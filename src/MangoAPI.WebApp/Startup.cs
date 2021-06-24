@@ -1,8 +1,8 @@
 using System.Text;
+using Mango.Auth.Application.CommandHandlers;
+using Mango.Auth.Application.Services;
 using Mango.Auth.Domain;
 using Mango.Auth.Infrastructure.Database;
-using MangoAPI.User.Registration;
-using MangoAPI.WebApp.Infrastructure;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
@@ -41,7 +41,7 @@ namespace MangoAPI.WebApp
             identityBuilder.AddEntityFrameworkStores<UserDbContext>();
             identityBuilder.AddSignInManager<SignInManager<UserEntity>>();
 
-            services.AddMediatR(typeof(RegistrationHandler).Assembly);
+            services.AddMediatR(typeof(RegistrationCommandHandler).Assembly);
             services.AddMvc(option =>
             {
                 option.EnableEndpointRouting = false;

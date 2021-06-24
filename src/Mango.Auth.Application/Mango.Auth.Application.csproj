@@ -4,4 +4,19 @@
         <TargetFramework>net5.0</TargetFramework>
     </PropertyGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\Mango.Auth.Domain\Mango.Auth.Domain.csproj" />
+      <ProjectReference Include="..\Mango.Auth.DTO\Mango.Auth.DTO.csproj" />
+      <ProjectReference Include="..\Mango.Auth.Infrastructure\Mango.Auth.Infrastructure.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="MediatR" Version="9.0.0" />
+      <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.2.0" />
+      <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="6.0.0-preview.5.21301.5" />
+      <PackageReference Include="Microsoft.IdentityModel.JsonWebTokens" Version="6.8.0" />
+      <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="6.11.1" />
+      <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.8.0" />
+    </ItemGroup>
+
 </Project>

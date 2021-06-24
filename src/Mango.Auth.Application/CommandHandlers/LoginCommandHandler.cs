@@ -1,21 +1,22 @@
 ﻿using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
+using Mango.Auth.Application.Exceptions;
 using Mango.Auth.Domain;
-using MangoAPI.WebApp.Exceptions;
-using MangoAPI.WebApp.Infrastructure;
+using Mango.Auth.DTO.Commands;
+using Mango.Auth.DTO.Models;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 
-namespace MangoAPI.User.Login
+namespace Mango.Auth.Application.CommandHandlers
 {
-    public class LoginHandler : IRequestHandler<LoginQuery, User>
+    public class LoginCommandHandler : IRequestHandler<LoginCommand, User>
     {
         private readonly UserManager<UserEntity> _userManager;
         private readonly SignInManager<UserEntity> _signInManager;
         private readonly IJwtGenerator _jwtGenerator;
 
-        public LoginHandler(UserManager<UserEntity> userManager, SignInManager<UserEntity> signInManager, 
+        public LoginCommandHandler(UserManager<UserEntity> userManager, SignInManager<UserEntity> signInManager, 
             IJwtGenerator jwtGenerator)
         {
             _userManager = userManager;
@@ -23,7 +24,7 @@ namespace MangoAPI.User.Login
             _jwtGenerator = jwtGenerator;
         }
 
-        public async Task<User> Handle(LoginQuery request, CancellationToken cancellationToken)
+        public async Task<User> Handle(LoginCommand request, CancellationToken cancellationToken)
         {
             var user = await _userManager.FindByEmailAsync(request.Email);
 

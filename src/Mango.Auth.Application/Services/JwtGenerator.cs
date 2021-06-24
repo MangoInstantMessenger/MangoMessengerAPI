@@ -8,7 +8,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using JwtRegisteredClaimNames = Microsoft.IdentityModel.JsonWebTokens.JwtRegisteredClaimNames;
 
-namespace MangoAPI.WebApp.Infrastructure
+namespace Mango.Auth.Application.Services
 {
     public class JwtGenerator : IJwtGenerator
     {

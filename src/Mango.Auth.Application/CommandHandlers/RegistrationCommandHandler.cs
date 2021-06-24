@@ -3,23 +3,25 @@ using System.Linq;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
+using Mango.Auth.Application.Exceptions;
 using Mango.Auth.Domain;
+using Mango.Auth.DTO.Commands;
+using Mango.Auth.DTO.Models;
 using Mango.Auth.Infrastructure.Database;
-using MangoAPI.WebApp.Exceptions;
-using MangoAPI.WebApp.Infrastructure;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
-namespace MangoAPI.User.Registration
+namespace Mango.Auth.Application.CommandHandlers
 {
-    public class RegistrationHandler : IRequestHandler<RegistrationCommand, User>
+    public class RegistrationCommandHandler : IRequestHandler<RegistrationCommand, User>
     {
         private readonly UserManager<UserEntity> _userManager;
         private readonly IJwtGenerator _jwtGenerator;
         private readonly UserDbContext _dbContext;
 
-        public RegistrationHandler(UserManager<UserEntity> userManager, IJwtGenerator jwtGenerator, UserDbContext dbContext)
+        public RegistrationCommandHandler(UserManager<UserEntity> userManager, IJwtGenerator jwtGenerator,
+            UserDbContext dbContext)
         {
             _userManager = userManager;
             _jwtGenerator = jwtGenerator;

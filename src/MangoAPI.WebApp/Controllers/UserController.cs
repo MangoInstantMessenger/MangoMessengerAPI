@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
-using MangoAPI.User.Login;
-using MangoAPI.User.Registration;
+using Mango.Auth.DTO.Commands;
+using Mango.Auth.DTO.Models;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -20,13 +20,13 @@ namespace MangoAPI.WebApp.Controllers
         }
 
         [HttpPost("login")]
-        public async Task<ActionResult<User.User>> LoginAsync(LoginQuery query)
+        public async Task<ActionResult<User>> LoginAsync(LoginCommand command)
         {
-            return await _mediator.Send(query);
+            return await _mediator.Send(command);
         }
 
         [HttpPost("registration")]
-        public async Task<ActionResult<User.User>> RegistrationAsync(RegistrationCommand command)
+        public async Task<ActionResult<User>> RegistrationAsync(RegistrationCommand command)
         {
             return await _mediator.Send(command);
         }

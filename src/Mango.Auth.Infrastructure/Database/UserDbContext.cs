@@ -13,11 +13,5 @@ namespace Mango.Auth.Infrastructure.Database
         public UserDbContext(DbContextOptions options) : base(options)
         {
         }
-
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            optionsBuilder.UseNpgsql(
-                "Server=localhost;User Id=postgres;Password=postgres;Database=MangoApiDatabase;");
-        }
     }
 }

@@ -1,6 +1,7 @@
-﻿using MediatR;
+﻿using Mango.Auth.DTO.Models;
+using MediatR;
 
-namespace MangoAPI.User.Registration
+namespace Mango.Auth.DTO.Commands
 {
     public class RegistrationCommand : IRequest<User>
     {
