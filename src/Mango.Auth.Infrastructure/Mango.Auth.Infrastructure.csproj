@@ -14,4 +14,12 @@
       <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="6.0.0-preview4" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Database\Configurations" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Mango.Auth.Domain\Mango.Auth.Domain.csproj" />
+    </ItemGroup>
+
 </Project>

@@ -5,7 +5,7 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace MangoAPI.Controllers
+namespace MangoAPI.WebApp.Controllers
 {
     [ApiController]
     [AllowAnonymous]

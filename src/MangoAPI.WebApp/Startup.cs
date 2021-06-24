@@ -1,8 +1,8 @@
 using System.Text;
-using MangoAPI.Data.Context;
-using MangoAPI.Data.Entities;
-using MangoAPI.Infrastructure;
+using Mango.Auth.Domain;
+using Mango.Auth.Infrastructure.Database;
 using MangoAPI.User.Registration;
+using MangoAPI.WebApp.Infrastructure;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
@@ -18,7 +18,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 
-namespace MangoAPI
+namespace MangoAPI.WebApp
 {
     public class Startup
     {
@@ -27,19 +27,19 @@ namespace MangoAPI
             Configuration = configuration;
         }
 
-        public IConfiguration Configuration { get; }
+        private IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
-            services.AddDbContext<DataContext>(opt =>
+            services.AddDbContext<UserDbContext>(opt =>
                 opt.UseNpgsql(Configuration.GetConnectionString("LOCAL_POSTGRES_CONNECTION_STRING")));
 
-            var builder = services.AddIdentityCore<AppUser>();
+            var builder = services.AddIdentityCore<UserEntity>();
             var identityBuilder = new IdentityBuilder(builder.UserType, builder.Services);
-            identityBuilder.AddEntityFrameworkStores<DataContext>();
-            identityBuilder.AddSignInManager<SignInManager<AppUser>>();
+            identityBuilder.AddEntityFrameworkStores<UserDbContext>();
+            identityBuilder.AddSignInManager<SignInManager<UserEntity>>();
 
             services.AddMediatR(typeof(RegistrationHandler).Assembly);
             services.AddMvc(option =>
@@ -70,7 +70,7 @@ namespace MangoAPI
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public static void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
             {

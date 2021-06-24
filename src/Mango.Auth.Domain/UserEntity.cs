@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Identity;
 
-namespace MangoAPI.Data.Entities
+namespace Mango.Auth.Domain
 {
-    public class AppUser : IdentityUser
+    public class UserEntity : IdentityUser
     {
         public string DisplayName { get; set; }
     }

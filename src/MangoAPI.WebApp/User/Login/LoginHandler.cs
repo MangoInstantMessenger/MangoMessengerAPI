@@ -1,9 +1,9 @@
 ﻿using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
-using MangoAPI.Data.Entities;
-using MangoAPI.Exceptions;
-using MangoAPI.Infrastructure;
+using Mango.Auth.Domain;
+using MangoAPI.WebApp.Exceptions;
+using MangoAPI.WebApp.Infrastructure;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 
@@ -11,11 +11,11 @@ namespace MangoAPI.User.Login
 {
     public class LoginHandler : IRequestHandler<LoginQuery, User>
     {
-        private readonly UserManager<AppUser> _userManager;
-        private readonly SignInManager<AppUser> _signInManager;
+        private readonly UserManager<UserEntity> _userManager;
+        private readonly SignInManager<UserEntity> _signInManager;
         private readonly IJwtGenerator _jwtGenerator;
 
-        public LoginHandler(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, 
+        public LoginHandler(UserManager<UserEntity> userManager, SignInManager<UserEntity> signInManager, 
             IJwtGenerator jwtGenerator)
         {
             _userManager = userManager;

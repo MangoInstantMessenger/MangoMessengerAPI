@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Net;
 
-namespace MangoAPI.Exceptions
+namespace MangoAPI.WebApp.Exceptions
 {
     public class RestException : Exception
     {

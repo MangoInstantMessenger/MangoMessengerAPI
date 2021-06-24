@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using MangoAPI.Data.Entities;
+using Mango.Auth.Domain;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using JwtRegisteredClaimNames = Microsoft.IdentityModel.JsonWebTokens.JwtRegisteredClaimNames;
 
-namespace MangoAPI.Infrastructure
+namespace MangoAPI.WebApp.Infrastructure
 {
     public class JwtGenerator : IJwtGenerator
     {
@@ -19,9 +19,9 @@ namespace MangoAPI.Infrastructure
             _key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["TokenKey"]));
         }
 
-        public string CreateToken(AppUser user)
+        public string CreateToken(UserEntity userEntity)
         {
-            var claims = new List<Claim> { new Claim(JwtRegisteredClaimNames.NameId, user.UserName) };
+            var claims = new List<Claim> { new Claim(JwtRegisteredClaimNames.NameId, userEntity.UserName) };
 
             var credentials = new SigningCredentials(_key, SecurityAlgorithms.HmacSha512Signature);
 

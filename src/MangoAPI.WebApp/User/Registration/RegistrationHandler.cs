@@ -3,10 +3,10 @@ using System.Linq;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
-using MangoAPI.Data.Context;
-using MangoAPI.Data.Entities;
-using MangoAPI.Exceptions;
-using MangoAPI.Infrastructure;
+using Mango.Auth.Domain;
+using Mango.Auth.Infrastructure.Database;
+using MangoAPI.WebApp.Exceptions;
+using MangoAPI.WebApp.Infrastructure;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -15,31 +15,31 @@ namespace MangoAPI.User.Registration
 {
     public class RegistrationHandler : IRequestHandler<RegistrationCommand, User>
     {
-        private readonly UserManager<AppUser> _userManager;
+        private readonly UserManager<UserEntity> _userManager;
         private readonly IJwtGenerator _jwtGenerator;
-        private readonly DataContext _context;
+        private readonly UserDbContext _dbContext;
 
-        public RegistrationHandler(UserManager<AppUser> userManager, IJwtGenerator jwtGenerator, DataContext context)
+        public RegistrationHandler(UserManager<UserEntity> userManager, IJwtGenerator jwtGenerator, UserDbContext dbContext)
         {
             _userManager = userManager;
             _jwtGenerator = jwtGenerator;
-            _context = context;
+            _dbContext = dbContext;
         }
 
 
         public async Task<User> Handle(RegistrationCommand request, CancellationToken cancellationToken)
         {
-            if (await _context.Users.Where(x => x.Email == request.Email).AnyAsync(cancellationToken))
+            if (await _dbContext.Users.Where(x => x.Email == request.Email).AnyAsync(cancellationToken))
             {
                 throw new RestException(HttpStatusCode.BadRequest, new {Email = "Email already exist"});
             }
 
-            if (await _context.Users.Where(x => x.UserName == request.UserName).AnyAsync(cancellationToken))
+            if (await _dbContext.Users.Where(x => x.UserName == request.UserName).AnyAsync(cancellationToken))
             {
                 throw new RestException(HttpStatusCode.BadRequest, new {UserName = "UserName already exist"});
             }
 
-            var user = new AppUser
+            var user = new UserEntity
             {
                 DisplayName = request.DisplayName,
                 Email = request.Email,
