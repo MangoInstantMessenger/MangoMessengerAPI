@@ -4,6 +4,8 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using MangoAPI.Domain;
+using MangoAPI.Domain.Entities;
+using MangoAPI.Domain.Interfaces;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using JwtRegisteredClaimNames = Microsoft.IdentityModel.JsonWebTokens.JwtRegisteredClaimNames;
@@ -21,7 +23,12 @@ namespace MangoAPI.Application.Services
 
         public string CreateToken(UserEntity userEntity)
         {
-            var claims = new List<Claim> { new Claim(JwtRegisteredClaimNames.NameId, userEntity.UserName) };
+            return CreateToken(userEntity.Email);
+        }
+
+        public string CreateToken(string email)
+        {
+            var claims = new List<Claim> {new(JwtRegisteredClaimNames.NameId, email)};
 
             var credentials = new SigningCredentials(_key, SecurityAlgorithms.HmacSha512Signature);
 
@@ -31,7 +38,7 @@ namespace MangoAPI.Application.Services
                 Expires = DateTime.Now.AddDays(7),
                 SigningCredentials = credentials
             };
-            
+
             var tokenHandler = new JwtSecurityTokenHandler();
 
             var token = tokenHandler.CreateToken(tokenDescriptor);

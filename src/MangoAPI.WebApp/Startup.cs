@@ -2,6 +2,8 @@ using System.Text;
 using MangoAPI.Application.CommandHandlers;
 using MangoAPI.Application.Services;
 using MangoAPI.Domain;
+using MangoAPI.Domain.Entities;
+using MangoAPI.Domain.Interfaces;
 using MangoAPI.Infrastructure.Database;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -35,6 +37,7 @@ namespace MangoAPI.WebApp
             services.AddControllers();
             services.AddDbContext<UserDbContext>(opt =>
                 opt.UseNpgsql(Configuration.GetConnectionString("LOCAL_POSTGRES_CONNECTION_STRING")));
+            
 
             var builder = services.AddIdentityCore<UserEntity>();
             var identityBuilder = new IdentityBuilder(builder.UserType, builder.Services);

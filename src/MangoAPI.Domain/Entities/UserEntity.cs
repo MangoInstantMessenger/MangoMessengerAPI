@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 
-namespace MangoAPI.Domain
+namespace MangoAPI.Domain.Entities
 {
     public class UserEntity : IdentityUser
     {
