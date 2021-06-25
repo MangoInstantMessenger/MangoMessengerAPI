@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
-using MangoAPI.DTO.Commands;
 using MangoAPI.DTO.Commands.Auth;
 using MangoAPI.DTO.Models;
+using MangoAPI.DTO.Responses;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -27,7 +27,7 @@ namespace MangoAPI.WebApp.Controllers
         }
 
         [HttpPost("register")]
-        public async Task<ActionResult<User>> RegistrationAsync(RegisterCommand command)
+        public async Task<RegisterResponse> RegisterAsync(RegisterCommand command)
         {
             return await _mediator.Send(command);
         }

@@ -1,4 +1,5 @@
-﻿using MangoAPI.Domain.Auth;
+﻿using System;
+using MangoAPI.Domain.Auth;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -10,7 +11,7 @@ namespace MangoAPI.Infrastructure.Database.Configurations
         {
             builder.HasKey(x => x.Id);
             builder.Property(x => x.Email).IsRequired();
-            builder.Property(x => x.Token).IsRequired();
+            builder.Property(x => x.Password).IsRequired();
             builder.Property(x => x.CreatedAt).IsRequired();
         }
     }

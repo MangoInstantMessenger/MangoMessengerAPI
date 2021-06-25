@@ -22,16 +22,17 @@ namespace MangoAPI.Infrastructure.Migrations
             modelBuilder.Entity("MangoAPI.Domain.Auth.RegisterRequestEntity", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("integer");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("Email")
+                        .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string>("Token")
+                    b.Property<string>("Password")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.HasKey("Id");

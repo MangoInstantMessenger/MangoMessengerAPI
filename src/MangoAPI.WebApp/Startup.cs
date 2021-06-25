@@ -1,10 +1,9 @@
 using System.Text;
-using MangoAPI.Application.CommandHandlers;
 using MangoAPI.Application.Interfaces;
-using MangoAPI.Application.Services;
-using MangoAPI.Domain;
 using MangoAPI.Domain.Entities;
+using MangoAPI.Infrastructure.CommandHandlers;
 using MangoAPI.Infrastructure.Database;
+using MangoAPI.Infrastructure.Services;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
@@ -30,8 +29,7 @@ namespace MangoAPI.WebApp
         }
 
         private IConfiguration Configuration { get; }
-
-        // This method gets called by the runtime. Use this method to add services to the container.
+        
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
@@ -71,8 +69,7 @@ namespace MangoAPI.WebApp
 
             services.AddSwaggerGen(c => { c.SwaggerDoc("v1", new OpenApiInfo {Title = "MangoAPI", Version = "v1"}); });
         }
-
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        
         public static void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())

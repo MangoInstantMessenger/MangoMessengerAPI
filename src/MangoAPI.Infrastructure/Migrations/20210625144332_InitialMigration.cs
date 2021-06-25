@@ -48,6 +48,20 @@ namespace MangoAPI.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "RegisterRequests",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false),
+                    Email = table.Column<string>(type: "text", nullable: false),
+                    Password = table.Column<string>(type: "text", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "timestamp without time zone", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_RegisterRequests", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "AspNetRoleClaims",
                 columns: table => new
                 {
@@ -205,6 +219,9 @@ namespace MangoAPI.Infrastructure.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetUserTokens");
+
+            migrationBuilder.DropTable(
+                name: "RegisterRequests");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");

@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MangoAPI.Infrastructure.Migrations
 {
     [DbContext(typeof(UserDbContext))]
-    [Migration("20210625000737_InitialMigration")]
+    [Migration("20210625144332_InitialMigration")]
     partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -21,7 +21,28 @@ namespace MangoAPI.Infrastructure.Migrations
                 .HasAnnotation("ProductVersion", "6.0.0-preview.5.21301.9")
                 .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
-            modelBuilder.Entity("MangoAPI.Domain.UserEntity", b =>
+            modelBuilder.Entity("MangoAPI.Domain.Auth.RegisterRequestEntity", b =>
+                {
+                    b.Property<int>("Id")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("RegisterRequests");
+                });
+
+            modelBuilder.Entity("MangoAPI.Domain.Entities.UserEntity", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("text");
@@ -227,7 +248,7 @@ namespace MangoAPI.Infrastructure.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("MangoAPI.Domain.UserEntity", null)
+                    b.HasOne("MangoAPI.Domain.Entities.UserEntity", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -236,7 +257,7 @@ namespace MangoAPI.Infrastructure.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("MangoAPI.Domain.UserEntity", null)
+                    b.HasOne("MangoAPI.Domain.Entities.UserEntity", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -251,7 +272,7 @@ namespace MangoAPI.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("MangoAPI.Domain.UserEntity", null)
+                    b.HasOne("MangoAPI.Domain.Entities.UserEntity", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -260,7 +281,7 @@ namespace MangoAPI.Infrastructure.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("MangoAPI.Domain.UserEntity", null)
+                    b.HasOne("MangoAPI.Domain.Entities.UserEntity", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)

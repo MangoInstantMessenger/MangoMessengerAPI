@@ -2,7 +2,7 @@
 
 namespace MangoAPI.Domain.Entities
 {
-    public class UserEntity : IdentityUser
+    public sealed class UserEntity : IdentityUser
     {
         public string DisplayName { get; set; }
     }

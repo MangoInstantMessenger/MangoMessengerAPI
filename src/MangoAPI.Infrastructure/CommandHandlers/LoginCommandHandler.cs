@@ -4,13 +4,12 @@ using System.Threading.Tasks;
 using MangoAPI.Application.Exceptions;
 using MangoAPI.Application.Interfaces;
 using MangoAPI.Domain.Entities;
-using MangoAPI.DTO.Commands;
 using MangoAPI.DTO.Commands.Auth;
 using MangoAPI.DTO.Models;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 
-namespace MangoAPI.Application.CommandHandlers
+namespace MangoAPI.Infrastructure.CommandHandlers
 {
     public class LoginCommandHandler : IRequestHandler<LoginCommand, User>
     {
