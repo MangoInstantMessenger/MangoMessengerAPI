@@ -1,4 +1,4 @@
-﻿namespace Mango.Auth.DTO.Models
+﻿namespace MangoAPI.DTO.Models
 {
     public class User
     {

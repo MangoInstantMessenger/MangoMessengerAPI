@@ -1,8 +1,8 @@
-﻿using Mango.Auth.Domain;
+﻿using MangoAPI.Domain;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
-namespace Mango.Auth.Infrastructure.Database
+namespace MangoAPI.Infrastructure.Database
 {
     public class UserDbContext : IdentityDbContext<UserEntity>
     {

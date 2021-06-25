@@ -1,9 +1,9 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace Mango.Auth.Infrastructure.Migrations
+namespace MangoAPI.Infrastructure.Migrations
 {
-    public partial class AuthInitialMigration : Migration
+    public partial class InitialMigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

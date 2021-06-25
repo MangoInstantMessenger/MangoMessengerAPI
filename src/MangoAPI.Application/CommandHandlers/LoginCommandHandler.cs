@@ -1,14 +1,14 @@
 ﻿using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
-using Mango.Auth.Application.Exceptions;
-using Mango.Auth.Domain;
-using Mango.Auth.DTO.Commands;
-using Mango.Auth.DTO.Models;
+using MangoAPI.Application.Exceptions;
+using MangoAPI.Domain;
+using MangoAPI.DTO.Commands;
+using MangoAPI.DTO.Models;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 
-namespace Mango.Auth.Application.CommandHandlers
+namespace MangoAPI.Application.CommandHandlers
 {
     public class LoginCommandHandler : IRequestHandler<LoginCommand, User>
     {

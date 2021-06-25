@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
-using Mango.Auth.DTO.Commands;
-using Mango.Auth.DTO.Models;
+using MangoAPI.DTO.Commands;
+using MangoAPI.DTO.Models;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

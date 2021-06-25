@@ -17,9 +17,9 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Mango.Auth.Application\Mango.Auth.Application.csproj" />
-      <ProjectReference Include="..\Mango.Auth.DTO\Mango.Auth.DTO.csproj" />
-      <ProjectReference Include="..\Mango.Auth.Infrastructure\Mango.Auth.Infrastructure.csproj" />
+      <ProjectReference Include="..\MangoAPI.Application\MangoAPI.Application.csproj" />
+      <ProjectReference Include="..\MangoAPI.DTO\MangoAPI.DTO.csproj" />
+      <ProjectReference Include="..\MangoAPI.Infrastructure\MangoAPI.Infrastructure.csproj" />
     </ItemGroup>
 
 </Project>

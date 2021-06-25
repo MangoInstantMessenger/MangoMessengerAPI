@@ -1,4 +1,4 @@
-﻿namespace Mango.Auth.Domain
+﻿namespace MangoAPI.Domain
 {
     public interface IJwtGenerator
     {

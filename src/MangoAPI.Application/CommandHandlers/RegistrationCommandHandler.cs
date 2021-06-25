@@ -3,16 +3,16 @@ using System.Linq;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
-using Mango.Auth.Application.Exceptions;
-using Mango.Auth.Domain;
-using Mango.Auth.DTO.Commands;
-using Mango.Auth.DTO.Models;
-using Mango.Auth.Infrastructure.Database;
+using MangoAPI.Application.Exceptions;
+using MangoAPI.Domain;
+using MangoAPI.DTO.Commands;
+using MangoAPI.DTO.Models;
+using MangoAPI.Infrastructure.Database;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
-namespace Mango.Auth.Application.CommandHandlers
+namespace MangoAPI.Application.CommandHandlers
 {
     public class RegistrationCommandHandler : IRequestHandler<RegistrationCommand, User>
     {

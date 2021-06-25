@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 
-namespace Mango.Auth.Infrastructure.Database
+namespace MangoAPI.Infrastructure.Database
 {
     public class DesignTimeUserDbContextFactory : IDesignTimeDbContextFactory<UserDbContext>
     {

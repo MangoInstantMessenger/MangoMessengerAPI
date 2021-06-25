@@ -1,8 +1,8 @@
 using System.Text;
-using Mango.Auth.Application.CommandHandlers;
-using Mango.Auth.Application.Services;
-using Mango.Auth.Domain;
-using Mango.Auth.Infrastructure.Database;
+using MangoAPI.Application.CommandHandlers;
+using MangoAPI.Application.Services;
+using MangoAPI.Domain;
+using MangoAPI.Infrastructure.Database;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
