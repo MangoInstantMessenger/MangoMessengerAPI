@@ -1,11 +1,11 @@
 ﻿using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
-using MangoAPI.Application.Exceptions;
-using MangoAPI.Application.Interfaces;
 using MangoAPI.Domain.Entities;
 using MangoAPI.DTO.Commands.Auth;
 using MangoAPI.DTO.Models;
+using MangoAPI.Infrastructure.Exceptions;
+using MangoAPI.Infrastructure.Interfaces;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 

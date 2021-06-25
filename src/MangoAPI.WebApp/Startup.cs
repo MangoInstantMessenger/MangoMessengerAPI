@@ -1,8 +1,8 @@
 using System.Text;
-using MangoAPI.Application.Interfaces;
 using MangoAPI.Domain.Entities;
 using MangoAPI.Infrastructure.CommandHandlers;
 using MangoAPI.Infrastructure.Database;
+using MangoAPI.Infrastructure.Interfaces;
 using MangoAPI.Infrastructure.Services;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -52,6 +52,7 @@ namespace MangoAPI.WebApp
             }).SetCompatibilityVersion(CompatibilityVersion.Latest);
             
             services.AddScoped<IJwtGenerator, JwtGenerator>();
+            services.AddScoped<IMailService, MailService>();
             
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("super secret key"));
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)

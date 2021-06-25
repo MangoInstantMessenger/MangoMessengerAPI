@@ -1,13 +1,11 @@
 ﻿using System;
-using System.Linq;
-using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
-using MangoAPI.Application.Exceptions;
 using MangoAPI.Domain.Auth;
 using MangoAPI.DTO.Commands.Auth;
 using MangoAPI.DTO.Responses;
 using MangoAPI.Infrastructure.Database;
+using MangoAPI.Infrastructure.Interfaces;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
@@ -16,44 +14,58 @@ namespace MangoAPI.Infrastructure.CommandHandlers
     public class RegisterCommandHandler : IRequestHandler<RegisterCommand, RegisterResponse>
     {
         private readonly UserDbContext _dbContext;
+        private readonly IMailService _mailService;
 
-        public RegisterCommandHandler(UserDbContext dbContext)
+        public RegisterCommandHandler(UserDbContext dbContext, IMailService mailService)
         {
             _dbContext = dbContext;
+            _mailService = mailService;
         }
-        
+
         public async Task<RegisterResponse> Handle(RegisterCommand request, CancellationToken cancellationToken)
         {
-            var userExists = await _dbContext.RegisterRequests
-                .Where(x => x.Email == request.Email).AnyAsync(cancellationToken);
-            
-            if (userExists)
+            var register = await _dbContext.RegisterRequests
+                .FirstOrDefaultAsync(x => x.Email == request.Email, cancellationToken);
+
+            if (register is { } existentRegister)
             {
-                throw new RestException(HttpStatusCode.BadRequest, 
-                    new {Email = "Email already exist. Forgot password?"});
+                // await _mailService.SendMailMessage(existentRegister.Email, existentRegister.ConfirmLinkCode);
+                return await Task.FromResult(new RegisterResponse
+                {
+                    Message = "Email already registered. Forgot password?",
+                    AlreadyRegistered = true,
+                    TermsAccepted = request.TermsAccepted
+                });
             }
 
             if (!request.TermsAccepted)
             {
-                throw new RestException(HttpStatusCode.BadRequest,
-                    new {TermsAccepted = "In order to register you must accept the terms of service."});
+                return await Task.FromResult(new RegisterResponse
+                {
+                    Message = "In order to register accept terms of service.",
+                    AlreadyRegistered = false,
+                    TermsAccepted = false
+                });
             }
 
             var registerRequest = new RegisterRequestEntity
             {
                 Email = request.Email,
                 Password = request.Password,
-                CreatedAt = DateTime.Now
+                CreatedAt = DateTime.Now,
+                ConfirmLinkCode = Guid.NewGuid()
             };
 
             await _dbContext.RegisterRequests.AddAsync(registerRequest, cancellationToken);
             await _dbContext.SaveChangesAsync(cancellationToken);
-            
-            // send verification email here
+
+            // await _mailService.SendMailMessage(registerRequest.Email, registerRequest.ConfirmLinkCode);
 
             return await Task.FromResult(new RegisterResponse
             {
-                Message = "Registration was successful. Confirm your email."
+                Message = "Registration was successful. Confirm your email.",
+                AlreadyRegistered = false,
+                TermsAccepted = true
             });
         }
     }

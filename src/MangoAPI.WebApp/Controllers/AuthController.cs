@@ -27,9 +27,16 @@ namespace MangoAPI.WebApp.Controllers
         }
 
         [HttpPost("register")]
-        public async Task<RegisterResponse> RegisterAsync(RegisterCommand command)
+        public async Task<IActionResult> RegisterAsync(RegisterCommand command)
         {
-            return await _mediator.Send(command);
+            var response = await _mediator.Send(command);
+
+            if (response.AlreadyRegistered || !response.TermsAccepted)
+            {
+                return BadRequest(response);
+            }
+
+            return Ok(response);
         }
     }
 }

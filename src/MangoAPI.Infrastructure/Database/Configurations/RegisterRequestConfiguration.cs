@@ -12,6 +12,7 @@ namespace MangoAPI.Infrastructure.Database.Configurations
             builder.Property(x => x.Email).IsRequired();
             builder.Property(x => x.Password).IsRequired();
             builder.Property(x => x.CreatedAt).IsRequired();
+            builder.Property(x => x.ConfirmLinkCode).IsRequired();
         }
     }
 }
