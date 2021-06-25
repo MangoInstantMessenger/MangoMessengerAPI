@@ -3,15 +3,15 @@ using Microsoft.EntityFrameworkCore.Design;
 
 namespace MangoAPI.Infrastructure.Database
 {
-    public class DesignTimeUserDbContextFactory : IDesignTimeDbContextFactory<UserDbContext>
+    public class DesignTimeUserDbContextFactory : IDesignTimeDbContextFactory<MangoPostgresDbContext>
     {
-        public UserDbContext CreateDbContext(string[] args)
+        public MangoPostgresDbContext CreateDbContext(string[] args)
         {
-            var optionsBuilder = new DbContextOptionsBuilder<UserDbContext>();
+            var optionsBuilder = new DbContextOptionsBuilder<MangoPostgresDbContext>();
             optionsBuilder.UseNpgsql(
                 "Server=localhost;User Id=postgres;Password=postgres;Database=MangoApiDatabase;");
 
-            return new UserDbContext(optionsBuilder.Options);
+            return new MangoPostgresDbContext(optionsBuilder.Options);
         }
     }
 }

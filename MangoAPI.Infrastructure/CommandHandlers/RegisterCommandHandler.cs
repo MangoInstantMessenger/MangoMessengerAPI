@@ -13,10 +13,10 @@ namespace MangoAPI.Infrastructure.CommandHandlers
 {
     public class RegisterCommandHandler : IRequestHandler<RegisterCommand, RegisterResponse>
     {
-        private readonly UserDbContext _dbContext;
+        private readonly MangoPostgresDbContext _dbContext;
         private readonly IMailService _mailService;
 
-        public RegisterCommandHandler(UserDbContext dbContext, IMailService mailService)
+        public RegisterCommandHandler(MangoPostgresDbContext dbContext, IMailService mailService)
         {
             _dbContext = dbContext;
             _mailService = mailService;
@@ -53,7 +53,7 @@ namespace MangoAPI.Infrastructure.CommandHandlers
                 Email = request.Email,
                 Password = request.Password,
                 CreatedAt = DateTime.Now,
-                ConfirmLinkCode = Guid.NewGuid()
+                ConfirmLinkCode = new Random().Next(100000, 999999)
             };
 
             await _dbContext.RegisterRequests.AddAsync(registerRequest, cancellationToken);

@@ -9,9 +9,9 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace MangoAPI.Infrastructure.Migrations
 {
-    [DbContext(typeof(UserDbContext))]
-    [Migration("20210625171725_ConfirnRegisterMigration")]
-    partial class ConfirnRegisterMigration
+    [DbContext(typeof(MangoPostgresDbContext))]
+    [Migration("20210625185533_InitialMigration")]
+    partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -27,8 +27,8 @@ namespace MangoAPI.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer");
 
-                    b.Property<Guid>("ConfirmLinkCode")
-                        .HasColumnType("uuid");
+                    b.Property<int>("ConfirmLinkCode")
+                        .HasColumnType("integer");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp without time zone");
@@ -46,6 +46,45 @@ namespace MangoAPI.Infrastructure.Migrations
                     b.ToTable("RegisterRequests");
                 });
 
+            modelBuilder.Entity("MangoAPI.Domain.Entities.RefreshTokenEntity", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<string>("CreatedByIp")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("Expires")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<string>("ReplacedByToken")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime?>("Revoked")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<string>("RevokedByIp")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Token")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("UserEntityId")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserEntityId");
+
+                    b.ToTable("RefreshTokens");
+                });
+
             modelBuilder.Entity("MangoAPI.Domain.Entities.UserEntity", b =>
                 {
                     b.Property<string>("Id")
@@ -53,9 +92,6 @@ namespace MangoAPI.Infrastructure.Migrations
 
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("integer");
-
-                    b.Property<string>("AccessToken")
-                        .HasColumnType("text");
 
                     b.Property<string>("Bio")
                         .HasColumnType("text");
@@ -99,9 +135,6 @@ namespace MangoAPI.Infrastructure.Migrations
 
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("boolean");
-
-                    b.Property<string>("RefreshToken")
-                        .HasColumnType("text");
 
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("text");
@@ -253,6 +286,15 @@ namespace MangoAPI.Infrastructure.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
+            modelBuilder.Entity("MangoAPI.Domain.Entities.RefreshTokenEntity", b =>
+                {
+                    b.HasOne("MangoAPI.Domain.Entities.UserEntity", "UserEntity")
+                        .WithMany("TokenEntities")
+                        .HasForeignKey("UserEntityId");
+
+                    b.Navigation("UserEntity");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -302,6 +344,11 @@ namespace MangoAPI.Infrastructure.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("MangoAPI.Domain.Entities.UserEntity", b =>
+                {
+                    b.Navigation("TokenEntities");
                 });
 #pragma warning restore 612, 618
         }

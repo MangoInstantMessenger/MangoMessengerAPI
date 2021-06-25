@@ -16,10 +16,10 @@ namespace MangoAPI.Infrastructure.CommandHandlers
     {
         private readonly UserManager<UserEntity> _userManager;
         private readonly IJwtGenerator _jwtGenerator;
-        private readonly UserDbContext _dbContext;
+        private readonly MangoPostgresDbContext _dbContext;
 
         public ConfirmRegisterCommandHandler(UserManager<UserEntity> userManager, IJwtGenerator jwtGenerator,
-            UserDbContext dbContext)
+            MangoPostgresDbContext dbContext)
         {
             _userManager = userManager;
             _jwtGenerator = jwtGenerator;
@@ -29,7 +29,7 @@ namespace MangoAPI.Infrastructure.CommandHandlers
         public async Task<ConfirmRegisterResponse> Handle(ConfirmRegisterCommand request,
             CancellationToken cancellationToken)
         {
-            var validRequestCode = Guid.TryParse(request.Guid, out var parsedGuid);
+            var validRequestCode = int.TryParse(request.ValidationCode, out var parsedValidationCode);
 
             if (!validRequestCode)
             {
@@ -41,7 +41,8 @@ namespace MangoAPI.Infrastructure.CommandHandlers
             }
 
             var requestEntity = await _dbContext.RegisterRequests
-                .FirstOrDefaultAsync(x => x.ConfirmLinkCode == parsedGuid, cancellationToken);
+                .FirstOrDefaultAsync(x => x.ConfirmLinkCode == parsedValidationCode, 
+                    cancellationToken);
 
             if (requestEntity == null)
             {
@@ -56,8 +57,6 @@ namespace MangoAPI.Infrastructure.CommandHandlers
             {
                 DisplayName = requestEntity.Email,
                 Email = requestEntity.Email,
-                AccessToken = _jwtGenerator.CreateToken(requestEntity.Email),
-                RefreshToken = _jwtGenerator.CreateToken(Guid.NewGuid().ToString()),
                 UserName = requestEntity.Email.Split('@')[0],
             };
 
@@ -69,8 +68,6 @@ namespace MangoAPI.Infrastructure.CommandHandlers
                 {
                     Message = "Your email was verified successfully.",
                     Success = true,
-                    AccessToken = userEntity.AccessToken,
-                    RefreshToken = userEntity.RefreshToken,
                 });
             }
             

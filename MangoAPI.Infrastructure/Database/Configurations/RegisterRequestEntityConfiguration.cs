@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace MangoAPI.Infrastructure.Database.Configurations
 {
-    public class RegisterRequestConfiguration : IEntityTypeConfiguration<RegisterRequestEntity>
+    public class RegisterRequestEntityConfiguration : IEntityTypeConfiguration<RegisterRequestEntity>
     {
         public void Configure(EntityTypeBuilder<RegisterRequestEntity> builder)
         {

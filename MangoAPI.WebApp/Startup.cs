@@ -33,13 +33,13 @@ namespace MangoAPI.WebApp
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
-            services.AddDbContext<UserDbContext>(opt =>
+            services.AddDbContext<MangoPostgresDbContext>(opt =>
                 opt.UseNpgsql(Configuration.GetConnectionString("LOCAL_POSTGRES_CONNECTION_STRING")));
             
 
             var builder = services.AddIdentityCore<UserEntity>();
             var identityBuilder = new IdentityBuilder(builder.UserType, builder.Services);
-            identityBuilder.AddEntityFrameworkStores<UserDbContext>();
+            identityBuilder.AddEntityFrameworkStores<MangoPostgresDbContext>();
             identityBuilder.AddSignInManager<SignInManager<UserEntity>>();
 
             services.AddMediatR(typeof(RegisterCommandHandler).Assembly);
