@@ -9,12 +9,12 @@ namespace MangoAPI.WebApp.Controllers
 {
     [ApiController]
     [AllowAnonymous]
-    [Route("[controller]")]
-    public class UserController : ControllerBase
+    [Route("api/auth")]
+    public class AuthController : ControllerBase
     {
         private readonly IMediator _mediator;
 
-        public UserController(IMediator mediator)
+        public AuthController(IMediator mediator)
         {
             _mediator = mediator;
         }
@@ -25,7 +25,7 @@ namespace MangoAPI.WebApp.Controllers
             return await _mediator.Send(command);
         }
 
-        [HttpPost("registration")]
+        [HttpPost("register")]
         public async Task<ActionResult<User>> RegistrationAsync(RegistrationCommand command)
         {
             return await _mediator.Send(command);
