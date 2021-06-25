@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MangoAPI.Infrastructure.Migrations
 {
     [DbContext(typeof(UserDbContext))]
-    [Migration("20210625144332_InitialMigration")]
+    [Migration("20210625145809_InitialMigration")]
     partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,6 +24,7 @@ namespace MangoAPI.Infrastructure.Migrations
             modelBuilder.Entity("MangoAPI.Domain.Auth.RegisterRequestEntity", b =>
                 {
                     b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("integer");
 
                     b.Property<DateTime>("CreatedAt")

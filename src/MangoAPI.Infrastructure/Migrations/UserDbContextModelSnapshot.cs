@@ -22,6 +22,7 @@ namespace MangoAPI.Infrastructure.Migrations
             modelBuilder.Entity("MangoAPI.Domain.Auth.RegisterRequestEntity", b =>
                 {
                     b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("integer");
 
                     b.Property<DateTime>("CreatedAt")
