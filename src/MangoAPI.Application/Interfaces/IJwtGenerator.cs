@@ -1,6 +1,6 @@
 ﻿using MangoAPI.Domain.Entities;
 
-namespace MangoAPI.Domain.Interfaces
+namespace MangoAPI.Application.Interfaces
 {
     public interface IJwtGenerator
     {

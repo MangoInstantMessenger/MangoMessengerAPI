@@ -2,9 +2,9 @@
 using System.Threading;
 using System.Threading.Tasks;
 using MangoAPI.Application.Exceptions;
+using MangoAPI.Application.Interfaces;
 using MangoAPI.Domain;
 using MangoAPI.Domain.Entities;
-using MangoAPI.Domain.Interfaces;
 using MangoAPI.DTO.Commands;
 using MangoAPI.DTO.Models;
 using MediatR;
