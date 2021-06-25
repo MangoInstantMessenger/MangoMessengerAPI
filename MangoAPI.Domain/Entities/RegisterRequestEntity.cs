@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace MangoAPI.Domain.Auth
+namespace MangoAPI.Domain.Entities
 {
     public class RegisterRequestEntity
     {

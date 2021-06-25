@@ -1,5 +1,4 @@
-﻿using MangoAPI.Domain.Auth;
-using MangoAPI.Domain.Entities;
+﻿using MangoAPI.Domain.Entities;
 using MangoAPI.Infrastructure.Database.Configurations;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;

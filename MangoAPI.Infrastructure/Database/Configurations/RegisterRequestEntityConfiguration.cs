@@ -1,4 +1,4 @@
-﻿using MangoAPI.Domain.Auth;
+﻿using MangoAPI.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
