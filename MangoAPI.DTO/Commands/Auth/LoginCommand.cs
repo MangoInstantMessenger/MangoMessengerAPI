@@ -1,11 +1,12 @@
-﻿using MangoAPI.DTO.Models;
+﻿using MangoAPI.DTO.Responses;
 using MediatR;
 
 namespace MangoAPI.DTO.Commands.Auth
 {
-    public class LoginCommand : IRequest<User>
+    public class LoginCommand : IRequest<LoginResponse>
     {
         public string Email { get; set; }
         public string Password { get; set; }
+        public string IpAddress { get; set; }
     }
 }

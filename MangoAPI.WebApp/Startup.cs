@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Authorization;
@@ -29,13 +30,13 @@ namespace MangoAPI.WebApp
         }
 
         private IConfiguration Configuration { get; }
-        
+
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
             services.AddDbContext<MangoPostgresDbContext>(opt =>
                 opt.UseNpgsql(Configuration.GetConnectionString("LOCAL_POSTGRES_CONNECTION_STRING")));
-            
+
 
             var builder = services.AddIdentityCore<UserEntity>();
             var identityBuilder = new IdentityBuilder(builder.UserType, builder.Services);
@@ -50,11 +51,11 @@ namespace MangoAPI.WebApp
                     .RequireAuthenticatedUser().RequireAuthenticatedUser().Build();
                 option.Filters.Add(new AuthorizeFilter(policy));
             }).SetCompatibilityVersion(CompatibilityVersion.Latest);
-            
+
             services.AddScoped<IJwtGenerator, JwtGenerator>();
             services.AddScoped<IMailService, MailService>();
             services.AddScoped<ICookieService, CookieService>();
-            
+
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("super secret key"));
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(
@@ -67,11 +68,11 @@ namespace MangoAPI.WebApp
                             ValidateAudience = false,
                             ValidateIssuer = false,
                         };
-                    });	
+                    });
 
             services.AddSwaggerGen(c => { c.SwaggerDoc("v1", new OpenApiInfo {Title = "MangoAPI", Version = "v1"}); });
         }
-        
+
         public static void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
@@ -89,6 +90,12 @@ namespace MangoAPI.WebApp
             app.UseAuthentication();
 
             app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
+
+            app.UseForwardedHeaders(new ForwardedHeadersOptions
+            {
+                ForwardedHeaders = ForwardedHeaders.XForwardedFor |
+                                   ForwardedHeaders.XForwardedProto
+            });
         }
     }
 }

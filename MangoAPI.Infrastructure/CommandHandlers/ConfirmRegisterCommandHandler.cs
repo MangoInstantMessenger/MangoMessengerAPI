@@ -5,7 +5,6 @@ using MangoAPI.Domain.Entities;
 using MangoAPI.DTO.Commands.Auth;
 using MangoAPI.DTO.Responses;
 using MangoAPI.Infrastructure.Database;
-using MangoAPI.Infrastructure.Interfaces;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -15,14 +14,12 @@ namespace MangoAPI.Infrastructure.CommandHandlers
     public class ConfirmRegisterCommandHandler : IRequestHandler<ConfirmRegisterCommand, ConfirmRegisterResponse>
     {
         private readonly UserManager<UserEntity> _userManager;
-        private readonly IJwtGenerator _jwtGenerator;
         private readonly MangoPostgresDbContext _dbContext;
 
-        public ConfirmRegisterCommandHandler(UserManager<UserEntity> userManager, IJwtGenerator jwtGenerator,
+        public ConfirmRegisterCommandHandler(UserManager<UserEntity> userManager,
             MangoPostgresDbContext dbContext)
         {
             _userManager = userManager;
-            _jwtGenerator = jwtGenerator;
             _dbContext = dbContext;
         }
 

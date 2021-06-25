@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Threading.Tasks;
 using MangoAPI.DTO.Commands.Auth;
-using MangoAPI.DTO.Models;
 using MangoAPI.Infrastructure.Interfaces;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace MangoAPI.WebApp.Controllers
 {
@@ -25,9 +23,27 @@ namespace MangoAPI.WebApp.Controllers
         }
 
         [HttpPost("login")]
-        public async Task<ActionResult<User>> LoginAsync([FromBody] LoginCommand command)
+        public async Task<IActionResult> LoginAsync([FromBody] LoginCommand command)
         {
-            return await _mediator.Send(command);
+            var ipAddress = Request.HttpContext.Connection.RemoteIpAddress;
+
+            if (ipAddress == null)
+            {
+                return BadRequest("Cannot catch an IP Address");
+            }
+
+            command.IpAddress = ipAddress.ToString();
+
+            var response = await _mediator.Send(command);
+
+            if (!response.Success)
+            {
+                return BadRequest(response);
+            }
+
+            _cookieService.Set(Response, "MangoJWTToken", response.AccessToken, 15);
+
+            return Ok(response);
         }
 
         [HttpPost("register")]
@@ -39,10 +55,10 @@ namespace MangoAPI.WebApp.Controllers
             {
                 return BadRequest(response);
             }
-            
-            _cookieService.Set(Response, "MangoRegisterRequest", 
+
+            _cookieService.Set(Response, "MangoRegisterRequest",
                 new Random().Next(1000).ToString(), 10);
-            
+
             return Ok(response);
         }
 
@@ -62,7 +78,7 @@ namespace MangoAPI.WebApp.Controllers
             {
                 return BadRequest(response);
             }
-            
+
             return Ok(response);
         }
     }
