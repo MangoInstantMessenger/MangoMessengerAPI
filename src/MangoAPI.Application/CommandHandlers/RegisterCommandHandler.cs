@@ -5,9 +5,9 @@ using System.Threading;
 using System.Threading.Tasks;
 using MangoAPI.Application.Exceptions;
 using MangoAPI.Application.Interfaces;
-using MangoAPI.Domain;
 using MangoAPI.Domain.Entities;
 using MangoAPI.DTO.Commands;
+using MangoAPI.DTO.Commands.Auth;
 using MangoAPI.DTO.Models;
 using MangoAPI.Infrastructure.Database;
 using MediatR;
@@ -16,13 +16,13 @@ using Microsoft.EntityFrameworkCore;
 
 namespace MangoAPI.Application.CommandHandlers
 {
-    public class RegistrationCommandHandler : IRequestHandler<RegistrationCommand, User>
+    public class RegisterCommandHandler : IRequestHandler<RegisterCommand, User>
     {
         private readonly UserManager<UserEntity> _userManager;
         private readonly IJwtGenerator _jwtGenerator;
         private readonly UserDbContext _dbContext;
 
-        public RegistrationCommandHandler(UserManager<UserEntity> userManager, IJwtGenerator jwtGenerator,
+        public RegisterCommandHandler(UserManager<UserEntity> userManager, IJwtGenerator jwtGenerator,
             UserDbContext dbContext)
         {
             _userManager = userManager;
@@ -31,7 +31,7 @@ namespace MangoAPI.Application.CommandHandlers
         }
 
 
-        public async Task<User> Handle(RegistrationCommand request, CancellationToken cancellationToken)
+        public async Task<User> Handle(RegisterCommand request, CancellationToken cancellationToken)
         {
             if (await _dbContext.Users.Where(x => x.Email == request.Email).AnyAsync(cancellationToken))
             {

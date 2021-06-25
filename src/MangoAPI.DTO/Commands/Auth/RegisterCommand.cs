@@ -1,9 +1,9 @@
 ﻿using MangoAPI.DTO.Models;
 using MediatR;
 
-namespace MangoAPI.DTO.Commands
+namespace MangoAPI.DTO.Commands.Auth
 {
-    public class RegistrationCommand : IRequest<User>
+    public class RegisterCommand : IRequest<User>
     {
         public string DisplayName { get; set; }
 

@@ -44,7 +44,7 @@ namespace MangoAPI.WebApp
             identityBuilder.AddEntityFrameworkStores<UserDbContext>();
             identityBuilder.AddSignInManager<SignInManager<UserEntity>>();
 
-            services.AddMediatR(typeof(RegistrationCommandHandler).Assembly);
+            services.AddMediatR(typeof(RegisterCommandHandler).Assembly);
             services.AddMvc(option =>
             {
                 option.EnableEndpointRouting = false;

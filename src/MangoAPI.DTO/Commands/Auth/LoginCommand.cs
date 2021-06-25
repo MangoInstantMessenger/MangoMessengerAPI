@@ -1,7 +1,7 @@
 ﻿using MangoAPI.DTO.Models;
 using MediatR;
 
-namespace MangoAPI.DTO.Commands
+namespace MangoAPI.DTO.Commands.Auth
 {
     public class LoginCommand : IRequest<User>
     {
