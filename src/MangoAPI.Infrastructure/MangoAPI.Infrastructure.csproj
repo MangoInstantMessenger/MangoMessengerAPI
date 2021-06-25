@@ -15,10 +15,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Database\Configurations" />
-    </ItemGroup>
-
-    <ItemGroup>
       <ProjectReference Include="..\MangoAPI.Domain\MangoAPI.Domain.csproj" />
     </ItemGroup>
 
