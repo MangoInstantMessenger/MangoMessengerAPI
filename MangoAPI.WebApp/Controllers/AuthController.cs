@@ -1,7 +1,6 @@
 ﻿using System.Threading.Tasks;
 using MangoAPI.DTO.Commands.Auth;
 using MangoAPI.DTO.Models;
-using MangoAPI.DTO.Responses;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -21,17 +20,30 @@ namespace MangoAPI.WebApp.Controllers
         }
 
         [HttpPost("login")]
-        public async Task<ActionResult<User>> LoginAsync(LoginCommand command)
+        public async Task<ActionResult<User>> LoginAsync([FromBody] LoginCommand command)
         {
             return await _mediator.Send(command);
         }
 
         [HttpPost("register")]
-        public async Task<IActionResult> RegisterAsync(RegisterCommand command)
+        public async Task<IActionResult> RegisterAsync([FromBody] RegisterCommand command)
         {
             var response = await _mediator.Send(command);
 
             if (response.AlreadyRegistered || !response.TermsAccepted)
+            {
+                return BadRequest(response);
+            }
+
+            return Ok(response);
+        }
+
+        [HttpPost("confirm-register")]
+        public async Task<IActionResult> ConfirmRegisterAsync([FromBody] ConfirmRegisterCommand command)
+        {
+            var response = await _mediator.Send(command);
+
+            if (!response.Success)
             {
                 return BadRequest(response);
             }

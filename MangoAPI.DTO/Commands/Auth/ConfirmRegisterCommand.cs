@@ -1,9 +1,10 @@
-﻿using System;
+﻿using MangoAPI.DTO.Responses;
+using MediatR;
 
 namespace MangoAPI.DTO.Commands.Auth
 {
-    public class ConfirmRegisterCommand
+    public class ConfirmRegisterCommand : IRequest<ConfirmRegisterResponse>
     {
-        public Guid Guid { get; set; }
+        public string Guid { get; set; }
     }
 }
