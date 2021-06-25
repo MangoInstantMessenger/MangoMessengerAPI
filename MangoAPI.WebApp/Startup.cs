@@ -53,6 +53,7 @@ namespace MangoAPI.WebApp
             
             services.AddScoped<IJwtGenerator, JwtGenerator>();
             services.AddScoped<IMailService, MailService>();
+            services.AddScoped<ICookieService, CookieService>();
             
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("super secret key"));
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)

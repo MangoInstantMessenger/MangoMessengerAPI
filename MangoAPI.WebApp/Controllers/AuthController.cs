@@ -1,9 +1,12 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using MangoAPI.DTO.Commands.Auth;
 using MangoAPI.DTO.Models;
+using MangoAPI.Infrastructure.Interfaces;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace MangoAPI.WebApp.Controllers
 {
@@ -13,10 +16,12 @@ namespace MangoAPI.WebApp.Controllers
     public class AuthController : ControllerBase
     {
         private readonly IMediator _mediator;
+        private readonly ICookieService _cookieService;
 
-        public AuthController(IMediator mediator)
+        public AuthController(IMediator mediator, ICookieService cookieService)
         {
             _mediator = mediator;
+            _cookieService = cookieService;
         }
 
         [HttpPost("login")]
@@ -34,7 +39,10 @@ namespace MangoAPI.WebApp.Controllers
             {
                 return BadRequest(response);
             }
-
+            
+            _cookieService.Set(Response, "MangoRegisterRequest", 
+                new Random().Next(1000).ToString(), 10);
+            
             return Ok(response);
         }
 
@@ -43,11 +51,18 @@ namespace MangoAPI.WebApp.Controllers
         {
             var response = await _mediator.Send(command);
 
+            var cookie = _cookieService.Get(Request, "MangoRegisterRequest");
+
+            if (cookie == null)
+            {
+                return BadRequest("Invalid or expired cookies.");
+            }
+
             if (!response.Success)
             {
                 return BadRequest(response);
             }
-
+            
             return Ok(response);
         }
     }
