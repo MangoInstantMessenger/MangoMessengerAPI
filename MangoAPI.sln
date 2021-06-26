@@ -11,9 +11,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MangoAPI.Domain", "MangoAPI
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MangoAPI.DTO", "MangoAPI.DTO\MangoAPI.DTO.csproj", "{637656CA-BDB8-4CF3-937F-773A9148C258}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MangoAPI.Docs", "MangoAPI.Docs", "{E87F0071-9671-44B9-8ECA-7A08A52424CD}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{F00D40FB-CA79-4EC9-BFAD-A32EDCD61519}"
 	ProjectSection(SolutionItems) = preProject
-		Docs.md = Docs.md
+		ChatDocs.md = ChatDocs.md
+		MessageDocs.md = MessageDocs.md
+		UserDocs.md = UserDocs.md
 	EndProjectSection
 EndProject
 Global
