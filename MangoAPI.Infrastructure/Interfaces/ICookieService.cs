@@ -5,7 +5,7 @@ namespace MangoAPI.Infrastructure.Interfaces
     public interface ICookieService
     {
         string Get(HttpRequest request, string key);
-        void Set(HttpResponse response, string key, string value, int? expireTime);
+        void Set(HttpResponse response, string key, string value, int? expireDays);
         void Remove(HttpResponse response, string key);
     }
 }

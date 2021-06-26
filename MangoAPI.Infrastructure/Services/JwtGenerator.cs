@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
@@ -21,12 +22,12 @@ namespace MangoAPI.Infrastructure.Services
             _key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["TokenKey"]));
         }
 
-        public string CreateToken(UserEntity userEntity)
+        public string GenerateJwtToken(UserEntity userEntity)
         {
-            return CreateToken(userEntity.Email);
+            return GenerateJwtToken(userEntity.Email);
         }
 
-        public string CreateToken(string email)
+        public string GenerateJwtToken(string email)
         {
             var claims = new List<Claim> {new(JwtRegisteredClaimNames.NameId, email)};
 
@@ -35,7 +36,7 @@ namespace MangoAPI.Infrastructure.Services
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(claims),
-                Expires = DateTime.Now.AddDays(7),
+                Expires = DateTime.Now.AddMinutes(15),
                 SigningCredentials = credentials
             };
 
@@ -49,9 +50,9 @@ namespace MangoAPI.Infrastructure.Services
         public RefreshTokenEntity GenerateRefreshToken(string ipAddress)
         {
             using var rngCryptoServiceProvider = new RNGCryptoServiceProvider();
-            
+
             var randomBytes = new byte[64];
-            
+            new Random().NextBytes(randomBytes);
             rngCryptoServiceProvider.GetBytes(randomBytes);
             
             return new RefreshTokenEntity

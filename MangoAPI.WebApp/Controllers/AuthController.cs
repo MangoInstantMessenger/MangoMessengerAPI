@@ -2,16 +2,20 @@
 using System.Threading.Tasks;
 using MangoAPI.DTO.Commands.Auth;
 using MangoAPI.Infrastructure.Interfaces;
+using MangoAPI.WebApp.Interfaces;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace MangoAPI.WebApp.Controllers
 {
+    /// <summary>
+    /// Controller responsible for user authentication process.
+    /// </summary>
     [ApiController]
     [AllowAnonymous]
     [Route("api/auth")]
-    public class AuthController : ControllerBase
+    public class AuthController : ControllerBase, IAuthController
     {
         private readonly IMediator _mediator;
         private readonly ICookieService _cookieService;
@@ -32,7 +36,7 @@ namespace MangoAPI.WebApp.Controllers
                 return BadRequest("Cannot catch an IP Address");
             }
 
-            command.IpAddress = ipAddress.ToString();
+            command.IpAddress = ipAddress.MapToIPv4().ToString();
 
             var response = await _mediator.Send(command);
 
@@ -41,7 +45,7 @@ namespace MangoAPI.WebApp.Controllers
                 return BadRequest(response);
             }
 
-            _cookieService.Set(Response, "MangoJWTToken", response.AccessToken, 15);
+            _cookieService.Set(Response, "MangoRefreshToken", response.RefreshToken, 7);
 
             return Ok(response);
         }
