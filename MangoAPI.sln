@@ -1,12 +1,20 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MangoAPI.WebApp", "MangoAPI.WebApp\MangoAPI.WebApp.csproj", "{139143FA-4968-4269-883B-80DF7EECE7EA}"
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31112.23
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MangoAPI.WebApp", "MangoAPI.WebApp\MangoAPI.WebApp.csproj", "{139143FA-4968-4269-883B-80DF7EECE7EA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MangoAPI.Infrastructure", "MangoAPI.Infrastructure\MangoAPI.Infrastructure.csproj", "{892FEF6D-BCF5-4A93-BB2A-C49D5EE57491}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MangoAPI.Infrastructure", "MangoAPI.Infrastructure\MangoAPI.Infrastructure.csproj", "{892FEF6D-BCF5-4A93-BB2A-C49D5EE57491}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MangoAPI.Domain", "MangoAPI.Domain\MangoAPI.Domain.csproj", "{CC4422A4-CDDC-4B8D-A6E4-6466732B2F47}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MangoAPI.Domain", "MangoAPI.Domain\MangoAPI.Domain.csproj", "{CC4422A4-CDDC-4B8D-A6E4-6466732B2F47}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MangoAPI.DTO", "MangoAPI.DTO\MangoAPI.DTO.csproj", "{637656CA-BDB8-4CF3-937F-773A9148C258}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MangoAPI.DTO", "MangoAPI.DTO\MangoAPI.DTO.csproj", "{637656CA-BDB8-4CF3-937F-773A9148C258}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MangoAPI.Docs", "MangoAPI.Docs", "{E87F0071-9671-44B9-8ECA-7A08A52424CD}"
+	ProjectSection(SolutionItems) = preProject
+		Docs.md = Docs.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -31,6 +39,10 @@ Global
 		{637656CA-BDB8-4CF3-937F-773A9148C258}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{637656CA-BDB8-4CF3-937F-773A9148C258}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
-	GlobalSection(NestedProjects) = preSolution
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {191EEE82-C09B-4CFE-99B5-938F313B12B6}
 	EndGlobalSection
 EndGlobal
