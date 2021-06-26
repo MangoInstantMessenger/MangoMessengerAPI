@@ -13,6 +13,11 @@
   - Create new branch based on `develop`, name it as task ID, e.g MANGO-ID
   - Solve the task
   - Create pull request to develop
+  
+## Commit messages
+- In case of bugfix, example of commit message `fix: some bug fixed`
+- In case of feature, example of commit message `feature: some new functionality added`
+- In case of refactor, example of commit message `refactor: some code part refactored`
 
 ## Links
 - Trello https://trello.com/b/Z7IlfrRb/mango-messenger-trello
