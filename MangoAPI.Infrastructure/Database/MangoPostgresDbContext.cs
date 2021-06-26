@@ -10,6 +10,7 @@ namespace MangoAPI.Infrastructure.Database
         public DbSet<RefreshTokenEntity> RefreshTokens { get; set; }
         public DbSet<ChatEntity> Chats { get; set; }
         public DbSet<MessageEntity> Messages { get; set; }
+        public DbSet<UserChatEntity> UserChats { get; set; }
         
         public MangoPostgresDbContext()
         {
