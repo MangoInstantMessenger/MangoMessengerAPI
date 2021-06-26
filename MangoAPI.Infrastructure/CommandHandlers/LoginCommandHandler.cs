@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using MangoAPI.Domain.Entities;
@@ -9,7 +8,6 @@ using MangoAPI.Infrastructure.Database;
 using MangoAPI.Infrastructure.Interfaces;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 
 namespace MangoAPI.Infrastructure.CommandHandlers
 {
@@ -66,17 +64,6 @@ namespace MangoAPI.Infrastructure.CommandHandlers
 
             refreshToken.UserId = user.Id;
 
-            var oldToken = await _postgresDbContext.Users
-                .Include(x => x.RefreshTokens)
-                .Where(x => x.Id == user.Id)
-                .SelectMany(x => x.RefreshTokens)
-                .FirstOrDefaultAsync(cancellationToken: cancellationToken);
-
-            if (oldToken != null)
-            {
-                _postgresDbContext.RefreshTokens.Remove(oldToken);
-            }
-            
             await _postgresDbContext.RefreshTokens.AddAsync(refreshToken, cancellationToken);
             await _postgresDbContext.SaveChangesAsync(cancellationToken);
 
