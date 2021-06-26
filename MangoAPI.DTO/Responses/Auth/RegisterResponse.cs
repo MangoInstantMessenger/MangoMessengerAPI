@@ -1,4 +1,4 @@
-﻿namespace MangoAPI.DTO.Responses
+﻿namespace MangoAPI.DTO.Responses.Auth
 {
     public class RegisterResponse
     {

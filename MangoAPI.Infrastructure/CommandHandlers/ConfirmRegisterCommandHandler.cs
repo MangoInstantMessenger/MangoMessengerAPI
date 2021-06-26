@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using MangoAPI.Domain.Entities;
 using MangoAPI.DTO.Commands.Auth;
 using MangoAPI.DTO.Responses;
+using MangoAPI.DTO.Responses.Auth;
 using MangoAPI.Infrastructure.Database;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
