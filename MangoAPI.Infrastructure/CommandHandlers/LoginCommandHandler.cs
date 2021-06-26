@@ -3,7 +3,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using MangoAPI.Domain.Entities;
 using MangoAPI.DTO.Commands.Auth;
-using MangoAPI.DTO.Responses;
 using MangoAPI.DTO.Responses.Auth;
 using MangoAPI.Infrastructure.Database;
 using MangoAPI.Infrastructure.Interfaces;
@@ -40,7 +39,7 @@ namespace MangoAPI.Infrastructure.CommandHandlers
             {
                 return await Task.FromResult(new LoginResponse
                 {
-                    Message = "Invalid Email error.",
+                    Message = "Invalid Email error. Register first.",
                     AccessToken = "N/A",
                     RefreshToken = "N/A",
                     Success = false
@@ -49,31 +48,31 @@ namespace MangoAPI.Infrastructure.CommandHandlers
 
             var result = await _signInManager.CheckPasswordSignInAsync(user, request.Password, false);
 
-            if (result.Succeeded)
+            if (!result.Succeeded)
             {
-                var refreshToken = _jwtGenerator.GenerateRefreshToken(request.IpAddress);
-                var jwtToken = _jwtGenerator.CreateToken(user);
-
-                refreshToken.UserId = user.Id;
-
-                await _postgresDbContext.RefreshTokens.AddAsync(refreshToken, cancellationToken);
-                await _postgresDbContext.SaveChangesAsync(cancellationToken);
-
                 return await Task.FromResult(new LoginResponse
                 {
-                    Message = "Login successful.",
-                    AccessToken = jwtToken,
-                    RefreshToken = refreshToken.Token,
-                    Success = true
+                    Message = "Invalid Password error.",
+                    AccessToken = "N/A",
+                    RefreshToken = "N/A",
+                    Success = false
                 });
             }
 
+            var refreshToken = _jwtGenerator.GenerateRefreshToken(request.IpAddress);
+            var jwtToken = _jwtGenerator.CreateToken(user);
+
+            refreshToken.UserId = user.Id;
+
+            await _postgresDbContext.RefreshTokens.AddAsync(refreshToken, cancellationToken);
+            await _postgresDbContext.SaveChangesAsync(cancellationToken);
+
             return await Task.FromResult(new LoginResponse
             {
-                Message = "Invalid Password error.",
-                AccessToken = "N/A",
-                RefreshToken = "N/A",
-                Success = false
+                Message = "Login successful.",
+                AccessToken = jwtToken,
+                RefreshToken = refreshToken.Token,
+                Success = true
             });
         }
     }
