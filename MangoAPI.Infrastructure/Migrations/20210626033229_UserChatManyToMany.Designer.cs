@@ -4,14 +4,16 @@ using MangoAPI.Infrastructure.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace MangoAPI.Infrastructure.Migrations
 {
     [DbContext(typeof(MangoPostgresDbContext))]
-    partial class MangoPostgresDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210626033229_UserChatManyToMany")]
+    partial class UserChatManyToMany
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -35,6 +37,10 @@ namespace MangoAPI.Infrastructure.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("Image")
+                        .HasColumnType("text");
+
+                    b.Property<string>("OwnerId")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<DateTime>("Updated")
@@ -122,9 +128,6 @@ namespace MangoAPI.Infrastructure.Migrations
 
                     b.Property<string>("UserId")
                         .HasColumnType("text");
-
-                    b.Property<int>("RoleId")
-                        .HasColumnType("integer");
 
                     b.HasKey("ChatId", "UserId");
 

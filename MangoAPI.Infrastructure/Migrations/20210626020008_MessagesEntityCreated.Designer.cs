@@ -4,14 +4,16 @@ using MangoAPI.Infrastructure.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace MangoAPI.Infrastructure.Migrations
 {
     [DbContext(typeof(MangoPostgresDbContext))]
-    partial class MangoPostgresDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210626020008_MessagesEntityCreated")]
+    partial class MessagesEntityCreated
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -19,39 +21,10 @@ namespace MangoAPI.Infrastructure.Migrations
                 .HasAnnotation("ProductVersion", "6.0.0-preview.5.21301.9")
                 .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
-            modelBuilder.Entity("MangoAPI.Domain.Entities.ChatEntity", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    b.Property<int>("ChatType")
-                        .HasColumnType("integer");
-
-                    b.Property<DateTime>("Created")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.Property<string>("Description")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Image")
-                        .HasColumnType("text");
-
-                    b.Property<DateTime>("Updated")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Chats");
-                });
-
             modelBuilder.Entity("MangoAPI.Domain.Entities.MessageEntity", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    b.Property<int>("ChatId")
                         .HasColumnType("integer");
 
                     b.Property<string>("Content")
@@ -68,8 +41,6 @@ namespace MangoAPI.Infrastructure.Migrations
                         .HasColumnType("text");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("ChatId");
 
                     b.HasIndex("UserId");
 
@@ -113,24 +84,6 @@ namespace MangoAPI.Infrastructure.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("RefreshTokens");
-                });
-
-            modelBuilder.Entity("MangoAPI.Domain.Entities.UserChatEntity", b =>
-                {
-                    b.Property<int>("ChatId")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("UserId")
-                        .HasColumnType("text");
-
-                    b.Property<int>("RoleId")
-                        .HasColumnType("integer");
-
-                    b.HasKey("ChatId", "UserId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("UserChats");
                 });
 
             modelBuilder.Entity("MangoAPI.Domain.Entities.UserEntity", b =>
@@ -342,17 +295,9 @@ namespace MangoAPI.Infrastructure.Migrations
 
             modelBuilder.Entity("MangoAPI.Domain.Entities.MessageEntity", b =>
                 {
-                    b.HasOne("MangoAPI.Domain.Entities.ChatEntity", "Chat")
-                        .WithMany("Messages")
-                        .HasForeignKey("ChatId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("MangoAPI.Domain.Entities.UserEntity", "User")
                         .WithMany("Messages")
                         .HasForeignKey("UserId");
-
-                    b.Navigation("Chat");
 
                     b.Navigation("User");
                 });
@@ -364,25 +309,6 @@ namespace MangoAPI.Infrastructure.Migrations
                         .HasForeignKey("UserId");
 
                     b.Navigation("UserEntity");
-                });
-
-            modelBuilder.Entity("MangoAPI.Domain.Entities.UserChatEntity", b =>
-                {
-                    b.HasOne("MangoAPI.Domain.Entities.ChatEntity", "Chat")
-                        .WithMany("ChatUsers")
-                        .HasForeignKey("ChatId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("MangoAPI.Domain.Entities.UserEntity", "User")
-                        .WithMany("UserChats")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Chat");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -436,20 +362,11 @@ namespace MangoAPI.Infrastructure.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("MangoAPI.Domain.Entities.ChatEntity", b =>
-                {
-                    b.Navigation("ChatUsers");
-
-                    b.Navigation("Messages");
-                });
-
             modelBuilder.Entity("MangoAPI.Domain.Entities.UserEntity", b =>
                 {
                     b.Navigation("Messages");
 
                     b.Navigation("RefreshTokens");
-
-                    b.Navigation("UserChats");
                 });
 #pragma warning restore 612, 618
         }
