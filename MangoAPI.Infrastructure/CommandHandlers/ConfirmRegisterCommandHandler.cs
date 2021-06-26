@@ -1,26 +1,19 @@
-﻿using System;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
-using MangoAPI.Domain.Entities;
 using MangoAPI.DTO.Commands.Auth;
-using MangoAPI.DTO.Responses;
 using MangoAPI.DTO.Responses.Auth;
 using MangoAPI.Infrastructure.Database;
 using MediatR;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace MangoAPI.Infrastructure.CommandHandlers
 {
     public class ConfirmRegisterCommandHandler : IRequestHandler<ConfirmRegisterCommand, ConfirmRegisterResponse>
     {
-        private readonly UserManager<UserEntity> _userManager;
         private readonly MangoPostgresDbContext _dbContext;
 
-        public ConfirmRegisterCommandHandler(UserManager<UserEntity> userManager,
-            MangoPostgresDbContext dbContext)
+        public ConfirmRegisterCommandHandler(MangoPostgresDbContext dbContext)
         {
-            _userManager = userManager;
             _dbContext = dbContext;
         }
 
@@ -38,11 +31,11 @@ namespace MangoAPI.Infrastructure.CommandHandlers
                 });
             }
 
-            var requestEntity = await _dbContext.RegisterRequests
-                .FirstOrDefaultAsync(x => x.ConfirmLinkCode == parsedValidationCode, 
+            var userEntity = await _dbContext.Users
+                .FirstOrDefaultAsync(x => x.ConfirmationCode == parsedValidationCode,
                     cancellationToken);
 
-            if (requestEntity == null)
+            if (userEntity == null)
             {
                 return await Task.FromResult(new ConfirmRegisterResponse
                 {
@@ -51,31 +44,17 @@ namespace MangoAPI.Infrastructure.CommandHandlers
                 });
             }
 
-            var userEntity = new UserEntity
-            {
-                DisplayName = requestEntity.Email,
-                Email = requestEntity.Email,
-                UserName = requestEntity.Email.Split('@')[0],
-            };
+            userEntity.Verified = true;
+            userEntity.ConfirmationCode = 0;
+            _dbContext.Update(userEntity);
+            await _dbContext.SaveChangesAsync(cancellationToken);
 
-            var result = await _userManager.CreateAsync(userEntity, requestEntity.Password);
 
-            if (result.Succeeded)
-            {
-                return await Task.FromResult(new ConfirmRegisterResponse
-                {
-                    Message = "Your email was verified successfully.",
-                    Success = true,
-                });
-            }
-            
             return await Task.FromResult(new ConfirmRegisterResponse
             {
-                Message = "Invalid or expired registration identifier.",
-                Success = false
+                Message = "Your email was verified successfully.",
+                Success = true,
             });
-
-
         }
     }
 }

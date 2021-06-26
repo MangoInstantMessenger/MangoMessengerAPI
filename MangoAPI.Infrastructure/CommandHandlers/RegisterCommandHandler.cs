@@ -1,32 +1,30 @@
 ﻿using System;
+using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using MangoAPI.Domain.Entities;
 using MangoAPI.DTO.Commands.Auth;
-using MangoAPI.DTO.Responses;
 using MangoAPI.DTO.Responses.Auth;
-using MangoAPI.Infrastructure.Database;
-using MangoAPI.Infrastructure.Interfaces;
+using MangoAPI.Infrastructure.Exceptions;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
 
 namespace MangoAPI.Infrastructure.CommandHandlers
 {
     public class RegisterCommandHandler : IRequestHandler<RegisterCommand, RegisterResponse>
     {
-        private readonly MangoPostgresDbContext _dbContext;
+        private readonly UserManager<UserEntity> _userManager;
 
-        public RegisterCommandHandler(MangoPostgresDbContext dbContext)
+        public RegisterCommandHandler(UserManager<UserEntity> userManager)
         {
-            _dbContext = dbContext;
+            _userManager = userManager;
         }
 
         public async Task<RegisterResponse> Handle(RegisterCommand request, CancellationToken cancellationToken)
         {
-            var exists = await _dbContext.RegisterRequests
-                .AnyAsync(x => x.Email == request.Email, cancellationToken);
+            var exists = await _userManager.FindByEmailAsync(request.Email);
 
-            if (exists)
+            if (exists != null)
             {
                 return await Task.FromResult(new RegisterResponse
                 {
@@ -46,23 +44,27 @@ namespace MangoAPI.Infrastructure.CommandHandlers
                 });
             }
 
-            var registerRequest = new RegisterRequestEntity
+            var userEntity = new UserEntity
             {
+                DisplayName = request.Email,
+                UserName = request.Email.Split('@')[0],
                 Email = request.Email,
-                Password = request.Password,
-                CreatedAt = DateTime.Now,
-                ConfirmLinkCode = new Random().Next(100000, 999999)
+                ConfirmationCode = new Random().Next(100000, 999999)
             };
 
-            await _dbContext.RegisterRequests.AddAsync(registerRequest, cancellationToken);
-            await _dbContext.SaveChangesAsync(cancellationToken);
+            var result = await _userManager.CreateAsync(userEntity, request.Password);
 
-            return await Task.FromResult(new RegisterResponse
+            if (result.Succeeded)
             {
-                Message = "Registration was successful. Confirm your email.",
-                AlreadyRegistered = false,
-                TermsAccepted = true
-            });
+                return await Task.FromResult(new RegisterResponse
+                {
+                    Message = "Registration was successful. Confirm your email.",
+                    AlreadyRegistered = false,
+                    TermsAccepted = true
+                });
+            }
+
+            throw new RestException(HttpStatusCode.BadRequest);
         }
     }
 }

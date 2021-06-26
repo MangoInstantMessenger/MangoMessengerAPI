@@ -7,7 +7,6 @@ namespace MangoAPI.Infrastructure.Database
 {
     public class MangoPostgresDbContext : IdentityDbContext<UserEntity>
     {
-        public DbSet<RegisterRequestEntity> RegisterRequests { get; set; }
         public DbSet<RefreshTokenEntity> RefreshTokens { get; set; }
         
         public MangoPostgresDbContext()
@@ -20,7 +19,6 @@ namespace MangoAPI.Infrastructure.Database
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
-            builder.ApplyConfiguration(new RegisterRequestEntityConfiguration());
             builder.ApplyConfiguration(new RefreshTokenEntityConfiguration());
             base.OnModelCreating(builder);
         }

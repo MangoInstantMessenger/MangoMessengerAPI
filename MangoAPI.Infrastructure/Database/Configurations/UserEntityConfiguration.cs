@@ -8,7 +8,7 @@ namespace MangoAPI.Infrastructure.Database.Configurations
     {
         public void Configure(EntityTypeBuilder<UserEntity> builder)
         {
-            builder.HasMany(x => x.TokenEntities)
+            builder.HasMany(x => x.RefreshTokens)
                 .WithOne(x => x.UserEntity)
                 .HasForeignKey(x => x.UserId);
         }
