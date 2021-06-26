@@ -11,12 +11,12 @@ namespace MangoAPI.Infrastructure.Services
             return request.Cookies[key];
         }
 
-        public void Set(HttpResponse response, string key, string value, int? expireTime)
+        public void Set(HttpResponse response, string key, string value, int? expireDays)
         {
             var option = new CookieOptions
             {
-                Expires = expireTime.HasValue
-                    ? DateTime.Now.AddMinutes(expireTime.Value)
+                Expires = expireDays.HasValue
+                    ? DateTime.Now.AddDays(expireDays.Value)
                     : DateTime.Now.AddMilliseconds(10)
             };
 
