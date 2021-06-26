@@ -9,7 +9,6 @@ namespace MangoAPI.Infrastructure.Database.Configurations
         public void Configure(EntityTypeBuilder<ChatEntity> builder)
         {
             builder.HasKey(x => x.Id);
-            builder.Property(x => x.OwnerId).IsRequired();
             builder.Property(x => x.ChatType).IsRequired();
             builder.Property(x => x.Created).IsRequired();
 

@@ -9,6 +9,7 @@ namespace MangoAPI.Infrastructure.Database.Configurations
         public void Configure(EntityTypeBuilder<UserChatEntity> builder)
         {
             builder.HasKey(x => new {x.ChatId, x.UserId});
+            builder.Property(x => x.RoleId).IsRequired();
 
             builder.HasOne(x => x.Chat)
                 .WithMany(x => x.ChatUsers)

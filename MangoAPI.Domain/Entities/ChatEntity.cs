@@ -7,7 +7,6 @@ namespace MangoAPI.Domain.Entities
     public class ChatEntity
     {
         public int Id { get; set; }
-        public string OwnerId { get; set; }
         public ChatType ChatType { get; set; }
         public string Description { get; set; }
         public string Image { get; set; }
@@ -15,5 +14,6 @@ namespace MangoAPI.Domain.Entities
         public DateTime Updated { get; set; }
 
         public virtual ICollection<MessageEntity> Messages { get; set; }
+        public virtual ICollection<UserChatEntity> ChatUsers { get; set; }
     }
 }
