@@ -1,5 +1,5 @@
-﻿using MangoAPI.Domain.Entities;
-using MangoAPI.Infrastructure.Database.Configurations;
+﻿using System.Reflection;
+using MangoAPI.Domain.Entities;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
@@ -8,6 +8,7 @@ namespace MangoAPI.Infrastructure.Database
     public class MangoPostgresDbContext : IdentityDbContext<UserEntity>
     {
         public DbSet<RefreshTokenEntity> RefreshTokens { get; set; }
+        public DbSet<MessageEntity> Messages { get; set; }
         
         public MangoPostgresDbContext()
         {
@@ -19,8 +20,8 @@ namespace MangoAPI.Infrastructure.Database
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
-            builder.ApplyConfiguration(new RefreshTokenEntityConfiguration());
             base.OnModelCreating(builder);
+            builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
         }
     }
 }

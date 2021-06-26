@@ -12,5 +12,6 @@ namespace MangoAPI.Domain.Entities
         public int ConfirmationCode { get; set; }
 
         public virtual ICollection<RefreshTokenEntity> RefreshTokens { get; set; }
+        public virtual ICollection<MessageEntity> Messages { get; set; }
     }
 }
