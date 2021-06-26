@@ -1,3 +1,4 @@
+using System;
 using System.Text;
 using MangoAPI.Domain.Entities;
 using MangoAPI.Infrastructure.CommandHandlers;
@@ -33,9 +34,12 @@ namespace MangoAPI.WebApp
 
         public void ConfigureServices(IServiceCollection services)
         {
+            var environmentConnectionString = Environment.GetEnvironmentVariable("POSTGRES_MANGO_CONNECTION_STRING");
+            
             services.AddControllers();
             services.AddDbContext<MangoPostgresDbContext>(opt =>
-                opt.UseNpgsql(Configuration.GetConnectionString("LOCAL_POSTGRES_CONNECTION_STRING")));
+                opt.UseNpgsql(environmentConnectionString ?? 
+                              throw new InvalidOperationException("Wrong Connection String in Startup class.")));
 
 
             var builder = services.AddIdentityCore<UserEntity>();
