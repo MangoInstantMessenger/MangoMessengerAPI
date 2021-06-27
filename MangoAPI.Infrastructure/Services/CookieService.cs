@@ -6,12 +6,16 @@ namespace MangoAPI.Infrastructure.Services
 {
     public class CookieService : ICookieService
     {
-        public string Get(HttpRequest request, string key)
-        {
-            return request.Cookies[key];
-        }
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public void Set(HttpResponse response, string key, string value, int? expireDays)
+        public CookieService(IHttpContextAccessor httpContextAccessor)
+        {
+            _httpContextAccessor = httpContextAccessor;
+        }
+        
+        public string Get(string key) => _httpContextAccessor.HttpContext.Request.Cookies[key];
+
+        public void Set(string key, string value, int? expireDays)
         {
             var option = new CookieOptions
             {
@@ -21,12 +25,12 @@ namespace MangoAPI.Infrastructure.Services
                 HttpOnly = true
             };
 
-            response.Cookies.Append(key, value, option);  
+            _httpContextAccessor.HttpContext.Response.Cookies.Append(key, value, option);  
         }
 
-        public void Remove(HttpResponse response, string key)
+        public void Remove(string key)
         {
-            response.Cookies.Delete(key);
+            _httpContextAccessor.HttpContext.Response.Cookies.Delete(key);
         }
     }
 }
