@@ -1,4 +1,5 @@
 ﻿using System;
+using MangoAPI.Infrastructure.Deploy;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 
@@ -11,6 +12,8 @@ namespace MangoAPI.Infrastructure.Database
             var optionsBuilder = new DbContextOptionsBuilder<MangoPostgresDbContext>();
 
             var connectionString = Environment.GetEnvironmentVariable("POSTGRES_MANGO_CONNECTION_STRING");
+            
+            connectionString = HerokuStringParser.Convert(connectionString);
 
             optionsBuilder.UseNpgsql(connectionString ??
                                      throw new InvalidOperationException(
