@@ -27,9 +27,10 @@ namespace MangoAPI.Infrastructure.CommandHandlers
             _postgresDbContext = postgresDbContext;
         }
 
+        //ToDo: Login does not check whether the user has verified the email. I can login unverified.
         public async Task<LoginResponse> Handle(LoginCommand request, CancellationToken cancellationToken)
         {
-            UserEntity user;
+            UserEntity user; 
 
             try
             {

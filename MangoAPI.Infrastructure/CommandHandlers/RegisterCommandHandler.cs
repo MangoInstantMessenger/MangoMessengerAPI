@@ -26,7 +26,7 @@ namespace MangoAPI.Infrastructure.CommandHandlers
 
             if (exists != null)
             {
-                return await Task.FromResult(new RegisterResponse
+                return await Task.FromResult(new RegisterResponse //ToDo: Remove Task.FromResult
                 {
                     Message = "Email already registered. Forgot password? Restore your password.",
                     AlreadyRegistered = true,
@@ -47,7 +47,7 @@ namespace MangoAPI.Infrastructure.CommandHandlers
             var userEntity = new UserEntity
             {
                 DisplayName = request.Email,
-                UserName = request.Email.Split('@')[0],
+                UserName = request.Email.Split('@')[0], //ToDo: nick@gmail.com and nick@yandex.ru will be the same username?
                 Email = request.Email,
                 ConfirmationCode = new Random().Next(100000, 999999)
             };
@@ -64,7 +64,7 @@ namespace MangoAPI.Infrastructure.CommandHandlers
                 });
             }
 
-            throw new RestException(HttpStatusCode.BadRequest);
+            throw new RestException(HttpStatusCode.BadRequest); // ToDo: Handle case when password doesn't meet security rules
         }
     }
 }
