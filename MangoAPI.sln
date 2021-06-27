@@ -1,5 +1,4 @@
-﻿
-Microsoft Visual Studio Solution File, Format Version 12.00
+﻿Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MangoAPI.WebApp", "MangoAPI.WebApp\MangoAPI.WebApp.csproj", "{139143FA-4968-4269-883B-80DF7EECE7EA}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MangoAPI.Infrastructure", "MangoAPI.Infrastructure\MangoAPI.Infrastructure.csproj", "{892FEF6D-BCF5-4A93-BB2A-C49D5EE57491}"
