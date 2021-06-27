@@ -1,10 +1,12 @@
-﻿namespace MangoAPI.DTO.Commands.Auth
+﻿using MangoAPI.DTO.Responses.Auth;
+using MediatR;
+
+namespace MangoAPI.DTO.Commands.Auth
 {
-    public class LogoutCommand
-    {
-        public string RefreshTokenId { get; set; }
-        public string IpAddress { get; set; }
-        public string UserAgent { get; set; }
-        public string FingerPrint { get; set; }
-    }
+    public record LogoutCommand(
+        string RefreshTokenId,
+        string IpAddress,
+        string UserAgent,
+        string FingerPrint
+    ) : IRequest<LogoutResponse>;
 }
