@@ -17,7 +17,8 @@ namespace MangoAPI.Infrastructure.Services
             {
                 Expires = expireDays.HasValue
                     ? DateTime.Now.AddDays(expireDays.Value)
-                    : DateTime.Now.AddMilliseconds(10)
+                    : DateTime.Now.AddMilliseconds(10),
+                HttpOnly = true
             };
 
             response.Cookies.Append(key, value, option);  

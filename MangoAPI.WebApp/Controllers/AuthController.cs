@@ -43,8 +43,6 @@ namespace MangoAPI.WebApp.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> LoginAsync([FromBody] LoginCommand command)
         {
-            // TODO: add user's refresh token verification here
-            
             var ipAddress = Request.HttpContext.Connection.RemoteIpAddress;
             if (ipAddress == null) return BadRequest("Cannot fetch an IP Address.");
 
@@ -69,9 +67,7 @@ namespace MangoAPI.WebApp.Controllers
             var response = await _mediator.Send(command);
 
             if (response.AlreadyRegistered || !response.TermsAccepted)
-            {
                 return BadRequest(response);
-            }
 
             _cookieService.Set(Response, "MangoRegisterRequest",
                 new Random().Next(1000).ToString(), 10);
@@ -84,18 +80,10 @@ namespace MangoAPI.WebApp.Controllers
         public async Task<IActionResult> ConfirmRegisterAsync([FromBody] ConfirmRegisterCommand command)
         {
             var response = await _mediator.Send(command);
+            if (!response.Success) return BadRequest(response);
 
             var cookie = _cookieService.Get(Request, "MangoRegisterRequest");
-
-            if (cookie == null)
-            {
-                return BadRequest("Invalid or expired cookies.");
-            }
-
-            if (!response.Success)
-            {
-                return BadRequest(response);
-            }
+            if (cookie == null) return BadRequest("Invalid or expired cookies.");
 
             return Ok(response);
         }
