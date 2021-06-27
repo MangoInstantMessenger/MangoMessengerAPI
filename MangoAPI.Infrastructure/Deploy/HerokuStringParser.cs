@@ -1,6 +1,6 @@
 ﻿namespace MangoAPI.Infrastructure.Deploy
 {
-    public static class StringParser
+    public static class HerokuStringParser
     {
         public static string Convert(string databaseUrl)
         {
