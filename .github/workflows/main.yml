@@ -24,7 +24,7 @@ jobs:
         dotnet tool restore
         dotnet ef database update --p MangoAPI.Infrastructure
       env:
-        ASPNETCORE_ENVIRONMENT: Development
+        HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
     - name: Release
       env:
         HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
