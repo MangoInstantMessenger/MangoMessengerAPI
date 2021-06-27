@@ -9,9 +9,12 @@ namespace MangoAPI.Infrastructure.Database.Configurations
         public void Configure(EntityTypeBuilder<RefreshTokenEntity> builder)
         {
             builder.HasKey(x => x.Id);
-            builder.Property(x => x.Token).IsRequired();
+            builder.Property(x => x.RefreshToken).IsRequired();
             builder.Property(x => x.Expires).IsRequired();
             builder.Property(x => x.Created).IsRequired();
+            builder.Property(x => x.BrowserFingerprint).IsRequired();
+            builder.Property(x => x.UserAgent).IsRequired();
+            builder.Property(x => x.IpAddress).IsRequired();
         }
     }
 }

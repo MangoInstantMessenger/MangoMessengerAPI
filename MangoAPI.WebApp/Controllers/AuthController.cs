@@ -45,14 +45,19 @@ namespace MangoAPI.WebApp.Controllers
         {
             // TODO: add user's refresh token verification here
             
+            var ipAddress = Request.HttpContext.Connection.RemoteIpAddress;
+            if (ipAddress == null) return BadRequest("Cannot fetch an IP Address.");
+
+            var userAgent = Request.Headers["User-Agent"].ToString();
+            if (userAgent == null) return BadRequest("Cannot fetch User Agent.");
+
+            command.IpAddress = ipAddress.MapToIPv6().ToString();
+            command.UserAgent = userAgent;
+            
             var response = await _mediator.Send(command);
+            if (!response.Success) return BadRequest(response);
 
-            if (!response.Success)
-            {
-                return BadRequest(response);
-            }
-
-            _cookieService.Set(Response, "MangoRefreshToken", response.RefreshToken, 7);
+            _cookieService.Set(Response, "MangoRefreshToken", response.RefreshTokenId, 7);
 
             return Ok(response);
         }
@@ -97,44 +102,32 @@ namespace MangoAPI.WebApp.Controllers
 
         [AllowAnonymous]
         [HttpPost("refresh-token")]
-        public async Task<IActionResult> RefreshTokenAsync()
+        public async Task<IActionResult> RefreshTokenAsync([FromBody] RefreshTokenCommand command)
         {
-            var token = _httpContextAccessor
-                .HttpContext?
-                .Request.Headers["Authorization"]
-                .ToString()
-                .Replace("Bearer ", string.Empty);
-
-            // _securityTokenValidator.ValidateToken(token, null, out var checkToken);
-
             var cookieToken = _cookieService.Get(Request, "MangoRefreshToken");
-
-            if (cookieToken == null)
-            {
-                return BadRequest("Invalid Refresh Token.");
-            }
+            
+            var parsed = Guid.TryParse(cookieToken, out _);
+            if (!parsed) return BadRequest("Invalid Refresh Token.");
 
             var tokenEntity = await _postgresDbContext.RefreshTokens
-                .FirstOrDefaultAsync(x => x.Token == cookieToken);
+                .FirstOrDefaultAsync(x => x.Id == cookieToken);
+            
+            var ipAddress = Request.HttpContext.Connection.RemoteIpAddress;
+            if (ipAddress == null) return BadRequest("Cannot fetch an IP Address.");
 
-            if (tokenEntity == null)
-            {
-                return BadRequest("Invalid Refresh Token.");
-            }
+            var userAgent = Request.Headers["User-Agent"].ToString();
+            if (userAgent == null) return BadRequest("Cannot fetch User Agent.");
 
-            var command = new RefreshTokenCommand
-            {
-                RefreshToken = tokenEntity.Token,
-            };
+            if (tokenEntity == null) return BadRequest("Invalid Refresh Token.");
+            
+            command.RefreshTokenId = tokenEntity.Id;
+            command.IpAddress = ipAddress.MapToIPv6().ToString();
+            command.UserAgent = userAgent;
 
             var result = await _mediator.Send(command);
+            if (!result.Success) return BadRequest(result);
 
-            if (!result.Success)
-            {
-                return BadRequest(result);
-            }
-
-            _cookieService.Set(Response, "MangoRefreshToken", result.RefreshToken, 7);
+            _cookieService.Set(Response, "MangoRefreshToken", result.RefreshTokenId, 7);
 
             return Ok(result);
         }
