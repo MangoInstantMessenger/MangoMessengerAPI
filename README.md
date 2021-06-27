@@ -2,7 +2,7 @@
 
 ## Database connection
 
-- Setup System Environment variable `POSTGRES_MANGO_CONNECTION_STRING` with value `Server=localhost;User Id=your_login;Password=your_password;Database=MangoApiDatabase;`
+- Setup System Environment variable `DATABASE_URL` with value `Server=localhost;User Id=your_login;Password=your_password;Database=MangoApiDatabase;`
 - Replace the `your_login` and `your_password` by your creditentials
 - Reload project in your IDE
 - How to set envirinmental variable: https://www.twilio.com/blog/2017/01/how-to-set-environment-variables.html

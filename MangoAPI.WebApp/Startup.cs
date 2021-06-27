@@ -3,6 +3,7 @@ using System.Text;
 using MangoAPI.Domain.Entities;
 using MangoAPI.Infrastructure.CommandHandlers;
 using MangoAPI.Infrastructure.Database;
+using MangoAPI.Infrastructure.Deploy;
 using MangoAPI.Infrastructure.Interfaces;
 using MangoAPI.Infrastructure.Services;
 using MangoAPI.Infrastructure.Validators;
@@ -30,10 +31,12 @@ namespace MangoAPI.WebApp
 
         public static void ConfigureServices(IServiceCollection services)
         {
-            var connectionString = Environment.GetEnvironmentVariable("POSTGRES_MANGO_CONNECTION_STRING");
+            var connectionString = Environment.GetEnvironmentVariable("DATABASE_URL");
             var tokenKey = Environment.GetEnvironmentVariable("MANGO_TOKEN_KEY");
             var issuer = Environment.GetEnvironmentVariable("MANGO_ISSUER");
             var audience = Environment.GetEnvironmentVariable("MANGO_AUDIENCE");
+
+            connectionString = HerokuStringParser.Convert(connectionString);
 
             services.AddControllers();
             services.AddDbContext<MangoPostgresDbContext>(opt =>
@@ -82,18 +85,22 @@ namespace MangoAPI.WebApp
 
         public static void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-                app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "MangoAPI v1"));
-            }
+            app.UseDeveloperExceptionPage();
+            app.UseSwagger();
+            app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "MangoAPI v1"));
 
             app.UseHttpsRedirection();
-
             app.UseRouting();
 
             app.UseAuthorization();
+
+            app.UseCors(builder =>
+            {
+                builder
+                    .AllowAnyOrigin()
+                    .AllowAnyMethod()
+                    .AllowAnyHeader();
+            });
 
             app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
 
