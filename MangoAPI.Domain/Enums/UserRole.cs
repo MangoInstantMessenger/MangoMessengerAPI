@@ -1,6 +1,4 @@
-﻿using MangoAPI.Domain.Entities;
-
-namespace MangoAPI.Domain.Enums
+﻿namespace MangoAPI.Domain.Enums
 {
     public enum UserRole
     {

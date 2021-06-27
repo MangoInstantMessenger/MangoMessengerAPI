@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Security.Claims;
 using System.Threading.Tasks;
 using MangoAPI.DTO.Commands.Auth;
 using MangoAPI.Infrastructure.Database;
@@ -113,7 +112,8 @@ namespace MangoAPI.WebApp.Controllers
                 .ToString()
                 .Replace("Bearer ", string.Empty);
 
-            var principal = _securityTokenValidator.ValidateToken(token, null, out var checkToken);
+            var principal = _securityTokenValidator
+                .ValidateToken(token, null, out var checkToken);
 
             var ipAddress = Request.HttpContext.Connection.RemoteIpAddress;
 

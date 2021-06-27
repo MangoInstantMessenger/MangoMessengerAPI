@@ -8,14 +8,11 @@ using MangoAPI.Infrastructure.Services;
 using MangoAPI.Infrastructure.Validators;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -27,14 +24,11 @@ namespace MangoAPI.WebApp
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
-        {
-            Configuration = configuration;
-        }
+        public Startup(IConfiguration configuration) => Configuration = configuration;
 
         private IConfiguration Configuration { get; }
 
-        public void ConfigureServices(IServiceCollection services)
+        public static void ConfigureServices(IServiceCollection services)
         {
             var connectionString = Environment.GetEnvironmentVariable("POSTGRES_MANGO_CONNECTION_STRING");
             var tokenKey = Environment.GetEnvironmentVariable("MANGO_TOKEN_KEY");
@@ -53,14 +47,6 @@ namespace MangoAPI.WebApp
             identityBuilder.AddSignInManager<SignInManager<UserEntity>>();
 
             services.AddMediatR(typeof(RegisterCommandHandler).Assembly);
-            
-            services.AddMvc(option =>
-            {
-                option.EnableEndpointRouting = false;
-                var policy = new AuthorizationPolicyBuilder()
-                    .RequireAuthenticatedUser().RequireAuthenticatedUser().Build();
-                option.Filters.Add(new AuthorizeFilter(policy));
-            }).SetCompatibilityVersion(CompatibilityVersion.Latest);
 
             services.AddScoped<IJwtGenerator, JwtGenerator>();
             services.AddScoped<IMailService, MailService>();
@@ -68,9 +54,9 @@ namespace MangoAPI.WebApp
             services.AddScoped<ISecurityTokenValidator, JwtSecurityTokenValidator>();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(tokenKey!));
+            var signingKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(tokenKey!));
 
-            services.AddAuthentication(options => 
+            services.AddAuthentication(options =>
                 {
                     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                     options.DefaultSignInScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -86,15 +72,12 @@ namespace MangoAPI.WebApp
                         ValidAudience = audience,
                         ValidateAudience = true,
                         ValidateLifetime = true,
-                        IssuerSigningKey = key,
+                        IssuerSigningKey = signingKey,
                         ValidateIssuerSigningKey = true
                     };
                 });
 
-            services.AddSwaggerGen(c =>
-            {
-                c.SwaggerDoc("v1", new OpenApiInfo {Title = "MangoAPI", Version = "v1"});
-            });
+            services.AddSwaggerGen(c => { c.SwaggerDoc("v1", new OpenApiInfo {Title = "MangoAPI", Version = "v1"}); });
         }
 
         public static void Configure(IApplicationBuilder app, IWebHostEnvironment env)
