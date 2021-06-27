@@ -59,7 +59,7 @@ namespace MangoAPI.Infrastructure.CommandHandlers
                 });
             }
 
-            var refreshToken = _jwtGenerator.GenerateRefreshToken(request.IpAddress);
+            var refreshToken = _jwtGenerator.GenerateRefreshToken();
             var jwtToken = _jwtGenerator.GenerateJwtToken(user);
 
             refreshToken.UserId = user.Id;

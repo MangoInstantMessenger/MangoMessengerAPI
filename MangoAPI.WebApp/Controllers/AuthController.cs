@@ -43,15 +43,8 @@ namespace MangoAPI.WebApp.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> LoginAsync([FromBody] LoginCommand command)
         {
-            var ipAddress = Request.HttpContext.Connection.RemoteIpAddress;
-
-            if (ipAddress == null)
-            {
-                return BadRequest("Cannot catch an IP Address");
-            }
-
-            command.IpAddress = ipAddress.MapToIPv4().ToString();
-
+            // TODO: add user's refresh token verification here
+            
             var response = await _mediator.Send(command);
 
             if (!response.Success)
@@ -112,15 +105,7 @@ namespace MangoAPI.WebApp.Controllers
                 .ToString()
                 .Replace("Bearer ", string.Empty);
 
-            var principal = _securityTokenValidator
-                .ValidateToken(token, null, out var checkToken);
-
-            var ipAddress = Request.HttpContext.Connection.RemoteIpAddress;
-
-            if (ipAddress == null)
-            {
-                return BadRequest("Invalid Ip Address.");
-            }
+            // _securityTokenValidator.ValidateToken(token, null, out var checkToken);
 
             var cookieToken = _cookieService.Get(Request, "MangoRefreshToken");
 
@@ -140,7 +125,6 @@ namespace MangoAPI.WebApp.Controllers
             var command = new RefreshTokenCommand
             {
                 RefreshToken = tokenEntity.Token,
-                IpAddress = ipAddress.MapToIPv4().ToString()
             };
 
             var result = await _mediator.Send(command);

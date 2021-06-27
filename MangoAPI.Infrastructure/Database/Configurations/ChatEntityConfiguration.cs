@@ -11,6 +11,7 @@ namespace MangoAPI.Infrastructure.Database.Configurations
             builder.HasKey(x => x.Id);
             builder.Property(x => x.ChatType).IsRequired();
             builder.Property(x => x.Created).IsRequired();
+            builder.Property(x => x.Title).IsRequired();
 
             builder.HasMany(x => x.Messages)
                 .WithOne(x => x.Chat)

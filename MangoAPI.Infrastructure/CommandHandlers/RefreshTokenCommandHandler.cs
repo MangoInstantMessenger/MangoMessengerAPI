@@ -24,7 +24,8 @@ namespace MangoAPI.Infrastructure.CommandHandlers
         public async Task<RefreshTokenResponse> Handle(RefreshTokenCommand request, CancellationToken cancellationToken)
         {
             var token = await _postgresDbContext.RefreshTokens
-                .FirstOrDefaultAsync(x => x.Token == request.RefreshToken, cancellationToken);
+                .FirstOrDefaultAsync(x => 
+                    x.Token == request.RefreshToken, cancellationToken);
 
             if (token is not {IsActive: true})
             {
@@ -51,14 +52,12 @@ namespace MangoAPI.Infrastructure.CommandHandlers
                 });
             }
 
-            var newRefreshToken = _jwtGenerator.GenerateRefreshToken(request.IpAddress);
+            var newRefreshToken = _jwtGenerator.GenerateRefreshToken();
             var newJwtToken = _jwtGenerator.GenerateJwtToken(user);
             
             newRefreshToken.UserId = user.Id;
             
             token.Revoked = DateTime.Now;
-            token.RevokedByIp = request.IpAddress;
-            token.ReplacedByToken = newRefreshToken.Token;
 
             _postgresDbContext.RefreshTokens.Update(token);
             await _postgresDbContext.RefreshTokens.AddAsync(newRefreshToken, cancellationToken);

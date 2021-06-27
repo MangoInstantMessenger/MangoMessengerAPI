@@ -8,6 +8,7 @@ namespace MangoAPI.Domain.Entities
         public string UserId { get; set; }
         public int ChatId { get; set; }
         public string Content { get; set; }
+        public bool IsRead { get; set; }
         public DateTime Created { get; set; }
         public DateTime Updated { get; set; }
 

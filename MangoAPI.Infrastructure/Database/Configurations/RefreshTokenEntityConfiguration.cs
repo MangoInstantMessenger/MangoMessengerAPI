@@ -12,7 +12,6 @@ namespace MangoAPI.Infrastructure.Database.Configurations
             builder.Property(x => x.Token).IsRequired();
             builder.Property(x => x.Expires).IsRequired();
             builder.Property(x => x.Created).IsRequired();
-            builder.Property(x => x.CreatedByIp).IsRequired();
         }
     }
 }
