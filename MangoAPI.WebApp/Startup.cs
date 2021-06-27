@@ -5,11 +5,13 @@ using MangoAPI.Infrastructure.CommandHandlers;
 using MangoAPI.Infrastructure.Database;
 using MangoAPI.Infrastructure.Interfaces;
 using MangoAPI.Infrastructure.Services;
+using MangoAPI.Infrastructure.Validators;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -34,11 +36,14 @@ namespace MangoAPI.WebApp
 
         public void ConfigureServices(IServiceCollection services)
         {
-            var environmentConnectionString = Environment.GetEnvironmentVariable("POSTGRES_MANGO_CONNECTION_STRING");
-            
+            var connectionString = Environment.GetEnvironmentVariable("POSTGRES_MANGO_CONNECTION_STRING");
+            var tokenKey = Environment.GetEnvironmentVariable("MANGO_TOKEN_KEY");
+            var issuer = Environment.GetEnvironmentVariable("MANGO_ISSUER");
+            var audience = Environment.GetEnvironmentVariable("MANGO_AUDIENCE");
+
             services.AddControllers();
             services.AddDbContext<MangoPostgresDbContext>(opt =>
-                opt.UseNpgsql(environmentConnectionString ?? 
+                opt.UseNpgsql(connectionString ??
                               throw new InvalidOperationException("Wrong Connection String in Startup class.")));
 
 
@@ -48,6 +53,7 @@ namespace MangoAPI.WebApp
             identityBuilder.AddSignInManager<SignInManager<UserEntity>>();
 
             services.AddMediatR(typeof(RegisterCommandHandler).Assembly);
+            
             services.AddMvc(option =>
             {
                 option.EnableEndpointRouting = false;
@@ -59,23 +65,36 @@ namespace MangoAPI.WebApp
             services.AddScoped<IJwtGenerator, JwtGenerator>();
             services.AddScoped<IMailService, MailService>();
             services.AddScoped<ICookieService, CookieService>();
-            services.AddSingleton<IPasswordHasher<UserEntity>, PasswordHasher<UserEntity>>();
+            services.AddScoped<ISecurityTokenValidator, JwtSecurityTokenValidator>();
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("super secret key"));
-            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-                .AddJwtBearer(
-                    opt =>
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(tokenKey!));
+
+            services.AddAuthentication(options => 
+                {
+                    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                    options.DefaultSignInScheme = JwtBearerDefaults.AuthenticationScheme;
+                    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                })
+                .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, configure =>
+                {
+                    configure.RequireHttpsMetadata = false;
+                    configure.TokenValidationParameters = new TokenValidationParameters
                     {
-                        opt.TokenValidationParameters = new TokenValidationParameters
-                        {
-                            ValidateIssuerSigningKey = true,
-                            IssuerSigningKey = key,
-                            ValidateAudience = false,
-                            ValidateIssuer = false,
-                        };
-                    });
+                        ValidIssuer = issuer,
+                        ValidateIssuer = true,
+                        ValidAudience = audience,
+                        ValidateAudience = true,
+                        ValidateLifetime = true,
+                        IssuerSigningKey = key,
+                        ValidateIssuerSigningKey = true
+                    };
+                });
 
-            services.AddSwaggerGen(c => { c.SwaggerDoc("v1", new OpenApiInfo {Title = "MangoAPI", Version = "v1"}); });
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo {Title = "MangoAPI", Version = "v1"});
+            });
         }
 
         public static void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -92,7 +111,6 @@ namespace MangoAPI.WebApp
             app.UseRouting();
 
             app.UseAuthorization();
-            app.UseAuthentication();
 
             app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
 

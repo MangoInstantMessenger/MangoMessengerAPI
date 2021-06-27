@@ -7,6 +7,12 @@
 - Reload project in your IDE
 - How to set envirinmental variable: https://www.twilio.com/blog/2017/01/how-to-set-environment-variables.html
 
+## Other Environment Variables
+
+- `MANGO_ISSUER`, `https://localhost:5001`
+- `MANGO_AUDIENCE`, `https://localhost:5000`
+- `MANGO_TOKEN_KEY`, `random string`
+
 ## About tasks management
 - Each task is assigned a number (MANGO-ID)
 - Tasks are at Trello board https://trello.com/b/Z7IlfrRb/mango-messenger-trello

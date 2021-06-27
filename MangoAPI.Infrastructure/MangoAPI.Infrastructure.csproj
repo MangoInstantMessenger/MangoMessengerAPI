@@ -6,6 +6,7 @@
 
     <ItemGroup>
       <PackageReference Include="MediatR" Version="9.0.0" />
+      <PackageReference Include="Microsoft.AspNetCore.Authorization" Version="6.0.0-preview.5.21301.17" />
       <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.2.0" />
       <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="6.0.0-preview.5.21301.17" />
       <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.0-preview.5.21301.9">
