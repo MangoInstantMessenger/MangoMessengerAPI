@@ -22,7 +22,7 @@ jobs:
       run: |
         dotnet tool install --global dotnet-ef
         dotnet tool restore
-        dotnet ef database update --p MangoAPI.Infrastructure
+        dotnet ef database update --project MangoAPI.Infrastructure
       env:
         HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
     - name: Release
