@@ -4,14 +4,16 @@ using MangoAPI.Infrastructure.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace MangoAPI.Infrastructure.Migrations
 {
     [DbContext(typeof(MangoPostgresDbContext))]
-    partial class MangoPostgresDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210627114225_DomainUpdated")]
+    partial class DomainUpdated
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -88,12 +90,9 @@ namespace MangoAPI.Infrastructure.Migrations
 
             modelBuilder.Entity("MangoAPI.Domain.Entities.RefreshTokenEntity", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasColumnType("text");
-
-                    b.Property<string>("BrowserFingerprint")
-                        .IsRequired()
-                        .HasColumnType("text");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
 
                     b.Property<DateTime>("Created")
                         .HasColumnType("timestamp without time zone");
@@ -101,18 +100,10 @@ namespace MangoAPI.Infrastructure.Migrations
                     b.Property<DateTime>("Expires")
                         .HasColumnType("timestamp without time zone");
 
-                    b.Property<string>("IpAddress")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("RefreshToken")
-                        .IsRequired()
-                        .HasColumnType("text");
-
                     b.Property<DateTime?>("Revoked")
                         .HasColumnType("timestamp without time zone");
 
-                    b.Property<string>("UserAgent")
+                    b.Property<string>("Token")
                         .IsRequired()
                         .HasColumnType("text");
 

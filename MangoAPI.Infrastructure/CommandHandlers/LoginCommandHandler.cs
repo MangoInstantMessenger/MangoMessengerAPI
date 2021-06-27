@@ -41,7 +41,7 @@ namespace MangoAPI.Infrastructure.CommandHandlers
                 {
                     Message = "Invalid Email error. Register first.",
                     AccessToken = "N/A",
-                    RefreshToken = "N/A",
+                    RefreshTokenId = "N/A",
                     Success = false
                 });
             }
@@ -54,12 +54,14 @@ namespace MangoAPI.Infrastructure.CommandHandlers
                 {
                     Message = "Invalid Password error.",
                     AccessToken = "N/A",
-                    RefreshToken = "N/A",
+                    RefreshTokenId = "N/A",
                     Success = false
                 });
             }
 
-            var refreshToken = _jwtGenerator.GenerateRefreshToken(request.IpAddress);
+            var refreshToken = _jwtGenerator.GenerateRefreshToken(request.UserAgent, 
+                request.FingerPrint, request.IpAddress);
+            
             var jwtToken = _jwtGenerator.GenerateJwtToken(user);
 
             refreshToken.UserId = user.Id;
@@ -71,7 +73,7 @@ namespace MangoAPI.Infrastructure.CommandHandlers
             {
                 Message = "Login successful.",
                 AccessToken = jwtToken,
-                RefreshToken = refreshToken.Token,
+                RefreshTokenId = refreshToken.Id,
                 Success = true
             });
         }

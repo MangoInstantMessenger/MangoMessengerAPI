@@ -2,8 +2,9 @@
 {
     public enum ChatType
     {
-        PrivateChat = 1,
-        PublicChat,
-        Channel
+        DirectChat = 1,
+        PrivateChannel,
+        PublicChannel,
+        ReadOnlyChannel
     }
 }

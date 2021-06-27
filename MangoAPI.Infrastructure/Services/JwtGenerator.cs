@@ -55,7 +55,7 @@ namespace MangoAPI.Infrastructure.Services
             return tokenHandler.WriteToken(token);
         }
         
-        public RefreshTokenEntity GenerateRefreshToken(string ipAddress)
+        public RefreshTokenEntity GenerateRefreshToken(string userAgent, string fingerPrint, string ipAddress)
         {
             using var rngCryptoServiceProvider = new RNGCryptoServiceProvider();
 
@@ -65,10 +65,13 @@ namespace MangoAPI.Infrastructure.Services
             
             return new RefreshTokenEntity
             {
-                Token = Convert.ToBase64String(randomBytes),
+                Id = Guid.NewGuid().ToString(),
+                RefreshToken = Convert.ToBase64String(randomBytes),
+                UserAgent = userAgent,
+                BrowserFingerprint = fingerPrint,
+                IpAddress = ipAddress,
                 Expires = DateTime.UtcNow.AddDays(7),
                 Created = DateTime.UtcNow,
-                CreatedByIp = ipAddress
             };
         }
     }

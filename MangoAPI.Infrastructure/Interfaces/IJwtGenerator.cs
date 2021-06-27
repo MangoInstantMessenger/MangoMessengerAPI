@@ -6,6 +6,6 @@ namespace MangoAPI.Infrastructure.Interfaces
     {
         string GenerateJwtToken(UserEntity userEntity);
         string GenerateJwtToken(string email);
-        RefreshTokenEntity GenerateRefreshToken(string ipAddress);
+        RefreshTokenEntity GenerateRefreshToken(string userAgent, string fingerPrint, string ipAddress);
     }
 }
