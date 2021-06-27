@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
@@ -19,7 +18,8 @@ namespace MangoAPI.Infrastructure.Services
 
         public JwtGenerator(IConfiguration config)
         {
-            _key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["TokenKey"]));
+            var tokenKey = Environment.GetEnvironmentVariable("MANGO_TOKEN_KEY");
+            _key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(tokenKey!));
         }
 
         public string GenerateJwtToken(UserEntity userEntity)
@@ -29,15 +29,23 @@ namespace MangoAPI.Infrastructure.Services
 
         public string GenerateJwtToken(string email)
         {
-            var claims = new List<Claim> {new(JwtRegisteredClaimNames.NameId, email)};
-
-            var credentials = new SigningCredentials(_key, SecurityAlgorithms.HmacSha512Signature);
+            var claims = new List<Claim>
+            {
+                new(JwtRegisteredClaimNames.NameId, email)
+            };
+            
+            var issuer = Environment.GetEnvironmentVariable("MANGO_ISSUER");
+            var audience = Environment.GetEnvironmentVariable("MANGO_AUDIENCE");
+            
+            var credentials = new SigningCredentials(_key, SecurityAlgorithms.HmacSha256);
 
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(claims),
-                Expires = DateTime.Now.AddMinutes(15),
-                SigningCredentials = credentials
+                Expires = DateTime.Now.AddMinutes(5),
+                SigningCredentials = credentials,
+                Issuer = issuer,
+                Audience = audience
             };
 
             var tokenHandler = new JwtSecurityTokenHandler();

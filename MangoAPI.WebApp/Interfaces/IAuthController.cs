@@ -9,7 +9,7 @@ namespace MangoAPI.WebApp.Interfaces
         Task<IActionResult> LoginAsync(LoginCommand command);
         Task<IActionResult> RegisterAsync(RegisterCommand command);
         Task<IActionResult> ConfirmRegisterAsync(ConfirmRegisterCommand command);
-        // Task<IActionResult> RefreshTokenAsync();
+        Task<IActionResult> RefreshTokenAsync();
         // Task<IActionResult> RevokeTokenAsync();
         // Task<IActionResult> LogoutAsync();
     }
