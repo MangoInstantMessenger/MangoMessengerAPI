@@ -12,7 +12,7 @@ namespace MangoAPI.Infrastructure.Database
             var optionsBuilder = new DbContextOptionsBuilder<MangoPostgresDbContext>();
 
             var connectionString = Environment.GetEnvironmentVariable("DATABASE_URL");
-            
+
             connectionString = HerokuStringParser.Convert(connectionString);
 
             optionsBuilder.UseNpgsql(connectionString ??
