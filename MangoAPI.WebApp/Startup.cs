@@ -82,6 +82,7 @@ namespace MangoAPI.WebApp
 
             services.AddSwaggerGen(c =>
             {
+                c.EnableAnnotations();
                 c.SwaggerDoc("v1", new OpenApiInfo {Title = "MangoAPI", Version = "v1"});
             });
             
