@@ -13,8 +13,18 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Models" />
-      <Folder Include="Queries" />
+      <Compile Remove="Models\**" />
+      <Compile Remove="Queries\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <EmbeddedResource Remove="Models\**" />
+      <EmbeddedResource Remove="Queries\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Remove="Models\**" />
+      <None Remove="Queries\**" />
     </ItemGroup>
 
 </Project>

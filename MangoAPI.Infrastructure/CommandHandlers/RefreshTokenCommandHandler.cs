@@ -14,33 +14,32 @@ namespace MangoAPI.Infrastructure.CommandHandlers
     {
         private readonly MangoPostgresDbContext _postgresDbContext;
         private readonly IJwtGenerator _jwtGenerator;
+        private readonly IJwtRefreshService _jwtRefreshVerifier;
 
-        public RefreshTokenCommandHandler(MangoPostgresDbContext postgresDbContext, IJwtGenerator jwtGenerator)
+        public RefreshTokenCommandHandler(MangoPostgresDbContext postgresDbContext, IJwtGenerator jwtGenerator, IJwtRefreshService jwtRefreshVerifier)
         {
             _postgresDbContext = postgresDbContext;
             _jwtGenerator = jwtGenerator;
+            _jwtRefreshVerifier = jwtRefreshVerifier;
         }
 
         public async Task<RefreshTokenResponse> Handle(RefreshTokenCommand request, CancellationToken cancellationToken)
         {
-            var token = await _postgresDbContext.RefreshTokens
-                .FirstOrDefaultAsync(x =>
-                    x.Id == request.RefreshTokenId, cancellationToken);
+            var validationResult =
+                await _jwtRefreshVerifier.VerifyUserRefreshTokenAsync(request.RefreshTokenId, request.UserAgent, request.FingerPrint, request.IpAddress, cancellationToken);
 
-            if (token is not {IsActive: true} ||
-                token.UserAgent != request.UserAgent ||
-                token.BrowserFingerprint != request.FingerPrint || 
-                token.IpAddress != request.IpAddress)
+            if (!validationResult.Success)
             {
-                return await Task.FromResult(new RefreshTokenResponse
+                return new RefreshTokenResponse
                 {
                     Message = "Invalid Refresh Token provided.",
                     Success = false,
                     RefreshTokenId = "N/A",
                     AccessToken = "N/A"
-                });
+                };
             }
 
+            var token = validationResult.RefreshToken;
             var user = await _postgresDbContext.Users
                 .FirstOrDefaultAsync(x => x.Id == token.UserId, cancellationToken);
 
@@ -59,11 +58,11 @@ namespace MangoAPI.Infrastructure.CommandHandlers
                 request.FingerPrint, request.IpAddress);
 
             var newJwtToken = _jwtGenerator.GenerateJwtToken(user);
-            
+
             newRefreshToken.UserId = user.Id;
-            
+
             token.Revoked = DateTime.Now;
-            
+
             // TODO: remove all old tokens if count greater then 5
 
             _postgresDbContext.RefreshTokens.Update(token);
