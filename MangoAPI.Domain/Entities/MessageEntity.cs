@@ -10,7 +10,7 @@ namespace MangoAPI.Domain.Entities
         public string Content { get; set; }
         public bool IsRead { get; set; }
         public DateTime Created { get; set; }
-        public DateTime Updated { get; set; }
+        public DateTime? Updated { get; set; }
 
         public virtual UserEntity User { get; set; }
         public virtual ChatEntity Chat { get; set; }
