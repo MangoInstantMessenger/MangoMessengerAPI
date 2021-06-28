@@ -1,5 +1,5 @@
 ﻿using System;
-using MangoAPI.Infrastructure.Interfaces;
+using MangoAPI.Application.Services;
 using Microsoft.AspNetCore.Http;
 
 namespace MangoAPI.Infrastructure.Services
