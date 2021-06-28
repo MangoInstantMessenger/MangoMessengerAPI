@@ -8,8 +8,9 @@ namespace MangoAPI.WebApp.Extensions
         public static RequestMetadata GetRequestMetadata(this HttpRequest httpRequest)
             => new()
             {
-                IpAddress = httpRequest.HttpContext.Connection.RemoteIpAddress?.MapToIPv4().ToString(),
-                UserAgent = httpRequest.Headers["User-Agent"].ToString()
+                IpAddress = httpRequest.HttpContext.Connection.RemoteIpAddress?.MapToIPv6().ToString(),
+                UserAgent = httpRequest.Headers["User-Agent"].ToString(),
+                FingerPrint = "string"
             };
     }
 }
