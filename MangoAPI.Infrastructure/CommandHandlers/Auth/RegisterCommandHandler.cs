@@ -26,22 +26,12 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Auth
 
             if (exists != null)
             {
-                return await Task.FromResult(new RegisterResponse //ToDo: Remove Task.FromResult
-                {
-                    Message = "Email already registered. Forgot password? Restore your password.",
-                    AlreadyRegistered = true,
-                    TermsAccepted = request.TermsAccepted
-                });
+                return RegisterResponse.UserAlreadyRegistered;
             }
 
             if (!request.TermsAccepted)
             {
-                return await Task.FromResult(new RegisterResponse
-                {
-                    Message = "In order to register accept terms of service.",
-                    AlreadyRegistered = false,
-                    TermsAccepted = false
-                });
+                return RegisterResponse.TermsNotAccepted;
             }
 
             var userEntity = new UserEntity
@@ -56,12 +46,7 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Auth
 
             if (result.Succeeded)
             {
-                return await Task.FromResult(new RegisterResponse
-                {
-                    Message = "Registration was successful. Confirm your email.",
-                    AlreadyRegistered = false,
-                    TermsAccepted = true
-                });
+                return RegisterResponse.SuccessResponse;
             }
 
             throw new RestException(HttpStatusCode.BadRequest); // ToDo: Handle case when password doesn't meet security rules

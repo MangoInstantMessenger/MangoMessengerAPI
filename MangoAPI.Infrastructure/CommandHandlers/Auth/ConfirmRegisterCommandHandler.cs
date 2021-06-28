@@ -23,38 +23,21 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Auth
             var validRequestCode = int.TryParse(request.ValidationCode, out var parsedValidationCode);
 
             if (!validRequestCode)
-            {
-                return await Task.FromResult(new ConfirmRegisterResponse
-                {
-                    Message = "Invalid or expired registration identifier.",
-                    Success = false
-                });
-            }
+                return ConfirmRegisterResponse.InvalidOrExpired;
 
             var userEntity = await _dbContext.Users
                 .FirstOrDefaultAsync(x => x.ConfirmationCode == parsedValidationCode,
                     cancellationToken);
 
             if (userEntity == null)
-            {
-                return await Task.FromResult(new ConfirmRegisterResponse
-                {
-                    Message = "Invalid or expired registration identifier.",
-                    Success = false
-                });
-            }
+                return ConfirmRegisterResponse.InvalidOrExpired;
 
             userEntity.EmailConfirmed = true; 
             userEntity.ConfirmationCode = 0;
             _dbContext.Update(userEntity);
             await _dbContext.SaveChangesAsync(cancellationToken);
-
-
-            return await Task.FromResult(new ConfirmRegisterResponse
-            {
-                Message = "Your email was verified successfully.",
-                Success = true,
-            });
+            
+            return ConfirmRegisterResponse.SuccessResponse;
         }
     }
 }

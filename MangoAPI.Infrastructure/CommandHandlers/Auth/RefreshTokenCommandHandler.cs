@@ -29,30 +29,15 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Auth
                 await _jwtRefreshVerifier.VerifyUserRefreshTokenAsync(request.RefreshTokenId, request.UserAgent, request.FingerPrint, request.IpAddress, cancellationToken);
 
             if (!validationResult.Success)
-            {
-                return new RefreshTokenResponse
-                {
-                    Message = "Invalid Refresh Token provided.",
-                    Success = false,
-                    RefreshTokenId = "N/A",
-                    AccessToken = "N/A"
-                };
-            }
+                return RefreshTokenResponse.InvalidRefreshToken;
+
 
             var token = validationResult.RefreshToken;
             var user = await _postgresDbContext.Users
                 .FirstOrDefaultAsync(x => x.Id == token.UserId, cancellationToken);
 
             if (user == null)
-            {
-                return await Task.FromResult(new RefreshTokenResponse
-                {
-                    Message = "Internal error in user fetching. Try again later.",
-                    Success = false,
-                    RefreshTokenId = "N/A",
-                    AccessToken = "N/A"
-                });
-            }
+                return RefreshTokenResponse.UserNotFoundForToken;
 
             var newRefreshToken = _jwtGenerator.GenerateRefreshToken(request.UserAgent,
                 request.FingerPrint, request.IpAddress);
@@ -69,13 +54,7 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Auth
             await _postgresDbContext.RefreshTokens.AddAsync(newRefreshToken, cancellationToken);
             await _postgresDbContext.SaveChangesAsync(cancellationToken);
 
-            return await Task.FromResult(new RefreshTokenResponse
-            {
-                Message = "Token refreshed successfully.",
-                Success = true,
-                RefreshTokenId = newRefreshToken.Id,
-                AccessToken = newJwtToken
-            });
+            return RefreshTokenResponse.FromSuccess(newRefreshToken.Id, newJwtToken);
         }
     }
 }

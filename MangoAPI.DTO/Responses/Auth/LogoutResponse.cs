@@ -1,32 +1,31 @@
-﻿namespace MangoAPI.DTO.Responses.Auth
-{
-    public record LogoutResponse
-    {
-        public bool Success { get; init; } 
-        public string Message { get; init; }
+﻿using MangoAPI.Domain.Constants;
 
+namespace MangoAPI.DTO.Responses.Auth
+{
+    public class LogoutResponse : ResponseBase
+    {
         public static LogoutResponse RefreshTokenNotFoundResponse => new()
         {
             Success = false,
-            Message = "Refresh token was not found"
+            Message = ResponseMessageCodes.LogoutTokenNotFound
         };
-        
+
         public static LogoutResponse RefreshTokenNotValidated => new()
         {
             Success = false,
-            Message = "Refresh token was not validated"
+            Message = ResponseMessageCodes.LogoutTokenInvalid
         };
-        
+
         public static LogoutResponse SuspiciousLogout => new()
         {
             Success = false,
-            Message = "Logout attempt is suspicious"
+            Message = ResponseMessageCodes.LogoutSuspiciousLogout
         };
-        
+
         public static LogoutResponse SuccessResponse => new()
         {
             Success = true,
-            Message = "Success"
+            Message = ResponseMessageCodes.Success
         };
     }
 }
