@@ -17,7 +17,6 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 
@@ -55,6 +54,7 @@ namespace MangoAPI.WebApp
             services.AddScoped<IMailService, MailService>();
             services.AddScoped<ICookieService, CookieService>();
             services.AddScoped<ISecurityTokenValidator, JwtSecurityTokenValidator>();
+            services.AddScoped<IJwtRefreshService, JwtRefreshService>();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
             var signingKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(tokenKey!));
