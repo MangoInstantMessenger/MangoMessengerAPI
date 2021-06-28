@@ -18,6 +18,12 @@ namespace MangoAPI.DTO.Responses.Auth
             Message = ResponseMessageCodes.LoginInvalidPassword,
             Success = false
         };
+
+        public static LoginResponse Unverified => new()
+        {
+            Message = ResponseMessageCodes.Unverified,
+            Success = false
+        };
         
         public static LoginResponse FromSuccess(string accessToken, string refreshTokenId) => new ()
         {

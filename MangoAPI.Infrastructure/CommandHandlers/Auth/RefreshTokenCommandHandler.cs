@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using MangoAPI.Application.Services;
@@ -35,11 +36,20 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Auth
 
 
             var token = validationResult.RefreshToken;
+            
             var user = await _postgresDbContext.Users
                 .FirstOrDefaultAsync(x => x.Id == token.UserId, cancellationToken);
 
             if (user == null)
                 return RefreshTokenResponse.UserNotFoundForToken;
+            
+            var userTokens = _postgresDbContext.RefreshTokens
+                .Where(x => x.UserId == user.Id);
+
+            if (await userTokens.CountAsync(cancellationToken) >= 5)
+            {
+                _postgresDbContext.RefreshTokens.RemoveRange(userTokens);
+            }
 
             var newRefreshToken = _jwtGenerator.GenerateRefreshToken(request.UserAgent,
                 request.FingerPrint, request.IpAddress);
@@ -49,8 +59,6 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Auth
             newRefreshToken.UserId = user.Id;
 
             token.Revoked = DateTime.Now;
-
-            // TODO: remove all old tokens if count greater then 5
 
             _postgresDbContext.RefreshTokens.Update(token);
             await _postgresDbContext.RefreshTokens.AddAsync(newRefreshToken, cancellationToken);

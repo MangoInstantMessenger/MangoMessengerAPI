@@ -13,5 +13,6 @@
         public static string LoginInvalidEmail => "INVALID_EMAIL";
         public static string LoginInvalidPassword => "INVALID_PASSWORD";
         public static string ConfirmRegisterInvalidIdentifier => "INVALID_CONFIRMATION_IDENTIFIER";
+        public static string Unverified => "UNVERIFIED_USER";
     }
 }
