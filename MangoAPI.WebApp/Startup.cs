@@ -2,6 +2,7 @@ using System;
 using System.Text;
 using MangoAPI.Domain.Entities;
 using MangoAPI.Infrastructure.CommandHandlers;
+using MangoAPI.Infrastructure.CommandHandlers.Auth;
 using MangoAPI.Infrastructure.Database;
 using MangoAPI.Infrastructure.Deploy;
 using MangoAPI.Infrastructure.Interfaces;

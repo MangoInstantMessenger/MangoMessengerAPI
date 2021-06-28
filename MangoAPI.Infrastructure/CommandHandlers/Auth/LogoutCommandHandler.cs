@@ -6,7 +6,7 @@ using MangoAPI.DTO.Responses.Auth;
 using MangoAPI.Infrastructure.Interfaces;
 using MediatR;
 
-namespace MangoAPI.Infrastructure.CommandHandlers
+namespace MangoAPI.Infrastructure.CommandHandlers.Auth
 {
     public class LogoutCommandHandler : IRequestHandler<LogoutCommand, LogoutResponse>
     {

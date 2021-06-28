@@ -12,19 +12,4 @@
       <PackageReference Include="MediatR" Version="9.0.0" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Compile Remove="Models\**" />
-      <Compile Remove="Queries\**" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <EmbeddedResource Remove="Models\**" />
-      <EmbeddedResource Remove="Queries\**" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <None Remove="Models\**" />
-      <None Remove="Queries\**" />
-    </ItemGroup>
-
 </Project>

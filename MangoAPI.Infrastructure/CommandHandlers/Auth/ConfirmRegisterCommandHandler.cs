@@ -6,7 +6,7 @@ using MangoAPI.Infrastructure.Database;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace MangoAPI.Infrastructure.CommandHandlers
+namespace MangoAPI.Infrastructure.CommandHandlers.Auth
 {
     public class ConfirmRegisterCommandHandler : IRequestHandler<ConfirmRegisterCommand, ConfirmRegisterResponse>
     {

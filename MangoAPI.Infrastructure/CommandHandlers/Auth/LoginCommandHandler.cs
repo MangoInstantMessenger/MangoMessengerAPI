@@ -9,7 +9,7 @@ using MangoAPI.Infrastructure.Interfaces;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 
-namespace MangoAPI.Infrastructure.CommandHandlers
+namespace MangoAPI.Infrastructure.CommandHandlers.Auth
 {
     public class LoginCommandHandler : IRequestHandler<LoginCommand, LoginResponse>
     {
