@@ -24,11 +24,11 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Auth
 
             if (!validRequestCode)
             {
-                return await Task.FromResult(new ConfirmRegisterResponse
+                return new ConfirmRegisterResponse
                 {
                     Message = "Invalid or expired registration identifier.",
                     Success = false
-                });
+                };
             }
 
             var userEntity = await _dbContext.Users
@@ -37,24 +37,24 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Auth
 
             if (userEntity == null)
             {
-                return await Task.FromResult(new ConfirmRegisterResponse
+                return new ConfirmRegisterResponse
                 {
                     Message = "Invalid or expired registration identifier.",
                     Success = false
-                });
+                };
             }
 
-            userEntity.EmailConfirmed = true; 
+            userEntity.EmailConfirmed = true;
             userEntity.ConfirmationCode = 0;
             _dbContext.Update(userEntity);
             await _dbContext.SaveChangesAsync(cancellationToken);
 
 
-            return await Task.FromResult(new ConfirmRegisterResponse
+            return new ConfirmRegisterResponse
             {
                 Message = "Your email was verified successfully.",
                 Success = true,
-            });
+            };
         }
     }
 }

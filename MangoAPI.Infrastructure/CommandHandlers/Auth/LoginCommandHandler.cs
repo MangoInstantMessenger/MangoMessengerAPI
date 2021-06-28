@@ -30,7 +30,7 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Auth
         //ToDo: Login does not check whether the user has verified the email. I can login unverified.
         public async Task<LoginResponse> Handle(LoginCommand request, CancellationToken cancellationToken)
         {
-            UserEntity user; 
+            UserEntity user;
 
             try
             {
@@ -38,31 +38,31 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Auth
             }
             catch (Exception)
             {
-                return await Task.FromResult(new LoginResponse
+                return new LoginResponse
                 {
                     Message = "Invalid Email error. Register first.",
                     AccessToken = "N/A",
                     RefreshTokenId = "N/A",
                     Success = false
-                });
+                };
             }
 
             var result = await _signInManager.CheckPasswordSignInAsync(user, request.Password, false);
 
             if (!result.Succeeded)
             {
-                return await Task.FromResult(new LoginResponse
+                return new LoginResponse
                 {
                     Message = "Invalid Password error.",
                     AccessToken = "N/A",
                     RefreshTokenId = "N/A",
                     Success = false
-                });
+                };
             }
 
-            var refreshToken = _jwtGenerator.GenerateRefreshToken(request.UserAgent, 
+            var refreshToken = _jwtGenerator.GenerateRefreshToken(request.UserAgent,
                 request.FingerPrint, request.IpAddress);
-            
+
             var jwtToken = _jwtGenerator.GenerateJwtToken(user);
 
             refreshToken.UserId = user.Id;
@@ -70,13 +70,13 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Auth
             await _postgresDbContext.RefreshTokens.AddAsync(refreshToken, cancellationToken);
             await _postgresDbContext.SaveChangesAsync(cancellationToken);
 
-            return await Task.FromResult(new LoginResponse
+            return new LoginResponse
             {
                 Message = "Login successful.",
                 AccessToken = jwtToken,
                 RefreshTokenId = refreshToken.Id,
                 Success = true
-            });
+            };
         }
     }
 }
