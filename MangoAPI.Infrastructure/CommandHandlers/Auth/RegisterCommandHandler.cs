@@ -26,22 +26,12 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Auth
 
             if (exists != null)
             {
-                return new RegisterResponse
-                {
-                    Message = "Email already registered. Forgot password? Restore your password.",
-                    AlreadyRegistered = true,
-                    TermsAccepted = request.TermsAccepted
-                };
+                return RegisterResponse.UserAlreadyRegistered;
             }
 
             if (!request.TermsAccepted)
             {
-                return new RegisterResponse
-                {
-                    Message = "In order to register accept terms of service.",
-                    AlreadyRegistered = false,
-                    TermsAccepted = false
-                };
+                return RegisterResponse.TermsNotAccepted;
             }
 
             var userEntity = new UserEntity
@@ -58,12 +48,7 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Auth
 
             if (result.Succeeded)
             {
-                return new RegisterResponse
-                {
-                    Message = "Registration was successful. Confirm your email.",
-                    AlreadyRegistered = false,
-                    TermsAccepted = true
-                };
+                return RegisterResponse.SuccessResponse;
             }
 
             throw

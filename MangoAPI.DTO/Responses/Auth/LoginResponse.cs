@@ -1,10 +1,30 @@
-﻿namespace MangoAPI.DTO.Responses.Auth
+﻿using MangoAPI.Domain.Constants;
+
+namespace MangoAPI.DTO.Responses.Auth
 {
-    public class LoginResponse
+    public class LoginResponse: ResponseBase
     {
-        public string Message { get; set; }
-        public bool Success { get; set; }
         public string AccessToken { get; set; }
         public string RefreshTokenId { get; set; }
+        
+        public static LoginResponse InvalidEmail => new ()
+        {
+            Message = ResponseMessageCodes.LoginInvalidEmail,
+            Success = false
+        };
+        
+        public static LoginResponse InvalidPassword => new ()
+        {
+            Message = ResponseMessageCodes.LoginInvalidPassword,
+            Success = false
+        };
+        
+        public static LoginResponse FromSuccess(string accessToken, string refreshTokenId) => new ()
+        {
+            Message = ResponseMessageCodes.Success,
+            AccessToken = accessToken,
+            RefreshTokenId = refreshTokenId,
+            Success = true
+        };
     }
 }

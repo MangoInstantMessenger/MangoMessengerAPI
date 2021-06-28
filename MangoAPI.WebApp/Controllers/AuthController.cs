@@ -65,8 +65,8 @@ namespace MangoAPI.WebApp.Controllers
         {
             var response = await _mediator.Send(command);
 
-            if (response.AlreadyRegistered || !response.TermsAccepted)
-                return BadRequest(response);
+            // if (response.AlreadyRegistered || !response.TermsAccepted)
+            //     return BadRequest(response); //ToDo Removed as not needed
 
             _cookieService.Set("MangoRegisterRequest",
                 new Random().Next(1000).ToString(), 10);

@@ -1,8 +1,19 @@
-﻿namespace MangoAPI.DTO.Responses.Auth
+﻿using MangoAPI.Domain.Constants;
+
+namespace MangoAPI.DTO.Responses.Auth
 {
-    public class ConfirmRegisterResponse
+    public class ConfirmRegisterResponse : ResponseBase
     {
-        public string Message { get; set; }
-        public bool Success { get; set; }
+        public static ConfirmRegisterResponse InvalidOrExpired => new ()
+        {
+            Success = false,
+            Message = ResponseMessageCodes.ConfirmRegisterInvalidIdentifier
+        };
+        
+        public static ConfirmRegisterResponse SuccessResponse => new ()
+        {
+            Success = true,
+            Message = ResponseMessageCodes.Success
+        };
     }
 }
