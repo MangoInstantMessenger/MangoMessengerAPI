@@ -16,7 +16,8 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Auth
         private readonly IJwtGenerator _jwtGenerator;
         private readonly IJwtRefreshService _jwtRefreshVerifier;
 
-        public RefreshTokenCommandHandler(MangoPostgresDbContext postgresDbContext, IJwtGenerator jwtGenerator, IJwtRefreshService jwtRefreshVerifier)
+        public RefreshTokenCommandHandler(MangoPostgresDbContext postgresDbContext, IJwtGenerator jwtGenerator,
+            IJwtRefreshService jwtRefreshVerifier)
         {
             _postgresDbContext = postgresDbContext;
             _jwtGenerator = jwtGenerator;
@@ -26,7 +27,8 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Auth
         public async Task<RefreshTokenResponse> Handle(RefreshTokenCommand request, CancellationToken cancellationToken)
         {
             var validationResult =
-                await _jwtRefreshVerifier.VerifyUserRefreshTokenAsync(request.RefreshTokenId, request.UserAgent, request.FingerPrint, request.IpAddress, cancellationToken);
+                await _jwtRefreshVerifier.VerifyUserRefreshTokenAsync(request.RefreshTokenId, request.UserAgent,
+                    request.FingerPrint, request.IpAddress, cancellationToken);
 
             if (!validationResult.Success)
             {
@@ -45,13 +47,13 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Auth
 
             if (user == null)
             {
-                return await Task.FromResult(new RefreshTokenResponse
+                return new RefreshTokenResponse
                 {
                     Message = "Internal error in user fetching. Try again later.",
                     Success = false,
                     RefreshTokenId = "N/A",
                     AccessToken = "N/A"
-                });
+                };
             }
 
             var newRefreshToken = _jwtGenerator.GenerateRefreshToken(request.UserAgent,
@@ -69,13 +71,13 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Auth
             await _postgresDbContext.RefreshTokens.AddAsync(newRefreshToken, cancellationToken);
             await _postgresDbContext.SaveChangesAsync(cancellationToken);
 
-            return await Task.FromResult(new RefreshTokenResponse
+            return new RefreshTokenResponse
             {
                 Message = "Token refreshed successfully.",
                 Success = true,
                 RefreshTokenId = newRefreshToken.Id,
                 AccessToken = newJwtToken
-            });
+            };
         }
     }
 }
