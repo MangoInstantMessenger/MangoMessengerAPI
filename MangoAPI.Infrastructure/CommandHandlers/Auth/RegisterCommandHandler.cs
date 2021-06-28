@@ -37,7 +37,9 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Auth
             var userEntity = new UserEntity
             {
                 DisplayName = request.Email,
-                UserName = request.Email.Split('@')[0], //ToDo: nick@gmail.com and nick@yandex.ru will be the same username?
+                UserName = request.Email
+                    .Split('@')[0], //ToDo: nick@gmail.com and nick@yandex.ru will be the same username?
+
                 Email = request.Email,
                 ConfirmationCode = new Random().Next(100000, 999999)
             };
@@ -49,7 +51,9 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Auth
                 return RegisterResponse.SuccessResponse;
             }
 
-            throw new RestException(HttpStatusCode.BadRequest); // ToDo: Handle case when password doesn't meet security rules
+            throw
+                new RestException(HttpStatusCode
+                    .BadRequest); // ToDo: Handle case when password doesn't meet security rules
         }
     }
 }

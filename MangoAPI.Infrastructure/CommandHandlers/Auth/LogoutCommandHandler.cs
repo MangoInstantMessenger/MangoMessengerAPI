@@ -1,9 +1,9 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
+using MangoAPI.Application.Services;
 using MangoAPI.Domain.Constants;
 using MangoAPI.DTO.Commands.Auth;
 using MangoAPI.DTO.Responses.Auth;
-using MangoAPI.Infrastructure.Interfaces;
 using MediatR;
 
 namespace MangoAPI.Infrastructure.CommandHandlers.Auth
@@ -35,11 +35,14 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Auth
             if (!validationResult.Success)
                 return LogoutResponse.RefreshTokenNotValidated;
 
-            var res = await _jwtRefreshService.RevokeRefreshTokenAsync(validationResult.RefreshToken.Id, cancellationToken);
+            var res = await _jwtRefreshService.RevokeRefreshTokenAsync(validationResult.RefreshToken.Id, 
+                cancellationToken);
+            
             if (!res.Success)
                 return LogoutResponse.RefreshTokenNotFoundResponse;
             
             _cookieService.Remove(CookieConstants.MangoRefreshToken);
+            
             return LogoutResponse.SuccessResponse;
         }
     }

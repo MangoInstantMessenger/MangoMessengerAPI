@@ -2,7 +2,7 @@
 
 namespace MangoAPI.Infrastructure.Migrations
 {
-    public partial class RemoveUserEntityVerified : Migration
+    public partial class UserEntityVerifiedFieldRemoved : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

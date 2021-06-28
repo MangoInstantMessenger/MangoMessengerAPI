@@ -32,7 +32,7 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Auth
             if (userEntity == null)
                 return ConfirmRegisterResponse.InvalidOrExpired;
 
-            userEntity.EmailConfirmed = true; 
+            userEntity.EmailConfirmed = true;
             userEntity.ConfirmationCode = 0;
             _dbContext.Update(userEntity);
             await _dbContext.SaveChangesAsync(cancellationToken);

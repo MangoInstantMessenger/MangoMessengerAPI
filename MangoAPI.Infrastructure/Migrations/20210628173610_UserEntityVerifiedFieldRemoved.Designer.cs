@@ -10,8 +10,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace MangoAPI.Infrastructure.Migrations
 {
     [DbContext(typeof(MangoPostgresDbContext))]
-    [Migration("20210628173211_RemoveUserEntityVerified")]
-    partial class RemoveUserEntityVerified
+    [Migration("20210628173610_UserEntityVerifiedFieldRemoved")]
+    partial class UserEntityVerifiedFieldRemoved
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

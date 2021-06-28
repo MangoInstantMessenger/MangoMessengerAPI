@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using MangoAPI.Domain.Entities;
 
-namespace MangoAPI.Infrastructure.Interfaces
+namespace MangoAPI.Application.Services
 {
     public interface IJwtRefreshService
     {

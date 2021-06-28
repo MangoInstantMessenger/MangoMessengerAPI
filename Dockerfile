@@ -11,6 +11,7 @@ COPY ["MangoAPI.WebApp/MangoAPI.WebApp.csproj", "MangoAPI.WebApp/"]
 COPY ["MangoAPI.Infrastructure/MangoAPI.Infrastructure.csproj", "MangoAPI.Infrastructure/"]
 COPY ["MangoAPI.DTO/MangoAPI.DTO.csproj", "MangoAPI.DTO/"]
 COPY ["MangoAPI.Domain/MangoAPI.Domain.csproj", "MangoAPI.Domain/"]
+COPY ["MangoAPI.Application/MangoAPI.Application.csproj", "MangoAPI.Application/"]
 RUN dotnet restore "MangoAPI.WebApp/MangoAPI.WebApp.csproj"
 COPY . .
 WORKDIR "/src/MangoAPI.WebApp"

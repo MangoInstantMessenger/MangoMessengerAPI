@@ -1,7 +1,7 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
+using MangoAPI.Application.Services;
 using MangoAPI.Infrastructure.Database;
-using MangoAPI.Infrastructure.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 namespace MangoAPI.Infrastructure.Services
@@ -15,8 +15,8 @@ namespace MangoAPI.Infrastructure.Services
             _postgresDbContext = postgresDbContext;
         }
 
-        public async Task<VerifyTokenResult> VerifyUserRefreshTokenAsync(string refreshTokenId, string userAgent, string fingerprint, string ipAddress,
-            CancellationToken cancellationToken)
+        public async Task<VerifyTokenResult> VerifyUserRefreshTokenAsync(string refreshTokenId, string userAgent, 
+            string fingerprint, string ipAddress, CancellationToken cancellationToken)
         {
             var token = await _postgresDbContext.RefreshTokens
                 .FirstOrDefaultAsync(x =>
@@ -37,7 +37,9 @@ namespace MangoAPI.Infrastructure.Services
 
         public async Task<RevokeTokenResult> RevokeRefreshTokenAsync(string refreshTokenId, CancellationToken cancellationToken)
         {
-            var token = await _postgresDbContext.RefreshTokens.FirstOrDefaultAsync(x => x.Id == refreshTokenId, cancellationToken);
+            var token = await _postgresDbContext.RefreshTokens
+                .FirstOrDefaultAsync(x => x.Id == refreshTokenId, cancellationToken);
+            
             if (token is null)
             {
                 return new RevokeTokenResult()
