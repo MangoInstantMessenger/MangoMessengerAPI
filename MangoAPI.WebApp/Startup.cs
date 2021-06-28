@@ -1,7 +1,6 @@
 using System;
 using System.Text;
 using MangoAPI.Domain.Entities;
-using MangoAPI.Infrastructure.CommandHandlers;
 using MangoAPI.Infrastructure.CommandHandlers.Auth;
 using MangoAPI.Infrastructure.Database;
 using MangoAPI.Infrastructure.Deploy;
@@ -19,7 +18,6 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 
@@ -33,7 +31,7 @@ namespace MangoAPI.WebApp
 
         public static void ConfigureServices(IServiceCollection services)
         {
-            var connectionString = Environment.GetEnvironmentVariable("POSTGRES_MANGO_CONNECTION_STRING");
+            var connectionString = Environment.GetEnvironmentVariable("DATABASE_URL");
             var tokenKey = Environment.GetEnvironmentVariable("MANGO_TOKEN_KEY");
             var issuer = Environment.GetEnvironmentVariable("MANGO_ISSUER");
             var audience = Environment.GetEnvironmentVariable("MANGO_AUDIENCE");
