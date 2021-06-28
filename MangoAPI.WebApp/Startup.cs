@@ -9,6 +9,7 @@ using MangoAPI.Infrastructure.Services;
 using MangoAPI.Infrastructure.Validators;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -31,7 +32,7 @@ namespace MangoAPI.WebApp
 
         public static void ConfigureServices(IServiceCollection services)
         {
-            var connectionString = Environment.GetEnvironmentVariable("DATABASE_URL");
+            var connectionString = Environment.GetEnvironmentVariable("POSTGRES_MANGO_CONNECTION_STRING");
             var tokenKey = Environment.GetEnvironmentVariable("MANGO_TOKEN_KEY");
             var issuer = Environment.GetEnvironmentVariable("MANGO_ISSUER");
             var audience = Environment.GetEnvironmentVariable("MANGO_AUDIENCE");
@@ -54,6 +55,7 @@ namespace MangoAPI.WebApp
             services.AddScoped<IJwtGenerator, JwtGenerator>();
             services.AddScoped<IMailService, MailService>();
             services.AddScoped<ICookieService, CookieService>();
+            services.AddScoped<IJwtRefreshService, JwtRefreshService>();
             services.AddScoped<ISecurityTokenValidator, JwtSecurityTokenValidator>();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
@@ -80,6 +82,13 @@ namespace MangoAPI.WebApp
                     };
                 });
 
+            services.AddAuthorization(options =>
+            {
+                options.DefaultPolicy = new AuthorizationPolicyBuilder()
+                    .RequireAuthenticatedUser()
+                    .AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme)
+                    .Build();
+            });
             services.AddSwaggerGen(c =>
             {
                 c.EnableAnnotations();

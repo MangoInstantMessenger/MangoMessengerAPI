@@ -1,8 +1,11 @@
 ﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 using MangoAPI.DTO.Commands.Auth;
+using MangoAPI.DTO.Common;
 using MangoAPI.Infrastructure.Database;
 using MangoAPI.Infrastructure.Interfaces;
+using MangoAPI.WebApp.Extensions;
 using MangoAPI.WebApp.Interfaces;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -24,19 +27,16 @@ namespace MangoAPI.WebApp.Controllers
         private readonly IMediator _mediator;
         private readonly ICookieService _cookieService;
         private readonly MangoPostgresDbContext _postgresDbContext;
-        private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly ISecurityTokenValidator _securityTokenValidator;
 
-        public AuthController(IMediator mediator, 
+        public AuthController(IMediator mediator,
             ICookieService cookieService,
-            MangoPostgresDbContext postgresDbContext, 
-            IHttpContextAccessor httpContextAccessor,
+            MangoPostgresDbContext postgresDbContext,
             ISecurityTokenValidator securityTokenValidator)
         {
             _mediator = mediator;
             _cookieService = cookieService;
             _postgresDbContext = postgresDbContext;
-            _httpContextAccessor = httpContextAccessor;
             _securityTokenValidator = securityTokenValidator;
         }
 
@@ -55,11 +55,11 @@ namespace MangoAPI.WebApp.Controllers
 
             command.IpAddress = ipAddress.MapToIPv6().ToString();
             command.UserAgent = userAgent;
-            
+
             var response = await _mediator.Send(command);
             if (!response.Success) return BadRequest(response);
 
-            _cookieService.Set(Response, "MangoRefreshToken", response.RefreshTokenId, 7);
+            _cookieService.Set("MangoRefreshToken", response.RefreshTokenId, 7);
 
             return Ok(response);
         }
@@ -73,7 +73,7 @@ namespace MangoAPI.WebApp.Controllers
             if (response.AlreadyRegistered || !response.TermsAccepted)
                 return BadRequest(response);
 
-            _cookieService.Set(Response, "MangoRegisterRequest",
+            _cookieService.Set("MangoRegisterRequest",
                 new Random().Next(1000).ToString(), 10);
 
             return Ok(response);
@@ -86,7 +86,7 @@ namespace MangoAPI.WebApp.Controllers
             var response = await _mediator.Send(command);
             if (!response.Success) return BadRequest(response);
 
-            var cookie = _cookieService.Get(Request, "MangoRegisterRequest");
+            var cookie = _cookieService.Get("MangoRegisterRequest");
             if (cookie == null) return BadRequest("Invalid or expired cookies.");
 
             return Ok(response);
@@ -96,14 +96,14 @@ namespace MangoAPI.WebApp.Controllers
         [HttpPost("refresh-token")]
         public async Task<IActionResult> RefreshTokenAsync([FromBody] RefreshTokenCommand command)
         {
-            var cookieToken = _cookieService.Get(Request, "MangoRefreshToken");
-            
+            var cookieToken = _cookieService.Get("MangoRefreshToken");
+
             var parsed = Guid.TryParse(cookieToken, out _);
             if (!parsed) return BadRequest("Invalid Refresh Token.");
 
             var tokenEntity = await _postgresDbContext.RefreshTokens
                 .FirstOrDefaultAsync(x => x.Id == cookieToken);
-            
+
             var ipAddress = Request.HttpContext.Connection.RemoteIpAddress;
             if (ipAddress == null) return BadRequest("Cannot fetch an IP Address.");
 
@@ -111,7 +111,7 @@ namespace MangoAPI.WebApp.Controllers
             if (userAgent == null) return BadRequest("Cannot fetch User Agent.");
 
             if (tokenEntity == null) return BadRequest("Invalid Refresh Token.");
-            
+
             command.RefreshTokenId = tokenEntity.Id;
             command.IpAddress = ipAddress.MapToIPv6().ToString();
             command.UserAgent = userAgent;
@@ -119,9 +119,23 @@ namespace MangoAPI.WebApp.Controllers
             var result = await _mediator.Send(command);
             if (!result.Success) return BadRequest(result);
 
-            _cookieService.Set(Response, "MangoRefreshToken", result.RefreshTokenId, 7);
+            _cookieService.Set("MangoRefreshToken", result.RefreshTokenId, 7); //ToDo Replace with CookieConstants.MangoRefreshToken
 
             return Ok(result);
         }
+
+        [Authorize]
+        [HttpPost("logout")]
+        public async Task<IActionResult> LogoutAsync([FromBody] LogoutCommand command, CancellationToken cancellationToken)
+        {
+            command = command with
+            {
+                RequestMetadata = RequestMetadata
+            };
+
+            return Ok(await _mediator.Send(command,cancellationToken));
+        }
+
+        public RequestMetadata RequestMetadata => Request.GetRequestMetadata();
     }
 }

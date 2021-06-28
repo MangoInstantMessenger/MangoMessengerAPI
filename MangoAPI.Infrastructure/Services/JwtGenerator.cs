@@ -24,14 +24,17 @@ namespace MangoAPI.Infrastructure.Services
 
         public string GenerateJwtToken(UserEntity userEntity)
         {
-            return GenerateJwtToken(userEntity.Email);
+            return GenerateJwtToken(userEntity.Email, userEntity.Id);
         }
 
-        public string GenerateJwtToken(string email)
+        public string GenerateJwtToken(string email,string userId)
         {
             var claims = new List<Claim>
             {
-                new(JwtRegisteredClaimNames.NameId, email)
+                new Claim(System.IdentityModel.Tokens.Jwt.JwtRegisteredClaimNames.Sub, email),
+                new Claim(System.IdentityModel.Tokens.Jwt.JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+                new Claim(ClaimTypes.NameIdentifier, userId),
+                //new(JwtRegisteredClaimNames.NameId, email)
             };
             
             var issuer = Environment.GetEnvironmentVariable("MANGO_ISSUER");
