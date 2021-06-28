@@ -13,6 +13,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace MangoAPI.WebApp.Controllers
 {
@@ -41,6 +42,9 @@ namespace MangoAPI.WebApp.Controllers
 
         [AllowAnonymous]
         [HttpPost("login")]
+        [SwaggerOperation(Summary = "Performs login to the messenger. Returns: Access token, Refresh Token ID.")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> LoginAsync([FromBody] LoginCommand command)
         {
             var ipAddress = Request.HttpContext.Connection.RemoteIpAddress;

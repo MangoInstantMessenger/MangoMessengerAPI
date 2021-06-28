@@ -89,7 +89,13 @@ namespace MangoAPI.WebApp
                     .AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme)
                     .Build();
             });
-            services.AddSwaggerGen(c => { c.SwaggerDoc("v1", new OpenApiInfo {Title = "MangoAPI", Version = "v1"}); });
+            services.AddSwaggerGen(c =>
+            {
+                c.EnableAnnotations();
+                c.SwaggerDoc("v1", new OpenApiInfo {Title = "MangoAPI", Version = "v1"});
+            });
+            
+            services.AddCors();
         }
 
         public static void Configure(IApplicationBuilder app, IWebHostEnvironment env)
