@@ -8,7 +8,7 @@ using MangoAPI.Infrastructure.Interfaces;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace MangoAPI.Infrastructure.CommandHandlers
+namespace MangoAPI.Infrastructure.CommandHandlers.Auth
 {
     public class RefreshTokenCommandHandler : IRequestHandler<RefreshTokenCommand, RefreshTokenResponse>
     {

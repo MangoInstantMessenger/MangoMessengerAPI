@@ -6,9 +6,9 @@ using MediatR;
 
 namespace MangoAPI.Infrastructure.CommandHandlers.Messages
 {
-    public class SendChatMessageCommandHandler : IRequestHandler<SendChatMessageCommand, SendChatMessageResponse>
+    public class SendMessageCommandHandler : IRequestHandler<SendMessageCommand, SendMessageResponse>
     {
-        public async Task<SendChatMessageResponse> Handle(SendChatMessageCommand request, CancellationToken cancellationToken)
+        public async Task<SendMessageResponse> Handle(SendMessageCommand request, CancellationToken cancellationToken)
         {
             throw new System.NotImplementedException();
         }

@@ -3,7 +3,7 @@ using MediatR;
 
 namespace MangoAPI.DTO.Commands.Messages
 {
-    public class DeleteChatMessageCommand : IRequest<DeleteChatMessageResponse>
+    public class DeleteMessageCommand : IRequest<DeleteMessageResponse>
     {
     }
 }

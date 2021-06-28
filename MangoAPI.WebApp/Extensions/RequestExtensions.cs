@@ -10,7 +10,7 @@ namespace MangoAPI.WebApp.Extensions
             {
                 IpAddress = httpRequest.HttpContext.Connection.RemoteIpAddress?.MapToIPv6().ToString(),
                 UserAgent = httpRequest.Headers["User-Agent"].ToString(),
-                FingerPrint = "string"
+                FingerPrint = "777777"  // TODO: remove this in future and discuss solution
             };
     }
 }

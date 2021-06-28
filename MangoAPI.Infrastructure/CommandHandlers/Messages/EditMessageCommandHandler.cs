@@ -6,9 +6,9 @@ using MediatR;
 
 namespace MangoAPI.Infrastructure.CommandHandlers.Messages
 {
-    public class EditChatMessageCommandHandler : IRequestHandler<EditChatMessageCommand, EditChatMessageResponse>
+    public class EditMessageCommandHandler : IRequestHandler<EditMessageCommand, EditMessageResponse>
     {
-        public async Task<EditChatMessageResponse> Handle(EditChatMessageCommand request, CancellationToken cancellationToken)
+        public async Task<EditMessageResponse> Handle(EditMessageCommand request, CancellationToken cancellationToken)
         {
             throw new System.NotImplementedException();
         }

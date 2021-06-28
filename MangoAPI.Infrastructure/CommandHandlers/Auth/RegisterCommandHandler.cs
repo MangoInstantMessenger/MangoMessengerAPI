@@ -9,7 +9,7 @@ using MangoAPI.Infrastructure.Exceptions;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 
-namespace MangoAPI.Infrastructure.CommandHandlers
+namespace MangoAPI.Infrastructure.CommandHandlers.Auth
 {
     public class RegisterCommandHandler : IRequestHandler<RegisterCommand, RegisterResponse>
     {

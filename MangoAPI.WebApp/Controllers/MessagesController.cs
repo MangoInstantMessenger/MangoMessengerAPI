@@ -2,6 +2,8 @@
 using System.Threading.Tasks;
 using MangoAPI.DTO.Commands.Messages;
 using MangoAPI.DTO.Queries;
+using MangoAPI.DTO.Queries.Chats;
+using MangoAPI.DTO.Queries.Messages;
 using MangoAPI.WebApp.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
@@ -12,25 +14,25 @@ namespace MangoAPI.WebApp.Controllers
     public class MessagesController : ControllerBase, IMessagesController
     {
         [HttpGet]
-        public Task<IActionResult> GetChatMessages(GetChatMessagesQuery query, CancellationToken cancellationToken)
+        public Task<IActionResult> GetChatMessages(GetMessagesQuery query, CancellationToken cancellationToken)
         {
             throw new System.NotImplementedException();
         }
 
         [HttpPost]
-        public Task<IActionResult> SendMessage(SendChatMessageCommand command, CancellationToken cancellationToken)
+        public Task<IActionResult> SendMessage(SendMessageCommand command, CancellationToken cancellationToken)
         {
             throw new System.NotImplementedException();
         }
 
         [HttpPut]
-        public Task<IActionResult> EditMessage(EditChatMessageCommand command, CancellationToken cancellationToken)
+        public Task<IActionResult> EditMessage(EditMessageCommand command, CancellationToken cancellationToken)
         {
             throw new System.NotImplementedException();
         }
 
         [HttpDelete]
-        public Task<IActionResult> DeleteMessage(DeleteChatMessageCommand command, CancellationToken cancellationToken)
+        public Task<IActionResult> DeleteMessage(DeleteMessageCommand command, CancellationToken cancellationToken)
         {
             throw new System.NotImplementedException();
         }

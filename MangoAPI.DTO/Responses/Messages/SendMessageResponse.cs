@@ -1,6 +1,6 @@
 ﻿namespace MangoAPI.DTO.Responses.Messages
 {
-    public class DeleteChatMessageResponse
+    public class SendMessageResponse
     {
         
     }
