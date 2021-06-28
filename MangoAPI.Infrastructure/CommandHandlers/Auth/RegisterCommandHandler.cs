@@ -37,9 +37,7 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Auth
             var userEntity = new UserEntity
             {
                 DisplayName = request.Email,
-                UserName = request.Email
-                    .Split('@')[0], //ToDo: nick@gmail.com and nick@yandex.ru will be the same username?
-
+                UserName = Guid.NewGuid().ToString(),
                 Email = request.Email,
                 ConfirmationCode = new Random().Next(100000, 999999)
             };
