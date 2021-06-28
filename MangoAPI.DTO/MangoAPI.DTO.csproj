@@ -14,7 +14,6 @@
 
     <ItemGroup>
       <Folder Include="Models" />
-      <Folder Include="Queries" />
     </ItemGroup>
 
 </Project>
