@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using MangoAPI.Application.Services;
@@ -8,6 +9,7 @@ using MangoAPI.DTO.Responses.Auth;
 using MangoAPI.Infrastructure.Database;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace MangoAPI.Infrastructure.CommandHandlers.Auth
 {
@@ -26,8 +28,7 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Auth
             _jwtGenerator = jwtGenerator;
             _postgresDbContext = postgresDbContext;
         }
-
-        //ToDo: Login does not check whether the user has verified the email. I can login unverified.
+        
         public async Task<LoginResponse> Handle(LoginCommand request, CancellationToken cancellationToken)
         {
             UserEntity user;
@@ -46,13 +47,32 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Auth
             if (!result.Succeeded)
                 return LoginResponse.InvalidPassword;
 
-
+            if (!user.EmailConfirmed)
+            {
+                return LoginResponse.Unverified;
+            }
+            
             var refreshToken = _jwtGenerator.GenerateRefreshToken(request.UserAgent,
                 request.FingerPrint, request.IpAddress);
 
             var jwtToken = _jwtGenerator.GenerateJwtToken(user);
 
             refreshToken.UserId = user.Id;
+
+            var userTokens = _postgresDbContext.RefreshTokens
+                .Where(x => x.UserId == user.Id);
+            
+            foreach (var token in userTokens)
+            {
+                token.Revoked = DateTime.Now;
+            }
+            
+            _postgresDbContext.UpdateRange(userTokens);
+
+            if (await userTokens.CountAsync(cancellationToken) >= 5)
+            {
+                _postgresDbContext.RefreshTokens.RemoveRange(userTokens);
+            }
 
             await _postgresDbContext.RefreshTokens.AddAsync(refreshToken, cancellationToken);
             await _postgresDbContext.SaveChangesAsync(cancellationToken);
