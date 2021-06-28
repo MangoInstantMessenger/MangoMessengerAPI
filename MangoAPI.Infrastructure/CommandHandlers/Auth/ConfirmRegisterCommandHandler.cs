@@ -44,7 +44,7 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Auth
                 });
             }
 
-            userEntity.Verified = true; //ToDo: IdentityUser already has EmailConfirmed field 
+            userEntity.EmailConfirmed = true;
             userEntity.ConfirmationCode = 0;
             _dbContext.Update(userEntity);
             await _dbContext.SaveChangesAsync(cancellationToken);
