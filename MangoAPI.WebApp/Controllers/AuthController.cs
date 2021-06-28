@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
+using MangoAPI.Application.Services;
 using MangoAPI.DTO.Commands.Auth;
 using MangoAPI.DTO.Common;
 using MangoAPI.Infrastructure.Database;
-using MangoAPI.Infrastructure.Interfaces;
 using MangoAPI.WebApp.Extensions;
 using MangoAPI.WebApp.Interfaces;
 using MediatR;
@@ -12,7 +12,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
 using Swashbuckle.AspNetCore.Annotations;
 
 namespace MangoAPI.WebApp.Controllers
@@ -27,17 +26,13 @@ namespace MangoAPI.WebApp.Controllers
         private readonly IMediator _mediator;
         private readonly ICookieService _cookieService;
         private readonly MangoPostgresDbContext _postgresDbContext;
-        private readonly ISecurityTokenValidator _securityTokenValidator;
 
-        public AuthController(IMediator mediator,
-            ICookieService cookieService,
-            MangoPostgresDbContext postgresDbContext,
-            ISecurityTokenValidator securityTokenValidator)
+        public AuthController(IMediator mediator, ICookieService cookieService, 
+            MangoPostgresDbContext postgresDbContext)
         {
             _mediator = mediator;
             _cookieService = cookieService;
             _postgresDbContext = postgresDbContext;
-            _securityTokenValidator = securityTokenValidator;
         }
 
         [AllowAnonymous]
@@ -119,21 +114,23 @@ namespace MangoAPI.WebApp.Controllers
             var result = await _mediator.Send(command);
             if (!result.Success) return BadRequest(result);
 
-            _cookieService.Set("MangoRefreshToken", result.RefreshTokenId, 7); //ToDo Replace with CookieConstants.MangoRefreshToken
+            _cookieService.Set("MangoRefreshToken", result.RefreshTokenId,
+                7); //ToDo Replace with CookieConstants.MangoRefreshToken
 
             return Ok(result);
         }
 
         [Authorize]
         [HttpPost("logout")]
-        public async Task<IActionResult> LogoutAsync([FromBody] LogoutCommand command, CancellationToken cancellationToken)
+        public async Task<IActionResult> LogoutAsync([FromBody] LogoutCommand command,
+            CancellationToken cancellationToken)
         {
             command = command with
             {
                 RequestMetadata = RequestMetadata
             };
 
-            return Ok(await _mediator.Send(command,cancellationToken));
+            return Ok(await _mediator.Send(command, cancellationToken));
         }
 
         public RequestMetadata RequestMetadata => Request.GetRequestMetadata();

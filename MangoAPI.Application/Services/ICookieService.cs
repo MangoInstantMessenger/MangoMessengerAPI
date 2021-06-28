@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-
-namespace MangoAPI.Infrastructure.Interfaces
+﻿namespace MangoAPI.Application.Services
 {
     public interface ICookieService
     {

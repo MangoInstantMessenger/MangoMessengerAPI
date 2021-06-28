@@ -1,10 +1,10 @@
 using System;
 using System.Text;
+using MangoAPI.Application.Services;
 using MangoAPI.Domain.Entities;
 using MangoAPI.Infrastructure.CommandHandlers.Auth;
 using MangoAPI.Infrastructure.Database;
 using MangoAPI.Infrastructure.Deploy;
-using MangoAPI.Infrastructure.Interfaces;
 using MangoAPI.Infrastructure.Services;
 using MangoAPI.Infrastructure.Validators;
 using MediatR;
@@ -52,7 +52,6 @@ namespace MangoAPI.WebApp
             services.AddMediatR(typeof(RegisterCommandHandler).Assembly);
 
             services.AddScoped<IJwtGenerator, JwtGenerator>();
-            services.AddScoped<IMailService, MailService>();
             services.AddScoped<ICookieService, CookieService>();
             services.AddScoped<IJwtRefreshService, JwtRefreshService>();
             services.AddScoped<ISecurityTokenValidator, JwtSecurityTokenValidator>();

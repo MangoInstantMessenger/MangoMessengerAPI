@@ -4,11 +4,9 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
+using MangoAPI.Application.Services;
 using MangoAPI.Domain.Entities;
-using MangoAPI.Infrastructure.Interfaces;
-using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
-using JwtRegisteredClaimNames = Microsoft.IdentityModel.JsonWebTokens.JwtRegisteredClaimNames;
 
 namespace MangoAPI.Infrastructure.Services
 {
@@ -16,7 +14,7 @@ namespace MangoAPI.Infrastructure.Services
     {
         private readonly SymmetricSecurityKey _key;
 
-        public JwtGenerator(IConfiguration config)
+        public JwtGenerator()
         {
             var tokenKey = Environment.GetEnvironmentVariable("MANGO_TOKEN_KEY");
             _key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(tokenKey!));
@@ -31,9 +29,9 @@ namespace MangoAPI.Infrastructure.Services
         {
             var claims = new List<Claim>
             {
-                new Claim(System.IdentityModel.Tokens.Jwt.JwtRegisteredClaimNames.Sub, email),
-                new Claim(System.IdentityModel.Tokens.Jwt.JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                new Claim(ClaimTypes.NameIdentifier, userId),
+                new(JwtRegisteredClaimNames.Sub, email),
+                new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+                new(ClaimTypes.NameIdentifier, userId),
                 //new(JwtRegisteredClaimNames.NameId, email)
             };
             
