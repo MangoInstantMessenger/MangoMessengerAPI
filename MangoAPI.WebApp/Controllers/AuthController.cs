@@ -1,36 +1,24 @@
-﻿using System;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
-using MangoAPI.Application.Common;
-using MangoAPI.Application.Services;
 using MangoAPI.DTO.Commands.Auth;
-using MangoAPI.Infrastructure.Database;
 using MangoAPI.WebApp.Interfaces;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Swashbuckle.AspNetCore.Annotations;
 
 namespace MangoAPI.WebApp.Controllers
 {
-    /// <summary>
-    /// Controller responsible for user authentication process.
-    /// </summary>
     [ApiController]
     [Route("api/auth")]
     public class AuthController : ControllerBase, IAuthController
     {
         private readonly IMediator _mediator;
-        private readonly MangoPostgresDbContext _postgresDbContext;
-        
-        
-        public AuthController(IMediator mediator,
-            MangoPostgresDbContext postgresDbContext)
+
+        public AuthController(IMediator mediator)
         {
             _mediator = mediator;
-            _postgresDbContext = postgresDbContext;
         }
 
         [AllowAnonymous]
@@ -38,50 +26,61 @@ namespace MangoAPI.WebApp.Controllers
         [SwaggerOperation(Summary = "Performs login to the messenger. Returns: Access token, Refresh Token ID.")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> LoginAsync([FromBody] LoginCommand command)
+        public async Task<IActionResult> LoginAsync([FromBody] LoginCommand command,
+            CancellationToken cancellationToken)
         {
-            var response = await _mediator.Send(command);
-            if (!response.Success) return BadRequest(response);
+            var response = await _mediator.Send(command, cancellationToken);
+
+            if (!response.Success)
+            {
+                return BadRequest(response);
+            }
+
             return Ok(response);
         }
 
         [AllowAnonymous]
         [HttpPost("register")]
-        public async Task<IActionResult> RegisterAsync([FromBody] RegisterCommand command)
+        public async Task<IActionResult> RegisterAsync([FromBody] RegisterCommand command,
+            CancellationToken cancellationToken)
         {
-            var response = await _mediator.Send(command);
+            var response = await _mediator.Send(command, cancellationToken);
             return Ok(response);
         }
 
         [AllowAnonymous]
         [HttpPost("confirm-register")]
-        public async Task<IActionResult> ConfirmRegisterAsync([FromBody] ConfirmRegisterCommand command)
+        public async Task<IActionResult> ConfirmRegisterAsync([FromBody] ConfirmRegisterCommand command,
+            CancellationToken cancellationToken)
         {
-            var response = await _mediator.Send(command);
-            if (!response.Success) return BadRequest(response);
+            var response = await _mediator.Send(command, cancellationToken);
+            if (!response.Success)
+            {
+                return BadRequest(response);
+            }
+
             return Ok(response);
         }
 
         [AllowAnonymous]
-        [HttpGet("refresh-token")]
-        public async Task<IActionResult> RefreshTokenAsync()
+        [HttpPost("refresh-token")]
+        public async Task<IActionResult> RefreshTokenAsync(CancellationToken cancellationToken)
         {
-            var command = new RefreshTokenCommand();
-            var result = await _mediator.Send(command);
-            if (!result.Success) return BadRequest(result);
+            var result = await _mediator.Send(new RefreshTokenCommand(), cancellationToken);
 
-            // _cookieService.Set("MangoRefreshToken", result.RefreshTokenId,
-            //     7);
+            if (!result.Success)
+            {
+                return BadRequest(result);
+            }
 
             return Ok(result);
         }
 
         [Authorize]
         [HttpPost("logout")]
-        public async Task<IActionResult> LogoutAsync([FromBody] LogoutCommand command,
-            CancellationToken cancellationToken)
+        public async Task<IActionResult> LogoutAsync(CancellationToken cancellationToken)
         {
-            return Ok(await _mediator.Send(command, cancellationToken));
+            return Ok(await _mediator.Send(new LogoutCommand(), cancellationToken));
         }
     }
 }

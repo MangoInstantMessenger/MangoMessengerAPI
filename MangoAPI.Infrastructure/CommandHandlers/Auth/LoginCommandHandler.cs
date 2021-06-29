@@ -56,7 +56,9 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Auth
             var result = await _signInManager.CheckPasswordSignInAsync(user, request.Password, false);
 
             if (!result.Succeeded)
+            {
                 return LoginResponse.InvalidPassword;
+            }
 
             if (!user.EmailConfirmed)
             {
@@ -88,7 +90,9 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Auth
 
             await _postgresDbContext.RefreshTokens.AddAsync(refreshToken, cancellationToken);
             await _postgresDbContext.SaveChangesAsync(cancellationToken);
+            
             _cookieService.Set(CookieConstants.MangoRefreshTokenId, refreshToken.Id, 7);
+            
             return LoginResponse.FromSuccess(jwtToken, refreshToken.Id);
         }
     }

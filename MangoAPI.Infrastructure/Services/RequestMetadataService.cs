@@ -15,9 +15,9 @@ namespace MangoAPI.Infrastructure.Services
         
         public RequestMetadata GetRequestMetadata() => new()
         {
-            IpAddress = _httpContextAccessor.HttpContext.Request.HttpContext.Connection.RemoteIpAddress?.MapToIPv6().ToString(),
-            UserAgent = _httpContextAccessor.HttpContext.Request.Headers["User-Agent"].ToString(),
-            FingerPrintSalt = _httpContextAccessor.HttpContext.Request.Headers["X-FingerprintSalt"].ToString(),
+            IpAddress = _httpContextAccessor.HttpContext?.Request.HttpContext.Connection.RemoteIpAddress?.MapToIPv6().ToString(),
+            UserAgent = _httpContextAccessor.HttpContext?.Request.Headers["User-Agent"].ToString(),
+            FingerPrintSalt = _httpContextAccessor.HttpContext?.Request.Headers["X-FingerprintSalt"].ToString(),
         };
     }
 }

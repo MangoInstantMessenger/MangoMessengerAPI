@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Threading;
+using System.Threading.Tasks;
 using MangoAPI.DTO.Queries.Users;
 using MangoAPI.WebApp.Interfaces;
 using Microsoft.AspNetCore.Mvc;
@@ -10,7 +11,7 @@ namespace MangoAPI.WebApp.Controllers
     public class UsersController : ControllerBase, IUsersController
     {
         [HttpGet]
-        public Task<IActionResult> FindUser(FindUserQuery query)
+        public Task<IActionResult> FindUser(FindUserQuery query, CancellationToken cancellationToken)
         {
             throw new System.NotImplementedException();
         }
