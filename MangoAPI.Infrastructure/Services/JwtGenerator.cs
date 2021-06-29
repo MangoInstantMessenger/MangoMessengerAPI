@@ -31,19 +31,24 @@ namespace MangoAPI.Infrastructure.Services
             {
                 new(JwtRegisteredClaimNames.Sub, email),
                 new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                new(ClaimTypes.NameIdentifier, userId),
-                //new(JwtRegisteredClaimNames.NameId, email)
+                new(ClaimTypes.NameIdentifier, userId)
             };
             
             var issuer = Environment.GetEnvironmentVariable("MANGO_ISSUER");
             var audience = Environment.GetEnvironmentVariable("MANGO_AUDIENCE");
+            var jwtLifetime = Environment.GetEnvironmentVariable("JWT_LIFETIME");
+
+            if (jwtLifetime == null || !int.TryParse(jwtLifetime, out var jwtLifetimeParsed))
+            {
+                throw new InvalidOperationException("Jwt lifetime environmental variable error.");
+            }
             
             var credentials = new SigningCredentials(_key, SecurityAlgorithms.HmacSha256);
 
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(claims),
-                Expires = DateTime.Now.AddMinutes(5),
+                Expires = DateTime.Now.AddMinutes(jwtLifetimeParsed),
                 SigningCredentials = credentials,
                 Issuer = issuer,
                 Audience = audience
@@ -59,6 +64,13 @@ namespace MangoAPI.Infrastructure.Services
         public RefreshTokenEntity GenerateRefreshToken(string userAgent, string fingerPrint, string ipAddress)
         {
             using var rngCryptoServiceProvider = new RNGCryptoServiceProvider();
+            
+            var refreshLifetime = Environment.GetEnvironmentVariable("REFRESH_TOKEN_LIFETIME");
+
+            if (refreshLifetime == null || !int.TryParse(refreshLifetime, out var refreshLifetimeParsed))
+            {
+                throw new InvalidOperationException("Refresh token lifetime environmental variable error.");
+            }
 
             var randomBytes = new byte[64];
             new Random().NextBytes(randomBytes);
@@ -71,7 +83,7 @@ namespace MangoAPI.Infrastructure.Services
                 UserAgent = userAgent,
                 BrowserFingerprint = fingerPrint,
                 IpAddress = ipAddress,
-                Expires = DateTime.UtcNow.AddDays(7),
+                Expires = DateTime.UtcNow.AddDays(refreshLifetimeParsed),
                 Created = DateTime.UtcNow,
             };
         }
