@@ -13,7 +13,7 @@
   - Auth: access token in request header, refresh token ID in cookies
   - Requires chat moderator claim
 
-- DELETE
+- DELETE: api/chats
   - Deletes particular chat 
   - Auth: access token in request header, refresh token ID in cookies
   - Requires chat owner claim
