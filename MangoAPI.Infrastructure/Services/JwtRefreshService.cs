@@ -27,7 +27,7 @@ namespace MangoAPI.Infrastructure.Services
             if (token == null)
                 return VerifyTokenResult.NotVerified;
 
-            return new VerifyTokenResult()
+            return new VerifyTokenResult
             {
                 FingerPrintValidated = _fingerprintService.VerifyFingerPrint(requestMetadata,token.BrowserFingerprint),
                 IpAddressValidated = token.IpAddress == requestMetadata.IpAddress,
@@ -51,7 +51,9 @@ namespace MangoAPI.Infrastructure.Services
             }
                 
             _postgresDbContext.RefreshTokens.Remove(token);
+            
             await _postgresDbContext.SaveChangesAsync(cancellationToken);
+            
             return new RevokeTokenResult()
             {
                 Success = true

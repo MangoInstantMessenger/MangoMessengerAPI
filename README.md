@@ -12,6 +12,8 @@
 - `MANGO_ISSUER`, `https://localhost:5001`
 - `MANGO_AUDIENCE`, `https://localhost:5000`
 - `MANGO_TOKEN_KEY`, `random string`
+- `JWT_LIFETIME`, integer
+- `REFRESH_TOKEN_LIFETIME`, integer
 
 ## About tasks management
 - Each task is assigned a number (MANGO-ID)
