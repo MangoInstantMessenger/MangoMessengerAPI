@@ -5,7 +5,7 @@
   - Auth: allow anonymous
 
 - POST: api/auth/verify-email
-  - Sends verification request with provided user parameters: email, verification guid.
+  - Sends verification request with provided user parameters: email, user ID guid.
   - Auth: allow anonymous
   
 - POST: api/auth/verify-phone
