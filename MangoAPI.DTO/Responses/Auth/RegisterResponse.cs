@@ -25,5 +25,12 @@ namespace MangoAPI.DTO.Responses.Auth
             Message = ResponseMessageCodes.Success,
             TermsAccepted = true
         };
+
+        public static RegisterResponse WeakPassword => new()
+        {
+            Success = false,
+            Message = ResponseMessageCodes.WeakPassword,
+            TermsAccepted = true
+        };
     }
 }

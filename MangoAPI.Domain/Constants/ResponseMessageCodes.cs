@@ -14,5 +14,6 @@
         public static string LoginInvalidPassword => "INVALID_PASSWORD";
         public static string ConfirmRegisterInvalidIdentifier => "INVALID_CONFIRMATION_IDENTIFIER";
         public static string Unverified => "UNVERIFIED_USER";
+        public static string WeakPassword => "WEAK_PASSWORD";
     }
 }
