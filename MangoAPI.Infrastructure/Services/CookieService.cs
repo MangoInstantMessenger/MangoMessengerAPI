@@ -13,7 +13,7 @@ namespace MangoAPI.Infrastructure.Services
             _httpContextAccessor = httpContextAccessor;
         }
         
-        public string Get(string key) => _httpContextAccessor.HttpContext.Request.Cookies[key];
+        public string Get(string key) => _httpContextAccessor.HttpContext?.Request.Cookies[key];
 
         public void Set(string key, string value, int? expireDays)
         {
@@ -25,12 +25,9 @@ namespace MangoAPI.Infrastructure.Services
                 HttpOnly = true
             };
 
-            _httpContextAccessor.HttpContext.Response.Cookies.Append(key, value, option);  
+            _httpContextAccessor.HttpContext?.Response.Cookies.Append(key, value, option);  
         }
 
-        public void Remove(string key)
-        {
-            _httpContextAccessor.HttpContext.Response.Cookies.Delete(key);
-        }
+        public void Remove(string key) => _httpContextAccessor.HttpContext?.Response.Cookies.Delete(key);
     }
 }
