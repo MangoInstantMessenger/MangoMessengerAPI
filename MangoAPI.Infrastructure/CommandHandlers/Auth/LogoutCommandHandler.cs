@@ -12,21 +12,23 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Auth
     {
         private readonly ICookieService _cookieService;
         private readonly IJwtRefreshService _jwtRefreshService;
+        private readonly IRequestMetadataService _metadataService;
 
-        public LogoutCommandHandler(ICookieService cookieService, IJwtRefreshService jwtRefreshService)
+        public LogoutCommandHandler(ICookieService cookieService, IJwtRefreshService jwtRefreshService, IRequestMetadataService metadataService)
         {
             _cookieService = cookieService;
             _jwtRefreshService = jwtRefreshService;
+            _metadataService = metadataService;
         }
 
         public async Task<LogoutResponse> Handle(LogoutCommand request, CancellationToken cancellationToken)
         {
+            var requestMetadata = _metadataService.GetRequestMetadata();
+            var refreshTokenId = _cookieService.Get(CookieConstants.MangoRefreshTokenId);
             var validationResult =
                 await _jwtRefreshService.VerifyUserRefreshTokenAsync(
-                    request.RefreshTokenId,
-                    request.RequestMetadata.UserAgent,
-                    request.RequestMetadata.FingerPrint,
-                    request.RequestMetadata.IpAddress,
+                    refreshTokenId,
+                    requestMetadata,
                     cancellationToken);
 
             if (validationResult.IsSuspicious)
@@ -41,7 +43,7 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Auth
             if (!res.Success)
                 return LogoutResponse.RefreshTokenNotFoundResponse;
             
-            _cookieService.Remove(CookieConstants.MangoRefreshToken);
+            _cookieService.Remove(CookieConstants.MangoRefreshTokenId);
             
             return LogoutResponse.SuccessResponse;
         }

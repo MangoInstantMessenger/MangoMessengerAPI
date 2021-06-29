@@ -1,5 +1,6 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
+using MangoAPI.Application.Common;
 using MangoAPI.Application.Services;
 using MangoAPI.Infrastructure.Database;
 using Microsoft.EntityFrameworkCore;
@@ -9,14 +10,15 @@ namespace MangoAPI.Infrastructure.Services
     public class JwtRefreshService : IJwtRefreshService
     {
         private readonly MangoPostgresDbContext _postgresDbContext;
+        private readonly IFingerprintService _fingerprintService;
 
-        public JwtRefreshService(MangoPostgresDbContext postgresDbContext)
+        public JwtRefreshService(MangoPostgresDbContext postgresDbContext,IFingerprintService fingerprintService)
         {
             _postgresDbContext = postgresDbContext;
+            _fingerprintService = fingerprintService;
         }
 
-        public async Task<VerifyTokenResult> VerifyUserRefreshTokenAsync(string refreshTokenId, string userAgent, 
-            string fingerprint, string ipAddress, CancellationToken cancellationToken)
+        public async Task<VerifyTokenResult> VerifyUserRefreshTokenAsync(string refreshTokenId, RequestMetadata requestMetadata, CancellationToken cancellationToken)
         {
             var token = await _postgresDbContext.RefreshTokens
                 .FirstOrDefaultAsync(x =>
@@ -27,9 +29,9 @@ namespace MangoAPI.Infrastructure.Services
 
             return new VerifyTokenResult()
             {
-                FingerPrintValidated = token.BrowserFingerprint == fingerprint,
-                IpAddressValidated = token.IpAddress == ipAddress,
-                UserAgentValidated = token.UserAgent == userAgent,
+                FingerPrintValidated = _fingerprintService.VerifyFingerPrint(requestMetadata,token.BrowserFingerprint),
+                IpAddressValidated = token.IpAddress == requestMetadata.IpAddress,
+                UserAgentValidated = token.UserAgent == requestMetadata.UserAgent,
                 RefreshTokenExpired = token.IsExpired,
                 RefreshToken = token
             };

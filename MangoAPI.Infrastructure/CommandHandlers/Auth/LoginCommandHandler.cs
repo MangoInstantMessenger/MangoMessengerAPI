@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using MangoAPI.Application.Services;
+using MangoAPI.Domain.Constants;
 using MangoAPI.Domain.Entities;
 using MangoAPI.DTO.Commands.Auth;
 using MangoAPI.DTO.Responses.Auth;
@@ -19,16 +20,26 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Auth
         private readonly SignInManager<UserEntity> _signInManager;
         private readonly IJwtGenerator _jwtGenerator;
         private readonly MangoPostgresDbContext _postgresDbContext;
+        private readonly IRequestMetadataService _metadataService;
+        private readonly IFingerprintService _fingerprintService;
+        private readonly ICookieService _cookieService;
 
-        public LoginCommandHandler(UserManager<UserEntity> userManager, SignInManager<UserEntity> signInManager,
-            IJwtGenerator jwtGenerator, MangoPostgresDbContext postgresDbContext)
+        public LoginCommandHandler(UserManager<UserEntity> userManager, 
+            SignInManager<UserEntity> signInManager,
+            IJwtGenerator jwtGenerator,
+            MangoPostgresDbContext postgresDbContext, 
+            IRequestMetadataService metadataService,
+            IFingerprintService fingerprintService, ICookieService cookieService)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _jwtGenerator = jwtGenerator;
             _postgresDbContext = postgresDbContext;
+            _metadataService = metadataService;
+            _fingerprintService = fingerprintService;
+            _cookieService = cookieService;
         }
-        
+
         public async Task<LoginResponse> Handle(LoginCommand request, CancellationToken cancellationToken)
         {
             UserEntity user;
@@ -51,9 +62,10 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Auth
             {
                 return LoginResponse.Unverified;
             }
-            
-            var refreshToken = _jwtGenerator.GenerateRefreshToken(request.UserAgent,
-                request.FingerPrint, request.IpAddress);
+
+            var metadata = _metadataService.GetRequestMetadata();
+            var refreshToken = _jwtGenerator.GenerateRefreshToken(metadata.UserAgent,
+                _fingerprintService.GetFingerprint(metadata), metadata.IpAddress);
 
             var jwtToken = _jwtGenerator.GenerateJwtToken(user);
 
@@ -61,12 +73,12 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Auth
 
             var userTokens = _postgresDbContext.RefreshTokens
                 .Where(x => x.UserId == user.Id);
-            
+
             foreach (var token in userTokens)
             {
                 token.Revoked = DateTime.Now;
             }
-            
+
             _postgresDbContext.UpdateRange(userTokens);
 
             if (await userTokens.CountAsync(cancellationToken) >= 5)
@@ -76,7 +88,7 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Auth
 
             await _postgresDbContext.RefreshTokens.AddAsync(refreshToken, cancellationToken);
             await _postgresDbContext.SaveChangesAsync(cancellationToken);
-
+            _cookieService.Set(CookieConstants.MangoRefreshTokenId, refreshToken.Id, 7);
             return LoginResponse.FromSuccess(jwtToken, refreshToken.Id);
         }
     }

@@ -1,9 +1,9 @@
-﻿namespace MangoAPI.DTO.Common
+﻿namespace MangoAPI.Application.Common
 {
     public class RequestMetadata
     {
         public string IpAddress { get; set; }
         public string UserAgent { get; set; }
-        public string FingerPrint { get; set; }
+        public string FingerPrintSalt { get; set; }
     }
 }
