@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
+using MangoAPI.Application.Common;
 using MangoAPI.Application.Services;
 using MangoAPI.DTO.Commands.Auth;
-using MangoAPI.DTO.Common;
 using MangoAPI.Infrastructure.Database;
-using MangoAPI.WebApp.Extensions;
 using MangoAPI.WebApp.Interfaces;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -24,14 +23,13 @@ namespace MangoAPI.WebApp.Controllers
     public class AuthController : ControllerBase, IAuthController
     {
         private readonly IMediator _mediator;
-        private readonly ICookieService _cookieService;
         private readonly MangoPostgresDbContext _postgresDbContext;
-
-        public AuthController(IMediator mediator, ICookieService cookieService, 
+        
+        
+        public AuthController(IMediator mediator,
             MangoPostgresDbContext postgresDbContext)
         {
             _mediator = mediator;
-            _cookieService = cookieService;
             _postgresDbContext = postgresDbContext;
         }
 
@@ -42,20 +40,8 @@ namespace MangoAPI.WebApp.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> LoginAsync([FromBody] LoginCommand command)
         {
-            var ipAddress = Request.HttpContext.Connection.RemoteIpAddress;
-            if (ipAddress == null) return BadRequest("Cannot fetch an IP Address.");
-
-            var userAgent = Request.Headers["User-Agent"].ToString();
-            if (userAgent == null) return BadRequest("Cannot fetch User Agent.");
-
-            command.IpAddress = ipAddress.MapToIPv6().ToString();
-            command.UserAgent = userAgent;
-
             var response = await _mediator.Send(command);
             if (!response.Success) return BadRequest(response);
-
-            _cookieService.Set("MangoRefreshToken", response.RefreshTokenId, 7);
-
             return Ok(response);
         }
 
@@ -64,13 +50,6 @@ namespace MangoAPI.WebApp.Controllers
         public async Task<IActionResult> RegisterAsync([FromBody] RegisterCommand command)
         {
             var response = await _mediator.Send(command);
-
-            // if (response.AlreadyRegistered || !response.TermsAccepted)
-            //     return BadRequest(response); //ToDo Removed as not needed
-
-            _cookieService.Set("MangoRegisterRequest",
-                new Random().Next(1000).ToString(), 10);
-
             return Ok(response);
         }
 
@@ -80,42 +59,19 @@ namespace MangoAPI.WebApp.Controllers
         {
             var response = await _mediator.Send(command);
             if (!response.Success) return BadRequest(response);
-
-            var cookie = _cookieService.Get("MangoRegisterRequest");
-            if (cookie == null) return BadRequest("Invalid or expired cookies.");
-
             return Ok(response);
         }
 
         [AllowAnonymous]
-        [HttpPost("refresh-token")]
-        public async Task<IActionResult> RefreshTokenAsync([FromBody] RefreshTokenCommand command)
+        [HttpGet("refresh-token")]
+        public async Task<IActionResult> RefreshTokenAsync()
         {
-            var cookieToken = _cookieService.Get("MangoRefreshToken");
-
-            var parsed = Guid.TryParse(cookieToken, out _);
-            if (!parsed) return BadRequest("Invalid Refresh Token.");
-
-            var tokenEntity = await _postgresDbContext.RefreshTokens
-                .FirstOrDefaultAsync(x => x.Id == cookieToken);
-
-            var ipAddress = Request.HttpContext.Connection.RemoteIpAddress;
-            if (ipAddress == null) return BadRequest("Cannot fetch an IP Address.");
-
-            var userAgent = Request.Headers["User-Agent"].ToString();
-            if (userAgent == null) return BadRequest("Cannot fetch User Agent.");
-
-            if (tokenEntity == null) return BadRequest("Invalid Refresh Token.");
-
-            command.RefreshTokenId = tokenEntity.Id;
-            command.IpAddress = ipAddress.MapToIPv6().ToString();
-            command.UserAgent = userAgent;
-
+            var command = new RefreshTokenCommand();
             var result = await _mediator.Send(command);
             if (!result.Success) return BadRequest(result);
 
-            _cookieService.Set("MangoRefreshToken", result.RefreshTokenId,
-                7); //ToDo Replace with CookieConstants.MangoRefreshToken
+            // _cookieService.Set("MangoRefreshToken", result.RefreshTokenId,
+            //     7);
 
             return Ok(result);
         }
@@ -125,14 +81,7 @@ namespace MangoAPI.WebApp.Controllers
         public async Task<IActionResult> LogoutAsync([FromBody] LogoutCommand command,
             CancellationToken cancellationToken)
         {
-            command = command with
-            {
-                RequestMetadata = RequestMetadata
-            };
-
             return Ok(await _mediator.Send(command, cancellationToken));
         }
-
-        public RequestMetadata RequestMetadata => Request.GetRequestMetadata();
     }
 }

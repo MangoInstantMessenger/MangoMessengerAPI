@@ -1,5 +1,6 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
+using MangoAPI.Application.Common;
 using MangoAPI.Domain.Entities;
 
 namespace MangoAPI.Application.Services
@@ -8,9 +9,7 @@ namespace MangoAPI.Application.Services
     {
         public Task<VerifyTokenResult> VerifyUserRefreshTokenAsync(
             string refreshTokenId,
-            string userAgent,
-            string fingerprint,
-            string ipAddress,
+            RequestMetadata requestMetadata,
             CancellationToken cancellationToken);
 
         public Task<RevokeTokenResult> RevokeRefreshTokenAsync(string refreshTokenId,CancellationToken cancellationToken);
