@@ -1,11 +1,9 @@
 ﻿using System;
-using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using MangoAPI.Domain.Entities;
 using MangoAPI.DTO.Commands.Auth;
 using MangoAPI.DTO.Responses.Auth;
-using MangoAPI.Infrastructure.Exceptions;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 
@@ -44,14 +42,12 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Auth
 
             var result = await _userManager.CreateAsync(userEntity, request.Password);
 
-            if (result.Succeeded)
+            if (!result.Succeeded)
             {
-                return RegisterResponse.SuccessResponse;
+                return RegisterResponse.WeakPassword;
             }
-
-            throw
-                new RestException(HttpStatusCode
-                    .BadRequest); // ToDo: Handle case when password doesn't meet security rules
+            
+            return RegisterResponse.SuccessResponse;
         }
     }
 }
