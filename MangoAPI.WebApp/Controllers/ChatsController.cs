@@ -17,8 +17,7 @@ namespace MangoAPI.WebApp.Controllers
     {
         [Authorize]
         [HttpGet]
-        [SwaggerOperation(Description = "Returns list of all user's chats  \n" +
-            "Auth: access token in request header, refresh token ID in cookies")]
+        [SwaggerOperation(Summary = "Returns list of all user's chats")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public Task<IActionResult> GetChats(GetChatsQuery query, CancellationToken cancellationToken)
@@ -28,8 +27,7 @@ namespace MangoAPI.WebApp.Controllers
         
         [Authorize]
         [HttpPost]
-        [SwaggerOperation(Description = "Sends message to particular chats  \n" +
-            "Auth: access token in request header, refresh token ID in cookies")]
+        [SwaggerOperation(Summary = "Sends message to particular chats")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public Task<IActionResult> CreateChat(CreateChatCommand command, CancellationToken cancellationToken)

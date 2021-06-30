@@ -17,8 +17,7 @@ namespace MangoAPI.WebApp.Controllers
     {
         [Authorize]
         [HttpGet]
-        [SwaggerOperation(Description = "Returns list of all messages of specified chat by chat ID  \n" +
-            "Auth: access token in request header, refresh token ID in cookies")]
+        [SwaggerOperation(Summary = "Returns list of all messages of specified chat by chat ID")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public Task<IActionResult> GetChatMessages(GetMessagesQuery query, CancellationToken cancellationToken)
@@ -28,8 +27,7 @@ namespace MangoAPI.WebApp.Controllers
 
         [Authorize]
         [HttpPost]
-        [SwaggerOperation(Description = "Sends message to particulat chat  \n" +
-            "Auth: access token in request header, refresh token ID in cookies")]
+        [SwaggerOperation(Summary = "Sends message to particulat chat")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public Task<IActionResult> SendMessage(SendMessageCommand command, CancellationToken cancellationToken)
@@ -39,9 +37,7 @@ namespace MangoAPI.WebApp.Controllers
 
         [Authorize]
         [HttpPut]
-        [SwaggerOperation(Description = "Updates particular message  \n" +
-            "Requires to by an author of message  \n" +
-            "Auth: access token in request header, refresh token ID in cookies")]
+        [SwaggerOperation(Summary = "Updates particular message")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public Task<IActionResult> EditMessage(EditMessageCommand command, CancellationToken cancellationToken)
@@ -51,9 +47,7 @@ namespace MangoAPI.WebApp.Controllers
         
         [Authorize]
         [HttpDelete]
-        [SwaggerOperation(Description = "Deletes particular message  \n" +
-            "Requires to by an author of message  \n" +
-            "Auth: access token in request header, refresh token ID in cookies")]
+        [SwaggerOperation(Summary = "Deletes particular message")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public Task<IActionResult> DeleteMessage(DeleteMessageCommand command, CancellationToken cancellationToken)
