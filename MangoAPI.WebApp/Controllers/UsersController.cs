@@ -16,7 +16,7 @@ namespace MangoAPI.WebApp.Controllers
     {
         [Authorize]
         [HttpGet]
-        [SwaggerOperation(Summary = "Returns information about particular user")]
+        [SwaggerOperation(Summary = "Returns information about particular user. Auth: access token in request header, refresh token ID in cookies")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public Task<IActionResult> FindUser(FindUserQuery query, CancellationToken cancellationToken)
