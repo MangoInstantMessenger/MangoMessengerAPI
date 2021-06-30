@@ -41,11 +41,10 @@
 ## Requirments
 
 - SDK: **[.NET Core 5.0](https://dotnet.microsoft.com/download/dotnet/5.0)**
-- ASP.NET: **[ASP.NET Core 3.1](https://dotnet.microsoft.com/learn/aspnet/what-is-aspnet-core)**
 - ORM: **[Entity Framework Core 5.0.7](https://www.nuget.org/packages/Microsoft.EntityFrameworkCore/5.0.7?_src=template)**
 - SQL Database: **[PostgreSQL 13](https://www.postgresql.org/)**
 - EF Core for PostgreSQL Provider: **[Npgsql.EntityFrameworkCore.PostgreSQL 5.0.7](https://www.nuget.org/packages/Npgsql.EntityFrameworkCore.PostgreSQL/5.0.7?_src=template)**
-- CI/CD: [GitHub Actions](https://docs.github.com/en/actions)
+- CI/CD: **[GitHub Actions](https://docs.github.com/en/actions)**
 - Mediator pattern library: **[MediatR 9.0.0](https://www.nuget.org/packages/MediatR/9.0.0?_src=template)**
 - Validation library: **[Fluent Validations](https://www.nuget.org/packages/FluentValidation/10.2.3?_src=template)**
 - JWT library: **[System JWT 6.8.0](https://www.nuget.org/packages/System.IdentityModel.Tokens.Jwt)**
