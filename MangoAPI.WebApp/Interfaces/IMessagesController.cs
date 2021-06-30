@@ -1,8 +1,6 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 using MangoAPI.DTO.Commands.Messages;
-using MangoAPI.DTO.Queries;
-using MangoAPI.DTO.Queries.Chats;
 using MangoAPI.DTO.Queries.Messages;
 using Microsoft.AspNetCore.Mvc;
 

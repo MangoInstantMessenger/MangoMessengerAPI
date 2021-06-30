@@ -5,7 +5,7 @@
   - Auth: access token in request header, refresh token ID in cookies
 
 - POST: api/chats
-  - Sends message to particular chats
+  - Creates new chat
   - Auth: access token in request header, refresh token ID in cookies
   
 - PUT: api/chats
