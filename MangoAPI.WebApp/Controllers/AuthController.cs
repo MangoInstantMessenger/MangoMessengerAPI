@@ -128,11 +128,16 @@ namespace MangoAPI.WebApp.Controllers
             "Auth: refresh token ID in cookies")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public Task<IActionResult> LogoutAllDevicesAsync(CancellationToken cancellationToken)
+        public async Task<IActionResult> LogoutAllDevicesAsync(CancellationToken cancellationToken)
         {
-            throw new System.NotImplementedException();
-        }
+            var response = await _mediator.Send(new LogoutAllCommand(), cancellationToken);
 
-        
+            if (!response.Success)
+            {
+                return BadRequest(response);
+            }
+
+            return Ok(response);
+        }
     }
 }

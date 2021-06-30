@@ -12,12 +12,13 @@ namespace MangoAPI.Application.Services
             RequestMetadata requestMetadata,
             CancellationToken cancellationToken);
 
-        public Task<RevokeTokenResult> RevokeRefreshTokenAsync(string refreshTokenId,CancellationToken cancellationToken);
+        public Task<RevokeTokenResult> RevokeRefreshTokenAsync(string refreshTokenId,
+            CancellationToken cancellationToken);
     }
 
     public class RevokeTokenResult
     {
-        public bool Success { get; set; } 
+        public bool Success { get; set; }
     }
 
     public class VerifyTokenResult
