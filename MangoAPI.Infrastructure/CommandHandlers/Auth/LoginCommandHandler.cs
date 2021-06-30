@@ -60,7 +60,7 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Auth
                 return LoginResponse.InvalidPassword;
             }
 
-            if (!user.EmailConfirmed)
+            if (!user.Verified)
             {
                 return LoginResponse.Unverified;
             }

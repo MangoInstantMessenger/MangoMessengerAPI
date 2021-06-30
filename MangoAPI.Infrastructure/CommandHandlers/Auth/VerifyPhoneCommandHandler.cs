@@ -32,7 +32,12 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Auth
             if (userEntity == null)
                 return VerifyPhoneResponse.InvalidOrExpired;
 
-            userEntity.EmailConfirmed = true;
+            if (userEntity.PhoneNumberConfirmed)
+            {
+                return VerifyPhoneResponse.PhoneAlreadyVerified;
+            }
+
+            userEntity.PhoneNumberConfirmed = true;
             userEntity.ConfirmationCode = 0;
             _dbContext.Update(userEntity);
             await _dbContext.SaveChangesAsync(cancellationToken);

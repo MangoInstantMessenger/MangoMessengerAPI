@@ -12,5 +12,7 @@ namespace MangoAPI.Domain.Entities
         public virtual ICollection<RefreshTokenEntity> RefreshTokens { get; set; }
         public virtual ICollection<MessageEntity> Messages { get; set; }
         public virtual ICollection<UserChatEntity> UserChats { get; set; }
+
+        public bool Verified => EmailConfirmed || PhoneNumberConfirmed;
     }
 }

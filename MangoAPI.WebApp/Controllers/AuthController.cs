@@ -61,10 +61,17 @@ namespace MangoAPI.WebApp.Controllers
             "Auth: allow anonymous")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public Task<IActionResult> VerifyEmailAsync(string email, string userId, CancellationToken cancellationToken)
+        public async Task<IActionResult> VerifyEmailAsync(string email, string userId, CancellationToken cancellationToken)
         {
             var command = new VerifyEmailCommand { Email = email, UserId = userId };
-            throw new System.NotImplementedException();
+            var response = await _mediator.Send(command, cancellationToken);
+
+            if (!response.Success)
+            {
+                return BadRequest(response);
+            }
+            
+            return Ok(response);
         }
 
         [AllowAnonymous]
