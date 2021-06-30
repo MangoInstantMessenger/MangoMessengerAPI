@@ -9,7 +9,7 @@ namespace MangoAPI.WebApp.Interfaces
     {
         Task<IActionResult> LoginAsync(LoginCommand command, CancellationToken cancellationToken);
         Task<IActionResult> RegisterAsync(RegisterCommand command, CancellationToken cancellationToken);
-        Task<IActionResult> VerifyPhoneCodeAsync(VerifyPhoneCodeCommand command, CancellationToken cancellationToken);
+        Task<IActionResult> VerifyPhoneCodeAsync(VerifyPhoneCommand command, CancellationToken cancellationToken);
         Task<IActionResult> RefreshTokenAsync(CancellationToken cancellationToken);
         Task<IActionResult> LogoutAsync(CancellationToken cancellationToken);
         Task<IActionResult> LogoutAllDevicesAsync(CancellationToken cancellationToken);
