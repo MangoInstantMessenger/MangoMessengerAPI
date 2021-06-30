@@ -8,7 +8,7 @@
         public static string LogoutSuspiciousLogout => "SUSPICIOUS_LOGOUT";
         public static string RegisterUserAlreadyRegistered => "USER_ALREADY_REGISTERED";
         public static string RegisterTermsNotAccepted => "TERMS_NOT_ACCEPTED";
-        public static string RefreshTokenInvalidRefreshTokenProvided => "INVALID_REFRESH_TOKEN_PROVIDED";
+        public static string InvalidRefreshTokenProvided => "INVALID_REFRESH_TOKEN_PROVIDED";
         public static string RefreshTokenUserNotFound => "USER_NOT_FOUND_FOR_TOKEN";
         public static string LoginInvalidEmail => "INVALID_EMAIL";
         public static string LoginInvalidPassword => "INVALID_PASSWORD";
@@ -19,5 +19,6 @@
         public static string UserNotFound => "USER_NOT_FOUND";
         public static string EmailAlreadyVerified => "EMAIL_ALREADY_VERIFIED";
         public static string PhoneAlreadyVerified => "PHONE_ALREADY_VERIFIED";
+        public static string CreateDirectChatSuspicious => "SUSPICIOUS_DIRECT_CHAT_CREATION";
     }
 }
