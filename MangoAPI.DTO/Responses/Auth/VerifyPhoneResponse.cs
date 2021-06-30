@@ -2,15 +2,15 @@
 
 namespace MangoAPI.DTO.Responses.Auth
 {
-    public class VerifyPhoneCodeResponse : ResponseBase
+    public class VerifyPhoneResponse : ResponseBase
     {
-        public static VerifyPhoneCodeResponse InvalidOrExpired => new ()
+        public static VerifyPhoneResponse InvalidOrExpired => new ()
         {
             Success = false,
             Message = ResponseMessageCodes.ConfirmRegisterInvalidIdentifier
         };
         
-        public static VerifyPhoneCodeResponse SuccessResponse => new ()
+        public static VerifyPhoneResponse SuccessResponse => new ()
         {
             Success = true,
             Message = ResponseMessageCodes.Success
