@@ -1,10 +1,13 @@
-﻿using System.Threading;
+﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 using MangoAPI.DTO.Commands.Chats;
 using MangoAPI.DTO.Queries.Chats;
 using MangoAPI.WebApp.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Http;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace MangoAPI.WebApp.Controllers
 {
@@ -14,16 +17,24 @@ namespace MangoAPI.WebApp.Controllers
     {
         [Authorize]
         [HttpGet]
+        [SwaggerOperation(Description = "Returns list of all user's chats  \n" +
+            "Auth: access token in request header, refresh token ID in cookies")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public Task<IActionResult> GetChats(GetChatsQuery query, CancellationToken cancellationToken)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
         
         [Authorize]
         [HttpPost]
+        [SwaggerOperation(Description = "Sends message to particular chats  \n" +
+            "Auth: access token in request header, refresh token ID in cookies")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public Task<IActionResult> CreateChat(CreateChatCommand command, CancellationToken cancellationToken)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
     }
 }
