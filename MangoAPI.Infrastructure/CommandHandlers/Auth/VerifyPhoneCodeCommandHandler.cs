@@ -8,36 +8,36 @@ using Microsoft.EntityFrameworkCore;
 
 namespace MangoAPI.Infrastructure.CommandHandlers.Auth
 {
-    public class ConfirmRegisterCommandHandler : IRequestHandler<ConfirmRegisterCommand, ConfirmRegisterResponse>
+    public class VerifyPhoneCodeCommandHandler : IRequestHandler<VerifyPhoneCodeCommand, VerifyPhoneCodeResponse>
     {
         private readonly MangoPostgresDbContext _dbContext;
 
-        public ConfirmRegisterCommandHandler(MangoPostgresDbContext dbContext)
+        public VerifyPhoneCodeCommandHandler(MangoPostgresDbContext dbContext)
         {
             _dbContext = dbContext;
         }
 
-        public async Task<ConfirmRegisterResponse> Handle(ConfirmRegisterCommand request,
+        public async Task<VerifyPhoneCodeResponse> Handle(VerifyPhoneCodeCommand request,
             CancellationToken cancellationToken)
         {
             var validRequestCode = int.TryParse(request.ValidationCode, out var parsedValidationCode);
 
             if (!validRequestCode)
-                return ConfirmRegisterResponse.InvalidOrExpired;
+                return VerifyPhoneCodeResponse.InvalidOrExpired;
 
             var userEntity = await _dbContext.Users
                 .FirstOrDefaultAsync(x => x.ConfirmationCode == parsedValidationCode,
                     cancellationToken);
 
             if (userEntity == null)
-                return ConfirmRegisterResponse.InvalidOrExpired;
+                return VerifyPhoneCodeResponse.InvalidOrExpired;
 
             userEntity.EmailConfirmed = true;
             userEntity.ConfirmationCode = 0;
             _dbContext.Update(userEntity);
             await _dbContext.SaveChangesAsync(cancellationToken);
             
-            return ConfirmRegisterResponse.SuccessResponse;
+            return VerifyPhoneCodeResponse.SuccessResponse;
         }
     }
 }

@@ -49,8 +49,8 @@ namespace MangoAPI.WebApp.Controllers
         }
 
         [AllowAnonymous]
-        [HttpPost("confirm-register")]
-        public async Task<IActionResult> ConfirmRegisterAsync([FromBody] ConfirmRegisterCommand command,
+        [HttpPost("verify-phone")]
+        public async Task<IActionResult> VerifyPhoneCodeAsync([FromBody] VerifyPhoneCodeCommand command,
             CancellationToken cancellationToken)
         {
             var response = await _mediator.Send(command, cancellationToken);
@@ -81,6 +81,21 @@ namespace MangoAPI.WebApp.Controllers
         public async Task<IActionResult> LogoutAsync(CancellationToken cancellationToken)
         {
             return Ok(await _mediator.Send(new LogoutCommand(), cancellationToken));
+        }
+
+        [AllowAnonymous]
+        [HttpPost("logout-all")]
+        public Task<IActionResult> LogoutAllDevicesAsync(CancellationToken cancellationToken)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        [AllowAnonymous]
+        [HttpPost("verify-email")]
+        public Task<IActionResult> VerifyEmailAsync(string email, string userId, CancellationToken cancellationToken)
+        {
+            var command = new VerifyEmailCommand {Email = email, UserId = userId};
+            throw new System.NotImplementedException();
         }
     }
 }

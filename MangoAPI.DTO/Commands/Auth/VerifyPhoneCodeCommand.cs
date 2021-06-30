@@ -3,7 +3,7 @@ using MediatR;
 
 namespace MangoAPI.DTO.Commands.Auth
 {
-    public class ConfirmRegisterCommand : IRequest<ConfirmRegisterResponse>
+    public class VerifyPhoneCodeCommand : IRequest<VerifyPhoneCodeResponse>
     {
         public string ValidationCode { get; set; }
     }
