@@ -15,5 +15,9 @@
         public static string ConfirmRegisterInvalidIdentifier => "INVALID_CONFIRMATION_IDENTIFIER";
         public static string Unverified => "UNVERIFIED_USER";
         public static string WeakPassword => "WEAK_PASSWORD";
+        public static string InvalidUserId => "INVALID_USER_ID";
+        public static string UserNotFound => "USER_NOT_FOUND";
+        public static string EmailAlreadyVerified => "EMAIL_ALREADY_VERIFIED";
+        public static string PhoneAlreadyVerified => "PHONE_ALREADY_VERIFIED";
     }
 }
