@@ -9,6 +9,7 @@ namespace MangoAPI.WebApp.Interfaces
     public interface IChatsController
     {
         Task<IActionResult> GetChats(GetChatsQuery query, CancellationToken cancellationToken);
-        Task<IActionResult> CreateChat(CreateChatCommand command, CancellationToken cancellationToken);
+        Task<IActionResult> CreateChat(CreateGroupCommand command, CancellationToken cancellationToken);
+        Task<IActionResult> CreateDirectChat(CreateDirectChatCommand command, CancellationToken cancellationToken);
     }
 }

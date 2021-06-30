@@ -10,7 +10,7 @@ namespace MangoAPI.DTO.Responses.Auth
         public static RefreshTokenResponse InvalidRefreshToken => new()
         {
             Success = false,
-            Message = ResponseMessageCodes.RefreshTokenInvalidRefreshTokenProvided
+            Message = ResponseMessageCodes.InvalidRefreshTokenProvided
         };
         
         public static RefreshTokenResponse UserNotFoundForToken => new()
