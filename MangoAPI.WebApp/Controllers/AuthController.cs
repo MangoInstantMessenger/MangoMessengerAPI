@@ -55,7 +55,7 @@ namespace MangoAPI.WebApp.Controllers
         }
 
         [AllowAnonymous]
-        [HttpPost("verify-email")]
+        [HttpGet("verify-email")]
         [SwaggerOperation(Summary = "Sends verification request with provided user parameters: " +
             "email, user ID guid. User receives proper link via email. " +
             "Auth: allow anonymous")]
@@ -73,7 +73,7 @@ namespace MangoAPI.WebApp.Controllers
             "Auth: allow anonymous")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> VerifyPhoneCodeAsync([FromBody] VerifyPhoneCodeCommand command,
+        public async Task<IActionResult> VerifyPhoneCodeAsync([FromBody] VerifyPhoneCommand command,
             CancellationToken cancellationToken)
         {
             var response = await _mediator.Send(command, cancellationToken);
