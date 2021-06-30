@@ -7,6 +7,7 @@
 - ORM: **[Entity Framework Core 5.0.7](https://www.nuget.org/packages/Microsoft.EntityFrameworkCore/5.0.7?_src=template)**
 - SQL: **[PostgreSQL 13](https://www.postgresql.org/)**
 - EF Core to PostgreSQL provider: **[Npgsql.EntityFrameworkCore.PostgreSQL 5.0.7](https://www.nuget.org/packages/Npgsql.EntityFrameworkCore.PostgreSQL/5.0.7?_src=template)**
+- CI/CD: [GitHub Actions](https://docs.github.com/en/actions)
 - Mediator pattern library: **[MediatR 9.0.0](https://www.nuget.org/packages/MediatR/9.0.0?_src=template)**
 - Validation library: **[Fluent Validations](https://www.nuget.org/packages/FluentValidation/10.2.3?_src=template)**
 - JWT library: **[System JWT 6.8.0](https://www.nuget.org/packages/System.IdentityModel.Tokens.Jwt)**
