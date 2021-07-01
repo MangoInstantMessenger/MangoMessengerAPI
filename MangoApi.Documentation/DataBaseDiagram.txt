@@ -1,0 +1,65 @@
+Table Users_ASPIdentity as UserTable {
+  Id text [pk, increment] // auto-increment
+  Username string
+  DisplayName string
+  PhoneNumber string
+  CreatedAt timestamp
+  UpdatedAt timestamp
+  Verified boolean
+  VerificationCode int
+}
+
+Table UserChats as UserChatTable {
+  ChatId integer
+  UserId text
+  RoleId enum
+}
+
+Table Chats as ChatTable {
+  Id integer [pk, increment]
+  Title text
+  ChatType enum
+  Description text
+  Image text
+  MembersCount integer
+  Tag text
+  CreatedAt timestamp
+  UpdatedAt timestamp
+}
+
+Ref: UserTable.Id > UserChatTable.UserId
+Ref: ChatTable.Id > UserChatTable.ChatId
+
+Table Messages as MessagesTable {
+  Id integer
+  ChatId integer
+  UserId text
+  Content text
+  IsRead boolean
+  CreatedAt timestamp
+  UpdatedAt timestamp
+}
+
+Ref: MessagesTable.ChatId > ChatTable.Id
+
+Ref: MessagesTable.UserId > UserTable.Id
+
+Table UserContacts as UserContactsTable {
+  ContactId text
+  UserId text
+}
+
+Ref: UserContactsTable.UserId > UserTable.Id
+
+Table RefreshTokens as RefreshTokensTable {
+  Id uuid [pk, increment]
+  UserId text
+  UserAgent text
+  BrowserFingerprint text
+  IpAddress text
+  RefreshToken text
+  ExpiresIn datetime
+  CreatedAt datetime
+}
+
+Ref: RefreshTokensTable.UserId > UserTable.Id
