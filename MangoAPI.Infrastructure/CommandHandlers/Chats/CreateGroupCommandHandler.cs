@@ -31,23 +31,6 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Chats
         public async Task<CreateChatEntityResponse> Handle(CreateGroupCommand request,
             CancellationToken cancellationToken)
         {
-            var requestMetadata = _metadataService.GetRequestMetadata();
-            var refreshTokenId = _cookieService.Get(CookieConstants.MangoRefreshTokenId);
-
-            var validationResult = await _jwtRefreshService.VerifyUserRefreshTokenAsync(refreshTokenId,
-                requestMetadata,
-                cancellationToken);
-
-            if (validationResult.IsSuspicious)
-            {
-                return CreateChatEntityResponse.Suspicious;
-            }
-
-            if (!validationResult.Success)
-            {
-                return CreateChatEntityResponse.RefreshTokenNotValidated;
-            }
-
             if (request.GroupTitle == null)
             {
                 return CreateChatEntityResponse.InvalidOrEmptyChatTitle;
@@ -60,7 +43,7 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Chats
 
             var currentUser = await _postgresDbContext
                 .Users
-                .FirstAsync(x => x.Id == validationResult.RefreshToken.UserId, cancellationToken);
+                .FirstAsync(x => x.Id == request.UserId, cancellationToken);
 
             var directChatEntity = new ChatEntity
             {

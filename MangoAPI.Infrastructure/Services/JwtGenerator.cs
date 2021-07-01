@@ -29,7 +29,7 @@ namespace MangoAPI.Infrastructure.Services
         {
             var claims = new List<Claim>
             {
-                new(JwtRegisteredClaimNames.Sub, email),
+                new(JwtRegisteredClaimNames.Sub, userId),
                 new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                 new(ClaimTypes.NameIdentifier, userId)
             };

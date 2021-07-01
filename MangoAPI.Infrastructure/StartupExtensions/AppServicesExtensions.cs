@@ -18,6 +18,7 @@ namespace MangoAPI.Infrastructure.StartupExtensions
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddScoped<IRequestMetadataService, RequestMetadataService>();
             services.AddScoped<IFingerprintService, FingerprintService>();
+            services.AddScoped<IChatNotificationService, ChatNotificationService>();
             return services;
         }
     }
