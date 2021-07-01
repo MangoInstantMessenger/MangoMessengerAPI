@@ -18,5 +18,7 @@
         public const string PhoneAlreadyVerified = "PHONE_ALREADY_VERIFIED";
         public const string InvalidOrEmptyGroupTitle = "INVALID_OR_EMPTY_GROUP_TITLE";
         public const string InvalidGroupType = "INVALID_GROUP_TYPE";
+        public const string PermissionDenied = "PERMISSION_DENIED";
+        public const string ChatNotFound = "CHAT_NOT_FOUND";
     }
 }
