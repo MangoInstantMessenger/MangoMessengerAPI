@@ -1,5 +1,14 @@
 # Mango Messenger ASP NET Core WebAPI
 
+[![Trello board](https://img.shields.io/badge/Task%20Board-Trello-blue)](https://trello.com/b/Z7IlfrRb/mango-messenger-trello)
+[![Contributors](https://img.shields.io/badge/Contributors-3-brightgreen)](https://github.com/kolosovpetro/MangoAPI/graphs/contributors)
+[![Mango Data Base Diagramm](https://img.shields.io/badge/Data%20Base%20Diagram-DbDiagram-lightgrey)](https://dbdiagram.io/d/60d66a13dd6a597148203e6b) 
+[![Heroku](https://img.shields.io/badge/Deploy-Heroku-yellowgreen)](https://mango-messenger-app.herokuapp.com/swagger/)
+[![SDK](https://img.shields.io/badge/SDK-.NET%20Core%205.0-blue)](https://dotnet.microsoft.com/download/dotnet/5.0)
+[![ORM](https://img.shields.io/badge/ORM-EF%20Core%20-yellow)](https://www.nuget.org/packages/Microsoft.EntityFrameworkCore/5.0.7?_src=template)
+[![DBMS](https://img.shields.io/badge/DBMS-PostgreSQL-yellowgreen)](https://www.postgresql.org/)
+
+
 ## Database connection
 
 - Setup System Environment variable `DATABASE_URL` with value `Server=localhost;User Id=your_login;Password=your_password;Database=MangoApiDatabase;`
