@@ -4,22 +4,16 @@ namespace MangoAPI.DTO.Responses.Auth
 {
     public class LogoutResponse : ResponseBase
     {
-        public static LogoutResponse RefreshTokenNotFoundResponse => new()
+        public static LogoutResponse InvalidOrEmptyRefreshToken => new()
         {
             Success = false,
-            Message = ResponseMessageCodes.LogoutTokenNotFound
-        };
-
-        public static LogoutResponse RefreshTokenNotValidated => new()
-        {
-            Success = false,
-            Message = ResponseMessageCodes.LogoutTokenInvalid
+            Message = ResponseMessageCodes.InvalidOrEmptyRefreshToken
         };
 
         public static LogoutResponse SuspiciousLogout => new()
         {
             Success = false,
-            Message = ResponseMessageCodes.LogoutSuspiciousLogout
+            Message = ResponseMessageCodes.SuspiciousAction
         };
 
         public static LogoutResponse SuccessResponse => new()

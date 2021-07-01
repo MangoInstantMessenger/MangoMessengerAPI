@@ -42,14 +42,14 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Auth
             
             var parsed = Guid.TryParse(cookieToken, out _);
             if (!parsed) 
-                return RefreshTokenResponse.InvalidRefreshToken;
+                return RefreshTokenResponse.InvalidOrEmptyRefreshToken;
             
             var requestMetadata = _metadataService.GetRequestMetadata();
             var validationResult =
                 await _jwtRefreshVerifier.VerifyUserRefreshTokenAsync(cookieToken, requestMetadata, cancellationToken);
 
             if (!validationResult.Success)
-                return RefreshTokenResponse.InvalidRefreshToken;
+                return RefreshTokenResponse.InvalidOrEmptyRefreshToken;
             
             var token = validationResult.RefreshToken;
 

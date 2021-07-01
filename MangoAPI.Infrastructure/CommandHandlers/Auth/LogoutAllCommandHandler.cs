@@ -43,7 +43,7 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Auth
 
             if (!validationResult.Success)
             {
-                return LogoutResponse.RefreshTokenNotValidated;
+                return LogoutResponse.InvalidOrEmptyRefreshToken;
             }
 
             var token = await _postgresDbContext.RefreshTokens

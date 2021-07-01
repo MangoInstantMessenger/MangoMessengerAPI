@@ -6,13 +6,13 @@ namespace MangoAPI.DTO.Responses.Chats
     {
         public static CreateChatEntityResponse Suspicious => new()
         {
-            Message = ResponseMessageCodes.CreateChatEntitySuspicious,
+            Message = ResponseMessageCodes.SuspiciousAction,
             Success = false
         };
 
         public static CreateChatEntityResponse RefreshTokenNotValidated => new()
         {
-            Message = ResponseMessageCodes.InvalidRefreshTokenProvided,
+            Message = ResponseMessageCodes.InvalidOrEmptyRefreshToken,
             Success = false
         };
 

@@ -9,14 +9,14 @@ namespace MangoAPI.DTO.Responses.Auth
         public static RegisterResponse UserAlreadyRegistered => new ()
         {
             Success = false,
-            Message = ResponseMessageCodes.RegisterUserAlreadyRegistered
+            Message = ResponseMessageCodes.UserAlreadyRegistered
         };
         
         public static RegisterResponse TermsNotAccepted => new ()
         {
             Success = false,
             TermsAccepted = false,
-            Message = ResponseMessageCodes.RegisterTermsNotAccepted
+            Message = ResponseMessageCodes.TermsNotAccepted
         };
         
         public static RegisterResponse SuccessResponse => new ()
