@@ -6,6 +6,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\MangoAPI.Domain\MangoAPI.Domain.csproj" />
+      <ProjectReference Include="..\MangoAPI.DTO\MangoAPI.DTO.csproj" />
     </ItemGroup>
 
 </Project>
