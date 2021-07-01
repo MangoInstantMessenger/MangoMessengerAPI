@@ -2,7 +2,6 @@
 using System.Threading;
 using System.Threading.Tasks;
 using MangoAPI.DTO.Commands.Messages;
-using MangoAPI.DTO.Queries.Messages;
 using MangoAPI.WebApp.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -15,16 +14,6 @@ namespace MangoAPI.WebApp.Controllers
     [Route("api/messages")]
     public class MessagesController : ControllerBase, IMessagesController
     {
-        [Authorize]
-        [HttpGet]
-        [SwaggerOperation(Summary = "Returns list of all messages of specified chat by chat ID.")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public Task<IActionResult> GetChatMessages(GetMessagesQuery query, CancellationToken cancellationToken)
-        {
-            throw new NotImplementedException();
-        }
-
         [Authorize]
         [HttpPost]
         [SwaggerOperation(Summary = "Sends message to particular chat.")]
