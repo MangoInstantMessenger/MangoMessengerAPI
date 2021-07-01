@@ -59,6 +59,7 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Messages
                 UserId = request.UserId,
                 Content = request.Content,
                 Created = DateTime.UtcNow,
+                Updated = DateTime.UtcNow
             };
 
             messageEntity = _db.Messages.Add(messageEntity).Entity;

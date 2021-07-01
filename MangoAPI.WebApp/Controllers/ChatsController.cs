@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
+using MangoAPI.Domain.Entities;
 using MangoAPI.DTO.Commands.Chats;
 using MangoAPI.DTO.Queries.Chats;
 using MangoAPI.WebApp.Interfaces;
@@ -8,6 +9,7 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Swashbuckle.AspNetCore.Annotations;
 
 namespace MangoAPI.WebApp.Controllers
@@ -18,10 +20,12 @@ namespace MangoAPI.WebApp.Controllers
     public class ChatsController : ControllerBase, IChatsController
     {
         private readonly IMediator _mediator;
+        private readonly UserManager<UserEntity> _userManager;
 
-        public ChatsController(IMediator mediator)
+        public ChatsController(IMediator mediator,UserManager<UserEntity> userManager)
         {
             _mediator = mediator;
+            _userManager = userManager;
         }
 
         [Authorize]
@@ -41,6 +45,7 @@ namespace MangoAPI.WebApp.Controllers
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> CreateChat(CreateGroupCommand command, CancellationToken cancellationToken)
         {
+            command.UserId = _userManager.GetUserId(User);
             var response = await _mediator.Send(command, cancellationToken);
 
             if (!response.Success)
