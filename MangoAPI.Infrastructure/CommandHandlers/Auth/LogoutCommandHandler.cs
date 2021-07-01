@@ -38,7 +38,7 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Auth
 
             if (!validationResult.Success)
             {
-                return LogoutResponse.RefreshTokenNotValidated;
+                return LogoutResponse.InvalidOrEmptyRefreshToken;
             }
 
             var result = await _jwtRefreshService.RevokeRefreshTokenAsync(validationResult.RefreshToken.Id,
@@ -46,7 +46,7 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Auth
 
             if (!result.Success)
             {
-                return LogoutResponse.RefreshTokenNotFoundResponse;
+                return LogoutResponse.InvalidOrEmptyRefreshToken;
             }
 
             _cookieService.Remove(CookieConstants.MangoRefreshTokenId);

@@ -62,7 +62,7 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Auth
 
             if (!user.Verified)
             {
-                return LoginResponse.Unverified;
+                return LoginResponse.UserUnverified;
             }
 
             var metadata = _metadataService.GetRequestMetadata();

@@ -9,19 +9,19 @@ namespace MangoAPI.DTO.Responses.Auth
 
         public static LoginResponse InvalidEmail => new()
         {
-            Message = ResponseMessageCodes.LoginInvalidEmail,
+            Message = ResponseMessageCodes.InvalidEmail,
             Success = false
         };
 
         public static LoginResponse InvalidPassword => new()
         {
-            Message = ResponseMessageCodes.LoginInvalidPassword,
+            Message = ResponseMessageCodes.InvalidPassword,
             Success = false
         };
 
-        public static LoginResponse Unverified => new()
+        public static LoginResponse UserUnverified => new()
         {
-            Message = ResponseMessageCodes.Unverified,
+            Message = ResponseMessageCodes.UserUnverified,
             Success = false
         };
 
