@@ -1,0 +1,10 @@
+﻿namespace MangoAPI.DTO.Models
+{
+    public class UserChat
+    {
+        public string Title { get; set; }
+        public string Image { get; set; }
+        public string LastMessageAuthor { get; set; }
+        public string LastMessage { get; set; }
+    }
+}
