@@ -19,6 +19,8 @@
         public static string UserNotFound => "USER_NOT_FOUND";
         public static string EmailAlreadyVerified => "EMAIL_ALREADY_VERIFIED";
         public static string PhoneAlreadyVerified => "PHONE_ALREADY_VERIFIED";
-        public static string CreateDirectChatSuspicious => "SUSPICIOUS_DIRECT_CHAT_CREATION";
+        public static string CreateChatEntitySuspicious => "SUSPICIOUS_CHAT_CREATION";
+        public static string InvalidOrEmptyGroupTitle => "INVALID_OR_EMPTY_GROUP_TITLE";
+        public static string InvalidGroupType => "INVALID_GROUP_TYPE";
     }
 }

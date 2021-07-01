@@ -40,13 +40,24 @@ namespace MangoAPI.WebApp.Controllers
                                     "Auth: access token in request header, refresh token ID in cookies")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public Task<IActionResult> CreateChat(CreateGroupCommand command, CancellationToken cancellationToken)
+        public async Task<IActionResult> CreateChat(CreateGroupCommand command, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            var response = await _mediator.Send(command, cancellationToken);
+
+            if (!response.Success)
+            {
+                return BadRequest(response);
+            }
+
+            return Ok(response);
         }
 
         [Authorize]
         [HttpPost("direct-chat")]
+        [SwaggerOperation(Summary = "Creates new direct chat with specified user. " +
+                                    "Auth: access token in request header, refresh token ID in cookies")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> CreateDirectChat(CreateDirectChatCommand command, CancellationToken cancellationToken)
         {
             var response = await _mediator.Send(command, cancellationToken);

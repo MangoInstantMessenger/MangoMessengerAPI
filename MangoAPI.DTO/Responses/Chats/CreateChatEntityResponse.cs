@@ -6,7 +6,7 @@ namespace MangoAPI.DTO.Responses.Chats
     {
         public static CreateChatEntityResponse Suspicious => new()
         {
-            Message = ResponseMessageCodes.CreateDirectChatSuspicious,
+            Message = ResponseMessageCodes.CreateChatEntitySuspicious,
             Success = false
         };
 
@@ -20,6 +20,18 @@ namespace MangoAPI.DTO.Responses.Chats
         {
             Message = ResponseMessageCodes.Success,
             Success = true
+        };
+
+        public static CreateChatEntityResponse InvalidOrEmptyChatTitle => new()
+        {
+            Message = ResponseMessageCodes.InvalidOrEmptyGroupTitle,
+            Success = false
+        };
+
+        public static CreateChatEntityResponse InvalidGroupType => new()
+        {
+            Message = ResponseMessageCodes.InvalidGroupType,
+            Success = false
         };
     }
 }
