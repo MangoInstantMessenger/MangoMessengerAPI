@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 using MangoAPI.Domain.Entities;
 using MangoAPI.DTO.Commands.Messages;
@@ -43,9 +42,16 @@ namespace MangoAPI.WebApp.Controllers
         [SwaggerOperation(Summary = "Updates particular message.")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public Task<IActionResult> EditMessage(EditMessageCommand command, CancellationToken cancellationToken)
+        public async Task<IActionResult> EditMessage(EditMessageCommand command, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            var response = await _mediator.Send(command, cancellationToken);
+
+            if (!response.Success)
+            {
+                return BadRequest(response);
+            }
+
+            return Ok(response);
         }
 
         [Authorize]
