@@ -21,5 +21,6 @@
         public const string PermissionDenied = "PERMISSION_DENIED";
         public const string ChatNotFound = "CHAT_NOT_FOUND";
         public const string MessageNotFound = "MESSAGE_NOT_FOUND";
+        public const string UserAlreadyJoined = "USER_ALREADY_JOINED_OR_BLOCKED";
     }
 }

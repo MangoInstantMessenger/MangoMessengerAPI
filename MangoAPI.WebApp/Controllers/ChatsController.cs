@@ -99,13 +99,21 @@ namespace MangoAPI.WebApp.Controllers
         }
 
         [Authorize]
-        [HttpPost("group/join")]
+        [HttpPost("group/join/{chatId:int}")]
         [SwaggerOperation(Summary = "Joins to the particular public group.")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public Task<IActionResult> JoinChat(JoinChatCommand command, CancellationToken cancellationToken)
+        public async Task<IActionResult> JoinChat(int chatId, CancellationToken cancellationToken)
         {
-            throw new System.NotImplementedException();
+            var command = new JoinChatCommand {ChatId = chatId};
+            var response = await _mediator.Send(command, cancellationToken);
+
+            if (!response.Success)
+            {
+                return BadRequest(response);
+            }
+
+            return Ok(response);
         }
     }
 }
