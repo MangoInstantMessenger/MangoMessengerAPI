@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 using MangoAPI.Domain.Entities;
 using MangoAPI.DTO.Commands.Chats;
@@ -33,9 +32,16 @@ namespace MangoAPI.WebApp.Controllers
         [SwaggerOperation(Summary = "Returns list of all user's chats.")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public Task<IActionResult> GetChats(GetChatsQuery query, CancellationToken cancellationToken)
+        public async Task<IActionResult> GetChats(CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            var response = await _mediator.Send(new GetChatsQuery(), cancellationToken);
+
+            if (!response.Success)
+            {
+                return BadRequest(response);
+            }
+
+            return Ok(response);
         }
 
         [Authorize]
