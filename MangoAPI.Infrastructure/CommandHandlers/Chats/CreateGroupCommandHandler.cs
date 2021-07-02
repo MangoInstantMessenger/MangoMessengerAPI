@@ -1,7 +1,5 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
-using MangoAPI.Application.Services;
-using MangoAPI.Domain.Constants;
 using MangoAPI.Domain.Entities;
 using MangoAPI.Domain.Enums;
 using MangoAPI.DTO.Commands.Chats;
@@ -14,17 +12,10 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Chats
 {
     public class CreateGroupCommandHandler : IRequestHandler<CreateGroupCommand, CreateChatEntityResponse>
     {
-        private readonly ICookieService _cookieService;
-        private readonly IJwtRefreshService _jwtRefreshService;
-        private readonly IRequestMetadataService _metadataService;
         private readonly MangoPostgresDbContext _postgresDbContext;
 
-        public CreateGroupCommandHandler(ICookieService cookieService, IJwtRefreshService jwtRefreshService,
-            IRequestMetadataService metadataService, MangoPostgresDbContext postgresDbContext)
+        public CreateGroupCommandHandler(MangoPostgresDbContext postgresDbContext)
         {
-            _cookieService = cookieService;
-            _jwtRefreshService = jwtRefreshService;
-            _metadataService = metadataService;
             _postgresDbContext = postgresDbContext;
         }
 

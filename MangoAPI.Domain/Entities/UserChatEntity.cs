@@ -1,5 +1,4 @@
-﻿using System.Reflection.Metadata;
-using MangoAPI.Domain.Enums;
+﻿using MangoAPI.Domain.Enums;
 
 namespace MangoAPI.Domain.Entities
 {
