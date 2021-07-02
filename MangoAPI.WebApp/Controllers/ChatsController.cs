@@ -97,5 +97,15 @@ namespace MangoAPI.WebApp.Controllers
 
             return Ok(response);
         }
+
+        [Authorize]
+        [HttpPost("group/join")]
+        [SwaggerOperation(Summary = "Joins to the particular public group.")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        public Task<IActionResult> JoinChat(JoinChatCommand command, CancellationToken cancellationToken)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

@@ -15,12 +15,13 @@ namespace MangoAPI.WebApp.Controllers
     public class UsersController : ControllerBase, IUsersController
     {
         [Authorize]
-        [HttpGet]
+        [HttpGet("{userId}")]
         [SwaggerOperation(Summary = "Returns information about particular user.")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public Task<IActionResult> FindUser(FindUserQuery query, CancellationToken cancellationToken)
+        public Task<IActionResult> FindUser([FromRoute] string userId, CancellationToken cancellationToken)
         {
+            var query = new FindUserQuery {UserId = userId};
             throw new NotImplementedException();
         }
     }
