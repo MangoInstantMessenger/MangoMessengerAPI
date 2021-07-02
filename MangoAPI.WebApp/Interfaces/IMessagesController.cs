@@ -9,6 +9,6 @@ namespace MangoAPI.WebApp.Interfaces
     {
         Task<IActionResult> SendMessage(SendMessageCommand command, CancellationToken cancellationToken);
         Task<IActionResult> EditMessage(EditMessageCommand command, CancellationToken cancellationToken);
-        Task<IActionResult> DeleteMessage(DeleteMessageCommand command, CancellationToken cancellationToken);
+        Task<IActionResult> DeleteMessage(int messageId, CancellationToken cancellationToken);
     }
 }
