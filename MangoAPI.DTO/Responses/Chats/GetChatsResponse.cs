@@ -36,8 +36,8 @@ namespace MangoAPI.DTO.Responses.Chats
             {
                 Title = x.Chat.Title,
                 Image = x.Chat.Image,
-                LastMessage = x.Chat.Messages.Last().Content,
-                LastMessageAuthor = x.Chat.Messages.Last().User.DisplayName
+                // LastMessage = x.Chat.Messages.Last().Content,
+                // LastMessageAuthor = x.Chat.Messages.Last().User.DisplayName
             }).ToList()
         };
     }
