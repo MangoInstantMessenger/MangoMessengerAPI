@@ -49,13 +49,21 @@ namespace MangoAPI.WebApp.Controllers
         }
 
         [Authorize]
-        [HttpDelete]
-        [SwaggerOperation(Summary = "Deletes particular message.")]
+        [HttpDelete("{messageId:int}")]
+        [SwaggerOperation(Summary = "Deletes particular message by ID.")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public Task<IActionResult> DeleteMessage(DeleteMessageCommand command, CancellationToken cancellationToken)
+        public async Task<IActionResult> DeleteMessage([FromRoute] int messageId, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            var command = new DeleteMessageCommand {MessageId = messageId};
+            var response = await _mediator.Send(command, cancellationToken);
+
+            if (!response.Success)
+            {
+                return BadRequest(response);
+            }
+
+            return Ok(response);
         }
     }
 }
