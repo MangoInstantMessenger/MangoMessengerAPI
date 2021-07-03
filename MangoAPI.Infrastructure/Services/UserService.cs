@@ -21,6 +21,7 @@ namespace MangoAPI.Infrastructure.Services
             var user = await _postgresDbContext
                 .Users
                 .Include(x => x.RefreshTokens)
+                .Include(x => x.Messages)
                 .FirstOrDefaultAsync(userEntity =>
                     userEntity.RefreshTokens.Any(tokenEntity => tokenEntity.Id == tokenId));
 
