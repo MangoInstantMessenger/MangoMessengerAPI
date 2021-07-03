@@ -14,23 +14,20 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Chats
 {
     public class JoinChatCommandHandler : IRequestHandler<JoinChatCommand, JoinChatResponse>
     {
-        private readonly ICookieService _cookieService;
         private readonly MangoPostgresDbContext _postgresDbContext;
-        private readonly IUserService _userService;
+        private readonly IRequestMetadataService _metadataService;
 
-        public JoinChatCommandHandler(ICookieService cookieService, MangoPostgresDbContext postgresDbContext,
-            IUserService userService)
+        public JoinChatCommandHandler(MangoPostgresDbContext postgresDbContext,
+            IRequestMetadataService metadataService)
         {
-            _cookieService = cookieService;
             _postgresDbContext = postgresDbContext;
-            _userService = userService;
+            _metadataService = metadataService;
         }
 
         public async Task<JoinChatResponse> Handle(JoinChatCommand request, CancellationToken cancellationToken)
         {
-            var refreshTokenId = _cookieService.Get(CookieConstants.MangoRefreshTokenId);
 
-            var currentUser = await _userService.GetUserByTokenIdAsync(refreshTokenId);
+            var currentUser = await _metadataService.GetUserFromRequestMetadataAsync();
 
             if (currentUser == null)
             {

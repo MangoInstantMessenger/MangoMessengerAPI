@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using MangoAPI.Application.Common;
 using MangoAPI.Application.Services;
 using MangoAPI.Domain.Entities;
 using MangoAPI.Domain.Enums;
@@ -18,16 +19,19 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Messages
     {
         private readonly MangoPostgresDbContext _db;
         private readonly IChatNotificationService _chatNotificationService;
+        private readonly IRequestMetadataService _requestMetadataService;
 
-        public SendMessageCommandHandler(MangoPostgresDbContext db, IChatNotificationService chatNotificationService)
+        public SendMessageCommandHandler(MangoPostgresDbContext db, IChatNotificationService chatNotificationService, IRequestMetadataService requestMetadataService)
         {
             _db = db;
             _chatNotificationService = chatNotificationService;
+            _requestMetadataService = requestMetadataService;
         }
 
         public async Task<SendMessageResponse> Handle(SendMessageCommand request, CancellationToken cancellationToken)
         {
-            var user = await GetUserAsync(request.UserId, cancellationToken);
+            var requestMetadata = _requestMetadataService.GetRequestMetadata();
+            var user = await GetUserAsync(requestMetadata.UserId, cancellationToken);
             if (user == null)
                 return SendMessageResponse.UserNotFound;
 
@@ -38,7 +42,7 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Messages
             if (!await CheckUserPermissions(user, chat, cancellationToken))
                 return SendMessageResponse.PermissionDenied;
 
-            var dbMessage = await SaveMessage(request, cancellationToken);
+            var dbMessage = await SaveMessage(request, requestMetadata, cancellationToken);
             var messageDto = new Message()
             {
                 SentAt = dbMessage.Created,
@@ -49,12 +53,12 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Messages
             return SendMessageResponse.FromSuccess(messageDto);
         }
 
-        private async Task<MessageEntity> SaveMessage(SendMessageCommand request, CancellationToken cancellationToken)
+        private async Task<MessageEntity> SaveMessage(SendMessageCommand request, RequestMetadata requestMetadata, CancellationToken cancellationToken)
         {
             var messageEntity = new MessageEntity
             {
                 ChatId = request.ChatId,
-                UserId = request.UserId,
+                UserId = requestMetadata.UserId,
                 Content = request.Content,
                 Created = DateTime.UtcNow,
                 Updated = DateTime.UtcNow

@@ -14,15 +14,12 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Chats
     public class CreateGroupCommandHandler : IRequestHandler<CreateGroupCommand, CreateChatEntityResponse>
     {
         private readonly MangoPostgresDbContext _postgresDbContext;
-        private readonly IUserService _userService;
-        private readonly ICookieService _cookieService;
+        private readonly IRequestMetadataService _metadataService;
 
-        public CreateGroupCommandHandler(MangoPostgresDbContext postgresDbContext, IUserService userService,
-            ICookieService cookieService)
+        public CreateGroupCommandHandler(MangoPostgresDbContext postgresDbContext, IRequestMetadataService metadataService)
         {
             _postgresDbContext = postgresDbContext;
-            _userService = userService;
-            _cookieService = cookieService;
+            _metadataService = metadataService;
         }
 
         public async Task<CreateChatEntityResponse> Handle(CreateGroupCommand request,
@@ -38,9 +35,7 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Chats
                 return CreateChatEntityResponse.InvalidGroupType;
             }
 
-            var refreshTokenId = _cookieService.Get(CookieConstants.MangoRefreshTokenId);
-
-            var currentUser = await _userService.GetUserByTokenIdAsync(refreshTokenId);
+            var currentUser = await _metadataService.GetUserFromRequestMetadataAsync();
 
             var directChatEntity = new ChatEntity
             {

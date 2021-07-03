@@ -12,24 +12,19 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Messages
 {
     public class DeleteMessageCommandHandler : IRequestHandler<DeleteMessageCommand, DeleteMessageResponse>
     {
-        private readonly ICookieService _cookieService;
+        private readonly IRequestMetadataService _metadataService;
         private readonly MangoPostgresDbContext _postgresDbContext;
-        private readonly IUserService _userService;
 
-        public DeleteMessageCommandHandler(ICookieService cookieService, MangoPostgresDbContext postgresDbContext,
-            IUserService userService)
+        public DeleteMessageCommandHandler(IRequestMetadataService metadataService, MangoPostgresDbContext postgresDbContext)
         {
-            _cookieService = cookieService;
+            _metadataService = metadataService;
             _postgresDbContext = postgresDbContext;
-            _userService = userService;
         }
         
         public async Task<DeleteMessageResponse> Handle(DeleteMessageCommand request,
             CancellationToken cancellationToken)
         {
-            var refreshTokenId = _cookieService.Get(CookieConstants.MangoRefreshTokenId);
-
-            var currentUser = await _userService.GetUserByTokenIdAsync(refreshTokenId);
+            var currentUser = await _metadataService.GetUserFromRequestMetadataAsync();
 
             if (currentUser == null)
             {
