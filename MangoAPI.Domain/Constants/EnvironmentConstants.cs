@@ -9,5 +9,6 @@ namespace MangoAPI.Domain.Constants
         public static string MangoAudience => Environment.GetEnvironmentVariable("MANGO_AUDIENCE");
         public static string JwtLifeTime => Environment.GetEnvironmentVariable("JWT_LIFETIME");
         public static string RefreshTokenLifeTime => Environment.GetEnvironmentVariable("REFRESH_TOKEN_LIFETIME");
+        public static string DbConnectionString => Environment.GetEnvironmentVariable("DATABASE_URL");
     }
 }
