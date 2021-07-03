@@ -8,6 +8,7 @@ using MangoAPI.DTO.Commands.Chats;
 using MangoAPI.DTO.Responses.Chats;
 using MangoAPI.Infrastructure.Database;
 using MediatR;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace MangoAPI.Infrastructure.CommandHandlers.Chats
@@ -18,22 +19,22 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Chats
         private readonly IJwtRefreshService _jwtRefreshService;
         private readonly IRequestMetadataService _metadataService;
         private readonly MangoPostgresDbContext _postgresDbContext;
-        private readonly IUserService _userService;
+        private readonly UserManager<UserEntity> _userManager;
 
         public CreateDirectChatCommandHandler(ICookieService cookieService, IJwtRefreshService jwtRefreshService,
-            IRequestMetadataService metadataService, MangoPostgresDbContext postgresDbContext, IUserService userService)
+            IRequestMetadataService metadataService, MangoPostgresDbContext postgresDbContext,UserManager<UserEntity> userManager)
         {
             _cookieService = cookieService;
             _jwtRefreshService = jwtRefreshService;
             _metadataService = metadataService;
             _postgresDbContext = postgresDbContext;
-            _userService = userService;
+            _userManager = userManager;
         }
 
         public async Task<CreateChatEntityResponse> Handle(CreateDirectChatCommand request,
             CancellationToken cancellationToken)
         {
-            var partner = await _userService.GetUserByIdAsync(request.PartnerId);
+            var partner = await _userManager.FindByIdAsync(request.PartnerId);
 
             if (partner == null)
             {
@@ -42,7 +43,7 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Chats
 
             var refreshTokenId = _cookieService.Get(CookieConstants.MangoRefreshTokenId);
 
-            var currentUser = await _userService.GetUserByTokenIdAsync(refreshTokenId);
+            var currentUser = await _metadataService.GetUserFromRequestMetadataAsync();
 
             var directChatEntity = new ChatEntity
             {
@@ -65,7 +66,7 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Chats
 
             await _postgresDbContext.SaveChangesAsync(cancellationToken);
 
-            return CreateChatEntityResponse.DirectChatCreateSuccess;
+            return CreateChatEntityResponse.SuccessResponse;
         }
     }
 }

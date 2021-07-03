@@ -13,23 +13,19 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Messages
 {
     public class EditMessageCommandHandler : IRequestHandler<EditMessageCommand, EditMessageResponse>
     {
-        private readonly ICookieService _cookieService;
         private readonly MangoPostgresDbContext _postgresDbContext;
-        private readonly IUserService _userService;
+        private readonly IRequestMetadataService _metadataService;
 
         public EditMessageCommandHandler(ICookieService cookieService, MangoPostgresDbContext postgresDbContext,
-            IUserService userService)
+            IRequestMetadataService metadataService)
         {
-            _cookieService = cookieService;
             _postgresDbContext = postgresDbContext;
-            _userService = userService;
+            _metadataService = metadataService;
         }
 
         public async Task<EditMessageResponse> Handle(EditMessageCommand request, CancellationToken cancellationToken)
         {
-            var refreshTokenId = _cookieService.Get(CookieConstants.MangoRefreshTokenId);
-
-            var currentUser = await _userService.GetUserByTokenIdAsync(refreshTokenId);
+            var currentUser = await _metadataService.GetUserFromRequestMetadataAsync();
 
             if (currentUser == null)
             {
@@ -50,7 +46,7 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Messages
 
             await _postgresDbContext.SaveChangesAsync(cancellationToken);
 
-            return EditMessageResponse.FromSuccess;
+            return EditMessageResponse.SuccessResponse;
         }
     }
 }

@@ -93,7 +93,7 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Auth
             
             _cookieService.Set(CookieConstants.MangoRefreshTokenId, refreshToken.Id, 7);
             
-            return LoginResponse.FromSuccess(jwtToken, refreshToken.Id);
+            return LoginResponse.FromSuccessWithData(jwtToken, refreshToken.Id);
         }
     }
 }

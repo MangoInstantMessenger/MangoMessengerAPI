@@ -57,7 +57,7 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Auth
                 .FirstOrDefaultAsync(x => x.Id == token.UserId, cancellationToken);
 
             if (user == null)
-                return RefreshTokenResponse.UserNotFoundForToken;
+                return RefreshTokenResponse.UserNotFound;
 
             var userTokens = _postgresDbContext.RefreshTokens
                 .Where(x => x.UserId == user.Id);

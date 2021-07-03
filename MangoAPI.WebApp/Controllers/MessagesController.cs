@@ -17,12 +17,10 @@ namespace MangoAPI.WebApp.Controllers
     public class MessagesController : ControllerBase, IMessagesController
     {
         private readonly IMediator _mediator;
-        private readonly UserManager<UserEntity> _userManager;
 
-        public MessagesController(IMediator mediator, UserManager<UserEntity> userManager)
+        public MessagesController(IMediator mediator)
         {
             _mediator = mediator;
-            _userManager = userManager;
         }
 
         [Authorize]
@@ -32,7 +30,6 @@ namespace MangoAPI.WebApp.Controllers
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> SendMessage(SendMessageCommand command, CancellationToken cancellationToken)
         {
-            command.UserId = _userManager.GetUserId(User);
             return Ok(await _mediator.Send(command, cancellationToken));
         }
 

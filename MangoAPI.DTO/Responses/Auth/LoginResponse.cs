@@ -2,7 +2,7 @@
 
 namespace MangoAPI.DTO.Responses.Auth
 {
-    public class LoginResponse : ResponseBase
+    public class LoginResponse : ResponseBase<LoginResponse>
     {
         public string AccessToken { get; set; }
         public string RefreshTokenId { get; set; }
@@ -19,13 +19,7 @@ namespace MangoAPI.DTO.Responses.Auth
             Success = false
         };
 
-        public static LoginResponse UserUnverified => new()
-        {
-            Message = ResponseMessageCodes.UserUnverified,
-            Success = false
-        };
-
-        public static LoginResponse FromSuccess(string accessToken, string refreshTokenId) => new()
+        public static LoginResponse FromSuccessWithData(string accessToken, string refreshTokenId) => new()
         {
             Message = ResponseMessageCodes.Success,
             AccessToken = accessToken,
