@@ -33,7 +33,7 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Chats
                 return CreateChatEntityResponse.InvalidOrEmptyChatTitle;
             }
 
-            if (request.GroupType == ChatType.DirectChat)
+            if (request.GroupType is ChatType.DirectChat)
             {
                 return CreateChatEntityResponse.InvalidGroupType;
             }
