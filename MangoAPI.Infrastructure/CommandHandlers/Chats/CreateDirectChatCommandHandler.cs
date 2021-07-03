@@ -18,57 +18,50 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Chats
         private readonly IJwtRefreshService _jwtRefreshService;
         private readonly IRequestMetadataService _metadataService;
         private readonly MangoPostgresDbContext _postgresDbContext;
+        private readonly IUserService _userService;
 
         public CreateDirectChatCommandHandler(ICookieService cookieService, IJwtRefreshService jwtRefreshService,
-            IRequestMetadataService metadataService, MangoPostgresDbContext postgresDbContext)
+            IRequestMetadataService metadataService, MangoPostgresDbContext postgresDbContext, IUserService userService)
         {
             _cookieService = cookieService;
             _jwtRefreshService = jwtRefreshService;
             _metadataService = metadataService;
             _postgresDbContext = postgresDbContext;
+            _userService = userService;
         }
 
         public async Task<CreateChatEntityResponse> Handle(CreateDirectChatCommand request,
             CancellationToken cancellationToken)
         {
-            // TODO: validate request user ID. Check if exists in DB.
-            var partner = await _postgresDbContext
-                .Users
-                .FirstOrDefaultAsync(x => x.Id == request.UserId, cancellationToken);
-            
-            var requestMetadata = _metadataService.GetRequestMetadata();
+            var partner = await _userService.GetUserByIdAsync(request.PartnerId);
+
+            if (partner == null)
+            {
+                return CreateChatEntityResponse.UserNotFound;
+            }
+
             var refreshTokenId = _cookieService.Get(CookieConstants.MangoRefreshTokenId);
 
-            var validationResult = await _jwtRefreshService.VerifyUserRefreshTokenAsync(refreshTokenId,
-                requestMetadata,
-                cancellationToken);
-
-            if (validationResult.IsSuspicious)
-            {
-                return CreateChatEntityResponse.Suspicious;
-            }
-
-            if (!validationResult.Success)
-            {
-                return CreateChatEntityResponse.RefreshTokenNotValidated;
-            }
-
-            var currentUser = await _postgresDbContext
-                .Users
-                .FirstAsync(x => x.Id == validationResult.RefreshToken.UserId, cancellationToken);
+            var currentUser = await _userService.GetUserByTokenIdAsync(refreshTokenId);
 
             var directChatEntity = new ChatEntity
             {
                 ChatType = ChatType.DirectChat,
                 Title = $"{currentUser.DisplayName} / {partner.DisplayName}"
             };
+            
+            // TODO: verify that chat already exists
 
             await _postgresDbContext.Chats.AddAsync(directChatEntity, cancellationToken);
             await _postgresDbContext.SaveChangesAsync(cancellationToken);
 
-            _postgresDbContext.UserChats.AddRange(
+            var userChats = new[]
+            {
                 new UserChatEntity {ChatId = directChatEntity.Id, RoleId = UserRole.User, UserId = currentUser.Id},
-                new UserChatEntity {ChatId = directChatEntity.Id, RoleId = UserRole.User, UserId = request.UserId});
+                new UserChatEntity {ChatId = directChatEntity.Id, RoleId = UserRole.User, UserId = request.PartnerId}
+            };
+
+            _postgresDbContext.UserChats.AddRange(userChats);
 
             await _postgresDbContext.SaveChangesAsync(cancellationToken);
 

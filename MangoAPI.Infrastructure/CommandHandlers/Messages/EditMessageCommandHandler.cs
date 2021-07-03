@@ -8,57 +8,35 @@ using MangoAPI.DTO.Commands.Messages;
 using MangoAPI.DTO.Responses.Messages;
 using MangoAPI.Infrastructure.Database;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 
 namespace MangoAPI.Infrastructure.CommandHandlers.Messages
 {
     public class EditMessageCommandHandler : IRequestHandler<EditMessageCommand, EditMessageResponse>
     {
         private readonly ICookieService _cookieService;
-        private readonly IJwtRefreshService _jwtRefreshService;
-        private readonly IRequestMetadataService _metadataService;
         private readonly MangoPostgresDbContext _postgresDbContext;
+        private readonly IUserService _userService;
 
-        public EditMessageCommandHandler(ICookieService cookieService, IJwtRefreshService jwtRefreshService,
-            IRequestMetadataService metadataService, MangoPostgresDbContext postgresDbContext)
+        public EditMessageCommandHandler(ICookieService cookieService, MangoPostgresDbContext postgresDbContext,
+            IUserService userService)
         {
             _cookieService = cookieService;
-            _jwtRefreshService = jwtRefreshService;
-            _metadataService = metadataService;
             _postgresDbContext = postgresDbContext;
+            _userService = userService;
         }
-        
+
         public async Task<EditMessageResponse> Handle(EditMessageCommand request, CancellationToken cancellationToken)
         {
-            var requestMetadata = _metadataService.GetRequestMetadata();
             var refreshTokenId = _cookieService.Get(CookieConstants.MangoRefreshTokenId);
 
-            var validationResult = await _jwtRefreshService.VerifyUserRefreshTokenAsync(refreshTokenId,
-                requestMetadata,
-                cancellationToken);
-
-            if (validationResult.IsSuspicious)
-            {
-                return EditMessageResponse.Suspicious;
-            }
-
-            if (!validationResult.Success)
-            {
-                return EditMessageResponse.RefreshTokenNotValidated;
-            }
-
-            var currentUser = await _postgresDbContext
-                .Users
-                .Include(x => x.Messages)
-                .FirstAsync(x => x.Id == validationResult.RefreshToken.UserId, cancellationToken);
+            var currentUser = await _userService.GetUserByTokenIdAsync(refreshTokenId);
 
             if (currentUser == null)
             {
                 return EditMessageResponse.UserNotFound;
             }
 
-            var message = currentUser.Messages
-                .FirstOrDefault(x => x.Id == request.MessageId);
+            var message = currentUser.Messages.FirstOrDefault(x => x.Id == request.MessageId);
 
             if (message == null)
             {
@@ -71,7 +49,7 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Messages
             _postgresDbContext.Update(message);
 
             await _postgresDbContext.SaveChangesAsync(cancellationToken);
-            
+
             return EditMessageResponse.FromSuccess;
         }
     }

@@ -2,6 +2,6 @@
 {
     public static class CookieConstants
     {
-        public static string MangoRefreshTokenId => nameof(MangoRefreshTokenId);
+        public const string MangoRefreshTokenId = "MangoRefreshTokenId";
     }
 }

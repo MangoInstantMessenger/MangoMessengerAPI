@@ -19,6 +19,7 @@ namespace MangoAPI.Infrastructure.StartupExtensions
             services.AddScoped<IRequestMetadataService, RequestMetadataService>();
             services.AddScoped<IFingerprintService, FingerprintService>();
             services.AddScoped<IChatNotificationService, ChatNotificationService>();
+            services.AddScoped<IUserService, UserService>();
             return services;
         }
     }

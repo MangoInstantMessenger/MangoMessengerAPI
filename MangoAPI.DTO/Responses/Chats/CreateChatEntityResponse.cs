@@ -4,18 +4,6 @@ namespace MangoAPI.DTO.Responses.Chats
 {
     public class CreateChatEntityResponse : ResponseBase
     {
-        public static CreateChatEntityResponse Suspicious => new()
-        {
-            Message = ResponseMessageCodes.SuspiciousAction,
-            Success = false
-        };
-
-        public static CreateChatEntityResponse RefreshTokenNotValidated => new()
-        {
-            Message = ResponseMessageCodes.InvalidOrEmptyRefreshToken,
-            Success = false
-        };
-
         public static CreateChatEntityResponse DirectChatCreateSuccess => new()
         {
             Message = ResponseMessageCodes.Success,
@@ -31,6 +19,12 @@ namespace MangoAPI.DTO.Responses.Chats
         public static CreateChatEntityResponse InvalidGroupType => new()
         {
             Message = ResponseMessageCodes.InvalidGroupType,
+            Success = false
+        };
+
+        public static CreateChatEntityResponse UserNotFound => new()
+        {
+            Message = ResponseMessageCodes.UserNotFound,
             Success = false
         };
     }

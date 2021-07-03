@@ -1,22 +1,28 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
+using MangoAPI.Application.Services;
+using MangoAPI.Domain.Constants;
 using MangoAPI.Domain.Entities;
 using MangoAPI.Domain.Enums;
 using MangoAPI.DTO.Commands.Chats;
 using MangoAPI.DTO.Responses.Chats;
 using MangoAPI.Infrastructure.Database;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 
 namespace MangoAPI.Infrastructure.CommandHandlers.Chats
 {
     public class CreateGroupCommandHandler : IRequestHandler<CreateGroupCommand, CreateChatEntityResponse>
     {
         private readonly MangoPostgresDbContext _postgresDbContext;
+        private readonly IUserService _userService;
+        private readonly ICookieService _cookieService;
 
-        public CreateGroupCommandHandler(MangoPostgresDbContext postgresDbContext)
+        public CreateGroupCommandHandler(MangoPostgresDbContext postgresDbContext, IUserService userService,
+            ICookieService cookieService)
         {
             _postgresDbContext = postgresDbContext;
+            _userService = userService;
+            _cookieService = cookieService;
         }
 
         public async Task<CreateChatEntityResponse> Handle(CreateGroupCommand request,
@@ -32,9 +38,9 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Chats
                 return CreateChatEntityResponse.InvalidGroupType;
             }
 
-            var currentUser = await _postgresDbContext
-                .Users
-                .FirstAsync(x => x.Id == request.UserId, cancellationToken);
+            var refreshTokenId = _cookieService.Get(CookieConstants.MangoRefreshTokenId);
+
+            var currentUser = await _userService.GetUserByTokenIdAsync(refreshTokenId);
 
             var directChatEntity = new ChatEntity
             {

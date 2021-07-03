@@ -5,6 +5,7 @@ using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
 using MangoAPI.Application.Services;
+using MangoAPI.Domain.Constants;
 using MangoAPI.Domain.Entities;
 using Microsoft.IdentityModel.Tokens;
 
@@ -16,7 +17,7 @@ namespace MangoAPI.Infrastructure.Services
 
         public JwtGenerator()
         {
-            var tokenKey = Environment.GetEnvironmentVariable("MANGO_TOKEN_KEY");
+            var tokenKey = EnvironmentConstants.MangoTokenKey;
             _key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(tokenKey!));
         }
 
@@ -34,9 +35,7 @@ namespace MangoAPI.Infrastructure.Services
                 new(ClaimTypes.NameIdentifier, userId)
             };
             
-            var issuer = Environment.GetEnvironmentVariable("MANGO_ISSUER");
-            var audience = Environment.GetEnvironmentVariable("MANGO_AUDIENCE");
-            var jwtLifetime = Environment.GetEnvironmentVariable("JWT_LIFETIME");
+            var jwtLifetime = EnvironmentConstants.JwtLifeTime;
 
             if (jwtLifetime == null || !int.TryParse(jwtLifetime, out var jwtLifetimeParsed))
             {
@@ -50,8 +49,8 @@ namespace MangoAPI.Infrastructure.Services
                 Subject = new ClaimsIdentity(claims),
                 Expires = DateTime.Now.AddMinutes(jwtLifetimeParsed),
                 SigningCredentials = credentials,
-                Issuer = issuer,
-                Audience = audience
+                Issuer = EnvironmentConstants.MangoIssuer,
+                Audience = EnvironmentConstants.MangoAudience
             };
 
             var tokenHandler = new JwtSecurityTokenHandler();
@@ -64,8 +63,8 @@ namespace MangoAPI.Infrastructure.Services
         public RefreshTokenEntity GenerateRefreshToken(string userAgent, string fingerPrint, string ipAddress)
         {
             using var rngCryptoServiceProvider = new RNGCryptoServiceProvider();
-            
-            var refreshLifetime = Environment.GetEnvironmentVariable("REFRESH_TOKEN_LIFETIME");
+
+            var refreshLifetime = EnvironmentConstants.RefreshTokenLifeTime;
 
             if (refreshLifetime == null || !int.TryParse(refreshLifetime, out var refreshLifetimeParsed))
             {
