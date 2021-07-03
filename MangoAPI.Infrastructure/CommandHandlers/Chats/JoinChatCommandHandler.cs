@@ -15,59 +15,46 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Chats
     public class JoinChatCommandHandler : IRequestHandler<JoinChatCommand, JoinChatResponse>
     {
         private readonly ICookieService _cookieService;
-        private readonly IJwtRefreshService _jwtRefreshService;
-        private readonly IRequestMetadataService _metadataService;
         private readonly MangoPostgresDbContext _postgresDbContext;
+        private readonly IUserService _userService;
 
-        public JoinChatCommandHandler(ICookieService cookieService, IJwtRefreshService jwtRefreshService,
-            IRequestMetadataService metadataService, MangoPostgresDbContext postgresDbContext)
+        public JoinChatCommandHandler(ICookieService cookieService, MangoPostgresDbContext postgresDbContext,
+            IUserService userService)
         {
             _cookieService = cookieService;
-            _jwtRefreshService = jwtRefreshService;
-            _metadataService = metadataService;
             _postgresDbContext = postgresDbContext;
+            _userService = userService;
         }
 
         public async Task<JoinChatResponse> Handle(JoinChatCommand request, CancellationToken cancellationToken)
         {
-            var requestMetadata = _metadataService.GetRequestMetadata();
             var refreshTokenId = _cookieService.Get(CookieConstants.MangoRefreshTokenId);
 
-            var validationResult = await _jwtRefreshService.VerifyUserRefreshTokenAsync(refreshTokenId,
-                requestMetadata,
-                cancellationToken);
-
-            if (validationResult.IsSuspicious)
-            {
-                return JoinChatResponse.Suspicious;
-            }
-
-            if (!validationResult.Success)
-            {
-                return JoinChatResponse.InvalidRefreshToken;
-            }
-
-            var currentUser = await _postgresDbContext
-                .Users
-                .FirstAsync(x => x.Id == validationResult.RefreshToken.UserId, cancellationToken);
+            var currentUser = await _userService.GetUserByTokenIdAsync(refreshTokenId);
 
             if (currentUser == null)
             {
                 return JoinChatResponse.UserNotFound;
             }
 
-            var alreadyJoinedOrBlocked = await
+            var alreadyJoined = await
                 _postgresDbContext.UserChats.AnyAsync(x =>
                     x.UserId == currentUser.Id && x.ChatId == request.ChatId, cancellationToken);
-            
-            // TODO: add check in chat's blacklist
 
-            if (alreadyJoinedOrBlocked)
+            if (alreadyJoined)
             {
                 return JoinChatResponse.UserAlreadyJoined;
             }
             
-            // TODO: Check that provided chat is not private
+            var chatExists = await _postgresDbContext.Chats
+                .AnyAsync(x =>
+                    x.Id == request.ChatId && x.ChatType != ChatType.DirectChat &&
+                    x.ChatType != ChatType.PrivateChannel, cancellationToken);
+
+            if (!chatExists)
+            {
+                return JoinChatResponse.ChatNotFound;
+            }
 
             await _postgresDbContext.UserChats.AddAsync(new UserChatEntity
             {

@@ -3,8 +3,8 @@
     public enum ChatType
     {
         DirectChat = 1,
-        PrivateChannel,
-        PublicChannel,
-        ReadOnlyChannel
+        PrivateChannel = 2,
+        PublicChannel = 3,
+        ReadOnlyChannel = 4
     }
 }
