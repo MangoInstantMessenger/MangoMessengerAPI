@@ -1,4 +1,5 @@
 ﻿using System;
+using MangoAPI.Domain.Constants;
 using MangoAPI.Infrastructure.Deploy;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
@@ -11,7 +12,7 @@ namespace MangoAPI.Infrastructure.Database
         {
             var optionsBuilder = new DbContextOptionsBuilder<MangoPostgresDbContext>();
 
-            var connectionString = Environment.GetEnvironmentVariable("DATABASE_URL");
+            var connectionString = EnvironmentConstants.DbConnectionString;
 
             connectionString = HerokuStringParser.Convert(connectionString);
 

@@ -1,4 +1,5 @@
 ﻿using System;
+using MangoAPI.Domain.Constants;
 using MangoAPI.Infrastructure.Database;
 using MangoAPI.Infrastructure.Deploy;
 using Microsoft.EntityFrameworkCore;
@@ -10,8 +11,10 @@ namespace MangoAPI.Infrastructure.StartupExtensions
     {
         public static IServiceCollection AddPostgresDb(this IServiceCollection services)
         {
-            var connectionString = Environment.GetEnvironmentVariable("DATABASE_URL");
+            var connectionString = EnvironmentConstants.DbConnectionString;
+            
             connectionString = HerokuStringParser.Convert(connectionString);
+            
             services.AddDbContext<MangoPostgresDbContext>(opt =>
                 opt.UseNpgsql(connectionString ??
                               throw new InvalidOperationException("Wrong Connection String in Startup class.")));
