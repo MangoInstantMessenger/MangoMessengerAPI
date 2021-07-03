@@ -1,6 +1,6 @@
 ﻿namespace MangoAPI.Domain.Constants
 {
-    public class EnvironmentConstants
+    public static class EnvironmentConstants
     {
         
     }
