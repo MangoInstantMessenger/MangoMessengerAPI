@@ -65,7 +65,7 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Chats
 
             await _postgresDbContext.SaveChangesAsync(cancellationToken);
 
-            return CreateChatEntityResponse.DirectChatCreateSuccess;
+            return CreateChatEntityResponse.SuccessResponse;
         }
     }
 }

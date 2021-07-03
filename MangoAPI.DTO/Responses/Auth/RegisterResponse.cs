@@ -2,7 +2,7 @@
 
 namespace MangoAPI.DTO.Responses.Auth
 {
-    public class RegisterResponse : ResponseBase
+    public class RegisterResponse : AuthResponseBase<RegisterResponse>
     {
         public bool TermsAccepted { get; set; }
         
@@ -19,7 +19,7 @@ namespace MangoAPI.DTO.Responses.Auth
             Message = ResponseMessageCodes.TermsNotAccepted
         };
         
-        public static RegisterResponse SuccessResponse => new ()
+        public new static RegisterResponse SuccessResponse => new ()
         {
             Success = true,
             Message = ResponseMessageCodes.Success,

@@ -47,7 +47,7 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Messages
             _postgresDbContext.Messages.Remove(message);
             await _postgresDbContext.SaveChangesAsync(cancellationToken);
 
-            return DeleteMessageResponse.FromSuccess;
+            return DeleteMessageResponse.SuccessResponse;
         }
     }
 }

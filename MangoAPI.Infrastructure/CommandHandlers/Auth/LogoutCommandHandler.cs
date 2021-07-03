@@ -33,7 +33,7 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Auth
 
             if (validationResult.IsSuspicious)
             {
-                return LogoutResponse.SuspiciousLogout;
+                return LogoutResponse.SuspiciousAction;
             }
 
             if (!validationResult.Success)

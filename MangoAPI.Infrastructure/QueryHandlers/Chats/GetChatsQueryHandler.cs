@@ -38,12 +38,12 @@ namespace MangoAPI.Infrastructure.QueryHandlers.Chats
 
             if (validationResult.IsSuspicious)
             {
-                return GetChatsResponse.Suspicious;
+                return GetChatsResponse.SuspiciousAction;
             }
 
             if (!validationResult.Success)
             {
-                return GetChatsResponse.InvalidRefreshToken;
+                return GetChatsResponse.InvalidOrEmptyRefreshToken;
             }
 
             var currentUser = await _postgresDbContext

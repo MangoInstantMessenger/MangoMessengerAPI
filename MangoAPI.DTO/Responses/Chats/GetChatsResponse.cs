@@ -6,27 +6,9 @@ using MangoAPI.DTO.Models;
 
 namespace MangoAPI.DTO.Responses.Chats
 {
-    public class GetChatsResponse : ResponseBase
+    public class GetChatsResponse : ResponseBase<GetChatsResponse>
     {
         public List<UserChat> Chats { get; set; }
-
-        public static GetChatsResponse Suspicious => new()
-        {
-            Message = ResponseMessageCodes.SuspiciousAction,
-            Success = false
-        };
-
-        public static GetChatsResponse InvalidRefreshToken => new()
-        {
-            Message = ResponseMessageCodes.InvalidOrEmptyRefreshToken,
-            Success = false
-        };
-
-        public static GetChatsResponse UserNotFound => new()
-        {
-            Message = ResponseMessageCodes.UserNotFound,
-            Success = false
-        };
 
         public static GetChatsResponse FromSuccess(List<UserChatEntity> chats) => new()
         {

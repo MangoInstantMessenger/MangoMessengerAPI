@@ -50,7 +50,7 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Messages
 
             await _postgresDbContext.SaveChangesAsync(cancellationToken);
 
-            return EditMessageResponse.FromSuccess;
+            return EditMessageResponse.SuccessResponse;
         }
     }
 }

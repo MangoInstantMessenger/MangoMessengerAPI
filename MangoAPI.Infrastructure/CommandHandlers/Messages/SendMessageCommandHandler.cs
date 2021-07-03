@@ -33,10 +33,10 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Messages
 
             var chat = await GetChatAsync(request.ChatId, cancellationToken);
             if (chat == null)
-                return SendMessageResponse.ChatNotFoundResponse;
+                return SendMessageResponse.ChatNotFound;
 
             if (!await CheckUserPermissions(user, chat, cancellationToken))
-                return SendMessageResponse.UserDontHavePermissions;
+                return SendMessageResponse.PermissionDenied;
 
             var dbMessage = await SaveMessage(request, cancellationToken);
             var messageDto = new Message()
