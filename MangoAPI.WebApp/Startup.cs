@@ -15,16 +15,19 @@ namespace MangoAPI.WebApp
 
         private IConfiguration Configuration { get; }
 
-        private static readonly string _myAllowSpecificOrigins = "_myAllowSpecificOrigins";
+        private const string MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 
         public static void ConfigureServices(IServiceCollection services)
         {
             services.AddCors(options =>
             {
-                options.AddPolicy(_myAllowSpecificOrigins,
+                options.AddPolicy(name: MyAllowSpecificOrigins,
                     builder =>
                     {
-                        builder.WithOrigins("http://localhost:4200");
+                        builder
+                            .AllowAnyOrigin()
+                            .AllowAnyHeader()
+                            .AllowAnyHeader();
                     });
             });
             services.AddControllers();
@@ -55,7 +58,7 @@ namespace MangoAPI.WebApp
                     }
                 });
             });
-            
+
             services.AddMvc();
         }
 
@@ -67,8 +70,8 @@ namespace MangoAPI.WebApp
 
             app.UseHttpsRedirection();
             app.UseRouting();
-            
-            app.UseCors();
+
+            app.UseCors(MyAllowSpecificOrigins);
 
             app.UseAuthorization();
 
