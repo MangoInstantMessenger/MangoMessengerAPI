@@ -47,6 +47,7 @@ namespace MangoAPI.WebApp
             });
 
             services.AddCors();
+            services.AddMvc();
         }
 
         public static void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -60,20 +61,20 @@ namespace MangoAPI.WebApp
 
             app.UseAuthorization();
 
-            app.UseCors(builder =>
-            {
-                builder
-                    .AllowAnyOrigin()
-                    .AllowAnyMethod()
-                    .AllowAnyHeader();
-            });
-
             app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
 
             app.UseForwardedHeaders(new ForwardedHeadersOptions
             {
                 ForwardedHeaders = ForwardedHeaders.XForwardedFor |
                                    ForwardedHeaders.XForwardedProto
+            });
+            
+            app.UseCors(builder =>
+            {
+                builder
+                    .AllowAnyOrigin()
+                    .AllowAnyMethod()
+                    .AllowAnyHeader();
             });
         }
     }
