@@ -58,9 +58,6 @@ namespace MangoAPI.WebApp
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseHttpsRedirection();
-            app.UseRouting();
-
             app.UseCors(builder =>
             {
                 builder
@@ -68,6 +65,11 @@ namespace MangoAPI.WebApp
                     .AllowAnyMethod()
                     .AllowAnyHeader();
             });
+            
+            app.UseHttpsRedirection();
+            app.UseRouting();
+
+            
             
             app.UseSwagger();
             app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "MangoAPI v1"));
