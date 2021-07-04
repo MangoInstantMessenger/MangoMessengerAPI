@@ -60,7 +60,6 @@ namespace MangoAPI.WebApp
 
             app.UseHttpsRedirection();
             app.UseRouting();
-            app.UseAuthorization();
 
             app.UseCors(builder =>
             {
@@ -69,17 +68,19 @@ namespace MangoAPI.WebApp
                     .AllowAnyMethod()
                     .AllowAnyHeader();
             });
-
+            
             app.UseSwagger();
             app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "MangoAPI v1"));
-
-            app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
+            
+            app.UseAuthorization();
 
             app.UseForwardedHeaders(new ForwardedHeadersOptions
             {
                 ForwardedHeaders = ForwardedHeaders.XForwardedFor |
                                    ForwardedHeaders.XForwardedProto
             });
+            
+            app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
         }
     }
 }
