@@ -18,7 +18,6 @@ namespace MangoAPI.WebApp
 
         public static void ConfigureServices(IServiceCollection services)
         {
-            services.AddCors();
             services.AddControllers();
             services.AddAppInfrastructure();
             services.AddSwaggerGen(c =>
@@ -47,7 +46,8 @@ namespace MangoAPI.WebApp
                     }
                 });
             });
-
+            
+            services.AddCors();
             services.AddMvc();
         }
 
