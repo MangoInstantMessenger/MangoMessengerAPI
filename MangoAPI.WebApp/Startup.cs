@@ -70,6 +70,7 @@ namespace MangoAPI.WebApp
             });
 
             app.UseCors(x => x
+                .AllowAnyOrigin()
                 .AllowAnyMethod()
                 .AllowAnyHeader()
                 .SetIsOriginAllowed(_ => true) // allow any origin
