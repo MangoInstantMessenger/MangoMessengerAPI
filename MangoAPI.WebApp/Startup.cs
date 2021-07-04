@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 
 namespace MangoAPI.WebApp
@@ -15,21 +16,8 @@ namespace MangoAPI.WebApp
 
         private IConfiguration Configuration { get; }
 
-        private const string MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
-
         public static void ConfigureServices(IServiceCollection services)
         {
-            services.AddCors(options =>
-            {
-                options.AddPolicy(name: MyAllowSpecificOrigins,
-                    builder =>
-                    {
-                        builder
-                            .AllowAnyOrigin()
-                            .AllowAnyHeader()
-                            .AllowAnyHeader();
-                    });
-            });
             services.AddControllers();
             services.AddAppInfrastructure();
             services.AddSwaggerGen(c =>
@@ -58,22 +46,32 @@ namespace MangoAPI.WebApp
                     }
                 });
             });
-
+            
+            services.AddCors();
             services.AddMvc();
         }
 
         public static void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            app.UseDeveloperExceptionPage();
-            app.UseSwagger();
-            app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "MangoAPI v1"));
+            if (env.IsDevelopment())
+            {
+                app.UseDeveloperExceptionPage();
+            }
 
             app.UseHttpsRedirection();
             app.UseRouting();
-
-            app.UseCors(MyAllowSpecificOrigins);
-
             app.UseAuthorization();
+
+            app.UseCors(builder =>
+            {
+                builder
+                    .AllowAnyOrigin()
+                    .AllowAnyMethod()
+                    .AllowAnyHeader();
+            });
+
+            app.UseSwagger();
+            app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "MangoAPI v1"));
 
             app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
 
