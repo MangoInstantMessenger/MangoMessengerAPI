@@ -68,13 +68,14 @@ namespace MangoAPI.WebApp
                 ForwardedHeaders = ForwardedHeaders.XForwardedFor |
                                    ForwardedHeaders.XForwardedProto
             });
-            
+
             app.UseCors(builder =>
             {
                 builder
                     .AllowAnyOrigin()
                     .AllowAnyMethod()
                     .AllowAnyHeader();
+                builder.SetIsOriginAllowed(_ => true);
             });
         }
     }
