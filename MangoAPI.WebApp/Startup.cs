@@ -69,14 +69,11 @@ namespace MangoAPI.WebApp
                                    ForwardedHeaders.XForwardedProto
             });
 
-            app.UseCors(builder =>
-            {
-                builder
-                    .AllowAnyOrigin()
-                    .AllowAnyMethod()
-                    .AllowAnyHeader();
-                builder.SetIsOriginAllowed(_ => true);
-            });
+            app.UseCors(x => x
+                .AllowAnyMethod()
+                .AllowAnyHeader()
+                .SetIsOriginAllowed(_ => true) // allow any origin
+                .AllowCredentials()); // allow credentials
         }
     }
 }
