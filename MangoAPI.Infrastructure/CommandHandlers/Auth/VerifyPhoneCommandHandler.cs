@@ -20,14 +20,11 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Auth
         public async Task<VerifyPhoneResponse> Handle(VerifyPhoneCommand request,
             CancellationToken cancellationToken)
         {
-            var validRequestCode = int.TryParse(request.ValidationCode, out var parsedValidationCode);
-
-            if (!validRequestCode)
-                return VerifyPhoneResponse.InvalidOrExpired;
-
             var userEntity = await _dbContext.Users
-                .FirstOrDefaultAsync(x => x.ConfirmationCode == parsedValidationCode,
+                .FirstOrDefaultAsync(x => x.ConfirmationCode == request.ConfirmationCode,
                     cancellationToken);
+            
+            // TODO: add cookie verification
 
             if (userEntity == null)
                 return VerifyPhoneResponse.InvalidOrExpired;
@@ -41,7 +38,7 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Auth
             userEntity.ConfirmationCode = 0;
             _dbContext.Update(userEntity);
             await _dbContext.SaveChangesAsync(cancellationToken);
-            
+
             return VerifyPhoneResponse.SuccessResponse;
         }
     }

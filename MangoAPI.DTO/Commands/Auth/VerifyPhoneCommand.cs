@@ -5,6 +5,6 @@ namespace MangoAPI.DTO.Commands.Auth
 {
     public class VerifyPhoneCommand : IRequest<VerifyPhoneResponse>
     {
-        public string ValidationCode { get; set; }
+        public int ConfirmationCode { get; set; }
     }
 }
