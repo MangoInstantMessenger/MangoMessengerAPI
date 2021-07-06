@@ -33,5 +33,11 @@ namespace MangoAPI.DTO.Responses.Auth
             Success = false,
             Message = ResponseMessageCodes.InvalidVerificationMethod
         };
+
+        public static RegisterResponse PhoneOccupied => new()
+        {
+            Success = false,
+            Message = ResponseMessageCodes.PhoneOccupied
+        };
     }
 }

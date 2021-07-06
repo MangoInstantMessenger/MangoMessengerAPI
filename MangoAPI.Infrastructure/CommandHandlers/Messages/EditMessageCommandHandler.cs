@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using MangoAPI.Application.Services;
@@ -7,6 +6,7 @@ using MangoAPI.DTO.Commands.Messages;
 using MangoAPI.DTO.Responses.Messages;
 using MangoAPI.Infrastructure.Database;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 namespace MangoAPI.Infrastructure.CommandHandlers.Messages
 {
@@ -31,7 +31,9 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Messages
                 return EditMessageResponse.UserNotFound;
             }
 
-            var message = currentUser.Messages.FirstOrDefault(x => x.Id == request.MessageId);
+            var message = await _postgresDbContext.Messages
+                .FirstOrDefaultAsync(x => x.Id == request.MessageId && x.UserId == currentUser.Id,
+                    cancellationToken);
 
             if (message == null)
             {
