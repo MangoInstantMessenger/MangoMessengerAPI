@@ -1,13 +1,12 @@
 ﻿using System;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using MangoAPI.Application.Services;
-using MangoAPI.Domain.Constants;
 using MangoAPI.DTO.Commands.Messages;
 using MangoAPI.DTO.Responses.Messages;
 using MangoAPI.Infrastructure.Database;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 namespace MangoAPI.Infrastructure.CommandHandlers.Messages
 {
@@ -16,7 +15,7 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Messages
         private readonly MangoPostgresDbContext _postgresDbContext;
         private readonly IRequestMetadataService _metadataService;
 
-        public EditMessageCommandHandler(ICookieService cookieService, MangoPostgresDbContext postgresDbContext,
+        public EditMessageCommandHandler(MangoPostgresDbContext postgresDbContext,
             IRequestMetadataService metadataService)
         {
             _postgresDbContext = postgresDbContext;
@@ -32,7 +31,9 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Messages
                 return EditMessageResponse.UserNotFound;
             }
 
-            var message = currentUser.Messages.FirstOrDefault(x => x.Id == request.MessageId);
+            var message = await _postgresDbContext.Messages
+                .FirstOrDefaultAsync(x => x.Id == request.MessageId && x.UserId == currentUser.Id,
+                    cancellationToken);
 
             if (message == null)
             {

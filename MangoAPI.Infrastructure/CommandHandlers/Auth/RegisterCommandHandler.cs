@@ -5,27 +5,40 @@ using MangoAPI.Domain.Entities;
 using MangoAPI.DTO.Commands.Auth;
 using MangoAPI.DTO.Enums;
 using MangoAPI.DTO.Responses.Auth;
+using MangoAPI.Infrastructure.Database;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace MangoAPI.Infrastructure.CommandHandlers.Auth
 {
     public class RegisterCommandHandler : IRequestHandler<RegisterCommand, RegisterResponse>
     {
         private readonly UserManager<UserEntity> _userManager;
+        private readonly MangoPostgresDbContext _postgresDbContext;
 
-        public RegisterCommandHandler(UserManager<UserEntity> userManager)
+        public RegisterCommandHandler(UserManager<UserEntity> userManager, MangoPostgresDbContext postgresDbContext)
         {
             _userManager = userManager;
+            _postgresDbContext = postgresDbContext;
         }
 
         public async Task<RegisterResponse> Handle(RegisterCommand request, CancellationToken cancellationToken)
         {
-            var exists = await _userManager.FindByEmailAsync(request.Email);
+            var findByEmailAsync = await _userManager.FindByEmailAsync(request.Email);
 
-            if (exists != null)
+            if (findByEmailAsync != null)
             {
                 return RegisterResponse.UserAlreadyRegistered;
+            }
+            
+            var findByPhone =
+                await _postgresDbContext.Users.FirstOrDefaultAsync(x => x.PhoneNumber == request.PhoneNumber,
+                    cancellationToken);
+
+            if (findByPhone != null)
+            {
+                return RegisterResponse.PhoneOccupied;
             }
 
             if (!request.TermsAccepted)
@@ -42,13 +55,6 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Auth
                 ConfirmationCode = new Random().Next(100000, 999999) // TODO: handle case for duplicate codes
             };
 
-            var result = await _userManager.CreateAsync(userEntity, request.Password);
-
-            if (!result.Succeeded)
-            {
-                return RegisterResponse.WeakPassword;
-            }
-
             switch (request.VerificationMethod)
             {
                 case VerificationMethod.Email:
@@ -57,6 +63,15 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Auth
                 case VerificationMethod.Phone:
                     // TODO: Send Phone Code
                     break;
+                default:
+                    return RegisterResponse.InvalidVerificationMethod;
+            }
+
+            var result = await _userManager.CreateAsync(userEntity, request.Password);
+
+            if (!result.Succeeded)
+            {
+                return RegisterResponse.WeakPassword;
             }
 
             return RegisterResponse.SuccessResponse;

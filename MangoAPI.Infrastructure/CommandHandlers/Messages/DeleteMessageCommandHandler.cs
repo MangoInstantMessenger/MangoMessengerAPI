@@ -1,12 +1,11 @@
-﻿using System.Linq;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 using MangoAPI.Application.Services;
-using MangoAPI.Domain.Constants;
 using MangoAPI.DTO.Commands.Messages;
 using MangoAPI.DTO.Responses.Messages;
 using MangoAPI.Infrastructure.Database;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 namespace MangoAPI.Infrastructure.CommandHandlers.Messages
 {
@@ -15,12 +14,13 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Messages
         private readonly IRequestMetadataService _metadataService;
         private readonly MangoPostgresDbContext _postgresDbContext;
 
-        public DeleteMessageCommandHandler(IRequestMetadataService metadataService, MangoPostgresDbContext postgresDbContext)
+        public DeleteMessageCommandHandler(IRequestMetadataService metadataService,
+            MangoPostgresDbContext postgresDbContext)
         {
             _metadataService = metadataService;
             _postgresDbContext = postgresDbContext;
         }
-        
+
         public async Task<DeleteMessageResponse> Handle(DeleteMessageCommand request,
             CancellationToken cancellationToken)
         {
@@ -31,8 +31,9 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Messages
                 return DeleteMessageResponse.UserNotFound;
             }
 
-            var message = currentUser.Messages
-                .FirstOrDefault(x => x.Id == request.MessageId);
+            var message = await _postgresDbContext.Messages
+                .FirstOrDefaultAsync(x => x.Id == request.MessageId && x.UserId == currentUser.Id,
+                    cancellationToken);
 
             if (message == null)
             {
