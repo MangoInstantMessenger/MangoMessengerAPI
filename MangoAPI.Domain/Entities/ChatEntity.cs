@@ -13,7 +13,7 @@ namespace MangoAPI.Domain.Entities
         public string Image { get; set; }
         public string Tag { get; set; }
         public DateTime Created { get; set; }
-        public DateTime Updated { get; set; }
+        public DateTime? Updated { get; set; }
 
         public int MembersCount => ChatUsers.Count;
 
