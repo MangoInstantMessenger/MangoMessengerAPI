@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 using MangoAPI.Application.Services;
 using MangoAPI.Domain.Entities;
@@ -40,7 +41,8 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Chats
             var directChatEntity = new ChatEntity
             {
                 ChatType = ChatType.DirectChat,
-                Title = $"{currentUser.DisplayName} / {partner.DisplayName}"
+                Title = $"{currentUser.DisplayName} / {partner.DisplayName}",
+                Created = DateTime.Now
             };
 
             // TODO: verify that chat already exists

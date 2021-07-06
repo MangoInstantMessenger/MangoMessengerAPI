@@ -1,5 +1,5 @@
-﻿using System;
-using System.Text;
+﻿using System.Text;
+using MangoAPI.Domain.Constants;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.DependencyInjection;
@@ -20,13 +20,11 @@ namespace MangoAPI.Infrastructure.StartupExtensions
             });
             return services;
         }
-        
+
         public static IServiceCollection AddAppAuthentication(this IServiceCollection services)
         {
-            var issuer = Environment.GetEnvironmentVariable("MANGO_ISSUER");
-            var audience = Environment.GetEnvironmentVariable("MANGO_AUDIENCE");
-            var tokenKey = Environment.GetEnvironmentVariable("MANGO_TOKEN_KEY");
-            var signingKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(tokenKey!));
+            var tokenKey = EnvironmentConstants.MangoTokenKey;
+            var signingKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(tokenKey));
 
             services.AddAuthentication(options =>
                 {
@@ -39,9 +37,9 @@ namespace MangoAPI.Infrastructure.StartupExtensions
                     configure.RequireHttpsMetadata = false;
                     configure.TokenValidationParameters = new TokenValidationParameters
                     {
-                        ValidIssuer = issuer,
+                        ValidIssuer = EnvironmentConstants.MangoIssuer,
                         ValidateIssuer = true,
-                        ValidAudience = audience,
+                        ValidAudience = EnvironmentConstants.MangoAudience,
                         ValidateAudience = true,
                         ValidateLifetime = true,
                         IssuerSigningKey = signingKey,

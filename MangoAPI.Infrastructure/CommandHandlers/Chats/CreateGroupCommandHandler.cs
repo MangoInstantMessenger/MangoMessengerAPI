@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 using MangoAPI.Application.Services;
 using MangoAPI.Domain.Entities;
@@ -39,7 +40,8 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Chats
             var directChatEntity = new ChatEntity
             {
                 ChatType = request.GroupType,
-                Title = request.GroupTitle
+                Title = request.GroupTitle,
+                Created = DateTime.Now
             };
 
             await _postgresDbContext.Chats.AddAsync(directChatEntity, cancellationToken);
