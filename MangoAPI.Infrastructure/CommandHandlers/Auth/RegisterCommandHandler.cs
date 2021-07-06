@@ -41,14 +41,7 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Auth
                 Email = request.Email,
                 ConfirmationCode = new Random().Next(100000, 999999) // TODO: handle case for duplicate codes
             };
-
-            var result = await _userManager.CreateAsync(userEntity, request.Password);
-
-            if (!result.Succeeded)
-            {
-                return RegisterResponse.WeakPassword;
-            }
-
+            
             switch (request.VerificationMethod)
             {
                 case VerificationMethod.Email:
@@ -57,6 +50,15 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Auth
                 case VerificationMethod.Phone:
                     // TODO: Send Phone Code
                     break;
+                default:
+                    return RegisterResponse.InvalidVerificationMethod;
+            }
+
+            var result = await _userManager.CreateAsync(userEntity, request.Password);
+
+            if (!result.Succeeded)
+            {
+                return RegisterResponse.WeakPassword;
             }
 
             return RegisterResponse.SuccessResponse;

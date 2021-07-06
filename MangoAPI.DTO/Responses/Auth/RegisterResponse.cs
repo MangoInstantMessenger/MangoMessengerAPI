@@ -4,8 +4,6 @@ namespace MangoAPI.DTO.Responses.Auth
 {
     public class RegisterResponse : AuthResponseBase<RegisterResponse>
     {
-        public bool TermsAccepted { get; set; }
-        
         public static RegisterResponse UserAlreadyRegistered => new ()
         {
             Success = false,
@@ -15,22 +13,25 @@ namespace MangoAPI.DTO.Responses.Auth
         public static RegisterResponse TermsNotAccepted => new ()
         {
             Success = false,
-            TermsAccepted = false,
             Message = ResponseMessageCodes.TermsNotAccepted
         };
         
         public new static RegisterResponse SuccessResponse => new ()
         {
             Success = true,
-            Message = ResponseMessageCodes.Success,
-            TermsAccepted = true
+            Message = ResponseMessageCodes.Success
         };
 
         public static RegisterResponse WeakPassword => new()
         {
             Success = false,
-            Message = ResponseMessageCodes.WeakPassword,
-            TermsAccepted = true
+            Message = ResponseMessageCodes.WeakPassword
+        };
+
+        public static RegisterResponse InvalidVerificationMethod => new()
+        {
+            Success = false,
+            Message = ResponseMessageCodes.InvalidVerificationMethod
         };
     }
 }
