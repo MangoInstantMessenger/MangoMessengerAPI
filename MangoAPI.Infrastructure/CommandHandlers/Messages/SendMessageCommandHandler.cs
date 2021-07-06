@@ -21,7 +21,8 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Messages
         private readonly IChatNotificationService _chatNotificationService;
         private readonly IRequestMetadataService _requestMetadataService;
 
-        public SendMessageCommandHandler(MangoPostgresDbContext db, IChatNotificationService chatNotificationService, IRequestMetadataService requestMetadataService)
+        public SendMessageCommandHandler(MangoPostgresDbContext db, IChatNotificationService chatNotificationService,
+            IRequestMetadataService requestMetadataService)
         {
             _db = db;
             _chatNotificationService = chatNotificationService;
@@ -43,17 +44,20 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Messages
                 return SendMessageResponse.PermissionDenied;
 
             var dbMessage = await SaveMessage(request, requestMetadata, cancellationToken);
-            var messageDto = new Message()
+            
+            var messageDto = new Message
             {
                 SentAt = dbMessage.Created,
                 MessageText = dbMessage.Content,
                 UserDisplayName = user.DisplayName
             };
+            
             await _chatNotificationService.NotifyChatUsersAsync(chat.Id, messageDto, cancellationToken);
             return SendMessageResponse.FromSuccess(messageDto);
         }
 
-        private async Task<MessageEntity> SaveMessage(SendMessageCommand request, RequestMetadata requestMetadata, CancellationToken cancellationToken)
+        private async Task<MessageEntity> SaveMessage(SendMessageCommand request, RequestMetadata requestMetadata,
+            CancellationToken cancellationToken)
         {
             var messageEntity = new MessageEntity
             {

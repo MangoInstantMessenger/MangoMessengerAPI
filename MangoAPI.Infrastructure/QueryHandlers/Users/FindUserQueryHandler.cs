@@ -22,12 +22,7 @@ namespace MangoAPI.Infrastructure.QueryHandlers.Users
             var user = await _postgresDbContext.Users.FirstOrDefaultAsync(x => x.Id == request.UserId, 
                 cancellationToken);
 
-            if (user == null)
-            {
-                return FindUserResponse.UserNotFound;
-            }
-            
-            return FindUserResponse.FromSuccess(user);
+            return user == null ? FindUserResponse.UserNotFound : FindUserResponse.FromSuccess(user);
         }
     }
 }

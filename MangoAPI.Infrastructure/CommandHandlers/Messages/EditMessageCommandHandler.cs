@@ -3,7 +3,6 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using MangoAPI.Application.Services;
-using MangoAPI.Domain.Constants;
 using MangoAPI.DTO.Commands.Messages;
 using MangoAPI.DTO.Responses.Messages;
 using MangoAPI.Infrastructure.Database;
@@ -16,7 +15,7 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Messages
         private readonly MangoPostgresDbContext _postgresDbContext;
         private readonly IRequestMetadataService _metadataService;
 
-        public EditMessageCommandHandler(ICookieService cookieService, MangoPostgresDbContext postgresDbContext,
+        public EditMessageCommandHandler(MangoPostgresDbContext postgresDbContext,
             IRequestMetadataService metadataService)
         {
             _postgresDbContext = postgresDbContext;
