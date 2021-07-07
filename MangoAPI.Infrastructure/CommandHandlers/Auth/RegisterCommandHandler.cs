@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -53,21 +52,24 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Auth
                 PhoneNumber = request.PhoneNumber,
                 DisplayName = request.Email,
                 UserName = Guid.NewGuid().ToString(),
-                Email = request.Email,
-                ConfirmationCode = new Random().Next(100000, 999999)
+                Email = request.Email
             };
 
             
             if (request.VerificationMethod == VerificationMethod.Phone)
             {
                 var codes = _postgresDbContext.Users
-                .Select(u => u.ConfirmationCode)
-                .Where(x => x != 0);
+                    .Select(u => u.ConfirmationCode)
+                    .Where(x => x != 0);
+
+                var confirmationCode = new Random().Next(100000, 999999);
 
                 while (codes.Contains(userEntity.ConfirmationCode))
                 {
-                    userEntity.ConfirmationCode = new Random().Next(100000, 999999);
+                    confirmationCode = new Random().Next(100000, 999999);
                 }
+
+                userEntity.ConfirmationCode = confirmationCode;
             }
 
             switch (request.VerificationMethod)

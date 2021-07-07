@@ -43,20 +43,18 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Auth
 
         public async Task<LoginResponse> Handle(LoginCommand request, CancellationToken cancellationToken)
         {
-            UserEntity user;
-
-            user = await _userManager.FindByEmailAsync(request.Email);
+            var user = await _userManager.FindByEmailAsync(request.Email);
 
             if (user == null) 
             {
-                return LoginResponse.InvalidEmail;
+                return LoginResponse.InvalidCredentials;
             }
 
             var result = await _signInManager.CheckPasswordSignInAsync(user, request.Password, false);
 
             if (!result.Succeeded)
             {
-                return LoginResponse.InvalidPassword;
+                return LoginResponse.InvalidCredentials;
             }
 
             if (!user.Verified)
