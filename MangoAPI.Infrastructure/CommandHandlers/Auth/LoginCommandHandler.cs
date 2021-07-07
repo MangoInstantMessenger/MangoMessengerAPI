@@ -47,7 +47,10 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Auth
 
             user = await _userManager.FindByEmailAsync(request.Email);
 
-            if(user == null) return LoginResponse.InvalidEmail;
+            if (user == null) 
+            {
+                return LoginResponse.InvalidEmail;
+            }
 
             var result = await _signInManager.CheckPasswordSignInAsync(user, request.Password, false);
 
