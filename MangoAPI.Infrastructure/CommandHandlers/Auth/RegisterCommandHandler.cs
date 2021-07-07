@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using MangoAPI.Domain.Entities;
@@ -54,6 +56,19 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Auth
                 Email = request.Email,
                 ConfirmationCode = new Random().Next(100000, 999999) // TODO: handle case for duplicate codes
             };
+
+            
+            if (request.VerificationMethod == VerificationMethod.Phone)
+            {
+                var codes = _postgresDbContext.Users
+                .Select(u => u.ConfirmationCode)
+                .Where(x => x != 0);
+
+                while (codes.Contains(userEntity.ConfirmationCode))
+                {
+                    userEntity.ConfirmationCode = new Random().Next(100000, 999999);
+                }
+            }
 
             switch (request.VerificationMethod)
             {
