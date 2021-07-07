@@ -7,15 +7,9 @@ namespace MangoAPI.DTO.Responses.Auth
         public string AccessToken { get; set; }
         public string RefreshTokenId { get; set; }
 
-        public static LoginResponse InvalidEmail => new()
+        public static LoginResponse InvalidCredentials => new()
         {
-            Message = ResponseMessageCodes.InvalidEmail,
-            Success = false
-        };
-
-        public static LoginResponse InvalidPassword => new()
-        {
-            Message = ResponseMessageCodes.InvalidPassword,
+            Message = ResponseMessageCodes.InvalidCredentials,
             Success = false
         };
 

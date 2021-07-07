@@ -7,8 +7,7 @@
         public const string SuspiciousAction = "SUSPICIOUS_ACTION";
         public const string UserAlreadyRegistered = "USER_ALREADY_REGISTERED";
         public const string TermsNotAccepted = "TERMS_NOT_ACCEPTED";
-        public const string InvalidEmail = "INVALID_EMAIL";
-        public const string InvalidPassword = "INVALID_PASSWORD";
+        public const string InvalidCredentials = "INVALID_LOGIN_OR_PASSWORD";
         public const string ConfirmRegisterInvalidIdentifier = "INVALID_CONFIRMATION_IDENTIFIER";
         public const string UserUnverified = "UNVERIFIED_USER";
         public const string WeakPassword = "WEAK_PASSWORD";
