@@ -29,7 +29,8 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Auth
             IJwtGenerator jwtGenerator,
             MangoPostgresDbContext postgresDbContext, 
             IRequestMetadataService metadataService,
-            IFingerprintService fingerprintService, ICookieService cookieService)
+            IFingerprintService fingerprintService, 
+            ICookieService cookieService)
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -44,11 +45,9 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Auth
         {
             UserEntity user;
 
-            try
-            {
-                user = await _userManager.FindByEmailAsync(request.Email);
-            }
-            catch (Exception)
+            user = await _userManager.FindByEmailAsync(request.Email);
+
+            if (user == null) 
             {
                 return LoginResponse.InvalidEmail;
             }
