@@ -54,7 +54,7 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Auth
                 DisplayName = request.Email,
                 UserName = Guid.NewGuid().ToString(),
                 Email = request.Email,
-                ConfirmationCode = new Random().Next(100000, 999999) // TODO: handle case for duplicate codes
+                ConfirmationCode = new Random().Next(100000, 999999)
             };
 
             
