@@ -30,10 +30,10 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Chats
                 return CreateChatEntityResponse.InvalidOrEmptyChatTitle;
             }
 
-            if (request.GroupType is ChatType.DirectChat)
-            {
+            var groupType = Convert.ToInt32(request.GroupType);
+
+            if (groupType > 4 || groupType < 2)
                 return CreateChatEntityResponse.InvalidGroupType;
-            }
 
             var currentUser = await _metadataService.GetUserFromRequestMetadataAsync();
 
