@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using MangoAPI.Application.Services;
@@ -9,6 +10,7 @@ using MangoAPI.DTO.Responses.Chats;
 using MangoAPI.Infrastructure.Database;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace MangoAPI.Infrastructure.CommandHandlers.Chats
 {
@@ -45,7 +47,19 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Chats
                 Created = DateTime.Now
             };
 
-            // TODO: verify that chat already exists
+            var userPrivateChats = _postgresDbContext.Chats
+                .Include(chatEntity => chatEntity.ChatUsers)
+                .Where(chatEntity => chatEntity.ChatType == ChatType.DirectChat && chatEntity.ChatUsers
+                    .Any(userChatEntity => userChatEntity.UserId == currentUser.Id)).ToList();
+
+            var directChatAlreadyExists =
+                userPrivateChats.Any(x => x.ChatUsers
+                        .Any(t => t.UserId == partner.Id));
+
+            if (directChatAlreadyExists)
+            {
+                return CreateChatEntityResponse.DirectChatAlreadyExists;
+            }
 
             await _postgresDbContext.Chats.AddAsync(directChatEntity, cancellationToken);
             await _postgresDbContext.SaveChangesAsync(cancellationToken);

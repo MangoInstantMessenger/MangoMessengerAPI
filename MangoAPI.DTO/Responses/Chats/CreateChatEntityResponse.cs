@@ -15,5 +15,11 @@ namespace MangoAPI.DTO.Responses.Chats
             Message = ResponseMessageCodes.InvalidGroupType,
             Success = false
         };
+
+        public static CreateChatEntityResponse DirectChatAlreadyExists => new()
+        {
+            Message = ResponseMessageCodes.DirectChatAlreadyExists,
+            Success = false
+        };
     }
 }
