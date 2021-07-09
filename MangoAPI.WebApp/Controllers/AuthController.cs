@@ -131,7 +131,7 @@ namespace MangoAPI.WebApp.Controllers
             return Ok(response);
         }
 
-        [AllowAnonymous]
+        [Authorize]
         [HttpPost("logout-all")]
         [SwaggerOperation(Summary = "Logs out from all devices.")]
         [ProducesResponseType(StatusCodes.Status200OK)]
