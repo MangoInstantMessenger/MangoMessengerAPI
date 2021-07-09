@@ -48,6 +48,12 @@ namespace MangoAPI.WebApp.Controllers
             CancellationToken cancellationToken)
         {
             var response = await _mediator.Send(command, cancellationToken);
+
+            if (!response.Success)
+            {
+                return BadRequest(response);
+            }
+            
             return Ok(response);
         }
 
@@ -82,6 +88,7 @@ namespace MangoAPI.WebApp.Controllers
             CancellationToken cancellationToken)
         {
             var response = await _mediator.Send(command, cancellationToken);
+            
             if (!response.Success)
             {
                 return BadRequest(response);
@@ -114,7 +121,14 @@ namespace MangoAPI.WebApp.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> LogoutAsync(CancellationToken cancellationToken)
         {
-            return Ok(await _mediator.Send(new LogoutCommand(), cancellationToken));
+            var response = await _mediator.Send(new LogoutCommand(), cancellationToken);
+
+            if (!response.Success)
+            {
+                return BadRequest(response);
+            }
+
+            return Ok(response);
         }
 
         [AllowAnonymous]
