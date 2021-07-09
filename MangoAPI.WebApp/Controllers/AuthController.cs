@@ -117,7 +117,7 @@ namespace MangoAPI.WebApp.Controllers
             return Ok(await _mediator.Send(new LogoutCommand(), cancellationToken));
         }
 
-        [AllowAnonymous]
+        [Authorize]
         [HttpPost("logout-all")]
         [SwaggerOperation(Summary = "Logs out from all devices.")]
         [ProducesResponseType(StatusCodes.Status200OK)]
