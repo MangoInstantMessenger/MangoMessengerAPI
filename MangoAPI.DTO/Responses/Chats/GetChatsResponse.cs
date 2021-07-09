@@ -19,7 +19,8 @@ namespace MangoAPI.DTO.Responses.Chats
                 Title = x.Chat.Title,
                 Image = x.Chat.Image,
                 LastMessage = x.Chat.Messages.Any() ? x.Chat.Messages.Last().Content : null,
-                LastMessageAuthor = x.Chat.Messages.Any() ? x.Chat.Messages.Last().User.DisplayName : null
+                LastMessageAuthor = x.Chat.Messages.Any() ? x.Chat.Messages.Last().User.DisplayName : null,
+                LastMessageAt = x.Chat.Messages.Any() ? x.Chat.Messages.Last().Created : null
             }).ToList()
         };
     }
