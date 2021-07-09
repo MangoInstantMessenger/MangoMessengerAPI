@@ -32,6 +32,11 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Auth
             {
                 return RegisterResponse.UserAlreadyRegistered;
             }
+
+            if (string.IsNullOrEmpty(request.DisplayName) || string.IsNullOrWhiteSpace(request.DisplayName))
+            {
+                return RegisterResponse.InvalidDisplayName;
+            }
             
             var findByPhone =
                 await _postgresDbContext.Users.FirstOrDefaultAsync(x => x.PhoneNumber == request.PhoneNumber,
@@ -50,7 +55,7 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Auth
             var userEntity = new UserEntity
             {
                 PhoneNumber = request.PhoneNumber,
-                DisplayName = request.Email,
+                DisplayName = request.DisplayName,
                 UserName = Guid.NewGuid().ToString(),
                 Email = request.Email
             };

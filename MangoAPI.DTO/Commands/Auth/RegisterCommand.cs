@@ -8,6 +8,7 @@ namespace MangoAPI.DTO.Commands.Auth
     {
         public string PhoneNumber { get; set; }
         public string Email { get; set; }
+        public string DisplayName { get; set; }
         public string Password { get; set; }
         public VerificationMethod VerificationMethod { get; set; }
         public bool TermsAccepted { get; set; }
