@@ -39,5 +39,11 @@ namespace MangoAPI.DTO.Responses.Auth
             Success = false,
             Message = ResponseMessageCodes.PhoneOccupied
         };
+
+        public static RegisterResponse InvalidDisplayName => new()
+        {
+            Message = ResponseMessageCodes.InvalidDisplayName,
+            Success = false
+        };
     }
 }
