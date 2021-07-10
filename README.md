@@ -22,6 +22,7 @@
 - `MANGO_TOKEN_KEY`, `random string`
 - `JWT_LIFETIME`, integer
 - `REFRESH_TOKEN_LIFETIME`, integer
+- `MANGO_DOMAIN_ADDRESS`, localhost
 
 ## About tasks management
 - Each task is assigned a number (MANGO-ID)
