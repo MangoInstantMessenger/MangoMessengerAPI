@@ -61,9 +61,10 @@ namespace MangoAPI.WebApp
             app.UseCors(builder =>
             {
                 builder
-                    .AllowAnyOrigin()
                     .AllowAnyMethod()
-                    .AllowAnyHeader();
+                    .AllowAnyHeader()
+                    .SetIsOriginAllowed(_ => true)
+                    .AllowCredentials();
             });
             
             app.UseHttpsRedirection();
