@@ -2,33 +2,33 @@
 using System.Threading;
 using System.Threading.Tasks;
 using MangoAPI.Application.Services;
-using MangoAPI.DTO.Queries.Chats;
-using MangoAPI.DTO.Responses.Chats;
+using MangoAPI.DTO.Queries.Messages;
+using MangoAPI.DTO.Responses.Messages;
 using MangoAPI.Infrastructure.Database;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace MangoAPI.Infrastructure.QueryHandlers.Chats
+namespace MangoAPI.Infrastructure.QueryHandlers.Messages
 {
-    public class GetChatByIdQueryHandler : IRequestHandler<GetChatByIdQuery, GetChatByIdResponse>
+    public class GetMessagesQueryHandler : IRequestHandler<GetMessagesQuery, GetMessagesResponse>
     {
         private readonly IRequestMetadataService _metadataService;
         private readonly MangoPostgresDbContext _postgresDbContext;
 
-        public GetChatByIdQueryHandler(IRequestMetadataService metadataService,
+        public GetMessagesQueryHandler(IRequestMetadataService metadataService,
             MangoPostgresDbContext postgresDbContext)
         {
             _metadataService = metadataService;
             _postgresDbContext = postgresDbContext;
         }
 
-        public async Task<GetChatByIdResponse> Handle(GetChatByIdQuery request, CancellationToken cancellationToken)
+        public async Task<GetMessagesResponse> Handle(GetMessagesQuery request, CancellationToken cancellationToken)
         {
             var user = await _metadataService.GetUserFromRequestMetadataAsync();
 
             if (user == null)
             {
-                return GetChatByIdResponse.UserNotFound;
+                return GetMessagesResponse.UserNotFound;
             }
 
             var belongsToChat = await _postgresDbContext.UserChats
@@ -37,16 +37,14 @@ namespace MangoAPI.Infrastructure.QueryHandlers.Chats
 
             if (!belongsToChat)
             {
-                return GetChatByIdResponse.PermissionDenied;
+                return GetMessagesResponse.PermissionDenied;
             }
 
-            var chat = await _postgresDbContext
-                .Chats
-                .Include(x => x.Messages)
-                .ThenInclude(x => x.User)
-                .FirstOrDefaultAsync(x => x.Id == request.ChatId, cancellationToken);
-
-            return GetChatByIdResponse.FromSuccess(chat);
+            var chat = _postgresDbContext.Messages
+                .Where(x => x.ChatId == request.ChatId)
+                .AsEnumerable();
+            
+            return GetMessagesResponse.FromSuccess(chat);
         }
     }
 }
