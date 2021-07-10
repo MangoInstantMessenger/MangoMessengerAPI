@@ -1,5 +1,6 @@
 ﻿using System;
 using MangoAPI.Application.Services;
+using MangoAPI.Domain.Constants;
 using Microsoft.AspNetCore.Http;
 
 namespace MangoAPI.Infrastructure.Services
@@ -19,10 +20,14 @@ namespace MangoAPI.Infrastructure.Services
         {
             var option = new CookieOptions
             {
+                Path = "api/auth",
+                Domain = EnvironmentConstants.DomainAddress,
                 Expires = expireDays.HasValue
                     ? DateTime.Now.AddDays(expireDays.Value)
                     : DateTime.Now.AddMilliseconds(10),
-                HttpOnly = true
+                HttpOnly = true,
+                Secure = true,
+                SameSite = SameSiteMode.None
             };
 
             _httpContextAccessor.HttpContext?.Response.Cookies.Append(key, value, option);  
