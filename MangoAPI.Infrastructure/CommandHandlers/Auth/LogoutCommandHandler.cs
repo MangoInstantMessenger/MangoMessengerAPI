@@ -25,7 +25,7 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Auth
         public async Task<LogoutResponse> Handle(LogoutCommand request, CancellationToken cancellationToken)
         {
             var requestMetadata = _metadataService.GetRequestMetadata();
-            var refreshTokenId = _cookieService.Get(CookieConstants.MangoRefreshTokenId);
+            var refreshTokenId = _cookieService.GetCookie(CookieConstants.MangoRefreshTokenId);
 
             var validationResult = await _jwtRefreshService.VerifyUserRefreshTokenAsync(refreshTokenId,
                 requestMetadata,
@@ -49,7 +49,7 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Auth
                 return LogoutResponse.InvalidOrEmptyRefreshToken;
             }
 
-            _cookieService.Remove(CookieConstants.MangoRefreshTokenId);
+            _cookieService.RemoveCookie(CookieConstants.MangoRefreshTokenId);
 
             return LogoutResponse.SuccessResponse;
         }
