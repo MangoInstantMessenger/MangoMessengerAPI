@@ -76,24 +76,6 @@ namespace MangoAPI.WebApp.Controllers
         }
 
         [Authorize]
-        [HttpGet("{chatId:int}")]
-        [SwaggerOperation(Summary = "Returns chat including messages by chat ID.")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public async Task<IActionResult> GetChatById([FromRoute] int chatId, CancellationToken cancellationToken)
-        {
-            var query = new GetChatByIdQuery {ChatId = chatId};
-            var response = await _mediator.Send(query, cancellationToken);
-
-            if (!response.Success)
-            {
-                return BadRequest(response);
-            }
-
-            return Ok(response);
-        }
-
-        [Authorize]
         [HttpPost("group/join/{chatId:int}")]
         [SwaggerOperation(Summary = "Joins to the particular public group.")]
         [ProducesResponseType(StatusCodes.Status200OK)]

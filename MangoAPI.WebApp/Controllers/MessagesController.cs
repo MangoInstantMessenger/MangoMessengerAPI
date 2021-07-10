@@ -1,6 +1,7 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 using MangoAPI.DTO.Commands.Messages;
+using MangoAPI.DTO.Queries.Messages;
 using MangoAPI.WebApp.Interfaces;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -19,6 +20,24 @@ namespace MangoAPI.WebApp.Controllers
         public MessagesController(IMediator mediator)
         {
             _mediator = mediator;
+        }
+
+        [Authorize]
+        [HttpGet("{chatId:int}")]
+        [SwaggerOperation(Summary = "Returns chat including messages by chat ID.")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        public async Task<IActionResult> GetChatMessages([FromRoute] int chatId, CancellationToken cancellationToken)
+        {
+            var query = new GetMessagesQuery {ChatId = chatId};
+            var response = await _mediator.Send(query, cancellationToken);
+
+            if (!response.Success)
+            {
+                return BadRequest(response);
+            }
+
+            return Ok(response);
         }
 
         [Authorize]
