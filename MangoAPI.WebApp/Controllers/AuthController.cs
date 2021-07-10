@@ -25,7 +25,7 @@ namespace MangoAPI.WebApp.Controllers
         [HttpPost("login")]
         [SwaggerOperation(Summary = "Performs login to the messenger. Returns: Access token, Refresh Token ID.")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> LoginAsync([FromBody] LoginCommand command,
             CancellationToken cancellationToken)
         {
@@ -43,7 +43,7 @@ namespace MangoAPI.WebApp.Controllers
         [HttpPost("register")]
         [SwaggerOperation(Summary = "Registers user in a messenger.")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> RegisterAsync([FromBody] RegisterCommand command,
             CancellationToken cancellationToken)
         {
@@ -63,7 +63,7 @@ namespace MangoAPI.WebApp.Controllers
             "Sends verification request with provided user parameters: E-mail, User's ID guid. " +
             "User receives confirmation link via email.")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> VerifyEmailAsync(string email, string userId,
             CancellationToken cancellationToken)
         {
@@ -83,7 +83,7 @@ namespace MangoAPI.WebApp.Controllers
         [SwaggerOperation(Summary =
             "Sends verification request with provided user parameters: phone confirmation code.")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> VerifyPhoneCodeAsync([FromBody] VerifyPhoneCommand command,
             CancellationToken cancellationToken)
         {
@@ -101,7 +101,8 @@ namespace MangoAPI.WebApp.Controllers
         [HttpPost("refresh-token")]
         [SwaggerOperation(Summary = "Refreshes user's existing refresh token and access token.")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> RefreshTokenAsync(CancellationToken cancellationToken)
         {
             var result = await _mediator.Send(new RefreshTokenCommand(), cancellationToken);
@@ -118,7 +119,8 @@ namespace MangoAPI.WebApp.Controllers
         [HttpPost("logout")]
         [SwaggerOperation(Summary = "Logs out from current device.")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> LogoutAsync(CancellationToken cancellationToken)
         {
             var response = await _mediator.Send(new LogoutCommand(), cancellationToken);
@@ -135,7 +137,8 @@ namespace MangoAPI.WebApp.Controllers
         [HttpPost("logout-all")]
         [SwaggerOperation(Summary = "Logs out from all devices.")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> LogoutAllDevicesAsync(CancellationToken cancellationToken)
         {
             var response = await _mediator.Send(new LogoutAllCommand(), cancellationToken);

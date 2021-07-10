@@ -26,6 +26,7 @@ namespace MangoAPI.WebApp.Controllers
         [HttpGet("{chatId:int}")]
         [SwaggerOperation(Summary = "Returns chat including messages by chat ID.")]
         [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> GetChatMessages([FromRoute] int chatId, CancellationToken cancellationToken)
         {
@@ -44,6 +45,7 @@ namespace MangoAPI.WebApp.Controllers
         [HttpPost]
         [SwaggerOperation(Summary = "Sends message to particular chat.")]
         [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> SendMessage(SendMessageCommand command, CancellationToken cancellationToken)
         {
@@ -62,6 +64,7 @@ namespace MangoAPI.WebApp.Controllers
         [HttpPut]
         [SwaggerOperation(Summary = "Updates particular message.")]
         [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> EditMessage(EditMessageCommand command, CancellationToken cancellationToken)
         {
@@ -79,6 +82,7 @@ namespace MangoAPI.WebApp.Controllers
         [HttpDelete("{messageId:int}")]
         [SwaggerOperation(Summary = "Deletes particular message by ID.")]
         [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> DeleteMessage([FromRoute] int messageId, CancellationToken cancellationToken)
         {
