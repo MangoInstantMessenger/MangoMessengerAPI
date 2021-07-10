@@ -1,5 +1,9 @@
 # api/auth
 
+- POST: api/auth/login
+  - Performs login to the messenger
+  - Auth: allow anonymous
+
 - POST: api/auth/register
   - Registers user in a messenger. Requires input: e-mail, phone, verification method (enum), password
   - Auth: allow anonymous
@@ -8,7 +12,6 @@
 - POST: api/auth/verify-email
   - Sends verification request with provided user parameters: email, user ID guid. User receives proper link via email.
   - Auth: allow anonymous
-  - Response
   - Response codes: 200, 400
   
 - POST: api/auth/verify-phone

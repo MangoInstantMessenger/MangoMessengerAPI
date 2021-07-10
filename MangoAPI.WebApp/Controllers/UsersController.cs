@@ -25,6 +25,7 @@ namespace MangoAPI.WebApp.Controllers
         [HttpGet("{userId}")]
         [SwaggerOperation(Summary = "Returns information about particular user.")]
         [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> FindUser([FromRoute] string userId, CancellationToken cancellationToken)
         {

@@ -44,6 +44,7 @@ namespace MangoAPI.WebApp.Controllers
         [HttpPost("group")]
         [SwaggerOperation(Summary = "Creates new group of specified type.")]
         [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> CreateChat(CreateGroupCommand command, CancellationToken cancellationToken)
         {
@@ -61,6 +62,7 @@ namespace MangoAPI.WebApp.Controllers
         [HttpPost("direct-chat")]
         [SwaggerOperation(Summary = "Creates new direct chat with specified user.")]
         [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> CreateDirectChat(CreateDirectChatCommand command,
             CancellationToken cancellationToken)
@@ -79,6 +81,7 @@ namespace MangoAPI.WebApp.Controllers
         [HttpPost("group/join/{chatId:int}")]
         [SwaggerOperation(Summary = "Joins to the particular public group.")]
         [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> JoinChat(int chatId, CancellationToken cancellationToken)
         {
