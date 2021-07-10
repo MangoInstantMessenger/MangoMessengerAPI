@@ -24,12 +24,12 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Auth
         private readonly IFingerprintService _fingerprintService;
         private readonly ICookieService _cookieService;
 
-        public LoginCommandHandler(UserManager<UserEntity> userManager, 
+        public LoginCommandHandler(UserManager<UserEntity> userManager,
             SignInManager<UserEntity> signInManager,
             IJwtGenerator jwtGenerator,
-            MangoPostgresDbContext postgresDbContext, 
+            MangoPostgresDbContext postgresDbContext,
             IRequestMetadataService metadataService,
-            IFingerprintService fingerprintService, 
+            IFingerprintService fingerprintService,
             ICookieService cookieService)
         {
             _userManager = userManager;
@@ -45,7 +45,7 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Auth
         {
             var user = await _userManager.FindByEmailAsync(request.Email);
 
-            if (user == null) 
+            if (user == null)
             {
                 return LoginResponse.InvalidCredentials;
             }
@@ -87,9 +87,21 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Auth
 
             await _postgresDbContext.RefreshTokens.AddAsync(refreshToken, cancellationToken);
             await _postgresDbContext.SaveChangesAsync(cancellationToken);
-            
-            _cookieService.Set(CookieConstants.MangoRefreshTokenId, refreshToken.Id, 7);
-            
+
+            _cookieService.SetCookie(
+                key: CookieConstants.MangoRefreshTokenId,
+                value: refreshToken.Id,
+                expireDays: 7,
+                domain: EnvironmentConstants.MangoApiAddress,
+                path: "api/auth");
+
+            _cookieService.SetCookie(
+                key: CookieConstants.MangoRefreshTokenId,
+                value: refreshToken.Id,
+                expireDays: 7,
+                domain: EnvironmentConstants.MangoClientAddress,
+                path: "/main");
+
             return LoginResponse.FromSuccessWithData(jwtToken, refreshToken.Id);
         }
     }

@@ -38,7 +38,7 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Auth
 
         public async Task<RefreshTokenResponse> Handle(RefreshTokenCommand request, CancellationToken cancellationToken)
         {
-            var cookieToken = _cookieService.Get(CookieConstants.MangoRefreshTokenId);
+            var cookieToken = _cookieService.GetCookie(CookieConstants.MangoRefreshTokenId);
             
             var parsed = Guid.TryParse(cookieToken, out _);
             if (!parsed) 

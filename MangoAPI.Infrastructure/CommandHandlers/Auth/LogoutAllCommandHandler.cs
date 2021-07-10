@@ -30,7 +30,7 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Auth
         public async Task<LogoutResponse> Handle(LogoutAllCommand request, CancellationToken cancellationToken)
         {
             var requestMetadata = _metadataService.GetRequestMetadata();
-            var refreshTokenId = _cookieService.Get(CookieConstants.MangoRefreshTokenId);
+            var refreshTokenId = _cookieService.GetCookie(CookieConstants.MangoRefreshTokenId);
             
             var validationResult = await _jwtRefreshService.VerifyUserRefreshTokenAsync(refreshTokenId,
                 requestMetadata,
