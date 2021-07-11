@@ -26,7 +26,9 @@ namespace MangoAPI.Infrastructure.Services
                     x.Id == refreshTokenId, cancellationToken);
 
             if (token == null)
+            {
                 return VerifyTokenResult.NotVerified;
+            }
 
             return new VerifyTokenResult
             {
