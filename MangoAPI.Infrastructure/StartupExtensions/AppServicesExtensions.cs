@@ -13,7 +13,6 @@ namespace MangoAPI.Infrastructure.StartupExtensions
         {
             services.AddMediatR(typeof(RegisterCommandHandler).Assembly);
             services.AddScoped<IJwtGenerator, JwtGenerator>();
-            services.AddScoped<ICookieService, CookieService>();
             services.AddScoped<IJwtRefreshService, JwtRefreshService>();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddScoped<IRequestMetadataService, RequestMetadataService>();

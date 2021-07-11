@@ -1,7 +1,6 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 using MangoAPI.Application.Services;
-using MangoAPI.Domain.Constants;
 using MangoAPI.DTO.Commands.Auth;
 using MangoAPI.DTO.Responses.Auth;
 using MediatR;
@@ -10,14 +9,11 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Auth
 {
     public class LogoutCommandHandler : IRequestHandler<LogoutCommand, LogoutResponse>
     {
-        private readonly ICookieService _cookieService;
         private readonly IJwtRefreshService _jwtRefreshService;
         private readonly IRequestMetadataService _metadataService;
 
-        public LogoutCommandHandler(ICookieService cookieService, IJwtRefreshService jwtRefreshService,
-            IRequestMetadataService metadataService)
+        public LogoutCommandHandler(IJwtRefreshService jwtRefreshService, IRequestMetadataService metadataService)
         {
-            _cookieService = cookieService;
             _jwtRefreshService = jwtRefreshService;
             _metadataService = metadataService;
         }
@@ -25,9 +21,8 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Auth
         public async Task<LogoutResponse> Handle(LogoutCommand request, CancellationToken cancellationToken)
         {
             var requestMetadata = _metadataService.GetRequestMetadata();
-            var refreshTokenId = _cookieService.GetCookie(CookieConstants.MangoRefreshTokenId);
 
-            var validationResult = await _jwtRefreshService.VerifyUserRefreshTokenAsync(refreshTokenId,
+            var validationResult = await _jwtRefreshService.VerifyUserRefreshTokenAsync(request.RefreshTokenId,
                 requestMetadata,
                 cancellationToken);
 
@@ -41,15 +36,13 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Auth
                 return LogoutResponse.InvalidOrEmptyRefreshToken;
             }
 
-            var result = await _jwtRefreshService.RevokeRefreshTokenAsync(validationResult.RefreshToken.Id,
+            var result = await _jwtRefreshService.RevokeRefreshTokenAsync(request.RefreshTokenId,
                 cancellationToken);
 
             if (!result.Success)
             {
                 return LogoutResponse.InvalidOrEmptyRefreshToken;
             }
-
-            _cookieService.RemoveCookie(CookieConstants.MangoRefreshTokenId);
 
             return LogoutResponse.SuccessResponse;
         }

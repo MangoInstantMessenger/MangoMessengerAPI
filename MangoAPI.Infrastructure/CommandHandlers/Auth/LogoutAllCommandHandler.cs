@@ -2,7 +2,6 @@
 using System.Threading;
 using System.Threading.Tasks;
 using MangoAPI.Application.Services;
-using MangoAPI.Domain.Constants;
 using MangoAPI.DTO.Commands.Auth;
 using MangoAPI.DTO.Responses.Auth;
 using MangoAPI.Infrastructure.Database;
@@ -13,15 +12,13 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Auth
 {
     public class LogoutAllCommandHandler : IRequestHandler<LogoutAllCommand, LogoutResponse>
     {
-        private readonly ICookieService _cookieService;
         private readonly IJwtRefreshService _jwtRefreshService;
         private readonly IRequestMetadataService _metadataService;
         private readonly MangoPostgresDbContext _postgresDbContext;
 
-        public LogoutAllCommandHandler(ICookieService cookieService, IJwtRefreshService jwtRefreshService, 
+        public LogoutAllCommandHandler(IJwtRefreshService jwtRefreshService, 
             IRequestMetadataService metadataService, MangoPostgresDbContext postgresDbContext)
         {
-            _cookieService = cookieService;
             _jwtRefreshService = jwtRefreshService;
             _metadataService = metadataService;
             _postgresDbContext = postgresDbContext;
@@ -30,9 +27,8 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Auth
         public async Task<LogoutResponse> Handle(LogoutAllCommand request, CancellationToken cancellationToken)
         {
             var requestMetadata = _metadataService.GetRequestMetadata();
-            var refreshTokenId = _cookieService.GetCookie(CookieConstants.MangoRefreshTokenId);
             
-            var validationResult = await _jwtRefreshService.VerifyUserRefreshTokenAsync(refreshTokenId,
+            var validationResult = await _jwtRefreshService.VerifyUserRefreshTokenAsync(request.RefreshTokenId,
                 requestMetadata,
                 cancellationToken);
             
@@ -46,8 +42,7 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Auth
                 return LogoutResponse.InvalidOrEmptyRefreshToken;
             }
 
-            var token = await _postgresDbContext.RefreshTokens
-                .FirstOrDefaultAsync(x => x.Id == refreshTokenId, cancellationToken);
+            var token = validationResult.RefreshToken;
 
             var userTokens = _postgresDbContext
                 .RefreshTokens

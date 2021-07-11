@@ -20,7 +20,7 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Auth
 
         public async Task<VerifyEmailResponse> Handle(VerifyEmailCommand request, CancellationToken cancellationToken)
         {
-            var guidParsed = Guid.TryParse(request.UserId, out var parsedGuid);
+            var guidParsed = Guid.TryParse(request.UserId, out _);
 
             if (!guidParsed)
             {
@@ -29,7 +29,8 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Auth
 
             var user = await _postgresDbContext
                 .Users
-                .FirstOrDefaultAsync(x => x.Id == request.UserId && x.Email == request.Email, cancellationToken);
+                .FirstOrDefaultAsync(x => x.Id == request.UserId 
+                                          && x.Email == request.Email, cancellationToken);
 
             if (user == null)
             {
@@ -42,7 +43,9 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Auth
             }
 
             user.EmailConfirmed = true;
+            
             _postgresDbContext.Update(user);
+            
             await _postgresDbContext.SaveChangesAsync(cancellationToken);
             
             return VerifyEmailResponse.SuccessResponse;
