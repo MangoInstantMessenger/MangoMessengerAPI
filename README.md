@@ -22,8 +22,6 @@
 - `MANGO_TOKEN_KEY`, `random string`
 - `JWT_LIFETIME`, integer
 - `REFRESH_TOKEN_LIFETIME`, integer
-- `MANGO_API_ADDRESS`, deploy address
-- `MANGO_CLIENT_ADDRESS`, localhos:port
 
 ## About tasks management
 - Each task is assigned a number (MANGO-ID)
