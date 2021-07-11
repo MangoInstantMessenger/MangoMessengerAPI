@@ -23,8 +23,6 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Auth
             var userEntity = await _dbContext.Users
                 .FirstOrDefaultAsync(x => x.ConfirmationCode == request.ConfirmationCode,
                     cancellationToken);
-            
-            // TODO: add cookie verification
 
             if (userEntity == null)
                 return VerifyPhoneResponse.InvalidOrExpired;
@@ -36,7 +34,9 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Auth
 
             userEntity.PhoneNumberConfirmed = true;
             userEntity.ConfirmationCode = 0;
+            
             _dbContext.Update(userEntity);
+            
             await _dbContext.SaveChangesAsync(cancellationToken);
 
             return VerifyPhoneResponse.SuccessResponse;

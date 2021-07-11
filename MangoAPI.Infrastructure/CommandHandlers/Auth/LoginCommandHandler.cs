@@ -3,7 +3,6 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using MangoAPI.Application.Services;
-using MangoAPI.Domain.Constants;
 using MangoAPI.Domain.Entities;
 using MangoAPI.DTO.Commands.Auth;
 using MangoAPI.DTO.Responses.Auth;
@@ -22,15 +21,10 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Auth
         private readonly MangoPostgresDbContext _postgresDbContext;
         private readonly IRequestMetadataService _metadataService;
         private readonly IFingerprintService _fingerprintService;
-        private readonly ICookieService _cookieService;
 
-        public LoginCommandHandler(UserManager<UserEntity> userManager,
-            SignInManager<UserEntity> signInManager,
-            IJwtGenerator jwtGenerator,
-            MangoPostgresDbContext postgresDbContext,
-            IRequestMetadataService metadataService,
-            IFingerprintService fingerprintService,
-            ICookieService cookieService)
+        public LoginCommandHandler(UserManager<UserEntity> userManager, SignInManager<UserEntity> signInManager,
+            IJwtGenerator jwtGenerator, MangoPostgresDbContext postgresDbContext, IRequestMetadataService metadataService,
+            IFingerprintService fingerprintService)
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -38,7 +32,6 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Auth
             _postgresDbContext = postgresDbContext;
             _metadataService = metadataService;
             _fingerprintService = fingerprintService;
-            _cookieService = cookieService;
         }
 
         public async Task<LoginResponse> Handle(LoginCommand request, CancellationToken cancellationToken)
@@ -87,21 +80,7 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Auth
 
             await _postgresDbContext.RefreshTokens.AddAsync(refreshToken, cancellationToken);
             await _postgresDbContext.SaveChangesAsync(cancellationToken);
-
-            _cookieService.SetCookie(
-                key: CookieConstants.MangoRefreshTokenId,
-                value: refreshToken.Id,
-                expireDays: 7,
-                domain: EnvironmentConstants.MangoApiAddress,
-                path: "api/auth");
-
-            _cookieService.SetCookie(
-                key: CookieConstants.MangoRefreshTokenId,
-                value: refreshToken.Id,
-                expireDays: 7,
-                domain: EnvironmentConstants.MangoClientAddress,
-                path: "/main");
-
+            
             return LoginResponse.FromSuccessWithData(jwtToken, refreshToken.Id);
         }
     }

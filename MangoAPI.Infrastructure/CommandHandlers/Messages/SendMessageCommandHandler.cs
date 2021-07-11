@@ -32,16 +32,25 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Messages
         public async Task<SendMessageResponse> Handle(SendMessageCommand request, CancellationToken cancellationToken)
         {
             var requestMetadata = _requestMetadataService.GetRequestMetadata();
+            
             var user = await GetUserAsync(requestMetadata.UserId, cancellationToken);
+            
             if (user == null)
+            {
                 return SendMessageResponse.UserNotFound;
+            }
 
             var chat = await GetChatAsync(request.ChatId, cancellationToken);
+            
             if (chat == null)
+            {
                 return SendMessageResponse.ChatNotFound;
+            }
 
             if (!await CheckUserPermissions(user, chat, cancellationToken))
+            {
                 return SendMessageResponse.PermissionDenied;
+            }
 
             var dbMessage = await SaveMessage(request, requestMetadata, cancellationToken);
             
@@ -87,23 +96,29 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Messages
         }
 
         private async Task<bool> CheckReadOnlyChannelPermissions(UserEntity user, ChatEntity chat,
-            CancellationToken cancellationToken) =>
-            (await _db.UserChats
-                .Where(x => x.UserId == user.Id && x.ChatId == chat.Id)
-                .ToListAsync(cancellationToken))
-            .Any(x => x.RoleId is UserRole.Moderator or UserRole.Admin or UserRole.Owner);
+            CancellationToken cancellationToken)
+        {
+            return (await _db.UserChats
+                    .Where(x => x.UserId == user.Id && x.ChatId == chat.Id)
+                    .ToListAsync(cancellationToken))
+                .Any(x => x.RoleId is UserRole.Moderator or UserRole.Admin or UserRole.Owner);
+        }
 
         private async Task<bool> CheckPublicChannelPermissions(UserEntity user, ChatEntity chat,
-            CancellationToken cancellationToken) =>
-            await _db.UserChats
+            CancellationToken cancellationToken)
+        {
+            return await _db.UserChats
                 .Where(x => x.UserId == user.Id && x.ChatId == chat.Id)
                 .AnyAsync(cancellationToken);
+        }
 
         private async Task<bool> CheckPrivateChannelPermissions(UserEntity user, ChatEntity chat,
-            CancellationToken cancellationToken) =>
-            await _db.UserChats
+            CancellationToken cancellationToken)
+        {
+            return await _db.UserChats
                 .Where(x => x.UserId == user.Id && x.ChatId == chat.Id)
                 .AnyAsync(cancellationToken);
+        }
 
         private async Task<bool> CheckForPersonalIgnoreList(UserEntity user, ChatEntity chat,
             CancellationToken cancellationToken)

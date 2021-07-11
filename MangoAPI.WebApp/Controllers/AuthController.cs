@@ -53,7 +53,7 @@ namespace MangoAPI.WebApp.Controllers
             {
                 return BadRequest(response);
             }
-            
+
             return Ok(response);
         }
 
@@ -88,7 +88,7 @@ namespace MangoAPI.WebApp.Controllers
             CancellationToken cancellationToken)
         {
             var response = await _mediator.Send(command, cancellationToken);
-            
+
             if (!response.Success)
             {
                 return BadRequest(response);
@@ -103,9 +103,10 @@ namespace MangoAPI.WebApp.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public async Task<IActionResult> RefreshTokenAsync(CancellationToken cancellationToken)
+        public async Task<IActionResult> RefreshTokenAsync(RefreshTokenCommand command,
+            CancellationToken cancellationToken)
         {
-            var result = await _mediator.Send(new RefreshTokenCommand(), cancellationToken);
+            var result = await _mediator.Send(command, cancellationToken);
 
             if (!result.Success)
             {
@@ -121,9 +122,9 @@ namespace MangoAPI.WebApp.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public async Task<IActionResult> LogoutAsync(CancellationToken cancellationToken)
+        public async Task<IActionResult> LogoutAsync(LogoutCommand command, CancellationToken cancellationToken)
         {
-            var response = await _mediator.Send(new LogoutCommand(), cancellationToken);
+            var response = await _mediator.Send(command, cancellationToken);
 
             if (!response.Success)
             {
@@ -139,7 +140,8 @@ namespace MangoAPI.WebApp.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public async Task<IActionResult> LogoutAllDevicesAsync(CancellationToken cancellationToken)
+        public async Task<IActionResult> LogoutAllDevicesAsync(LogoutAllCommand command,
+            CancellationToken cancellationToken)
         {
             var response = await _mediator.Send(new LogoutAllCommand(), cancellationToken);
 

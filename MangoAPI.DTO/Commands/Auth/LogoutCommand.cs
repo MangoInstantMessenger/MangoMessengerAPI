@@ -3,5 +3,8 @@ using MediatR;
 
 namespace MangoAPI.DTO.Commands.Auth
 {
-    public record LogoutCommand : IRequest<LogoutResponse>;
+    public class LogoutCommand : IRequest<LogoutResponse>
+    {
+        public string RefreshTokenId { get; set; }
+    }
 }
