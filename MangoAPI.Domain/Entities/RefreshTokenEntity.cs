@@ -12,11 +12,9 @@ namespace MangoAPI.Domain.Entities
         public string RefreshToken { get; set; }
         public DateTime Expires { get; set; }
         public DateTime Created { get; set; }
-        public DateTime? Revoked { get; set; }
 
-        public bool IsActive => Revoked == null && !IsExpired;
         public bool IsExpired => DateTime.UtcNow >= Expires;
-        
+
         public virtual UserEntity UserEntity { get; set; }
     }
 }
