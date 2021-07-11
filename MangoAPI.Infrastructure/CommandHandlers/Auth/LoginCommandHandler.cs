@@ -1,6 +1,4 @@
-﻿using System;
-using System.Linq;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 using MangoAPI.Application.Services;
 using MangoAPI.Domain.Entities;
@@ -23,7 +21,8 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Auth
         private readonly IFingerprintService _fingerprintService;
 
         public LoginCommandHandler(UserManager<UserEntity> userManager, SignInManager<UserEntity> signInManager,
-            IJwtGenerator jwtGenerator, MangoPostgresDbContext postgresDbContext, IRequestMetadataService metadataService,
+            IJwtGenerator jwtGenerator, MangoPostgresDbContext postgresDbContext,
+            IRequestMetadataService metadataService,
             IFingerprintService fingerprintService)
         {
             _userManager = userManager;
@@ -56,31 +55,31 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Auth
             }
 
             var metadata = _metadataService.GetRequestMetadata();
-            var refreshToken = _jwtGenerator.GenerateRefreshToken(metadata.UserAgent,
-                _fingerprintService.GetFingerprint(metadata), metadata.IpAddress);
+
+            var browserFingerPrint = _fingerprintService.GetFingerprint(metadata);
+
+            var refreshToken = _jwtGenerator.GenerateRefreshToken(
+                metadata.UserAgent,
+                browserFingerPrint,
+                metadata.IpAddress);
 
             var jwtToken = _jwtGenerator.GenerateJwtToken(user);
 
             refreshToken.UserId = user.Id;
 
-            var userTokens = _postgresDbContext.RefreshTokens
-                .Where(x => x.UserId == user.Id);
+            var oldUserTokenSameDevice = await _postgresDbContext.RefreshTokens
+                .FirstOrDefaultAsync(x => x.UserId == user.Id && x.BrowserFingerprint == browserFingerPrint,
+                    cancellationToken);
 
-            foreach (var token in userTokens)
+            if (oldUserTokenSameDevice != null)
             {
-                token.Revoked = DateTime.Now;
-            }
-
-            _postgresDbContext.UpdateRange(userTokens);
-
-            if (await userTokens.CountAsync(cancellationToken) >= 5)
-            {
-                _postgresDbContext.RefreshTokens.RemoveRange(userTokens);
+                _postgresDbContext.Remove(oldUserTokenSameDevice);
             }
 
             await _postgresDbContext.RefreshTokens.AddAsync(refreshToken, cancellationToken);
+
             await _postgresDbContext.SaveChangesAsync(cancellationToken);
-            
+
             return LoginResponse.FromSuccessWithData(jwtToken, refreshToken.Id);
         }
     }

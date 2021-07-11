@@ -6,7 +6,6 @@ using MangoAPI.DTO.Commands.Auth;
 using MangoAPI.DTO.Responses.Auth;
 using MangoAPI.Infrastructure.Database;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 
 namespace MangoAPI.Infrastructure.CommandHandlers.Auth
 {

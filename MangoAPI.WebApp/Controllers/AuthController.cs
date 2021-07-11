@@ -143,7 +143,7 @@ namespace MangoAPI.WebApp.Controllers
         public async Task<IActionResult> LogoutAllDevicesAsync(LogoutAllCommand command,
             CancellationToken cancellationToken)
         {
-            var response = await _mediator.Send(new LogoutAllCommand(), cancellationToken);
+            var response = await _mediator.Send(command, cancellationToken);
 
             if (!response.Success)
             {
