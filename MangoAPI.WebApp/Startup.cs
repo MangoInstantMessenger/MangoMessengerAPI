@@ -16,7 +16,7 @@ namespace MangoAPI.WebApp
 
         private IConfiguration Configuration { get; }
 
-        public static void ConfigureServices(IServiceCollection services)
+        public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
             services.AddAppInfrastructure();
@@ -46,8 +46,17 @@ namespace MangoAPI.WebApp
                     }
                 });
             });
-            
-            services.AddCors();
+
+            services.AddCors(options =>
+            {
+                options.AddPolicy("DefaultPolicy", builder =>
+                {
+                    builder.WithOrigins(Configuration.GetSection("AllowedOrigins").Get<string[]>())
+                        .WithMethods("GET", "POST", "PUT", "PATCH", "DELETE")
+                        .AllowCredentials()
+                        .AllowAnyHeader();
+                });
+            });
             services.AddMvc();
         }
 
@@ -66,15 +75,14 @@ namespace MangoAPI.WebApp
                     .SetIsOriginAllowed(_ => true)
                     .AllowCredentials();
             });
-            
+
             app.UseHttpsRedirection();
             app.UseRouting();
 
-            
-            
+
             app.UseSwagger();
             app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "MangoAPI v1"));
-            
+
             app.UseAuthorization();
 
             app.UseForwardedHeaders(new ForwardedHeadersOptions
@@ -82,7 +90,7 @@ namespace MangoAPI.WebApp
                 ForwardedHeaders = ForwardedHeaders.XForwardedFor |
                                    ForwardedHeaders.XForwardedProto
             });
-            
+
             app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
         }
     }
