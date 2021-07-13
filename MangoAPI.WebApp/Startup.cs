@@ -1,6 +1,4 @@
 using System;
-using MangoAPI.Application.Services;
-using MangoAPI.Infrastructure.Services;
 using MangoAPI.Infrastructure.StartupExtensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -48,9 +46,7 @@ namespace MangoAPI.WebApp
                     }
                 });
             });
-
-            services.AddTransient<IEmailSenderService, EmailSenderService>();
-
+            
             services.AddCors(options =>
             {
                 options.AddPolicy("DefaultPolicy", builder =>
