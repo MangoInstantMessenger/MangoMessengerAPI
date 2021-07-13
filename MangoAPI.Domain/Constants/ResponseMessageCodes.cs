@@ -9,6 +9,7 @@
         public const string TermsNotAccepted = "TERMS_NOT_ACCEPTED";
         public const string InvalidCredentials = "INVALID_LOGIN_OR_PASSWORD";
         public const string ConfirmRegisterInvalidIdentifier = "INVALID_CONFIRMATION_IDENTIFIER";
+        public const string EmailIsNotAllowed = "EMAIL_IS_NOT_ALLOWED";
         public const string UserUnverified = "UNVERIFIED_USER";
         public const string WeakPassword = "WEAK_PASSWORD";
         public const string InvalidUserId = "INVALID_USER_ID";

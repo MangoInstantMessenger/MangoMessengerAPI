@@ -12,23 +12,22 @@ namespace MangoAPI.Infrastructure.Services
 {
     public class EmailSenderService : IEmailSenderService
     {
+        private static readonly string _senderEmail = Environment.GetEnvironmentVariable("EMAIL_SENDER_ADDRESS");
+        private static readonly string _senderPassword = Environment.GetEnvironmentVariable("EMAIL_SENDER_PASSWORD");
+
         public async Task SendVerificationEmailAsync(UserEntity user,
             CancellationToken cancellationToken)
         {
             var smtpClient = GetGmailSmtpClient();
-            var senderEmail = Environment.GetEnvironmentVariable("EMAIL_SENDER_ADDRESS");
 
-            var verificationMessage = VerifyEmailMessage.GetVerificationMessage(senderEmail, user);
+            var verificationMessage = VerifyEmailMessage.GetVerificationMessage(_senderEmail, user);
 
             await smtpClient.SendMailAsync(verificationMessage, cancellationToken);
         }
 
         private static SmtpClient GetGmailSmtpClient()
         {
-            var login = Environment.GetEnvironmentVariable("EMAIL_SENDER_ADDRESS");
-            var password = Environment.GetEnvironmentVariable("EMAIL_SENDER_PASSWORD");
-
-            var credentials = new NetworkCredential(login, password);
+            var credentials = new NetworkCredential(_senderEmail, _senderPassword);
 
             var smtpClient = new SmtpClient
             {

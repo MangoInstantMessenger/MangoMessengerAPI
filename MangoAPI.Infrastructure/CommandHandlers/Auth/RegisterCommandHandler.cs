@@ -19,6 +19,7 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Auth
         private readonly UserManager<UserEntity> _userManager;
         private readonly MangoPostgresDbContext _postgresDbContext;
         private readonly IEmailSenderService _emailSenderService;
+        private readonly string _senderEmail = Environment.GetEnvironmentVariable("EMAIL_SENDER_ADDRESS");
 
         public RegisterCommandHandler(UserManager<UserEntity> userManager, 
             MangoPostgresDbContext postgresDbContext, IEmailSenderService emailSenderService)
@@ -30,6 +31,9 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Auth
 
         public async Task<RegisterResponse> Handle(RegisterCommand request, CancellationToken cancellationToken)
         {
+            if (request.Email == _senderEmail)
+                return RegisterResponse.EmailIsNotAllowed;
+
             var findByEmailAsync = await _userManager.FindByEmailAsync(request.Email);
 
             if (findByEmailAsync != null)
