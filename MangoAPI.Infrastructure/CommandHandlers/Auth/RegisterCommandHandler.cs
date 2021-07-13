@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using MangoAPI.Application.Services;
 using MangoAPI.Domain.Entities;
 using MangoAPI.DTO.Commands.Auth;
 using MangoAPI.DTO.Enums;
@@ -17,11 +18,14 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Auth
     {
         private readonly UserManager<UserEntity> _userManager;
         private readonly MangoPostgresDbContext _postgresDbContext;
+        private readonly IEmailSenderService _emailSenderService;
 
-        public RegisterCommandHandler(UserManager<UserEntity> userManager, MangoPostgresDbContext postgresDbContext)
+        public RegisterCommandHandler(UserManager<UserEntity> userManager, 
+            MangoPostgresDbContext postgresDbContext, IEmailSenderService emailSenderService)
         {
             _userManager = userManager;
             _postgresDbContext = postgresDbContext;
+            _emailSenderService = emailSenderService;
         }
 
         public async Task<RegisterResponse> Handle(RegisterCommand request, CancellationToken cancellationToken)
@@ -80,7 +84,7 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Auth
             switch (request.VerificationMethod)
             {
                 case VerificationMethod.Email:
-                    // TODO: Send Mail
+                    await _emailSenderService.SendVerificationEmailAsync(userEntity, cancellationToken);
                     break;
                 case VerificationMethod.Phone:
                     // TODO: Send Phone Code

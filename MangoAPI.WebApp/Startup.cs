@@ -46,7 +46,7 @@ namespace MangoAPI.WebApp
                     }
                 });
             });
-
+            
             services.AddCors(options =>
             {
                 options.AddPolicy("DefaultPolicy", builder =>

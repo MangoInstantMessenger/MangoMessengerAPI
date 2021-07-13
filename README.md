@@ -22,6 +22,9 @@
 - `MANGO_TOKEN_KEY`, `random string`
 - `JWT_LIFETIME`, integer
 - `REFRESH_TOKEN_LIFETIME`, integer
+- `EMAIL_SENDER_ADDRESS`, string
+- `EMAIL_SENDER_PASSWORD`, string
+- `MANGO_API_DOMAIN`, string (deployed API address)
 
 ## About tasks management
 - Each task is assigned a number (MANGO-ID)
