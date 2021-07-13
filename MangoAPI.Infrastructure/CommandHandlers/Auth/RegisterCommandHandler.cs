@@ -32,7 +32,9 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Auth
         public async Task<RegisterResponse> Handle(RegisterCommand request, CancellationToken cancellationToken)
         {
             if (request.Email == EnvironmentConstants.EmailSenderAddres)
-                return RegisterResponse.EmailIsNotAllowed;
+            {
+                return RegisterResponse.InvalidEmail;
+            }
 
             var findByEmailAsync = await _userManager.FindByEmailAsync(request.Email);
 

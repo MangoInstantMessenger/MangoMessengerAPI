@@ -1,5 +1,4 @@
-﻿using System;
-using System.Text;
+﻿using System.Text;
 using System.Net;
 using System.Net.Mail;
 using System.Threading;
@@ -12,22 +11,22 @@ namespace MangoAPI.Infrastructure.Services
 {
     public class EmailSenderService : IEmailSenderService
     {
-        private static readonly string _senderEmail = EnvironmentConstants.EmailSenderAddres;
-        private static readonly string _senderPassword = EnvironmentConstants.EmailSenderPassword;
-
         public async Task SendVerificationEmailAsync(UserEntity user,
             CancellationToken cancellationToken)
         {
+            var senderEmail = EnvironmentConstants.EmailSenderAddres;
             var smtpClient = GetGmailSmtpClient();
 
-            var verificationMessage = VerifyEmailMessage.GetVerificationMessage(_senderEmail, user);
+            var verificationMessage = VerifyEmailMessage.GetVerificationMessage(senderEmail, user);
 
             await smtpClient.SendMailAsync(verificationMessage, cancellationToken);
         }
 
         private static SmtpClient GetGmailSmtpClient()
         {
-            var credentials = new NetworkCredential(_senderEmail, _senderPassword);
+            var senderEmail = EnvironmentConstants.EmailSenderAddres;
+            var senderPassword = EnvironmentConstants.EmailSenderPassword;
+            var credentials = new NetworkCredential(senderEmail, senderPassword);
 
             var smtpClient = new SmtpClient
             {
