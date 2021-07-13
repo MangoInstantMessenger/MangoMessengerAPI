@@ -4,6 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using MangoAPI.Application.Services;
 using MangoAPI.Domain.Entities;
+using MangoAPI.Domain.Constants;
 using MangoAPI.DTO.Commands.Auth;
 using MangoAPI.DTO.Enums;
 using MangoAPI.DTO.Responses.Auth;
@@ -30,6 +31,11 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Auth
 
         public async Task<RegisterResponse> Handle(RegisterCommand request, CancellationToken cancellationToken)
         {
+            if (request.Email == EnvironmentConstants.EmailSenderAddres)
+            {
+                return RegisterResponse.InvalidEmail;
+            }
+
             var findByEmailAsync = await _userManager.FindByEmailAsync(request.Email);
 
             if (findByEmailAsync != null)

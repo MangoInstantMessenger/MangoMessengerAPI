@@ -9,7 +9,13 @@ namespace MangoAPI.DTO.Responses.Auth
             Success = false,
             Message = ResponseMessageCodes.UserAlreadyRegistered
         };
-        
+
+        public static RegisterResponse InvalidEmail => new()
+        {
+            Success = false,
+            Message = ResponseMessageCodes.InvalidEmail
+        };
+
         public static RegisterResponse TermsNotAccepted => new ()
         {
             Success = false,
