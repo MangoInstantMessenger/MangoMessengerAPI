@@ -22,7 +22,7 @@
 - `MANGO_TOKEN_KEY`, `random string`
 - `JWT_LIFETIME`, integer
 - `REFRESH_TOKEN_LIFETIME`, integer
-- `EMAIL_SENDER_ADDRESS`, string
+- `EMAIL_SENDER_ADDRES`, string
 - `EMAIL_SENDER_PASSWORD`, string
 - `MANGO_API_DOMAIN`, string (deployed API address)
 

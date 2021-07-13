@@ -12,8 +12,8 @@ namespace MangoAPI.Infrastructure.Services
 {
     public class EmailSenderService : IEmailSenderService
     {
-        private static readonly string _senderEmail = Environment.GetEnvironmentVariable("EMAIL_SENDER_ADDRESS");
-        private static readonly string _senderPassword = Environment.GetEnvironmentVariable("EMAIL_SENDER_PASSWORD");
+        private static readonly string _senderEmail = EnvironmentConstants.EmailSenderAddres;
+        private static readonly string _senderPassword = EnvironmentConstants.EmailSenderPassword;
 
         public async Task SendVerificationEmailAsync(UserEntity user,
             CancellationToken cancellationToken)
