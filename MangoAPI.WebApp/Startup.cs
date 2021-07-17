@@ -1,5 +1,6 @@
 using System;
 using MangoAPI.Infrastructure.StartupExtensions;
+using MangoAPI.WebApp.Hubs;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpOverrides;
@@ -20,6 +21,7 @@ namespace MangoAPI.WebApp
         {
             services.AddControllers();
             services.AddAppInfrastructure();
+            services.AddSignalR();
             services.AddSwaggerGen(c =>
             {
                 c.EnableAnnotations();
@@ -91,7 +93,12 @@ namespace MangoAPI.WebApp
                                    ForwardedHeaders.XForwardedProto
             });
 
-            app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllers();
+                endpoints.MapHub<GroupsHub>("/groups");
+                endpoints.MapHub<MessagesHub>("/messages");
+            });
         }
     }
 }

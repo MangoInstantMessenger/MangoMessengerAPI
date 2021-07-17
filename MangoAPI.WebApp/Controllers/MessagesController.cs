@@ -2,11 +2,13 @@
 using System.Threading.Tasks;
 using MangoAPI.DTO.Commands.Messages;
 using MangoAPI.DTO.Queries.Messages;
+using MangoAPI.WebApp.Hubs;
 using MangoAPI.WebApp.Interfaces;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.SignalR;
 using Swashbuckle.AspNetCore.Annotations;
 
 namespace MangoAPI.WebApp.Controllers
@@ -16,10 +18,12 @@ namespace MangoAPI.WebApp.Controllers
     public class MessagesController : ControllerBase, IMessagesController
     {
         private readonly IMediator _mediator;
+        private readonly IHubContext<MessagesHub> _messagesHubContext;
 
-        public MessagesController(IMediator mediator)
+        public MessagesController(IMediator mediator, IHubContext<MessagesHub> messagesHubContext)
         {
             _mediator = mediator;
+            _messagesHubContext = messagesHubContext;
         }
 
         [Authorize]
@@ -55,6 +59,9 @@ namespace MangoAPI.WebApp.Controllers
             {
                 return BadRequest(response);
             }
+
+            await _messagesHubContext.Clients.Group($"chat_{command.ChatId}")
+                .SendAsync("onMessageSendNotify", command.Content, cancellationToken);
 
             return Ok(response);
         }
