@@ -49,29 +49,27 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Auth
                 return RefreshTokenResponse.InvalidOrEmptyRefreshToken;
             }
 
-            var oldRefreshToken = validationResult.RefreshToken;
+            var refreshToken = validationResult.RefreshToken;
 
             var user = await _postgresDbContext.Users
-                .FirstOrDefaultAsync(x => x.Id == oldRefreshToken.UserId, cancellationToken);
+                .FirstOrDefaultAsync(x => x.Id == refreshToken.UserId, cancellationToken);
 
             if (user == null)
             {
                 return RefreshTokenResponse.UserNotFound;
             }
 
-            _postgresDbContext.Remove(oldRefreshToken);
-
-            var newRefreshToken = _jwtGenerator.GenerateRefreshToken(requestMetadata.UserAgent,
+            refreshToken = _jwtGenerator.GenerateRefreshToken(requestMetadata.UserAgent,
                 _fingerprintService.GetFingerprint(requestMetadata), requestMetadata.IpAddress);
 
             var newJwtToken = _jwtGenerator.GenerateJwtToken(user);
 
-            newRefreshToken.UserId = user.Id;
+            refreshToken.UserId = user.Id;
 
-            await _postgresDbContext.RefreshTokens.AddAsync(newRefreshToken, cancellationToken);
+            _postgresDbContext.RefreshTokens.Update(refreshToken);
             await _postgresDbContext.SaveChangesAsync(cancellationToken);
 
-            return RefreshTokenResponse.FromSuccess(newRefreshToken.Id, newJwtToken);
+            return RefreshTokenResponse.FromSuccess(refreshToken.Id, newJwtToken);
         }
     }
 }

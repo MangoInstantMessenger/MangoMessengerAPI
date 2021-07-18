@@ -98,7 +98,7 @@ namespace MangoAPI.WebApp.Controllers
         }
 
         [AllowAnonymous]
-        [HttpPost("refresh-token")]
+        [HttpPatch("refresh-token")]
         [SwaggerOperation(Summary = "Refreshes user's existing refresh token and access token.")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -109,7 +109,7 @@ namespace MangoAPI.WebApp.Controllers
             var result = await _mediator.Send(command, cancellationToken);
 
             if (!result.Success)
-            {
+            {   
                 return BadRequest(result);
             }
 
