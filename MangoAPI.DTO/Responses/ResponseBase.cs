@@ -2,10 +2,20 @@
 
 namespace MangoAPI.DTO.Responses
 {
+    public abstract class ErrorMessage
+    {
+        public int StatusCode { get; set; }
+        
+        public string Title { get; set; }
+        
+        public string Detail { get; set; }
+    }
+    
     public abstract class ResponseBase
     {
         public string Message { get; set; }
         public bool Success { get; set; }
+        public ErrorMessage ErrorMessage { get; set; }
     }
 
     public abstract class ResponseBase<T> : ResponseBase where T : ResponseBase, new()

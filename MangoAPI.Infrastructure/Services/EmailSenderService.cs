@@ -65,7 +65,7 @@ namespace MangoAPI.Infrastructure.Services
                 "Verify email" +
                 "</a>" +
                 "</body>";
-
+            
             message.IsBodyHtml = true;
             message.BodyEncoding = Encoding.UTF8;
 
