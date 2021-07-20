@@ -16,6 +16,7 @@ namespace MangoAPI.DTO.Responses.Chats
             Success = true,
             Chats = chats.Select(x => new UserChat
             {
+                ChatId = x.ChatId,
                 Title = x.Chat.Title,
                 Image = x.Chat.Image,
                 LastMessage = x.Chat.Messages.Any() ? x.Chat.Messages.Last().Content : null,
