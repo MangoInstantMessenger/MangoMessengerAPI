@@ -32,6 +32,11 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Messages
         public async Task<SendMessageResponse> Handle(SendMessageCommand request, CancellationToken cancellationToken)
         {
             var requestMetadata = _requestMetadataService.GetRequestMetadata();
+
+            if (string.IsNullOrEmpty(request.Content) || string.IsNullOrWhiteSpace(request.Content))
+            {
+                return SendMessageResponse.EmptyMessage;
+            }
             
             var user = await GetUserAsync(requestMetadata.UserId, cancellationToken);
             
@@ -132,7 +137,7 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Messages
             return chat;
         }
 
-        async Task<UserEntity> GetUserAsync(string userId, CancellationToken cancellationToken)
+        private async Task<UserEntity> GetUserAsync(string userId, CancellationToken cancellationToken)
         {
             var user = await _db.Users.FirstOrDefaultAsync(x => x.Id == userId, cancellationToken);
             return user;

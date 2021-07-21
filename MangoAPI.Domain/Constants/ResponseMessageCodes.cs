@@ -26,5 +26,6 @@
         public const string InvalidVerificationMethod = "INVALID_VERIFICATION_METHOD";
         public const string DirectChatAlreadyExists = "DIRECT_CHAT_ALREADY_EXISTS";
         public const string InvalidDisplayName = "INVALID_DISPLAY_NAME";
+        public const string EmptyMessage = "CANNOT_SEND_EMPTY_MESSAGE";
     }
 }

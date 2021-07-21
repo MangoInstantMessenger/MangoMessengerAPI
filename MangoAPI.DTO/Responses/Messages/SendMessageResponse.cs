@@ -13,5 +13,12 @@ namespace MangoAPI.DTO.Responses.Messages
             Message = ResponseMessageCodes.Success,
             ChatMessage = message
         };
+
+        public static SendMessageResponse EmptyMessage => new()
+        {
+            Success = false,
+            Message = ResponseMessageCodes.EmptyMessage,
+            ChatMessage = null
+        };
     }
 }

@@ -46,7 +46,7 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Auth
 
             if (!validationResult.Success)
             {
-                return RefreshTokenResponse.InvalidOrEmptyRefreshToken;
+                return RefreshTokenResponse.SuspiciousAction;
             }
 
             var oldRefreshToken = validationResult.RefreshToken;
