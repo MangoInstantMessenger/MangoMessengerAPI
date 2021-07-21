@@ -65,7 +65,7 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Auth
             _postgresDbContext.Remove(oldRefreshToken);
 
             var newRefreshToken = _jwtGenerator.GenerateRefreshToken(requestMetadata.UserAgent,
-                _fingerprintService.GetFingerprint(requestMetadata), requestMetadata.IpAddress);
+                _fingerprintService.GetFingerprint(requestMetadata));
 
             var newJwtToken = _jwtGenerator.GenerateJwtToken(user);
 

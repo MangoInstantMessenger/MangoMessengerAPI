@@ -13,6 +13,6 @@ namespace MangoAPI.Infrastructure.Services
             => new SHA256().VerifyHash(fingerPrint, GetHashtableString(metadata)).Success;
 
         private static string GetHashtableString(RequestMetadata requestMetadata)
-            => $"{requestMetadata.IpAddress}{requestMetadata.UserAgent}{requestMetadata.FingerPrintSalt}";
+            => $"{requestMetadata.UserAgent}{requestMetadata.FingerPrintSalt}";
     }
 }

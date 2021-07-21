@@ -23,10 +23,10 @@ namespace MangoAPI.Infrastructure.Services
 
         public string GenerateJwtToken(UserEntity userEntity)
         {
-            return GenerateJwtToken(userEntity.Email, userEntity.Id);
+            return GenerateJwtToken(userEntity.Id);
         }
 
-        public string GenerateJwtToken(string email,string userId)
+        private string GenerateJwtToken(string userId)
         {
             var claims = new List<Claim>
             {
@@ -34,14 +34,14 @@ namespace MangoAPI.Infrastructure.Services
                 new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                 new(ClaimTypes.NameIdentifier, userId)
             };
-            
+
             var jwtLifetime = EnvironmentConstants.JwtLifeTime;
 
             if (jwtLifetime == null || !int.TryParse(jwtLifetime, out var jwtLifetimeParsed))
             {
                 throw new InvalidOperationException("Jwt lifetime environmental variable error.");
             }
-            
+
             var credentials = new SigningCredentials(_key, SecurityAlgorithms.HmacSha256);
 
             var tokenDescriptor = new SecurityTokenDescriptor
@@ -59,8 +59,8 @@ namespace MangoAPI.Infrastructure.Services
 
             return tokenHandler.WriteToken(token);
         }
-        
-        public RefreshTokenEntity GenerateRefreshToken(string userAgent, string fingerPrint, string ipAddress)
+
+        public RefreshTokenEntity GenerateRefreshToken(string userAgent, string fingerPrint)
         {
             using var rngCryptoServiceProvider = new RNGCryptoServiceProvider();
 
@@ -74,7 +74,7 @@ namespace MangoAPI.Infrastructure.Services
             var randomBytes = new byte[64];
             new Random().NextBytes(randomBytes);
             rngCryptoServiceProvider.GetBytes(randomBytes);
-            
+
             return new RefreshTokenEntity
             {
                 Id = Guid.NewGuid().ToString(),
