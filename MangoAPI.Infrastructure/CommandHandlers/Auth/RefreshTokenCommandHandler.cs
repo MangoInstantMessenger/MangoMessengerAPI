@@ -40,12 +40,15 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Auth
 
             var requestMetadata = _metadataService.GetRequestMetadata();
 
-            var validationResult =
+            VerifyTokenResult validationResult =
                 await _jwtRefreshVerifier.VerifyUserRefreshTokenAsync(request.RefreshTokenId, requestMetadata,
                     cancellationToken);
 
             if (!validationResult.Success)
             {
+                Console.WriteLine($"Fingerprint validated: {validationResult.FingerPrintValidated}");
+                Console.WriteLine($"Agent validated: {validationResult.UserAgentValidated}");
+                Console.WriteLine($"Token expired: {validationResult.RefreshTokenExpired}");
                 return RefreshTokenResponse.SuspiciousAction;
             }
 
