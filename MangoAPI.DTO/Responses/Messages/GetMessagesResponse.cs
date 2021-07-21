@@ -20,8 +20,8 @@ namespace MangoAPI.DTO.Responses.Messages
                 EditedAt = x.Updated,
                 SentAt = x.Created,
                 UserDisplayName = x.User.DisplayName
-            }).ToList(),
-            
+            }).OrderBy(x => x.SentAt).ToList(),
+
             Success = true
         };
     }
