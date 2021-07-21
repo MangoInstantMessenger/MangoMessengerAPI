@@ -58,10 +58,7 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Auth
 
             var browserFingerPrint = _fingerprintService.GetFingerprint(metadata);
 
-            var refreshToken = _jwtGenerator.GenerateRefreshToken(
-                metadata.UserAgent,
-                browserFingerPrint,
-                metadata.IpAddress);
+            var refreshToken = _jwtGenerator.GenerateRefreshToken(metadata.UserAgent, browserFingerPrint);
 
             var jwtToken = _jwtGenerator.GenerateJwtToken(user);
 
