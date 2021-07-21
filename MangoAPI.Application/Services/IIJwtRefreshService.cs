@@ -23,18 +23,16 @@ namespace MangoAPI.Application.Services
 
     public class VerifyTokenResult
     {
-        public bool Success => FingerPrintValidated && IpAddressValidated && UserAgentValidated && !RefreshTokenExpired;
-        public bool IsSuspicious => !Success && (!FingerPrintValidated || !IpAddressValidated || !UserAgentValidated);
+        public bool Success => FingerPrintValidated && UserAgentValidated && !RefreshTokenExpired;
+        public bool IsSuspicious => !Success && (!FingerPrintValidated || !UserAgentValidated);
         public bool RefreshTokenExpired { get; init; }
         public bool FingerPrintValidated { get; init; }
-        public bool IpAddressValidated { get; init; }
         public bool UserAgentValidated { get; init; }
         public RefreshTokenEntity RefreshToken { get; init; }
 
         public static VerifyTokenResult NotVerified => new()
         {
             FingerPrintValidated = false,
-            IpAddressValidated = false,
             RefreshTokenExpired = false,
             UserAgentValidated = false
         };

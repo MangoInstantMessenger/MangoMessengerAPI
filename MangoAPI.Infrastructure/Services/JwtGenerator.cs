@@ -81,7 +81,6 @@ namespace MangoAPI.Infrastructure.Services
                 RefreshToken = Convert.ToBase64String(randomBytes),
                 UserAgent = userAgent,
                 BrowserFingerprint = fingerPrint,
-                IpAddress = ipAddress,
                 Expires = DateTime.UtcNow.AddDays(refreshLifetimeParsed),
                 Created = DateTime.UtcNow,
             };
