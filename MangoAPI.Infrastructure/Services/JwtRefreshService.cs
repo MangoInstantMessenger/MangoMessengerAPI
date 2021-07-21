@@ -33,7 +33,6 @@ namespace MangoAPI.Infrastructure.Services
             return new VerifyTokenResult
             {
                 FingerPrintValidated = _fingerprintService.VerifyFingerPrint(requestMetadata, token.BrowserFingerprint),
-                IpAddressValidated = token.IpAddress == requestMetadata.IpAddress,
                 UserAgentValidated = token.UserAgent == requestMetadata.UserAgent,
                 RefreshTokenExpired = token.IsExpired,
                 RefreshToken = token

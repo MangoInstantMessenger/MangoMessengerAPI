@@ -14,7 +14,6 @@ namespace MangoAPI.Infrastructure.Database.Configurations
             builder.Property(x => x.Created).IsRequired();
             builder.Property(x => x.BrowserFingerprint).IsRequired();
             builder.Property(x => x.UserAgent).IsRequired();
-            builder.Property(x => x.IpAddress).IsRequired();
         }
     }
 }
