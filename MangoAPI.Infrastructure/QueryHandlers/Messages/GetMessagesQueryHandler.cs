@@ -41,9 +41,10 @@ namespace MangoAPI.Infrastructure.QueryHandlers.Messages
             }
 
             var chat = _postgresDbContext.Messages
+                .Include(x => x.User)
                 .Where(x => x.ChatId == request.ChatId)
                 .AsEnumerable();
-            
+
             return GetMessagesResponse.FromSuccess(chat);
         }
     }
