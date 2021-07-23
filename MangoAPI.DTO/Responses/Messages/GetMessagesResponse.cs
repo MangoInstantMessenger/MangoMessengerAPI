@@ -10,7 +10,7 @@ namespace MangoAPI.DTO.Responses.Messages
     {
         public List<Message> Messages { get; set; }
 
-        public static GetMessagesResponse FromSuccess(IEnumerable<MessageEntity> messages) => new()
+        public static GetMessagesResponse FromSuccess(IEnumerable<MessageEntity> messages, UserEntity user) => new()
         {
             Message = ResponseMessageCodes.Success,
 
@@ -19,7 +19,8 @@ namespace MangoAPI.DTO.Responses.Messages
                 MessageText = x.Content,
                 EditedAt = x.Updated?.ToShortTimeString(),
                 SentAt = x.Created.ToShortTimeString(),
-                UserDisplayName = x.User.DisplayName
+                UserDisplayName = x.User.DisplayName,
+                Self = x.User.Id == user.Id
             }).OrderBy(x => x.SentAt).ToList(),
 
             Success = true

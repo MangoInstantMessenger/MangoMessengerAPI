@@ -2,6 +2,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using MangoAPI.Application.Services;
+using MangoAPI.Domain.Entities;
 using MangoAPI.DTO.Queries.Messages;
 using MangoAPI.DTO.Responses.Messages;
 using MangoAPI.Infrastructure.Database;
@@ -45,7 +46,7 @@ namespace MangoAPI.Infrastructure.QueryHandlers.Messages
                 .Where(x => x.ChatId == request.ChatId)
                 .AsEnumerable();
 
-            return GetMessagesResponse.FromSuccess(chat);
+            return GetMessagesResponse.FromSuccess(chat, user);
         }
     }
 }
