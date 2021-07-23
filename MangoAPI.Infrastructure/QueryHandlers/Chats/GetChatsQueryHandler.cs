@@ -33,6 +33,7 @@ namespace MangoAPI.Infrastructure.QueryHandlers.Chats
             var chats = _postgresDbContext.UserChats
                 .Include(x => x.Chat)
                 .ThenInclude(x => x.Messages)
+                .ThenInclude(x => x.User)
                 .Where(x => x.UserId == currentUser.Id)
                 .ToList();
 
