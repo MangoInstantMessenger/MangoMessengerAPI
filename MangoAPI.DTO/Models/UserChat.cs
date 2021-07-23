@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace MangoAPI.DTO.Models
+﻿namespace MangoAPI.DTO.Models
 {
     public class UserChat
     {

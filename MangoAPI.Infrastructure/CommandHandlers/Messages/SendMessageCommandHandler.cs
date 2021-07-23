@@ -61,12 +61,13 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Messages
             
             var messageDto = new Message
             {
-                SentAt = dbMessage.Created,
+                SentAt = dbMessage.Created.ToShortTimeString(),
                 MessageText = dbMessage.Content,
                 UserDisplayName = user.DisplayName
             };
             
             await _chatNotificationService.NotifyChatUsersAsync(chat.Id, messageDto, cancellationToken);
+            
             return SendMessageResponse.FromSuccess(messageDto);
         }
 

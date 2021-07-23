@@ -1,12 +1,10 @@
-﻿using System;
-
-namespace MangoAPI.DTO.Models
+﻿namespace MangoAPI.DTO.Models
 {
     public class Message
     {
         public string UserDisplayName { get; set; }
         public string MessageText { get; set; }
-        public DateTime SentAt { get; set; }
-        public DateTime? EditedAt { get; set; }
+        public string SentAt { get; set; }
+        public string EditedAt { get; set; }
     }
 }

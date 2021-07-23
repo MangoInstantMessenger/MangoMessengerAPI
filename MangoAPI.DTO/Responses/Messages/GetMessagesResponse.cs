@@ -17,8 +17,8 @@ namespace MangoAPI.DTO.Responses.Messages
             Messages = messages.Select(x => new Message
             {
                 MessageText = x.Content,
-                EditedAt = x.Updated,
-                SentAt = x.Created,
+                EditedAt = x.Updated?.ToShortTimeString(),
+                SentAt = x.Created.ToShortTimeString(),
                 UserDisplayName = x.User.DisplayName
             }).OrderBy(x => x.SentAt).ToList(),
 
