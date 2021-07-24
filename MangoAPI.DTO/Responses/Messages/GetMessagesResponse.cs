@@ -14,14 +14,15 @@ namespace MangoAPI.DTO.Responses.Messages
         {
             Message = ResponseMessageCodes.Success,
 
-            Messages = messages.Select(x => new Message
-            {
-                MessageText = x.Content,
-                EditedAt = x.Updated?.ToShortTimeString(),
-                SentAt = x.Created.ToShortTimeString(),
-                UserDisplayName = x.User.DisplayName,
-                Self = x.User.Id == user.Id
-            }).OrderBy(x => x.SentAt).ToList(),
+            Messages = messages.OrderBy(x => x.Created)
+                .Select(x => new Message
+                {
+                    MessageText = x.Content,
+                    EditedAt = x.Updated?.ToShortTimeString(),
+                    SentAt = x.Created.ToShortTimeString(),
+                    UserDisplayName = x.User.DisplayName,
+                    Self = x.User.Id == user.Id
+                }).ToList(),
 
             Success = true
         };
