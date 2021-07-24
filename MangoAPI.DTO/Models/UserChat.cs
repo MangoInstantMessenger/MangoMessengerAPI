@@ -8,5 +8,6 @@
         public string LastMessageAuthor { get; set; }
         public string LastMessage { get; set; }
         public string LastMessageAt { get; set; }
+        public int MembersCount { get; set; }
     }
 }

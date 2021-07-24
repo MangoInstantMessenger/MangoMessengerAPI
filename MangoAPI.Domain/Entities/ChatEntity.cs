@@ -15,7 +15,7 @@ namespace MangoAPI.Domain.Entities
         public DateTime Created { get; set; }
         public DateTime? Updated { get; set; }
 
-        public int MembersCount => ChatUsers.Count;
+        public int MembersCount { get; set; }
 
         public virtual ICollection<MessageEntity> Messages { get; set; }
         public virtual ICollection<UserChatEntity> ChatUsers { get; set; }
