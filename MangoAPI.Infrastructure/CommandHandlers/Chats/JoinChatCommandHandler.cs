@@ -25,7 +25,6 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Chats
 
         public async Task<JoinChatResponse> Handle(JoinChatCommand request, CancellationToken cancellationToken)
         {
-
             var currentUser = await _metadataService.GetUserFromRequestMetadataAsync();
 
             if (currentUser == null)
@@ -41,13 +40,13 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Chats
             {
                 return JoinChatResponse.UserAlreadyJoined;
             }
-            
-            var chatExists = await _postgresDbContext.Chats
-                .AnyAsync(x =>
+
+            var chat = await _postgresDbContext.Chats
+                .FirstOrDefaultAsync(x =>
                     x.Id == request.ChatId && x.ChatType != ChatType.DirectChat &&
                     x.ChatType != ChatType.PrivateChannel, cancellationToken);
 
-            if (!chatExists)
+            if (chat == null)
             {
                 return JoinChatResponse.ChatNotFound;
             }
@@ -59,6 +58,9 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Chats
                 RoleId = UserRole.User
             }, cancellationToken);
 
+            chat.MembersCount += 1;
+
+            _postgresDbContext.Update(chat);
             await _postgresDbContext.SaveChangesAsync(cancellationToken);
 
             return JoinChatResponse.SuccessResponse;

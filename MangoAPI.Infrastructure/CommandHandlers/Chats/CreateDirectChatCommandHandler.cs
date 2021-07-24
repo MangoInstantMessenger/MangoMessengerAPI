@@ -44,7 +44,8 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Chats
             {
                 ChatType = ChatType.DirectChat,
                 Title = $"{currentUser.DisplayName} / {partner.DisplayName}",
-                Created = DateTime.Now
+                Created = DateTime.Now,
+                MembersCount = 2
             };
 
             var userPrivateChats = _postgresDbContext.Chats
@@ -54,7 +55,7 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Chats
 
             var directChatAlreadyExists =
                 userPrivateChats.Any(x => x.ChatUsers
-                        .Any(t => t.UserId == partner.Id));
+                    .Any(t => t.UserId == partner.Id));
 
             if (directChatAlreadyExists)
             {
