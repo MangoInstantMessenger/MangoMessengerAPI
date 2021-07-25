@@ -9,6 +9,7 @@ using MangoAPI.DTO.Models;
 using MangoAPI.DTO.Responses.Messages;
 using MangoAPI.Infrastructure.Database;
 using MediatR;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace MangoAPI.Infrastructure.CommandHandlers.Messages
@@ -16,10 +17,13 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Messages
     public class SendMessageCommandHandler : IRequestHandler<SendMessageCommand, SendMessageResponse>
     {
         private readonly MangoPostgresDbContext _mangoPostgresDbContext;
+        private readonly UserManager<UserEntity> _userManager;
 
-        public SendMessageCommandHandler(MangoPostgresDbContext mangoPostgresDbContext)
+        public SendMessageCommandHandler(MangoPostgresDbContext mangoPostgresDbContext,
+            UserManager<UserEntity> userManager)
         {
             _mangoPostgresDbContext = mangoPostgresDbContext;
+            _userManager = userManager;
         }
 
         public async Task<SendMessageResponse> Handle(SendMessageCommand request, CancellationToken cancellationToken)
@@ -29,8 +33,7 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Messages
                 return SendMessageResponse.EmptyMessage;
             }
 
-            var user = await _mangoPostgresDbContext.Users.FirstOrDefaultAsync(x => x.Id == request.UserId,
-                cancellationToken);
+            var user = await _userManager.FindByIdAsync(request.UserId);
 
             if (user == null)
             {
@@ -61,7 +64,7 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Messages
                 Updated = DateTime.UtcNow
             };
 
-            messageEntity = _mangoPostgresDbContext.Messages.Add(messageEntity).Entity;
+            await _mangoPostgresDbContext.Messages.AddAsync(messageEntity, cancellationToken);
             await _mangoPostgresDbContext.SaveChangesAsync(cancellationToken);
 
             var messageDto = new Message
