@@ -1,8 +1,18 @@
-﻿namespace MangoAPI.DTO.CommandModels.Chats
+﻿using MangoAPI.DTO.ApiCommands.Chats;
+
+namespace MangoAPI.DTO.CommandModels.Chats
 {
     public class JoinChatCommandModel
     {
         public string ChatId { get; set; }
-        public string UserId { get; set; }
+    }
+
+    public static class JoinChatCommandMapper
+    {
+        public static JoinChatCommand ToJoinChatCommand(this JoinChatCommandModel model) =>
+            new JoinChatCommand()
+            {
+                ChatId = model.ChatId
+            };
     }
 }

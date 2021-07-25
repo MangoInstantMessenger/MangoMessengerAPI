@@ -10,6 +10,6 @@ namespace MangoAPI.WebApp.Interfaces
         Task<IActionResult> GetChatMessages(string chatId, CancellationToken cancellationToken);
         Task<IActionResult> SendMessage(SendMessageCommandModel commandModel, CancellationToken cancellationToken);
         Task<IActionResult> EditMessage(EditMessageCommandModel commandModel, CancellationToken cancellationToken);
-        Task<IActionResult> DeleteMessage(string messageId, CancellationToken cancellationToken);
+        Task<IActionResult> DeleteMessage(DeleteMessageCommandModel commandModel, CancellationToken cancellationToken);
     }
 }

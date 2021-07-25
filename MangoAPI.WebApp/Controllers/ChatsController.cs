@@ -1,7 +1,7 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
+using MangoAPI.DTO.ApiQueries.Chats;
 using MangoAPI.DTO.CommandModels.Chats;
-using MangoAPI.DTO.QueryModels.Chats;
 using MangoAPI.DTO.Responses.Chats;
 using MangoAPI.WebApp.Extensions;
 using MangoAPI.WebApp.Interfaces;
@@ -29,7 +29,7 @@ namespace MangoAPI.WebApp.Controllers
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> GetChats(CancellationToken cancellationToken)
         {
-            var request = new GetChatsQueryModel {UserId = HttpContext.User.GetUserId()};
+            var request = new GetChatsQuery {UserId = HttpContext.User.GetUserId()};
             return await RequestAsync(request, cancellationToken);
         }
 
@@ -39,8 +39,13 @@ namespace MangoAPI.WebApp.Controllers
         [ProducesResponseType(typeof(CreateChatEntityResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(CreateChatEntityResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public async Task<IActionResult> CreateChat(CreateGroupCommandModel commandModel, CancellationToken cancellationToken) =>
-            await RequestAsync(commandModel, cancellationToken);
+        public async Task<IActionResult> CreateChat(CreateGroupCommandModel commandModel,
+            CancellationToken cancellationToken)
+        {
+            var command = commandModel.ToCreateGroupCommand();
+            command.UserId = HttpContext.User.GetUserId();
+            return await RequestAsync(command, cancellationToken);
+        }
 
         [Authorize]
         [HttpPost("direct-chat")]
@@ -49,16 +54,25 @@ namespace MangoAPI.WebApp.Controllers
         [ProducesResponseType(typeof(CreateChatEntityResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> CreateDirectChat(CreateDirectChatCommandModel commandModel,
-            CancellationToken cancellationToken) =>
-            await RequestAsync(commandModel, cancellationToken);
+            CancellationToken cancellationToken)
+        {
+            var command = commandModel.ToCreateDirectChatCommand();
+            command.UserId = HttpContext.User.GetUserId();
+            return await RequestAsync(command, cancellationToken);
+        }
 
         [Authorize]
-        [HttpPost("group/join")]
+        [HttpPost("join")]
         [SwaggerOperation(Summary = "Joins to the particular public group.")]
         [ProducesResponseType(typeof(JoinChatResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(JoinChatResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public async Task<IActionResult> JoinChat(JoinChatCommandModel commandModel, CancellationToken cancellationToken) =>
-            await RequestAsync(commandModel, cancellationToken);
+        public async Task<IActionResult> JoinChat(JoinChatCommandModel commandModel,
+            CancellationToken cancellationToken)
+        {
+            var command = commandModel.ToJoinChatCommand();
+            command.UserId = HttpContext.User.GetUserId();
+            return await RequestAsync(command, cancellationToken);
+        }
     }
 }

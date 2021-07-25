@@ -1,4 +1,5 @@
-﻿using MangoAPI.DTO.Enums;
+﻿using MangoAPI.DTO.ApiCommands.Auth;
+using MangoAPI.DTO.Enums;
 
 namespace MangoAPI.DTO.CommandModels.Auth
 {
@@ -10,5 +11,19 @@ namespace MangoAPI.DTO.CommandModels.Auth
         public string Password { get; set; }
         public VerificationMethod VerificationMethod { get; set; }
         public bool TermsAccepted { get; set; }
+    }
+
+    public static class RegisterCommandMapper
+    {
+        public static RegisterCommand ToRegisterCommand(this RegisterCommandModel model) =>
+            new RegisterCommand
+            {
+                PhoneNumber = model.PhoneNumber,
+                Email = model.Email,
+                DisplayName = model.DisplayName,
+                Password = model.Password,
+                VerificationMethod = model.VerificationMethod,
+                TermsAccepted = model.TermsAccepted
+            };
     }
 }

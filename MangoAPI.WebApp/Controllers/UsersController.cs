@@ -1,6 +1,6 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
-using MangoAPI.DTO.QueryModels.Users;
+using MangoAPI.DTO.ApiQueries.Users;
 using MangoAPI.DTO.Responses.Users;
 using MangoAPI.WebApp.Interfaces;
 using MediatR;
@@ -25,9 +25,9 @@ namespace MangoAPI.WebApp.Controllers
         [ProducesResponseType(typeof(FindUserResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(FindUserResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public async Task<IActionResult> FindUser([FromRoute] string userId, CancellationToken cancellationToken)
+        public async Task<IActionResult> GetUserById([FromRoute] string userId, CancellationToken cancellationToken)
         {
-            var query = new FindUserQueryModel {UserId = userId};
+            var query = new FindUserQuery {UserId = userId};
             return await RequestAsync(query, cancellationToken);
         }
     }

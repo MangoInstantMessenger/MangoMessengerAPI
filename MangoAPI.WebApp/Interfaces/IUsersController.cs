@@ -6,6 +6,6 @@ namespace MangoAPI.WebApp.Interfaces
 {
     public interface IUsersController
     {
-        Task<IActionResult> FindUser(string userId, CancellationToken cancellationToken);
+        Task<IActionResult> GetUserById(string userId, CancellationToken cancellationToken);
     }
 }

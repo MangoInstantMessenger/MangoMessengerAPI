@@ -1,4 +1,5 @@
 ﻿using MangoAPI.Domain.Enums;
+using MangoAPI.DTO.ApiCommands.Chats;
 
 namespace MangoAPI.DTO.CommandModels.Chats
 {
@@ -6,6 +7,15 @@ namespace MangoAPI.DTO.CommandModels.Chats
     {
         public ChatType GroupType { get; set; }
         public string GroupTitle { get; set; }
-        public string UserId { get; set; }
+    }
+
+    public static class CreateGroupCommandMapper
+    {
+        public static CreateGroupCommand ToCreateGroupCommand(this CreateGroupCommandModel model) =>
+            new CreateGroupCommand()
+            {
+                GroupType = model.GroupType,
+                GroupTitle = model.GroupTitle
+            };
     }
 }
