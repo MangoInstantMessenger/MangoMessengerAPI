@@ -17,20 +17,16 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Auth
         private readonly SignInManager<UserEntity> _signInManager;
         private readonly IJwtGenerator _jwtGenerator;
         private readonly MangoPostgresDbContext _postgresDbContext;
-        private readonly IRequestMetadataService _metadataService;
-        private readonly IFingerprintService _fingerprintService;
 
-        public LoginCommandHandler(UserManager<UserEntity> userManager, SignInManager<UserEntity> signInManager,
-            IJwtGenerator jwtGenerator, MangoPostgresDbContext postgresDbContext,
-            IRequestMetadataService metadataService,
-            IFingerprintService fingerprintService)
+        public LoginCommandHandler(UserManager<UserEntity> userManager,
+            SignInManager<UserEntity> signInManager,
+            IJwtGenerator jwtGenerator,
+            MangoPostgresDbContext postgresDbContext)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _jwtGenerator = jwtGenerator;
             _postgresDbContext = postgresDbContext;
-            _metadataService = metadataService;
-            _fingerprintService = fingerprintService;
         }
 
         public async Task<LoginResponse> Handle(LoginCommand request, CancellationToken cancellationToken)
@@ -54,18 +50,14 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Auth
                 return LoginResponse.UserUnverified;
             }
 
-            var metadata = _metadataService.GetRequestMetadata();
-
-            var browserFingerPrint = _fingerprintService.GetFingerprint(metadata);
-
-            var refreshToken = _jwtGenerator.GenerateRefreshToken(metadata.UserAgent, browserFingerPrint);
+            var refreshToken = _jwtGenerator.GenerateRefreshToken();
 
             var jwtToken = _jwtGenerator.GenerateJwtToken(user);
 
             refreshToken.UserId = user.Id;
 
             var oldUserTokenSameDevice = await _postgresDbContext.RefreshTokens
-                .FirstOrDefaultAsync(x => x.UserId == user.Id && x.BrowserFingerprint == browserFingerPrint,
+                .FirstOrDefaultAsync(x => x.UserId == user.Id,
                     cancellationToken);
 
             if (oldUserTokenSameDevice != null)

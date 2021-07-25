@@ -21,7 +21,7 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Auth
         private readonly MangoPostgresDbContext _postgresDbContext;
         private readonly IEmailSenderService _emailSenderService;
 
-        public RegisterCommandHandler(UserManager<UserEntity> userManager, 
+        public RegisterCommandHandler(UserManager<UserEntity> userManager,
             MangoPostgresDbContext postgresDbContext, IEmailSenderService emailSenderService)
         {
             _userManager = userManager;
@@ -47,7 +47,7 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Auth
             {
                 return RegisterResponse.InvalidDisplayName;
             }
-            
+
             var findByPhone =
                 await _postgresDbContext.Users.FirstOrDefaultAsync(x => x.PhoneNumber == request.PhoneNumber,
                     cancellationToken);
@@ -62,7 +62,7 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Auth
                 return RegisterResponse.TermsNotAccepted;
             }
 
-            var userEntity = new UserEntity
+            var user = new UserEntity
             {
                 PhoneNumber = request.PhoneNumber,
                 DisplayName = request.DisplayName,
@@ -70,7 +70,7 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Auth
                 Email = request.Email
             };
 
-            
+
             if (request.VerificationMethod == VerificationMethod.Phone)
             {
                 var codes = _postgresDbContext.Users
@@ -79,18 +79,18 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Auth
 
                 var confirmationCode = new Random().Next(100000, 999999);
 
-                while (codes.Contains(userEntity.ConfirmationCode))
+                while (codes.Contains(user.ConfirmationCode))
                 {
                     confirmationCode = new Random().Next(100000, 999999);
                 }
 
-                userEntity.ConfirmationCode = confirmationCode;
+                user.ConfirmationCode = confirmationCode;
             }
 
             switch (request.VerificationMethod)
             {
                 case VerificationMethod.Email:
-                    await _emailSenderService.SendVerificationEmailAsync(userEntity, cancellationToken);
+                    await _emailSenderService.SendVerificationEmailAsync(user, cancellationToken);
                     break;
                 case VerificationMethod.Phone:
                     // TODO: Send Phone Code
@@ -99,14 +99,14 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Auth
                     return RegisterResponse.InvalidVerificationMethod;
             }
 
-            var result = await _userManager.CreateAsync(userEntity, request.Password);
+            var result = await _userManager.CreateAsync(user, request.Password);
 
             if (!result.Succeeded)
             {
                 return RegisterResponse.WeakPassword;
             }
 
-            return RegisterResponse.SuccessResponse;
+            return RegisterResponse.SuccessResponse(user);
         }
     }
 }

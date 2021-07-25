@@ -12,8 +12,6 @@ namespace MangoAPI.Infrastructure.Database.Configurations
             builder.Property(x => x.RefreshToken).IsRequired();
             builder.Property(x => x.Expires).IsRequired();
             builder.Property(x => x.Created).IsRequired();
-            builder.Property(x => x.BrowserFingerprint).IsRequired();
-            builder.Property(x => x.UserAgent).IsRequired();
         }
     }
 }

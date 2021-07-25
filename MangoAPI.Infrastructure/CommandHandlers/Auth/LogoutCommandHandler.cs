@@ -1,48 +1,45 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
-using MangoAPI.Application.Services;
+using MangoAPI.Domain.Entities;
 using MangoAPI.DTO.Commands.Auth;
 using MangoAPI.DTO.Responses.Auth;
+using MangoAPI.Infrastructure.Database;
 using MediatR;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace MangoAPI.Infrastructure.CommandHandlers.Auth
 {
     public class LogoutCommandHandler : IRequestHandler<LogoutCommand, LogoutResponse>
     {
-        private readonly IJwtRefreshService _jwtRefreshService;
-        private readonly IRequestMetadataService _metadataService;
+        private readonly MangoPostgresDbContext _postgresDbContext;
+        private readonly UserManager<UserEntity> _userManager;
 
-        public LogoutCommandHandler(IJwtRefreshService jwtRefreshService, IRequestMetadataService metadataService)
+        public LogoutCommandHandler(MangoPostgresDbContext postgresDbContext, UserManager<UserEntity> userManager)
         {
-            _jwtRefreshService = jwtRefreshService;
-            _metadataService = metadataService;
+            _postgresDbContext = postgresDbContext;
+            _userManager = userManager;
         }
 
         public async Task<LogoutResponse> Handle(LogoutCommand request, CancellationToken cancellationToken)
         {
-            var requestMetadata = _metadataService.GetRequestMetadata();
+            var token = await _postgresDbContext.RefreshTokens
+                .FirstOrDefaultAsync(x => x.Id == request.RefreshTokenId, cancellationToken);
 
-            var validationResult = await _jwtRefreshService.VerifyUserRefreshTokenAsync(request.RefreshTokenId,
-                requestMetadata,
-                cancellationToken);
-
-            if (validationResult.IsSuspicious)
-            {
-                return LogoutResponse.SuspiciousAction;
-            }
-
-            if (!validationResult.Success)
+            if (token is null)
             {
                 return LogoutResponse.InvalidOrEmptyRefreshToken;
             }
 
-            var result = await _jwtRefreshService.RevokeRefreshTokenAsync(request.RefreshTokenId,
-                cancellationToken);
+            var user = await _userManager.FindByIdAsync(token.UserId);
 
-            if (!result.Success)
+            if (user is null)
             {
-                return LogoutResponse.InvalidOrEmptyRefreshToken;
+                return LogoutResponse.UserNotFound;
             }
+
+            _postgresDbContext.RefreshTokens.Remove(token);
+            await _postgresDbContext.SaveChangesAsync(cancellationToken);
 
             return LogoutResponse.SuccessResponse;
         }
