@@ -42,7 +42,7 @@ namespace MangoAPI.Infrastructure.Services
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(claims),
-                Expires = DateTime.Now.AddMinutes(jwtLifetimeParsed),
+                Expires = DateTime.UtcNow.AddMinutes(jwtLifetimeParsed),
                 SigningCredentials = credentials,
                 Issuer = EnvironmentConstants.MangoIssuer,
                 Audience = EnvironmentConstants.MangoAudience
