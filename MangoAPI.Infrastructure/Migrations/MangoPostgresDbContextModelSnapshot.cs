@@ -21,10 +21,8 @@ namespace MangoAPI.Infrastructure.Migrations
 
             modelBuilder.Entity("MangoAPI.Domain.Entities.ChatEntity", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+                    b.Property<string>("Id")
+                        .HasColumnType("text");
 
                     b.Property<int>("ChatType")
                         .HasColumnType("integer");
@@ -32,24 +30,15 @@ namespace MangoAPI.Infrastructure.Migrations
                     b.Property<DateTime>("Created")
                         .HasColumnType("timestamp without time zone");
 
-                    b.Property<string>("Description")
-                        .HasColumnType("text");
-
                     b.Property<string>("Image")
                         .HasColumnType("text");
 
                     b.Property<int>("MembersCount")
                         .HasColumnType("integer");
 
-                    b.Property<string>("Tag")
-                        .HasColumnType("text");
-
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasColumnType("text");
-
-                    b.Property<DateTime?>("Updated")
-                        .HasColumnType("timestamp without time zone");
 
                     b.HasKey("Id");
 
@@ -58,13 +47,11 @@ namespace MangoAPI.Infrastructure.Migrations
 
             modelBuilder.Entity("MangoAPI.Domain.Entities.MessageEntity", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+                    b.Property<string>("Id")
+                        .HasColumnType("text");
 
-                    b.Property<int>("ChatId")
-                        .HasColumnType("integer");
+                    b.Property<string>("ChatId")
+                        .HasColumnType("text");
 
                     b.Property<string>("Content")
                         .IsRequired()
@@ -72,9 +59,6 @@ namespace MangoAPI.Infrastructure.Migrations
 
                     b.Property<DateTime>("Created")
                         .HasColumnType("timestamp without time zone");
-
-                    b.Property<bool>("IsRead")
-                        .HasColumnType("boolean");
 
                     b.Property<DateTime?>("Updated")
                         .HasColumnType("timestamp without time zone");
@@ -118,8 +102,8 @@ namespace MangoAPI.Infrastructure.Migrations
 
             modelBuilder.Entity("MangoAPI.Domain.Entities.UserChatEntity", b =>
                 {
-                    b.Property<int>("ChatId")
-                        .HasColumnType("integer");
+                    b.Property<string>("ChatId")
+                        .HasColumnType("text");
 
                     b.Property<string>("UserId")
                         .HasColumnType("text");
@@ -344,9 +328,7 @@ namespace MangoAPI.Infrastructure.Migrations
                 {
                     b.HasOne("MangoAPI.Domain.Entities.ChatEntity", "Chat")
                         .WithMany("Messages")
-                        .HasForeignKey("ChatId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ChatId");
 
                     b.HasOne("MangoAPI.Domain.Entities.UserEntity", "User")
                         .WithMany("Messages")

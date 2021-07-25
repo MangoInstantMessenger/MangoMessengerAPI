@@ -2,6 +2,7 @@
 {
     public class Message
     {
+        public string MessageId { get; set; }
         public string UserDisplayName { get; set; }
         public string MessageText { get; set; }
         public string SentAt { get; set; }

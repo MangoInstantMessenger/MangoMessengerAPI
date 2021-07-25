@@ -3,7 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using MangoAPI.Domain.Entities;
 using MangoAPI.Domain.Enums;
-using MangoAPI.DTO.Commands.Chats;
+using MangoAPI.DTO.ApiCommands.Chats;
 using MangoAPI.DTO.Responses.Chats;
 using MangoAPI.Infrastructure.Database;
 using MediatR;
@@ -44,6 +44,7 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Chats
 
             var group = new ChatEntity
             {
+                Id = Guid.NewGuid().ToString(),
                 ChatType = request.GroupType,
                 Title = request.GroupTitle,
                 Created = DateTime.UtcNow,
@@ -51,7 +52,6 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Chats
             };
 
             await _postgresDbContext.Chats.AddAsync(group, cancellationToken);
-            await _postgresDbContext.SaveChangesAsync(cancellationToken);
 
             _postgresDbContext.UserChats.Add(new UserChatEntity
             {
@@ -60,7 +60,7 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Chats
 
             await _postgresDbContext.SaveChangesAsync(cancellationToken);
 
-            return CreateChatEntityResponse.SuccessResponse;
+            return CreateChatEntityResponse.FromSuccess(group);
         }
     }
 }

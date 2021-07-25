@@ -5,7 +5,7 @@ namespace MangoAPI.Domain.Entities
     public class UserChatEntity
     {
         public string UserId { get; set; }
-        public int ChatId { get; set; }
+        public string ChatId { get; set; }
         public UserRole RoleId { get; set; }
 
         public UserEntity User { get; set; }

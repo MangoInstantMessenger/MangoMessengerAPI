@@ -2,7 +2,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using MangoAPI.Domain.Entities;
-using MangoAPI.DTO.Queries.Chats;
+using MangoAPI.DTO.ApiQueries.Chats;
 using MangoAPI.DTO.Responses.Chats;
 using MangoAPI.Infrastructure.Database;
 using MediatR;
@@ -31,12 +31,12 @@ namespace MangoAPI.Infrastructure.QueryHandlers.Chats
                 return GetChatsResponse.UserNotFound;
             }
 
-            var chats = _postgresDbContext.UserChats
+            var chats = await _postgresDbContext.UserChats
                 .Include(x => x.Chat)
                 .ThenInclude(x => x.Messages)
                 .ThenInclude(x => x.User)
                 .Where(x => x.UserId == currentUser.Id)
-                .ToList();
+                .ToListAsync(cancellationToken);
 
             return GetChatsResponse.FromSuccess(chats);
         }

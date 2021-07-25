@@ -1,8 +1,9 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
-using MangoAPI.DTO.Commands.Messages;
-using MangoAPI.DTO.Queries.Messages;
+using MangoAPI.DTO.ApiQueries.Messages;
+using MangoAPI.DTO.CommandModels.Messages;
 using MangoAPI.DTO.Responses.Messages;
+using MangoAPI.WebApp.Extensions;
 using MangoAPI.WebApp.Interfaces;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -13,6 +14,7 @@ using Swashbuckle.AspNetCore.Annotations;
 namespace MangoAPI.WebApp.Controllers
 {
     [ApiController]
+    [Authorize]
     [Route("api/messages")]
     public class MessagesController : ApiControllerBase, IMessagesController
     {
@@ -20,45 +22,53 @@ namespace MangoAPI.WebApp.Controllers
         {
         }
 
-        [Authorize]
-        [HttpGet("{chatId:int}")]
+        [HttpGet("{chatId}")]
         [SwaggerOperation(Summary = "Returns chat including messages by chat ID.")]
         [ProducesResponseType(typeof(GetMessagesResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(GetMessagesResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public async Task<IActionResult> GetChatMessages([FromRoute] int chatId, CancellationToken cancellationToken)
+        public async Task<IActionResult> GetChatMessages([FromRoute] string chatId, CancellationToken cancellationToken)
         {
-            var query = new GetMessagesQuery {ChatId = chatId};
+            var query = new GetMessagesQuery {ChatId = chatId, UserId = HttpContext.User.GetUserId()};
             return await RequestAsync(query, cancellationToken);
         }
 
-        [Authorize]
         [HttpPost]
         [SwaggerOperation(Summary = "Sends message to particular chat.")]
         [ProducesResponseType(typeof(SendMessageResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(SendMessageResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public async Task<IActionResult> SendMessage(SendMessageCommand command, CancellationToken cancellationToken) =>
-            await RequestAsync(command, cancellationToken);
-        
-        [Authorize]
+        public async Task<IActionResult> SendMessage(SendMessageCommandModel commandModel,
+            CancellationToken cancellationToken)
+        {
+            var command = commandModel.ToSendMessageCommand();
+            command.UserId = HttpContext.User.GetUserId();
+            return await RequestAsync(command, cancellationToken);
+        }
+
         [HttpPut]
         [SwaggerOperation(Summary = "Updates particular message.")]
         [ProducesResponseType(typeof(EditMessageResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(EditMessageResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public async Task<IActionResult> EditMessage(EditMessageCommand command, CancellationToken cancellationToken) =>
-            await RequestAsync(command, cancellationToken);
+        public async Task<IActionResult> EditMessage(EditMessageCommandModel commandModel,
+            CancellationToken cancellationToken)
+        {
+            var command = commandModel.ToEditMessageCommand();
+            command.UserId = HttpContext.User.GetUserId();
+            return await RequestAsync(command, cancellationToken);
+        }
 
-        [Authorize]
-        [HttpDelete("{messageId:int}")]
+        [HttpDelete]
         [SwaggerOperation(Summary = "Deletes particular message by ID.")]
         [ProducesResponseType(typeof(DeleteMessageResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(DeleteMessageResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public async Task<IActionResult> DeleteMessage([FromRoute] int messageId, CancellationToken cancellationToken)
+        public async Task<IActionResult> DeleteMessage(DeleteMessageCommandModel commandModel,
+            CancellationToken cancellationToken)
         {
-            var command = new DeleteMessageCommand {MessageId = messageId};
+            var command = commandModel.ToDeleteMessageCommand();
+            command.UserId = HttpContext.User.GetUserId();
             return await RequestAsync(command, cancellationToken);
         }
     }
