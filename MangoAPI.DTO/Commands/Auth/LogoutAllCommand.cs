@@ -6,5 +6,6 @@ namespace MangoAPI.DTO.Commands.Auth
     public class LogoutAllCommand : IRequest<LogoutResponse>
     {
         public string RefreshTokenId { get; set; }
+        public string UserId { get; set; }
     }
 }

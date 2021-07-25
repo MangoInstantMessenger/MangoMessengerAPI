@@ -1,10 +1,13 @@
 ﻿using MangoAPI.Domain.Constants;
+using MangoAPI.Domain.Entities;
 
 namespace MangoAPI.DTO.Responses.Auth
 {
     public class RegisterResponse : AuthResponseBase<RegisterResponse>
     {
-        public static RegisterResponse UserAlreadyRegistered => new ()
+        public string UserId { get; set; }
+
+        public static RegisterResponse UserAlreadyRegistered => new()
         {
             Success = false,
             Message = ResponseMessageCodes.UserAlreadyRegistered
@@ -16,14 +19,15 @@ namespace MangoAPI.DTO.Responses.Auth
             Message = ResponseMessageCodes.InvalidEmail
         };
 
-        public static RegisterResponse TermsNotAccepted => new ()
+        public static RegisterResponse TermsNotAccepted => new()
         {
             Success = false,
             Message = ResponseMessageCodes.TermsNotAccepted
         };
-        
-        public new static RegisterResponse SuccessResponse => new ()
+
+        public static RegisterResponse SuccessResponse(UserEntity userEntity) => new()
         {
+            UserId = userEntity.Id,
             Success = true,
             Message = ResponseMessageCodes.Success
         };
