@@ -43,7 +43,7 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Chats
             {
                 ChatType = request.GroupType,
                 Title = request.GroupTitle,
-                Created = DateTime.Now,
+                Created = DateTime.UtcNow,
                 MembersCount = 1
             };
 

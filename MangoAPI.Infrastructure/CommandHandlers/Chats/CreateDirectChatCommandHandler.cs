@@ -41,7 +41,7 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Chats
             {
                 ChatType = ChatType.DirectChat,
                 Title = $"{currentUser.DisplayName} / {partner.DisplayName}",
-                Created = DateTime.Now,
+                Created = DateTime.UtcNow,
                 MembersCount = 2
             };
 
