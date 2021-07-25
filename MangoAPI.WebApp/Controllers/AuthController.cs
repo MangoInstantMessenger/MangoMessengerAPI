@@ -13,13 +13,10 @@ namespace MangoAPI.WebApp.Controllers
 {
     [ApiController]
     [Route("api/auth")]
-    public class AuthController : ControllerBase, IAuthController
+    public class AuthController : ApiControllerBase, IAuthController
     {
-        private readonly IMediator _mediator;
-
-        public AuthController(IMediator mediator)
+        public AuthController(IMediator mediator) : base(mediator)
         {
-            _mediator = mediator;
         }
 
         [AllowAnonymous]
@@ -29,16 +26,7 @@ namespace MangoAPI.WebApp.Controllers
         [ProducesResponseType(typeof(LoginResponse), StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> LoginAsync([FromBody] LoginCommand command,
             CancellationToken cancellationToken)
-        {
-            var response = await _mediator.Send(command, cancellationToken);
-
-            if (!response.Success)
-            {
-                return BadRequest(response);
-            }
-
-            return Ok(response);
-        }
+            => await RequestAsync(command, cancellationToken);
 
         [AllowAnonymous]
         [HttpPost("register")]
@@ -46,17 +34,8 @@ namespace MangoAPI.WebApp.Controllers
         [ProducesResponseType(typeof(RegisterResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(RegisterResponse), StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> RegisterAsync([FromBody] RegisterCommand command,
-            CancellationToken cancellationToken)
-        {
-            var response = await _mediator.Send(command, cancellationToken);
-
-            if (!response.Success)
-            {
-                return BadRequest(response);
-            }
-
-            return Ok(response);
-        }
+            CancellationToken cancellationToken) =>
+            await RequestAsync(command, cancellationToken);
 
         [AllowAnonymous]
         [HttpGet("verify-email")]
@@ -69,14 +48,7 @@ namespace MangoAPI.WebApp.Controllers
             CancellationToken cancellationToken)
         {
             var command = new VerifyEmailCommand {Email = email, UserId = userId};
-            var response = await _mediator.Send(command, cancellationToken);
-
-            if (!response.Success)
-            {
-                return BadRequest(response);
-            }
-
-            return Ok(response);
+            return await RequestAsync(command, cancellationToken);
         }
 
         [AllowAnonymous]
@@ -86,17 +58,8 @@ namespace MangoAPI.WebApp.Controllers
         [ProducesResponseType(typeof(VerifyPhoneResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(VerifyPhoneResponse), StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> VerifyPhoneCodeAsync([FromBody] VerifyPhoneCommand command,
-            CancellationToken cancellationToken)
-        {
-            var response = await _mediator.Send(command, cancellationToken);
-
-            if (!response.Success)
-            {
-                return BadRequest(response);
-            }
-
-            return Ok(response);
-        }
+            CancellationToken cancellationToken) =>
+            await RequestAsync(command, cancellationToken);
 
         [AllowAnonymous]
         [HttpPost("refresh-token")]
@@ -105,17 +68,8 @@ namespace MangoAPI.WebApp.Controllers
         [ProducesResponseType(typeof(RefreshTokenResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> RefreshTokenAsync(RefreshTokenCommand command,
-            CancellationToken cancellationToken)
-        {
-            var result = await _mediator.Send(command, cancellationToken);
-
-            if (!result.Success)
-            {
-                return BadRequest(result);
-            }
-
-            return Ok(result);
-        }
+            CancellationToken cancellationToken) =>
+            await RequestAsync(command, cancellationToken);
 
         [Authorize]
         [HttpPost("logout")]
@@ -123,17 +77,8 @@ namespace MangoAPI.WebApp.Controllers
         [ProducesResponseType(typeof(LogoutResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(LogoutResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(LogoutResponse), StatusCodes.Status401Unauthorized)]
-        public async Task<IActionResult> LogoutAsync(LogoutCommand command, CancellationToken cancellationToken)
-        {
-            var response = await _mediator.Send(command, cancellationToken);
-
-            if (!response.Success)
-            {
-                return BadRequest(response);
-            }
-
-            return Ok(response);
-        }
+        public async Task<IActionResult> LogoutAsync(LogoutCommand command, CancellationToken cancellationToken) =>
+            await RequestAsync(command, cancellationToken);
 
         [Authorize]
         [HttpPost("logout-all")]
@@ -142,16 +87,7 @@ namespace MangoAPI.WebApp.Controllers
         [ProducesResponseType(typeof(LogoutResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(LogoutResponse), StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> LogoutAllDevicesAsync(LogoutAllCommand command,
-            CancellationToken cancellationToken)
-        {
-            var response = await _mediator.Send(command, cancellationToken);
-
-            if (!response.Success)
-            {
-                return BadRequest(response);
-            }
-
-            return Ok(response);
-        }
+            CancellationToken cancellationToken) =>
+            await RequestAsync(command, cancellationToken);
     }
 }

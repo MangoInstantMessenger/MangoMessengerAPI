@@ -15,13 +15,10 @@ namespace MangoAPI.WebApp.Controllers
     [ApiController]
     [Route("api/chats")]
     [Produces("application/json")]
-    public class ChatsController : ControllerBase, IChatsController
+    public class ChatsController : ApiControllerBase, IChatsController
     {
-        private readonly IMediator _mediator;
-
-        public ChatsController(IMediator mediator)
+        public ChatsController(IMediator mediator) : base(mediator)
         {
-            _mediator = mediator;
         }
 
         [Authorize]
@@ -29,17 +26,8 @@ namespace MangoAPI.WebApp.Controllers
         [SwaggerOperation(Summary = "Returns list of all user's chats.")]
         [ProducesResponseType(typeof(GetChatsResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public async Task<IActionResult> GetChats(CancellationToken cancellationToken)
-        {
-            var response = await _mediator.Send(new GetChatsQuery(), cancellationToken);
-
-            if (!response.Success)
-            {
-                return BadRequest(response);
-            }
-
-            return Ok(response);
-        }
+        public async Task<IActionResult> GetChats(CancellationToken cancellationToken) =>
+            await RequestAsync(new GetChatsQuery(), cancellationToken);
 
         [Authorize]
         [HttpPost("group")]
@@ -47,17 +35,8 @@ namespace MangoAPI.WebApp.Controllers
         [ProducesResponseType(typeof(CreateChatEntityResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(CreateChatEntityResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public async Task<IActionResult> CreateChat(CreateGroupCommand command, CancellationToken cancellationToken)
-        {
-            var response = await _mediator.Send(command, cancellationToken);
-
-            if (!response.Success)
-            {
-                return BadRequest(response);
-            }
-
-            return Ok(response);
-        }
+        public async Task<IActionResult> CreateChat(CreateGroupCommand command, CancellationToken cancellationToken) =>
+            await RequestAsync(command, cancellationToken);
 
         [Authorize]
         [HttpPost("direct-chat")]
@@ -66,17 +45,8 @@ namespace MangoAPI.WebApp.Controllers
         [ProducesResponseType(typeof(CreateChatEntityResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> CreateDirectChat(CreateDirectChatCommand command,
-            CancellationToken cancellationToken)
-        {
-            var response = await _mediator.Send(command, cancellationToken);
-
-            if (!response.Success)
-            {
-                return BadRequest(response);
-            }
-
-            return Ok(response);
-        }
+            CancellationToken cancellationToken) =>
+            await RequestAsync(command, cancellationToken);
 
         [Authorize]
         [HttpPost("group/join/{chatId:int}")]
@@ -87,14 +57,7 @@ namespace MangoAPI.WebApp.Controllers
         public async Task<IActionResult> JoinChat(int chatId, CancellationToken cancellationToken)
         {
             var command = new JoinChatCommand {ChatId = chatId};
-            var response = await _mediator.Send(command, cancellationToken);
-
-            if (!response.Success)
-            {
-                return BadRequest(response);
-            }
-
-            return Ok(response);
+            return await RequestAsync(command, cancellationToken);
         }
     }
 }

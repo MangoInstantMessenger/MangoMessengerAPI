@@ -13,13 +13,10 @@ namespace MangoAPI.WebApp.Controllers
 {
     [ApiController]
     [Route("api/users")]
-    public class UsersController : ControllerBase, IUsersController
+    public class UsersController : ApiControllerBase, IUsersController
     {
-        private readonly IMediator _mediator;
-
-        public UsersController(IMediator mediator)
+        public UsersController(IMediator mediator) : base(mediator)
         {
-            _mediator = mediator;
         }
 
         [Authorize]
@@ -31,14 +28,7 @@ namespace MangoAPI.WebApp.Controllers
         public async Task<IActionResult> FindUser([FromRoute] string userId, CancellationToken cancellationToken)
         {
             var query = new FindUserQuery {UserId = userId};
-            var response = await _mediator.Send(query, cancellationToken);
-
-            if (!response.Success)
-            {
-                return BadRequest(response);
-            }
-
-            return Ok(response);
+            return await RequestAsync(query, cancellationToken);
         }
     }
 }
