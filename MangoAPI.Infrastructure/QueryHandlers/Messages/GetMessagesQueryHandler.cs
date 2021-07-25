@@ -1,31 +1,30 @@
 ﻿using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using MangoAPI.Application.Services;
 using MangoAPI.Domain.Entities;
 using MangoAPI.DTO.Queries.Messages;
 using MangoAPI.DTO.Responses.Messages;
 using MangoAPI.Infrastructure.Database;
 using MediatR;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace MangoAPI.Infrastructure.QueryHandlers.Messages
 {
     public class GetMessagesQueryHandler : IRequestHandler<GetMessagesQuery, GetMessagesResponse>
     {
-        private readonly IRequestMetadataService _metadataService;
         private readonly MangoPostgresDbContext _postgresDbContext;
+        private readonly UserManager<UserEntity> _userManager;
 
-        public GetMessagesQueryHandler(IRequestMetadataService metadataService,
-            MangoPostgresDbContext postgresDbContext)
+        public GetMessagesQueryHandler(MangoPostgresDbContext postgresDbContext, UserManager<UserEntity> userManager)
         {
-            _metadataService = metadataService;
             _postgresDbContext = postgresDbContext;
+            _userManager = userManager;
         }
 
         public async Task<GetMessagesResponse> Handle(GetMessagesQuery request, CancellationToken cancellationToken)
         {
-            var user = await _metadataService.GetUserFromRequestMetadataAsync();
+            var user = await _userManager.FindByIdAsync(request.UserId);
 
             if (user == null)
             {

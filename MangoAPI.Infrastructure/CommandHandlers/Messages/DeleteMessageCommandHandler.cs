@@ -1,30 +1,31 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
-using MangoAPI.Application.Services;
+using MangoAPI.Domain.Entities;
 using MangoAPI.DTO.Commands.Messages;
 using MangoAPI.DTO.Responses.Messages;
 using MangoAPI.Infrastructure.Database;
 using MediatR;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace MangoAPI.Infrastructure.CommandHandlers.Messages
 {
     public class DeleteMessageCommandHandler : IRequestHandler<DeleteMessageCommand, DeleteMessageResponse>
     {
-        private readonly IRequestMetadataService _metadataService;
         private readonly MangoPostgresDbContext _postgresDbContext;
+        private readonly UserManager<UserEntity> _userManager;
 
-        public DeleteMessageCommandHandler(IRequestMetadataService metadataService,
-            MangoPostgresDbContext postgresDbContext)
+        public DeleteMessageCommandHandler(MangoPostgresDbContext postgresDbContext,
+            UserManager<UserEntity> userManager)
         {
-            _metadataService = metadataService;
             _postgresDbContext = postgresDbContext;
+            _userManager = userManager;
         }
 
         public async Task<DeleteMessageResponse> Handle(DeleteMessageCommand request,
             CancellationToken cancellationToken)
         {
-            var currentUser = await _metadataService.GetUserFromRequestMetadataAsync();
+            var currentUser = await _userManager.FindByIdAsync(request.UserId);
 
             if (currentUser == null)
             {

@@ -23,16 +23,11 @@ namespace MangoAPI.Infrastructure.Services
 
         public string GenerateJwtToken(UserEntity userEntity)
         {
-            return GenerateJwtToken(userEntity.Id);
-        }
-
-        private string GenerateJwtToken(string userId)
-        {
             var claims = new List<Claim>
             {
-                new(JwtRegisteredClaimNames.Sub, userId),
+                new(JwtRegisteredClaimNames.Sub, userEntity.Id),
                 new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                new(ClaimTypes.NameIdentifier, userId)
+                new(ClaimTypes.NameIdentifier, userEntity.Id)
             };
 
             var jwtLifetime = EnvironmentConstants.JwtLifeTime;
@@ -60,7 +55,7 @@ namespace MangoAPI.Infrastructure.Services
             return tokenHandler.WriteToken(token);
         }
 
-        public RefreshTokenEntity GenerateRefreshToken(string userAgent, string fingerPrint)
+        public RefreshTokenEntity GenerateRefreshToken()
         {
             using var rngCryptoServiceProvider = new RNGCryptoServiceProvider();
 
@@ -79,8 +74,6 @@ namespace MangoAPI.Infrastructure.Services
             {
                 Id = Guid.NewGuid().ToString(),
                 RefreshToken = Convert.ToBase64String(randomBytes),
-                UserAgent = userAgent,
-                BrowserFingerprint = fingerPrint,
                 Expires = DateTime.UtcNow.AddDays(refreshLifetimeParsed),
                 Created = DateTime.UtcNow,
             };
