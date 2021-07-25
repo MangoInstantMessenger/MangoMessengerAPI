@@ -30,14 +30,17 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Chats
                 return CreateChatEntityResponse.InvalidOrEmptyChatTitle;
             }
 
-            var groupType = (int) request.GroupType;
-
-            if (groupType is > 4 or < 2)
+            if (request.GroupType is ChatType.DirectChat)
             {
                 return CreateChatEntityResponse.InvalidGroupType;
             }
 
-            var currentUser = await _userManager.FindByIdAsync(request.UserId);
+            var user = await _userManager.FindByIdAsync(request.UserId);
+
+            if (user is null)
+            {
+                return CreateChatEntityResponse.UserNotFound;
+            }
 
             var group = new ChatEntity
             {
@@ -52,7 +55,7 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Chats
 
             _postgresDbContext.UserChats.Add(new UserChatEntity
             {
-                ChatId = group.Id, RoleId = UserRole.Owner, UserId = currentUser.Id
+                ChatId = group.Id, RoleId = UserRole.Owner, UserId = user.Id
             });
 
             await _postgresDbContext.SaveChangesAsync(cancellationToken);

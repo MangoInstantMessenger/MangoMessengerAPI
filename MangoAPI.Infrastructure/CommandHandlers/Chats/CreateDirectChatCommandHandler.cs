@@ -30,7 +30,7 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Chats
         {
             var partner = await _userManager.FindByIdAsync(request.PartnerId);
 
-            if (partner == null)
+            if (partner is null)
             {
                 return CreateChatEntityResponse.UserNotFound;
             }
