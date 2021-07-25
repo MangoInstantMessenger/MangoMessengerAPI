@@ -5,6 +5,6 @@ namespace MangoAPI.Application.Services
     public interface IJwtGenerator
     {
         string GenerateJwtToken(UserEntity userEntity);
-        RefreshTokenEntity GenerateRefreshToken(string userAgent, string fingerPrint);
+        RefreshTokenEntity GenerateRefreshToken();
     }
 }

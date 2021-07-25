@@ -15,5 +15,11 @@ namespace MangoAPI.DTO.Responses.Auth
             Message = ResponseMessageCodes.EmailAlreadyVerified,
             Success = false
         };
+
+        public static VerifyEmailResponse InvalidEmail => new()
+        {
+            Message = ResponseMessageCodes.InvalidEmail,
+            Success = false
+        };
     }
 }

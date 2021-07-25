@@ -6,8 +6,6 @@ namespace MangoAPI.Domain.Entities
     {
         public string Id { get; set; }
         public string UserId { get; set; }
-        public string UserAgent { get; set; }
-        public string BrowserFingerprint { get; set; }
         public string RefreshToken { get; set; }
         public DateTime Expires { get; set; }
         public DateTime Created { get; set; }
