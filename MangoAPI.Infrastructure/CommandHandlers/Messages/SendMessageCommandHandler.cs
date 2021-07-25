@@ -4,7 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using MangoAPI.Domain.Entities;
 using MangoAPI.Domain.Enums;
-using MangoAPI.DTO.Commands.Messages;
+using MangoAPI.DTO.ApiCommands.Messages;
 using MangoAPI.DTO.Models;
 using MangoAPI.DTO.Responses.Messages;
 using MangoAPI.Infrastructure.Database;

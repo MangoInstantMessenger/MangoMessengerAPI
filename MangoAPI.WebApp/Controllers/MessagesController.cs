@@ -1,7 +1,7 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
-using MangoAPI.DTO.Commands.Messages;
-using MangoAPI.DTO.Queries.Messages;
+using MangoAPI.DTO.CommandModels.Messages;
+using MangoAPI.DTO.QueryModels.Messages;
 using MangoAPI.DTO.Responses.Messages;
 using MangoAPI.WebApp.Extensions;
 using MangoAPI.WebApp.Interfaces;
@@ -29,7 +29,7 @@ namespace MangoAPI.WebApp.Controllers
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> GetChatMessages([FromRoute] string chatId, CancellationToken cancellationToken)
         {
-            var query = new GetMessagesQuery {ChatId = chatId, UserId = HttpContext.User.GetUserId()};
+            var query = new GetMessagesQueryModel {ChatId = chatId, UserId = HttpContext.User.GetUserId()};
             return await RequestAsync(query, cancellationToken);
         }
         
@@ -38,16 +38,16 @@ namespace MangoAPI.WebApp.Controllers
         [ProducesResponseType(typeof(SendMessageResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(SendMessageResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public async Task<IActionResult> SendMessage(SendMessageCommand command, CancellationToken cancellationToken) =>
-            await RequestAsync(command, cancellationToken);
+        public async Task<IActionResult> SendMessage(SendMessageCommandModel commandModel, CancellationToken cancellationToken) =>
+            await RequestAsync(commandModel, cancellationToken);
         
         [HttpPut]
         [SwaggerOperation(Summary = "Updates particular message.")]
         [ProducesResponseType(typeof(EditMessageResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(EditMessageResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public async Task<IActionResult> EditMessage(EditMessageCommand command, CancellationToken cancellationToken) =>
-            await RequestAsync(command, cancellationToken);
+        public async Task<IActionResult> EditMessage(EditMessageCommandModel commandModel, CancellationToken cancellationToken) =>
+            await RequestAsync(commandModel, cancellationToken);
         
         [HttpDelete("{messageId}")]
         [SwaggerOperation(Summary = "Deletes particular message by ID.")]
@@ -56,7 +56,7 @@ namespace MangoAPI.WebApp.Controllers
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> DeleteMessage([FromRoute] string messageId, CancellationToken cancellationToken)
         {
-            var command = new DeleteMessageCommand {MessageId = messageId};
+            var command = new DeleteMessageCommandModel {MessageId = messageId};
             return await RequestAsync(command, cancellationToken);
         }
     }

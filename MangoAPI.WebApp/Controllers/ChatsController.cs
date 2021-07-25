@@ -1,7 +1,7 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
-using MangoAPI.DTO.Commands.Chats;
-using MangoAPI.DTO.Queries.Chats;
+using MangoAPI.DTO.CommandModels.Chats;
+using MangoAPI.DTO.QueryModels.Chats;
 using MangoAPI.DTO.Responses.Chats;
 using MangoAPI.WebApp.Extensions;
 using MangoAPI.WebApp.Interfaces;
@@ -29,7 +29,7 @@ namespace MangoAPI.WebApp.Controllers
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> GetChats(CancellationToken cancellationToken)
         {
-            var request = new GetChatsQuery {UserId = HttpContext.User.GetUserId()};
+            var request = new GetChatsQueryModel {UserId = HttpContext.User.GetUserId()};
             return await RequestAsync(request, cancellationToken);
         }
 
@@ -39,8 +39,8 @@ namespace MangoAPI.WebApp.Controllers
         [ProducesResponseType(typeof(CreateChatEntityResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(CreateChatEntityResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public async Task<IActionResult> CreateChat(CreateGroupCommand command, CancellationToken cancellationToken) =>
-            await RequestAsync(command, cancellationToken);
+        public async Task<IActionResult> CreateChat(CreateGroupCommandModel commandModel, CancellationToken cancellationToken) =>
+            await RequestAsync(commandModel, cancellationToken);
 
         [Authorize]
         [HttpPost("direct-chat")]
@@ -48,9 +48,9 @@ namespace MangoAPI.WebApp.Controllers
         [ProducesResponseType(typeof(CreateChatEntityResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(CreateChatEntityResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public async Task<IActionResult> CreateDirectChat(CreateDirectChatCommand command,
+        public async Task<IActionResult> CreateDirectChat(CreateDirectChatCommandModel commandModel,
             CancellationToken cancellationToken) =>
-            await RequestAsync(command, cancellationToken);
+            await RequestAsync(commandModel, cancellationToken);
 
         [Authorize]
         [HttpPost("group/join")]
@@ -58,7 +58,7 @@ namespace MangoAPI.WebApp.Controllers
         [ProducesResponseType(typeof(JoinChatResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(JoinChatResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public async Task<IActionResult> JoinChat(JoinChatCommand command, CancellationToken cancellationToken) =>
-            await RequestAsync(command, cancellationToken);
+        public async Task<IActionResult> JoinChat(JoinChatCommandModel commandModel, CancellationToken cancellationToken) =>
+            await RequestAsync(commandModel, cancellationToken);
     }
 }

@@ -12,4 +12,9 @@
       <PackageReference Include="MediatR" Version="9.0.0" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="CommandModels" />
+      <Folder Include="QueryModels" />
+    </ItemGroup>
+
 </Project>

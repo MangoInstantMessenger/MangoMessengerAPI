@@ -1,6 +1,6 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
-using MangoAPI.DTO.Commands.Chats;
+using MangoAPI.DTO.CommandModels.Chats;
 using Microsoft.AspNetCore.Mvc;
 
 namespace MangoAPI.WebApp.Interfaces
@@ -8,8 +8,8 @@ namespace MangoAPI.WebApp.Interfaces
     public interface IChatsController
     {
         Task<IActionResult> GetChats(CancellationToken cancellationToken);
-        Task<IActionResult> CreateChat(CreateGroupCommand command, CancellationToken cancellationToken);
-        Task<IActionResult> CreateDirectChat(CreateDirectChatCommand command, CancellationToken cancellationToken);
-        Task<IActionResult> JoinChat(JoinChatCommand command, CancellationToken cancellationToken);
+        Task<IActionResult> CreateChat(CreateGroupCommandModel commandModel, CancellationToken cancellationToken);
+        Task<IActionResult> CreateDirectChat(CreateDirectChatCommandModel commandModel, CancellationToken cancellationToken);
+        Task<IActionResult> JoinChat(JoinChatCommandModel commandModel, CancellationToken cancellationToken);
     }
 }

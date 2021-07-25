@@ -1,6 +1,6 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
-using MangoAPI.DTO.Queries.Users;
+using MangoAPI.DTO.ApiQueries.Users;
 using MangoAPI.DTO.Responses.Users;
 using MangoAPI.Infrastructure.Database;
 using MediatR;

@@ -1,6 +1,6 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
-using MangoAPI.DTO.Commands.Auth;
+using MangoAPI.DTO.CommandModels.Auth;
 using MangoAPI.DTO.Responses.Auth;
 using MangoAPI.WebApp.Interfaces;
 using MediatR;
@@ -24,18 +24,18 @@ namespace MangoAPI.WebApp.Controllers
         [SwaggerOperation(Summary = "Performs login to the messenger. Returns: Access token, Refresh Token ID.")]
         [ProducesResponseType(typeof(LoginResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(LoginResponse), StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> LoginAsync([FromBody] LoginCommand command,
+        public async Task<IActionResult> LoginAsync([FromBody] LoginCommandModel commandModel,
             CancellationToken cancellationToken)
-            => await RequestAsync(command, cancellationToken);
+            => await RequestAsync(commandModel, cancellationToken);
 
         [AllowAnonymous]
         [HttpPost("register")]
         [SwaggerOperation(Summary = "Registers user in a messenger.")]
         [ProducesResponseType(typeof(RegisterResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(RegisterResponse), StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> RegisterAsync([FromBody] RegisterCommand command,
+        public async Task<IActionResult> RegisterAsync([FromBody] RegisterCommandModel commandModel,
             CancellationToken cancellationToken) =>
-            await RequestAsync(command, cancellationToken);
+            await RequestAsync(commandModel, cancellationToken);
 
         [AllowAnonymous]
         [HttpGet("verify-email")]
@@ -47,7 +47,7 @@ namespace MangoAPI.WebApp.Controllers
         public async Task<IActionResult> VerifyEmailAsync(string email, string userId,
             CancellationToken cancellationToken)
         {
-            var command = new VerifyEmailCommand {Email = email, UserId = userId};
+            var command = new VerifyEmailCommandModel {Email = email, UserId = userId};
             return await RequestAsync(command, cancellationToken);
         }
 
@@ -57,9 +57,9 @@ namespace MangoAPI.WebApp.Controllers
             "Sends verification request with provided user parameters: phone confirmation code.")]
         [ProducesResponseType(typeof(VerifyPhoneResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(VerifyPhoneResponse), StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> VerifyPhoneCodeAsync([FromBody] VerifyPhoneCommand command,
+        public async Task<IActionResult> VerifyPhoneCodeAsync([FromBody] VerifyPhoneCommandModel commandModel,
             CancellationToken cancellationToken) =>
-            await RequestAsync(command, cancellationToken);
+            await RequestAsync(commandModel, cancellationToken);
 
         [AllowAnonymous]
         [HttpPost("refresh-token")]
@@ -67,9 +67,9 @@ namespace MangoAPI.WebApp.Controllers
         [ProducesResponseType(typeof(RefreshTokenResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(RefreshTokenResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public async Task<IActionResult> RefreshTokenAsync(RefreshTokenCommand command,
+        public async Task<IActionResult> RefreshTokenAsync(RefreshTokenCommandModel commandModel,
             CancellationToken cancellationToken) =>
-            await RequestAsync(command, cancellationToken);
+            await RequestAsync(commandModel, cancellationToken);
 
         [Authorize]
         [HttpPost("logout")]
@@ -77,8 +77,8 @@ namespace MangoAPI.WebApp.Controllers
         [ProducesResponseType(typeof(LogoutResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(LogoutResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(LogoutResponse), StatusCodes.Status401Unauthorized)]
-        public async Task<IActionResult> LogoutAsync(LogoutCommand command, CancellationToken cancellationToken) =>
-            await RequestAsync(command, cancellationToken);
+        public async Task<IActionResult> LogoutAsync(LogoutCommandModel commandModel, CancellationToken cancellationToken) =>
+            await RequestAsync(commandModel, cancellationToken);
 
         [Authorize]
         [HttpPost("logout-all")]
@@ -86,8 +86,8 @@ namespace MangoAPI.WebApp.Controllers
         [ProducesResponseType(typeof(LogoutResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(LogoutResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(LogoutResponse), StatusCodes.Status401Unauthorized)]
-        public async Task<IActionResult> LogoutAllDevicesAsync(LogoutAllCommand command,
+        public async Task<IActionResult> LogoutAllDevicesAsync(LogoutAllCommandModel commandModel,
             CancellationToken cancellationToken) =>
-            await RequestAsync(command, cancellationToken);
+            await RequestAsync(commandModel, cancellationToken);
     }
 }

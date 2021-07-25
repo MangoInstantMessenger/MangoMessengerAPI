@@ -2,7 +2,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using MangoAPI.Domain.Entities;
-using MangoAPI.DTO.Queries.Chats;
+using MangoAPI.DTO.ApiQueries.Chats;
 using MangoAPI.DTO.Responses.Chats;
 using MangoAPI.Infrastructure.Database;
 using MediatR;
