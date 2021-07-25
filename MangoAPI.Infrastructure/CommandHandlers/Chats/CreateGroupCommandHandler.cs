@@ -1,26 +1,23 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
-using MangoAPI.Application.Services;
 using MangoAPI.Domain.Entities;
 using MangoAPI.Domain.Enums;
 using MangoAPI.DTO.Commands.Chats;
 using MangoAPI.DTO.Responses.Chats;
 using MangoAPI.Infrastructure.Database;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 namespace MangoAPI.Infrastructure.CommandHandlers.Chats
 {
     public class CreateGroupCommandHandler : IRequestHandler<CreateGroupCommand, CreateChatEntityResponse>
     {
         private readonly MangoPostgresDbContext _postgresDbContext;
-        private readonly IRequestMetadataService _metadataService;
 
-        public CreateGroupCommandHandler(MangoPostgresDbContext postgresDbContext,
-            IRequestMetadataService metadataService)
+        public CreateGroupCommandHandler(MangoPostgresDbContext postgresDbContext)
         {
             _postgresDbContext = postgresDbContext;
-            _metadataService = metadataService;
         }
 
         public async Task<CreateChatEntityResponse> Handle(CreateGroupCommand request,
@@ -38,7 +35,8 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Chats
                 return CreateChatEntityResponse.InvalidGroupType;
             }
 
-            var currentUser = await _metadataService.GetUserFromRequestMetadataAsync();
+            var currentUser =
+                await _postgresDbContext.Users.FirstOrDefaultAsync(x => x.Id == request.UserId, cancellationToken);
 
             var group = new ChatEntity
             {

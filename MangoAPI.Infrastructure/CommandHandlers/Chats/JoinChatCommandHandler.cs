@@ -1,6 +1,5 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
-using MangoAPI.Application.Services;
 using MangoAPI.Domain.Entities;
 using MangoAPI.Domain.Enums;
 using MangoAPI.DTO.Commands.Chats;
@@ -14,18 +13,16 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Chats
     public class JoinChatCommandHandler : IRequestHandler<JoinChatCommand, JoinChatResponse>
     {
         private readonly MangoPostgresDbContext _postgresDbContext;
-        private readonly IRequestMetadataService _metadataService;
 
-        public JoinChatCommandHandler(MangoPostgresDbContext postgresDbContext,
-            IRequestMetadataService metadataService)
+        public JoinChatCommandHandler(MangoPostgresDbContext postgresDbContext)
         {
             _postgresDbContext = postgresDbContext;
-            _metadataService = metadataService;
         }
 
         public async Task<JoinChatResponse> Handle(JoinChatCommand request, CancellationToken cancellationToken)
         {
-            var currentUser = await _metadataService.GetUserFromRequestMetadataAsync();
+            var currentUser =
+                await _postgresDbContext.Users.FirstOrDefaultAsync(x => x.Id == request.UserId, cancellationToken);
 
             if (currentUser == null)
             {

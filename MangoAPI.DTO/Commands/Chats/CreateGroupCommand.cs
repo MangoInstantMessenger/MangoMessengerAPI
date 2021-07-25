@@ -8,5 +8,6 @@ namespace MangoAPI.DTO.Commands.Chats
     {
         public ChatType GroupType { get; set; }
         public string GroupTitle { get; set; }
+        public string UserId { get; set; }
     }
 }
