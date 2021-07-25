@@ -5,20 +5,20 @@ namespace MangoAPI.DTO.Responses.Messages
 {
     public class SendMessageResponse: MessageResponseBase<SendMessageResponse>
     {
-        public Message ChatMessage { get; set; }
+        public string MessageId { get; set; }
 
-        public static SendMessageResponse FromSuccess(Message message) => new()
+        public static SendMessageResponse FromSuccess(string messageId) => new()
         {
             Success = true,
             Message = ResponseMessageCodes.Success,
-            ChatMessage = message
+            MessageId = messageId
         };
 
         public static SendMessageResponse EmptyMessage => new()
         {
             Success = false,
             Message = ResponseMessageCodes.EmptyMessage,
-            ChatMessage = null
+            MessageId = null
         };
     }
 }

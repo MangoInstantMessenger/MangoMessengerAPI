@@ -11,7 +11,7 @@ namespace MangoAPI.DTO.CommandModels.Messages
     public static class EditMessageCommandMapper
     {
         public static EditMessageCommand ToEditMessageCommand(this EditMessageCommandModel model) =>
-            new EditMessageCommand()
+            new()
             {
                 MessageId = model.MessageId,
                 ModifiedText = model.ModifiedText

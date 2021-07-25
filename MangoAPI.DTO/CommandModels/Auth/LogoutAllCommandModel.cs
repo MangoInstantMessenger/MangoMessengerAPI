@@ -10,7 +10,7 @@ namespace MangoAPI.DTO.CommandModels.Auth
     public static class LogoutAllCommandMapper
     {
         public static LogoutAllCommand ToLogoutAllCommand(this LogoutAllCommandModel model) =>
-            new LogoutAllCommand()
+            new()
             {
                 RefreshTokenId = model.RefreshTokenId
             };

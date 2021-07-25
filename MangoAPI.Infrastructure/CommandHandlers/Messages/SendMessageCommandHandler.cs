@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using MangoAPI.Domain.Entities;
 using MangoAPI.Domain.Enums;
 using MangoAPI.DTO.ApiCommands.Messages;
-using MangoAPI.DTO.Models;
 using MangoAPI.DTO.Responses.Messages;
 using MangoAPI.Infrastructure.Database;
 using MediatR;
@@ -48,7 +47,7 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Messages
                 return SendMessageResponse.ChatNotFound;
             }
 
-            var permitted = !await CheckUserPermissions(user, chat, cancellationToken);
+            var permitted = await CheckUserPermissions(user, chat, cancellationToken);
 
             if (!permitted)
             {
@@ -68,14 +67,7 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Messages
             await _mangoPostgresDbContext.Messages.AddAsync(messageEntity, cancellationToken);
             await _mangoPostgresDbContext.SaveChangesAsync(cancellationToken);
 
-            var messageDto = new Message
-            {
-                SentAt = messageEntity.Created.ToShortTimeString(),
-                MessageText = messageEntity.Content,
-                UserDisplayName = user.DisplayName
-            };
-
-            return SendMessageResponse.FromSuccess(messageDto);
+            return SendMessageResponse.FromSuccess(messageEntity.Id);
         }
 
         private async Task<bool> CheckUserPermissions(UserEntity user, ChatEntity chat,

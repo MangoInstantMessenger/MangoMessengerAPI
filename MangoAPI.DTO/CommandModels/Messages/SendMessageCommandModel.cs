@@ -11,7 +11,7 @@ namespace MangoAPI.DTO.CommandModels.Messages
     public static class SendMessageCommandMapper
     {
         public static SendMessageCommand ToSendMessageCommand(this SendMessageCommandModel model) =>
-            new SendMessageCommand()
+            new()
             {
                 ChatId = model.ChatId,
                 MessageText = model.MessageText

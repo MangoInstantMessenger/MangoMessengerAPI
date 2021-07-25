@@ -12,7 +12,7 @@ namespace MangoAPI.DTO.CommandModels.Chats
     public static class CreateGroupCommandMapper
     {
         public static CreateGroupCommand ToCreateGroupCommand(this CreateGroupCommandModel model) =>
-            new CreateGroupCommand()
+            new()
             {
                 GroupType = model.GroupType,
                 GroupTitle = model.GroupTitle

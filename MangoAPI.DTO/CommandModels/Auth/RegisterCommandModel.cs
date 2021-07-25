@@ -16,7 +16,7 @@ namespace MangoAPI.DTO.CommandModels.Auth
     public static class RegisterCommandMapper
     {
         public static RegisterCommand ToRegisterCommand(this RegisterCommandModel model) =>
-            new RegisterCommand
+            new()
             {
                 PhoneNumber = model.PhoneNumber,
                 Email = model.Email,

@@ -10,7 +10,7 @@ namespace MangoAPI.DTO.CommandModels.Messages
     public static class DeleteMessageCommandMapper
     {
         public static DeleteMessageCommand ToDeleteMessageCommand(this DeleteMessageCommandModel model) =>
-            new DeleteMessageCommand()
+            new()
             {
                 MessageId = model.MessageId
             };

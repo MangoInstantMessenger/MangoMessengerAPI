@@ -11,7 +11,7 @@ namespace MangoAPI.DTO.CommandModels.Auth
     public static class LoginCommandMapper
     {
         public static LoginCommand ToLoginCommand(this LoginCommandModel model) =>
-            new LoginCommand()
+            new()
             {
                 Email = model.Email,
                 Password = model.Password

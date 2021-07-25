@@ -37,7 +37,7 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Chats
 
             var currentUser = await _userManager.FindByIdAsync(request.UserId);
 
-            var directChatEntity = new ChatEntity
+            var directChat = new ChatEntity
             {
                 Id = Guid.NewGuid().ToString(),
                 ChatType = ChatType.DirectChat,
@@ -60,20 +60,20 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Chats
                 return CreateChatEntityResponse.DirectChatAlreadyExists;
             }
 
-            await _postgresDbContext.Chats.AddAsync(directChatEntity, cancellationToken);
+            await _postgresDbContext.Chats.AddAsync(directChat, cancellationToken);
             await _postgresDbContext.SaveChangesAsync(cancellationToken);
 
             var userChats = new[]
             {
-                new UserChatEntity {ChatId = directChatEntity.Id, RoleId = UserRole.User, UserId = currentUser.Id},
-                new UserChatEntity {ChatId = directChatEntity.Id, RoleId = UserRole.User, UserId = request.PartnerId}
+                new UserChatEntity {ChatId = directChat.Id, RoleId = UserRole.User, UserId = currentUser.Id},
+                new UserChatEntity {ChatId = directChat.Id, RoleId = UserRole.User, UserId = request.PartnerId}
             };
 
             _postgresDbContext.UserChats.AddRange(userChats);
 
             await _postgresDbContext.SaveChangesAsync(cancellationToken);
 
-            return CreateChatEntityResponse.SuccessResponse;
+            return CreateChatEntityResponse.FromSuccess(directChat);
         }
     }
 }

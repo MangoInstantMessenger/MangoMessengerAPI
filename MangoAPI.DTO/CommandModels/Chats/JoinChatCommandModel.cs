@@ -10,7 +10,7 @@ namespace MangoAPI.DTO.CommandModels.Chats
     public static class JoinChatCommandMapper
     {
         public static JoinChatCommand ToJoinChatCommand(this JoinChatCommandModel model) =>
-            new JoinChatCommand()
+            new()
             {
                 ChatId = model.ChatId
             };

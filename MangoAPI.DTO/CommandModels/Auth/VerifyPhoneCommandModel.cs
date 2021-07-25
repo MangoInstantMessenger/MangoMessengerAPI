@@ -11,7 +11,7 @@ namespace MangoAPI.DTO.CommandModels.Auth
     public static class VerifyPhoneCommandMapper
     {
         public static VerifyPhoneCommand ToVerifyPhoneCommand(this VerifyPhoneCommandModel model) =>
-            new VerifyPhoneCommand()
+            new()
             {
                 ConfirmationCode = model.ConfirmationCode,
                 UserId = model.UserId

@@ -10,7 +10,7 @@ namespace MangoAPI.DTO.CommandModels.Chats
     public static class CreateDirectChatCommandMapper
     {
         public static CreateDirectChatCommand ToCreateDirectChatCommand(this CreateDirectChatCommandModel model) =>
-            new CreateDirectChatCommand()
+            new()
             {
                 PartnerId = model.PartnerId
             };

@@ -14,8 +14,6 @@
 
     <ItemGroup>
       <Folder Include="CommandModels" />
-      <Folder Include="QueryModels" />
-      <Folder Include="QueryModels\Users" />
     </ItemGroup>
 
 </Project>
