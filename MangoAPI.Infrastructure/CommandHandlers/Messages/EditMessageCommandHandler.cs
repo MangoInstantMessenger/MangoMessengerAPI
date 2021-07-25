@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
-using MangoAPI.Application.Services;
 using MangoAPI.DTO.Commands.Messages;
 using MangoAPI.DTO.Responses.Messages;
 using MangoAPI.Infrastructure.Database;
@@ -13,18 +12,16 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Messages
     public class EditMessageCommandHandler : IRequestHandler<EditMessageCommand, EditMessageResponse>
     {
         private readonly MangoPostgresDbContext _postgresDbContext;
-        private readonly IRequestMetadataService _metadataService;
 
-        public EditMessageCommandHandler(MangoPostgresDbContext postgresDbContext,
-            IRequestMetadataService metadataService)
+        public EditMessageCommandHandler(MangoPostgresDbContext postgresDbContext)
         {
             _postgresDbContext = postgresDbContext;
-            _metadataService = metadataService;
         }
 
         public async Task<EditMessageResponse> Handle(EditMessageCommand request, CancellationToken cancellationToken)
         {
-            var currentUser = await _metadataService.GetUserFromRequestMetadataAsync();
+            var currentUser =
+                await _postgresDbContext.Users.FirstOrDefaultAsync(x => x.Id == request.UserId, cancellationToken);
 
             if (currentUser == null)
             {
@@ -41,7 +38,7 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Messages
             }
 
             message.Content = request.ModifiedText;
-            message.Updated = DateTime.Now;
+            message.Updated = DateTime.UtcNow;
 
             _postgresDbContext.Update(message);
 
