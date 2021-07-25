@@ -31,12 +31,12 @@ namespace MangoAPI.Infrastructure.QueryHandlers.Chats
                 return GetChatsResponse.UserNotFound;
             }
 
-            var chats = _postgresDbContext.UserChats
+            var chats = await _postgresDbContext.UserChats
                 .Include(x => x.Chat)
                 .ThenInclude(x => x.Messages)
                 .ThenInclude(x => x.User)
                 .Where(x => x.UserId == currentUser.Id)
-                .ToList();
+                .ToListAsync(cancellationToken);
 
             return GetChatsResponse.FromSuccess(chats);
         }

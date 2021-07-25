@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using MangoAPI.DTO.Commands.Chats;
 using MangoAPI.DTO.Queries.Chats;
 using MangoAPI.DTO.Responses.Chats;
+using MangoAPI.WebApp.Extensions;
 using MangoAPI.WebApp.Interfaces;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -26,8 +27,11 @@ namespace MangoAPI.WebApp.Controllers
         [SwaggerOperation(Summary = "Returns list of all user's chats.")]
         [ProducesResponseType(typeof(GetChatsResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public async Task<IActionResult> GetChats(CancellationToken cancellationToken) =>
-            await RequestAsync(new GetChatsQuery(), cancellationToken);
+        public async Task<IActionResult> GetChats(CancellationToken cancellationToken)
+        {
+            var request = new GetChatsQuery {UserId = HttpContext.User.GetUserId()};
+            return await RequestAsync(request, cancellationToken);
+        }
 
         [Authorize]
         [HttpPost("group")]
@@ -49,15 +53,12 @@ namespace MangoAPI.WebApp.Controllers
             await RequestAsync(command, cancellationToken);
 
         [Authorize]
-        [HttpPost("group/join/{chatId:int}")]
+        [HttpPost("group/join")]
         [SwaggerOperation(Summary = "Joins to the particular public group.")]
         [ProducesResponseType(typeof(JoinChatResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(JoinChatResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public async Task<IActionResult> JoinChat(int chatId, CancellationToken cancellationToken)
-        {
-            var command = new JoinChatCommand {ChatId = chatId};
-            return await RequestAsync(command, cancellationToken);
-        }
+        public async Task<IActionResult> JoinChat(JoinChatCommand command, CancellationToken cancellationToken) =>
+            await RequestAsync(command, cancellationToken);
     }
 }

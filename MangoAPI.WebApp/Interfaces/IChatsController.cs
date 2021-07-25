@@ -10,6 +10,6 @@ namespace MangoAPI.WebApp.Interfaces
         Task<IActionResult> GetChats(CancellationToken cancellationToken);
         Task<IActionResult> CreateChat(CreateGroupCommand command, CancellationToken cancellationToken);
         Task<IActionResult> CreateDirectChat(CreateDirectChatCommand command, CancellationToken cancellationToken);
-        Task<IActionResult> JoinChat(int chatId, CancellationToken cancellationToken);
+        Task<IActionResult> JoinChat(JoinChatCommand command, CancellationToken cancellationToken);
     }
 }

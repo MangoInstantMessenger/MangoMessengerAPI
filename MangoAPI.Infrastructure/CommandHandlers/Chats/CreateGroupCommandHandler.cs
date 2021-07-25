@@ -44,6 +44,7 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Chats
 
             var group = new ChatEntity
             {
+                Id = Guid.NewGuid().ToString(),
                 ChatType = request.GroupType,
                 Title = request.GroupTitle,
                 Created = DateTime.UtcNow,
@@ -51,7 +52,6 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Chats
             };
 
             await _postgresDbContext.Chats.AddAsync(group, cancellationToken);
-            await _postgresDbContext.SaveChangesAsync(cancellationToken);
 
             _postgresDbContext.UserChats.Add(new UserChatEntity
             {

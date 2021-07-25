@@ -1,0 +1,15 @@
+﻿using System;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+
+namespace MangoAPI.WebApp.Extensions
+{
+    public static class ClaimsPrincipalExtensions
+    {
+        public static string GetUserId(this ClaimsPrincipal principal)
+        {
+            return principal?.FindFirstValue(JwtRegisteredClaimNames.Jti) ??
+                   throw new InvalidOperationException("Claim not found");
+        }
+    }
+}

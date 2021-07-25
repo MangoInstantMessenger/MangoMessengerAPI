@@ -23,22 +23,22 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Auth
         public async Task<VerifyPhoneResponse> Handle(VerifyPhoneCommand request,
             CancellationToken cancellationToken)
         {
-            var userEntity = await _userManager.FindByIdAsync(request.UserId);
+            var user = await _userManager.FindByIdAsync(request.UserId);
 
-            if (userEntity == null)
+            if (user == null)
             {
                 return VerifyPhoneResponse.UserNotFound;
             }
 
-            if (userEntity.PhoneNumberConfirmed)
+            if (user.PhoneNumberConfirmed)
             {
                 return VerifyPhoneResponse.PhoneAlreadyVerified;
             }
 
-            userEntity.PhoneNumberConfirmed = true;
-            userEntity.ConfirmationCode = 0;
+            user.PhoneNumberConfirmed = true;
+            user.ConfirmationCode = 0;
             
-            _postgresDbContext.Update(userEntity);
+            _postgresDbContext.Update(user);
             
             await _postgresDbContext.SaveChangesAsync(cancellationToken);
 

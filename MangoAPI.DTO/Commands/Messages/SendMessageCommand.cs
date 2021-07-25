@@ -7,6 +7,6 @@ namespace MangoAPI.DTO.Commands.Messages
     {
         public string MessageText { get; set; }
         public string UserId { get; set; }
-        public int ChatId { get; set; }
+        public string ChatId { get; set; }
     }
 }

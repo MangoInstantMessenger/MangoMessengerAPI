@@ -25,7 +25,7 @@ namespace MangoAPI.DTO.Responses.Auth
             Message = ResponseMessageCodes.TermsNotAccepted
         };
 
-        public static RegisterResponse SuccessResponse(UserEntity userEntity) => new()
+        public static RegisterResponse FromSuccess(UserEntity userEntity) => new()
         {
             UserId = userEntity.Id,
             Success = true,

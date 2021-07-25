@@ -57,6 +57,7 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Messages
 
             var messageEntity = new MessageEntity
             {
+                Id = Guid.NewGuid().ToString(),
                 ChatId = request.ChatId,
                 UserId = request.UserId,
                 Content = request.MessageText,

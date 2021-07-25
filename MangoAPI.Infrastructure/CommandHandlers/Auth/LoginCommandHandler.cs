@@ -68,10 +68,9 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Auth
             }
 
             await _postgresDbContext.RefreshTokens.AddAsync(refreshToken, cancellationToken);
-
             await _postgresDbContext.SaveChangesAsync(cancellationToken);
 
-            return LoginResponse.FromSuccessWithData(jwtToken, refreshToken.Id);
+            return LoginResponse.FromSuccess(jwtToken, refreshToken.Id, user.Id);
         }
     }
 }

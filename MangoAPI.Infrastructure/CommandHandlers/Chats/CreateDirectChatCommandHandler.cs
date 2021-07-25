@@ -39,6 +39,7 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Chats
 
             var directChatEntity = new ChatEntity
             {
+                Id = Guid.NewGuid().ToString(),
                 ChatType = ChatType.DirectChat,
                 Title = $"{currentUser.DisplayName} / {partner.DisplayName}",
                 Created = DateTime.UtcNow,

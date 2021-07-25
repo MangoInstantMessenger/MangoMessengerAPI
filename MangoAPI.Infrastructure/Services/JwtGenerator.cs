@@ -25,9 +25,7 @@ namespace MangoAPI.Infrastructure.Services
         {
             var claims = new List<Claim>
             {
-                new(JwtRegisteredClaimNames.Sub, userEntity.Id),
-                new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                new(ClaimTypes.NameIdentifier, userEntity.Id)
+                new(JwtRegisteredClaimNames.Jti, userEntity.Id)
             };
 
             var jwtLifetime = EnvironmentConstants.JwtLifeTime;
