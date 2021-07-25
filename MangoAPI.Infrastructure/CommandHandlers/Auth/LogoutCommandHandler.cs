@@ -33,7 +33,7 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Auth
 
             var user = await _userManager.FindByIdAsync(token.UserId);
 
-            if (user is null)
+            if (user is null || token.UserId != user.Id)
             {
                 return LogoutResponse.UserNotFound;
             }

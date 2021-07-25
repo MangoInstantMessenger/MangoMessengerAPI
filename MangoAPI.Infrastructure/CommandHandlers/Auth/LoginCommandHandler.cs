@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using MangoAPI.Application.Services;
 using MangoAPI.Domain.Entities;
@@ -33,7 +34,7 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Auth
         {
             var user = await _userManager.FindByEmailAsync(request.Email);
 
-            if (user == null)
+            if (user is null)
             {
                 return LoginResponse.InvalidCredentials;
             }
@@ -56,13 +57,14 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Auth
 
             refreshToken.UserId = user.Id;
 
-            var oldUserTokenSameDevice = await _postgresDbContext.RefreshTokens
-                .FirstOrDefaultAsync(x => x.UserId == user.Id,
-                    cancellationToken);
+            var userRefreshTokens = _postgresDbContext.RefreshTokens
+                .Where(x => x.UserId == user.Id);
 
-            if (oldUserTokenSameDevice != null)
+            var userTokensCount = await userRefreshTokens.CountAsync(cancellationToken);
+
+            if (userTokensCount >= 5)
             {
-                _postgresDbContext.Remove(oldUserTokenSameDevice);
+                _postgresDbContext.RefreshTokens.RemoveRange(userRefreshTokens);
             }
 
             await _postgresDbContext.RefreshTokens.AddAsync(refreshToken, cancellationToken);
