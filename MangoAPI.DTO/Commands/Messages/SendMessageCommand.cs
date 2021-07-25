@@ -5,7 +5,8 @@ namespace MangoAPI.DTO.Commands.Messages
 {
     public class SendMessageCommand : IRequest<SendMessageResponse>
     {
-        public string Content { get; set; }
+        public string MessageText { get; set; }
+        public string UserId { get; set; }
         public int ChatId { get; set; }
     }
 }

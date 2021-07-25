@@ -33,7 +33,7 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Messages
         {
             var requestMetadata = _requestMetadataService.GetRequestMetadata();
 
-            if (string.IsNullOrEmpty(request.Content) || string.IsNullOrWhiteSpace(request.Content))
+            if (string.IsNullOrEmpty(request.MessageText) || string.IsNullOrWhiteSpace(request.MessageText))
             {
                 return SendMessageResponse.EmptyMessage;
             }
@@ -78,7 +78,7 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Messages
             {
                 ChatId = request.ChatId,
                 UserId = requestMetadata.UserId,
-                Content = request.Content,
+                Content = request.MessageText,
                 Created = DateTime.UtcNow,
                 Updated = DateTime.UtcNow
             };
