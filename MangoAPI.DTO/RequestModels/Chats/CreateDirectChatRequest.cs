@@ -1,15 +1,15 @@
 ﻿using MangoAPI.DTO.ApiCommands.Chats;
 
-namespace MangoAPI.DTO.CommandModels.Chats
+namespace MangoAPI.DTO.RequestModels.Chats
 {
-    public class CreateDirectChatCommandModel
+    public class CreateDirectChatRequest
     {
         public string PartnerId { get; set; }
     }
 
     public static class CreateDirectChatCommandMapper
     {
-        public static CreateDirectChatCommand ToCreateDirectChatCommand(this CreateDirectChatCommandModel model) =>
+        public static CreateDirectChatCommand ToCommand(this CreateDirectChatRequest model) =>
             new()
             {
                 PartnerId = model.PartnerId

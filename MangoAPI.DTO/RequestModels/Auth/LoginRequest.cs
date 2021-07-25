@@ -1,8 +1,8 @@
 ﻿using MangoAPI.DTO.ApiCommands.Auth;
 
-namespace MangoAPI.DTO.CommandModels.Auth
+namespace MangoAPI.DTO.RequestModels.Auth
 {
-    public class LoginCommandModel
+    public class LoginRequest
     {
         public string Email { get; set; }
         public string Password { get; set; }
@@ -10,7 +10,7 @@ namespace MangoAPI.DTO.CommandModels.Auth
 
     public static class LoginCommandMapper
     {
-        public static LoginCommand ToLoginCommand(this LoginCommandModel model) =>
+        public static LoginCommand ToCommand(this LoginRequest model) =>
             new()
             {
                 Email = model.Email,

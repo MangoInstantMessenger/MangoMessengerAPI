@@ -1,8 +1,8 @@
 ﻿using MangoAPI.DTO.ApiCommands.Messages;
 
-namespace MangoAPI.DTO.CommandModels.Messages
+namespace MangoAPI.DTO.RequestModels.Messages
 {
-    public class EditMessageCommandModel
+    public class EditMessageRequest
     {
         public string MessageId { get; set; }
         public string ModifiedText { get; set; }
@@ -10,7 +10,7 @@ namespace MangoAPI.DTO.CommandModels.Messages
 
     public static class EditMessageCommandMapper
     {
-        public static EditMessageCommand ToEditMessageCommand(this EditMessageCommandModel model) =>
+        public static EditMessageCommand ToCommand(this EditMessageRequest model) =>
             new()
             {
                 MessageId = model.MessageId,

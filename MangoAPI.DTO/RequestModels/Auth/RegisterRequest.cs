@@ -1,9 +1,9 @@
 ﻿using MangoAPI.DTO.ApiCommands.Auth;
 using MangoAPI.DTO.Enums;
 
-namespace MangoAPI.DTO.CommandModels.Auth
+namespace MangoAPI.DTO.RequestModels.Auth
 {
-    public class RegisterCommandModel
+    public class RegisterRequest
     {
         public string PhoneNumber { get; set; }
         public string Email { get; set; }
@@ -15,7 +15,7 @@ namespace MangoAPI.DTO.CommandModels.Auth
 
     public static class RegisterCommandMapper
     {
-        public static RegisterCommand ToRegisterCommand(this RegisterCommandModel model) =>
+        public static RegisterCommand ToCommand(this RegisterRequest model) =>
             new()
             {
                 PhoneNumber = model.PhoneNumber,

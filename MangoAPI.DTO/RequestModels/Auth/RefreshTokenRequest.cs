@@ -1,15 +1,15 @@
 ﻿using MangoAPI.DTO.ApiCommands.Auth;
 
-namespace MangoAPI.DTO.CommandModels.Auth
+namespace MangoAPI.DTO.RequestModels.Auth
 {
-    public class LogoutCommandModel
+    public class RefreshTokenRequest
     {
         public string RefreshTokenId { get; set; }
     }
 
-    public static class LogoutCommandMapper
+    public static class RefreshTokenCommandMapper
     {
-        public static LogoutCommand ToLogoutCommand(this LogoutCommandModel model) =>
+        public static RefreshTokenCommand ToCommand(this RefreshTokenRequest model) =>
             new()
             {
                 RefreshTokenId = model.RefreshTokenId

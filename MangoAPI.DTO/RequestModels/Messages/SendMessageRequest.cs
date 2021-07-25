@@ -1,8 +1,8 @@
 ﻿using MangoAPI.DTO.ApiCommands.Messages;
 
-namespace MangoAPI.DTO.CommandModels.Messages
+namespace MangoAPI.DTO.RequestModels.Messages
 {
-    public class SendMessageCommandModel
+    public class SendMessageRequest
     {
         public string MessageText { get; set; }
         public string ChatId { get; set; }
@@ -10,7 +10,7 @@ namespace MangoAPI.DTO.CommandModels.Messages
 
     public static class SendMessageCommandMapper
     {
-        public static SendMessageCommand ToSendMessageCommand(this SendMessageCommandModel model) =>
+        public static SendMessageCommand ToCommand(this SendMessageRequest model) =>
             new()
             {
                 ChatId = model.ChatId,

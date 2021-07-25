@@ -1,8 +1,8 @@
 ﻿using MangoAPI.DTO.ApiCommands.Auth;
 
-namespace MangoAPI.DTO.CommandModels.Auth
+namespace MangoAPI.DTO.RequestModels.Auth
 {
-    public class VerifyPhoneCommandModel
+    public class VerifyPhoneRequest
     {
         public int ConfirmationCode { get; set; }
         public string UserId { get; set; }
@@ -10,7 +10,7 @@ namespace MangoAPI.DTO.CommandModels.Auth
 
     public static class VerifyPhoneCommandMapper
     {
-        public static VerifyPhoneCommand ToVerifyPhoneCommand(this VerifyPhoneCommandModel model) =>
+        public static VerifyPhoneCommand ToCommand(this VerifyPhoneRequest model) =>
             new()
             {
                 ConfirmationCode = model.ConfirmationCode,

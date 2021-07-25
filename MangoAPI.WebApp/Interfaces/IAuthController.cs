@@ -1,19 +1,19 @@
 ﻿
 using System.Threading;
 using System.Threading.Tasks;
-using MangoAPI.DTO.CommandModels.Auth;
+using MangoAPI.DTO.RequestModels.Auth;
 using Microsoft.AspNetCore.Mvc;
 
 namespace MangoAPI.WebApp.Interfaces
 {
     public interface IAuthController
     {
-        Task<IActionResult> LoginAsync(LoginCommandModel commandModel, CancellationToken cancellationToken);
-        Task<IActionResult> RegisterAsync(RegisterCommandModel commandModel, CancellationToken cancellationToken);
-        Task<IActionResult> VerifyPhoneCodeAsync(VerifyPhoneCommandModel commandModel, CancellationToken cancellationToken);
-        Task<IActionResult> RefreshTokenAsync(RefreshTokenCommandModel commandModel, CancellationToken cancellationToken);
-        Task<IActionResult> LogoutAsync(LogoutCommandModel commandModel, CancellationToken cancellationToken);
-        Task<IActionResult> LogoutAllDevicesAsync(LogoutAllCommandModel commandModel, CancellationToken cancellationToken);
+        Task<IActionResult> LoginAsync(LoginRequest request, CancellationToken cancellationToken);
+        Task<IActionResult> RegisterAsync(RegisterRequest request, CancellationToken cancellationToken);
+        Task<IActionResult> VerifyPhoneCodeAsync(VerifyPhoneRequest request, CancellationToken cancellationToken);
+        Task<IActionResult> RefreshTokenAsync(RefreshTokenRequest request, CancellationToken cancellationToken);
+        Task<IActionResult> LogoutAsync(LogoutRequest request, CancellationToken cancellationToken);
+        Task<IActionResult> LogoutAllDevicesAsync(LogoutAllRequest request, CancellationToken cancellationToken);
         Task<IActionResult> VerifyEmailAsync(string email, string userId, CancellationToken cancellationToken);
     }
 }

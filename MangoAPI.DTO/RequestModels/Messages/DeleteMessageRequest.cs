@@ -1,15 +1,15 @@
 ﻿using MangoAPI.DTO.ApiCommands.Messages;
 
-namespace MangoAPI.DTO.CommandModels.Messages
+namespace MangoAPI.DTO.RequestModels.Messages
 {
-    public class DeleteMessageCommandModel
+    public class DeleteMessageRequest
     {
         public string MessageId { get; set; }
     }
 
     public static class DeleteMessageCommandMapper
     {
-        public static DeleteMessageCommand ToDeleteMessageCommand(this DeleteMessageCommandModel model) =>
+        public static DeleteMessageCommand ToCommand(this DeleteMessageRequest model) =>
             new()
             {
                 MessageId = model.MessageId

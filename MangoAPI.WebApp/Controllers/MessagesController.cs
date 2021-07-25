@@ -1,7 +1,7 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 using MangoAPI.DTO.ApiQueries.Messages;
-using MangoAPI.DTO.CommandModels.Messages;
+using MangoAPI.DTO.RequestModels.Messages;
 using MangoAPI.DTO.Responses.Messages;
 using MangoAPI.WebApp.Extensions;
 using MangoAPI.WebApp.Interfaces;
@@ -38,10 +38,10 @@ namespace MangoAPI.WebApp.Controllers
         [ProducesResponseType(typeof(SendMessageResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(SendMessageResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public async Task<IActionResult> SendMessage(SendMessageCommandModel commandModel,
+        public async Task<IActionResult> SendMessage(SendMessageRequest request,
             CancellationToken cancellationToken)
         {
-            var command = commandModel.ToSendMessageCommand();
+            var command = request.ToCommand();
             command.UserId = HttpContext.User.GetUserId();
             return await RequestAsync(command, cancellationToken);
         }
@@ -51,10 +51,10 @@ namespace MangoAPI.WebApp.Controllers
         [ProducesResponseType(typeof(EditMessageResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(EditMessageResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public async Task<IActionResult> EditMessage(EditMessageCommandModel commandModel,
+        public async Task<IActionResult> EditMessage(EditMessageRequest request,
             CancellationToken cancellationToken)
         {
-            var command = commandModel.ToEditMessageCommand();
+            var command = request.ToCommand();
             command.UserId = HttpContext.User.GetUserId();
             return await RequestAsync(command, cancellationToken);
         }
@@ -64,10 +64,10 @@ namespace MangoAPI.WebApp.Controllers
         [ProducesResponseType(typeof(DeleteMessageResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(DeleteMessageResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public async Task<IActionResult> DeleteMessage(DeleteMessageCommandModel commandModel,
+        public async Task<IActionResult> DeleteMessage(DeleteMessageRequest request,
             CancellationToken cancellationToken)
         {
-            var command = commandModel.ToDeleteMessageCommand();
+            var command = request.ToCommand();
             command.UserId = HttpContext.User.GetUserId();
             return await RequestAsync(command, cancellationToken);
         }
