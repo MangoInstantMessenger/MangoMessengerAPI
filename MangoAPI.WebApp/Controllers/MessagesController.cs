@@ -14,13 +14,10 @@ namespace MangoAPI.WebApp.Controllers
 {
     [ApiController]
     [Route("api/messages")]
-    public class MessagesController : ControllerBase, IMessagesController
+    public class MessagesController : ApiControllerBase, IMessagesController
     {
-        private readonly IMediator _mediator;
-
-        public MessagesController(IMediator mediator)
+        public MessagesController(IMediator mediator) : base(mediator)
         {
-            _mediator = mediator;
         }
 
         [Authorize]
@@ -32,14 +29,7 @@ namespace MangoAPI.WebApp.Controllers
         public async Task<IActionResult> GetChatMessages([FromRoute] int chatId, CancellationToken cancellationToken)
         {
             var query = new GetMessagesQuery {ChatId = chatId};
-            var response = await _mediator.Send(query, cancellationToken);
-
-            if (!response.Success)
-            {
-                return BadRequest(response);
-            }
-
-            return Ok(response);
+            return await RequestAsync(query, cancellationToken);
         }
 
         [Authorize]
@@ -48,36 +38,17 @@ namespace MangoAPI.WebApp.Controllers
         [ProducesResponseType(typeof(SendMessageResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(SendMessageResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public async Task<IActionResult> SendMessage(SendMessageCommand command, CancellationToken cancellationToken)
-        {
-            var response = await _mediator.Send(command, cancellationToken);
-
-            if (!response.Success)
-            {
-                return BadRequest(response);
-            }
-
-            return Ok(response);
-        }
-
-
+        public async Task<IActionResult> SendMessage(SendMessageCommand command, CancellationToken cancellationToken) =>
+            await RequestAsync(command, cancellationToken);
+        
         [Authorize]
         [HttpPut]
         [SwaggerOperation(Summary = "Updates particular message.")]
         [ProducesResponseType(typeof(EditMessageResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(EditMessageResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public async Task<IActionResult> EditMessage(EditMessageCommand command, CancellationToken cancellationToken)
-        {
-            var response = await _mediator.Send(command, cancellationToken);
-
-            if (!response.Success)
-            {
-                return BadRequest(response);
-            }
-
-            return Ok(response);
-        }
+        public async Task<IActionResult> EditMessage(EditMessageCommand command, CancellationToken cancellationToken) =>
+            await RequestAsync(command, cancellationToken);
 
         [Authorize]
         [HttpDelete("{messageId:int}")]
@@ -88,14 +59,7 @@ namespace MangoAPI.WebApp.Controllers
         public async Task<IActionResult> DeleteMessage([FromRoute] int messageId, CancellationToken cancellationToken)
         {
             var command = new DeleteMessageCommand {MessageId = messageId};
-            var response = await _mediator.Send(command, cancellationToken);
-
-            if (!response.Success)
-            {
-                return BadRequest(response);
-            }
-
-            return Ok(response);
+            return await RequestAsync(command, cancellationToken);
         }
     }
 }
