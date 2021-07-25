@@ -34,15 +34,14 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Auth
 
             var user = await _userManager.FindByIdAsync(token.UserId);
 
-            if (user is null)
+            if (user is null || user.Id != token.UserId)
             {
                 return LogoutResponse.UserNotFound;
             }
 
             var userTokens = _postgresDbContext
                 .RefreshTokens
-                .Where(x => x.UserId == token.UserId)
-                .ToList();
+                .Where(x => x.UserId == user.Id);
 
             _postgresDbContext.RefreshTokens.RemoveRange(userTokens);
 

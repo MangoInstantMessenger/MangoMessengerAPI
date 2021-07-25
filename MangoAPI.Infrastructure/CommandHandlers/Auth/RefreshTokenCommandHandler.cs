@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using MangoAPI.Application.Services;
@@ -46,12 +47,20 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Auth
 
             var user = await _userManager.FindByIdAsync(refreshToken.UserId);
 
-            if (user == null)
+            if (user is null)
             {
                 return RefreshTokenResponse.UserNotFound;
             }
 
-            _postgresDbContext.Remove(refreshToken);
+            var userRefreshTokens = _postgresDbContext.RefreshTokens
+                .Where(x => x.UserId == user.Id);
+
+            var userTokensCount = await userRefreshTokens.CountAsync(cancellationToken);
+
+            if (userTokensCount >= 5)
+            {
+                _postgresDbContext.RefreshTokens.RemoveRange(userRefreshTokens);
+            }
 
             var newRefreshToken = _jwtGenerator.GenerateRefreshToken();
 
