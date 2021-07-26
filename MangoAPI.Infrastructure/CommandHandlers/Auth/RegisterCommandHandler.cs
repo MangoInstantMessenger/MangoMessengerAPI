@@ -7,6 +7,7 @@ using MangoAPI.Domain.Constants;
 using MangoAPI.DTO.ApiCommands.Auth;
 using MangoAPI.DTO.Enums;
 using MangoAPI.DTO.Responses.Auth;
+using MangoAPI.Infrastructure.BusinessExceptions;
 using MangoAPI.Infrastructure.Database;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
@@ -32,7 +33,7 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Auth
         {
             if (request.Email == EnvironmentConstants.EmailSenderAddres)
             {
-                return RegisterResponse.InvalidEmail;
+                throw new BusinessException(ResponseMessageCodes.InvalidEmail);
             }
 
             try
@@ -41,12 +42,7 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Auth
             }
             catch (InvalidOperationException)
             {
-                return RegisterResponse.EmailOccupied;
-            }
-
-            if (string.IsNullOrEmpty(request.DisplayName) || string.IsNullOrWhiteSpace(request.DisplayName))
-            {
-                return RegisterResponse.InvalidDisplayName;
+                throw new BusinessException(ResponseMessageCodes.EmailOccupied);
             }
 
             var user = await _postgresDbContext.Users.FirstOrDefaultAsync(x => x.PhoneNumber == request.PhoneNumber,
@@ -54,12 +50,7 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Auth
 
             if (user != null)
             {
-                return RegisterResponse.PhoneOccupied;
-            }
-
-            if (!request.TermsAccepted)
-            {
-                return RegisterResponse.TermsNotAccepted;
+                throw new BusinessException(ResponseMessageCodes.PhoneOccupied);
             }
 
             var newUser = new UserEntity
@@ -79,7 +70,7 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Auth
 
             if (!result.Succeeded)
             {
-                return RegisterResponse.WeakPassword;
+                throw new BusinessException(ResponseMessageCodes.WeakPassword);
             }
 
             switch (request.VerificationMethod)
@@ -91,7 +82,7 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Auth
                     // TODO: Send Phone Code
                     break;
                 default:
-                    return RegisterResponse.InvalidVerificationMethod;
+                    throw new ArgumentOutOfRangeException();
             }
 
             return RegisterResponse.FromSuccess(newUser);

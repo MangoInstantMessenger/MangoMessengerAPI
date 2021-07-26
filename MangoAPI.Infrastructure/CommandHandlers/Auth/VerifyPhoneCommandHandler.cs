@@ -1,8 +1,10 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
+using MangoAPI.Domain.Constants;
 using MangoAPI.Domain.Entities;
 using MangoAPI.DTO.ApiCommands.Auth;
 using MangoAPI.DTO.Responses.Auth;
+using MangoAPI.Infrastructure.BusinessExceptions;
 using MangoAPI.Infrastructure.Database;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
@@ -27,12 +29,17 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Auth
 
             if (user == null)
             {
-                return VerifyPhoneResponse.UserNotFound;
+                throw new BusinessException(ResponseMessageCodes.UserNotFound);
             }
 
             if (user.PhoneNumberConfirmed)
             {
-                return VerifyPhoneResponse.PhoneAlreadyVerified;
+                throw new BusinessException(ResponseMessageCodes.PhoneAlreadyVerified);
+            }
+
+            if (user.ConfirmationCode != request.ConfirmationCode)
+            {
+                throw new BusinessException(ResponseMessageCodes.InvalidPhoneCode);
             }
 
             user.PhoneNumberConfirmed = true;

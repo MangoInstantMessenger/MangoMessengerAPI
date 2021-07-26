@@ -2,10 +2,12 @@
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using MangoAPI.Domain.Constants;
 using MangoAPI.Domain.Entities;
 using MangoAPI.Domain.Enums;
 using MangoAPI.DTO.ApiCommands.Messages;
 using MangoAPI.DTO.Responses.Messages;
+using MangoAPI.Infrastructure.BusinessExceptions;
 using MangoAPI.Infrastructure.Database;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
@@ -31,7 +33,7 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Messages
 
             if (user == null)
             {
-                return SendMessageResponse.UserNotFound;
+                throw new BusinessException(ResponseMessageCodes.UserNotFound);
             }
 
             var chat = await _mangoPostgresDbContext.Chats.FirstOrDefaultAsync(x => x.Id == request.ChatId,
@@ -39,14 +41,14 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Messages
 
             if (chat == null)
             {
-                return SendMessageResponse.ChatNotFound;
+                throw new BusinessException(ResponseMessageCodes.ChatNotFound);
             }
 
             var permitted = await CheckUserPermissions(user, chat, cancellationToken);
 
             if (!permitted)
             {
-                return SendMessageResponse.PermissionDenied;
+                throw new BusinessException(ResponseMessageCodes.PermissionDenied);
             }
 
             var messageEntity = new MessageEntity

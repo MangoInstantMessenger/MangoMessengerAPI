@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
+using MangoAPI.Domain.Constants;
 using MangoAPI.Domain.Entities;
 using MangoAPI.Domain.Enums;
 using MangoAPI.DTO.ApiCommands.Chats;
 using MangoAPI.DTO.Responses.Chats;
+using MangoAPI.Infrastructure.BusinessExceptions;
 using MangoAPI.Infrastructure.Database;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
@@ -29,7 +31,7 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Chats
 
             if (user is null)
             {
-                return CreateChatEntityResponse.UserNotFound;
+                throw new BusinessException(ResponseMessageCodes.UserNotFound);
             }
 
             var group = new ChatEntity

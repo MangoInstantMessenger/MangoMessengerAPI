@@ -2,10 +2,12 @@
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using MangoAPI.Domain.Constants;
 using MangoAPI.Domain.Entities;
 using MangoAPI.Domain.Enums;
 using MangoAPI.DTO.ApiCommands.Chats;
 using MangoAPI.DTO.Responses.Chats;
+using MangoAPI.Infrastructure.BusinessExceptions;
 using MangoAPI.Infrastructure.Database;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
@@ -32,7 +34,7 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Chats
 
             if (partner is null)
             {
-                return CreateChatEntityResponse.UserNotFound;
+                throw new BusinessException(ResponseMessageCodes.UserNotFound);
             }
 
             var currentUser = await _userManager.FindByIdAsync(request.UserId);
@@ -57,7 +59,7 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Chats
 
             if (directChatAlreadyExists)
             {
-                return CreateChatEntityResponse.DirectChatAlreadyExists;
+                throw new BusinessException(ResponseMessageCodes.DirectChatAlreadyExists);
             }
 
             await _postgresDbContext.Chats.AddAsync(directChat, cancellationToken);

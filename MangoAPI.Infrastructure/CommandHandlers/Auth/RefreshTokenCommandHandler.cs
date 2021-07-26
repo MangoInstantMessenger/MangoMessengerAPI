@@ -2,9 +2,11 @@
 using System.Threading;
 using System.Threading.Tasks;
 using MangoAPI.Application.Services;
+using MangoAPI.Domain.Constants;
 using MangoAPI.Domain.Entities;
 using MangoAPI.DTO.ApiCommands.Auth;
 using MangoAPI.DTO.Responses.Auth;
+using MangoAPI.Infrastructure.BusinessExceptions;
 using MangoAPI.Infrastructure.Database;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
@@ -34,14 +36,14 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Auth
 
             if (refreshToken is null || refreshToken.IsExpired)
             {
-                return RefreshTokenResponse.InvalidOrEmptyRefreshToken;
+                throw new BusinessException(ResponseMessageCodes.InvalidOrEmptyRefreshToken);
             }
 
             var user = await _userManager.FindByIdAsync(refreshToken.UserId);
 
             if (user is null)
             {
-                return RefreshTokenResponse.UserNotFound;
+                throw new BusinessException(ResponseMessageCodes.UserNotFound);
             }
 
             var userRefreshTokens = _postgresDbContext.RefreshTokens

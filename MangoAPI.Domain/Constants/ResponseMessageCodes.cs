@@ -27,5 +27,7 @@
         public const string InvalidDisplayName = "INVALID_DISPLAY_NAME";
         public const string EmptyMessage = "CANNOT_SEND_EMPTY_MESSAGE";
         public const string ValidationError = "VALIDATION_ERROR";
+        public const string InvalidPhoneCode = "INVALID_PHONE_CODE";
+        public const string InternalServerError = "INTERNAL_SERVER_ERROR";
     }
 }

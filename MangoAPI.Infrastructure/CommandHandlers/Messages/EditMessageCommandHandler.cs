@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
+using MangoAPI.Domain.Constants;
 using MangoAPI.Domain.Entities;
 using MangoAPI.DTO.ApiCommands.Messages;
 using MangoAPI.DTO.Responses.Messages;
+using MangoAPI.Infrastructure.BusinessExceptions;
 using MangoAPI.Infrastructure.Database;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
@@ -28,7 +30,7 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Messages
 
             if (currentUser == null)
             {
-                return EditMessageResponse.UserNotFound;
+                throw new BusinessException(ResponseMessageCodes.UserNotFound);
             }
 
             var message = await _postgresDbContext.Messages
@@ -37,7 +39,7 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Messages
 
             if (message == null)
             {
-                return EditMessageResponse.MessageNotFound;
+                throw new BusinessException(ResponseMessageCodes.MessageNotFound);
             }
             
             message.Content = request.ModifiedText;

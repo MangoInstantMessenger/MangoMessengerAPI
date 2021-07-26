@@ -2,9 +2,11 @@
 using System.Threading;
 using System.Threading.Tasks;
 using MangoAPI.Application.Services;
+using MangoAPI.Domain.Constants;
 using MangoAPI.Domain.Entities;
 using MangoAPI.DTO.ApiCommands.Auth;
 using MangoAPI.DTO.Responses.Auth;
+using MangoAPI.Infrastructure.BusinessExceptions;
 using MangoAPI.Infrastructure.Database;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
@@ -36,14 +38,14 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Auth
 
             if (user is null)
             {
-                return LoginResponse.InvalidCredentials;
+                throw new BusinessException(ResponseMessageCodes.InvalidCredentials);
             }
 
             var result = await _signInManager.CheckPasswordSignInAsync(user, request.Password, false);
 
             if (!result.Succeeded)
             {
-                return LoginResponse.InvalidCredentials;
+                throw new BusinessException(ResponseMessageCodes.InvalidCredentials);
             }
 
             if (!user.Verified)

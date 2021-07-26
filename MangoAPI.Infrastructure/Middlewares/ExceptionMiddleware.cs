@@ -1,9 +1,10 @@
 ﻿using System;
-using System.ComponentModel.DataAnnotations;
 using System.Net;
 using System.Threading.Tasks;
+using FluentValidation;
 using MangoAPI.Domain.Constants;
 using MangoAPI.DTO.Responses;
+using MangoAPI.Infrastructure.BusinessExceptions;
 using Microsoft.AspNetCore.Http;
 
 namespace MangoAPI.Infrastructure.Middlewares
@@ -31,30 +32,60 @@ namespace MangoAPI.Infrastructure.Middlewares
 
         private static async Task HandleExceptionAsync(HttpContext context, Exception exception)
         {
-            if (exception is ValidationException validationException)
+            ErrorContext errorContext;
+            
+            switch (exception)
             {
-                context.Response.ContentType = "application/json";
-                context.Response.StatusCode = (int) HttpStatusCode.BadRequest;
-                await context.Response.WriteAsync(new ErrorResponse
-                {
-                    Success = false,
-                    ErrorMessage = ResponseMessageCodes.ValidationError,
-                    ErrorDetails = validationException.Message,
-                    StatusCode = (int) HttpStatusCode.BadRequest
-                }.ToString());
+                case ValidationException:
+                    errorContext = new ErrorContext(exception.Message, exception);
+                    await ThrowError(context, errorContext);
+                    return;
+                case BusinessException:
+                    errorContext = new ErrorContext(exception.Message, exception);
+                    await ThrowError(context, errorContext);
+                    return;
+                default:
+                    errorContext = new ErrorContext(exception,
+                        HttpStatusCode.InternalServerError,
+                        ResponseMessageCodes.InternalServerError);
 
-                return;
+                    await ThrowError(context, errorContext);
+                    break;
             }
+        }
 
+        private static async Task ThrowError(HttpContext context, ErrorContext errorContext)
+        {
             context.Response.ContentType = "application/json";
-            context.Response.StatusCode = (int) HttpStatusCode.InternalServerError;
+            context.Response.StatusCode = (int) errorContext.StatusCode;
             await context.Response.WriteAsync(new ErrorResponse
             {
                 Success = false,
-                ErrorMessage = ResponseMessageCodes.ValidationError,
-                ErrorDetails = exception.Message,
-                StatusCode = (int) HttpStatusCode.BadRequest
+                ErrorMessage = errorContext.ErrorMessage,
+                ErrorDetails = errorContext.Exception.Source,
+                StatusCode = (int) errorContext.StatusCode
             }.ToString());
+        }
+    }
+
+    internal class ErrorContext
+    {
+        public Exception Exception { get; set; }
+        public HttpStatusCode StatusCode { get; }
+        public string ErrorMessage { get; }
+
+        public ErrorContext(string errorMessage, Exception exception)
+        {
+            ErrorMessage = errorMessage;
+            StatusCode = HttpStatusCode.BadRequest;
+            Exception = exception;
+        }
+
+        public ErrorContext(Exception exception, HttpStatusCode statusCode, string errorMessage)
+        {
+            Exception = exception;
+            StatusCode = statusCode;
+            ErrorMessage = errorMessage;
         }
     }
 }

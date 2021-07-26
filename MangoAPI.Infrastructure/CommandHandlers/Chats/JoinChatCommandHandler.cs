@@ -1,9 +1,11 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
+using MangoAPI.Domain.Constants;
 using MangoAPI.Domain.Entities;
 using MangoAPI.Domain.Enums;
 using MangoAPI.DTO.ApiCommands.Chats;
 using MangoAPI.DTO.Responses.Chats;
+using MangoAPI.Infrastructure.BusinessExceptions;
 using MangoAPI.Infrastructure.Database;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
@@ -28,7 +30,7 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Chats
 
             if (currentUser == null)
             {
-                return JoinChatResponse.UserNotFound;
+                throw new BusinessException(ResponseMessageCodes.UserNotFound);
             }
 
             var alreadyJoined = await
@@ -37,7 +39,7 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Chats
 
             if (alreadyJoined)
             {
-                return JoinChatResponse.UserAlreadyJoined;
+                throw new BusinessException(ResponseMessageCodes.UserAlreadyJoined);
             }
 
             var chat = await _postgresDbContext.Chats
@@ -47,7 +49,7 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Chats
 
             if (chat == null)
             {
-                return JoinChatResponse.ChatNotFound;
+                throw new BusinessException(ResponseMessageCodes.ChatNotFound);
             }
 
             await _postgresDbContext.UserChats.AddAsync(new UserChatEntity
