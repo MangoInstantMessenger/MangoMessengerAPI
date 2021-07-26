@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using MangoAPI.DTO.ApiCommands.Auth;
 using MangoAPI.DTO.RequestModels.Auth;
+using MangoAPI.DTO.Responses;
 using MangoAPI.DTO.Responses.Auth;
 using MangoAPI.WebApp.Extensions;
 using MangoAPI.WebApp.Interfaces;
@@ -25,7 +26,8 @@ namespace MangoAPI.WebApp.Controllers
         [HttpPost("login")]
         [SwaggerOperation(Summary = "Performs login to the messenger. Returns: Access token, Refresh Token ID.")]
         [ProducesResponseType(typeof(LoginResponse), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(LoginResponse), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
         public async Task<IActionResult> LoginAsync([FromBody] LoginRequest request,
             CancellationToken cancellationToken)
         {
@@ -36,7 +38,8 @@ namespace MangoAPI.WebApp.Controllers
         [HttpPost("register")]
         [SwaggerOperation(Summary = "Registers user in a messenger.")]
         [ProducesResponseType(typeof(RegisterResponse), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(RegisterResponse), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
         public async Task<IActionResult> RegisterAsync([FromBody] RegisterRequest request,
             CancellationToken cancellationToken)
         {
@@ -49,7 +52,8 @@ namespace MangoAPI.WebApp.Controllers
             "Sends verification request with provided user parameters: E-mail, User's ID guid. " +
             "User receives confirmation link via email.")]
         [ProducesResponseType(typeof(VerifyEmailResponse), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(VerifyEmailResponse), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
         public async Task<IActionResult> VerifyEmailAsync(string email, string userId,
             CancellationToken cancellationToken)
         {
@@ -60,8 +64,8 @@ namespace MangoAPI.WebApp.Controllers
         [HttpPost("verify-phone")]
         [SwaggerOperation(Summary =
             "Sends verification request with provided user parameters: phone confirmation code.")]
-        [ProducesResponseType(typeof(VerifyPhoneResponse), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(VerifyPhoneResponse), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
         public async Task<IActionResult> VerifyPhoneCodeAsync([FromBody] VerifyPhoneRequest request,
             CancellationToken cancellationToken)
         {
@@ -71,8 +75,8 @@ namespace MangoAPI.WebApp.Controllers
         [AllowAnonymous]
         [HttpPost("refresh-token")]
         [SwaggerOperation(Summary = "Refreshes user's existing refresh token and access token.")]
-        [ProducesResponseType(typeof(RefreshTokenResponse), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(RefreshTokenResponse), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> RefreshTokenAsync(RefreshTokenRequest request,
             CancellationToken cancellationToken)
@@ -84,8 +88,9 @@ namespace MangoAPI.WebApp.Controllers
         [HttpPost("logout")]
         [SwaggerOperation(Summary = "Logs out from current device.")]
         [ProducesResponseType(typeof(LogoutResponse), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(LogoutResponse), StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(typeof(LogoutResponse), StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> LogoutAsync(LogoutRequest request,
             CancellationToken cancellationToken)
         {
@@ -96,8 +101,9 @@ namespace MangoAPI.WebApp.Controllers
         [HttpPost("logout-all")]
         [SwaggerOperation(Summary = "Logs out from all devices.")]
         [ProducesResponseType(typeof(LogoutResponse), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(LogoutResponse), StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(typeof(LogoutResponse), StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> LogoutAllDevicesAsync(LogoutAllRequest request,
             CancellationToken cancellationToken)
         {
