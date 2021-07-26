@@ -1,4 +1,5 @@
-﻿using FluentValidation;
+﻿using System;
+using FluentValidation;
 using MangoAPI.DTO.ApiCommands.Chats;
 
 namespace MangoAPI.Infrastructure.Validators.Chat
@@ -9,7 +10,10 @@ namespace MangoAPI.Infrastructure.Validators.Chat
         {
             RuleFor(x => x.GroupTitle).NotNull().NotEmpty();
             RuleFor(x => x.GroupType).IsInEnum();
+            
             RuleFor(x => x.UserId).NotNull().NotEmpty();
+            RuleFor(x => x.UserId).Must(x => Guid.TryParse(x, out _))
+                .WithMessage("Create group: User Id cannot be parsed.");
         }
     }
 }

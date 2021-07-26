@@ -2,7 +2,6 @@
 using System.Net;
 using System.Threading.Tasks;
 using FluentValidation;
-using MangoAPI.Domain.Constants;
 using MangoAPI.DTO.Responses;
 using MangoAPI.Infrastructure.BusinessExceptions;
 using Microsoft.AspNetCore.Http;
@@ -32,22 +31,20 @@ namespace MangoAPI.Infrastructure.Middlewares
 
         private static async Task HandleExceptionAsync(HttpContext context, Exception exception)
         {
-            ErrorContext errorContext;
+            var errorContext = new ErrorContext(exception.Message, exception);
             
             switch (exception)
             {
                 case ValidationException:
-                    errorContext = new ErrorContext(exception.Message, exception);
                     await ThrowError(context, errorContext);
                     return;
                 case BusinessException:
-                    errorContext = new ErrorContext(exception.Message, exception);
                     await ThrowError(context, errorContext);
                     return;
                 default:
                     errorContext = new ErrorContext(exception,
                         HttpStatusCode.InternalServerError,
-                        ResponseMessageCodes.InternalServerError);
+                        exception.Message);
 
                     await ThrowError(context, errorContext);
                     break;

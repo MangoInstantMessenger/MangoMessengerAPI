@@ -9,6 +9,8 @@ namespace MangoAPI.Infrastructure.Validators.Auth
         public RefreshTokenCommandValidator()
         {
             RuleFor(x => x.RefreshTokenId).NotNull().NotEmpty();
+            RuleFor(x => x.RefreshTokenId).Must(x => Guid.TryParse(x, out _))
+                .WithMessage("RefreshTokenCommand: Refresh Token Id cannot be parsed.");
         }
     }
 }
