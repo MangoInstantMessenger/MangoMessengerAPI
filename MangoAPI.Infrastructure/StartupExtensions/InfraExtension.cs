@@ -1,4 +1,7 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using FluentValidation;
+using MangoAPI.Infrastructure.Pipelines;
+using MediatR;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace MangoAPI.Infrastructure.StartupExtensions
 {
@@ -11,6 +14,8 @@ namespace MangoAPI.Infrastructure.StartupExtensions
             services.AddAppServices();
             services.AddAppAuthorization();
             services.AddAppAuthentication();
+            services.AddValidatorsFromAssembly(typeof(InfraExtension).Assembly);
+            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehaviour<,>));
             return services;
         }
     }
