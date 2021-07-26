@@ -39,7 +39,7 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Chats
 
             if (alreadyJoined)
             {
-                throw new BusinessException(ResponseMessageCodes.UserAlreadyJoined);
+                throw new BusinessException(ResponseMessageCodes.UserAlreadyJoinedGroup);
             }
 
             var chat = await _postgresDbContext.Chats

@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using MangoAPI.Domain.Enums;
 using MangoAPI.DTO.ApiQueries.Chats;
 using MangoAPI.DTO.Responses.Chats;
 using MangoAPI.Infrastructure.Database;
@@ -25,6 +26,8 @@ namespace MangoAPI.Infrastructure.QueryHandlers.Chats
                 .Include(x => x.Chat)
                 .ThenInclude(x => x.Messages)
                 .Where(x => x.Chat.Title.Contains(request.DisplayName))
+                .Where(x => x.Chat.ChatType != ChatType.PrivateChannel)
+                .Where(x => x.Chat.ChatType != ChatType.DirectChat)
                 .ToListAsync(cancellationToken);
 
             return SearchChatsResponse.FromSuccess(chats, request.UserId);

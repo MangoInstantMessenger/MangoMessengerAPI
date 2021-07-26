@@ -36,7 +36,7 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Auth
 
             if (refreshToken is null || refreshToken.IsExpired)
             {
-                throw new BusinessException(ResponseMessageCodes.InvalidOrEmptyRefreshToken);
+                throw new BusinessException(ResponseMessageCodes.InvalidOrExpiredRefreshToken);
             }
 
             var user = await _userManager.FindByIdAsync(refreshToken.UserId);
