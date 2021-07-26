@@ -31,13 +31,14 @@ namespace MangoAPI.WebApp.Controllers
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> GetChats(CancellationToken cancellationToken)
         {
-            var request = new GetChatsQuery {UserId = HttpContext.User.GetUserId()};
+            var request = new GetCurrentUserChatsQuery {UserId = HttpContext.User.GetUserId()};
             return await RequestAsync(request, cancellationToken);
         }
 
         [Authorize]
         [HttpPost("group")]
-        [SwaggerOperation(Summary = "Creates new group of specified type.")]
+        [SwaggerOperation(Summary =
+            "Creates new group of specified type. 2 -- Private Channel, 3 -- Public Channel, 4 -- ReadOnlyChannel")]
         [ProducesResponseType(typeof(CreateChatEntityResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
@@ -78,6 +79,21 @@ namespace MangoAPI.WebApp.Controllers
             var command = request.ToCommand();
             command.UserId = HttpContext.User.GetUserId();
             return await RequestAsync(command, cancellationToken);
+        }
+
+        [Authorize]
+        [HttpGet("{search}")]
+        [SwaggerOperation(Summary = "Searches chats by display name.")]
+        [ProducesResponseType(typeof(SearchChatsQuery), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        public async Task<IActionResult> SearchChat([FromQuery] string displayName, CancellationToken cancellationToken,
+            [FromRoute] string search)
+        {
+            var userId = HttpContext.User.GetUserId();
+            var request = new SearchChatsQuery {DisplayName = displayName, UserId = userId};
+            return await RequestAsync(request, cancellationToken);
         }
     }
 }

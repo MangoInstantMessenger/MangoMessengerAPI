@@ -3,8 +3,9 @@ using MediatR;
 
 namespace MangoAPI.DTO.ApiQueries.Chats
 {
-    public class GetChatsQuery : IRequest<GetChatsResponse>
+    public class SearchChatsQuery : IRequest<SearchChatsResponse>
     {
+        public string DisplayName { get; set; }
         public string UserId { get; set; }
     }
 }

@@ -9,5 +9,6 @@
         public string LastMessage { get; set; }
         public string LastMessageAt { get; set; }
         public int MembersCount { get; set; }
+        public bool IsMember { get; set; }
     }
 }
