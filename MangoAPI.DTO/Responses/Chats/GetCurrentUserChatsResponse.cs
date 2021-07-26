@@ -6,11 +6,11 @@ using MangoAPI.DTO.Models;
 
 namespace MangoAPI.DTO.Responses.Chats
 {
-    public class GetChatsResponse : ResponseBase<GetChatsResponse>
+    public class GetCurrentUserChatsResponse : ResponseBase<GetCurrentUserChatsResponse>
     {
         public List<UserChat> Chats { get; set; }
 
-        public static GetChatsResponse FromSuccess(IEnumerable<UserChatEntity> chats) => new()
+        public static GetCurrentUserChatsResponse FromSuccess(IEnumerable<UserChatEntity> chats) => new()
         {
             Message = ResponseMessageCodes.Success,
             Success = true,
@@ -22,7 +22,8 @@ namespace MangoAPI.DTO.Responses.Chats
                 LastMessage = x.Chat.Messages.Any() ? x.Chat.Messages.Last().Content : null,
                 LastMessageAuthor = x.Chat.Messages.Any() ? x.Chat.Messages.Last().User.DisplayName : null,
                 LastMessageAt = x.Chat.Messages.Any() ? x.Chat.Messages.Last().Created.ToShortTimeString() : null,
-                MembersCount = x.Chat.MembersCount
+                MembersCount = x.Chat.MembersCount,
+                IsMember = true
             }).ToList()
         };
     }

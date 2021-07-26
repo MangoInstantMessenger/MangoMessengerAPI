@@ -13,18 +13,18 @@ using Microsoft.EntityFrameworkCore;
 
 namespace MangoAPI.Infrastructure.QueryHandlers.Chats
 {
-    public class GetChatsQueryHandler : IRequestHandler<GetChatsQuery, GetChatsResponse>
+    public class GetCurrentUserChatsQueryHandler : IRequestHandler<GetCurrentUserChatsQuery, GetCurrentUserChatsResponse>
     {
         private readonly MangoPostgresDbContext _postgresDbContext;
         private readonly UserManager<UserEntity> _userManager;
 
-        public GetChatsQueryHandler(MangoPostgresDbContext postgresDbContext, UserManager<UserEntity> userManager)
+        public GetCurrentUserChatsQueryHandler(MangoPostgresDbContext postgresDbContext, UserManager<UserEntity> userManager)
         {
             _postgresDbContext = postgresDbContext;
             _userManager = userManager;
         }
 
-        public async Task<GetChatsResponse> Handle(GetChatsQuery request, CancellationToken cancellationToken)
+        public async Task<GetCurrentUserChatsResponse> Handle(GetCurrentUserChatsQuery request, CancellationToken cancellationToken)
         {
             var currentUser = await _userManager.FindByIdAsync(request.UserId);
 
@@ -40,7 +40,7 @@ namespace MangoAPI.Infrastructure.QueryHandlers.Chats
                 .Where(x => x.UserId == currentUser.Id)
                 .ToListAsync(cancellationToken);
 
-            return GetChatsResponse.FromSuccess(chats);
+            return GetCurrentUserChatsResponse.FromSuccess(chats);
         }
     }
 }
