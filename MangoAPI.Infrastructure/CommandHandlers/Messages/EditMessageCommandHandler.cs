@@ -39,6 +39,11 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Messages
             {
                 return EditMessageResponse.MessageNotFound;
             }
+            
+            if (string.IsNullOrEmpty(message.Content) || string.IsNullOrWhiteSpace(message.Content))
+            {
+                return EditMessageResponse.EmptyMessage;
+            }
 
             message.Content = request.ModifiedText;
             message.Updated = DateTime.UtcNow;
