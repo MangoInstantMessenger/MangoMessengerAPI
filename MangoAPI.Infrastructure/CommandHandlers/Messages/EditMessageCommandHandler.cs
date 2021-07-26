@@ -24,11 +24,6 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Messages
 
         public async Task<EditMessageResponse> Handle(EditMessageCommand request, CancellationToken cancellationToken)
         {
-            if (string.IsNullOrEmpty(request.ModifiedText) || string.IsNullOrWhiteSpace(request.ModifiedText))
-            {
-                return EditMessageResponse.EmptyMessage;
-            }
-            
             var currentUser = await _userManager.FindByIdAsync(request.UserId);
 
             if (currentUser == null)
@@ -45,8 +40,6 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Messages
                 return EditMessageResponse.MessageNotFound;
             }
             
-            
-
             message.Content = request.ModifiedText;
             message.Updated = DateTime.UtcNow;
 

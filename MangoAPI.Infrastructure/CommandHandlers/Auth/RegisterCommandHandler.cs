@@ -35,11 +35,13 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Auth
                 return RegisterResponse.InvalidEmail;
             }
 
-            var user = await _userManager.FindByEmailAsync(request.Email);
-
-            if (user != null)
+            try
             {
-                return RegisterResponse.UserAlreadyRegistered;
+                await _userManager.FindByEmailAsync(request.Email);
+            }
+            catch (InvalidOperationException)
+            {
+                return RegisterResponse.EmailOccupied;
             }
 
             if (string.IsNullOrEmpty(request.DisplayName) || string.IsNullOrWhiteSpace(request.DisplayName))
@@ -47,8 +49,8 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Auth
                 return RegisterResponse.InvalidDisplayName;
             }
 
-            user = await _postgresDbContext.Users.FirstOrDefaultAsync(x => x.PhoneNumber == request.PhoneNumber,
-                    cancellationToken);
+            var user = await _postgresDbContext.Users.FirstOrDefaultAsync(x => x.PhoneNumber == request.PhoneNumber,
+                cancellationToken);
 
             if (user != null)
             {

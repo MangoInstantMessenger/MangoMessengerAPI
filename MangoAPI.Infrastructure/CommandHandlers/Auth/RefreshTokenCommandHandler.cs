@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using MangoAPI.Application.Services;
@@ -29,20 +28,13 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Auth
 
         public async Task<RefreshTokenResponse> Handle(RefreshTokenCommand request, CancellationToken cancellationToken)
         {
-            var parsed = Guid.TryParse(request.RefreshTokenId, out _);
-
-            if (!parsed)
-            {
-                return RefreshTokenResponse.InvalidOrEmptyRefreshToken;
-            }
-
             var refreshToken =
                 await _postgresDbContext.RefreshTokens
                     .FirstOrDefaultAsync(x => x.Id == request.RefreshTokenId, cancellationToken);
 
             if (refreshToken is null || refreshToken.IsExpired)
             {
-                return RefreshTokenResponse.SuspiciousAction;
+                return RefreshTokenResponse.InvalidOrEmptyRefreshToken;
             }
 
             var user = await _userManager.FindByIdAsync(refreshToken.UserId);

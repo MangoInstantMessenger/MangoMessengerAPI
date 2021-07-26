@@ -5,7 +5,7 @@
         public const string Success = "SUCCESS";
         public const string InvalidOrEmptyRefreshToken = "INVALID_OR_EMPTY_REFRESH_TOKEN";
         public const string SuspiciousAction = "SUSPICIOUS_ACTION";
-        public const string UserAlreadyRegistered = "USER_ALREADY_REGISTERED";
+        public const string EmailOccupied = "EMAIL_OCUUPIED";
         public const string TermsNotAccepted = "TERMS_NOT_ACCEPTED";
         public const string InvalidCredentials = "INVALID_LOGIN_OR_PASSWORD";
         public const string ConfirmRegisterInvalidIdentifier = "INVALID_CONFIRMATION_IDENTIFIER";
@@ -22,7 +22,6 @@
         public const string PermissionDenied = "PERMISSION_DENIED";
         public const string ChatNotFound = "CHAT_NOT_FOUND";
         public const string MessageNotFound = "MESSAGE_NOT_FOUND";
-        public const string MessageIsNullOrEmpty = "MESSAGE_IS_NULL_OR_EMPTY";
         public const string UserAlreadyJoined = "USER_ALREADY_JOINED_OR_BLOCKED";
         public const string InvalidVerificationMethod = "INVALID_VERIFICATION_METHOD";
         public const string DirectChatAlreadyExists = "DIRECT_CHAT_ALREADY_EXISTS";

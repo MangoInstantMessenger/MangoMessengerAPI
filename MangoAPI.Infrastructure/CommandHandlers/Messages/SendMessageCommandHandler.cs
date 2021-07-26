@@ -27,11 +27,6 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Messages
 
         public async Task<SendMessageResponse> Handle(SendMessageCommand request, CancellationToken cancellationToken)
         {
-            if (string.IsNullOrEmpty(request.MessageText) || string.IsNullOrWhiteSpace(request.MessageText))
-            {
-                return SendMessageResponse.EmptyMessage;
-            }
-
             var user = await _userManager.FindByIdAsync(request.UserId);
 
             if (user == null)

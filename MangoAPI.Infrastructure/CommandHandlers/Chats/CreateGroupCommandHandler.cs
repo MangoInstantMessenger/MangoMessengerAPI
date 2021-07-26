@@ -25,16 +25,6 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Chats
         public async Task<CreateChatEntityResponse> Handle(CreateGroupCommand request,
             CancellationToken cancellationToken)
         {
-            if (string.IsNullOrEmpty(request.GroupTitle) || string.IsNullOrWhiteSpace(request.GroupTitle))
-            {
-                return CreateChatEntityResponse.InvalidOrEmptyChatTitle;
-            }
-
-            if (request.GroupType is ChatType.DirectChat)
-            {
-                return CreateChatEntityResponse.InvalidGroupType;
-            }
-
             var user = await _userManager.FindByIdAsync(request.UserId);
 
             if (user is null)

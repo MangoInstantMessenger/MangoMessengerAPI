@@ -7,10 +7,10 @@ namespace MangoAPI.DTO.Responses.Auth
     {
         public string UserId { get; set; }
 
-        public static RegisterResponse UserAlreadyRegistered => new()
+        public static RegisterResponse EmailOccupied => new()
         {
             Success = false,
-            Message = ResponseMessageCodes.UserAlreadyRegistered
+            Message = ResponseMessageCodes.EmailOccupied
         };
 
         public static RegisterResponse InvalidEmail => new()

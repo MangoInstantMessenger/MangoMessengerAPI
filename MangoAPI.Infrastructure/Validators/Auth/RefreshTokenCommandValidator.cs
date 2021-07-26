@@ -1,4 +1,5 @@
-﻿using FluentValidation;
+﻿using System;
+using FluentValidation;
 using MangoAPI.DTO.ApiCommands.Auth;
 
 namespace MangoAPI.Infrastructure.Validators.Auth
