@@ -15,25 +15,19 @@ namespace MangoAPI.DTO.Responses
             Message = ResponseMessageCodes.UserUnverified,
             Success = false
         };
-        
+
         public static T UserNotFound => new()
         {
             Message = ResponseMessageCodes.UserNotFound,
             Success = false
         };
-        
+
         public static T SuccessResponse => new()
         {
             Success = true,
             Message = ResponseMessageCodes.Success
         };
-        
-        public static T SuspiciousAction => new()
-        {
-            Message = ResponseMessageCodes.SuspiciousAction,
-            Success = false
-        };
-        
+
         public static T InvalidOrEmptyRefreshToken => new()
         {
             Success = false,

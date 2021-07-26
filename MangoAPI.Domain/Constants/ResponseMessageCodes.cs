@@ -4,7 +4,6 @@
     {
         public const string Success = "SUCCESS";
         public const string InvalidOrEmptyRefreshToken = "INVALID_OR_EMPTY_REFRESH_TOKEN";
-        public const string SuspiciousAction = "SUSPICIOUS_ACTION";
         public const string EmailOccupied = "EMAIL_OCUUPIED";
         public const string TermsNotAccepted = "TERMS_NOT_ACCEPTED";
         public const string InvalidCredentials = "INVALID_LOGIN_OR_PASSWORD";
@@ -27,5 +26,6 @@
         public const string DirectChatAlreadyExists = "DIRECT_CHAT_ALREADY_EXISTS";
         public const string InvalidDisplayName = "INVALID_DISPLAY_NAME";
         public const string EmptyMessage = "CANNOT_SEND_EMPTY_MESSAGE";
+        public const string ValidationError = "VALIDATION_ERROR";
     }
 }
