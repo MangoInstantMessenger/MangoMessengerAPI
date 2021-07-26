@@ -1,6 +1,8 @@
-﻿namespace MangoAPI.Infrastructure.BusinessExceptions
+﻿using System;
+
+namespace MangoAPI.Infrastructure.BusinessExceptions
 {
-    public class BusinessException : System.Exception
+    public class BusinessException : Exception
     {
         public BusinessException(string message) : base(message)
         {

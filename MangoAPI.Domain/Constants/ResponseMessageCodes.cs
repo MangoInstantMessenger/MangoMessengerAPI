@@ -4,7 +4,7 @@
     {
         public const string Success = "SUCCESS";
         public const string InvalidOrEmptyRefreshToken = "INVALID_OR_EMPTY_REFRESH_TOKEN";
-        public const string EmailOccupied = "EMAIL_OCUUPIED";
+        public const string EmailOccupied = "EMAIL_OCCUPIED";
         public const string InvalidCredentials = "INVALID_LOGIN_OR_PASSWORD";
         public const string InvalidEmail = "INVALID_EMAIL";
         public const string UserNotVerified = "USER_NOT_VERIFIED";
