@@ -4,9 +4,9 @@ namespace MangoAPI.DTO.Responses.Messages
 {
     public class EditMessageResponse : MessageResponseBase<EditMessageResponse>
     {
-        public static EditMessageResponse MessageContentIsNullOrEmpty => new()
+        public static EditMessageResponse EmptyMessage => new()
         {
-          Message  = ResponseMessageCodes.MessageIsNullOrEmpty
+          Message  = ResponseMessageCodes.EmptyMessage
         };
     }
 }

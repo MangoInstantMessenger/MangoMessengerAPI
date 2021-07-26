@@ -42,7 +42,7 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Messages
             
             if (string.IsNullOrEmpty(message.Content) || string.IsNullOrWhiteSpace(message.Content))
             {
-                return EditMessageResponse.MessageContentIsNullOrEmpty;
+                return EditMessageResponse.EmptyMessage;
             }
 
             message.Content = request.ModifiedText;
