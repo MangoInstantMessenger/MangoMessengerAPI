@@ -10,7 +10,7 @@ namespace MangoAPI.DTO.Responses.Chats
     {
         public List<UserChat> Chats { get; set; }
 
-        public static GetChatsResponse FromSuccess(List<UserChatEntity> chats) => new()
+        public static GetChatsResponse FromSuccess(IEnumerable<UserChatEntity> chats) => new()
         {
             Message = ResponseMessageCodes.Success,
             Success = true,

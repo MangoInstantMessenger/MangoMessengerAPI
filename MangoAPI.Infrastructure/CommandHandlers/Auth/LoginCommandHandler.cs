@@ -50,7 +50,7 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Auth
 
             if (!user.Verified)
             {
-                return LoginResponse.UserUnverified;
+                throw new BusinessException(ResponseMessageCodes.UserNotVerified);
             }
 
             var refreshToken = _jwtGenerator.GenerateRefreshToken();
