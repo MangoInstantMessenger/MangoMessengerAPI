@@ -7,24 +7,6 @@ namespace MangoAPI.DTO.Responses.Chats
     {
         public string ChatId { get; set; }
 
-        public static CreateChatEntityResponse InvalidOrEmptyChatTitle => new()
-        {
-            Message = ResponseMessageCodes.InvalidOrEmptyGroupTitle,
-            Success = false
-        };
-
-        public static CreateChatEntityResponse InvalidGroupType => new()
-        {
-            Message = ResponseMessageCodes.InvalidGroupType,
-            Success = false
-        };
-
-        public static CreateChatEntityResponse DirectChatAlreadyExists => new()
-        {
-            Message = ResponseMessageCodes.DirectChatAlreadyExists,
-            Success = false
-        };
-
         public static CreateChatEntityResponse FromSuccess(ChatEntity chatEntity) => new()
         {
             ChatId = chatEntity.Id,

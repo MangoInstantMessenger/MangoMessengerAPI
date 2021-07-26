@@ -1,5 +1,4 @@
 ﻿using MangoAPI.Domain.Constants;
-using MangoAPI.DTO.Models;
 
 namespace MangoAPI.DTO.Responses.Messages
 {
@@ -12,13 +11,6 @@ namespace MangoAPI.DTO.Responses.Messages
             Success = true,
             Message = ResponseMessageCodes.Success,
             MessageId = messageId
-        };
-
-        public static SendMessageResponse EmptyMessage => new()
-        {
-            Success = false,
-            Message = ResponseMessageCodes.EmptyMessage,
-            MessageId = null
         };
     }
 }

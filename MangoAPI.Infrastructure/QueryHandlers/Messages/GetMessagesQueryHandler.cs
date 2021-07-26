@@ -1,9 +1,11 @@
 ﻿using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using MangoAPI.Domain.Constants;
 using MangoAPI.Domain.Entities;
 using MangoAPI.DTO.ApiQueries.Messages;
 using MangoAPI.DTO.Responses.Messages;
+using MangoAPI.Infrastructure.BusinessExceptions;
 using MangoAPI.Infrastructure.Database;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
@@ -28,7 +30,7 @@ namespace MangoAPI.Infrastructure.QueryHandlers.Messages
 
             if (user == null)
             {
-                return GetMessagesResponse.UserNotFound;
+                throw new BusinessException(ResponseMessageCodes.UserNotFound);
             }
 
             var belongsToChat = await _postgresDbContext.UserChats
@@ -37,7 +39,7 @@ namespace MangoAPI.Infrastructure.QueryHandlers.Messages
 
             if (!belongsToChat)
             {
-                return GetMessagesResponse.PermissionDenied;
+                throw new BusinessException(ResponseMessageCodes.PermissionDenied);
             }
 
             var chat = _postgresDbContext.Messages

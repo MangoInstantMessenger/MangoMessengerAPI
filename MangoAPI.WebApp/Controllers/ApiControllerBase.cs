@@ -23,7 +23,7 @@ namespace MangoAPI.WebApp.Controllers
 
             if (!response.Success)
             {
-                return BadRequest(response);
+                return Conflict(response);
             }
 
             return Ok(response);

@@ -1,9 +1,10 @@
-﻿using System;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
+using MangoAPI.Domain.Constants;
 using MangoAPI.Domain.Entities;
 using MangoAPI.DTO.ApiCommands.Auth;
 using MangoAPI.DTO.Responses.Auth;
+using MangoAPI.Infrastructure.BusinessExceptions;
 using MangoAPI.Infrastructure.Database;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
@@ -23,28 +24,21 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Auth
 
         public async Task<VerifyEmailResponse> Handle(VerifyEmailCommand request, CancellationToken cancellationToken)
         {
-            var guidParsed = Guid.TryParse(request.UserId, out _);
-
-            if (!guidParsed)
-            {
-                return VerifyEmailResponse.InvalidUserId;
-            }
-
             var user = await _userManager.FindByIdAsync(request.UserId);
 
             if (user is null)
             {
-                return VerifyEmailResponse.UserNotFound;
+                throw new BusinessException(ResponseMessageCodes.UserNotFound);
             }
 
             if (user.Email != request.Email)
             {
-                return VerifyEmailResponse.InvalidEmail;
+                throw new BusinessException(ResponseMessageCodes.InvalidEmail);
             }
 
             if (user.EmailConfirmed)
             {
-                return VerifyEmailResponse.EmailAlreadyVerified;
+                throw new BusinessException(ResponseMessageCodes.EmailAlreadyVerified);
             }
 
             user.EmailConfirmed = true;

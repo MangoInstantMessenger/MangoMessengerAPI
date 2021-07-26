@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
+using MangoAPI.Domain.Constants;
 using MangoAPI.Domain.Entities;
 using MangoAPI.Domain.Enums;
 using MangoAPI.DTO.ApiCommands.Chats;
 using MangoAPI.DTO.Responses.Chats;
+using MangoAPI.Infrastructure.BusinessExceptions;
 using MangoAPI.Infrastructure.Database;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
@@ -25,21 +27,11 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Chats
         public async Task<CreateChatEntityResponse> Handle(CreateGroupCommand request,
             CancellationToken cancellationToken)
         {
-            if (string.IsNullOrEmpty(request.GroupTitle) || string.IsNullOrWhiteSpace(request.GroupTitle))
-            {
-                return CreateChatEntityResponse.InvalidOrEmptyChatTitle;
-            }
-
-            if (request.GroupType is ChatType.DirectChat)
-            {
-                return CreateChatEntityResponse.InvalidGroupType;
-            }
-
             var user = await _userManager.FindByIdAsync(request.UserId);
 
             if (user is null)
             {
-                return CreateChatEntityResponse.UserNotFound;
+                throw new BusinessException(ResponseMessageCodes.UserNotFound);
             }
 
             var group = new ChatEntity

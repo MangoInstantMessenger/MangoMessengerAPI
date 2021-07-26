@@ -66,6 +66,8 @@ namespace MangoAPI.WebApp
             {
                 app.UseDeveloperExceptionPage();
             }
+            
+            app.ConfigureExceptionHandler();
 
             app.UseCors(builder =>
             {
