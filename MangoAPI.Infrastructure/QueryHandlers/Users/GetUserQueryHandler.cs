@@ -10,23 +10,23 @@ using Microsoft.EntityFrameworkCore;
 
 namespace MangoAPI.Infrastructure.QueryHandlers.Users
 {
-    public class FindUserQueryHandler : IRequestHandler<GetUserByIdQuery, FindUserResponse>
+    public class GetUserQueryHandler : IRequestHandler<GetUserQuery, GetUserResponse>
     {
         private readonly MangoPostgresDbContext _postgresDbContext;
 
-        public FindUserQueryHandler(MangoPostgresDbContext postgresDbContext)
+        public GetUserQueryHandler(MangoPostgresDbContext postgresDbContext)
         {
             _postgresDbContext = postgresDbContext;
         }
 
-        public async Task<FindUserResponse> Handle(GetUserByIdQuery request, CancellationToken cancellationToken)
+        public async Task<GetUserResponse> Handle(GetUserQuery request, CancellationToken cancellationToken)
         {
             var user = await _postgresDbContext.Users.FirstOrDefaultAsync(x => x.Id == request.UserId,
                 cancellationToken);
 
             return user == null
                 ? throw new BusinessException(ResponseMessageCodes.UserNotFound)
-                : FindUserResponse.FromSuccess(user);
+                : GetUserResponse.FromSuccess(user);
         }
     }
 }

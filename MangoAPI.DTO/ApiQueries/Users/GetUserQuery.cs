@@ -3,7 +3,7 @@ using MediatR;
 
 namespace MangoAPI.DTO.ApiQueries.Users
 {
-    public class GetUserByIdQuery : IRequest<FindUserResponse>
+    public class GetUserQuery : IRequest<GetUserResponse>
     {
         public string UserId { get; set; }
     }

@@ -4,11 +4,11 @@ using MangoAPI.DTO.Models;
 
 namespace MangoAPI.DTO.Responses.Users
 {
-    public class FindUserResponse : ResponseBase<FindUserResponse>
+    public class GetUserResponse : ResponseBase<GetUserResponse>
     {
         public User User { get; set; }
 
-        public static FindUserResponse FromSuccess(UserEntity user) => new()
+        public static GetUserResponse FromSuccess(UserEntity user) => new()
         {
             Message = ResponseMessageCodes.Success,
             Success = true,
