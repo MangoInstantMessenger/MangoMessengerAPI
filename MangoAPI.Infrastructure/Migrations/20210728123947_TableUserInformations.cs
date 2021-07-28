@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace MangoAPI.Infrastructure.Migrations
 {
-    public partial class TableUserInformation : Migration
+    public partial class TableUserInformations : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -16,18 +16,23 @@ namespace MangoAPI.Infrastructure.Migrations
                     LastName = table.Column<string>(type: "text", nullable: true),
                     BirthDay = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
                     Website = table.Column<string>(type: "text", nullable: true),
-                    Address = table.Column<string>(type: "text", nullable: true)
+                    Address = table.Column<string>(type: "text", nullable: true),
+                    Facebook = table.Column<string>(type: "text", nullable: true),
+                    Twitter = table.Column<string>(type: "text", nullable: true),
+                    Instagram = table.Column<string>(type: "text", nullable: true),
+                    LinkedIn = table.Column<string>(type: "text", nullable: true),
+                    ProfilePicture = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_UserInformations", x => x.Id);
+                    table.PrimaryKey("PK_UserInformation", x => x.Id);
                 });
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "UserInformations");
+                name: "UserInformation");
         }
     }
 }

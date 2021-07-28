@@ -10,8 +10,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace MangoAPI.Infrastructure.Migrations
 {
     [DbContext(typeof(MangoPostgresDbContext))]
-    [Migration("20210728114142_TableUserInformation")]
-    partial class TableUserInformation
+    [Migration("20210728123947_TableUserInformations")]
+    partial class TableUserInformations
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -207,10 +207,25 @@ namespace MangoAPI.Infrastructure.Migrations
                     b.Property<DateTime?>("BirthDay")
                         .HasColumnType("timestamp without time zone");
 
+                    b.Property<string>("Facebook")
+                        .HasColumnType("text");
+
                     b.Property<string>("FirstName")
                         .HasColumnType("text");
 
+                    b.Property<string>("Instagram")
+                        .HasColumnType("text");
+
                     b.Property<string>("LastName")
+                        .HasColumnType("text");
+
+                    b.Property<string>("LinkedIn")
+                        .HasColumnType("text");
+
+                    b.Property<string>("ProfilePicture")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Twitter")
                         .HasColumnType("text");
 
                     b.Property<string>("Website")
@@ -218,7 +233,7 @@ namespace MangoAPI.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("UserInformations");
+                    b.ToTable("UserInformation");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
