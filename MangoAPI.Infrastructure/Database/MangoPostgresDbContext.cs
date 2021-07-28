@@ -12,6 +12,8 @@ namespace MangoAPI.Infrastructure.Database
         public DbSet<MessageEntity> Messages { get; set; }
         public DbSet<UserChatEntity> UserChats { get; set; }
         
+        public DbSet<UserInformationEntity> UserInformation { get; set; }
+        
         public MangoPostgresDbContext()
         {
         }
