@@ -3,10 +3,10 @@ using MediatR;
 
 namespace MangoAPI.DTO.ApiCommands.Messages
 {
-    public class SendMessageCommand : IRequest<SendMessageResponse>
+    public record SendMessageCommand : IRequest<SendMessageResponse>
     {
-        public string MessageText { get; set; }
-        public string UserId { get; set; }
-        public string ChatId { get; set; }
+        public string MessageText { get; init; }
+        public string UserId { get; init; }
+        public string ChatId { get; init; }
     }
 }

@@ -1,7 +1,7 @@
 ﻿
 using System.Threading;
 using System.Threading.Tasks;
-using MangoAPI.DTO.RequestModels.Auth;
+using MangoAPI.DTO.ApiCommands.Auth;
 using Microsoft.AspNetCore.Mvc;
 
 namespace MangoAPI.WebApp.Interfaces

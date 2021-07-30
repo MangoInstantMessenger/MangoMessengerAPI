@@ -3,9 +3,9 @@ using MediatR;
 
 namespace MangoAPI.DTO.ApiCommands.Auth
 {
-    public class VerifyEmailCommand : IRequest<VerifyEmailResponse>
+    public record VerifyEmailCommand : IRequest<VerifyEmailResponse>
     {
-        public string Email { get; set; }
-        public string UserId { get; set; }
+        public string Email { get; init; }
+        public string UserId { get; init; }
     }
 }

@@ -2,10 +2,15 @@
 
 namespace MangoAPI.DTO.Responses.Auth
 {
-    public class RefreshTokenResponse : AuthResponseBase<RefreshTokenResponse>
+    public record RefreshTokenResponse : AuthResponseBase<RefreshTokenResponse>
     {
-        public string RefreshTokenId { get; set; }
-        public string AccessToken { get; set; }
+        // ReSharper disable once MemberCanBePrivate.Global
+        // ReSharper disable once UnusedAutoPropertyAccessor.Global
+        public string RefreshTokenId { get; init; }
+
+        // ReSharper disable once MemberCanBePrivate.Global
+        // ReSharper disable once UnusedAutoPropertyAccessor.Global
+        public string AccessToken { get; init; }
 
         public static RefreshTokenResponse FromSuccess(string newRefreshTokenId, string newAccessToken) => new()
         {

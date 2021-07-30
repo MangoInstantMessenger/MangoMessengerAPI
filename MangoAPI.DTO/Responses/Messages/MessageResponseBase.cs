@@ -2,7 +2,5 @@
 
 namespace MangoAPI.DTO.Responses.Messages
 {
-    public class MessageResponseBase<T> : ChatResponseBase<T> where T : ResponseBase, new()
-    {
-    }
+    public record MessageResponseBase<T> : ChatResponseBase<T> where T : ResponseBase, new();
 }

@@ -31,7 +31,7 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Auth
 
         public async Task<RegisterResponse> Handle(RegisterCommand request, CancellationToken cancellationToken)
         {
-            if (request.Email == EnvironmentConstants.EmailSenderAddres)
+            if (request.Email == EnvironmentConstants.EmailSenderAddress)
             {
                 throw new BusinessException(ResponseMessageCodes.InvalidEmail);
             }

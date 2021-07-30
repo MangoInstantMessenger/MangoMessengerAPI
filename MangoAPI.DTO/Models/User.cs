@@ -1,10 +1,17 @@
 ﻿namespace MangoAPI.DTO.Models
 {
-    public class User
+    public record User
     {
-        public string Username { get; set; }
-        public string DisplayName { get; set; }
-        public string Bio { get; set; }
-        public string Image { get; set; }
+        // ReSharper disable once UnusedAutoPropertyAccessor.Global
+        public string Username { get; init; }
+
+        // ReSharper disable once UnusedAutoPropertyAccessor.Global
+        public string DisplayName { get; init; }
+
+        // ReSharper disable once UnusedAutoPropertyAccessor.Global
+        public string Bio { get; init; }
+
+        // ReSharper disable once UnusedAutoPropertyAccessor.Global
+        public string Image { get; init; }
     }
 }

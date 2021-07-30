@@ -1,14 +1,29 @@
 ﻿namespace MangoAPI.DTO.Models
 {
-    public class UserChat
+    public record UserChat
     {
-        public string ChatId { get; set; }
-        public string Title { get; set; }
-        public string Image { get; set; }
-        public string LastMessageAuthor { get; set; }
-        public string LastMessage { get; set; }
-        public string LastMessageAt { get; set; }
-        public int MembersCount { get; set; }
-        public bool IsMember { get; set; }
+        // ReSharper disable once UnusedAutoPropertyAccessor.Global
+        public string ChatId { get; init; }
+
+        // ReSharper disable once UnusedAutoPropertyAccessor.Global
+        public string Title { get; init; }
+
+        // ReSharper disable once UnusedAutoPropertyAccessor.Global
+        public string Image { get; init; }
+
+        // ReSharper disable once UnusedAutoPropertyAccessor.Global
+        public string LastMessageAuthor { get; init; }
+
+        // ReSharper disable once UnusedAutoPropertyAccessor.Global
+        public string LastMessage { get; init; }
+
+        // ReSharper disable once UnusedAutoPropertyAccessor.Global
+        public string LastMessageAt { get; init; }
+
+        // ReSharper disable once UnusedAutoPropertyAccessor.Global
+        public int MembersCount { get; init; }
+
+        // ReSharper disable once UnusedAutoPropertyAccessor.Global
+        public bool IsMember { get; init; }
     }
 }

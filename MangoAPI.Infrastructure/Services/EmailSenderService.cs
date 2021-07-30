@@ -14,7 +14,7 @@ namespace MangoAPI.Infrastructure.Services
         public async Task SendVerificationEmailAsync(UserEntity user,
             CancellationToken cancellationToken)
         {
-            var senderEmail = EnvironmentConstants.EmailSenderAddres;
+            var senderEmail = EnvironmentConstants.EmailSenderAddress;
             var smtpClient = GetGmailSmtpClient();
 
             var verificationMessage = VerifyEmailMessage.GetVerificationMessage(senderEmail, user);
@@ -24,7 +24,7 @@ namespace MangoAPI.Infrastructure.Services
 
         private static SmtpClient GetGmailSmtpClient()
         {
-            var senderEmail = EnvironmentConstants.EmailSenderAddres;
+            var senderEmail = EnvironmentConstants.EmailSenderAddress;
             var senderPassword = EnvironmentConstants.EmailSenderPassword;
             var credentials = new NetworkCredential(senderEmail, senderPassword);
 

@@ -46,7 +46,9 @@ namespace MangoAPI.WebApp
                     }
                 });
             });
-            
+
+            services.AddSwaggerGenNewtonsoftSupport();
+
             services.AddCors(options =>
             {
                 options.AddPolicy("DefaultPolicy", builder =>

@@ -1,6 +1,6 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
-using MangoAPI.DTO.RequestModels.Messages;
+using MangoAPI.DTO.ApiCommands.Messages;
 using Microsoft.AspNetCore.Mvc;
 
 namespace MangoAPI.WebApp.Interfaces

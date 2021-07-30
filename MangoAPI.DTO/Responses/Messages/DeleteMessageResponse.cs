@@ -1,6 +1,4 @@
 ﻿namespace MangoAPI.DTO.Responses.Messages
 {
-    public class DeleteMessageResponse : MessageResponseBase<DeleteMessageResponse>
-    {
-    }
+    public record DeleteMessageResponse : MessageResponseBase<DeleteMessageResponse>;
 }

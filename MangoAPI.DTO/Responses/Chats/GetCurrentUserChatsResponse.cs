@@ -6,23 +6,33 @@ using MangoAPI.DTO.Models;
 
 namespace MangoAPI.DTO.Responses.Chats
 {
-    public class GetCurrentUserChatsResponse : ResponseBase<GetCurrentUserChatsResponse>
+    public record GetCurrentUserChatsResponse : ResponseBase<GetCurrentUserChatsResponse>
     {
-        public List<UserChat> Chats { get; set; }
+        // ReSharper disable once UnusedAutoPropertyAccessor.Global
+        // ReSharper disable once MemberCanBePrivate.Global
+        public List<UserChat> Chats { get; init; }
 
         public static GetCurrentUserChatsResponse FromSuccess(IEnumerable<UserChatEntity> chats) => new()
         {
             Message = ResponseMessageCodes.Success,
             Success = true,
-            Chats = chats.Select(x => new UserChat
+            Chats = chats.Select(userChatEntity => new UserChat
             {
-                ChatId = x.ChatId,
-                Title = x.Chat.Title,
-                Image = x.Chat.Image,
-                LastMessage = x.Chat.Messages.Any() ? x.Chat.Messages.OrderBy(x => x.Created).Last().Content : null,
-                LastMessageAuthor = x.Chat.Messages.Any() ? x.Chat.Messages.OrderBy(x => x.Created).Last().User.DisplayName : null,
-                LastMessageAt = x.Chat.Messages.Any() ? x.Chat.Messages.OrderBy(x => x.Created).Last().Created.ToShortTimeString() : null,
-                MembersCount = x.Chat.MembersCount,
+                ChatId = userChatEntity.ChatId,
+                Title = userChatEntity.Chat.Title,
+                Image = userChatEntity.Chat.Image,
+                LastMessage = userChatEntity.Chat.Messages.Any()
+                    ? userChatEntity.Chat.Messages.OrderBy(messageEntity => messageEntity.Created).Last().Content
+                    : null,
+                LastMessageAuthor = userChatEntity.Chat.Messages.Any()
+                    ? userChatEntity.Chat.Messages.OrderBy(messageEntity => messageEntity.Created).Last().User
+                        .DisplayName
+                    : null,
+                LastMessageAt = userChatEntity.Chat.Messages.Any()
+                    ? userChatEntity.Chat.Messages.OrderBy(messageEntity => messageEntity.Created).Last().Created
+                        .ToShortTimeString()
+                    : null,
+                MembersCount = userChatEntity.Chat.MembersCount,
                 IsMember = true
             }).ToList()
         };
