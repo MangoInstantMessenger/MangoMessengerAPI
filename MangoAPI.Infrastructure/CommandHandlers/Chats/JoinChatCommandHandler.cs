@@ -52,13 +52,9 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Chats
                 throw new BusinessException(ResponseMessageCodes.ChatNotFound);
             }
 
-            await _postgresDbContext.UserChats.AddAsync(new UserChatEntity
-            {
-                ChatId = request.ChatId,
-                UserId = currentUser.Id,
-                RoleId = UserRole.User
-            }, cancellationToken);
-
+            await _postgresDbContext.UserChats.AddAsync(UserChatEntity.Create(currentUser.Id, request.ChatId, UserRole.User), 
+                cancellationToken);
+            
             chat.MembersCount += 1;
 
             _postgresDbContext.Update(chat);

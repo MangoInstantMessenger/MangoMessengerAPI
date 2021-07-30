@@ -45,10 +45,8 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Chats
 
             await _postgresDbContext.Chats.AddAsync(group, cancellationToken);
 
-            _postgresDbContext.UserChats.Add(new UserChatEntity
-            {
-                ChatId = group.Id, RoleId = UserRole.Owner, UserId = user.Id
-            });
+            await _postgresDbContext.UserChats.AddAsync(UserChatEntity.Create(user.Id, group.Id, UserRole.Owner),
+                cancellationToken);
 
             await _postgresDbContext.SaveChangesAsync(cancellationToken);
 

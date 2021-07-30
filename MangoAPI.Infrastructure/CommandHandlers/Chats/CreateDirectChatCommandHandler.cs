@@ -48,14 +48,14 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Chats
                 MembersCount = 2
             };
 
-            var userPrivateChats = _postgresDbContext.Chats
+            var userPrivateChats = await _postgresDbContext.Chats
                 .Include(chatEntity => chatEntity.ChatUsers)
                 .Where(chatEntity => chatEntity.ChatType == ChatType.DirectChat && chatEntity.ChatUsers
-                    .Any(userChatEntity => userChatEntity.UserId == currentUser.Id)).ToList();
+                    .Any(userChatEntity => userChatEntity.UserId == currentUser.Id))
+                .ToListAsync(cancellationToken);
 
             var directChatAlreadyExists =
-                userPrivateChats.Any(x => x.ChatUsers
-                    .Any(t => t.UserId == partner.Id));
+                userPrivateChats.Any(x => x.ChatUsers.Any(t => t.UserId == partner.Id));
 
             if (directChatAlreadyExists)
             {
@@ -67,11 +67,11 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Chats
 
             var userChats = new[]
             {
-                new UserChatEntity {ChatId = directChat.Id, RoleId = UserRole.User, UserId = currentUser.Id},
-                new UserChatEntity {ChatId = directChat.Id, RoleId = UserRole.User, UserId = request.PartnerId}
+                UserChatEntity.Create(currentUser.Id, directChat.Id, UserRole.User),
+                UserChatEntity.Create(request.PartnerId, directChat.Id, UserRole.User)
             };
 
-            _postgresDbContext.UserChats.AddRange(userChats);
+            await _postgresDbContext.UserChats.AddRangeAsync(userChats);
 
             await _postgresDbContext.SaveChangesAsync(cancellationToken);
 
