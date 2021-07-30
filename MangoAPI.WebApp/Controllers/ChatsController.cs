@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using MangoAPI.DTO.ApiCommands.Chats;
 using MangoAPI.DTO.ApiQueries.Chats;
+using MangoAPI.DTO.ApiQueries.Users;
 using MangoAPI.DTO.Responses;
 using MangoAPI.DTO.Responses.Chats;
 using MangoAPI.WebApp.Extensions;
