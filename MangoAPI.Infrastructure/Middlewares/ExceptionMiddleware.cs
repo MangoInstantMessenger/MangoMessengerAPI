@@ -59,7 +59,7 @@ namespace MangoAPI.Infrastructure.Middlewares
             {
                 Success = false,
                 ErrorMessage = errorContext.ErrorMessage,
-                ErrorDetails = errorContext.Exception.Source,
+                ErrorDetails = errorContext.Exception.StackTrace,
                 StatusCode = (int) errorContext.StatusCode
             }.ToString());
         }
@@ -67,7 +67,7 @@ namespace MangoAPI.Infrastructure.Middlewares
 
     internal class ErrorContext
     {
-        public Exception Exception { get; set; }
+        public Exception Exception { get; }
         public HttpStatusCode StatusCode { get; }
         public string ErrorMessage { get; }
 
