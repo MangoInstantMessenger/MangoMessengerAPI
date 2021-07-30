@@ -1,6 +1,6 @@
 ﻿namespace MangoAPI.DTO.Models
 {
-    public class UserChat
+    public record UserChat
     {
         public string ChatId { get; set; }
         public string Title { get; set; }

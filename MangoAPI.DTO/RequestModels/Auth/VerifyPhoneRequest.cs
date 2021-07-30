@@ -2,7 +2,7 @@
 
 namespace MangoAPI.DTO.RequestModels.Auth
 {
-    public class VerifyPhoneRequest
+    public record VerifyPhoneRequest
     {
         public int ConfirmationCode { get; set; }
         public string UserId { get; set; }

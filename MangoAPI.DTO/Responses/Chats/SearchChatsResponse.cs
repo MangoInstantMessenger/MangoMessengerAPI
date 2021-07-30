@@ -6,7 +6,7 @@ using MangoAPI.DTO.Models;
 
 namespace MangoAPI.DTO.Responses.Chats
 {
-    public class SearchChatsResponse : ChatResponseBase<SearchChatsResponse>
+    public record SearchChatsResponse : ChatResponseBase<SearchChatsResponse>
     {
         public List<UserChat> Chats { get; set; }
 

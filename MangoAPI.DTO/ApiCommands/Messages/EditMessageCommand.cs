@@ -3,7 +3,7 @@ using MediatR;
 
 namespace MangoAPI.DTO.ApiCommands.Messages
 {
-    public class EditMessageCommand : IRequest<EditMessageResponse>
+    public record EditMessageCommand : IRequest<EditMessageResponse>
     {
         public string MessageId { get; set; }
         public string UserId { get; set; }

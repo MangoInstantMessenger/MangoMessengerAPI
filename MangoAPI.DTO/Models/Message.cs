@@ -1,6 +1,6 @@
 ﻿namespace MangoAPI.DTO.Models
 {
-    public class Message
+    public record Message
     {
         public string MessageId { get; set; }
         public string UserDisplayName { get; set; }

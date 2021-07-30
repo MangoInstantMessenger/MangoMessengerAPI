@@ -1,6 +1,6 @@
 ﻿namespace MangoAPI.DTO.Responses.Messages
 {
-    public class EditMessageResponse : MessageResponseBase<EditMessageResponse>
+    public record EditMessageResponse : MessageResponseBase<EditMessageResponse>
     {
     }
 }

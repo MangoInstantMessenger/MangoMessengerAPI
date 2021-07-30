@@ -4,7 +4,7 @@ using MediatR;
 
 namespace MangoAPI.DTO.ApiCommands.Chats
 {
-    public class CreateGroupCommand : IRequest<CreateChatEntityResponse>
+    public record CreateGroupCommand : IRequest<CreateChatEntityResponse>
     {
         public ChatType GroupType { get; set; }
         public string GroupTitle { get; set; }

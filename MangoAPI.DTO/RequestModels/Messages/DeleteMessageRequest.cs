@@ -2,7 +2,7 @@
 
 namespace MangoAPI.DTO.RequestModels.Messages
 {
-    public class DeleteMessageRequest
+    public record DeleteMessageRequest
     {
         public string MessageId { get; set; }
     }

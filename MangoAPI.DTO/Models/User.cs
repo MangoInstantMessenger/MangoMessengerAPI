@@ -1,6 +1,6 @@
 ﻿namespace MangoAPI.DTO.Models
 {
-    public class User
+    public record User
     {
         public string Username { get; set; }
         public string DisplayName { get; set; }

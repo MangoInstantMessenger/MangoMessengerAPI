@@ -2,7 +2,7 @@
 
 namespace MangoAPI.DTO.RequestModels.Chats
 {
-    public class JoinChatRequest
+    public record JoinChatRequest
     {
         public string ChatId { get; set; }
     }

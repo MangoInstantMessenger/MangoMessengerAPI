@@ -2,7 +2,7 @@
 
 namespace MangoAPI.DTO.RequestModels.Messages
 {
-    public class SendMessageRequest
+    public record SendMessageRequest
     {
         public string MessageText { get; set; }
         public string ChatId { get; set; }

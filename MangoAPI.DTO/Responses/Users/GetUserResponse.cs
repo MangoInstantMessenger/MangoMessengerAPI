@@ -4,7 +4,7 @@ using MangoAPI.DTO.Models;
 
 namespace MangoAPI.DTO.Responses.Users
 {
-    public class GetUserResponse : ResponseBase<GetUserResponse>
+    public record GetUserResponse : ResponseBase<GetUserResponse>
     {
         public User User { get; set; }
 

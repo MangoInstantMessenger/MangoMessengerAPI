@@ -3,7 +3,7 @@ using MangoAPI.DTO.ApiCommands.Chats;
 
 namespace MangoAPI.DTO.RequestModels.Chats
 {
-    public class CreateGroupRequest
+    public record CreateGroupRequest
     {
         public ChatType GroupType { get; set; }
         public string GroupTitle { get; set; }

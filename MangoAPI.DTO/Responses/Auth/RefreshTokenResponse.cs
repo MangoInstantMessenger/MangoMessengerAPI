@@ -2,7 +2,7 @@
 
 namespace MangoAPI.DTO.Responses.Auth
 {
-    public class RefreshTokenResponse : AuthResponseBase<RefreshTokenResponse>
+    public record RefreshTokenResponse : AuthResponseBase<RefreshTokenResponse>
     {
         public string RefreshTokenId { get; set; }
         public string AccessToken { get; set; }

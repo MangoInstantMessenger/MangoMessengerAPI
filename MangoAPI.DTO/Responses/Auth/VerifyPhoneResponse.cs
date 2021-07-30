@@ -1,6 +1,6 @@
 ﻿namespace MangoAPI.DTO.Responses.Auth
 {
-    public class VerifyPhoneResponse : ResponseBase<VerifyPhoneResponse>
+    public record VerifyPhoneResponse : ResponseBase<VerifyPhoneResponse>
     {
     }
 }

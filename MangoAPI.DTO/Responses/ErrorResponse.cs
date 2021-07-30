@@ -2,7 +2,7 @@
 
 namespace MangoAPI.DTO.Responses
 {
-    public class ErrorResponse
+    public record ErrorResponse
     {
         public string ErrorMessage { get; set; }
         public string ErrorDetails { get; set; }

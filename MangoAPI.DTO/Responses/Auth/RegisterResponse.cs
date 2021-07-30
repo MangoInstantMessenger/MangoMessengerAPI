@@ -3,7 +3,7 @@ using MangoAPI.Domain.Entities;
 
 namespace MangoAPI.DTO.Responses.Auth
 {
-    public class RegisterResponse : AuthResponseBase<RegisterResponse>
+    public record RegisterResponse : AuthResponseBase<RegisterResponse>
     {
         public string UserId { get; set; }
 

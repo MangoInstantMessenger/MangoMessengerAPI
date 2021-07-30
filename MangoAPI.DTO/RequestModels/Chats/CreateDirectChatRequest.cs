@@ -2,7 +2,7 @@
 
 namespace MangoAPI.DTO.RequestModels.Chats
 {
-    public class CreateDirectChatRequest
+    public record CreateDirectChatRequest
     {
         public string PartnerId { get; set; }
     }

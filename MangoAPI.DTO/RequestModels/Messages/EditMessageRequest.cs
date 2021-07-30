@@ -2,7 +2,7 @@
 
 namespace MangoAPI.DTO.RequestModels.Messages
 {
-    public class EditMessageRequest
+    public record EditMessageRequest
     {
         public string MessageId { get; set; }
         public string ModifiedText { get; set; }

@@ -2,7 +2,7 @@
 
 namespace MangoAPI.DTO.RequestModels.Auth
 {
-    public class LogoutRequest
+    public record LogoutRequest
     {
         public string RefreshTokenId { get; set; }
     }

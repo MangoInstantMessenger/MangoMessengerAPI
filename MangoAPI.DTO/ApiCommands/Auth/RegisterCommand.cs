@@ -4,7 +4,7 @@ using MediatR;
 
 namespace MangoAPI.DTO.ApiCommands.Auth
 {
-    public class RegisterCommand : IRequest<RegisterResponse>
+    public record RegisterCommand : IRequest<RegisterResponse>
     {
         public string PhoneNumber { get; set; }
         public string Email { get; set; }

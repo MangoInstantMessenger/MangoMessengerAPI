@@ -2,7 +2,7 @@
 
 namespace MangoAPI.DTO.Responses.Messages
 {
-    public class SendMessageResponse: MessageResponseBase<SendMessageResponse>
+    public record SendMessageResponse: MessageResponseBase<SendMessageResponse>
     {
         public string MessageId { get; set; }
 

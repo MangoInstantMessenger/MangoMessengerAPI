@@ -3,7 +3,7 @@ using MediatR;
 
 namespace MangoAPI.DTO.ApiCommands.Auth
 {
-    public class RefreshTokenCommand : IRequest<RefreshTokenResponse>
+    public record RefreshTokenCommand : IRequest<RefreshTokenResponse>
     {
         public string RefreshTokenId { get; set; }
     }

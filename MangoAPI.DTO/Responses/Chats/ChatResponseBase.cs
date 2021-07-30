@@ -1,6 +1,6 @@
 ﻿namespace MangoAPI.DTO.Responses.Chats
 {
-    public abstract class ChatResponseBase<T> : ResponseBase<T> where T : ResponseBase, new()
+    public abstract record ChatResponseBase<T> : ResponseBase<T> where T : ResponseBase, new()
     {
     }
 }

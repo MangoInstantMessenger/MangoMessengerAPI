@@ -6,7 +6,7 @@ using MangoAPI.DTO.Models;
 
 namespace MangoAPI.DTO.Responses.Messages
 {
-    public class GetMessagesResponse : MessageResponseBase<GetMessagesResponse>
+    public record GetMessagesResponse : MessageResponseBase<GetMessagesResponse>
     {
         public List<Message> Messages { get; set; }
 

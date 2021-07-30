@@ -3,7 +3,7 @@ using MangoAPI.Domain.Entities;
 
 namespace MangoAPI.DTO.Responses.Chats
 {
-    public class CreateChatEntityResponse : ChatResponseBase<CreateChatEntityResponse>
+    public record CreateChatEntityResponse : ChatResponseBase<CreateChatEntityResponse>
     {
         public string ChatId { get; set; }
 

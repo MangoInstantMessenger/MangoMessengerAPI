@@ -3,7 +3,7 @@ using MangoAPI.DTO.Enums;
 
 namespace MangoAPI.DTO.RequestModels.Auth
 {
-    public class RegisterRequest
+    public record RegisterRequest
     {
         public string PhoneNumber { get; set; }
         public string Email { get; set; }
