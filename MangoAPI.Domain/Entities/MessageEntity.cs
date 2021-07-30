@@ -2,7 +2,7 @@
 
 namespace MangoAPI.Domain.Entities
 {
-    public class MessageEntity
+    public sealed class MessageEntity
     {
         public string Id { get; set; }
         public string UserId { get; set; }
@@ -11,7 +11,7 @@ namespace MangoAPI.Domain.Entities
         public DateTime Created { get; set; }
         public DateTime? Updated { get; set; }
 
-        public virtual UserEntity User { get; set; }
-        public virtual ChatEntity Chat { get; set; }
+        public UserEntity User { get; set; }
+        public ChatEntity Chat { get; set; }
     }
 }

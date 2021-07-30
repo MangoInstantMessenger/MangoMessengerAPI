@@ -2,7 +2,7 @@
 
 namespace MangoAPI.Domain.Entities
 {
-    public class RefreshTokenEntity
+    public sealed class RefreshTokenEntity
     {
         public string Id { get; set; }
         public string UserId { get; set; }
@@ -12,6 +12,6 @@ namespace MangoAPI.Domain.Entities
 
         public bool IsExpired => DateTime.UtcNow >= Expires;
 
-        public virtual UserEntity UserEntity { get; set; }
+        public UserEntity UserEntity { get; set; }
     }
 }

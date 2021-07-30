@@ -4,7 +4,7 @@ using MangoAPI.Domain.Enums;
 
 namespace MangoAPI.Domain.Entities
 {
-    public class ChatEntity
+    public sealed class ChatEntity
     {
         public string Id { get; set; }
         public string Title { get; set; }
@@ -13,7 +13,7 @@ namespace MangoAPI.Domain.Entities
         public DateTime Created { get; set; }
         public int MembersCount { get; set; }
         
-        public virtual ICollection<MessageEntity> Messages { get; set; }
-        public virtual ICollection<UserChatEntity> ChatUsers { get; set; }
+        public ICollection<MessageEntity> Messages { get; set; }
+        public ICollection<UserChatEntity> ChatUsers { get; set; }
     }
 }
