@@ -52,18 +52,23 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Auth
             {
                 throw new BusinessException(ResponseMessageCodes.PhoneOccupied);
             }
-
-            var newUser = new UserEntity
-            {
-                PhoneNumber = request.PhoneNumber,
-                DisplayName = request.DisplayName,
-                UserName = Guid.NewGuid().ToString(),
-                Email = request.Email
-            };
+            
+            UserEntity newUser;
             
             if (request.VerificationMethod == VerificationMethod.Phone)
             {
-                newUser.ConfirmationCode = new Random().Next(100000, 999999);
+                var confirmationCode = new Random().Next(100000, 999999);
+                var newUserId = Guid.NewGuid().ToString();
+                
+                newUser = UserEntity.Create(request.PhoneNumber, request.DisplayName,
+                    newUserId, request.Email, confirmationCode);
+            }
+            else
+            {
+                var newUserId = Guid.NewGuid().ToString();
+                
+                newUser = UserEntity.Create(request.PhoneNumber, request.DisplayName,
+                    newUserId, request.Email);
             }
             
             var result = await _userManager.CreateAsync(newUser, request.Password);

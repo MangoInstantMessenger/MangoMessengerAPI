@@ -42,9 +42,8 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Auth
                 throw new BusinessException(ResponseMessageCodes.InvalidPhoneCode);
             }
 
-            user.PhoneNumberConfirmed = true;
-            user.ConfirmationCode = 0;
-            
+            user.SetPhoneNumberVerified();
+
             _postgresDbContext.Update(user);
             
             await _postgresDbContext.SaveChangesAsync(cancellationToken);
