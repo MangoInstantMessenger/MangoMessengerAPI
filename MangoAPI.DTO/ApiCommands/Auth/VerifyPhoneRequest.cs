@@ -1,7 +1,10 @@
-﻿namespace MangoAPI.DTO.ApiCommands.Auth
+﻿using Newtonsoft.Json;
+
+namespace MangoAPI.DTO.ApiCommands.Auth
 {
     public record VerifyPhoneRequest
     {
+        [JsonConstructor]
         public VerifyPhoneRequest(int confirmationCode, string userId)
         {
             ConfirmationCode = confirmationCode;
