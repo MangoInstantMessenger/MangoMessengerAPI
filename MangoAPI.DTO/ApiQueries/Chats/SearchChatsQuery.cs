@@ -5,7 +5,7 @@ namespace MangoAPI.DTO.ApiQueries.Chats
 {
     public record SearchChatsQuery : IRequest<SearchChatsResponse>
     {
-        public string DisplayName { get; set; }
-        public string UserId { get; set; }
+        public string DisplayName { get; init; }
+        public string UserId { get; init; }
     }
 }

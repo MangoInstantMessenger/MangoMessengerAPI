@@ -4,9 +4,17 @@ namespace MangoAPI.DTO.Responses.Auth
 {
     public record LoginResponse : ResponseBase<LoginResponse>
     {
-        public string AccessToken { get; set; }
-        public string RefreshTokenId { get; set; }
-        public string UserId { get; set; }
+        // ReSharper disable once UnusedAutoPropertyAccessor.Global
+        // ReSharper disable once MemberCanBePrivate.Global
+        public string AccessToken { get; init; }
+
+        // ReSharper disable once UnusedAutoPropertyAccessor.Global
+        // ReSharper disable once MemberCanBePrivate.Global
+        public string RefreshTokenId { get; init; }
+
+        // ReSharper disable once UnusedAutoPropertyAccessor.Global
+        // ReSharper disable once MemberCanBePrivate.Global
+        public string UserId { get; init; }
 
         public static LoginResponse FromSuccess(string accessToken, string refreshTokenId, string userId) => new()
         {

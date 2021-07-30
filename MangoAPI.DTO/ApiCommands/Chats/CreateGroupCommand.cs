@@ -6,8 +6,8 @@ namespace MangoAPI.DTO.ApiCommands.Chats
 {
     public record CreateGroupCommand : IRequest<CreateChatEntityResponse>
     {
-        public ChatType GroupType { get; set; }
-        public string GroupTitle { get; set; }
-        public string UserId { get; set; }
+        public ChatType GroupType { get; init; }
+        public string GroupTitle { get; init; }
+        public string UserId { get; init; }
     }
 }

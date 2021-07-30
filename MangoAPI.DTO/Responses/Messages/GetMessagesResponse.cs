@@ -8,20 +8,22 @@ namespace MangoAPI.DTO.Responses.Messages
 {
     public record GetMessagesResponse : MessageResponseBase<GetMessagesResponse>
     {
-        public List<Message> Messages { get; set; }
+        // ReSharper disable once UnusedAutoPropertyAccessor.Global
+        // ReSharper disable once MemberCanBePrivate.Global
+        public List<Message> Messages { get; init; }
 
         public static GetMessagesResponse FromSuccess(IEnumerable<MessageEntity> messages, UserEntity user) => new()
         {
             Message = ResponseMessageCodes.Success,
 
-            Messages = messages.OrderBy(x => x.Created)
-                .Select(x => new Message
+            Messages = messages.OrderBy(messageEntity => messageEntity.Created)
+                .Select(messageEntity => new Message
                 {
-                    MessageText = x.Content,
-                    EditedAt = x.Updated?.ToShortTimeString(),
-                    SentAt = x.Created.ToShortTimeString(),
-                    UserDisplayName = x.User.DisplayName,
-                    Self = x.User.Id == user.Id
+                    MessageText = messageEntity.Content,
+                    EditedAt = messageEntity.Updated?.ToShortTimeString(),
+                    SentAt = messageEntity.Created.ToShortTimeString(),
+                    UserDisplayName = messageEntity.User.DisplayName,
+                    Self = messageEntity.User.Id == user.Id
                 }).ToList(),
 
             Success = true

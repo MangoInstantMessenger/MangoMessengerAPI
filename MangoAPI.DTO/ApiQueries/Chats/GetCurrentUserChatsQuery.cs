@@ -5,6 +5,6 @@ namespace MangoAPI.DTO.ApiQueries.Chats
 {
     public record GetCurrentUserChatsQuery : IRequest<GetCurrentUserChatsResponse>
     {
-        public string UserId { get; set; }
+        public string UserId { get; init; }
     }
 }

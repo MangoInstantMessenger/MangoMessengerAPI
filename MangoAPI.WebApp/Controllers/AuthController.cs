@@ -1,7 +1,6 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 using MangoAPI.DTO.ApiCommands.Auth;
-using MangoAPI.DTO.RequestModels.Auth;
 using MangoAPI.DTO.Responses;
 using MangoAPI.DTO.Responses.Auth;
 using MangoAPI.WebApp.Extensions;
@@ -78,7 +77,7 @@ namespace MangoAPI.WebApp.Controllers
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public async Task<IActionResult> RefreshTokenAsync(RefreshTokenRequest request,
+        public async Task<IActionResult> RefreshTokenAsync([FromBody] RefreshTokenRequest request,
             CancellationToken cancellationToken)
         {
             return await RequestAsync(request.ToCommand(), cancellationToken);
@@ -91,7 +90,7 @@ namespace MangoAPI.WebApp.Controllers
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public async Task<IActionResult> LogoutAsync(LogoutRequest request,
+        public async Task<IActionResult> LogoutAsync([FromBody] LogoutRequest request,
             CancellationToken cancellationToken)
         {
             return await RequestAsync(request.ToCommand(), cancellationToken);
@@ -104,11 +103,11 @@ namespace MangoAPI.WebApp.Controllers
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public async Task<IActionResult> LogoutAllDevicesAsync(LogoutAllRequest request,
+        public async Task<IActionResult> LogoutAllDevicesAsync([FromBody] LogoutAllRequest request,
             CancellationToken cancellationToken)
         {
-            var command = request.ToCommand();
-            command.UserId = HttpContext.User.GetUserId();
+            var userId = HttpContext.User.GetUserId();
+            var command = request.ToCommand(userId);
             return await RequestAsync(command, cancellationToken);
         }
     }

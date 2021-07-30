@@ -1,7 +1,7 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
+using MangoAPI.DTO.ApiCommands.Chats;
 using MangoAPI.DTO.ApiQueries.Chats;
-using MangoAPI.DTO.RequestModels.Chats;
 using MangoAPI.DTO.Responses;
 using MangoAPI.DTO.Responses.Chats;
 using MangoAPI.WebApp.Extensions;
@@ -43,11 +43,11 @@ namespace MangoAPI.WebApp.Controllers
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public async Task<IActionResult> CreateChat(CreateGroupRequest request,
+        public async Task<IActionResult> CreateChat([FromBody] CreateGroupRequest request,
             CancellationToken cancellationToken)
         {
-            var command = request.ToCommand();
-            command.UserId = HttpContext.User.GetUserId();
+            var userId = HttpContext.User.GetUserId();
+            var command = request.ToCommand(userId);
             return await RequestAsync(command, cancellationToken);
         }
 
@@ -58,11 +58,11 @@ namespace MangoAPI.WebApp.Controllers
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public async Task<IActionResult> CreateDirectChat(CreateDirectChatRequest request,
+        public async Task<IActionResult> CreateDirectChat([FromBody] CreateDirectChatRequest request,
             CancellationToken cancellationToken)
         {
-            var command = request.ToCommand();
-            command.UserId = HttpContext.User.GetUserId();
+            var userId = HttpContext.User.GetUserId();
+            var command = request.ToCommand(userId);
             return await RequestAsync(command, cancellationToken);
         }
 
@@ -73,11 +73,11 @@ namespace MangoAPI.WebApp.Controllers
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public async Task<IActionResult> JoinChat(JoinChatRequest request,
+        public async Task<IActionResult> JoinChat([FromBody] JoinChatRequest request,
             CancellationToken cancellationToken)
         {
-            var command = request.ToCommand();
-            command.UserId = HttpContext.User.GetUserId();
+            var userId = HttpContext.User.GetUserId();
+            var command = request.ToCommand(userId);
             return await RequestAsync(command, cancellationToken);
         }
 

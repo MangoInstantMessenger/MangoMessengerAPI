@@ -4,14 +4,18 @@ namespace MangoAPI.DTO.Responses
 {
     public record ErrorResponse
     {
-        public string ErrorMessage { get; set; }
-        public string ErrorDetails { get; set; }
-        public int StatusCode { get; set; }
-        public bool Success { get; set; }
+        // ReSharper disable once UnusedAutoPropertyAccessor.Global
+        public string ErrorMessage { get; init; }
 
-        public override string ToString()
-        {
-            return JsonSerializer.Serialize(this);
-        }
+        // ReSharper disable once UnusedAutoPropertyAccessor.Global
+        public string ErrorDetails { get; init; }
+
+        // ReSharper disable once UnusedAutoPropertyAccessor.Global
+        public int StatusCode { get; init; }
+
+        // ReSharper disable once UnusedAutoPropertyAccessor.Global
+        public bool Success { get; init; }
+
+        public override string ToString() => JsonSerializer.Serialize(this);
     }
 }

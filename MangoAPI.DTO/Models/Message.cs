@@ -2,11 +2,19 @@
 {
     public record Message
     {
-        public string MessageId { get; set; }
-        public string UserDisplayName { get; set; }
-        public string MessageText { get; set; }
-        public string SentAt { get; set; }
-        public string EditedAt { get; set; }
-        public bool Self { get; set; }
+        // ReSharper disable once UnusedAutoPropertyAccessor.Global
+        public string UserDisplayName { get; init; }
+
+        // ReSharper disable once UnusedAutoPropertyAccessor.Global
+        public string MessageText { get; init; }
+
+        // ReSharper disable once UnusedAutoPropertyAccessor.Global
+        public string SentAt { get; init; }
+
+        // ReSharper disable once UnusedAutoPropertyAccessor.Global
+        public string EditedAt { get; init; }
+
+        // ReSharper disable once UnusedAutoPropertyAccessor.Global
+        public bool Self { get; init; }
     }
 }

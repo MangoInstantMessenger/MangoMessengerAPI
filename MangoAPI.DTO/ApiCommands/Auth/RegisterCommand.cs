@@ -6,11 +6,11 @@ namespace MangoAPI.DTO.ApiCommands.Auth
 {
     public record RegisterCommand : IRequest<RegisterResponse>
     {
-        public string PhoneNumber { get; set; }
-        public string Email { get; set; }
-        public string DisplayName { get; set; }
-        public string Password { get; set; }
-        public VerificationMethod VerificationMethod { get; set; }
-        public bool TermsAccepted { get; set; }
+        public string PhoneNumber { get; init; }
+        public string Email { get; init; }
+        public string DisplayName { get; init; }
+        public string Password { get; init; }
+        public VerificationMethod VerificationMethod { get; init; }
+        public bool TermsAccepted { get; init; }
     }
 }

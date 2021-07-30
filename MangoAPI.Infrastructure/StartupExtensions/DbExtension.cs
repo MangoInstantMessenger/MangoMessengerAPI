@@ -1,7 +1,7 @@
 ﻿using System;
 using MangoAPI.Domain.Constants;
 using MangoAPI.Infrastructure.Database;
-using MangoAPI.Infrastructure.Deploy;
+using MangoAPI.Infrastructure.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 

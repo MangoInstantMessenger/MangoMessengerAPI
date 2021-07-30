@@ -6,7 +6,9 @@ namespace MangoAPI.DTO.Responses.Users
 {
     public record GetUserResponse : ResponseBase<GetUserResponse>
     {
-        public User User { get; set; }
+        // ReSharper disable once UnusedAutoPropertyAccessor.Global
+        // ReSharper disable once MemberCanBePrivate.Global
+        public User User { get; init; }
 
         public static GetUserResponse FromSuccess(UserEntity user) => new()
         {

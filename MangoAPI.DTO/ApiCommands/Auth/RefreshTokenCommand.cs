@@ -5,6 +5,6 @@ namespace MangoAPI.DTO.ApiCommands.Auth
 {
     public record RefreshTokenCommand : IRequest<RefreshTokenResponse>
     {
-        public string RefreshTokenId { get; set; }
+        public string RefreshTokenId { get; init; }
     }
 }

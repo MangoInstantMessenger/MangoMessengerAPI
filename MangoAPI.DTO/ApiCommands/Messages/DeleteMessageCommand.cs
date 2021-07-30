@@ -5,7 +5,7 @@ namespace MangoAPI.DTO.ApiCommands.Messages
 {
     public record DeleteMessageCommand : IRequest<DeleteMessageResponse>
     {
-        public string MessageId { get; set; }
-        public string UserId { get; set; }
+        public string MessageId { get; init; }
+        public string UserId { get; init; }
     }
 }

@@ -2,9 +2,11 @@
 
 namespace MangoAPI.DTO.Responses.Messages
 {
-    public record SendMessageResponse: MessageResponseBase<SendMessageResponse>
+    public record SendMessageResponse : MessageResponseBase<SendMessageResponse>
     {
-        public string MessageId { get; set; }
+        // ReSharper disable once UnusedAutoPropertyAccessor.Global
+        // ReSharper disable once MemberCanBePrivate.Global
+        public string MessageId { get; init; }
 
         public static SendMessageResponse FromSuccess(string messageId) => new()
         {

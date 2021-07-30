@@ -4,8 +4,9 @@ namespace MangoAPI.DTO.Responses
 {
     public abstract record ResponseBase
     {
-        public string Message { get; set; }
-        public bool Success { get; set; }
+        // ReSharper disable once UnusedAutoPropertyAccessor.Global
+        public string Message { get; init; }
+        public bool Success { get; init; }
     }
 
     public abstract record ResponseBase<T> : ResponseBase where T : ResponseBase, new()

@@ -5,7 +5,9 @@ namespace MangoAPI.DTO.Responses.Chats
 {
     public record CreateChatEntityResponse : ChatResponseBase<CreateChatEntityResponse>
     {
-        public string ChatId { get; set; }
+        // ReSharper disable once UnusedAutoPropertyAccessor.Global
+        // ReSharper disable once MemberCanBePrivate.Global
+        public string ChatId { get; init; }
 
         public static CreateChatEntityResponse FromSuccess(ChatEntity chatEntity) => new()
         {
