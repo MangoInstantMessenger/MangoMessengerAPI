@@ -9,7 +9,7 @@ namespace MangoAPI.Domain.Entities
         public string Id { get; set; }
         public string Title { get; set; }
         public ChatType ChatType { get; set; }
-        public string Image { get; set; }
+        public string? Image { get; set; }
         public DateTime Created { get; set; }
         public int MembersCount { get; set; }
         

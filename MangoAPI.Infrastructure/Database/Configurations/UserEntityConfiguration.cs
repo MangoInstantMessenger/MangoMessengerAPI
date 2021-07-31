@@ -11,6 +11,14 @@ namespace MangoAPI.Infrastructure.Database.Configurations
             builder.HasMany(x => x.RefreshTokens)
                 .WithOne(x => x.UserEntity)
                 .HasForeignKey(x => x.UserId);
+
+            builder.HasOne(x => x.UserInformation)
+                .WithOne(x => x.User)
+                .HasForeignKey<UserInformationEntity>(x => x.UserId);
+
+            builder.HasMany(x => x.Contacts)
+                .WithOne(x => x.User)
+                .HasForeignKey(x => x.UserId);
         }
     }
 }
