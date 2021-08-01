@@ -3,15 +3,17 @@ using System;
 using MangoAPI.Infrastructure.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace MangoAPI.Infrastructure.Migrations
 {
     [DbContext(typeof(MangoPostgresDbContext))]
-    partial class MangoPostgresDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210801115928_SeedAdded")]
+    partial class SeedAdded
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
