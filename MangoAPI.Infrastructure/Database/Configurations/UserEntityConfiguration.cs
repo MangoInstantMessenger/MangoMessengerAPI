@@ -1,7 +1,5 @@
-﻿using System;
-using MangoAPI.Domain.Entities;
+﻿using MangoAPI.Domain.Entities;
 using MangoAPI.Infrastructure.Services;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -22,8 +20,8 @@ namespace MangoAPI.Infrastructure.Database.Configurations
             builder.HasMany(x => x.Contacts)
                 .WithOne(x => x.User)
                 .HasForeignKey(x => x.UserId);
-            
-            var user1 = new UserEntity()
+
+            var user1 = new UserEntity
             {
                 PhoneNumber = "+374 775 55 43 10",
                 DisplayName = "Khachatur Khachatryan",
@@ -36,7 +34,7 @@ namespace MangoAPI.Infrastructure.Database.Configurations
                 PhoneNumberConfirmed = true
             };
 
-            var user2 = new UserEntity()
+            var user2 = new UserEntity
             {
                 PhoneNumber = "+48 577 615 532",
                 DisplayName = "razumovsky r",
@@ -49,7 +47,7 @@ namespace MangoAPI.Infrastructure.Database.Configurations
                 PhoneNumberConfirmed = true
             };
 
-            var user3 = new UserEntity()
+            var user3 = new UserEntity
             {
                 PhoneNumber = "+7 701 750 62 65",
                 DisplayName = "Мусяка Колбасяка",
@@ -62,7 +60,7 @@ namespace MangoAPI.Infrastructure.Database.Configurations
                 PhoneNumberConfirmed = true
             };
 
-            var user4 = new UserEntity()
+            var user4 = new UserEntity
             {
                 PhoneNumber = "+1 202 555 0152",
                 DisplayName = "Amelit",
@@ -74,16 +72,15 @@ namespace MangoAPI.Infrastructure.Database.Configurations
                 EmailConfirmed = true,
                 PhoneNumberConfirmed = true
             };
-            
+
             var passwordHasher = new PasswordHashService();
 
             passwordHasher.HashPassword(user1, "z[?6dMR#xmp=nr6q");
             passwordHasher.HashPassword(user2, "z[?6dMR#xmp=nr6q");
             passwordHasher.HashPassword(user3, "z[?6dMR#xmp=nr6q");
             passwordHasher.HashPassword(user4, "z[?6dMR#xmp=nr6q");
-            
+
             builder.HasData(user1, user2, user3, user4);
         }
     }
-
 }

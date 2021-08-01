@@ -8,11 +8,6 @@ namespace MangoAPI.Infrastructure.Services
     {
         public override string HashPassword(UserEntity user, string password)
         {
-            if (user == null || password == null)
-            {
-                throw new ArgumentNullException();
-            }
-
             var hash = base.HashPassword(user, password);
             user.PasswordHash = hash;
 
