@@ -10,7 +10,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace MangoAPI.Infrastructure.Migrations
 {
     [DbContext(typeof(MangoPostgresDbContext))]
-    [Migration("20210801115928_SeedAdded")]
+    [Migration("20210801121441_SeedAdded")]
     partial class SeedAdded
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -648,10 +648,10 @@ namespace MangoAPI.Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "cffcd552-021d-4df7-aea7-c0cff349ff93",
+                            Id = "e77cf2cb-3f3a-4f0b-ac5a-90a3263d075a",
                             AccessFailedCount = 0,
                             Bio = "13 y. o. | C# pozer",
-                            ConcurrencyStamp = "2292cc16-7d43-419c-8109-a771807f4e3b",
+                            ConcurrencyStamp = "9e6b9ea7-461c-4285-b99b-a0e65c05c0f3",
                             DisplayName = "Khachatur Khachatryan",
                             Email = "xachulxx@gmail.com",
                             EmailConfirmed = true,
@@ -659,16 +659,15 @@ namespace MangoAPI.Infrastructure.Migrations
                             PasswordHash = "AQAAAAEAACcQAAAAEDz1x10ejBYPaKgQAz3I61UGPBculigLAlaRQFL2EYRa6G6jm5Oge7gCg1dRmxmlRA==",
                             PhoneNumber = "+374 775 55 43 10",
                             PhoneNumberConfirmed = true,
-                            SecurityStamp = "ab79f029-a363-4481-822d-721fb5bdef7f",
-                            TwoFactorEnabled = false,
-                            UserName = "e77cf2cb-3f3a-4f0b-ac5a-90a3263d075a"
+                            SecurityStamp = "75871266-3058-4362-9ff6-ed8e821191da",
+                            TwoFactorEnabled = false
                         },
                         new
                         {
-                            Id = "dd3c6e06-d57b-4d0c-9955-8bab0fbb69aa",
+                            Id = "fd3c67c5-c6ff-4a5d-a166-98ece1b7752b",
                             AccessFailedCount = 0,
                             Bio = "11011 y.o Dotnet Developer from $\"{cityName}\"",
-                            ConcurrencyStamp = "da227dc1-a719-4d95-b689-bab1d4b89777",
+                            ConcurrencyStamp = "74572c2f-0680-4202-beda-542af6d7caa9",
                             DisplayName = "razumovsky r",
                             Email = "kolosovp@gmail.com",
                             EmailConfirmed = true,
@@ -676,16 +675,15 @@ namespace MangoAPI.Infrastructure.Migrations
                             PasswordHash = "AQAAAAEAACcQAAAAEDz1x10ejBYPaKgQAz3I61UGPBculigLAlaRQFL2EYRa6G6jm5Oge7gCg1dRmxmlRA==",
                             PhoneNumber = "+48 577 615 532",
                             PhoneNumberConfirmed = true,
-                            SecurityStamp = "4a33f379-36a8-4f00-82a4-f0849820a00d",
-                            TwoFactorEnabled = false,
-                            UserName = "fd3c67c5-c6ff-4a5d-a166-98ece1b7752b"
+                            SecurityStamp = "d24e13e6-996e-49d0-b845-e97d3ad66397",
+                            TwoFactorEnabled = false
                         },
                         new
                         {
-                            Id = "f8c2babd-02f2-457c-bc97-efe45a32f448",
+                            Id = "5b515247-f6f5-47e1-ad06-95f317a0599b",
                             AccessFailedCount = 0,
                             Bio = "Колбасятор.",
-                            ConcurrencyStamp = "53575b21-aac4-4f04-a3f6-d01b6640e41f",
+                            ConcurrencyStamp = "d8786a22-3f88-44a2-bc7c-e0b9927933c5",
                             DisplayName = "Мусяка Колбасяка",
                             Email = "kolbasator@gmail.com",
                             EmailConfirmed = true,
@@ -693,16 +691,15 @@ namespace MangoAPI.Infrastructure.Migrations
                             PasswordHash = "AQAAAAEAACcQAAAAEDz1x10ejBYPaKgQAz3I61UGPBculigLAlaRQFL2EYRa6G6jm5Oge7gCg1dRmxmlRA==",
                             PhoneNumber = "+7 701 750 62 65",
                             PhoneNumberConfirmed = true,
-                            SecurityStamp = "23339d38-6f19-490b-b91f-33edfe91f88c",
-                            TwoFactorEnabled = false,
-                            UserName = "5b515247-f6f5-47e1-ad06-95f317a0599b"
+                            SecurityStamp = "b88448d1-ebc4-419c-94dd-b1b51aabc39c",
+                            TwoFactorEnabled = false
                         },
                         new
                         {
-                            Id = "c214508a-9ebc-47f9-8682-0b3999b93c1d",
+                            Id = "d942706b-e4e2-48f9-bbdc-b022816471f0",
                             AccessFailedCount = 0,
                             Bio = "Дипломат",
-                            ConcurrencyStamp = "27148535-bfd4-4af0-88c1-7cda0b2b3167",
+                            ConcurrencyStamp = "6d5e28bd-69e1-4c31-882e-ea34fdac4e25",
                             DisplayName = "Amelit",
                             Email = "amelit@gmail.com",
                             EmailConfirmed = true,
@@ -710,9 +707,8 @@ namespace MangoAPI.Infrastructure.Migrations
                             PasswordHash = "AQAAAAEAACcQAAAAEDz1x10ejBYPaKgQAz3I61UGPBculigLAlaRQFL2EYRa6G6jm5Oge7gCg1dRmxmlRA==",
                             PhoneNumber = "+1 202 555 0152",
                             PhoneNumberConfirmed = true,
-                            SecurityStamp = "b31538f1-778b-4941-9bc4-33b721479dfa",
-                            TwoFactorEnabled = false,
-                            UserName = "d942706b-e4e2-48f9-bbdc-b022816471f0"
+                            SecurityStamp = "5ff2defc-0620-4444-aefc-619007adefd1",
+                            TwoFactorEnabled = false
                         });
                 });
 
