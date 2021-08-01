@@ -1,5 +1,6 @@
 ﻿using System;
 using MangoAPI.Domain.Entities;
+using MangoAPI.Infrastructure.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -66,7 +67,7 @@ namespace MangoAPI.Infrastructure.Database.Configurations
                 PhoneNumberConfirmed = true
             };
             
-            var passwordHasher = new PasswordHasher<UserEntity>();
+            var passwordHasher = new PasswordHashService();
 
             passwordHasher.HashPassword(user1, "z[?6dMR#xmp=nr6q");
             passwordHasher.HashPassword(user2, "z[?6dMR#xmp=nr6q");
@@ -76,4 +77,5 @@ namespace MangoAPI.Infrastructure.Database.Configurations
             builder.HasData(user1, user2, user3, user4);
         }
     }
+
 }
