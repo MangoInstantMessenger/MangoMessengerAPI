@@ -9,7 +9,7 @@ namespace MangoAPI.DTO.ApiQueries.Users
         {
             RuleFor(x => x.DisplayName).NotEmpty().NotEmpty();
             RuleFor(x => x.DisplayName).Must(x => Guid.TryParse(x, out _))
-                .WithMessage("GetUserQuery: User Id cannot be parsed.");
+                .WithMessage("UserSearchQuery: User Id cannot be parsed.");
         }
     }
 }
