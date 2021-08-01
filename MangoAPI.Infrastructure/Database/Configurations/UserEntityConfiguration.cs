@@ -29,7 +29,9 @@ namespace MangoAPI.Infrastructure.Database.Configurations
                 DisplayName = "Khachatur Khachatryan",
                 Bio = "13 y. o. | C# pozer",
                 Id = "e77cf2cb-3f3a-4f0b-ac5a-90a3263d075a",
+                UserName = "e77cf2cb-3f3a-4f0b-ac5a-90a3263d075a",
                 Email = "xachulxx@gmail.com",
+                NormalizedEmail = "XACHULXX@GMAIL.COM",
                 EmailConfirmed = true,
                 PhoneNumberConfirmed = true
             };
@@ -40,7 +42,9 @@ namespace MangoAPI.Infrastructure.Database.Configurations
                 DisplayName = "razumovsky r",
                 Bio = "11011 y.o Dotnet Developer from $\"{cityName}\"",
                 Id = "fd3c67c5-c6ff-4a5d-a166-98ece1b7752b",
+                UserName = "fd3c67c5-c6ff-4a5d-a166-98ece1b7752b",
                 Email = "kolosovp94@gmail.com",
+                NormalizedEmail = "KOLOSOVP94@GMAIL.COM",
                 EmailConfirmed = true,
                 PhoneNumberConfirmed = true
             };
@@ -51,7 +55,9 @@ namespace MangoAPI.Infrastructure.Database.Configurations
                 DisplayName = "Мусяка Колбасяка",
                 Bio = "Колбасятор.",
                 Id = "5b515247-f6f5-47e1-ad06-95f317a0599b",
+                UserName = "5b515247-f6f5-47e1-ad06-95f317a0599b",
                 Email = "kolbasator@gmail.com",
+                NormalizedEmail = "KOLBASATOR@GMAIL.COM",
                 EmailConfirmed = true,
                 PhoneNumberConfirmed = true
             };
@@ -62,7 +68,9 @@ namespace MangoAPI.Infrastructure.Database.Configurations
                 DisplayName = "Amelit",
                 Bio = "Дипломат",
                 Id = "d942706b-e4e2-48f9-bbdc-b022816471f0",
+                UserName = "d942706b-e4e2-48f9-bbdc-b022816471f0",
                 Email = "amelit@gmail.com",
+                NormalizedEmail = "AMELIT@GMAIL.COM",
                 EmailConfirmed = true,
                 PhoneNumberConfirmed = true
             };

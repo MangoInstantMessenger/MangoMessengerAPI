@@ -10,7 +10,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace MangoAPI.Infrastructure.Migrations
 {
     [DbContext(typeof(MangoPostgresDbContext))]
-    [Migration("20210801145543_AddedSeeds")]
+    [Migration("20210801160038_AddedSeeds")]
     partial class AddedSeeds
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -651,64 +651,72 @@ namespace MangoAPI.Infrastructure.Migrations
                             Id = "e77cf2cb-3f3a-4f0b-ac5a-90a3263d075a",
                             AccessFailedCount = 0,
                             Bio = "13 y. o. | C# pozer",
-                            ConcurrencyStamp = "a66963e8-23ee-4cff-9b3b-3c0cf693cfcf",
+                            ConcurrencyStamp = "e6cb648b-aa61-405a-afa5-092c73416b5e",
                             DisplayName = "Khachatur Khachatryan",
                             Email = "xachulxx@gmail.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
-                            PasswordHash = "AQAAAAEAACcQAAAAELwgnbhIWG+jrk0b2XRPqYKZF5H5nds4dD3GCFkBNvbcdXQ/G82oHTwel214Ln9JQQ==",
+                            NormalizedEmail = "XACHULXX@GMAIL.COM",
+                            PasswordHash = "AQAAAAEAACcQAAAAEI/Czc/eo6mrhQv0oIbfvqs4BvCdtaECN0PD0l9zWosCyTthp5fX0nqKIupFjenLsQ==",
                             PhoneNumber = "+374 775 55 43 10",
                             PhoneNumberConfirmed = true,
-                            SecurityStamp = "04e56edc-cc05-475f-a5ca-d7944564685f",
-                            TwoFactorEnabled = false
+                            SecurityStamp = "8b8b629b-89d7-44d5-bed1-33bccaa82147",
+                            TwoFactorEnabled = false,
+                            UserName = "e77cf2cb-3f3a-4f0b-ac5a-90a3263d075a"
                         },
                         new
                         {
                             Id = "fd3c67c5-c6ff-4a5d-a166-98ece1b7752b",
                             AccessFailedCount = 0,
                             Bio = "11011 y.o Dotnet Developer from $\"{cityName}\"",
-                            ConcurrencyStamp = "5998f6b0-1ee6-4c93-95b7-49284ebfefe5",
+                            ConcurrencyStamp = "7cc2dc90-b03e-412b-a903-4ef82454a62e",
                             DisplayName = "razumovsky r",
                             Email = "kolosovp94@gmail.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
-                            PasswordHash = "AQAAAAEAACcQAAAAEEEEv+PLkyGdOIFyid8ahugwDhip1SX+CNmX6hPDBlhNKwhUOc4D3zzY9dRnKhbJEQ==",
+                            NormalizedEmail = "KOLOSOVP94@GMAIL.COM",
+                            PasswordHash = "AQAAAAEAACcQAAAAECLqbm36thbPwn9s8PUHfE+PrhYR6Q2ojt4kA9l7xGkjkKJ/OQyTvck/hTZfJ6uw7Q==",
                             PhoneNumber = "+48 577 615 532",
                             PhoneNumberConfirmed = true,
-                            SecurityStamp = "91f52137-4fcc-4994-9cd1-1d8fde7f643a",
-                            TwoFactorEnabled = false
+                            SecurityStamp = "461d22b4-9550-46a1-ba27-c3d9e5f31609",
+                            TwoFactorEnabled = false,
+                            UserName = "fd3c67c5-c6ff-4a5d-a166-98ece1b7752b"
                         },
                         new
                         {
                             Id = "5b515247-f6f5-47e1-ad06-95f317a0599b",
                             AccessFailedCount = 0,
                             Bio = "Колбасятор.",
-                            ConcurrencyStamp = "0c19cea9-5cfc-4836-9891-b41c5bb5c423",
+                            ConcurrencyStamp = "32859e27-6c16-437b-a0fd-3a248549167e",
                             DisplayName = "Мусяка Колбасяка",
                             Email = "kolbasator@gmail.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
-                            PasswordHash = "AQAAAAEAACcQAAAAEJs6h4FvyIyBa0XdxLMoCe2PHjG1lUEIUBOFZcJhJToXdRaqDWCGsuToRir85LzL1w==",
+                            NormalizedEmail = "KOLBASATOR@GMAIL.COM",
+                            PasswordHash = "AQAAAAEAACcQAAAAEMQv0thkK7BopkOkboShXe1zaBL7hiHY1gj4e+EEWmeu5ODLu45WYQQz5oauB58T1A==",
                             PhoneNumber = "+7 701 750 62 65",
                             PhoneNumberConfirmed = true,
-                            SecurityStamp = "003e683a-b091-4088-83f5-71de050f8139",
-                            TwoFactorEnabled = false
+                            SecurityStamp = "4e128bbd-ae30-4b58-8b88-8ca637b7e25d",
+                            TwoFactorEnabled = false,
+                            UserName = "5b515247-f6f5-47e1-ad06-95f317a0599b"
                         },
                         new
                         {
                             Id = "d942706b-e4e2-48f9-bbdc-b022816471f0",
                             AccessFailedCount = 0,
                             Bio = "Дипломат",
-                            ConcurrencyStamp = "ca74d030-5a81-4a61-a086-96b315f7f31f",
+                            ConcurrencyStamp = "b7965fa1-d032-4091-ae19-c42235b154b9",
                             DisplayName = "Amelit",
                             Email = "amelit@gmail.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
-                            PasswordHash = "AQAAAAEAACcQAAAAEJPwXtSQOyMpm4SbvdcFZcKEZ6MRKZ6mPzVABEWGd2em+FoMtM4fIdh9Yv4lcrRHUw==",
+                            NormalizedEmail = "AMELIT@GMAIL.COM",
+                            PasswordHash = "AQAAAAEAACcQAAAAEAKdIGeExVpLtoQORJQQ9k8YYatc4abSTnZ32AgljW+d7EJqk28EtyJk21URMqXwZw==",
                             PhoneNumber = "+1 202 555 0152",
                             PhoneNumberConfirmed = true,
-                            SecurityStamp = "4b2475f9-2ab9-402c-8514-4996f80b5343",
-                            TwoFactorEnabled = false
+                            SecurityStamp = "099a54f4-1cfc-4a21-a524-a726122fc0b1",
+                            TwoFactorEnabled = false,
+                            UserName = "d942706b-e4e2-48f9-bbdc-b022816471f0"
                         });
                 });
 
