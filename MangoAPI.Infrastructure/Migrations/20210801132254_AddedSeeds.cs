@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace MangoAPI.Infrastructure.Migrations
 {
-    public partial class SeedAdded : Migration
+    public partial class AddedSeeds : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -12,10 +12,10 @@ namespace MangoAPI.Infrastructure.Migrations
                 columns: new[] { "Id", "AccessFailedCount", "Bio", "ConcurrencyStamp", "ConfirmationCode", "DisplayName", "Email", "EmailConfirmed", "Image", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
                 values: new object[,]
                 {
-                    { "e77cf2cb-3f3a-4f0b-ac5a-90a3263d075a", 0, "13 y. o. | C# pozer", "9e6b9ea7-461c-4285-b99b-a0e65c05c0f3", null, "Khachatur Khachatryan", "xachulxx@gmail.com", true, null, false, null, null, null, "AQAAAAEAACcQAAAAEDz1x10ejBYPaKgQAz3I61UGPBculigLAlaRQFL2EYRa6G6jm5Oge7gCg1dRmxmlRA==", "+374 775 55 43 10", true, "75871266-3058-4362-9ff6-ed8e821191da", false, null },
-                    { "fd3c67c5-c6ff-4a5d-a166-98ece1b7752b", 0, "11011 y.o Dotnet Developer from $\"{cityName}\"", "74572c2f-0680-4202-beda-542af6d7caa9", null, "razumovsky r", "kolosovp@gmail.com", true, null, false, null, null, null, "AQAAAAEAACcQAAAAEDz1x10ejBYPaKgQAz3I61UGPBculigLAlaRQFL2EYRa6G6jm5Oge7gCg1dRmxmlRA==", "+48 577 615 532", true, "d24e13e6-996e-49d0-b845-e97d3ad66397", false, null },
-                    { "5b515247-f6f5-47e1-ad06-95f317a0599b", 0, "Колбасятор.", "d8786a22-3f88-44a2-bc7c-e0b9927933c5", null, "Мусяка Колбасяка", "kolbasator@gmail.com", true, null, false, null, null, null, "AQAAAAEAACcQAAAAEDz1x10ejBYPaKgQAz3I61UGPBculigLAlaRQFL2EYRa6G6jm5Oge7gCg1dRmxmlRA==", "+7 701 750 62 65", true, "b88448d1-ebc4-419c-94dd-b1b51aabc39c", false, null },
-                    { "d942706b-e4e2-48f9-bbdc-b022816471f0", 0, "Дипломат", "6d5e28bd-69e1-4c31-882e-ea34fdac4e25", null, "Amelit", "amelit@gmail.com", true, null, false, null, null, null, "AQAAAAEAACcQAAAAEDz1x10ejBYPaKgQAz3I61UGPBculigLAlaRQFL2EYRa6G6jm5Oge7gCg1dRmxmlRA==", "+1 202 555 0152", true, "5ff2defc-0620-4444-aefc-619007adefd1", false, null }
+                    { "e77cf2cb-3f3a-4f0b-ac5a-90a3263d075a", 0, "13 y. o. | C# pozer", "85816631-9bbd-41d1-b9b4-dd6b7e2c7086", null, "Khachatur Khachatryan", "xachulxx@gmail.com", true, null, false, null, null, null, null, "+374 775 55 43 10", true, "91424e5d-3e4d-496b-9655-691ba1ccb5a2", false, null },
+                    { "fd3c67c5-c6ff-4a5d-a166-98ece1b7752b", 0, "11011 y.o Dotnet Developer from $\"{cityName}\"", "b5fbcff6-a1ad-42aa-a190-ba391aeaa4e0", null, "razumovsky r", "kolosovp94@gmail.com", true, null, false, null, null, null, null, "+48 577 615 532", true, "97ad771b-1736-4092-86ff-698f380d4cb0", false, null },
+                    { "5b515247-f6f5-47e1-ad06-95f317a0599b", 0, "Колбасятор.", "a9fe7099-a284-41ea-8671-5dc4e9c31499", null, "Мусяка Колбасяка", "kolbasator@gmail.com", true, null, false, null, null, null, null, "+7 701 750 62 65", true, "6da00741-92ae-424c-919f-c49d01894cbd", false, null },
+                    { "d942706b-e4e2-48f9-bbdc-b022816471f0", 0, "Дипломат", "5d05d36d-0e4d-4c02-8f05-9242da256516", null, "Amelit", "amelit@gmail.com", true, null, false, null, null, null, null, "+1 202 555 0152", true, "4bee5382-1130-41ed-b53c-688c1a7a6788", false, null }
                 });
 
             migrationBuilder.InsertData(

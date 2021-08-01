@@ -10,8 +10,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace MangoAPI.Infrastructure.Migrations
 {
     [DbContext(typeof(MangoPostgresDbContext))]
-    [Migration("20210801121441_SeedAdded")]
-    partial class SeedAdded
+    [Migration("20210801132254_AddedSeeds")]
+    partial class AddedSeeds
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -651,15 +651,14 @@ namespace MangoAPI.Infrastructure.Migrations
                             Id = "e77cf2cb-3f3a-4f0b-ac5a-90a3263d075a",
                             AccessFailedCount = 0,
                             Bio = "13 y. o. | C# pozer",
-                            ConcurrencyStamp = "9e6b9ea7-461c-4285-b99b-a0e65c05c0f3",
+                            ConcurrencyStamp = "85816631-9bbd-41d1-b9b4-dd6b7e2c7086",
                             DisplayName = "Khachatur Khachatryan",
                             Email = "xachulxx@gmail.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
-                            PasswordHash = "AQAAAAEAACcQAAAAEDz1x10ejBYPaKgQAz3I61UGPBculigLAlaRQFL2EYRa6G6jm5Oge7gCg1dRmxmlRA==",
                             PhoneNumber = "+374 775 55 43 10",
                             PhoneNumberConfirmed = true,
-                            SecurityStamp = "75871266-3058-4362-9ff6-ed8e821191da",
+                            SecurityStamp = "91424e5d-3e4d-496b-9655-691ba1ccb5a2",
                             TwoFactorEnabled = false
                         },
                         new
@@ -667,15 +666,14 @@ namespace MangoAPI.Infrastructure.Migrations
                             Id = "fd3c67c5-c6ff-4a5d-a166-98ece1b7752b",
                             AccessFailedCount = 0,
                             Bio = "11011 y.o Dotnet Developer from $\"{cityName}\"",
-                            ConcurrencyStamp = "74572c2f-0680-4202-beda-542af6d7caa9",
+                            ConcurrencyStamp = "b5fbcff6-a1ad-42aa-a190-ba391aeaa4e0",
                             DisplayName = "razumovsky r",
-                            Email = "kolosovp@gmail.com",
+                            Email = "kolosovp94@gmail.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
-                            PasswordHash = "AQAAAAEAACcQAAAAEDz1x10ejBYPaKgQAz3I61UGPBculigLAlaRQFL2EYRa6G6jm5Oge7gCg1dRmxmlRA==",
                             PhoneNumber = "+48 577 615 532",
                             PhoneNumberConfirmed = true,
-                            SecurityStamp = "d24e13e6-996e-49d0-b845-e97d3ad66397",
+                            SecurityStamp = "97ad771b-1736-4092-86ff-698f380d4cb0",
                             TwoFactorEnabled = false
                         },
                         new
@@ -683,15 +681,14 @@ namespace MangoAPI.Infrastructure.Migrations
                             Id = "5b515247-f6f5-47e1-ad06-95f317a0599b",
                             AccessFailedCount = 0,
                             Bio = "Колбасятор.",
-                            ConcurrencyStamp = "d8786a22-3f88-44a2-bc7c-e0b9927933c5",
+                            ConcurrencyStamp = "a9fe7099-a284-41ea-8671-5dc4e9c31499",
                             DisplayName = "Мусяка Колбасяка",
                             Email = "kolbasator@gmail.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
-                            PasswordHash = "AQAAAAEAACcQAAAAEDz1x10ejBYPaKgQAz3I61UGPBculigLAlaRQFL2EYRa6G6jm5Oge7gCg1dRmxmlRA==",
                             PhoneNumber = "+7 701 750 62 65",
                             PhoneNumberConfirmed = true,
-                            SecurityStamp = "b88448d1-ebc4-419c-94dd-b1b51aabc39c",
+                            SecurityStamp = "6da00741-92ae-424c-919f-c49d01894cbd",
                             TwoFactorEnabled = false
                         },
                         new
@@ -699,15 +696,14 @@ namespace MangoAPI.Infrastructure.Migrations
                             Id = "d942706b-e4e2-48f9-bbdc-b022816471f0",
                             AccessFailedCount = 0,
                             Bio = "Дипломат",
-                            ConcurrencyStamp = "6d5e28bd-69e1-4c31-882e-ea34fdac4e25",
+                            ConcurrencyStamp = "5d05d36d-0e4d-4c02-8f05-9242da256516",
                             DisplayName = "Amelit",
                             Email = "amelit@gmail.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
-                            PasswordHash = "AQAAAAEAACcQAAAAEDz1x10ejBYPaKgQAz3I61UGPBculigLAlaRQFL2EYRa6G6jm5Oge7gCg1dRmxmlRA==",
                             PhoneNumber = "+1 202 555 0152",
                             PhoneNumberConfirmed = true,
-                            SecurityStamp = "5ff2defc-0620-4444-aefc-619007adefd1",
+                            SecurityStamp = "4bee5382-1130-41ed-b53c-688c1a7a6788",
                             TwoFactorEnabled = false
                         });
                 });
