@@ -73,6 +73,12 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Auth
                 throw new BusinessException(ResponseMessageCodes.WeakPassword);
             }
 
+            var userInfo = new UserInformationEntity
+            {
+                Id = Guid.NewGuid().ToString(),
+                UserId = newUser.Id
+            };
+
             switch (request.VerificationMethod)
             {
                 case VerificationMethod.Email:
@@ -85,6 +91,9 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Auth
                     throw new ArgumentOutOfRangeException();
             }
 
+            await _postgresDbContext.UserInformation.AddAsync(userInfo, cancellationToken);
+            await _postgresDbContext.SaveChangesAsync(cancellationToken);
+            
             return RegisterResponse.FromSuccess(newUser);
         }
     }
