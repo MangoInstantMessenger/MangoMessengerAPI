@@ -9,7 +9,7 @@ namespace MangoAPI.DTO.ApiCommands.Contacts
         {
             RuleFor(x => x.UserId).NotNull().NotEmpty();
             RuleFor(x => x.UserId).Must(x => Guid.TryParse(x, out _))
-                .WithMessage("Create group: User Id cannot be parsed.");
+                .WithMessage("Add Contact: User Id cannot be parsed.");
         }
     }
 }
