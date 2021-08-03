@@ -34,6 +34,7 @@ namespace MangoAPI.Infrastructure.QueryHandlers.Messages
             }
 
             var belongsToChat = await _postgresDbContext.UserChats
+                .AsNoTracking()
                 .Where(userChatEntity => userChatEntity.UserId == user.Id)
                 .AnyAsync(userChatEntity => userChatEntity.ChatId == request.ChatId, cancellationToken);
 
