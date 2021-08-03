@@ -63,6 +63,7 @@ namespace MangoAPI.WebApp.Controllers
         [HttpPost("verify-phone")]
         [SwaggerOperation(Summary =
             "Sends verification request with provided user parameters: phone confirmation code.")]
+        [ProducesResponseType(typeof(VerifyPhoneResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
         public async Task<IActionResult> VerifyPhoneCodeAsync([FromBody] VerifyPhoneRequest request,
@@ -74,6 +75,7 @@ namespace MangoAPI.WebApp.Controllers
         [AllowAnonymous]
         [HttpPost("refresh-token")]
         [SwaggerOperation(Summary = "Refreshes user's existing refresh token and access token.")]
+        [ProducesResponseType(typeof(RefreshTokenResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
