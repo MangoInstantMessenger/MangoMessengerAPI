@@ -35,6 +35,7 @@ namespace MangoAPI.Infrastructure.QueryHandlers.Chats
             }
 
             var chats = await _postgresDbContext.UserChats
+                .AsNoTracking()
                 .Include(x => x.Chat)
                 .ThenInclude(x => x.Messages)
                 .ThenInclude(x => x.User)

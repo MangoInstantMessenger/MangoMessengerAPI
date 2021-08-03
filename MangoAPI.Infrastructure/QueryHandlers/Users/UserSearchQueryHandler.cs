@@ -24,7 +24,9 @@ namespace MangoAPI.Infrastructure.QueryHandlers.Users
         
         public async Task<UserSearchResponse> Handle(UserSearchQuery request, CancellationToken cancellationToken)
         {
-            var users = await _postgresDbContext.Users.Where(x => x.DisplayName.Contains(request.DisplayName))
+            var users = await _postgresDbContext.Users
+                .AsNoTracking()
+                .Where(x => x.DisplayName.Contains(request.DisplayName))
                 .ToListAsync(cancellationToken);
 
             return UserSearchResponse.FromSuccess(users);
