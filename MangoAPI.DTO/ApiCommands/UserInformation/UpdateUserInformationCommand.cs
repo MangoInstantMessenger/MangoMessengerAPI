@@ -6,7 +6,7 @@ namespace MangoAPI.DTO.ApiCommands.UserInformation
 {
     public class UpdateUserInformationCommand : IRequest<UpdateUserInformationResponse>
     {
-        public string? UserId { get; init; }
+        public string UserId { get; init; }
         
         public string? FirstName { get; init; }
         public string? LastName { get; init; }
