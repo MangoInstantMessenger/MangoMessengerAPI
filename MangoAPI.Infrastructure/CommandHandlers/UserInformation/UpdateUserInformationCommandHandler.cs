@@ -15,13 +15,10 @@ namespace MangoAPI.Infrastructure.CommandHandlers.UserInformation
     public class UpdateUserInformationCommandHandler : IRequestHandler<UpdateUserInformationCommand, UpdateUserInformationResponse>
     {
         private readonly MangoPostgresDbContext _postgresDbContext;
-        private readonly UserManager<UserEntity> _userManager;
         
-        public UpdateUserInformationCommandHandler(MangoPostgresDbContext postgresDbContext,
-            UserManager<UserEntity> userManager)
+        public UpdateUserInformationCommandHandler(MangoPostgresDbContext postgresDbContext)
         {
             _postgresDbContext = postgresDbContext;
-            _userManager = userManager;
         }
         
         public async Task<UpdateUserInformationResponse> Handle(UpdateUserInformationCommand request, CancellationToken cancellationToken)

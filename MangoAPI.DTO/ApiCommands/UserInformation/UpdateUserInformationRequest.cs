@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Text.Json.Serialization;
 
 namespace MangoAPI.DTO.ApiCommands.UserInformation
 {
     public record UpdateUserInformationRequest
     {
+        [JsonConstructor]
         public UpdateUserInformationRequest(string firstName, string lastName,
             DateTime? birthDay, string website, string address, string facebook,
             string twitter, string instagram, string linkedIn, string profilePicture)
