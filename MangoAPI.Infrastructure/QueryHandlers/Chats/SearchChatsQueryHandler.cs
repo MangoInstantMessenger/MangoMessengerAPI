@@ -30,6 +30,7 @@ namespace MangoAPI.Infrastructure.QueryHandlers.Chats
                 .Where(x => x.Chat.Title.Contains(request.DisplayName))
                 .Where(x => x.Chat.ChatType != ChatType.PrivateChannel)
                 .Where(x => x.Chat.ChatType != ChatType.DirectChat)
+                .Where(x => x.UserId == request.UserId)
                 .ToListAsync(cancellationToken);
 
             return SearchChatsResponse.FromSuccess(chats, request.UserId);
