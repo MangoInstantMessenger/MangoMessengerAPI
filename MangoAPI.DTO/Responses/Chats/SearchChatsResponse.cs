@@ -16,21 +16,24 @@ namespace MangoAPI.DTO.Responses.Chats
         {
             Message = ResponseMessageCodes.Success,
             Success = true,
-            Chats = chats.Select(userChatEntity => new UserChat
-            {
-                ChatId = userChatEntity.ChatId,
-                Title = userChatEntity.Chat.Title,
-                Image = userChatEntity.Chat.Image,
-                LastMessage = userChatEntity.Chat.Messages.Any() ? userChatEntity.Chat.Messages.Last().Content : null,
-                LastMessageAuthor = userChatEntity.Chat.Messages.Any()
-                    ? userChatEntity.Chat.Messages.Last().User.DisplayName
-                    : null,
-                LastMessageAt = userChatEntity.Chat.Messages.Any()
-                    ? userChatEntity.Chat.Messages.Last().Created.ToShortTimeString()
-                    : null,
-                MembersCount = userChatEntity.Chat.MembersCount,
-                IsMember = userChatEntity.UserId == userId
-            }).ToList()
+            Chats = chats.Select(userChatEntity =>
+                new UserChat
+                {
+                    ChatId = userChatEntity.ChatId,
+                    Title = userChatEntity.Chat.Title,
+                    Image = userChatEntity.Chat.Image,
+                    LastMessage = userChatEntity.Chat.Messages.Any()
+                        ? userChatEntity.Chat.Messages.Last().Content
+                        : null,
+                    LastMessageAuthor = userChatEntity.Chat.Messages.Any()
+                        ? userChatEntity.Chat.Messages.Last().User.DisplayName
+                        : null,
+                    LastMessageAt = userChatEntity.Chat.Messages.Any()
+                        ? userChatEntity.Chat.Messages.Last().Created.ToShortTimeString()
+                        : null,
+                    MembersCount = userChatEntity.Chat.MembersCount,
+                    IsMember = userChatEntity.UserId == userId
+                }).ToList()
         };
     }
 }
