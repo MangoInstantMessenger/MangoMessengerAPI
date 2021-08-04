@@ -16,7 +16,9 @@ namespace MangoAPI.DTO.Responses.Chats
         {
             Message = ResponseMessageCodes.Success,
             Success = true,
-            Chats = chats.Select(userChatEntity => new UserChat
+            Chats = chats.GroupBy(x => x.ChatId)
+                .Select(userChatEntity =>
+            new UserChat
             {
                 ChatId = userChatEntity.ChatId,
                 Title = userChatEntity.Chat.Title,
@@ -30,7 +32,7 @@ namespace MangoAPI.DTO.Responses.Chats
                     : null,
                 MembersCount = userChatEntity.Chat.MembersCount,
                 IsMember = userChatEntity.UserId == userId
-            }).ToList()
+            }).Distinct().ToList()
         };
     }
 }
