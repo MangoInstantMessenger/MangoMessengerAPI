@@ -7,8 +7,20 @@ namespace MangoAPI.DTO.ApiCommands.Contacts
     {
         public AddContactCommandValidator()
         {
-            RuleFor(x => x.UserId).NotNull().NotEmpty();
+            RuleFor(x => x.UserId)
+                .Cascade(CascadeMode.StopOnFirstFailure)
+                .NotEmpty()
+                .Length(2, 300);
+            
             RuleFor(x => x.UserId).Must(x => Guid.TryParse(x, out _))
+                .WithMessage("Add Contact: User Id cannot be parsed.");
+            
+            RuleFor(x => x.ContactId)
+                .Cascade(CascadeMode.StopOnFirstFailure)
+                .NotEmpty()
+                .Length(2, 300);
+            
+            RuleFor(x => x.ContactId).Must(x => Guid.TryParse(x, out _))
                 .WithMessage("Add Contact: User Id cannot be parsed.");
         }
     }

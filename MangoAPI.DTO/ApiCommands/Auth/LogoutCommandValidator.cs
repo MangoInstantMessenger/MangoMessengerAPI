@@ -6,7 +6,10 @@ namespace MangoAPI.DTO.ApiCommands.Auth
     {
         public LogoutCommandValidator()
         {
-            RuleFor(x => x.RefreshTokenId).NotNull().NotEmpty();
+            RuleFor(x => x.RefreshTokenId)
+                .Cascade(CascadeMode.StopOnFirstFailure)
+                .NotEmpty()
+                .Length(2, 300);
         }
     }
 }

@@ -7,14 +7,24 @@ namespace MangoAPI.DTO.ApiCommands.Messages
     {
         public SendMessageCommandValidator()
         {
-            RuleFor(x => x.ChatId).NotNull().NotEmpty();
+            RuleFor(x => x.ChatId)
+                .Cascade(CascadeMode.StopOnFirstFailure)
+                .NotEmpty()
+                .Length(2, 300);
+                
             RuleFor(x => x.ChatId).Must(x => Guid.TryParse(x, out _))
                 .WithMessage("SendMessageCommand: Chat Id cannot be parsed.");
             
-            RuleFor(x => x.MessageText).NotNull().NotEmpty();
-            RuleFor(x => x.MessageText).MaximumLength(300);
+            RuleFor(x => x.MessageText)
+                .Cascade(CascadeMode.StopOnFirstFailure)
+                .NotEmpty()
+                .Length(2, 300);
             
-            RuleFor(x => x.UserId).NotEmpty().NotEmpty();
+            RuleFor(x => x.UserId)
+                .Cascade(CascadeMode.StopOnFirstFailure)
+                .NotEmpty()
+                .Length(2, 300);
+            
             RuleFor(x => x.UserId).Must(x => Guid.TryParse(x, out _))
                 .WithMessage("SendMessageCommand: User Id cannot be parsed.");
         }
