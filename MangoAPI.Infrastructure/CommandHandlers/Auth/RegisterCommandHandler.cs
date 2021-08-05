@@ -36,15 +36,13 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Auth
                 throw new BusinessException(ResponseMessageCodes.InvalidEmail);
             }
 
-            try
-            {
-                await _userManager.FindByEmailAsync(request.Email);
-            }
-            catch (InvalidOperationException)
+            var exists = await _userManager.FindByEmailAsync(request.Email);
+
+            if (exists != null)
             {
                 throw new BusinessException(ResponseMessageCodes.EmailOccupied);
             }
-
+            
             var user = await _postgresDbContext.Users.FirstOrDefaultAsync(x => x.PhoneNumber == request.PhoneNumber,
                 cancellationToken);
 
