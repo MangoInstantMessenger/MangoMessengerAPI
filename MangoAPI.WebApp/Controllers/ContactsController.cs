@@ -2,7 +2,6 @@
 using System.Threading.Tasks;
 using MangoAPI.DTO.ApiCommands.Contacts;
 using MangoAPI.DTO.Responses;
-using MangoAPI.DTO.Responses.Auth;
 using MangoAPI.DTO.Responses.Contacts;
 using MangoAPI.WebApp.Extensions;
 using MangoAPI.WebApp.Interfaces;

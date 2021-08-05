@@ -7,12 +7,12 @@ namespace MangoAPI.DTO.ApiCommands.Auth
         public LoginCommandValidator()
         {
             RuleFor(x => x.Email)
-                .Cascade(CascadeMode.StopOnFirstFailure)
+                .Cascade(CascadeMode.Stop)
                 .NotEmpty()
                 .Length(2, 300);
 
             RuleFor(x => x.Password)
-                .Cascade(CascadeMode.StopOnFirstFailure)
+                .Cascade(CascadeMode.Stop)
                 .NotEmpty()
                 .Length(2, 300);
         }

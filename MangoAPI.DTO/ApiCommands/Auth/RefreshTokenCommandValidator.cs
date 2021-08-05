@@ -8,7 +8,7 @@ namespace MangoAPI.DTO.ApiCommands.Auth
         public RefreshTokenCommandValidator()
         {
             RuleFor(x => x.RefreshTokenId)
-                .Cascade(CascadeMode.StopOnFirstFailure)
+                .Cascade(CascadeMode.Stop)
                 .NotEmpty()
                 .Length(2, 300);
             

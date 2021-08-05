@@ -8,52 +8,52 @@ namespace MangoAPI.DTO.ApiCommands.UserInformation
         public UpdateUserInformationCommandValidator()
         {
             RuleFor(x => x.UserId)
-                .Cascade(CascadeMode.StopOnFirstFailure)
+                .Cascade(CascadeMode.Stop)
                 .NotEmpty()
                 .Length(2, 300);
-            
+
             RuleFor(x => x.FirstName)
-                .Cascade(CascadeMode.StopOnFirstFailure)
+                .Cascade(CascadeMode.Stop)
                 .NotEmpty()
                 .Length(2, 300);
-            
+
             RuleFor(x => x.LastName)
-                .Cascade(CascadeMode.StopOnFirstFailure)
+                .Cascade(CascadeMode.Stop)
                 .NotEmpty()
                 .Length(2, 300);
-            
+
             RuleFor(x => x.Website)
-                .Cascade(CascadeMode.StopOnFirstFailure)
+                .Cascade(CascadeMode.Stop)
                 .NotEmpty()
                 .Length(2, 300);
-            
+
             RuleFor(x => x.Address)
-                .Cascade(CascadeMode.StopOnFirstFailure)
+                .Cascade(CascadeMode.Stop)
                 .NotEmpty()
                 .Length(2, 300);
-            
+
             RuleFor(x => x.Facebook)
-                .Cascade(CascadeMode.StopOnFirstFailure)
+                .Cascade(CascadeMode.Stop)
                 .NotEmpty()
                 .Length(2, 300);
-            
+
             RuleFor(x => x.Twitter)
-                .Cascade(CascadeMode.StopOnFirstFailure)
+                .Cascade(CascadeMode.Stop)
                 .NotEmpty()
                 .Length(2, 300);
-            
+
             RuleFor(x => x.Instagram)
-                .Cascade(CascadeMode.StopOnFirstFailure)
+                .Cascade(CascadeMode.Stop)
                 .NotEmpty()
                 .Length(2, 300);
-            
+
             RuleFor(x => x.LinkedIn)
-                .Cascade(CascadeMode.StopOnFirstFailure)
+                .Cascade(CascadeMode.Stop)
                 .NotEmpty()
                 .Length(2, 300);
-            
+
             RuleFor(x => x.ProfilePicture)
-                .Cascade(CascadeMode.StopOnFirstFailure)
+                .Cascade(CascadeMode.Stop)
                 .NotEmpty()
                 .Length(2, 300);
 

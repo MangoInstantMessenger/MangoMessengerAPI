@@ -8,7 +8,7 @@ namespace MangoAPI.DTO.ApiCommands.Auth
         public VerifyPhoneCommandValidator()
         {
             RuleFor(x => x.UserId)
-                .Cascade(CascadeMode.StopOnFirstFailure)
+                .Cascade(CascadeMode.Stop)
                 .NotEmpty()
                 .Length(2, 300);
             
@@ -16,7 +16,7 @@ namespace MangoAPI.DTO.ApiCommands.Auth
                 .WithMessage("Verify Phone code: User Id cannot be parsed.");
 
             RuleFor(x => x.ConfirmationCode)
-                .Cascade(CascadeMode.StopOnFirstFailure)
+                .Cascade(CascadeMode.Stop)
                 .NotEmpty();
         }
     }

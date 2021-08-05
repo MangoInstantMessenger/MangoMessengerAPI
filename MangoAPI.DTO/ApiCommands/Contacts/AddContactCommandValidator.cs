@@ -8,7 +8,7 @@ namespace MangoAPI.DTO.ApiCommands.Contacts
         public AddContactCommandValidator()
         {
             RuleFor(x => x.UserId)
-                .Cascade(CascadeMode.StopOnFirstFailure)
+                .Cascade(CascadeMode.Stop)
                 .NotEmpty()
                 .Length(2, 300);
             
@@ -16,7 +16,7 @@ namespace MangoAPI.DTO.ApiCommands.Contacts
                 .WithMessage("Add Contact: User Id cannot be parsed.");
             
             RuleFor(x => x.ContactId)
-                .Cascade(CascadeMode.StopOnFirstFailure)
+                .Cascade(CascadeMode.Stop)
                 .NotEmpty()
                 .Length(2, 300);
             

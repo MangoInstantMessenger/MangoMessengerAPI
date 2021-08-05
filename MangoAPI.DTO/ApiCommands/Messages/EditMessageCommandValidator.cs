@@ -8,7 +8,7 @@ namespace MangoAPI.DTO.ApiCommands.Messages
         public EditMessageCommandValidator()
         {
             RuleFor(x => x.MessageId)
-                .Cascade(CascadeMode.StopOnFirstFailure)
+                .Cascade(CascadeMode.Stop)
                 .NotEmpty()
                 .Length(2, 300);
             
@@ -16,7 +16,7 @@ namespace MangoAPI.DTO.ApiCommands.Messages
                 .WithMessage("EditMessageCommand: Message Id cannot be parsed.");
             
             RuleFor(x => x.UserId)
-                .Cascade(CascadeMode.StopOnFirstFailure)
+                .Cascade(CascadeMode.Stop)
                 .NotEmpty()
                 .Length(2, 300);
             
@@ -24,7 +24,7 @@ namespace MangoAPI.DTO.ApiCommands.Messages
                 .WithMessage("EditMessageCommand: User Id cannot be parsed.");
             
             RuleFor(x => x.ModifiedText)
-                .Cascade(CascadeMode.StopOnFirstFailure)
+                .Cascade(CascadeMode.Stop)
                 .NotEmpty()
                 .Length(1, 300);
             

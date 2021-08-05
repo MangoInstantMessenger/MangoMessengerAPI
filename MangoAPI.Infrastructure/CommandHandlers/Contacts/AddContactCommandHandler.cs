@@ -10,7 +10,6 @@ using MangoAPI.Infrastructure.BusinessExceptions;
 using MangoAPI.Infrastructure.Database;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 
 namespace MangoAPI.Infrastructure.CommandHandlers.Contacts
 {

@@ -8,14 +8,14 @@ namespace MangoAPI.DTO.ApiCommands.Chats
         public CreateGroupCommandValidator()
         {
             RuleFor(x => x.GroupTitle)
-                .Cascade(CascadeMode.StopOnFirstFailure)
+                .Cascade(CascadeMode.Stop)
                 .NotEmpty()
                 .Length(2, 300);
             
             RuleFor(x => x.GroupType).IsInEnum();
             
             RuleFor(x => x.UserId)
-                .Cascade(CascadeMode.StopOnFirstFailure)
+                .Cascade(CascadeMode.Stop)
                 .NotEmpty()
                 .Length(2, 300);
             

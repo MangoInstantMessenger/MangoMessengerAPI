@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace MangoAPI.DTO.Models
+﻿namespace MangoAPI.DTO.Models
 {
     public record UserChat
     {

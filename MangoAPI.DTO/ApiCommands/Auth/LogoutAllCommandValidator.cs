@@ -8,7 +8,7 @@ namespace MangoAPI.DTO.ApiCommands.Auth
         public LogoutAllCommandValidator()
         {
             RuleFor(x => x.RefreshTokenId)
-                .Cascade(CascadeMode.StopOnFirstFailure)
+                .Cascade(CascadeMode.Stop)
                 .NotEmpty()
                 .Length(2, 300);
             
@@ -16,7 +16,7 @@ namespace MangoAPI.DTO.ApiCommands.Auth
                 .WithMessage("LogoutAllCommand: Refresh Token Id cannot be parsed.");
             
             RuleFor(x => x.UserId)
-                .Cascade(CascadeMode.StopOnFirstFailure)
+                .Cascade(CascadeMode.Stop)
                 .NotEmpty()
                 .Length(2, 300);
             

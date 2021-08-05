@@ -3,7 +3,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using MangoAPI.Domain.Constants;
 using MangoAPI.Domain.Entities;
-using MangoAPI.DTO.ApiQueries.Chats;
 using MangoAPI.DTO.ApiQueries.Users;
 using MangoAPI.DTO.Responses.Chats;
 using MangoAPI.Infrastructure.BusinessExceptions;

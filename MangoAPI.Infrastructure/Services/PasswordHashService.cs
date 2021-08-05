@@ -1,5 +1,4 @@
-﻿using System;
-using MangoAPI.Domain.Entities;
+﻿using MangoAPI.Domain.Entities;
 using Microsoft.AspNetCore.Identity;
 
 namespace MangoAPI.Infrastructure.Services
