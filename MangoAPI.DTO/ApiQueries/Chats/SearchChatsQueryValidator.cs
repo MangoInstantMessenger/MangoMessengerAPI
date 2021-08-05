@@ -7,9 +7,16 @@ namespace MangoAPI.DTO.ApiQueries.Chats
     {
         public SearchChatsQueryValidator()
         {
-            RuleFor(x => x.DisplayName).NotNull().NotEmpty();
+            RuleFor(x => x.DisplayName)
+                .Cascade(CascadeMode.StopOnFirstFailure)
+                .NotEmpty()
+                .Length(2, 300);
             
-            RuleFor(x => x.UserId).NotNull().NotEmpty();
+            RuleFor(x => x.UserId)
+                .Cascade(CascadeMode.StopOnFirstFailure)
+                .NotEmpty()
+                .Length(2, 300);
+            
             RuleFor(x => x.UserId).Must(x => Guid.TryParse(x, out _))
                 .WithMessage("SearchChatsQueryValidator: User Id cannot be parsed.");
         }

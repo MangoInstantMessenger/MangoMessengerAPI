@@ -13,7 +13,6 @@ namespace MangoAPI.Infrastructure.StartupExtensions
         {
             services.AddMediatR(typeof(RegisterCommandHandler).Assembly);
             services.AddScoped<IJwtGenerator, JwtGenerator>();
-            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddScoped<IEmailSenderService, EmailSenderService>();
             return services;
         }
