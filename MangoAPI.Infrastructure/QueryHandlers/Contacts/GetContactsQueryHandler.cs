@@ -34,14 +34,10 @@ namespace MangoAPI.Infrastructure.QueryHandlers.Contacts
                 throw new BusinessException(ResponseMessageCodes.UserNotFound);
             }
 
-            var contactIds = await _postgresDbContext.UserContacts.AsNoTracking()
-                .Where(x => x.UserId == request.UserId)
-                .Select(x => x.ContactId)
-                .ToListAsync(cancellationToken);
-
-            var contacts = await _postgresDbContext.Users.AsNoTracking()
-                .Where(x => contactIds.Contains(x.Id))
-                .ToListAsync(cancellationToken);
+            var contacts = await (from userContact in _postgresDbContext.UserContacts
+                join userEntity in _postgresDbContext.Users on userContact.ContactId equals userEntity.Id
+                where userContact.UserId == request.UserId
+                select userEntity).ToListAsync(cancellationToken);
 
             return GetContactsResponse.FromSuccess(contacts);
         }
