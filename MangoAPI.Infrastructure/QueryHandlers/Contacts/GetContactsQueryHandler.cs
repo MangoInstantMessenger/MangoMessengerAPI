@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using MangoAPI.Domain.Constants;
@@ -25,7 +24,7 @@ namespace MangoAPI.Infrastructure.QueryHandlers.Contacts
             _postgresDbContext = postgresDbContext;
             _userManager = userManager;
         }
-        
+
         public async Task<GetContactsResponse> Handle(GetContactsQuery request, CancellationToken cancellationToken)
         {
             var user = await _userManager.FindByIdAsync(request.UserId);
@@ -35,12 +34,15 @@ namespace MangoAPI.Infrastructure.QueryHandlers.Contacts
                 throw new BusinessException(ResponseMessageCodes.UserNotFound);
             }
 
-            var contacts = await _postgresDbContext.UserContacts
-                .AsNoTracking()
-                .Include(x => x.User)
+            var contactIds = await _postgresDbContext.UserContacts.AsNoTracking()
                 .Where(x => x.UserId == request.UserId)
+                .Select(x => x.ContactId)
                 .ToListAsync(cancellationToken);
-            
+
+            var contacts = await _postgresDbContext.Users.AsNoTracking()
+                .Where(x => contactIds.Contains(x.Id))
+                .ToListAsync(cancellationToken);
+
             return GetContactsResponse.FromSuccess(contacts);
         }
     }

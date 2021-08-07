@@ -5,6 +5,6 @@ namespace MangoAPI.DTO.ApiQueries.Contacts
 {
     public record GetContactsQuery : IRequest<GetContactsResponse>
     {
-        public string UserId { get; set; }
+        public string UserId { get; init; }
     }
 }
