@@ -10,6 +10,7 @@ using MangoAPI.Infrastructure.BusinessExceptions;
 using MangoAPI.Infrastructure.Database;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace MangoAPI.Infrastructure.CommandHandlers.Contacts
 {
@@ -41,9 +42,9 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Contacts
                 UserId = request.UserId
             };
 
-            var userContactExist = _postgresDbContext.UserContacts
+            var userContactExist = await _postgresDbContext.UserContacts
                 .Where(x => x.UserId == request.UserId)
-                .Any(x => x.ContactId == contact.Id);
+                .AnyAsync(x => x.ContactId == contact.Id, cancellationToken);
 
             if (userContactExist)
             {
