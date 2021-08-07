@@ -1,4 +1,5 @@
 ﻿using System;
+using MangoAPI.Domain.Constants;
 using MangoAPI.Domain.Entities;
 using MangoAPI.Domain.Enums;
 using Microsoft.EntityFrameworkCore;
@@ -22,7 +23,7 @@ namespace MangoAPI.Infrastructure.Database.Configurations
             builder.HasData(
                 new ChatEntity
                 {
-                    Id = "0dae5a74-3528-4e85-95bb-2036bd80432c",
+                    Id = SeedDataConstants.ExtremeCodeMainId,
                     Title = "Extreme Code Main",
                     ChatType = ChatType.PublicChannel,
                     Created = new DateTime(2020, 2, 4),
@@ -30,7 +31,7 @@ namespace MangoAPI.Infrastructure.Database.Configurations
                 },
                 new ChatEntity
                 {
-                    Id = "5e656ec2-205f-471c-b095-1c80b93b7655",
+                    Id = SeedDataConstants.ExtremeCodeFloodId,
                     Title = "Extreme Code Flood",
                     ChatType = ChatType.PublicChannel,
                     Created = new DateTime(2020, 4, 23),
@@ -38,7 +39,7 @@ namespace MangoAPI.Infrastructure.Database.Configurations
                 },
                 new ChatEntity
                 {
-                    Id = "cd358b94-c3b9-4022-923a-13f787f70055",
+                    Id = SeedDataConstants.ExtremeCodeCppId,
                     Title = "Extreme Code C++",
                     ChatType = ChatType.PublicChannel,
                     Created = new DateTime(2020, 5, 12),
@@ -46,7 +47,7 @@ namespace MangoAPI.Infrastructure.Database.Configurations
                 },
                 new ChatEntity
                 {
-                    Id = "6f66e318-1e94-44ae-9b33-fe001e070842",
+                    Id = SeedDataConstants.ExtremeCodeDotnetId,
                     Title = "Extreme Code .NET",
                     ChatType = ChatType.PublicChannel,
                     Created = new DateTime(2020, 5, 12),
@@ -54,28 +55,28 @@ namespace MangoAPI.Infrastructure.Database.Configurations
                 },
                 new ChatEntity
                 {
-                    Id = "f5b7824f-e52b-4246-9984-06fc8e964f0c",
+                    Id = SeedDataConstants.DirectKhachaturRazumovsky,
                     Title = "Khachatur Khachatryan / razumovsky r",
                     ChatType = ChatType.DirectChat,
                     MembersCount = 2
                 },
                 new ChatEntity
                 {
-                    Id = "f8729a12-5746-443f-ad31-378d846fce30",
+                    Id = SeedDataConstants.DirectKolbasatorRazumovsky,
                     Title = "Мусяка Колбасяка / razumovsky r",
                     ChatType = ChatType.DirectChat,
                     MembersCount = 2
                 },
                 new ChatEntity
                 {
-                    Id = "b119914a-6d95-4047-bf8a-db27deeb7dc9",
+                    Id = SeedDataConstants.DirectAmelitRazumovsky,
                     Title = "Amelit / razumovsky r",
                     ChatType = ChatType.DirectChat,
                     MembersCount = 2
                 },
                 new ChatEntity
                 {
-                    Id = "9f205dde-0ddc-401f-8fe9-6c794b661f5d",
+                    Id = SeedDataConstants.DirectKhachaturKolbasator,
                     Title = "Khachatur Khachatryan / Мусяка Колбасяка",
                     ChatType = ChatType.DirectChat,
                     MembersCount = 2
