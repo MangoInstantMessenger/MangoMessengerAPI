@@ -28,6 +28,7 @@ namespace MangoAPI.WebApp.Controllers
         [ProducesResponseType(typeof(AddContactResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> AddContact([FromBody] AddContactRequest request,
             CancellationToken cancellationToken)
         {
@@ -44,6 +45,7 @@ namespace MangoAPI.WebApp.Controllers
         [ProducesResponseType(typeof(GetContactsResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> GetContacts(CancellationToken cancellationToken)
         {
             var query = new GetContactsQuery {UserId = HttpContext.User.GetUserId()};
