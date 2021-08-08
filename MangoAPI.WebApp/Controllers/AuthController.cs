@@ -46,17 +46,19 @@ namespace MangoAPI.WebApp.Controllers
         }
 
         [AllowAnonymous]
-        [HttpGet("verify-email")]
+        [HttpPost("verify-email")]
         [SwaggerOperation(Summary =
             "Sends verification request with provided user parameters: E-mail, User's ID guid. " +
             "User receives confirmation link via email.")]
         [ProducesResponseType(typeof(VerifyEmailResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
-        public async Task<IActionResult> VerifyEmailAsync(string email, string userId,
+        public async Task<IActionResult> VerifyEmailAsync([FromBody] VerifyEmailRequest request,
             CancellationToken cancellationToken)
         {
-            return await RequestAsync(new VerifyEmailCommand {Email = email, UserId = userId}, cancellationToken);
+            var command = request.ToCommand();
+            
+            return await RequestAsync(command, cancellationToken);
         }
 
         [AllowAnonymous]
