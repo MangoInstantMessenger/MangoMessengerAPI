@@ -14,6 +14,6 @@ namespace MangoAPI.WebApp.Interfaces
         Task<IActionResult> RefreshTokenAsync(RefreshTokenRequest request, CancellationToken cancellationToken);
         Task<IActionResult> LogoutAsync(LogoutRequest request, CancellationToken cancellationToken);
         Task<IActionResult> LogoutAllDevicesAsync(LogoutAllRequest request, CancellationToken cancellationToken);
-        Task<IActionResult> VerifyEmailAsync(string email, string userId, CancellationToken cancellationToken);
+        Task<IActionResult> VerifyEmailAsync(VerifyEmailRequest request, CancellationToken cancellationToken);
     }
 }
