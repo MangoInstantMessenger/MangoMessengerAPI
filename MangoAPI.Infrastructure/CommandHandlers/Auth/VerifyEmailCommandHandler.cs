@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 using MangoAPI.Domain.Constants;
 using MangoAPI.Domain.Entities;
@@ -24,30 +25,41 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Auth
 
         public async Task<VerifyEmailResponse> Handle(VerifyEmailCommand request, CancellationToken cancellationToken)
         {
-            var user = await _userManager.FindByIdAsync(request.UserId);
-
-            if (user is null)
+            await using var transaction = await _postgresDbContext.Database.BeginTransactionAsync(cancellationToken);
+            try
             {
-                throw new BusinessException(ResponseMessageCodes.UserNotFound);
-            }
+                var user = await _userManager.FindByIdAsync(request.UserId);
 
-            if (user.Email != request.Email)
+                if (user is null)
+                {
+                    throw new BusinessException(ResponseMessageCodes.UserNotFound);
+                }
+
+                if (user.Email != request.Email)
+                {
+                    throw new BusinessException(ResponseMessageCodes.InvalidEmail);
+                }
+
+                if (user.EmailConfirmed)
+                {
+                    throw new BusinessException(ResponseMessageCodes.EmailAlreadyVerified);
+                }
+
+                user.EmailConfirmed = true;
+
+                _postgresDbContext.Update(user);
+
+                await _postgresDbContext.SaveChangesAsync(cancellationToken);
+                await transaction.CommitAsync(cancellationToken);
+
+                return VerifyEmailResponse.SuccessResponse;
+            }
+            catch (Exception e)
             {
-                throw new BusinessException(ResponseMessageCodes.InvalidEmail);
+                await transaction.RollbackAsync(cancellationToken);
+                throw new BusinessException(ResponseMessageCodes.DatabaseError);
             }
-
-            if (user.EmailConfirmed)
-            {
-                throw new BusinessException(ResponseMessageCodes.EmailAlreadyVerified);
-            }
-
-            user.EmailConfirmed = true;
-
-            _postgresDbContext.Update(user);
-
-            await _postgresDbContext.SaveChangesAsync(cancellationToken);
-
-            return VerifyEmailResponse.SuccessResponse;
+            
         }
     }
 }

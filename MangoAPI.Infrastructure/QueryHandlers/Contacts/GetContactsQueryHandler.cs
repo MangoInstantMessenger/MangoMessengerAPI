@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using MangoAPI.Domain.Constants;
@@ -27,19 +28,29 @@ namespace MangoAPI.Infrastructure.QueryHandlers.Contacts
 
         public async Task<GetContactsResponse> Handle(GetContactsQuery request, CancellationToken cancellationToken)
         {
-            var user = await _userManager.FindByIdAsync(request.UserId);
-
-            if (user is null)
+            await using var transaction = await _postgresDbContext.Database.BeginTransactionAsync(cancellationToken);
+            try
             {
-                throw new BusinessException(ResponseMessageCodes.UserNotFound);
+                var user = await _userManager.FindByIdAsync(request.UserId);
+
+                if (user is null)
+                {
+                    throw new BusinessException(ResponseMessageCodes.UserNotFound);
+                }
+
+                var contacts = await (from userContact in _postgresDbContext.UserContacts
+                    join userEntity in _postgresDbContext.Users on userContact.ContactId equals userEntity.Id
+                    where userContact.UserId == request.UserId
+                    select userEntity).ToListAsync(cancellationToken);
+
+                return GetContactsResponse.FromSuccess(contacts);
             }
-
-            var contacts = await (from userContact in _postgresDbContext.UserContacts
-                join userEntity in _postgresDbContext.Users on userContact.ContactId equals userEntity.Id
-                where userContact.UserId == request.UserId
-                select userEntity).ToListAsync(cancellationToken);
-
-            return GetContactsResponse.FromSuccess(contacts);
+            catch (Exception e)
+            {
+                await transaction.RollbackAsync(cancellationToken);
+                throw new BusinessException(ResponseMessageCodes.DatabaseError);
+            }
+           
         }
     }
 }

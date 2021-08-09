@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using MangoAPI.Application.Services;
@@ -34,45 +35,56 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Auth
 
         public async Task<LoginResponse> Handle(LoginCommand request, CancellationToken cancellationToken)
         {
-            var user = await _userManager.FindByEmailAsync(request.Email);
-
-            if (user is null)
+            await using var transaction = await _postgresDbContext.Database.BeginTransactionAsync(cancellationToken);
+            try
             {
-                throw new BusinessException(ResponseMessageCodes.InvalidCredentials);
+                var user = await _userManager.FindByEmailAsync(request.Email);
+
+                if (user is null)
+                {
+                    throw new BusinessException(ResponseMessageCodes.InvalidCredentials);
+                }
+
+                var result = await _signInManager.CheckPasswordSignInAsync(user, request.Password, false);
+
+                if (!result.Succeeded)
+                {
+                    throw new BusinessException(ResponseMessageCodes.InvalidCredentials);
+                }
+
+                if (!user.Verified)
+                {
+                    throw new BusinessException(ResponseMessageCodes.UserNotVerified);
+                }
+
+                var refreshToken = _jwtGenerator.GenerateRefreshToken();
+
+                var jwtToken = _jwtGenerator.GenerateJwtToken(user);
+
+                refreshToken.UserId = user.Id;
+
+                var userRefreshTokens = _postgresDbContext.RefreshTokens
+                    .Where(x => x.UserId == user.Id);
+
+                var userTokensCount = await userRefreshTokens.CountAsync(cancellationToken);
+
+                if (userTokensCount >= 5)
+                {
+                    _postgresDbContext.RefreshTokens.RemoveRange(userRefreshTokens);
+                }
+
+                await _postgresDbContext.RefreshTokens.AddAsync(refreshToken, cancellationToken);
+                await _postgresDbContext.SaveChangesAsync(cancellationToken);
+                await transaction.CommitAsync(cancellationToken);
+                
+                return LoginResponse.FromSuccess(jwtToken, refreshToken.Id, user.Id);
+            }
+            catch (Exception e)
+            {
+                await transaction.RollbackAsync(cancellationToken);
+                throw new BusinessException(ResponseMessageCodes.DatabaseError);
             }
 
-            var result = await _signInManager.CheckPasswordSignInAsync(user, request.Password, false);
-
-            if (!result.Succeeded)
-            {
-                throw new BusinessException(ResponseMessageCodes.InvalidCredentials);
-            }
-
-            if (!user.Verified)
-            {
-                throw new BusinessException(ResponseMessageCodes.UserNotVerified);
-            }
-
-            var refreshToken = _jwtGenerator.GenerateRefreshToken();
-
-            var jwtToken = _jwtGenerator.GenerateJwtToken(user);
-
-            refreshToken.UserId = user.Id;
-
-            var userRefreshTokens = _postgresDbContext.RefreshTokens
-                .Where(x => x.UserId == user.Id);
-
-            var userTokensCount = await userRefreshTokens.CountAsync(cancellationToken);
-
-            if (userTokensCount >= 5)
-            {
-                _postgresDbContext.RefreshTokens.RemoveRange(userRefreshTokens);
-            }
-
-            await _postgresDbContext.RefreshTokens.AddAsync(refreshToken, cancellationToken);
-            await _postgresDbContext.SaveChangesAsync(cancellationToken);
-
-            return LoginResponse.FromSuccess(jwtToken, refreshToken.Id, user.Id);
         }
     }
 }

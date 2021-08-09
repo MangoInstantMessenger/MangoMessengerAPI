@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using MangoAPI.Domain.Constants;
@@ -26,29 +27,39 @@ namespace MangoAPI.Infrastructure.QueryHandlers.Messages
 
         public async Task<GetMessagesResponse> Handle(GetMessagesQuery request, CancellationToken cancellationToken)
         {
-            var user = await _userManager.FindByIdAsync(request.UserId);
-
-            if (user == null)
+            await using var transaction = await _postgresDbContext.Database.BeginTransactionAsync(cancellationToken);
+            try
             {
-                throw new BusinessException(ResponseMessageCodes.UserNotFound);
+                var user = await _userManager.FindByIdAsync(request.UserId);
+
+                if (user == null)
+                {
+                    throw new BusinessException(ResponseMessageCodes.UserNotFound);
+                }
+
+                var belongsToChat = await _postgresDbContext.UserChats
+                    .AsNoTracking()
+                    .Where(userChatEntity => userChatEntity.UserId == user.Id)
+                    .AnyAsync(userChatEntity => userChatEntity.ChatId == request.ChatId, cancellationToken);
+
+                if (!belongsToChat)
+                {
+                    throw new BusinessException(ResponseMessageCodes.PermissionDenied);
+                }
+
+                var chat = _postgresDbContext.Messages
+                    .Include(x => x.User)
+                    .Where(x => x.ChatId == request.ChatId)
+                    .AsEnumerable();
+
+                return GetMessagesResponse.FromSuccess(chat, user);
             }
-
-            var belongsToChat = await _postgresDbContext.UserChats
-                .AsNoTracking()
-                .Where(userChatEntity => userChatEntity.UserId == user.Id)
-                .AnyAsync(userChatEntity => userChatEntity.ChatId == request.ChatId, cancellationToken);
-
-            if (!belongsToChat)
+            catch (Exception e)
             {
-                throw new BusinessException(ResponseMessageCodes.PermissionDenied);
+                await transaction.RollbackAsync(cancellationToken);
+                throw new BusinessException(ResponseMessageCodes.DatabaseError);
             }
-
-            var chat = _postgresDbContext.Messages
-                .Include(x => x.User)
-                .Where(x => x.ChatId == request.ChatId)
-                .AsEnumerable();
-
-            return GetMessagesResponse.FromSuccess(chat, user);
+            
         }
     }
 }

@@ -26,30 +26,41 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Messages
 
         public async Task<EditMessageResponse> Handle(EditMessageCommand request, CancellationToken cancellationToken)
         {
-            var currentUser = await _userManager.FindByIdAsync(request.UserId);
-
-            if (currentUser == null)
+            await using var transaction = await _postgresDbContext.Database.BeginTransactionAsync(cancellationToken);
+            try
             {
-                throw new BusinessException(ResponseMessageCodes.UserNotFound);
+                var currentUser = await _userManager.FindByIdAsync(request.UserId);
+
+                if (currentUser == null)
+                {
+                    throw new BusinessException(ResponseMessageCodes.UserNotFound);
+                }
+
+                var message = await _postgresDbContext.Messages
+                    .FirstOrDefaultAsync(x => x.Id == request.MessageId && x.UserId == currentUser.Id,
+                        cancellationToken);
+
+                if (message == null)
+                {
+                    throw new BusinessException(ResponseMessageCodes.MessageNotFound);
+                }
+            
+                message.Content = request.ModifiedText;
+                message.Updated = DateTime.UtcNow;
+
+                _postgresDbContext.Update(message);
+
+                await _postgresDbContext.SaveChangesAsync(cancellationToken);
+                await transaction.CommitAsync(cancellationToken);
+                
+                return EditMessageResponse.SuccessResponse;
             }
-
-            var message = await _postgresDbContext.Messages
-                .FirstOrDefaultAsync(x => x.Id == request.MessageId && x.UserId == currentUser.Id,
-                    cancellationToken);
-
-            if (message == null)
+            catch (Exception e)
             {
-                throw new BusinessException(ResponseMessageCodes.MessageNotFound);
+                await transaction.RollbackAsync(cancellationToken);
+                throw new BusinessException(ResponseMessageCodes.DatabaseError);
             }
             
-            message.Content = request.ModifiedText;
-            message.Updated = DateTime.UtcNow;
-
-            _postgresDbContext.Update(message);
-
-            await _postgresDbContext.SaveChangesAsync(cancellationToken);
-
-            return EditMessageResponse.SuccessResponse;
         }
     }
 }

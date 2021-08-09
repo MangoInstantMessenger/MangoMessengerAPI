@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 using MangoAPI.Domain.Constants;
 using MangoAPI.DTO.ApiQueries.Users;
@@ -21,12 +22,21 @@ namespace MangoAPI.Infrastructure.QueryHandlers.Users
 
         public async Task<GetUserResponse> Handle(GetUserQuery request, CancellationToken cancellationToken)
         {
-            var user = await _postgresDbContext.Users.AsNoTracking()
-                .FirstOrDefaultAsync(x => x.Id == request.UserId, cancellationToken);
+            await using var transaction = await _postgresDbContext.Database.BeginTransactionAsync(cancellationToken);
+            try
+            {
+                var user = await _postgresDbContext.Users.AsNoTracking()
+                    .FirstOrDefaultAsync(x => x.Id == request.UserId, cancellationToken);
 
-            return user == null
-                ? throw new BusinessException(ResponseMessageCodes.UserNotFound)
-                : GetUserResponse.FromSuccess(user);
+                return user == null
+                    ? throw new BusinessException(ResponseMessageCodes.UserNotFound)
+                    : GetUserResponse.FromSuccess(user);
+            }
+            catch (Exception e)
+            {
+                await transaction.RollbackAsync(cancellationToken);
+                throw new BusinessException(ResponseMessageCodes.DatabaseError);
+            }
         }
     }
 }
