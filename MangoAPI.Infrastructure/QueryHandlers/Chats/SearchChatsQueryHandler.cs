@@ -24,28 +24,20 @@ namespace MangoAPI.Infrastructure.QueryHandlers.Chats
 
         public async Task<SearchChatsResponse> Handle(SearchChatsQuery request, CancellationToken cancellationToken)
         {
-            await using var transaction = await _postgresDbContext.Database.BeginTransactionAsync(cancellationToken);
-            try
-            {
-                var chats = await _postgresDbContext
-                    .UserChats
-                    .AsNoTracking()
-                    .Include(x => x.Chat)
-                    .ThenInclude(x => x.Messages)
-                    .ThenInclude(x => x.User)
-                    .Where(x => x.Chat.Title.Contains(request.DisplayName))
-                    .Where(x => x.Chat.ChatType != ChatType.PrivateChannel)
-                    .Where(x => x.Chat.ChatType != ChatType.DirectChat)
-                    .Where(x => x.UserId == request.UserId)
-                    .ToListAsync(cancellationToken);
+            var chats = await _postgresDbContext
+                .UserChats
+                .AsNoTracking()
+                .Include(x => x.Chat)
+                .ThenInclude(x => x.Messages)
+                .ThenInclude(x => x.User)
+                .Where(x => x.Chat.Title.Contains(request.DisplayName))
+                .Where(x => x.Chat.ChatType != ChatType.PrivateChannel)
+                .Where(x => x.Chat.ChatType != ChatType.DirectChat)
+                .Where(x => x.UserId == request.UserId)
+                .ToListAsync(cancellationToken);
 
-                return SearchChatsResponse.FromSuccess(chats, request.UserId);
-            }
-            catch (Exception e)
-            {
-                await transaction.RollbackAsync(cancellationToken);
-                throw new BusinessException(ResponseMessageCodes.DatabaseError);
-            }
+            return SearchChatsResponse.FromSuccess(chats, request.UserId);
+            
            
         }
     }

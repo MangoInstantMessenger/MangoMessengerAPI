@@ -27,33 +27,20 @@ namespace MangoAPI.Infrastructure.QueryHandlers.Chats
 
         public async Task<GetCurrentUserChatsResponse> Handle(GetCurrentUserChatsQuery request, CancellationToken cancellationToken)
         {
-            await using var transaction = await _postgresDbContext.Database.BeginTransactionAsync(cancellationToken);
-            try
+            var currentUser = await _userManager.FindByIdAsync(request.UserId);
+            if (currentUser == null)
             {
-                var currentUser = await _userManager.FindByIdAsync(request.UserId);
-
-                if (currentUser == null)
-                {
-                    throw new BusinessException(ResponseMessageCodes.UserNotFound);
-                }
-
-                var chats = await _postgresDbContext.UserChats
-                    .AsNoTracking()
-                    .Include(x => x.Chat)
-                    .ThenInclude(x => x.Messages)
-                    .ThenInclude(x => x.User)
-                    .Where(x => x.UserId == currentUser.Id)
-                    .ToListAsync(cancellationToken);
-                
-
-                return GetCurrentUserChatsResponse.FromSuccess(chats);
+                throw new BusinessException(ResponseMessageCodes.UserNotFound);
             }
-            catch (Exception e)
-            {
-                await transaction.RollbackAsync(cancellationToken);
-                throw new BusinessException(ResponseMessageCodes.DatabaseError);
-            }
+            var chats = await _postgresDbContext.UserChats
+                .AsNoTracking()
+                .Include(x => x.Chat)
+                .ThenInclude(x => x.Messages)
+                .ThenInclude(x => x.User)
+                .Where(x => x.UserId == currentUser.Id)
+                .ToListAsync(cancellationToken);
             
+            return GetCurrentUserChatsResponse.FromSuccess(chats);
         }
     }
 }

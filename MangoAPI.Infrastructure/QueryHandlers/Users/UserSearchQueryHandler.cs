@@ -23,22 +23,12 @@ namespace MangoAPI.Infrastructure.QueryHandlers.Users
         
         public async Task<UserSearchResponse> Handle(UserSearchQuery request, CancellationToken cancellationToken)
         {
-            await using var transaction = await _postgresDbContext.Database.BeginTransactionAsync(cancellationToken);
-            try
-            {
-                var users = await _postgresDbContext.Users
-                    .AsNoTracking()
-                    .Where(x => x.DisplayName.Contains(request.DisplayName))
-                    .ToListAsync(cancellationToken);
+            var users = await _postgresDbContext.Users
+                .AsNoTracking()
+                .Where(x => x.DisplayName.Contains(request.DisplayName))
+                .ToListAsync(cancellationToken);
 
-                return UserSearchResponse.FromSuccess(users);
-            }
-            catch (Exception e)
-            {
-                await transaction.RollbackAsync(cancellationToken);
-                throw new BusinessException(ResponseMessageCodes.DatabaseError);
-            }
-            
+            return UserSearchResponse.FromSuccess(users);
         }
         
     }
