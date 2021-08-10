@@ -31,68 +31,79 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Auth
 
         public async Task<RegisterResponse> Handle(RegisterCommand request, CancellationToken cancellationToken)
         {
-            if (request.Email == EnvironmentConstants.EmailSenderAddress)
+            await using var transaction = await _postgresDbContext.Database.BeginTransactionAsync(cancellationToken);
+            try
             {
-                throw new BusinessException(ResponseMessageCodes.InvalidEmail);
+                if (request.Email == EnvironmentConstants.EmailSenderAddress)
+                {
+                    throw new BusinessException(ResponseMessageCodes.InvalidEmail);
+                }
+    
+                var exists = await _userManager.FindByEmailAsync(request.Email);
+    
+                if (exists != null)
+                {
+                    throw new BusinessException(ResponseMessageCodes.EmailOccupied);
+                }
+                
+                var user = await _postgresDbContext.Users.FirstOrDefaultAsync(x => x.PhoneNumber == request.PhoneNumber,
+                    cancellationToken);
+    
+                if (user != null)
+                {
+                    throw new BusinessException(ResponseMessageCodes.PhoneOccupied);
+                }
+    
+                var newUser = new UserEntity
+                {
+                    PhoneNumber = request.PhoneNumber,
+                    DisplayName = request.DisplayName,
+                    UserName = Guid.NewGuid().ToString(),
+                    Email = request.Email
+                };
+                
+                if (request.VerificationMethod == VerificationMethod.Phone)
+                {
+                    newUser.ConfirmationCode = new Random().Next(100000, 999999);
+                }
+                
+                var result = await _userManager.CreateAsync(newUser, request.Password);
+    
+                if (!result.Succeeded)
+                {
+                    throw new BusinessException(ResponseMessageCodes.WeakPassword);
+                }
+    
+                var userInfo = new UserInformationEntity
+                {
+                    Id = Guid.NewGuid().ToString(),
+                    UserId = newUser.Id
+                };
+    
+                switch (request.VerificationMethod)
+                {
+                    case VerificationMethod.Email:
+                        await _emailSenderService.SendVerificationEmailAsync(newUser, cancellationToken);
+                        break;
+                    case VerificationMethod.Phone:
+                        // TODO: Send Phone Code
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException();
+                }
+    
+                await _postgresDbContext.UserInformation.AddAsync(userInfo, cancellationToken);
+                await _postgresDbContext.SaveChangesAsync(cancellationToken);
+                await transaction.CommitAsync(cancellationToken);
+                
+                return RegisterResponse.FromSuccess(newUser);
             }
-
-            var exists = await _userManager.FindByEmailAsync(request.Email);
-
-            if (exists != null)
+            catch (Exception e)
             {
-                throw new BusinessException(ResponseMessageCodes.EmailOccupied);
+                await transaction.RollbackAsync(cancellationToken);
+                throw new BusinessException(ResponseMessageCodes.DatabaseError);
             }
             
-            var user = await _postgresDbContext.Users.FirstOrDefaultAsync(x => x.PhoneNumber == request.PhoneNumber,
-                cancellationToken);
-
-            if (user != null)
-            {
-                throw new BusinessException(ResponseMessageCodes.PhoneOccupied);
-            }
-
-            var newUser = new UserEntity
-            {
-                PhoneNumber = request.PhoneNumber,
-                DisplayName = request.DisplayName,
-                UserName = Guid.NewGuid().ToString(),
-                Email = request.Email
-            };
-            
-            if (request.VerificationMethod == VerificationMethod.Phone)
-            {
-                newUser.ConfirmationCode = new Random().Next(100000, 999999);
-            }
-            
-            var result = await _userManager.CreateAsync(newUser, request.Password);
-
-            if (!result.Succeeded)
-            {
-                throw new BusinessException(ResponseMessageCodes.WeakPassword);
-            }
-
-            var userInfo = new UserInformationEntity
-            {
-                Id = Guid.NewGuid().ToString(),
-                UserId = newUser.Id
-            };
-
-            switch (request.VerificationMethod)
-            {
-                case VerificationMethod.Email:
-                    await _emailSenderService.SendVerificationEmailAsync(newUser, cancellationToken);
-                    break;
-                case VerificationMethod.Phone:
-                    // TODO: Send Phone Code
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException();
-            }
-
-            await _postgresDbContext.UserInformation.AddAsync(userInfo, cancellationToken);
-            await _postgresDbContext.SaveChangesAsync(cancellationToken);
-            
-            return RegisterResponse.FromSuccess(newUser);
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using MangoAPI.Domain.Constants;
@@ -27,12 +28,10 @@ namespace MangoAPI.Infrastructure.QueryHandlers.Chats
         public async Task<GetCurrentUserChatsResponse> Handle(GetCurrentUserChatsQuery request, CancellationToken cancellationToken)
         {
             var currentUser = await _userManager.FindByIdAsync(request.UserId);
-
             if (currentUser == null)
             {
                 throw new BusinessException(ResponseMessageCodes.UserNotFound);
             }
-
             var chats = await _postgresDbContext.UserChats
                 .AsNoTracking()
                 .Include(x => x.Chat)
@@ -40,7 +39,7 @@ namespace MangoAPI.Infrastructure.QueryHandlers.Chats
                 .ThenInclude(x => x.User)
                 .Where(x => x.UserId == currentUser.Id)
                 .ToListAsync(cancellationToken);
-
+            
             return GetCurrentUserChatsResponse.FromSuccess(chats);
         }
     }

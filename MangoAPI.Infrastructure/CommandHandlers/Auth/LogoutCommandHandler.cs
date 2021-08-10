@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 using MangoAPI.Domain.Constants;
 using MangoAPI.Domain.Entities;
@@ -25,25 +26,36 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Auth
 
         public async Task<LogoutResponse> Handle(LogoutCommand request, CancellationToken cancellationToken)
         {
-            var token = await _postgresDbContext.RefreshTokens
-                .FirstOrDefaultAsync(x => x.Id == request.RefreshTokenId, cancellationToken);
-
-            if (token is null)
+            await using var transaction = await _postgresDbContext.Database.BeginTransactionAsync(cancellationToken);
+            try
             {
-                throw new BusinessException(ResponseMessageCodes.InvalidOrExpiredRefreshToken);
+                var token = await _postgresDbContext.RefreshTokens
+                    .FirstOrDefaultAsync(x => x.Id == request.RefreshTokenId, cancellationToken);
+
+                if (token is null)
+                {
+                    throw new BusinessException(ResponseMessageCodes.InvalidOrExpiredRefreshToken);
+                }
+
+                var user = await _userManager.FindByIdAsync(token.UserId);
+
+                if (user is null || token.UserId != user.Id)
+                {
+                    throw new BusinessException(ResponseMessageCodes.UserNotFound);
+                }
+
+                _postgresDbContext.RefreshTokens.Remove(token);
+                await _postgresDbContext.SaveChangesAsync(cancellationToken);
+                await transaction.CommitAsync(cancellationToken);
+
+                return LogoutResponse.SuccessResponse;
             }
-
-            var user = await _userManager.FindByIdAsync(token.UserId);
-
-            if (user is null || token.UserId != user.Id)
+            catch (Exception e)
             {
-                throw new BusinessException(ResponseMessageCodes.UserNotFound);
+                transaction.RollbackAsync(cancellationToken);
+                throw new BusinessException(ResponseMessageCodes.DatabaseError);
             }
-
-            _postgresDbContext.RefreshTokens.Remove(token);
-            await _postgresDbContext.SaveChangesAsync(cancellationToken);
-
-            return LogoutResponse.SuccessResponse;
+           
         }
     }
 }

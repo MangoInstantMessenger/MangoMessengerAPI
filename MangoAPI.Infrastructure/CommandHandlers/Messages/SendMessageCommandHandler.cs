@@ -17,54 +17,65 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Messages
 {
     public class SendMessageCommandHandler : IRequestHandler<SendMessageCommand, SendMessageResponse>
     {
-        private readonly MangoPostgresDbContext _mangoPostgresDbContext;
+        private readonly MangoPostgresDbContext _postgresDbContext;
         private readonly UserManager<UserEntity> _userManager;
 
-        public SendMessageCommandHandler(MangoPostgresDbContext mangoPostgresDbContext,
+        public SendMessageCommandHandler(MangoPostgresDbContext postgresDbContext,
             UserManager<UserEntity> userManager)
         {
-            _mangoPostgresDbContext = mangoPostgresDbContext;
+            _postgresDbContext = postgresDbContext;
             _userManager = userManager;
         }
 
         public async Task<SendMessageResponse> Handle(SendMessageCommand request, CancellationToken cancellationToken)
         {
-            var user = await _userManager.FindByIdAsync(request.UserId);
-
-            if (user == null)
+            await using var transaction = await _postgresDbContext.Database.BeginTransactionAsync(cancellationToken);
+            try
             {
-                throw new BusinessException(ResponseMessageCodes.UserNotFound);
+                var user = await _userManager.FindByIdAsync(request.UserId);
+
+                if (user == null)
+                {
+                    throw new BusinessException(ResponseMessageCodes.UserNotFound);
+                }
+
+                var chat = await _postgresDbContext.Chats.FirstOrDefaultAsync(x => x.Id == request.ChatId,
+                    cancellationToken);
+
+                if (chat == null)
+                {
+                    throw new BusinessException(ResponseMessageCodes.ChatNotFound);
+                }
+
+                var permitted = await CheckUserPermissions(user, chat, cancellationToken);
+
+                if (!permitted)
+                {
+                    throw new BusinessException(ResponseMessageCodes.PermissionDenied);
+                }
+
+                var messageEntity = new MessageEntity
+                {
+                    Id = Guid.NewGuid().ToString(),
+                    ChatId = request.ChatId,
+                    UserId = request.UserId,
+                    Content = request.MessageText,
+                    Created = DateTime.UtcNow,
+                    Updated = DateTime.UtcNow
+                };
+
+                await _postgresDbContext.Messages.AddAsync(messageEntity, cancellationToken);
+                await _postgresDbContext.SaveChangesAsync(cancellationToken);
+                await transaction.CommitAsync(cancellationToken);
+
+                return SendMessageResponse.FromSuccess(messageEntity.Id);
             }
-
-            var chat = await _mangoPostgresDbContext.Chats.FirstOrDefaultAsync(x => x.Id == request.ChatId,
-                cancellationToken);
-
-            if (chat == null)
+            catch (Exception e)
             {
-                throw new BusinessException(ResponseMessageCodes.ChatNotFound);
+                await transaction.RollbackAsync(cancellationToken);
+                throw new BusinessException(ResponseMessageCodes.DatabaseError);
             }
-
-            var permitted = await CheckUserPermissions(user, chat, cancellationToken);
-
-            if (!permitted)
-            {
-                throw new BusinessException(ResponseMessageCodes.PermissionDenied);
-            }
-
-            var messageEntity = new MessageEntity
-            {
-                Id = Guid.NewGuid().ToString(),
-                ChatId = request.ChatId,
-                UserId = request.UserId,
-                Content = request.MessageText,
-                Created = DateTime.UtcNow,
-                Updated = DateTime.UtcNow
-            };
-
-            await _mangoPostgresDbContext.Messages.AddAsync(messageEntity, cancellationToken);
-            await _mangoPostgresDbContext.SaveChangesAsync(cancellationToken);
-
-            return SendMessageResponse.FromSuccess(messageEntity.Id);
+            
         }
 
         private async Task<bool> CheckUserPermissions(UserEntity user, ChatEntity chat,
@@ -83,7 +94,7 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Messages
         private async Task<bool> CheckReadOnlyChannelPermissions(UserEntity user, ChatEntity chat,
             CancellationToken cancellationToken)
         {
-            return (await _mangoPostgresDbContext.UserChats
+            return (await _postgresDbContext.UserChats
                     .Where(x => x.UserId == user.Id && x.ChatId == chat.Id)
                     .ToListAsync(cancellationToken))
                 .Any(x => x.RoleId is UserRole.Moderator or UserRole.Admin or UserRole.Owner);
@@ -92,7 +103,7 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Messages
         private async Task<bool> CheckPublicChannelPermissions(UserEntity user, ChatEntity chat,
             CancellationToken cancellationToken)
         {
-            return await _mangoPostgresDbContext.UserChats
+            return await _postgresDbContext.UserChats
                 .Where(x => x.UserId == user.Id && x.ChatId == chat.Id)
                 .AnyAsync(cancellationToken);
         }
@@ -100,7 +111,7 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Messages
         private async Task<bool> CheckPrivateChannelPermissions(UserEntity user, ChatEntity chat,
             CancellationToken cancellationToken)
         {
-            return await _mangoPostgresDbContext.UserChats
+            return await _postgresDbContext.UserChats
                 .Where(x => x.UserId == user.Id && x.ChatId == chat.Id)
                 .AnyAsync(cancellationToken);
         }

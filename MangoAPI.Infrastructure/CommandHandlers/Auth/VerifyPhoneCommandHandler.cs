@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 using MangoAPI.Domain.Constants;
 using MangoAPI.Domain.Entities;
@@ -25,31 +26,42 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Auth
         public async Task<VerifyPhoneResponse> Handle(VerifyPhoneCommand request,
             CancellationToken cancellationToken)
         {
-            var user = await _userManager.FindByIdAsync(request.UserId);
-
-            if (user == null)
+            await using var transaction = await _postgresDbContext.Database.BeginTransactionAsync(cancellationToken);
+            try
             {
-                throw new BusinessException(ResponseMessageCodes.UserNotFound);
-            }
+                var user = await _userManager.FindByIdAsync(request.UserId);
 
-            if (user.PhoneNumberConfirmed)
-            {
-                throw new BusinessException(ResponseMessageCodes.PhoneAlreadyVerified);
-            }
+                if (user == null)
+                {
+                    throw new BusinessException(ResponseMessageCodes.UserNotFound);
+                }
 
-            if (user.ConfirmationCode != request.ConfirmationCode)
-            {
-                throw new BusinessException(ResponseMessageCodes.InvalidPhoneCode);
-            }
+                if (user.PhoneNumberConfirmed)
+                {
+                    throw new BusinessException(ResponseMessageCodes.PhoneAlreadyVerified);
+                }
 
-            user.PhoneNumberConfirmed = true;
-            user.ConfirmationCode = 0;
+                if (user.ConfirmationCode != request.ConfirmationCode)
+                {
+                    throw new BusinessException(ResponseMessageCodes.InvalidPhoneCode);
+                }
+
+                user.PhoneNumberConfirmed = true;
+                user.ConfirmationCode = 0;
             
-            _postgresDbContext.Update(user);
+                _postgresDbContext.Update(user);
             
-            await _postgresDbContext.SaveChangesAsync(cancellationToken);
+                await _postgresDbContext.SaveChangesAsync(cancellationToken);
+                await transaction.CommitAsync(cancellationToken);
 
-            return VerifyPhoneResponse.SuccessResponse;
+                return VerifyPhoneResponse.SuccessResponse;
+            }
+            catch (Exception e)
+            {
+                await transaction.RollbackAsync(cancellationToken);
+                throw new BusinessException(ResponseMessageCodes.DatabaseError);
+            }
+           
         }
     }
 }

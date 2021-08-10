@@ -1,9 +1,12 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using MangoAPI.Domain.Constants;
 using MangoAPI.Domain.Enums;
 using MangoAPI.DTO.ApiQueries.Chats;
 using MangoAPI.DTO.Responses.Chats;
+using MangoAPI.Infrastructure.BusinessExceptions;
 using MangoAPI.Infrastructure.Database;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -34,6 +37,8 @@ namespace MangoAPI.Infrastructure.QueryHandlers.Chats
                 .ToListAsync(cancellationToken);
 
             return SearchChatsResponse.FromSuccess(chats, request.UserId);
+            
+           
         }
     }
 }
