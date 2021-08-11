@@ -23,6 +23,23 @@ namespace MangoAPI.DataAccess.Database.Configurations
                 .HasForeignKey(x => x.ChatId);
 
             builder.HasData(
+                // WSB
+                new MessageEntity
+                {
+                    Id = "e8f26f7a-fc72-4925-b528-dbc8326b3476",
+                    UserId = SeedDataConstants.SzymonId,
+                    ChatId = SeedDataConstants.WsbId,
+                    Content = "Hello World",
+                    Created = new DateTime(2021, 8, 11, 21, 8, 21)
+                },
+                new MessageEntity
+                {
+                    Id = "e1918784-455a-42c7-998e-d0b94380c21f",
+                    UserId = SeedDataConstants.KhachaturId,
+                    ChatId = SeedDataConstants.ExtremeCodeMainId,
+                    Content = "Hello World",
+                    Created = new DateTime(2021, 8, 11, 21, 9, 2)
+                },
                 // Extreme Code Main
                 new MessageEntity
                 {

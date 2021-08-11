@@ -14,6 +14,28 @@ namespace MangoAPI.DataAccess.Database.Configurations
             builder.HasData(
                 new UserInformationEntity
                 {
+                    Id = "e44583f1-62ca-4ca4-a6a2-3fc1a874ab0c",
+                    UserId = SeedDataConstants.PetroId,
+                    FirstName = "Petro",
+                    LastName = "Kolosov",
+                    BirthDay = new DateTime(1994, 6, 12),
+                    Website = "pkolosov.com",
+                    Instagram = "petro.kolosov",
+                    LinkedIn = "petro.kolosov"
+                },
+                new UserInformationEntity
+                {
+                    Id = "f773c1da-c7d5-44e9-9a1a-04e1be0b4b55",
+                    UserId = SeedDataConstants.SzymonId,
+                    FirstName = "Szymon",
+                    LastName = "Murawski",
+                    BirthDay = new DateTime(1983, 5, 25),
+                    Website = "murawski.com",
+                    Instagram = "szymon.murawski",
+                    LinkedIn = "szymon.murawski"
+                },
+                new UserInformationEntity
+                {
                     Id = "3067c801-da6d-4b03-ac5e-ad3fa0db5acf",
                     UserId = SeedDataConstants.KhachaturId,
                     FirstName = "Khachatur",
