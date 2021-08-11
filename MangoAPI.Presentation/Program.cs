@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 
-namespace MangoAPI.WebApp
+namespace MangoAPI.Presentation
 {
     public static class Program
     {

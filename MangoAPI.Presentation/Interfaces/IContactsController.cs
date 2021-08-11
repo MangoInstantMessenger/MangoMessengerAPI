@@ -1,10 +1,9 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
-using MangoAPI.DTO.ApiCommands.Contacts;
-using MangoAPI.DTO.ApiQueries.Contacts;
+using MangoAPI.BusinessLogic.ApiCommands.Contacts;
 using Microsoft.AspNetCore.Mvc;
 
-namespace MangoAPI.WebApp.Interfaces
+namespace MangoAPI.Presentation.Interfaces
 {
     public interface IContactsController
     {

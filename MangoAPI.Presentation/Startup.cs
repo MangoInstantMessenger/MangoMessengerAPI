@@ -1,5 +1,5 @@
 using System;
-using MangoAPI.Infrastructure.StartupExtensions;
+using MangoAPI.Presentation.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpOverrides;
@@ -8,7 +8,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 
-namespace MangoAPI.WebApp
+namespace MangoAPI.Presentation
 {
     public class Startup
     {

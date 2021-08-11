@@ -1,10 +1,10 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
-using MangoAPI.DTO.Responses;
+using MangoAPI.BusinessLogic.Responses;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
-namespace MangoAPI.WebApp.Controllers
+namespace MangoAPI.Presentation.Controllers
 {
     public class ApiControllerBase : ControllerBase
     {

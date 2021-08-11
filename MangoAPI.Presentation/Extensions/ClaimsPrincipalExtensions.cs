@@ -2,7 +2,7 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 
-namespace MangoAPI.WebApp.Extensions
+namespace MangoAPI.Presentation.Extensions
 {
     public static class ClaimsPrincipalExtensions
     {

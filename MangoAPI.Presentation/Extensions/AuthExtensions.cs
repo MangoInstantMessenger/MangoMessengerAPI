@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 
-namespace MangoAPI.Infrastructure.StartupExtensions
+namespace MangoAPI.Presentation.Extensions
 {
     public static class AuthExtensions
     {

@@ -1,11 +1,10 @@
 ﻿using MangoAPI.Application.Services;
-using MangoAPI.Infrastructure.CommandHandlers.Auth;
+using MangoAPI.BusinessLogic.ApiCommandHandlers.Auth;
 using MangoAPI.Infrastructure.Services;
 using MediatR;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace MangoAPI.Infrastructure.StartupExtensions
+namespace MangoAPI.Presentation.Extensions
 {
     public static class AppServicesExtensions
     {

@@ -1,9 +1,9 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
-using MangoAPI.DTO.ApiCommands.UserInformation;
+using MangoAPI.BusinessLogic.ApiCommands.UserInformation;
 using Microsoft.AspNetCore.Mvc;
 
-namespace MangoAPI.WebApp.Interfaces
+namespace MangoAPI.Presentation.Interfaces
 {
     public interface IUserInformationController
     {

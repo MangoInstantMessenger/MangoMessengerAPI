@@ -1,10 +1,9 @@
-﻿
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
-using MangoAPI.DTO.ApiCommands.Auth;
+using MangoAPI.BusinessLogic.ApiCommands.Auth;
 using Microsoft.AspNetCore.Mvc;
 
-namespace MangoAPI.WebApp.Interfaces
+namespace MangoAPI.Presentation.Interfaces
 {
     public interface IAuthController
     {

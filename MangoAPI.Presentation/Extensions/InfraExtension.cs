@@ -1,10 +1,10 @@
 ﻿using FluentValidation;
-using MangoAPI.DTO.ApiCommands.Auth;
-using MangoAPI.Infrastructure.Pipelines;
+using MangoAPI.BusinessLogic.ApiCommands.Auth;
+using MangoAPI.BusinessLogic.Pipelines;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace MangoAPI.Infrastructure.StartupExtensions
+namespace MangoAPI.Presentation.Extensions
 {
     public static class InfraExtension
     {

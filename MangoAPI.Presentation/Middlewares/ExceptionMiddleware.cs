@@ -2,11 +2,11 @@
 using System.Net;
 using System.Threading.Tasks;
 using FluentValidation;
-using MangoAPI.DTO.Responses;
-using MangoAPI.Infrastructure.BusinessExceptions;
+using MangoAPI.BusinessLogic.BusinessExceptions;
+using MangoAPI.BusinessLogic.Responses;
 using Microsoft.AspNetCore.Http;
 
-namespace MangoAPI.Infrastructure.Middlewares
+namespace MangoAPI.Presentation.Middlewares
 {
     public class ExceptionMiddleware
     {

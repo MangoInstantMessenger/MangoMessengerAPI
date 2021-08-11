@@ -1,18 +1,18 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
-using MangoAPI.DTO.ApiCommands.Messages;
-using MangoAPI.DTO.ApiQueries.Messages;
-using MangoAPI.DTO.Responses;
-using MangoAPI.DTO.Responses.Messages;
-using MangoAPI.WebApp.Extensions;
-using MangoAPI.WebApp.Interfaces;
+using MangoAPI.BusinessLogic.ApiCommands.Messages;
+using MangoAPI.BusinessLogic.ApiQueries.Messages;
+using MangoAPI.BusinessLogic.Responses;
+using MangoAPI.BusinessLogic.Responses.Messages;
+using MangoAPI.Presentation.Extensions;
+using MangoAPI.Presentation.Interfaces;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 
-namespace MangoAPI.WebApp.Controllers
+namespace MangoAPI.Presentation.Controllers
 {
     [ApiController]
     [Authorize]

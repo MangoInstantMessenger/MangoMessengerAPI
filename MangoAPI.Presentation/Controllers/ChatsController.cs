@@ -1,19 +1,19 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
-using MangoAPI.DTO.ApiCommands.Chats;
-using MangoAPI.DTO.ApiQueries.Chats;
-using MangoAPI.DTO.ApiQueries.Users;
-using MangoAPI.DTO.Responses;
-using MangoAPI.DTO.Responses.Chats;
-using MangoAPI.WebApp.Extensions;
-using MangoAPI.WebApp.Interfaces;
+using MangoAPI.BusinessLogic.ApiCommands.Chats;
+using MangoAPI.BusinessLogic.ApiQueries.Chats;
+using MangoAPI.BusinessLogic.ApiQueries.Users;
+using MangoAPI.BusinessLogic.Responses;
+using MangoAPI.BusinessLogic.Responses.Chats;
+using MangoAPI.Presentation.Extensions;
+using MangoAPI.Presentation.Interfaces;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 
-namespace MangoAPI.WebApp.Controllers
+namespace MangoAPI.Presentation.Controllers
 {
     [ApiController]
     [Route("api/chats")]

@@ -1,9 +1,9 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
-using MangoAPI.DTO.ApiCommands.Chats;
+using MangoAPI.BusinessLogic.ApiCommands.Chats;
 using Microsoft.AspNetCore.Mvc;
 
-namespace MangoAPI.WebApp.Interfaces
+namespace MangoAPI.Presentation.Interfaces
 {
     public interface IChatsController
     {

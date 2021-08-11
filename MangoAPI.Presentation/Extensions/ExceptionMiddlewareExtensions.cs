@@ -1,7 +1,7 @@
-﻿using MangoAPI.Infrastructure.Middlewares;
+﻿using MangoAPI.Presentation.Middlewares;
 using Microsoft.AspNetCore.Builder;
 
-namespace MangoAPI.Infrastructure.StartupExtensions
+namespace MangoAPI.Presentation.Extensions
 {
     public static class ExceptionMiddlewareExtensions
     {

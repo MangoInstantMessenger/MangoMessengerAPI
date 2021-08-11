@@ -1,18 +1,18 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
-using MangoAPI.DTO.ApiCommands.Contacts;
-using MangoAPI.DTO.ApiQueries.Contacts;
-using MangoAPI.DTO.Responses;
-using MangoAPI.DTO.Responses.Contacts;
-using MangoAPI.WebApp.Extensions;
-using MangoAPI.WebApp.Interfaces;
+using MangoAPI.BusinessLogic.ApiCommands.Contacts;
+using MangoAPI.BusinessLogic.ApiQueries.Contacts;
+using MangoAPI.BusinessLogic.Responses;
+using MangoAPI.BusinessLogic.Responses.Contacts;
+using MangoAPI.Presentation.Extensions;
+using MangoAPI.Presentation.Interfaces;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 
-namespace MangoAPI.WebApp.Controllers
+namespace MangoAPI.Presentation.Controllers
 {
     [ApiController]
     [Route("api/contacts")]

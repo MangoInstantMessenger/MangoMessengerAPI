@@ -1,9 +1,9 @@
-﻿using MangoAPI.Domain.Entities;
-using MangoAPI.Infrastructure.Database;
+﻿using MangoAPI.DataAccess.Database;
+using MangoAPI.Domain.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace MangoAPI.Infrastructure.StartupExtensions
+namespace MangoAPI.Presentation.Extensions
 {
     public static class IdentityExtensions
     {
