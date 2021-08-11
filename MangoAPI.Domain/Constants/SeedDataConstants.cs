@@ -1,6 +1,6 @@
 ﻿namespace MangoAPI.Domain.Constants
 {
-    public class SeedDataConstants
+    public static class SeedDataConstants
     {
         // User Id
         public const string KhachaturId = "e77cf2cb-3f3a-4f0b-ac5a-90a3263d075a";

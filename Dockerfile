@@ -7,21 +7,21 @@ EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build
 WORKDIR /src
-COPY ["MangoAPI.WebApp/MangoAPI.WebApp.csproj", "MangoAPI.WebApp/"]
-COPY ["MangoAPI.Infrastructure/MangoAPI.Infrastructure.csproj", "MangoAPI.Infrastructure/"]
-COPY ["MangoAPI.DTO/MangoAPI.DTO.csproj", "MangoAPI.DTO/"]
+COPY ["MangoAPI.Presentation/MangoAPI.Presentation.csproj", "MangoAPI.Presentation/"]
+COPY ["MangoAPI.DataAccess/MangoAPI.DataAccess.csproj", "MangoAPI.DataAccess/"]
+COPY ["MangoAPI.BusinessLogic/MangoAPI.BusinessLogic.csproj", "MangoAPI.BusinessLogic/"]
 COPY ["MangoAPI.Domain/MangoAPI.Domain.csproj", "MangoAPI.Domain/"]
 COPY ["MangoAPI.Application/MangoAPI.Application.csproj", "MangoAPI.Application/"]
-RUN dotnet restore "MangoAPI.WebApp/MangoAPI.WebApp.csproj"
+RUN dotnet restore "MangoAPI.Presentation/MangoAPI.Presentation.csproj"
 COPY . .
-WORKDIR "/src/MangoAPI.WebApp"
-RUN dotnet build "MangoAPI.WebApp.csproj" -c Release -o /app/build
+WORKDIR "/src/MangoAPI.Presentation"
+RUN dotnet build "MangoAPI.Presentation.csproj" -c Release -o /app/build
 
 FROM build AS publish
-RUN dotnet publish "MangoAPI.WebApp.csproj" -c Release -o /app/publish
+RUN dotnet publish "MangoAPI.Presentation.csproj" -c Release -o /app/publish
 
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-#ENTRYPOINT ["dotnet", "MangoAPI.WebApp.dll"]
-CMD ASPNETCORE_URLS=http://*:$PORT dotnet MangoAPI.WebApp.dll
+#ENTRYPOINT ["dotnet", "MangoAPI.Presentation.dll"]
+CMD ASPNETCORE_URLS=http://*:$PORT dotnet MangoAPI.Presentation.dll
