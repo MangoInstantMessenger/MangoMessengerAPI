@@ -8,7 +8,7 @@
         public const string KolbasatorId = "5b515247-f6f5-47e1-ad06-95f317a0599b";
         public const string AmelitId = "d942706b-e4e2-48f9-bbdc-b022816471f0";
         public const string PetroId = "2cd4b9a0-f70d-476d-a3cc-908da43f93c4";
-        public const string SzymonId = "12feddf1-a878-4cbf-af60-38542e1e5f8d";
+        public const string SzymonId = "5e7274ad-3132-4ad7-be36-38778a8f7b1c";
         
         // Public Chats
         public const string ExtremeCodeMainId = "0dae5a74-3528-4e85-95bb-2036bd80432c";

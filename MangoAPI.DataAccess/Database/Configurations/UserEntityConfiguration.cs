@@ -89,7 +89,7 @@ namespace MangoAPI.DataAccess.Database.Configurations
             var user6 = new UserEntity 
             {
                 PhoneNumber = "+48 743 615 532",
-                DisplayName = "Szimon Murawski",
+                DisplayName = "Szymon Murawski",
                 Id = SeedDataConstants.SzymonId,
                 UserName = SeedDataConstants.SzymonId,
                 Email = "szymon.murawski@wp.pl",
