@@ -9,7 +9,7 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Users
             RuleFor(x => x.DisplayName)
                 .Cascade(CascadeMode.Stop)
                 .NotEmpty()
-                .Length(2, 300);
+                .Length(1, 300);
         }
     }
 }

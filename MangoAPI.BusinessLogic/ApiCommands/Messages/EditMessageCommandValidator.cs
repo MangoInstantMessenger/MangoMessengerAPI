@@ -10,16 +10,16 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Messages
             RuleFor(x => x.MessageId)
                 .Cascade(CascadeMode.Stop)
                 .NotEmpty()
-                .Length(2, 300);
-            
+                .Length(1, 300);
+
             RuleFor(x => x.MessageId).Must(x => Guid.TryParse(x, out _))
                 .WithMessage("EditMessageCommand: Message Id cannot be parsed.");
             
             RuleFor(x => x.UserId)
                 .Cascade(CascadeMode.Stop)
                 .NotEmpty()
-                .Length(2, 300);
-            
+                .Length(1, 300);
+
             RuleFor(x => x.UserId).Must(x => Guid.TryParse(x, out _))
                 .WithMessage("EditMessageCommand: User Id cannot be parsed.");
             
@@ -27,7 +27,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Messages
                 .Cascade(CascadeMode.Stop)
                 .NotEmpty()
                 .Length(1, 300);
-            
+
             RuleFor(x => x.ModifiedText).MaximumLength(300);
         }
     }
