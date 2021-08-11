@@ -10,13 +10,7 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Chats
             RuleFor(x => x.DisplayName)
                 .Cascade(CascadeMode.Stop)
                 .NotEmpty()
-                .Length(2, 300);
-
-            RuleFor(x => x.UserId)
-                .Cascade(CascadeMode.Stop)
-                .NotEmpty()
-                .Length(2, 300);
-
+                .Length(1, 300);
             RuleFor(x => x.UserId).Must(x => Guid.TryParse(x, out _))
                 .WithMessage("SearchChatsQueryValidator: User Id cannot be parsed.");
         }

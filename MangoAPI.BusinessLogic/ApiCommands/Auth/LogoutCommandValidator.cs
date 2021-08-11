@@ -9,7 +9,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Auth
             RuleFor(x => x.RefreshTokenId)
                 .Cascade(CascadeMode.Stop)
                 .NotEmpty()
-                .Length(2, 300);
+                .Length(1, 300);
         }
     }
 }

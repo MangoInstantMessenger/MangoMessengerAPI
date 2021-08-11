@@ -9,12 +9,12 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Auth
             RuleFor(x => x.Email)
                 .Cascade(CascadeMode.Stop)
                 .NotEmpty()
-                .Length(2, 300);
+                .Length(1, 300);
 
             RuleFor(x => x.Password)
                 .Cascade(CascadeMode.Stop)
                 .NotEmpty()
-                .Length(2, 300);
+                .Length(1, 300);
         }
     }
 }
