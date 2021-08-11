@@ -1,7 +1,7 @@
 ﻿using System;
 using FluentValidation;
 
-namespace MangoAPI.DTO.ApiCommands.Chats
+namespace MangoAPI.BusinessLogic.ApiCommands.Chats
 {
     public class CreateDirectChatCommandValidator : AbstractValidator<CreateDirectChatCommand>
     {

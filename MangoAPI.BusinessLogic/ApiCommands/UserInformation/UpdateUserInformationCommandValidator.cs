@@ -1,7 +1,7 @@
 ﻿using System;
 using FluentValidation;
 
-namespace MangoAPI.DTO.ApiCommands.UserInformation
+namespace MangoAPI.BusinessLogic.ApiCommands.UserInformation
 {
     public class UpdateUserInformationCommandValidator : AbstractValidator<UpdateUserInformationCommand>
     {

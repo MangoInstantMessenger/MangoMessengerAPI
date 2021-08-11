@@ -2,17 +2,17 @@
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using MangoAPI.BusinessLogic.ApiCommands.Contacts;
+using MangoAPI.BusinessLogic.BusinessExceptions;
+using MangoAPI.BusinessLogic.Responses.Contacts;
+using MangoAPI.DataAccess.Database;
 using MangoAPI.Domain.Constants;
 using MangoAPI.Domain.Entities;
-using MangoAPI.DTO.ApiCommands.Contacts;
-using MangoAPI.DTO.Responses.Contacts;
-using MangoAPI.Infrastructure.BusinessExceptions;
-using MangoAPI.Infrastructure.Database;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
-namespace MangoAPI.Infrastructure.CommandHandlers.Contacts
+namespace MangoAPI.BusinessLogic.ApiCommandHandlers.Contacts
 {
     public class AddContactCommandHandler : IRequestHandler<AddContactCommand, AddContactResponse>
     {
@@ -60,7 +60,7 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Contacts
             
                 return AddContactResponse.SuccessResponse;
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 await transaction.RollbackAsync(cancellationToken);
                 throw new BusinessException(ResponseMessageCodes.DatabaseError);

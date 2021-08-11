@@ -1,7 +1,7 @@
-﻿using MangoAPI.DTO.Responses.Auth;
+﻿using MangoAPI.BusinessLogic.Responses.Auth;
 using MediatR;
 
-namespace MangoAPI.DTO.ApiCommands.Auth
+namespace MangoAPI.BusinessLogic.ApiCommands.Auth
 {
     public record VerifyEmailCommand : IRequest<VerifyEmailResponse>
     {

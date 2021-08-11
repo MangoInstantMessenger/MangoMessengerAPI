@@ -1,4 +1,4 @@
-﻿namespace MangoAPI.DTO.Enums
+﻿namespace MangoAPI.BusinessLogic.Enums
 {
     public enum VerificationMethod
     {

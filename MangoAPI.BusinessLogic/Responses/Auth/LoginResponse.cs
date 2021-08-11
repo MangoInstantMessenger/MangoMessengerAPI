@@ -1,6 +1,6 @@
 ﻿using MangoAPI.Domain.Constants;
 
-namespace MangoAPI.DTO.Responses.Auth
+namespace MangoAPI.BusinessLogic.Responses.Auth
 {
     public record LoginResponse : ResponseBase<LoginResponse>
     {

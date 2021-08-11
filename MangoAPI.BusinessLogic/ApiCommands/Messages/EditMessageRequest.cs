@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace MangoAPI.DTO.ApiCommands.Messages
+namespace MangoAPI.BusinessLogic.ApiCommands.Messages
 {
     public record EditMessageRequest
     {

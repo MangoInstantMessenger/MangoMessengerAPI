@@ -2,18 +2,18 @@
 using System.Threading;
 using System.Threading.Tasks;
 using MangoAPI.Application.Services;
-using MangoAPI.Domain.Entities;
+using MangoAPI.BusinessLogic.ApiCommands.Auth;
+using MangoAPI.BusinessLogic.BusinessExceptions;
+using MangoAPI.BusinessLogic.Enums;
+using MangoAPI.BusinessLogic.Responses.Auth;
+using MangoAPI.DataAccess.Database;
 using MangoAPI.Domain.Constants;
-using MangoAPI.DTO.ApiCommands.Auth;
-using MangoAPI.DTO.Enums;
-using MangoAPI.DTO.Responses.Auth;
-using MangoAPI.Infrastructure.BusinessExceptions;
-using MangoAPI.Infrastructure.Database;
+using MangoAPI.Domain.Entities;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
-namespace MangoAPI.Infrastructure.CommandHandlers.Auth
+namespace MangoAPI.BusinessLogic.ApiCommandHandlers.Auth
 {
     public class RegisterCommandHandler : IRequestHandler<RegisterCommand, RegisterResponse>
     {
@@ -98,7 +98,7 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Auth
                 
                 return RegisterResponse.FromSuccess(newUser);
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 await transaction.RollbackAsync(cancellationToken);
                 throw new BusinessException(ResponseMessageCodes.DatabaseError);

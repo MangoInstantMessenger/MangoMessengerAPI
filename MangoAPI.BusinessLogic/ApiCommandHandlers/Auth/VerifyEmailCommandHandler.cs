@@ -1,16 +1,16 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
+using MangoAPI.BusinessLogic.ApiCommands.Auth;
+using MangoAPI.BusinessLogic.BusinessExceptions;
+using MangoAPI.BusinessLogic.Responses.Auth;
+using MangoAPI.DataAccess.Database;
 using MangoAPI.Domain.Constants;
 using MangoAPI.Domain.Entities;
-using MangoAPI.DTO.ApiCommands.Auth;
-using MangoAPI.DTO.Responses.Auth;
-using MangoAPI.Infrastructure.BusinessExceptions;
-using MangoAPI.Infrastructure.Database;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 
-namespace MangoAPI.Infrastructure.CommandHandlers.Auth
+namespace MangoAPI.BusinessLogic.ApiCommandHandlers.Auth
 {
     public class VerifyEmailCommandHandler : IRequestHandler<VerifyEmailCommand, VerifyEmailResponse>
     {
@@ -54,7 +54,7 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Auth
 
                 return VerifyEmailResponse.SuccessResponse;
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 await transaction.RollbackAsync(cancellationToken);
                 throw new BusinessException(ResponseMessageCodes.DatabaseError);

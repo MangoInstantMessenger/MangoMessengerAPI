@@ -1,4 +1,4 @@
-﻿namespace MangoAPI.DTO.Models
+﻿namespace MangoAPI.BusinessLogic.Models
 {
     public record Message
     {

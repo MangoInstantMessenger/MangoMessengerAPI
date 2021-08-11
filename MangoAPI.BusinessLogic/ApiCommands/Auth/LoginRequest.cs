@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace MangoAPI.DTO.ApiCommands.Auth
+namespace MangoAPI.BusinessLogic.ApiCommands.Auth
 {
     public record LoginRequest
     {

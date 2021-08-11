@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using FluentValidation;
 using MediatR;
 
-namespace MangoAPI.Infrastructure.Pipelines
+namespace MangoAPI.BusinessLogic.Pipelines
 {
     public class ValidationBehaviour<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
         where TRequest : IRequest<TResponse>
@@ -27,14 +27,14 @@ namespace MangoAPI.Infrastructure.Pipelines
 
             var context = new ValidationContext<TRequest>(request);
             var enumerableTasks = _validators.Select(validator => validator.ValidateAsync(context, cancellationToken));
-                
+
             var validationResults = await Task.WhenAll(enumerableTasks);
-                
+
             var failureList = validationResults
                 .SelectMany(validationResult => validationResult.Errors)
                 .Where(validationFailure => validationFailure != null)
                 .ToList();
-                
+
             if (failureList.Count != 0)
             {
                 throw new ValidationException(failureList);

@@ -1,4 +1,4 @@
-﻿namespace MangoAPI.DTO.Responses.Contacts
+﻿namespace MangoAPI.BusinessLogic.Responses.Contacts
 {
     public record AddContactResponse : ContactsResponseBase<AddContactResponse>;
 }

@@ -1,4 +1,4 @@
-﻿namespace MangoAPI.DTO.Responses.Auth
+﻿namespace MangoAPI.BusinessLogic.Responses.Auth
 {
     public record LogoutResponse : AuthResponseBase<LogoutResponse>;
 }

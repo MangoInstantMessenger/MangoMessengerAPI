@@ -1,7 +1,7 @@
-﻿using MangoAPI.DTO.Responses.Contacts;
+﻿using MangoAPI.BusinessLogic.Responses.Contacts;
 using MediatR;
 
-namespace MangoAPI.DTO.ApiCommands.Contacts
+namespace MangoAPI.BusinessLogic.ApiCommands.Contacts
 {
     public record AddContactCommand : IRequest<AddContactResponse>
     {

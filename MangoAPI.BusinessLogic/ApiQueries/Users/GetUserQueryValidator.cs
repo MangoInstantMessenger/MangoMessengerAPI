@@ -1,7 +1,7 @@
 ﻿using System;
 using FluentValidation;
 
-namespace MangoAPI.DTO.ApiQueries.Users
+namespace MangoAPI.BusinessLogic.ApiQueries.Users
 {
     public class GetUserQueryValidator : AbstractValidator<GetUserQuery>
     {

@@ -1,7 +1,7 @@
-﻿using MangoAPI.DTO.Responses.Users;
+﻿using MangoAPI.BusinessLogic.Responses.Users;
 using MediatR;
 
-namespace MangoAPI.DTO.ApiQueries.Users
+namespace MangoAPI.BusinessLogic.ApiQueries.Users
 {
     public record UserSearchQuery : IRequest<UserSearchResponse>
     {

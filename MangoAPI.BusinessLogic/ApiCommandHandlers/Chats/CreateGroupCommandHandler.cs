@@ -1,17 +1,17 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
+using MangoAPI.BusinessLogic.ApiCommands.Chats;
+using MangoAPI.BusinessLogic.BusinessExceptions;
+using MangoAPI.BusinessLogic.Responses.Chats;
+using MangoAPI.DataAccess.Database;
 using MangoAPI.Domain.Constants;
 using MangoAPI.Domain.Entities;
 using MangoAPI.Domain.Enums;
-using MangoAPI.DTO.ApiCommands.Chats;
-using MangoAPI.DTO.Responses.Chats;
-using MangoAPI.Infrastructure.BusinessExceptions;
-using MangoAPI.Infrastructure.Database;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 
-namespace MangoAPI.Infrastructure.CommandHandlers.Chats
+namespace MangoAPI.BusinessLogic.ApiCommandHandlers.Chats
 {
     public class CreateGroupCommandHandler : IRequestHandler<CreateGroupCommand, CreateChatEntityResponse>
     {
@@ -58,7 +58,7 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Chats
 
                 return CreateChatEntityResponse.FromSuccess(group);
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 await transaction.RollbackAsync(cancellationToken);
                 throw new BusinessException(ResponseMessageCodes.DatabaseError);

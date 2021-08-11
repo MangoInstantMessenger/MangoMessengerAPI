@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace MangoAPI.DTO.ApiCommands.Contacts
+namespace MangoAPI.BusinessLogic.ApiCommands.Contacts
 {
     public record AddContactRequest
     {

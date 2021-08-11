@@ -1,15 +1,15 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
+using MangoAPI.BusinessLogic.ApiCommands.UserInformation;
+using MangoAPI.BusinessLogic.BusinessExceptions;
+using MangoAPI.BusinessLogic.Responses.UserInformation;
+using MangoAPI.DataAccess.Database;
 using MangoAPI.Domain.Constants;
-using MangoAPI.DTO.ApiCommands.UserInformation;
-using MangoAPI.DTO.Responses.UserInformation;
-using MangoAPI.Infrastructure.BusinessExceptions;
-using MangoAPI.Infrastructure.Database;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace MangoAPI.Infrastructure.CommandHandlers.UserInformation
+namespace MangoAPI.BusinessLogic.ApiCommandHandlers.UserInformation
 {
     public class UpdateUserInformationCommandHandler : IRequestHandler<UpdateUserInformationCommand, UpdateUserInformationResponse>
     {
@@ -54,7 +54,7 @@ namespace MangoAPI.Infrastructure.CommandHandlers.UserInformation
 
                 return UpdateUserInformationResponse.SuccessResponse;
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 await transaction.RollbackAsync(cancellationToken);
                 throw new BusinessException(ResponseMessageCodes.DatabaseError);

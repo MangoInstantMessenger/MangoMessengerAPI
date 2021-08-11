@@ -1,7 +1,7 @@
 ﻿using MangoAPI.Domain.Constants;
 using MangoAPI.Domain.Entities;
 
-namespace MangoAPI.DTO.Responses.Auth
+namespace MangoAPI.BusinessLogic.Responses.Auth
 {
     public record RegisterResponse : AuthResponseBase<RegisterResponse>
     {

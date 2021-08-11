@@ -1,7 +1,7 @@
-﻿using MangoAPI.DTO.Responses.Messages;
+﻿using MangoAPI.BusinessLogic.Responses.Messages;
 using MediatR;
 
-namespace MangoAPI.DTO.ApiCommands.Messages
+namespace MangoAPI.BusinessLogic.ApiCommands.Messages
 {
     public record DeleteMessageCommand : IRequest<DeleteMessageResponse>
     {

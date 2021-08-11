@@ -1,7 +1,7 @@
 ﻿using System;
 using FluentValidation;
 
-namespace MangoAPI.DTO.ApiCommands.Auth
+namespace MangoAPI.BusinessLogic.ApiCommands.Auth
 {
     public class VerifyPhoneCommandValidator : AbstractValidator<VerifyPhoneCommand>
     {

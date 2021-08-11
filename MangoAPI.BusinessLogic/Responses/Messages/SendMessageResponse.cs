@@ -1,6 +1,6 @@
 ﻿using MangoAPI.Domain.Constants;
 
-namespace MangoAPI.DTO.Responses.Messages
+namespace MangoAPI.BusinessLogic.Responses.Messages
 {
     public record SendMessageResponse : MessageResponseBase<SendMessageResponse>
     {

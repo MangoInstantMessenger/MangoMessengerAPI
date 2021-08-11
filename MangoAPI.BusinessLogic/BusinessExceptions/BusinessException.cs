@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace MangoAPI.Infrastructure.BusinessExceptions
+namespace MangoAPI.BusinessLogic.BusinessExceptions
 {
     public class BusinessException : Exception
     {

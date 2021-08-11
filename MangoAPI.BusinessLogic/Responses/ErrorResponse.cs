@@ -1,6 +1,6 @@
 ﻿using System.Text.Json;
 
-namespace MangoAPI.DTO.Responses
+namespace MangoAPI.BusinessLogic.Responses
 {
     public record ErrorResponse
     {

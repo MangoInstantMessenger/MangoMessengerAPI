@@ -1,18 +1,17 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using MangoAPI.BusinessLogic.ApiQueries.Contacts;
+using MangoAPI.BusinessLogic.BusinessExceptions;
+using MangoAPI.BusinessLogic.Responses.Contacts;
+using MangoAPI.DataAccess.Database;
 using MangoAPI.Domain.Constants;
 using MangoAPI.Domain.Entities;
-using MangoAPI.DTO.ApiQueries.Contacts;
-using MangoAPI.DTO.Responses.Contacts;
-using MangoAPI.Infrastructure.BusinessExceptions;
-using MangoAPI.Infrastructure.Database;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
-namespace MangoAPI.Infrastructure.QueryHandlers.Contacts
+namespace MangoAPI.BusinessLogic.ApiQueryHandlers.Contacts
 {
     public class GetContactsQueryHandler : IRequestHandler<GetContactsQuery, GetContactsResponse>
     {
@@ -29,17 +28,17 @@ namespace MangoAPI.Infrastructure.QueryHandlers.Contacts
         public async Task<GetContactsResponse> Handle(GetContactsQuery request, CancellationToken cancellationToken)
         {
             var user = await _userManager.FindByIdAsync(request.UserId);
-            
+
             if (user is null)
             {
                 throw new BusinessException(ResponseMessageCodes.UserNotFound);
             }
-            
-            var contacts = await (from userContact in _postgresDbContext.UserContacts
+
+            var contacts = await (from userContact in _postgresDbContext.UserContacts.AsNoTracking()
                 join userEntity in _postgresDbContext.Users on userContact.ContactId equals userEntity.Id
                 where userContact.UserId == request.UserId
                 select userEntity).ToListAsync(cancellationToken);
-            
+
             return GetContactsResponse.FromSuccess(contacts);
         }
     }

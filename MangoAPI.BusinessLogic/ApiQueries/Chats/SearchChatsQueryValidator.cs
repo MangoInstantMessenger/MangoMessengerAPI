@@ -1,7 +1,7 @@
 ﻿using System;
 using FluentValidation;
 
-namespace MangoAPI.DTO.ApiQueries.Chats
+namespace MangoAPI.BusinessLogic.ApiQueries.Chats
 {
     public class SearchChatsQueryValidator : AbstractValidator<SearchChatsQuery>
     {

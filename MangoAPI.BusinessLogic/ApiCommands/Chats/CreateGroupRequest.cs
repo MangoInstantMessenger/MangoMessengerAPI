@@ -1,7 +1,7 @@
 ﻿using MangoAPI.Domain.Enums;
 using Newtonsoft.Json;
 
-namespace MangoAPI.DTO.ApiCommands.Chats
+namespace MangoAPI.BusinessLogic.ApiCommands.Chats
 {
     public record CreateGroupRequest
     {

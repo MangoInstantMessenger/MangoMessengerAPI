@@ -1,4 +1,4 @@
-﻿namespace MangoAPI.DTO.Responses.Chats
+﻿namespace MangoAPI.BusinessLogic.Responses.Chats
 {
     public record JoinChatResponse : ChatResponseBase<JoinChatResponse>;
 }

@@ -1,7 +1,7 @@
 ﻿using System;
 using FluentValidation;
 
-namespace MangoAPI.DTO.ApiQueries.Messages
+namespace MangoAPI.BusinessLogic.ApiQueries.Messages
 {
     public class GetMessagesQueryValidator : AbstractValidator<GetMessagesQuery>
     {

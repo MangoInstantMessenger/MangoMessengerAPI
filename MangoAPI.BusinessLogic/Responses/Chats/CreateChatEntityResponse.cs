@@ -1,7 +1,7 @@
 ﻿using MangoAPI.Domain.Constants;
 using MangoAPI.Domain.Entities;
 
-namespace MangoAPI.DTO.Responses.Chats
+namespace MangoAPI.BusinessLogic.Responses.Chats
 {
     public record CreateChatEntityResponse : ChatResponseBase<CreateChatEntityResponse>
     {

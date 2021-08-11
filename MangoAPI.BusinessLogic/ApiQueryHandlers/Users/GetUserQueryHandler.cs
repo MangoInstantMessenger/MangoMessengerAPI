@@ -1,15 +1,14 @@
-﻿using System;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
+using MangoAPI.BusinessLogic.ApiQueries.Users;
+using MangoAPI.BusinessLogic.BusinessExceptions;
+using MangoAPI.BusinessLogic.Responses.Users;
+using MangoAPI.DataAccess.Database;
 using MangoAPI.Domain.Constants;
-using MangoAPI.DTO.ApiQueries.Users;
-using MangoAPI.DTO.Responses.Users;
-using MangoAPI.Infrastructure.BusinessExceptions;
-using MangoAPI.Infrastructure.Database;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace MangoAPI.Infrastructure.QueryHandlers.Users
+namespace MangoAPI.BusinessLogic.ApiQueryHandlers.Users
 {
     public class GetUserQueryHandler : IRequestHandler<GetUserQuery, GetUserResponse>
     {

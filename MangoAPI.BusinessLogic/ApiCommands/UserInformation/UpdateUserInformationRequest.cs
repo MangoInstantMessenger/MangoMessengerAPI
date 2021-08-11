@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Text.Json.Serialization;
 
-namespace MangoAPI.DTO.ApiCommands.UserInformation
+namespace MangoAPI.BusinessLogic.ApiCommands.UserInformation
 {
     public record UpdateUserInformationRequest
     {

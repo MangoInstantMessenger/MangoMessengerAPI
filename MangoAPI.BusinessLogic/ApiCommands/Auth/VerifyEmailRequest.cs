@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace MangoAPI.DTO.ApiCommands.Auth
+namespace MangoAPI.BusinessLogic.ApiCommands.Auth
 {
     public record VerifyEmailRequest
     {

@@ -3,17 +3,17 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using MangoAPI.Application.Services;
+using MangoAPI.BusinessLogic.ApiCommands.Auth;
+using MangoAPI.BusinessLogic.BusinessExceptions;
+using MangoAPI.BusinessLogic.Responses.Auth;
+using MangoAPI.DataAccess.Database;
 using MangoAPI.Domain.Constants;
 using MangoAPI.Domain.Entities;
-using MangoAPI.DTO.ApiCommands.Auth;
-using MangoAPI.DTO.Responses.Auth;
-using MangoAPI.Infrastructure.BusinessExceptions;
-using MangoAPI.Infrastructure.Database;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
-namespace MangoAPI.Infrastructure.CommandHandlers.Auth
+namespace MangoAPI.BusinessLogic.ApiCommandHandlers.Auth
 {
     public class LoginCommandHandler : IRequestHandler<LoginCommand, LoginResponse>
     {
@@ -79,7 +79,7 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Auth
                 
                 return LoginResponse.FromSuccess(jwtToken, refreshToken.Id, user.Id);
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 await transaction.RollbackAsync(cancellationToken);
                 throw new BusinessException(ResponseMessageCodes.DatabaseError);

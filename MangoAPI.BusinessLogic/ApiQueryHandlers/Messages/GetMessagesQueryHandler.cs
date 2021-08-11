@@ -1,18 +1,17 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using MangoAPI.BusinessLogic.ApiQueries.Messages;
+using MangoAPI.BusinessLogic.BusinessExceptions;
+using MangoAPI.BusinessLogic.Responses.Messages;
+using MangoAPI.DataAccess.Database;
 using MangoAPI.Domain.Constants;
 using MangoAPI.Domain.Entities;
-using MangoAPI.DTO.ApiQueries.Messages;
-using MangoAPI.DTO.Responses.Messages;
-using MangoAPI.Infrastructure.BusinessExceptions;
-using MangoAPI.Infrastructure.Database;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
-namespace MangoAPI.Infrastructure.QueryHandlers.Messages
+namespace MangoAPI.BusinessLogic.ApiQueryHandlers.Messages
 {
     public class GetMessagesQueryHandler : IRequestHandler<GetMessagesQuery, GetMessagesResponse>
     {
@@ -44,7 +43,7 @@ namespace MangoAPI.Infrastructure.QueryHandlers.Messages
                 throw new BusinessException(ResponseMessageCodes.PermissionDenied);
             }           
             
-            var chat = _postgresDbContext.Messages
+            var chat = _postgresDbContext.Messages.AsNoTracking()
                 .Include(x => x.User)
                 .Where(x => x.ChatId == request.ChatId)
                 .AsEnumerable();            

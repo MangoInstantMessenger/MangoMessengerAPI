@@ -1,17 +1,17 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
+using MangoAPI.BusinessLogic.ApiCommands.Messages;
+using MangoAPI.BusinessLogic.BusinessExceptions;
+using MangoAPI.BusinessLogic.Responses.Messages;
+using MangoAPI.DataAccess.Database;
 using MangoAPI.Domain.Constants;
 using MangoAPI.Domain.Entities;
-using MangoAPI.DTO.ApiCommands.Messages;
-using MangoAPI.DTO.Responses.Messages;
-using MangoAPI.Infrastructure.BusinessExceptions;
-using MangoAPI.Infrastructure.Database;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
-namespace MangoAPI.Infrastructure.CommandHandlers.Messages
+namespace MangoAPI.BusinessLogic.ApiCommandHandlers.Messages
 {
     public class DeleteMessageCommandHandler : IRequestHandler<DeleteMessageCommand, DeleteMessageResponse>
     {
@@ -53,7 +53,7 @@ namespace MangoAPI.Infrastructure.CommandHandlers.Messages
 
                 return DeleteMessageResponse.SuccessResponse;
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 await transaction.RollbackAsync(cancellationToken);
                 throw new BusinessException(ResponseMessageCodes.DatabaseError);

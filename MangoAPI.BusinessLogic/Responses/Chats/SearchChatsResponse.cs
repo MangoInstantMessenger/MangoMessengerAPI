@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using MangoAPI.BusinessLogic.Models;
 using MangoAPI.Domain.Constants;
 using MangoAPI.Domain.Entities;
-using MangoAPI.DTO.Models;
 
-namespace MangoAPI.DTO.Responses.Chats
+namespace MangoAPI.BusinessLogic.Responses.Chats
 {
     public record SearchChatsResponse : ChatResponseBase<SearchChatsResponse>
     {

@@ -1,8 +1,8 @@
-﻿using MangoAPI.Domain.Constants;
+﻿using MangoAPI.BusinessLogic.Models;
+using MangoAPI.Domain.Constants;
 using MangoAPI.Domain.Entities;
-using MangoAPI.DTO.Models;
 
-namespace MangoAPI.DTO.Responses.Users
+namespace MangoAPI.BusinessLogic.Responses.Users
 {
     public record GetUserResponse : ResponseBase<GetUserResponse>
     {

@@ -1,6 +1,6 @@
-﻿using MangoAPI.DTO.Responses.Chats;
+﻿using MangoAPI.BusinessLogic.Responses.Chats;
 
-namespace MangoAPI.DTO.Responses.Messages
+namespace MangoAPI.BusinessLogic.Responses.Messages
 {
     public record MessageResponseBase<T> : ChatResponseBase<T> where T : ResponseBase, new();
 }

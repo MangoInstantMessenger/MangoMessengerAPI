@@ -1,7 +1,7 @@
-﻿using MangoAPI.DTO.Responses.Chats;
+﻿using MangoAPI.BusinessLogic.Responses.Chats;
 using MediatR;
 
-namespace MangoAPI.DTO.ApiQueries.Chats
+namespace MangoAPI.BusinessLogic.ApiQueries.Chats
 {
     public record SearchChatsQuery : IRequest<SearchChatsResponse>
     {

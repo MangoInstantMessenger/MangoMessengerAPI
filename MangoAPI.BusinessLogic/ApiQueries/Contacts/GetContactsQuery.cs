@@ -1,7 +1,7 @@
-﻿using MangoAPI.DTO.Responses.Contacts;
+﻿using MangoAPI.BusinessLogic.Responses.Contacts;
 using MediatR;
 
-namespace MangoAPI.DTO.ApiQueries.Contacts
+namespace MangoAPI.BusinessLogic.ApiQueries.Contacts
 {
     public record GetContactsQuery : IRequest<GetContactsResponse>
     {

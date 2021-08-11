@@ -1,7 +1,7 @@
 ﻿using System;
 using FluentValidation;
 
-namespace MangoAPI.DTO.ApiQueries.Contacts
+namespace MangoAPI.BusinessLogic.ApiQueries.Contacts
 {
     public class GetContactsQueryValidator : AbstractValidator<GetContactsQuery>
     {
