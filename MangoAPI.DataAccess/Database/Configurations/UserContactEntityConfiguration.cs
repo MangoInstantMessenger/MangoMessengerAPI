@@ -14,7 +14,19 @@ namespace MangoAPI.DataAccess.Database.Configurations
             builder.HasData(
                 new UserContactEntity
                 {
-                    Id = "e744e03d-2739-4bdc-aa93-8fa1618b8548",
+                    Id = "3d69d8fc-fffd-4b6e-9978-84d8425340c4",
+                    ContactId = SeedDataConstants.SzymonId,
+                    UserId = SeedDataConstants.PetroId
+                },
+                new UserContactEntity
+                {
+                    Id = "817139cf-2115-4ab4-9ea6-055f70f736c6",
+                    ContactId = SeedDataConstants.PetroId,
+                    UserId = SeedDataConstants.SzymonId
+                },
+                new UserContactEntity
+                {
+                    Id = "2f71da07-8dac-4a31-b09e-82940d42e79d ",
                     ContactId = SeedDataConstants.RazumovskyId,
                     UserId = SeedDataConstants.KhachaturId
                 },

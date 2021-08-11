@@ -22,6 +22,19 @@ namespace MangoAPI.DataAccess.Database.Configurations
                 .HasForeignKey(x => x.UserId);
 
             builder.HasData(
+                // WSB
+                new UserChatEntity
+                {
+                    UserId = SeedDataConstants.PetroId,
+                    ChatId = SeedDataConstants.WsbId,
+                    RoleId = UserRole.User
+                },
+                new UserChatEntity
+                {
+                    UserId = SeedDataConstants.SzymonId,
+                    ChatId = SeedDataConstants.WsbId,
+                    RoleId = UserRole.User
+                },
                 // Extreme Code Main
                 new UserChatEntity
                 {
@@ -180,6 +193,21 @@ namespace MangoAPI.DataAccess.Database.Configurations
                 {
                     UserId = SeedDataConstants.KolbasatorId,
                     ChatId = SeedDataConstants.DirectKhachaturKolbasator,
+                    RoleId = UserRole.User
+                },
+                
+                // Petro Kolosov / Szymon Murawski
+                
+                new UserChatEntity
+                {
+                    UserId = SeedDataConstants.PetroId,
+                    ChatId = SeedDataConstants.DirectPetroSzymon,
+                    RoleId = UserRole.User
+                },
+                new UserChatEntity
+                {
+                    UserId = SeedDataConstants.SzymonId,
+                    ChatId = SeedDataConstants.DirectPetroSzymon,
                     RoleId = UserRole.User
                 }
             );

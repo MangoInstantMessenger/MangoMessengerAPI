@@ -23,6 +23,13 @@ namespace MangoAPI.DataAccess.Database.Configurations
             builder.HasData(
                 new ChatEntity
                 {
+                    Id = SeedDataConstants.WsbId,
+                    Title = "WSB",
+                    ChatType = ChatType.PublicChannel,
+                    MembersCount = 2
+                },
+                new ChatEntity
+                {
                     Id = SeedDataConstants.ExtremeCodeMainId,
                     Title = "Extreme Code Main",
                     ChatType = ChatType.PublicChannel,
@@ -78,6 +85,13 @@ namespace MangoAPI.DataAccess.Database.Configurations
                 {
                     Id = SeedDataConstants.DirectKhachaturKolbasator,
                     Title = "Khachatur Khachatryan / Мусяка Колбасяка",
+                    ChatType = ChatType.DirectChat,
+                    MembersCount = 2
+                },
+                new ChatEntity
+                {
+                    Id = SeedDataConstants.DirectPetroSzymon,
+                    Title = "Petro Kolosov / Szymon Murawski",
                     ChatType = ChatType.DirectChat,
                     MembersCount = 2
                 }
