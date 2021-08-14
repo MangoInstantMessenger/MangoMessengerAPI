@@ -1,4 +1,5 @@
-﻿using MangoAPI.Application.Services;
+﻿using MangoAPI.Application.Interfaces;
+using MangoAPI.Application.Services;
 using MangoAPI.BusinessLogic.ApiCommandHandlers.Auth;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;

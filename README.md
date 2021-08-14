@@ -25,7 +25,7 @@
 - `REFRESH_TOKEN_LIFETIME`, integer
 - `EMAIL_SENDER_ADDRESS`, string
 - `EMAIL_SENDER_PASSWORD`, string
-- `FRONTEND_ADDRESS`, string (default http://localhost:4200/)
+- `FRONTEND_ADDRESS`, string (default http://localhost:4200)
 
 ## About tasks management
 - Each task is assigned a number (MANGO-ID)
