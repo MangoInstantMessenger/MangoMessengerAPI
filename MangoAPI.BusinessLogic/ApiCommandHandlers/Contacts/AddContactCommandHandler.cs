@@ -17,18 +17,15 @@ namespace MangoAPI.BusinessLogic.ApiCommandHandlers.Contacts
     public class AddContactCommandHandler : IRequestHandler<AddContactCommand, AddContactResponse>
     {
         private readonly MangoPostgresDbContext _postgresDbContext;
-        private readonly UserManager<UserEntity> _userManager;
 
-        public AddContactCommandHandler(MangoPostgresDbContext postgresDbContext,
-            UserManager<UserEntity> userManager)
+        public AddContactCommandHandler(MangoPostgresDbContext postgresDbContext)
         {
             _postgresDbContext = postgresDbContext;
-            _userManager = userManager;
         }
 
         public async Task<AddContactResponse> Handle(AddContactCommand request, CancellationToken cancellationToken)
         {
-            var contact = await _userManager.FindByIdAsync(request.ContactId);
+            var contact = await _postgresDbContext.Users.FirstOrDefaultAsync(x => x.Id == request.UserId, cancellationToken);
 
             if (contact is null)
             {

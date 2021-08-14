@@ -16,19 +16,16 @@ namespace MangoAPI.BusinessLogic.ApiCommandHandlers.Messages
     public class DeleteMessageCommandHandler : IRequestHandler<DeleteMessageCommand, DeleteMessageResponse>
     {
         private readonly MangoPostgresDbContext _postgresDbContext;
-        private readonly UserManager<UserEntity> _userManager;
 
-        public DeleteMessageCommandHandler(MangoPostgresDbContext postgresDbContext,
-            UserManager<UserEntity> userManager)
+        public DeleteMessageCommandHandler(MangoPostgresDbContext postgresDbContext)
         {
             _postgresDbContext = postgresDbContext;
-            _userManager = userManager;
         }
 
         public async Task<DeleteMessageResponse> Handle(DeleteMessageCommand request,
             CancellationToken cancellationToken)
         {
-            var currentUser = await _userManager.FindByIdAsync(request.UserId);
+            var currentUser = await _postgresDbContext.Users.FirstOrDefaultAsync(x => x.Id == request.UserId, cancellationToken);
 
             if (currentUser == null)
             {

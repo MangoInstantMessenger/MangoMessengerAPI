@@ -16,17 +16,14 @@ namespace MangoAPI.BusinessLogic.ApiCommandHandlers.Messages
     public class EditMessageCommandHandler : IRequestHandler<EditMessageCommand, EditMessageResponse>
     {
         private readonly MangoPostgresDbContext _postgresDbContext;
-        private readonly UserManager<UserEntity> _userManager;
-
-        public EditMessageCommandHandler(MangoPostgresDbContext postgresDbContext, UserManager<UserEntity> userManager)
+        public EditMessageCommandHandler(MangoPostgresDbContext postgresDbContext)
         {
             _postgresDbContext = postgresDbContext;
-            _userManager = userManager;
         }
 
         public async Task<EditMessageResponse> Handle(EditMessageCommand request, CancellationToken cancellationToken)
         {
-            var currentUser = await _userManager.FindByIdAsync(request.UserId);
+            var currentUser = await _postgresDbContext.Users.FirstOrDefaultAsync(x => x.Id == request.UserId, cancellationToken);
 
             if (currentUser == null)
             {
