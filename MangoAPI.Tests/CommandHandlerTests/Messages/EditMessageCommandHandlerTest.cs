@@ -10,16 +10,17 @@ using NUnit.Framework;
 namespace MangoAPI.Tests.CommandHandlerTests.Messages
 {
     [TestFixture]
-    public class EditMessageCommandHandlerTest : DbContextFixture
+    public class EditMessageCommandHandlerTest
     {
         [Test]
-        public async Task EditMessageCommandHandlerTest_200Test()
+        public async Task EditMessageCommandHandlerTest_Success()
         {
-            var handler = new EditMessageCommandHandler(PostgresDbContext);
+            using var dbContextFixture = new DbContextFixture();
+            var handler = new EditMessageCommandHandler(dbContextFixture.PostgresDbContext);
             var command = new EditMessageCommand
             {
                 UserId = "1",
-                MessageId = "5",
+                MessageId = "3",
                 ModifiedText = "hello c#"
             };
 
@@ -29,9 +30,28 @@ namespace MangoAPI.Tests.CommandHandlerTests.Messages
         }
 
         [Test]
-        public async Task EditMessageCommandHandlerTest_409Test()
+        public async Task EditMessageCommandHandlerTest_ShouldThrowMessageNotFound()
         {
-            var handler = new EditMessageCommandHandler(PostgresDbContext);
+            using var dbContextFixture = new DbContextFixture();
+            var handler = new EditMessageCommandHandler(dbContextFixture.PostgresDbContext);
+            var command = new EditMessageCommand
+            {
+                UserId = "1",
+                MessageId = "152",
+                ModifiedText = "hello c#"
+            };
+
+            Func<Task> result = async () => await handler.Handle(command, CancellationToken.None);
+
+            await result.Should().ThrowAsync<BusinessException>()
+                .WithMessage("MESSAGE_NOT_FOUND");
+        }
+        
+        [Test]
+        public async Task EditMessageCommandHandlerTest_ShouldThrowUserNotFound()
+        {
+            using var dbContextFixture = new DbContextFixture();
+            var handler = new EditMessageCommandHandler(dbContextFixture.PostgresDbContext);
             var command = new EditMessageCommand
             {
                 MessageId = "152",
@@ -41,7 +61,7 @@ namespace MangoAPI.Tests.CommandHandlerTests.Messages
             Func<Task> result = async () => await handler.Handle(command, CancellationToken.None);
 
             await result.Should().ThrowAsync<BusinessException>()
-                .WithMessage("MESSAGE_NOT_FOUND");
+                .WithMessage("USER_NOT_FOUND");
         }
     }
 }

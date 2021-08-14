@@ -107,33 +107,35 @@ namespace MangoAPI.Tests
             PostgresDbContext.Messages.AddRange(
                 new MessageEntity
                 {
-                    Id = "5",
+                    Id = "1",
                     ChatId = "3",
                     UserId = "1",
-                    Content = "hello world"
+                    Content = "hello world 1"
                 },
                 new MessageEntity
                 {
-                    Id = "6",
+                    Id = "2",
                     ChatId = "3",
                     UserId = "2",
-                    Content = "hello world"
+                    Content = "hello world 2"
                 },
                 new MessageEntity
                 {
-                    Id = "7",
+                    Id = "3",
                     ChatId = "4",
                     UserId = "1",
-                    Content = "hello world"
+                    Content = "hello world 3"
                 },
                 new MessageEntity
                 {
-                    Id = "8",
+                    Id = "4",
                     ChatId = "4",
                     UserId = "2",
-                    Content = "hello world"
+                    Content = "hello world 4"
                 }
             );
+
+            PostgresDbContext.SaveChanges();
         }
 
         public void Dispose()
