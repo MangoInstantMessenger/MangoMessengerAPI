@@ -45,6 +45,17 @@ namespace MangoAPI.Tests
                 new ChatEntity
                 {
                     ChatType = ChatType.PublicChannel,
+                    Title = "Extreme Code Main",
+                    Id = "1"
+                },
+                new ChatEntity
+                {
+                    ChatType = ChatType.PublicChannel,
+                    Title = "Extreme Code C++",
+                    Id = "2"
+                }, new ChatEntity
+                {
+                    ChatType = ChatType.PublicChannel,
                     Title = "Extreme Code",
                     Id = "3"
                 },
