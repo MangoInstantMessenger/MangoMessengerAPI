@@ -9,7 +9,6 @@ using MangoAPI.DataAccess.Database;
 using MangoAPI.Domain.Constants;
 using MangoAPI.Domain.Entities;
 using MediatR;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace MangoAPI.BusinessLogic.ApiCommandHandlers.Contacts
@@ -25,14 +24,15 @@ namespace MangoAPI.BusinessLogic.ApiCommandHandlers.Contacts
 
         public async Task<AddContactResponse> Handle(AddContactCommand request, CancellationToken cancellationToken)
         {
-            var contact = await _postgresDbContext.Users.FirstOrDefaultAsync(x => x.Id == request.UserId, cancellationToken);
+            var contact = await _postgresDbContext.Users
+                .FirstOrDefaultAsync(x => x.Id == request.UserId, cancellationToken);
 
             if (contact is null)
             {
                 throw new BusinessException(ResponseMessageCodes.UserNotFound);
             }
 
-            var contactEntity = new UserContactEntity()
+            var contactEntity = new UserContactEntity
             {
                 Id = Guid.NewGuid().ToString(),
                 ContactId = request.ContactId,
@@ -41,7 +41,7 @@ namespace MangoAPI.BusinessLogic.ApiCommandHandlers.Contacts
 
             var userContactExist = await _postgresDbContext.UserContacts
                 .Where(x => x.UserId == request.UserId)
-                .AnyAsync(x => x.ContactId == contact.Id, cancellationToken);
+                .AnyAsync(x => x.ContactId == request.ContactId, cancellationToken);
 
             if (userContactExist)
             {

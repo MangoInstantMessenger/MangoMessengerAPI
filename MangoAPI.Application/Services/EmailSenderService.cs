@@ -3,6 +3,7 @@ using System.Net.Mail;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using MangoAPI.Application.Interfaces;
 using MangoAPI.Domain.Constants;
 using MangoAPI.Domain.Entities;
 

@@ -6,9 +6,7 @@ using MangoAPI.BusinessLogic.BusinessExceptions;
 using MangoAPI.BusinessLogic.Responses.Contacts;
 using MangoAPI.DataAccess.Database;
 using MangoAPI.Domain.Constants;
-using MangoAPI.Domain.Entities;
 using MediatR;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace MangoAPI.BusinessLogic.ApiQueryHandlers.Contacts
@@ -24,7 +22,8 @@ namespace MangoAPI.BusinessLogic.ApiQueryHandlers.Contacts
 
         public async Task<GetContactsResponse> Handle(GetContactsQuery request, CancellationToken cancellationToken)
         {
-            var user = await _postgresDbContext.Users.FirstOrDefaultAsync(x => x.Id == request.UserId, cancellationToken);
+            var user = await _postgresDbContext.Users
+                .FirstOrDefaultAsync(x => x.Id == request.UserId, cancellationToken);
 
             if (user is null)
             {

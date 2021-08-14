@@ -1,8 +1,8 @@
-﻿using MangoAPI.Domain.Entities;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
+using MangoAPI.Domain.Entities;
 
-namespace MangoAPI.Application.Services
+namespace MangoAPI.Application.Interfaces
 {
     public interface IEmailSenderService
     {

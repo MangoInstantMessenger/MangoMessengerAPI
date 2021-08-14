@@ -6,9 +6,7 @@ using MangoAPI.BusinessLogic.BusinessExceptions;
 using MangoAPI.BusinessLogic.Responses.Messages;
 using MangoAPI.DataAccess.Database;
 using MangoAPI.Domain.Constants;
-using MangoAPI.Domain.Entities;
 using MediatR;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace MangoAPI.BusinessLogic.ApiCommandHandlers.Messages
@@ -23,7 +21,8 @@ namespace MangoAPI.BusinessLogic.ApiCommandHandlers.Messages
 
         public async Task<EditMessageResponse> Handle(EditMessageCommand request, CancellationToken cancellationToken)
         {
-            var currentUser = await _postgresDbContext.Users.FirstOrDefaultAsync(x => x.Id == request.UserId, cancellationToken);
+            var currentUser = await _postgresDbContext.Users
+                .FirstOrDefaultAsync(x => x.Id == request.UserId, cancellationToken);
 
             if (currentUser == null)
             {

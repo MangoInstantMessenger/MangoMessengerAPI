@@ -31,24 +31,17 @@ namespace MangoAPI.Presentation.Middlewares
 
         private static async Task HandleExceptionAsync(HttpContext context, Exception exception)
         {
-            var errorContext = new ErrorContext(exception.Message, exception);
-            
-            switch (exception)
+            var errorContext = new ErrorContext(exception.Message, exception)
             {
-                case ValidationException:
-                    await ThrowError(context, errorContext);
-                    return;
-                case BusinessException:
-                    await ThrowError(context, errorContext);
-                    return;
-                default:
-                    errorContext = new ErrorContext(exception,
-                        HttpStatusCode.InternalServerError,
-                        exception.Message);
-
-                    await ThrowError(context, errorContext);
-                    break;
-            }
+                StatusCode = exception switch
+                {
+                    ValidationException => HttpStatusCode.BadRequest,
+                    BusinessException => HttpStatusCode.Conflict,
+                    _ => HttpStatusCode.InternalServerError
+                }
+            };
+            
+            await ThrowError(context, errorContext);
         }
 
         private static async Task ThrowError(HttpContext context, ErrorContext errorContext)
@@ -68,7 +61,7 @@ namespace MangoAPI.Presentation.Middlewares
     internal class ErrorContext
     {
         public Exception Exception { get; }
-        public HttpStatusCode StatusCode { get; }
+        public HttpStatusCode StatusCode { get; init; }
         public string ErrorMessage { get; }
 
         public ErrorContext(string errorMessage, Exception exception)
@@ -76,13 +69,6 @@ namespace MangoAPI.Presentation.Middlewares
             ErrorMessage = errorMessage;
             StatusCode = HttpStatusCode.BadRequest;
             Exception = exception;
-        }
-
-        public ErrorContext(Exception exception, HttpStatusCode statusCode, string errorMessage)
-        {
-            Exception = exception;
-            StatusCode = statusCode;
-            ErrorMessage = errorMessage;
         }
     }
 }

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 using MangoAPI.BusinessLogic.ApiCommands.UserInformation;
 using MangoAPI.BusinessLogic.BusinessExceptions;
@@ -11,8 +10,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace MangoAPI.BusinessLogic.ApiCommandHandlers.UserInformation
 {
-    public class
-        UpdateUserInformationCommandHandler : IRequestHandler<UpdateUserInformationCommand,
+    public class UpdateUserInformationCommandHandler : IRequestHandler<UpdateUserInformationCommand,
             UpdateUserInformationResponse>
     {
         private readonly MangoPostgresDbContext _postgresDbContext;

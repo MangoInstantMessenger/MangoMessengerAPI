@@ -10,7 +10,6 @@ using MangoAPI.Domain.Constants;
 using MangoAPI.Domain.Entities;
 using MangoAPI.Domain.Enums;
 using MediatR;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace MangoAPI.BusinessLogic.ApiCommandHandlers.Chats
@@ -27,14 +26,16 @@ namespace MangoAPI.BusinessLogic.ApiCommandHandlers.Chats
         public async Task<CreateChatEntityResponse> Handle(CreateDirectChatCommand request,
             CancellationToken cancellationToken)
         {
-            var partner = await _postgresDbContext.Users.FirstOrDefaultAsync(x => x.Id == request.PartnerId, cancellationToken);
+            var partner = await _postgresDbContext.Users
+                .FirstOrDefaultAsync(x => x.Id == request.PartnerId, cancellationToken);
 
             if (partner is null)
             {
                 throw new BusinessException(ResponseMessageCodes.UserNotFound);
             }
 
-            var currentUser = await _postgresDbContext.Users.FirstOrDefaultAsync(x => x.Id == request.UserId, cancellationToken);
+            var currentUser = await _postgresDbContext.Users
+                .FirstOrDefaultAsync(x => x.Id == request.UserId, cancellationToken);
 
             var directChat = new ChatEntity
             {
@@ -60,7 +61,6 @@ namespace MangoAPI.BusinessLogic.ApiCommandHandlers.Chats
             }
 
             await _postgresDbContext.Chats.AddAsync(directChat, cancellationToken);
-            await _postgresDbContext.SaveChangesAsync(cancellationToken);
 
             var userChats = new[]
             {
@@ -68,10 +68,8 @@ namespace MangoAPI.BusinessLogic.ApiCommandHandlers.Chats
                 new UserChatEntity {ChatId = directChat.Id, RoleId = UserRole.User, UserId = request.PartnerId}
             };
 
-            _postgresDbContext.UserChats.AddRange(userChats);
-
+            await _postgresDbContext.UserChats.AddRangeAsync(userChats, cancellationToken);
             await _postgresDbContext.SaveChangesAsync(cancellationToken);
-
             return CreateChatEntityResponse.FromSuccess(directChat);
         }
     }
