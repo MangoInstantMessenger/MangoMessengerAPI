@@ -25,41 +25,30 @@ namespace MangoAPI.BusinessLogic.ApiCommandHandlers.Auth
 
         public async Task<VerifyEmailResponse> Handle(VerifyEmailCommand request, CancellationToken cancellationToken)
         {
-            await using var transaction = await _postgresDbContext.Database.BeginTransactionAsync(cancellationToken);
-            try
+            var user = await _userManager.FindByIdAsync(request.UserId);
+
+            if (user is null)
             {
-                var user = await _userManager.FindByIdAsync(request.UserId);
-
-                if (user is null)
-                {
-                    throw new BusinessException(ResponseMessageCodes.UserNotFound);
-                }
-
-                if (user.Email != request.Email)
-                {
-                    throw new BusinessException(ResponseMessageCodes.InvalidEmail);
-                }
-
-                if (user.EmailConfirmed)
-                {
-                    throw new BusinessException(ResponseMessageCodes.EmailAlreadyVerified);
-                }
-
-                user.EmailConfirmed = true;
-
-                _postgresDbContext.Update(user);
-
-                await _postgresDbContext.SaveChangesAsync(cancellationToken);
-                await transaction.CommitAsync(cancellationToken);
-
-                return VerifyEmailResponse.SuccessResponse;
+                throw new BusinessException(ResponseMessageCodes.UserNotFound);
             }
-            catch (Exception)
+
+            if (user.Email != request.Email)
             {
-                await transaction.RollbackAsync(cancellationToken);
-                throw new BusinessException(ResponseMessageCodes.DatabaseError);
+                throw new BusinessException(ResponseMessageCodes.InvalidEmail);
             }
-            
+
+            if (user.EmailConfirmed)
+            {
+                throw new BusinessException(ResponseMessageCodes.EmailAlreadyVerified);
+            }
+
+            user.EmailConfirmed = true;
+
+            _postgresDbContext.Update(user);
+
+            await _postgresDbContext.SaveChangesAsync(cancellationToken);
+
+            return VerifyEmailResponse.SuccessResponse;
         }
     }
 }

@@ -27,57 +27,45 @@ namespace MangoAPI.BusinessLogic.ApiCommandHandlers.Chats
 
         public async Task<JoinChatResponse> Handle(JoinChatCommand request, CancellationToken cancellationToken)
         {
-            await using var transaction = await _postgresDbContext.Database.BeginTransactionAsync(cancellationToken);
-            try
+            var currentUser = await _userManager.FindByIdAsync(request.UserId);
+
+            if (currentUser == null)
             {
-                var currentUser = await _userManager.FindByIdAsync(request.UserId);
-
-                if (currentUser == null)
-                {
-                    throw new BusinessException(ResponseMessageCodes.UserNotFound);
-                }
-
-                var alreadyJoined = await
-                    _postgresDbContext.UserChats.AnyAsync(x =>
-                        x.UserId == currentUser.Id && x.ChatId == request.ChatId, cancellationToken);
-
-                if (alreadyJoined)
-                {
-                    throw new BusinessException(ResponseMessageCodes.UserAlreadyJoinedGroup);
-                }
-
-                var chat = await _postgresDbContext.Chats
-                    .FirstOrDefaultAsync(x =>
-                        x.Id == request.ChatId && x.ChatType != ChatType.DirectChat &&
-                        x.ChatType != ChatType.PrivateChannel, cancellationToken);
-
-                if (chat == null)
-                {
-                    throw new BusinessException(ResponseMessageCodes.ChatNotFound);
-                }
-
-                await _postgresDbContext.UserChats.AddAsync(new UserChatEntity
-                {
-                    ChatId = request.ChatId,
-                    UserId = currentUser.Id,
-                    RoleId = UserRole.User
-                }, cancellationToken);
-
-                chat.MembersCount += 1;
-
-                _postgresDbContext.Update(chat);
-                await _postgresDbContext.SaveChangesAsync(cancellationToken);
-                await transaction.CommitAsync(cancellationToken);
-
-                return JoinChatResponse.SuccessResponse;
+                throw new BusinessException(ResponseMessageCodes.UserNotFound);
             }
-            catch (Exception)
+
+            var alreadyJoined = await
+                _postgresDbContext.UserChats.AnyAsync(x =>
+                    x.UserId == currentUser.Id && x.ChatId == request.ChatId, cancellationToken);
+
+            if (alreadyJoined)
             {
-                await transaction.RollbackAsync(cancellationToken);
-                throw new BusinessException(ResponseMessageCodes.DatabaseError);
+                throw new BusinessException(ResponseMessageCodes.UserAlreadyJoinedGroup);
             }
-            
-            
+
+            var chat = await _postgresDbContext.Chats
+                .FirstOrDefaultAsync(x =>
+                    x.Id == request.ChatId && x.ChatType != ChatType.DirectChat &&
+                    x.ChatType != ChatType.PrivateChannel, cancellationToken);
+
+            if (chat == null)
+            {
+                throw new BusinessException(ResponseMessageCodes.ChatNotFound);
+            }
+
+            await _postgresDbContext.UserChats.AddAsync(new UserChatEntity
+            {
+                ChatId = request.ChatId,
+                UserId = currentUser.Id,
+                RoleId = UserRole.User
+            }, cancellationToken);
+
+            chat.MembersCount += 1;
+
+            _postgresDbContext.Update(chat);
+            await _postgresDbContext.SaveChangesAsync(cancellationToken);
+
+            return JoinChatResponse.SuccessResponse;
         }
     }
 }

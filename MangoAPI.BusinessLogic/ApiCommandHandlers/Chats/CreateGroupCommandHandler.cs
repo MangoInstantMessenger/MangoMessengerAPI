@@ -27,43 +27,32 @@ namespace MangoAPI.BusinessLogic.ApiCommandHandlers.Chats
         public async Task<CreateChatEntityResponse> Handle(CreateGroupCommand request,
             CancellationToken cancellationToken)
         {
-            await using var transaction = await _postgresDbContext.Database.BeginTransactionAsync(cancellationToken);
-            try
+            var user = await _userManager.FindByIdAsync(request.UserId);
+
+            if (user is null)
             {
-                var user = await _userManager.FindByIdAsync(request.UserId);
-
-                if (user is null)
-                {
-                    throw new BusinessException(ResponseMessageCodes.UserNotFound);
-                }
-
-                var group = new ChatEntity
-                {
-                    Id = Guid.NewGuid().ToString(),
-                    ChatType = request.GroupType,
-                    Title = request.GroupTitle,
-                    Created = DateTime.UtcNow,
-                    MembersCount = 1
-                };
-
-                await _postgresDbContext.Chats.AddAsync(group, cancellationToken);
-
-                _postgresDbContext.UserChats.Add(new UserChatEntity
-                {
-                    ChatId = group.Id, RoleId = UserRole.Owner, UserId = user.Id
-                });
-
-                await _postgresDbContext.SaveChangesAsync(cancellationToken);
-                await transaction.CommitAsync(cancellationToken);
-
-                return CreateChatEntityResponse.FromSuccess(group);
+                throw new BusinessException(ResponseMessageCodes.UserNotFound);
             }
-            catch (Exception)
+
+            var group = new ChatEntity
             {
-                await transaction.RollbackAsync(cancellationToken);
-                throw new BusinessException(ResponseMessageCodes.DatabaseError);
-            }
-            
+                Id = Guid.NewGuid().ToString(),
+                ChatType = request.GroupType,
+                Title = request.GroupTitle,
+                Created = DateTime.UtcNow,
+                MembersCount = 1
+            };
+
+            await _postgresDbContext.Chats.AddAsync(group, cancellationToken);
+
+            _postgresDbContext.UserChats.Add(new UserChatEntity
+            {
+                ChatId = group.Id, RoleId = UserRole.Owner, UserId = user.Id
+            });
+
+            await _postgresDbContext.SaveChangesAsync(cancellationToken);
+
+            return CreateChatEntityResponse.FromSuccess(group);
         }
     }
 }
