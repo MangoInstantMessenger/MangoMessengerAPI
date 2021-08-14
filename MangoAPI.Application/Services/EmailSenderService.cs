@@ -60,7 +60,7 @@ namespace MangoAPI.Application.Services
                 "<body>" +
                 $"<p>Hi, {user.DisplayName}, please follow this link.</p>" +
                 "<br>" +
-                $"<a href='{EnvironmentConstants.MangoApiDomain}/api/auth/verify-email?email={user.Email}&userId={user.Id}'>" +
+                $"<a href='{EnvironmentConstants.FrontendAddress}/verify-email?email={user.Email}&userId={user.Id}'>" +
                 "Verify email" +
                 "</a>" +
                 "</body>";

@@ -20,12 +20,12 @@
 
 - `MANGO_ISSUER`, `https://localhost:5001`
 - `MANGO_AUDIENCE`, `https://localhost:5000`
-- `MANGO_TOKEN_KEY`, `random string`
+- `MANGO_TOKEN_KEY`, `Private RSA key`
 - `JWT_LIFETIME`, integer
 - `REFRESH_TOKEN_LIFETIME`, integer
 - `EMAIL_SENDER_ADDRESS`, string
 - `EMAIL_SENDER_PASSWORD`, string
-- `MANGO_API_DOMAIN`, string (deployed API address)
+- `FRONTEND_ADDRESS`, string (default http://localhost:4200/)
 
 ## About tasks management
 - Each task is assigned a number (MANGO-ID)
@@ -42,7 +42,7 @@
   - Create pull request to develop
   
 ## Commit messages
-- In case of bug fix, example of commit message `fix: some bug fixed`
+- In case of bug fix, example of commit message `bugfix: some bug fixed`
 - In case of feature, example of commit message `feature: some new functionality added`
 - In case of refactor, example of commit message `refactor: some code part refactored`
 
