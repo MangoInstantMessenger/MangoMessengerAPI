@@ -10,12 +10,13 @@ using NUnit.Framework;
 namespace MangoAPI.Tests.CommandHandlerTests.Contacts
 {
     [TestFixture]
-    public class AddContactCommandHandlerTest : DbContextFixture
+    public class AddContactCommandHandlerTest
     {
         [Test]
-        public async Task AddContactCommandHandlerTest_200()
+        public async Task AddContactCommandHandlerTest_Success()
         {
-            var handler = new AddContactCommandHandler(PostgresDbContext);
+            using var dbContextFixture = new DbContextFixture();
+            var handler = new AddContactCommandHandler(dbContextFixture.PostgresDbContext);
             var command = new AddContactCommand
             {
                 UserId = "1",
@@ -28,9 +29,10 @@ namespace MangoAPI.Tests.CommandHandlerTests.Contacts
         }
 
         [Test]
-        public async Task AddContactCommandHandlerTest_409()
+        public async Task AddContactCommandHandlerTest_ShouldThrowUserNotFound()
         {
-            var handler = new AddContactCommandHandler(PostgresDbContext);
+            using var dbContextFixture = new DbContextFixture();
+            var handler = new AddContactCommandHandler(dbContextFixture.PostgresDbContext);
             var command = new AddContactCommand
             {
                 UserId = "123",
@@ -40,7 +42,25 @@ namespace MangoAPI.Tests.CommandHandlerTests.Contacts
             Func<Task> result = async () => await handler.Handle(command, CancellationToken.None);
 
             await result.Should().ThrowAsync<BusinessException>()
-                .WithMessage("CONTACT_NOT_FOUND");
+                .WithMessage("USER_NOT_FOUND");
+        }
+        
+        [Test]
+        public async Task AddContactCommandHandlerTest_ShouldThrowContactAlreadyExists()
+        {
+            using var dbContextFixture = new DbContextFixture();
+            var handler = new AddContactCommandHandler(dbContextFixture.PostgresDbContext);
+            var command = new AddContactCommand
+            {
+                UserId = "1",
+                ContactId = "2"
+            };
+
+            await handler.Handle(command, CancellationToken.None);
+            Func<Task> result = async () => await handler.Handle(command, CancellationToken.None);
+
+            await result.Should().ThrowAsync<BusinessException>()
+                .WithMessage("CONTACT_ALREADY_EXISTS");
         }
     }
 }
