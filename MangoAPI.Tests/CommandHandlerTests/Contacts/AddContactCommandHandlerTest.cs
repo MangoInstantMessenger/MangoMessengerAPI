@@ -10,7 +10,7 @@ using NUnit.Framework;
 namespace MangoAPI.Tests.CommandHandlerTests.Contacts
 {
     [TestFixture]
-    public class AddContactCommandHandlerTest : TestBase
+    public class AddContactCommandHandlerTest : DbContextFixture
     {
         [Test]
         public async Task AddContactCommandHandlerTest_200()

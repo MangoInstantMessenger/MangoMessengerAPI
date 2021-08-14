@@ -1,15 +1,16 @@
-﻿using MangoAPI.DataAccess.Database;
+﻿using System;
+using MangoAPI.DataAccess.Database;
 using MangoAPI.Domain.Entities;
 using MangoAPI.Domain.Enums;
 using Microsoft.EntityFrameworkCore;
 
 namespace MangoAPI.Tests
 {
-    public class TestBase
+    public class DbContextFixture : IDisposable
     {
-        protected MangoPostgresDbContext PostgresDbContext { get; }
+        public MangoPostgresDbContext PostgresDbContext { get; }
 
-        protected TestBase()
+        public DbContextFixture()
         {
             var options = new DbContextOptionsBuilder<MangoPostgresDbContext>()
                 .UseInMemoryDatabase("MangoApiDatabase")
@@ -122,6 +123,12 @@ namespace MangoAPI.Tests
                     Content = "hello world"
                 }
             );
+        }
+
+        public void Dispose()
+        {
+            PostgresDbContext.Database.EnsureDeleted();
+            PostgresDbContext.Dispose();
         }
     }
 }

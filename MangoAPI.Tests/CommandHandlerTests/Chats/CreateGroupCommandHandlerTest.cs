@@ -11,12 +11,13 @@ using NUnit.Framework;
 namespace MangoAPI.Tests.CommandHandlerTests.Chats
 {
     [TestFixture]
-    public class CreateGroupCommandHandlerTest : TestBase
+    public class CreateGroupCommandHandlerTest
     {
         [Test]
-        public async Task CreateGroupCommandHandler_200Test()
+        public async Task CreateGroupCommandHandlerTest_Success()
         {
-            var handler = new CreateGroupCommandHandler(PostgresDbContext);
+            using var dbContextFixture = new DbContextFixture();
+            var handler = new CreateGroupCommandHandler(dbContextFixture.PostgresDbContext);
             var command = new CreateGroupCommand
             {
                 UserId = "1",
@@ -30,9 +31,10 @@ namespace MangoAPI.Tests.CommandHandlerTests.Chats
         }
 
         [Test]
-        public async Task CreateGroupCommandHandler_409Test()
+        public async Task CreateGroupCommandHandlerTest_ShouldThrowUserNotFound()
         {
-            var handler = new CreateGroupCommandHandler(PostgresDbContext);
+            using var dbContextFixture = new DbContextFixture();
+            var handler = new CreateGroupCommandHandler(dbContextFixture.PostgresDbContext);
             var command = new CreateGroupCommand
             {
                 UserId = "12412512",

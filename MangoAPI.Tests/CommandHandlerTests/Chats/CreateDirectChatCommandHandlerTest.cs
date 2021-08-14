@@ -10,12 +10,13 @@ using NUnit.Framework;
 namespace MangoAPI.Tests.CommandHandlerTests.Chats
 {
     [TestFixture]
-    public class CreateDirectChatCommandHandlerTest : TestBase
+    public class CreateDirectChatCommandHandlerTest
     {
         [Test]
-        public async Task CreateDirectChatCommandHandler_200Test()
+        public async Task CreateDirectChatCommandHandlerTest_Success()
         {
-            var handler = new CreateDirectChatCommandHandler(PostgresDbContext);
+            using var dbContextFixture = new DbContextFixture();
+            var handler = new CreateDirectChatCommandHandler(dbContextFixture.PostgresDbContext);
             var createChatCommand = new CreateDirectChatCommand
             {
                 UserId = "1",
@@ -25,13 +26,13 @@ namespace MangoAPI.Tests.CommandHandlerTests.Chats
             var result = await handler.Handle(createChatCommand, CancellationToken.None);
 
             result.Success.Should().BeTrue();
-
         }
 
         [Test]
-        public async Task CreateDirectChatCommandHandler_409Test()
+        public async Task CreateDirectChatCommandHandler_ShouldThrowUserNotFound()
         {
-            var handler = new CreateDirectChatCommandHandler(PostgresDbContext);
+            using var dbContextFixture = new DbContextFixture();
+            var handler = new CreateDirectChatCommandHandler(dbContextFixture.PostgresDbContext);
             var createDirectChatCommand = new CreateDirectChatCommand
             {
                 UserId = "3421512523",
@@ -42,6 +43,24 @@ namespace MangoAPI.Tests.CommandHandlerTests.Chats
 
             await result.Should().ThrowAsync<BusinessException>()
                 .WithMessage("USER_NOT_FOUND");
+        }
+        
+        [Test]
+        public async Task CreateDirectChatCommandHandler_ShouldThrowAlreadyExists()
+        {
+            using var dbContextFixture = new DbContextFixture();
+            var handler = new CreateDirectChatCommandHandler(dbContextFixture.PostgresDbContext);
+            var createDirectChatCommand = new CreateDirectChatCommand
+            {
+                UserId = "1",
+                PartnerId = "2"
+            };
+
+            await handler.Handle(createDirectChatCommand, CancellationToken.None);
+            Func<Task> result = async () => await handler.Handle(createDirectChatCommand, CancellationToken.None);
+
+            await result.Should().ThrowAsync<BusinessException>()
+                .WithMessage("DIRECT_CHAT_ALREADY_EXISTS");
         }
     }
 }

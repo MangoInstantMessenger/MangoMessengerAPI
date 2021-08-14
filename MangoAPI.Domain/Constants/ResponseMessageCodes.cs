@@ -20,6 +20,5 @@
         public const string DirectChatAlreadyExists = "DIRECT_CHAT_ALREADY_EXISTS";
         public const string InvalidPhoneCode = "INVALID_PHONE_CODE";
         public const string ContactAlreadyExist = "CONTACT_ALREADY_EXISTS";
-        public const string DatabaseError = "DATABASE_ERROR";
     }
 }

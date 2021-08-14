@@ -8,7 +8,7 @@ using NUnit.Framework;
 namespace MangoAPI.Tests.QueryHandlerTests.Chats
 {
     [TestFixture]
-    public class GetCurrentUserChatsQueryHandlerTest : TestBase
+    public class GetCurrentUserChatsQueryHandlerTest : DbContextFixture
     {
         [Test]
         public async Task GetCurrentUserChatsQueryHandler_200Test()

@@ -10,7 +10,7 @@ using NUnit.Framework;
 namespace MangoAPI.Tests.CommandHandlerTests.Chats
 {
     [TestFixture]
-    public class JoinChatCommandHandlerTest : TestBase
+    public class JoinChatCommandHandlerTest : DbContextFixture
     {
         [Test]
         public async Task JoinChatCommandHandlerTest_200Test()

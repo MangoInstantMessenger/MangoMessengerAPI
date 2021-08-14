@@ -10,7 +10,7 @@ using NUnit.Framework;
 namespace MangoAPI.Tests.CommandHandlerTests.Messages
 {
     [TestFixture]
-    public class SendMessageCommandHandlerTest : TestBase
+    public class SendMessageCommandHandlerTest : DbContextFixture
     {
         [Test]
         public async Task SendMessageCommandHandlerTest_200Test()
