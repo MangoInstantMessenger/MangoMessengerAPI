@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 using FluentAssertions;
 using MangoAPI.BusinessLogic.ApiQueries.Users;
@@ -26,6 +27,7 @@ namespace MangoAPI.Tests.QueryHandlerTests.Chats
         [Test]
         public async Task GetCurrentUserChatsQueryHandlerTest_ShouldThrowUserNotFound()
         {
+            throw new NotImplementedException();
         }
     }
 }

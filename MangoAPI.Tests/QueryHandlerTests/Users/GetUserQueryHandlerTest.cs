@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using NUnit.Framework;
 
 namespace MangoAPI.Tests.QueryHandlerTests.Users
@@ -9,11 +10,13 @@ namespace MangoAPI.Tests.QueryHandlerTests.Users
         [Test]
         public async Task GetUserQueryHandlerTest_Success()
         {
+            throw new NotImplementedException();
         }
         
         [Test]
         public async Task GetUserQueryHandlerTest_ShouldThrowUserNotFound()
         {
+            throw new NotImplementedException();
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using NUnit.Framework;
 
 namespace MangoAPI.Tests.QueryHandlerTests.Chats
@@ -9,6 +10,7 @@ namespace MangoAPI.Tests.QueryHandlerTests.Chats
         [Test]
         public async Task SearchChatsQueryHandlerTest_Success()
         {
+            throw new NotImplementedException();
         }
     }
 }

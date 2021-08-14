@@ -50,37 +50,13 @@ namespace MangoAPI.Tests.CommandHandlerTests.Messages
         [Test]
         public async Task SendMessageCommandHandlerTest_ShouldThrowChatNotFound()
         {
-            using var dbContextFixture = new DbContextFixture();
-            var handler = new SendMessageCommandHandler(dbContextFixture.PostgresDbContext);
-            var command = new SendMessageCommand
-            {
-                UserId = "15",
-                ChatId = "24",
-                MessageText = "hello world"
-            };
-
-            Func<Task> result = async () => await handler.Handle(command, CancellationToken.None);
-
-            await result.Should().ThrowAsync<BusinessException>()
-                .WithMessage("CHAT_NOT_FOUND");
+            throw new NotImplementedException();
         }
 
         [Test]
         public async Task SendMessageCommandHandlerTest_ShouldThrowPermissionDenied()
         {
-            using var dbContextFixture = new DbContextFixture();
-            var handler = new SendMessageCommandHandler(dbContextFixture.PostgresDbContext);
-            var command = new SendMessageCommand
-            {
-                UserId = "15",
-                ChatId = "24",
-                MessageText = "hello world"
-            };
-
-            Func<Task> result = async () => await handler.Handle(command, CancellationToken.None);
-
-            await result.Should().ThrowAsync<BusinessException>()
-                .WithMessage("PERMISSION_DENIED");
+            throw new NotImplementedException();
         }
     }
 }

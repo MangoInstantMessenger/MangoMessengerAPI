@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using NUnit.Framework;
 
 namespace MangoAPI.Tests.QueryHandlerTests.Messages
@@ -9,16 +10,19 @@ namespace MangoAPI.Tests.QueryHandlerTests.Messages
         [Test]
         public async Task GetMessagesQueryHandlerTest_Success()
         {
+            throw new NotImplementedException();
         }
 
         [Test]
         public async Task GetMessagesQueryHandlerTest_ShouldThrowUserNotFound()
         {
+            throw new NotImplementedException();
         }
 
         [Test]
         public async Task GetMessagesQueryHandlerTest_ShouldThrowPermissionDenied()
         {
+            throw new NotImplementedException();
         }
     }
 }
