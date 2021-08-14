@@ -35,56 +35,45 @@ namespace MangoAPI.BusinessLogic.ApiCommandHandlers.Auth
 
         public async Task<LoginResponse> Handle(LoginCommand request, CancellationToken cancellationToken)
         {
-            await using var transaction = await _postgresDbContext.Database.BeginTransactionAsync(cancellationToken);
-            try
+            var user = await _userManager.FindByEmailAsync(request.Email);
+
+            if (user is null)
             {
-                var user = await _userManager.FindByEmailAsync(request.Email);
-
-                if (user is null)
-                {
-                    throw new BusinessException(ResponseMessageCodes.InvalidCredentials);
-                }
-
-                var result = await _signInManager.CheckPasswordSignInAsync(user, request.Password, false);
-
-                if (!result.Succeeded)
-                {
-                    throw new BusinessException(ResponseMessageCodes.InvalidCredentials);
-                }
-
-                if (!user.Verified)
-                {
-                    throw new BusinessException(ResponseMessageCodes.UserNotVerified);
-                }
-
-                var refreshToken = _jwtGenerator.GenerateRefreshToken();
-
-                var jwtToken = _jwtGenerator.GenerateJwtToken(user);
-
-                refreshToken.UserId = user.Id;
-
-                var userRefreshTokens = _postgresDbContext.RefreshTokens
-                    .Where(x => x.UserId == user.Id);
-
-                var userTokensCount = await userRefreshTokens.CountAsync(cancellationToken);
-
-                if (userTokensCount >= 5)
-                {
-                    _postgresDbContext.RefreshTokens.RemoveRange(userRefreshTokens);
-                }
-
-                await _postgresDbContext.RefreshTokens.AddAsync(refreshToken, cancellationToken);
-                await _postgresDbContext.SaveChangesAsync(cancellationToken);
-                await transaction.CommitAsync(cancellationToken);
-                
-                return LoginResponse.FromSuccess(jwtToken, refreshToken.Id, user.Id);
-            }
-            catch (Exception)
-            {
-                await transaction.RollbackAsync(cancellationToken);
-                throw new BusinessException(ResponseMessageCodes.DatabaseError);
+                throw new BusinessException(ResponseMessageCodes.InvalidCredentials);
             }
 
+            var result = await _signInManager.CheckPasswordSignInAsync(user, request.Password, false);
+
+            if (!result.Succeeded)
+            {
+                throw new BusinessException(ResponseMessageCodes.InvalidCredentials);
+            }
+
+            if (!user.Verified)
+            {
+                throw new BusinessException(ResponseMessageCodes.UserNotVerified);
+            }
+
+            var refreshToken = _jwtGenerator.GenerateRefreshToken();
+
+            var jwtToken = _jwtGenerator.GenerateJwtToken(user);
+
+            refreshToken.UserId = user.Id;
+
+            var userRefreshTokens = _postgresDbContext.RefreshTokens
+                .Where(x => x.UserId == user.Id);
+
+            var userTokensCount = await userRefreshTokens.CountAsync(cancellationToken);
+
+            if (userTokensCount >= 5)
+            {
+                _postgresDbContext.RefreshTokens.RemoveRange(userRefreshTokens);
+            }
+
+            await _postgresDbContext.RefreshTokens.AddAsync(refreshToken, cancellationToken);
+            await _postgresDbContext.SaveChangesAsync(cancellationToken);
+
+            return LoginResponse.FromSuccess(jwtToken, refreshToken.Id, user.Id);
         }
     }
 }
