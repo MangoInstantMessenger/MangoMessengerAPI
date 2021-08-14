@@ -1,0 +1,39 @@
+﻿using System.Threading;
+using System.Threading.Tasks;
+using FluentAssertions;
+using MangoAPI.BusinessLogic.ApiCommandHandlers.Chats;
+using MangoAPI.BusinessLogic.ApiCommands.Chats;
+using NUnit.Framework;
+
+namespace MangoAPI.Tests.CommandHandlerTests.Chats
+{
+    [TestFixture]
+    public class CreateDirectChatCommandHandlerTest : TestBase
+    {
+        [Test]
+        public async Task CreateDirectChatCommandHandler_200Test()
+        {
+            var handler = new CreateDirectChatCommandHandler(PostgresDbContext);
+            var createChatCommand = new CreateDirectChatCommand
+            {
+                UserId = "1",
+                PartnerId = "2"
+            };
+
+            var result = await handler.Handle(createChatCommand, CancellationToken.None);
+
+            result.Success.Should().BeTrue();
+
+        }
+
+        [Test]
+        public async Task CreateDirectChatCommandHandler_400Test()
+        {
+        }
+
+        [Test]
+        public async Task CreateDirectChatCommandHandler_409Test()
+        {
+        }
+    }
+}
