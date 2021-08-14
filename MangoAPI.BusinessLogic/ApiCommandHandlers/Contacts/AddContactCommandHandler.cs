@@ -25,47 +25,36 @@ namespace MangoAPI.BusinessLogic.ApiCommandHandlers.Contacts
             _postgresDbContext = postgresDbContext;
             _userManager = userManager;
         }
-        
+
         public async Task<AddContactResponse> Handle(AddContactCommand request, CancellationToken cancellationToken)
         {
-            await using var transaction = await _postgresDbContext.Database.BeginTransactionAsync(cancellationToken);
-            try
+            var contact = await _userManager.FindByIdAsync(request.ContactId);
+
+            if (contact is null)
             {
-                var contact = await _userManager.FindByIdAsync(request.ContactId);
-
-                if (contact is null)
-                {
-                    throw new BusinessException(ResponseMessageCodes.UserNotFound);
-                }
-
-                var contactEntity = new UserContactEntity()
-                {
-                    Id = Guid.NewGuid().ToString(),
-                    ContactId = request.ContactId,
-                    UserId = request.UserId
-                };
-
-                var userContactExist = await _postgresDbContext.UserContacts
-                    .Where(x => x.UserId == request.UserId)
-                    .AnyAsync(x => x.ContactId == contact.Id, cancellationToken);
-
-                if (userContactExist)
-                {
-                    throw new BusinessException(ResponseMessageCodes.ContactAlreadyExist);
-                }
-
-                await _postgresDbContext.UserContacts.AddAsync(contactEntity, cancellationToken);
-                await _postgresDbContext.SaveChangesAsync(cancellationToken);
-                await transaction.CommitAsync(cancellationToken);
-            
-                return AddContactResponse.SuccessResponse;
+                throw new BusinessException(ResponseMessageCodes.UserNotFound);
             }
-            catch (Exception)
+
+            var contactEntity = new UserContactEntity()
             {
-                await transaction.RollbackAsync(cancellationToken);
-                throw new BusinessException(ResponseMessageCodes.DatabaseError);
+                Id = Guid.NewGuid().ToString(),
+                ContactId = request.ContactId,
+                UserId = request.UserId
+            };
+
+            var userContactExist = await _postgresDbContext.UserContacts
+                .Where(x => x.UserId == request.UserId)
+                .AnyAsync(x => x.ContactId == contact.Id, cancellationToken);
+
+            if (userContactExist)
+            {
+                throw new BusinessException(ResponseMessageCodes.ContactAlreadyExist);
             }
-            
+
+            await _postgresDbContext.UserContacts.AddAsync(contactEntity, cancellationToken);
+            await _postgresDbContext.SaveChangesAsync(cancellationToken);
+
+            return AddContactResponse.SuccessResponse;
         }
     }
 }

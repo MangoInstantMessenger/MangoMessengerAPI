@@ -29,53 +29,42 @@ namespace MangoAPI.BusinessLogic.ApiCommandHandlers.Messages
 
         public async Task<SendMessageResponse> Handle(SendMessageCommand request, CancellationToken cancellationToken)
         {
-            await using var transaction = await _postgresDbContext.Database.BeginTransactionAsync(cancellationToken);
-            try
+            var user = await _userManager.FindByIdAsync(request.UserId);
+
+            if (user == null)
             {
-                var user = await _userManager.FindByIdAsync(request.UserId);
-
-                if (user == null)
-                {
-                    throw new BusinessException(ResponseMessageCodes.UserNotFound);
-                }
-
-                var chat = await _postgresDbContext.Chats.FirstOrDefaultAsync(x => x.Id == request.ChatId,
-                    cancellationToken);
-
-                if (chat == null)
-                {
-                    throw new BusinessException(ResponseMessageCodes.ChatNotFound);
-                }
-
-                var permitted = await CheckUserPermissions(user, chat, cancellationToken);
-
-                if (!permitted)
-                {
-                    throw new BusinessException(ResponseMessageCodes.PermissionDenied);
-                }
-
-                var messageEntity = new MessageEntity
-                {
-                    Id = Guid.NewGuid().ToString(),
-                    ChatId = request.ChatId,
-                    UserId = request.UserId,
-                    Content = request.MessageText,
-                    Created = DateTime.UtcNow,
-                    Updated = DateTime.UtcNow
-                };
-
-                await _postgresDbContext.Messages.AddAsync(messageEntity, cancellationToken);
-                await _postgresDbContext.SaveChangesAsync(cancellationToken);
-                await transaction.CommitAsync(cancellationToken);
-
-                return SendMessageResponse.FromSuccess(messageEntity.Id);
+                throw new BusinessException(ResponseMessageCodes.UserNotFound);
             }
-            catch (Exception)
+
+            var chat = await _postgresDbContext.Chats.FirstOrDefaultAsync(x => x.Id == request.ChatId,
+                cancellationToken);
+
+            if (chat == null)
             {
-                await transaction.RollbackAsync(cancellationToken);
-                throw new BusinessException(ResponseMessageCodes.DatabaseError);
+                throw new BusinessException(ResponseMessageCodes.ChatNotFound);
             }
-            
+
+            var permitted = await CheckUserPermissions(user, chat, cancellationToken);
+
+            if (!permitted)
+            {
+                throw new BusinessException(ResponseMessageCodes.PermissionDenied);
+            }
+
+            var messageEntity = new MessageEntity
+            {
+                Id = Guid.NewGuid().ToString(),
+                ChatId = request.ChatId,
+                UserId = request.UserId,
+                Content = request.MessageText,
+                Created = DateTime.UtcNow,
+                Updated = DateTime.UtcNow
+            };
+
+            await _postgresDbContext.Messages.AddAsync(messageEntity, cancellationToken);
+            await _postgresDbContext.SaveChangesAsync(cancellationToken);
+
+            return SendMessageResponse.FromSuccess(messageEntity.Id);
         }
 
         private async Task<bool> CheckUserPermissions(UserEntity user, ChatEntity chat,

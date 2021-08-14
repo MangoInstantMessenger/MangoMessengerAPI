@@ -26,35 +26,25 @@ namespace MangoAPI.BusinessLogic.ApiCommandHandlers.Auth
 
         public async Task<LogoutResponse> Handle(LogoutCommand request, CancellationToken cancellationToken)
         {
-            await using var transaction = await _postgresDbContext.Database.BeginTransactionAsync(cancellationToken);
-            try
+            var token = await _postgresDbContext.RefreshTokens
+                .FirstOrDefaultAsync(x => x.Id == request.RefreshTokenId, cancellationToken);
+
+            if (token is null)
             {
-                var token = await _postgresDbContext.RefreshTokens
-                    .FirstOrDefaultAsync(x => x.Id == request.RefreshTokenId, cancellationToken);
-
-                if (token is null)
-                {
-                    throw new BusinessException(ResponseMessageCodes.InvalidOrExpiredRefreshToken);
-                }
-
-                var user = await _userManager.FindByIdAsync(token.UserId);
-
-                if (user is null || token.UserId != user.Id)
-                {
-                    throw new BusinessException(ResponseMessageCodes.UserNotFound);
-                }
-
-                _postgresDbContext.RefreshTokens.Remove(token);
-                await _postgresDbContext.SaveChangesAsync(cancellationToken);
-                await transaction.CommitAsync(cancellationToken);
-
-                return LogoutResponse.SuccessResponse;
+                throw new BusinessException(ResponseMessageCodes.InvalidOrExpiredRefreshToken);
             }
-            catch (Exception)
+
+            var user = await _userManager.FindByIdAsync(token.UserId);
+
+            if (user is null || token.UserId != user.Id)
             {
-                await transaction.RollbackAsync(cancellationToken);
-                throw new BusinessException(ResponseMessageCodes.DatabaseError);
+                throw new BusinessException(ResponseMessageCodes.UserNotFound);
             }
+
+            _postgresDbContext.RefreshTokens.Remove(token);
+            await _postgresDbContext.SaveChangesAsync(cancellationToken);
+
+            return LogoutResponse.SuccessResponse;
         }
     }
 }
