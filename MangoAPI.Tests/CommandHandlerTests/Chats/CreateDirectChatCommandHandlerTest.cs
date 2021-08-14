@@ -29,11 +29,6 @@ namespace MangoAPI.Tests.CommandHandlerTests.Chats
         }
 
         [Test]
-        public async Task CreateDirectChatCommandHandler_400Test()
-        {
-        }
-
-        [Test]
         public async Task CreateDirectChatCommandHandler_409Test()
         {
             var handler = new CreateDirectChatCommandHandler(PostgresDbContext);
@@ -45,7 +40,7 @@ namespace MangoAPI.Tests.CommandHandlerTests.Chats
 
             Func<Task> result = async () => await handler.Handle(createDirectChatCommand, CancellationToken.None);
 
-            result.Should().ThrowAsync<BusinessException>()
+            await result.Should().ThrowAsync<BusinessException>()
                 .WithMessage("USER_NOT_FOUND");
         }
     }

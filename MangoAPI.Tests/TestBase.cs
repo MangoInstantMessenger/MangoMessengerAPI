@@ -16,6 +16,7 @@ namespace MangoAPI.Tests
                 .Options;
 
             PostgresDbContext = new MangoPostgresDbContext(options);
+            PostgresDbContext.Database.EnsureDeleted();
             SeedUsers();
             SeedChats();
             SeedUserChat();
@@ -52,7 +53,7 @@ namespace MangoAPI.Tests
                     Title = "Extreme Code Flood",
                     Id = "4"
                 }
-                );
+            );
 
             PostgresDbContext.SaveChanges();
         }
@@ -60,25 +61,25 @@ namespace MangoAPI.Tests
         private void SeedUserChat()
         {
             PostgresDbContext.UserChats.AddRange(
-                new UserChatEntity()
+                new UserChatEntity
                 {
                     ChatId = "3",
                     UserId = "1",
                     RoleId = UserRole.User
                 },
-                new UserChatEntity()
+                new UserChatEntity
                 {
                     ChatId = "3",
                     UserId = "2",
                     RoleId = UserRole.User
                 },
-                new UserChatEntity()
+                new UserChatEntity
                 {
                     ChatId = "4",
                     UserId = "1",
                     RoleId = UserRole.User
                 },
-                new UserChatEntity()
+                new UserChatEntity
                 {
                     ChatId = "4",
                     UserId = "2",
@@ -92,35 +93,35 @@ namespace MangoAPI.Tests
         private void SeedMessages()
         {
             PostgresDbContext.Messages.AddRange(
-                    new MessageEntity
-                    {
-                        Id = "5",
-                        ChatId = "3",
-                        UserId = "1",
-                        Content = "hello world"
-                    },
-                    new MessageEntity
-                    {
-                        Id = "6",
-                        ChatId = "3",
-                        UserId = "2",
-                        Content = "hello world"
-                    },
-                    new MessageEntity
-                    {
-                        Id = "7",
-                        ChatId = "4",
-                        UserId = "1",
-                        Content = "hello world"
-                    },
-                    new MessageEntity
-                    {
-                        Id = "8",
-                        ChatId = "4",
-                        UserId = "2",
-                        Content = "hello world"
-                    }
-                );
+                new MessageEntity
+                {
+                    Id = "5",
+                    ChatId = "3",
+                    UserId = "1",
+                    Content = "hello world"
+                },
+                new MessageEntity
+                {
+                    Id = "6",
+                    ChatId = "3",
+                    UserId = "2",
+                    Content = "hello world"
+                },
+                new MessageEntity
+                {
+                    Id = "7",
+                    ChatId = "4",
+                    UserId = "1",
+                    Content = "hello world"
+                },
+                new MessageEntity
+                {
+                    Id = "8",
+                    ChatId = "4",
+                    UserId = "2",
+                    Content = "hello world"
+                }
+            );
         }
     }
 }

@@ -5,7 +5,6 @@ using FluentAssertions;
 using MangoAPI.BusinessLogic.ApiCommandHandlers.Messages;
 using MangoAPI.BusinessLogic.ApiCommands.Messages;
 using MangoAPI.BusinessLogic.BusinessExceptions;
-using Microsoft.AspNetCore.Identity;
 using NUnit.Framework;
 
 namespace MangoAPI.Tests.CommandHandlerTests.Messages
@@ -30,12 +29,6 @@ namespace MangoAPI.Tests.CommandHandlerTests.Messages
         }
 
         [Test]
-        public async Task EditMessageCommandHandlerTest_400Test()
-        {
-            
-        }
-
-        [Test]
         public async Task EditMessageCommandHandlerTest_409Test()
         {
             var handler = new EditMessageCommandHandler(PostgresDbContext);
@@ -47,7 +40,7 @@ namespace MangoAPI.Tests.CommandHandlerTests.Messages
 
             Func<Task> result = async () => await handler.Handle(command, CancellationToken.None);
 
-            result.Should().ThrowAsync<BusinessException>()
+            await result.Should().ThrowAsync<BusinessException>()
                 .WithMessage("MESSAGE_NOT_FOUND");
         }
     }

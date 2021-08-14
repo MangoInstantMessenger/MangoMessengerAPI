@@ -29,12 +29,6 @@ namespace MangoAPI.Tests.CommandHandlerTests.Messages
         }
 
         [Test]
-        public async Task SendMessageCommandHandlerTest_400Test()
-        {
-            
-        }
-
-        [Test]
         public async Task SendMessageCommandHandlerTest_409Test()
         {
             var handler = new SendMessageCommandHandler(PostgresDbContext);
@@ -47,7 +41,7 @@ namespace MangoAPI.Tests.CommandHandlerTests.Messages
             
             Func<Task> result = async () => await handler.Handle(command, CancellationToken.None);
 
-            result.Should().ThrowAsync<BusinessException>()
+            await result.Should().ThrowAsync<BusinessException>()
                 .WithMessage("PERMISSION_DENIED");
         }
     }

@@ -28,11 +28,6 @@ namespace MangoAPI.Tests.CommandHandlerTests.Contacts
         }
 
         [Test]
-        public async Task AddContactCommandHandlerTest_400()
-        {
-        }
-
-        [Test]
         public async Task AddContactCommandHandlerTest_409()
         {
             var handler = new AddContactCommandHandler(PostgresDbContext);
@@ -42,9 +37,9 @@ namespace MangoAPI.Tests.CommandHandlerTests.Contacts
                 ContactId = "212"
             };
 
-            Func<Task> result = async () => handler.Handle(command, CancellationToken.None);
+            Func<Task> result = async () => await handler.Handle(command, CancellationToken.None);
 
-            result.Should().ThrowAsync<BusinessException>()
+            await result.Should().ThrowAsync<BusinessException>()
                 .WithMessage("CONTACT_NOT_FOUND");
         }
     }

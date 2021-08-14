@@ -27,11 +27,6 @@ namespace MangoAPI.Tests.CommandHandlerTests.Chats
             result.Success.Should().BeTrue();
         }
 
-        public async Task JoinChatCommandHandler_400Test()
-        {
-            
-        }
-
         [Test]
         public async Task JoinChatCommandHandler_409Test()
         {
@@ -44,7 +39,7 @@ namespace MangoAPI.Tests.CommandHandlerTests.Chats
 
             Func<Task> result = async () => await handler.Handle(command, CancellationToken.None);
 
-            result.Should().ThrowAsync<BusinessException>();
+            await result.Should().ThrowAsync<BusinessException>();
         }
     }
 }

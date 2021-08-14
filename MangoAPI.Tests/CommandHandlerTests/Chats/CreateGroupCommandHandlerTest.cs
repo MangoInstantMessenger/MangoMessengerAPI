@@ -30,12 +30,6 @@ namespace MangoAPI.Tests.CommandHandlerTests.Chats
         }
 
         [Test]
-        public async Task CreateGroupCommandHandler_400Test()
-        {
-            
-        }
-
-        [Test]
         public async Task CreateGroupCommandHandler_409Test()
         {
             var handler = new CreateGroupCommandHandler(PostgresDbContext);
@@ -48,7 +42,7 @@ namespace MangoAPI.Tests.CommandHandlerTests.Chats
 
             Func<Task> result = async () => await handler.Handle(command, CancellationToken.None);
 
-            result.Should().ThrowAsync<BusinessException>()
+            await result.Should().ThrowAsync<BusinessException>()
                 .WithMessage("USER_NOT_FOUND");
         }
     }
