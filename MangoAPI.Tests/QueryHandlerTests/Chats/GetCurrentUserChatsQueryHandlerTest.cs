@@ -8,18 +8,24 @@ using NUnit.Framework;
 namespace MangoAPI.Tests.QueryHandlerTests.Chats
 {
     [TestFixture]
-    public class GetCurrentUserChatsQueryHandlerTest : DbContextFixture
+    public class GetCurrentUserChatsQueryHandlerTest
     {
         [Test]
-        public async Task GetCurrentUserChatsQueryHandler_200Test()
+        public async Task GetCurrentUserChatsQueryHandlerTest_Success()
         {
+            using var dbContextFixture = new DbContextFixture();
             var query = new GetCurrentUserChatsQuery {UserId = "1"};
-            var handler = new GetCurrentUserChatsQueryHandler(PostgresDbContext);
+            var handler = new GetCurrentUserChatsQueryHandler(dbContextFixture.PostgresDbContext);
             
             var response = await handler.Handle(query, CancellationToken.None);
 
             response.Success.Should().BeTrue();
-            response.Chats.Should().HaveCount(0);
+            response.Chats.Should().NotBeEmpty();
+        }
+        
+        [Test]
+        public async Task GetCurrentUserChatsQueryHandlerTest_ShouldThrowUserNotFound()
+        {
         }
     }
 }
