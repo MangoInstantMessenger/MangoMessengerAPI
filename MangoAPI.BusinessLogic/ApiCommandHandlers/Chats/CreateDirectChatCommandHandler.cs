@@ -18,26 +18,23 @@ namespace MangoAPI.BusinessLogic.ApiCommandHandlers.Chats
     public class CreateDirectChatCommandHandler : IRequestHandler<CreateDirectChatCommand, CreateChatEntityResponse>
     {
         private readonly MangoPostgresDbContext _postgresDbContext;
-        private readonly UserManager<UserEntity> _userManager;
 
-        public CreateDirectChatCommandHandler(MangoPostgresDbContext postgresDbContext,
-            UserManager<UserEntity> userManager)
+        public CreateDirectChatCommandHandler(MangoPostgresDbContext postgresDbContext)
         {
             _postgresDbContext = postgresDbContext;
-            _userManager = userManager;
         }
 
         public async Task<CreateChatEntityResponse> Handle(CreateDirectChatCommand request,
             CancellationToken cancellationToken)
         {
-            var partner = await _userManager.FindByIdAsync(request.PartnerId);
+            var partner = await _postgresDbContext.Users.FirstOrDefaultAsync(x => x.Id == request.PartnerId, cancellationToken);
 
             if (partner is null)
             {
                 throw new BusinessException(ResponseMessageCodes.UserNotFound);
             }
 
-            var currentUser = await _userManager.FindByIdAsync(request.UserId);
+            var currentUser = await _postgresDbContext.Users.FirstOrDefaultAsync(x => x.Id == request.UserId, cancellationToken);
 
             var directChat = new ChatEntity
             {

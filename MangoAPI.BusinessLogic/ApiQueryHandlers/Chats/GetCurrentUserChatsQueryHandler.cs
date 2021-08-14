@@ -17,19 +17,17 @@ namespace MangoAPI.BusinessLogic.ApiQueryHandlers.Chats
         GetCurrentUserChatsQueryHandler : IRequestHandler<GetCurrentUserChatsQuery, GetCurrentUserChatsResponse>
     {
         private readonly MangoPostgresDbContext _postgresDbContext;
-        private readonly UserManager<UserEntity> _userManager;
 
-        public GetCurrentUserChatsQueryHandler(MangoPostgresDbContext postgresDbContext,
-            UserManager<UserEntity> userManager)
+        public GetCurrentUserChatsQueryHandler(MangoPostgresDbContext postgresDbContext)
         {
             _postgresDbContext = postgresDbContext;
-            _userManager = userManager;
         }
 
         public async Task<GetCurrentUserChatsResponse> Handle(GetCurrentUserChatsQuery request,
             CancellationToken cancellationToken)
         {
-            var currentUser = await _userManager.FindByIdAsync(request.UserId);
+            var currentUser = await _postgresDbContext.Users.FirstOrDefaultAsync(x => x.Id == request.UserId, cancellationToken);
+            
             if (currentUser == null)
             {
                 throw new BusinessException(ResponseMessageCodes.UserNotFound);
