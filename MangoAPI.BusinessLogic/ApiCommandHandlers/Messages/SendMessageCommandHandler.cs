@@ -25,15 +25,16 @@ namespace MangoAPI.BusinessLogic.ApiCommandHandlers.Messages
 
         public async Task<SendMessageResponse> Handle(SendMessageCommand request, CancellationToken cancellationToken)
         {
-            var user = await _postgresDbContext.Users.FirstOrDefaultAsync(x => x.Id == request.UserId, cancellationToken);
+            var user = await _postgresDbContext.Users
+                .FirstOrDefaultAsync(x => x.Id == request.UserId, cancellationToken);
 
             if (user == null)
             {
                 throw new BusinessException(ResponseMessageCodes.UserNotFound);
             }
 
-            var chat = await _postgresDbContext.Chats.FirstOrDefaultAsync(x => x.Id == request.ChatId,
-                cancellationToken);
+            var chat = await _postgresDbContext.Chats
+                .FirstOrDefaultAsync(x => x.Id == request.ChatId, cancellationToken);
 
             if (chat == null)
             {
