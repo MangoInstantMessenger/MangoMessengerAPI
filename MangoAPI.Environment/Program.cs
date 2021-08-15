@@ -3,24 +3,24 @@ using System.Collections.Generic;
 
 namespace MangoAPI.Environment
 {
-    class Program
+    public static class Program
     {
-        static void Main(string[] args)
+        private static void Main()
         {
             SetEnvironmentVariables();
-            
-            Console.WriteLine("Hello World!");
+
+            Console.WriteLine("Environmental variables initialized successfully.");
         }
-        
-        static void SetEnvironmentVariables()
+
+        private static void SetEnvironmentVariables()
         {
             var dictionary = new Dictionary<string, string>
             {
-                {"MANGO_ISSUER","https://localhost:5001"},
-                {"MANGO_AUDIENCE","https://localhost:5000"},
-                {"MANGO_TOKEN_KEY","Private RSA key"},
-                {"JWT_LIFETIME","5"},
-                {"REFRESH_TOKEN_LIFETIME","7"},
+                {"MANGO_ISSUER", "https://localhost:5001"},
+                {"MANGO_AUDIENCE", "https://localhost:5000"},
+                {"MANGO_TOKEN_KEY", Guid.NewGuid().ToString()},
+                {"JWT_LIFETIME", "5"},
+                {"REFRESH_TOKEN_LIFETIME", "7"},
                 {"FRONTEND_ADDRESS", "http://localhost:4200"}
             };
 
@@ -30,7 +30,7 @@ namespace MangoAPI.Environment
                 {
                     continue;
                 }
-                
+
                 System.Environment.SetEnvironmentVariable(item.Key, item.Value, EnvironmentVariableTarget.User);
             }
         }
