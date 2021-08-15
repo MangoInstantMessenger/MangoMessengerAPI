@@ -5,6 +5,7 @@ using FluentAssertions;
 using MangoAPI.BusinessLogic.ApiCommandHandlers.Contacts;
 using MangoAPI.BusinessLogic.ApiCommands.Contacts;
 using MangoAPI.BusinessLogic.BusinessExceptions;
+using MangoAPI.Domain.Constants;
 using NUnit.Framework;
 
 namespace MangoAPI.Tests.CommandHandlerTests.Contacts
@@ -20,7 +21,7 @@ namespace MangoAPI.Tests.CommandHandlerTests.Contacts
             var command = new AddContactCommand
             {
                 UserId = "1",
-                ContactId = "2"
+                ContactId = "3"
             };
 
             var result = await handler.Handle(command, CancellationToken.None);
@@ -42,7 +43,7 @@ namespace MangoAPI.Tests.CommandHandlerTests.Contacts
             Func<Task> result = async () => await handler.Handle(command, CancellationToken.None);
 
             await result.Should().ThrowAsync<BusinessException>()
-                .WithMessage("USER_NOT_FOUND");
+                .WithMessage(ResponseMessageCodes.UserNotFound);
         }
         
         [Test]
@@ -56,11 +57,10 @@ namespace MangoAPI.Tests.CommandHandlerTests.Contacts
                 ContactId = "2"
             };
 
-            await handler.Handle(command, CancellationToken.None);
             Func<Task> result = async () => await handler.Handle(command, CancellationToken.None);
 
             await result.Should().ThrowAsync<BusinessException>()
-                .WithMessage("CONTACT_ALREADY_EXISTS");
+                .WithMessage(ResponseMessageCodes.ContactAlreadyExist);
         }
     }
 }

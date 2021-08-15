@@ -4,6 +4,8 @@ using System.Threading.Tasks;
 using FluentAssertions;
 using MangoAPI.BusinessLogic.ApiQueries.Users;
 using MangoAPI.BusinessLogic.ApiQueryHandlers.Chats;
+using MangoAPI.BusinessLogic.BusinessExceptions;
+using MangoAPI.Domain.Constants;
 using NUnit.Framework;
 
 namespace MangoAPI.Tests.QueryHandlerTests.Chats
@@ -15,8 +17,8 @@ namespace MangoAPI.Tests.QueryHandlerTests.Chats
         public async Task GetCurrentUserChatsQueryHandlerTest_Success()
         {
             using var dbContextFixture = new DbContextFixture();
-            var query = new GetCurrentUserChatsQuery {UserId = "1"};
             var handler = new GetCurrentUserChatsQueryHandler(dbContextFixture.PostgresDbContext);
+            var query = new GetCurrentUserChatsQuery {UserId = "1"};
             
             var response = await handler.Handle(query, CancellationToken.None);
 
@@ -27,7 +29,14 @@ namespace MangoAPI.Tests.QueryHandlerTests.Chats
         [Test]
         public async Task GetCurrentUserChatsQueryHandlerTest_ShouldThrowUserNotFound()
         {
-            throw new NotImplementedException();
+            using var dbContextFixture = new DbContextFixture();
+            var handler = new GetCurrentUserChatsQueryHandler(dbContextFixture.PostgresDbContext);
+            var query = new GetCurrentUserChatsQuery {UserId = "24"};
+            
+            Func<Task> response = async () => await handler.Handle(query, CancellationToken.None);
+
+            await response.Should().ThrowAsync<BusinessException>()
+                .WithMessage(ResponseMessageCodes.UserNotFound);
         }
     }
 }
