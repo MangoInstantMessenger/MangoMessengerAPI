@@ -77,9 +77,9 @@ namespace MangoAPI.Tests
         }
     }
 
-    static class SeedData
+    internal static class SeedData
     {
-        public static List<UserEntity> Users => new List<UserEntity>
+        public static List<UserEntity> Users => new()
         {
             new UserEntity
             {
@@ -98,7 +98,7 @@ namespace MangoAPI.Tests
             }
         };
 
-        public static List<UserInformationEntity> UserInfo => new List<UserInformationEntity>
+        public static List<UserInformationEntity> UserInfo => new()
         {
             new UserInformationEntity
             {
@@ -128,7 +128,7 @@ namespace MangoAPI.Tests
             }
         };
 
-        public static List<ChatEntity> Chats => new List<ChatEntity>
+        public static List<ChatEntity> Chats => new()
         {
             new ChatEntity
             {
@@ -155,7 +155,7 @@ namespace MangoAPI.Tests
             }
         };
 
-        public static List<UserChatEntity> UserChats => new List<UserChatEntity>
+        public static List<UserChatEntity> UserChats => new()
         {
             new UserChatEntity
             {
@@ -183,7 +183,7 @@ namespace MangoAPI.Tests
             }
         };
 
-        public static List<MessageEntity> Messages => new List<MessageEntity>
+        public static List<MessageEntity> Messages => new()
         {
             new MessageEntity
             {
@@ -215,7 +215,7 @@ namespace MangoAPI.Tests
             }
         };
 
-        public static List<UserContactEntity> Contacts => new List<UserContactEntity>
+        public static List<UserContactEntity> Contacts => new()
         {
             new UserContactEntity
             {
