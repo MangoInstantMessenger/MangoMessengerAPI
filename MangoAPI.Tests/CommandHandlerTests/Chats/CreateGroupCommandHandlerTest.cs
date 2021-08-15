@@ -5,6 +5,7 @@ using FluentAssertions;
 using MangoAPI.BusinessLogic.ApiCommandHandlers.Chats;
 using MangoAPI.BusinessLogic.ApiCommands.Chats;
 using MangoAPI.BusinessLogic.BusinessExceptions;
+using MangoAPI.Domain.Constants;
 using MangoAPI.Domain.Enums;
 using NUnit.Framework;
 
@@ -45,7 +46,7 @@ namespace MangoAPI.Tests.CommandHandlerTests.Chats
             Func<Task> result = async () => await handler.Handle(command, CancellationToken.None);
 
             await result.Should().ThrowAsync<BusinessException>()
-                .WithMessage("USER_NOT_FOUND");
+                .WithMessage(ResponseMessageCodes.UserNotFound);
         }
     }
 }

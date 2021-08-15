@@ -1,5 +1,10 @@
 ﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
+using FluentAssertions;
+using MangoAPI.BusinessLogic.ApiQueries.Chats;
+using MangoAPI.BusinessLogic.ApiQueries.Users;
+using MangoAPI.BusinessLogic.ApiQueryHandlers.Chats;
 using NUnit.Framework;
 
 namespace MangoAPI.Tests.QueryHandlerTests.Chats
@@ -10,7 +15,18 @@ namespace MangoAPI.Tests.QueryHandlerTests.Chats
         [Test]
         public async Task SearchChatsQueryHandlerTest_Success()
         {
-            throw new NotImplementedException();
+            using var dbContextFixture = new DbContextFixture();
+            var handler = new SearchChatsQueryHandler(dbContextFixture.PostgresDbContext);
+            var query = new SearchChatsQuery
+            {
+                UserId = "1",
+                DisplayName = "Extreme"
+            };
+            
+            var response = await handler.Handle(query, CancellationToken.None);
+
+            response.Success.Should().BeTrue();
+            response.Chats.Should().NotBeEmpty();
         }
     }
 }

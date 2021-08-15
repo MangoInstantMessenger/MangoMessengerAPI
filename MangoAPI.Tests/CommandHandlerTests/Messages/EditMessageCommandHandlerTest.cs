@@ -5,6 +5,7 @@ using FluentAssertions;
 using MangoAPI.BusinessLogic.ApiCommandHandlers.Messages;
 using MangoAPI.BusinessLogic.ApiCommands.Messages;
 using MangoAPI.BusinessLogic.BusinessExceptions;
+using MangoAPI.Domain.Constants;
 using NUnit.Framework;
 
 namespace MangoAPI.Tests.CommandHandlerTests.Messages
@@ -44,7 +45,7 @@ namespace MangoAPI.Tests.CommandHandlerTests.Messages
             Func<Task> result = async () => await handler.Handle(command, CancellationToken.None);
 
             await result.Should().ThrowAsync<BusinessException>()
-                .WithMessage("MESSAGE_NOT_FOUND");
+                .WithMessage(ResponseMessageCodes.MessageNotFound);
         }
         
         [Test]
@@ -61,7 +62,7 @@ namespace MangoAPI.Tests.CommandHandlerTests.Messages
             Func<Task> result = async () => await handler.Handle(command, CancellationToken.None);
 
             await result.Should().ThrowAsync<BusinessException>()
-                .WithMessage("USER_NOT_FOUND");
+                .WithMessage(ResponseMessageCodes.UserNotFound);
         }
     }
 }

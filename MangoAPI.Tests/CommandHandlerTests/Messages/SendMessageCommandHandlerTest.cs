@@ -5,6 +5,7 @@ using FluentAssertions;
 using MangoAPI.BusinessLogic.ApiCommandHandlers.Messages;
 using MangoAPI.BusinessLogic.ApiCommands.Messages;
 using MangoAPI.BusinessLogic.BusinessExceptions;
+using MangoAPI.Domain.Constants;
 using NUnit.Framework;
 
 namespace MangoAPI.Tests.CommandHandlerTests.Messages
@@ -37,6 +38,24 @@ namespace MangoAPI.Tests.CommandHandlerTests.Messages
             var command = new SendMessageCommand
             {
                 UserId = "15",
+                ChatId = "3",
+                MessageText = "hello world"
+            };
+
+            Func<Task> result = async () => await handler.Handle(command, CancellationToken.None);
+
+            await result.Should().ThrowAsync<BusinessException>()
+                .WithMessage(ResponseMessageCodes.UserNotFound);
+        }
+
+        [Test]
+        public async Task SendMessageCommandHandlerTest_ShouldThrowChatNotFound()
+        {
+            using var dbContextFixture = new DbContextFixture();
+            var handler = new SendMessageCommandHandler(dbContextFixture.PostgresDbContext);
+            var command = new SendMessageCommand
+            {
+                UserId = "1",
                 ChatId = "24",
                 MessageText = "hello world"
             };
@@ -44,19 +63,25 @@ namespace MangoAPI.Tests.CommandHandlerTests.Messages
             Func<Task> result = async () => await handler.Handle(command, CancellationToken.None);
 
             await result.Should().ThrowAsync<BusinessException>()
-                .WithMessage("USER_NOT_FOUND");
-        }
-
-        [Test]
-        public async Task SendMessageCommandHandlerTest_ShouldThrowChatNotFound()
-        {
-            throw new NotImplementedException();
+                .WithMessage(ResponseMessageCodes.ChatNotFound);
         }
 
         [Test]
         public async Task SendMessageCommandHandlerTest_ShouldThrowPermissionDenied()
         {
-            throw new NotImplementedException();
+            using var dbContextFixture = new DbContextFixture();
+            var handler = new SendMessageCommandHandler(dbContextFixture.PostgresDbContext);
+            var command = new SendMessageCommand
+            {
+                UserId = "1",
+                ChatId = "2",
+                MessageText = "hello world"
+            };
+            
+            Func<Task> result = async () => await handler.Handle(command, CancellationToken.None);
+
+            await result.Should().ThrowAsync<BusinessException>()
+                .WithMessage(ResponseMessageCodes.PermissionDenied);
         }
     }
 }
