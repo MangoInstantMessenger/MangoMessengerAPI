@@ -11,5 +11,11 @@ namespace MangoAPI.Presentation.Extensions
             return principal?.FindFirstValue(JwtRegisteredClaimNames.Jti) ??
                    throw new InvalidOperationException("Claim not found");
         }
+        
+        public static string GetRole(this ClaimsPrincipal principal)
+        {
+            return principal?.FindFirstValue(ClaimTypes.Role) ??
+                   throw new InvalidOperationException("Claim not found");
+        }
     }
 }

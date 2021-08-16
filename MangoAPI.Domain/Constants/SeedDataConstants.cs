@@ -32,6 +32,6 @@
         // Roles 
         public const string AdminRole = "Administrator";
         public const string UserRole = "User";
-        public const string UnverifiedRole = "Unverifiied";
+        public const string UnverifiedRole = "Unverified";
     }
 }

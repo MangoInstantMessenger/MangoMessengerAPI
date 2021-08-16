@@ -5,7 +5,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
     public record VerifyPhoneRequest
     {
         [JsonConstructor]
-        public VerifyPhoneRequest(int confirmationCode, string userId)
+        public VerifyPhoneRequest(int confirmationCode)
         {
             ConfirmationCode = confirmationCode;
         }
