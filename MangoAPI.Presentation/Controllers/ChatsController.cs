@@ -2,7 +2,6 @@
 using System.Threading.Tasks;
 using MangoAPI.BusinessLogic.ApiCommands.Chats;
 using MangoAPI.BusinessLogic.ApiQueries.Chats;
-using MangoAPI.BusinessLogic.ApiQueries.Users;
 using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.Presentation.Extensions;
 using MangoAPI.Presentation.Interfaces;
@@ -78,12 +77,11 @@ namespace MangoAPI.Presentation.Controllers
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public async Task<IActionResult> SearchAsync([FromQuery] string displayName,
-            CancellationToken cancellationToken)
+        public async Task<IActionResult> SearchAsync(SearchChatsRequest request, CancellationToken cancellationToken)
         {
             var userId = HttpContext.User.GetUserId();
-            var request = new SearchChatsCommand {DisplayName = displayName, UserId = userId};
-            return await RequestAsync(request, cancellationToken);
+            var command = request.ToCommand(userId);
+            return await RequestAsync(command, cancellationToken);
         }
     }
 }

@@ -2,7 +2,6 @@
 using System.Threading.Tasks;
 using FluentAssertions;
 using MangoAPI.BusinessLogic.ApiCommands.Users;
-using MangoAPI.BusinessLogic.ApiQueries.Users;
 using NUnit.Framework;
 
 namespace MangoAPI.Tests.QueryHandlerTests.Users
