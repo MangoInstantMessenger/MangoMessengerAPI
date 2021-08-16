@@ -26,7 +26,15 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Chats
             var user = await _postgresDbContext.Users.FirstOrDefaultAsync(x => x.Id == request.UserId,
                 cancellationToken);
 
-            if (user is null) throw new BusinessException(ResponseMessageCodes.UserNotFound);
+            if (user is null)
+            {
+                throw new BusinessException(ResponseMessageCodes.UserNotFound);
+            }
+
+            if (request.GroupType == ChatType.DirectChat)
+            {
+                throw new BusinessException(ResponseMessageCodes.InvalidGroupType);
+            }
 
             var group = new ChatEntity
             {
