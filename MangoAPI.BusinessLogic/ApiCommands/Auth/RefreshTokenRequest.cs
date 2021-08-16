@@ -15,10 +15,10 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Auth
 
     public static class RefreshTokenCommandMapper
     {
-        public static RefreshTokenCommand ToCommand(this RefreshTokenRequest model) =>
+        public static RefreshSessionCommand ToCommand(this RefreshTokenRequest model) =>
             new()
             {
-                RefreshTokenId = model.RefreshTokenId
+                SessionId = model.RefreshTokenId
             };
     }
 }

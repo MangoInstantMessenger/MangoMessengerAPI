@@ -11,7 +11,7 @@ namespace MangoAPI.Domain.Entities
         public int? ConfirmationCode { get; set; }
         public bool Verified => EmailConfirmed || PhoneNumberConfirmed;
 
-        public ICollection<RefreshTokenEntity> RefreshTokens { get; set; }
+        public ICollection<SessionEntity> Sessions { get; set; }
         public ICollection<MessageEntity> Messages { get; set; }
         public ICollection<UserChatEntity> UserChats { get; set; }
         public UserInformationEntity UserInformation { get; set; }

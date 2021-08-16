@@ -10,7 +10,7 @@ namespace MangoAPI.DataAccess.Database.Configurations
     {
         public void Configure(EntityTypeBuilder<UserEntity> builder)
         {
-            builder.HasMany(x => x.RefreshTokens)
+            builder.HasMany(x => x.Sessions)
                 .WithOne(x => x.UserEntity)
                 .HasForeignKey(x => x.UserId);
 

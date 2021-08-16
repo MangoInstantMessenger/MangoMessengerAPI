@@ -25,8 +25,8 @@ namespace MangoAPI.BusinessLogic.ApiCommandHandlers.Auth
 
         public async Task<LogoutResponse> Handle(LogoutCommand request, CancellationToken cancellationToken)
         {
-            var token = await _postgresDbContext.RefreshTokens
-                .FirstOrDefaultAsync(x => x.Id == request.RefreshTokenId, cancellationToken);
+            var token = await _postgresDbContext.Sessions
+                .FirstOrDefaultAsync(x => x.Id == request.SessionId, cancellationToken);
 
             if (token is null)
             {
@@ -40,7 +40,7 @@ namespace MangoAPI.BusinessLogic.ApiCommandHandlers.Auth
                 throw new BusinessException(ResponseMessageCodes.UserNotFound);
             }
 
-            _postgresDbContext.RefreshTokens.Remove(token);
+            _postgresDbContext.Sessions.Remove(token);
             await _postgresDbContext.SaveChangesAsync(cancellationToken);
 
             return LogoutResponse.SuccessResponse;

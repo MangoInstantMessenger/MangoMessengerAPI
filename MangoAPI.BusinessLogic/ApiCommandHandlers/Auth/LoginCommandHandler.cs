@@ -53,26 +53,26 @@ namespace MangoAPI.BusinessLogic.ApiCommandHandlers.Auth
                 throw new BusinessException(ResponseMessageCodes.UserNotVerified);
             }
 
-            var refreshToken = _jwtGenerator.GenerateRefreshToken();
+            var session = _jwtGenerator.GenerateRefreshSession();
 
             var jwtToken = _jwtGenerator.GenerateJwtToken(user);
 
-            refreshToken.UserId = user.Id;
+            session.UserId = user.Id;
 
-            var userRefreshTokens = _postgresDbContext.RefreshTokens
+            var userSessions = _postgresDbContext.Sessions
                 .Where(x => x.UserId == user.Id);
 
-            var userTokensCount = await userRefreshTokens.CountAsync(cancellationToken);
+            var userSessionsCount = await userSessions.CountAsync(cancellationToken);
 
-            if (userTokensCount >= 5)
+            if (userSessionsCount >= 5)
             {
-                _postgresDbContext.RefreshTokens.RemoveRange(userRefreshTokens);
+                _postgresDbContext.Sessions.RemoveRange(userSessions);
             }
 
-            await _postgresDbContext.RefreshTokens.AddAsync(refreshToken, cancellationToken);
+            await _postgresDbContext.Sessions.AddAsync(session, cancellationToken);
             await _postgresDbContext.SaveChangesAsync(cancellationToken);
 
-            return LoginResponse.FromSuccess(jwtToken, refreshToken.Id, user.Id);
+            return LoginResponse.FromSuccess(jwtToken, session.Id);
         }
     }
 }

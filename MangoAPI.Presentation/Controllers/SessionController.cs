@@ -36,13 +36,13 @@ namespace MangoAPI.Presentation.Controllers
         [AllowAnonymous]
         [HttpPost("{id}")]
         [SwaggerOperation(Summary = "Refreshes current user's session. Returns: Access token, Session Id.")]
-        [ProducesResponseType(typeof(RefreshTokenResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(RefreshSessionResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> RefreshSession([FromRoute] string id, CancellationToken cancellationToken)
         {
-            var command = new RefreshTokenCommand {RefreshTokenId = id};
+            var command = new RefreshSessionCommand {SessionId = id};
             return await RequestAsync(command, cancellationToken);
         }
 
@@ -55,7 +55,7 @@ namespace MangoAPI.Presentation.Controllers
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> LogoutAsync([FromRoute] string id, CancellationToken cancellationToken)
         {
-            var command = new LogoutCommand {RefreshTokenId = id};
+            var command = new LogoutCommand {SessionId = id};
             return await RequestAsync(command, cancellationToken);
         }
 

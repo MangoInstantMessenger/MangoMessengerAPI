@@ -6,7 +6,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Auth
     {
         public LogoutCommandValidator()
         {
-            RuleFor(x => x.RefreshTokenId)
+            RuleFor(x => x.SessionId)
                 .Cascade(CascadeMode.Stop)
                 .NotEmpty()
                 .Length(1, 300);

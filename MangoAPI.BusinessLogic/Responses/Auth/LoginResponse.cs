@@ -12,7 +12,7 @@ namespace MangoAPI.BusinessLogic.Responses.Auth
         // ReSharper disable once MemberCanBePrivate.Global
         public string RefreshTokenId { get; init; }
 
-        public static LoginResponse FromSuccess(string accessToken, string refreshTokenId, string userId) => new()
+        public static LoginResponse FromSuccess(string accessToken, string refreshTokenId) => new()
         {
             Message = ResponseMessageCodes.Success,
             AccessToken = accessToken,

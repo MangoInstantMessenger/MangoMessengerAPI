@@ -14,13 +14,13 @@ using Microsoft.EntityFrameworkCore;
 
 namespace MangoAPI.BusinessLogic.ApiCommandHandlers.Auth
 {
-    public class RefreshTokenCommandHandler : IRequestHandler<RefreshTokenCommand, RefreshTokenResponse>
+    public class RefreshSessionCommandHandler : IRequestHandler<RefreshSessionCommand, RefreshSessionResponse>
     {
         private readonly MangoPostgresDbContext _postgresDbContext;
         private readonly IJwtGenerator _jwtGenerator;
         private readonly UserManager<UserEntity> _userManager;
 
-        public RefreshTokenCommandHandler(MangoPostgresDbContext postgresDbContext, IJwtGenerator jwtGenerator,
+        public RefreshSessionCommandHandler(MangoPostgresDbContext postgresDbContext, IJwtGenerator jwtGenerator,
             UserManager<UserEntity> userManager)
         {
             _postgresDbContext = postgresDbContext;
@@ -28,44 +28,44 @@ namespace MangoAPI.BusinessLogic.ApiCommandHandlers.Auth
             _userManager = userManager;
         }
 
-        public async Task<RefreshTokenResponse> Handle(RefreshTokenCommand request, CancellationToken cancellationToken)
+        public async Task<RefreshSessionResponse> Handle(RefreshSessionCommand request, CancellationToken cancellationToken)
         {
-            var refreshToken =
-                await _postgresDbContext.RefreshTokens
-                    .FirstOrDefaultAsync(x => x.Id == request.RefreshTokenId, cancellationToken);
+            var session =
+                await _postgresDbContext.Sessions
+                    .FirstOrDefaultAsync(x => x.Id == request.SessionId, cancellationToken);
 
-            if (refreshToken is null || refreshToken.IsExpired)
+            if (session is null || session.IsExpired)
             {
                 throw new BusinessException(ResponseMessageCodes.InvalidOrExpiredRefreshToken);
             }
 
-            var user = await _userManager.FindByIdAsync(refreshToken.UserId);
+            var user = await _userManager.FindByIdAsync(session.UserId);
 
             if (user is null)
             {
                 throw new BusinessException(ResponseMessageCodes.UserNotFound);
             }
 
-            var userRefreshTokens = _postgresDbContext.RefreshTokens
+            var userSessions = _postgresDbContext.Sessions
                 .Where(x => x.UserId == user.Id);
 
-            var userTokensCount = await userRefreshTokens.CountAsync(cancellationToken);
+            var userSessionCount = await userSessions.CountAsync(cancellationToken);
 
-            if (userTokensCount >= 5)
+            if (userSessionCount >= 5)
             {
-                _postgresDbContext.RefreshTokens.RemoveRange(userRefreshTokens);
+                _postgresDbContext.Sessions.RemoveRange(userSessions);
             }
 
-            var newRefreshToken = _jwtGenerator.GenerateRefreshToken();
+            var newSession = _jwtGenerator.GenerateRefreshSession();
 
             var newJwtToken = _jwtGenerator.GenerateJwtToken(user);
 
-            newRefreshToken.UserId = user.Id;
+            newSession.UserId = user.Id;
 
-            await _postgresDbContext.RefreshTokens.AddAsync(newRefreshToken, cancellationToken);
+            await _postgresDbContext.Sessions.AddAsync(newSession, cancellationToken);
             await _postgresDbContext.SaveChangesAsync(cancellationToken);
 
-            return RefreshTokenResponse.FromSuccess(newRefreshToken.Id, newJwtToken);
+            return RefreshSessionResponse.FromSuccess(newSession.Id, newJwtToken);
         }
     }
 }

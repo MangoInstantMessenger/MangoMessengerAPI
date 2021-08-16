@@ -54,7 +54,7 @@ namespace MangoAPI.Application.Services
             return tokenHandler.WriteToken(token);
         }
 
-        public RefreshTokenEntity GenerateRefreshToken()
+        public SessionEntity GenerateRefreshSession()
         {
             using var rngCryptoServiceProvider = new RNGCryptoServiceProvider();
 
@@ -65,14 +65,9 @@ namespace MangoAPI.Application.Services
                 throw new InvalidOperationException("Refresh token lifetime environmental variable error.");
             }
 
-            var randomBytes = new byte[64];
-            new Random().NextBytes(randomBytes);
-            rngCryptoServiceProvider.GetBytes(randomBytes);
-
-            return new RefreshTokenEntity
+            return new SessionEntity
             {
                 Id = Guid.NewGuid().ToString(),
-                RefreshToken = Convert.ToBase64String(randomBytes),
                 Expires = DateTime.UtcNow.AddDays(refreshLifetimeParsed),
                 Created = DateTime.UtcNow,
             };

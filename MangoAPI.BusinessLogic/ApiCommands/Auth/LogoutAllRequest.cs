@@ -5,12 +5,12 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Auth
     public record LogoutAllRequest
     {
         [JsonConstructor]
-        public LogoutAllRequest(string refreshTokenId)
+        public LogoutAllRequest(string sessionId)
         {
-            RefreshTokenId = refreshTokenId;
+            SessionId = sessionId;
         }
 
-        public string RefreshTokenId { get; }
+        public string SessionId { get; }
     }
 
     public static class LogoutAllCommandMapper
@@ -18,7 +18,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Auth
         public static LogoutAllCommand ToCommand(this LogoutAllRequest model, string userId) =>
             new()
             {
-                RefreshTokenId = model.RefreshTokenId,
+                SessionId = model.SessionId,
                 UserId = userId
             };
     }

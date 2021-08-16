@@ -4,12 +4,11 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace MangoAPI.DataAccess.Database.Configurations
 {
-    public class RefreshTokenEntityConfiguration : IEntityTypeConfiguration<RefreshTokenEntity>
+    public class SessionEntityConfiguration : IEntityTypeConfiguration<SessionEntity>
     {
-        public void Configure(EntityTypeBuilder<RefreshTokenEntity> builder)
+        public void Configure(EntityTypeBuilder<SessionEntity> builder)
         {
             builder.HasKey(x => x.Id);
-            builder.Property(x => x.RefreshToken).IsRequired();
             builder.Property(x => x.Expires).IsRequired();
             builder.Property(x => x.Created).IsRequired();
         }

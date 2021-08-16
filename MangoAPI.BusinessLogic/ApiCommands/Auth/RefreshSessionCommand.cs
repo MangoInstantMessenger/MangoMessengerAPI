@@ -3,8 +3,8 @@ using MediatR;
 
 namespace MangoAPI.BusinessLogic.ApiCommands.Auth
 {
-    public record RefreshTokenCommand : IRequest<RefreshTokenResponse>
+    public record RefreshSessionCommand : IRequest<RefreshSessionResponse>
     {
-        public string RefreshTokenId { get; init; }
+        public string SessionId { get; init; }
     }
 }
