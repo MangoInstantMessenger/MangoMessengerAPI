@@ -13,7 +13,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Sessions
         // ReSharper disable once UnusedAutoPropertyAccessor.Global
         public string AccessToken { get; init; }
 
-        public static RefreshSessionResponse FromSuccess(string refreshToken, string accessToken)
+        public static RefreshSessionResponse FromSuccess(string accessToken, string refreshToken)
         {
             return new()
             {

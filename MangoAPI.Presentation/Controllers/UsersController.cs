@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 using MangoAPI.BusinessLogic.ApiCommands.Users;
 using MangoAPI.BusinessLogic.ApiQueries.Users;
@@ -24,11 +23,12 @@ namespace MangoAPI.Presentation.Controllers
 
         [AllowAnonymous]
         [HttpPost]
-        [SwaggerOperation(Summary = "Registers user in a messenger.")]
+        [SwaggerOperation(Summary = "Registers user in a messenger. Verification methods: 1 -- Phone, 2 -- Email.")]
         [ProducesResponseType(typeof(RegisterResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
-        public async Task<IActionResult> RegisterAsync(RegisterRequest request, CancellationToken cancellationToken)
+        public async Task<IActionResult> RegisterAsync([FromBody] RegisterRequest request,
+            CancellationToken cancellationToken)
         {
             return await RequestAsync(request.ToCommand(), cancellationToken);
         }
@@ -41,7 +41,7 @@ namespace MangoAPI.Presentation.Controllers
         [ProducesResponseType(typeof(VerifyEmailResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
-        public async Task<IActionResult> EmailConfirmationAsync(VerifyEmailRequest request,
+        public async Task<IActionResult> EmailConfirmationAsync([FromBody] VerifyEmailRequest request,
             CancellationToken cancellationToken)
         {
             var command = request.ToCommand();
@@ -55,10 +55,10 @@ namespace MangoAPI.Presentation.Controllers
         [ProducesResponseType(typeof(VerifyPhoneResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
-        public Task<IActionResult> PhoneConfirmationAsync(VerifyPhoneRequest request,
+        public async Task<IActionResult> PhoneConfirmationAsync([FromBody] VerifyPhoneRequest request,
             CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            return await RequestAsync(request.ToCommand(), cancellationToken);
         }
 
         [Authorize]
@@ -108,7 +108,7 @@ namespace MangoAPI.Presentation.Controllers
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public async Task<IActionResult> UpdateUserInformationAsync(UpdateUserInformationRequest request,
+        public async Task<IActionResult> UpdateUserInformationAsync([FromBody] UpdateUserInformationRequest request,
             CancellationToken cancellationToken)
         {
             var userId = HttpContext.User.GetUserId();
