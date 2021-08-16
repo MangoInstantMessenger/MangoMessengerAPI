@@ -10,6 +10,6 @@ namespace MangoAPI.Presentation.Interfaces
         Task<IActionResult> LoginAsync(LoginRequest request, CancellationToken cancellationToken);
         Task<IActionResult> RefreshSession(string refreshToken, CancellationToken cancellationToken);
         Task<IActionResult> LogoutAsync(string refreshToken, CancellationToken cancellationToken);
-        Task<IActionResult> LogoutAllAsync(LogoutAllRequest request, CancellationToken cancellationToken);
+        Task<IActionResult> LogoutAllAsync(CancellationToken cancellationToken);
     }
 }

@@ -24,13 +24,20 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Sessions
         public async Task<LogoutResponse> Handle(LogoutCommand request, CancellationToken cancellationToken)
         {
             var token = await _postgresDbContext.Sessions
-                .FirstOrDefaultAsync(x => x.Id == request.RefreshToken, cancellationToken);
+                .FirstOrDefaultAsync(x => x.RefreshToken == request.RefreshToken,
+                    cancellationToken);
 
-            if (token is null) throw new BusinessException(ResponseMessageCodes.InvalidOrExpiredRefreshToken);
+            if (token is null)
+            {
+                throw new BusinessException(ResponseMessageCodes.InvalidOrExpiredRefreshToken);
+            }
 
             var user = await _userManager.FindByIdAsync(token.UserId);
 
-            if (user is null || token.UserId != user.Id) throw new BusinessException(ResponseMessageCodes.UserNotFound);
+            if (user is null || token.UserId != user.Id)
+            {
+                throw new BusinessException(ResponseMessageCodes.UserNotFound);
+            }
 
             _postgresDbContext.Sessions.Remove(token);
             await _postgresDbContext.SaveChangesAsync(cancellationToken);

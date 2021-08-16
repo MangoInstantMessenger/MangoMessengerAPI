@@ -35,18 +35,29 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Sessions
         {
             var user = await _userManager.FindByEmailAsync(request.Email);
 
-            if (user is null) throw new BusinessException(ResponseMessageCodes.InvalidCredentials);
+            if (user is null)
+            {
+                throw new BusinessException(ResponseMessageCodes.InvalidCredentials);
+            }
 
             var result = await _signInManager.CheckPasswordSignInAsync(user, request.Password, false);
 
-            if (!result.Succeeded) throw new BusinessException(ResponseMessageCodes.InvalidCredentials);
+            if (!result.Succeeded)
+            {
+                throw new BusinessException(ResponseMessageCodes.InvalidCredentials);
+            }
 
-            if (!user.Verified) throw new BusinessException(ResponseMessageCodes.UserNotVerified);
+            if (!user.Verified)
+            {
+                throw new BusinessException(ResponseMessageCodes.UserNotVerified);
+            }
 
             var refreshLifetime = EnvironmentConstants.RefreshTokenLifeTime;
 
             if (refreshLifetime == null || !int.TryParse(refreshLifetime, out var refreshLifetimeParsed))
+            {
                 throw new BusinessException(ResponseMessageCodes.RefreshTokenLifeTimeError);
+            }
 
             var session = new SessionEntity
             {
@@ -65,7 +76,10 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Sessions
 
             var userSessionsCount = await userSessions.CountAsync(cancellationToken);
 
-            if (userSessionsCount >= 5) _postgresDbContext.Sessions.RemoveRange(userSessions);
+            if (userSessionsCount >= 5)
+            {
+                _postgresDbContext.Sessions.RemoveRange(userSessions);
+            }
 
             await _postgresDbContext.Sessions.AddAsync(session, cancellationToken);
             await _postgresDbContext.SaveChangesAsync(cancellationToken);

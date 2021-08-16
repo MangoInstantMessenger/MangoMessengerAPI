@@ -46,7 +46,7 @@ namespace MangoAPI.Presentation.Controllers
             {
                 RefreshToken = refreshToken
             };
-            
+
             return await RequestAsync(command, cancellationToken);
         }
 
@@ -71,11 +71,10 @@ namespace MangoAPI.Presentation.Controllers
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public async Task<IActionResult> LogoutAllAsync([FromBody] LogoutAllRequest request,
-            CancellationToken cancellationToken)
+        public async Task<IActionResult> LogoutAllAsync(CancellationToken cancellationToken)
         {
             var userId = HttpContext.User.GetUserId();
-            var command = request.ToCommand(userId);
+            var command = new LogoutAllCommand {UserId = userId};
             return await RequestAsync(command, cancellationToken);
         }
     }

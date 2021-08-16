@@ -19,7 +19,6 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Sessions
         {
             return new()
             {
-                RefreshToken = model.RefreshToken,
                 UserId = userId
             };
         }
