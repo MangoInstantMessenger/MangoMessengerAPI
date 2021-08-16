@@ -92,7 +92,7 @@ namespace MangoAPI.BusinessLogic.ApiCommandHandlers.Auth
             await _postgresDbContext.UserInformation.AddAsync(userInfo, cancellationToken);
             await _postgresDbContext.SaveChangesAsync(cancellationToken);
 
-            return RegisterResponse.FromSuccess(newUser);
+            return RegisterResponse.FromSuccess();
         }
     }
 }
