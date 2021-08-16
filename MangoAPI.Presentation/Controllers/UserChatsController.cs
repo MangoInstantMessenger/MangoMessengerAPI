@@ -1,6 +1,7 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 using MangoAPI.BusinessLogic.ApiCommands.Chats;
+using MangoAPI.BusinessLogic.ApiCommands.UserChats;
 using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.Presentation.Extensions;
 using MangoAPI.Presentation.Interfaces;

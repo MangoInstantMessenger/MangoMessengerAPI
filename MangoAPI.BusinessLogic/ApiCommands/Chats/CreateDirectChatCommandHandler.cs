@@ -27,7 +27,10 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Chats
             var partner = await _postgresDbContext.Users
                 .FirstOrDefaultAsync(x => x.Id == request.PartnerId, cancellationToken);
 
-            if (partner is null) throw new BusinessException(ResponseMessageCodes.UserNotFound);
+            if (partner is null)
+            {
+                throw new BusinessException(ResponseMessageCodes.UserNotFound);
+            }
 
             var currentUser = await _postgresDbContext.Users
                 .FirstOrDefaultAsync(x => x.Id == request.UserId, cancellationToken);
@@ -50,7 +53,10 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Chats
                 userPrivateChats.Any(x => x.ChatUsers
                     .Any(t => t.UserId == partner.Id));
 
-            if (directChatAlreadyExists) throw new BusinessException(ResponseMessageCodes.DirectChatAlreadyExists);
+            if (directChatAlreadyExists)
+            {
+                throw new BusinessException(ResponseMessageCodes.DirectChatAlreadyExists);
+            }
 
             await _postgresDbContext.Chats.AddAsync(directChat, cancellationToken);
 

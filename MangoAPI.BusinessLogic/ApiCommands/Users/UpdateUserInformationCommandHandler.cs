@@ -25,7 +25,10 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
                 .Include(x => x.UserInformation)
                 .FirstOrDefaultAsync(x => x.Id == request.UserId, cancellationToken);
 
-            if (user is null) throw new BusinessException(ResponseMessageCodes.UserNotFound);
+            if (user is null)
+            {
+                throw new BusinessException(ResponseMessageCodes.UserNotFound);
+            }
 
             user.UserInformation.FirstName = request.FirstName;
             user.UserInformation.LastName = request.LastName;

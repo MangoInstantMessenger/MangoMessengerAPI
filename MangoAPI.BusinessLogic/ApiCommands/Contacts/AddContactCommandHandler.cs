@@ -25,7 +25,10 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Contacts
             var contact = await _postgresDbContext.Users
                 .FirstOrDefaultAsync(x => x.Id == request.UserId, cancellationToken);
 
-            if (contact is null) throw new BusinessException(ResponseMessageCodes.UserNotFound);
+            if (contact is null)
+            {
+                throw new BusinessException(ResponseMessageCodes.UserNotFound);
+            }
 
             var contactEntity = new UserContactEntity
             {
@@ -38,7 +41,10 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Contacts
                 .Where(x => x.UserId == request.UserId)
                 .AnyAsync(x => x.ContactId == request.ContactId, cancellationToken);
 
-            if (userContactExist) throw new BusinessException(ResponseMessageCodes.ContactAlreadyExist);
+            if (userContactExist)
+            {
+                throw new BusinessException(ResponseMessageCodes.ContactAlreadyExist);
+            }
 
             await _postgresDbContext.UserContacts.AddAsync(contactEntity, cancellationToken);
             await _postgresDbContext.SaveChangesAsync(cancellationToken);

@@ -23,14 +23,20 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Messages
             var user = await _postgresDbContext.Users.FirstOrDefaultAsync(x => x.Id == request.UserId,
                 cancellationToken);
 
-            if (user == null) throw new BusinessException(ResponseMessageCodes.UserNotFound);
+            if (user == null)
+            {
+                throw new BusinessException(ResponseMessageCodes.UserNotFound);
+            }
 
             var belongsToChat = await _postgresDbContext.UserChats
                 .AsNoTracking()
                 .Where(userChatEntity => userChatEntity.UserId == user.Id)
                 .AnyAsync(userChatEntity => userChatEntity.ChatId == request.ChatId, cancellationToken);
 
-            if (!belongsToChat) throw new BusinessException(ResponseMessageCodes.PermissionDenied);
+            if (!belongsToChat)
+            {
+                throw new BusinessException(ResponseMessageCodes.PermissionDenied);
+            }
 
             var chat = _postgresDbContext.Messages.AsNoTracking()
                 .Include(x => x.User)

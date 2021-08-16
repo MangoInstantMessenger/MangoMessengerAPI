@@ -23,7 +23,10 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Contacts
             var user = await _postgresDbContext.Users
                 .FirstOrDefaultAsync(x => x.Id == request.UserId, cancellationToken);
 
-            if (user is null) throw new BusinessException(ResponseMessageCodes.UserNotFound);
+            if (user is null)
+            {
+                throw new BusinessException(ResponseMessageCodes.UserNotFound);
+            }
 
             var contacts = await (from userContact in _postgresDbContext.UserContacts.AsNoTracking()
                 join userEntity in _postgresDbContext.Users on userContact.ContactId equals userEntity.Id

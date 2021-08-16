@@ -30,16 +30,24 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
         public async Task<RegisterResponse> Handle(RegisterCommand request, CancellationToken cancellationToken)
         {
             if (request.Email == EnvironmentConstants.EmailSenderAddress)
+            {
                 throw new BusinessException(ResponseMessageCodes.InvalidEmail);
+            }
 
             var exists = await _userManager.FindByEmailAsync(request.Email);
 
-            if (exists != null) throw new BusinessException(ResponseMessageCodes.EmailOccupied);
+            if (exists != null)
+            {
+                throw new BusinessException(ResponseMessageCodes.EmailOccupied);
+            }
 
-            var user = await _postgresDbContext.Users.FirstOrDefaultAsync(x => x.PhoneNumber == request.PhoneNumber,
-                cancellationToken);
+            var user = await _postgresDbContext.Users
+                .FirstOrDefaultAsync(x => x.PhoneNumber == request.PhoneNumber, cancellationToken);
 
-            if (user != null) throw new BusinessException(ResponseMessageCodes.PhoneOccupied);
+            if (user != null)
+            {
+                throw new BusinessException(ResponseMessageCodes.PhoneOccupied);
+            }
 
             var newUser = new UserEntity
             {
@@ -50,11 +58,16 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
             };
 
             if (request.VerificationMethod == VerificationMethod.Phone)
+            {
                 newUser.ConfirmationCode = new Random().Next(100000, 999999);
+            }
 
             var result = await _userManager.CreateAsync(newUser, request.Password);
 
-            if (!result.Succeeded) throw new BusinessException(ResponseMessageCodes.WeakPassword);
+            if (!result.Succeeded)
+            {
+                throw new BusinessException(ResponseMessageCodes.WeakPassword);
+            }
 
             var userInfo = new UserInformationEntity
             {

@@ -22,7 +22,7 @@ namespace MangoAPI.Presentation.Controllers
 
         [AllowAnonymous]
         [HttpPost]
-        [SwaggerOperation(Summary = "Performs login to the messenger. Returns: Returns: Access token, Refresh Token.")]
+        [SwaggerOperation(Summary = "Performs login to the messenger. Returns: Access token, Refresh Token.")]
         [ProducesResponseType(typeof(LoginResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
