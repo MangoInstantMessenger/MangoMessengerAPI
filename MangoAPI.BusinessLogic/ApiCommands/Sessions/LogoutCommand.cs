@@ -1,10 +1,9 @@
-﻿using MangoAPI.BusinessLogic.Responses.Auth;
-using MediatR;
+﻿using MediatR;
 
-namespace MangoAPI.BusinessLogic.ApiCommands.Auth
+namespace MangoAPI.BusinessLogic.ApiCommands.Sessions
 {
     public record LogoutCommand : IRequest<LogoutResponse>
     {
-        public string SessionId { get; init; }
+        public string RefreshToken { get; init; }
     }
 }

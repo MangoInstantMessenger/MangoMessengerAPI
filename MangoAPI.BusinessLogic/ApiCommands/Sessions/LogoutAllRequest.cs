@@ -1,25 +1,27 @@
 ﻿using Newtonsoft.Json;
 
-namespace MangoAPI.BusinessLogic.ApiCommands.Auth
+namespace MangoAPI.BusinessLogic.ApiCommands.Sessions
 {
     public record LogoutAllRequest
     {
         [JsonConstructor]
-        public LogoutAllRequest(string sessionId)
+        public LogoutAllRequest(string refreshToken)
         {
-            SessionId = sessionId;
+            RefreshToken = refreshToken;
         }
 
-        public string SessionId { get; }
+        public string RefreshToken { get; }
     }
 
     public static class LogoutAllCommandMapper
     {
-        public static LogoutAllCommand ToCommand(this LogoutAllRequest model, string userId) =>
-            new()
+        public static LogoutAllCommand ToCommand(this LogoutAllRequest model, string userId)
+        {
+            return new()
             {
-                SessionId = model.SessionId,
+                RefreshToken = model.RefreshToken,
                 UserId = userId
             };
+        }
     }
 }

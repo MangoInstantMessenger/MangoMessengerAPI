@@ -1,8 +1,7 @@
 ﻿using System;
-using MangoAPI.BusinessLogic.Responses.UserInformation;
 using MediatR;
 
-namespace MangoAPI.BusinessLogic.ApiCommands.UserInformation
+namespace MangoAPI.BusinessLogic.ApiCommands.Users
 {
     public class UpdateUserInformationCommand : IRequest<UpdateUserInformationResponse>
     {

@@ -2,7 +2,6 @@
 using System.Threading;
 using System.Threading.Tasks;
 using FluentAssertions;
-using MangoAPI.BusinessLogic.ApiCommandHandlers.Messages;
 using MangoAPI.BusinessLogic.ApiCommands.Messages;
 using MangoAPI.BusinessLogic.BusinessExceptions;
 using MangoAPI.Domain.Constants;
@@ -47,7 +46,7 @@ namespace MangoAPI.Tests.CommandHandlerTests.Messages
             await result.Should().ThrowAsync<BusinessException>()
                 .WithMessage(ResponseMessageCodes.MessageNotFound);
         }
-        
+
         [Test]
         public async Task EditMessageCommandHandlerTest_ShouldThrowUserNotFound()
         {

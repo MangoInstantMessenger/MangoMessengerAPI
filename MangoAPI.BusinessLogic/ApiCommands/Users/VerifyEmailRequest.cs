@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace MangoAPI.BusinessLogic.ApiCommands.Auth
+namespace MangoAPI.BusinessLogic.ApiCommands.Users
 {
     public record VerifyEmailRequest
     {
@@ -10,17 +10,20 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Auth
             Email = email;
             UserId = userId;
         }
-        
+
         public string Email { get; set; }
         public string UserId { get; set; }
     }
-    
+
     public static class VerifyEmailRequestMapper
     {
-        public static VerifyEmailCommand ToCommand(this VerifyEmailRequest model) => new()
+        public static VerifyEmailCommand ToCommand(this VerifyEmailRequest model)
         {
-            Email = model.Email,
-            UserId =  model.UserId
-        };
+            return new()
+            {
+                Email = model.Email,
+                UserId = model.UserId
+            };
+        }
     }
 }

@@ -21,10 +21,7 @@ namespace MangoAPI.Presentation.Controllers
         {
             var response = await _mediator.Send(request, cancellationToken);
 
-            if (!response.Success)
-            {
-                return Conflict(response);
-            }
+            if (!response.Success) return Conflict(response);
 
             return Ok(response);
         }

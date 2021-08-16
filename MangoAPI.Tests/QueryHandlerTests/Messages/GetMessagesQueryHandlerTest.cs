@@ -3,7 +3,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using FluentAssertions;
 using MangoAPI.BusinessLogic.ApiQueries.Messages;
-using MangoAPI.BusinessLogic.ApiQueryHandlers.Messages;
 using MangoAPI.BusinessLogic.BusinessExceptions;
 using MangoAPI.Domain.Constants;
 using NUnit.Framework;
@@ -18,8 +17,8 @@ namespace MangoAPI.Tests.QueryHandlerTests.Messages
         {
             using var dbContextFixture = new DbContextFixture();
             var handler = new GetMessagesQueryHandler(dbContextFixture.PostgresDbContext);
-            var query = new GetMessagesQuery{ UserId = "1", ChatId = "3"};
-            
+            var query = new GetMessagesQuery {UserId = "1", ChatId = "3"};
+
             var response = await handler.Handle(query, CancellationToken.None);
 
             response.Success.Should().BeTrue();
@@ -31,8 +30,8 @@ namespace MangoAPI.Tests.QueryHandlerTests.Messages
         {
             using var dbContextFixture = new DbContextFixture();
             var handler = new GetMessagesQueryHandler(dbContextFixture.PostgresDbContext);
-            var query = new GetMessagesQuery{ UserId = "24", ChatId = "3"};
-            
+            var query = new GetMessagesQuery {UserId = "24", ChatId = "3"};
+
             Func<Task> response = async () => await handler.Handle(query, CancellationToken.None);
 
             await response.Should().ThrowAsync<BusinessException>()
@@ -44,8 +43,8 @@ namespace MangoAPI.Tests.QueryHandlerTests.Messages
         {
             using var dbContextFixture = new DbContextFixture();
             var handler = new GetMessagesQueryHandler(dbContextFixture.PostgresDbContext);
-            var query = new GetMessagesQuery{ UserId = "1", ChatId = "1"};
-            
+            var query = new GetMessagesQuery {UserId = "1", ChatId = "1"};
+
             Func<Task> response = async () => await handler.Handle(query, CancellationToken.None);
 
             await response.Should().ThrowAsync<BusinessException>()

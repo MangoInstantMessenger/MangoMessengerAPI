@@ -17,12 +17,14 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Messages
 
     public static class SendMessageCommandMapper
     {
-        public static SendMessageCommand ToCommand(this SendMessageRequest model, string userId) =>
-            new()
+        public static SendMessageCommand ToCommand(this SendMessageRequest model, string userId)
+        {
+            return new()
             {
                 ChatId = model.ChatId,
                 MessageText = model.MessageText,
                 UserId = userId
             };
+        }
     }
 }

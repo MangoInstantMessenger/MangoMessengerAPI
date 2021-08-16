@@ -1,7 +1,6 @@
-﻿using MangoAPI.BusinessLogic.Responses.Chats;
-using MediatR;
+﻿using MediatR;
 
-namespace MangoAPI.BusinessLogic.ApiQueries.Users
+namespace MangoAPI.BusinessLogic.ApiQueries.Chats
 {
     public record GetCurrentUserChatsQuery : IRequest<GetCurrentUserChatsResponse>
     {

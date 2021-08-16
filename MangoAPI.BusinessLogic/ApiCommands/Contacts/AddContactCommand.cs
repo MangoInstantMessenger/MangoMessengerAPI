@@ -1,5 +1,4 @@
-﻿using MangoAPI.BusinessLogic.Responses.Contacts;
-using MediatR;
+﻿using MediatR;
 
 namespace MangoAPI.BusinessLogic.ApiCommands.Contacts
 {

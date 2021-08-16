@@ -1,8 +1,6 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
-using MangoAPI.BusinessLogic.ApiCommands.Auth;
 using MangoAPI.BusinessLogic.BusinessExceptions;
-using MangoAPI.BusinessLogic.Responses.Auth;
 using MangoAPI.DataAccess.Database;
 using MangoAPI.Domain.Constants;
 using MangoAPI.Domain.Entities;
@@ -10,7 +8,7 @@ using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
-namespace MangoAPI.BusinessLogic.ApiCommandHandlers.Auth
+namespace MangoAPI.BusinessLogic.ApiCommands.Sessions
 {
     public class LogoutCommandHandler : IRequestHandler<LogoutCommand, LogoutResponse>
     {
@@ -26,19 +24,13 @@ namespace MangoAPI.BusinessLogic.ApiCommandHandlers.Auth
         public async Task<LogoutResponse> Handle(LogoutCommand request, CancellationToken cancellationToken)
         {
             var token = await _postgresDbContext.Sessions
-                .FirstOrDefaultAsync(x => x.Id == request.SessionId, cancellationToken);
+                .FirstOrDefaultAsync(x => x.Id == request.RefreshToken, cancellationToken);
 
-            if (token is null)
-            {
-                throw new BusinessException(ResponseMessageCodes.InvalidOrExpiredRefreshToken);
-            }
+            if (token is null) throw new BusinessException(ResponseMessageCodes.InvalidOrExpiredRefreshToken);
 
             var user = await _userManager.FindByIdAsync(token.UserId);
 
-            if (user is null || token.UserId != user.Id)
-            {
-                throw new BusinessException(ResponseMessageCodes.UserNotFound);
-            }
+            if (user is null || token.UserId != user.Id) throw new BusinessException(ResponseMessageCodes.UserNotFound);
 
             _postgresDbContext.Sessions.Remove(token);
             await _postgresDbContext.SaveChangesAsync(cancellationToken);

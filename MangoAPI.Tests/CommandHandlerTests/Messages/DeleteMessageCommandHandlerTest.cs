@@ -2,7 +2,6 @@
 using System.Threading;
 using System.Threading.Tasks;
 using FluentAssertions;
-using MangoAPI.BusinessLogic.ApiCommandHandlers.Messages;
 using MangoAPI.BusinessLogic.ApiCommands.Messages;
 using MangoAPI.BusinessLogic.BusinessExceptions;
 using MangoAPI.Domain.Constants;
@@ -40,7 +39,7 @@ namespace MangoAPI.Tests.CommandHandlerTests.Messages
                 MessageId = "3"
             };
 
-            Func<Task> result = async () =>await handler.Handle(command, CancellationToken.None);
+            Func<Task> result = async () => await handler.Handle(command, CancellationToken.None);
 
             await result.Should().ThrowAsync<BusinessException>()
                 .WithMessage(ResponseMessageCodes.UserNotFound);
@@ -57,7 +56,7 @@ namespace MangoAPI.Tests.CommandHandlerTests.Messages
                 MessageId = "21"
             };
 
-            Func<Task> result = async () =>await handler.Handle(command, CancellationToken.None);
+            Func<Task> result = async () => await handler.Handle(command, CancellationToken.None);
 
             await result.Should().ThrowAsync<BusinessException>()
                 .WithMessage(ResponseMessageCodes.MessageNotFound);

@@ -4,7 +4,6 @@ using MangoAPI.BusinessLogic.ApiCommands.Chats;
 using MangoAPI.BusinessLogic.ApiQueries.Chats;
 using MangoAPI.BusinessLogic.ApiQueries.Users;
 using MangoAPI.BusinessLogic.Responses;
-using MangoAPI.BusinessLogic.Responses.Chats;
 using MangoAPI.Presentation.Extensions;
 using MangoAPI.Presentation.Interfaces;
 using MediatR;
@@ -83,7 +82,7 @@ namespace MangoAPI.Presentation.Controllers
             CancellationToken cancellationToken)
         {
             var userId = HttpContext.User.GetUserId();
-            var request = new SearchChatsQuery {DisplayName = displayName, UserId = userId};
+            var request = new SearchChatsCommand {DisplayName = displayName, UserId = userId};
             return await RequestAsync(request, cancellationToken);
         }
     }

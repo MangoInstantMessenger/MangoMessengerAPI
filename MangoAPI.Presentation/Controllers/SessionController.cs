@@ -1,8 +1,7 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
-using MangoAPI.BusinessLogic.ApiCommands.Auth;
+using MangoAPI.BusinessLogic.ApiCommands.Sessions;
 using MangoAPI.BusinessLogic.Responses;
-using MangoAPI.BusinessLogic.Responses.Auth;
 using MangoAPI.Presentation.Extensions;
 using MangoAPI.Presentation.Interfaces;
 using MediatR;
@@ -34,15 +33,15 @@ namespace MangoAPI.Presentation.Controllers
         }
 
         [AllowAnonymous]
-        [HttpPost("{id}")]
+        [HttpPut]
         [SwaggerOperation(Summary = "Refreshes current user's session. Returns: Access token, Session Id.")]
         [ProducesResponseType(typeof(RefreshSessionResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public async Task<IActionResult> RefreshSession([FromRoute] string id, CancellationToken cancellationToken)
+        public async Task<IActionResult> RefreshSession([FromBody] RefreshSessionRequest request, CancellationToken cancellationToken)
         {
-            var command = new RefreshSessionCommand {SessionId = id};
+            var command = request.ToCommand();
             return await RequestAsync(command, cancellationToken);
         }
 
@@ -55,7 +54,7 @@ namespace MangoAPI.Presentation.Controllers
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> LogoutAsync([FromRoute] string id, CancellationToken cancellationToken)
         {
-            var command = new LogoutCommand {SessionId = id};
+            var command = new LogoutCommand {RefreshToken = id};
             return await RequestAsync(command, cancellationToken);
         }
 

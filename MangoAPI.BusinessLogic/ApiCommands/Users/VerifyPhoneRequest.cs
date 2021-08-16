@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace MangoAPI.BusinessLogic.ApiCommands.Auth
+namespace MangoAPI.BusinessLogic.ApiCommands.Users
 {
     public record VerifyPhoneRequest
     {
@@ -17,11 +17,13 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Auth
 
     public static class VerifyPhoneCommandMapper
     {
-        public static VerifyPhoneCommand ToCommand(this VerifyPhoneRequest model) =>
-            new()
+        public static VerifyPhoneCommand ToCommand(this VerifyPhoneRequest model)
+        {
+            return new()
             {
                 ConfirmationCode = model.ConfirmationCode,
                 UserId = model.UserId
             };
+        }
     }
 }

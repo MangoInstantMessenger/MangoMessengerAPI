@@ -2,7 +2,6 @@
 using System.Threading;
 using System.Threading.Tasks;
 using FluentAssertions;
-using MangoAPI.BusinessLogic.ApiCommandHandlers.Chats;
 using MangoAPI.BusinessLogic.ApiCommands.Chats;
 using MangoAPI.BusinessLogic.BusinessExceptions;
 using MangoAPI.Domain.Constants;
@@ -28,7 +27,7 @@ namespace MangoAPI.Tests.CommandHandlerTests.Chats
 
             result.Success.Should().BeTrue();
         }
-        
+
         [Test]
         public async Task JoinChatCommandHandlerTest_ShouldThrowAlreadyJoined()
         {

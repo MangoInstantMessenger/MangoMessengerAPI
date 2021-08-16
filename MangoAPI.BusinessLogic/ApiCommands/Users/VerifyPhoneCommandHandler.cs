@@ -1,15 +1,13 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
-using MangoAPI.BusinessLogic.ApiCommands.Auth;
 using MangoAPI.BusinessLogic.BusinessExceptions;
-using MangoAPI.BusinessLogic.Responses.Auth;
 using MangoAPI.DataAccess.Database;
 using MangoAPI.Domain.Constants;
 using MangoAPI.Domain.Entities;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 
-namespace MangoAPI.BusinessLogic.ApiCommandHandlers.Auth
+namespace MangoAPI.BusinessLogic.ApiCommands.Users
 {
     public class VerifyPhoneCommandHandler : IRequestHandler<VerifyPhoneCommand, VerifyPhoneResponse>
     {
@@ -27,20 +25,12 @@ namespace MangoAPI.BusinessLogic.ApiCommandHandlers.Auth
         {
             var user = await _userManager.FindByIdAsync(request.UserId);
 
-            if (user == null)
-            {
-                throw new BusinessException(ResponseMessageCodes.UserNotFound);
-            }
+            if (user == null) throw new BusinessException(ResponseMessageCodes.UserNotFound);
 
-            if (user.PhoneNumberConfirmed)
-            {
-                throw new BusinessException(ResponseMessageCodes.PhoneAlreadyVerified);
-            }
+            if (user.PhoneNumberConfirmed) throw new BusinessException(ResponseMessageCodes.PhoneAlreadyVerified);
 
             if (user.ConfirmationCode != request.ConfirmationCode)
-            {
                 throw new BusinessException(ResponseMessageCodes.InvalidPhoneCode);
-            }
 
             user.PhoneNumberConfirmed = true;
             user.ConfirmationCode = 0;

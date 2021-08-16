@@ -1,7 +1,6 @@
-﻿using MangoAPI.BusinessLogic.Responses.Auth;
-using MediatR;
+﻿using MediatR;
 
-namespace MangoAPI.BusinessLogic.ApiCommands.Auth
+namespace MangoAPI.BusinessLogic.ApiCommands.Users
 {
     public record VerifyPhoneCommand : IRequest<VerifyPhoneResponse>
     {

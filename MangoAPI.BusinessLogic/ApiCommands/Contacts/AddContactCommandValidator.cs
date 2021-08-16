@@ -14,7 +14,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Contacts
 
             RuleFor(x => x.UserId).Must(x => Guid.TryParse(x, out _))
                 .WithMessage("Add Contact: User Id cannot be parsed.");
-            
+
             RuleFor(x => x.ContactId)
                 .Cascade(CascadeMode.Stop)
                 .NotEmpty()

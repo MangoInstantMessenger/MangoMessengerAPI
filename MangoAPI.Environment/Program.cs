@@ -26,10 +26,7 @@ namespace MangoAPI.Environment
 
             foreach (var item in dictionary)
             {
-                if (System.Environment.GetEnvironmentVariable(item.Key) != null)
-                {
-                    continue;
-                }
+                if (System.Environment.GetEnvironmentVariable(item.Key) != null) continue;
 
                 System.Environment.SetEnvironmentVariable(item.Key, item.Value, EnvironmentVariableTarget.User);
             }

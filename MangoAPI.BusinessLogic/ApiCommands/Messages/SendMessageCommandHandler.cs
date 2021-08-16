@@ -2,9 +2,7 @@
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using MangoAPI.BusinessLogic.ApiCommands.Messages;
 using MangoAPI.BusinessLogic.BusinessExceptions;
-using MangoAPI.BusinessLogic.Responses.Messages;
 using MangoAPI.DataAccess.Database;
 using MangoAPI.Domain.Constants;
 using MangoAPI.Domain.Entities;
@@ -12,7 +10,7 @@ using MangoAPI.Domain.Enums;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace MangoAPI.BusinessLogic.ApiCommandHandlers.Messages
+namespace MangoAPI.BusinessLogic.ApiCommands.Messages
 {
     public class SendMessageCommandHandler : IRequestHandler<SendMessageCommand, SendMessageResponse>
     {
@@ -28,25 +26,16 @@ namespace MangoAPI.BusinessLogic.ApiCommandHandlers.Messages
             var user = await _postgresDbContext.Users
                 .FirstOrDefaultAsync(x => x.Id == request.UserId, cancellationToken);
 
-            if (user == null)
-            {
-                throw new BusinessException(ResponseMessageCodes.UserNotFound);
-            }
+            if (user == null) throw new BusinessException(ResponseMessageCodes.UserNotFound);
 
             var chat = await _postgresDbContext.Chats
                 .FirstOrDefaultAsync(x => x.Id == request.ChatId, cancellationToken);
 
-            if (chat == null)
-            {
-                throw new BusinessException(ResponseMessageCodes.ChatNotFound);
-            }
+            if (chat == null) throw new BusinessException(ResponseMessageCodes.ChatNotFound);
 
             var permitted = await CheckUserPermissions(user, chat, cancellationToken);
 
-            if (!permitted)
-            {
-                throw new BusinessException(ResponseMessageCodes.PermissionDenied);
-            }
+            if (!permitted) throw new BusinessException(ResponseMessageCodes.PermissionDenied);
 
             var messageEntity = new MessageEntity
             {

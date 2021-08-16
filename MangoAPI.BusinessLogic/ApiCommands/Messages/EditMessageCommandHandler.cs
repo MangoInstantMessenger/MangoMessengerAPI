@@ -1,19 +1,18 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
-using MangoAPI.BusinessLogic.ApiCommands.Messages;
 using MangoAPI.BusinessLogic.BusinessExceptions;
-using MangoAPI.BusinessLogic.Responses.Messages;
 using MangoAPI.DataAccess.Database;
 using MangoAPI.Domain.Constants;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace MangoAPI.BusinessLogic.ApiCommandHandlers.Messages
+namespace MangoAPI.BusinessLogic.ApiCommands.Messages
 {
     public class EditMessageCommandHandler : IRequestHandler<EditMessageCommand, EditMessageResponse>
     {
         private readonly MangoPostgresDbContext _postgresDbContext;
+
         public EditMessageCommandHandler(MangoPostgresDbContext postgresDbContext)
         {
             _postgresDbContext = postgresDbContext;
@@ -24,19 +23,13 @@ namespace MangoAPI.BusinessLogic.ApiCommandHandlers.Messages
             var currentUser = await _postgresDbContext.Users
                 .FirstOrDefaultAsync(x => x.Id == request.UserId, cancellationToken);
 
-            if (currentUser == null)
-            {
-                throw new BusinessException(ResponseMessageCodes.UserNotFound);
-            }
+            if (currentUser == null) throw new BusinessException(ResponseMessageCodes.UserNotFound);
 
             var message = await _postgresDbContext.Messages
                 .FirstOrDefaultAsync(x => x.Id == request.MessageId && x.UserId == currentUser.Id,
                     cancellationToken);
 
-            if (message == null)
-            {
-                throw new BusinessException(ResponseMessageCodes.MessageNotFound);
-            }
+            if (message == null) throw new BusinessException(ResponseMessageCodes.MessageNotFound);
 
             message.Content = request.ModifiedText;
             message.Updated = DateTime.UtcNow;

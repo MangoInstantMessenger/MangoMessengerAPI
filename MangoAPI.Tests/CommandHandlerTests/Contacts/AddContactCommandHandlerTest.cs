@@ -2,7 +2,6 @@
 using System.Threading;
 using System.Threading.Tasks;
 using FluentAssertions;
-using MangoAPI.BusinessLogic.ApiCommandHandlers.Contacts;
 using MangoAPI.BusinessLogic.ApiCommands.Contacts;
 using MangoAPI.BusinessLogic.BusinessExceptions;
 using MangoAPI.Domain.Constants;
@@ -45,7 +44,7 @@ namespace MangoAPI.Tests.CommandHandlerTests.Contacts
             await result.Should().ThrowAsync<BusinessException>()
                 .WithMessage(ResponseMessageCodes.UserNotFound);
         }
-        
+
         [Test]
         public async Task AddContactCommandHandlerTest_ShouldThrowContactAlreadyExists()
         {

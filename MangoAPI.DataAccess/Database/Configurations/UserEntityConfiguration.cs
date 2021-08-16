@@ -73,8 +73,8 @@ namespace MangoAPI.DataAccess.Database.Configurations
                 EmailConfirmed = true,
                 PhoneNumberConfirmed = true
             };
-            
-            var user5 = new UserEntity 
+
+            var user5 = new UserEntity
             {
                 PhoneNumber = "+48 743 615 532",
                 DisplayName = "Petro Kolosov",
@@ -86,7 +86,7 @@ namespace MangoAPI.DataAccess.Database.Configurations
                 PhoneNumberConfirmed = true
             };
 
-            var user6 = new UserEntity 
+            var user6 = new UserEntity
             {
                 PhoneNumber = "+48 743 615 532",
                 DisplayName = "Szymon Murawski",
@@ -98,7 +98,7 @@ namespace MangoAPI.DataAccess.Database.Configurations
                 PhoneNumberConfirmed = true
             };
 
-            
+
             var passwordHasher = new PasswordHashService();
 
             passwordHasher.HashPassword(user1, "z[?6dMR#xmp=nr6q");
@@ -107,8 +107,8 @@ namespace MangoAPI.DataAccess.Database.Configurations
             passwordHasher.HashPassword(user4, "z[?6dMR#xmp=nr6q");
             passwordHasher.HashPassword(user5, "z[?6dMR#xmp=nr6q");
             passwordHasher.HashPassword(user6, "z[?6dMR#xmp=nr6q");
-            
-            
+
+
             builder.HasData(user1, user2, user3, user4, user5, user6);
         }
     }

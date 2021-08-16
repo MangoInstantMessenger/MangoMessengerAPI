@@ -9,8 +9,6 @@ namespace MangoAPI.Tests
 {
     public class DbContextFixture : IDisposable
     {
-        public MangoPostgresDbContext PostgresDbContext { get; }
-
         public DbContextFixture()
         {
             var options = new DbContextOptionsBuilder<MangoPostgresDbContext>()
@@ -19,13 +17,21 @@ namespace MangoAPI.Tests
 
             PostgresDbContext = new MangoPostgresDbContext(options);
             PostgresDbContext.Database.EnsureDeleted();
-            
+
             SeedUsers();
             SeedUserInformation();
             SeedChats();
             SeedUserChat();
             SeedMessages();
             SeedContacts();
+        }
+
+        public MangoPostgresDbContext PostgresDbContext { get; }
+
+        public void Dispose()
+        {
+            PostgresDbContext.Database.EnsureDeleted();
+            PostgresDbContext.Dispose();
         }
 
         private void SeedUsers()
@@ -41,7 +47,7 @@ namespace MangoAPI.Tests
 
             PostgresDbContext.SaveChanges();
         }
-        
+
         private void SeedChats()
         {
             PostgresDbContext.Chats.AddRange(SeedData.Chats);
@@ -66,14 +72,8 @@ namespace MangoAPI.Tests
         private void SeedContacts()
         {
             PostgresDbContext.UserContacts.AddRange(SeedData.Contacts);
-            
-            PostgresDbContext.SaveChanges();
-        }
 
-        public void Dispose()
-        {
-            PostgresDbContext.Database.EnsureDeleted();
-            PostgresDbContext.Dispose();
+            PostgresDbContext.SaveChanges();
         }
     }
 
@@ -85,12 +85,12 @@ namespace MangoAPI.Tests
             {
                 Id = "1",
                 DisplayName = "Petro"
-            }, 
+            },
             new UserEntity
             {
                 Id = "2",
                 DisplayName = "Szymon"
-            }, 
+            },
             new UserEntity
             {
                 Id = "3",
@@ -106,7 +106,7 @@ namespace MangoAPI.Tests
                 UserId = "1",
                 FirstName = "Szymon",
                 LastName = "Murawski",
-                BirthDay = new DateTime(1985,7,24),
+                BirthDay = new DateTime(1985, 7, 24),
                 Address = "Poland, Krakov",
                 Facebook = "szymon.murawski",
                 Instagram = "szymon.murawski",
@@ -119,7 +119,7 @@ namespace MangoAPI.Tests
                 UserId = "2",
                 FirstName = "Petro",
                 LastName = "Kolosov",
-                BirthDay = new DateTime(1994,4,6),
+                BirthDay = new DateTime(1994, 4, 6),
                 Address = "Poland, Lvov",
                 Facebook = "petro.kolosov",
                 Instagram = "petro.kolosov",
@@ -141,7 +141,8 @@ namespace MangoAPI.Tests
                 ChatType = ChatType.PublicChannel,
                 Title = "Extreme Code C++",
                 Id = "2"
-            }, new ChatEntity
+            },
+            new ChatEntity
             {
                 ChatType = ChatType.PublicChannel,
                 Title = "Extreme Code",

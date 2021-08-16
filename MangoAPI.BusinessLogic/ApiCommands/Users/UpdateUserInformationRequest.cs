@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Text.Json.Serialization;
 
-namespace MangoAPI.BusinessLogic.ApiCommands.UserInformation
+namespace MangoAPI.BusinessLogic.ApiCommands.Users
 {
     public record UpdateUserInformationRequest
     {
@@ -21,7 +21,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.UserInformation
             LinkedIn = linkedIn;
             ProfilePicture = profilePicture;
         }
-                    
+
         public string FirstName { get; init; }
         public string LastName { get; init; }
         public DateTime? BirthDay { get; init; }
@@ -39,19 +39,22 @@ namespace MangoAPI.BusinessLogic.ApiCommands.UserInformation
 
     public static class UpdateUserInformationRequestMapper
     {
-        public static UpdateUserInformationCommand ToCommand(this UpdateUserInformationRequest model, string userId) => new()
+        public static UpdateUserInformationCommand ToCommand(this UpdateUserInformationRequest model, string userId)
         {
-            FirstName = model.FirstName,
-            LastName = model.LastName,
-            BirthDay = model.BirthDay,
-            Website = model.Website,
-            Address = model.Address,
-            Facebook = model.Facebook,
-            Twitter = model.Twitter,
-            Instagram = model.Instagram,
-            LinkedIn = model.LinkedIn,
-            ProfilePicture = model.ProfilePicture,
-            UserId = userId
-        };
+            return new()
+            {
+                FirstName = model.FirstName,
+                LastName = model.LastName,
+                BirthDay = model.BirthDay,
+                Website = model.Website,
+                Address = model.Address,
+                Facebook = model.Facebook,
+                Twitter = model.Twitter,
+                Instagram = model.Instagram,
+                LinkedIn = model.LinkedIn,
+                ProfilePicture = model.ProfilePicture,
+                UserId = userId
+            };
+        }
     }
 }

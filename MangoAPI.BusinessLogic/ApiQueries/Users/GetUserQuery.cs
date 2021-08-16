@@ -1,5 +1,4 @@
-﻿using MangoAPI.BusinessLogic.Responses.Users;
-using MediatR;
+﻿using MediatR;
 
 namespace MangoAPI.BusinessLogic.ApiQueries.Users
 {

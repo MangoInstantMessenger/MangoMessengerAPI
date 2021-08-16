@@ -1,8 +1,7 @@
 ﻿using MangoAPI.BusinessLogic.Enums;
-using MangoAPI.BusinessLogic.Responses.Auth;
 using MediatR;
 
-namespace MangoAPI.BusinessLogic.ApiCommands.Auth
+namespace MangoAPI.BusinessLogic.ApiCommands.Users
 {
     public record RegisterCommand : IRequest<RegisterResponse>
     {

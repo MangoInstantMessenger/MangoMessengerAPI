@@ -12,7 +12,10 @@ namespace MangoAPI.Presentation
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration) => Configuration = configuration;
+        public Startup(IConfiguration configuration)
+        {
+            Configuration = configuration;
+        }
 
         private IConfiguration Configuration { get; }
 
@@ -64,11 +67,8 @@ namespace MangoAPI.Presentation
 
         public static void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
-            
+            if (env.IsDevelopment()) app.UseDeveloperExceptionPage();
+
             app.ConfigureExceptionHandler();
 
             app.UseCors(builder =>

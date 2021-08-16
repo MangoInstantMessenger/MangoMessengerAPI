@@ -1,14 +1,12 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
-using MangoAPI.BusinessLogic.ApiQueries.Users;
 using MangoAPI.BusinessLogic.BusinessExceptions;
-using MangoAPI.BusinessLogic.Responses.Users;
 using MangoAPI.DataAccess.Database;
 using MangoAPI.Domain.Constants;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace MangoAPI.BusinessLogic.ApiQueryHandlers.Users
+namespace MangoAPI.BusinessLogic.ApiQueries.Users
 {
     public class GetUserQueryHandler : IRequestHandler<GetUserQuery, GetUserResponse>
     {

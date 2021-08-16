@@ -1,7 +1,7 @@
 ﻿using MangoAPI.BusinessLogic.Enums;
 using Newtonsoft.Json;
 
-namespace MangoAPI.BusinessLogic.ApiCommands.Auth
+namespace MangoAPI.BusinessLogic.ApiCommands.Users
 {
     public record RegisterRequest
     {
@@ -31,8 +31,9 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Auth
 
     public static class RegisterCommandMapper
     {
-        public static RegisterCommand ToCommand(this RegisterRequest model) =>
-            new()
+        public static RegisterCommand ToCommand(this RegisterRequest model)
+        {
+            return new()
             {
                 PhoneNumber = model.PhoneNumber,
                 Email = model.Email,
@@ -41,5 +42,6 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Auth
                 VerificationMethod = model.VerificationMethod,
                 TermsAccepted = model.TermsAccepted
             };
+        }
     }
 }

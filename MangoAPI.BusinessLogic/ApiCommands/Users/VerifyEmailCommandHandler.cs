@@ -1,15 +1,13 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
-using MangoAPI.BusinessLogic.ApiCommands.Auth;
 using MangoAPI.BusinessLogic.BusinessExceptions;
-using MangoAPI.BusinessLogic.Responses.Auth;
 using MangoAPI.DataAccess.Database;
 using MangoAPI.Domain.Constants;
 using MangoAPI.Domain.Entities;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 
-namespace MangoAPI.BusinessLogic.ApiCommandHandlers.Auth
+namespace MangoAPI.BusinessLogic.ApiCommands.Users
 {
     public class VerifyEmailCommandHandler : IRequestHandler<VerifyEmailCommand, VerifyEmailResponse>
     {
@@ -26,20 +24,11 @@ namespace MangoAPI.BusinessLogic.ApiCommandHandlers.Auth
         {
             var user = await _userManager.FindByIdAsync(request.UserId);
 
-            if (user is null)
-            {
-                throw new BusinessException(ResponseMessageCodes.UserNotFound);
-            }
+            if (user is null) throw new BusinessException(ResponseMessageCodes.UserNotFound);
 
-            if (user.Email != request.Email)
-            {
-                throw new BusinessException(ResponseMessageCodes.InvalidEmail);
-            }
+            if (user.Email != request.Email) throw new BusinessException(ResponseMessageCodes.InvalidEmail);
 
-            if (user.EmailConfirmed)
-            {
-                throw new BusinessException(ResponseMessageCodes.EmailAlreadyVerified);
-            }
+            if (user.EmailConfirmed) throw new BusinessException(ResponseMessageCodes.EmailAlreadyVerified);
 
             user.EmailConfirmed = true;
 

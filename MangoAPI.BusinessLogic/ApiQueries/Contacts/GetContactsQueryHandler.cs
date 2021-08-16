@@ -1,15 +1,13 @@
 ﻿using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using MangoAPI.BusinessLogic.ApiQueries.Contacts;
 using MangoAPI.BusinessLogic.BusinessExceptions;
-using MangoAPI.BusinessLogic.Responses.Contacts;
 using MangoAPI.DataAccess.Database;
 using MangoAPI.Domain.Constants;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace MangoAPI.BusinessLogic.ApiQueryHandlers.Contacts
+namespace MangoAPI.BusinessLogic.ApiQueries.Contacts
 {
     public class GetContactsQueryHandler : IRequestHandler<GetContactsQuery, GetContactsResponse>
     {
@@ -25,10 +23,7 @@ namespace MangoAPI.BusinessLogic.ApiQueryHandlers.Contacts
             var user = await _postgresDbContext.Users
                 .FirstOrDefaultAsync(x => x.Id == request.UserId, cancellationToken);
 
-            if (user is null)
-            {
-                throw new BusinessException(ResponseMessageCodes.UserNotFound);
-            }
+            if (user is null) throw new BusinessException(ResponseMessageCodes.UserNotFound);
 
             var contacts = await (from userContact in _postgresDbContext.UserContacts.AsNoTracking()
                 join userEntity in _postgresDbContext.Users on userContact.ContactId equals userEntity.Id

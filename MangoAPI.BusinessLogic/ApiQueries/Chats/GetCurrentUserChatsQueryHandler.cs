@@ -1,15 +1,14 @@
 ﻿using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using MangoAPI.BusinessLogic.ApiQueries.Users;
 using MangoAPI.BusinessLogic.BusinessExceptions;
-using MangoAPI.BusinessLogic.Responses.Chats;
 using MangoAPI.DataAccess.Database;
 using MangoAPI.Domain.Constants;
+using MangoAPI.Domain.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace MangoAPI.BusinessLogic.ApiQueryHandlers.Chats
+namespace MangoAPI.BusinessLogic.ApiQueries.Chats
 {
     public class
         GetCurrentUserChatsQueryHandler : IRequestHandler<GetCurrentUserChatsQuery, GetCurrentUserChatsResponse>
@@ -24,18 +23,16 @@ namespace MangoAPI.BusinessLogic.ApiQueryHandlers.Chats
         public async Task<GetCurrentUserChatsResponse> Handle(GetCurrentUserChatsQuery request,
             CancellationToken cancellationToken)
         {
-            var currentUser = await _postgresDbContext.Users.FirstOrDefaultAsync(x => x.Id == request.UserId, cancellationToken);
-            
-            if (currentUser == null)
-            {
-                throw new BusinessException(ResponseMessageCodes.UserNotFound);
-            }
+            var currentUser =
+                await _postgresDbContext.Users.FirstOrDefaultAsync(x => x.Id == request.UserId, cancellationToken);
+
+            if (currentUser == null) throw new BusinessException(ResponseMessageCodes.UserNotFound);
 
             var chats = await _postgresDbContext.UserChats
                 .AsNoTracking()
                 .Include(x => x.Chat)
                 .ThenInclude(x => x.Messages)
-                .ThenInclude(x => x.User)
+                .ThenInclude<UserChatEntity, MessageEntity, UserEntity>(x => x.User)
                 .Where(x => x.UserId == currentUser.Id)
                 .ToListAsync(cancellationToken);
 

@@ -32,9 +32,7 @@ namespace MangoAPI.Application.Services
             var jwtLifetime = EnvironmentConstants.JwtLifeTime;
 
             if (jwtLifetime == null || !int.TryParse(jwtLifetime, out var jwtLifetimeParsed))
-            {
                 throw new InvalidOperationException("Jwt lifetime environmental variable error.");
-            }
 
             var credentials = new SigningCredentials(_key, SecurityAlgorithms.HmacSha256);
 
@@ -61,15 +59,13 @@ namespace MangoAPI.Application.Services
             var refreshLifetime = EnvironmentConstants.RefreshTokenLifeTime;
 
             if (refreshLifetime == null || !int.TryParse(refreshLifetime, out var refreshLifetimeParsed))
-            {
                 throw new InvalidOperationException("Refresh token lifetime environmental variable error.");
-            }
 
             return new SessionEntity
             {
                 Id = Guid.NewGuid().ToString(),
                 Expires = DateTime.UtcNow.AddDays(refreshLifetimeParsed),
-                Created = DateTime.UtcNow,
+                Created = DateTime.UtcNow
             };
         }
     }

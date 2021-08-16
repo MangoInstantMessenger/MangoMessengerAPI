@@ -1,17 +1,15 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
-using MangoAPI.BusinessLogic.ApiCommands.UserInformation;
 using MangoAPI.BusinessLogic.BusinessExceptions;
-using MangoAPI.BusinessLogic.Responses.UserInformation;
 using MangoAPI.DataAccess.Database;
 using MangoAPI.Domain.Constants;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace MangoAPI.BusinessLogic.ApiCommandHandlers.UserInformation
+namespace MangoAPI.BusinessLogic.ApiCommands.Users
 {
     public class UpdateUserInformationCommandHandler : IRequestHandler<UpdateUserInformationCommand,
-            UpdateUserInformationResponse>
+        UpdateUserInformationResponse>
     {
         private readonly MangoPostgresDbContext _postgresDbContext;
 
@@ -27,10 +25,7 @@ namespace MangoAPI.BusinessLogic.ApiCommandHandlers.UserInformation
                 .Include(x => x.UserInformation)
                 .FirstOrDefaultAsync(x => x.Id == request.UserId, cancellationToken);
 
-            if (user is null)
-            {
-                throw new BusinessException(ResponseMessageCodes.UserNotFound);
-            }
+            if (user is null) throw new BusinessException(ResponseMessageCodes.UserNotFound);
 
             user.UserInformation.FirstName = request.FirstName;
             user.UserInformation.LastName = request.LastName;

@@ -3,7 +3,6 @@ using System.Threading.Tasks;
 using MangoAPI.BusinessLogic.ApiCommands.Messages;
 using MangoAPI.BusinessLogic.ApiQueries.Messages;
 using MangoAPI.BusinessLogic.Responses;
-using MangoAPI.BusinessLogic.Responses.Messages;
 using MangoAPI.Presentation.Extensions;
 using MangoAPI.Presentation.Interfaces;
 using MediatR;
@@ -77,7 +76,7 @@ namespace MangoAPI.Presentation.Controllers
                 MessageId = id,
                 UserId = userId
             };
-            
+
             return await RequestAsync(command, cancellationToken);
         }
     }

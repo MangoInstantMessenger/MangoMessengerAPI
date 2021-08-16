@@ -1,12 +1,9 @@
-﻿using System.Threading;
+﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
-using MangoAPI.BusinessLogic.ApiCommands.Auth;
-using MangoAPI.BusinessLogic.ApiCommands.UserInformation;
+using MangoAPI.BusinessLogic.ApiCommands.Users;
 using MangoAPI.BusinessLogic.ApiQueries.Users;
 using MangoAPI.BusinessLogic.Responses;
-using MangoAPI.BusinessLogic.Responses.Auth;
-using MangoAPI.BusinessLogic.Responses.UserInformation;
-using MangoAPI.BusinessLogic.Responses.Users;
 using MangoAPI.Presentation.Extensions;
 using MangoAPI.Presentation.Interfaces;
 using MediatR;
@@ -61,7 +58,7 @@ namespace MangoAPI.Presentation.Controllers
         public Task<IActionResult> PhoneConfirmationAsync(VerifyPhoneRequest request,
             CancellationToken cancellationToken)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         [Authorize]
@@ -87,7 +84,7 @@ namespace MangoAPI.Presentation.Controllers
         public async Task<IActionResult> SearchesAsync([FromQuery] string displayName,
             CancellationToken cancellationToken)
         {
-            var query = new UserSearchQuery {DisplayName = displayName};
+            var query = new UserSearchCommand {DisplayName = displayName};
             return await RequestAsync(query, cancellationToken);
         }
 

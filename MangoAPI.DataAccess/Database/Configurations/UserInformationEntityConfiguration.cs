@@ -54,7 +54,7 @@ namespace MangoAPI.DataAccess.Database.Configurations
                     BirthDay = new DateTime(1994, 7, 21),
                     Address = "Poland, Krakov",
                     Website = "razumovsky.com",
-                    Twitter = "razumovsky_r",
+                    Twitter = "razumovsky_r"
                 },
                 new UserInformationEntity
                 {
