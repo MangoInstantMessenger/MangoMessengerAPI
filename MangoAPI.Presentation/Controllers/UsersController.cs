@@ -33,7 +33,7 @@ namespace MangoAPI.Presentation.Controllers
             return await RequestAsync(request.ToCommand(), cancellationToken);
         }
 
-        [AllowAnonymous]
+        [Authorize(Roles = "User, Unverified")]
         [HttpPut("email-confirmation")]
         [SwaggerOperation(Summary = "Confirms user's email.")]
         [ProducesResponseType(typeof(VerifyEmailResponse), StatusCodes.Status200OK)]
@@ -46,7 +46,7 @@ namespace MangoAPI.Presentation.Controllers
             return await RequestAsync(command, cancellationToken);
         }
 
-        [AllowAnonymous]
+        [Authorize(Roles = "User, Unverified")]
         [HttpPut("phone-confirmation")]
         [SwaggerOperation(Summary = "Confirms user's phone number.")]
         [ProducesResponseType(typeof(VerifyPhoneResponse), StatusCodes.Status200OK)]
@@ -55,10 +55,12 @@ namespace MangoAPI.Presentation.Controllers
         public async Task<IActionResult> PhoneConfirmationAsync([FromBody] VerifyPhoneRequest request,
             CancellationToken cancellationToken)
         {
-            return await RequestAsync(request.ToCommand(), cancellationToken);
+            var userId = HttpContext.User.GetUserId();
+            var command = request.ToCommand(userId);
+            return await RequestAsync(command, cancellationToken);
         }
 
-        [Authorize]
+        [Authorize(Roles = "User, Admin")]
         [HttpGet("{userId}")]
         [SwaggerOperation(Summary = "Gets an information about particular user by user ID.")]
         [ProducesResponseType(typeof(GetUserResponse), StatusCodes.Status200OK)]
@@ -71,7 +73,7 @@ namespace MangoAPI.Presentation.Controllers
             return await RequestAsync(query, cancellationToken);
         }
 
-        [Authorize]
+        [Authorize(Roles = "User, Admin")]
         [HttpPost("searches")]
         [SwaggerOperation(Summary = "Searches user by display name.")]
         [ProducesResponseType(typeof(UserSearchResponse), StatusCodes.Status200OK)]
@@ -84,7 +86,7 @@ namespace MangoAPI.Presentation.Controllers
             return await RequestAsync(request, cancellationToken);
         }
 
-        [Authorize]
+        [Authorize(Roles = "Unverified")]
         [HttpGet]
         [SwaggerOperation(Summary = "Gets an information about current user.")]
         [ProducesResponseType(typeof(GetUserResponse), StatusCodes.Status200OK)]
@@ -98,7 +100,7 @@ namespace MangoAPI.Presentation.Controllers
             return await RequestAsync(request, cancellationToken);
         }
 
-        [Authorize]
+        [Authorize(Roles = "User, Admin")]
         [HttpPut("information")]
         [SwaggerOperation(Summary = "Updates user's personal information.")]
         [ProducesResponseType(typeof(UpdateUserInformationResponse), StatusCodes.Status200OK)]

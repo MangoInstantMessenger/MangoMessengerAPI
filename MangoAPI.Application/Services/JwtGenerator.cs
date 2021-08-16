@@ -21,17 +21,20 @@ namespace MangoAPI.Application.Services
             _key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(tokenKey!));
         }
 
-        public string GenerateJwtToken(UserEntity userEntity)
+        public string GenerateJwtToken(UserEntity userEntity, string role)
         {
             var claims = new List<Claim>
             {
-                new(JwtRegisteredClaimNames.Jti, userEntity.Id)
+                new(JwtRegisteredClaimNames.Jti, userEntity.Id),
+                new(ClaimTypes.Role, role)
             };
 
             var jwtLifetime = EnvironmentConstants.JwtLifeTime;
 
             if (jwtLifetime == null || !int.TryParse(jwtLifetime, out var jwtLifetimeParsed))
+            {
                 throw new InvalidOperationException("Jwt lifetime environmental variable error.");
+            }
 
             var credentials = new SigningCredentials(_key, SecurityAlgorithms.HmacSha256);
 

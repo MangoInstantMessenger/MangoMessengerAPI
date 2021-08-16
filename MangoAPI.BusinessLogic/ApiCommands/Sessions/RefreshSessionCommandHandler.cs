@@ -72,7 +72,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Sessions
                 Created = DateTime.UtcNow
             };
 
-            var jwtToken = _jwtGenerator.GenerateJwtToken(user);
+            var jwtToken = _jwtGenerator.GenerateJwtToken(user, "User");
 
             await _postgresDbContext.Sessions.AddAsync(newSession, cancellationToken);
             await _postgresDbContext.SaveChangesAsync(cancellationToken);
