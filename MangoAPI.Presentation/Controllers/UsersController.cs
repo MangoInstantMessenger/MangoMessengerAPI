@@ -35,9 +35,7 @@ namespace MangoAPI.Presentation.Controllers
 
         [AllowAnonymous]
         [HttpPut("email-confirmation")]
-        [SwaggerOperation(Summary =
-            "Sends verification request with provided user parameters: E-mail, User's ID guid. " +
-            "User receives confirmation link via email.")]
+        [SwaggerOperation(Summary = "Confirms user's email.")]
         [ProducesResponseType(typeof(VerifyEmailResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
@@ -50,8 +48,7 @@ namespace MangoAPI.Presentation.Controllers
 
         [AllowAnonymous]
         [HttpPut("phone-confirmation")]
-        [SwaggerOperation(Summary =
-            "Sends verification request with provided user parameters: phone confirmation code.")]
+        [SwaggerOperation(Summary = "Confirms user's phone number.")]
         [ProducesResponseType(typeof(VerifyPhoneResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]

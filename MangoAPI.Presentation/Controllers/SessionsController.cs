@@ -22,7 +22,7 @@ namespace MangoAPI.Presentation.Controllers
 
         [AllowAnonymous]
         [HttpPost]
-        [SwaggerOperation(Summary = "Performs login to the messenger. Returns: Access token, Session Id.")]
+        [SwaggerOperation(Summary = "Performs login to the messenger. Returns: Returns: Access token, Refresh Token.")]
         [ProducesResponseType(typeof(LoginResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
@@ -34,7 +34,7 @@ namespace MangoAPI.Presentation.Controllers
 
         [AllowAnonymous]
         [HttpPost("{refreshToken}")]
-        [SwaggerOperation(Summary = "Refreshes current user's session. Returns: Access token, Session Id.")]
+        [SwaggerOperation(Summary = "Refreshes current user's session. Returns: Access token, Refresh Token.")]
         [ProducesResponseType(typeof(RefreshSessionResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
