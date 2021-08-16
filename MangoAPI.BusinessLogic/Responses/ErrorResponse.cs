@@ -16,6 +16,9 @@ namespace MangoAPI.BusinessLogic.Responses
         // ReSharper disable once UnusedAutoPropertyAccessor.Global
         public bool Success { get; init; }
 
-        public override string ToString() => JsonSerializer.Serialize(this);
+        public override string ToString()
+        {
+            return JsonSerializer.Serialize(this);
+        }
     }
 }

@@ -10,7 +10,7 @@ namespace MangoAPI.Application.Services
             var hash = base.HashPassword(user, password);
             user.PasswordHash = hash;
 
-            return hash; 
+            return hash;
         }
     }
 }

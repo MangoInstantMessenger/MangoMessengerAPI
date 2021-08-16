@@ -3,7 +3,6 @@ using System.Threading.Tasks;
 using MangoAPI.BusinessLogic.ApiCommands.Messages;
 using MangoAPI.BusinessLogic.ApiQueries.Messages;
 using MangoAPI.BusinessLogic.Responses;
-using MangoAPI.BusinessLogic.Responses.Messages;
 using MangoAPI.Presentation.Extensions;
 using MangoAPI.Presentation.Interfaces;
 using MediatR;
@@ -63,17 +62,21 @@ namespace MangoAPI.Presentation.Controllers
             return await RequestAsync(command, cancellationToken);
         }
 
-        [HttpDelete]
-        [SwaggerOperation(Summary = "Deletes particular message by ID.")]
+        [HttpDelete("{messageId}")]
+        [SwaggerOperation(Summary = "Deletes particular message by message Id.")]
         [ProducesResponseType(typeof(DeleteMessageResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public async Task<IActionResult> DeleteMessage([FromBody] DeleteMessageRequest request,
-            CancellationToken cancellationToken)
+        public async Task<IActionResult> DeleteMessage([FromRoute] string messageId, CancellationToken cancellationToken)
         {
             var userId = HttpContext.User.GetUserId();
-            var command = request.ToCommand(userId);
+            var command = new DeleteMessageCommand
+            {
+                MessageId = messageId,
+                UserId = userId
+            };
+
             return await RequestAsync(command, cancellationToken);
         }
     }

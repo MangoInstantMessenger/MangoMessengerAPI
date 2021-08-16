@@ -7,7 +7,6 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Messages
     {
         public SendMessageCommandValidator()
         {
-
             RuleFor(x => x.ChatId).Must(x => Guid.TryParse(x, out _))
                 .WithMessage("SendMessageCommand: Chat Id cannot be parsed.");
 

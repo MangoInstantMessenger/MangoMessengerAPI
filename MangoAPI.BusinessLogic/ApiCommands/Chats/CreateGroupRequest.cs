@@ -18,12 +18,14 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Chats
 
     public static class CreateGroupCommandMapper
     {
-        public static CreateGroupCommand ToCommand(this CreateGroupRequest model, string userId) =>
-            new()
+        public static CreateGroupCommand ToCommand(this CreateGroupRequest model, string userId)
+        {
+            return new()
             {
                 GroupType = model.GroupType,
                 GroupTitle = model.GroupTitle,
                 UserId = userId
             };
+        }
     }
 }

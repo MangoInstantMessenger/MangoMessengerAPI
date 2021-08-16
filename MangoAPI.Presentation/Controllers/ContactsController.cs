@@ -3,7 +3,6 @@ using System.Threading.Tasks;
 using MangoAPI.BusinessLogic.ApiCommands.Contacts;
 using MangoAPI.BusinessLogic.ApiQueries.Contacts;
 using MangoAPI.BusinessLogic.Responses;
-using MangoAPI.BusinessLogic.Responses.Contacts;
 using MangoAPI.Presentation.Extensions;
 using MangoAPI.Presentation.Interfaces;
 using MediatR;

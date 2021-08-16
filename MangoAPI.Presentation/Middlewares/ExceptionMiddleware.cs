@@ -40,7 +40,7 @@ namespace MangoAPI.Presentation.Middlewares
                     _ => HttpStatusCode.InternalServerError
                 }
             };
-            
+
             await ThrowError(context, errorContext);
         }
 
@@ -60,15 +60,15 @@ namespace MangoAPI.Presentation.Middlewares
 
     internal class ErrorContext
     {
-        public Exception Exception { get; }
-        public HttpStatusCode StatusCode { get; init; }
-        public string ErrorMessage { get; }
-
         public ErrorContext(string errorMessage, Exception exception)
         {
             ErrorMessage = errorMessage;
             StatusCode = HttpStatusCode.BadRequest;
             Exception = exception;
         }
+
+        public Exception Exception { get; }
+        public HttpStatusCode StatusCode { get; init; }
+        public string ErrorMessage { get; }
     }
 }

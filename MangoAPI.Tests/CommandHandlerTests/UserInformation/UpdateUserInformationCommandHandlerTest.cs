@@ -2,8 +2,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using FluentAssertions;
-using MangoAPI.BusinessLogic.ApiCommandHandlers.UserInformation;
-using MangoAPI.BusinessLogic.ApiCommands.UserInformation;
+using MangoAPI.BusinessLogic.ApiCommands.Users;
 using MangoAPI.BusinessLogic.BusinessExceptions;
 using MangoAPI.Domain.Constants;
 using NUnit.Framework;
@@ -23,7 +22,7 @@ namespace MangoAPI.Tests.CommandHandlerTests.UserInformation
                 UserId = "1",
                 FirstName = "Szymon",
                 LastName = "Murawsky",
-                BirthDay = new DateTime(1987,2,14),
+                BirthDay = new DateTime(1987, 2, 14),
                 Address = "Poland, Lvov",
                 Facebook = "szymon.murawski",
                 Instagram = "szymon.murawski",
@@ -46,7 +45,7 @@ namespace MangoAPI.Tests.CommandHandlerTests.UserInformation
                 UserId = "24",
                 FirstName = "First Name",
                 LastName = "Last Name",
-                BirthDay = new DateTime(1999,1,1),
+                BirthDay = new DateTime(1999, 1, 1),
                 Address = "Address",
                 Facebook = "Facebook",
                 Instagram = "Instagram",

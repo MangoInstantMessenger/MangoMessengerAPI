@@ -9,16 +9,19 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Contacts
         {
             ContactId = contactId;
         }
-        
+
         public string ContactId { get; }
     }
 
     public static class AddContactRequestMapper
     {
-        public static AddContactCommand ToCommand(this AddContactRequest model, string userId) => new()
+        public static AddContactCommand ToCommand(this AddContactRequest model, string userId)
+        {
+            return new()
             {
                 ContactId = model.ContactId,
                 UserId = userId
             };
+        }
     }
 }

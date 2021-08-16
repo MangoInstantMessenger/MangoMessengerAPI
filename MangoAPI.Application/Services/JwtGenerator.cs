@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
-using System.Security.Cryptography;
 using System.Text;
 using MangoAPI.Application.Interfaces;
 using MangoAPI.Domain.Constants;
@@ -32,9 +31,7 @@ namespace MangoAPI.Application.Services
             var jwtLifetime = EnvironmentConstants.JwtLifeTime;
 
             if (jwtLifetime == null || !int.TryParse(jwtLifetime, out var jwtLifetimeParsed))
-            {
                 throw new InvalidOperationException("Jwt lifetime environmental variable error.");
-            }
 
             var credentials = new SigningCredentials(_key, SecurityAlgorithms.HmacSha256);
 
@@ -52,30 +49,6 @@ namespace MangoAPI.Application.Services
             var token = tokenHandler.CreateToken(tokenDescriptor);
 
             return tokenHandler.WriteToken(token);
-        }
-
-        public RefreshTokenEntity GenerateRefreshToken()
-        {
-            using var rngCryptoServiceProvider = new RNGCryptoServiceProvider();
-
-            var refreshLifetime = EnvironmentConstants.RefreshTokenLifeTime;
-
-            if (refreshLifetime == null || !int.TryParse(refreshLifetime, out var refreshLifetimeParsed))
-            {
-                throw new InvalidOperationException("Refresh token lifetime environmental variable error.");
-            }
-
-            var randomBytes = new byte[64];
-            new Random().NextBytes(randomBytes);
-            rngCryptoServiceProvider.GetBytes(randomBytes);
-
-            return new RefreshTokenEntity
-            {
-                Id = Guid.NewGuid().ToString(),
-                RefreshToken = Convert.ToBase64String(randomBytes),
-                Expires = DateTime.UtcNow.AddDays(refreshLifetimeParsed),
-                Created = DateTime.UtcNow,
-            };
         }
     }
 }

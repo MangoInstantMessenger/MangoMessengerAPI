@@ -9,8 +9,8 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Contacts
         {
             RuleFor(x => x.UserId)
                 .Must(x => Guid.TryParse(x, out _))
-                .WithMessage("SearchChatsQueryValidator: User Id cannot be parsed.");;
-            
+                .WithMessage("SearchChatsQueryValidator: User Id cannot be parsed.");
+            ;
         }
     }
 }

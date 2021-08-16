@@ -3,6 +3,6 @@
     public enum VerificationMethod
     {
         Phone = 1,
-        Email = 2,
+        Email = 2
     }
 }

@@ -182,7 +182,6 @@ namespace MangoAPI.DataAccess.Database.Configurations
                 },
 
                 // Khachatur Khachatryan / Мусяка Колбасяка
-                
                 new UserChatEntity
                 {
                     UserId = SeedDataConstants.KhachaturId,
@@ -195,9 +194,8 @@ namespace MangoAPI.DataAccess.Database.Configurations
                     ChatId = SeedDataConstants.DirectKhachaturKolbasator,
                     RoleId = UserRole.User
                 },
-                
+
                 // Petro Kolosov / Szymon Murawski
-                
                 new UserChatEntity
                 {
                     UserId = SeedDataConstants.PetroId,

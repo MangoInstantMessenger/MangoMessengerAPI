@@ -9,14 +9,14 @@
         public const string AmelitId = "d942706b-e4e2-48f9-bbdc-b022816471f0";
         public const string PetroId = "2cd4b9a0-f70d-476d-a3cc-908da43f93c4";
         public const string SzymonId = "5e7274ad-3132-4ad7-be36-38778a8f7b1c";
-        
+
         // Public Chats
         public const string ExtremeCodeMainId = "0dae5a74-3528-4e85-95bb-2036bd80432c";
         public const string ExtremeCodeFloodId = "5e656ec2-205f-471c-b095-1c80b93b7655";
         public const string ExtremeCodeCppId = "cd358b94-c3b9-4022-923a-13f787f70055";
         public const string ExtremeCodeDotnetId = "6f66e318-1e94-44ae-9b33-fe001e070842";
-        public const string WsbId = "b6ca4533-fc21-4f44-9747-687361e3031c"; 
-        
+        public const string WsbId = "b6ca4533-fc21-4f44-9747-687361e3031c";
+
         // Direct Chats
         public const string DirectKhachaturKolbasator = "9f205dde-0ddc-401f-8fe9-6c794b661f5d";
         public const string DirectKhachaturRazumovsky = "f5b7824f-e52b-4246-9984-06fc8e964f0c";

@@ -1,5 +1,4 @@
-﻿using MangoAPI.BusinessLogic.Responses.Chats;
-using MangoAPI.Domain.Enums;
+﻿using MangoAPI.Domain.Enums;
 using MediatR;
 
 namespace MangoAPI.BusinessLogic.ApiCommands.Chats

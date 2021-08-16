@@ -15,11 +15,13 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Messages
 
     public static class DeleteMessageCommandMapper
     {
-        public static DeleteMessageCommand ToCommand(this DeleteMessageRequest model, string userId) =>
-            new()
+        public static DeleteMessageCommand ToCommand(this DeleteMessageRequest model, string userId)
+        {
+            return new()
             {
                 MessageId = model.MessageId,
                 UserId = userId
             };
+        }
     }
 }

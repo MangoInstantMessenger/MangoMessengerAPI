@@ -1,5 +1,4 @@
-﻿using MangoAPI.BusinessLogic.Responses.Chats;
-using MediatR;
+﻿using MediatR;
 
 namespace MangoAPI.BusinessLogic.ApiCommands.Chats
 {

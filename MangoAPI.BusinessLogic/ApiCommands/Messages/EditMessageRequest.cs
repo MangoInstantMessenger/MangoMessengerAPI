@@ -17,12 +17,14 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Messages
 
     public static class EditMessageCommandMapper
     {
-        public static EditMessageCommand ToCommand(this EditMessageRequest model, string userId) =>
-            new()
+        public static EditMessageCommand ToCommand(this EditMessageRequest model, string userId)
+        {
+            return new()
             {
                 MessageId = model.MessageId,
                 ModifiedText = model.ModifiedText,
                 UserId = userId
             };
+        }
     }
 }

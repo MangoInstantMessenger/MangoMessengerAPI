@@ -2,9 +2,7 @@
 using System.Threading.Tasks;
 using MangoAPI.BusinessLogic.ApiCommands.Chats;
 using MangoAPI.BusinessLogic.ApiQueries.Chats;
-using MangoAPI.BusinessLogic.ApiQueries.Users;
 using MangoAPI.BusinessLogic.Responses;
-using MangoAPI.BusinessLogic.Responses.Chats;
 using MangoAPI.Presentation.Extensions;
 using MangoAPI.Presentation.Interfaces;
 using MediatR;
@@ -38,14 +36,14 @@ namespace MangoAPI.Presentation.Controllers
         }
 
         [Authorize]
-        [HttpPost("group")]
+        [HttpPost]
         [SwaggerOperation(Summary =
             "Creates new group of specified type. 2 -- Private Channel, 3 -- Public Channel, 4 -- ReadOnlyChannel")]
         [ProducesResponseType(typeof(CreateChatEntityResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public async Task<IActionResult> CreateChat([FromBody] CreateGroupRequest request,
+        public async Task<IActionResult> CreateChatAsync([FromBody] CreateGroupRequest request,
             CancellationToken cancellationToken)
         {
             var userId = HttpContext.User.GetUserId();
@@ -54,47 +52,36 @@ namespace MangoAPI.Presentation.Controllers
         }
 
         [Authorize]
-        [HttpPost("direct-chat")]
-        [SwaggerOperation(Summary = "Creates new direct chat with specified user.")]
+        [HttpPost("{userId}")]
+        [SwaggerOperation(Summary = "Creates new direct chat by user ID.")]
         [ProducesResponseType(typeof(CreateChatEntityResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public async Task<IActionResult> CreateDirectChat([FromBody] CreateDirectChatRequest request,
-            CancellationToken cancellationToken)
+        public async Task<IActionResult> CreateChatAsync([FromRoute] string userId, CancellationToken cancellationToken)
         {
-            var userId = HttpContext.User.GetUserId();
-            var command = request.ToCommand(userId);
+            var currentUserId = HttpContext.User.GetUserId();
+            var command = new CreateDirectChatCommand
+            {
+                PartnerId = userId,
+                UserId = currentUserId
+            };
+
             return await RequestAsync(command, cancellationToken);
         }
 
         [Authorize]
-        [HttpPost("join")]
-        [SwaggerOperation(Summary = "Joins to the particular public group.")]
-        [ProducesResponseType(typeof(JoinChatResponse), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
-        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public async Task<IActionResult> JoinChat([FromBody] JoinChatRequest request,
-            CancellationToken cancellationToken)
-        {
-            var userId = HttpContext.User.GetUserId();
-            var command = request.ToCommand(userId);
-            return await RequestAsync(command, cancellationToken);
-        }
-
-        [Authorize]
-        [HttpGet("search")]
+        [HttpPost("searches")]
         [SwaggerOperation(Summary = "Searches chats by display name.")]
         [ProducesResponseType(typeof(SearchChatsResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public async Task<IActionResult> SearchChat([FromQuery] string displayName, CancellationToken cancellationToken)
+        public async Task<IActionResult> SearchAsync(SearchChatsRequest request, CancellationToken cancellationToken)
         {
             var userId = HttpContext.User.GetUserId();
-            var request = new SearchChatsQuery {DisplayName = displayName, UserId = userId};
-            return await RequestAsync(request, cancellationToken);
+            var command = request.ToCommand(userId);
+            return await RequestAsync(command, cancellationToken);
         }
     }
 }

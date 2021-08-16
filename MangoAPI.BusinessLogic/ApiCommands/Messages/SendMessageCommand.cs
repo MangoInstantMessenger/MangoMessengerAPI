@@ -1,5 +1,4 @@
-﻿using MangoAPI.BusinessLogic.Responses.Messages;
-using MediatR;
+﻿using MediatR;
 
 namespace MangoAPI.BusinessLogic.ApiCommands.Messages
 {

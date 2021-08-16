@@ -1,5 +1,5 @@
 ﻿using FluentValidation;
-using MangoAPI.BusinessLogic.ApiCommands.Auth;
+using MangoAPI.BusinessLogic.ApiCommands.Sessions;
 using MangoAPI.BusinessLogic.Pipelines;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;

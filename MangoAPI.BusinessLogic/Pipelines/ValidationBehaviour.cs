@@ -20,10 +20,7 @@ namespace MangoAPI.BusinessLogic.Pipelines
         public async Task<TResponse> Handle(TRequest request, CancellationToken cancellationToken,
             RequestHandlerDelegate<TResponse> next)
         {
-            if (!_validators.Any())
-            {
-                return await next();
-            }
+            if (!_validators.Any()) return await next();
 
             var context = new ValidationContext<TRequest>(request);
             var enumerableTasks = _validators.Select(validator => validator.ValidateAsync(context, cancellationToken));
@@ -35,10 +32,7 @@ namespace MangoAPI.BusinessLogic.Pipelines
                 .Where(validationFailure => validationFailure != null)
                 .ToList();
 
-            if (failureList.Count != 0)
-            {
-                throw new ValidationException(failureList);
-            }
+            if (failureList.Count != 0) throw new ValidationException(failureList);
 
             return await next();
         }
