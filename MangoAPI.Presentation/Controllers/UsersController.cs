@@ -1,7 +1,11 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
+using MangoAPI.BusinessLogic.ApiCommands.Auth;
+using MangoAPI.BusinessLogic.ApiCommands.UserInformation;
 using MangoAPI.BusinessLogic.ApiQueries.Users;
 using MangoAPI.BusinessLogic.Responses;
+using MangoAPI.BusinessLogic.Responses.Auth;
+using MangoAPI.BusinessLogic.Responses.UserInformation;
 using MangoAPI.BusinessLogic.Responses.Users;
 using MangoAPI.Presentation.Extensions;
 using MangoAPI.Presentation.Interfaces;
@@ -21,27 +25,66 @@ namespace MangoAPI.Presentation.Controllers
         {
         }
 
+        [AllowAnonymous]
+        [HttpPost]
+        [SwaggerOperation(Summary = "Registers user in a messenger.")]
+        [ProducesResponseType(typeof(RegisterResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
+        public async Task<IActionResult> RegisterAsync(RegisterRequest request, CancellationToken cancellationToken)
+        {
+            return await RequestAsync(request.ToCommand(), cancellationToken);
+        }
+
+        [AllowAnonymous]
+        [HttpPut("email-confirmation")]
+        [SwaggerOperation(Summary =
+            "Sends verification request with provided user parameters: E-mail, User's ID guid. " +
+            "User receives confirmation link via email.")]
+        [ProducesResponseType(typeof(VerifyEmailResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
+        public async Task<IActionResult> EmailConfirmationAsync(VerifyEmailRequest request,
+            CancellationToken cancellationToken)
+        {
+            var command = request.ToCommand();
+            return await RequestAsync(command, cancellationToken);
+        }
+
+        [AllowAnonymous]
+        [HttpPut("phone-confirmation")]
+        [SwaggerOperation(Summary =
+            "Sends verification request with provided user parameters: phone confirmation code.")]
+        [ProducesResponseType(typeof(VerifyPhoneResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
+        public Task<IActionResult> PhoneConfirmationAsync(VerifyPhoneRequest request,
+            CancellationToken cancellationToken)
+        {
+            throw new System.NotImplementedException();
+        }
+
         [Authorize]
-        [HttpGet("{userId}")]
-        [SwaggerOperation(Summary = "Returns information about particular user by user ID.")]
+        [HttpGet("{id}")]
+        [SwaggerOperation(Summary = "Gets an information about particular user by user ID.")]
         [ProducesResponseType(typeof(GetUserResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public async Task<IActionResult> GetUserById([FromRoute] string userId, CancellationToken cancellationToken)
+        public async Task<IActionResult> GetUserById([FromRoute] string id, CancellationToken cancellationToken)
         {
-            var query = new GetUserQuery {UserId = userId};
+            var query = new GetUserQuery {UserId = id};
             return await RequestAsync(query, cancellationToken);
         }
 
         [Authorize]
-        [HttpGet("search")]
-        [SwaggerOperation(Summary = "Searches user by display name.")]
+        [HttpPost("searches")]
+        [SwaggerOperation(Summary = "Searches user by particular filter.")]
         [ProducesResponseType(typeof(UserSearchResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public async Task<IActionResult> SearchUsersByDisplayName([FromQuery] string displayName,
+        public async Task<IActionResult> SearchesAsync([FromQuery] string displayName,
             CancellationToken cancellationToken)
         {
             var query = new UserSearchQuery {DisplayName = displayName};
@@ -50,7 +93,7 @@ namespace MangoAPI.Presentation.Controllers
 
         [Authorize]
         [HttpGet]
-        [SwaggerOperation(Summary = "Returns information about current user logged in system.")]
+        [SwaggerOperation(Summary = "Gets an information about current user.")]
         [ProducesResponseType(typeof(GetUserResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
@@ -60,6 +103,22 @@ namespace MangoAPI.Presentation.Controllers
             var userId = HttpContext.User.GetUserId();
             var request = new GetUserQuery {UserId = userId};
             return await RequestAsync(request, cancellationToken);
+        }
+
+        [Authorize]
+        [HttpPut("information")]
+        [SwaggerOperation(Summary = "Updates user's personal information.")]
+        [ProducesResponseType(typeof(UpdateUserInformationResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        public async Task<IActionResult> UpdateUserInformationAsync(UpdateUserInformationRequest request,
+            CancellationToken cancellationToken)
+        {
+            var userId = HttpContext.User.GetUserId();
+            var command = request.ToCommand(userId);
+
+            return await RequestAsync(command, cancellationToken);
         }
     }
 }
