@@ -13,10 +13,10 @@ using Swashbuckle.AspNetCore.Annotations;
 namespace MangoAPI.Presentation.Controllers
 {
     [ApiController]
-    [Route("api/session")]
-    public class SessionController : ApiControllerBase, ISessionController
+    [Route("api/sessions")]
+    public class SessionsController : ApiControllerBase, ISessionsController
     {
-        public SessionController(IMediator mediator) : base(mediator)
+        public SessionsController(IMediator mediator) : base(mediator)
         {
         }
 
@@ -33,28 +33,34 @@ namespace MangoAPI.Presentation.Controllers
         }
 
         [AllowAnonymous]
-        [HttpPut]
+        [HttpPost("{refreshToken}")]
         [SwaggerOperation(Summary = "Refreshes current user's session. Returns: Access token, Session Id.")]
         [ProducesResponseType(typeof(RefreshSessionResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public async Task<IActionResult> RefreshSession([FromBody] RefreshSessionRequest request, CancellationToken cancellationToken)
+        public async Task<IActionResult> RefreshSession([FromRoute] string refreshToken,
+            CancellationToken cancellationToken)
         {
-            var command = request.ToCommand();
+            var command = new RefreshSessionCommand
+            {
+                RefreshToken = refreshToken
+            };
+            
             return await RequestAsync(command, cancellationToken);
         }
 
         [Authorize]
-        [HttpDelete("{id}")]
+        [HttpDelete("{refreshToken}")]
         [SwaggerOperation(Summary = "Deletes session of current user's device.")]
         [ProducesResponseType(typeof(LogoutResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public async Task<IActionResult> LogoutAsync([FromRoute] string id, CancellationToken cancellationToken)
+        public async Task<IActionResult> LogoutAsync([FromRoute] string refreshToken,
+            CancellationToken cancellationToken)
         {
-            var command = new LogoutCommand {RefreshToken = id};
+            var command = new LogoutCommand {RefreshToken = refreshToken};
             return await RequestAsync(command, cancellationToken);
         }
 

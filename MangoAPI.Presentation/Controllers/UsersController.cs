@@ -62,30 +62,29 @@ namespace MangoAPI.Presentation.Controllers
         }
 
         [Authorize]
-        [HttpGet("{id}")]
+        [HttpGet("{userId}")]
         [SwaggerOperation(Summary = "Gets an information about particular user by user ID.")]
         [ProducesResponseType(typeof(GetUserResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public async Task<IActionResult> GetUserById([FromRoute] string id, CancellationToken cancellationToken)
+        public async Task<IActionResult> GetUserById([FromRoute] string userId, CancellationToken cancellationToken)
         {
-            var query = new GetUserQuery {UserId = id};
+            var query = new GetUserQuery {UserId = userId};
             return await RequestAsync(query, cancellationToken);
         }
 
         [Authorize]
         [HttpPost("searches")]
-        [SwaggerOperation(Summary = "Searches user by particular filter.")]
+        [SwaggerOperation(Summary = "Searches user by display name.")]
         [ProducesResponseType(typeof(UserSearchResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public async Task<IActionResult> SearchesAsync([FromQuery] string displayName,
+        public async Task<IActionResult> SearchesAsync([FromBody] UserSearchCommand request,
             CancellationToken cancellationToken)
         {
-            var query = new UserSearchCommand {DisplayName = displayName};
-            return await RequestAsync(query, cancellationToken);
+            return await RequestAsync(request, cancellationToken);
         }
 
         [Authorize]

@@ -52,19 +52,19 @@ namespace MangoAPI.Presentation.Controllers
         }
 
         [Authorize]
-        [HttpPost("{id}")]
+        [HttpPost("{userId}")]
         [SwaggerOperation(Summary = "Creates new direct chat by user ID.")]
         [ProducesResponseType(typeof(CreateChatEntityResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public async Task<IActionResult> CreateChatAsync([FromRoute] string id, CancellationToken cancellationToken)
+        public async Task<IActionResult> CreateChatAsync([FromRoute] string userId, CancellationToken cancellationToken)
         {
-            var userId = HttpContext.User.GetUserId();
+            var currentUserId = HttpContext.User.GetUserId();
             var command = new CreateDirectChatCommand
             {
-                PartnerId = id,
-                UserId = userId
+                PartnerId = userId,
+                UserId = currentUserId
             };
 
             return await RequestAsync(command, cancellationToken);

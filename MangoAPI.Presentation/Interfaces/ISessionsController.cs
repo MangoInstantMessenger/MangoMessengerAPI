@@ -5,11 +5,11 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace MangoAPI.Presentation.Interfaces
 {
-    public interface ISessionController
+    public interface ISessionsController
     {
         Task<IActionResult> LoginAsync(LoginRequest request, CancellationToken cancellationToken);
-        Task<IActionResult> RefreshSession(RefreshSessionRequest request, CancellationToken cancellationToken);
-        Task<IActionResult> LogoutAsync(string id, CancellationToken cancellationToken);
+        Task<IActionResult> RefreshSession(string refreshToken, CancellationToken cancellationToken);
+        Task<IActionResult> LogoutAsync(string refreshToken, CancellationToken cancellationToken);
         Task<IActionResult> LogoutAllAsync(LogoutAllRequest request, CancellationToken cancellationToken);
     }
 }

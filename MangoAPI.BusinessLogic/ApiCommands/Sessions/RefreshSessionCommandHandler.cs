@@ -34,33 +34,23 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Sessions
                 .FirstOrDefaultAsync(x => x.Id == request.RefreshToken, cancellationToken);
 
             if (session is null || session.IsExpired)
-            {
                 throw new BusinessException(ResponseMessageCodes.InvalidOrExpiredRefreshToken);
-            }
 
             var user = await _userManager.FindByIdAsync(session.UserId);
 
-            if (user is null)
-            {
-                throw new BusinessException(ResponseMessageCodes.UserNotFound);
-            }
+            if (user is null) throw new BusinessException(ResponseMessageCodes.UserNotFound);
 
             var userSessions = _postgresDbContext.Sessions
                 .Where(x => x.UserId == user.Id);
 
             var userSessionCount = await userSessions.CountAsync(cancellationToken);
 
-            if (userSessionCount >= 5)
-            {
-                _postgresDbContext.Sessions.RemoveRange(userSessions);
-            }
+            if (userSessionCount >= 5) _postgresDbContext.Sessions.RemoveRange(userSessions);
 
             var refreshLifetime = EnvironmentConstants.RefreshTokenLifeTime;
 
             if (refreshLifetime == null || !int.TryParse(refreshLifetime, out var refreshLifetimeParsed))
-            {
                 throw new BusinessException(ResponseMessageCodes.RefreshTokenLifeTimeError);
-            }
 
             var newSession = new SessionEntity
             {

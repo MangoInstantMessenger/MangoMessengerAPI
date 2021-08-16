@@ -11,7 +11,7 @@ namespace MangoAPI.Presentation.Interfaces
         Task<IActionResult> EmailConfirmationAsync(VerifyEmailRequest request, CancellationToken cancellationToken);
         Task<IActionResult> PhoneConfirmationAsync(VerifyPhoneRequest request, CancellationToken cancellationToken);
         Task<IActionResult> GetUserById(string userId, CancellationToken cancellationToken);
-        Task<IActionResult> SearchesAsync(string displayName, CancellationToken cancellationToken);
+        Task<IActionResult> SearchesAsync(UserSearchCommand request, CancellationToken cancellationToken);
         Task<IActionResult> GetCurrentUser(CancellationToken cancellationToken);
 
         Task<IActionResult> UpdateUserInformationAsync(UpdateUserInformationRequest request,

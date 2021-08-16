@@ -22,15 +22,15 @@ namespace MangoAPI.Presentation.Controllers
         {
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("{chatId}")]
         [SwaggerOperation(Summary = "Returns chat including messages by chat ID.")]
         [ProducesResponseType(typeof(GetMessagesResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public async Task<IActionResult> GetChatMessages([FromRoute] string id, CancellationToken cancellationToken)
+        public async Task<IActionResult> GetChatMessages([FromRoute] string chatId, CancellationToken cancellationToken)
         {
-            var query = new GetMessagesQuery {ChatId = id, UserId = HttpContext.User.GetUserId()};
+            var query = new GetMessagesQuery {ChatId = chatId, UserId = HttpContext.User.GetUserId()};
             return await RequestAsync(query, cancellationToken);
         }
 
@@ -62,18 +62,18 @@ namespace MangoAPI.Presentation.Controllers
             return await RequestAsync(command, cancellationToken);
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete("{messageId}")]
         [SwaggerOperation(Summary = "Deletes particular message by message Id.")]
         [ProducesResponseType(typeof(DeleteMessageResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public async Task<IActionResult> DeleteMessage([FromRoute] string id, CancellationToken cancellationToken)
+        public async Task<IActionResult> DeleteMessage([FromRoute] string messageId, CancellationToken cancellationToken)
         {
             var userId = HttpContext.User.GetUserId();
             var command = new DeleteMessageCommand
             {
-                MessageId = id,
+                MessageId = messageId,
                 UserId = userId
             };
 
