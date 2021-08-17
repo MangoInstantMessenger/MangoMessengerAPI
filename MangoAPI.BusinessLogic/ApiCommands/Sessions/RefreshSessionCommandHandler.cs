@@ -35,7 +35,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Sessions
                 throw new BusinessException(ResponseMessageCodes.InvalidOrExpiredRefreshToken);
             }
 
-            var user = await _postgresDbContext.Users.FirstOrDefaultAsync(x => x.Id == session.UserId,
+            var user = await _postgresDbContext.Users.FirstOrDefaultAsync(x => x.Id == session.Id,
                 cancellationToken);
 
             if (user is null)
@@ -48,9 +48,14 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Sessions
 
             var userSessionCount = await userSessions.CountAsync(cancellationToken);
 
-            if (userSessionCount >= 5)
+            switch (userSessionCount)
             {
-                _postgresDbContext.Sessions.RemoveRange(userSessions);
+                case >= 5:
+                    _postgresDbContext.Sessions.RemoveRange(userSessions);
+                    break;
+                default:
+                    _postgresDbContext.Sessions.Remove(session);
+                    break;
             }
 
             var refreshLifetime = EnvironmentConstants.RefreshTokenLifeTime;
@@ -69,7 +74,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Sessions
                 Created = DateTime.UtcNow
             };
 
-            var jwtToken = _jwtGenerator.GenerateJwtToken(user);
+            var jwtToken = _jwtGenerator.GenerateJwtToken(user, "User");
 
             await _postgresDbContext.Sessions.AddAsync(newSession, cancellationToken);
             await _postgresDbContext.SaveChangesAsync(cancellationToken);

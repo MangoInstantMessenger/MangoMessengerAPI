@@ -47,11 +47,6 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Sessions
                 throw new BusinessException(ResponseMessageCodes.InvalidCredentials);
             }
 
-            if (!user.Verified)
-            {
-                throw new BusinessException(ResponseMessageCodes.UserNotVerified);
-            }
-
             var refreshLifetime = EnvironmentConstants.RefreshTokenLifeTime;
 
             if (refreshLifetime == null || !int.TryParse(refreshLifetime, out var refreshLifetimeParsed))
@@ -67,7 +62,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Sessions
                 Created = DateTime.UtcNow
             };
 
-            var jwtToken = _jwtGenerator.GenerateJwtToken(user);
+            var jwtToken = _jwtGenerator.GenerateJwtToken(user, "User");
 
             session.UserId = user.Id;
 
