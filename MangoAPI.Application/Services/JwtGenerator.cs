@@ -27,7 +27,7 @@ namespace MangoAPI.Application.Services
             _key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(tokenKey));
         }
 
-        public virtual string GenerateJwtToken(UserEntity userEntity, List<string> roles)
+        public string GenerateJwtToken(UserEntity userEntity, List<string> roles)
         {
             var claims = new List<Claim>
             {

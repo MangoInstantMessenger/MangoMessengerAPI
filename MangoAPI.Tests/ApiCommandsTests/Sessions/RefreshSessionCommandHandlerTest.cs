@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using FluentAssertions;
-using MangoAPI.Application.Services;
+using MangoAPI.Application.Interfaces;
 using MangoAPI.BusinessLogic.ApiCommands.Sessions;
 using MangoAPI.BusinessLogic.BusinessExceptions;
 using MangoAPI.Domain.Constants;
@@ -20,7 +20,7 @@ namespace MangoAPI.Tests.ApiCommandsTests.Sessions
         public async Task RefreshSessionCommandHandlerTest_Success()
         {
             using var dbContextFixture = new DbContextFixture();
-            var jwtGenerator = new Mock<JwtGenerator>();
+            var jwtGenerator = new Mock<IJwtGenerator>();
             jwtGenerator.Setup(x => x.GenerateJwtToken(It.IsAny<UserEntity>(), It.IsAny<List<string>>()))
                 .Returns("Token");
             var handler = new RefreshSessionCommandHandler(dbContextFixture.PostgresDbContext, jwtGenerator.Object);
@@ -36,7 +36,7 @@ namespace MangoAPI.Tests.ApiCommandsTests.Sessions
         public async Task RefreshSessionCommandHandlerTest_ShouldThrowInvalidOrExpiredRefreshToken()
         {
             using var dbContextFixture = new DbContextFixture();
-            var jwtGenerator = new Mock<JwtGenerator>();
+            var jwtGenerator = new Mock<IJwtGenerator>();
             jwtGenerator.Setup(x => x.GenerateJwtToken(It.IsAny<UserEntity>(), It.IsAny<List<string>>()))
                 .Returns("Token");
             var handler = new RefreshSessionCommandHandler(dbContextFixture.PostgresDbContext, jwtGenerator.Object);
