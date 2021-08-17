@@ -6,6 +6,7 @@ using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.Presentation.Extensions;
 using MangoAPI.Presentation.Interfaces;
 using MediatR;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -14,8 +15,8 @@ using Swashbuckle.AspNetCore.Annotations;
 namespace MangoAPI.Presentation.Controllers
 {
     [ApiController]
-    [Authorize]
     [Route("api/messages")]
+    [Authorize(Roles = "User", AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class MessagesController : ApiControllerBase, IMessagesController
     {
         public MessagesController(IMediator mediator) : base(mediator)
@@ -68,7 +69,8 @@ namespace MangoAPI.Presentation.Controllers
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public async Task<IActionResult> DeleteMessage([FromRoute] string messageId, CancellationToken cancellationToken)
+        public async Task<IActionResult> DeleteMessage([FromRoute] string messageId,
+            CancellationToken cancellationToken)
         {
             var userId = HttpContext.User.GetUserId();
             var command = new DeleteMessageCommand

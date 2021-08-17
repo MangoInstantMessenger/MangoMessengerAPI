@@ -5,6 +5,7 @@ using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.Presentation.Extensions;
 using MangoAPI.Presentation.Interfaces;
 using MediatR;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -14,14 +15,15 @@ namespace MangoAPI.Presentation.Controllers
 {
     [ApiController]
     [Route("api/sessions")]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class SessionsController : ApiControllerBase, ISessionsController
     {
         public SessionsController(IMediator mediator) : base(mediator)
         {
         }
 
-        [AllowAnonymous]
         [HttpPost]
+        [AllowAnonymous]
         [SwaggerOperation(Summary = "Performs login to the messenger. Returns: Access token, Refresh Token.")]
         [ProducesResponseType(typeof(LoginResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
@@ -50,8 +52,8 @@ namespace MangoAPI.Presentation.Controllers
             return await RequestAsync(command, cancellationToken);
         }
 
-        [Authorize]
         [HttpDelete("{refreshToken}")]
+        [Authorize(Roles = "Unverified, User")]
         [SwaggerOperation(Summary = "Deletes session of current user's device.")]
         [ProducesResponseType(typeof(LogoutResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
@@ -64,8 +66,8 @@ namespace MangoAPI.Presentation.Controllers
             return await RequestAsync(command, cancellationToken);
         }
 
-        [Authorize]
         [HttpDelete]
+        [Authorize(Roles = "Unverified, User")]
         [SwaggerOperation(Summary = "Deletes all sessions of current user.")]
         [ProducesResponseType(typeof(LogoutResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]

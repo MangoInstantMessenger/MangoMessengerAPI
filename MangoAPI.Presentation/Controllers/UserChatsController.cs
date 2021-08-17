@@ -1,11 +1,11 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
-using MangoAPI.BusinessLogic.ApiCommands.Chats;
 using MangoAPI.BusinessLogic.ApiCommands.UserChats;
 using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.Presentation.Extensions;
 using MangoAPI.Presentation.Interfaces;
 using MediatR;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -15,14 +15,15 @@ namespace MangoAPI.Presentation.Controllers
 {
     [ApiController]
     [Route("api/user-chats")]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class UserChatsController : ApiControllerBase, IUserChatsController
     {
         public UserChatsController(IMediator mediator) : base(mediator)
         {
         }
-
-        [Authorize]
+        
         [HttpPost]
+        [Authorize(Roles = "User")]
         [SwaggerOperation(Summary = "Joins to the particular public group.")]
         [ProducesResponseType(typeof(JoinChatResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
