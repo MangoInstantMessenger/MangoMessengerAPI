@@ -26,7 +26,7 @@ namespace MangoAPI.Application.Services
             var claims = new List<Claim>
             {
                 new(JwtRegisteredClaimNames.Jti, userEntity.Id),
-                new(ClaimTypes.Role, role)
+                new(ClaimsIdentity.DefaultRoleClaimType, role),
             };
 
             var jwtLifetime = EnvironmentConstants.JwtLifeTime;
@@ -48,9 +48,7 @@ namespace MangoAPI.Application.Services
             };
 
             var tokenHandler = new JwtSecurityTokenHandler();
-
             var token = tokenHandler.CreateToken(tokenDescriptor);
-
             return tokenHandler.WriteToken(token);
         }
     }
