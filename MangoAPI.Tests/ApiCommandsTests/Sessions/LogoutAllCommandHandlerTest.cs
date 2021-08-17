@@ -1,5 +1,10 @@
 ﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
+using FluentAssertions;
+using MangoAPI.BusinessLogic.ApiCommands.Sessions;
+using MangoAPI.BusinessLogic.BusinessExceptions;
+using MangoAPI.Domain.Constants;
 using NUnit.Framework;
 
 namespace MangoAPI.Tests.ApiCommandsTests.Sessions
@@ -10,9 +15,15 @@ namespace MangoAPI.Tests.ApiCommandsTests.Sessions
         [Test]
         public async Task LogoutAllCommandHandlerTest_Success()
         {
-            throw new NotImplementedException();
+            using var dbContextFixture = new DbContextFixture();
+            var handler = new LogoutAllCommandHandler(dbContextFixture.PostgresDbContext);
+            var command = new LogoutAllCommand {UserId = "1"};
+
+            var result = await handler.Handle(command, CancellationToken.None);
+
+            result.Success.Should().BeTrue();
         }
-        
+
         [Test]
         public async Task LogoutAllCommandHandlerTest_ShouldThrowInvalidOrExpiredRefreshToken()
         {

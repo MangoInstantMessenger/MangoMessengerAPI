@@ -150,7 +150,7 @@ namespace MangoAPI.Tests
             new SessionEntity
             {
                 Id = "2",
-                UserId = "2",
+                UserId = "24",
                 RefreshToken = "219d9df3-9bc0-4679-baaa-c18b1c7524e8",
                 Created = DateTime.UtcNow,
                 Expires = DateTime.UtcNow.AddDays(3)
