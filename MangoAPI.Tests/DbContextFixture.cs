@@ -20,8 +20,9 @@ namespace MangoAPI.Tests
 
             SeedUsers();
             SeedUserInformation();
+            SeedUserSessions();
             SeedChats();
-            SeedUserChat();
+            SeedUserChats();
             SeedMessages();
             SeedContacts();
         }
@@ -47,7 +48,14 @@ namespace MangoAPI.Tests
 
             PostgresDbContext.SaveChanges();
         }
+        
+        private void SeedUserSessions()
+        {
+            PostgresDbContext.Sessions.AddRange(SeedData.UserSessions);
 
+            PostgresDbContext.SaveChanges();
+        }
+        
         private void SeedChats()
         {
             PostgresDbContext.Chats.AddRange(SeedData.Chats);
@@ -55,13 +63,14 @@ namespace MangoAPI.Tests
             PostgresDbContext.SaveChanges();
         }
 
-        private void SeedUserChat()
+        private void SeedUserChats()
         {
             PostgresDbContext.UserChats.AddRange(SeedData.UserChats);
 
             PostgresDbContext.SaveChanges();
         }
 
+        
         private void SeedMessages()
         {
             PostgresDbContext.Messages.AddRange(SeedData.Messages);
@@ -125,6 +134,26 @@ namespace MangoAPI.Tests
                 Instagram = "petro.kolosov",
                 LinkedIn = "petro.kolosov",
                 ProfilePicture = "petro.png"
+            }
+        };
+
+        public static List<SessionEntity> UserSessions => new()
+        {
+            new SessionEntity
+            {
+                Id = "1",
+                UserId = "1",
+                RefreshToken = "69dbef09-de5a-4da7-9d67-abeba1510118",
+                Created = DateTime.UtcNow,
+                Expires = DateTime.UtcNow.AddDays(3)
+            },
+            new SessionEntity
+            {
+                Id = "2",
+                UserId = "2",
+                RefreshToken = "219d9df3-9bc0-4679-baaa-c18b1c7524e8",
+                Created = DateTime.UtcNow,
+                Expires = DateTime.UtcNow.AddDays(3)
             }
         };
 
