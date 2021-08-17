@@ -4,6 +4,6 @@ namespace MangoAPI.Application.Interfaces
 {
     public interface IJwtGenerator
     {
-        string GenerateJwtToken(UserEntity userEntity);
+        string GenerateJwtToken(UserEntity userEntity, string role);
     }
 }

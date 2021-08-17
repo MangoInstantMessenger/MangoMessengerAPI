@@ -18,13 +18,16 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
         private readonly IEmailSenderService _emailSenderService;
         private readonly MangoPostgresDbContext _postgresDbContext;
         private readonly UserManager<UserEntity> _userManager;
+        private readonly IJwtGenerator _jwtGenerator;
 
         public RegisterCommandHandler(UserManager<UserEntity> userManager,
-            MangoPostgresDbContext postgresDbContext, IEmailSenderService emailSenderService)
+            MangoPostgresDbContext postgresDbContext, IEmailSenderService emailSenderService,
+            IJwtGenerator jwtGenerator)
         {
             _userManager = userManager;
             _postgresDbContext = postgresDbContext;
             _emailSenderService = emailSenderService;
+            _jwtGenerator = jwtGenerator;
         }
 
         public async Task<RegisterResponse> Handle(RegisterCommand request, CancellationToken cancellationToken)
@@ -87,10 +90,35 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
                     throw new ArgumentOutOfRangeException();
             }
 
+            var refreshLifetime = EnvironmentConstants.RefreshTokenLifeTime;
+
+            if (refreshLifetime == null || !int.TryParse(refreshLifetime, out var refreshLifetimeParsed))
+            {
+                throw new BusinessException(ResponseMessageCodes.RefreshTokenLifeTimeError);
+            }
+
+            var newSession = new SessionEntity
+            {
+                Id = Guid.NewGuid().ToString(),
+                RefreshToken = Guid.NewGuid().ToString(),
+                UserId = newUser.Id,
+                Expires = DateTime.UtcNow.AddDays(refreshLifetimeParsed),
+                Created = DateTime.UtcNow
+            };
+
+            var jwtToken = _jwtGenerator.GenerateJwtToken(newUser, SeedDataConstants.UnverifiedRole);
+
+            await _postgresDbContext.UserRoles.AddAsync(new IdentityUserRole<string>
+            {
+                UserId = newUser.Id,
+                RoleId = SeedDataConstants.UnverifiedRoleId
+            }, cancellationToken);
+
+            await _postgresDbContext.Sessions.AddAsync(newSession, cancellationToken);
             await _postgresDbContext.UserInformation.AddAsync(userInfo, cancellationToken);
             await _postgresDbContext.SaveChangesAsync(cancellationToken);
 
-            return RegisterResponse.FromSuccess();
+            return RegisterResponse.FromSuccess(jwtToken, newSession.RefreshToken);
         }
     }
 }

@@ -11,8 +11,8 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
             UserId = userId;
         }
 
-        public string Email { get; set; }
-        public string UserId { get; set; }
+        public string Email { get; }
+        public string UserId { get; }
     }
 
     public static class VerifyEmailRequestMapper
