@@ -25,7 +25,9 @@ namespace MangoAPI.Presentation.Controllers
 
         [HttpPost]
         [AllowAnonymous]
-        [SwaggerOperation(Summary = "Registers user in a messenger. Verification methods: 1 -- Phone, 2 -- Email.")]
+        [SwaggerOperation(Summary =
+            "Registers user in a messenger. Verification methods: 1 -- Phone, 2 -- Email. " +
+            "Returns pair of tokens with Unverified user role.")]
         [ProducesResponseType(typeof(RegisterResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]

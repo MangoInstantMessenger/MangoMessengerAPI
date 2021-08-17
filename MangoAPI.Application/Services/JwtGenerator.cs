@@ -21,13 +21,14 @@ namespace MangoAPI.Application.Services
             _key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(tokenKey!));
         }
 
-        public string GenerateJwtToken(UserEntity userEntity, string role)
+        public string GenerateJwtToken(UserEntity userEntity, List<string> roles)
         {
             var claims = new List<Claim>
             {
                 new(JwtRegisteredClaimNames.Jti, userEntity.Id),
-                new(ClaimsIdentity.DefaultRoleClaimType, role),
             };
+
+            roles.ForEach(x => claims.Add(new Claim(ClaimsIdentity.DefaultRoleClaimType, x)));
 
             var jwtLifetime = EnvironmentConstants.JwtLifeTime;
 

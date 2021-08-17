@@ -4,6 +4,7 @@ using MangoAPI.BusinessLogic.BusinessExceptions;
 using MangoAPI.DataAccess.Database;
 using MangoAPI.Domain.Constants;
 using MediatR;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace MangoAPI.BusinessLogic.ApiCommands.Users
@@ -37,6 +38,12 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
             {
                 throw new BusinessException(ResponseMessageCodes.InvalidPhoneCode);
             }
+
+            await _postgresDbContext.UserRoles.AddAsync(new IdentityUserRole<string>()
+            {
+                UserId = user.Id,
+                RoleId = SeedDataConstants.UserRoleId
+            }, cancellationToken);
 
             user.PhoneNumberConfirmed = true;
             user.ConfirmationCode = 0;

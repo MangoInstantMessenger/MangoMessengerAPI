@@ -68,8 +68,18 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Sessions
                 Expires = DateTime.UtcNow.AddDays(refreshLifetimeParsed),
                 Created = DateTime.UtcNow
             };
+            
+            var roleIds = await _postgresDbContext.UserRoles
+                .Where(x => x.UserId == user.Id)
+                .Select(x => x.RoleId)
+                .ToListAsync(cancellationToken);
 
-            var jwtToken = _jwtGenerator.GenerateJwtToken(user, "User");
+            var roles = await _postgresDbContext.Roles
+                .Where(x => roleIds.Contains(x.Id))
+                .Select(x => x.Name)
+                .ToListAsync(cancellationToken);
+
+            var jwtToken = _jwtGenerator.GenerateJwtToken(user, roles);
 
             await _postgresDbContext.Sessions.AddAsync(newSession, cancellationToken);
             await _postgresDbContext.SaveChangesAsync(cancellationToken);
