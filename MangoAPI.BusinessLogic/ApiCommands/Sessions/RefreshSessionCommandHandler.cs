@@ -35,13 +35,8 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Sessions
                 throw new BusinessException(ResponseMessageCodes.InvalidOrExpiredRefreshToken);
             }
 
-            var user = await _postgresDbContext.Users.FirstOrDefaultAsync(x => x.Id == session.Id,
+            var user = await _postgresDbContext.Users.FirstAsync(x => x.Id == session.UserId,
                 cancellationToken);
-
-            if (user is null)
-            {
-                throw new BusinessException(ResponseMessageCodes.UserNotFound);
-            }
 
             var userSessions = _postgresDbContext.Sessions
                 .Where(x => x.UserId == user.Id);
