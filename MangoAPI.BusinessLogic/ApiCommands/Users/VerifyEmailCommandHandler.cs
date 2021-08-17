@@ -3,34 +3,48 @@ using System.Threading.Tasks;
 using MangoAPI.BusinessLogic.BusinessExceptions;
 using MangoAPI.DataAccess.Database;
 using MangoAPI.Domain.Constants;
-using MangoAPI.Domain.Entities;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace MangoAPI.BusinessLogic.ApiCommands.Users
 {
     public class VerifyEmailCommandHandler : IRequestHandler<VerifyEmailCommand, VerifyEmailResponse>
     {
         private readonly MangoPostgresDbContext _postgresDbContext;
-        private readonly UserManager<UserEntity> _userManager;
 
-        public VerifyEmailCommandHandler(MangoPostgresDbContext postgresDbContext, UserManager<UserEntity> userManager)
+        public VerifyEmailCommandHandler(MangoPostgresDbContext postgresDbContext)
         {
             _postgresDbContext = postgresDbContext;
-            _userManager = userManager;
         }
 
         public async Task<VerifyEmailResponse> Handle(VerifyEmailCommand request, CancellationToken cancellationToken)
         {
-            var user = await _userManager.FindByIdAsync(request.UserId);
+            var user = await _postgresDbContext.Users.FirstOrDefaultAsync(x => x.Id == request.UserId,
+                cancellationToken);
 
-            if (user is null) throw new BusinessException(ResponseMessageCodes.UserNotFound);
+            if (user is null)
+            {
+                throw new BusinessException(ResponseMessageCodes.UserNotFound);
+            }
 
-            if (user.Email != request.Email) throw new BusinessException(ResponseMessageCodes.InvalidEmail);
+            if (user.Email != request.Email)
+            {
+                throw new BusinessException(ResponseMessageCodes.InvalidEmail);
+            }
 
-            if (user.EmailConfirmed) throw new BusinessException(ResponseMessageCodes.EmailAlreadyVerified);
+            if (user.EmailConfirmed)
+            {
+                throw new BusinessException(ResponseMessageCodes.EmailAlreadyVerified);
+            }
 
             user.EmailConfirmed = true;
+
+            await _postgresDbContext.UserRoles.AddAsync(new IdentityUserRole<string>()
+            {
+                UserId = user.Id,
+                RoleId = SeedDataConstants.UserRoleId
+            }, cancellationToken);
 
             _postgresDbContext.Update(user);
 

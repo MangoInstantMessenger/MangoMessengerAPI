@@ -6,6 +6,7 @@ using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.Presentation.Extensions;
 using MangoAPI.Presentation.Interfaces;
 using MediatR;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -15,15 +16,18 @@ namespace MangoAPI.Presentation.Controllers
 {
     [ApiController]
     [Route("api/users")]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class UsersController : ApiControllerBase, IUsersController
     {
         public UsersController(IMediator mediator) : base(mediator)
         {
         }
 
-        [AllowAnonymous]
         [HttpPost]
-        [SwaggerOperation(Summary = "Registers user in a messenger. Verification methods: 1 -- Phone, 2 -- Email.")]
+        [AllowAnonymous]
+        [SwaggerOperation(Summary =
+            "Registers user in a messenger. Verification methods: 1 -- Phone, 2 -- Email. " +
+            "Returns pair of tokens with Unverified user role.")]
         [ProducesResponseType(typeof(RegisterResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
@@ -33,8 +37,8 @@ namespace MangoAPI.Presentation.Controllers
             return await RequestAsync(request.ToCommand(), cancellationToken);
         }
 
-        [AllowAnonymous]
         [HttpPut("email-confirmation")]
+        [Authorize(Roles = "Unverified, User")]
         [SwaggerOperation(Summary = "Confirms user's email.")]
         [ProducesResponseType(typeof(VerifyEmailResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
@@ -46,8 +50,8 @@ namespace MangoAPI.Presentation.Controllers
             return await RequestAsync(command, cancellationToken);
         }
 
-        [AllowAnonymous]
         [HttpPut("phone-confirmation")]
+        [Authorize(Roles = "Unverified, User")]
         [SwaggerOperation(Summary = "Confirms user's phone number.")]
         [ProducesResponseType(typeof(VerifyPhoneResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
@@ -55,11 +59,13 @@ namespace MangoAPI.Presentation.Controllers
         public async Task<IActionResult> PhoneConfirmationAsync([FromBody] VerifyPhoneRequest request,
             CancellationToken cancellationToken)
         {
-            return await RequestAsync(request.ToCommand(), cancellationToken);
+            var userId = HttpContext.User.GetUserId();
+            var command = request.ToCommand(userId);
+            return await RequestAsync(command, cancellationToken);
         }
 
-        [Authorize]
         [HttpGet("{userId}")]
+        [Authorize(Roles = "User")]
         [SwaggerOperation(Summary = "Gets an information about particular user by user ID.")]
         [ProducesResponseType(typeof(GetUserResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
@@ -71,8 +77,8 @@ namespace MangoAPI.Presentation.Controllers
             return await RequestAsync(query, cancellationToken);
         }
 
-        [Authorize]
         [HttpPost("searches")]
+        [Authorize(Roles = "User")]
         [SwaggerOperation(Summary = "Searches user by display name.")]
         [ProducesResponseType(typeof(UserSearchResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
@@ -84,8 +90,8 @@ namespace MangoAPI.Presentation.Controllers
             return await RequestAsync(request, cancellationToken);
         }
 
-        [Authorize]
         [HttpGet]
+        [Authorize(Roles = "Unverified, User")]
         [SwaggerOperation(Summary = "Gets an information about current user.")]
         [ProducesResponseType(typeof(GetUserResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
@@ -98,8 +104,8 @@ namespace MangoAPI.Presentation.Controllers
             return await RequestAsync(request, cancellationToken);
         }
 
-        [Authorize]
         [HttpPut("information")]
+        [Authorize(Roles = "User")]
         [SwaggerOperation(Summary = "Updates user's personal information.")]
         [ProducesResponseType(typeof(UpdateUserInformationResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]

@@ -9,7 +9,6 @@ namespace MangoAPI.Domain.Entities
         public string? Image { get; set; }
         public string? Bio { get; set; }
         public int? ConfirmationCode { get; set; }
-        public bool Verified => EmailConfirmed || PhoneNumberConfirmed;
 
         public ICollection<SessionEntity> Sessions { get; set; }
         public ICollection<MessageEntity> Messages { get; set; }

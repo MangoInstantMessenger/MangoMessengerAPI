@@ -5,24 +5,22 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
     public record VerifyPhoneRequest
     {
         [JsonConstructor]
-        public VerifyPhoneRequest(int confirmationCode, string userId)
+        public VerifyPhoneRequest(int confirmationCode)
         {
             ConfirmationCode = confirmationCode;
-            UserId = userId;
         }
 
         public int ConfirmationCode { get; }
-        public string UserId { get; }
     }
 
     public static class VerifyPhoneCommandMapper
     {
-        public static VerifyPhoneCommand ToCommand(this VerifyPhoneRequest model)
+        public static VerifyPhoneCommand ToCommand(this VerifyPhoneRequest model, string userId)
         {
             return new()
             {
                 ConfirmationCode = model.ConfirmationCode,
-                UserId = model.UserId
+                UserId = userId
             };
         }
     }

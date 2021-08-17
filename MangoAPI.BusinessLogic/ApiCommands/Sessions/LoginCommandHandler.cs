@@ -18,14 +18,10 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Sessions
         private readonly IJwtGenerator _jwtGenerator;
         private readonly MangoPostgresDbContext _postgresDbContext;
         private readonly SignInManager<UserEntity> _signInManager;
-        private readonly UserManager<UserEntity> _userManager;
 
-        public LoginCommandHandler(UserManager<UserEntity> userManager,
-            SignInManager<UserEntity> signInManager,
-            IJwtGenerator jwtGenerator,
+        public LoginCommandHandler(SignInManager<UserEntity> signInManager, IJwtGenerator jwtGenerator,
             MangoPostgresDbContext postgresDbContext)
         {
-            _userManager = userManager;
             _signInManager = signInManager;
             _jwtGenerator = jwtGenerator;
             _postgresDbContext = postgresDbContext;
@@ -33,7 +29,9 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Sessions
 
         public async Task<LoginResponse> Handle(LoginCommand request, CancellationToken cancellationToken)
         {
-            var user = await _userManager.FindByEmailAsync(request.Email);
+            var user = await _postgresDbContext.Users
+                .FirstOrDefaultAsync(x => x.Email == request.Email,
+                    cancellationToken);
 
             if (user is null)
             {
@@ -47,11 +45,6 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Sessions
                 throw new BusinessException(ResponseMessageCodes.InvalidCredentials);
             }
 
-            if (!user.Verified)
-            {
-                throw new BusinessException(ResponseMessageCodes.UserNotVerified);
-            }
-
             var refreshLifetime = EnvironmentConstants.RefreshTokenLifeTime;
 
             if (refreshLifetime == null || !int.TryParse(refreshLifetime, out var refreshLifetimeParsed))
@@ -62,14 +55,23 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Sessions
             var session = new SessionEntity
             {
                 Id = Guid.NewGuid().ToString(),
+                UserId = user.Id,
                 RefreshToken = Guid.NewGuid().ToString(),
                 Expires = DateTime.UtcNow.AddDays(refreshLifetimeParsed),
                 Created = DateTime.UtcNow
             };
 
-            var jwtToken = _jwtGenerator.GenerateJwtToken(user);
+            var roleIds = await _postgresDbContext.UserRoles
+                .Where(x => x.UserId == user.Id)
+                .Select(x => x.RoleId)
+                .ToListAsync(cancellationToken);
 
-            session.UserId = user.Id;
+            var roles = await _postgresDbContext.Roles
+                .Where(x => roleIds.Contains(x.Id))
+                .Select(x => x.Name)
+                .ToListAsync(cancellationToken);
+
+            var jwtToken = _jwtGenerator.GenerateJwtToken(user, roles);
 
             var userSessions = _postgresDbContext.Sessions
                 .Where(x => x.UserId == user.Id);

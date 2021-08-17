@@ -6,6 +6,7 @@ using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.Presentation.Extensions;
 using MangoAPI.Presentation.Interfaces;
 using MediatR;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -15,13 +16,13 @@ namespace MangoAPI.Presentation.Controllers
 {
     [ApiController]
     [Route("api/contacts")]
+    [Authorize(Roles = "User", AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class ContactsController : ApiControllerBase, IContactsController
     {
         public ContactsController(IMediator mediator) : base(mediator)
         {
         }
-
-        [Authorize]
+        
         [HttpPost]
         [SwaggerOperation(Summary = "Adds new contact.")]
         [ProducesResponseType(typeof(AddContactResponse), StatusCodes.Status200OK)]
@@ -36,9 +37,7 @@ namespace MangoAPI.Presentation.Controllers
 
             return await RequestAsync(command, cancellationToken);
         }
-
-
-        [Authorize]
+        
         [HttpGet]
         [SwaggerOperation(Summary = "Returns list of current user's contacts.")]
         [ProducesResponseType(typeof(GetContactsResponse), StatusCodes.Status200OK)]

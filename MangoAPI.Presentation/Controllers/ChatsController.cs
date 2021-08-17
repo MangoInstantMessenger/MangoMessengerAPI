@@ -6,6 +6,7 @@ using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.Presentation.Extensions;
 using MangoAPI.Presentation.Interfaces;
 using MediatR;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -16,13 +17,13 @@ namespace MangoAPI.Presentation.Controllers
     [ApiController]
     [Route("api/chats")]
     [Produces("application/json")]
+    [Authorize(Roles = "User", AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class ChatsController : ApiControllerBase, IChatsController
     {
         public ChatsController(IMediator mediator) : base(mediator)
         {
         }
 
-        [Authorize]
         [HttpGet]
         [SwaggerOperation(Summary = "Returns list of all user's chats.")]
         [ProducesResponseType(typeof(GetCurrentUserChatsResponse), StatusCodes.Status200OK)]
@@ -35,7 +36,6 @@ namespace MangoAPI.Presentation.Controllers
             return await RequestAsync(request, cancellationToken);
         }
 
-        [Authorize]
         [HttpPost]
         [SwaggerOperation(Summary =
             "Creates new group of specified type. 2 -- Private Channel, 3 -- Public Channel, 4 -- ReadOnlyChannel")]
@@ -51,7 +51,6 @@ namespace MangoAPI.Presentation.Controllers
             return await RequestAsync(command, cancellationToken);
         }
 
-        [Authorize]
         [HttpPost("{userId}")]
         [SwaggerOperation(Summary = "Creates new direct chat by user ID.")]
         [ProducesResponseType(typeof(CreateChatEntityResponse), StatusCodes.Status200OK)]
@@ -70,7 +69,6 @@ namespace MangoAPI.Presentation.Controllers
             return await RequestAsync(command, cancellationToken);
         }
 
-        [Authorize]
         [HttpPost("searches")]
         [SwaggerOperation(Summary = "Searches chats by display name.")]
         [ProducesResponseType(typeof(SearchChatsResponse), StatusCodes.Status200OK)]

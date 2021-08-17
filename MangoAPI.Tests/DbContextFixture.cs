@@ -20,8 +20,9 @@ namespace MangoAPI.Tests
 
             SeedUsers();
             SeedUserInformation();
+            SeedUserSessions();
             SeedChats();
-            SeedUserChat();
+            SeedUserChats();
             SeedMessages();
             SeedContacts();
         }
@@ -47,7 +48,14 @@ namespace MangoAPI.Tests
 
             PostgresDbContext.SaveChanges();
         }
+        
+        private void SeedUserSessions()
+        {
+            PostgresDbContext.Sessions.AddRange(SeedData.UserSessions);
 
+            PostgresDbContext.SaveChanges();
+        }
+        
         private void SeedChats()
         {
             PostgresDbContext.Chats.AddRange(SeedData.Chats);
@@ -55,13 +63,14 @@ namespace MangoAPI.Tests
             PostgresDbContext.SaveChanges();
         }
 
-        private void SeedUserChat()
+        private void SeedUserChats()
         {
             PostgresDbContext.UserChats.AddRange(SeedData.UserChats);
 
             PostgresDbContext.SaveChanges();
         }
 
+        
         private void SeedMessages()
         {
             PostgresDbContext.Messages.AddRange(SeedData.Messages);
@@ -84,17 +93,28 @@ namespace MangoAPI.Tests
             new UserEntity
             {
                 Id = "1",
-                DisplayName = "Petro"
+                DisplayName = "Petro",
+                Email = "kolosovp94@gmail.com",
+                NormalizedEmail = "KOLOSOVP94@GMAIL.COM",
+                PhoneNumber = "+1 987 65 43 21",
+                PhoneNumberConfirmed = true
             },
             new UserEntity
             {
                 Id = "2",
-                DisplayName = "Szymon"
+                DisplayName = "Szymon",
+                PhoneNumber = "+1 234 45 67",
+                ConfirmationCode = 524675
             },
             new UserEntity
             {
                 Id = "3",
-                DisplayName = "Razumovsky"
+                DisplayName = "Razumovsky",
+                Email = "kolosovp95@gmail.com",
+                NormalizedEmail = "KOLOSOVP95@GMAIL.COM",
+                EmailConfirmed = true,
+                PhoneNumber = "+1 234 45 67",
+                ConfirmationCode = 154783
             }
         };
 
@@ -125,6 +145,26 @@ namespace MangoAPI.Tests
                 Instagram = "petro.kolosov",
                 LinkedIn = "petro.kolosov",
                 ProfilePicture = "petro.png"
+            }
+        };
+
+        public static List<SessionEntity> UserSessions => new()
+        {
+            new SessionEntity
+            {
+                Id = "1",
+                UserId = "1",
+                RefreshToken = "69dbef09-de5a-4da7-9d67-abeba1510118",
+                Created = DateTime.UtcNow,
+                Expires = DateTime.UtcNow.AddDays(3)
+            },
+            new SessionEntity
+            {
+                Id = "2",
+                UserId = "24",
+                RefreshToken = "219d9df3-9bc0-4679-baaa-c18b1c7524e8",
+                Created = DateTime.UtcNow,
+                Expires = DateTime.UtcNow.AddDays(3)
             }
         };
 
