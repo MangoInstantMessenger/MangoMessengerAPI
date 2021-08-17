@@ -47,11 +47,6 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Sessions
                 throw new BusinessException(ResponseMessageCodes.InvalidCredentials);
             }
 
-            if (!user.Verified)
-            {
-                throw new BusinessException(ResponseMessageCodes.UserNotVerified);
-            }
-
             var refreshLifetime = EnvironmentConstants.RefreshTokenLifeTime;
 
             if (refreshLifetime == null || !int.TryParse(refreshLifetime, out var refreshLifetimeParsed))

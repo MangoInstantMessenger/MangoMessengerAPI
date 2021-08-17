@@ -48,9 +48,14 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Sessions
 
             var userSessionCount = await userSessions.CountAsync(cancellationToken);
 
-            if (userSessionCount >= 5)
+            switch (userSessionCount)
             {
-                _postgresDbContext.Sessions.RemoveRange(userSessions);
+                case >= 5:
+                    _postgresDbContext.Sessions.RemoveRange(userSessions);
+                    break;
+                default:
+                    _postgresDbContext.Sessions.Remove(session);
+                    break;
             }
 
             var refreshLifetime = EnvironmentConstants.RefreshTokenLifeTime;
