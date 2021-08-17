@@ -11,12 +11,6 @@ namespace MangoAPI.DataAccess.Database.Configurations
         {
             builder.HasData(new IdentityRole
                 {
-                    Id = SeedDataConstants.AdminRoleId,
-                    Name = SeedDataConstants.AdminRole,
-                    NormalizedName = SeedDataConstants.AdminRole.ToUpper()
-                },
-                new IdentityRole
-                {
                     Id = SeedDataConstants.UserRoleId,
                     Name = SeedDataConstants.UserRole,
                     NormalizedName = SeedDataConstants.UserRole.ToUpper()

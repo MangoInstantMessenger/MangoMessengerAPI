@@ -25,12 +25,10 @@
         public const string DirectPetroSzymon = "3fce8b2c-252d-4514-a1bb-fbdf73c47b78";
         
         // Role ID
-        public const string AdminRoleId = "253f8c95-3e39-4298-9c8c-8e626d26ad05";
         public const string UserRoleId = "32904a05-6d7c-43cf-b915-223324ff480e";
         public const string UnverifiedRoleId = "1c48f8d5-01ed-4e47-8377-a22ffa58c150";
         
         // Roles 
-        public const string AdminRole = "Administrator";
         public const string UserRole = "User";
         public const string UnverifiedRole = "Unverified";
     }
