@@ -21,19 +21,23 @@ namespace MangoAPI.Presentation.Controllers
         public UserChatsController(IMediator mediator) : base(mediator)
         {
         }
-        
-        [HttpPost]
+
+        [HttpPost("{chatId}")]
         [Authorize(Roles = "User")]
         [SwaggerOperation(Summary = "Joins to the particular public group.")]
         [ProducesResponseType(typeof(JoinChatResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public async Task<IActionResult> JoinChatAsync([FromBody] JoinChatRequest request,
-            CancellationToken cancellationToken)
+        public async Task<IActionResult> JoinChatAsync([FromRoute] string chatId, CancellationToken cancellationToken)
         {
             var userId = HttpContext.User.GetUserId();
-            var command = request.ToCommand(userId);
+            var command = new JoinChatCommand
+            {
+                UserId = userId,
+                ChatId = chatId
+            };
+            
             return await RequestAsync(command, cancellationToken);
         }
     }

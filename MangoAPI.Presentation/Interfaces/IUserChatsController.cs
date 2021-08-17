@@ -7,6 +7,6 @@ namespace MangoAPI.Presentation.Interfaces
 {
     public interface IUserChatsController
     {
-        Task<IActionResult> JoinChatAsync(JoinChatRequest request, CancellationToken cancellationToken);
+        Task<IActionResult> JoinChatAsync(string chatId, CancellationToken cancellationToken);
     }
 }
