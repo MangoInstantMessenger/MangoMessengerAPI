@@ -27,7 +27,14 @@ namespace MangoAPI.Tests.ApiCommandsTests.Sessions
         [Test]
         public async Task LogoutAllCommandHandlerTest_ShouldThrowInvalidOrExpiredRefreshToken()
         {
-            throw new NotImplementedException();
+            using var dbContextFixture = new DbContextFixture();
+            var handler = new LogoutAllCommandHandler(dbContextFixture.PostgresDbContext);
+            var command = new LogoutAllCommand { UserId = "3" };
+
+            Func<Task> result = async () => await handler.Handle(command, CancellationToken.None);
+
+            await result.Should().ThrowAsync<BusinessException>()
+                .WithMessage(ResponseMessageCodes.InvalidOrExpiredRefreshToken);
         }
     }
 }

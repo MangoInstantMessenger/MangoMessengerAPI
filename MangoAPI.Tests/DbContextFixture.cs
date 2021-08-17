@@ -93,17 +93,28 @@ namespace MangoAPI.Tests
             new UserEntity
             {
                 Id = "1",
-                DisplayName = "Petro"
+                DisplayName = "Petro",
+                Email = "kolosovp94@gmail.com",
+                NormalizedEmail = "KOLOSOVP94@GMAIL.COM",
+                PhoneNumber = "+1 987 65 43 21",
+                PhoneNumberConfirmed = true
             },
             new UserEntity
             {
                 Id = "2",
-                DisplayName = "Szymon"
+                DisplayName = "Szymon",
+                PhoneNumber = "+1 234 45 67",
+                ConfirmationCode = 524675
             },
             new UserEntity
             {
                 Id = "3",
-                DisplayName = "Razumovsky"
+                DisplayName = "Razumovsky",
+                Email = "kolosovp95@gmail.com",
+                NormalizedEmail = "KOLOSOVP95@GMAIL.COM",
+                EmailConfirmed = true,
+                PhoneNumber = "+1 234 45 67",
+                ConfirmationCode = 154783
             }
         };
 
