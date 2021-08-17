@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using MangoAPI.Application.Interfaces;
@@ -106,7 +107,8 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
                 Created = DateTime.UtcNow
             };
 
-            var jwtToken = _jwtGenerator.GenerateJwtToken(newUser, SeedDataConstants.UnverifiedRole);
+            var jwtToken = _jwtGenerator.GenerateJwtToken(newUser, 
+                new List<string> {SeedDataConstants.UnverifiedRole});
 
             await _postgresDbContext.UserRoles.AddAsync(new IdentityUserRole<string>
             {

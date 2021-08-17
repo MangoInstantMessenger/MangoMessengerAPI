@@ -16,6 +16,7 @@ namespace MangoAPI.Presentation.Controllers
 {
     [ApiController]
     [Route("api/users")]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class UsersController : ApiControllerBase, IUsersController
     {
         public UsersController(IMediator mediator) : base(mediator)
@@ -24,7 +25,9 @@ namespace MangoAPI.Presentation.Controllers
 
         [HttpPost]
         [AllowAnonymous]
-        [SwaggerOperation(Summary = "Registers user in a messenger. Verification methods: 1 -- Phone, 2 -- Email.")]
+        [SwaggerOperation(Summary =
+            "Registers user in a messenger. Verification methods: 1 -- Phone, 2 -- Email. " +
+            "Returns pair of tokens with Unverified user role.")]
         [ProducesResponseType(typeof(RegisterResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
@@ -35,7 +38,7 @@ namespace MangoAPI.Presentation.Controllers
         }
 
         [HttpPut("email-confirmation")]
-        [Authorize(Roles = "Unverified", AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [Authorize(Roles = "Unverified, User")]
         [SwaggerOperation(Summary = "Confirms user's email.")]
         [ProducesResponseType(typeof(VerifyEmailResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
@@ -48,7 +51,7 @@ namespace MangoAPI.Presentation.Controllers
         }
 
         [HttpPut("phone-confirmation")]
-        [Authorize(Roles = "Unverified", AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [Authorize(Roles = "Unverified, User")]
         [SwaggerOperation(Summary = "Confirms user's phone number.")]
         [ProducesResponseType(typeof(VerifyPhoneResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
@@ -62,7 +65,7 @@ namespace MangoAPI.Presentation.Controllers
         }
 
         [HttpGet("{userId}")]
-        [Authorize(Roles = "User", AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [Authorize(Roles = "User")]
         [SwaggerOperation(Summary = "Gets an information about particular user by user ID.")]
         [ProducesResponseType(typeof(GetUserResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
@@ -75,7 +78,7 @@ namespace MangoAPI.Presentation.Controllers
         }
 
         [HttpPost("searches")]
-        [Authorize(Roles = "User", AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [Authorize(Roles = "User")]
         [SwaggerOperation(Summary = "Searches user by display name.")]
         [ProducesResponseType(typeof(UserSearchResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
@@ -88,7 +91,7 @@ namespace MangoAPI.Presentation.Controllers
         }
 
         [HttpGet]
-        [Authorize(Roles = "Unverified", AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [Authorize(Roles = "Unverified, User")]
         [SwaggerOperation(Summary = "Gets an information about current user.")]
         [ProducesResponseType(typeof(GetUserResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
@@ -102,7 +105,7 @@ namespace MangoAPI.Presentation.Controllers
         }
 
         [HttpPut("information")]
-        [Authorize(Roles = "User", AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [Authorize(Roles = "User")]
         [SwaggerOperation(Summary = "Updates user's personal information.")]
         [ProducesResponseType(typeof(UpdateUserInformationResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
