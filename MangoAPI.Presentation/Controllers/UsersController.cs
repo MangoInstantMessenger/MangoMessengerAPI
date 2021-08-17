@@ -50,17 +50,22 @@ namespace MangoAPI.Presentation.Controllers
             return await RequestAsync(command, cancellationToken);
         }
 
-        [HttpPut("phone-confirmation")]
+        [HttpPut("{phoneCode:int}")]
         [Authorize(Roles = "Unverified, User")]
         [SwaggerOperation(Summary = "Confirms user's phone number.")]
         [ProducesResponseType(typeof(VerifyPhoneResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
-        public async Task<IActionResult> PhoneConfirmationAsync([FromBody] VerifyPhoneRequest request,
+        public async Task<IActionResult> PhoneConfirmationAsync([FromRoute] int phoneCode,
             CancellationToken cancellationToken)
         {
             var userId = HttpContext.User.GetUserId();
-            var command = request.ToCommand(userId);
+            var command = new VerifyPhoneCommand
+            {
+                UserId = userId,
+                ConfirmationCode = phoneCode
+            };
+            
             return await RequestAsync(command, cancellationToken);
         }
 
@@ -90,7 +95,7 @@ namespace MangoAPI.Presentation.Controllers
             {
                 DisplayName = displayName
             };
-            
+
             return await RequestAsync(command, cancellationToken);
         }
 
