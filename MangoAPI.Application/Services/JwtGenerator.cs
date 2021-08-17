@@ -18,7 +18,13 @@ namespace MangoAPI.Application.Services
         public JwtGenerator()
         {
             var tokenKey = EnvironmentConstants.MangoTokenKey;
-            _key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(tokenKey!));
+            
+            if (tokenKey == null)
+            {
+                throw new NullReferenceException("Mango token key is null");
+            }
+            
+            _key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(tokenKey));
         }
 
         public string GenerateJwtToken(UserEntity userEntity, List<string> roles)
