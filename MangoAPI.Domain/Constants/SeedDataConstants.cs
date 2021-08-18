@@ -9,7 +9,10 @@
         public const string AmelitId = "d942706b-e4e2-48f9-bbdc-b022816471f0";
         public const string PetroId = "2cd4b9a0-f70d-476d-a3cc-908da43f93c4";
         public const string SzymonId = "5e7274ad-3132-4ad7-be36-38778a8f7b1c";
-
+        public const string IlliaId = "72a7a013-8bc4-4ae6-89cb-d9f19e0c9cf9";
+        public const string ArslanbekId = "56d6294f-7b80-4a78-856a-92b141de2d1c";
+        public const string SerhiiId = "d1ae1de1-1aa8-4650-937c-4ed882038ad7";
+        
         // Public Chats
         public const string ExtremeCodeMainId = "0dae5a74-3528-4e85-95bb-2036bd80432c";
         public const string ExtremeCodeFloodId = "5e656ec2-205f-471c-b095-1c80b93b7655";
