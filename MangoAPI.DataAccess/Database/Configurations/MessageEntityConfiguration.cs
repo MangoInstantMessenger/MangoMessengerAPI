@@ -279,6 +279,16 @@ namespace MangoAPI.DataAccess.Database.Configurations
                     ChatId = SeedDataConstants.DirectKhachaturKolbasator,
                     Content = "Hello World",
                     Created = new DateTime(2021, 8, 1, 14, 31, 23)
+                },
+                
+                // Petro / Szymon
+                new MessageEntity
+                {
+                    Id = "c4635d82-0703-4fe6-8836-be849482ec89",
+                    UserId = SeedDataConstants.PetroId,
+                    ChatId = SeedDataConstants.DirectPetroSzymon,
+                    Content = "Hi teacher",
+                    Created = new DateTime(2021, 8, 1, 14, 31, 23)
                 }
             );
         }
