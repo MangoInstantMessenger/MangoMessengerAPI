@@ -38,35 +38,30 @@ namespace MangoAPI.Tests
         private void SeedUsers()
         {
             PostgresDbContext.Users.AddRange(SeedData.Users);
-
             PostgresDbContext.SaveChanges();
         }
 
         private void SeedUserInformation()
         {
             PostgresDbContext.UserInformation.AddRange(SeedData.UserInfo);
-
             PostgresDbContext.SaveChanges();
         }
         
         private void SeedUserSessions()
         {
             PostgresDbContext.Sessions.AddRange(SeedData.UserSessions);
-
             PostgresDbContext.SaveChanges();
         }
         
         private void SeedChats()
         {
             PostgresDbContext.Chats.AddRange(SeedData.Chats);
-
             PostgresDbContext.SaveChanges();
         }
 
         private void SeedUserChats()
         {
             PostgresDbContext.UserChats.AddRange(SeedData.UserChats);
-
             PostgresDbContext.SaveChanges();
         }
 
@@ -74,14 +69,12 @@ namespace MangoAPI.Tests
         private void SeedMessages()
         {
             PostgresDbContext.Messages.AddRange(SeedData.Messages);
-
             PostgresDbContext.SaveChanges();
         }
 
         private void SeedContacts()
         {
             PostgresDbContext.UserContacts.AddRange(SeedData.Contacts);
-
             PostgresDbContext.SaveChanges();
         }
     }
