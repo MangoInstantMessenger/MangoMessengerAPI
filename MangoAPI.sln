@@ -1,17 +1,26 @@
-﻿Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MangoAPI.Presentation", "MangoAPI.Presentation\MangoAPI.Presentation.csproj", "{139143FA-4968-4269-883B-80DF7EECE7EA}"
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31410.357
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MangoAPI.Presentation", "MangoAPI.Presentation\MangoAPI.Presentation.csproj", "{139143FA-4968-4269-883B-80DF7EECE7EA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MangoAPI.DataAccess", "MangoAPI.DataAccess\MangoAPI.DataAccess.csproj", "{892FEF6D-BCF5-4A93-BB2A-C49D5EE57491}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MangoAPI.DataAccess", "MangoAPI.DataAccess\MangoAPI.DataAccess.csproj", "{892FEF6D-BCF5-4A93-BB2A-C49D5EE57491}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MangoAPI.Domain", "MangoAPI.Domain\MangoAPI.Domain.csproj", "{CC4422A4-CDDC-4B8D-A6E4-6466732B2F47}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MangoAPI.Domain", "MangoAPI.Domain\MangoAPI.Domain.csproj", "{CC4422A4-CDDC-4B8D-A6E4-6466732B2F47}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MangoAPI.BusinessLogic", "MangoAPI.BusinessLogic\MangoAPI.BusinessLogic.csproj", "{637656CA-BDB8-4CF3-937F-773A9148C258}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MangoAPI.BusinessLogic", "MangoAPI.BusinessLogic\MangoAPI.BusinessLogic.csproj", "{637656CA-BDB8-4CF3-937F-773A9148C258}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MangoAPI.Application", "MangoAPI.Application\MangoAPI.Application.csproj", "{18FF1265-DBFA-4AF7-8069-E895148848B2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MangoAPI.Application", "MangoAPI.Application\MangoAPI.Application.csproj", "{18FF1265-DBFA-4AF7-8069-E895148848B2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MangoAPI.Tests", "MangoAPI.Tests\MangoAPI.Tests.csproj", "{006BE543-524D-417E-BA7E-744DDBBED768}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MangoAPI.Tests", "MangoAPI.Tests\MangoAPI.Tests.csproj", "{006BE543-524D-417E-BA7E-744DDBBED768}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MangoAPI.Environment", "MangoAPI.Environment\MangoAPI.Environment.csproj", "{386818EE-869F-40E2-BDB1-2590AE65457E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MangoAPI.Environment", "MangoAPI.Environment\MangoAPI.Environment.csproj", "{386818EE-869F-40E2-BDB1-2590AE65457E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{F8A0C2AF-AB92-4D4E-8EB9-FEC56B93DD01}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -48,6 +57,10 @@ Global
 		{386818EE-869F-40E2-BDB1-2590AE65457E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{386818EE-869F-40E2-BDB1-2590AE65457E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
-	GlobalSection(NestedProjects) = preSolution
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {64B16C18-46ED-4D73-927F-B2E229345447}
 	EndGlobalSection
 EndGlobal
