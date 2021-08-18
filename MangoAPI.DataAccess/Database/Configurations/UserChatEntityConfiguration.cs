@@ -27,14 +27,33 @@ namespace MangoAPI.DataAccess.Database.Configurations
                 {
                     UserId = SeedDataConstants.PetroId,
                     ChatId = SeedDataConstants.WsbId,
-                    RoleId = UserRole.User
+                    RoleId = UserRole.Moderator
                 },
                 new UserChatEntity
                 {
                     UserId = SeedDataConstants.SzymonId,
                     ChatId = SeedDataConstants.WsbId,
+                    RoleId = UserRole.Owner
+                },
+                new UserChatEntity
+                {
+                    UserId = SeedDataConstants.IlliaId,
+                    ChatId = SeedDataConstants.WsbId,
                     RoleId = UserRole.User
                 },
+                new UserChatEntity
+                {
+                    UserId = SeedDataConstants.ArslanbekId,
+                    ChatId = SeedDataConstants.WsbId,
+                    RoleId = UserRole.User
+                },
+                new UserChatEntity
+                {
+                    UserId = SeedDataConstants.SerhiiId,
+                    ChatId = SeedDataConstants.WsbId,
+                    RoleId = UserRole.User
+                },
+                
                 // Extreme Code Main
                 new UserChatEntity
                 {

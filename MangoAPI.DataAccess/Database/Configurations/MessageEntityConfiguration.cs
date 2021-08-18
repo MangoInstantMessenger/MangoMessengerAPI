@@ -30,16 +30,41 @@ namespace MangoAPI.DataAccess.Database.Configurations
                     UserId = SeedDataConstants.SzymonId,
                     ChatId = SeedDataConstants.WsbId,
                     Content = "Hello World",
-                    Created = new DateTime(2021, 8, 11, 21, 8, 21)
+                    Created = new DateTime(2021, 8, 11, 14, 48, 21)
                 },
                 new MessageEntity
                 {
                     Id = "e1918784-455a-42c7-998e-d0b94380c21f",
-                    UserId = SeedDataConstants.KhachaturId,
-                    ChatId = SeedDataConstants.ExtremeCodeMainId,
+                    UserId = SeedDataConstants.IlliaId,
+                    ChatId = SeedDataConstants.WsbId,
                     Content = "Hello World",
-                    Created = new DateTime(2021, 8, 11, 21, 9, 2)
+                    Created = new DateTime(2021, 8, 11, 14, 53, 2)
                 },
+                new MessageEntity
+                {
+                    Id = "5aca4139-5251-4e94-a6b1-459ebf80b3ee",
+                    UserId = SeedDataConstants.ArslanbekId,
+                    ChatId = SeedDataConstants.WsbId,
+                    Content = "Hello World",
+                    Created = new DateTime(2021, 8, 11, 21, 53, 35)
+                },
+                new MessageEntity
+                {
+                    Id = "a9e3d66a-9e19-4bd2-bf09-d02fe4540fdf",
+                    UserId = SeedDataConstants.IlliaId,
+                    ChatId = SeedDataConstants.WsbId,
+                    Content = "Hello World",
+                    Created = new DateTime(2021, 8, 11, 21, 53, 57)
+                },
+                new MessageEntity
+                {
+                    Id = "1dc37267-8f45-491b-9f43-d78421e79575",
+                    UserId = SeedDataConstants.SerhiiId,
+                    ChatId = SeedDataConstants.WsbId,
+                    Content = "Hello World",
+                    Created = new DateTime(2021, 8, 11, 21, 55, 5)
+                },
+                
                 // Extreme Code Main
                 new MessageEntity
                 {

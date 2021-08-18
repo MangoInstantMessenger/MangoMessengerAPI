@@ -98,18 +98,56 @@ namespace MangoAPI.DataAccess.Database.Configurations
                 PhoneNumberConfirmed = true
             };
 
+            var user7 = new UserEntity
+            {
+                PhoneNumber = "+48 352 643 123",
+                DisplayName = "Illia Zubachov",
+                Id = SeedDataConstants.IlliaId,
+                UserName = SeedDataConstants.IlliaId,
+                Email = "illia.zubachov@wp.pl",
+                NormalizedEmail = "ILLIA.ZUBACHOW@WP.PL",
+                EmailConfirmed = true,
+                PhoneNumberConfirmed = true
+            };
+            
+            var user8 = new UserEntity
+            {
+                PhoneNumber = "+48 278 187 781",
+                DisplayName = "Arslanbek Temirbekov",
+                Id = SeedDataConstants.ArslanbekId,
+                UserName = SeedDataConstants.ArslanbekId,
+                Email = "arslanbek.temirbekov@wp.pl",
+                NormalizedEmail = "ARSLANBEK.TEMIRBEKOV@WP.PL",
+                EmailConfirmed = true,
+                PhoneNumberConfirmed = true
+            };
 
+            var user9  = new UserEntity
+            {
+                PhoneNumber = "+48 175 481 653",
+                DisplayName = "Serhii Holishevskii",
+                Id = SeedDataConstants.SerhiiId,
+                UserName = SeedDataConstants.SerhiiId,
+                Email = "serhii.holishevskii@wp.pl",
+                NormalizedEmail = "SERHII.HOLISHEVSKII@WP.PL",
+                EmailConfirmed = true,
+                PhoneNumberConfirmed = true
+            };
+            
             var passwordHasher = new PasswordHashService();
 
-            passwordHasher.HashPassword(user1, "z[?6dMR#xmp=nr6q");
-            passwordHasher.HashPassword(user2, "z[?6dMR#xmp=nr6q");
-            passwordHasher.HashPassword(user3, "z[?6dMR#xmp=nr6q");
-            passwordHasher.HashPassword(user4, "z[?6dMR#xmp=nr6q");
-            passwordHasher.HashPassword(user5, "z[?6dMR#xmp=nr6q");
-            passwordHasher.HashPassword(user6, "z[?6dMR#xmp=nr6q");
+            passwordHasher.HashPassword(user1, EnvironmentConstants.SeedPassword);
+            passwordHasher.HashPassword(user2, EnvironmentConstants.SeedPassword);
+            passwordHasher.HashPassword(user3, EnvironmentConstants.SeedPassword);
+            passwordHasher.HashPassword(user4, EnvironmentConstants.SeedPassword);
+            passwordHasher.HashPassword(user5, EnvironmentConstants.SeedPassword);
+            passwordHasher.HashPassword(user6, EnvironmentConstants.SeedPassword);
+            passwordHasher.HashPassword(user7, EnvironmentConstants.SeedPassword);
+            passwordHasher.HashPassword(user8, EnvironmentConstants.SeedPassword);
+            passwordHasher.HashPassword(user9, EnvironmentConstants.SeedPassword);
 
 
-            builder.HasData(user1, user2, user3, user4, user5, user6);
+            builder.HasData(user1, user2, user3, user4, user5, user6, user7, user8, user9);
         }
     }
 }

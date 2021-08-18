@@ -21,6 +21,7 @@
 - `MANGO_ISSUER`, `https://localhost:5001`
 - `MANGO_AUDIENCE`, `https://localhost:5000`
 - `MANGO_TOKEN_KEY`, `Private RSA key`
+- `SEED_PASSWORD`, string
 - `JWT_LIFETIME`, integer
 - `REFRESH_TOKEN_LIFETIME`, integer
 - `EMAIL_SENDER_ADDRESS`, string

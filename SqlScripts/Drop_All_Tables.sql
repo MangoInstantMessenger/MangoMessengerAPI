@@ -7,7 +7,7 @@ DROP TABLE public."AspNetUserRoles" CASCADE;
 DROP TABLE public."AspNetUserLogins" CASCADE;
 DROP TABLE public."AspNetUserTokens" CASCADE;
 DROP TABLE public."Messages" CASCADE;
-DROP TABLE public."RefreshTokens" CASCADE;
+DROP TABLE public."Sessions" CASCADE;
 DROP TABLE public."UserChats" CASCADE;
 DROP TABLE public."UserContacts" CASCADE;
 DROP TABLE public."UserInformation" CASCADE;
