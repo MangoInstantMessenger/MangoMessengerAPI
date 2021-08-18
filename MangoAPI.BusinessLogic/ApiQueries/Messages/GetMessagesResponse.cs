@@ -26,10 +26,10 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Messages
                         EditedAt = messageEntity.Updated?.ToShortTimeString(),
                         SentAt = messageEntity.Created.ToShortTimeString(),
                         UserDisplayName = messageEntity.User.DisplayName,
-                        Self = messageEntity.User.Id == user.Id
+                        Self = messageEntity.User.Id == user.Id,
                     }).ToList(),
 
-                Success = true
+                Success = true,
             };
         }
     }
