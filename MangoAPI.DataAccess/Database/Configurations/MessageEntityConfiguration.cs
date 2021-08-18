@@ -29,7 +29,7 @@ namespace MangoAPI.DataAccess.Database.Configurations
                     Id = "e8f26f7a-fc72-4925-b528-dbc8326b3476",
                     UserId = SeedDataConstants.SzymonId,
                     ChatId = SeedDataConstants.WsbId,
-                    Content = "Hello World",
+                    Content = "Hello guys, how your diploma project goes?",
                     Created = new DateTime(2021, 8, 11, 14, 48, 21)
                 },
                 new MessageEntity
@@ -37,7 +37,7 @@ namespace MangoAPI.DataAccess.Database.Configurations
                     Id = "e1918784-455a-42c7-998e-d0b94380c21f",
                     UserId = SeedDataConstants.IlliaId,
                     ChatId = SeedDataConstants.WsbId,
-                    Content = "Hello World",
+                    Content = "Well, I'm doing UI/UX part of the project",
                     Created = new DateTime(2021, 8, 11, 14, 53, 2)
                 },
                 new MessageEntity
@@ -45,15 +45,15 @@ namespace MangoAPI.DataAccess.Database.Configurations
                     Id = "5aca4139-5251-4e94-a6b1-459ebf80b3ee",
                     UserId = SeedDataConstants.ArslanbekId,
                     ChatId = SeedDataConstants.WsbId,
-                    Content = "Hello World",
+                    Content = "Hi teacher, I perform QA of the current version",
                     Created = new DateTime(2021, 8, 11, 21, 53, 35)
                 },
                 new MessageEntity
                 {
                     Id = "a9e3d66a-9e19-4bd2-bf09-d02fe4540fdf",
-                    UserId = SeedDataConstants.IlliaId,
+                    UserId = SeedDataConstants.PetroId,
                     ChatId = SeedDataConstants.WsbId,
-                    Content = "Hello World",
+                    Content = "Greetings. I currently workout the back-end part",
                     Created = new DateTime(2021, 8, 11, 21, 53, 57)
                 },
                 new MessageEntity
@@ -61,8 +61,17 @@ namespace MangoAPI.DataAccess.Database.Configurations
                     Id = "1dc37267-8f45-491b-9f43-d78421e79575",
                     UserId = SeedDataConstants.SerhiiId,
                     ChatId = SeedDataConstants.WsbId,
-                    Content = "Hello World",
+                    Content = "I work with backend too...",
                     Created = new DateTime(2021, 8, 11, 21, 55, 5)
+                },
+                
+                new MessageEntity
+                {
+                    Id = "e8f26f7a-fc72-4925-b528-dbc8326b3477",
+                    UserId = SeedDataConstants.SzymonId,
+                    ChatId = SeedDataConstants.WsbId,
+                    Content = "Great! Good luck to all of you",
+                    Created = new DateTime(2021, 8, 11, 14, 48, 21)
                 },
                 
                 // Extreme Code Main
