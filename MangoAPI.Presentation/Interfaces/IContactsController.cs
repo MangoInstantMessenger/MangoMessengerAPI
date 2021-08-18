@@ -1,6 +1,5 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
-using MangoAPI.BusinessLogic.ApiCommands.Contacts;
 using Microsoft.AspNetCore.Mvc;
 
 namespace MangoAPI.Presentation.Interfaces

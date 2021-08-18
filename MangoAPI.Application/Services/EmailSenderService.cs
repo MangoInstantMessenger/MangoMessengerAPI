@@ -64,6 +64,8 @@ namespace MangoAPI.Application.Services
                 $"<a href='{EnvironmentConstants.FrontendAddress}/verify-email?email={user.Email}&userId={user.Id}'>" +
                 "Verify email" +
                 "</a>" +
+                "<br>" +
+                $"<p>Your phone confirmation code is: {user.ConfirmationCode} </p>" +
                 "</body>";
 
             message.IsBodyHtml = true;
