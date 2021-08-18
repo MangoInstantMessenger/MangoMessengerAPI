@@ -25,6 +25,7 @@ jobs:
         dotnet ef database update --project MangoAPI.DataAccess
       env:
         DATABASE_URL: ${{ secrets.DATABASE_URL }}
+        SEED_PASSWORD: ${{ secrets.SEED_PASSWORD }}
     - name: Run unit tests
       run: |
         dotnet test MangoAPI.Tests/MangoAPI.Tests.csproj
@@ -32,7 +33,6 @@ jobs:
         MANGO_TOKEN_KEY: ${{ secrets.MANGO_TOKEN_KEY }}
         REFRESH_TOKEN_LIFETIME: ${{ secrets.REFRESH_TOKEN_LIFETIME }}
         JWT_LIFETIME: ${{ secrets.JWT_LIFETIME }}
-        SEED_PASSWORD: ${{ secrets.SEED_PASSWORD }}
     - name: Release
       env:
         HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}

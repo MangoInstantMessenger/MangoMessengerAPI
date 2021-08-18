@@ -1,4 +1,5 @@
-﻿using MangoAPI.Application.Services;
+﻿using System;
+using MangoAPI.Application.Services;
 using MangoAPI.Domain.Constants;
 using MangoAPI.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
@@ -135,6 +136,13 @@ namespace MangoAPI.DataAccess.Database.Configurations
             };
             
             var passwordHasher = new PasswordHashService();
+
+            var password = EnvironmentConstants.SeedPassword;
+
+            if (password == null)
+            {
+                throw new InvalidOperationException("SEED_PASSWORD_ENV_VARIABLE_ERROR");
+            }
 
             passwordHasher.HashPassword(user1, EnvironmentConstants.SeedPassword);
             passwordHasher.HashPassword(user2, EnvironmentConstants.SeedPassword);

@@ -64,7 +64,6 @@ namespace MangoAPI.DataAccess.Database.Configurations
                     Content = "I work with backend too...",
                     Created = new DateTime(2021, 8, 11, 21, 55, 5)
                 },
-                
                 new MessageEntity
                 {
                     Id = "e8f26f7a-fc72-4925-b528-dbc8326b3477",
@@ -73,7 +72,7 @@ namespace MangoAPI.DataAccess.Database.Configurations
                     Content = "Great! Good luck to all of you",
                     Created = new DateTime(2021, 8, 11, 14, 48, 21)
                 },
-                
+
                 // Extreme Code Main
                 new MessageEntity
                 {

@@ -7,7 +7,6 @@
         public const string EmailOccupied = "EMAIL_OCCUPIED";
         public const string InvalidCredentials = "INVALID_CREDENTIALS";
         public const string InvalidEmail = "INVALID_EMAIL";
-        public const string UserNotVerified = "USER_NOT_VERIFIED";
         public const string WeakPassword = "WEAK_PASSWORD";
         public const string UserNotFound = "USER_NOT_FOUND";
         public const string EmailAlreadyVerified = "EMAIL_ALREADY_VERIFIED";
