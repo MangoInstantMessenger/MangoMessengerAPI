@@ -9,9 +9,9 @@ namespace MangoAPI.Presentation.Interfaces
     {
         Task<IActionResult> RegisterAsync(RegisterRequest request, CancellationToken cancellationToken);
         Task<IActionResult> EmailConfirmationAsync(VerifyEmailRequest request, CancellationToken cancellationToken);
-        Task<IActionResult> PhoneConfirmationAsync(VerifyPhoneRequest request, CancellationToken cancellationToken);
+        Task<IActionResult> PhoneConfirmationAsync(int phoneCode, CancellationToken cancellationToken);
         Task<IActionResult> GetUserById(string userId, CancellationToken cancellationToken);
-        Task<IActionResult> SearchesAsync(UserSearchCommand request, CancellationToken cancellationToken);
+        Task<IActionResult> SearchesAsync(string displayName, CancellationToken cancellationToken);
         Task<IActionResult> GetCurrentUser(CancellationToken cancellationToken);
 
         Task<IActionResult> UpdateUserInformationAsync(UpdateUserInformationRequest request,

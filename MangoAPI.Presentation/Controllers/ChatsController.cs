@@ -69,16 +69,22 @@ namespace MangoAPI.Presentation.Controllers
             return await RequestAsync(command, cancellationToken);
         }
 
-        [HttpPost("searches")]
+        [HttpGet("{displayName}")]
         [SwaggerOperation(Summary = "Searches chats by display name.")]
         [ProducesResponseType(typeof(SearchChatsResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public async Task<IActionResult> SearchAsync(SearchChatsRequest request, CancellationToken cancellationToken)
+        public async Task<IActionResult> SearchAsync([FromRoute] string displayName,
+            CancellationToken cancellationToken)
         {
             var userId = HttpContext.User.GetUserId();
-            var command = request.ToCommand(userId);
+            var command = new SearchChatsCommand
+            {
+                DisplayName = displayName,
+                UserId = userId
+            };
+
             return await RequestAsync(command, cancellationToken);
         }
     }

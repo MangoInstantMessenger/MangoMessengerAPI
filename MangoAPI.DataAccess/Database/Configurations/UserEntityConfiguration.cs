@@ -42,7 +42,7 @@ namespace MangoAPI.DataAccess.Database.Configurations
                 Bio = "11011 y.o Dotnet Developer from $\"{cityName}\"",
                 Id = SeedDataConstants.RazumovskyId,
                 UserName = SeedDataConstants.RazumovskyId,
-                Email = "kolosovp94@gmail.com",
+                Email = "kolosovp95@gmail.com",
                 NormalizedEmail = "KOLOSOVP94@GMAIL.COM",
                 EmailConfirmed = true,
                 PhoneNumberConfirmed = true

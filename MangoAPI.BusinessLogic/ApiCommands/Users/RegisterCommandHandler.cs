@@ -4,7 +4,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using MangoAPI.Application.Interfaces;
 using MangoAPI.BusinessLogic.BusinessExceptions;
-using MangoAPI.BusinessLogic.Enums;
 using MangoAPI.DataAccess.Database;
 using MangoAPI.Domain.Constants;
 using MangoAPI.Domain.Entities;
@@ -46,7 +45,8 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
             }
 
             var user = await _postgresDbContext.Users
-                .FirstOrDefaultAsync(x => x.PhoneNumber == request.PhoneNumber, cancellationToken);
+                .FirstOrDefaultAsync(x => x.PhoneNumber == request.PhoneNumber, 
+                    cancellationToken);
 
             if (user != null)
             {
@@ -58,14 +58,10 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
                 PhoneNumber = request.PhoneNumber,
                 DisplayName = request.DisplayName,
                 UserName = Guid.NewGuid().ToString(),
-                Email = request.Email
+                Email = request.Email,
+                ConfirmationCode = new Random().Next(100000, 999999)
             };
-
-            if (request.VerificationMethod == VerificationMethod.Phone)
-            {
-                newUser.ConfirmationCode = new Random().Next(100000, 999999);
-            }
-
+            
             var result = await _userManager.CreateAsync(newUser, request.Password);
 
             if (!result.Succeeded)
@@ -79,17 +75,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
                 UserId = newUser.Id
             };
 
-            switch (request.VerificationMethod)
-            {
-                case VerificationMethod.Email:
-                    await _emailSenderService.SendVerificationEmailAsync(newUser, cancellationToken);
-                    break;
-                case VerificationMethod.Phone:
-                    // TODO: Send Phone Code
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException();
-            }
+            await _emailSenderService.SendVerificationEmailAsync(newUser, cancellationToken);
 
             var refreshLifetime = EnvironmentConstants.RefreshTokenLifeTime;
 

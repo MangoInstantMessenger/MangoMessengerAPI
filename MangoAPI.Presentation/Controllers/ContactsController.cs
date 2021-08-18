@@ -22,22 +22,25 @@ namespace MangoAPI.Presentation.Controllers
         public ContactsController(IMediator mediator) : base(mediator)
         {
         }
-        
-        [HttpPost]
+
+        [HttpPost("{contactId}")]
         [SwaggerOperation(Summary = "Adds new contact.")]
         [ProducesResponseType(typeof(AddContactResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public async Task<IActionResult> AddContact([FromBody] AddContactRequest request,
-            CancellationToken cancellationToken)
+        public async Task<IActionResult> AddContact([FromRoute] string contactId, CancellationToken cancellationToken)
         {
-            var userId = HttpContext.User.GetUserId();
-            var command = request.ToCommand(userId);
+            var currentUserId = HttpContext.User.GetUserId();
+            var command = new AddContactCommand
+            {
+                UserId = currentUserId,
+                ContactId = contactId
+            };
 
             return await RequestAsync(command, cancellationToken);
         }
-        
+
         [HttpGet]
         [SwaggerOperation(Summary = "Returns list of current user's contacts.")]
         [ProducesResponseType(typeof(GetContactsResponse), StatusCodes.Status200OK)]
