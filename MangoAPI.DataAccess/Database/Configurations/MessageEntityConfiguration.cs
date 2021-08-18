@@ -70,7 +70,7 @@ namespace MangoAPI.DataAccess.Database.Configurations
                     UserId = SeedDataConstants.SzymonId,
                     ChatId = SeedDataConstants.WsbId,
                     Content = "Great! Good luck to all of you",
-                    Created = new DateTime(2021, 8, 11, 14, 48, 21)
+                    Created = new DateTime(2021, 8, 11, 21, 59, 5)
                 },
 
                 // Extreme Code Main
