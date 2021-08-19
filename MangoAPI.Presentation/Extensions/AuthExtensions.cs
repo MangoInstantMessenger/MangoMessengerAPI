@@ -1,12 +1,12 @@
-﻿using System.Text;
-using MangoAPI.Domain.Constants;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.IdentityModel.Tokens;
-
-namespace MangoAPI.Presentation.Extensions
+﻿namespace MangoAPI.Presentation.Extensions
 {
+    using System.Text;
+    using MangoAPI.Domain.Constants;
+    using Microsoft.AspNetCore.Authentication.JwtBearer;
+    using Microsoft.AspNetCore.Authorization;
+    using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.IdentityModel.Tokens;
+
     public static class AuthExtensions
     {
         public static IServiceCollection AddAppAuthorization(this IServiceCollection services)
@@ -43,7 +43,7 @@ namespace MangoAPI.Presentation.Extensions
                         ValidateAudience = true,
                         ValidateLifetime = true,
                         IssuerSigningKey = signingKey,
-                        ValidateIssuerSigningKey = true
+                        ValidateIssuerSigningKey = true,
                     };
                 });
 

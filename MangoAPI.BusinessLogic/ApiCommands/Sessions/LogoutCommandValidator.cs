@@ -1,7 +1,7 @@
-﻿using FluentValidation;
-
-namespace MangoAPI.BusinessLogic.ApiCommands.Sessions
+﻿namespace MangoAPI.BusinessLogic.ApiCommands.Sessions
 {
+    using FluentValidation;
+
     public class LogoutCommandValidator : AbstractValidator<LogoutCommand>
     {
         public LogoutCommandValidator()

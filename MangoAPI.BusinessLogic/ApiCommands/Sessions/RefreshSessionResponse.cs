@@ -1,8 +1,8 @@
-﻿using MangoAPI.BusinessLogic.Responses;
-using MangoAPI.Domain.Constants;
-
-namespace MangoAPI.BusinessLogic.ApiCommands.Sessions
+﻿namespace MangoAPI.BusinessLogic.ApiCommands.Sessions
 {
+    using MangoAPI.BusinessLogic.Responses;
+    using MangoAPI.Domain.Constants;
+
     public record RefreshSessionResponse : AuthResponseBase<RefreshSessionResponse>
     {
         // ReSharper disable once MemberCanBePrivate.Global
@@ -15,12 +15,12 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Sessions
 
         public static RefreshSessionResponse FromSuccess(string accessToken, string refreshToken)
         {
-            return new()
+            return new ()
             {
                 AccessToken = accessToken,
                 RefreshToken = refreshToken,
                 Message = ResponseMessageCodes.Success,
-                Success = true
+                Success = true,
             };
         }
     }

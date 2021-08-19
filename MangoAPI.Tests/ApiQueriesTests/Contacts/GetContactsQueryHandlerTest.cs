@@ -1,14 +1,14 @@
-﻿using System;
-using System.Threading;
-using System.Threading.Tasks;
-using FluentAssertions;
-using MangoAPI.BusinessLogic.ApiQueries.Contacts;
-using MangoAPI.BusinessLogic.BusinessExceptions;
-using MangoAPI.Domain.Constants;
-using NUnit.Framework;
-
-namespace MangoAPI.Tests.ApiQueriesTests.Contacts
+﻿namespace MangoAPI.Tests.ApiQueriesTests.Contacts
 {
+    using System;
+    using System.Threading;
+    using System.Threading.Tasks;
+    using FluentAssertions;
+    using MangoAPI.BusinessLogic.ApiQueries.Contacts;
+    using MangoAPI.BusinessLogic.BusinessExceptions;
+    using MangoAPI.Domain.Constants;
+    using NUnit.Framework;
+
     [TestFixture]
     public class GetContactsQueryHandlerTest
     {
@@ -17,7 +17,7 @@ namespace MangoAPI.Tests.ApiQueriesTests.Contacts
         {
             using var dbContextFixture = new DbContextFixture();
             var handler = new GetContactsQueryHandler(dbContextFixture.PostgresDbContext);
-            var query = new GetContactsQuery {UserId = "1"};
+            var query = new GetContactsQuery { UserId = "1" };
 
             var response = await handler.Handle(query, CancellationToken.None);
 
@@ -30,7 +30,7 @@ namespace MangoAPI.Tests.ApiQueriesTests.Contacts
         {
             using var dbContextFixture = new DbContextFixture();
             var handler = new GetContactsQueryHandler(dbContextFixture.PostgresDbContext);
-            var query = new GetContactsQuery {UserId = "24"};
+            var query = new GetContactsQuery { UserId = "24" };
 
             Func<Task> response = async () => await handler.Handle(query, CancellationToken.None);
 

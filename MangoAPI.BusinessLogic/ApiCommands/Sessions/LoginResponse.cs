@@ -1,8 +1,8 @@
-﻿using MangoAPI.BusinessLogic.Responses;
-using MangoAPI.Domain.Constants;
-
-namespace MangoAPI.BusinessLogic.ApiCommands.Sessions
+﻿namespace MangoAPI.BusinessLogic.ApiCommands.Sessions
 {
+    using MangoAPI.BusinessLogic.Responses;
+    using MangoAPI.Domain.Constants;
+
     public record LoginResponse : ResponseBase<LoginResponse>
     {
         // ReSharper disable once UnusedAutoPropertyAccessor.Global
@@ -15,12 +15,12 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Sessions
 
         public static LoginResponse FromSuccess(string accessToken, string refreshToken)
         {
-            return new()
+            return new ()
             {
                 Message = ResponseMessageCodes.Success,
                 AccessToken = accessToken,
                 RefreshToken = refreshToken,
-                Success = true
+                Success = true,
             };
         }
     }

@@ -1,25 +1,25 @@
-﻿using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
-using MangoAPI.DataAccess.Database;
-using MangoAPI.Domain.Enums;
-using MediatR;
-using Microsoft.EntityFrameworkCore;
-
-namespace MangoAPI.BusinessLogic.ApiCommands.Chats
+﻿namespace MangoAPI.BusinessLogic.ApiCommands.Chats
 {
+    using System.Linq;
+    using System.Threading;
+    using System.Threading.Tasks;
+    using MangoAPI.DataAccess.Database;
+    using MangoAPI.Domain.Enums;
+    using MediatR;
+    using Microsoft.EntityFrameworkCore;
+
     public class SearchChatsCommandHandler : IRequestHandler<SearchChatsCommand, SearchChatsResponse>
     {
-        private readonly MangoPostgresDbContext _postgresDbContext;
+        private readonly MangoPostgresDbContext postgresDbContext;
 
         public SearchChatsCommandHandler(MangoPostgresDbContext postgresDbContext)
         {
-            _postgresDbContext = postgresDbContext;
+            this.postgresDbContext = postgresDbContext;
         }
 
         public async Task<SearchChatsResponse> Handle(SearchChatsCommand request, CancellationToken cancellationToken)
         {
-            var chats = await _postgresDbContext
+            var chats = await postgresDbContext
                 .UserChats
                 .AsNoTracking()
                 .Include(x => x.Chat)

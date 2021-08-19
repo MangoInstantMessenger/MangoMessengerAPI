@@ -1,7 +1,7 @@
-﻿using FluentValidation;
-
-namespace MangoAPI.BusinessLogic.ApiCommands.Users
+﻿namespace MangoAPI.BusinessLogic.ApiCommands.Users
 {
+    using FluentValidation;
+
     public class RegisterCommandValidator : AbstractValidator<RegisterCommand>
     {
         public RegisterCommandValidator()

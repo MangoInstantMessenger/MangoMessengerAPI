@@ -1,11 +1,11 @@
-﻿using System;
-using MangoAPI.Domain.Constants;
-using MangoAPI.Domain.Entities;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
-
-namespace MangoAPI.DataAccess.Database.Configurations
+﻿namespace MangoAPI.DataAccess.Database.Configurations
 {
+    using System;
+    using MangoAPI.Domain.Constants;
+    using MangoAPI.Domain.Entities;
+    using Microsoft.EntityFrameworkCore;
+    using Microsoft.EntityFrameworkCore.Metadata.Builders;
+
     public class UserInformationEntityConfiguration : IEntityTypeConfiguration<UserInformationEntity>
     {
         public void Configure(EntityTypeBuilder<UserInformationEntity> builder)
@@ -21,7 +21,7 @@ namespace MangoAPI.DataAccess.Database.Configurations
                     BirthDay = new DateTime(1994, 6, 12),
                     Website = "pkolosov.com",
                     Instagram = "petro.kolosov",
-                    LinkedIn = "petro.kolosov"
+                    LinkedIn = "petro.kolosov",
                 },
                 new UserInformationEntity
                 {
@@ -32,7 +32,7 @@ namespace MangoAPI.DataAccess.Database.Configurations
                     BirthDay = new DateTime(1983, 5, 25),
                     Website = "murawski.com",
                     Instagram = "szymon.murawski",
-                    LinkedIn = "szymon.murawski"
+                    LinkedIn = "szymon.murawski",
                 },
                 new UserInformationEntity
                 {
@@ -43,7 +43,7 @@ namespace MangoAPI.DataAccess.Database.Configurations
                     BirthDay = new DateTime(2008, 3, 7),
                     Website = "khachapur.com",
                     Instagram = "khachapur.mudrenych",
-                    LinkedIn = "khachapur.mudrenych"
+                    LinkedIn = "khachapur.mudrenych",
                 },
                 new UserInformationEntity
                 {
@@ -54,7 +54,7 @@ namespace MangoAPI.DataAccess.Database.Configurations
                     BirthDay = new DateTime(1994, 7, 21),
                     Address = "Poland, Krakov",
                     Website = "razumovsky.com",
-                    Twitter = "razumovsky_r"
+                    Twitter = "razumovsky_r",
                 },
                 new UserInformationEntity
                 {
@@ -64,7 +64,7 @@ namespace MangoAPI.DataAccess.Database.Configurations
                     LastName = "Колбасяка",
                     Website = "kolbasator.com",
                     Facebook = "kolbasator",
-                    ProfilePicture = "profile.png"
+                    ProfilePicture = "profile.png",
                 },
                 new UserInformationEntity
                 {
@@ -73,9 +73,8 @@ namespace MangoAPI.DataAccess.Database.Configurations
                     FirstName = "Amelit",
                     Facebook = "TheMoonlightSonata",
                     Instagram = "TheMoonlightSonata",
-                    Twitter = "TheMoonlightSonata"
-                }
-            );
+                    Twitter = "TheMoonlightSonata",
+                });
         }
     }
 }

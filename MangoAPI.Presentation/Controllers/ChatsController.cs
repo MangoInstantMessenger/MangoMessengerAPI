@@ -1,19 +1,19 @@
-﻿using System.Threading;
-using System.Threading.Tasks;
-using MangoAPI.BusinessLogic.ApiCommands.Chats;
-using MangoAPI.BusinessLogic.ApiQueries.Chats;
-using MangoAPI.BusinessLogic.Responses;
-using MangoAPI.Presentation.Extensions;
-using MangoAPI.Presentation.Interfaces;
-using MediatR;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Swashbuckle.AspNetCore.Annotations;
-
-namespace MangoAPI.Presentation.Controllers
+﻿namespace MangoAPI.Presentation.Controllers
 {
+    using System.Threading;
+    using System.Threading.Tasks;
+    using MangoAPI.BusinessLogic.ApiCommands.Chats;
+    using MangoAPI.BusinessLogic.ApiQueries.Chats;
+    using MangoAPI.BusinessLogic.Responses;
+    using MangoAPI.Presentation.Extensions;
+    using MangoAPI.Presentation.Interfaces;
+    using MediatR;
+    using Microsoft.AspNetCore.Authentication.JwtBearer;
+    using Microsoft.AspNetCore.Authorization;
+    using Microsoft.AspNetCore.Http;
+    using Microsoft.AspNetCore.Mvc;
+    using Swashbuckle.AspNetCore.Annotations;
+
     /// <summary>
     /// Controller responsible for Chats Entity.
     /// </summary>

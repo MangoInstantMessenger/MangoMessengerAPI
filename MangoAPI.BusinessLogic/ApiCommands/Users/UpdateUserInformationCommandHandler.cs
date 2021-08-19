@@ -1,27 +1,27 @@
-﻿using System.Threading;
-using System.Threading.Tasks;
-using MangoAPI.BusinessLogic.BusinessExceptions;
-using MangoAPI.DataAccess.Database;
-using MangoAPI.Domain.Constants;
-using MediatR;
-using Microsoft.EntityFrameworkCore;
-
-namespace MangoAPI.BusinessLogic.ApiCommands.Users
+﻿namespace MangoAPI.BusinessLogic.ApiCommands.Users
 {
+    using System.Threading;
+    using System.Threading.Tasks;
+    using MangoAPI.BusinessLogic.BusinessExceptions;
+    using MangoAPI.DataAccess.Database;
+    using MangoAPI.Domain.Constants;
+    using MediatR;
+    using Microsoft.EntityFrameworkCore;
+
     public class UpdateUserInformationCommandHandler : IRequestHandler<UpdateUserInformationCommand,
         UpdateUserInformationResponse>
     {
-        private readonly MangoPostgresDbContext _postgresDbContext;
+        private readonly MangoPostgresDbContext postgresDbContext;
 
         public UpdateUserInformationCommandHandler(MangoPostgresDbContext postgresDbContext)
         {
-            _postgresDbContext = postgresDbContext;
+            this.postgresDbContext = postgresDbContext;
         }
 
         public async Task<UpdateUserInformationResponse> Handle(UpdateUserInformationCommand request,
             CancellationToken cancellationToken)
         {
-            var user = await _postgresDbContext.Users
+            var user = await postgresDbContext.Users
                 .Include(x => x.UserInformation)
                 .FirstOrDefaultAsync(x => x.Id == request.UserId, cancellationToken);
 
@@ -44,8 +44,8 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
 
             user.UserInformation.ProfilePicture = request.ProfilePicture;
 
-            _postgresDbContext.UserInformation.Update(user.UserInformation);
-            await _postgresDbContext.SaveChangesAsync(cancellationToken);
+            postgresDbContext.UserInformation.Update(user.UserInformation);
+            await postgresDbContext.SaveChangesAsync(cancellationToken);
 
             return UpdateUserInformationResponse.SuccessResponse;
         }

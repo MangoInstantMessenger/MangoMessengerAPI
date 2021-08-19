@@ -1,7 +1,7 @@
-﻿using MediatR;
-
-namespace MangoAPI.BusinessLogic.ApiCommands.Chats
+﻿namespace MangoAPI.BusinessLogic.ApiCommands.Chats
 {
+    using MediatR;
+
     public record SearchChatsCommand : IRequest<SearchChatsResponse>
     {
         public string DisplayName { get; init; }

@@ -5,6 +5,6 @@
         User = 1,
         Moderator = 2,
         Admin = 3,
-        Owner = 4
+        Owner = 4,
     }
 }

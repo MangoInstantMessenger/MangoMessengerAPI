@@ -1,8 +1,8 @@
-﻿using MangoAPI.Domain.Enums;
-using MediatR;
-
-namespace MangoAPI.BusinessLogic.ApiCommands.Chats
+﻿namespace MangoAPI.BusinessLogic.ApiCommands.Chats
 {
+    using MangoAPI.Domain.Enums;
+    using MediatR;
+
     public record CreateGroupCommand : IRequest<CreateChatEntityResponse>
     {
         public ChatType GroupType { get; init; }

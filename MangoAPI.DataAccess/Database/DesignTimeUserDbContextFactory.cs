@@ -1,11 +1,11 @@
-﻿using System;
-using MangoAPI.Application.Services;
-using MangoAPI.Domain.Constants;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Design;
-
-namespace MangoAPI.DataAccess.Database
+﻿namespace MangoAPI.DataAccess.Database
 {
+    using System;
+    using MangoAPI.Application.Services;
+    using MangoAPI.Domain.Constants;
+    using Microsoft.EntityFrameworkCore;
+    using Microsoft.EntityFrameworkCore.Design;
+
     public class DesignTimeUserDbContextFactory : IDesignTimeDbContextFactory<MangoPostgresDbContext>
     {
         public MangoPostgresDbContext CreateDbContext(string[] args)

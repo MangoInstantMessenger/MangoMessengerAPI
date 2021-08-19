@@ -1,11 +1,11 @@
-﻿using System.Threading;
-using System.Threading.Tasks;
-using FluentAssertions;
-using MangoAPI.BusinessLogic.ApiCommands.Chats;
-using NUnit.Framework;
-
-namespace MangoAPI.Tests.ApiCommandsTests.Chats
+﻿namespace MangoAPI.Tests.ApiCommandsTests.Chats
 {
+    using System.Threading;
+    using System.Threading.Tasks;
+    using FluentAssertions;
+    using MangoAPI.BusinessLogic.ApiCommands.Chats;
+    using NUnit.Framework;
+
     [TestFixture]
     public class SearchChatsCommandHandlerTest
     {
@@ -17,7 +17,7 @@ namespace MangoAPI.Tests.ApiCommandsTests.Chats
             var query = new SearchChatsCommand
             {
                 UserId = "1",
-                DisplayName = "Extreme"
+                DisplayName = "Extreme",
             };
 
             var response = await handler.Handle(query, CancellationToken.None);

@@ -1,14 +1,14 @@
-﻿using System.Net;
-using System.Net.Mail;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-using MangoAPI.Application.Interfaces;
-using MangoAPI.Domain.Constants;
-using MangoAPI.Domain.Entities;
-
-namespace MangoAPI.Application.Services
+﻿namespace MangoAPI.Application.Services
 {
+    using System.Net;
+    using System.Net.Mail;
+    using System.Text;
+    using System.Threading;
+    using System.Threading.Tasks;
+    using MangoAPI.Application.Interfaces;
+    using MangoAPI.Domain.Constants;
+    using MangoAPI.Domain.Entities;
+
     public class EmailSenderService : IEmailSenderService
     {
         public async Task SendVerificationEmailAsync(UserEntity user,
@@ -33,7 +33,7 @@ namespace MangoAPI.Application.Services
                 Host = GmailConstants.GmailSmtpHost,
                 Port = GmailConstants.GmailPort,
                 Credentials = credentials,
-                EnableSsl = true
+                EnableSsl = true,
             };
 
             return smtpClient;
@@ -49,9 +49,8 @@ namespace MangoAPI.Application.Services
 
             var message = new MailMessage(fromAddress, toAddress)
             {
-                Subject = "Email Verification", SubjectEncoding = Encoding.UTF8
+                Subject = "Email Verification", SubjectEncoding = Encoding.UTF8,
             };
-
 
             var body =
                 "<!DOCTYPE html>" +

@@ -1,7 +1,7 @@
-﻿using Newtonsoft.Json;
-
-namespace MangoAPI.BusinessLogic.ApiCommands.Chats
+﻿namespace MangoAPI.BusinessLogic.ApiCommands.Chats
 {
+    using Newtonsoft.Json;
+
     public record CreateDirectChatRequest
     {
         [JsonConstructor]
@@ -17,10 +17,10 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Chats
     {
         public static CreateDirectChatCommand ToCommand(this CreateDirectChatRequest model, string userId)
         {
-            return new()
+            return new ()
             {
                 PartnerId = model.PartnerId,
-                UserId = userId
+                UserId = userId,
             };
         }
     }

@@ -1,29 +1,32 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
-using FluentValidation;
-using MediatR;
-
-namespace MangoAPI.BusinessLogic.Pipelines
+﻿namespace MangoAPI.BusinessLogic.Pipelines
 {
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Threading;
+    using System.Threading.Tasks;
+    using FluentValidation;
+    using MediatR;
+
     public class ValidationBehaviour<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
         where TRequest : IRequest<TResponse>
     {
-        private readonly IEnumerable<IValidator<TRequest>> _validators;
+        private readonly IEnumerable<IValidator<TRequest>> validators;
 
         public ValidationBehaviour(IEnumerable<IValidator<TRequest>> validators)
         {
-            _validators = validators;
+            this.validators = validators;
         }
 
         public async Task<TResponse> Handle(TRequest request, CancellationToken cancellationToken,
             RequestHandlerDelegate<TResponse> next)
         {
-            if (!_validators.Any()) return await next();
+            if (!validators.Any())
+            {
+                return await next();
+            }
 
             var context = new ValidationContext<TRequest>(request);
-            var enumerableTasks = _validators.Select(validator => validator.ValidateAsync(context, cancellationToken));
+            var enumerableTasks = validators.Select(validator => validator.ValidateAsync(context, cancellationToken));
 
             var validationResults = await Task.WhenAll(enumerableTasks);
 
@@ -32,7 +35,10 @@ namespace MangoAPI.BusinessLogic.Pipelines
                 .Where(validationFailure => validationFailure != null)
                 .ToList();
 
-            if (failureList.Count != 0) throw new ValidationException(failureList);
+            if (failureList.Count != 0)
+            {
+                throw new ValidationException(failureList);
+            }
 
             return await next();
         }

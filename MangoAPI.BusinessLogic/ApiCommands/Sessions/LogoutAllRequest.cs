@@ -1,7 +1,7 @@
-﻿using Newtonsoft.Json;
-
-namespace MangoAPI.BusinessLogic.ApiCommands.Sessions
+﻿namespace MangoAPI.BusinessLogic.ApiCommands.Sessions
 {
+    using Newtonsoft.Json;
+
     public record LogoutAllRequest
     {
         [JsonConstructor]
@@ -17,9 +17,9 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Sessions
     {
         public static LogoutAllCommand ToCommand(this LogoutAllRequest model, string userId)
         {
-            return new()
+            return new ()
             {
-                UserId = userId
+                UserId = userId,
             };
         }
     }

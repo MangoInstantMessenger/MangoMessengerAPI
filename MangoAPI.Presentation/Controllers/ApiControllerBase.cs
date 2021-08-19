@@ -1,11 +1,11 @@
-﻿using System.Threading;
-using System.Threading.Tasks;
-using MangoAPI.BusinessLogic.Responses;
-using MediatR;
-using Microsoft.AspNetCore.Mvc;
-
-namespace MangoAPI.Presentation.Controllers
+﻿namespace MangoAPI.Presentation.Controllers
 {
+    using System.Threading;
+    using System.Threading.Tasks;
+    using MangoAPI.BusinessLogic.Responses;
+    using MediatR;
+    using Microsoft.AspNetCore.Mvc;
+
     /// <summary>
     /// Base controller class. Encapsulates common logics.
     /// </summary>

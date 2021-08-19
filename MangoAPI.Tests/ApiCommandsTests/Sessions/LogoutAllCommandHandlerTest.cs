@@ -1,14 +1,14 @@
-﻿using System;
-using System.Threading;
-using System.Threading.Tasks;
-using FluentAssertions;
-using MangoAPI.BusinessLogic.ApiCommands.Sessions;
-using MangoAPI.BusinessLogic.BusinessExceptions;
-using MangoAPI.Domain.Constants;
-using NUnit.Framework;
-
-namespace MangoAPI.Tests.ApiCommandsTests.Sessions
+﻿namespace MangoAPI.Tests.ApiCommandsTests.Sessions
 {
+    using System;
+    using System.Threading;
+    using System.Threading.Tasks;
+    using FluentAssertions;
+    using MangoAPI.BusinessLogic.ApiCommands.Sessions;
+    using MangoAPI.BusinessLogic.BusinessExceptions;
+    using MangoAPI.Domain.Constants;
+    using NUnit.Framework;
+
     [TestFixture]
     public class LogoutAllCommandHandlerTest
     {
@@ -17,7 +17,7 @@ namespace MangoAPI.Tests.ApiCommandsTests.Sessions
         {
             using var dbContextFixture = new DbContextFixture();
             var handler = new LogoutAllCommandHandler(dbContextFixture.PostgresDbContext);
-            var command = new LogoutAllCommand {UserId = "1"};
+            var command = new LogoutAllCommand { UserId = "1" };
 
             var result = await handler.Handle(command, CancellationToken.None);
 

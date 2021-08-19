@@ -1,15 +1,15 @@
-﻿using System;
-using System.Threading;
-using System.Threading.Tasks;
-using FluentAssertions;
-using MangoAPI.BusinessLogic.ApiCommands.Chats;
-using MangoAPI.BusinessLogic.BusinessExceptions;
-using MangoAPI.Domain.Constants;
-using MangoAPI.Domain.Enums;
-using NUnit.Framework;
-
-namespace MangoAPI.Tests.ApiCommandsTests.Chats
+﻿namespace MangoAPI.Tests.ApiCommandsTests.Chats
 {
+    using System;
+    using System.Threading;
+    using System.Threading.Tasks;
+    using FluentAssertions;
+    using MangoAPI.BusinessLogic.ApiCommands.Chats;
+    using MangoAPI.BusinessLogic.BusinessExceptions;
+    using MangoAPI.Domain.Constants;
+    using MangoAPI.Domain.Enums;
+    using NUnit.Framework;
+
     [TestFixture]
     public class CreateGroupCommandHandlerTest
     {
@@ -22,7 +22,7 @@ namespace MangoAPI.Tests.ApiCommandsTests.Chats
             {
                 UserId = "1",
                 GroupType = ChatType.PublicChannel,
-                GroupTitle = "Extreme Code"
+                GroupTitle = "Extreme Code",
             };
 
             var result = await handler.Handle(command, CancellationToken.None);
@@ -39,7 +39,7 @@ namespace MangoAPI.Tests.ApiCommandsTests.Chats
             {
                 UserId = "12412512",
                 GroupType = ChatType.PublicChannel,
-                GroupTitle = "Extreme Code"
+                GroupTitle = "Extreme Code",
             };
 
             Func<Task> result = async () => await handler.Handle(command, CancellationToken.None);

@@ -1,37 +1,37 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Text;
-using MangoAPI.Application.Interfaces;
-using MangoAPI.Domain.Constants;
-using MangoAPI.Domain.Entities;
-using Microsoft.IdentityModel.Tokens;
-using JwtRegisteredClaimNames = Microsoft.IdentityModel.JsonWebTokens.JwtRegisteredClaimNames;
-
-namespace MangoAPI.Application.Services
+﻿namespace MangoAPI.Application.Services
 {
+    using System;
+    using System.Collections.Generic;
+    using System.IdentityModel.Tokens.Jwt;
+    using System.Security.Claims;
+    using System.Text;
+    using MangoAPI.Application.Interfaces;
+    using MangoAPI.Domain.Constants;
+    using MangoAPI.Domain.Entities;
+    using Microsoft.IdentityModel.Tokens;
+    using JwtRegisteredClaimNames = Microsoft.IdentityModel.JsonWebTokens.JwtRegisteredClaimNames;
+
     public class JwtGenerator : IJwtGenerator
     {
-        private readonly SymmetricSecurityKey _key;
+        private readonly SymmetricSecurityKey key;
 
         public JwtGenerator()
         {
             var tokenKey = EnvironmentConstants.MangoTokenKey;
-            
+
             if (tokenKey == null)
             {
                 throw new NullReferenceException("Mango token key is null");
             }
-            
-            _key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(tokenKey));
+
+            key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(tokenKey));
         }
 
         public string GenerateJwtToken(UserEntity userEntity, List<string> roles)
         {
             var claims = new List<Claim>
             {
-                new(JwtRegisteredClaimNames.Jti, userEntity.Id),
+                new (JwtRegisteredClaimNames.Jti, userEntity.Id),
             };
 
             roles.ForEach(x => claims.Add(new Claim(ClaimsIdentity.DefaultRoleClaimType, x)));
@@ -43,7 +43,7 @@ namespace MangoAPI.Application.Services
                 throw new InvalidOperationException("Jwt lifetime environmental variable error.");
             }
 
-            var credentials = new SigningCredentials(_key, SecurityAlgorithms.HmacSha256);
+            var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
             var tokenDescriptor = new SecurityTokenDescriptor
             {
@@ -51,7 +51,7 @@ namespace MangoAPI.Application.Services
                 Expires = DateTime.UtcNow.AddMinutes(jwtLifetimeParsed),
                 SigningCredentials = credentials,
                 Issuer = EnvironmentConstants.MangoIssuer,
-                Audience = EnvironmentConstants.MangoAudience
+                Audience = EnvironmentConstants.MangoAudience,
             };
 
             var tokenHandler = new JwtSecurityTokenHandler();

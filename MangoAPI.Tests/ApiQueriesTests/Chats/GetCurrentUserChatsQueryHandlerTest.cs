@@ -1,14 +1,14 @@
-﻿using System;
-using System.Threading;
-using System.Threading.Tasks;
-using FluentAssertions;
-using MangoAPI.BusinessLogic.ApiQueries.Chats;
-using MangoAPI.BusinessLogic.BusinessExceptions;
-using MangoAPI.Domain.Constants;
-using NUnit.Framework;
-
-namespace MangoAPI.Tests.ApiQueriesTests.Chats
+﻿namespace MangoAPI.Tests.ApiQueriesTests.Chats
 {
+    using System;
+    using System.Threading;
+    using System.Threading.Tasks;
+    using FluentAssertions;
+    using MangoAPI.BusinessLogic.ApiQueries.Chats;
+    using MangoAPI.BusinessLogic.BusinessExceptions;
+    using MangoAPI.Domain.Constants;
+    using NUnit.Framework;
+
     [TestFixture]
     public class GetCurrentUserChatsQueryHandlerTest
     {
@@ -17,7 +17,7 @@ namespace MangoAPI.Tests.ApiQueriesTests.Chats
         {
             using var dbContextFixture = new DbContextFixture();
             var handler = new GetCurrentUserChatsQueryHandler(dbContextFixture.PostgresDbContext);
-            var query = new GetCurrentUserChatsQuery {UserId = "1"};
+            var query = new GetCurrentUserChatsQuery { UserId = "1" };
 
             var response = await handler.Handle(query, CancellationToken.None);
 
@@ -30,7 +30,7 @@ namespace MangoAPI.Tests.ApiQueriesTests.Chats
         {
             using var dbContextFixture = new DbContextFixture();
             var handler = new GetCurrentUserChatsQueryHandler(dbContextFixture.PostgresDbContext);
-            var query = new GetCurrentUserChatsQuery {UserId = "24"};
+            var query = new GetCurrentUserChatsQuery { UserId = "24" };
 
             Func<Task> response = async () => await handler.Handle(query, CancellationToken.None);
 

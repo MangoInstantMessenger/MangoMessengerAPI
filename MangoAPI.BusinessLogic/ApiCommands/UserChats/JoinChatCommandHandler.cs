@@ -1,27 +1,27 @@
-﻿using System.Threading;
-using System.Threading.Tasks;
-using MangoAPI.BusinessLogic.BusinessExceptions;
-using MangoAPI.DataAccess.Database;
-using MangoAPI.Domain.Constants;
-using MangoAPI.Domain.Entities;
-using MangoAPI.Domain.Enums;
-using MediatR;
-using Microsoft.EntityFrameworkCore;
-
-namespace MangoAPI.BusinessLogic.ApiCommands.UserChats
+﻿namespace MangoAPI.BusinessLogic.ApiCommands.UserChats
 {
+    using System.Threading;
+    using System.Threading.Tasks;
+    using MangoAPI.BusinessLogic.BusinessExceptions;
+    using MangoAPI.DataAccess.Database;
+    using MangoAPI.Domain.Constants;
+    using MangoAPI.Domain.Entities;
+    using MangoAPI.Domain.Enums;
+    using MediatR;
+    using Microsoft.EntityFrameworkCore;
+
     public class JoinChatCommandHandler : IRequestHandler<JoinChatCommand, JoinChatResponse>
     {
-        private readonly MangoPostgresDbContext _postgresDbContext;
+        private readonly MangoPostgresDbContext postgresDbContext;
 
         public JoinChatCommandHandler(MangoPostgresDbContext postgresDbContext)
         {
-            _postgresDbContext = postgresDbContext;
+            this.postgresDbContext = postgresDbContext;
         }
 
         public async Task<JoinChatResponse> Handle(JoinChatCommand request, CancellationToken cancellationToken)
         {
-            var currentUser = await _postgresDbContext.Users
+            var currentUser = await postgresDbContext.Users
                 .FirstOrDefaultAsync(x => x.Id == request.UserId, cancellationToken);
 
             if (currentUser == null)
@@ -30,7 +30,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.UserChats
             }
 
             var alreadyJoined = await
-                _postgresDbContext.UserChats.AnyAsync(x =>
+                postgresDbContext.UserChats.AnyAsync(x =>
                     x.UserId == currentUser.Id && x.ChatId == request.ChatId, cancellationToken);
 
             if (alreadyJoined)
@@ -38,7 +38,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.UserChats
                 throw new BusinessException(ResponseMessageCodes.UserAlreadyJoinedGroup);
             }
 
-            var chat = await _postgresDbContext.Chats
+            var chat = await postgresDbContext.Chats
                 .FirstOrDefaultAsync(x =>
                     x.Id == request.ChatId && x.ChatType != ChatType.DirectChat &&
                     x.ChatType != ChatType.PrivateChannel, cancellationToken);
@@ -48,17 +48,17 @@ namespace MangoAPI.BusinessLogic.ApiCommands.UserChats
                 throw new BusinessException(ResponseMessageCodes.ChatNotFound);
             }
 
-            await _postgresDbContext.UserChats.AddAsync(new UserChatEntity
+            await postgresDbContext.UserChats.AddAsync(new UserChatEntity
             {
                 ChatId = request.ChatId,
                 UserId = currentUser.Id,
-                RoleId = UserRole.User
+                RoleId = UserRole.User,
             }, cancellationToken);
 
             chat.MembersCount += 1;
 
-            _postgresDbContext.Update(chat);
-            await _postgresDbContext.SaveChangesAsync(cancellationToken);
+            postgresDbContext.Update(chat);
+            await postgresDbContext.SaveChangesAsync(cancellationToken);
 
             return JoinChatResponse.SuccessResponse;
         }

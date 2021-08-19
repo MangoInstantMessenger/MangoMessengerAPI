@@ -1,14 +1,14 @@
-﻿using System;
-using System.Threading;
-using System.Threading.Tasks;
-using FluentAssertions;
-using MangoAPI.BusinessLogic.ApiCommands.Sessions;
-using MangoAPI.BusinessLogic.BusinessExceptions;
-using MangoAPI.Domain.Constants;
-using NUnit.Framework;
-
-namespace MangoAPI.Tests.ApiCommandsTests.Sessions
+﻿namespace MangoAPI.Tests.ApiCommandsTests.Sessions
 {
+    using System;
+    using System.Threading;
+    using System.Threading.Tasks;
+    using FluentAssertions;
+    using MangoAPI.BusinessLogic.ApiCommands.Sessions;
+    using MangoAPI.BusinessLogic.BusinessExceptions;
+    using MangoAPI.Domain.Constants;
+    using NUnit.Framework;
+
     [TestFixture]
     public class LogoutCommandHandlerTest
     {

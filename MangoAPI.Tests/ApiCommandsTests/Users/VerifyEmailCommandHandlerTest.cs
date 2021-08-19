@@ -1,14 +1,14 @@
-﻿using System;
-using System.Threading;
-using System.Threading.Tasks;
-using FluentAssertions;
-using MangoAPI.BusinessLogic.ApiCommands.Users;
-using MangoAPI.BusinessLogic.BusinessExceptions;
-using MangoAPI.Domain.Constants;
-using NUnit.Framework;
-
-namespace MangoAPI.Tests.ApiCommandsTests.Users
+﻿namespace MangoAPI.Tests.ApiCommandsTests.Users
 {
+    using System;
+    using System.Threading;
+    using System.Threading.Tasks;
+    using FluentAssertions;
+    using MangoAPI.BusinessLogic.ApiCommands.Users;
+    using MangoAPI.BusinessLogic.BusinessExceptions;
+    using MangoAPI.Domain.Constants;
+    using NUnit.Framework;
+
     [TestFixture]
     public class VerifyEmailCommandHandlerTest
     {
@@ -20,7 +20,7 @@ namespace MangoAPI.Tests.ApiCommandsTests.Users
             var command = new VerifyEmailCommand
             {
                 UserId = "1",
-                Email = "kolosovp94@gmail.com"
+                Email = "kolosovp94@gmail.com",
             };
 
             var result = await handler.Handle(command, CancellationToken.None);
@@ -36,7 +36,7 @@ namespace MangoAPI.Tests.ApiCommandsTests.Users
             var command = new VerifyEmailCommand
             {
                 UserId = "1",
-                Email = "kolosovp@gmail.com"
+                Email = "kolosovp@gmail.com",
             };
 
             Func<Task> result = async () => await handler.Handle(command, CancellationToken.None);
@@ -53,7 +53,7 @@ namespace MangoAPI.Tests.ApiCommandsTests.Users
             var command = new VerifyEmailCommand
             {
                 UserId = "24",
-                Email = "kolosovp94@gmail.com"
+                Email = "kolosovp94@gmail.com",
             };
 
             Func<Task> result = async () => await handler.Handle(command, CancellationToken.None);
@@ -70,7 +70,7 @@ namespace MangoAPI.Tests.ApiCommandsTests.Users
             var command = new VerifyEmailCommand
             {
                 UserId = "3",
-                Email = "kolosovp95@gmail.com"
+                Email = "kolosovp95@gmail.com",
             };
 
             Func<Task> result = async () => await handler.Handle(command, CancellationToken.None);

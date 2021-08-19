@@ -1,8 +1,8 @@
-﻿using System;
-using FluentValidation;
-
-namespace MangoAPI.BusinessLogic.ApiCommands.Messages
+﻿namespace MangoAPI.BusinessLogic.ApiCommands.Messages
 {
+    using System;
+    using FluentValidation;
+
     public class DeleteMessageCommandValidator : AbstractValidator<DeleteMessageCommand>
     {
         public DeleteMessageCommandValidator()

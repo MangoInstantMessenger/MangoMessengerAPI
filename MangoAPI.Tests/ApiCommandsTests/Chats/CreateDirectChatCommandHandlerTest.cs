@@ -1,14 +1,14 @@
-﻿using System;
-using System.Threading;
-using System.Threading.Tasks;
-using FluentAssertions;
-using MangoAPI.BusinessLogic.ApiCommands.Chats;
-using MangoAPI.BusinessLogic.BusinessExceptions;
-using MangoAPI.Domain.Constants;
-using NUnit.Framework;
-
-namespace MangoAPI.Tests.ApiCommandsTests.Chats
+﻿namespace MangoAPI.Tests.ApiCommandsTests.Chats
 {
+    using System;
+    using System.Threading;
+    using System.Threading.Tasks;
+    using FluentAssertions;
+    using MangoAPI.BusinessLogic.ApiCommands.Chats;
+    using MangoAPI.BusinessLogic.BusinessExceptions;
+    using MangoAPI.Domain.Constants;
+    using NUnit.Framework;
+
     [TestFixture]
     public class CreateDirectChatCommandHandlerTest
     {
@@ -20,7 +20,7 @@ namespace MangoAPI.Tests.ApiCommandsTests.Chats
             var createChatCommand = new CreateDirectChatCommand
             {
                 UserId = "1",
-                PartnerId = "2"
+                PartnerId = "2",
             };
 
             var result = await handler.Handle(createChatCommand, CancellationToken.None);
@@ -36,7 +36,7 @@ namespace MangoAPI.Tests.ApiCommandsTests.Chats
             var createDirectChatCommand = new CreateDirectChatCommand
             {
                 UserId = "3421512523",
-                PartnerId = "15241412"
+                PartnerId = "15241412",
             };
 
             Func<Task> result = async () => await handler.Handle(createDirectChatCommand, CancellationToken.None);
@@ -53,7 +53,7 @@ namespace MangoAPI.Tests.ApiCommandsTests.Chats
             var createDirectChatCommand = new CreateDirectChatCommand
             {
                 UserId = "1",
-                PartnerId = "2"
+                PartnerId = "2",
             };
 
             await handler.Handle(createDirectChatCommand, CancellationToken.None);

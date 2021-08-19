@@ -1,8 +1,8 @@
-﻿using System;
-using FluentValidation;
-
-namespace MangoAPI.BusinessLogic.ApiQueries.Messages
+﻿namespace MangoAPI.BusinessLogic.ApiQueries.Messages
 {
+    using System;
+    using FluentValidation;
+
     public class GetMessagesQueryValidator : AbstractValidator<GetMessagesQuery>
     {
         public GetMessagesQueryValidator()

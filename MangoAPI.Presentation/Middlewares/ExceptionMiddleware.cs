@@ -1,27 +1,27 @@
-﻿using System;
-using System.Net;
-using System.Threading.Tasks;
-using FluentValidation;
-using MangoAPI.BusinessLogic.BusinessExceptions;
-using MangoAPI.BusinessLogic.Responses;
-using Microsoft.AspNetCore.Http;
-
-namespace MangoAPI.Presentation.Middlewares
+﻿namespace MangoAPI.Presentation.Middlewares
 {
+    using System;
+    using System.Net;
+    using System.Threading.Tasks;
+    using FluentValidation;
+    using MangoAPI.BusinessLogic.BusinessExceptions;
+    using MangoAPI.BusinessLogic.Responses;
+    using Microsoft.AspNetCore.Http;
+
     public class ExceptionMiddleware
     {
-        private readonly RequestDelegate _next;
+        private readonly RequestDelegate next;
 
         public ExceptionMiddleware(RequestDelegate next)
         {
-            _next = next;
+            this.next = next;
         }
 
         public async Task InvokeAsync(HttpContext httpContext)
         {
             try
             {
-                await _next(httpContext);
+                await next(httpContext);
             }
             catch (Exception ex)
             {
@@ -37,8 +37,8 @@ namespace MangoAPI.Presentation.Middlewares
                 {
                     ValidationException => HttpStatusCode.BadRequest,
                     BusinessException => HttpStatusCode.Conflict,
-                    _ => HttpStatusCode.InternalServerError
-                }
+                    _ => HttpStatusCode.InternalServerError,
+                },
             };
 
             await ThrowError(context, errorContext);
@@ -53,7 +53,7 @@ namespace MangoAPI.Presentation.Middlewares
                 Success = false,
                 ErrorMessage = errorContext.ErrorMessage,
                 ErrorDetails = errorContext.Exception.StackTrace,
-                StatusCode = (int) errorContext.StatusCode
+                StatusCode = (int) errorContext.StatusCode,
             }.ToString());
         }
     }
@@ -68,7 +68,9 @@ namespace MangoAPI.Presentation.Middlewares
         }
 
         public Exception Exception { get; }
+
         public HttpStatusCode StatusCode { get; init; }
+
         public string ErrorMessage { get; }
     }
 }

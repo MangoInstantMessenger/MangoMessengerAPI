@@ -4,9 +4,15 @@
     {
         public static string Convert(string databaseUrl)
         {
-            if (string.IsNullOrEmpty(databaseUrl) || !databaseUrl.Contains("postgres")) return null;
+            if (string.IsNullOrEmpty(databaseUrl) || !databaseUrl.Contains("postgres"))
+            {
+                return null;
+            }
 
-            if (!databaseUrl.Contains(@"://")) return databaseUrl;
+            if (!databaseUrl.Contains(@"://"))
+            {
+                return databaseUrl;
+            }
 
             var temp = databaseUrl.Split(@"://");
             var parameters = temp[1].Split(':', '@', '/');

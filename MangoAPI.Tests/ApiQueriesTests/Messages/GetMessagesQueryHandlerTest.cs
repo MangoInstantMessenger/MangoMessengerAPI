@@ -1,14 +1,14 @@
-﻿using System;
-using System.Threading;
-using System.Threading.Tasks;
-using FluentAssertions;
-using MangoAPI.BusinessLogic.ApiQueries.Messages;
-using MangoAPI.BusinessLogic.BusinessExceptions;
-using MangoAPI.Domain.Constants;
-using NUnit.Framework;
-
-namespace MangoAPI.Tests.ApiQueriesTests.Messages
+﻿namespace MangoAPI.Tests.ApiQueriesTests.Messages
 {
+    using System;
+    using System.Threading;
+    using System.Threading.Tasks;
+    using FluentAssertions;
+    using MangoAPI.BusinessLogic.ApiQueries.Messages;
+    using MangoAPI.BusinessLogic.BusinessExceptions;
+    using MangoAPI.Domain.Constants;
+    using NUnit.Framework;
+
     [TestFixture]
     public class GetMessagesQueryHandlerTest
     {
@@ -17,7 +17,7 @@ namespace MangoAPI.Tests.ApiQueriesTests.Messages
         {
             using var dbContextFixture = new DbContextFixture();
             var handler = new GetMessagesQueryHandler(dbContextFixture.PostgresDbContext);
-            var query = new GetMessagesQuery {UserId = "1", ChatId = "3"};
+            var query = new GetMessagesQuery { UserId = "1", ChatId = "3" };
 
             var response = await handler.Handle(query, CancellationToken.None);
 
@@ -30,7 +30,7 @@ namespace MangoAPI.Tests.ApiQueriesTests.Messages
         {
             using var dbContextFixture = new DbContextFixture();
             var handler = new GetMessagesQueryHandler(dbContextFixture.PostgresDbContext);
-            var query = new GetMessagesQuery {UserId = "24", ChatId = "3"};
+            var query = new GetMessagesQuery { UserId = "24", ChatId = "3" };
 
             Func<Task> response = async () => await handler.Handle(query, CancellationToken.None);
 
@@ -43,7 +43,7 @@ namespace MangoAPI.Tests.ApiQueriesTests.Messages
         {
             using var dbContextFixture = new DbContextFixture();
             var handler = new GetMessagesQueryHandler(dbContextFixture.PostgresDbContext);
-            var query = new GetMessagesQuery {UserId = "1", ChatId = "1"};
+            var query = new GetMessagesQuery { UserId = "1", ChatId = "1" };
 
             Func<Task> response = async () => await handler.Handle(query, CancellationToken.None);
 

@@ -1,25 +1,25 @@
-﻿using System.Threading;
-using System.Threading.Tasks;
-using MangoAPI.BusinessLogic.BusinessExceptions;
-using MangoAPI.DataAccess.Database;
-using MangoAPI.Domain.Constants;
-using MediatR;
-using Microsoft.EntityFrameworkCore;
-
-namespace MangoAPI.BusinessLogic.ApiCommands.Sessions
+﻿namespace MangoAPI.BusinessLogic.ApiCommands.Sessions
 {
+    using System.Threading;
+    using System.Threading.Tasks;
+    using MangoAPI.BusinessLogic.BusinessExceptions;
+    using MangoAPI.DataAccess.Database;
+    using MangoAPI.Domain.Constants;
+    using MediatR;
+    using Microsoft.EntityFrameworkCore;
+
     public class LogoutCommandHandler : IRequestHandler<LogoutCommand, LogoutResponse>
     {
-        private readonly MangoPostgresDbContext _postgresDbContext;
+        private readonly MangoPostgresDbContext postgresDbContext;
 
         public LogoutCommandHandler(MangoPostgresDbContext postgresDbContext)
         {
-            _postgresDbContext = postgresDbContext;
+            this.postgresDbContext = postgresDbContext;
         }
 
         public async Task<LogoutResponse> Handle(LogoutCommand request, CancellationToken cancellationToken)
         {
-            var session = await _postgresDbContext.Sessions
+            var session = await postgresDbContext.Sessions
                 .FirstOrDefaultAsync(x => x.RefreshToken == request.RefreshToken,
                     cancellationToken);
 
@@ -28,7 +28,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Sessions
                 throw new BusinessException(ResponseMessageCodes.InvalidOrExpiredRefreshToken);
             }
 
-            var user = await _postgresDbContext.Users.FirstOrDefaultAsync(x => x.Id == session.UserId,
+            var user = await postgresDbContext.Users.FirstOrDefaultAsync(x => x.Id == session.UserId,
                 cancellationToken);
 
             if (user is null || session.UserId != user.Id)
@@ -36,8 +36,8 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Sessions
                 throw new BusinessException(ResponseMessageCodes.UserNotFound);
             }
 
-            _postgresDbContext.Sessions.Remove(session);
-            await _postgresDbContext.SaveChangesAsync(cancellationToken);
+            postgresDbContext.Sessions.Remove(session);
+            await postgresDbContext.SaveChangesAsync(cancellationToken);
 
             return LogoutResponse.SuccessResponse;
         }

@@ -1,8 +1,8 @@
-﻿using System;
-using System.Text.Json.Serialization;
-
-namespace MangoAPI.BusinessLogic.ApiCommands.Users
+﻿namespace MangoAPI.BusinessLogic.ApiCommands.Users
 {
+    using System;
+    using System.Text.Json.Serialization;
+
     public record UpdateUserInformationRequest
     {
         [JsonConstructor]
@@ -41,7 +41,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
     {
         public static UpdateUserInformationCommand ToCommand(this UpdateUserInformationRequest model, string userId)
         {
-            return new()
+            return new ()
             {
                 FirstName = model.FirstName,
                 LastName = model.LastName,
@@ -53,7 +53,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
                 Instagram = model.Instagram,
                 LinkedIn = model.LinkedIn,
                 ProfilePicture = model.ProfilePicture,
-                UserId = userId
+                UserId = userId,
             };
         }
     }

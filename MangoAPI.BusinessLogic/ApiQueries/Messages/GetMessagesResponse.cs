@@ -1,12 +1,12 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using MangoAPI.BusinessLogic.Models;
-using MangoAPI.BusinessLogic.Responses;
-using MangoAPI.Domain.Constants;
-using MangoAPI.Domain.Entities;
-
-namespace MangoAPI.BusinessLogic.ApiQueries.Messages
+﻿namespace MangoAPI.BusinessLogic.ApiQueries.Messages
 {
+    using System.Collections.Generic;
+    using System.Linq;
+    using MangoAPI.BusinessLogic.Models;
+    using MangoAPI.BusinessLogic.Responses;
+    using MangoAPI.Domain.Constants;
+    using MangoAPI.Domain.Entities;
+
     public record GetMessagesResponse : MessageResponseBase<GetMessagesResponse>
     {
         // ReSharper disable once UnusedAutoPropertyAccessor.Global
@@ -15,7 +15,7 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Messages
 
         public static GetMessagesResponse FromSuccess(IEnumerable<MessageEntity> messages, UserEntity user)
         {
-            return new()
+            return new ()
             {
                 Message = ResponseMessageCodes.Success,
 

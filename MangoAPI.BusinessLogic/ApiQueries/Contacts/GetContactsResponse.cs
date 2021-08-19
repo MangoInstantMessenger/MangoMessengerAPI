@@ -1,12 +1,12 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using MangoAPI.BusinessLogic.Models;
-using MangoAPI.BusinessLogic.Responses;
-using MangoAPI.Domain.Constants;
-using MangoAPI.Domain.Entities;
-
-namespace MangoAPI.BusinessLogic.ApiQueries.Contacts
+﻿namespace MangoAPI.BusinessLogic.ApiQueries.Contacts
 {
+    using System.Collections.Generic;
+    using System.Linq;
+    using MangoAPI.BusinessLogic.Models;
+    using MangoAPI.BusinessLogic.Responses;
+    using MangoAPI.Domain.Constants;
+    using MangoAPI.Domain.Entities;
+
     public record GetContactsResponse : ContactsResponseBase<GetContactsResponse>
     {
         // ReSharper disable once MemberCanBePrivate.Global
@@ -15,7 +15,7 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Contacts
 
         public static GetContactsResponse FromSuccess(IEnumerable<UserEntity> contacts)
         {
-            return new()
+            return new ()
             {
                 Message = ResponseMessageCodes.Success,
                 Success = true,
@@ -26,8 +26,8 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Contacts
                             Username = contact.UserName,
                             DisplayName = contact.DisplayName,
                             Image = contact.Image,
-                            Bio = contact.Bio
-                        }).ToList()
+                            Bio = contact.Bio,
+                        }).ToList(),
             };
         }
     }

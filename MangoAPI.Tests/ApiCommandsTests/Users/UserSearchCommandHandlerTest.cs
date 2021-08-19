@@ -1,11 +1,11 @@
-﻿using System.Threading;
-using System.Threading.Tasks;
-using FluentAssertions;
-using MangoAPI.BusinessLogic.ApiCommands.Users;
-using NUnit.Framework;
-
-namespace MangoAPI.Tests.ApiCommandsTests.Users
+﻿namespace MangoAPI.Tests.ApiCommandsTests.Users
 {
+    using System.Threading;
+    using System.Threading.Tasks;
+    using FluentAssertions;
+    using MangoAPI.BusinessLogic.ApiCommands.Users;
+    using NUnit.Framework;
+
     [TestFixture]
     public class UserSearchCommandHandlerTest
     {
@@ -14,7 +14,7 @@ namespace MangoAPI.Tests.ApiCommandsTests.Users
         {
             using var dbContextFixture = new DbContextFixture();
             var handler = new UserSearchCommandHandler(dbContextFixture.PostgresDbContext);
-            var query = new UserSearchCommand {DisplayName = "Petro"};
+            var query = new UserSearchCommand { DisplayName = "Petro" };
 
             var response = await handler.Handle(query, CancellationToken.None);
 

@@ -1,7 +1,7 @@
-﻿using Newtonsoft.Json;
-
-namespace MangoAPI.BusinessLogic.ApiCommands.UserChats
+﻿namespace MangoAPI.BusinessLogic.ApiCommands.UserChats
 {
+    using Newtonsoft.Json;
+
     public record JoinChatRequest
     {
         [JsonConstructor]
@@ -17,10 +17,10 @@ namespace MangoAPI.BusinessLogic.ApiCommands.UserChats
     {
         public static JoinChatCommand ToCommand(this JoinChatRequest model, string userId)
         {
-            return new()
+            return new ()
             {
                 ChatId = model.ChatId,
-                UserId = userId
+                UserId = userId,
             };
         }
     }

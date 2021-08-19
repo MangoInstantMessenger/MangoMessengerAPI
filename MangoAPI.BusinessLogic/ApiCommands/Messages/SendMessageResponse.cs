@@ -1,8 +1,8 @@
-﻿using MangoAPI.BusinessLogic.Responses;
-using MangoAPI.Domain.Constants;
-
-namespace MangoAPI.BusinessLogic.ApiCommands.Messages
+﻿namespace MangoAPI.BusinessLogic.ApiCommands.Messages
 {
+    using MangoAPI.BusinessLogic.Responses;
+    using MangoAPI.Domain.Constants;
+
     public record SendMessageResponse : MessageResponseBase<SendMessageResponse>
     {
         // ReSharper disable once UnusedAutoPropertyAccessor.Global
@@ -11,11 +11,11 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Messages
 
         public static SendMessageResponse FromSuccess(string messageId)
         {
-            return new()
+            return new ()
             {
                 Success = true,
                 Message = ResponseMessageCodes.Success,
-                MessageId = messageId
+                MessageId = messageId,
             };
         }
     }
