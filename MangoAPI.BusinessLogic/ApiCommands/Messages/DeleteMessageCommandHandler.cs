@@ -17,7 +17,8 @@
             this.postgresDbContext = postgresDbContext;
         }
 
-        public async Task<DeleteMessageResponse> Handle(DeleteMessageCommand request,
+        public async Task<DeleteMessageResponse> Handle(
+            DeleteMessageCommand request,
             CancellationToken cancellationToken)
         {
             var currentUser =
@@ -29,7 +30,8 @@
             }
 
             var message = await postgresDbContext.Messages
-                .FirstOrDefaultAsync(x => x.Id == request.MessageId && x.UserId == currentUser.Id,
+                .FirstOrDefaultAsync(
+                    x => x.Id == request.MessageId && x.UserId == currentUser.Id,
                     cancellationToken);
 
             if (message == null)

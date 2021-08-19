@@ -18,10 +18,10 @@
             this.postgresDbContext = postgresDbContext;
         }
 
-        public async Task<VerifyPhoneResponse> Handle(VerifyPhoneCommand request,
-            CancellationToken cancellationToken)
+        public async Task<VerifyPhoneResponse> Handle(VerifyPhoneCommand request, CancellationToken cancellationToken)
         {
-            var user = await postgresDbContext.Users.FirstOrDefaultAsync(x => x.Id == request.UserId,
+            var user = await postgresDbContext.Users.FirstOrDefaultAsync(
+                x => x.Id == request.UserId,
                 cancellationToken);
 
             if (user == null)
@@ -39,11 +39,12 @@
                 throw new BusinessException(ResponseMessageCodes.InvalidPhoneCode);
             }
 
-            await postgresDbContext.UserRoles.AddAsync(new IdentityUserRole<string>()
-            {
-                UserId = user.Id,
-                RoleId = SeedDataConstants.UserRoleId,
-            }, cancellationToken);
+            await postgresDbContext.UserRoles.AddAsync(
+                new IdentityUserRole<string>
+                {
+                    UserId = user.Id,
+                    RoleId = SeedDataConstants.UserRoleId,
+                }, cancellationToken);
 
             user.PhoneNumberConfirmed = true;
             user.ConfirmationCode = 0;

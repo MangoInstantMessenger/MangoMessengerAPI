@@ -19,7 +19,9 @@
         private readonly MangoPostgresDbContext postgresDbContext;
         private readonly SignInManager<UserEntity> signInManager;
 
-        public LoginCommandHandler(SignInManager<UserEntity> signInManager, IJwtGenerator jwtGenerator,
+        public LoginCommandHandler(
+            SignInManager<UserEntity> signInManager,
+            IJwtGenerator jwtGenerator,
             MangoPostgresDbContext postgresDbContext)
         {
             this.signInManager = signInManager;

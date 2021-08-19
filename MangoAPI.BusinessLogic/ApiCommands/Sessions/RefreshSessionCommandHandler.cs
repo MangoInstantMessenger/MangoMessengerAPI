@@ -23,11 +23,13 @@
             this.jwtGenerator = jwtGenerator;
         }
 
-        public async Task<RefreshSessionResponse> Handle(RefreshSessionCommand request,
+        public async Task<RefreshSessionResponse> Handle(
+            RefreshSessionCommand request,
             CancellationToken cancellationToken)
         {
             var session = await postgresDbContext.Sessions
-                .FirstOrDefaultAsync(x => x.RefreshToken == request.RefreshToken,
+                .FirstOrDefaultAsync(
+                    x => x.RefreshToken == request.RefreshToken,
                     cancellationToken);
 
             if (session is null || session.IsExpired)
@@ -35,7 +37,8 @@
                 throw new BusinessException(ResponseMessageCodes.InvalidOrExpiredRefreshToken);
             }
 
-            var user = await postgresDbContext.Users.FirstAsync(x => x.Id == session.UserId,
+            var user = await postgresDbContext.Users.FirstAsync(
+                x => x.Id == session.UserId,
                 cancellationToken);
 
             var userSessions = postgresDbContext.Sessions

@@ -22,8 +22,6 @@
                 .HasForeignKey(x => x.UserId);
 
             builder.HasData(
-
-                // WSB
                 new UserChatEntity
                 {
                     UserId = SeedDataConstants.PetroId,
@@ -54,8 +52,6 @@
                     ChatId = SeedDataConstants.WsbId,
                     RoleId = UserRole.User,
                 },
-
-                // Extreme Code Main
                 new UserChatEntity
                 {
                     UserId = SeedDataConstants.KhachaturId,
@@ -80,8 +76,6 @@
                     ChatId = SeedDataConstants.ExtremeCodeMainId,
                     RoleId = UserRole.Owner,
                 },
-
-                // Extreme Code Flood
                 new UserChatEntity
                 {
                     UserId = SeedDataConstants.RazumovskyId,
@@ -106,8 +100,6 @@
                     ChatId = SeedDataConstants.ExtremeCodeFloodId,
                     RoleId = UserRole.User,
                 },
-
-                // Extreme Code C++
                 new UserChatEntity
                 {
                     UserId = SeedDataConstants.AmelitId,
@@ -132,8 +124,6 @@
                     ChatId = SeedDataConstants.ExtremeCodeCppId,
                     RoleId = UserRole.User,
                 },
-
-                // Extreme Code .NET
                 new UserChatEntity
                 {
                     UserId = SeedDataConstants.RazumovskyId,
@@ -158,8 +148,6 @@
                     ChatId = SeedDataConstants.ExtremeCodeDotnetId,
                     RoleId = UserRole.User,
                 },
-
-                // Khachatur Khachatryan / razumovsky r
                 new UserChatEntity
                 {
                     UserId = SeedDataConstants.KhachaturId,
@@ -172,8 +160,6 @@
                     ChatId = SeedDataConstants.DirectKhachaturRazumovsky,
                     RoleId = UserRole.User,
                 },
-
-                // Мусяка Колбасяка / razumovsky r
                 new UserChatEntity
                 {
                     UserId = SeedDataConstants.KolbasatorId,
@@ -186,8 +172,6 @@
                     ChatId = SeedDataConstants.DirectKolbasatorRazumovsky,
                     RoleId = UserRole.User,
                 },
-
-                // Amelit / razumovsky r
                 new UserChatEntity
                 {
                     UserId = SeedDataConstants.AmelitId,
@@ -200,8 +184,6 @@
                     ChatId = SeedDataConstants.DirectAmelitRazumovsky,
                     RoleId = UserRole.User,
                 },
-
-                // Khachatur Khachatryan / Мусяка Колбасяка
                 new UserChatEntity
                 {
                     UserId = SeedDataConstants.KhachaturId,
@@ -214,8 +196,6 @@
                     ChatId = SeedDataConstants.DirectKhachaturKolbasator,
                     RoleId = UserRole.User,
                 },
-
-                // Petro Kolosov / Szymon Murawski
                 new UserChatEntity
                 {
                     UserId = SeedDataConstants.PetroId,

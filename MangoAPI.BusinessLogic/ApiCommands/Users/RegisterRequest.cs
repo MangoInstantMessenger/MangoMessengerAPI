@@ -6,7 +6,8 @@
     public record RegisterRequest
     {
         [JsonConstructor]
-        public RegisterRequest(string phoneNumber,
+        public RegisterRequest(
+            string phoneNumber,
             string email,
             string displayName,
             string password,

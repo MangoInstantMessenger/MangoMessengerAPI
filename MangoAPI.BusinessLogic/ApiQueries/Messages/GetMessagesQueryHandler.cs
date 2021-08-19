@@ -20,7 +20,8 @@
 
         public async Task<GetMessagesResponse> Handle(GetMessagesQuery request, CancellationToken cancellationToken)
         {
-            var user = await postgresDbContext.Users.FirstOrDefaultAsync(x => x.Id == request.UserId,
+            var user = await postgresDbContext.Users.FirstOrDefaultAsync(
+                x => x.Id == request.UserId,
                 cancellationToken);
 
             if (user == null)

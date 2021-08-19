@@ -30,7 +30,8 @@
             }
 
             var alreadyJoined = await
-                postgresDbContext.UserChats.AnyAsync(x =>
+                postgresDbContext.UserChats.AnyAsync(
+                    x =>
                     x.UserId == currentUser.Id && x.ChatId == request.ChatId, cancellationToken);
 
             if (alreadyJoined)
@@ -39,7 +40,8 @@
             }
 
             var chat = await postgresDbContext.Chats
-                .FirstOrDefaultAsync(x =>
+                .FirstOrDefaultAsync(
+                    x =>
                     x.Id == request.ChatId && x.ChatType != ChatType.DirectChat &&
                     x.ChatType != ChatType.PrivateChannel, cancellationToken);
 
@@ -48,7 +50,8 @@
                 throw new BusinessException(ResponseMessageCodes.ChatNotFound);
             }
 
-            await postgresDbContext.UserChats.AddAsync(new UserChatEntity
+            await postgresDbContext.UserChats.AddAsync(
+                new UserChatEntity
             {
                 ChatId = request.ChatId,
                 UserId = currentUser.Id,

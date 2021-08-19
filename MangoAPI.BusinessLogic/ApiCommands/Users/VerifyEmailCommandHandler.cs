@@ -20,7 +20,8 @@
 
         public async Task<VerifyEmailResponse> Handle(VerifyEmailCommand request, CancellationToken cancellationToken)
         {
-            var user = await postgresDbContext.Users.FirstOrDefaultAsync(x => x.Id == request.UserId,
+            var user = await postgresDbContext.Users.FirstOrDefaultAsync(
+                x => x.Id == request.UserId,
                 cancellationToken);
 
             if (user is null)
@@ -40,11 +41,12 @@
 
             user.EmailConfirmed = true;
 
-            await postgresDbContext.UserRoles.AddAsync(new IdentityUserRole<string>()
-            {
-                UserId = user.Id,
-                RoleId = SeedDataConstants.UserRoleId,
-            }, cancellationToken);
+            await postgresDbContext.UserRoles.AddAsync(
+                new IdentityUserRole<string>
+                {
+                    UserId = user.Id,
+                    RoleId = SeedDataConstants.UserRoleId,
+                }, cancellationToken);
 
             postgresDbContext.Update(user);
 

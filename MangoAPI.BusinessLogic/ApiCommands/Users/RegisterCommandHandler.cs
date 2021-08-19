@@ -20,8 +20,10 @@
         private readonly UserManager<UserEntity> userManager;
         private readonly IJwtGenerator jwtGenerator;
 
-        public RegisterCommandHandler(UserManager<UserEntity> userManager,
-            MangoPostgresDbContext postgresDbContext, IEmailSenderService emailSenderService,
+        public RegisterCommandHandler(
+            UserManager<UserEntity> userManager,
+            MangoPostgresDbContext postgresDbContext,
+            IEmailSenderService emailSenderService,
             IJwtGenerator jwtGenerator)
         {
             this.userManager = userManager;
@@ -45,7 +47,8 @@
             }
 
             var user = await postgresDbContext.Users
-                .FirstOrDefaultAsync(x => x.PhoneNumber == request.PhoneNumber,
+                .FirstOrDefaultAsync(
+                    x => x.PhoneNumber == request.PhoneNumber,
                     cancellationToken);
 
             if (user != null)
@@ -93,10 +96,12 @@
                 Created = DateTime.UtcNow,
             };
 
-            var jwtToken = jwtGenerator.GenerateJwtToken(newUser,
+            var jwtToken = jwtGenerator.GenerateJwtToken(
+                newUser,
                 new List<string> { SeedDataConstants.UnverifiedRole });
 
-            await postgresDbContext.UserRoles.AddAsync(new IdentityUserRole<string>
+            await postgresDbContext.UserRoles.AddAsync(
+                new IdentityUserRole<string>
             {
                 UserId = newUser.Id,
                 RoleId = SeedDataConstants.UnverifiedRoleId,

@@ -17,7 +17,9 @@
             this.validators = validators;
         }
 
-        public async Task<TResponse> Handle(TRequest request, CancellationToken cancellationToken,
+        public async Task<TResponse> Handle(
+            TRequest request,
+            CancellationToken cancellationToken,
             RequestHandlerDelegate<TResponse> next)
         {
             if (!validators.Any())

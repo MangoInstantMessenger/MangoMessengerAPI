@@ -62,7 +62,9 @@
             return SendMessageResponse.FromSuccess(messageEntity.Id);
         }
 
-        private async Task<bool> CheckUserPermissions(UserEntity user, ChatEntity chat,
+        private async Task<bool> CheckUserPermissions(
+            UserEntity user,
+            ChatEntity chat,
             CancellationToken cancellationToken)
         {
             return chat.ChatType switch
@@ -75,7 +77,9 @@
             };
         }
 
-        private async Task<bool> CheckReadOnlyChannelPermissions(UserEntity user, ChatEntity chat,
+        private async Task<bool> CheckReadOnlyChannelPermissions(
+            UserEntity user,
+            ChatEntity chat,
             CancellationToken cancellationToken)
         {
             return (await postgresDbContext.UserChats
@@ -84,7 +88,9 @@
                 .Any(x => x.RoleId is UserRole.Moderator or UserRole.Admin or UserRole.Owner);
         }
 
-        private async Task<bool> CheckPublicChannelPermissions(UserEntity user, ChatEntity chat,
+        private async Task<bool> CheckPublicChannelPermissions(
+            UserEntity user,
+            ChatEntity chat,
             CancellationToken cancellationToken)
         {
             return await postgresDbContext.UserChats
@@ -92,7 +98,9 @@
                 .AnyAsync(cancellationToken);
         }
 
-        private async Task<bool> CheckPrivateChannelPermissions(UserEntity user, ChatEntity chat,
+        private async Task<bool> CheckPrivateChannelPermissions(
+            UserEntity user,
+            ChatEntity chat,
             CancellationToken cancellationToken)
         {
             return await postgresDbContext.UserChats

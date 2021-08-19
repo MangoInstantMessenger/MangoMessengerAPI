@@ -9,7 +9,8 @@
     {
         public void Configure(EntityTypeBuilder<IdentityRole> builder)
         {
-            builder.HasData(new IdentityRole
+            builder.HasData(
+                new IdentityRole
                 {
                     Id = SeedDataConstants.UserRoleId,
                     Name = SeedDataConstants.UserRole,

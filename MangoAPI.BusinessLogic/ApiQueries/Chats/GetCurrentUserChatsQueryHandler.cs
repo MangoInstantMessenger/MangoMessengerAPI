@@ -19,7 +19,8 @@
             this.postgresDbContext = postgresDbContext;
         }
 
-        public async Task<GetCurrentUserChatsResponse> Handle(GetCurrentUserChatsQuery request,
+        public async Task<GetCurrentUserChatsResponse> Handle(
+            GetCurrentUserChatsQuery request,
             CancellationToken cancellationToken)
         {
             var currentUser =

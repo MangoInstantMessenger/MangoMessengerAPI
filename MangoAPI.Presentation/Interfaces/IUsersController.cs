@@ -19,7 +19,8 @@
 
         Task<IActionResult> GetCurrentUser(CancellationToken cancellationToken);
 
-        Task<IActionResult> UpdateUserInformationAsync(UpdateUserInformationRequest request,
+        Task<IActionResult> UpdateUserInformationAsync(
+            UpdateUserInformationRequest request,
             CancellationToken cancellationToken);
     }
 }

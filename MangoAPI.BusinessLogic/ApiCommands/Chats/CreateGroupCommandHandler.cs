@@ -20,10 +20,12 @@
             this.postgresDbContext = postgresDbContext;
         }
 
-        public async Task<CreateChatEntityResponse> Handle(CreateGroupCommand request,
+        public async Task<CreateChatEntityResponse> Handle(
+            CreateGroupCommand request,
             CancellationToken cancellationToken)
         {
-            var user = await postgresDbContext.Users.FirstOrDefaultAsync(x => x.Id == request.UserId,
+            var user = await postgresDbContext.Users.FirstOrDefaultAsync(
+                x => x.Id == request.UserId,
                 cancellationToken);
 
             if (user is null)

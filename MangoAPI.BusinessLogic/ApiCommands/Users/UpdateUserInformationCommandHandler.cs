@@ -18,7 +18,8 @@
             this.postgresDbContext = postgresDbContext;
         }
 
-        public async Task<UpdateUserInformationResponse> Handle(UpdateUserInformationCommand request,
+        public async Task<UpdateUserInformationResponse> Handle(
+            UpdateUserInformationCommand request,
             CancellationToken cancellationToken)
         {
             var user = await postgresDbContext.Users

@@ -29,7 +29,8 @@
             }
 
             var message = await postgresDbContext.Messages
-                .FirstOrDefaultAsync(x => x.Id == request.MessageId && x.UserId == currentUser.Id,
+                .FirstOrDefaultAsync(
+                    x => x.Id == request.MessageId && x.UserId == currentUser.Id,
                     cancellationToken);
 
             if (message == null)

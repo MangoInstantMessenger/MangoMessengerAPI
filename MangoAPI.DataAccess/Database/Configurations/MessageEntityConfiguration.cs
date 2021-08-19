@@ -23,8 +23,6 @@
                 .HasForeignKey(x => x.ChatId);
 
             builder.HasData(
-
-                // WSB
                 new MessageEntity
                 {
                     Id = "e8f26f7a-fc72-4925-b528-dbc8326b3476",
@@ -73,8 +71,6 @@
                     Content = "Great! Good luck to all of you",
                     Created = new DateTime(2021, 8, 11, 21, 59, 5),
                 },
-
-                // Extreme Code Main
                 new MessageEntity
                 {
                     Id = "bb431cae-3df2-4c5b-9b63-cff0b74ff0d1",
@@ -107,8 +103,6 @@
                     Content = "TypeScript The Best",
                     Created = new DateTime(2021, 8, 1, 14, 32, 32),
                 },
-
-                // Extreme Code Flood
                 new MessageEntity
                 {
                     Id = "8c0f730d-6b36-4071-bac9-08a5db5a54bd",
@@ -141,8 +135,6 @@
                     Content = "Слава Партии!!",
                     Created = new DateTime(2021, 8, 1, 18, 45, 56),
                 },
-
-                // Extreme Code C++
                 new MessageEntity
                 {
                     Id = "33ac80b1-0d3e-46cd-8175-e6e02350296e",
@@ -175,8 +167,6 @@
                     Content = "Hello World",
                     Created = new DateTime(2021, 8, 1, 18, 43, 53),
                 },
-
-                // Extreme Code .NET
                 new MessageEntity
                 {
                     Id = "dd870cc5-0acd-4dfd-9f76-e60504a6df7f",
@@ -209,8 +199,6 @@
                     Content = "Hello World",
                     Created = new DateTime(2021, 8, 1, 18, 43, 53),
                 },
-
-                // Khachatur Khachatryan / razumovsky r
                 new MessageEntity
                 {
                     Id = "6d49b347-c544-4d57-8f06-cf1d6994cdd0",
@@ -227,8 +215,6 @@
                     Content = "Hello World",
                     Created = new DateTime(2021, 8, 1, 14, 46, 29),
                 },
-
-                // Мусяка Колбасяка / razumovsky r
                 new MessageEntity
                 {
                     Id = "e5626507-b84d-4850-914c-a2ac8ae8d2d1",
@@ -245,8 +231,6 @@
                     Content = "Hello World",
                     Created = new DateTime(2021, 8, 1, 14, 44, 59),
                 },
-
-                // Amelit / razumovsky r
                 new MessageEntity
                 {
                     Id = "d8792fca-23df-4ae1-b83a-8a9aa5cc827a",
@@ -263,8 +247,6 @@
                     Content = "Hello World",
                     Created = new DateTime(2021, 8, 1, 14, 31, 23),
                 },
-
-                // Khachatur Khachatryan / Мусяка Колбасяка
                 new MessageEntity
                 {
                     Id = "c1d5d83c-447f-4320-8894-d5266090a9f5",
@@ -281,8 +263,6 @@
                     Content = "Hello World",
                     Created = new DateTime(2021, 8, 1, 14, 31, 23),
                 },
-
-                // Petro / Szymon
                 new MessageEntity
                 {
                     Id = "c4635d82-0703-4fe6-8836-be849482ec89",

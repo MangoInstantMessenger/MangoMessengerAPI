@@ -11,7 +11,8 @@
 
     public class EmailSenderService : IEmailSenderService
     {
-        public async Task SendVerificationEmailAsync(UserEntity user,
+        public async Task SendVerificationEmailAsync(
+            UserEntity user,
             CancellationToken cancellationToken)
         {
             var senderEmail = EnvironmentConstants.EmailSenderAddress;

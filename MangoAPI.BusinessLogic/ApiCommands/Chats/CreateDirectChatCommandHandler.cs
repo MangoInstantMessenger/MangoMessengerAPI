@@ -21,7 +21,8 @@
             this.postgresDbContext = postgresDbContext;
         }
 
-        public async Task<CreateChatEntityResponse> Handle(CreateDirectChatCommand request,
+        public async Task<CreateChatEntityResponse> Handle(
+            CreateDirectChatCommand request,
             CancellationToken cancellationToken)
         {
             var partner = await postgresDbContext.Users

@@ -6,9 +6,17 @@
     public record UpdateUserInformationRequest
     {
         [JsonConstructor]
-        public UpdateUserInformationRequest(string firstName, string lastName,
-            DateTime? birthDay, string website, string address, string facebook,
-            string twitter, string instagram, string linkedIn, string profilePicture)
+        public UpdateUserInformationRequest(
+            string firstName,
+            string lastName,
+            DateTime? birthDay,
+            string website,
+            string address,
+            string facebook,
+            string twitter,
+            string instagram,
+            string linkedIn,
+            string profilePicture)
         {
             FirstName = firstName;
             LastName = lastName;
@@ -22,19 +30,16 @@
             ProfilePicture = profilePicture;
         }
 
-        public string FirstName { get; init; }
-        public string LastName { get; init; }
-        public DateTime? BirthDay { get; init; }
-
-        public string Website { get; init; }
-        public string Address { get; init; }
-
-        public string Facebook { get; init; }
-        public string Twitter { get; init; }
-        public string Instagram { get; init; }
-        public string LinkedIn { get; init; }
-
-        public string ProfilePicture { get; init; }
+        public string FirstName { get; }
+        public string LastName { get; }
+        public DateTime? BirthDay { get; }
+        public string Website { get; }
+        public string Address { get; }
+        public string Facebook { get; }
+        public string Twitter { get; }
+        public string Instagram { get; }
+        public string LinkedIn { get; }
+        public string ProfilePicture { get; }
     }
 
     public static class UpdateUserInformationRequestMapper

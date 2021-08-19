@@ -20,7 +20,8 @@
         public async Task<LogoutResponse> Handle(LogoutCommand request, CancellationToken cancellationToken)
         {
             var session = await postgresDbContext.Sessions
-                .FirstOrDefaultAsync(x => x.RefreshToken == request.RefreshToken,
+                .FirstOrDefaultAsync(
+                    x => x.RefreshToken == request.RefreshToken,
                     cancellationToken);
 
             if (session is null)
@@ -28,7 +29,8 @@
                 throw new BusinessException(ResponseMessageCodes.InvalidOrExpiredRefreshToken);
             }
 
-            var user = await postgresDbContext.Users.FirstOrDefaultAsync(x => x.Id == session.UserId,
+            var user = await postgresDbContext.Users.FirstOrDefaultAsync(
+                x => x.Id == session.UserId,
                 cancellationToken);
 
             if (user is null || session.UserId != user.Id)
