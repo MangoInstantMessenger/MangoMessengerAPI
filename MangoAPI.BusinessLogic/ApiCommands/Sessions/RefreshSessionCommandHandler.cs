@@ -1,33 +1,35 @@
-﻿using System;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
-using MangoAPI.Application.Interfaces;
-using MangoAPI.BusinessLogic.BusinessExceptions;
-using MangoAPI.DataAccess.Database;
-using MangoAPI.Domain.Constants;
-using MangoAPI.Domain.Entities;
-using MediatR;
-using Microsoft.EntityFrameworkCore;
-
-namespace MangoAPI.BusinessLogic.ApiCommands.Sessions
+﻿namespace MangoAPI.BusinessLogic.ApiCommands.Sessions
 {
+    using System;
+    using System.Linq;
+    using System.Threading;
+    using System.Threading.Tasks;
+    using MangoAPI.Application.Interfaces;
+    using MangoAPI.BusinessLogic.BusinessExceptions;
+    using MangoAPI.DataAccess.Database;
+    using MangoAPI.Domain.Constants;
+    using MangoAPI.Domain.Entities;
+    using MediatR;
+    using Microsoft.EntityFrameworkCore;
+
     public class RefreshSessionCommandHandler : IRequestHandler<RefreshSessionCommand, RefreshSessionResponse>
     {
-        private readonly IJwtGenerator _jwtGenerator;
-        private readonly MangoPostgresDbContext _postgresDbContext;
+        private readonly IJwtGenerator jwtGenerator;
+        private readonly MangoPostgresDbContext postgresDbContext;
 
         public RefreshSessionCommandHandler(MangoPostgresDbContext postgresDbContext, IJwtGenerator jwtGenerator)
         {
-            _postgresDbContext = postgresDbContext;
-            _jwtGenerator = jwtGenerator;
+            this.postgresDbContext = postgresDbContext;
+            this.jwtGenerator = jwtGenerator;
         }
 
-        public async Task<RefreshSessionResponse> Handle(RefreshSessionCommand request,
+        public async Task<RefreshSessionResponse> Handle(
+            RefreshSessionCommand request,
             CancellationToken cancellationToken)
         {
-            var session = await _postgresDbContext.Sessions
-                .FirstOrDefaultAsync(x => x.RefreshToken == request.RefreshToken,
+            var session = await postgresDbContext.Sessions
+                .FirstOrDefaultAsync(
+                    x => x.RefreshToken == request.RefreshToken,
                     cancellationToken);
 
             if (session is null || session.IsExpired)
@@ -35,10 +37,11 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Sessions
                 throw new BusinessException(ResponseMessageCodes.InvalidOrExpiredRefreshToken);
             }
 
-            var user = await _postgresDbContext.Users.FirstAsync(x => x.Id == session.UserId,
+            var user = await postgresDbContext.Users.FirstAsync(
+                x => x.Id == session.UserId,
                 cancellationToken);
 
-            var userSessions = _postgresDbContext.Sessions
+            var userSessions = postgresDbContext.Sessions
                 .Where(x => x.UserId == user.Id);
 
             var userSessionCount = await userSessions.CountAsync(cancellationToken);
@@ -46,10 +49,10 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Sessions
             switch (userSessionCount)
             {
                 case >= 5:
-                    _postgresDbContext.Sessions.RemoveRange(userSessions);
+                    postgresDbContext.Sessions.RemoveRange(userSessions);
                     break;
                 default:
-                    _postgresDbContext.Sessions.Remove(session);
+                    postgresDbContext.Sessions.Remove(session);
                     break;
             }
 
@@ -66,23 +69,23 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Sessions
                 RefreshToken = Guid.NewGuid().ToString(),
                 UserId = user.Id,
                 Expires = DateTime.UtcNow.AddDays(refreshLifetimeParsed),
-                Created = DateTime.UtcNow
+                Created = DateTime.UtcNow,
             };
-            
-            var roleIds = await _postgresDbContext.UserRoles
+
+            var roleIds = await postgresDbContext.UserRoles
                 .Where(x => x.UserId == user.Id)
                 .Select(x => x.RoleId)
                 .ToListAsync(cancellationToken);
 
-            var roles = await _postgresDbContext.Roles
+            var roles = await postgresDbContext.Roles
                 .Where(x => roleIds.Contains(x.Id))
                 .Select(x => x.Name)
                 .ToListAsync(cancellationToken);
 
-            var jwtToken = _jwtGenerator.GenerateJwtToken(user, roles);
+            var jwtToken = jwtGenerator.GenerateJwtToken(user, roles);
 
-            await _postgresDbContext.Sessions.AddAsync(newSession, cancellationToken);
-            await _postgresDbContext.SaveChangesAsync(cancellationToken);
+            await postgresDbContext.Sessions.AddAsync(newSession, cancellationToken);
+            await postgresDbContext.SaveChangesAsync(cancellationToken);
 
             return RefreshSessionResponse.FromSuccess(jwtToken, newSession.RefreshToken);
         }

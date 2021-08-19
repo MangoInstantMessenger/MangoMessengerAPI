@@ -1,9 +1,9 @@
-﻿using MangoAPI.Domain.Entities;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
-
-namespace MangoAPI.DataAccess.Database.Configurations
+﻿namespace MangoAPI.DataAccess.Database.Configurations
 {
+    using MangoAPI.Domain.Entities;
+    using Microsoft.EntityFrameworkCore;
+    using Microsoft.EntityFrameworkCore.Metadata.Builders;
+
     public class SessionEntityConfiguration : IEntityTypeConfiguration<SessionEntity>
     {
         public void Configure(EntityTypeBuilder<SessionEntity> builder)

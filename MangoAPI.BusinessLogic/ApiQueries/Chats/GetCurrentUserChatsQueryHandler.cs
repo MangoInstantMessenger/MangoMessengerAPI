@@ -1,36 +1,37 @@
-﻿using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
-using MangoAPI.BusinessLogic.BusinessExceptions;
-using MangoAPI.DataAccess.Database;
-using MangoAPI.Domain.Constants;
-using MediatR;
-using Microsoft.EntityFrameworkCore;
-
-namespace MangoAPI.BusinessLogic.ApiQueries.Chats
+﻿namespace MangoAPI.BusinessLogic.ApiQueries.Chats
 {
+    using System.Linq;
+    using System.Threading;
+    using System.Threading.Tasks;
+    using MangoAPI.BusinessLogic.BusinessExceptions;
+    using MangoAPI.DataAccess.Database;
+    using MangoAPI.Domain.Constants;
+    using MediatR;
+    using Microsoft.EntityFrameworkCore;
+
     public class
         GetCurrentUserChatsQueryHandler : IRequestHandler<GetCurrentUserChatsQuery, GetCurrentUserChatsResponse>
     {
-        private readonly MangoPostgresDbContext _postgresDbContext;
+        private readonly MangoPostgresDbContext postgresDbContext;
 
         public GetCurrentUserChatsQueryHandler(MangoPostgresDbContext postgresDbContext)
         {
-            _postgresDbContext = postgresDbContext;
+            this.postgresDbContext = postgresDbContext;
         }
 
-        public async Task<GetCurrentUserChatsResponse> Handle(GetCurrentUserChatsQuery request,
+        public async Task<GetCurrentUserChatsResponse> Handle(
+            GetCurrentUserChatsQuery request,
             CancellationToken cancellationToken)
         {
             var currentUser =
-                await _postgresDbContext.Users.FirstOrDefaultAsync(x => x.Id == request.UserId, cancellationToken);
+                await postgresDbContext.Users.FirstOrDefaultAsync(x => x.Id == request.UserId, cancellationToken);
 
             if (currentUser == null)
             {
                 throw new BusinessException(ResponseMessageCodes.UserNotFound);
             }
 
-            var chats = await _postgresDbContext.UserChats
+            var chats = await postgresDbContext.UserChats
                 .AsNoTracking()
                 .Include(x => x.Chat)
                 .ThenInclude(x => x.Messages)

@@ -1,7 +1,7 @@
-﻿using Newtonsoft.Json;
-
-namespace MangoAPI.BusinessLogic.ApiCommands.Chats
+﻿namespace MangoAPI.BusinessLogic.ApiCommands.Chats
 {
+    using Newtonsoft.Json;
+
     public record SearchChatsRequest
     {
         [JsonConstructor]
@@ -17,10 +17,10 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Chats
     {
         public static SearchChatsCommand ToCommand(this SearchChatsRequest request, string userId)
         {
-            return new()
+            return new ()
             {
                 DisplayName = request.DisplayName,
-                UserId = userId
+                UserId = userId,
             };
         }
     }

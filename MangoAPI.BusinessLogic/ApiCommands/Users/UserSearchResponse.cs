@@ -1,12 +1,12 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using MangoAPI.BusinessLogic.Models;
-using MangoAPI.BusinessLogic.Responses;
-using MangoAPI.Domain.Constants;
-using MangoAPI.Domain.Entities;
-
-namespace MangoAPI.BusinessLogic.ApiCommands.Users
+﻿namespace MangoAPI.BusinessLogic.ApiCommands.Users
 {
+    using System.Collections.Generic;
+    using System.Linq;
+    using MangoAPI.BusinessLogic.Models;
+    using MangoAPI.BusinessLogic.Responses;
+    using MangoAPI.Domain.Constants;
+    using MangoAPI.Domain.Entities;
+
     public record UserSearchResponse : ResponseBase<UserSearchResponse>
     {
         // ReSharper disable once UnusedAutoPropertyAccessor.Global
@@ -15,7 +15,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
 
         public static UserSearchResponse FromSuccess(IEnumerable<UserEntity> users)
         {
-            return new()
+            return new ()
             {
                 Message = ResponseMessageCodes.Success,
                 Success = true,
@@ -25,8 +25,8 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
                         Username = x.UserName,
                         DisplayName = x.DisplayName,
                         Bio = x.Bio,
-                        Image = x.Image
-                    }).ToList()
+                        Image = x.Image,
+                    }).ToList(),
             };
         }
     }

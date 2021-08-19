@@ -1,12 +1,12 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using MangoAPI.BusinessLogic.Models;
-using MangoAPI.BusinessLogic.Responses;
-using MangoAPI.Domain.Constants;
-using MangoAPI.Domain.Entities;
-
-namespace MangoAPI.BusinessLogic.ApiCommands.Chats
+﻿namespace MangoAPI.BusinessLogic.ApiCommands.Chats
 {
+    using System.Collections.Generic;
+    using System.Linq;
+    using MangoAPI.BusinessLogic.Models;
+    using MangoAPI.BusinessLogic.Responses;
+    using MangoAPI.Domain.Constants;
+    using MangoAPI.Domain.Entities;
+
     public record SearchChatsResponse : ChatResponseBase<SearchChatsResponse>
     {
         // ReSharper disable once UnusedAutoPropertyAccessor.Global
@@ -15,7 +15,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Chats
 
         public static SearchChatsResponse FromSuccess(IEnumerable<UserChatEntity> chats, string userId)
         {
-            return new()
+            return new ()
             {
                 Message = ResponseMessageCodes.Success,
                 Success = true,
@@ -35,8 +35,8 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Chats
                             ? userChatEntity.Chat.Messages.Last().Created.ToShortTimeString()
                             : null,
                         MembersCount = userChatEntity.Chat.MembersCount,
-                        IsMember = userChatEntity.UserId == userId
-                    }).ToList()
+                        IsMember = userChatEntity.UserId == userId,
+                    }).ToList(),
             };
         }
     }

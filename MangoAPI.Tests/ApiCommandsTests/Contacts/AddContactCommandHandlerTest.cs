@@ -1,14 +1,14 @@
-﻿using System;
-using System.Threading;
-using System.Threading.Tasks;
-using FluentAssertions;
-using MangoAPI.BusinessLogic.ApiCommands.Contacts;
-using MangoAPI.BusinessLogic.BusinessExceptions;
-using MangoAPI.Domain.Constants;
-using NUnit.Framework;
-
-namespace MangoAPI.Tests.ApiCommandsTests.Contacts
+﻿namespace MangoAPI.Tests.ApiCommandsTests.Contacts
 {
+    using System;
+    using System.Threading;
+    using System.Threading.Tasks;
+    using FluentAssertions;
+    using MangoAPI.BusinessLogic.ApiCommands.Contacts;
+    using MangoAPI.BusinessLogic.BusinessExceptions;
+    using MangoAPI.Domain.Constants;
+    using NUnit.Framework;
+
     [TestFixture]
     public class AddContactCommandHandlerTest
     {
@@ -20,7 +20,7 @@ namespace MangoAPI.Tests.ApiCommandsTests.Contacts
             var command = new AddContactCommand
             {
                 UserId = "1",
-                ContactId = "3"
+                ContactId = "3",
             };
 
             var result = await handler.Handle(command, CancellationToken.None);
@@ -36,7 +36,7 @@ namespace MangoAPI.Tests.ApiCommandsTests.Contacts
             var command = new AddContactCommand
             {
                 UserId = "123",
-                ContactId = "212"
+                ContactId = "212",
             };
 
             Func<Task> result = async () => await handler.Handle(command, CancellationToken.None);
@@ -53,7 +53,7 @@ namespace MangoAPI.Tests.ApiCommandsTests.Contacts
             var command = new AddContactCommand
             {
                 UserId = "1",
-                ContactId = "2"
+                ContactId = "2",
             };
 
             Func<Task> result = async () => await handler.Handle(command, CancellationToken.None);

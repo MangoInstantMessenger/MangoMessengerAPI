@@ -1,28 +1,28 @@
-﻿using System;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
-using MangoAPI.BusinessLogic.BusinessExceptions;
-using MangoAPI.DataAccess.Database;
-using MangoAPI.Domain.Constants;
-using MangoAPI.Domain.Entities;
-using MediatR;
-using Microsoft.EntityFrameworkCore;
-
-namespace MangoAPI.BusinessLogic.ApiCommands.Contacts
+﻿namespace MangoAPI.BusinessLogic.ApiCommands.Contacts
 {
+    using System;
+    using System.Linq;
+    using System.Threading;
+    using System.Threading.Tasks;
+    using MangoAPI.BusinessLogic.BusinessExceptions;
+    using MangoAPI.DataAccess.Database;
+    using MangoAPI.Domain.Constants;
+    using MangoAPI.Domain.Entities;
+    using MediatR;
+    using Microsoft.EntityFrameworkCore;
+
     public class AddContactCommandHandler : IRequestHandler<AddContactCommand, AddContactResponse>
     {
-        private readonly MangoPostgresDbContext _postgresDbContext;
+        private readonly MangoPostgresDbContext postgresDbContext;
 
         public AddContactCommandHandler(MangoPostgresDbContext postgresDbContext)
         {
-            _postgresDbContext = postgresDbContext;
+            this.postgresDbContext = postgresDbContext;
         }
 
         public async Task<AddContactResponse> Handle(AddContactCommand request, CancellationToken cancellationToken)
         {
-            var contact = await _postgresDbContext.Users
+            var contact = await postgresDbContext.Users
                 .FirstOrDefaultAsync(x => x.Id == request.UserId, cancellationToken);
 
             if (contact is null)
@@ -34,10 +34,10 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Contacts
             {
                 Id = Guid.NewGuid().ToString(),
                 ContactId = request.ContactId,
-                UserId = request.UserId
+                UserId = request.UserId,
             };
 
-            var userContactExist = await _postgresDbContext.UserContacts
+            var userContactExist = await postgresDbContext.UserContacts
                 .Where(x => x.UserId == request.UserId)
                 .AnyAsync(x => x.ContactId == request.ContactId, cancellationToken);
 
@@ -46,8 +46,8 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Contacts
                 throw new BusinessException(ResponseMessageCodes.ContactAlreadyExist);
             }
 
-            await _postgresDbContext.UserContacts.AddAsync(contactEntity, cancellationToken);
-            await _postgresDbContext.SaveChangesAsync(cancellationToken);
+            await postgresDbContext.UserContacts.AddAsync(contactEntity, cancellationToken);
+            await postgresDbContext.SaveChangesAsync(cancellationToken);
 
             return AddContactResponse.SuccessResponse;
         }

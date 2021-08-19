@@ -1,14 +1,14 @@
-﻿using System;
-using System.Threading;
-using System.Threading.Tasks;
-using FluentAssertions;
-using MangoAPI.BusinessLogic.ApiCommands.Users;
-using MangoAPI.BusinessLogic.BusinessExceptions;
-using MangoAPI.Domain.Constants;
-using NUnit.Framework;
-
-namespace MangoAPI.Tests.ApiCommandsTests.Users
+﻿namespace MangoAPI.Tests.ApiCommandsTests.Users
 {
+    using System;
+    using System.Threading;
+    using System.Threading.Tasks;
+    using FluentAssertions;
+    using MangoAPI.BusinessLogic.ApiCommands.Users;
+    using MangoAPI.BusinessLogic.BusinessExceptions;
+    using MangoAPI.Domain.Constants;
+    using NUnit.Framework;
+
     [TestFixture]
     public class UpdateUserInformationCommandHandlerTest
     {
@@ -27,7 +27,7 @@ namespace MangoAPI.Tests.ApiCommandsTests.Users
                 Facebook = "szymon.murawski",
                 Instagram = "szymon.murawski",
                 LinkedIn = "szymon.murawski",
-                ProfilePicture = "image.jpg"
+                ProfilePicture = "image.jpg",
             };
 
             var result = await handler.Handle(command, CancellationToken.None);
@@ -50,7 +50,7 @@ namespace MangoAPI.Tests.ApiCommandsTests.Users
                 Facebook = "Facebook",
                 Instagram = "Instagram",
                 LinkedIn = "LinkedIn",
-                ProfilePicture = "Profile Picture"
+                ProfilePicture = "Profile Picture",
             };
 
             Func<Task> result = async () => await handler.Handle(command, CancellationToken.None);

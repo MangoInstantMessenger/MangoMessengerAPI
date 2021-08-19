@@ -1,7 +1,7 @@
-﻿using System.Text.Json;
-
-namespace MangoAPI.BusinessLogic.Responses
+﻿namespace MangoAPI.BusinessLogic.Responses
 {
+    using System.Text.Json;
+
     public record ErrorResponse
     {
         // ReSharper disable once UnusedAutoPropertyAccessor.Global

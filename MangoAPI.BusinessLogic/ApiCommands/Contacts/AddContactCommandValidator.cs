@@ -1,8 +1,8 @@
-﻿using System;
-using FluentValidation;
-
-namespace MangoAPI.BusinessLogic.ApiCommands.Contacts
+﻿namespace MangoAPI.BusinessLogic.ApiCommands.Contacts
 {
+    using System;
+    using FluentValidation;
+
     public class AddContactCommandValidator : AbstractValidator<AddContactCommand>
     {
         public AddContactCommandValidator()

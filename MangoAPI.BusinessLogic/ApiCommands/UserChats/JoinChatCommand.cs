@@ -1,7 +1,7 @@
-﻿using MediatR;
-
-namespace MangoAPI.BusinessLogic.ApiCommands.UserChats
+﻿namespace MangoAPI.BusinessLogic.ApiCommands.UserChats
 {
+    using MediatR;
+
     public record JoinChatCommand : IRequest<JoinChatResponse>
     {
         public string ChatId { get; init; }

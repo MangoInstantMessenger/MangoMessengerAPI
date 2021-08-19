@@ -1,8 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace MangoAPI.Environment
+﻿namespace MangoAPI.Environment
 {
+    using System;
+    using System.Collections.Generic;
+
     public static class Program
     {
         private static void Main()
@@ -16,17 +16,20 @@ namespace MangoAPI.Environment
         {
             var dictionary = new Dictionary<string, string>
             {
-                {"MANGO_ISSUER", "https://localhost:5001"},
-                {"MANGO_AUDIENCE", "https://localhost:5000"},
-                {"MANGO_TOKEN_KEY", Guid.NewGuid().ToString()},
-                {"JWT_LIFETIME", "5"},
-                {"REFRESH_TOKEN_LIFETIME", "7"},
-                {"FRONTEND_ADDRESS", "http://localhost:4200"}
+                { "MANGO_ISSUER", "https://localhost:5001" },
+                { "MANGO_AUDIENCE", "https://localhost:5000" },
+                { "MANGO_TOKEN_KEY", Guid.NewGuid().ToString() },
+                { "JWT_LIFETIME", "5" },
+                { "REFRESH_TOKEN_LIFETIME", "7" },
+                { "FRONTEND_ADDRESS", "http://localhost:4200" },
             };
 
             foreach (var item in dictionary)
             {
-                if (System.Environment.GetEnvironmentVariable(item.Key) != null) continue;
+                if (System.Environment.GetEnvironmentVariable(item.Key) != null)
+                {
+                    continue;
+                }
 
                 System.Environment.SetEnvironmentVariable(item.Key, item.Value, EnvironmentVariableTarget.User);
             }

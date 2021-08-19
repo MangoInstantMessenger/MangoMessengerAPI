@@ -1,13 +1,17 @@
-﻿using System;
-
-namespace MangoAPI.Domain.Entities
+﻿namespace MangoAPI.Domain.Entities
 {
+    using System;
+
     public sealed class SessionEntity
     {
         public string Id { get; set; }
+
         public string UserId { get; set; }
+
         public DateTime Expires { get; set; }
+
         public string RefreshToken { get; set; }
+
         public DateTime Created { get; set; }
 
         public bool IsExpired => DateTime.UtcNow >= Expires;

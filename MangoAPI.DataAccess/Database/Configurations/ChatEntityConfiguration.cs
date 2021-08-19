@@ -1,12 +1,12 @@
-﻿using System;
-using MangoAPI.Domain.Constants;
-using MangoAPI.Domain.Entities;
-using MangoAPI.Domain.Enums;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
-
-namespace MangoAPI.DataAccess.Database.Configurations
+﻿namespace MangoAPI.DataAccess.Database.Configurations
 {
+    using System;
+    using MangoAPI.Domain.Constants;
+    using MangoAPI.Domain.Entities;
+    using MangoAPI.Domain.Enums;
+    using Microsoft.EntityFrameworkCore;
+    using Microsoft.EntityFrameworkCore.Metadata.Builders;
+
     public class ChatEntityConfiguration : IEntityTypeConfiguration<ChatEntity>
     {
         public void Configure(EntityTypeBuilder<ChatEntity> builder)
@@ -26,7 +26,7 @@ namespace MangoAPI.DataAccess.Database.Configurations
                     Id = SeedDataConstants.WsbId,
                     Title = "WSB",
                     ChatType = ChatType.PublicChannel,
-                    MembersCount = 5
+                    MembersCount = 5,
                 },
                 new ChatEntity
                 {
@@ -34,7 +34,7 @@ namespace MangoAPI.DataAccess.Database.Configurations
                     Title = "Extreme Code Main",
                     ChatType = ChatType.PublicChannel,
                     Created = new DateTime(2020, 2, 4),
-                    MembersCount = 4
+                    MembersCount = 4,
                 },
                 new ChatEntity
                 {
@@ -42,7 +42,7 @@ namespace MangoAPI.DataAccess.Database.Configurations
                     Title = "Extreme Code Flood",
                     ChatType = ChatType.PublicChannel,
                     Created = new DateTime(2020, 4, 23),
-                    MembersCount = 4
+                    MembersCount = 4,
                 },
                 new ChatEntity
                 {
@@ -50,7 +50,7 @@ namespace MangoAPI.DataAccess.Database.Configurations
                     Title = "Extreme Code C++",
                     ChatType = ChatType.PublicChannel,
                     Created = new DateTime(2020, 5, 12),
-                    MembersCount = 4
+                    MembersCount = 4,
                 },
                 new ChatEntity
                 {
@@ -58,44 +58,43 @@ namespace MangoAPI.DataAccess.Database.Configurations
                     Title = "Extreme Code .NET",
                     ChatType = ChatType.PublicChannel,
                     Created = new DateTime(2020, 5, 12),
-                    MembersCount = 4
+                    MembersCount = 4,
                 },
                 new ChatEntity
                 {
                     Id = SeedDataConstants.DirectKhachaturRazumovsky,
                     Title = "Khachatur Khachatryan / razumovsky r",
                     ChatType = ChatType.DirectChat,
-                    MembersCount = 2
+                    MembersCount = 2,
                 },
                 new ChatEntity
                 {
                     Id = SeedDataConstants.DirectKolbasatorRazumovsky,
                     Title = "Мусяка Колбасяка / razumovsky r",
                     ChatType = ChatType.DirectChat,
-                    MembersCount = 2
+                    MembersCount = 2,
                 },
                 new ChatEntity
                 {
                     Id = SeedDataConstants.DirectAmelitRazumovsky,
                     Title = "Amelit / razumovsky r",
                     ChatType = ChatType.DirectChat,
-                    MembersCount = 2
+                    MembersCount = 2,
                 },
                 new ChatEntity
                 {
                     Id = SeedDataConstants.DirectKhachaturKolbasator,
                     Title = "Khachatur Khachatryan / Мусяка Колбасяка",
                     ChatType = ChatType.DirectChat,
-                    MembersCount = 2
+                    MembersCount = 2,
                 },
                 new ChatEntity
                 {
                     Id = SeedDataConstants.DirectPetroSzymon,
                     Title = "Petro Kolosov / Szymon Murawski",
                     ChatType = ChatType.DirectChat,
-                    MembersCount = 2
-                }
-            );
+                    MembersCount = 2,
+                });
         }
     }
 }

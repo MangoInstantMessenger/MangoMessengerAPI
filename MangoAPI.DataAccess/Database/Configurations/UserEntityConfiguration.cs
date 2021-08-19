@@ -1,12 +1,12 @@
-﻿using System;
-using MangoAPI.Application.Services;
-using MangoAPI.Domain.Constants;
-using MangoAPI.Domain.Entities;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
-
-namespace MangoAPI.DataAccess.Database.Configurations
+﻿namespace MangoAPI.DataAccess.Database.Configurations
 {
+    using System;
+    using MangoAPI.Application.Services;
+    using MangoAPI.Domain.Constants;
+    using MangoAPI.Domain.Entities;
+    using Microsoft.EntityFrameworkCore;
+    using Microsoft.EntityFrameworkCore.Metadata.Builders;
+
     public class UserEntityConfiguration : IEntityTypeConfiguration<UserEntity>
     {
         public void Configure(EntityTypeBuilder<UserEntity> builder)
@@ -33,7 +33,7 @@ namespace MangoAPI.DataAccess.Database.Configurations
                 Email = "xachulxx@gmail.com",
                 NormalizedEmail = "XACHULXX@GMAIL.COM",
                 EmailConfirmed = true,
-                PhoneNumberConfirmed = true
+                PhoneNumberConfirmed = true,
             };
 
             var user2 = new UserEntity
@@ -46,7 +46,7 @@ namespace MangoAPI.DataAccess.Database.Configurations
                 Email = "kolosovp95@gmail.com",
                 NormalizedEmail = "KOLOSOVP94@GMAIL.COM",
                 EmailConfirmed = true,
-                PhoneNumberConfirmed = true
+                PhoneNumberConfirmed = true,
             };
 
             var user3 = new UserEntity
@@ -59,7 +59,7 @@ namespace MangoAPI.DataAccess.Database.Configurations
                 Email = "kolbasator@gmail.com",
                 NormalizedEmail = "KOLBASATOR@GMAIL.COM",
                 EmailConfirmed = true,
-                PhoneNumberConfirmed = true
+                PhoneNumberConfirmed = true,
             };
 
             var user4 = new UserEntity
@@ -72,7 +72,7 @@ namespace MangoAPI.DataAccess.Database.Configurations
                 Email = "amelit@gmail.com",
                 NormalizedEmail = "AMELIT@GMAIL.COM",
                 EmailConfirmed = true,
-                PhoneNumberConfirmed = true
+                PhoneNumberConfirmed = true,
             };
 
             var user5 = new UserEntity
@@ -84,7 +84,7 @@ namespace MangoAPI.DataAccess.Database.Configurations
                 Email = "petro.kolosov@wp.pl",
                 NormalizedEmail = "PETRO.KOLOSOV@WP.PL",
                 EmailConfirmed = true,
-                PhoneNumberConfirmed = true
+                PhoneNumberConfirmed = true,
             };
 
             var user6 = new UserEntity
@@ -96,7 +96,7 @@ namespace MangoAPI.DataAccess.Database.Configurations
                 Email = "szymon.murawski@wp.pl",
                 NormalizedEmail = "SZYMON.MURAWSKI@WP.PL",
                 EmailConfirmed = true,
-                PhoneNumberConfirmed = true
+                PhoneNumberConfirmed = true,
             };
 
             var user7 = new UserEntity
@@ -108,9 +108,9 @@ namespace MangoAPI.DataAccess.Database.Configurations
                 Email = "illia.zubachov@wp.pl",
                 NormalizedEmail = "ILLIA.ZUBACHOW@WP.PL",
                 EmailConfirmed = true,
-                PhoneNumberConfirmed = true
+                PhoneNumberConfirmed = true,
             };
-            
+
             var user8 = new UserEntity
             {
                 PhoneNumber = "+48 278 187 781",
@@ -120,10 +120,10 @@ namespace MangoAPI.DataAccess.Database.Configurations
                 Email = "arslanbek.temirbekov@wp.pl",
                 NormalizedEmail = "ARSLANBEK.TEMIRBEKOV@WP.PL",
                 EmailConfirmed = true,
-                PhoneNumberConfirmed = true
+                PhoneNumberConfirmed = true,
             };
 
-            var user9  = new UserEntity
+            var user9 = new UserEntity
             {
                 PhoneNumber = "+48 175 481 653",
                 DisplayName = "Serhii Holishevskii",
@@ -132,9 +132,9 @@ namespace MangoAPI.DataAccess.Database.Configurations
                 Email = "serhii.holishevskii@wp.pl",
                 NormalizedEmail = "SERHII.HOLISHEVSKII@WP.PL",
                 EmailConfirmed = true,
-                PhoneNumberConfirmed = true
+                PhoneNumberConfirmed = true,
             };
-            
+
             var passwordHasher = new PasswordHashService();
 
             var password = EnvironmentConstants.SeedPassword;
@@ -153,7 +153,6 @@ namespace MangoAPI.DataAccess.Database.Configurations
             passwordHasher.HashPassword(user7, EnvironmentConstants.SeedPassword);
             passwordHasher.HashPassword(user8, EnvironmentConstants.SeedPassword);
             passwordHasher.HashPassword(user9, EnvironmentConstants.SeedPassword);
-
 
             builder.HasData(user1, user2, user3, user4, user5, user6, user7, user8, user9);
         }

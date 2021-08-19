@@ -1,8 +1,8 @@
-﻿using MangoAPI.BusinessLogic.Responses;
-using MangoAPI.Domain.Constants;
-
-namespace MangoAPI.BusinessLogic.ApiCommands.Users
+﻿namespace MangoAPI.BusinessLogic.ApiCommands.Users
 {
+    using MangoAPI.BusinessLogic.Responses;
+    using MangoAPI.Domain.Constants;
+
     public record RegisterResponse : AuthResponseBase<RegisterResponse>
     {
         // ReSharper disable once UnusedAutoPropertyAccessor.Global
@@ -15,12 +15,12 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
 
         public static RegisterResponse FromSuccess(string accessToken, string refreshToken)
         {
-            return new()
+            return new ()
             {
                 AccessToken = accessToken,
                 RefreshToken = refreshToken,
                 Success = true,
-                Message = ResponseMessageCodes.Success
+                Message = ResponseMessageCodes.Success,
             };
         }
     }

@@ -2,7 +2,14 @@
 {
     public enum VerificationMethod
     {
+        /// <summary>
+        /// Verification By Phone.
+        /// </summary>
         Phone = 1,
-        Email = 2
+
+        /// <summary>
+        /// Verification By Email.
+        /// </summary>
+        Email = 2,
     }
 }

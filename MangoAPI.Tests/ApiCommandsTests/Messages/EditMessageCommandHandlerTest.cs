@@ -1,14 +1,14 @@
-﻿using System;
-using System.Threading;
-using System.Threading.Tasks;
-using FluentAssertions;
-using MangoAPI.BusinessLogic.ApiCommands.Messages;
-using MangoAPI.BusinessLogic.BusinessExceptions;
-using MangoAPI.Domain.Constants;
-using NUnit.Framework;
-
-namespace MangoAPI.Tests.ApiCommandsTests.Messages
+﻿namespace MangoAPI.Tests.ApiCommandsTests.Messages
 {
+    using System;
+    using System.Threading;
+    using System.Threading.Tasks;
+    using FluentAssertions;
+    using MangoAPI.BusinessLogic.ApiCommands.Messages;
+    using MangoAPI.BusinessLogic.BusinessExceptions;
+    using MangoAPI.Domain.Constants;
+    using NUnit.Framework;
+
     [TestFixture]
     public class EditMessageCommandHandlerTest
     {
@@ -21,7 +21,7 @@ namespace MangoAPI.Tests.ApiCommandsTests.Messages
             {
                 UserId = "1",
                 MessageId = "3",
-                ModifiedText = "hello c#"
+                ModifiedText = "hello c#",
             };
 
             var result = await handler.Handle(command, CancellationToken.None);
@@ -38,7 +38,7 @@ namespace MangoAPI.Tests.ApiCommandsTests.Messages
             {
                 UserId = "1",
                 MessageId = "152",
-                ModifiedText = "hello c#"
+                ModifiedText = "hello c#",
             };
 
             Func<Task> result = async () => await handler.Handle(command, CancellationToken.None);
@@ -55,7 +55,7 @@ namespace MangoAPI.Tests.ApiCommandsTests.Messages
             var command = new EditMessageCommand
             {
                 MessageId = "152",
-                ModifiedText = "hello c#"
+                ModifiedText = "hello c#",
             };
 
             Func<Task> result = async () => await handler.Handle(command, CancellationToken.None);

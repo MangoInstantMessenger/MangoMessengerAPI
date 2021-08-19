@@ -1,10 +1,10 @@
-﻿using MangoAPI.BusinessLogic.Models;
-using MangoAPI.BusinessLogic.Responses;
-using MangoAPI.Domain.Constants;
-using MangoAPI.Domain.Entities;
-
-namespace MangoAPI.BusinessLogic.ApiQueries.Users
+﻿namespace MangoAPI.BusinessLogic.ApiQueries.Users
 {
+    using MangoAPI.BusinessLogic.Models;
+    using MangoAPI.BusinessLogic.Responses;
+    using MangoAPI.Domain.Constants;
+    using MangoAPI.Domain.Entities;
+
     public record GetUserResponse : ResponseBase<GetUserResponse>
     {
         // ReSharper disable once UnusedAutoPropertyAccessor.Global
@@ -13,7 +13,7 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Users
 
         public static GetUserResponse FromSuccess(UserEntity user)
         {
-            return new()
+            return new ()
             {
                 Message = ResponseMessageCodes.Success,
                 Success = true,
@@ -22,8 +22,8 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Users
                     Bio = user.Bio,
                     DisplayName = user.DisplayName,
                     Image = user.Image,
-                    Username = user.UserName
-                }
+                    Username = user.UserName,
+                },
             };
         }
     }

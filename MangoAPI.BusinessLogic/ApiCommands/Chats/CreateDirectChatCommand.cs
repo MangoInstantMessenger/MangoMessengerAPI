@@ -1,7 +1,7 @@
-﻿using MediatR;
-
-namespace MangoAPI.BusinessLogic.ApiCommands.Chats
+﻿namespace MangoAPI.BusinessLogic.ApiCommands.Chats
 {
+    using MediatR;
+
     public record CreateDirectChatCommand : IRequest<CreateChatEntityResponse>
     {
         public string PartnerId { get; init; }

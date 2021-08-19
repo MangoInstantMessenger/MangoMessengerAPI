@@ -1,7 +1,7 @@
-﻿using MediatR;
-
-namespace MangoAPI.BusinessLogic.ApiQueries.Messages
+﻿namespace MangoAPI.BusinessLogic.ApiQueries.Messages
 {
+    using MediatR;
+
     public record GetMessagesQuery : IRequest<GetMessagesResponse>
     {
         public string ChatId { get; init; }

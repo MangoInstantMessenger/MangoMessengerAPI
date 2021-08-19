@@ -1,14 +1,14 @@
-﻿using System;
-using System.Threading;
-using System.Threading.Tasks;
-using FluentAssertions;
-using MangoAPI.BusinessLogic.ApiCommands.Users;
-using MangoAPI.BusinessLogic.BusinessExceptions;
-using MangoAPI.Domain.Constants;
-using NUnit.Framework;
-
-namespace MangoAPI.Tests.ApiCommandsTests.Users
+﻿namespace MangoAPI.Tests.ApiCommandsTests.Users
 {
+    using System;
+    using System.Threading;
+    using System.Threading.Tasks;
+    using FluentAssertions;
+    using MangoAPI.BusinessLogic.ApiCommands.Users;
+    using MangoAPI.BusinessLogic.BusinessExceptions;
+    using MangoAPI.Domain.Constants;
+    using NUnit.Framework;
+
     [TestFixture]
     public class VerifyPhoneCommandHandlerTest
     {
@@ -20,14 +20,14 @@ namespace MangoAPI.Tests.ApiCommandsTests.Users
             var command = new VerifyPhoneCommand
             {
                 UserId = "2",
-                ConfirmationCode = 524675
+                ConfirmationCode = 524675,
             };
 
             var result = await handler.Handle(command, CancellationToken.None);
 
             result.Success.Should().BeTrue();
         }
-        
+
         [Test]
         public async Task VerifyPhoneCommandHandlerTest_ShouldThrowUserNotFound()
         {
@@ -36,7 +36,7 @@ namespace MangoAPI.Tests.ApiCommandsTests.Users
             var command = new VerifyPhoneCommand
             {
                 UserId = "24",
-                ConfirmationCode = 524675
+                ConfirmationCode = 524675,
             };
 
             Func<Task> result = async () => await handler.Handle(command, CancellationToken.None);
@@ -44,7 +44,7 @@ namespace MangoAPI.Tests.ApiCommandsTests.Users
             await result.Should().ThrowAsync<BusinessException>()
                 .WithMessage(ResponseMessageCodes.UserNotFound);
         }
-        
+
         [Test]
         public async Task VerifyPhoneCommandHandlerTest_ShouldThrowPhoneAlreadyVerified()
         {
@@ -53,7 +53,7 @@ namespace MangoAPI.Tests.ApiCommandsTests.Users
             var command = new VerifyPhoneCommand
             {
                 UserId = "1",
-                ConfirmationCode = 524675
+                ConfirmationCode = 524675,
             };
 
             Func<Task> result = async () => await handler.Handle(command, CancellationToken.None);
@@ -61,7 +61,7 @@ namespace MangoAPI.Tests.ApiCommandsTests.Users
             await result.Should().ThrowAsync<BusinessException>()
                 .WithMessage(ResponseMessageCodes.PhoneAlreadyVerified);
         }
-        
+
         [Test]
         public async Task VerifyPhoneCommandHandlerTest_ShouldThrowInvalidPhoneCode()
         {
@@ -70,7 +70,7 @@ namespace MangoAPI.Tests.ApiCommandsTests.Users
             var command = new VerifyPhoneCommand
             {
                 UserId = "3",
-                ConfirmationCode = 543178
+                ConfirmationCode = 543178,
             };
 
             Func<Task> result = async () => await handler.Handle(command, CancellationToken.None);

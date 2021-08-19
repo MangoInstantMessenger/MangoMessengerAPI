@@ -1,12 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using MangoAPI.DataAccess.Database;
-using MangoAPI.Domain.Entities;
-using MangoAPI.Domain.Enums;
-using Microsoft.EntityFrameworkCore;
-
-namespace MangoAPI.Tests
+﻿namespace MangoAPI.Tests
 {
+    using System;
+    using System.Collections.Generic;
+    using MangoAPI.DataAccess.Database;
+    using MangoAPI.Domain.Entities;
+    using MangoAPI.Domain.Enums;
+    using Microsoft.EntityFrameworkCore;
+
     public class DbContextFixture : IDisposable
     {
         public DbContextFixture()
@@ -46,13 +46,13 @@ namespace MangoAPI.Tests
             PostgresDbContext.UserInformation.AddRange(SeedData.UserInfo);
             PostgresDbContext.SaveChanges();
         }
-        
+
         private void SeedUserSessions()
         {
             PostgresDbContext.Sessions.AddRange(SeedData.UserSessions);
             PostgresDbContext.SaveChanges();
         }
-        
+
         private void SeedChats()
         {
             PostgresDbContext.Chats.AddRange(SeedData.Chats);
@@ -65,7 +65,6 @@ namespace MangoAPI.Tests
             PostgresDbContext.SaveChanges();
         }
 
-        
         private void SeedMessages()
         {
             PostgresDbContext.Messages.AddRange(SeedData.Messages);
@@ -81,7 +80,7 @@ namespace MangoAPI.Tests
 
     internal static class SeedData
     {
-        public static List<UserEntity> Users => new()
+        public static List<UserEntity> Users => new ()
         {
             new UserEntity
             {
@@ -90,14 +89,14 @@ namespace MangoAPI.Tests
                 Email = "kolosovp94@gmail.com",
                 NormalizedEmail = "KOLOSOVP94@GMAIL.COM",
                 PhoneNumber = "+1 987 65 43 21",
-                PhoneNumberConfirmed = true
+                PhoneNumberConfirmed = true,
             },
             new UserEntity
             {
                 Id = "2",
                 DisplayName = "Szymon",
                 PhoneNumber = "+1 234 45 67",
-                ConfirmationCode = 524675
+                ConfirmationCode = 524675,
             },
             new UserEntity
             {
@@ -107,11 +106,11 @@ namespace MangoAPI.Tests
                 NormalizedEmail = "KOLOSOVP95@GMAIL.COM",
                 EmailConfirmed = true,
                 PhoneNumber = "+1 234 45 67",
-                ConfirmationCode = 154783
-            }
+                ConfirmationCode = 154783,
+            },
         };
 
-        public static List<UserInformationEntity> UserInfo => new()
+        public static List<UserInformationEntity> UserInfo => new ()
         {
             new UserInformationEntity
             {
@@ -124,7 +123,7 @@ namespace MangoAPI.Tests
                 Facebook = "szymon.murawski",
                 Instagram = "szymon.murawski",
                 LinkedIn = "szymon.murawski",
-                ProfilePicture = "image.png"
+                ProfilePicture = "image.png",
             },
             new UserInformationEntity
             {
@@ -137,11 +136,11 @@ namespace MangoAPI.Tests
                 Facebook = "petro.kolosov",
                 Instagram = "petro.kolosov",
                 LinkedIn = "petro.kolosov",
-                ProfilePicture = "petro.png"
-            }
+                ProfilePicture = "petro.png",
+            },
         };
 
-        public static List<SessionEntity> UserSessions => new()
+        public static List<SessionEntity> UserSessions => new ()
         {
             new SessionEntity
             {
@@ -149,7 +148,7 @@ namespace MangoAPI.Tests
                 UserId = "1",
                 RefreshToken = "69dbef09-de5a-4da7-9d67-abeba1510118",
                 Created = DateTime.UtcNow,
-                Expires = DateTime.UtcNow.AddDays(3)
+                Expires = DateTime.UtcNow.AddDays(3),
             },
             new SessionEntity
             {
@@ -157,112 +156,112 @@ namespace MangoAPI.Tests
                 UserId = "24",
                 RefreshToken = "219d9df3-9bc0-4679-baaa-c18b1c7524e8",
                 Created = DateTime.UtcNow,
-                Expires = DateTime.UtcNow.AddDays(3)
-            }
+                Expires = DateTime.UtcNow.AddDays(3),
+            },
         };
 
-        public static List<ChatEntity> Chats => new()
+        public static List<ChatEntity> Chats => new ()
         {
             new ChatEntity
             {
                 ChatType = ChatType.PublicChannel,
                 Title = "Extreme Code Main",
-                Id = "1"
+                Id = "1",
             },
             new ChatEntity
             {
                 ChatType = ChatType.PublicChannel,
                 Title = "Extreme Code C++",
-                Id = "2"
+                Id = "2",
             },
             new ChatEntity
             {
                 ChatType = ChatType.PublicChannel,
                 Title = "Extreme Code",
-                Id = "3"
+                Id = "3",
             },
             new ChatEntity
             {
                 ChatType = ChatType.PublicChannel,
                 Title = "Extreme Code Flood",
-                Id = "4"
-            }
+                Id = "4",
+            },
         };
 
-        public static List<UserChatEntity> UserChats => new()
+        public static List<UserChatEntity> UserChats => new ()
         {
             new UserChatEntity
             {
                 ChatId = "3",
                 UserId = "1",
-                RoleId = UserRole.User
+                RoleId = UserRole.User,
             },
             new UserChatEntity
             {
                 ChatId = "3",
                 UserId = "2",
-                RoleId = UserRole.User
+                RoleId = UserRole.User,
             },
             new UserChatEntity
             {
                 ChatId = "4",
                 UserId = "1",
-                RoleId = UserRole.User
+                RoleId = UserRole.User,
             },
             new UserChatEntity
             {
                 ChatId = "4",
                 UserId = "2",
-                RoleId = UserRole.User
-            }
+                RoleId = UserRole.User,
+            },
         };
 
-        public static List<MessageEntity> Messages => new()
+        public static List<MessageEntity> Messages => new ()
         {
             new MessageEntity
             {
                 Id = "1",
                 ChatId = "3",
                 UserId = "1",
-                Content = "hello world 1"
+                Content = "hello world 1",
             },
             new MessageEntity
             {
                 Id = "2",
                 ChatId = "3",
                 UserId = "2",
-                Content = "hello world 2"
+                Content = "hello world 2",
             },
             new MessageEntity
             {
                 Id = "3",
                 ChatId = "4",
                 UserId = "1",
-                Content = "hello world 3"
+                Content = "hello world 3",
             },
             new MessageEntity
             {
                 Id = "4",
                 ChatId = "4",
                 UserId = "2",
-                Content = "hello world 4"
-            }
+                Content = "hello world 4",
+            },
         };
 
-        public static List<UserContactEntity> Contacts => new()
+        public static List<UserContactEntity> Contacts => new ()
         {
             new UserContactEntity
             {
                 Id = "1",
                 UserId = "1",
-                ContactId = "2"
+                ContactId = "2",
             },
             new UserContactEntity
             {
                 Id = "2",
                 UserId = "2",
-                ContactId = "1"
-            }
+                ContactId = "1",
+            },
         };
     }
 }

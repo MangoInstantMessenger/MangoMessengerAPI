@@ -1,7 +1,7 @@
-﻿using MangoAPI.Domain.Constants;
-
-namespace MangoAPI.BusinessLogic.Responses
+﻿namespace MangoAPI.BusinessLogic.Responses
 {
+    using MangoAPI.Domain.Constants;
+
     public abstract record ResponseBase
     {
         // ReSharper disable once UnusedAutoPropertyAccessor.Global
@@ -9,12 +9,13 @@ namespace MangoAPI.BusinessLogic.Responses
         public bool Success { get; init; }
     }
 
-    public abstract record ResponseBase<T> : ResponseBase where T : ResponseBase, new()
+    public abstract record ResponseBase<T> : ResponseBase
+        where T : ResponseBase, new()
     {
-        public static T SuccessResponse => new()
+        public static T SuccessResponse => new ()
         {
             Success = true,
-            Message = ResponseMessageCodes.Success
+            Message = ResponseMessageCodes.Success,
         };
     }
 }

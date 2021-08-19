@@ -1,7 +1,7 @@
-﻿using Newtonsoft.Json;
-
-namespace MangoAPI.BusinessLogic.ApiCommands.Messages
+﻿namespace MangoAPI.BusinessLogic.ApiCommands.Messages
 {
+    using Newtonsoft.Json;
+
     public record SendMessageRequest
     {
         [JsonConstructor]
@@ -19,11 +19,11 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Messages
     {
         public static SendMessageCommand ToCommand(this SendMessageRequest model, string userId)
         {
-            return new()
+            return new ()
             {
                 ChatId = model.ChatId,
                 MessageText = model.MessageText,
-                UserId = userId
+                UserId = userId,
             };
         }
     }

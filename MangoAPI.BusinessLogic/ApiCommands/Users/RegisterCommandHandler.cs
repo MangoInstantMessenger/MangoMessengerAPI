@@ -1,33 +1,35 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
-using MangoAPI.Application.Interfaces;
-using MangoAPI.BusinessLogic.BusinessExceptions;
-using MangoAPI.DataAccess.Database;
-using MangoAPI.Domain.Constants;
-using MangoAPI.Domain.Entities;
-using MediatR;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
-
-namespace MangoAPI.BusinessLogic.ApiCommands.Users
+﻿namespace MangoAPI.BusinessLogic.ApiCommands.Users
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Threading;
+    using System.Threading.Tasks;
+    using MangoAPI.Application.Interfaces;
+    using MangoAPI.BusinessLogic.BusinessExceptions;
+    using MangoAPI.DataAccess.Database;
+    using MangoAPI.Domain.Constants;
+    using MangoAPI.Domain.Entities;
+    using MediatR;
+    using Microsoft.AspNetCore.Identity;
+    using Microsoft.EntityFrameworkCore;
+
     public class RegisterCommandHandler : IRequestHandler<RegisterCommand, RegisterResponse>
     {
-        private readonly IEmailSenderService _emailSenderService;
-        private readonly MangoPostgresDbContext _postgresDbContext;
-        private readonly UserManager<UserEntity> _userManager;
-        private readonly IJwtGenerator _jwtGenerator;
+        private readonly IEmailSenderService emailSenderService;
+        private readonly MangoPostgresDbContext postgresDbContext;
+        private readonly UserManager<UserEntity> userManager;
+        private readonly IJwtGenerator jwtGenerator;
 
-        public RegisterCommandHandler(UserManager<UserEntity> userManager,
-            MangoPostgresDbContext postgresDbContext, IEmailSenderService emailSenderService,
+        public RegisterCommandHandler(
+            UserManager<UserEntity> userManager,
+            MangoPostgresDbContext postgresDbContext,
+            IEmailSenderService emailSenderService,
             IJwtGenerator jwtGenerator)
         {
-            _userManager = userManager;
-            _postgresDbContext = postgresDbContext;
-            _emailSenderService = emailSenderService;
-            _jwtGenerator = jwtGenerator;
+            this.userManager = userManager;
+            this.postgresDbContext = postgresDbContext;
+            this.emailSenderService = emailSenderService;
+            this.jwtGenerator = jwtGenerator;
         }
 
         public async Task<RegisterResponse> Handle(RegisterCommand request, CancellationToken cancellationToken)
@@ -37,15 +39,16 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
                 throw new BusinessException(ResponseMessageCodes.InvalidEmail);
             }
 
-            var exists = await _userManager.FindByEmailAsync(request.Email);
+            var exists = await userManager.FindByEmailAsync(request.Email);
 
             if (exists != null)
             {
                 throw new BusinessException(ResponseMessageCodes.EmailOccupied);
             }
 
-            var user = await _postgresDbContext.Users
-                .FirstOrDefaultAsync(x => x.PhoneNumber == request.PhoneNumber, 
+            var user = await postgresDbContext.Users
+                .FirstOrDefaultAsync(
+                    x => x.PhoneNumber == request.PhoneNumber,
                     cancellationToken);
 
             if (user != null)
@@ -59,10 +62,10 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
                 DisplayName = request.DisplayName,
                 UserName = Guid.NewGuid().ToString(),
                 Email = request.Email,
-                ConfirmationCode = new Random().Next(100000, 999999)
+                ConfirmationCode = new Random().Next(100000, 999999),
             };
-            
-            var result = await _userManager.CreateAsync(newUser, request.Password);
+
+            var result = await userManager.CreateAsync(newUser, request.Password);
 
             if (!result.Succeeded)
             {
@@ -72,10 +75,10 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
             var userInfo = new UserInformationEntity
             {
                 Id = Guid.NewGuid().ToString(),
-                UserId = newUser.Id
+                UserId = newUser.Id,
             };
 
-            await _emailSenderService.SendVerificationEmailAsync(newUser, cancellationToken);
+            await emailSenderService.SendVerificationEmailAsync(newUser, cancellationToken);
 
             var refreshLifetime = EnvironmentConstants.RefreshTokenLifeTime;
 
@@ -90,21 +93,23 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
                 RefreshToken = Guid.NewGuid().ToString(),
                 UserId = newUser.Id,
                 Expires = DateTime.UtcNow.AddDays(refreshLifetimeParsed),
-                Created = DateTime.UtcNow
+                Created = DateTime.UtcNow,
             };
 
-            var jwtToken = _jwtGenerator.GenerateJwtToken(newUser, 
-                new List<string> {SeedDataConstants.UnverifiedRole});
+            var jwtToken = jwtGenerator.GenerateJwtToken(
+                newUser,
+                new List<string> { SeedDataConstants.UnverifiedRole });
 
-            await _postgresDbContext.UserRoles.AddAsync(new IdentityUserRole<string>
+            await postgresDbContext.UserRoles.AddAsync(
+                new IdentityUserRole<string>
             {
                 UserId = newUser.Id,
-                RoleId = SeedDataConstants.UnverifiedRoleId
+                RoleId = SeedDataConstants.UnverifiedRoleId,
             }, cancellationToken);
 
-            await _postgresDbContext.Sessions.AddAsync(newSession, cancellationToken);
-            await _postgresDbContext.UserInformation.AddAsync(userInfo, cancellationToken);
-            await _postgresDbContext.SaveChangesAsync(cancellationToken);
+            await postgresDbContext.Sessions.AddAsync(newSession, cancellationToken);
+            await postgresDbContext.UserInformation.AddAsync(userInfo, cancellationToken);
+            await postgresDbContext.SaveChangesAsync(cancellationToken);
 
             return RegisterResponse.FromSuccess(jwtToken, newSession.RefreshToken);
         }

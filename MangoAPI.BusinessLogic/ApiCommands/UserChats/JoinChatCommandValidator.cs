@@ -1,8 +1,8 @@
-﻿using System;
-using FluentValidation;
-
-namespace MangoAPI.BusinessLogic.ApiCommands.UserChats
+﻿namespace MangoAPI.BusinessLogic.ApiCommands.UserChats
 {
+    using System;
+    using FluentValidation;
+
     public class JoinChatCommandValidator : AbstractValidator<JoinChatCommand>
     {
         public JoinChatCommandValidator()

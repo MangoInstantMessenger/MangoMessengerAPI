@@ -1,8 +1,8 @@
-﻿using MangoAPI.Domain.Entities;
-using Microsoft.AspNetCore.Identity;
-
-namespace MangoAPI.Application.Services
+﻿namespace MangoAPI.Application.Services
 {
+    using MangoAPI.Domain.Entities;
+    using Microsoft.AspNetCore.Identity;
+
     public class PasswordHashService : PasswordHasher<UserEntity>
     {
         public override string HashPassword(UserEntity user, string password)

@@ -1,14 +1,14 @@
-﻿using System;
-using System.Threading;
-using System.Threading.Tasks;
-using FluentAssertions;
-using MangoAPI.BusinessLogic.ApiCommands.Messages;
-using MangoAPI.BusinessLogic.BusinessExceptions;
-using MangoAPI.Domain.Constants;
-using NUnit.Framework;
-
-namespace MangoAPI.Tests.ApiCommandsTests.Messages
+﻿namespace MangoAPI.Tests.ApiCommandsTests.Messages
 {
+    using System;
+    using System.Threading;
+    using System.Threading.Tasks;
+    using FluentAssertions;
+    using MangoAPI.BusinessLogic.ApiCommands.Messages;
+    using MangoAPI.BusinessLogic.BusinessExceptions;
+    using MangoAPI.Domain.Constants;
+    using NUnit.Framework;
+
     [TestFixture]
     public class SendMessageCommandHandlerTest
     {
@@ -21,7 +21,7 @@ namespace MangoAPI.Tests.ApiCommandsTests.Messages
             {
                 UserId = "1",
                 ChatId = "3",
-                MessageText = "hello world"
+                MessageText = "hello world",
             };
 
             var result = await handler.Handle(command, CancellationToken.None);
@@ -38,7 +38,7 @@ namespace MangoAPI.Tests.ApiCommandsTests.Messages
             {
                 UserId = "15",
                 ChatId = "3",
-                MessageText = "hello world"
+                MessageText = "hello world",
             };
 
             Func<Task> result = async () => await handler.Handle(command, CancellationToken.None);
@@ -56,7 +56,7 @@ namespace MangoAPI.Tests.ApiCommandsTests.Messages
             {
                 UserId = "1",
                 ChatId = "24",
-                MessageText = "hello world"
+                MessageText = "hello world",
             };
 
             Func<Task> result = async () => await handler.Handle(command, CancellationToken.None);
@@ -74,7 +74,7 @@ namespace MangoAPI.Tests.ApiCommandsTests.Messages
             {
                 UserId = "1",
                 ChatId = "2",
-                MessageText = "hello world"
+                MessageText = "hello world",
             };
 
             Func<Task> result = async () => await handler.Handle(command, CancellationToken.None);

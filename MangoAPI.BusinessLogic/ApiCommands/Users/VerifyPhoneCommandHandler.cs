@@ -1,27 +1,27 @@
-﻿using System.Threading;
-using System.Threading.Tasks;
-using MangoAPI.BusinessLogic.BusinessExceptions;
-using MangoAPI.DataAccess.Database;
-using MangoAPI.Domain.Constants;
-using MediatR;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
-
-namespace MangoAPI.BusinessLogic.ApiCommands.Users
+﻿namespace MangoAPI.BusinessLogic.ApiCommands.Users
 {
+    using System.Threading;
+    using System.Threading.Tasks;
+    using MangoAPI.BusinessLogic.BusinessExceptions;
+    using MangoAPI.DataAccess.Database;
+    using MangoAPI.Domain.Constants;
+    using MediatR;
+    using Microsoft.AspNetCore.Identity;
+    using Microsoft.EntityFrameworkCore;
+
     public class VerifyPhoneCommandHandler : IRequestHandler<VerifyPhoneCommand, VerifyPhoneResponse>
     {
-        private readonly MangoPostgresDbContext _postgresDbContext;
+        private readonly MangoPostgresDbContext postgresDbContext;
 
         public VerifyPhoneCommandHandler(MangoPostgresDbContext postgresDbContext)
         {
-            _postgresDbContext = postgresDbContext;
+            this.postgresDbContext = postgresDbContext;
         }
 
-        public async Task<VerifyPhoneResponse> Handle(VerifyPhoneCommand request,
-            CancellationToken cancellationToken)
+        public async Task<VerifyPhoneResponse> Handle(VerifyPhoneCommand request, CancellationToken cancellationToken)
         {
-            var user = await _postgresDbContext.Users.FirstOrDefaultAsync(x => x.Id == request.UserId,
+            var user = await postgresDbContext.Users.FirstOrDefaultAsync(
+                x => x.Id == request.UserId,
                 cancellationToken);
 
             if (user == null)
@@ -39,18 +39,19 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
                 throw new BusinessException(ResponseMessageCodes.InvalidPhoneCode);
             }
 
-            await _postgresDbContext.UserRoles.AddAsync(new IdentityUserRole<string>()
-            {
-                UserId = user.Id,
-                RoleId = SeedDataConstants.UserRoleId
-            }, cancellationToken);
+            await postgresDbContext.UserRoles.AddAsync(
+                new IdentityUserRole<string>
+                {
+                    UserId = user.Id,
+                    RoleId = SeedDataConstants.UserRoleId,
+                }, cancellationToken);
 
             user.PhoneNumberConfirmed = true;
             user.ConfirmationCode = 0;
 
-            _postgresDbContext.Update(user);
+            postgresDbContext.Update(user);
 
-            await _postgresDbContext.SaveChangesAsync(cancellationToken);
+            await postgresDbContext.SaveChangesAsync(cancellationToken);
 
             return VerifyPhoneResponse.SuccessResponse;
         }

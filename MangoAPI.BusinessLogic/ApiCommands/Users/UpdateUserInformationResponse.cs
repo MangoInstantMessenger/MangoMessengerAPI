@@ -1,6 +1,6 @@
-﻿using MangoAPI.BusinessLogic.Responses;
-
-namespace MangoAPI.BusinessLogic.ApiCommands.Users
+﻿namespace MangoAPI.BusinessLogic.ApiCommands.Users
 {
+    using MangoAPI.BusinessLogic.Responses;
+
     public record UpdateUserInformationResponse : UserInformationResponseBase<UpdateUserInformationResponse>;
 }

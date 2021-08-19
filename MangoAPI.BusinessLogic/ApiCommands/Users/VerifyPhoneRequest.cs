@@ -1,7 +1,7 @@
-﻿using Newtonsoft.Json;
-
-namespace MangoAPI.BusinessLogic.ApiCommands.Users
+﻿namespace MangoAPI.BusinessLogic.ApiCommands.Users
 {
+    using Newtonsoft.Json;
+
     public record VerifyPhoneRequest
     {
         [JsonConstructor]
@@ -17,10 +17,10 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
     {
         public static VerifyPhoneCommand ToCommand(this VerifyPhoneRequest model, string userId)
         {
-            return new()
+            return new ()
             {
                 ConfirmationCode = model.ConfirmationCode,
-                UserId = userId
+                UserId = userId,
             };
         }
     }

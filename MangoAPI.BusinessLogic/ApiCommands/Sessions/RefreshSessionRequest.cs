@@ -1,7 +1,7 @@
-﻿using Newtonsoft.Json;
-
-namespace MangoAPI.BusinessLogic.ApiCommands.Sessions
+﻿namespace MangoAPI.BusinessLogic.ApiCommands.Sessions
 {
+    using Newtonsoft.Json;
+
     public record RefreshSessionRequest
     {
         [JsonConstructor]
@@ -17,9 +17,9 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Sessions
     {
         public static RefreshSessionCommand ToCommand(this RefreshSessionRequest model)
         {
-            return new()
+            return new ()
             {
-                RefreshToken = model.RefreshToken
+                RefreshToken = model.RefreshToken,
             };
         }
     }

@@ -1,7 +1,7 @@
-﻿using Newtonsoft.Json;
-
-namespace MangoAPI.BusinessLogic.ApiCommands.Contacts
+﻿namespace MangoAPI.BusinessLogic.ApiCommands.Contacts
 {
+    using Newtonsoft.Json;
+
     public record AddContactRequest
     {
         [JsonConstructor]
@@ -17,10 +17,10 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Contacts
     {
         public static AddContactCommand ToCommand(this AddContactRequest model, string userId)
         {
-            return new()
+            return new ()
             {
                 ContactId = model.ContactId,
-                UserId = userId
+                UserId = userId,
             };
         }
     }

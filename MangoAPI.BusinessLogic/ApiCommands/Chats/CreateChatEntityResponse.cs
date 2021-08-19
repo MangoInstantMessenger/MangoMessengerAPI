@@ -1,9 +1,9 @@
-﻿using MangoAPI.BusinessLogic.Responses;
-using MangoAPI.Domain.Constants;
-using MangoAPI.Domain.Entities;
-
-namespace MangoAPI.BusinessLogic.ApiCommands.Chats
+﻿namespace MangoAPI.BusinessLogic.ApiCommands.Chats
 {
+    using MangoAPI.BusinessLogic.Responses;
+    using MangoAPI.Domain.Constants;
+    using MangoAPI.Domain.Entities;
+
     public record CreateChatEntityResponse : ChatResponseBase<CreateChatEntityResponse>
     {
         // ReSharper disable once UnusedAutoPropertyAccessor.Global
@@ -12,11 +12,11 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Chats
 
         public static CreateChatEntityResponse FromSuccess(ChatEntity chatEntity)
         {
-            return new()
+            return new ()
             {
                 ChatId = chatEntity.Id,
                 Message = ResponseMessageCodes.Success,
-                Success = true
+                Success = true,
             };
         }
     }

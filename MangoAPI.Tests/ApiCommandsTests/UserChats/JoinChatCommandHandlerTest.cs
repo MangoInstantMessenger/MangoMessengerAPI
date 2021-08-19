@@ -1,14 +1,14 @@
-﻿using System;
-using System.Threading;
-using System.Threading.Tasks;
-using FluentAssertions;
-using MangoAPI.BusinessLogic.ApiCommands.UserChats;
-using MangoAPI.BusinessLogic.BusinessExceptions;
-using MangoAPI.Domain.Constants;
-using NUnit.Framework;
-
-namespace MangoAPI.Tests.ApiCommandsTests.UserChats
+﻿namespace MangoAPI.Tests.ApiCommandsTests.UserChats
 {
+    using System;
+    using System.Threading;
+    using System.Threading.Tasks;
+    using FluentAssertions;
+    using MangoAPI.BusinessLogic.ApiCommands.UserChats;
+    using MangoAPI.BusinessLogic.BusinessExceptions;
+    using MangoAPI.Domain.Constants;
+    using NUnit.Framework;
+
     [TestFixture]
     public class JoinChatCommandHandlerTest
     {
@@ -20,7 +20,7 @@ namespace MangoAPI.Tests.ApiCommandsTests.UserChats
             var command = new JoinChatCommand
             {
                 UserId = "2",
-                ChatId = "1"
+                ChatId = "1",
             };
 
             var result = await handler.Handle(command, CancellationToken.None);
@@ -36,7 +36,7 @@ namespace MangoAPI.Tests.ApiCommandsTests.UserChats
             var command = new JoinChatCommand
             {
                 UserId = "2",
-                ChatId = "1"
+                ChatId = "1",
             };
 
             await handler.Handle(command, CancellationToken.None);
@@ -54,7 +54,7 @@ namespace MangoAPI.Tests.ApiCommandsTests.UserChats
             var command = new JoinChatCommand
             {
                 UserId = "1241",
-                ChatId = "21512"
+                ChatId = "21512",
             };
 
             Func<Task> result = async () => await handler.Handle(command, CancellationToken.None);
@@ -71,7 +71,7 @@ namespace MangoAPI.Tests.ApiCommandsTests.UserChats
             var command = new JoinChatCommand
             {
                 UserId = "1",
-                ChatId = "21512"
+                ChatId = "21512",
             };
 
             Func<Task> result = async () => await handler.Handle(command, CancellationToken.None);

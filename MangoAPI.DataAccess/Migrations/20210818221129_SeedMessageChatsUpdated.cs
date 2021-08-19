@@ -1,8 +1,8 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore.Migrations;
-
-namespace MangoAPI.DataAccess.Migrations
+﻿namespace MangoAPI.DataAccess.Migrations
 {
+    using System;
+    using Microsoft.EntityFrameworkCore.Migrations;
+
     public partial class SeedMessageChatsUpdated : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)

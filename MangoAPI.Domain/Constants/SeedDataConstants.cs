@@ -12,7 +12,7 @@
         public const string IlliaId = "72a7a013-8bc4-4ae6-89cb-d9f19e0c9cf9";
         public const string ArslanbekId = "56d6294f-7b80-4a78-856a-92b141de2d1c";
         public const string SerhiiId = "d1ae1de1-1aa8-4650-937c-4ed882038ad7";
-        
+
         // Public Chats
         public const string ExtremeCodeMainId = "0dae5a74-3528-4e85-95bb-2036bd80432c";
         public const string ExtremeCodeFloodId = "5e656ec2-205f-471c-b095-1c80b93b7655";
@@ -26,12 +26,12 @@
         public const string DirectKolbasatorRazumovsky = "f8729a12-5746-443f-ad31-378d846fce30";
         public const string DirectAmelitRazumovsky = "b119914a-6d95-4047-bf8a-db27deeb7dc9";
         public const string DirectPetroSzymon = "3fce8b2c-252d-4514-a1bb-fbdf73c47b78";
-        
+
         // Role ID
         public const string UserRoleId = "32904a05-6d7c-43cf-b915-223324ff480e";
         public const string UnverifiedRoleId = "1c48f8d5-01ed-4e47-8377-a22ffa58c150";
-        
-        // Roles 
+
+        // Roles
         public const string UserRole = "User";
         public const string UnverifiedRole = "Unverified";
     }

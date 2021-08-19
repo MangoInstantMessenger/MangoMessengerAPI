@@ -1,14 +1,14 @@
-﻿using System;
-using System.Threading;
-using System.Threading.Tasks;
-using FluentAssertions;
-using MangoAPI.BusinessLogic.ApiCommands.Messages;
-using MangoAPI.BusinessLogic.BusinessExceptions;
-using MangoAPI.Domain.Constants;
-using NUnit.Framework;
-
-namespace MangoAPI.Tests.ApiCommandsTests.Messages
+﻿namespace MangoAPI.Tests.ApiCommandsTests.Messages
 {
+    using System;
+    using System.Threading;
+    using System.Threading.Tasks;
+    using FluentAssertions;
+    using MangoAPI.BusinessLogic.ApiCommands.Messages;
+    using MangoAPI.BusinessLogic.BusinessExceptions;
+    using MangoAPI.Domain.Constants;
+    using NUnit.Framework;
+
     [TestFixture]
     public class DeleteMessageCommandHandlerTest
     {
@@ -20,7 +20,7 @@ namespace MangoAPI.Tests.ApiCommandsTests.Messages
             var command = new DeleteMessageCommand
             {
                 UserId = "1",
-                MessageId = "3"
+                MessageId = "3",
             };
 
             var result = await handler.Handle(command, CancellationToken.None);
@@ -36,7 +36,7 @@ namespace MangoAPI.Tests.ApiCommandsTests.Messages
             var command = new DeleteMessageCommand
             {
                 UserId = "4",
-                MessageId = "3"
+                MessageId = "3",
             };
 
             Func<Task> result = async () => await handler.Handle(command, CancellationToken.None);
@@ -53,7 +53,7 @@ namespace MangoAPI.Tests.ApiCommandsTests.Messages
             var command = new DeleteMessageCommand
             {
                 UserId = "2",
-                MessageId = "21"
+                MessageId = "21",
             };
 
             Func<Task> result = async () => await handler.Handle(command, CancellationToken.None);

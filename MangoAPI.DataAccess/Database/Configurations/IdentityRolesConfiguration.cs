@@ -1,25 +1,26 @@
-﻿using MangoAPI.Domain.Constants;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
-
-namespace MangoAPI.DataAccess.Database.Configurations
+﻿namespace MangoAPI.DataAccess.Database.Configurations
 {
+    using MangoAPI.Domain.Constants;
+    using Microsoft.AspNetCore.Identity;
+    using Microsoft.EntityFrameworkCore;
+    using Microsoft.EntityFrameworkCore.Metadata.Builders;
+
     public class IdentityRolesConfiguration : IEntityTypeConfiguration<IdentityRole>
     {
         public void Configure(EntityTypeBuilder<IdentityRole> builder)
         {
-            builder.HasData(new IdentityRole
+            builder.HasData(
+                new IdentityRole
                 {
                     Id = SeedDataConstants.UserRoleId,
                     Name = SeedDataConstants.UserRole,
-                    NormalizedName = SeedDataConstants.UserRole.ToUpper()
+                    NormalizedName = SeedDataConstants.UserRole.ToUpper(),
                 },
                 new IdentityRole
                 {
                     Id = SeedDataConstants.UnverifiedRoleId,
                     Name = SeedDataConstants.UnverifiedRole,
-                    NormalizedName = SeedDataConstants.UnverifiedRole.ToUpper()
+                    NormalizedName = SeedDataConstants.UnverifiedRole.ToUpper(),
                 });
         }
     }

@@ -1,7 +1,7 @@
-﻿using Newtonsoft.Json;
-
-namespace MangoAPI.BusinessLogic.ApiCommands.Messages
+﻿namespace MangoAPI.BusinessLogic.ApiCommands.Messages
 {
+    using Newtonsoft.Json;
+
     public record DeleteMessageRequest
     {
         [JsonConstructor]
@@ -17,10 +17,10 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Messages
     {
         public static DeleteMessageCommand ToCommand(this DeleteMessageRequest model, string userId)
         {
-            return new()
+            return new ()
             {
                 MessageId = model.MessageId,
-                UserId = userId
+                UserId = userId,
             };
         }
     }
