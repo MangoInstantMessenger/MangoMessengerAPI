@@ -34,6 +34,18 @@
                 {
                     RoleId = SeedDataConstants.UserRoleId,
                     UserId = SeedDataConstants.SzymonId,
+                }, new IdentityUserRole<string>
+                {
+                    RoleId = SeedDataConstants.UserRoleId,
+                    UserId = SeedDataConstants.IlliaId,
+                }, new IdentityUserRole<string>
+                {
+                    RoleId = SeedDataConstants.UserRoleId,
+                    UserId = SeedDataConstants.ArslanbekId,
+                }, new IdentityUserRole<string>
+                {
+                    RoleId = SeedDataConstants.UserRoleId,
+                    UserId = SeedDataConstants.SerhiiId,
                 });
         }
     }
