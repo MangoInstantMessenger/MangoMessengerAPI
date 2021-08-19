@@ -70,7 +70,7 @@ namespace MangoAPI.DataAccess.Database.Configurations
                     UserId = SeedDataConstants.SzymonId,
                     ChatId = SeedDataConstants.WsbId,
                     Content = "Great! Good luck to all of you",
-                    Created = new DateTime(2021, 8, 11, 14, 48, 21)
+                    Created = new DateTime(2021, 8, 11, 21, 59, 5)
                 },
 
                 // Extreme Code Main
@@ -278,6 +278,16 @@ namespace MangoAPI.DataAccess.Database.Configurations
                     UserId = SeedDataConstants.KolbasatorId,
                     ChatId = SeedDataConstants.DirectKhachaturKolbasator,
                     Content = "Hello World",
+                    Created = new DateTime(2021, 8, 1, 14, 31, 23)
+                },
+                
+                // Petro / Szymon
+                new MessageEntity
+                {
+                    Id = "c4635d82-0703-4fe6-8836-be849482ec89",
+                    UserId = SeedDataConstants.PetroId,
+                    ChatId = SeedDataConstants.DirectPetroSzymon,
+                    Content = "Hi teacher",
                     Created = new DateTime(2021, 8, 1, 14, 31, 23)
                 }
             );

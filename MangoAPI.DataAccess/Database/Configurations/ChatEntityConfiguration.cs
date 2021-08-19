@@ -26,7 +26,7 @@ namespace MangoAPI.DataAccess.Database.Configurations
                     Id = SeedDataConstants.WsbId,
                     Title = "WSB",
                     ChatType = ChatType.PublicChannel,
-                    MembersCount = 2
+                    MembersCount = 5
                 },
                 new ChatEntity
                 {
