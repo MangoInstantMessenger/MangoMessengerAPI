@@ -22,6 +22,19 @@
                     Website = "pkolosov.com",
                     Instagram = "petro.kolosov",
                     LinkedIn = "petro.kolosov",
+                    Address = "Poznan, Poland",
+                },
+                new UserInformationEntity
+                {
+                    Id = "e44583f1-62ca-4ca4-a6a2-3fc1a874ab0d",
+                    UserId = SeedDataConstants.IlliaId,
+                    FirstName = "Illia",
+                    LastName = "Zubachov",
+                    BirthDay = new DateTime(1994, 6, 12),
+                    Website = "illia.zubachov.com",
+                    Instagram = "illia.zubachov",
+                    LinkedIn = "illia.zubachov",
+                    Address = "Poznan, Poland",
                 },
                 new UserInformationEntity
                 {
@@ -33,6 +46,7 @@
                     Website = "murawski.com",
                     Instagram = "szymon.murawski",
                     LinkedIn = "szymon.murawski",
+                    Address = "Poznan, Poland",
                 },
                 new UserInformationEntity
                 {
@@ -44,6 +58,7 @@
                     Website = "khachapur.com",
                     Instagram = "khachapur.mudrenych",
                     LinkedIn = "khachapur.mudrenych",
+                    Address = "Moscow, Russia",
                 },
                 new UserInformationEntity
                 {
@@ -52,7 +67,7 @@
                     FirstName = "razumovsky",
                     LastName = "r",
                     BirthDay = new DateTime(1994, 7, 21),
-                    Address = "Poland, Krakov",
+                    Address = "Odessa, Ukraine",
                     Website = "razumovsky.com",
                     Twitter = "razumovsky_r",
                 },
@@ -65,6 +80,7 @@
                     Website = "kolbasator.com",
                     Facebook = "kolbasator",
                     ProfilePicture = "profile.png",
+                    Address = "Saint-Petersburg, Russia",
                 },
                 new UserInformationEntity
                 {
@@ -74,6 +90,7 @@
                     Facebook = "TheMoonlightSonata",
                     Instagram = "TheMoonlightSonata",
                     Twitter = "TheMoonlightSonata",
+                    Address = "Moscow, Russia",
                 });
         }
     }
