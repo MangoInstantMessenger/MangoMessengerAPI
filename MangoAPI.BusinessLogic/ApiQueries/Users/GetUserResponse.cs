@@ -20,6 +20,7 @@
                 User = new UserGetResult
                 {
                     DisplayName = user.DisplayName,
+                    Address = user.UserInformation.Address,
                     FirstName = user.UserInformation.FirstName,
                     LastName = user.UserInformation.LastName,
                     BirthdayDate = user.UserInformation.BirthDay?.ToString("MM/dd/yyyy"),

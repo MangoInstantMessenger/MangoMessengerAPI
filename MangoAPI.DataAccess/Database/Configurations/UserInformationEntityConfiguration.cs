@@ -19,7 +19,7 @@
                     FirstName = "Petro",
                     LastName = "Kolosov",
                     BirthDay = new DateTime(1994, 6, 12),
-                    Website = "pkolosov.com",
+                    Website = "petro.kolosov.com",
                     Instagram = "petro.kolosov",
                     LinkedIn = "petro.kolosov",
                     Address = "Poznan, Poland",
@@ -34,6 +34,8 @@
                     Website = "illia.zubachov.com",
                     Instagram = "illia.zubachov",
                     LinkedIn = "illia.zubachov",
+                    Facebook = "illia.zubachov",
+                    Twitter = "illia.zubachov",
                     Address = "Poznan, Poland",
                 }, new UserInformationEntity
                 {
@@ -45,6 +47,8 @@
                     Website = "serhii.holishevskii.com",
                     Instagram = "serhii.holishevskii",
                     LinkedIn = "serhii.holishevskii",
+                    Facebook = "serhii.holishevskii",
+                    Twitter = "serhii.holishevskii",
                     Address = "Poznan, Poland",
                 }, new UserInformationEntity
                 {
@@ -56,6 +60,8 @@
                     Website = "arslan.temirbekov.com",
                     Instagram = "arslan.temirbekov",
                     LinkedIn = "arslan.temirbekov",
+                    Facebook = "arslan.temirbekov",
+                    Twitter = "arslan.temirbekov",
                     Address = "Poznan, Poland",
                 },
                 new UserInformationEntity
@@ -65,9 +71,11 @@
                     FirstName = "Szymon",
                     LastName = "Murawski",
                     BirthDay = new DateTime(1983, 5, 25),
-                    Website = "murawski.com",
+                    Website = "szymon.murawski.com",
                     Instagram = "szymon.murawski",
                     LinkedIn = "szymon.murawski",
+                    Facebook = "szymon.murawski",
+                    Twitter = "szymon.murawski",
                     Address = "Poznan, Poland",
                 },
                 new UserInformationEntity
