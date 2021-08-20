@@ -35,6 +35,28 @@
                     Instagram = "illia.zubachov",
                     LinkedIn = "illia.zubachov",
                     Address = "Poznan, Poland",
+                }, new UserInformationEntity
+                {
+                    Id = "e44583f1-62ca-4ca4-a6a2-3fc1a874ab0e",
+                    UserId = SeedDataConstants.SerhiiId,
+                    FirstName = "Serhii",
+                    LastName = "Holishevskii",
+                    BirthDay = new DateTime(1994, 6, 12),
+                    Website = "serhii.holishevskii.com",
+                    Instagram = "serhii.holishevskii",
+                    LinkedIn = "serhii.holishevskii",
+                    Address = "Poznan, Poland",
+                }, new UserInformationEntity
+                {
+                    Id = "e44583f1-62ca-4ca4-a6a2-3fc1a874ab0f",
+                    UserId = SeedDataConstants.ArslanbekId,
+                    FirstName = "Arslan",
+                    LastName = "Temirbekov",
+                    BirthDay = new DateTime(1994, 6, 12),
+                    Website = "arslan.temirbekov.com",
+                    Instagram = "arslan.temirbekov",
+                    LinkedIn = "arslan.temirbekov",
+                    Address = "Poznan, Poland",
                 },
                 new UserInformationEntity
                 {
