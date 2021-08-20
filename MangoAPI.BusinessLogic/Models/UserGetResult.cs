@@ -2,6 +2,7 @@
 {
     public record UserGetResult
     {
+        public string UserId { get; set; }
         public string DisplayName { get; init; }
 
         public string Address { get; set; }
