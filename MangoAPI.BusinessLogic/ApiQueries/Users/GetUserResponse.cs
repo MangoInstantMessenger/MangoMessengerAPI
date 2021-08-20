@@ -19,6 +19,7 @@
                 Success = true,
                 User = new UserGetResult
                 {
+                    UserId = user.Id,
                     DisplayName = user.DisplayName,
                     Address = user.UserInformation.Address,
                     FirstName = user.UserInformation.FirstName,
