@@ -12,7 +12,6 @@
             builder.HasKey(x => x.Id);
 
             builder.HasData(
-
                 // Petro Contacts
                 new UserContactEntity
                 {
@@ -156,6 +155,26 @@
                 {
                     Id = "950750fc-91af-4bdc-b9cb-46c8b0fd5073",
                     ContactId = SeedDataConstants.KhachaturId,
+                    UserId = SeedDataConstants.RazumovskyId,
+                }, new UserContactEntity
+                {
+                    Id = "950750fc-91af-4bdc-b9cb-46c8b0fd5074",
+                    ContactId = SeedDataConstants.SzymonId,
+                    UserId = SeedDataConstants.RazumovskyId,
+                }, new UserContactEntity
+                {
+                    Id = "950750fc-91af-4bdc-b9cb-46c8b0fd5075",
+                    ContactId = SeedDataConstants.IlliaId,
+                    UserId = SeedDataConstants.RazumovskyId,
+                }, new UserContactEntity
+                {
+                    Id = "950750fc-91af-4bdc-b9cb-46c8b0fd5076",
+                    ContactId = SeedDataConstants.KolbasatorId,
+                    UserId = SeedDataConstants.RazumovskyId,
+                }, new UserContactEntity
+                {
+                    Id = "950750fc-91af-4bdc-b9cb-46c8b0fd5077",
+                    ContactId = SeedDataConstants.AmelitId,
                     UserId = SeedDataConstants.RazumovskyId,
                 },
 
