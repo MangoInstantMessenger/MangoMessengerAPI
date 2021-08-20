@@ -1,5 +1,6 @@
 ﻿namespace MangoAPI.DataAccess.Database.Configurations
 {
+    using System.Collections.Generic;
     using MangoAPI.Domain.Constants;
     using MangoAPI.Domain.Entities;
     using MangoAPI.Domain.Enums;
@@ -21,7 +22,8 @@
                 .WithMany(x => x.UserChats)
                 .HasForeignKey(x => x.UserId);
 
-            builder.HasData(
+            var wsbUserChats = new List<UserChatEntity>
+            {
                 new UserChatEntity
                 {
                     UserId = SeedDataConstants.PetroId,
@@ -52,6 +54,10 @@
                     ChatId = SeedDataConstants.WsbId,
                     RoleId = UserRole.User,
                 },
+            };
+
+            var extremeCodeMainUserChats = new List<UserChatEntity>
+            {
                 new UserChatEntity
                 {
                     UserId = SeedDataConstants.KhachaturId,
@@ -76,6 +82,10 @@
                     ChatId = SeedDataConstants.ExtremeCodeMainId,
                     RoleId = UserRole.Owner,
                 },
+            };
+
+            var extremeCodeFloodUserChats = new List<UserChatEntity>
+            {
                 new UserChatEntity
                 {
                     UserId = SeedDataConstants.RazumovskyId,
@@ -100,6 +110,10 @@
                     ChatId = SeedDataConstants.ExtremeCodeFloodId,
                     RoleId = UserRole.User,
                 },
+            };
+
+            var extremeCodeCppUserChats = new List<UserChatEntity>
+            {
                 new UserChatEntity
                 {
                     UserId = SeedDataConstants.AmelitId,
@@ -124,6 +138,10 @@
                     ChatId = SeedDataConstants.ExtremeCodeCppId,
                     RoleId = UserRole.User,
                 },
+            };
+
+            var extremeCodeDotnetUserChats = new List<UserChatEntity>
+            {
                 new UserChatEntity
                 {
                     UserId = SeedDataConstants.RazumovskyId,
@@ -148,6 +166,10 @@
                     ChatId = SeedDataConstants.ExtremeCodeDotnetId,
                     RoleId = UserRole.User,
                 },
+            };
+
+            var khachaturRazumovskyDirectUserChats = new List<UserChatEntity>()
+            {
                 new UserChatEntity
                 {
                     UserId = SeedDataConstants.KhachaturId,
@@ -160,6 +182,10 @@
                     ChatId = SeedDataConstants.DirectKhachaturRazumovsky,
                     RoleId = UserRole.User,
                 },
+            };
+
+            var kolbasatorRazumovskyDirectUserChats = new List<UserChatEntity>
+            {
                 new UserChatEntity
                 {
                     UserId = SeedDataConstants.KolbasatorId,
@@ -172,6 +198,10 @@
                     ChatId = SeedDataConstants.DirectKolbasatorRazumovsky,
                     RoleId = UserRole.User,
                 },
+            };
+
+            var amelitRazumovskyDirecUserChats = new List<UserChatEntity>()
+            {
                 new UserChatEntity
                 {
                     UserId = SeedDataConstants.AmelitId,
@@ -184,6 +214,10 @@
                     ChatId = SeedDataConstants.DirectAmelitRazumovsky,
                     RoleId = UserRole.User,
                 },
+            };
+
+            var khachaturKolbasatorDirectUserChats = new List<UserChatEntity>
+            {
                 new UserChatEntity
                 {
                     UserId = SeedDataConstants.KhachaturId,
@@ -196,6 +230,10 @@
                     ChatId = SeedDataConstants.DirectKhachaturKolbasator,
                     RoleId = UserRole.User,
                 },
+            };
+
+            var petroSzymonDirectUserChats = new List<UserChatEntity>
+            {
                 new UserChatEntity
                 {
                     UserId = SeedDataConstants.PetroId,
@@ -207,7 +245,14 @@
                     UserId = SeedDataConstants.SzymonId,
                     ChatId = SeedDataConstants.DirectPetroSzymon,
                     RoleId = UserRole.User,
-                });
+                },
+            };
+
+            builder.HasData(wsbUserChats, extremeCodeMainUserChats,
+                extremeCodeFloodUserChats, extremeCodeCppUserChats,
+                extremeCodeDotnetUserChats, khachaturRazumovskyDirectUserChats,
+                kolbasatorRazumovskyDirectUserChats, amelitRazumovskyDirecUserChats,
+                khachaturKolbasatorDirectUserChats, petroSzymonDirectUserChats);
         }
     }
 }

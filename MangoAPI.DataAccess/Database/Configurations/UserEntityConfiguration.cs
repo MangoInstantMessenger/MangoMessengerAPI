@@ -23,7 +23,67 @@
                 .WithOne(x => x.User)
                 .HasForeignKey(x => x.UserId);
 
-            var user1 = new UserEntity
+            var petroKolosov = new UserEntity
+            {
+                PhoneNumber = "+48 743 615 532",
+                DisplayName = "Petro Kolosov",
+                Id = SeedDataConstants.PetroId,
+                UserName = SeedDataConstants.PetroId,
+                Email = "petro.kolosov@wp.pl",
+                NormalizedEmail = "PETRO.KOLOSOV@WP.PL",
+                EmailConfirmed = true,
+                PhoneNumberConfirmed = true,
+            };
+
+            var szymonMurawski = new UserEntity
+            {
+                PhoneNumber = "+48 743 615 532",
+                DisplayName = "Szymon Murawski",
+                Id = SeedDataConstants.SzymonId,
+                UserName = SeedDataConstants.SzymonId,
+                Email = "szymon.murawski@wp.pl",
+                NormalizedEmail = "SZYMON.MURAWSKI@WP.PL",
+                EmailConfirmed = true,
+                PhoneNumberConfirmed = true,
+            };
+
+            var illiaZubachov = new UserEntity
+            {
+                PhoneNumber = "+48 352 643 123",
+                DisplayName = "Illia Zubachov",
+                Id = SeedDataConstants.IlliaId,
+                UserName = SeedDataConstants.IlliaId,
+                Email = "illia.zubachov@wp.pl",
+                NormalizedEmail = "ILLIA.ZUBACHOW@WP.PL",
+                EmailConfirmed = true,
+                PhoneNumberConfirmed = true,
+            };
+
+            var arslanbekTemirbekov = new UserEntity
+            {
+                PhoneNumber = "+48 278 187 781",
+                DisplayName = "Arslanbek Temirbekov",
+                Id = SeedDataConstants.ArslanbekId,
+                UserName = SeedDataConstants.ArslanbekId,
+                Email = "arslanbek.temirbekov@wp.pl",
+                NormalizedEmail = "ARSLANBEK.TEMIRBEKOV@WP.PL",
+                EmailConfirmed = true,
+                PhoneNumberConfirmed = true,
+            };
+
+            var serhiiHolishevskii = new UserEntity
+            {
+                PhoneNumber = "+48 175 481 653",
+                DisplayName = "Serhii Holishevskii",
+                Id = SeedDataConstants.SerhiiId,
+                UserName = SeedDataConstants.SerhiiId,
+                Email = "serhii.holishevskii@wp.pl",
+                NormalizedEmail = "SERHII.HOLISHEVSKII@WP.PL",
+                EmailConfirmed = true,
+                PhoneNumberConfirmed = true,
+            };
+
+            var khachaturKhachatryan = new UserEntity
             {
                 PhoneNumber = "+374 775 55 43 10",
                 DisplayName = "Khachatur Khachatryan",
@@ -36,7 +96,7 @@
                 PhoneNumberConfirmed = true,
             };
 
-            var user2 = new UserEntity
+            var razumovskyR = new UserEntity
             {
                 PhoneNumber = "+48 743 615 532",
                 DisplayName = "razumovsky r",
@@ -49,7 +109,7 @@
                 PhoneNumberConfirmed = true,
             };
 
-            var user3 = new UserEntity
+            var kolbasator = new UserEntity
             {
                 PhoneNumber = "+7 701 750 62 65",
                 DisplayName = "Мусяка Колбасяка",
@@ -62,7 +122,7 @@
                 PhoneNumberConfirmed = true,
             };
 
-            var user4 = new UserEntity
+            var amelit = new UserEntity
             {
                 PhoneNumber = "+1 202 555 0152",
                 DisplayName = "Amelit",
@@ -71,66 +131,6 @@
                 UserName = SeedDataConstants.AmelitId,
                 Email = "amelit@gmail.com",
                 NormalizedEmail = "AMELIT@GMAIL.COM",
-                EmailConfirmed = true,
-                PhoneNumberConfirmed = true,
-            };
-
-            var user5 = new UserEntity
-            {
-                PhoneNumber = "+48 743 615 532",
-                DisplayName = "Petro Kolosov",
-                Id = SeedDataConstants.PetroId,
-                UserName = SeedDataConstants.PetroId,
-                Email = "petro.kolosov@wp.pl",
-                NormalizedEmail = "PETRO.KOLOSOV@WP.PL",
-                EmailConfirmed = true,
-                PhoneNumberConfirmed = true,
-            };
-
-            var user6 = new UserEntity
-            {
-                PhoneNumber = "+48 743 615 532",
-                DisplayName = "Szymon Murawski",
-                Id = SeedDataConstants.SzymonId,
-                UserName = SeedDataConstants.SzymonId,
-                Email = "szymon.murawski@wp.pl",
-                NormalizedEmail = "SZYMON.MURAWSKI@WP.PL",
-                EmailConfirmed = true,
-                PhoneNumberConfirmed = true,
-            };
-
-            var user7 = new UserEntity
-            {
-                PhoneNumber = "+48 352 643 123",
-                DisplayName = "Illia Zubachov",
-                Id = SeedDataConstants.IlliaId,
-                UserName = SeedDataConstants.IlliaId,
-                Email = "illia.zubachov@wp.pl",
-                NormalizedEmail = "ILLIA.ZUBACHOW@WP.PL",
-                EmailConfirmed = true,
-                PhoneNumberConfirmed = true,
-            };
-
-            var user8 = new UserEntity
-            {
-                PhoneNumber = "+48 278 187 781",
-                DisplayName = "Arslanbek Temirbekov",
-                Id = SeedDataConstants.ArslanbekId,
-                UserName = SeedDataConstants.ArslanbekId,
-                Email = "arslanbek.temirbekov@wp.pl",
-                NormalizedEmail = "ARSLANBEK.TEMIRBEKOV@WP.PL",
-                EmailConfirmed = true,
-                PhoneNumberConfirmed = true,
-            };
-
-            var user9 = new UserEntity
-            {
-                PhoneNumber = "+48 175 481 653",
-                DisplayName = "Serhii Holishevskii",
-                Id = SeedDataConstants.SerhiiId,
-                UserName = SeedDataConstants.SerhiiId,
-                Email = "serhii.holishevskii@wp.pl",
-                NormalizedEmail = "SERHII.HOLISHEVSKII@WP.PL",
                 EmailConfirmed = true,
                 PhoneNumberConfirmed = true,
             };
@@ -144,17 +144,18 @@
                 throw new InvalidOperationException("SEED_PASSWORD_ENV_VARIABLE_ERROR");
             }
 
-            passwordHasher.HashPassword(user1, EnvironmentConstants.SeedPassword);
-            passwordHasher.HashPassword(user2, EnvironmentConstants.SeedPassword);
-            passwordHasher.HashPassword(user3, EnvironmentConstants.SeedPassword);
-            passwordHasher.HashPassword(user4, EnvironmentConstants.SeedPassword);
-            passwordHasher.HashPassword(user5, EnvironmentConstants.SeedPassword);
-            passwordHasher.HashPassword(user6, EnvironmentConstants.SeedPassword);
-            passwordHasher.HashPassword(user7, EnvironmentConstants.SeedPassword);
-            passwordHasher.HashPassword(user8, EnvironmentConstants.SeedPassword);
-            passwordHasher.HashPassword(user9, EnvironmentConstants.SeedPassword);
+            passwordHasher.HashPassword(petroKolosov, EnvironmentConstants.SeedPassword);
+            passwordHasher.HashPassword(szymonMurawski, EnvironmentConstants.SeedPassword);
+            passwordHasher.HashPassword(illiaZubachov, EnvironmentConstants.SeedPassword);
+            passwordHasher.HashPassword(serhiiHolishevskii, EnvironmentConstants.SeedPassword);
+            passwordHasher.HashPassword(arslanbekTemirbekov, EnvironmentConstants.SeedPassword);
+            passwordHasher.HashPassword(khachaturKhachatryan, EnvironmentConstants.SeedPassword);
+            passwordHasher.HashPassword(razumovskyR, EnvironmentConstants.SeedPassword);
+            passwordHasher.HashPassword(kolbasator, EnvironmentConstants.SeedPassword);
+            passwordHasher.HashPassword(amelit, EnvironmentConstants.SeedPassword);
 
-            builder.HasData(user1, user2, user3, user4, user5, user6, user7, user8, user9);
+            builder.HasData(petroKolosov, szymonMurawski, illiaZubachov, serhiiHolishevskii,
+                arslanbekTemirbekov, khachaturKhachatryan, razumovskyR, kolbasator, amelit);
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿namespace MangoAPI.DataAccess.Database.Configurations
 {
+    using System.Collections.Generic;
     using MangoAPI.Domain.Constants;
     using MangoAPI.Domain.Entities;
     using Microsoft.EntityFrameworkCore;
@@ -11,9 +12,8 @@
         {
             builder.HasKey(x => x.Id);
 
-            builder.HasData(
-
-                // Petro Contacts
+            var petroContacts = new List<UserContactEntity>
+            {
                 new UserContactEntity
                 {
                     Id = "3d69d8fc-fffd-4b6e-9978-84d8425340c4",
@@ -38,8 +38,10 @@
                     ContactId = SeedDataConstants.SerhiiId,
                     UserId = SeedDataConstants.PetroId,
                 },
+            };
 
-                // Szymon Contacts
+            var szymonContacts = new List<UserContactEntity>
+            {
                 new UserContactEntity
                 {
                     Id = "fa0622ae-3718-46a9-9a86-4cd3afbbb06e",
@@ -64,8 +66,10 @@
                     ContactId = SeedDataConstants.SerhiiId,
                     UserId = SeedDataConstants.SzymonId,
                 },
+            };
 
-                // Illia Contacts
+            var illiaContacts = new List<UserContactEntity>
+            {
                 new UserContactEntity
                 {
                     Id = "45ee4a8c-f080-4019-af9d-54675aee33b6",
@@ -90,8 +94,10 @@
                     ContactId = SeedDataConstants.SerhiiId,
                     UserId = SeedDataConstants.IlliaId,
                 },
+            };
 
-                // Serhii Contacts
+            var serhiiContacts = new List<UserContactEntity>
+            {
                 new UserContactEntity
                 {
                     Id = "4b00417a-a7f2-4db5-8428-a62369398875",
@@ -116,8 +122,10 @@
                     ContactId = SeedDataConstants.IlliaId,
                     UserId = SeedDataConstants.SerhiiId,
                 },
+            };
 
-                // Arslanbek Contacts
+            var arslanbekContacts = new List<UserContactEntity>
+            {
                 new UserContactEntity
                 {
                     Id = "9c1c1e15-18e8-4a36-b577-a48e534b4328",
@@ -142,38 +150,75 @@
                     ContactId = SeedDataConstants.IlliaId,
                     UserId = SeedDataConstants.ArslanbekId,
                 },
+            };
 
-                // Khachatur Contacts
+            var khachaturContacts = new List<UserContactEntity>
+            {
                 new UserContactEntity
                 {
                     Id = "2f71da07-8dac-4a31-b09e-82940d42e79d",
                     ContactId = SeedDataConstants.RazumovskyId,
                     UserId = SeedDataConstants.KhachaturId,
                 },
+            };
 
-                // Razumovsky Contacts
+            var razumovskyContacts = new List<UserContactEntity>
+            {
                 new UserContactEntity
                 {
                     Id = "950750fc-91af-4bdc-b9cb-46c8b0fd5073",
                     ContactId = SeedDataConstants.KhachaturId,
                     UserId = SeedDataConstants.RazumovskyId,
                 },
+                new UserContactEntity
+                {
+                    Id = "749f45dd-1b9c-4df2-9281-af26bcfe306c",
+                    ContactId = SeedDataConstants.KolbasatorId,
+                    UserId = SeedDataConstants.RazumovskyId,
+                },
+                new UserContactEntity
+                {
+                    Id = "52d58e02-ec2c-4258-8c4d-61aa32afa5fd",
+                    ContactId = SeedDataConstants.AmelitId,
+                    UserId = SeedDataConstants.RazumovskyId,
+                },
+                new UserContactEntity
+                {
+                    Id = "375bd001-961e-4757-ba71-fb0b2f225a25",
+                    ContactId = SeedDataConstants.PetroId,
+                    UserId = SeedDataConstants.RazumovskyId,
+                },
+                new UserContactEntity
+                {
+                    Id = "8c56929c-cdda-4684-810d-7943ed2df3f0",
+                    ContactId = SeedDataConstants.SzymonId,
+                    UserId = SeedDataConstants.RazumovskyId,
+                },
+            };
 
-                // Kolbasator Contacts
+            var kolbasatorContacts = new List<UserContactEntity>
+            {
                 new UserContactEntity
                 {
                     Id = "f11d2294-1db9-41f0-8a40-601800967889",
                     ContactId = SeedDataConstants.KhachaturId,
                     UserId = SeedDataConstants.KolbasatorId,
                 },
+            };
 
-                // Amelit Contacts
+            var amelitContacts = new List<UserContactEntity>
+            {
                 new UserContactEntity
                 {
                     Id = "14b62bb7-bacd-457c-8b2b-c9effc83d838",
                     ContactId = SeedDataConstants.RazumovskyId,
                     UserId = SeedDataConstants.AmelitId,
-                });
+                },
+            };
+
+            builder.HasData(petroContacts, szymonContacts, illiaContacts,
+                serhiiContacts, arslanbekContacts, khachaturContacts,
+                razumovskyContacts, kolbasatorContacts, amelitContacts);
         }
     }
 }
