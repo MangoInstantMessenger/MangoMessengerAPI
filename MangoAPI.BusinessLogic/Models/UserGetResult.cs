@@ -1,0 +1,27 @@
+﻿namespace MangoAPI.BusinessLogic.Models
+{
+    public record UserGetResult
+    {
+        public string DisplayName { get; init; }
+
+        public string FirstName { get; set; }
+
+        public string LastName { get; set; }
+
+        public string BirthdayDate { get; set; }
+
+        public string PhoneNumber { get; set; }
+
+        public string Email { get; set; }
+
+        public string WebSite { get; set; }
+
+        public string Facebook { get; set; }
+
+        public string Twitter { get; set; }
+
+        public string Instagram { get; set; }
+
+        public string LinkedIn { get; set; }
+    }
+}

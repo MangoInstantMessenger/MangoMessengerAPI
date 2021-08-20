@@ -19,7 +19,9 @@
 
         public async Task<GetUserResponse> Handle(GetUserQuery request, CancellationToken cancellationToken)
         {
-            var user = await postgresDbContext.Users.AsNoTracking()
+            var user = await postgresDbContext.Users
+                .Include(x => x.UserInformation)
+                .AsNoTracking()
                 .FirstOrDefaultAsync(x => x.Id == request.UserId, cancellationToken);
 
             return user == null
