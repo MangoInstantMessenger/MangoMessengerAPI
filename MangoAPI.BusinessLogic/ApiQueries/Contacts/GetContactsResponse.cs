@@ -11,22 +11,20 @@
     {
         // ReSharper disable once MemberCanBePrivate.Global
         // ReSharper disable once UnusedAutoPropertyAccessor.Global
-        public List<User> Contacts { get; init; }
+        public List<Contact> Contacts { get; init; }
 
         public static GetContactsResponse FromSuccess(IEnumerable<UserEntity> contacts)
         {
-            return new ()
+            return new()
             {
                 Message = ResponseMessageCodes.Success,
                 Success = true,
                 Contacts = contacts
-                    .Select(contact =>
-                        new User
+                    .Select(userEntity =>
+                        new Contact
                         {
-                            Username = contact.UserName,
-                            DisplayName = contact.DisplayName,
-                            Image = contact.Image,
-                            Bio = contact.Bio,
+                            DisplayName = userEntity.DisplayName,
+                            Address = userEntity.UserInformation.Address,
                         }).ToList(),
             };
         }

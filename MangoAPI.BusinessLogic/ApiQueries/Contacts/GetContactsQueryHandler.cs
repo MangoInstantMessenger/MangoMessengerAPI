@@ -29,7 +29,8 @@
             }
 
             var contacts = await (from userContact in postgresDbContext.UserContacts.AsNoTracking()
-                join userEntity in postgresDbContext.Users on userContact.ContactId equals userEntity.Id
+                join userEntity in postgresDbContext.Users.Include(x => x.UserInformation)
+                    on userContact.ContactId equals userEntity.Id
                 where userContact.UserId == request.UserId
                 select userEntity).ToListAsync(cancellationToken);
 
