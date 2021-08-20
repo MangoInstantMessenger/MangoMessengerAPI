@@ -9,7 +9,7 @@
     {
         // ReSharper disable once UnusedAutoPropertyAccessor.Global
         // ReSharper disable once MemberCanBePrivate.Global
-        public UserGetResult UserSearchResult { get; init; }
+        public UserGetResult User { get; init; }
 
         public static GetUserResponse FromSuccess(UserEntity user)
         {
@@ -17,7 +17,7 @@
             {
                 Message = ResponseMessageCodes.Success,
                 Success = true,
-                UserSearchResult = new UserGetResult
+                User = new UserGetResult
                 {
                     DisplayName = user.DisplayName,
                     FirstName = user.UserInformation.FirstName,
