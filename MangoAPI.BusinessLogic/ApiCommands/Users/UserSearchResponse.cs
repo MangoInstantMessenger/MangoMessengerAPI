@@ -11,7 +11,7 @@
     {
         // ReSharper disable once UnusedAutoPropertyAccessor.Global
         // ReSharper disable once MemberCanBePrivate.Global
-        public List<User> Users { get; init; }
+        public List<UserSearchResult> Users { get; init; }
 
         public static UserSearchResponse FromSuccess(IEnumerable<UserEntity> users)
         {
@@ -20,7 +20,7 @@
                 Message = ResponseMessageCodes.Success,
                 Success = true,
                 Users = users.OrderBy(x => x.DisplayName)
-                    .Select(x => new User
+                    .Select(x => new UserSearchResult
                     {
                         Username = x.UserName,
                         DisplayName = x.DisplayName,

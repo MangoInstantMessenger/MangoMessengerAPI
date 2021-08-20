@@ -1,6 +1,6 @@
 ﻿namespace MangoAPI.BusinessLogic.Models
 {
-    public record User
+    public record UserSearchResult
     {
         // ReSharper disable once UnusedAutoPropertyAccessor.Global
         public string Username { get; init; }

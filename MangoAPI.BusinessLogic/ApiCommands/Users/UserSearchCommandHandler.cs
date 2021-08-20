@@ -20,7 +20,7 @@
         {
             var users = await postgresDbContext.Users
                 .AsNoTracking()
-                .Where(x => x.DisplayName.Contains(request.DisplayName))
+                .Where(x => x.DisplayName.ToUpper().Contains(request.DisplayName.ToUpper()))
                 .ToListAsync(cancellationToken);
 
             return UserSearchResponse.FromSuccess(users);
