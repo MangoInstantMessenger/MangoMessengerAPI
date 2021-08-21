@@ -15,7 +15,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
 
         public string MobileNumber { get; init; }
 
-        public DateTime? BirthDay { get; init; }
+        public DateTime? BirthdayDate { get; init; }
 
         public string Email { get; init; }
 

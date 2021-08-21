@@ -1,7 +1,7 @@
 namespace MangoAPI.BusinessLogic.ApiCommands.Users
 {
-    using System;
     using Newtonsoft.Json;
+    using System;
 
     public record UpdateUserInformationRequest
     {
@@ -10,7 +10,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
             string firstName,
             string lastName,
             string mobileNumber,
-            DateTime? birthDay,
+            DateTime? birthdayDate,
             string email,
             string website,
             string username,
@@ -25,7 +25,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
             FirstName = firstName;
             LastName = lastName;
             MobileNumber = mobileNumber;
-            BirthDay = birthDay;
+            BirthdayDate = birthdayDate;
             Email = email;
             Website = website;
             Username = username;
@@ -42,7 +42,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
         public string LastName { get; }
         public string DisplayName { get; }
         public string MobileNumber { get; }
-        public DateTime? BirthDay { get; }
+        public DateTime? BirthdayDate { get; }
         public string Email { get; }
         public string Website { get; }
         public string Username { get; }
@@ -65,7 +65,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
                 LastName = model.LastName,
                 DisplayName = model.DisplayName,
                 MobileNumber = model.MobileNumber,
-                BirthDay = model.BirthDay,
+                BirthdayDate = model.BirthdayDate,
                 Email = model.Email,
                 Website = model.Website,
                 Username = model.Username,

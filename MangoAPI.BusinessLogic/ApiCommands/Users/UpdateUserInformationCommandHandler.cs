@@ -35,7 +35,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
             user.UserInformation.LastName = request.LastName ?? user.UserInformation.LastName;
             user.DisplayName = request.DisplayName ?? user.DisplayName;
             user.PhoneNumber = request.MobileNumber ?? user.PhoneNumber;
-            user.UserInformation.BirthDay = request.BirthDay ?? user.UserInformation.BirthDay;
+            user.UserInformation.BirthDay = request.BirthdayDate ?? user.UserInformation.BirthDay;
             user.Email = request.Email ?? user.Email;
             user.UserInformation.Website = request.Website ?? user.UserInformation.Website;
             user.UserName = request.Username ?? user.UserName;

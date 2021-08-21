@@ -24,7 +24,7 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Users
                     Address = user.UserInformation.Address,
                     FirstName = user.UserInformation.FirstName,
                     LastName = user.UserInformation.LastName,
-                    BirthdayDate = user.UserInformation.BirthDay?.ToString("MM/dd/yyyy"),
+                    BirthdayDate = user.UserInformation.BirthDay?.ToString("yyyy-MM-dd"),
                     PhoneNumber = user.PhoneNumber,
                     Email = user.Email,
                     WebSite = user.UserInformation.Website,
