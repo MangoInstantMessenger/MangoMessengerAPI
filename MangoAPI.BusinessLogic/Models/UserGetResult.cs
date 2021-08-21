@@ -29,5 +29,7 @@ namespace MangoAPI.BusinessLogic.Models
         public string LinkedIn { get; set; }
 
         public string Username { get; set; }
+
+        public string Bio { get; set; }
     }
 }

@@ -79,6 +79,7 @@ namespace MangoAPI.DataAccess.Database.Configurations
             {
                 PhoneNumber = "+48 743 615 532",
                 DisplayName = "Petro Kolosov",
+                Bio = "Third year student of WSB at Poznan",
                 Id = SeedDataConstants.PetroId,
                 UserName = "petro.kolosov",
                 Email = "petro.kolosov@wp.pl",
@@ -91,6 +92,7 @@ namespace MangoAPI.DataAccess.Database.Configurations
             {
                 PhoneNumber = "+48 743 615 532",
                 DisplayName = "Szymon Murawski",
+                Bio = "Teacher of Computer Science at WSB Poznan",
                 Id = SeedDataConstants.SzymonId,
                 UserName = "szymon.murawski",
                 Email = "szymon.murawski@wp.pl",
@@ -103,6 +105,7 @@ namespace MangoAPI.DataAccess.Database.Configurations
             {
                 PhoneNumber = "+48 352 643 123",
                 DisplayName = "Illia Zubachov",
+                Bio = "Third year student of WSB at Poznan",
                 Id = SeedDataConstants.IlliaId,
                 UserName = "illia.zubachov",
                 Email = "illia.zubachov@wp.pl",
@@ -115,6 +118,7 @@ namespace MangoAPI.DataAccess.Database.Configurations
             {
                 PhoneNumber = "+48 278 187 781",
                 DisplayName = "Arslanbek Temirbekov",
+                Bio = "Third year student of WSB at Poznan",
                 Id = SeedDataConstants.ArslanbekId,
                 UserName = "arslanbek.temirbekov",
                 Email = "arslanbek.temirbekov@wp.pl",
@@ -127,6 +131,7 @@ namespace MangoAPI.DataAccess.Database.Configurations
             {
                 PhoneNumber = "+48 175 481 653",
                 DisplayName = "Serhii Holishevskii",
+                Bio = "Third year student of WSB at Poznan",
                 Id = SeedDataConstants.SerhiiId,
                 UserName = "serhii.holishevskii",
                 Email = "serhii.holishevskii@wp.pl",

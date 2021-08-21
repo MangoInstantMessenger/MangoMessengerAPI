@@ -33,6 +33,7 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Users
                     Instagram = user.UserInformation.Instagram,
                     LinkedIn = user.UserInformation.LinkedIn,
                     Username = user.UserName,
+                    Bio = user.Bio,
                 },
             };
         }
