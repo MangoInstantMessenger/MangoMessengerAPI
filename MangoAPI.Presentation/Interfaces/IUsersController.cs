@@ -13,6 +13,8 @@
 
         Task<IActionResult> PhoneConfirmationAsync(int phoneCode, CancellationToken cancellationToken);
 
+        Task<IActionResult> ChangePassword(ChangePasswordRequest request, CancellationToken cancellationToken);
+
         Task<IActionResult> GetUserById(string userId, CancellationToken cancellationToken);
 
         Task<IActionResult> SearchesAsync(string displayName, CancellationToken cancellationToken);

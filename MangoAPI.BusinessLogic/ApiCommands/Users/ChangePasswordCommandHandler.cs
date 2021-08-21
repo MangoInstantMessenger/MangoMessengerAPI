@@ -24,21 +24,30 @@
 
         public async Task<ChangePasswordResponse> Handle(ChangePasswordCommand request, CancellationToken cancellationToken)
         {
-            var user = await postgresDbContext.Users.FirstOrDefaultAsync(x => x.Id == request.UserId);
+            var user = await postgresDbContext.Users.FirstOrDefaultAsync(x => x.Id == request.UserId, cancellationToken);
 
             if (user is null)
             {
                 throw new BusinessException(ResponseMessageCodes.UserNotFound);
             }
 
-            var token = await userManager.GeneratePasswordResetTokenAsync(user);
+            var currentPasswordVerified = await userManager.CheckPasswordAsync(user, request.CurrentPassword);
 
-            var result = await userManager.ResetPasswordAsync(user, token, request.NewPassword);
+            if (!currentPasswordVerified)
+            {
+                throw new BusinessException(ResponseMessageCodes.InvalidCredentials);
+            }
+            
+            await userManager.RemovePasswordAsync(user);
+
+            var result = await userManager.AddPasswordAsync(user, request.NewPassword);
 
             if (!result.Succeeded)
             {
                 throw new BusinessException(ResponseMessageCodes.WeakPassword);
             }
+            
+            await postgresDbContext.SaveChangesAsync(cancellationToken);
 
             return ChangePasswordResponse.SuccessResponse;
         }
