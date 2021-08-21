@@ -1,8 +1,9 @@
-﻿namespace MangoAPI.BusinessLogic.Models
+namespace MangoAPI.BusinessLogic.Models
 {
     public record UserGetResult
     {
         public string UserId { get; set; }
+
         public string DisplayName { get; init; }
 
         public string Address { get; set; }
@@ -26,5 +27,7 @@
         public string Instagram { get; set; }
 
         public string LinkedIn { get; set; }
+
+        public string Username { get; set; }
     }
 }
