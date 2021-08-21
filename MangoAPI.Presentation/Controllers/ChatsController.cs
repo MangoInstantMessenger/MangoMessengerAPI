@@ -2,11 +2,11 @@
 {
     using System.Threading;
     using System.Threading.Tasks;
-    using MangoAPI.BusinessLogic.ApiCommands.Chats;
-    using MangoAPI.BusinessLogic.ApiQueries.Chats;
-    using MangoAPI.BusinessLogic.Responses;
-    using MangoAPI.Presentation.Extensions;
-    using MangoAPI.Presentation.Interfaces;
+    using BusinessLogic.ApiCommands.Chats;
+    using BusinessLogic.ApiQueries.Chats;
+    using BusinessLogic.Responses;
+    using Extensions;
+    using Interfaces;
     using MediatR;
     using Microsoft.AspNetCore.Authentication.JwtBearer;
     using Microsoft.AspNetCore.Authorization;

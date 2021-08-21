@@ -2,10 +2,10 @@
 {
     using System.Collections.Generic;
     using System.Linq;
-    using MangoAPI.BusinessLogic.Models;
-    using MangoAPI.BusinessLogic.Responses;
-    using MangoAPI.Domain.Constants;
-    using MangoAPI.Domain.Entities;
+    using Models;
+    using Responses;
+    using Domain.Constants;
+    using Domain.Entities;
 
     public record SearchChatsResponse : ChatResponseBase<SearchChatsResponse>
     {

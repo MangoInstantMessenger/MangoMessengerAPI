@@ -4,8 +4,8 @@
     using System.Net;
     using System.Threading.Tasks;
     using FluentValidation;
-    using MangoAPI.BusinessLogic.BusinessExceptions;
-    using MangoAPI.BusinessLogic.Responses;
+    using BusinessLogic.BusinessExceptions;
+    using BusinessLogic.Responses;
     using Microsoft.AspNetCore.Http;
 
     public class ExceptionMiddleware

@@ -1,3 +1,5 @@
+using System.Globalization;
+
 namespace MangoAPI.Tests.ApiCommandsTests.Users
 {
     using System;
@@ -5,8 +7,8 @@ namespace MangoAPI.Tests.ApiCommandsTests.Users
     using System.Threading.Tasks;
     using FluentAssertions;
     using MangoAPI.BusinessLogic.ApiCommands.Users;
-    using MangoAPI.BusinessLogic.BusinessExceptions;
-    using MangoAPI.Domain.Constants;
+    using BusinessLogic.BusinessExceptions;
+    using Domain.Constants;
     using NUnit.Framework;
 
     [TestFixture]
@@ -22,7 +24,7 @@ namespace MangoAPI.Tests.ApiCommandsTests.Users
                 UserId = "1",
                 FirstName = "Szymon",
                 LastName = "Murawski",
-                BirthdayDate = new DateTime(1987, 2, 14).ToString(),
+                BirthdayDate = new DateTime(1987, 2, 14).ToString(CultureInfo.CurrentCulture),
                 Address = "Poland, Poznan",
                 Facebook = "szymon.murawski",
                 Instagram = "szymon.murawski",
@@ -44,7 +46,7 @@ namespace MangoAPI.Tests.ApiCommandsTests.Users
                 UserId = "24",
                 FirstName = "First Name",
                 LastName = "Last Name",
-                BirthdayDate = new DateTime(1999, 1, 1).ToString(),
+                BirthdayDate = new DateTime(1999, 1, 1).ToString(CultureInfo.CurrentCulture),
                 Address = "Address",
                 Facebook = "Facebook",
                 Instagram = "Instagram",

@@ -1,8 +1,8 @@
 ﻿namespace MangoAPI.BusinessLogic.ApiCommands.Chats
 {
-    using MangoAPI.BusinessLogic.Responses;
-    using MangoAPI.Domain.Constants;
-    using MangoAPI.Domain.Entities;
+    using Responses;
+    using Domain.Constants;
+    using Domain.Entities;
 
     public record CreateChatEntityResponse : ChatResponseBase<CreateChatEntityResponse>
     {

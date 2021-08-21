@@ -1,6 +1,6 @@
 ﻿namespace MangoAPI.BusinessLogic.ApiCommands.Users
 {
-    using MangoAPI.BusinessLogic.Responses;
+    using Responses;
 
     public record VerifyEmailResponse : AuthResponseBase<VerifyEmailResponse>;
 }

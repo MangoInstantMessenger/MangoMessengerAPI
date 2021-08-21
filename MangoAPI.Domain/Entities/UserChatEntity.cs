@@ -1,6 +1,6 @@
 ﻿namespace MangoAPI.Domain.Entities
 {
-    using MangoAPI.Domain.Enums;
+    using Enums;
 
     public sealed class UserChatEntity
     {

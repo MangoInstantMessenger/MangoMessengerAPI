@@ -4,11 +4,11 @@
     using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
-    using MangoAPI.Application.Interfaces;
-    using MangoAPI.BusinessLogic.BusinessExceptions;
-    using MangoAPI.DataAccess.Database;
-    using MangoAPI.Domain.Constants;
-    using MangoAPI.Domain.Entities;
+    using Application.Interfaces;
+    using BusinessExceptions;
+    using DataAccess.Database;
+    using Domain.Constants;
+    using Domain.Entities;
     using MediatR;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.EntityFrameworkCore;

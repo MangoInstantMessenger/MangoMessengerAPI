@@ -2,7 +2,7 @@
 {
     using System.Threading;
     using System.Threading.Tasks;
-    using MangoAPI.BusinessLogic.ApiCommands.Chats;
+    using BusinessLogic.ApiCommands.Chats;
     using Microsoft.AspNetCore.Mvc;
 
     public interface IChatsController

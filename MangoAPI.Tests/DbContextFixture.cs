@@ -2,9 +2,9 @@
 {
     using System;
     using System.Collections.Generic;
-    using MangoAPI.DataAccess.Database;
-    using MangoAPI.Domain.Entities;
-    using MangoAPI.Domain.Enums;
+    using DataAccess.Database;
+    using Domain.Entities;
+    using Domain.Enums;
     using Microsoft.EntityFrameworkCore;
 
     public class DbContextFixture : IDisposable

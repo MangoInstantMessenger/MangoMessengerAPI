@@ -1,6 +1,6 @@
 ﻿namespace MangoAPI.Presentation.Extensions
 {
-    using MangoAPI.Presentation.Middlewares;
+    using Middlewares;
     using Microsoft.AspNetCore.Builder;
 
     public static class ExceptionMiddlewareExtensions
