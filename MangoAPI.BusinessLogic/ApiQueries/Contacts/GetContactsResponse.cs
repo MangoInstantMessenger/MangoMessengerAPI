@@ -15,7 +15,7 @@
 
         public static GetContactsResponse FromSuccess(IEnumerable<UserEntity> contacts)
         {
-            return new()
+            return new ()
             {
                 Message = ResponseMessageCodes.Success,
                 Success = true,

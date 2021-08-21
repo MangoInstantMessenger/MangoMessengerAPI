@@ -13,7 +13,7 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Users
 
         public static GetUserResponse FromSuccess(UserEntity user)
         {
-            return new()
+            return new ()
             {
                 Message = ResponseMessageCodes.Success,
                 Success = true,
