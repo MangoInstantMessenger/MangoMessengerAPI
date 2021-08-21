@@ -1,4 +1,4 @@
-﻿namespace MangoAPI.BusinessLogic.ApiQueries.Users
+namespace MangoAPI.BusinessLogic.ApiQueries.Users
 {
     using MangoAPI.BusinessLogic.Models;
     using MangoAPI.BusinessLogic.Responses;
@@ -32,6 +32,7 @@
                     Twitter = user.UserInformation.Twitter,
                     Instagram = user.UserInformation.Instagram,
                     LinkedIn = user.UserInformation.LinkedIn,
+                    Username = user.UserName,
                 },
             };
         }
