@@ -1,6 +1,6 @@
 ﻿namespace MangoAPI.BusinessLogic.Responses
 {
-    using MangoAPI.Domain.Constants;
+    using Domain.Constants;
 
     public abstract record ResponseBase
     {

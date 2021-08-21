@@ -1,7 +1,7 @@
 ﻿namespace MangoAPI.Presentation.Extensions
 {
-    using MangoAPI.DataAccess.Database;
-    using MangoAPI.Domain.Entities;
+    using DataAccess.Database;
+    using Domain.Entities;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.Extensions.DependencyInjection;
 

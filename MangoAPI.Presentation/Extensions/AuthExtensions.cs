@@ -1,7 +1,7 @@
 ﻿namespace MangoAPI.Presentation.Extensions
 {
     using System.Text;
-    using MangoAPI.Domain.Constants;
+    using Domain.Constants;
     using Microsoft.AspNetCore.Authentication.JwtBearer;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.Extensions.DependencyInjection;

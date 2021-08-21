@@ -1,10 +1,11 @@
-﻿namespace MangoAPI.BusinessLogic.ApiCommands.Users
+namespace MangoAPI.BusinessLogic.ApiCommands.Users
 {
+    using System;
     using System.Threading;
     using System.Threading.Tasks;
-    using MangoAPI.BusinessLogic.BusinessExceptions;
-    using MangoAPI.DataAccess.Database;
-    using MangoAPI.Domain.Constants;
+    using BusinessExceptions;
+    using DataAccess.Database;
+    using Domain.Constants;
     using MediatR;
     using Microsoft.EntityFrameworkCore;
 
@@ -31,19 +32,24 @@
                 throw new BusinessException(ResponseMessageCodes.UserNotFound);
             }
 
-            user.UserInformation.FirstName = request.FirstName;
-            user.UserInformation.LastName = request.LastName;
-            user.UserInformation.BirthDay = request.BirthDay;
+            user.UserInformation.FirstName = request.FirstName ?? user.UserInformation.FirstName;
+            user.UserInformation.LastName = request.LastName ?? user.UserInformation.LastName;
+            user.DisplayName = request.DisplayName ?? user.DisplayName;
+            user.PhoneNumber = request.PhoneNumber ?? user.PhoneNumber;
 
-            user.UserInformation.Website = request.Website;
-            user.UserInformation.Address = request.Address;
+            user.UserInformation.BirthDay = DateTime.TryParse(request.BirthdayDate, out var newDate)
+                ? newDate
+                : user.UserInformation.BirthDay;
 
-            user.UserInformation.Facebook = request.Facebook;
-            user.UserInformation.Twitter = request.Twitter;
-            user.UserInformation.Instagram = request.Instagram;
-            user.UserInformation.LinkedIn = request.LinkedIn;
-
-            user.UserInformation.ProfilePicture = request.ProfilePicture;
+            user.Email = request.Email ?? user.Email;
+            user.UserInformation.Website = request.Website ?? user.UserInformation.Website;
+            user.UserName = request.Username ?? user.UserName;
+            user.Bio = request.Bio ?? user.Bio;
+            user.UserInformation.Address = request.Address ?? user.UserInformation.Address;
+            user.UserInformation.Facebook = request.Facebook ?? user.UserInformation.Facebook;
+            user.UserInformation.Twitter = request.Twitter ?? user.UserInformation.Twitter;
+            user.UserInformation.Instagram = request.Instagram ?? user.UserInformation.Instagram;
+            user.UserInformation.LinkedIn = request.LinkedIn ?? user.UserInformation.LinkedIn;
 
             postgresDbContext.UserInformation.Update(user.UserInformation);
             await postgresDbContext.SaveChangesAsync(cancellationToken);

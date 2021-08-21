@@ -5,9 +5,9 @@
     using System.IdentityModel.Tokens.Jwt;
     using System.Security.Claims;
     using System.Text;
-    using MangoAPI.Application.Interfaces;
-    using MangoAPI.Domain.Constants;
-    using MangoAPI.Domain.Entities;
+    using Interfaces;
+    using Domain.Constants;
+    using Domain.Entities;
     using Microsoft.IdentityModel.Tokens;
     using JwtRegisteredClaimNames = Microsoft.IdentityModel.JsonWebTokens.JwtRegisteredClaimNames;
 

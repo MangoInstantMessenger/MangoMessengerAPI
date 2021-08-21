@@ -1,8 +1,8 @@
 ﻿namespace MangoAPI.DataAccess.Database
 {
     using System;
-    using MangoAPI.Application.Services;
-    using MangoAPI.Domain.Constants;
+    using Application.Services;
+    using Domain.Constants;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore.Design;
 

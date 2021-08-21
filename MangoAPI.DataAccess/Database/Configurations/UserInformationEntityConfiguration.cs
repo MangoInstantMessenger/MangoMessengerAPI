@@ -1,8 +1,8 @@
-﻿namespace MangoAPI.DataAccess.Database.Configurations
+namespace MangoAPI.DataAccess.Database.Configurations
 {
     using System;
-    using MangoAPI.Domain.Constants;
-    using MangoAPI.Domain.Entities;
+    using Domain.Constants;
+    using Domain.Entities;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -22,6 +22,8 @@
                     Website = "petro.kolosov.com",
                     Instagram = "petro.kolosov",
                     LinkedIn = "petro.kolosov",
+                    Facebook = "petro.kolosov",
+                    Twitter = "petro.kolosov",
                     Address = "Poznan, Poland",
                 },
                 new UserInformationEntity

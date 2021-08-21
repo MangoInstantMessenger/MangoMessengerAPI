@@ -3,9 +3,9 @@
     using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
-    using MangoAPI.BusinessLogic.BusinessExceptions;
-    using MangoAPI.DataAccess.Database;
-    using MangoAPI.Domain.Constants;
+    using BusinessExceptions;
+    using DataAccess.Database;
+    using Domain.Constants;
     using MediatR;
     using Microsoft.EntityFrameworkCore;
 

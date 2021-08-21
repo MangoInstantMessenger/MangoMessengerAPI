@@ -2,7 +2,7 @@
 {
     using System.Threading;
     using System.Threading.Tasks;
-    using MangoAPI.BusinessLogic.ApiCommands.Messages;
+    using BusinessLogic.ApiCommands.Messages;
     using Microsoft.AspNetCore.Mvc;
 
     public interface IMessagesController

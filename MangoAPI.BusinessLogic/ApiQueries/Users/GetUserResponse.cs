@@ -1,9 +1,9 @@
-namespace MangoAPI.BusinessLogic.ApiQueries.Users
+﻿namespace MangoAPI.BusinessLogic.ApiQueries.Users
 {
-    using MangoAPI.BusinessLogic.Models;
-    using MangoAPI.BusinessLogic.Responses;
-    using MangoAPI.Domain.Constants;
-    using MangoAPI.Domain.Entities;
+    using Models;
+    using Responses;
+    using Domain.Constants;
+    using Domain.Entities;
 
     public record GetUserResponse : ResponseBase<GetUserResponse>
     {
@@ -24,10 +24,10 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Users
                     Address = user.UserInformation.Address,
                     FirstName = user.UserInformation.FirstName,
                     LastName = user.UserInformation.LastName,
-                    BirthdayDate = user.UserInformation.BirthDay?.ToString("MM/dd/yyyy"),
+                    BirthdayDate = user.UserInformation.BirthDay?.ToString("yyyy-MM-dd"),
                     PhoneNumber = user.PhoneNumber,
                     Email = user.Email,
-                    WebSite = user.UserInformation.Website,
+                    Website = user.UserInformation.Website,
                     Facebook = user.UserInformation.Facebook,
                     Twitter = user.UserInformation.Twitter,
                     Instagram = user.UserInformation.Instagram,

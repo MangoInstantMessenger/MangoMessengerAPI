@@ -1,8 +1,8 @@
 ﻿namespace MangoAPI.Presentation.Extensions
 {
     using FluentValidation;
-    using MangoAPI.BusinessLogic.ApiCommands.Sessions;
-    using MangoAPI.BusinessLogic.Pipelines;
+    using BusinessLogic.ApiCommands.Sessions;
+    using BusinessLogic.Pipelines;
     using MediatR;
     using Microsoft.Extensions.DependencyInjection;
 

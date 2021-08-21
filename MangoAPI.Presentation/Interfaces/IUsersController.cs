@@ -2,7 +2,7 @@
 {
     using System.Threading;
     using System.Threading.Tasks;
-    using MangoAPI.BusinessLogic.ApiCommands.Users;
+    using BusinessLogic.ApiCommands.Users;
     using Microsoft.AspNetCore.Mvc;
 
     public interface IUsersController

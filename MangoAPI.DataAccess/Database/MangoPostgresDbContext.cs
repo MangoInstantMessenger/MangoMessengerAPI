@@ -1,7 +1,7 @@
 ﻿namespace MangoAPI.DataAccess.Database
 {
     using System.Reflection;
-    using MangoAPI.Domain.Entities;
+    using Domain.Entities;
     using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore;
 

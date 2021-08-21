@@ -1,6 +1,6 @@
 ﻿namespace MangoAPI.Application.Services
 {
-    using MangoAPI.Domain.Entities;
+    using Domain.Entities;
     using Microsoft.AspNetCore.Identity;
 
     public class PasswordHashService : PasswordHasher<UserEntity>

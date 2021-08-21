@@ -1,12 +1,14 @@
-﻿namespace MangoAPI.Tests.ApiCommandsTests.Users
+using System.Globalization;
+
+namespace MangoAPI.Tests.ApiCommandsTests.Users
 {
     using System;
     using System.Threading;
     using System.Threading.Tasks;
     using FluentAssertions;
     using MangoAPI.BusinessLogic.ApiCommands.Users;
-    using MangoAPI.BusinessLogic.BusinessExceptions;
-    using MangoAPI.Domain.Constants;
+    using BusinessLogic.BusinessExceptions;
+    using Domain.Constants;
     using NUnit.Framework;
 
     [TestFixture]
@@ -21,13 +23,12 @@
             {
                 UserId = "1",
                 FirstName = "Szymon",
-                LastName = "Murawsky",
-                BirthDay = new DateTime(1987, 2, 14),
-                Address = "Poland, Lvov",
+                LastName = "Murawski",
+                BirthdayDate = new DateTime(1987, 2, 14).ToString(CultureInfo.CurrentCulture),
+                Address = "Poland, Poznan",
                 Facebook = "szymon.murawski",
                 Instagram = "szymon.murawski",
                 LinkedIn = "szymon.murawski",
-                ProfilePicture = "image.jpg",
             };
 
             var result = await handler.Handle(command, CancellationToken.None);
@@ -45,12 +46,11 @@
                 UserId = "24",
                 FirstName = "First Name",
                 LastName = "Last Name",
-                BirthDay = new DateTime(1999, 1, 1),
+                BirthdayDate = new DateTime(1999, 1, 1).ToString(CultureInfo.CurrentCulture),
                 Address = "Address",
                 Facebook = "Facebook",
                 Instagram = "Instagram",
                 LinkedIn = "LinkedIn",
-                ProfilePicture = "Profile Picture",
             };
 
             Func<Task> result = async () => await handler.Handle(command, CancellationToken.None);
