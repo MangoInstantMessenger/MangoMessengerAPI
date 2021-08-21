@@ -4,32 +4,32 @@ namespace MangoAPI.BusinessLogic.Models
     {
         public string UserId { get; set; }
 
+        public string FirstName { get; init; }
+
+        public string LastName { get; init; }
+
         public string DisplayName { get; init; }
 
-        public string Address { get; set; }
+        public string PhoneNumber { get; init; }
 
-        public string FirstName { get; set; }
+        public string BirthdayDate { get; init; }
 
-        public string LastName { get; set; }
+        public string Email { get; init; }
 
-        public string BirthdayDate { get; set; }
+        public string Website { get; init; }
 
-        public string PhoneNumber { get; set; }
+        public string Username { get; init; }
 
-        public string Email { get; set; }
+        public string Bio { get; init; }
 
-        public string WebSite { get; set; }
+        public string Address { get; init; }
 
-        public string Facebook { get; set; }
+        public string Facebook { get; init; }
 
-        public string Twitter { get; set; }
+        public string Twitter { get; init; }
 
-        public string Instagram { get; set; }
+        public string Instagram { get; init; }
 
-        public string LinkedIn { get; set; }
-
-        public string Username { get; set; }
-
-        public string Bio { get; set; }
+        public string LinkedIn { get; init; }
     }
 }

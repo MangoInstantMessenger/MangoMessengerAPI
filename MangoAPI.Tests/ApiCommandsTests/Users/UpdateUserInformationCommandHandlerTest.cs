@@ -22,11 +22,11 @@ namespace MangoAPI.Tests.ApiCommandsTests.Users
                 UserId = "1",
                 FirstName = "Szymon",
                 LastName = "Murawski",
-                BirthdayDate = new DateTime(1987, 2, 14),
+                BirthdayDate = new DateTime(1987, 2, 14).ToString(),
                 Address = "Poland, Poznan",
                 Facebook = "szymon.murawski",
                 Instagram = "szymon.murawski",
-                LinkedIn = "szymon.murawski"
+                LinkedIn = "szymon.murawski",
             };
 
             var result = await handler.Handle(command, CancellationToken.None);
@@ -44,7 +44,7 @@ namespace MangoAPI.Tests.ApiCommandsTests.Users
                 UserId = "24",
                 FirstName = "First Name",
                 LastName = "Last Name",
-                BirthdayDate = new DateTime(1999, 1, 1),
+                BirthdayDate = new DateTime(1999, 1, 1).ToString(),
                 Address = "Address",
                 Facebook = "Facebook",
                 Instagram = "Instagram",

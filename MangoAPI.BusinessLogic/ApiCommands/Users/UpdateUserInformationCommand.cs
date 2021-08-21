@@ -1,6 +1,5 @@
 namespace MangoAPI.BusinessLogic.ApiCommands.Users
 {
-    using System;
     using MediatR;
 
     public class UpdateUserInformationCommand : IRequest<UpdateUserInformationResponse>
@@ -11,11 +10,11 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
 
         public string LastName { get; init; }
 
-        public string DisplayName { get; set; }
+        public string DisplayName { get; init; }
 
-        public string MobileNumber { get; init; }
+        public string PhoneNumber { get; init; }
 
-        public DateTime? BirthdayDate { get; init; }
+        public string BirthdayDate { get; init; }
 
         public string Email { get; init; }
 

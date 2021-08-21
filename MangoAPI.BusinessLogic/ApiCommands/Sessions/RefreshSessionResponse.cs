@@ -1,4 +1,4 @@
-﻿namespace MangoAPI.BusinessLogic.ApiCommands.Sessions
+namespace MangoAPI.BusinessLogic.ApiCommands.Sessions
 {
     using MangoAPI.BusinessLogic.Responses;
     using MangoAPI.Domain.Constants;
@@ -7,15 +7,15 @@
     {
         // ReSharper disable once MemberCanBePrivate.Global
         // ReSharper disable once UnusedAutoPropertyAccessor.Global
-        public string RefreshToken { get; init; }
+        public string AccessToken { get; init; }
 
         // ReSharper disable once MemberCanBePrivate.Global
         // ReSharper disable once UnusedAutoPropertyAccessor.Global
-        public string AccessToken { get; init; }
+        public string RefreshToken { get; init; }
 
         public static RefreshSessionResponse FromSuccess(string accessToken, string refreshToken)
         {
-            return new ()
+            return new()
             {
                 AccessToken = accessToken,
                 RefreshToken = refreshToken,
