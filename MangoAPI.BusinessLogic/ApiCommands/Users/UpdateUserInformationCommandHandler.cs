@@ -1,4 +1,4 @@
-﻿namespace MangoAPI.BusinessLogic.ApiCommands.Users
+namespace MangoAPI.BusinessLogic.ApiCommands.Users
 {
     using System.Threading;
     using System.Threading.Tasks;
@@ -31,19 +31,20 @@
                 throw new BusinessException(ResponseMessageCodes.UserNotFound);
             }
 
-            user.UserInformation.FirstName = request.FirstName;
-            user.UserInformation.LastName = request.LastName;
-            user.UserInformation.BirthDay = request.BirthDay;
-
-            user.UserInformation.Website = request.Website;
-            user.UserInformation.Address = request.Address;
-
-            user.UserInformation.Facebook = request.Facebook;
-            user.UserInformation.Twitter = request.Twitter;
-            user.UserInformation.Instagram = request.Instagram;
-            user.UserInformation.LinkedIn = request.LinkedIn;
-
-            user.UserInformation.ProfilePicture = request.ProfilePicture;
+            user.UserInformation.FirstName = request.FirstName ?? user.UserInformation.FirstName;
+            user.UserInformation.LastName = request.LastName ?? user.UserInformation.LastName;
+            user.DisplayName = request.DisplayName ?? user.DisplayName;
+            user.PhoneNumber = request.MobileNumber ?? user.PhoneNumber;
+            user.UserInformation.BirthDay = request.BirthDay ?? user.UserInformation.BirthDay;
+            user.Email = request.Email ?? user.Email;
+            user.UserInformation.Website = request.Website ?? user.UserInformation.Website;
+            user.UserName = request.Username ?? user.UserName;
+            user.Bio = request.Bio ?? user.Bio;
+            user.UserInformation.Address = request.Address ?? user.UserInformation.Address;
+            user.UserInformation.Facebook = request.Facebook ?? user.UserInformation.Facebook;
+            user.UserInformation.Twitter = request.Twitter ?? user.UserInformation.Twitter;
+            user.UserInformation.Instagram = request.Instagram ?? user.UserInformation.Instagram;
+            user.UserInformation.LinkedIn = request.LinkedIn ?? user.UserInformation.LinkedIn;
 
             postgresDbContext.UserInformation.Update(user.UserInformation);
             await postgresDbContext.SaveChangesAsync(cancellationToken);
