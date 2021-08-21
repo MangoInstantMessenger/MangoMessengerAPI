@@ -2,7 +2,7 @@
 {
     using System.Threading;
     using System.Threading.Tasks;
-    using MangoAPI.Domain.Entities;
+    using Domain.Entities;
 
     public interface IEmailSenderService
     {

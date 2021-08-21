@@ -3,7 +3,7 @@
     using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
-    using MangoAPI.DataAccess.Database;
+    using DataAccess.Database;
     using MangoAPI.Domain.Enums;
     using MediatR;
     using Microsoft.EntityFrameworkCore;

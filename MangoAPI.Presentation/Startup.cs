@@ -1,7 +1,7 @@
 namespace MangoAPI.Presentation
 {
     using System;
-    using MangoAPI.Presentation.Extensions;
+    using Extensions;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.HttpOverrides;

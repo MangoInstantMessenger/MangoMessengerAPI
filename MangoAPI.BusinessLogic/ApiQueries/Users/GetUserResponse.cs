@@ -1,9 +1,9 @@
-namespace MangoAPI.BusinessLogic.ApiQueries.Users
+﻿namespace MangoAPI.BusinessLogic.ApiQueries.Users
 {
-    using MangoAPI.BusinessLogic.Models;
-    using MangoAPI.BusinessLogic.Responses;
-    using MangoAPI.Domain.Constants;
-    using MangoAPI.Domain.Entities;
+    using Models;
+    using Responses;
+    using Domain.Constants;
+    using Domain.Entities;
 
     public record GetUserResponse : ResponseBase<GetUserResponse>
     {

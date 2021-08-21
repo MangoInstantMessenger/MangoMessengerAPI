@@ -1,8 +1,8 @@
 ﻿namespace MangoAPI.Presentation.Extensions
 {
     using MangoAPI.Application.Interfaces;
-    using MangoAPI.Application.Services;
-    using MangoAPI.BusinessLogic.ApiCommands.Users;
+    using Application.Services;
+    using BusinessLogic.ApiCommands.Users;
     using MediatR;
     using Microsoft.Extensions.DependencyInjection;
 

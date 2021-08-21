@@ -1,7 +1,7 @@
 ﻿namespace MangoAPI.BusinessLogic.ApiCommands.Sessions
 {
-    using MangoAPI.BusinessLogic.Responses;
-    using MangoAPI.Domain.Constants;
+    using Responses;
+    using Domain.Constants;
 
     public record LoginResponse : ResponseBase<LoginResponse>
     {

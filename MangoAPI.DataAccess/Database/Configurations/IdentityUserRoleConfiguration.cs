@@ -1,6 +1,6 @@
 ﻿namespace MangoAPI.DataAccess.Database.Configurations
 {
-    using MangoAPI.Domain.Constants;
+    using Domain.Constants;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore.Metadata.Builders;

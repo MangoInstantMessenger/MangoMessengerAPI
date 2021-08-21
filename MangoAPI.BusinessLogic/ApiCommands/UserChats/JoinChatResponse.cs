@@ -1,6 +1,6 @@
 ﻿namespace MangoAPI.BusinessLogic.ApiCommands.UserChats
 {
-    using MangoAPI.BusinessLogic.Responses;
+    using Responses;
 
     public record JoinChatResponse : ChatResponseBase<JoinChatResponse>;
 }

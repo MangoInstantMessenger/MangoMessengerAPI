@@ -4,7 +4,7 @@ namespace MangoAPI.Domain.Entities
 {
     using System;
     using System.Collections.Generic;
-    using MangoAPI.Domain.Enums;
+    using Enums;
 
     public sealed class ChatEntity
     {

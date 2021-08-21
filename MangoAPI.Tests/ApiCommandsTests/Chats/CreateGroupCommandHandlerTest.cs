@@ -5,9 +5,9 @@
     using System.Threading.Tasks;
     using FluentAssertions;
     using MangoAPI.BusinessLogic.ApiCommands.Chats;
-    using MangoAPI.BusinessLogic.BusinessExceptions;
-    using MangoAPI.Domain.Constants;
-    using MangoAPI.Domain.Enums;
+    using BusinessLogic.BusinessExceptions;
+    using Domain.Constants;
+    using Domain.Enums;
     using NUnit.Framework;
 
     [TestFixture]

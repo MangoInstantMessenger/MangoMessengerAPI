@@ -5,8 +5,8 @@
     using System.Threading.Tasks;
     using FluentAssertions;
     using MangoAPI.BusinessLogic.ApiCommands.Messages;
-    using MangoAPI.BusinessLogic.BusinessExceptions;
-    using MangoAPI.Domain.Constants;
+    using BusinessLogic.BusinessExceptions;
+    using Domain.Constants;
     using NUnit.Framework;
 
     [TestFixture]

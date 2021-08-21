@@ -1,9 +1,9 @@
 ﻿namespace MangoAPI.DataAccess.Database.Configurations
 {
     using System;
-    using MangoAPI.Domain.Constants;
-    using MangoAPI.Domain.Entities;
-    using MangoAPI.Domain.Enums;
+    using Domain.Constants;
+    using Domain.Entities;
+    using Domain.Enums;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore.Metadata.Builders;
 

@@ -1,7 +1,7 @@
 ﻿namespace MangoAPI.Application.Interfaces
 {
     using System.Collections.Generic;
-    using MangoAPI.Domain.Entities;
+    using Domain.Entities;
 
     public interface IJwtGenerator
     {

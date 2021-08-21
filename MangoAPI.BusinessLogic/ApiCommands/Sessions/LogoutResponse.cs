@@ -1,6 +1,6 @@
 ﻿namespace MangoAPI.BusinessLogic.ApiCommands.Sessions
 {
-    using MangoAPI.BusinessLogic.Responses;
+    using Responses;
 
     public record LogoutResponse : AuthResponseBase<LogoutResponse>;
 }
