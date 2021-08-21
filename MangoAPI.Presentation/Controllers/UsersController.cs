@@ -112,6 +112,28 @@
         }
 
         /// <summary>
+        /// Changes password by current password. Required role: User.
+        /// </summary>
+        /// <param name="request">Request instance.</param>
+        /// <param name="cancellationToken">Cancellation Token Instance.</param>
+        /// <returns></returns>
+        [HttpPut("password")]
+        [Authorize(Roles = "User")]
+        [SwaggerOperation(Summary = "Changes password by current password. Required role: User")]
+        [ProducesResponseType(typeof(GetUserResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        public async Task<IActionResult> ChangePassword([FromBody] ChangePasswordRequest request, 
+            CancellationToken cancellationToken)
+        {
+            var userId = HttpContext.User.GetUserId();
+            var command = request.ToCommand(userId);
+
+            return await RequestAsync(command, cancellationToken);
+        }
+
+        /// <summary>
         /// Gets user by ID. Requires role: User.
         /// </summary>
         /// <param name="userId">ID of the user to get, UUID.</param>

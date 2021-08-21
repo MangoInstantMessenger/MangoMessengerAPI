@@ -12,6 +12,7 @@
             builder.HasKey(x => x.Id);
 
             builder.HasData(
+
                 // Petro Contacts
                 new UserContactEntity
                 {
