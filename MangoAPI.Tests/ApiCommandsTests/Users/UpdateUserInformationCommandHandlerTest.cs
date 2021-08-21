@@ -1,4 +1,4 @@
-﻿namespace MangoAPI.Tests.ApiCommandsTests.Users
+namespace MangoAPI.Tests.ApiCommandsTests.Users
 {
     using System;
     using System.Threading;
@@ -21,13 +21,12 @@
             {
                 UserId = "1",
                 FirstName = "Szymon",
-                LastName = "Murawsky",
-                BirthDay = new DateTime(1987, 2, 14),
-                Address = "Poland, Lvov",
+                LastName = "Murawski",
+                BirthdayDate = new DateTime(1987, 2, 14),
+                Address = "Poland, Poznan",
                 Facebook = "szymon.murawski",
                 Instagram = "szymon.murawski",
-                LinkedIn = "szymon.murawski",
-                ProfilePicture = "image.jpg",
+                LinkedIn = "szymon.murawski"
             };
 
             var result = await handler.Handle(command, CancellationToken.None);
@@ -45,12 +44,11 @@
                 UserId = "24",
                 FirstName = "First Name",
                 LastName = "Last Name",
-                BirthDay = new DateTime(1999, 1, 1),
+                BirthdayDate = new DateTime(1999, 1, 1),
                 Address = "Address",
                 Facebook = "Facebook",
                 Instagram = "Instagram",
                 LinkedIn = "LinkedIn",
-                ProfilePicture = "Profile Picture",
             };
 
             Func<Task> result = async () => await handler.Handle(command, CancellationToken.None);

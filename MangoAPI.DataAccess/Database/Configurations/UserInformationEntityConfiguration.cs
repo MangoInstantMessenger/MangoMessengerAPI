@@ -1,4 +1,4 @@
-﻿namespace MangoAPI.DataAccess.Database.Configurations
+namespace MangoAPI.DataAccess.Database.Configurations
 {
     using System;
     using MangoAPI.Domain.Constants;
@@ -22,6 +22,8 @@
                     Website = "petro.kolosov.com",
                     Instagram = "petro.kolosov",
                     LinkedIn = "petro.kolosov",
+                    Facebook = "petro.kolosov",
+                    Twitter = "petro.kolosov",
                     Address = "Poznan, Poland",
                 },
                 new UserInformationEntity
