@@ -1,5 +1,6 @@
 namespace MangoAPI.BusinessLogic.ApiCommands.Users
 {
+    using System;
     using System.Threading;
     using System.Threading.Tasks;
     using MangoAPI.BusinessLogic.BusinessExceptions;
@@ -34,8 +35,12 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
             user.UserInformation.FirstName = request.FirstName ?? user.UserInformation.FirstName;
             user.UserInformation.LastName = request.LastName ?? user.UserInformation.LastName;
             user.DisplayName = request.DisplayName ?? user.DisplayName;
-            user.PhoneNumber = request.MobileNumber ?? user.PhoneNumber;
-            user.UserInformation.BirthDay = request.BirthdayDate ?? user.UserInformation.BirthDay;
+            user.PhoneNumber = request.PhoneNumber ?? user.PhoneNumber;
+
+            user.UserInformation.BirthDay = DateTime.TryParse(request.BirthdayDate, out var newDate)
+                ? newDate
+                : user.UserInformation.BirthDay;
+
             user.Email = request.Email ?? user.Email;
             user.UserInformation.Website = request.Website ?? user.UserInformation.Website;
             user.UserName = request.Username ?? user.UserName;
