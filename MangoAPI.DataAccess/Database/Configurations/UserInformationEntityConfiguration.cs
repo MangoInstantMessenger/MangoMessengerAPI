@@ -100,6 +100,9 @@
                     Address = "Odessa, Ukraine",
                     Website = "razumovsky.com",
                     Twitter = "razumovsky_r",
+                    Facebook = "razumovsky_r",
+                    Instagram = "razumovsky_r",
+                    LinkedIn = "razumovsky_r",
                 },
                 new UserInformationEntity
                 {
