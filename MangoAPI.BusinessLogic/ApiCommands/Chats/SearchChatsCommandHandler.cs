@@ -20,18 +20,16 @@
         public async Task<SearchChatsResponse> Handle(SearchChatsCommand request, CancellationToken cancellationToken)
         {
             var chats = await postgresDbContext
-                .UserChats
+                .Chats
                 .AsNoTracking()
-                .Include(x => x.Chat)
-                .ThenInclude(x => x.Messages)
+                .Include(x => x.Messages)
                 .ThenInclude(x => x.User)
-                .Where(x => x.Chat.Title.Contains(request.DisplayName))
-                .Where(x => x.Chat.ChatType != ChatType.PrivateChannel)
-                .Where(x => x.Chat.ChatType != ChatType.DirectChat)
-                .Where(x => x.UserId == request.UserId)
+                .Where(x => x.Title.Contains(request.DisplayName))
+                .Where(x => x.ChatType != ChatType.PrivateChannel)
+                .Where(x => x.ChatType != ChatType.DirectChat)
                 .ToListAsync(cancellationToken);
 
-            return SearchChatsResponse.FromSuccess(chats, request.UserId);
+            return SearchChatsResponse.FromSuccess(chats);
         }
     }
 }

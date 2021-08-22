@@ -11,31 +11,31 @@
     {
         // ReSharper disable once UnusedAutoPropertyAccessor.Global
         // ReSharper disable once MemberCanBePrivate.Global
-        public List<UserChat> Chats { get; init; }
+        public List<Chat> Chats { get; init; }
 
-        public static SearchChatsResponse FromSuccess(IEnumerable<UserChatEntity> chats, string userId)
+        public static SearchChatsResponse FromSuccess(IEnumerable<ChatEntity> chats)
         {
-            return new ()
+            return new()
             {
                 Message = ResponseMessageCodes.Success,
                 Success = true,
-                Chats = chats.Select(userChatEntity =>
-                    new UserChat
+                Chats = chats.Select(x =>
+                    new Chat
                     {
-                        ChatId = userChatEntity.ChatId,
-                        Title = userChatEntity.Chat.Title,
-                        Image = userChatEntity.Chat.Image,
-                        LastMessage = userChatEntity.Chat.Messages.Any()
-                            ? userChatEntity.Chat.Messages.Last().Content
+                        ChatId = x.Id,
+                        Title = x.Title,
+                        Image = x.Image,
+                        LastMessage = x.Messages.Any()
+                            ? x.Messages.Last().Content
                             : null,
-                        LastMessageAuthor = userChatEntity.Chat.Messages.Any()
-                            ? userChatEntity.Chat.Messages.Last().User.DisplayName
+                        LastMessageAuthor = x.Messages.Any()
+                            ? x.Messages.Last().User.DisplayName
                             : null,
-                        LastMessageAt = userChatEntity.Chat.Messages.Any()
-                            ? userChatEntity.Chat.Messages.Last().Created.ToShortTimeString()
+                        LastMessageAt = x.Messages.Any()
+                            ? x.Messages.Last().Created.ToShortTimeString()
                             : null,
-                        MembersCount = userChatEntity.Chat.MembersCount,
-                        IsMember = userChatEntity.UserId == userId,
+                        MembersCount = x.MembersCount,
+                        ChatType = x.ChatType,
                     }).ToList(),
             };
         }

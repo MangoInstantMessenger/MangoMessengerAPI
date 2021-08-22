@@ -11,15 +11,15 @@
     {
         // ReSharper disable once UnusedAutoPropertyAccessor.Global
         // ReSharper disable once MemberCanBePrivate.Global
-        public List<UserChat> Chats { get; init; }
+        public List<Chat> Chats { get; init; }
 
         public static GetCurrentUserChatsResponse FromSuccess(IEnumerable<UserChatEntity> chats)
         {
-            return new ()
+            return new()
             {
                 Message = ResponseMessageCodes.Success,
                 Success = true,
-                Chats = chats.Select(userChatEntity => new UserChat
+                Chats = chats.Select(userChatEntity => new Chat
                 {
                     ChatId = userChatEntity.ChatId,
                     Title = userChatEntity.Chat.Title,
@@ -36,7 +36,7 @@
                             .ToShortTimeString()
                         : null,
                     MembersCount = userChatEntity.Chat.MembersCount,
-                    IsMember = true,
+                    ChatType = userChatEntity.Chat.ChatType,
                 }).ToList(),
             };
         }
