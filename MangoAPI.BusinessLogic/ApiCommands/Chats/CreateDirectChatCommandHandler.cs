@@ -33,6 +33,11 @@
                 throw new BusinessException(ResponseMessageCodes.UserNotFound);
             }
 
+            if (request.UserId == request.PartnerId)
+            {
+                throw new BusinessException(ResponseMessageCodes.CannotCreateSelfChat);
+            }
+
             var currentUser = await postgresDbContext.Users
                 .FirstOrDefaultAsync(x => x.Id == request.UserId, cancellationToken);
 

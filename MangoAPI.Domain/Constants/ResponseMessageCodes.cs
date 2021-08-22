@@ -22,5 +22,6 @@
         public const string RefreshTokenLifeTimeError = "REFRESH_TOKEN_LIFETIME_ERROR";
         public const string InvalidGroupType = "INVALID_GROUP_TYPE";
         public const string CannotAddSelfToContacts = "CANNOT_ADD_SELF_TO_CONTACTS";
+        public const string CannotCreateSelfChat = "CANNOT_CREATE_SELF_CHAT";
     }
 }
