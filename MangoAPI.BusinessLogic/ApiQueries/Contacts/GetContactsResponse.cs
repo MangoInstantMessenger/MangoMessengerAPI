@@ -9,13 +9,11 @@
 
     public record GetContactsResponse : ContactsResponseBase<GetContactsResponse>
     {
-        // ReSharper disable once MemberCanBePrivate.Global
-        // ReSharper disable once UnusedAutoPropertyAccessor.Global
         public List<Contact> Contacts { get; init; }
 
         public static GetContactsResponse FromSuccess(IEnumerable<UserEntity> contacts)
         {
-            return new ()
+            return new()
             {
                 Message = ResponseMessageCodes.Success,
                 Success = true,
@@ -23,8 +21,10 @@
                     .Select(userEntity =>
                         new Contact
                         {
+                            UserId = userEntity.Id,
                             DisplayName = userEntity.DisplayName,
                             Address = userEntity.UserInformation.Address,
+                            Bio = userEntity.Bio,
                         }).ToList(),
             };
         }
