@@ -30,12 +30,10 @@
                 throw new BusinessException(ResponseMessageCodes.UserNotFound);
             }
 
-            var contactEntity = new UserContactEntity
+            if (request.UserId == request.ContactId)
             {
-                Id = Guid.NewGuid().ToString(),
-                ContactId = request.ContactId,
-                UserId = request.UserId,
-            };
+                throw new BusinessException(ResponseMessageCodes.CannotAddSelfToContacts);
+            }
 
             var userContactExist = await postgresDbContext.UserContacts
                 .Where(x => x.UserId == request.UserId)
@@ -45,6 +43,13 @@
             {
                 throw new BusinessException(ResponseMessageCodes.ContactAlreadyExist);
             }
+
+            var contactEntity = new UserContactEntity
+            {
+                Id = Guid.NewGuid().ToString(),
+                ContactId = request.ContactId,
+                UserId = request.UserId,
+            };
 
             await postgresDbContext.UserContacts.AddAsync(contactEntity, cancellationToken);
             await postgresDbContext.SaveChangesAsync(cancellationToken);
