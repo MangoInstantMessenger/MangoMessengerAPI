@@ -1,6 +1,6 @@
 namespace MangoAPI.BusinessLogic.Models
 {
-    public record UserGetResult
+    public record User
     {
         public string UserId { get; set; }
 

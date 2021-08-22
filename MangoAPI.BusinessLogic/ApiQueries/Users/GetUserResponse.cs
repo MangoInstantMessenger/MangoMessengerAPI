@@ -7,9 +7,7 @@
 
     public record GetUserResponse : ResponseBase<GetUserResponse>
     {
-        // ReSharper disable once UnusedAutoPropertyAccessor.Global
-        // ReSharper disable once MemberCanBePrivate.Global
-        public UserGetResult User { get; init; }
+        public User User { get; init; }
 
         public static GetUserResponse FromSuccess(UserEntity user)
         {
@@ -17,7 +15,7 @@
             {
                 Message = ResponseMessageCodes.Success,
                 Success = true,
-                User = new UserGetResult
+                User = new User
                 {
                     UserId = user.Id,
                     DisplayName = user.DisplayName,

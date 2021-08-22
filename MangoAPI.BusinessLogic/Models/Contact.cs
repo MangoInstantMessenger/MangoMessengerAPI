@@ -1,9 +1,13 @@
 ﻿namespace MangoAPI.BusinessLogic.Models
 {
-    public class Contact
+    public record Contact
     {
-        public string DisplayName { get; set; }
+        public string UserId { get; init; }
 
-        public string Address { get; set; }
+        public string DisplayName { get; init; }
+
+        public string Address { get; init; }
+
+        public string Bio { get; init; }
     }
 }
