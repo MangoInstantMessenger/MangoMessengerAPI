@@ -39,7 +39,8 @@
                 throw new BusinessException(ResponseMessageCodes.InvalidEmail);
             }
 
-            var exists = await userManager.FindByEmailAsync(request.Email);
+            var exists = await postgresDbContext.Users
+                .FirstOrDefaultAsync(x => x.Email == request.Email, cancellationToken);
 
             if (exists != null)
             {
