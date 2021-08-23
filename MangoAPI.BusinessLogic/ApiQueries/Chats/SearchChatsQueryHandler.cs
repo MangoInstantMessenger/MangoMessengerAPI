@@ -1,23 +1,23 @@
-﻿namespace MangoAPI.BusinessLogic.ApiCommands.Chats
+﻿namespace MangoAPI.BusinessLogic.ApiQueries.Chats
 {
-    using System.Linq;
-    using System.Threading;
-    using System.Threading.Tasks;
     using DataAccess.Database;
     using MangoAPI.Domain.Enums;
     using MediatR;
     using Microsoft.EntityFrameworkCore;
+    using System.Linq;
+    using System.Threading;
+    using System.Threading.Tasks;
 
-    public class SearchChatsCommandHandler : IRequestHandler<SearchChatsCommand, SearchChatsResponse>
+    public class SearchChatsQueryHandler : IRequestHandler<SearchChatsQuery, SearchChatsResponse>
     {
         private readonly MangoPostgresDbContext _postgresDbContext;
 
-        public SearchChatsCommandHandler(MangoPostgresDbContext postgresDbContext)
+        public SearchChatsQueryHandler(MangoPostgresDbContext postgresDbContext)
         {
             _postgresDbContext = postgresDbContext;
         }
 
-        public async Task<SearchChatsResponse> Handle(SearchChatsCommand request, CancellationToken cancellationToken)
+        public async Task<SearchChatsResponse> Handle(SearchChatsQuery request, CancellationToken cancellationToken)
         {
             var chats = await _postgresDbContext
                 .Chats

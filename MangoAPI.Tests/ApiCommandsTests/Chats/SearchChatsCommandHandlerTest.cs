@@ -13,8 +13,8 @@
         public async Task SearchChatsQueryHandlerTest_Success()
         {
             using var dbContextFixture = new DbContextFixture();
-            var handler = new SearchChatsCommandHandler(dbContextFixture.PostgresDbContext);
-            var query = new SearchChatsCommand
+            var handler = new SearchChatsQueryHandler(dbContextFixture.PostgresDbContext);
+            var query = new SearchChatsQuery
             {
                 UserId = "1",
                 DisplayName = "Extreme",

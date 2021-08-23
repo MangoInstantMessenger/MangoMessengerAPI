@@ -1,4 +1,4 @@
-﻿namespace MangoAPI.BusinessLogic.ApiCommands.Chats
+﻿namespace MangoAPI.BusinessLogic.ApiQueries.Chats
 {
     using Newtonsoft.Json;
 
