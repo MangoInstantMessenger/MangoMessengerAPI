@@ -42,7 +42,7 @@
             _postgresDbContext.Messages.Remove(message);
             await _postgresDbContext.SaveChangesAsync(cancellationToken);
 
-            return DeleteMessageResponse.SuccessResponse;
+            return DeleteMessageResponse.FromSuccess(message);
         }
     }
 }
