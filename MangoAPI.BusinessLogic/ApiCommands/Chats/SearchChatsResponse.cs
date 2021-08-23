@@ -9,8 +9,6 @@
 
     public record SearchChatsResponse : ChatResponseBase<SearchChatsResponse>
     {
-        // ReSharper disable once UnusedAutoPropertyAccessor.Global
-        // ReSharper disable once MemberCanBePrivate.Global
         public List<Chat> Chats { get; init; }
 
         public static SearchChatsResponse FromSuccess(IEnumerable<ChatEntity> chats)

@@ -9,8 +9,6 @@
 
     public record GetCurrentUserChatsResponse : ResponseBase<GetCurrentUserChatsResponse>
     {
-        // ReSharper disable once UnusedAutoPropertyAccessor.Global
-        // ReSharper disable once MemberCanBePrivate.Global
         public List<Chat> Chats { get; init; }
 
         public static GetCurrentUserChatsResponse FromSuccess(IEnumerable<UserChatEntity> chats)
@@ -37,6 +35,7 @@
                         : null,
                     MembersCount = userChatEntity.Chat.MembersCount,
                     ChatType = userChatEntity.Chat.ChatType,
+                    IsArchived = userChatEntity.IsArchived,
                 }).ToList(),
             };
         }
