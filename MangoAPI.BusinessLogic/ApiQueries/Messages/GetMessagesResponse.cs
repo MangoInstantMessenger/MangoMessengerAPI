@@ -13,13 +13,14 @@
 
         public static GetMessagesResponse FromSuccess(IEnumerable<MessageEntity> messages, UserEntity user)
         {
-            return new ()
+            return new()
             {
                 Message = ResponseMessageCodes.Success,
 
                 Messages = messages.OrderBy(messageEntity => messageEntity.Created)
                     .Select(messageEntity => new Message
                     {
+                        MessageId = messageEntity.Id,
                         MessageText = messageEntity.Content,
                         EditedAt = messageEntity.Updated?.ToShortTimeString(),
                         SentAt = messageEntity.Created.ToShortTimeString(),

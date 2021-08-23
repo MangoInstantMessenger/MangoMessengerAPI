@@ -2,6 +2,8 @@
 {
     public record Message
     {
+        public string MessageId { get; init; }
+
         public string UserDisplayName { get; init; }
 
         public string MessageText { get; init; }
