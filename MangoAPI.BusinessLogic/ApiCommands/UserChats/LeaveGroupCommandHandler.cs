@@ -31,6 +31,11 @@ namespace MangoAPI.BusinessLogic.ApiCommands.UserChats
             var userChat = await postgresDbContext.UserChats
                 .Where(x => x.ChatId == request.ChatId)
                 .FirstOrDefaultAsync(x => x.UserId == request.UserId, cancellationToken);
+            
+            if (userChat is null)
+            {
+                throw new BusinessException(ResponseMessageCodes.ChatNotFound);
+            }
 
             postgresDbContext.UserChats.Remove(userChat);
             await postgresDbContext.SaveChangesAsync(cancellationToken);
