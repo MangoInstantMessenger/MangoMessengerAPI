@@ -5,7 +5,6 @@ using MangoAPI.Domain.Enums;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
-using System.Security.Cryptography.X509Certificates;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -45,7 +44,10 @@ namespace MangoAPI.BusinessLogic.ApiCommands.UserChats
 
             if (chat.ChatType == ChatType.DirectChat)
             {
+                var messages = await postgresDbContext.Messages.Where(x => x.ChatId == request.ChatId)
+                                                               .ToListAsync(cancellationToken);
 
+                postgresDbContext.Messages.RemoveRange(messages);
                 postgresDbContext.UserChats.RemoveRange(chat.ChatUsers);
                 postgresDbContext.Chats.Remove(chat);
 
