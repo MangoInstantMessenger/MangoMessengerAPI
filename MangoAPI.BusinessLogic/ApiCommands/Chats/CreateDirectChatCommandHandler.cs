@@ -47,12 +47,26 @@
                     .Any(userChatEntity => userChatEntity.UserId == currentUser.Id))
                 .ToListAsync(cancellationToken);
 
-            var findDirectChat = userPrivateChats
+            var findCurrentUserDirectChat = userPrivateChats
                 .FirstOrDefault(x => x.ChatUsers.Any(t => t.UserId == partner.Id));
 
-            if (findDirectChat != null)
+            if (findCurrentUserDirectChat != null)
             {
-                return CreateChatEntityResponse.FromSuccess(findDirectChat);
+                return CreateChatEntityResponse.FromSuccess(findCurrentUserDirectChat);
+            }
+
+            var partnerPrivateChats = await _postgresDbContext.Chats
+                .Include(chatEntity => chatEntity.ChatUsers)
+                .Where(chatEntity => chatEntity.ChatType == ChatType.DirectChat && chatEntity.ChatUsers
+                    .Any(userChatEntity => userChatEntity.UserId == partner.Id))
+                .ToListAsync(cancellationToken);
+            
+            var findPartnerDirectChat = partnerPrivateChats
+                .FirstOrDefault(x => x.ChatUsers.Any(t => t.UserId == currentUser.Id));
+            
+            if (findPartnerDirectChat != null)
+            {
+                return CreateChatEntityResponse.FromSuccess(findPartnerDirectChat);
             }
 
             var directChat = new ChatEntity
