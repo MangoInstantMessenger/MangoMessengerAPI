@@ -13,18 +13,18 @@
 
     public class CreateGroupCommandHandler : IRequestHandler<CreateGroupCommand, CreateChatEntityResponse>
     {
-        private readonly MangoPostgresDbContext postgresDbContext;
+        private readonly MangoPostgresDbContext _postgresDbContext;
 
         public CreateGroupCommandHandler(MangoPostgresDbContext postgresDbContext)
         {
-            this.postgresDbContext = postgresDbContext;
+            _postgresDbContext = postgresDbContext;
         }
 
         public async Task<CreateChatEntityResponse> Handle(
             CreateGroupCommand request,
             CancellationToken cancellationToken)
         {
-            var user = await postgresDbContext.Users.FirstOrDefaultAsync(
+            var user = await _postgresDbContext.Users.FirstOrDefaultAsync(
                 x => x.Id == request.UserId,
                 cancellationToken);
 
@@ -47,14 +47,14 @@
                 MembersCount = 1,
             };
 
-            await postgresDbContext.Chats.AddAsync(group, cancellationToken);
+            await _postgresDbContext.Chats.AddAsync(group, cancellationToken);
 
-            postgresDbContext.UserChats.Add(new UserChatEntity
+            _postgresDbContext.UserChats.Add(new UserChatEntity
             {
                 ChatId = group.Id, RoleId = UserRole.Owner, UserId = user.Id,
             });
 
-            await postgresDbContext.SaveChangesAsync(cancellationToken);
+            await _postgresDbContext.SaveChangesAsync(cancellationToken);
 
             return CreateChatEntityResponse.FromSuccess(group);
         }

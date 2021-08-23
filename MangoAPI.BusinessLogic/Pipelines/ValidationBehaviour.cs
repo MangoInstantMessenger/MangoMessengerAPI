@@ -10,11 +10,11 @@
     public class ValidationBehaviour<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
         where TRequest : IRequest<TResponse>
     {
-        private readonly IEnumerable<IValidator<TRequest>> validators;
+        private readonly IEnumerable<IValidator<TRequest>> _validators;
 
         public ValidationBehaviour(IEnumerable<IValidator<TRequest>> validators)
         {
-            this.validators = validators;
+            _validators = validators;
         }
 
         public async Task<TResponse> Handle(
@@ -22,13 +22,13 @@
             CancellationToken cancellationToken,
             RequestHandlerDelegate<TResponse> next)
         {
-            if (!validators.Any())
+            if (!_validators.Any())
             {
                 return await next();
             }
 
             var context = new ValidationContext<TRequest>(request);
-            var enumerableTasks = validators.Select(validator => validator.ValidateAsync(context, cancellationToken));
+            var enumerableTasks = _validators.Select(validator => validator.ValidateAsync(context, cancellationToken));
 
             var validationResults = await Task.WhenAll(enumerableTasks);
 

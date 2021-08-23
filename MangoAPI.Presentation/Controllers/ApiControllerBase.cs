@@ -11,7 +11,7 @@
     /// </summary>
     public class ApiControllerBase : ControllerBase
     {
-        private readonly IMediator mediator;
+        private readonly IMediator _mediator;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ApiControllerBase"/> class.
@@ -19,7 +19,7 @@
         /// <param name="mediator">Mediator instance.</param>
         public ApiControllerBase(IMediator mediator)
         {
-            this.mediator = mediator;
+            _mediator = mediator;
         }
 
         /// <summary>
@@ -33,7 +33,7 @@
         protected async Task<IActionResult> RequestAsync<T>(IRequest<T> request, CancellationToken cancellationToken)
             where T : ResponseBase
         {
-            var response = await mediator.Send(request, cancellationToken);
+            var response = await _mediator.Send(request, cancellationToken);
 
             if (!response.Success)
             {

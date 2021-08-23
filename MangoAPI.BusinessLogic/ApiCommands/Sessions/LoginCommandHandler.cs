@@ -15,23 +15,23 @@
 
     public class LoginCommandHandler : IRequestHandler<LoginCommand, LoginResponse>
     {
-        private readonly IJwtGenerator jwtGenerator;
-        private readonly MangoPostgresDbContext postgresDbContext;
-        private readonly SignInManager<UserEntity> signInManager;
+        private readonly IJwtGenerator _jwtGenerator;
+        private readonly MangoPostgresDbContext _postgresDbContext;
+        private readonly SignInManager<UserEntity> _signInManager;
 
         public LoginCommandHandler(
             SignInManager<UserEntity> signInManager,
             IJwtGenerator jwtGenerator,
             MangoPostgresDbContext postgresDbContext)
         {
-            this.signInManager = signInManager;
-            this.jwtGenerator = jwtGenerator;
-            this.postgresDbContext = postgresDbContext;
+            _signInManager = signInManager;
+            _jwtGenerator = jwtGenerator;
+            _postgresDbContext = postgresDbContext;
         }
 
         public async Task<LoginResponse> Handle(LoginCommand request, CancellationToken cancellationToken)
         {
-            var user = await postgresDbContext.Users
+            var user = await _postgresDbContext.Users
                 .FirstOrDefaultAsync(x => x.Email == request.Email,
                     cancellationToken);
 
@@ -40,7 +40,7 @@
                 throw new BusinessException(ResponseMessageCodes.InvalidCredentials);
             }
 
-            var result = await signInManager.CheckPasswordSignInAsync(user, request.Password, false);
+            var result = await _signInManager.CheckPasswordSignInAsync(user, request.Password, false);
 
             if (!result.Succeeded)
             {
@@ -63,30 +63,30 @@
                 Created = DateTime.UtcNow,
             };
 
-            var roleIds = await postgresDbContext.UserRoles
+            var roleIds = await _postgresDbContext.UserRoles
                 .Where(x => x.UserId == user.Id)
                 .Select(x => x.RoleId)
                 .ToListAsync(cancellationToken);
 
-            var roles = await postgresDbContext.Roles
+            var roles = await _postgresDbContext.Roles
                 .Where(x => roleIds.Contains(x.Id))
                 .Select(x => x.Name)
                 .ToListAsync(cancellationToken);
 
-            var jwtToken = jwtGenerator.GenerateJwtToken(user, roles);
+            var jwtToken = _jwtGenerator.GenerateJwtToken(user, roles);
 
-            var userSessions = postgresDbContext.Sessions
+            var userSessions = _postgresDbContext.Sessions
                 .Where(x => x.UserId == user.Id);
 
             var userSessionsCount = await userSessions.CountAsync(cancellationToken);
 
             if (userSessionsCount >= 5)
             {
-                postgresDbContext.Sessions.RemoveRange(userSessions);
+                _postgresDbContext.Sessions.RemoveRange(userSessions);
             }
 
-            await postgresDbContext.Sessions.AddAsync(session, cancellationToken);
-            await postgresDbContext.SaveChangesAsync(cancellationToken);
+            await _postgresDbContext.Sessions.AddAsync(session, cancellationToken);
+            await _postgresDbContext.SaveChangesAsync(cancellationToken);
 
             return LoginResponse.FromSuccess(jwtToken, session.RefreshToken);
         }

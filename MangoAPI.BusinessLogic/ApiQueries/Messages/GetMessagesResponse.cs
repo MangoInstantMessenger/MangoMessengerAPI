@@ -9,8 +9,6 @@
 
     public record GetMessagesResponse : MessageResponseBase<GetMessagesResponse>
     {
-        // ReSharper disable once UnusedAutoPropertyAccessor.Global
-        // ReSharper disable once MemberCanBePrivate.Global
         public List<Message> Messages { get; init; }
 
         public static GetMessagesResponse FromSuccess(IEnumerable<MessageEntity> messages, UserEntity user)

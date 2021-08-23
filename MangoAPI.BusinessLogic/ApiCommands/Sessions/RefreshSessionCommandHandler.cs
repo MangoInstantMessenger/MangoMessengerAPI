@@ -14,20 +14,20 @@
 
     public class RefreshSessionCommandHandler : IRequestHandler<RefreshSessionCommand, RefreshSessionResponse>
     {
-        private readonly IJwtGenerator jwtGenerator;
-        private readonly MangoPostgresDbContext postgresDbContext;
+        private readonly IJwtGenerator _jwtGenerator;
+        private readonly MangoPostgresDbContext _postgresDbContext;
 
         public RefreshSessionCommandHandler(MangoPostgresDbContext postgresDbContext, IJwtGenerator jwtGenerator)
         {
-            this.postgresDbContext = postgresDbContext;
-            this.jwtGenerator = jwtGenerator;
+            _postgresDbContext = postgresDbContext;
+            _jwtGenerator = jwtGenerator;
         }
 
         public async Task<RefreshSessionResponse> Handle(
             RefreshSessionCommand request,
             CancellationToken cancellationToken)
         {
-            var session = await postgresDbContext.Sessions
+            var session = await _postgresDbContext.Sessions
                 .FirstOrDefaultAsync(
                     x => x.RefreshToken == request.RefreshToken,
                     cancellationToken);
@@ -37,11 +37,11 @@
                 throw new BusinessException(ResponseMessageCodes.InvalidOrExpiredRefreshToken);
             }
 
-            var user = await postgresDbContext.Users.FirstAsync(
+            var user = await _postgresDbContext.Users.FirstAsync(
                 x => x.Id == session.UserId,
                 cancellationToken);
 
-            var userSessions = postgresDbContext.Sessions
+            var userSessions = _postgresDbContext.Sessions
                 .Where(x => x.UserId == user.Id);
 
             var userSessionCount = await userSessions.CountAsync(cancellationToken);
@@ -49,10 +49,10 @@
             switch (userSessionCount)
             {
                 case >= 5:
-                    postgresDbContext.Sessions.RemoveRange(userSessions);
+                    _postgresDbContext.Sessions.RemoveRange(userSessions);
                     break;
                 default:
-                    postgresDbContext.Sessions.Remove(session);
+                    _postgresDbContext.Sessions.Remove(session);
                     break;
             }
 
@@ -72,20 +72,20 @@
                 Created = DateTime.UtcNow,
             };
 
-            var roleIds = await postgresDbContext.UserRoles
+            var roleIds = await _postgresDbContext.UserRoles
                 .Where(x => x.UserId == user.Id)
                 .Select(x => x.RoleId)
                 .ToListAsync(cancellationToken);
 
-            var roles = await postgresDbContext.Roles
+            var roles = await _postgresDbContext.Roles
                 .Where(x => roleIds.Contains(x.Id))
                 .Select(x => x.Name)
                 .ToListAsync(cancellationToken);
 
-            var jwtToken = jwtGenerator.GenerateJwtToken(user, roles);
+            var jwtToken = _jwtGenerator.GenerateJwtToken(user, roles);
 
-            await postgresDbContext.Sessions.AddAsync(newSession, cancellationToken);
-            await postgresDbContext.SaveChangesAsync(cancellationToken);
+            await _postgresDbContext.Sessions.AddAsync(newSession, cancellationToken);
+            await _postgresDbContext.SaveChangesAsync(cancellationToken);
 
             return RefreshSessionResponse.FromSuccess(jwtToken, newSession.RefreshToken);
         }

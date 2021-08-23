@@ -11,16 +11,16 @@
 
     public class VerifyEmailCommandHandler : IRequestHandler<VerifyEmailCommand, VerifyEmailResponse>
     {
-        private readonly MangoPostgresDbContext postgresDbContext;
+        private readonly MangoPostgresDbContext _postgresDbContext;
 
         public VerifyEmailCommandHandler(MangoPostgresDbContext postgresDbContext)
         {
-            this.postgresDbContext = postgresDbContext;
+            _postgresDbContext = postgresDbContext;
         }
 
         public async Task<VerifyEmailResponse> Handle(VerifyEmailCommand request, CancellationToken cancellationToken)
         {
-            var user = await postgresDbContext.Users.FirstOrDefaultAsync(
+            var user = await _postgresDbContext.Users.FirstOrDefaultAsync(
                 x => x.Id == request.UserId,
                 cancellationToken);
 
@@ -41,16 +41,16 @@
 
             user.EmailConfirmed = true;
 
-            await postgresDbContext.UserRoles.AddAsync(
+            await _postgresDbContext.UserRoles.AddAsync(
                 new IdentityUserRole<string>
                 {
                     UserId = user.Id,
                     RoleId = SeedDataConstants.UserRoleId,
                 }, cancellationToken);
 
-            postgresDbContext.Update(user);
+            _postgresDbContext.Update(user);
 
-            await postgresDbContext.SaveChangesAsync(cancellationToken);
+            await _postgresDbContext.SaveChangesAsync(cancellationToken);
 
             return VerifyEmailResponse.SuccessResponse;
         }

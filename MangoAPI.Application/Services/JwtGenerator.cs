@@ -13,7 +13,7 @@
 
     public class JwtGenerator : IJwtGenerator
     {
-        private readonly SymmetricSecurityKey key;
+        private readonly SymmetricSecurityKey _key;
 
         public JwtGenerator()
         {
@@ -24,7 +24,7 @@
                 throw new NullReferenceException("Mango token key is null");
             }
 
-            key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(tokenKey));
+            _key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(tokenKey));
         }
 
         public string GenerateJwtToken(UserEntity userEntity, List<string> roles)
@@ -43,7 +43,7 @@
                 throw new InvalidOperationException("Jwt lifetime environmental variable error.");
             }
 
-            var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+            var credentials = new SigningCredentials(_key, SecurityAlgorithms.HmacSha256);
 
             var tokenDescriptor = new SecurityTokenDescriptor
             {
