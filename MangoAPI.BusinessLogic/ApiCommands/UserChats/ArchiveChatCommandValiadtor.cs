@@ -22,8 +22,6 @@ namespace MangoAPI.BusinessLogic.ApiCommands.UserChats
 
             RuleFor(x => x.UserId).Must(x => Guid.TryParse(x, out _))
                 .WithMessage("ArchiveChatCommand: User Id cannot be parsed.");
-
-            RuleFor(x => x.Archived).NotEmpty();
         }
     }
 }
