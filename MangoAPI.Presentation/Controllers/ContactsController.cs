@@ -56,6 +56,26 @@
             return await RequestAsync(command, cancellationToken);
         }
 
+        [HttpDelete("{contactId}")]
+        [SwaggerOperation(Summary = "Deletes particular contact from the contacts. Fetches user by user ID. " +
+                                    "Requires role: User")]
+        [ProducesResponseType(typeof(DeleteContactResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        public async Task<IActionResult> DeleteContact([FromRoute] string contactId,
+            CancellationToken cancellationToken)
+        {
+            var currentUserId = HttpContext.User.GetUserId();
+            var command = new DeleteContactCommand()
+            {
+                UserId = currentUserId,
+                ContactId = contactId,
+            };
+
+            return await RequestAsync(command, cancellationToken);
+        }
+
         /// <summary>
         /// Returns list of current user's contacts. Requires role: User.
         /// </summary>
