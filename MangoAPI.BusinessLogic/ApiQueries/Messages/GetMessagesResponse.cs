@@ -1,11 +1,11 @@
 ﻿namespace MangoAPI.BusinessLogic.ApiQueries.Messages
 {
-    using System.Collections.Generic;
-    using System.Linq;
-    using Models;
-    using Responses;
     using Domain.Constants;
     using Domain.Entities;
+    using Models;
+    using Responses;
+    using System.Collections.Generic;
+    using System.Linq;
 
     public record GetMessagesResponse : MessageResponseBase<GetMessagesResponse>
     {
