@@ -31,6 +31,26 @@
         }
 
         /// <summary>
+        /// Archives or un-archives chat. Requires roles: User.
+        /// </summary>
+        /// <param name="request">ArchiveChatRequest instance.</param>
+        /// <param name="cancellationToken">Cancellation token instance.</param>
+        /// <returns>Possible codes: 200, 400, 409.</returns>
+        [HttpPut]
+        [SwaggerOperation(Summary = "Archives or un-archives chat. Requires roles: User.")]
+        [ProducesResponseType(typeof(ArchiveChatResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        public async Task<IActionResult> ArchiveChat(ArchiveChatRequest request, CancellationToken cancellationToken)
+        {
+            var userId = HttpContext.User.GetUserId();
+            var command = request.ToCommand(userId);
+
+            return await RequestAsync(command, cancellationToken);
+        }
+
+        /// <summary>
         /// Joins to the particular public group. Fetches group by ID. Requires roles: User.
         /// </summary>
         /// <param name="chatId">Chat ID, UUID.</param>

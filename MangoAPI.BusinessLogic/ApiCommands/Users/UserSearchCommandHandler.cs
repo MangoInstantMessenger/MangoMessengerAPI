@@ -9,16 +9,17 @@
 
     public class UserSearchCommandHandler : IRequestHandler<UserSearchCommand, UserSearchResponse>
     {
-        private readonly MangoPostgresDbContext postgresDbContext;
+        private readonly MangoPostgresDbContext _postgresDbContext;
 
         public UserSearchCommandHandler(MangoPostgresDbContext postgresDbContext)
         {
-            this.postgresDbContext = postgresDbContext;
+            _postgresDbContext = postgresDbContext;
         }
 
         public async Task<UserSearchResponse> Handle(UserSearchCommand request, CancellationToken cancellationToken)
         {
-            var users = await postgresDbContext.Users
+            var users = await _postgresDbContext.Users
+                .Include(x => x.UserInformation)
                 .AsNoTracking()
                 .Where(x => x.DisplayName.ToUpper().Contains(request.DisplayName.ToUpper()))
                 .ToListAsync(cancellationToken);

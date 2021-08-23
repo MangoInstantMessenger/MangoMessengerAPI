@@ -10,6 +10,8 @@
 
         public UserRole RoleId { get; set; }
 
+        public bool IsArchived { get; set; }
+
         public UserEntity User { get; set; }
 
         public ChatEntity Chat { get; set; }

@@ -42,25 +42,24 @@
             Func<Task> result = async () => await handler.Handle(createDirectChatCommand, CancellationToken.None);
 
             await result.Should().ThrowAsync<BusinessException>()
-                .WithMessage("USER_NOT_FOUND");
+                .WithMessage(ResponseMessageCodes.UserNotFound);
         }
 
         [Test]
-        public async Task CreateDirectChatCommandHandler_ShouldThrowAlreadyExists()
+        public async Task CreateDirectChatCommandHandler_ShouldThrowCannotCreateSelf()
         {
             using var dbContextFixture = new DbContextFixture();
             var handler = new CreateDirectChatCommandHandler(dbContextFixture.PostgresDbContext);
             var createDirectChatCommand = new CreateDirectChatCommand
             {
                 UserId = "1",
-                PartnerId = "2",
+                PartnerId = "1",
             };
 
-            await handler.Handle(createDirectChatCommand, CancellationToken.None);
             Func<Task> result = async () => await handler.Handle(createDirectChatCommand, CancellationToken.None);
 
             await result.Should().ThrowAsync<BusinessException>()
-                .WithMessage(ResponseMessageCodes.DirectChatAlreadyExists);
+                .WithMessage(ResponseMessageCodes.CannotCreateSelfChat);
         }
     }
 }

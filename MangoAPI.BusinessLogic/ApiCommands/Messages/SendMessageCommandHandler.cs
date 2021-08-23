@@ -14,16 +14,16 @@
 
     public class SendMessageCommandHandler : IRequestHandler<SendMessageCommand, SendMessageResponse>
     {
-        private readonly MangoPostgresDbContext postgresDbContext;
+        private readonly MangoPostgresDbContext _postgresDbContext;
 
         public SendMessageCommandHandler(MangoPostgresDbContext postgresDbContext)
         {
-            this.postgresDbContext = postgresDbContext;
+            _postgresDbContext = postgresDbContext;
         }
 
         public async Task<SendMessageResponse> Handle(SendMessageCommand request, CancellationToken cancellationToken)
         {
-            var user = await postgresDbContext.Users
+            var user = await _postgresDbContext.Users
                 .FirstOrDefaultAsync(x => x.Id == request.UserId, cancellationToken);
 
             if (user == null)
@@ -31,7 +31,7 @@
                 throw new BusinessException(ResponseMessageCodes.UserNotFound);
             }
 
-            var chat = await postgresDbContext.Chats
+            var chat = await _postgresDbContext.Chats
                 .FirstOrDefaultAsync(x => x.Id == request.ChatId, cancellationToken);
 
             if (chat == null)
@@ -56,8 +56,8 @@
                 Updated = DateTime.UtcNow,
             };
 
-            await postgresDbContext.Messages.AddAsync(messageEntity, cancellationToken);
-            await postgresDbContext.SaveChangesAsync(cancellationToken);
+            await _postgresDbContext.Messages.AddAsync(messageEntity, cancellationToken);
+            await _postgresDbContext.SaveChangesAsync(cancellationToken);
 
             return SendMessageResponse.FromSuccess(messageEntity.Id);
         }
@@ -82,7 +82,7 @@
             ChatEntity chat,
             CancellationToken cancellationToken)
         {
-            return (await postgresDbContext.UserChats
+            return (await _postgresDbContext.UserChats
                     .Where(x => x.UserId == user.Id && x.ChatId == chat.Id)
                     .ToListAsync(cancellationToken))
                 .Any(x => x.RoleId is UserRole.Moderator or UserRole.Admin or UserRole.Owner);
@@ -93,7 +93,7 @@
             ChatEntity chat,
             CancellationToken cancellationToken)
         {
-            return await postgresDbContext.UserChats
+            return await _postgresDbContext.UserChats
                 .Where(x => x.UserId == user.Id && x.ChatId == chat.Id)
                 .AnyAsync(cancellationToken);
         }
@@ -103,7 +103,7 @@
             ChatEntity chat,
             CancellationToken cancellationToken)
         {
-            return await postgresDbContext.UserChats
+            return await _postgresDbContext.UserChats
                 .Where(x => x.UserId == user.Id && x.ChatId == chat.Id)
                 .AnyAsync(cancellationToken);
         }

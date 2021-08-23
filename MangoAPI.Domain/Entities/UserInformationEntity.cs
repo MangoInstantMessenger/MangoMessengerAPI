@@ -3,8 +3,7 @@
 namespace MangoAPI.Domain.Entities
 {
     using System;
-
-    // ReSharper disable once ClassWithVirtualMembersNeverInherited.Global
+    
     public class UserInformationEntity
     {
         public string Id { get; set; } = null!;

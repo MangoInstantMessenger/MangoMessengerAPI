@@ -10,16 +10,16 @@
 
     public class LogoutCommandHandler : IRequestHandler<LogoutCommand, LogoutResponse>
     {
-        private readonly MangoPostgresDbContext postgresDbContext;
+        private readonly MangoPostgresDbContext _postgresDbContext;
 
         public LogoutCommandHandler(MangoPostgresDbContext postgresDbContext)
         {
-            this.postgresDbContext = postgresDbContext;
+            _postgresDbContext = postgresDbContext;
         }
 
         public async Task<LogoutResponse> Handle(LogoutCommand request, CancellationToken cancellationToken)
         {
-            var session = await postgresDbContext.Sessions
+            var session = await _postgresDbContext.Sessions
                 .FirstOrDefaultAsync(
                     x => x.RefreshToken == request.RefreshToken,
                     cancellationToken);
@@ -29,7 +29,7 @@
                 throw new BusinessException(ResponseMessageCodes.InvalidOrExpiredRefreshToken);
             }
 
-            var user = await postgresDbContext.Users.FirstOrDefaultAsync(
+            var user = await _postgresDbContext.Users.FirstOrDefaultAsync(
                 x => x.Id == session.UserId,
                 cancellationToken);
 
@@ -38,8 +38,8 @@
                 throw new BusinessException(ResponseMessageCodes.UserNotFound);
             }
 
-            postgresDbContext.Sessions.Remove(session);
-            await postgresDbContext.SaveChangesAsync(cancellationToken);
+            _postgresDbContext.Sessions.Remove(session);
+            await _postgresDbContext.SaveChangesAsync(cancellationToken);
 
             return LogoutResponse.SuccessResponse;
         }

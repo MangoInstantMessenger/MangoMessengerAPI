@@ -6,8 +6,6 @@
 
     public record CreateChatEntityResponse : ChatResponseBase<CreateChatEntityResponse>
     {
-        // ReSharper disable once UnusedAutoPropertyAccessor.Global
-        // ReSharper disable once MemberCanBePrivate.Global
         public string ChatId { get; init; }
 
         public static CreateChatEntityResponse FromSuccess(ChatEntity chatEntity)

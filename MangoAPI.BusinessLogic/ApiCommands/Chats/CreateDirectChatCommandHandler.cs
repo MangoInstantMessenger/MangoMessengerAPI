@@ -14,18 +14,18 @@
 
     public class CreateDirectChatCommandHandler : IRequestHandler<CreateDirectChatCommand, CreateChatEntityResponse>
     {
-        private readonly MangoPostgresDbContext postgresDbContext;
+        private readonly MangoPostgresDbContext _postgresDbContext;
 
         public CreateDirectChatCommandHandler(MangoPostgresDbContext postgresDbContext)
         {
-            this.postgresDbContext = postgresDbContext;
+            _postgresDbContext = postgresDbContext;
         }
 
         public async Task<CreateChatEntityResponse> Handle(
             CreateDirectChatCommand request,
             CancellationToken cancellationToken)
         {
-            var partner = await postgresDbContext.Users
+            var partner = await _postgresDbContext.Users
                 .FirstOrDefaultAsync(x => x.Id == request.PartnerId, cancellationToken);
 
             if (partner is null)
@@ -33,8 +33,27 @@
                 throw new BusinessException(ResponseMessageCodes.UserNotFound);
             }
 
-            var currentUser = await postgresDbContext.Users
+            if (request.UserId == request.PartnerId)
+            {
+                throw new BusinessException(ResponseMessageCodes.CannotCreateSelfChat);
+            }
+
+            var currentUser = await _postgresDbContext.Users
                 .FirstOrDefaultAsync(x => x.Id == request.UserId, cancellationToken);
+
+            var userPrivateChats = await _postgresDbContext.Chats
+                .Include(chatEntity => chatEntity.ChatUsers)
+                .Where(chatEntity => chatEntity.ChatType == ChatType.DirectChat && chatEntity.ChatUsers
+                    .Any(userChatEntity => userChatEntity.UserId == currentUser.Id))
+                .ToListAsync(cancellationToken);
+
+            var findDirectChat = userPrivateChats
+                .FirstOrDefault(x => x.ChatUsers.Any(t => t.UserId == partner.Id));
+
+            if (findDirectChat != null)
+            {
+                return CreateChatEntityResponse.FromSuccess(findDirectChat);
+            }
 
             var directChat = new ChatEntity
             {
@@ -45,30 +64,15 @@
                 MembersCount = 2,
             };
 
-            var userPrivateChats = postgresDbContext.Chats
-                .Include(chatEntity => chatEntity.ChatUsers)
-                .Where(chatEntity => chatEntity.ChatType == ChatType.DirectChat && chatEntity.ChatUsers
-                    .Any(userChatEntity => userChatEntity.UserId == currentUser.Id)).ToList();
-
-            var directChatAlreadyExists =
-                userPrivateChats.Any(x => x.ChatUsers
-                    .Any(t => t.UserId == partner.Id));
-
-            if (directChatAlreadyExists)
-            {
-                throw new BusinessException(ResponseMessageCodes.DirectChatAlreadyExists);
-            }
-
-            await postgresDbContext.Chats.AddAsync(directChat, cancellationToken);
-
             var userChats = new[]
             {
                 new UserChatEntity { ChatId = directChat.Id, RoleId = UserRole.User, UserId = currentUser.Id },
                 new UserChatEntity { ChatId = directChat.Id, RoleId = UserRole.User, UserId = request.PartnerId },
             };
 
-            await postgresDbContext.UserChats.AddRangeAsync(userChats, cancellationToken);
-            await postgresDbContext.SaveChangesAsync(cancellationToken);
+            await _postgresDbContext.Chats.AddAsync(directChat, cancellationToken);
+            await _postgresDbContext.UserChats.AddRangeAsync(userChats, cancellationToken);
+            await _postgresDbContext.SaveChangesAsync(cancellationToken);
             return CreateChatEntityResponse.FromSuccess(directChat);
         }
     }

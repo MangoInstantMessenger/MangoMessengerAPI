@@ -2,52 +2,52 @@
 {
     using System.Threading;
     using System.Threading.Tasks;
-    using MangoAPI.BusinessLogic.BusinessExceptions;
-    using MangoAPI.DataAccess.Database;
-    using MangoAPI.Domain.Constants;
-    using MangoAPI.Domain.Entities;
+    using BusinessExceptions;
+    using DataAccess.Database;
+    using Domain.Constants;
+    using Domain.Entities;
     using MediatR;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.EntityFrameworkCore;
 
     public class ChangePasswordCommandHandler : IRequestHandler<ChangePasswordCommand, ChangePasswordResponse>
     {
-        private readonly MangoPostgresDbContext postgresDbContext;
-        private readonly UserManager<UserEntity> userManager;
+        private readonly MangoPostgresDbContext _postgresDbContext;
+        private readonly UserManager<UserEntity> _userManager;
 
         public ChangePasswordCommandHandler(MangoPostgresDbContext postgresDbContext,
             UserManager<UserEntity> userManager)
         {
-            this.postgresDbContext = postgresDbContext;
-            this.userManager = userManager;
+            _postgresDbContext = postgresDbContext;
+            _userManager = userManager;
         }
 
         public async Task<ChangePasswordResponse> Handle(ChangePasswordCommand request, CancellationToken cancellationToken)
         {
-            var user = await postgresDbContext.Users.FirstOrDefaultAsync(x => x.Id == request.UserId, cancellationToken);
+            var user = await _postgresDbContext.Users.FirstOrDefaultAsync(x => x.Id == request.UserId, cancellationToken);
 
             if (user is null)
             {
                 throw new BusinessException(ResponseMessageCodes.UserNotFound);
             }
 
-            var currentPasswordVerified = await userManager.CheckPasswordAsync(user, request.CurrentPassword);
+            var currentPasswordVerified = await _userManager.CheckPasswordAsync(user, request.CurrentPassword);
 
             if (!currentPasswordVerified)
             {
                 throw new BusinessException(ResponseMessageCodes.InvalidCredentials);
             }
             
-            await userManager.RemovePasswordAsync(user);
+            await _userManager.RemovePasswordAsync(user);
 
-            var result = await userManager.AddPasswordAsync(user, request.NewPassword);
+            var result = await _userManager.AddPasswordAsync(user, request.NewPassword);
 
             if (!result.Succeeded)
             {
                 throw new BusinessException(ResponseMessageCodes.WeakPassword);
             }
             
-            await postgresDbContext.SaveChangesAsync(cancellationToken);
+            await _postgresDbContext.SaveChangesAsync(cancellationToken);
 
             return ChangePasswordResponse.SuccessResponse;
         }

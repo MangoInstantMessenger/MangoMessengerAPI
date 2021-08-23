@@ -5,12 +5,8 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Sessions
 
     public record RefreshSessionResponse : AuthResponseBase<RefreshSessionResponse>
     {
-        // ReSharper disable once MemberCanBePrivate.Global
-        // ReSharper disable once UnusedAutoPropertyAccessor.Global
         public string AccessToken { get; init; }
-
-        // ReSharper disable once MemberCanBePrivate.Global
-        // ReSharper disable once UnusedAutoPropertyAccessor.Global
+        
         public string RefreshToken { get; init; }
 
         public static RefreshSessionResponse FromSuccess(string accessToken, string refreshToken)

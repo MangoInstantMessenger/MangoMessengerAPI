@@ -4,7 +4,6 @@
 
     public abstract record ResponseBase
     {
-        // ReSharper disable once UnusedAutoPropertyAccessor.Global
         public string Message { get; init; }
         public bool Success { get; init; }
     }
