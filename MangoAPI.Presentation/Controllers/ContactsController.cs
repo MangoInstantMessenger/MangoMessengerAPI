@@ -56,6 +56,12 @@
             return await RequestAsync(command, cancellationToken);
         }
 
+        /// <summary>
+        /// Deletes particular contact from the contacts. Fetches user by user ID. Requires role: User
+        /// </summary>
+        /// <param name="contactId">User ID to add, UUID.</param>
+        /// <param name="cancellationToken">Cancellation token instance.</param>
+        /// <returns>Possible codes: 200, 400, 409.</returns>
         [HttpDelete("{contactId}")]
         [SwaggerOperation(Summary = "Deletes particular contact from the contacts. Fetches user by user ID. " +
                                     "Requires role: User")]
