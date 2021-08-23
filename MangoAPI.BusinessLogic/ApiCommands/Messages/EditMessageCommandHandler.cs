@@ -11,16 +11,16 @@
 
     public class EditMessageCommandHandler : IRequestHandler<EditMessageCommand, EditMessageResponse>
     {
-        private readonly MangoPostgresDbContext postgresDbContext;
+        private readonly MangoPostgresDbContext _postgresDbContext;
 
         public EditMessageCommandHandler(MangoPostgresDbContext postgresDbContext)
         {
-            this.postgresDbContext = postgresDbContext;
+            _postgresDbContext = postgresDbContext;
         }
 
         public async Task<EditMessageResponse> Handle(EditMessageCommand request, CancellationToken cancellationToken)
         {
-            var currentUser = await postgresDbContext.Users
+            var currentUser = await _postgresDbContext.Users
                 .FirstOrDefaultAsync(x => x.Id == request.UserId, cancellationToken);
 
             if (currentUser == null)
@@ -28,7 +28,7 @@
                 throw new BusinessException(ResponseMessageCodes.UserNotFound);
             }
 
-            var message = await postgresDbContext.Messages
+            var message = await _postgresDbContext.Messages
                 .FirstOrDefaultAsync(
                     x => x.Id == request.MessageId && x.UserId == currentUser.Id,
                     cancellationToken);
@@ -41,9 +41,9 @@
             message.Content = request.ModifiedText;
             message.Updated = DateTime.UtcNow;
 
-            postgresDbContext.Update(message);
+            _postgresDbContext.Update(message);
 
-            await postgresDbContext.SaveChangesAsync(cancellationToken);
+            await _postgresDbContext.SaveChangesAsync(cancellationToken);
 
             return EditMessageResponse.SuccessResponse;
         }

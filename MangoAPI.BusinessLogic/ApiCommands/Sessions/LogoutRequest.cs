@@ -12,15 +12,4 @@
 
         public string RefreshToken { get; }
     }
-
-    public static class LogoutCommandMapper
-    {
-        public static LogoutCommand ToCommand(this LogoutRequest model)
-        {
-            return new ()
-            {
-                RefreshToken = model.RefreshToken,
-            };
-        }
-    }
 }

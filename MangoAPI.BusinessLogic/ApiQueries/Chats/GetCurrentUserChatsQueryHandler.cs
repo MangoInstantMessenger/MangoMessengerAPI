@@ -12,11 +12,11 @@
     public class
         GetCurrentUserChatsQueryHandler : IRequestHandler<GetCurrentUserChatsQuery, GetCurrentUserChatsResponse>
     {
-        private readonly MangoPostgresDbContext postgresDbContext;
+        private readonly MangoPostgresDbContext _postgresDbContext;
 
         public GetCurrentUserChatsQueryHandler(MangoPostgresDbContext postgresDbContext)
         {
-            this.postgresDbContext = postgresDbContext;
+            _postgresDbContext = postgresDbContext;
         }
 
         public async Task<GetCurrentUserChatsResponse> Handle(
@@ -24,14 +24,14 @@
             CancellationToken cancellationToken)
         {
             var currentUser =
-                await postgresDbContext.Users.FirstOrDefaultAsync(x => x.Id == request.UserId, cancellationToken);
+                await _postgresDbContext.Users.FirstOrDefaultAsync(x => x.Id == request.UserId, cancellationToken);
 
             if (currentUser == null)
             {
                 throw new BusinessException(ResponseMessageCodes.UserNotFound);
             }
 
-            var chats = await postgresDbContext.UserChats
+            var chats = await _postgresDbContext.UserChats
                 .AsNoTracking()
                 .Include(x => x.Chat)
                 .ThenInclude(x => x.Messages)

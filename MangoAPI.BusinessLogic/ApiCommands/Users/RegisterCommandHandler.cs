@@ -15,10 +15,10 @@
 
     public class RegisterCommandHandler : IRequestHandler<RegisterCommand, RegisterResponse>
     {
-        private readonly IEmailSenderService emailSenderService;
-        private readonly MangoPostgresDbContext postgresDbContext;
-        private readonly UserManager<UserEntity> userManager;
-        private readonly IJwtGenerator jwtGenerator;
+        private readonly IEmailSenderService _emailSenderService;
+        private readonly MangoPostgresDbContext _postgresDbContext;
+        private readonly UserManager<UserEntity> _userManager;
+        private readonly IJwtGenerator _jwtGenerator;
 
         public RegisterCommandHandler(
             UserManager<UserEntity> userManager,
@@ -26,10 +26,10 @@
             IEmailSenderService emailSenderService,
             IJwtGenerator jwtGenerator)
         {
-            this.userManager = userManager;
-            this.postgresDbContext = postgresDbContext;
-            this.emailSenderService = emailSenderService;
-            this.jwtGenerator = jwtGenerator;
+            _userManager = userManager;
+            _postgresDbContext = postgresDbContext;
+            _emailSenderService = emailSenderService;
+            _jwtGenerator = jwtGenerator;
         }
 
         public async Task<RegisterResponse> Handle(RegisterCommand request, CancellationToken cancellationToken)
@@ -39,14 +39,14 @@
                 throw new BusinessException(ResponseMessageCodes.InvalidEmail);
             }
 
-            var exists = await userManager.FindByEmailAsync(request.Email);
+            var exists = await _userManager.FindByEmailAsync(request.Email);
 
             if (exists != null)
             {
                 throw new BusinessException(ResponseMessageCodes.EmailOccupied);
             }
 
-            var user = await postgresDbContext.Users
+            var user = await _postgresDbContext.Users
                 .FirstOrDefaultAsync(
                     x => x.PhoneNumber == request.PhoneNumber,
                     cancellationToken);
@@ -65,7 +65,7 @@
                 ConfirmationCode = new Random().Next(100000, 999999),
             };
 
-            var result = await userManager.CreateAsync(newUser, request.Password);
+            var result = await _userManager.CreateAsync(newUser, request.Password);
 
             if (!result.Succeeded)
             {
@@ -78,7 +78,7 @@
                 UserId = newUser.Id,
             };
 
-            await emailSenderService.SendVerificationEmailAsync(newUser, cancellationToken);
+            await _emailSenderService.SendVerificationEmailAsync(newUser, cancellationToken);
 
             var refreshLifetime = EnvironmentConstants.RefreshTokenLifeTime;
 
@@ -96,20 +96,20 @@
                 Created = DateTime.UtcNow,
             };
 
-            var jwtToken = jwtGenerator.GenerateJwtToken(
+            var jwtToken = _jwtGenerator.GenerateJwtToken(
                 newUser,
                 new List<string> { SeedDataConstants.UnverifiedRole });
 
-            await postgresDbContext.UserRoles.AddAsync(
+            await _postgresDbContext.UserRoles.AddAsync(
                 new IdentityUserRole<string>
             {
                 UserId = newUser.Id,
                 RoleId = SeedDataConstants.UnverifiedRoleId,
             }, cancellationToken);
 
-            await postgresDbContext.Sessions.AddAsync(newSession, cancellationToken);
-            await postgresDbContext.UserInformation.AddAsync(userInfo, cancellationToken);
-            await postgresDbContext.SaveChangesAsync(cancellationToken);
+            await _postgresDbContext.Sessions.AddAsync(newSession, cancellationToken);
+            await _postgresDbContext.UserInformation.AddAsync(userInfo, cancellationToken);
+            await _postgresDbContext.SaveChangesAsync(cancellationToken);
 
             return RegisterResponse.FromSuccess(jwtToken, newSession.RefreshToken);
         }

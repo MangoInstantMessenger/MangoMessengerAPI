@@ -12,15 +12,4 @@
 
         public string RefreshToken { get; }
     }
-
-    public static class RefreshTokenCommandMapper
-    {
-        public static RefreshSessionCommand ToCommand(this RefreshSessionRequest model)
-        {
-            return new ()
-            {
-                RefreshToken = model.RefreshToken,
-            };
-        }
-    }
 }

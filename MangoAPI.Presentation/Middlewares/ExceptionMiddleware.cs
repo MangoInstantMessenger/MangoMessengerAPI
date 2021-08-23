@@ -10,18 +10,18 @@
 
     public class ExceptionMiddleware
     {
-        private readonly RequestDelegate next;
+        private readonly RequestDelegate _next;
 
         public ExceptionMiddleware(RequestDelegate next)
         {
-            this.next = next;
+            _next = next;
         }
 
         public async Task InvokeAsync(HttpContext httpContext)
         {
             try
             {
-                await next(httpContext);
+                await _next(httpContext);
             }
             catch (Exception ex)
             {

@@ -19,5 +19,7 @@ namespace MangoAPI.BusinessLogic.Models
         public string LastMessageAt { get; init; }
 
         public int MembersCount { get; init; }
+
+        public bool IsArchived { get; init; }
     }
 }

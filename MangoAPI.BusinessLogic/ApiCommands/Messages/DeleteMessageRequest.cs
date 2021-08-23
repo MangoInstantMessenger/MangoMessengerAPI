@@ -12,16 +12,4 @@
 
         public string MessageId { get; }
     }
-
-    public static class DeleteMessageCommandMapper
-    {
-        public static DeleteMessageCommand ToCommand(this DeleteMessageRequest model, string userId)
-        {
-            return new ()
-            {
-                MessageId = model.MessageId,
-                UserId = userId,
-            };
-        }
-    }
 }

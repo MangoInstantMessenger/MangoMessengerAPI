@@ -10,11 +10,11 @@
 
     public class DeleteMessageCommandHandler : IRequestHandler<DeleteMessageCommand, DeleteMessageResponse>
     {
-        private readonly MangoPostgresDbContext postgresDbContext;
+        private readonly MangoPostgresDbContext _postgresDbContext;
 
         public DeleteMessageCommandHandler(MangoPostgresDbContext postgresDbContext)
         {
-            this.postgresDbContext = postgresDbContext;
+            _postgresDbContext = postgresDbContext;
         }
 
         public async Task<DeleteMessageResponse> Handle(
@@ -22,14 +22,14 @@
             CancellationToken cancellationToken)
         {
             var currentUser =
-                await postgresDbContext.Users.FirstOrDefaultAsync(x => x.Id == request.UserId, cancellationToken);
+                await _postgresDbContext.Users.FirstOrDefaultAsync(x => x.Id == request.UserId, cancellationToken);
 
             if (currentUser == null)
             {
                 throw new BusinessException(ResponseMessageCodes.UserNotFound);
             }
 
-            var message = await postgresDbContext.Messages
+            var message = await _postgresDbContext.Messages
                 .FirstOrDefaultAsync(
                     x => x.Id == request.MessageId && x.UserId == currentUser.Id,
                     cancellationToken);
@@ -39,8 +39,8 @@
                 throw new BusinessException(ResponseMessageCodes.MessageNotFound);
             }
 
-            postgresDbContext.Messages.Remove(message);
-            await postgresDbContext.SaveChangesAsync(cancellationToken);
+            _postgresDbContext.Messages.Remove(message);
+            await _postgresDbContext.SaveChangesAsync(cancellationToken);
 
             return DeleteMessageResponse.SuccessResponse;
         }

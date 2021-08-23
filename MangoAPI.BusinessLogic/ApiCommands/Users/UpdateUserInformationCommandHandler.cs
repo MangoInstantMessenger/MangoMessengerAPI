@@ -12,18 +12,18 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
     public class UpdateUserInformationCommandHandler : IRequestHandler<UpdateUserInformationCommand,
         UpdateUserInformationResponse>
     {
-        private readonly MangoPostgresDbContext postgresDbContext;
+        private readonly MangoPostgresDbContext _postgresDbContext;
 
         public UpdateUserInformationCommandHandler(MangoPostgresDbContext postgresDbContext)
         {
-            this.postgresDbContext = postgresDbContext;
+            _postgresDbContext = postgresDbContext;
         }
 
         public async Task<UpdateUserInformationResponse> Handle(
             UpdateUserInformationCommand request,
             CancellationToken cancellationToken)
         {
-            var user = await postgresDbContext.Users
+            var user = await _postgresDbContext.Users
                 .Include(x => x.UserInformation)
                 .FirstOrDefaultAsync(x => x.Id == request.UserId, cancellationToken);
 
@@ -51,8 +51,8 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
             user.UserInformation.Instagram = request.Instagram ?? user.UserInformation.Instagram;
             user.UserInformation.LinkedIn = request.LinkedIn ?? user.UserInformation.LinkedIn;
 
-            postgresDbContext.UserInformation.Update(user.UserInformation);
-            await postgresDbContext.SaveChangesAsync(cancellationToken);
+            _postgresDbContext.UserInformation.Update(user.UserInformation);
+            await _postgresDbContext.SaveChangesAsync(cancellationToken);
 
             return UpdateUserInformationResponse.SuccessResponse;
         }

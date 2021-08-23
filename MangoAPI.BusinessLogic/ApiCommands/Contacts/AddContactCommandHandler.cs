@@ -13,16 +13,16 @@
 
     public class AddContactCommandHandler : IRequestHandler<AddContactCommand, AddContactResponse>
     {
-        private readonly MangoPostgresDbContext postgresDbContext;
+        private readonly MangoPostgresDbContext _postgresDbContext;
 
         public AddContactCommandHandler(MangoPostgresDbContext postgresDbContext)
         {
-            this.postgresDbContext = postgresDbContext;
+            _postgresDbContext = postgresDbContext;
         }
 
         public async Task<AddContactResponse> Handle(AddContactCommand request, CancellationToken cancellationToken)
         {
-            var contact = await postgresDbContext.Users
+            var contact = await _postgresDbContext.Users
                 .FirstOrDefaultAsync(x => x.Id == request.UserId, cancellationToken);
 
             if (contact is null)
@@ -35,7 +35,7 @@
                 throw new BusinessException(ResponseMessageCodes.CannotAddSelfToContacts);
             }
 
-            var userContactExist = await postgresDbContext.UserContacts
+            var userContactExist = await _postgresDbContext.UserContacts
                 .Where(x => x.UserId == request.UserId)
                 .AnyAsync(x => x.ContactId == request.ContactId, cancellationToken);
 
@@ -51,8 +51,8 @@
                 UserId = request.UserId,
             };
 
-            await postgresDbContext.UserContacts.AddAsync(contactEntity, cancellationToken);
-            await postgresDbContext.SaveChangesAsync(cancellationToken);
+            await _postgresDbContext.UserContacts.AddAsync(contactEntity, cancellationToken);
+            await _postgresDbContext.SaveChangesAsync(cancellationToken);
 
             return AddContactResponse.SuccessResponse;
         }

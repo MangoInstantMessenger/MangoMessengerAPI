@@ -10,16 +10,16 @@
 
     public class SearchChatsCommandHandler : IRequestHandler<SearchChatsCommand, SearchChatsResponse>
     {
-        private readonly MangoPostgresDbContext postgresDbContext;
+        private readonly MangoPostgresDbContext _postgresDbContext;
 
         public SearchChatsCommandHandler(MangoPostgresDbContext postgresDbContext)
         {
-            this.postgresDbContext = postgresDbContext;
+            _postgresDbContext = postgresDbContext;
         }
 
         public async Task<SearchChatsResponse> Handle(SearchChatsCommand request, CancellationToken cancellationToken)
         {
-            var chats = await postgresDbContext
+            var chats = await _postgresDbContext
                 .Chats
                 .AsNoTracking()
                 .Include(x => x.Messages)

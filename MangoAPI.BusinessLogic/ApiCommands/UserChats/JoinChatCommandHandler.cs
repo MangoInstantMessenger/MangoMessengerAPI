@@ -12,16 +12,16 @@
 
     public class JoinChatCommandHandler : IRequestHandler<JoinChatCommand, JoinChatResponse>
     {
-        private readonly MangoPostgresDbContext postgresDbContext;
+        private readonly MangoPostgresDbContext _postgresDbContext;
 
         public JoinChatCommandHandler(MangoPostgresDbContext postgresDbContext)
         {
-            this.postgresDbContext = postgresDbContext;
+            _postgresDbContext = postgresDbContext;
         }
 
         public async Task<JoinChatResponse> Handle(JoinChatCommand request, CancellationToken cancellationToken)
         {
-            var currentUser = await postgresDbContext.Users
+            var currentUser = await _postgresDbContext.Users
                 .FirstOrDefaultAsync(x => x.Id == request.UserId, cancellationToken);
 
             if (currentUser == null)
@@ -30,7 +30,7 @@
             }
 
             var alreadyJoined = await
-                postgresDbContext.UserChats.AnyAsync(
+                _postgresDbContext.UserChats.AnyAsync(
                     x =>
                     x.UserId == currentUser.Id && x.ChatId == request.ChatId, cancellationToken);
 
@@ -39,7 +39,7 @@
                 throw new BusinessException(ResponseMessageCodes.UserAlreadyJoinedGroup);
             }
 
-            var chat = await postgresDbContext.Chats
+            var chat = await _postgresDbContext.Chats
                 .FirstOrDefaultAsync(
                     x =>
                     x.Id == request.ChatId && x.ChatType != ChatType.DirectChat &&
@@ -50,7 +50,7 @@
                 throw new BusinessException(ResponseMessageCodes.ChatNotFound);
             }
 
-            await postgresDbContext.UserChats.AddAsync(
+            await _postgresDbContext.UserChats.AddAsync(
                 new UserChatEntity
             {
                 ChatId = request.ChatId,
@@ -60,8 +60,8 @@
 
             chat.MembersCount += 1;
 
-            postgresDbContext.Update(chat);
-            await postgresDbContext.SaveChangesAsync(cancellationToken);
+            _postgresDbContext.Update(chat);
+            await _postgresDbContext.SaveChangesAsync(cancellationToken);
 
             return JoinChatResponse.SuccessResponse;
         }

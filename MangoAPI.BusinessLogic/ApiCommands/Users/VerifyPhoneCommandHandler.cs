@@ -11,16 +11,16 @@
 
     public class VerifyPhoneCommandHandler : IRequestHandler<VerifyPhoneCommand, VerifyPhoneResponse>
     {
-        private readonly MangoPostgresDbContext postgresDbContext;
+        private readonly MangoPostgresDbContext _postgresDbContext;
 
         public VerifyPhoneCommandHandler(MangoPostgresDbContext postgresDbContext)
         {
-            this.postgresDbContext = postgresDbContext;
+            _postgresDbContext = postgresDbContext;
         }
 
         public async Task<VerifyPhoneResponse> Handle(VerifyPhoneCommand request, CancellationToken cancellationToken)
         {
-            var user = await postgresDbContext.Users.FirstOrDefaultAsync(
+            var user = await _postgresDbContext.Users.FirstOrDefaultAsync(
                 x => x.Id == request.UserId,
                 cancellationToken);
 
@@ -39,7 +39,7 @@
                 throw new BusinessException(ResponseMessageCodes.InvalidPhoneCode);
             }
 
-            await postgresDbContext.UserRoles.AddAsync(
+            await _postgresDbContext.UserRoles.AddAsync(
                 new IdentityUserRole<string>
                 {
                     UserId = user.Id,
@@ -49,9 +49,9 @@
             user.PhoneNumberConfirmed = true;
             user.ConfirmationCode = 0;
 
-            postgresDbContext.Update(user);
+            _postgresDbContext.Update(user);
 
-            await postgresDbContext.SaveChangesAsync(cancellationToken);
+            await _postgresDbContext.SaveChangesAsync(cancellationToken);
 
             return VerifyPhoneResponse.SuccessResponse;
         }
