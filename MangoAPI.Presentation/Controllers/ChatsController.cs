@@ -45,7 +45,7 @@
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> GetChats(CancellationToken cancellationToken)
         {
-            var request = new GetCurrentUserChatsQuery { UserId = HttpContext.User.GetUserId() };
+            var request = new GetCurrentUserChatsQuery {UserId = HttpContext.User.GetUserId()};
             return await RequestAsync(request, cancellationToken);
         }
 
@@ -81,8 +81,9 @@
         /// <param name="cancellationToken">Cancellation token instance.</param>
         /// <returns>Possible codes: 200, 400, 409.</returns>
         [HttpPost("{userId}")]
-        [SwaggerOperation(Summary = "Creates new direct chat with specified user. User is fetched by parameter user ID. " +
-                                    "Requires role: User.")]
+        [SwaggerOperation(Summary =
+            "Creates new direct chat with specified user. User is fetched by parameter user ID. " +
+            "Requires role: User.")]
         [ProducesResponseType(typeof(CreateChatEntityResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
@@ -100,6 +101,32 @@
 
             return await RequestAsync(command, cancellationToken);
         }
+
+        /// <summary>
+        /// Gets chat by ID. Requires role: User.
+        /// </summary>
+        /// <param name="chatId">User ID of colleague, UUID.</param>
+        /// <param name="cancellationToken">Cancellation token instance.</param>
+        /// <returns>Possible codes: 200, 400, 409.</returns>
+        [HttpGet("{chatId}")]
+        [SwaggerOperation(Summary = "Gets chat by ID. Requires role: User.")]
+        [ProducesResponseType(typeof(GetChatByIdResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        public async Task<IActionResult> SearchById([FromRoute]string chatId,
+            CancellationToken cancellationToken)
+        {
+            var currentUserId = HttpContext.User.GetUserId();
+            var command = new GetChatByIdQuery
+            {
+                UserId = currentUserId,
+                ChatId = chatId,
+            };
+
+            return await RequestAsync(command, cancellationToken);
+        }
+
 
         /// <summary>
         /// Searches chats by display name. Requires role: User.
