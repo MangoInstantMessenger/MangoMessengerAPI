@@ -12,6 +12,8 @@ namespace MangoAPI.BusinessLogic.Models
 
         public string Image { get; init; }
 
+        public string Description { get; init; }
+
         public string LastMessageAuthor { get; init; }
 
         public string LastMessage { get; init; }

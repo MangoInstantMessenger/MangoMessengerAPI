@@ -75,6 +75,7 @@
                 ChatType = ChatType.DirectChat,
                 Title = $"{currentUser.DisplayName} / {partner.DisplayName}",
                 Created = DateTime.UtcNow,
+                Description = $"Direct chat between {currentUser.DisplayName} and {partner.DisplayName}",
                 MembersCount = 2,
             };
 

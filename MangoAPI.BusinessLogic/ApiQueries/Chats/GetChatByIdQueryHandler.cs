@@ -59,6 +59,7 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Chats
                 Title = chatEntity.Title,
                 ChatType = chatEntity.ChatType,
                 Image = chatEntity.Image,
+                Description = chatEntity.Description,
                 LastMessageAuthor = chatEntity.Messages.Any()
                     ? chatEntity.Messages.OrderBy(messageEntity => messageEntity.Created).Last().User.DisplayName
                     : null,

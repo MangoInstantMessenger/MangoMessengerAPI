@@ -43,6 +43,7 @@
                     ChatId = chat.Id,
                     Title = chat.Title,
                     Image = chat.Image,
+                    Description = chat.Description,
                     LastMessage = chat.Messages.Any()
                             ? chat.Messages.Last().Content
                             : null,

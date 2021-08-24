@@ -22,6 +22,7 @@
                     ChatId = userChatEntity.ChatId,
                     Title = userChatEntity.Chat.Title,
                     Image = userChatEntity.Chat.Image,
+                    Description = userChatEntity.Chat.Description,
                     LastMessage = userChatEntity.Chat.Messages.Any()
                         ? userChatEntity.Chat.Messages.OrderBy(messageEntity => messageEntity.Created).Last().Content
                         : null,

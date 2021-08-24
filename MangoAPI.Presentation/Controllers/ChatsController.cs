@@ -118,13 +118,13 @@
             CancellationToken cancellationToken)
         {
             var currentUserId = HttpContext.User.GetUserId();
-            var command = new GetChatByIdQuery
+            var query = new GetChatByIdQuery
             {
                 UserId = currentUserId,
                 ChatId = chatId,
             };
 
-            return await RequestAsync(command, cancellationToken);
+            return await RequestAsync(query, cancellationToken);
         }
 
 

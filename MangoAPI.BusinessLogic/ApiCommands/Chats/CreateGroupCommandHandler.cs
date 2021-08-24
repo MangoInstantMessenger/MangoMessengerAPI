@@ -44,6 +44,7 @@
                 ChatType = request.GroupType,
                 Title = request.GroupTitle,
                 Created = DateTime.UtcNow,
+                Description = request.GroupDescription,
                 MembersCount = 1,
             };
 
