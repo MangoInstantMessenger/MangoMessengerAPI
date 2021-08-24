@@ -107,7 +107,7 @@
         /// <param name="displayName">Display name of the chat, string.</param>
         /// <param name="cancellationToken">Cancellation token instance.</param>
         /// <returns>Possible codes: 200, 400, 409.</returns>
-        [HttpGet("{displayName}")]
+        [HttpGet("searches/{displayName}")]
         [SwaggerOperation(Summary = "Searches chats by display name. Requires role: User.")]
         [ProducesResponseType(typeof(SearchChatsResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
