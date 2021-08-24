@@ -1,11 +1,11 @@
 ﻿namespace MangoAPI.BusinessLogic.ApiQueries.Messages
 {
-    using System.Collections.Generic;
-    using System.Linq;
-    using Models;
-    using Responses;
     using Domain.Constants;
     using Domain.Entities;
+    using Models;
+    using Responses;
+    using System.Collections.Generic;
+    using System.Linq;
 
     public record GetMessagesResponse : MessageResponseBase<GetMessagesResponse>
     {
@@ -13,13 +13,14 @@
 
         public static GetMessagesResponse FromSuccess(IEnumerable<MessageEntity> messages, UserEntity user)
         {
-            return new ()
+            return new()
             {
                 Message = ResponseMessageCodes.Success,
 
                 Messages = messages.OrderBy(messageEntity => messageEntity.Created)
                     .Select(messageEntity => new Message
                     {
+                        MessageId = messageEntity.Id,
                         MessageText = messageEntity.Content,
                         EditedAt = messageEntity.Updated?.ToShortTimeString(),
                         SentAt = messageEntity.Created.ToShortTimeString(),

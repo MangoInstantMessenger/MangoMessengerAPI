@@ -1,12 +1,12 @@
 ﻿namespace MangoAPI.BusinessLogic.ApiCommands.Messages
 {
-    using System.Threading;
-    using System.Threading.Tasks;
     using BusinessExceptions;
     using DataAccess.Database;
     using Domain.Constants;
     using MediatR;
     using Microsoft.EntityFrameworkCore;
+    using System.Threading;
+    using System.Threading.Tasks;
 
     public class DeleteMessageCommandHandler : IRequestHandler<DeleteMessageCommand, DeleteMessageResponse>
     {
@@ -42,7 +42,7 @@
             _postgresDbContext.Messages.Remove(message);
             await _postgresDbContext.SaveChangesAsync(cancellationToken);
 
-            return DeleteMessageResponse.SuccessResponse;
+            return DeleteMessageResponse.FromSuccess(message);
         }
     }
 }

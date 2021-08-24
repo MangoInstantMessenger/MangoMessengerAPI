@@ -1,10 +1,10 @@
-﻿namespace MangoAPI.Tests.ApiCommandsTests.Chats
+﻿namespace MangoAPI.Tests.ApiQueriesTests.Chats
 {
+    using FluentAssertions;
+    using MangoAPI.BusinessLogic.ApiQueries.Chats;
+    using NUnit.Framework;
     using System.Threading;
     using System.Threading.Tasks;
-    using FluentAssertions;
-    using MangoAPI.BusinessLogic.ApiCommands.Chats;
-    using NUnit.Framework;
 
     [TestFixture]
     public class SearchChatsCommandHandlerTest
@@ -13,8 +13,8 @@
         public async Task SearchChatsQueryHandlerTest_Success()
         {
             using var dbContextFixture = new DbContextFixture();
-            var handler = new SearchChatsCommandHandler(dbContextFixture.PostgresDbContext);
-            var query = new SearchChatsCommand
+            var handler = new SearchChatsQueryHandler(dbContextFixture.PostgresDbContext);
+            var query = new SearchChatsQuery
             {
                 UserId = "1",
                 DisplayName = "Extreme",

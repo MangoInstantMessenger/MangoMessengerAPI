@@ -118,7 +118,7 @@
             CancellationToken cancellationToken)
         {
             var userId = HttpContext.User.GetUserId();
-            var command = new SearchChatsCommand
+            var command = new SearchChatsQuery
             {
                 DisplayName = displayName,
                 UserId = userId,

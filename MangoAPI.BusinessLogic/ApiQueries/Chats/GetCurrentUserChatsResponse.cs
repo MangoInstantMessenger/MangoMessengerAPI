@@ -36,6 +36,7 @@
                     MembersCount = userChatEntity.Chat.MembersCount,
                     ChatType = userChatEntity.Chat.ChatType,
                     IsArchived = userChatEntity.IsArchived,
+                    IsMember = true,
                 }).ToList(),
             };
         }

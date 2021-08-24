@@ -1,16 +1,14 @@
-﻿#nullable enable
-
-namespace MangoAPI.Domain.Entities
+﻿namespace MangoAPI.Domain.Entities
 {
+    using Enums;
     using System;
     using System.Collections.Generic;
-    using Enums;
 
     public sealed class ChatEntity
     {
-        public string Id { get; set; } = null!;
+        public string Id { get; set; }
 
-        public string Title { get; set; } = null!;
+        public string Title { get; set; }
 
         public ChatType ChatType { get; set; }
 
@@ -20,8 +18,8 @@ namespace MangoAPI.Domain.Entities
 
         public int MembersCount { get; set; }
 
-        public ICollection<MessageEntity> Messages { get; set; } = null!;
+        public ICollection<MessageEntity> Messages { get; set; }
 
-        public ICollection<UserChatEntity> ChatUsers { get; set; } = null!;
+        public ICollection<UserChatEntity> ChatUsers { get; set; }
     }
 }
