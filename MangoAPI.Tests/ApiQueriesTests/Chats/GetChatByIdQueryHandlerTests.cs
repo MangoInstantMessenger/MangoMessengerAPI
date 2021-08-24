@@ -1,11 +1,11 @@
-﻿using System;
-using System.Threading;
-using System.Threading.Tasks;
-using FluentAssertions;
+﻿using FluentAssertions;
 using MangoAPI.BusinessLogic.ApiQueries.Chats;
 using MangoAPI.BusinessLogic.BusinessExceptions;
 using MangoAPI.Domain.Constants;
 using NUnit.Framework;
+using System;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace MangoAPI.Tests.ApiQueriesTests.Chats
 {
@@ -45,7 +45,7 @@ namespace MangoAPI.Tests.ApiQueriesTests.Chats
             await result.Should().ThrowAsync<BusinessException>()
                 .WithMessage(ResponseMessageCodes.UserNotFound);
         }
-        
+
         [Test]
         public async Task GetChatByIdQueryHandlerTest_ShouldThrowChatNotFound1()
         {
@@ -62,7 +62,7 @@ namespace MangoAPI.Tests.ApiQueriesTests.Chats
             await result.Should().ThrowAsync<BusinessException>()
                 .WithMessage(ResponseMessageCodes.ChatNotFound);
         }
-        
+
         [Test]
         public async Task GetChatByIdQueryHandlerTest_ShouldThrowChatNotFound2()
         {
@@ -79,7 +79,7 @@ namespace MangoAPI.Tests.ApiQueriesTests.Chats
             await result.Should().ThrowAsync<BusinessException>()
                 .WithMessage(ResponseMessageCodes.ChatNotFound);
         }
-        
+
         [Test]
         public async Task GetChatByIdQueryHandlerTest_ShouldThrowChatNotFound3()
         {

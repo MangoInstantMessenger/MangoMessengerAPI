@@ -1,5 +1,5 @@
-﻿using System;
-using FluentValidation;
+﻿using FluentValidation;
+using System;
 
 namespace MangoAPI.BusinessLogic.ApiQueries.Chats
 {
@@ -10,7 +10,7 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Chats
             RuleFor(x => x.UserId)
                 .Must(x => Guid.TryParse(x, out _))
                 .WithMessage("Get Chat By Id: User id can not be parsed");
-            
+
             RuleFor(x => x.ChatId)
                 .Must(x => Guid.TryParse(x, out _))
                 .WithMessage("Get Chat By Id: Chat id can not be parsed");
