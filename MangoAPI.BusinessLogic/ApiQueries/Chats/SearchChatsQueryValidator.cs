@@ -1,11 +1,11 @@
-﻿namespace MangoAPI.BusinessLogic.ApiCommands.Chats
+﻿namespace MangoAPI.BusinessLogic.ApiQueries.Chats
 {
-    using System;
     using FluentValidation;
+    using System;
 
-    public class SearchChatsCommandValidator : AbstractValidator<SearchChatsCommand>
+    public class SearchChatsQueryValidator : AbstractValidator<SearchChatsQuery>
     {
-        public SearchChatsCommandValidator()
+        public SearchChatsQueryValidator()
         {
             RuleFor(x => x.DisplayName)
                 .Cascade(CascadeMode.Stop)
