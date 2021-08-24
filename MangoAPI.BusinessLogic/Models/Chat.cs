@@ -21,5 +21,7 @@ namespace MangoAPI.BusinessLogic.Models
         public int MembersCount { get; init; }
 
         public bool IsArchived { get; init; }
+
+        public bool IsMember { get; init; }
     }
 }
