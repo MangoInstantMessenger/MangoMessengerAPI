@@ -47,8 +47,7 @@
 
             Func<Task> response = async () => await handler.Handle(query, CancellationToken.None);
 
-            await response.Should().ThrowAsync<BusinessException>()
-                .WithMessage(ResponseMessageCodes.PermissionDenied);
+            await response.Should().NotThrowAsync<BusinessException>();
         }
     }
 }
