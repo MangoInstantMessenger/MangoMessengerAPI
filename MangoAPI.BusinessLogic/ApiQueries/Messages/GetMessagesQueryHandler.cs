@@ -1,13 +1,13 @@
 ﻿namespace MangoAPI.BusinessLogic.ApiQueries.Messages
 {
-    using System.Linq;
-    using System.Threading;
-    using System.Threading.Tasks;
     using BusinessExceptions;
     using DataAccess.Database;
     using Domain.Constants;
     using MediatR;
     using Microsoft.EntityFrameworkCore;
+    using System.Linq;
+    using System.Threading;
+    using System.Threading.Tasks;
 
     public class GetMessagesQueryHandler : IRequestHandler<GetMessagesQuery, GetMessagesResponse>
     {
@@ -27,16 +27,6 @@
             if (user == null)
             {
                 throw new BusinessException(ResponseMessageCodes.UserNotFound);
-            }
-
-            var belongsToChat = await _postgresDbContext.UserChats
-                .AsNoTracking()
-                .Where(userChatEntity => userChatEntity.UserId == user.Id)
-                .AnyAsync(userChatEntity => userChatEntity.ChatId == request.ChatId, cancellationToken);
-
-            if (!belongsToChat)
-            {
-                throw new BusinessException(ResponseMessageCodes.PermissionDenied);
             }
 
             var chat = _postgresDbContext.Messages.AsNoTracking()
