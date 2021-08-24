@@ -13,6 +13,8 @@
 
         Task<IActionResult> CreateChatAsync(string userId, CancellationToken cancellationToken);
 
+        Task<IActionResult> SearchById(string chatId, CancellationToken cancellationToken);
+        
         Task<IActionResult> SearchAsync(string displayName, CancellationToken cancellationToken);
     }
 }
