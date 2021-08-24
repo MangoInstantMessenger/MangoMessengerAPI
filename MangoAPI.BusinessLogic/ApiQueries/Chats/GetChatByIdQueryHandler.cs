@@ -69,7 +69,7 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Chats
                     ? chatEntity.Messages.OrderBy(messageEntity => messageEntity.Created).Last().Created.ToShortTimeString()
                     : null,
                 MembersCount = chatEntity.MembersCount,
-                IsMember = true,
+                IsMember = userChat != null,
             };
 
             return GetChatByIdResponse.FromSuccess(chat);
