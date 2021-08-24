@@ -41,11 +41,16 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Chats
             }
 
             var userChat = await postgresDbContext.UserChats
+                .Where(x => x.UserId == request.UserId)
                 .FirstOrDefaultAsync(x => x.ChatId == request.ChatId, cancellationToken);
 
-            if (userChat is null && chatEntity.ChatType == ChatType.DirectChat)
+            switch (userChat)
             {
-                throw new BusinessException(ResponseMessageCodes.ChatNotFound);
+                case null when chatEntity.ChatType == ChatType.DirectChat:
+                    throw new BusinessException(ResponseMessageCodes.ChatNotFound);
+                
+                case null when chatEntity.ChatType == ChatType.PrivateChannel:
+                    throw new BusinessException(ResponseMessageCodes.ChatNotFound);
             }
             
             var chat = new Chat()
@@ -64,7 +69,7 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Chats
                     ? chatEntity.Messages.OrderBy(messageEntity => messageEntity.Created).Last().Created.ToShortTimeString()
                     : null,
                 MembersCount = chatEntity.MembersCount,
-                IsArchived = userChat.IsArchived,
+                IsArchived = userChat != null,
                 IsMember = userChat != null 
             };
             

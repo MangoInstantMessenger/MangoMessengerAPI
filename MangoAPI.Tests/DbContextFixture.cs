@@ -170,22 +170,28 @@
             },
             new ChatEntity
             {
-                ChatType = ChatType.PublicChannel,
+                ChatType = ChatType.PrivateChannel,
                 Title = "Extreme Code C++",
                 Id = "2",
             },
             new ChatEntity
             {
-                ChatType = ChatType.PublicChannel,
+                ChatType = ChatType.ReadOnlyChannel,
                 Title = "Extreme Code",
                 Id = "3",
             },
             new ChatEntity
             {
-                ChatType = ChatType.PublicChannel,
+                ChatType = ChatType.PrivateChannel,
                 Title = "Extreme Code Flood",
                 Id = "4",
             },
+            new ChatEntity()
+            {
+                ChatType = ChatType.DirectChat,
+                Title = "Petro / Szymon",
+                Id = "5"
+            }
         };
 
         public static List<UserChatEntity> UserChats => new ()

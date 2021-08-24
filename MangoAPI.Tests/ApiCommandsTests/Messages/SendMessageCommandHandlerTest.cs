@@ -20,7 +20,7 @@
             var command = new SendMessageCommand
             {
                 UserId = "1",
-                ChatId = "3",
+                ChatId = "4",
                 MessageText = "hello world",
             };
 
