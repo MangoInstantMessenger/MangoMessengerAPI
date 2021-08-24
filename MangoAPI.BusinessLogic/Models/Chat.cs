@@ -11,6 +11,8 @@ namespace MangoAPI.BusinessLogic.Models
         public ChatType ChatType { get; init; }
 
         public string Image { get; init; }
+        
+        public string Description { get; set; }
 
         public string LastMessageAuthor { get; init; }
 

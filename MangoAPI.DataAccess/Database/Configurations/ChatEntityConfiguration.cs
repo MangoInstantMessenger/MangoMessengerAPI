@@ -26,6 +26,7 @@
                     Id = SeedDataConstants.WsbId,
                     Title = "WSB",
                     ChatType = ChatType.PublicChannel,
+                    Description = "WSB Public Group",
                     MembersCount = 5,
                 },
                 new ChatEntity
@@ -33,6 +34,7 @@
                     Id = SeedDataConstants.ExtremeCodeMainId,
                     Title = "Extreme Code Main",
                     ChatType = ChatType.PublicChannel,
+                    Description = "Extreme Code Main Public Group",
                     Created = new DateTime(2020, 2, 4),
                     MembersCount = 4,
                 },
@@ -41,6 +43,7 @@
                     Id = SeedDataConstants.ExtremeCodeFloodId,
                     Title = "Extreme Code Flood",
                     ChatType = ChatType.PublicChannel,
+                    Description = "Extreme Code Flood Public Group",
                     Created = new DateTime(2020, 4, 23),
                     MembersCount = 4,
                 },
@@ -49,6 +52,7 @@
                     Id = SeedDataConstants.ExtremeCodeCppId,
                     Title = "Extreme Code C++",
                     ChatType = ChatType.PublicChannel,
+                    Description = "Extreme Code C++ Public Group",
                     Created = new DateTime(2020, 5, 12),
                     MembersCount = 4,
                 },
@@ -57,6 +61,7 @@
                     Id = SeedDataConstants.ExtremeCodeDotnetId,
                     Title = "Extreme Code .NET",
                     ChatType = ChatType.PublicChannel,
+                    Description = "Extreme Code .NET Public Group",
                     Created = new DateTime(2020, 5, 12),
                     MembersCount = 4,
                 },
@@ -64,6 +69,7 @@
                 {
                     Id = SeedDataConstants.DirectKhachaturRazumovsky,
                     Title = "Khachatur Khachatryan / razumovsky r",
+                    Description = "Direct chat between Khachatur Khachatryan and razumovsky r",
                     ChatType = ChatType.DirectChat,
                     MembersCount = 2,
                 },
@@ -71,6 +77,7 @@
                 {
                     Id = SeedDataConstants.DirectKolbasatorRazumovsky,
                     Title = "Мусяка Колбасяка / razumovsky r",
+                    Description = "Direct chat between Мусяка Колбасяка and razumovsky r",
                     ChatType = ChatType.DirectChat,
                     MembersCount = 2,
                 },
@@ -78,6 +85,7 @@
                 {
                     Id = SeedDataConstants.DirectAmelitRazumovsky,
                     Title = "Amelit / razumovsky r",
+                    Description = "Direct chat between Amelit and razumovsky r",
                     ChatType = ChatType.DirectChat,
                     MembersCount = 2,
                 },
@@ -85,6 +93,7 @@
                 {
                     Id = SeedDataConstants.DirectKhachaturKolbasator,
                     Title = "Khachatur Khachatryan / Мусяка Колбасяка",
+                    Description = "Direct chat between Khachatur Khachatryan and Мусяка Колбасяка",
                     ChatType = ChatType.DirectChat,
                     MembersCount = 2,
                 },
@@ -92,6 +101,7 @@
                 {
                     Id = SeedDataConstants.DirectPetroSzymon,
                     Title = "Petro Kolosov / Szymon Murawski",
+                    Description = "Direct chat between Petro Kolosov and Szymon Murawski",
                     ChatType = ChatType.DirectChat,
                     MembersCount = 2,
                 });

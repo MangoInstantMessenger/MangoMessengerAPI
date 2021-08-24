@@ -7,6 +7,8 @@
     {
         public ChatType GroupType { get; init; }
         public string GroupTitle { get; init; }
+        public string GroupDescription { get; set; }
+
         public string UserId { get; init; }
     }
 }

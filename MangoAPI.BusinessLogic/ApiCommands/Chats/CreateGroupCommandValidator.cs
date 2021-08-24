@@ -11,6 +11,11 @@
                 .Cascade(CascadeMode.Stop)
                 .NotEmpty()
                 .Length(1, 300);
+                
+            RuleFor(x => x.GroupDescription)
+                .Cascade(CascadeMode.Stop)
+                .NotEmpty()
+                .Length(1, 300);
 
             RuleFor(x => x.GroupType).IsInEnum();
 

@@ -29,7 +29,7 @@
                 DisplayName = "Khachatur Khachatryan",
                 Bio = "13 y. o. | C# pozer",
                 Id = SeedDataConstants.KhachaturId,
-                UserName = "xachulxx",
+                UserName = "KHACHATUR228",
                 Email = "xachulxx@gmail.com",
                 NormalizedEmail = "XACHULXX@GMAIL.COM",
                 EmailConfirmed = true,
