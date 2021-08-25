@@ -158,16 +158,16 @@
         /// <param name="displayName">User's display name, string.</param>
         /// <param name="cancellationToken">CancellationToken instance.</param>
         /// <returns>Possible codes: 200, 400, 409.</returns>
-        [HttpPost("{displayName}")]
+        [HttpGet("searches/{displayName}")]
         [Authorize(Roles = "User")]
         [SwaggerOperation(Summary = "Searches user by his display name. Requires role: User.")]
-        [ProducesResponseType(typeof(UserSearchResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(SearchUserByDisplayNameResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> SearchesAsync(string displayName, CancellationToken cancellationToken)
         {
-            var command = new UserSearchCommand
+            var command = new SearchUserByDisplayNameQuery
             {
                 DisplayName = displayName,
             };

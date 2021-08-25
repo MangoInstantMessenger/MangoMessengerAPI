@@ -1,8 +1,8 @@
-﻿namespace MangoAPI.BusinessLogic.ApiCommands.Users
+﻿namespace MangoAPI.BusinessLogic.ApiQueries.Users
 {
     using FluentValidation;
 
-    public class UserSearchCommandValidator : AbstractValidator<UserSearchCommand>
+    public class UserSearchCommandValidator : AbstractValidator<SearchUserByDisplayNameQuery>
     {
         public UserSearchCommandValidator()
         {

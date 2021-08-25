@@ -1,4 +1,4 @@
-﻿namespace MangoAPI.BusinessLogic.ApiCommands.Users
+﻿namespace MangoAPI.BusinessLogic.ApiQueries.Users
 {
     using System.Collections.Generic;
     using System.Linq;
@@ -7,11 +7,11 @@
     using Domain.Constants;
     using Domain.Entities;
 
-    public record UserSearchResponse : ResponseBase<UserSearchResponse>
+    public record SearchUserByDisplayNameResponse : ResponseBase<SearchUserByDisplayNameResponse>
     {
         public List<User> Users { get; init; }
 
-        public static UserSearchResponse FromSuccess(IEnumerable<UserEntity> users)
+        public static SearchUserByDisplayNameResponse FromSuccess(IEnumerable<UserEntity> users)
         {
             return new()
             {
