@@ -38,7 +38,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Messages
             }
 
             message.Content = request.ModifiedText;
-            message.Updated = DateTime.UtcNow;
+            message.UpdatedAt = DateTime.UtcNow;
 
             _postgresDbContext.Update(message);
 

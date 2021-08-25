@@ -147,16 +147,16 @@
                 Id = "1",
                 UserId = "1",
                 RefreshToken = "69dbef09-de5a-4da7-9d67-abeba1510118",
-                Created = DateTime.UtcNow,
-                Expires = DateTime.UtcNow.AddDays(3),
+                CreatedAt = DateTime.UtcNow,
+                ExpiresAt = DateTime.UtcNow.AddDays(3),
             },
             new SessionEntity
             {
                 Id = "2",
                 UserId = "24",
                 RefreshToken = "219d9df3-9bc0-4679-baaa-c18b1c7524e8",
-                Created = DateTime.UtcNow,
-                Expires = DateTime.UtcNow.AddDays(3),
+                CreatedAt = DateTime.UtcNow,
+                ExpiresAt = DateTime.UtcNow.AddDays(3),
             },
         };
 

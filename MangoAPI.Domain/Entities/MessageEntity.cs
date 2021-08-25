@@ -12,9 +12,9 @@
 
         public string Content { get; set; }
 
-        public DateTime Created { get; set; }
+        public DateTime CreatedAt { get; set; }
 
-        public DateTime? Updated { get; set; }
+        public DateTime? UpdatedAt { get; set; }
 
         public UserEntity User { get; set; }
 

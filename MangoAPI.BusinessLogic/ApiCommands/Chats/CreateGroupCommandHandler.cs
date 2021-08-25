@@ -43,7 +43,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Chats
                 Id = Guid.NewGuid().ToString(),
                 ChatType = request.GroupType,
                 Title = request.GroupTitle,
-                Created = DateTime.UtcNow,
+                CreatedAt = DateTime.UtcNow,
                 Description = request.GroupDescription,
                 MembersCount = 1,
             };
