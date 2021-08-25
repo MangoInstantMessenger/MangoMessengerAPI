@@ -28,7 +28,11 @@
                       ? userChatEntity.Chat.Messages.OrderBy(messageEntity => messageEntity.CreatedAt).Last().User
                           .DisplayName
                       : null,
-                LastMessageAt = userChatEntity.Chat.UpdatedAt?.ToShortTimeString(),
+                LastMessageAt = userChatEntity.Chat.UpdatedAt?.ToShortTimeString() ?? (userChatEntity.Chat.Messages.Any()
+                        ? userChatEntity.Chat.Messages.OrderBy(messageEntity => messageEntity.CreatedAt)
+                                                      .Last().CreatedAt
+                                                      .ToShortTimeString()
+                        : null),
                 MembersCount = userChatEntity.Chat.MembersCount,
                 ChatType = userChatEntity.Chat.ChatType,
                 IsArchived = userChatEntity.IsArchived,
