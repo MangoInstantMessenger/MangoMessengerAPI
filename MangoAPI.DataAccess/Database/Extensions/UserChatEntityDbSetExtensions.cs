@@ -29,11 +29,10 @@ namespace MangoAPI.DataAccess.Database.Extensions
                 .FirstOrDefaultAsync(x => x.ChatId == chatId, cancellationToken);
         }
 
-        public static async Task<bool> IsAlreadyJoinedAsync(this DbSet<UserChatEntity> dbSet, 
+        public static async Task<bool> IsAlreadyJoinedAsync(this DbSet<UserChatEntity> dbSet,
             string userId, string chatId, CancellationToken cancellationToken)
         {
-            return await dbSet.AnyAsync(x =>
-                x.UserId == userId && x.ChatId == chatId, cancellationToken);
+            return await dbSet.AnyAsync(x => x.UserId == userId && x.ChatId == chatId, cancellationToken);
         }
     }
 }

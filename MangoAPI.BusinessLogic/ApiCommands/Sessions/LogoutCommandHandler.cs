@@ -22,7 +22,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Sessions
         public async Task<LogoutResponse> Handle(LogoutCommand request, CancellationToken cancellationToken)
         {
             var session = await _postgresDbContext.Sessions
-                .GetUserSessionByRefreshTokenAsync(request.RefreshToken, cancellationToken);
+                .GetSessionByRefreshTokenAsync(request.RefreshToken, cancellationToken);
 
             if (session is null)
             {

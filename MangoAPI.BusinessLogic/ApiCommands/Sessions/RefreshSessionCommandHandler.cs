@@ -27,7 +27,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Sessions
 
         public async Task<RefreshSessionResponse> Handle(RefreshSessionCommand request, CancellationToken cancellationToken)
         {
-            var session = await _postgresDbContext.Sessions.GetUserSessionByRefreshTokenAsync(request.RefreshToken, cancellationToken);
+            var session = await _postgresDbContext.Sessions.GetSessionByRefreshTokenAsync(request.RefreshToken, cancellationToken);
 
             if (session is null || session.IsExpired)
             {

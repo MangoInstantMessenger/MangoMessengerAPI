@@ -14,7 +14,7 @@ namespace MangoAPI.DataAccess.Database.Extensions
             return dbSet.Where(x => x.UserId == userId);
         }
 
-        public static async Task<SessionEntity> GetUserSessionByRefreshTokenAsync(this DbSet<SessionEntity> dbSet,
+        public static async Task<SessionEntity> GetSessionByRefreshTokenAsync(this DbSet<SessionEntity> dbSet,
             string refreshToken, CancellationToken cancellationToken)
         {
             return await dbSet.FirstOrDefaultAsync(x => x.RefreshToken == refreshToken,
