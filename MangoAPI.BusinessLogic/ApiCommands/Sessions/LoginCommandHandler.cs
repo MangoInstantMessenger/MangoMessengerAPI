@@ -59,8 +59,8 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Sessions
                 Id = Guid.NewGuid().ToString(),
                 UserId = user.Id,
                 RefreshToken = Guid.NewGuid().ToString(),
-                Expires = DateTime.UtcNow.AddDays(refreshLifetimeParsed),
-                Created = DateTime.UtcNow,
+                ExpiresAt = DateTime.UtcNow.AddDays(refreshLifetimeParsed),
+                CreatedAt = DateTime.UtcNow,
             };
 
             var roleIds = await _postgresDbContext.UserRoles

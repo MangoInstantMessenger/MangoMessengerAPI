@@ -56,13 +56,13 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Chats
                 Image = chatEntity.Image,
                 Description = chatEntity.Description,
                 LastMessageAuthor = chatEntity.Messages.Any()
-                    ? chatEntity.Messages.OrderBy(messageEntity => messageEntity.Created).Last().User.DisplayName
+                    ? chatEntity.Messages.OrderBy(messageEntity => messageEntity.CreatedAt).Last().User.DisplayName
                     : null,
                 LastMessage = chatEntity.Messages.Any()
-                    ? chatEntity.Messages.OrderBy(messageEntity => messageEntity.Created).Last().Content
+                    ? chatEntity.Messages.OrderBy(messageEntity => messageEntity.CreatedAt).Last().Content
                     : null,
                 LastMessageAt = chatEntity.Messages.Any()
-                    ? chatEntity.Messages.OrderBy(messageEntity => messageEntity.Created).Last().Created.ToShortTimeString()
+                    ? chatEntity.Messages.OrderBy(messageEntity => messageEntity.CreatedAt).Last().CreatedAt.ToShortTimeString()
                     : null,
                 MembersCount = chatEntity.MembersCount,
                 IsMember = userChat != null,

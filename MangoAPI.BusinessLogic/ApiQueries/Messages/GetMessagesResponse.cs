@@ -17,13 +17,13 @@
             {
                 Message = ResponseMessageCodes.Success,
 
-                Messages = messages.OrderBy(messageEntity => messageEntity.Created)
+                Messages = messages.OrderBy(messageEntity => messageEntity.CreatedAt)
                     .Select(messageEntity => new Message
                     {
                         MessageId = messageEntity.Id,
                         MessageText = messageEntity.Content,
-                        EditedAt = messageEntity.Updated?.ToShortTimeString(),
-                        SentAt = messageEntity.Created.ToShortTimeString(),
+                        EditedAt = messageEntity.UpdatedAt?.ToShortTimeString(),
+                        SentAt = messageEntity.CreatedAt.ToShortTimeString(),
                         UserDisplayName = messageEntity.User.DisplayName,
                         Self = messageEntity.User.Id == user.Id,
                     }).ToList(),

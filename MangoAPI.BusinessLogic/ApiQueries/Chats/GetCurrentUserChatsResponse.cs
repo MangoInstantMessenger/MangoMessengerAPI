@@ -24,14 +24,14 @@
                     Image = userChatEntity.Chat.Image,
                     Description = userChatEntity.Chat.Description,
                     LastMessage = userChatEntity.Chat.Messages.Any()
-                        ? userChatEntity.Chat.Messages.OrderBy(messageEntity => messageEntity.Created).Last().Content
+                        ? userChatEntity.Chat.Messages.OrderBy(messageEntity => messageEntity.CreatedAt).Last().Content
                         : null,
                     LastMessageAuthor = userChatEntity.Chat.Messages.Any()
-                        ? userChatEntity.Chat.Messages.OrderBy(messageEntity => messageEntity.Created).Last().User
+                        ? userChatEntity.Chat.Messages.OrderBy(messageEntity => messageEntity.CreatedAt).Last().User
                             .DisplayName
                         : null,
                     LastMessageAt = userChatEntity.Chat.Messages.Any()
-                        ? userChatEntity.Chat.Messages.OrderBy(messageEntity => messageEntity.Created).Last().Created
+                        ? userChatEntity.Chat.Messages.OrderBy(messageEntity => messageEntity.CreatedAt).Last().CreatedAt
                             .ToShortTimeString()
                         : null,
                     MembersCount = userChatEntity.Chat.MembersCount,

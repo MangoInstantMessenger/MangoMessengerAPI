@@ -9,8 +9,8 @@
         public void Configure(EntityTypeBuilder<SessionEntity> builder)
         {
             builder.HasKey(x => x.Id);
-            builder.Property(x => x.Expires).IsRequired();
-            builder.Property(x => x.Created).IsRequired();
+            builder.Property(x => x.ExpiresAt).IsRequired();
+            builder.Property(x => x.CreatedAt).IsRequired();
         }
     }
 }

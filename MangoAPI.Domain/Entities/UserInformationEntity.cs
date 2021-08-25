@@ -1,7 +1,7 @@
 ﻿namespace MangoAPI.Domain.Entities
 {
     using System;
-    
+
     public class UserInformationEntity
     {
         public string Id { get; set; }
@@ -27,6 +27,10 @@
         public string? LinkedIn { get; set; }
 
         public string? ProfilePicture { get; set; }
+
+        public DateTime CreatedAt { get; set; }
+
+        public DateTime? UpdatedAt { get; set; }
 
         public virtual UserEntity User { get; set; }
     }

@@ -46,7 +46,7 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Chats
                             ? chat.Messages.Last().User.DisplayName
                             : null,
                     LastMessageAt = chat.Messages.Any()
-                            ? chat.Messages.Last().Created.ToShortTimeString()
+                            ? chat.Messages.Last().CreatedAt.ToShortTimeString()
                             : null,
                     MembersCount = chat.MembersCount,
                     ChatType = chat.ChatType,

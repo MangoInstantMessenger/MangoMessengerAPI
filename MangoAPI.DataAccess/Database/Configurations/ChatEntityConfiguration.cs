@@ -13,7 +13,7 @@
         {
             builder.HasKey(x => x.Id);
             builder.Property(x => x.ChatType).IsRequired();
-            builder.Property(x => x.Created).IsRequired();
+            builder.Property(x => x.CreatedAt).IsRequired();
             builder.Property(x => x.Title).IsRequired();
 
             builder.HasMany(x => x.Messages)
@@ -35,7 +35,7 @@
                     Title = "Extreme Code Main",
                     ChatType = ChatType.PublicChannel,
                     Description = "Extreme Code Main Public Group",
-                    Created = new DateTime(2020, 2, 4),
+                    CreatedAt = new DateTime(2020, 2, 4),
                     MembersCount = 4,
                 },
                 new ChatEntity
@@ -44,7 +44,7 @@
                     Title = "Extreme Code Flood",
                     ChatType = ChatType.PublicChannel,
                     Description = "Extreme Code Flood Public Group",
-                    Created = new DateTime(2020, 4, 23),
+                    CreatedAt = new DateTime(2020, 4, 23),
                     MembersCount = 4,
                 },
                 new ChatEntity
@@ -53,7 +53,7 @@
                     Title = "Extreme Code C++",
                     ChatType = ChatType.PublicChannel,
                     Description = "Extreme Code C++ Public Group",
-                    Created = new DateTime(2020, 5, 12),
+                    CreatedAt = new DateTime(2020, 5, 12),
                     MembersCount = 4,
                 },
                 new ChatEntity
@@ -62,7 +62,7 @@
                     Title = "Extreme Code .NET",
                     ChatType = ChatType.PublicChannel,
                     Description = "Extreme Code .NET Public Group",
-                    Created = new DateTime(2020, 5, 12),
+                    CreatedAt = new DateTime(2020, 5, 12),
                     MembersCount = 4,
                 },
                 new ChatEntity

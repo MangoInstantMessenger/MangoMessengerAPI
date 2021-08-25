@@ -8,13 +8,13 @@
 
         public string UserId { get; set; }
 
-        public DateTime Expires { get; set; }
-
         public string RefreshToken { get; set; }
 
-        public DateTime Created { get; set; }
+        public DateTime CreatedAt { get; set; }
 
-        public bool IsExpired => DateTime.UtcNow >= Expires;
+        public DateTime ExpiresAt { get; set; }
+
+        public bool IsExpired => DateTime.UtcNow >= ExpiresAt;
 
         public UserEntity UserEntity { get; set; }
     }

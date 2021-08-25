@@ -52,8 +52,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Messages
                 ChatId = request.ChatId,
                 UserId = request.UserId,
                 Content = request.MessageText,
-                Created = DateTime.UtcNow,
-                Updated = DateTime.UtcNow,
+                CreatedAt = DateTime.UtcNow
             };
 
             await _postgresDbContext.Messages.AddAsync(messageEntity, cancellationToken);

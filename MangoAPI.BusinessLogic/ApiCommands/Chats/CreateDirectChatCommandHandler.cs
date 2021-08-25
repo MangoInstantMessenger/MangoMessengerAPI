@@ -64,7 +64,7 @@
                 Id = Guid.NewGuid().ToString(),
                 ChatType = ChatType.DirectChat,
                 Title = $"{currentUser.DisplayName} / {partner.DisplayName}",
-                Created = DateTime.UtcNow,
+                CreatedAt = DateTime.UtcNow,
                 Description = $"Direct chat between {currentUser.DisplayName} and {partner.DisplayName}",
                 MembersCount = 2,
             };
