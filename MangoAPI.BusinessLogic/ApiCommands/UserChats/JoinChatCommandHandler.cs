@@ -31,7 +31,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.UserChats
             }
 
             var alreadyJoined = await
-                _postgresDbContext.UserChats.AlreadyJoinedAsync(currentUser.Id, request.ChatId, cancellationToken);
+                _postgresDbContext.UserChats.IsAlreadyJoinedAsync(currentUser.Id, request.ChatId, cancellationToken);
 
             if (alreadyJoined)
             {

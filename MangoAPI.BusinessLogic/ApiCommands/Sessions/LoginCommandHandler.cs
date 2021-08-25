@@ -1,4 +1,6 @@
-﻿namespace MangoAPI.BusinessLogic.ApiCommands.Sessions
+﻿using MangoAPI.DataAccess.Database.Extensions;
+
+namespace MangoAPI.BusinessLogic.ApiCommands.Sessions
 {
     using System;
     using System.Linq;
@@ -31,9 +33,7 @@
 
         public async Task<LoginResponse> Handle(LoginCommand request, CancellationToken cancellationToken)
         {
-            var user = await _postgresDbContext.Users
-                .FirstOrDefaultAsync(x => x.Email == request.Email,
-                    cancellationToken);
+            var user = await _postgresDbContext.Users.FindUserByEmailAsync(request.Email, cancellationToken);
 
             if (user is null)
             {
@@ -75,8 +75,7 @@
 
             var jwtToken = _jwtGenerator.GenerateJwtToken(user, roles);
 
-            var userSessions = _postgresDbContext.Sessions
-                .Where(x => x.UserId == user.Id);
+            var userSessions = _postgresDbContext.Sessions.GetUserSessionsById(user.Id);
 
             var userSessionsCount = await userSessions.CountAsync(cancellationToken);
 

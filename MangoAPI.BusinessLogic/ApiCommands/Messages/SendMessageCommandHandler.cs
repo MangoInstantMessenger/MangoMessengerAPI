@@ -1,4 +1,6 @@
-﻿namespace MangoAPI.BusinessLogic.ApiCommands.Messages
+﻿using MangoAPI.DataAccess.Database.Extensions;
+
+namespace MangoAPI.BusinessLogic.ApiCommands.Messages
 {
     using System;
     using System.Linq;
@@ -23,16 +25,14 @@
 
         public async Task<SendMessageResponse> Handle(SendMessageCommand request, CancellationToken cancellationToken)
         {
-            var user = await _postgresDbContext.Users
-                .FirstOrDefaultAsync(x => x.Id == request.UserId, cancellationToken);
+            var user = await _postgresDbContext.Users.FindUserByIdAsync(request.UserId, cancellationToken);
 
             if (user == null)
             {
                 throw new BusinessException(ResponseMessageCodes.UserNotFound);
             }
 
-            var chat = await _postgresDbContext.Chats
-                .FirstOrDefaultAsync(x => x.Id == request.ChatId, cancellationToken);
+            var chat = await _postgresDbContext.Chats.FindChatByIdAsync(request.ChatId, cancellationToken);
 
             if (chat == null)
             {

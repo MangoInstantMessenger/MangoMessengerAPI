@@ -19,7 +19,13 @@ namespace MangoAPI.DataAccess.Database.Extensions
                 .ToListAsync(cancellationToken);
         }
 
-        public static async Task<ChatEntity> FindChatByIdIncludeMessages(this DbSet<ChatEntity> dbSet,
+        public static async Task<ChatEntity> FindChatByIdAsync(this DbSet<ChatEntity> dbSet,
+            string chatId, CancellationToken cancellationToken)
+        {
+            return await dbSet.FirstOrDefaultAsync(x => x.Id == chatId, cancellationToken);
+        }
+
+        public static async Task<ChatEntity> FindChatByIdIncludeMessagesAsync(this DbSet<ChatEntity> dbSet,
             string chatId, CancellationToken cancellationToken)
         {
             return await dbSet
@@ -28,7 +34,7 @@ namespace MangoAPI.DataAccess.Database.Extensions
                 .FirstOrDefaultAsync(x => x.Id == chatId, cancellationToken);
         }
 
-        public static async Task<ChatEntity> FindChatByIdIncludeChatUsers(this DbSet<ChatEntity> dbSet,
+        public static async Task<ChatEntity> FindChatByIdIncludeChatUsersAsync(this DbSet<ChatEntity> dbSet,
             string chatId, CancellationToken cancellationToken)
         {
             return await dbSet
@@ -44,7 +50,7 @@ namespace MangoAPI.DataAccess.Database.Extensions
                     x.ChatType != ChatType.PrivateChannel, cancellationToken);
         }
 
-        public static async Task<List<ChatEntity>> SearchChatsByDisplayName(this DbSet<ChatEntity> dbSet,
+        public static async Task<List<ChatEntity>> SearchChatsByDisplayNameAsync(this DbSet<ChatEntity> dbSet,
             string displayName, CancellationToken cancellationToken)
         {
             return await dbSet.AsNoTracking()

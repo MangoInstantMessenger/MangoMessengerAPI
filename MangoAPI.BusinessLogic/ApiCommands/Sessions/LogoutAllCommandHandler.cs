@@ -1,4 +1,6 @@
-﻿namespace MangoAPI.BusinessLogic.ApiCommands.Sessions
+﻿using MangoAPI.DataAccess.Database.Extensions;
+
+namespace MangoAPI.BusinessLogic.ApiCommands.Sessions
 {
     using System.Linq;
     using System.Threading;
@@ -20,8 +22,7 @@
 
         public async Task<LogoutResponse> Handle(LogoutAllCommand request, CancellationToken cancellationToken)
         {
-            var userSessions = _postgresDbContext.Sessions
-                .Where(x => x.UserId == request.UserId);
+            var userSessions = _postgresDbContext.Sessions.GetUserSessionsById(request.UserId);
 
             if (!await userSessions.AnyAsync(cancellationToken))
             {

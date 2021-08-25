@@ -38,12 +38,11 @@ namespace MangoAPI.BusinessLogic.ApiCommands.UserChats
                 throw new BusinessException(ResponseMessageCodes.ChatNotFound);
             }
 
-            var chat = await postgresDbContext.Chats.FindChatByIdIncludeChatUsers(request.ChatId, cancellationToken);
+            var chat = await postgresDbContext.Chats.FindChatByIdIncludeChatUsersAsync(request.ChatId, cancellationToken);
 
             if (chat.ChatType == ChatType.DirectChat)
             {
-                var messages = await postgresDbContext.Messages.Where(x => x.ChatId == request.ChatId)
-                                                               .ToListAsync(cancellationToken);
+                var messages = await postgresDbContext.Messages.GetChatMessagesByIdAsync(chat.Id, cancellationToken);
 
                 postgresDbContext.Messages.RemoveRange(messages);
                 postgresDbContext.UserChats.RemoveRange(chat.ChatUsers);

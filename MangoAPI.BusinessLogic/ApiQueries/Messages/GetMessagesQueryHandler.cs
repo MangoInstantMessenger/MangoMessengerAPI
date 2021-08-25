@@ -1,4 +1,6 @@
-﻿namespace MangoAPI.BusinessLogic.ApiQueries.Messages
+﻿using MangoAPI.DataAccess.Database.Extensions;
+
+namespace MangoAPI.BusinessLogic.ApiQueries.Messages
 {
     using BusinessExceptions;
     using DataAccess.Database;
@@ -29,10 +31,7 @@
                 throw new BusinessException(ResponseMessageCodes.UserNotFound);
             }
 
-            var chat = _postgresDbContext.Messages.AsNoTracking()
-                .Include(x => x.User)
-                .Where(x => x.ChatId == request.ChatId)
-                .AsEnumerable();
+            var chat = _postgresDbContext.Messages.GetChatMessagesByIdIncludeUser(request.ChatId);
 
             return GetMessagesResponse.FromSuccess(chat, user);
         }

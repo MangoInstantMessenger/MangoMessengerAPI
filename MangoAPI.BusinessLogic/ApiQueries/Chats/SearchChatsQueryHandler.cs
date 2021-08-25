@@ -24,7 +24,7 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Chats
         public async Task<SearchChatsResponse> Handle(SearchChatsQuery request, CancellationToken cancellationToken)
         {
             var chats = await _postgresDbContext
-                .Chats.SearchChatsByDisplayName(request.DisplayName, cancellationToken);
+                .Chats.SearchChatsByDisplayNameAsync(request.DisplayName, cancellationToken);
 
             var resultList = new List<Chat>();
 

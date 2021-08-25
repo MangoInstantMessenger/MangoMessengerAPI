@@ -3,6 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using MangoAPI.BusinessLogic.BusinessExceptions;
 using MangoAPI.DataAccess.Database;
+using MangoAPI.DataAccess.Database.Extensions;
 using MangoAPI.Domain.Constants;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -20,17 +21,14 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Contacts
         
         public async Task<DeleteContactResponse> Handle(DeleteContactCommand request, CancellationToken cancellationToken)
         {
-            var user = await postgresDbContext.Users
-                .FirstOrDefaultAsync(x => x.Id == request.UserId, cancellationToken);
+            var user = await postgresDbContext.Users.FindUserByIdAsync(request.UserId, cancellationToken);
 
             if (user is null)
             {
                 throw new BusinessException(ResponseMessageCodes.UserNotFound);
             }
 
-            var userContacts = await postgresDbContext.UserContacts
-                .Where(x => x.UserId == request.UserId)
-                .ToListAsync(cancellationToken);
+            var userContacts = await postgresDbContext.UserContacts.GetUserContactsAsync(user.Id, cancellationToken);
 
             var contact = userContacts.FirstOrDefault(x => x.ContactId == request.ContactId);
 
