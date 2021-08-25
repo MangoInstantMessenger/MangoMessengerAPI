@@ -37,7 +37,7 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Chats
                 throw new BusinessException(ResponseMessageCodes.ChatNotFound);
             }
 
-            var userChat = await postgresDbContext.UserChats.GetUserChatByIdAsync(request.UserId, request.ChatId, cancellationToken);
+            var userChat = await postgresDbContext.UserChats.FindUserChatByIdAsync(request.UserId, request.ChatId, cancellationToken);
 
             switch (userChat)
             {

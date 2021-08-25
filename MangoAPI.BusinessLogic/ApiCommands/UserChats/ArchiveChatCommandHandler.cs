@@ -4,6 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using MangoAPI.BusinessLogic.BusinessExceptions;
+using MangoAPI.DataAccess.Database.Extensions;
 using MangoAPI.Domain.Constants;
 
 namespace MangoAPI.BusinessLogic.ApiCommands.UserChats
@@ -19,8 +20,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.UserChats
 
         public async Task<ArchiveChatResponse> Handle(ArchiveChatCommand request, CancellationToken cancellationToken)
         {
-            var chat = await _postgresDbContext.UserChats
-                .FirstOrDefaultAsync(x => x.UserId == request.UserId && x.ChatId == request.ChatId, cancellationToken);
+            var chat = await _postgresDbContext.UserChats.FindUserChatByIdAsync(request.UserId, request.ChatId, cancellationToken);
 
             if (chat == null)
             {

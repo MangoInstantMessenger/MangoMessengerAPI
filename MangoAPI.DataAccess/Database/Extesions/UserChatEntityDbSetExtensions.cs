@@ -9,7 +9,8 @@ namespace MangoAPI.DataAccess.Database.Extensions
 {
     public static class UserChatDbSetExtensions
     {
-        public static async Task<List<UserChatEntity>> GetUserChatsByIdIncludeMessagesAsync(this DbSet<UserChatEntity> dbSet,
+        public static async Task<List<UserChatEntity>> FindUserChatsByIdIncludeMessagesAsync(
+            this DbSet<UserChatEntity> dbSet,
             string userId, CancellationToken cancellationToken)
         {
             return await dbSet.AsNoTracking()
@@ -20,14 +21,19 @@ namespace MangoAPI.DataAccess.Database.Extensions
                 .ToListAsync(cancellationToken);
         }
 
-        public static async Task<UserChatEntity> GetUserChatByIdAsync(this DbSet<UserChatEntity> dbSet,
+        public static async Task<UserChatEntity> FindUserChatByIdAsync(this DbSet<UserChatEntity> dbSet,
             string userId, string chatId, CancellationToken cancellationToken)
         {
             return await dbSet
                 .Where(x => x.UserId == userId)
                 .FirstOrDefaultAsync(x => x.ChatId == chatId, cancellationToken);
         }
-        
-        
+
+        public static async Task<bool> AlreadyJoinedAsync(this DbSet<UserChatEntity> dbSet, 
+            string userId, string chatId, CancellationToken cancellationToken)
+        {
+            return await dbSet.AnyAsync(x =>
+                x.UserId == userId && x.ChatId == chatId, cancellationToken);
+        }
     }
 }

@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using MangoAPI.DataAccess.Database.Extensions;
 
 namespace MangoAPI.BusinessLogic.ApiCommands.UserChats
 {
@@ -21,26 +22,23 @@ namespace MangoAPI.BusinessLogic.ApiCommands.UserChats
 
         public async Task<LeaveGroupResponse> Handle(LeaveGroupCommand request, CancellationToken cancellationToken)
         {
-            var user = await postgresDbContext.Users
-                .FirstOrDefaultAsync(x => x.Id == request.UserId, cancellationToken);
+            var user = await postgresDbContext.Users.FindUserByIdAsync(request.UserId, cancellationToken);
 
             if (user is null)
             {
                 throw new BusinessException(ResponseMessageCodes.UserNotFound);
             }
 
-            var userChat = await postgresDbContext.UserChats
-                .Where(x => x.ChatId == request.ChatId)
-                .FirstOrDefaultAsync(x => x.UserId == request.UserId, cancellationToken);
+            var userChat =
+                await postgresDbContext.UserChats.FindUserChatByIdAsync(request.UserId, request.ChatId,
+                    cancellationToken);
 
             if (userChat is null)
             {
                 throw new BusinessException(ResponseMessageCodes.ChatNotFound);
             }
 
-            var chat = await postgresDbContext.Chats
-                .Include(x => x.ChatUsers)
-                .FirstOrDefaultAsync(x => x.Id == request.ChatId, cancellationToken);
+            var chat = await postgresDbContext.Chats.FindChatByIdIncludeChatUsers(request.ChatId, cancellationToken);
 
             if (chat.ChatType == ChatType.DirectChat)
             {
