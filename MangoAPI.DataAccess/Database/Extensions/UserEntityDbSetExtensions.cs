@@ -20,7 +20,6 @@ namespace MangoAPI.DataAccess.Database.Extensions
         {
             return await dbSet
                 .Include(x => x.UserInformation)
-                .AsNoTracking()
                 .FirstOrDefaultAsync(x => x.Id == userId, cancellationToken);
         }
 
