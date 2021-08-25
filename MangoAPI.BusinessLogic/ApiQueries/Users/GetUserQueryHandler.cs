@@ -4,9 +4,9 @@
     using System.Threading.Tasks;
     using BusinessExceptions;
     using DataAccess.Database;
+    using DataAccess.Database.Extensions;
     using Domain.Constants;
     using MediatR;
-    using Microsoft.EntityFrameworkCore;
 
     public class GetUserQueryHandler : IRequestHandler<GetUserQuery, GetUserResponse>
     {
@@ -19,14 +19,14 @@
 
         public async Task<GetUserResponse> Handle(GetUserQuery request, CancellationToken cancellationToken)
         {
-            var user = await _postgresDbContext.Users
-                .Include(x => x.UserInformation)
-                .AsNoTracking()
-                .FirstOrDefaultAsync(x => x.Id == request.UserId, cancellationToken);
+            var user = await _postgresDbContext.Users.FindUserByIdIncludeInfoAsync(request.UserId, cancellationToken);
 
-            return user == null
-                ? throw new BusinessException(ResponseMessageCodes.UserNotFound)
-                : GetUserResponse.FromSuccess(user);
+            if (user is null)
+            {
+                throw new BusinessException(ResponseMessageCodes.UserNotFound);
+            }
+            
+            return GetUserResponse.FromSuccess(user);
         }
     }
 }

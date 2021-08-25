@@ -1,4 +1,6 @@
-﻿namespace MangoAPI.BusinessLogic.ApiCommands.Contacts
+﻿using MangoAPI.DataAccess.Database.Extensions;
+
+namespace MangoAPI.BusinessLogic.ApiCommands.Contacts
 {
     using System;
     using System.Linq;
@@ -22,8 +24,7 @@
 
         public async Task<AddContactResponse> Handle(AddContactCommand request, CancellationToken cancellationToken)
         {
-            var contact = await _postgresDbContext.Users
-                .FirstOrDefaultAsync(x => x.Id == request.UserId, cancellationToken);
+            var contact = await _postgresDbContext.Users.FindUserByIdAsync(request.UserId, cancellationToken);
 
             if (contact is null)
             {
@@ -36,8 +37,7 @@
             }
 
             var userContactExist = await _postgresDbContext.UserContacts
-                .Where(x => x.UserId == request.UserId)
-                .AnyAsync(x => x.ContactId == request.ContactId, cancellationToken);
+                .IsContactExistAsync(request.UserId, request.ContactId, cancellationToken);
 
             if (userContactExist)
             {

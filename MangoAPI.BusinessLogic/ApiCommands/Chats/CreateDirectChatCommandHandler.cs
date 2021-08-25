@@ -6,11 +6,11 @@
     using System.Threading.Tasks;
     using BusinessExceptions;
     using DataAccess.Database;
+    using DataAccess.Database.Extensions;
     using Domain.Constants;
     using Domain.Entities;
     using MangoAPI.Domain.Enums;
     using MediatR;
-    using Microsoft.EntityFrameworkCore;
 
     public class CreateDirectChatCommandHandler : IRequestHandler<CreateDirectChatCommand, CreateChatEntityResponse>
     {
@@ -25,8 +25,7 @@
             CreateDirectChatCommand request,
             CancellationToken cancellationToken)
         {
-            var partner = await _postgresDbContext.Users
-                .FirstOrDefaultAsync(x => x.Id == request.PartnerId, cancellationToken);
+            var partner = await _postgresDbContext.Users.FindUserByIdAsync(request.PartnerId, cancellationToken);
 
             if (partner is null)
             {
@@ -38,14 +37,9 @@
                 throw new BusinessException(ResponseMessageCodes.CannotCreateSelfChat);
             }
 
-            var currentUser = await _postgresDbContext.Users
-                .FirstOrDefaultAsync(x => x.Id == request.UserId, cancellationToken);
+            var currentUser = await _postgresDbContext.Users.FindUserByIdAsync(request.UserId, cancellationToken);
 
-            var userPrivateChats = await _postgresDbContext.Chats
-                .Include(chatEntity => chatEntity.ChatUsers)
-                .Where(chatEntity => chatEntity.ChatType == ChatType.DirectChat && chatEntity.ChatUsers
-                    .Any(userChatEntity => userChatEntity.UserId == currentUser.Id))
-                .ToListAsync(cancellationToken);
+            var userPrivateChats = await _postgresDbContext.Chats.GetUserPrivateChatsAsync(currentUser.Id, cancellationToken);
 
             var findCurrentUserDirectChat = userPrivateChats
                 .FirstOrDefault(x => x.ChatUsers.Any(t => t.UserId == partner.Id));
@@ -55,11 +49,7 @@
                 return CreateChatEntityResponse.FromSuccess(findCurrentUserDirectChat);
             }
 
-            var partnerPrivateChats = await _postgresDbContext.Chats
-                .Include(chatEntity => chatEntity.ChatUsers)
-                .Where(chatEntity => chatEntity.ChatType == ChatType.DirectChat && chatEntity.ChatUsers
-                    .Any(userChatEntity => userChatEntity.UserId == partner.Id))
-                .ToListAsync(cancellationToken);
+            var partnerPrivateChats = await _postgresDbContext.Chats.GetUserPrivateChatsAsync(partner.Id, cancellationToken);
             
             var findPartnerDirectChat = partnerPrivateChats
                 .FirstOrDefault(x => x.ChatUsers.Any(t => t.UserId == currentUser.Id));

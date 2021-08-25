@@ -1,4 +1,6 @@
-﻿namespace MangoAPI.BusinessLogic.ApiQueries.Contacts
+﻿using MangoAPI.DataAccess.Database.Extensions;
+
+namespace MangoAPI.BusinessLogic.ApiQueries.Contacts
 {
     using System.Linq;
     using System.Threading;
@@ -20,8 +22,7 @@
 
         public async Task<GetContactsResponse> Handle(GetContactsQuery request, CancellationToken cancellationToken)
         {
-            var user = await _postgresDbContext.Users
-                .FirstOrDefaultAsync(x => x.Id == request.UserId, cancellationToken);
+            var user = await _postgresDbContext.Users.FindUserByIdAsync(request.UserId, cancellationToken);
 
             if (user is null)
             {

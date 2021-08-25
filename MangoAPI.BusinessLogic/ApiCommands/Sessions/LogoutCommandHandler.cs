@@ -1,4 +1,6 @@
-﻿namespace MangoAPI.BusinessLogic.ApiCommands.Sessions
+﻿using MangoAPI.DataAccess.Database.Extensions;
+
+namespace MangoAPI.BusinessLogic.ApiCommands.Sessions
 {
     using System.Threading;
     using System.Threading.Tasks;
@@ -20,18 +22,14 @@
         public async Task<LogoutResponse> Handle(LogoutCommand request, CancellationToken cancellationToken)
         {
             var session = await _postgresDbContext.Sessions
-                .FirstOrDefaultAsync(
-                    x => x.RefreshToken == request.RefreshToken,
-                    cancellationToken);
+                .GetSessionByRefreshTokenAsync(request.RefreshToken, cancellationToken);
 
             if (session is null)
             {
                 throw new BusinessException(ResponseMessageCodes.InvalidOrExpiredRefreshToken);
             }
 
-            var user = await _postgresDbContext.Users.FirstOrDefaultAsync(
-                x => x.Id == session.UserId,
-                cancellationToken);
+            var user = await _postgresDbContext.Users.FindUserByIdAsync(session.UserId, cancellationToken);
 
             if (user is null || session.UserId != user.Id)
             {

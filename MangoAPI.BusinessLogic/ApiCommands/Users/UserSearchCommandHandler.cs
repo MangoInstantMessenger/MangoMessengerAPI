@@ -1,11 +1,10 @@
 ﻿namespace MangoAPI.BusinessLogic.ApiCommands.Users
 {
-    using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
     using DataAccess.Database;
+    using DataAccess.Database.Extensions;
     using MediatR;
-    using Microsoft.EntityFrameworkCore;
 
     public class UserSearchCommandHandler : IRequestHandler<UserSearchCommand, UserSearchResponse>
     {
@@ -18,11 +17,8 @@
 
         public async Task<UserSearchResponse> Handle(UserSearchCommand request, CancellationToken cancellationToken)
         {
-            var users = await _postgresDbContext.Users
-                .Include(x => x.UserInformation)
-                .AsNoTracking()
-                .Where(x => x.DisplayName.ToUpper().Contains(request.DisplayName.ToUpper()))
-                .ToListAsync(cancellationToken);
+            var users = await _postgresDbContext.Users.SearchUsersByDisplayNameAsync(request.DisplayName, cancellationToken);
+
 
             return UserSearchResponse.FromSuccess(users);
         }

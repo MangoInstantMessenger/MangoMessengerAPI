@@ -1,4 +1,6 @@
-﻿namespace MangoAPI.BusinessLogic.ApiCommands.UserChats
+﻿using MangoAPI.DataAccess.Database.Extensions;
+
+namespace MangoAPI.BusinessLogic.ApiCommands.UserChats
 {
     using System.Threading;
     using System.Threading.Tasks;
@@ -21,8 +23,7 @@
 
         public async Task<JoinChatResponse> Handle(JoinChatCommand request, CancellationToken cancellationToken)
         {
-            var currentUser = await _postgresDbContext.Users
-                .FirstOrDefaultAsync(x => x.Id == request.UserId, cancellationToken);
+            var currentUser = await _postgresDbContext.Users.FindUserByIdAsync(request.UserId, cancellationToken);
 
             if (currentUser == null)
             {
@@ -30,20 +31,14 @@
             }
 
             var alreadyJoined = await
-                _postgresDbContext.UserChats.AnyAsync(
-                    x =>
-                    x.UserId == currentUser.Id && x.ChatId == request.ChatId, cancellationToken);
+                _postgresDbContext.UserChats.IsAlreadyJoinedAsync(currentUser.Id, request.ChatId, cancellationToken);
 
             if (alreadyJoined)
             {
                 throw new BusinessException(ResponseMessageCodes.UserAlreadyJoinedGroup);
             }
 
-            var chat = await _postgresDbContext.Chats
-                .FirstOrDefaultAsync(
-                    x =>
-                    x.Id == request.ChatId && x.ChatType != ChatType.DirectChat &&
-                    x.ChatType != ChatType.PrivateChannel, cancellationToken);
+            var chat = await _postgresDbContext.Chats.FindPublicChanelByIdAsync(request.ChatId, cancellationToken);
 
             if (chat == null)
             {

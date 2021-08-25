@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using MangoAPI.DataAccess.Database.Extensions;
 
 namespace MangoAPI.BusinessLogic.ApiQueries.Chats
 {
@@ -22,27 +23,21 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Chats
 
         public async Task<GetChatByIdResponse> Handle(GetChatByIdQuery request, CancellationToken cancellationToken)
         {
-            var user = await postgresDbContext.Users
-                .FirstOrDefaultAsync(x => x.Id == request.UserId, cancellationToken);
+            var user = await postgresDbContext.Users.FindUserByIdAsync(request.UserId, cancellationToken);
 
             if (user is null)
             {
                 throw new BusinessException(ResponseMessageCodes.UserNotFound);
             }
 
-            var chatEntity = await postgresDbContext.Chats
-                .Include(x => x.Messages)
-                .ThenInclude(x => x.User)
-                .FirstOrDefaultAsync(x => x.Id == request.ChatId, cancellationToken);
+            var chatEntity = await postgresDbContext.Chats.FindChatByIdIncludeMessagesAsync(request.ChatId, cancellationToken);
 
             if (chatEntity is null)
             {
                 throw new BusinessException(ResponseMessageCodes.ChatNotFound);
             }
 
-            var userChat = await postgresDbContext.UserChats
-                .Where(x => x.UserId == request.UserId)
-                .FirstOrDefaultAsync(x => x.ChatId == request.ChatId, cancellationToken);
+            var userChat = await postgresDbContext.UserChats.FindUserChatByIdAsync(request.UserId, request.ChatId, cancellationToken);
 
             switch (userChat)
             {

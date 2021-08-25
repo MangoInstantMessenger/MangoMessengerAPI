@@ -4,10 +4,10 @@
     using System.Threading.Tasks;
     using BusinessExceptions;
     using DataAccess.Database;
+    using DataAccess.Database.Extensions;
     using Domain.Constants;
     using MediatR;
     using Microsoft.AspNetCore.Identity;
-    using Microsoft.EntityFrameworkCore;
 
     public class VerifyPhoneCommandHandler : IRequestHandler<VerifyPhoneCommand, VerifyPhoneResponse>
     {
@@ -20,9 +20,7 @@
 
         public async Task<VerifyPhoneResponse> Handle(VerifyPhoneCommand request, CancellationToken cancellationToken)
         {
-            var user = await _postgresDbContext.Users.FirstOrDefaultAsync(
-                x => x.Id == request.UserId,
-                cancellationToken);
+            var user = await _postgresDbContext.Users.FindUserByIdAsync(request.UserId, cancellationToken);
 
             if (user == null)
             {

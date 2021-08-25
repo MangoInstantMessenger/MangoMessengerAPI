@@ -1,4 +1,6 @@
-﻿namespace MangoAPI.BusinessLogic.ApiCommands.Messages
+﻿using MangoAPI.DataAccess.Database.Extensions;
+
+namespace MangoAPI.BusinessLogic.ApiCommands.Messages
 {
     using System;
     using System.Threading;
@@ -20,8 +22,7 @@
 
         public async Task<EditMessageResponse> Handle(EditMessageCommand request, CancellationToken cancellationToken)
         {
-            var currentUser = await _postgresDbContext.Users
-                .FirstOrDefaultAsync(x => x.Id == request.UserId, cancellationToken);
+            var currentUser = await _postgresDbContext.Users.FindUserByIdAsync(request.UserId, cancellationToken);
 
             if (currentUser == null)
             {
@@ -29,9 +30,7 @@
             }
 
             var message = await _postgresDbContext.Messages
-                .FirstOrDefaultAsync(
-                    x => x.Id == request.MessageId && x.UserId == currentUser.Id,
-                    cancellationToken);
+                .FindMessageByUserIdAsync(request.MessageId, currentUser.Id, cancellationToken);
 
             if (message == null)
             {

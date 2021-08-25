@@ -1,11 +1,11 @@
 ﻿namespace MangoAPI.Presentation.Extensions
 {
-    using System;
     using Application.Services;
     using DataAccess.Database;
     using Domain.Constants;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.DependencyInjection;
+    using System;
 
     public static class DbExtensions
     {
@@ -15,9 +15,12 @@
 
             connectionString = HerokuStringParser.Convert(connectionString);
 
-            services.AddDbContext<MangoPostgresDbContext>(opt =>
-                opt.UseNpgsql(connectionString ??
-                              throw new InvalidOperationException("Wrong Connection String in Startup class.")));
+            services.AddDbContext<MangoPostgresDbContext>(options =>
+            {
+                options.UseNpgsql(connectionString ??
+                              throw new InvalidOperationException("Wrong Connection String in Startup class."));
+                options.EnableSensitiveDataLogging(true);
+            });
             return services;
         }
     }

@@ -5,9 +5,9 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
     using System.Threading.Tasks;
     using BusinessExceptions;
     using DataAccess.Database;
+    using DataAccess.Database.Extensions;
     using Domain.Constants;
     using MediatR;
-    using Microsoft.EntityFrameworkCore;
 
     public class UpdateUserInformationCommandHandler : IRequestHandler<UpdateUserInformationCommand,
         UpdateUserInformationResponse>
@@ -23,9 +23,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
             UpdateUserInformationCommand request,
             CancellationToken cancellationToken)
         {
-            var user = await _postgresDbContext.Users
-                .Include(x => x.UserInformation)
-                .FirstOrDefaultAsync(x => x.Id == request.UserId, cancellationToken);
+            var user = await _postgresDbContext.Users.FindUserByIdIncludeInfoAsync(request.UserId, cancellationToken);
 
             if (user is null)
             {
