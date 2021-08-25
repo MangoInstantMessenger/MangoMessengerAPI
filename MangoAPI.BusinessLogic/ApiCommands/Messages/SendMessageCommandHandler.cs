@@ -55,6 +55,9 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Messages
                 CreatedAt = DateTime.UtcNow
             };
 
+            chat.UpdatedAt = messageEntity.CreatedAt;
+
+            _postgresDbContext.Chats.Update(chat);
             await _postgresDbContext.Messages.AddAsync(messageEntity, cancellationToken);
             await _postgresDbContext.SaveChangesAsync(cancellationToken);
 
