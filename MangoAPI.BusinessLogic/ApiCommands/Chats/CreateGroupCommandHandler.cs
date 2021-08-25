@@ -1,4 +1,6 @@
-﻿namespace MangoAPI.BusinessLogic.ApiCommands.Chats
+﻿using MangoAPI.DataAccess.Database.Extensions;
+
+namespace MangoAPI.BusinessLogic.ApiCommands.Chats
 {
     using System;
     using System.Threading;
@@ -24,9 +26,7 @@
             CreateGroupCommand request,
             CancellationToken cancellationToken)
         {
-            var user = await _postgresDbContext.Users.FirstOrDefaultAsync(
-                x => x.Id == request.UserId,
-                cancellationToken);
+            var user = await _postgresDbContext.Users.FindUserByIdAsync(request.UserId, cancellationToken);
 
             if (user is null)
             {

@@ -1,4 +1,6 @@
-﻿namespace MangoAPI.BusinessLogic.ApiQueries.Chats
+﻿using MangoAPI.DataAccess.Database.Extensions;
+
+namespace MangoAPI.BusinessLogic.ApiQueries.Chats
 {
     using System.Linq;
     using System.Threading;
@@ -23,21 +25,14 @@
             GetCurrentUserChatsQuery request,
             CancellationToken cancellationToken)
         {
-            var currentUser =
-                await _postgresDbContext.Users.FirstOrDefaultAsync(x => x.Id == request.UserId, cancellationToken);
+            var currentUser = await _postgresDbContext.Users.FindUserByIdAsync(request.UserId, cancellationToken);
 
             if (currentUser == null)
             {
                 throw new BusinessException(ResponseMessageCodes.UserNotFound);
             }
 
-            var chats = await _postgresDbContext.UserChats
-                .AsNoTracking()
-                .Include(x => x.Chat)
-                .ThenInclude(x => x.Messages)
-                .ThenInclude(x => x.User)
-                .Where(x => x.UserId == currentUser.Id)
-                .ToListAsync(cancellationToken);
+            var chats = await _postgresDbContext.UserChats.GetUserChatsByIdIncludeMessagesAsync(currentUser.Id, cancellationToken);
 
             return GetCurrentUserChatsResponse.FromSuccess(chats);
         }

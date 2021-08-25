@@ -7,11 +7,11 @@
     using Application.Interfaces;
     using BusinessExceptions;
     using DataAccess.Database;
+    using DataAccess.Database.Extensions;
     using Domain.Constants;
     using Domain.Entities;
     using MediatR;
     using Microsoft.AspNetCore.Identity;
-    using Microsoft.EntityFrameworkCore;
 
     public class RegisterCommandHandler : IRequestHandler<RegisterCommand, RegisterResponse>
     {
@@ -39,18 +39,14 @@
                 throw new BusinessException(ResponseMessageCodes.InvalidEmail);
             }
 
-            var exists = await postgresDbContext.Users
-                .FirstOrDefaultAsync(x => x.Email == request.Email, cancellationToken);
+            var exists = await postgresDbContext.Users.FindUserByEmailAsync(request.Email, cancellationToken);
 
             if (exists != null)
             {
                 throw new BusinessException(ResponseMessageCodes.EmailOccupied);
             }
 
-            var user = await postgresDbContext.Users
-                .FirstOrDefaultAsync(
-                    x => x.PhoneNumber == request.PhoneNumber,
-                    cancellationToken);
+            var user = await postgresDbContext.Users.FindUserByPhoneAsync(request.PhoneNumber, cancellationToken);
 
             if (user != null)
             {

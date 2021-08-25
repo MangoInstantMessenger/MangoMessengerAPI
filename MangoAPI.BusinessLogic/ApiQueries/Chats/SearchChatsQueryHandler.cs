@@ -1,4 +1,6 @@
-﻿namespace MangoAPI.BusinessLogic.ApiQueries.Chats
+﻿using MangoAPI.DataAccess.Database.Extensions;
+
+namespace MangoAPI.BusinessLogic.ApiQueries.Chats
 {
     using DataAccess.Database;
     using MangoAPI.BusinessLogic.Models;
@@ -22,14 +24,7 @@
         public async Task<SearchChatsResponse> Handle(SearchChatsQuery request, CancellationToken cancellationToken)
         {
             var chats = await _postgresDbContext
-                .Chats
-                .AsNoTracking()
-                .Include(x => x.Messages)
-                .ThenInclude(x => x.User)
-                .Where(x => x.Title.ToLower().Contains(request.DisplayName.ToLower()))
-                .Where(x => x.ChatType != ChatType.PrivateChannel)
-                .Where(x => x.ChatType != ChatType.DirectChat)
-                .ToListAsync(cancellationToken);
+                .Chats.SearchChatsByDisplayName(request.DisplayName, cancellationToken);
 
             var resultList = new List<Chat>();
 
