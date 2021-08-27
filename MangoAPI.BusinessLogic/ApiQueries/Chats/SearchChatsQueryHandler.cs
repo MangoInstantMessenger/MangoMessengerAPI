@@ -4,7 +4,6 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Chats
 {
     using DataAccess.Database;
     using MangoAPI.BusinessLogic.Models;
-    using MangoAPI.Domain.Enums;
     using MediatR;
     using Microsoft.EntityFrameworkCore;
     using System.Collections.Generic;
@@ -43,11 +42,13 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Chats
                             ? chat.Messages.Last().Content
                             : null,
                     LastMessageAuthor = chat.Messages.Any()
-                            ? chat.Messages.Last().User.DisplayName
+                            ? chat.Messages.OrderBy(x => x.CreatedAt).Last().User.DisplayName
                             : null,
-                    LastMessageAt = chat.Messages.Any()
-                            ? chat.Messages.Last().CreatedAt.ToShortTimeString()
-                            : null,
+                    LastMessageAt = chat.UpdatedAt?.ToShortTimeString() ?? (chat.Messages.Any()
+                        ? chat.Messages.OrderBy(messageEntity => messageEntity.CreatedAt)
+                                                      .Last().CreatedAt
+                                                      .ToShortTimeString()
+                        : null),
                     MembersCount = chat.MembersCount,
                     ChatType = chat.ChatType,
                     IsMember = isMember,
