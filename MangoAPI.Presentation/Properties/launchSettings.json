@@ -1,0 +1,46 @@
+{
+  "iisSettings": {
+    "windowsAuthentication": false,
+    "anonymousAuthentication": true,
+    "iisExpress": {
+      "applicationUrl": "http://localhost:35870",
+      "sslPort": 44353
+    }
+  },
+  "$schema": "http://json.schemastore.org/launchsettings.json",
+  "profiles": {
+    "IIS Express": {
+      "commandName": "IISExpress",
+      "launchBrowser": true,
+      "launchUrl": "swagger",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "POSTGRES_MANGO_CONNECTION_STRING": "Server=localhost;User Id=postgres;Password=postgres;Database=MangoApiDatabase;",
+        "MANGO_ISSUER": "https://localhost:5001",
+        "MANGO_AUDIENCE": "https://localhost:5000",
+        "MANGO_TOKEN_KEY": "9s03G9_cnCor4QX5HuK3jUMpn5S4H4s-QXwMa_bLoyjnbm00k2FiOjJ62PiRJnQdTcxk3FC4sA3TTpyVww5BOYFq1IBuln6IN-LlyEPk_T6DgHjFBIKaQ6rm-88cGDysXRu1_jLIFPHOb5SmW6R0ITy1_RRCAIKpK86OwrFQak8"
+      }
+    },
+    "MangoAPI": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "launchUrl": "swagger",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "POSTGRES_MANGO_CONNECTION_STRING": "Server=localhost;User Id=postgres;Password=postgres;Database=MangoApiDatabase;",
+        "MANGO_ISSUER": "https://localhost:5001",
+        "MANGO_AUDIENCE": "https://localhost:5000",
+        "MANGO_TOKEN_KEY": "9s03G9_cnCor4QX5HuK3jUMpn5S4H4s-QXwMa_bLoyjnbm00k2FiOjJ62PiRJnQdTcxk3FC4sA3TTpyVww5BOYFq1IBuln6IN-LlyEPk_T6DgHjFBIKaQ6rm-88cGDysXRu1_jLIFPHOb5SmW6R0ITy1_RRCAIKpK86OwrFQak8"
+      },
+      "dotnetRunMessages": "true",
+      "applicationUrl": "https://localhost:5001;http://localhost:5000"
+    },
+    "Docker": {
+      "commandName": "Docker",
+      "launchBrowser": true,
+      "launchUrl": "{Scheme}://{ServiceHost}:{ServicePort}/swagger",
+      "publishAllPorts": true,
+      "useSSL": true
+    }
+  }
+}
