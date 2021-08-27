@@ -6,7 +6,6 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Messages
     using DataAccess.Database;
     using Domain.Constants;
     using MediatR;
-    using Microsoft.EntityFrameworkCore;
     using System.Threading;
     using System.Threading.Tasks;
 
@@ -19,9 +18,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Messages
             _postgresDbContext = postgresDbContext;
         }
 
-        public async Task<DeleteMessageResponse> Handle(
-            DeleteMessageCommand request,
-            CancellationToken cancellationToken)
+        public async Task<DeleteMessageResponse> Handle(DeleteMessageCommand request, CancellationToken cancellationToken)
         {
             var currentUser = await _postgresDbContext.Users.FindUserByIdAsync(request.UserId, cancellationToken);
 
