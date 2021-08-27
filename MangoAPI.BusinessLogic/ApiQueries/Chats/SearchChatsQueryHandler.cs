@@ -39,7 +39,7 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Chats
                     Image = chat.Image,
                     Description = chat.Description,
                     LastMessage = chat.Messages.Any()
-                            ? chat.Messages.Last().Content
+                            ? chat.Messages.OrderBy(x => x.CreatedAt).Last().Content
                             : null,
                     LastMessageAuthor = chat.Messages.Any()
                             ? chat.Messages.OrderBy(x => x.CreatedAt).Last().User.DisplayName
