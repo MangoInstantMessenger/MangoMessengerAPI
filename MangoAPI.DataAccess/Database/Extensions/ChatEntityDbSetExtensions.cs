@@ -61,5 +61,16 @@ namespace MangoAPI.DataAccess.Database.Extensions
                 .Where(x => x.ChatType != ChatType.DirectChat)
                 .ToListAsync(cancellationToken);
         }
+
+        public static async Task<List<ChatEntity>> GetPublicChatsIncludeMessagesUsersAsync(this DbSet<ChatEntity> dbSet, 
+            CancellationToken cancellationToken)
+        {
+            return await dbSet.AsNoTracking()
+                .Include(x => x.Messages)
+                .ThenInclude(x => x.User)
+                .Where(x => x.ChatType != ChatType.PrivateChannel)
+                .Where(x => x.ChatType != ChatType.DirectChat)
+                .ToListAsync(cancellationToken);
+        }
     }
 }
