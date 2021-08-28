@@ -1,4 +1,4 @@
-﻿using MangoAPI.DataAccess.Database.Extensions;
+﻿
 
 namespace MangoAPI.BusinessLogic.ApiQueries.Chats
 {
@@ -10,6 +10,7 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Chats
     using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
+    using MangoAPI.DataAccess.Database.Extensions;
 
     public class SearchChatsQueryHandler : IRequestHandler<SearchChatsQuery, SearchChatsResponse>
     {
@@ -22,8 +23,12 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Chats
 
         public async Task<SearchChatsResponse> Handle(SearchChatsQuery request, CancellationToken cancellationToken)
         {
-            var chats = await _postgresDbContext
-                .Chats.SearchChatsByDisplayNameAsync(request.DisplayName, cancellationToken);
+            var chats = await _postgresDbContext.Chats.GetPublicChatsIncludeMessagesUsersAsync(cancellationToken);
+
+            if (!string.IsNullOrEmpty(request.DisplayName) || !string.IsNullOrWhiteSpace(request.DisplayName))
+            {
+                chats = await _postgresDbContext.Chats.SearchChatsByDisplayNameAsync(request.DisplayName, cancellationToken);
+            }
 
             var resultList = new List<Chat>();
 
