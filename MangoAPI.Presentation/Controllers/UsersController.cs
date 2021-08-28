@@ -1,7 +1,5 @@
 ﻿namespace MangoAPI.Presentation.Controllers
 {
-    using System.Threading;
-    using System.Threading.Tasks;
     using BusinessLogic.ApiCommands.Users;
     using BusinessLogic.ApiQueries.Users;
     using BusinessLogic.Responses;
@@ -13,6 +11,8 @@
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
     using Swashbuckle.AspNetCore.Annotations;
+    using System.Threading;
+    using System.Threading.Tasks;
 
     /// <summary>
     /// Controller responsible for User Entity.
@@ -50,8 +50,7 @@
         [ProducesResponseType(typeof(RegisterResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
-        public async Task<IActionResult> RegisterAsync(
-            [FromBody] RegisterRequest request,
+        public async Task<IActionResult> RegisterAsync([FromBody] RegisterRequest request,
             CancellationToken cancellationToken)
         {
             return await RequestAsync(request.ToCommand(), cancellationToken);
@@ -73,8 +72,7 @@
         [ProducesResponseType(typeof(VerifyEmailResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
-        public async Task<IActionResult> EmailConfirmationAsync(
-            [FromBody] VerifyEmailRequest request,
+        public async Task<IActionResult> EmailConfirmationAsync([FromBody] VerifyEmailRequest request,
             CancellationToken cancellationToken)
         {
             var command = request.ToCommand();
@@ -97,8 +95,7 @@
         [ProducesResponseType(typeof(VerifyPhoneResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
-        public async Task<IActionResult> PhoneConfirmationAsync(
-            [FromRoute] int phoneCode,
+        public async Task<IActionResult> PhoneConfirmationAsync([FromRoute] int phoneCode,
             CancellationToken cancellationToken)
         {
             var userId = HttpContext.User.GetUserId();
@@ -124,7 +121,7 @@
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public async Task<IActionResult> ChangePassword([FromBody] ChangePasswordRequest request, 
+        public async Task<IActionResult> ChangePassword([FromBody] ChangePasswordRequest request,
             CancellationToken cancellationToken)
         {
             var userId = HttpContext.User.GetUserId();
@@ -158,14 +155,14 @@
         /// <param name="displayName">User's display name, string.</param>
         /// <param name="cancellationToken">CancellationToken instance.</param>
         /// <returns>Possible codes: 200, 400, 409.</returns>
-        [HttpGet("searches/{displayName}")]
+        [HttpGet("searches")]
         [Authorize(Roles = "User")]
         [SwaggerOperation(Summary = "Searches user by his display name. Requires role: User.")]
         [ProducesResponseType(typeof(SearchUserByDisplayNameResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public async Task<IActionResult> SearchesAsync(string displayName, CancellationToken cancellationToken)
+        public async Task<IActionResult> SearchesAsync([FromQuery] string displayName, CancellationToken cancellationToken)
         {
             var command = new SearchUserByDisplayNameQuery
             {
@@ -209,8 +206,7 @@
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public async Task<IActionResult> UpdateUserInformationAsync(
-            [FromBody] UpdateUserInformationRequest request,
+        public async Task<IActionResult> UpdateUserInformationAsync([FromBody] UpdateUserInformationRequest request,
             CancellationToken cancellationToken)
         {
             var userId = HttpContext.User.GetUserId();
