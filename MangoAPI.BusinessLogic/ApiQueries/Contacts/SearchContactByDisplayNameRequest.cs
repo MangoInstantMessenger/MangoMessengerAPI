@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace MangoAPI.BusinessLogic.ApiQueries.Users
+namespace MangoAPI.BusinessLogic.ApiQueries.Contacts
 {
     public record SearchContactByDisplayNameRequest
     {

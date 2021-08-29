@@ -1,13 +1,13 @@
-﻿namespace MangoAPI.Tests.ApiQueriesTests.Users
+﻿namespace MangoAPI.Tests.ApiQueriesTests.Contacts
 {
     using System.Threading;
     using System.Threading.Tasks;
     using FluentAssertions;
-    using MangoAPI.BusinessLogic.ApiQueries.Users;
+    using MangoAPI.BusinessLogic.ApiQueries.Contacts;
     using NUnit.Framework;
 
     [TestFixture]
-    public class UserSearchCommandHandlerTest
+    public class SearchContactByDisplayNameQueryHandlerTest
     {
         [Test]
         public async Task UserSearchQueryHandlerTest_Success()

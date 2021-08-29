@@ -1,4 +1,4 @@
-﻿namespace MangoAPI.BusinessLogic.ApiQueries.Users
+﻿namespace MangoAPI.BusinessLogic.ApiQueries.Contacts
 {
     using MediatR;
 

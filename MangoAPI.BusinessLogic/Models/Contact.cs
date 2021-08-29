@@ -10,6 +10,6 @@
 
         public string Bio { get; init; }
 
-        public bool IsContact { get; init; }
+        public bool IsContact { get; set; }
     }
 }

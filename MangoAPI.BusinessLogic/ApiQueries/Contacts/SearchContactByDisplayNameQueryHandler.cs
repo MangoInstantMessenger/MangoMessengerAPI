@@ -1,9 +1,11 @@
-﻿namespace MangoAPI.BusinessLogic.ApiQueries.Users
+﻿namespace MangoAPI.BusinessLogic.ApiQueries.Contacts
 {
     using DataAccess.Database;
     using DataAccess.Database.Extensions;
+    using MangoAPI.BusinessLogic.Models;
     using MediatR;
     using Microsoft.EntityFrameworkCore;
+    using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
 
@@ -30,7 +32,23 @@
                 users = await _postgresDbContext.Users.SearchUsersByDisplayNameAsync(request.DisplayName, cancellationToken);
             }
 
-            return SearchContactByDisplayNameResponse.FromSuccess(users);
+            var contacts = users.Select(x => new Contact
+            {
+                UserId = x.Id,
+                DisplayName = x.DisplayName,
+                Address = x.UserInformation.Address,
+                Bio = x.Bio,
+            }).ToList();
+
+            foreach (var contact in contacts)
+            {
+                var isContact = await _postgresDbContext.UserContacts
+                    .AnyAsync(x => x.UserId == request.UserId && x.ContactId == contact.UserId, cancellationToken);
+
+                contact.IsContact = isContact;
+            }
+
+            return SearchContactByDisplayNameResponse.FromSuccess(contacts);
         }
     }
 }

@@ -6,10 +6,12 @@
 
     public interface IContactsController
     {
-        public Task<IActionResult> AddContact(string contactId, CancellationToken cancellationToken);
+        Task<IActionResult> AddContact(string contactId, CancellationToken cancellationToken);
 
-        public Task<IActionResult> DeleteContact(string contactId, CancellationToken cancellationToken);
+        Task<IActionResult> DeleteContact(string contactId, CancellationToken cancellationToken);
 
-        public Task<IActionResult> GetContacts(CancellationToken cancellationToken);
+        Task<IActionResult> GetContacts(CancellationToken cancellationToken);
+
+        Task<IActionResult> SearchesAsync(string displayName, CancellationToken cancellationToken);
     }
 }
