@@ -25,6 +25,7 @@
                             DisplayName = userEntity.DisplayName,
                             Address = userEntity.UserInformation.Address,
                             Bio = userEntity.Bio,
+                            IsContact = true,
                         }).ToList(),
             };
         }
