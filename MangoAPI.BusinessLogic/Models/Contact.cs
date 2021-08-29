@@ -9,5 +9,7 @@
         public string Address { get; init; }
 
         public string Bio { get; init; }
+
+        public bool IsContact { get; init; }
     }
 }

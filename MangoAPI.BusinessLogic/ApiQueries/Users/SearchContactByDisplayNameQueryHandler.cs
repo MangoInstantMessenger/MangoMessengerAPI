@@ -7,16 +7,16 @@
     using System.Threading;
     using System.Threading.Tasks;
 
-    public class SearchUserByDisplayNameQueryHandler : IRequestHandler<SearchUserByDisplayNameQuery, SearchUserByDisplayNameResponse>
+    public class SearchContactByDisplayNameQueryHandler : IRequestHandler<SearchContactByDisplayNameQuery, SearchContactByDisplayNameResponse>
     {
         private readonly MangoPostgresDbContext _postgresDbContext;
 
-        public SearchUserByDisplayNameQueryHandler(MangoPostgresDbContext postgresDbContext)
+        public SearchContactByDisplayNameQueryHandler(MangoPostgresDbContext postgresDbContext)
         {
             _postgresDbContext = postgresDbContext;
         }
 
-        public async Task<SearchUserByDisplayNameResponse> Handle(SearchUserByDisplayNameQuery request, CancellationToken cancellationToken)
+        public async Task<SearchContactByDisplayNameResponse> Handle(SearchContactByDisplayNameQuery request, CancellationToken cancellationToken)
         {
             // TODO: optimize this part, goes two requests to DB.
 
@@ -30,7 +30,7 @@
                 users = await _postgresDbContext.Users.SearchUsersByDisplayNameAsync(request.DisplayName, cancellationToken);
             }
 
-            return SearchUserByDisplayNameResponse.FromSuccess(users);
+            return SearchContactByDisplayNameResponse.FromSuccess(users);
         }
     }
 }

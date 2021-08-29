@@ -158,13 +158,13 @@
         [HttpGet("searches")]
         [Authorize(Roles = "User")]
         [SwaggerOperation(Summary = "Searches user by his display name. Requires role: User.")]
-        [ProducesResponseType(typeof(SearchUserByDisplayNameResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(SearchContactByDisplayNameResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> SearchesAsync([FromQuery] string displayName, CancellationToken cancellationToken)
         {
-            var command = new SearchUserByDisplayNameQuery
+            var command = new SearchContactByDisplayNameQuery
             {
                 DisplayName = displayName,
             };

@@ -7,11 +7,11 @@
     using Domain.Constants;
     using Domain.Entities;
 
-    public record SearchUserByDisplayNameResponse : ResponseBase<SearchUserByDisplayNameResponse>
+    public record SearchContactByDisplayNameResponse : ResponseBase<SearchContactByDisplayNameResponse>
     {
         public List<User> Users { get; init; }
 
-        public static SearchUserByDisplayNameResponse FromSuccess(IEnumerable<UserEntity> users)
+        public static SearchContactByDisplayNameResponse FromSuccess(IEnumerable<UserEntity> users)
         {
             return new()
             {
