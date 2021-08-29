@@ -1,20 +1,20 @@
-﻿namespace MangoAPI.Tests.ApiQueriesTests.Users
+﻿namespace MangoAPI.Tests.ApiQueriesTests.Contacts
 {
     using System.Threading;
     using System.Threading.Tasks;
     using FluentAssertions;
-    using MangoAPI.BusinessLogic.ApiQueries.Users;
+    using MangoAPI.BusinessLogic.ApiQueries.Contacts;
     using NUnit.Framework;
 
     [TestFixture]
-    public class UserSearchCommandHandlerTest
+    public class SearchContactByDisplayNameQueryHandlerTest
     {
         [Test]
         public async Task UserSearchQueryHandlerTest_Success()
         {
             using var dbContextFixture = new DbContextFixture();
-            var handler = new SearchUserByDisplayNameQueryHandler(dbContextFixture.PostgresDbContext);
-            var query = new SearchUserByDisplayNameQuery() { DisplayName = "Petro" };
+            var handler = new SearchContactByDisplayNameQueryHandler(dbContextFixture.PostgresDbContext);
+            var query = new SearchContactByDisplayNameQuery() { DisplayName = "Petro" };
 
             var response = await handler.Handle(query, CancellationToken.None);
 

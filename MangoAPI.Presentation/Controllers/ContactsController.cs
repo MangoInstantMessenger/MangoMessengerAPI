@@ -1,7 +1,5 @@
 ﻿namespace MangoAPI.Presentation.Controllers
 {
-    using System.Threading;
-    using System.Threading.Tasks;
     using BusinessLogic.ApiCommands.Contacts;
     using BusinessLogic.ApiQueries.Contacts;
     using BusinessLogic.Responses;
@@ -13,6 +11,8 @@
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
     using Swashbuckle.AspNetCore.Annotations;
+    using System.Threading;
+    using System.Threading.Tasks;
 
     /// <summary>
     /// Controller responsible for Contacts Entity.
@@ -98,6 +98,31 @@
             var query = new GetContactsQuery { UserId = HttpContext.User.GetUserId() };
 
             return await RequestAsync(query, cancellationToken);
+        }
+
+        /// <summary>
+        /// Searches user by his display name. Requires role: User.
+        /// </summary>
+        /// <param name="displayName">User's display name, string.</param>
+        /// <param name="cancellationToken">CancellationToken instance.</param>
+        /// <returns>Possible codes: 200, 400, 409.</returns>
+        [HttpGet("searches")]
+        [Authorize(Roles = "User")]
+        [SwaggerOperation(Summary = "Searches user by his display name. Requires role: User.")]
+        [ProducesResponseType(typeof(SearchContactByDisplayNameResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        public async Task<IActionResult> SearchesAsync(string displayName, CancellationToken cancellationToken)
+        {
+            var currentUserId = HttpContext.User.GetUserId();
+            var command = new SearchContactByDisplayNameQuery
+            {
+                DisplayName = displayName,
+                UserId = currentUserId,
+            };
+
+            return await RequestAsync(command, cancellationToken);
         }
     }
 }

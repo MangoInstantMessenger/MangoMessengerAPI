@@ -5,6 +5,7 @@
     using BusinessLogic.Responses;
     using Extensions;
     using Interfaces;
+    using MangoAPI.BusinessLogic.ApiQueries.Contacts;
     using MediatR;
     using Microsoft.AspNetCore.Authentication.JwtBearer;
     using Microsoft.AspNetCore.Authorization;
@@ -147,29 +148,6 @@
         {
             var query = new GetUserQuery { UserId = userId };
             return await RequestAsync(query, cancellationToken);
-        }
-
-        /// <summary>
-        /// Searches user by his display name. Requires role: User.
-        /// </summary>
-        /// <param name="displayName">User's display name, string.</param>
-        /// <param name="cancellationToken">CancellationToken instance.</param>
-        /// <returns>Possible codes: 200, 400, 409.</returns>
-        [HttpGet("searches")]
-        [Authorize(Roles = "User")]
-        [SwaggerOperation(Summary = "Searches user by his display name. Requires role: User.")]
-        [ProducesResponseType(typeof(SearchUserByDisplayNameResponse), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
-        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public async Task<IActionResult> SearchesAsync([FromQuery] string displayName, CancellationToken cancellationToken)
-        {
-            var command = new SearchUserByDisplayNameQuery
-            {
-                DisplayName = displayName,
-            };
-
-            return await RequestAsync(command, cancellationToken);
         }
 
         /// <summary>
