@@ -1,14 +1,13 @@
 ﻿using MangoAPI.BusinessLogic.BusinessExceptions;
 using MangoAPI.BusinessLogic.Models;
 using MangoAPI.DataAccess.Database;
+using MangoAPI.DataAccess.Database.Extensions;
 using MangoAPI.Domain.Constants;
 using MangoAPI.Domain.Enums;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using MangoAPI.DataAccess.Database.Extensions;
 
 namespace MangoAPI.BusinessLogic.ApiQueries.Chats
 {
@@ -66,6 +65,7 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Chats
                     : null,
                 MembersCount = chatEntity.MembersCount,
                 IsMember = userChat != null,
+                IsArchived = userChat != null && userChat.IsArchived,
             };
 
             return GetChatByIdResponse.FromSuccess(chat);
