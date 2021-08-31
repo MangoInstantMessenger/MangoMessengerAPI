@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using MangoAPI.BusinessLogic.BusinessExceptions;
@@ -6,7 +7,9 @@ using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.DataAccess.Database;
 using MangoAPI.DataAccess.Database.Extensions;
 using MangoAPI.Domain.Constants;
+using MangoAPI.Domain.Enums;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 namespace MangoAPI.BusinessLogic.ApiCommands.Users
 {
@@ -31,7 +34,26 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
 
             user.UserInformation.FirstName = request.FirstName ?? user.UserInformation.FirstName;
             user.UserInformation.LastName = request.LastName ?? user.UserInformation.LastName;
-            user.DisplayName = request.DisplayName ?? user.DisplayName;
+
+            if (user.DisplayName != request.DisplayName)
+            {
+                var userChats = await _postgresDbContext.UserChats
+                    .Include(x => x.Chat)
+                    .Where(x => x.UserId == user.Id && x.Chat.ChatType == ChatType.DirectChat)
+                    .Select(x => x.Chat)
+                    .ToListAsync(cancellationToken);
+
+                foreach (var chatEntity in userChats)
+                {
+                    var newTitle = chatEntity.Title.Replace(user.DisplayName, request.DisplayName);
+                    chatEntity.Title = newTitle;
+                }
+                
+                user.DisplayName = request.DisplayName;
+
+                _postgresDbContext.Chats.UpdateRange(userChats);
+            }
+
             user.PhoneNumber = request.PhoneNumber ?? user.PhoneNumber;
 
             user.UserInformation.BirthDay = DateTime.TryParse(request.BirthdayDate, out var newDate)
