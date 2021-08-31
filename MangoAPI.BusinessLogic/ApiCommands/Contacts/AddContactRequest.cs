@@ -1,7 +1,7 @@
-﻿namespace MangoAPI.BusinessLogic.ApiCommands.Contacts
-{
-    using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 
+namespace MangoAPI.BusinessLogic.ApiCommands.Contacts
+{
     public record AddContactRequest
     {
         [JsonConstructor]

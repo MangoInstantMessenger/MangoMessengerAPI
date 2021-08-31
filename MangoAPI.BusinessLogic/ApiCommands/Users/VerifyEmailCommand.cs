@@ -1,8 +1,9 @@
-﻿namespace MangoAPI.BusinessLogic.ApiCommands.Users
-{
-    using MediatR;
+﻿using MangoAPI.BusinessLogic.Responses;
+using MediatR;
 
-    public record VerifyEmailCommand : IRequest<VerifyEmailResponse>
+namespace MangoAPI.BusinessLogic.ApiCommands.Users
+{
+    public record VerifyEmailCommand : IRequest<ResponseBase>
     {
         public string Email { get; init; }
         public string UserId { get; init; }

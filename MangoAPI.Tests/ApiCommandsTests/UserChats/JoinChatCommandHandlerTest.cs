@@ -1,14 +1,14 @@
-﻿namespace MangoAPI.Tests.ApiCommandsTests.UserChats
-{
-    using System;
-    using System.Threading;
-    using System.Threading.Tasks;
-    using FluentAssertions;
-    using MangoAPI.BusinessLogic.ApiCommands.UserChats;
-    using BusinessLogic.BusinessExceptions;
-    using Domain.Constants;
-    using NUnit.Framework;
+﻿using System;
+using System.Threading;
+using System.Threading.Tasks;
+using FluentAssertions;
+using MangoAPI.BusinessLogic.ApiCommands.UserChats;
+using MangoAPI.BusinessLogic.BusinessExceptions;
+using MangoAPI.Domain.Constants;
+using NUnit.Framework;
 
+namespace MangoAPI.Tests.ApiCommandsTests.UserChats
+{
     [TestFixture]
     public class JoinChatCommandHandlerTest
     {

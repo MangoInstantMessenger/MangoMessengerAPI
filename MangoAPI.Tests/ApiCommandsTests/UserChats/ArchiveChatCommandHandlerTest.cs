@@ -1,11 +1,11 @@
-﻿using FluentAssertions;
+﻿using System;
+using System.Threading;
+using System.Threading.Tasks;
+using FluentAssertions;
 using MangoAPI.BusinessLogic.ApiCommands.UserChats;
 using MangoAPI.BusinessLogic.BusinessExceptions;
 using MangoAPI.Domain.Constants;
 using NUnit.Framework;
-using System;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace MangoAPI.Tests.ApiCommandsTests.UserChats
 {

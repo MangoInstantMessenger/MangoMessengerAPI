@@ -1,14 +1,14 @@
-﻿namespace MangoAPI.Application.Services
-{
-    using System.Net;
-    using System.Net.Mail;
-    using System.Text;
-    using System.Threading;
-    using System.Threading.Tasks;
-    using Interfaces;
-    using Domain.Constants;
-    using Domain.Entities;
+﻿using System.Net;
+using System.Net.Mail;
+using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
+using MangoAPI.Application.Interfaces;
+using MangoAPI.Domain.Constants;
+using MangoAPI.Domain.Entities;
 
+namespace MangoAPI.Application.Services
+{
     public class EmailSenderService : IEmailSenderService
     {
         public async Task SendVerificationEmailAsync(

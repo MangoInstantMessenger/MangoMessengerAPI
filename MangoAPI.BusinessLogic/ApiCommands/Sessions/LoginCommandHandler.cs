@@ -1,21 +1,21 @@
-﻿using MangoAPI.DataAccess.Database.Extensions;
+﻿using System;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
+using MangoAPI.Application.Interfaces;
+using MangoAPI.BusinessLogic.BusinessExceptions;
+using MangoAPI.BusinessLogic.Responses;
+using MangoAPI.DataAccess.Database;
+using MangoAPI.DataAccess.Database.Extensions;
+using MangoAPI.Domain.Constants;
+using MangoAPI.Domain.Entities;
+using MediatR;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace MangoAPI.BusinessLogic.ApiCommands.Sessions
 {
-    using System;
-    using System.Linq;
-    using System.Threading;
-    using System.Threading.Tasks;
-    using Application.Interfaces;
-    using BusinessExceptions;
-    using DataAccess.Database;
-    using Domain.Constants;
-    using Domain.Entities;
-    using MediatR;
-    using Microsoft.AspNetCore.Identity;
-    using Microsoft.EntityFrameworkCore;
-
-    public class LoginCommandHandler : IRequestHandler<LoginCommand, LoginResponse>
+    public class LoginCommandHandler : IRequestHandler<LoginCommand, TokensResponse>
     {
         private readonly IJwtGenerator _jwtGenerator;
         private readonly MangoPostgresDbContext _postgresDbContext;
@@ -31,7 +31,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Sessions
             _postgresDbContext = postgresDbContext;
         }
 
-        public async Task<LoginResponse> Handle(LoginCommand request, CancellationToken cancellationToken)
+        public async Task<TokensResponse> Handle(LoginCommand request, CancellationToken cancellationToken)
         {
             var user = await _postgresDbContext.Users.FindUserByEmailAsync(request.Email, cancellationToken);
 
@@ -87,7 +87,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Sessions
             await _postgresDbContext.Sessions.AddAsync(session, cancellationToken);
             await _postgresDbContext.SaveChangesAsync(cancellationToken);
 
-            return LoginResponse.FromSuccess(jwtToken, session.RefreshToken);
+            return TokensResponse.FromSuccess(jwtToken, session.RefreshToken);
         }
     }
 }

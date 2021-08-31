@@ -1,7 +1,7 @@
-﻿namespace MangoAPI.BusinessLogic.ApiCommands.Messages
-{
-    using MediatR;
+﻿using MediatR;
 
+namespace MangoAPI.BusinessLogic.ApiCommands.Messages
+{
     public record SendMessageCommand : IRequest<SendMessageResponse>
     {
         public string MessageText { get; init; }

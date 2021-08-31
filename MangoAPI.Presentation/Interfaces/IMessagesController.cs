@@ -1,10 +1,10 @@
-﻿namespace MangoAPI.Presentation.Interfaces
-{
-    using System.Threading;
-    using System.Threading.Tasks;
-    using BusinessLogic.ApiCommands.Messages;
-    using Microsoft.AspNetCore.Mvc;
+﻿using System.Threading;
+using System.Threading.Tasks;
+using MangoAPI.BusinessLogic.ApiCommands.Messages;
+using Microsoft.AspNetCore.Mvc;
 
+namespace MangoAPI.Presentation.Interfaces
+{
     public interface IMessagesController
     {
         Task<IActionResult> GetChatMessages(string chatId, CancellationToken cancellationToken);

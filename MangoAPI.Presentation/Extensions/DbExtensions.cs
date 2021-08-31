@@ -1,12 +1,12 @@
-﻿namespace MangoAPI.Presentation.Extensions
-{
-    using Application.Services;
-    using DataAccess.Database;
-    using Domain.Constants;
-    using Microsoft.EntityFrameworkCore;
-    using Microsoft.Extensions.DependencyInjection;
-    using System;
+﻿using System;
+using MangoAPI.Application.Services;
+using MangoAPI.DataAccess.Database;
+using MangoAPI.Domain.Constants;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 
+namespace MangoAPI.Presentation.Extensions
+{
     public static class DbExtensions
     {
         public static IServiceCollection AddPostgresDb(this IServiceCollection services)
@@ -19,7 +19,7 @@
             {
                 options.UseNpgsql(connectionString ??
                               throw new InvalidOperationException("Wrong Connection String in Startup class."));
-                options.EnableSensitiveDataLogging(true);
+                options.EnableSensitiveDataLogging();
             });
             return services;
         }

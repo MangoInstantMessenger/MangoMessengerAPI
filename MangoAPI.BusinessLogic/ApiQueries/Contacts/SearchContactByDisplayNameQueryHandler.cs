@@ -1,14 +1,14 @@
-﻿namespace MangoAPI.BusinessLogic.ApiQueries.Contacts
-{
-    using DataAccess.Database;
-    using DataAccess.Database.Extensions;
-    using MangoAPI.BusinessLogic.Models;
-    using MediatR;
-    using Microsoft.EntityFrameworkCore;
-    using System.Linq;
-    using System.Threading;
-    using System.Threading.Tasks;
+﻿using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
+using MangoAPI.BusinessLogic.Models;
+using MangoAPI.DataAccess.Database;
+using MangoAPI.DataAccess.Database.Extensions;
+using MediatR;
+using Microsoft.EntityFrameworkCore;
 
+namespace MangoAPI.BusinessLogic.ApiQueries.Contacts
+{
     public class SearchContactByDisplayNameQueryHandler : IRequestHandler<SearchContactByDisplayNameQuery, SearchContactByDisplayNameResponse>
     {
         private readonly MangoPostgresDbContext _postgresDbContext;

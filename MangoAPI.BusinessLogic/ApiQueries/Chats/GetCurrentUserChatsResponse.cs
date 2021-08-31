@@ -1,12 +1,12 @@
-﻿namespace MangoAPI.BusinessLogic.ApiQueries.Chats
-{
-    using Domain.Constants;
-    using Domain.Entities;
-    using Models;
-    using Responses;
-    using System.Collections.Generic;
-    using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
+using MangoAPI.BusinessLogic.Models;
+using MangoAPI.BusinessLogic.Responses;
+using MangoAPI.Domain.Constants;
+using MangoAPI.Domain.Entities;
 
+namespace MangoAPI.BusinessLogic.ApiQueries.Chats
+{
     public record GetCurrentUserChatsResponse : ResponseBase<GetCurrentUserChatsResponse>
     {
         public List<Chat> Chats { get; init; }

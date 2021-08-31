@@ -1,15 +1,15 @@
-﻿namespace MangoAPI.Domain.Entities
-{
-    using Microsoft.AspNetCore.Identity;
-    using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using Microsoft.AspNetCore.Identity;
 
+namespace MangoAPI.Domain.Entities
+{
     public sealed class UserEntity : IdentityUser
     {
         public string DisplayName { get; set; }
 
-        public string? Image { get; set; }
+        public string Image { get; set; }
 
-        public string? Bio { get; set; }
+        public string Bio { get; set; }
 
         public int? ConfirmationCode { get; set; }
 

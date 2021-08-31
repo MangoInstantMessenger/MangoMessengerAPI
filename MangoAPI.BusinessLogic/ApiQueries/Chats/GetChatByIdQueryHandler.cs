@@ -1,42 +1,42 @@
-﻿using MangoAPI.BusinessLogic.BusinessExceptions;
+﻿using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
+using MangoAPI.BusinessLogic.BusinessExceptions;
 using MangoAPI.BusinessLogic.Models;
 using MangoAPI.DataAccess.Database;
 using MangoAPI.DataAccess.Database.Extensions;
 using MangoAPI.Domain.Constants;
 using MangoAPI.Domain.Enums;
 using MediatR;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace MangoAPI.BusinessLogic.ApiQueries.Chats
 {
     public class GetChatByIdQueryHandler : IRequestHandler<GetChatByIdQuery, GetChatByIdResponse>
     {
-        private readonly MangoPostgresDbContext postgresDbContext;
+        private readonly MangoPostgresDbContext _postgresDbContext;
 
         public GetChatByIdQueryHandler(MangoPostgresDbContext postgresDbContext)
         {
-            this.postgresDbContext = postgresDbContext;
+            _postgresDbContext = postgresDbContext;
         }
 
         public async Task<GetChatByIdResponse> Handle(GetChatByIdQuery request, CancellationToken cancellationToken)
         {
-            var user = await postgresDbContext.Users.FindUserByIdAsync(request.UserId, cancellationToken);
+            var user = await _postgresDbContext.Users.FindUserByIdAsync(request.UserId, cancellationToken);
 
             if (user is null)
             {
                 throw new BusinessException(ResponseMessageCodes.UserNotFound);
             }
 
-            var chatEntity = await postgresDbContext.Chats.FindChatByIdIncludeMessagesAsync(request.ChatId, cancellationToken);
+            var chatEntity = await _postgresDbContext.Chats.FindChatByIdIncludeMessagesAsync(request.ChatId, cancellationToken);
 
             if (chatEntity is null)
             {
                 throw new BusinessException(ResponseMessageCodes.ChatNotFound);
             }
 
-            var userChat = await postgresDbContext.UserChats.FindUserChatByIdAsync(request.UserId, request.ChatId, cancellationToken);
+            var userChat = await _postgresDbContext.UserChats.FindUserChatByIdAsync(request.UserId, request.ChatId, cancellationToken);
 
             switch (userChat)
             {
@@ -47,7 +47,7 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Chats
                     throw new BusinessException(ResponseMessageCodes.ChatNotFound);
             }
 
-            var chat = new Chat()
+            var chat = new Chat
             {
                 ChatId = chatEntity.Id,
                 Title = chatEntity.Title,

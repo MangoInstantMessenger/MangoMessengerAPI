@@ -1,7 +1,7 @@
+using Newtonsoft.Json;
+
 namespace MangoAPI.BusinessLogic.ApiCommands.Users
 {
-    using Newtonsoft.Json;
-
     public record UpdateUserInformationRequest
     {
         [JsonConstructor]

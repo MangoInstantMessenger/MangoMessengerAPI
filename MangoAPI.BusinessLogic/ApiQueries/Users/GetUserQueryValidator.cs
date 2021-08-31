@@ -1,8 +1,8 @@
-﻿namespace MangoAPI.BusinessLogic.ApiQueries.Users
-{
-    using System;
-    using FluentValidation;
+﻿using System;
+using FluentValidation;
 
+namespace MangoAPI.BusinessLogic.ApiQueries.Users
+{
     public class GetUserQueryValidator : AbstractValidator<GetUserQuery>
     {
         public GetUserQueryValidator()

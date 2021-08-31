@@ -1,20 +1,19 @@
-﻿namespace MangoAPI.Presentation.Controllers
-{
-    using BusinessLogic.ApiCommands.Users;
-    using BusinessLogic.ApiQueries.Users;
-    using BusinessLogic.Responses;
-    using Extensions;
-    using Interfaces;
-    using MangoAPI.BusinessLogic.ApiQueries.Contacts;
-    using MediatR;
-    using Microsoft.AspNetCore.Authentication.JwtBearer;
-    using Microsoft.AspNetCore.Authorization;
-    using Microsoft.AspNetCore.Http;
-    using Microsoft.AspNetCore.Mvc;
-    using Swashbuckle.AspNetCore.Annotations;
-    using System.Threading;
-    using System.Threading.Tasks;
+﻿using System.Threading;
+using System.Threading.Tasks;
+using MangoAPI.BusinessLogic.ApiCommands.Users;
+using MangoAPI.BusinessLogic.ApiQueries.Users;
+using MangoAPI.BusinessLogic.Responses;
+using MangoAPI.Presentation.Extensions;
+using MangoAPI.Presentation.Interfaces;
+using MediatR;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Swashbuckle.AspNetCore.Annotations;
 
+namespace MangoAPI.Presentation.Controllers
+{
     /// <summary>
     /// Controller responsible for User Entity.
     /// </summary>
@@ -48,7 +47,7 @@
             "Does not require any authorization or users role. " +
             "After registration user receives pair of access/refresh tokens. " +
             "Access token claim role is Unverified. ")]
-        [ProducesResponseType(typeof(RegisterResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(TokensResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
         public async Task<IActionResult> RegisterAsync([FromBody] RegisterRequest request,
@@ -70,7 +69,7 @@
         [SwaggerOperation(Summary = "Confirms user's email address. Adds a User role to the current user. " +
                                     "This endpoint may be accessed by both roles: Unverified, User. " +
                                     "On refresh session user receives new access token with updated roles. ")]
-        [ProducesResponseType(typeof(VerifyEmailResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ResponseBase), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
         public async Task<IActionResult> EmailConfirmationAsync([FromBody] VerifyEmailRequest request,
@@ -93,7 +92,7 @@
         [SwaggerOperation(Summary = "Confirms user's phone number. Adds a User role to the current user. " +
                                     "This endpoint may be accessed by both roles: Unverified, User. " +
                                     "On refresh session user receives new access token with updated roles. ")]
-        [ProducesResponseType(typeof(VerifyPhoneResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ResponseBase), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
         public async Task<IActionResult> PhoneConfirmationAsync([FromRoute] int phoneCode,
@@ -118,7 +117,7 @@
         [HttpPut("password")]
         [Authorize(Roles = "User")]
         [SwaggerOperation(Summary = "Changes password by current password. Required role: User")]
-        [ProducesResponseType(typeof(ChangePasswordResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ResponseBase), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
@@ -146,7 +145,7 @@
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> GetUserById([FromRoute] string userId, CancellationToken cancellationToken)
         {
-            var query = new GetUserQuery { UserId = userId };
+            var query = new GetUserQuery {UserId = userId};
             return await RequestAsync(query, cancellationToken);
         }
 
@@ -167,7 +166,7 @@
         public async Task<IActionResult> GetCurrentUser(CancellationToken cancellationToken)
         {
             var userId = HttpContext.User.GetUserId();
-            var request = new GetUserQuery { UserId = userId };
+            var request = new GetUserQuery {UserId = userId};
             return await RequestAsync(request, cancellationToken);
         }
 
@@ -180,7 +179,7 @@
         [HttpPut("information")]
         [Authorize(Roles = "User")]
         [SwaggerOperation(Summary = "Updates user's personal information. Requires role: User.")]
-        [ProducesResponseType(typeof(UpdateUserInformationResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ResponseBase), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]

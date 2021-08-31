@@ -1,15 +1,14 @@
-﻿namespace MangoAPI.BusinessLogic.ApiCommands.Sessions
-{
-    using Responses;
-    using Domain.Constants;
+﻿using MangoAPI.Domain.Constants;
 
-    public record LoginResponse : ResponseBase<LoginResponse>
+namespace MangoAPI.BusinessLogic.Responses
+{
+    public record TokensResponse : ResponseBase<TokensResponse>
     {
         public string AccessToken { get; init; }
         
         public string RefreshToken { get; init; }
 
-        public static LoginResponse FromSuccess(string accessToken, string refreshToken)
+        public static TokensResponse FromSuccess(string accessToken, string refreshToken)
         {
             return new ()
             {

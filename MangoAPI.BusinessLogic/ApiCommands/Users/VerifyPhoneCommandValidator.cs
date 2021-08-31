@@ -1,8 +1,8 @@
-﻿namespace MangoAPI.BusinessLogic.ApiCommands.Users
-{
-    using System;
-    using FluentValidation;
+﻿using System;
+using FluentValidation;
 
+namespace MangoAPI.BusinessLogic.ApiCommands.Users
+{
     public class VerifyPhoneCommandValidator : AbstractValidator<VerifyPhoneCommand>
     {
         public VerifyPhoneCommandValidator()

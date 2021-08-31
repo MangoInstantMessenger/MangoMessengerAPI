@@ -1,10 +1,10 @@
-﻿namespace MangoAPI.BusinessLogic.ApiQueries.Contacts
-{
-    using Domain.Constants;
-    using Models;
-    using Responses;
-    using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using MangoAPI.BusinessLogic.Models;
+using MangoAPI.BusinessLogic.Responses;
+using MangoAPI.Domain.Constants;
 
+namespace MangoAPI.BusinessLogic.ApiQueries.Contacts
+{
     public record SearchContactByDisplayNameResponse : ResponseBase<SearchContactByDisplayNameResponse>
     {
         public List<Contact> Contacts { get; init; }

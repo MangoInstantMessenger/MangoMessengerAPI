@@ -27,7 +27,7 @@ namespace MangoAPI.DataAccess.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "text", nullable: false),
-                    DisplayName = table.Column<string>(type: "text", nullable: false),
+                    DisplayName = table.Column<string>(type: "text", nullable: true),
                     Image = table.Column<string>(type: "text", nullable: true),
                     Bio = table.Column<string>(type: "text", nullable: true),
                     ConfirmationCode = table.Column<int>(type: "integer", nullable: true),
@@ -58,8 +58,10 @@ namespace MangoAPI.DataAccess.Migrations
                     Id = table.Column<string>(type: "text", nullable: false),
                     Title = table.Column<string>(type: "text", nullable: false),
                     ChatType = table.Column<int>(type: "integer", nullable: false),
+                    Description = table.Column<string>(type: "text", nullable: true),
                     Image = table.Column<string>(type: "text", nullable: true),
-                    Created = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
+                    UpdatedAt = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
                     MembersCount = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
@@ -179,9 +181,9 @@ namespace MangoAPI.DataAccess.Migrations
                 {
                     Id = table.Column<string>(type: "text", nullable: false),
                     UserId = table.Column<string>(type: "text", nullable: true),
-                    Expires = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
                     RefreshToken = table.Column<string>(type: "text", nullable: true),
-                    Created = table.Column<DateTime>(type: "timestamp without time zone", nullable: false)
+                    CreatedAt = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
+                    ExpiresAt = table.Column<DateTime>(type: "timestamp without time zone", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -200,7 +202,7 @@ namespace MangoAPI.DataAccess.Migrations
                 {
                     Id = table.Column<string>(type: "text", nullable: false),
                     ContactId = table.Column<string>(type: "text", nullable: true),
-                    UserId = table.Column<string>(type: "text", nullable: false)
+                    UserId = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -210,7 +212,7 @@ namespace MangoAPI.DataAccess.Migrations
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -218,7 +220,7 @@ namespace MangoAPI.DataAccess.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "text", nullable: false),
-                    UserId = table.Column<string>(type: "text", nullable: false),
+                    UserId = table.Column<string>(type: "text", nullable: true),
                     FirstName = table.Column<string>(type: "text", nullable: true),
                     LastName = table.Column<string>(type: "text", nullable: true),
                     BirthDay = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
@@ -228,7 +230,9 @@ namespace MangoAPI.DataAccess.Migrations
                     Twitter = table.Column<string>(type: "text", nullable: true),
                     Instagram = table.Column<string>(type: "text", nullable: true),
                     LinkedIn = table.Column<string>(type: "text", nullable: true),
-                    ProfilePicture = table.Column<string>(type: "text", nullable: true)
+                    ProfilePicture = table.Column<string>(type: "text", nullable: true),
+                    CreatedAt = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
+                    UpdatedAt = table.Column<DateTime>(type: "timestamp without time zone", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -238,7 +242,7 @@ namespace MangoAPI.DataAccess.Migrations
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -249,8 +253,8 @@ namespace MangoAPI.DataAccess.Migrations
                     UserId = table.Column<string>(type: "text", nullable: true),
                     ChatId = table.Column<string>(type: "text", nullable: true),
                     Content = table.Column<string>(type: "text", nullable: false),
-                    Created = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
-                    Updated = table.Column<DateTime>(type: "timestamp without time zone", nullable: true)
+                    CreatedAt = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
+                    UpdatedAt = table.Column<DateTime>(type: "timestamp without time zone", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -275,7 +279,8 @@ namespace MangoAPI.DataAccess.Migrations
                 {
                     UserId = table.Column<string>(type: "text", nullable: false),
                     ChatId = table.Column<string>(type: "text", nullable: false),
-                    RoleId = table.Column<int>(type: "integer", nullable: false)
+                    RoleId = table.Column<int>(type: "integer", nullable: false),
+                    IsArchived = table.Column<bool>(type: "boolean", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -299,8 +304,8 @@ namespace MangoAPI.DataAccess.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "1c48f8d5-01ed-4e47-8377-a22ffa58c150", "e941aff4-49b5-411f-a87e-9f5d662e004b", "Unverified", "UNVERIFIED" },
-                    { "32904a05-6d7c-43cf-b915-223324ff480e", "0045c0dc-bc7c-4130-a08e-b6f7fcafd690", "User", "USER" }
+                    { "1c48f8d5-01ed-4e47-8377-a22ffa58c150", "d372448a-1e64-4c37-8bf5-3d17dacb7695", "Unverified", "UNVERIFIED" },
+                    { "32904a05-6d7c-43cf-b915-223324ff480e", "f5239f8a-0e9e-43a0-a783-1f3117ed0c89", "User", "USER" }
                 });
 
             migrationBuilder.InsertData(
@@ -308,32 +313,32 @@ namespace MangoAPI.DataAccess.Migrations
                 columns: new[] { "Id", "AccessFailedCount", "Bio", "ConcurrencyStamp", "ConfirmationCode", "DisplayName", "Email", "EmailConfirmed", "Image", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
                 values: new object[,]
                 {
-                    { "d1ae1de1-1aa8-4650-937c-4ed882038ad7", 0, "Third year student of WSB at Poznan", "5a227c95-4b4e-4fb3-bc34-bb60ce77fb36", null, "Serhii Holishevskii", "serhii.holishevskii@wp.pl", true, null, false, null, "SERHII.HOLISHEVSKII@WP.PL", null, "AQAAAAEAACcQAAAAEJxOl7X8OmQfQitaWKr3dyOrYGd4Ohq1hvUjlP3QKf4JYM7gIt4CJFHJec4RSkrIRA==", "+48 175 481 653", true, "ad2bb942-71ff-4330-9e0f-204bcd7e923a", false, "serhii.holishevskii" },
-                    { "56d6294f-7b80-4a78-856a-92b141de2d1c", 0, "Third year student of WSB at Poznan", "6fd1eef2-62b8-47cc-a239-5beec2c78aaa", null, "Arslanbek Temirbekov", "arslanbek.temirbekov@wp.pl", true, null, false, null, "ARSLANBEK.TEMIRBEKOV@WP.PL", null, "AQAAAAEAACcQAAAAEAizWGioD21ltej+Pe3dBLmunljgh3BT9StHrfhtWBf+cKM3hN9YHckHdR8SMpgICg==", "+48 278 187 781", true, "389f2d71-df7c-4a0d-8fa7-8833d5b46655", false, "arslanbek.temirbekov" },
-                    { "72a7a013-8bc4-4ae6-89cb-d9f19e0c9cf9", 0, "Third year student of WSB at Poznan", "24a838c6-78e6-4e93-8f48-50fdd3b5be51", null, "Illia Zubachov", "illia.zubachov@wp.pl", true, null, false, null, "ILLIA.ZUBACHOW@WP.PL", null, "AQAAAAEAACcQAAAAEORofVFwnPvV/LoGTi9thND5KWZ44VgmUfalTQFDAB4YBcOmdHLcDFUsag8z3MVm1A==", "+48 352 643 123", true, "dd398a1a-f624-4aa5-9e26-b34ed99c7b36", false, "illia.zubachov" },
-                    { "5e7274ad-3132-4ad7-be36-38778a8f7b1c", 0, "Teacher of Computer Science at WSB Poznan", "266d8e5e-22a0-453b-ab88-9f95d973047a", null, "Szymon Murawski", "szymon.murawski@wp.pl", true, null, false, null, "SZYMON.MURAWSKI@WP.PL", null, "AQAAAAEAACcQAAAAEJfb5HWqyCskCUK1nTp3iWg0ySjPey1lfXn/+N8+IZzwnl+/luuWpniUHRWlVnIEcQ==", "+48 743 615 532", true, "fd986a5f-bb80-40bc-bd0b-ebdce167b771", false, "szymon.murawski" },
-                    { "2cd4b9a0-f70d-476d-a3cc-908da43f93c4", 0, "Third year student of WSB at Poznan", "8a14e79c-9444-4149-90a8-92e2391adac4", null, "Petro Kolosov", "petro.kolosov@wp.pl", true, null, false, null, "PETRO.KOLOSOV@WP.PL", null, "AQAAAAEAACcQAAAAEI6kNY51mj8vOVC04RaxER3DR6pR1m6YaguoClnoGeBAYebEo0iVVqoWHIhtsBllTg==", "+48 743 615 532", true, "6a14d288-3e06-41ef-bbd2-4d2b6a8222aa", false, "petro.kolosov" },
-                    { "d942706b-e4e2-48f9-bbdc-b022816471f0", 0, "Дипломат", "e278a66c-94ca-44de-a9fb-b3392a74ab44", null, "Amelit", "amelit@gmail.com", true, null, false, null, "AMELIT@GMAIL.COM", null, "AQAAAAEAACcQAAAAEI+Pe3eYUrvXYdLl6WHgqM1oxt0tBI+Lxge3Xb6+vQmHxFcBS5Dw36ERR2qBkBSQkg==", "+1 202 555 0152", true, "7134d1fb-fbf8-4f18-9cc4-50b35474e22f", false, "TheMoonlightSonata" },
-                    { "5b515247-f6f5-47e1-ad06-95f317a0599b", 0, "Колбасятор.", "391835b1-91a7-4dd2-9c78-ed0fac5b8668", null, "Мусяка Колбасяка", "kolbasator@gmail.com", true, null, false, null, "KOLBASATOR@GMAIL.COM", null, "AQAAAAEAACcQAAAAENW5g/U2m06t0mYZyJZ+iyrWZzAmbLeuz6qNpHqjpzqiaf30tdlWCbGYAYho3oiEaQ==", "+7 701 750 62 65", true, "588f6c6b-c01b-4840-8295-f78a6b070eb4", false, "kolbasator" },
-                    { "fd3c67c5-c6ff-4a5d-a166-98ece1b7752b", 0, "11011 y.o Dotnet Developer from $\"{cityName}\"", "7e4eb078-27d4-4682-ad55-70ccbc5a850f", null, "razumovsky r", "kolosovp95@gmail.com", true, null, false, null, "KOLOSOVP94@GMAIL.COM", null, "AQAAAAEAACcQAAAAEBhErwGZRDDFyMH7ZgkWl2Iil+eQiTofmE1flcFz3Sfq+11/rA4SUibUVOVCnTHIXg==", "+48 743 615 532", true, "1a373e6b-5d20-4224-b716-f98d6c2f9bc5", false, "razumovsky_r" },
-                    { "e77cf2cb-3f3a-4f0b-ac5a-90a3263d075a", 0, "13 y. o. | C# pozer", "128c7439-b7d1-487f-8771-e31092930759", null, "Khachatur Khachatryan", "xachulxx@gmail.com", true, null, false, null, "XACHULXX@GMAIL.COM", null, "AQAAAAEAACcQAAAAEOteu5gbPixEWyHIr32/3r17wg5FKWWhKGyulyHAnqN+c8fNQ2qg35VlZ/7JDcogfA==", "+374 775 55 43 10", true, "42fe3251-a1c1-4e51-ac7e-3862b022dca3", false, "xachulxx" }
+                    { "d1ae1de1-1aa8-4650-937c-4ed882038ad7", 0, "Third year student of WSB at Poznan", "00f1908a-175c-4742-9c9a-056191830e51", null, "Serhii Holishevskii", "serhii.holishevskii@wp.pl", true, null, false, null, "SERHII.HOLISHEVSKII@WP.PL", null, "AQAAAAEAACcQAAAAEAQYd+BzdvENF6uN2Aj7j5eHCgMypgSWghQOwxnRDb14b1RbdL/oEbkTmg0VdnXHuw==", "+48 175 481 653", true, "6d543d80-92ab-481c-9f20-f5f7f1fc8159", false, "serhii.holishevskii" },
+                    { "56d6294f-7b80-4a78-856a-92b141de2d1c", 0, "Third year student of WSB at Poznan", "143dd771-4f0e-4d38-a8df-821852458f81", null, "Arslanbek Temirbekov", "arslanbek.temirbekov@wp.pl", true, null, false, null, "ARSLANBEK.TEMIRBEKOV@WP.PL", null, "AQAAAAEAACcQAAAAEJa1oXZr2q03L85DkY9L8RDfCIriIgaRG/uK1gUFgs+ZSaG4XKqIM+lA0xk+gK8tdA==", "+48 278 187 781", true, "4009ba7a-4340-4c66-99d6-cb3ece41d315", false, "arslanbek.temirbekov" },
+                    { "72a7a013-8bc4-4ae6-89cb-d9f19e0c9cf9", 0, "Third year student of WSB at Poznan", "d59ce62f-5e24-4220-8236-5e64f13d6c99", null, "Illia Zubachov", "illia.zubachov@wp.pl", true, null, false, null, "ILLIA.ZUBACHOW@WP.PL", null, "AQAAAAEAACcQAAAAEPZtnOKd8cInoHxhaMS6+ii/vQU1ghrf8X6CiTg9MZdCicBHpBVj79bHf3s2Jgc9CQ==", "+48 352 643 123", true, "28d21c8a-a09b-424f-b114-32628b81847c", false, "illia.zubachov" },
+                    { "5e7274ad-3132-4ad7-be36-38778a8f7b1c", 0, "Teacher of Computer Science at WSB Poznan", "f02e62cd-e6cd-492c-9d58-b5cb35e4f33e", null, "Szymon Murawski", "szymon.murawski@wp.pl", true, null, false, null, "SZYMON.MURAWSKI@WP.PL", null, "AQAAAAEAACcQAAAAEO05cwjXUFsr4N8w3r1t3MfX25xTyg0PqdlB3/dXirVgTFt21ruQDYG+vdBOTyMcBw==", "+48 743 615 532", true, "ab90f3bf-ab6a-4fe5-acda-1c806fd1cf59", false, "szymon.murawski" },
+                    { "2cd4b9a0-f70d-476d-a3cc-908da43f93c4", 0, "Third year student of WSB at Poznan", "c7dcab4c-7c9d-47f8-80bf-34c572878fe6", null, "Petro Kolosov", "petro.kolosov@wp.pl", true, null, false, null, "PETRO.KOLOSOV@WP.PL", null, "AQAAAAEAACcQAAAAEEJq9QVFEZtIKArZPnz8yxaqrhwhXZbT/FdxlYFvHUW/CRXi3asIJQ70LQ246kaMuA==", "+48 743 615 532", true, "b2c19190-4383-4efc-ada5-c79d015b4b80", false, "petro.kolosov" },
+                    { "d942706b-e4e2-48f9-bbdc-b022816471f0", 0, "Дипломат", "afe53c04-e64a-42d5-bd33-f3376b745ead", null, "Amelit", "amelit@gmail.com", true, null, false, null, "AMELIT@GMAIL.COM", null, "AQAAAAEAACcQAAAAEG7Q8gVCPfJUG+cj5MeVxeEN9GrcCC0io8z5wDl7NwK3XEuui4GhuMoJNxdKx+yPJA==", "+1 202 555 0152", true, "b2c22bbb-3c02-4656-8ce9-a1c9d040d3d2", false, "TheMoonlightSonata" },
+                    { "5b515247-f6f5-47e1-ad06-95f317a0599b", 0, "Колбасятор.", "dc3fe35f-3f29-4119-978b-ce5518aac31c", null, "Мусяка Колбасяка", "kolbasator@gmail.com", true, null, false, null, "KOLBASATOR@GMAIL.COM", null, "AQAAAAEAACcQAAAAEL+vCecznNfd3mtbFNoheKKMYvmvQe9umNwaFYT33w895y5XJGOOgk6o/hjA+E2rAg==", "+7 701 750 62 65", true, "77cca940-762a-4ffd-b228-7b3c56f70bcc", false, "kolbasator" },
+                    { "fd3c67c5-c6ff-4a5d-a166-98ece1b7752b", 0, "11011 y.o Dotnet Developer from $\"{cityName}\"", "75c17653-5f74-45cc-917e-bb22ce77193b", null, "razumovsky r", "kolosovp95@gmail.com", true, null, false, null, "KOLOSOVP94@GMAIL.COM", null, "AQAAAAEAACcQAAAAEMjbYcWwNrP3q1uwlm0OjotzMISCSLxlpQaJWWz/i0QNhL6qRke9EEI4idYHv52Vnw==", "+48 743 615 532", true, "32cb6e9d-9505-4b0f-be7c-b96918086d2b", false, "razumovsky_r" },
+                    { "e77cf2cb-3f3a-4f0b-ac5a-90a3263d075a", 0, "13 y. o. | C# pozer", "00b6c25f-f1c4-4e99-b805-e516ca3ee52e", null, "Khachatur Khachatryan", "xachulxx@gmail.com", true, null, false, null, "XACHULXX@GMAIL.COM", null, "AQAAAAEAACcQAAAAEH5DE8LgSI/ryOe68ThLMG1dVutKPYcmEswuZcsQgvPVPRkaZUIP7cZiK0lrtbxZXw==", "+374 775 55 43 10", true, "9385ee64-6194-4d3d-9957-e2a905cfabec", false, "KHACHATUR228" }
                 });
 
             migrationBuilder.InsertData(
                 table: "Chats",
-                columns: new[] { "Id", "ChatType", "Created", "Image", "MembersCount", "Title" },
+                columns: new[] { "Id", "ChatType", "CreatedAt", "Description", "Image", "MembersCount", "Title", "UpdatedAt" },
                 values: new object[,]
                 {
-                    { "9f205dde-0ddc-401f-8fe9-6c794b661f5d", 1, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, 2, "Khachatur Khachatryan / Мусяка Колбасяка" },
-                    { "b119914a-6d95-4047-bf8a-db27deeb7dc9", 1, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, 2, "Amelit / razumovsky r" },
-                    { "f8729a12-5746-443f-ad31-378d846fce30", 1, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, 2, "Мусяка Колбасяка / razumovsky r" },
-                    { "f5b7824f-e52b-4246-9984-06fc8e964f0c", 1, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, 2, "Khachatur Khachatryan / razumovsky r" },
-                    { "6f66e318-1e94-44ae-9b33-fe001e070842", 3, new DateTime(2020, 5, 12, 0, 0, 0, 0, DateTimeKind.Unspecified), null, 4, "Extreme Code .NET" },
-                    { "cd358b94-c3b9-4022-923a-13f787f70055", 3, new DateTime(2020, 5, 12, 0, 0, 0, 0, DateTimeKind.Unspecified), null, 4, "Extreme Code C++" },
-                    { "5e656ec2-205f-471c-b095-1c80b93b7655", 3, new DateTime(2020, 4, 23, 0, 0, 0, 0, DateTimeKind.Unspecified), null, 4, "Extreme Code Flood" },
-                    { "0dae5a74-3528-4e85-95bb-2036bd80432c", 3, new DateTime(2020, 2, 4, 0, 0, 0, 0, DateTimeKind.Unspecified), null, 4, "Extreme Code Main" },
-                    { "3fce8b2c-252d-4514-a1bb-fbdf73c47b78", 1, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, 2, "Petro Kolosov / Szymon Murawski" },
-                    { "b6ca4533-fc21-4f44-9747-687361e3031c", 3, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, 5, "WSB" }
+                    { "9f205dde-0ddc-401f-8fe9-6c794b661f5d", 1, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Direct chat between Khachatur Khachatryan and Мусяка Колбасяка", null, 2, "Khachatur Khachatryan / Мусяка Колбасяка", null },
+                    { "b119914a-6d95-4047-bf8a-db27deeb7dc9", 1, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Direct chat between Amelit and razumovsky r", null, 2, "Amelit / razumovsky r", null },
+                    { "f8729a12-5746-443f-ad31-378d846fce30", 1, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Direct chat between Мусяка Колбасяка and razumovsky r", null, 2, "Мусяка Колбасяка / razumovsky r", null },
+                    { "f5b7824f-e52b-4246-9984-06fc8e964f0c", 1, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Direct chat between Khachatur Khachatryan and razumovsky r", null, 2, "Khachatur Khachatryan / razumovsky r", null },
+                    { "6f66e318-1e94-44ae-9b33-fe001e070842", 3, new DateTime(2020, 5, 12, 0, 0, 0, 0, DateTimeKind.Unspecified), "Extreme Code .NET Public Group", null, 4, "Extreme Code .NET", null },
+                    { "cd358b94-c3b9-4022-923a-13f787f70055", 3, new DateTime(2020, 5, 12, 0, 0, 0, 0, DateTimeKind.Unspecified), "Extreme Code C++ Public Group", null, 4, "Extreme Code C++", null },
+                    { "5e656ec2-205f-471c-b095-1c80b93b7655", 3, new DateTime(2020, 4, 23, 0, 0, 0, 0, DateTimeKind.Unspecified), "Extreme Code Flood Public Group", null, 4, "Extreme Code Flood", null },
+                    { "0dae5a74-3528-4e85-95bb-2036bd80432c", 3, new DateTime(2020, 2, 4, 0, 0, 0, 0, DateTimeKind.Unspecified), "Extreme Code Main Public Group", null, 4, "Extreme Code Main", null },
+                    { "3fce8b2c-252d-4514-a1bb-fbdf73c47b78", 1, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Direct chat between Petro Kolosov and Szymon Murawski", null, 2, "Petro Kolosov / Szymon Murawski", null },
+                    { "b6ca4533-fc21-4f44-9747-687361e3031c", 3, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "WSB Public Group", null, 5, "WSB", null }
                 });
 
             migrationBuilder.InsertData(
@@ -354,7 +359,7 @@ namespace MangoAPI.DataAccess.Migrations
 
             migrationBuilder.InsertData(
                 table: "Messages",
-                columns: new[] { "Id", "ChatId", "Content", "Created", "Updated", "UserId" },
+                columns: new[] { "Id", "ChatId", "Content", "CreatedAt", "UpdatedAt", "UserId" },
                 values: new object[,]
                 {
                     { "0f9e236f-f68b-48b7-a330-eb8079277b9e", "cd358b94-c3b9-4022-923a-13f787f70055", "Hello World", new DateTime(2021, 8, 1, 18, 43, 53, 0, DateTimeKind.Unspecified), null, "d942706b-e4e2-48f9-bbdc-b022816471f0" },
@@ -392,40 +397,40 @@ namespace MangoAPI.DataAccess.Migrations
 
             migrationBuilder.InsertData(
                 table: "UserChats",
-                columns: new[] { "ChatId", "UserId", "RoleId" },
+                columns: new[] { "ChatId", "UserId", "IsArchived", "RoleId" },
                 values: new object[,]
                 {
-                    { "0dae5a74-3528-4e85-95bb-2036bd80432c", "d942706b-e4e2-48f9-bbdc-b022816471f0", 4 },
-                    { "6f66e318-1e94-44ae-9b33-fe001e070842", "d942706b-e4e2-48f9-bbdc-b022816471f0", 1 },
-                    { "b119914a-6d95-4047-bf8a-db27deeb7dc9", "d942706b-e4e2-48f9-bbdc-b022816471f0", 1 },
-                    { "b6ca4533-fc21-4f44-9747-687361e3031c", "2cd4b9a0-f70d-476d-a3cc-908da43f93c4", 2 },
-                    { "cd358b94-c3b9-4022-923a-13f787f70055", "e77cf2cb-3f3a-4f0b-ac5a-90a3263d075a", 1 },
-                    { "b6ca4533-fc21-4f44-9747-687361e3031c", "d1ae1de1-1aa8-4650-937c-4ed882038ad7", 1 },
-                    { "b119914a-6d95-4047-bf8a-db27deeb7dc9", "fd3c67c5-c6ff-4a5d-a166-98ece1b7752b", 1 },
-                    { "9f205dde-0ddc-401f-8fe9-6c794b661f5d", "e77cf2cb-3f3a-4f0b-ac5a-90a3263d075a", 1 },
-                    { "b6ca4533-fc21-4f44-9747-687361e3031c", "5e7274ad-3132-4ad7-be36-38778a8f7b1c", 4 },
-                    { "3fce8b2c-252d-4514-a1bb-fbdf73c47b78", "5e7274ad-3132-4ad7-be36-38778a8f7b1c", 1 },
-                    { "b6ca4533-fc21-4f44-9747-687361e3031c", "56d6294f-7b80-4a78-856a-92b141de2d1c", 1 },
-                    { "6f66e318-1e94-44ae-9b33-fe001e070842", "e77cf2cb-3f3a-4f0b-ac5a-90a3263d075a", 1 },
-                    { "f5b7824f-e52b-4246-9984-06fc8e964f0c", "e77cf2cb-3f3a-4f0b-ac5a-90a3263d075a", 1 },
-                    { "3fce8b2c-252d-4514-a1bb-fbdf73c47b78", "2cd4b9a0-f70d-476d-a3cc-908da43f93c4", 1 },
-                    { "cd358b94-c3b9-4022-923a-13f787f70055", "d942706b-e4e2-48f9-bbdc-b022816471f0", 4 },
-                    { "5e656ec2-205f-471c-b095-1c80b93b7655", "d942706b-e4e2-48f9-bbdc-b022816471f0", 1 },
-                    { "5e656ec2-205f-471c-b095-1c80b93b7655", "e77cf2cb-3f3a-4f0b-ac5a-90a3263d075a", 1 },
-                    { "0dae5a74-3528-4e85-95bb-2036bd80432c", "fd3c67c5-c6ff-4a5d-a166-98ece1b7752b", 3 },
-                    { "b6ca4533-fc21-4f44-9747-687361e3031c", "72a7a013-8bc4-4ae6-89cb-d9f19e0c9cf9", 1 },
-                    { "0dae5a74-3528-4e85-95bb-2036bd80432c", "5b515247-f6f5-47e1-ad06-95f317a0599b", 2 },
-                    { "5e656ec2-205f-471c-b095-1c80b93b7655", "5b515247-f6f5-47e1-ad06-95f317a0599b", 2 },
-                    { "cd358b94-c3b9-4022-923a-13f787f70055", "5b515247-f6f5-47e1-ad06-95f317a0599b", 1 },
-                    { "5e656ec2-205f-471c-b095-1c80b93b7655", "fd3c67c5-c6ff-4a5d-a166-98ece1b7752b", 4 },
-                    { "6f66e318-1e94-44ae-9b33-fe001e070842", "fd3c67c5-c6ff-4a5d-a166-98ece1b7752b", 4 },
-                    { "f8729a12-5746-443f-ad31-378d846fce30", "5b515247-f6f5-47e1-ad06-95f317a0599b", 1 },
-                    { "f5b7824f-e52b-4246-9984-06fc8e964f0c", "fd3c67c5-c6ff-4a5d-a166-98ece1b7752b", 1 },
-                    { "9f205dde-0ddc-401f-8fe9-6c794b661f5d", "5b515247-f6f5-47e1-ad06-95f317a0599b", 1 },
-                    { "f8729a12-5746-443f-ad31-378d846fce30", "fd3c67c5-c6ff-4a5d-a166-98ece1b7752b", 1 },
-                    { "0dae5a74-3528-4e85-95bb-2036bd80432c", "e77cf2cb-3f3a-4f0b-ac5a-90a3263d075a", 1 },
-                    { "6f66e318-1e94-44ae-9b33-fe001e070842", "5b515247-f6f5-47e1-ad06-95f317a0599b", 1 },
-                    { "cd358b94-c3b9-4022-923a-13f787f70055", "fd3c67c5-c6ff-4a5d-a166-98ece1b7752b", 3 }
+                    { "0dae5a74-3528-4e85-95bb-2036bd80432c", "d942706b-e4e2-48f9-bbdc-b022816471f0", false, 4 },
+                    { "6f66e318-1e94-44ae-9b33-fe001e070842", "d942706b-e4e2-48f9-bbdc-b022816471f0", false, 1 },
+                    { "b119914a-6d95-4047-bf8a-db27deeb7dc9", "d942706b-e4e2-48f9-bbdc-b022816471f0", false, 1 },
+                    { "b6ca4533-fc21-4f44-9747-687361e3031c", "2cd4b9a0-f70d-476d-a3cc-908da43f93c4", false, 2 },
+                    { "cd358b94-c3b9-4022-923a-13f787f70055", "e77cf2cb-3f3a-4f0b-ac5a-90a3263d075a", false, 1 },
+                    { "b6ca4533-fc21-4f44-9747-687361e3031c", "d1ae1de1-1aa8-4650-937c-4ed882038ad7", false, 1 },
+                    { "b119914a-6d95-4047-bf8a-db27deeb7dc9", "fd3c67c5-c6ff-4a5d-a166-98ece1b7752b", false, 1 },
+                    { "9f205dde-0ddc-401f-8fe9-6c794b661f5d", "e77cf2cb-3f3a-4f0b-ac5a-90a3263d075a", false, 1 },
+                    { "b6ca4533-fc21-4f44-9747-687361e3031c", "5e7274ad-3132-4ad7-be36-38778a8f7b1c", false, 4 },
+                    { "3fce8b2c-252d-4514-a1bb-fbdf73c47b78", "5e7274ad-3132-4ad7-be36-38778a8f7b1c", false, 1 },
+                    { "b6ca4533-fc21-4f44-9747-687361e3031c", "56d6294f-7b80-4a78-856a-92b141de2d1c", false, 1 },
+                    { "6f66e318-1e94-44ae-9b33-fe001e070842", "e77cf2cb-3f3a-4f0b-ac5a-90a3263d075a", false, 1 },
+                    { "f5b7824f-e52b-4246-9984-06fc8e964f0c", "e77cf2cb-3f3a-4f0b-ac5a-90a3263d075a", false, 1 },
+                    { "3fce8b2c-252d-4514-a1bb-fbdf73c47b78", "2cd4b9a0-f70d-476d-a3cc-908da43f93c4", false, 1 },
+                    { "cd358b94-c3b9-4022-923a-13f787f70055", "d942706b-e4e2-48f9-bbdc-b022816471f0", false, 4 },
+                    { "5e656ec2-205f-471c-b095-1c80b93b7655", "d942706b-e4e2-48f9-bbdc-b022816471f0", false, 1 },
+                    { "5e656ec2-205f-471c-b095-1c80b93b7655", "e77cf2cb-3f3a-4f0b-ac5a-90a3263d075a", false, 1 },
+                    { "0dae5a74-3528-4e85-95bb-2036bd80432c", "fd3c67c5-c6ff-4a5d-a166-98ece1b7752b", false, 3 },
+                    { "b6ca4533-fc21-4f44-9747-687361e3031c", "72a7a013-8bc4-4ae6-89cb-d9f19e0c9cf9", false, 1 },
+                    { "0dae5a74-3528-4e85-95bb-2036bd80432c", "5b515247-f6f5-47e1-ad06-95f317a0599b", false, 2 },
+                    { "5e656ec2-205f-471c-b095-1c80b93b7655", "5b515247-f6f5-47e1-ad06-95f317a0599b", false, 2 },
+                    { "cd358b94-c3b9-4022-923a-13f787f70055", "5b515247-f6f5-47e1-ad06-95f317a0599b", false, 1 },
+                    { "5e656ec2-205f-471c-b095-1c80b93b7655", "fd3c67c5-c6ff-4a5d-a166-98ece1b7752b", false, 4 },
+                    { "6f66e318-1e94-44ae-9b33-fe001e070842", "fd3c67c5-c6ff-4a5d-a166-98ece1b7752b", false, 4 },
+                    { "f8729a12-5746-443f-ad31-378d846fce30", "5b515247-f6f5-47e1-ad06-95f317a0599b", false, 1 },
+                    { "f5b7824f-e52b-4246-9984-06fc8e964f0c", "fd3c67c5-c6ff-4a5d-a166-98ece1b7752b", false, 1 },
+                    { "9f205dde-0ddc-401f-8fe9-6c794b661f5d", "5b515247-f6f5-47e1-ad06-95f317a0599b", false, 1 },
+                    { "f8729a12-5746-443f-ad31-378d846fce30", "fd3c67c5-c6ff-4a5d-a166-98ece1b7752b", false, 1 },
+                    { "0dae5a74-3528-4e85-95bb-2036bd80432c", "e77cf2cb-3f3a-4f0b-ac5a-90a3263d075a", false, 1 },
+                    { "6f66e318-1e94-44ae-9b33-fe001e070842", "5b515247-f6f5-47e1-ad06-95f317a0599b", false, 1 },
+                    { "cd358b94-c3b9-4022-923a-13f787f70055", "fd3c67c5-c6ff-4a5d-a166-98ece1b7752b", false, 3 }
                 });
 
             migrationBuilder.InsertData(
@@ -465,18 +470,18 @@ namespace MangoAPI.DataAccess.Migrations
 
             migrationBuilder.InsertData(
                 table: "UserInformation",
-                columns: new[] { "Id", "Address", "BirthDay", "Facebook", "FirstName", "Instagram", "LastName", "LinkedIn", "ProfilePicture", "Twitter", "UserId", "Website" },
+                columns: new[] { "Id", "Address", "BirthDay", "CreatedAt", "Facebook", "FirstName", "Instagram", "LastName", "LinkedIn", "ProfilePicture", "Twitter", "UpdatedAt", "UserId", "Website" },
                 values: new object[,]
                 {
-                    { "e44583f1-62ca-4ca4-a6a2-3fc1a874ab0c", "Poznan, Poland", new DateTime(1994, 6, 12, 0, 0, 0, 0, DateTimeKind.Unspecified), "petro.kolosov", "Petro", "petro.kolosov", "Kolosov", "petro.kolosov", null, "petro.kolosov", "2cd4b9a0-f70d-476d-a3cc-908da43f93c4", "petro.kolosov.com" },
-                    { "3067c801-da6d-4b03-ac5e-ad3fa0db5acf", "Moscow, Russia", new DateTime(2008, 3, 7, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Khachatur", "khachapur.mudrenych", "Khachatryan", "khachapur.mudrenych", null, null, "e77cf2cb-3f3a-4f0b-ac5a-90a3263d075a", "khachapur.com" },
-                    { "f3fbbce4-b451-4d2b-bfb4-662a9c87c315", "Moscow, Russia", null, "TheMoonlightSonata", "Amelit", "TheMoonlightSonata", null, null, null, "TheMoonlightSonata", "d942706b-e4e2-48f9-bbdc-b022816471f0", null },
-                    { "e44583f1-62ca-4ca4-a6a2-3fc1a874ab0e", "Poznan, Poland", new DateTime(1994, 6, 12, 0, 0, 0, 0, DateTimeKind.Unspecified), "serhii.holishevskii", "Serhii", "serhii.holishevskii", "Holishevskii", "serhii.holishevskii", null, "serhii.holishevskii", "d1ae1de1-1aa8-4650-937c-4ed882038ad7", "serhii.holishevskii.com" },
-                    { "91d1d13e-e475-4f77-820a-0225c37035a4", "Saint-Petersburg, Russia", null, "kolbasator", "Мусяка", null, "Колбасяка", null, "profile.png", null, "5b515247-f6f5-47e1-ad06-95f317a0599b", "kolbasator.com" },
-                    { "11da38d9-13e2-4056-80a7-a8a76b1c0682", "Odessa, Ukraine", new DateTime(1994, 7, 21, 0, 0, 0, 0, DateTimeKind.Unspecified), "razumovsky_r", "razumovsky", "razumovsky_r", "r", "razumovsky_r", null, "razumovsky_r", "fd3c67c5-c6ff-4a5d-a166-98ece1b7752b", "razumovsky.com" },
-                    { "e44583f1-62ca-4ca4-a6a2-3fc1a874ab0d", "Poznan, Poland", new DateTime(1994, 6, 12, 0, 0, 0, 0, DateTimeKind.Unspecified), "illia.zubachov", "Illia", "illia.zubachov", "Zubachov", "illia.zubachov", null, "illia.zubachov", "72a7a013-8bc4-4ae6-89cb-d9f19e0c9cf9", "illia.zubachov.com" },
-                    { "f773c1da-c7d5-44e9-9a1a-04e1be0b4b55", "Poznan, Poland", new DateTime(1983, 5, 25, 0, 0, 0, 0, DateTimeKind.Unspecified), "szymon.murawski", "Szymon", "szymon.murawski", "Murawski", "szymon.murawski", null, "szymon.murawski", "5e7274ad-3132-4ad7-be36-38778a8f7b1c", "szymon.murawski.com" },
-                    { "e44583f1-62ca-4ca4-a6a2-3fc1a874ab0f", "Poznan, Poland", new DateTime(1994, 6, 12, 0, 0, 0, 0, DateTimeKind.Unspecified), "arslan.temirbekov", "Arslan", "arslan.temirbekov", "Temirbekov", "arslan.temirbekov", null, "arslan.temirbekov", "56d6294f-7b80-4a78-856a-92b141de2d1c", "arslan.temirbekov.com" }
+                    { "e44583f1-62ca-4ca4-a6a2-3fc1a874ab0c", "Poznan, Poland", new DateTime(1994, 6, 12, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "petro.kolosov", "Petro", "petro.kolosov", "Kolosov", "petro.kolosov", null, "petro.kolosov", null, "2cd4b9a0-f70d-476d-a3cc-908da43f93c4", "petro.kolosov.com" },
+                    { "3067c801-da6d-4b03-ac5e-ad3fa0db5acf", "Moscow, Russia", new DateTime(2008, 3, 7, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Khachatur", "khachapur.mudrenych", "Khachatryan", "khachapur.mudrenych", null, null, null, "e77cf2cb-3f3a-4f0b-ac5a-90a3263d075a", "khachapur.com" },
+                    { "f3fbbce4-b451-4d2b-bfb4-662a9c87c315", "Moscow, Russia", null, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "TheMoonlightSonata", "Amelit", "TheMoonlightSonata", null, null, null, "TheMoonlightSonata", null, "d942706b-e4e2-48f9-bbdc-b022816471f0", null },
+                    { "e44583f1-62ca-4ca4-a6a2-3fc1a874ab0e", "Poznan, Poland", new DateTime(1994, 6, 12, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "serhii.holishevskii", "Serhii", "serhii.holishevskii", "Holishevskii", "serhii.holishevskii", null, "serhii.holishevskii", null, "d1ae1de1-1aa8-4650-937c-4ed882038ad7", "serhii.holishevskii.com" },
+                    { "91d1d13e-e475-4f77-820a-0225c37035a4", "Saint-Petersburg, Russia", null, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "kolbasator", "Мусяка", null, "Колбасяка", null, "profile.png", null, null, "5b515247-f6f5-47e1-ad06-95f317a0599b", "kolbasator.com" },
+                    { "11da38d9-13e2-4056-80a7-a8a76b1c0682", "Odessa, Ukraine", new DateTime(1994, 7, 21, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "razumovsky_r", "razumovsky", "razumovsky_r", "r", "razumovsky_r", null, "razumovsky_r", null, "fd3c67c5-c6ff-4a5d-a166-98ece1b7752b", "razumovsky.com" },
+                    { "e44583f1-62ca-4ca4-a6a2-3fc1a874ab0d", "Poznan, Poland", new DateTime(1994, 6, 12, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "illia.zubachov", "Illia", "illia.zubachov", "Zubachov", "illia.zubachov", null, "illia.zubachov", null, "72a7a013-8bc4-4ae6-89cb-d9f19e0c9cf9", "illia.zubachov.com" },
+                    { "f773c1da-c7d5-44e9-9a1a-04e1be0b4b55", "Poznan, Poland", new DateTime(1983, 5, 25, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "szymon.murawski", "Szymon", "szymon.murawski", "Murawski", "szymon.murawski", null, "szymon.murawski", null, "5e7274ad-3132-4ad7-be36-38778a8f7b1c", "szymon.murawski.com" },
+                    { "e44583f1-62ca-4ca4-a6a2-3fc1a874ab0f", "Poznan, Poland", new DateTime(1994, 6, 12, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "arslan.temirbekov", "Arslan", "arslan.temirbekov", "Temirbekov", "arslan.temirbekov", null, "arslan.temirbekov", null, "56d6294f-7b80-4a78-856a-92b141de2d1c", "arslan.temirbekov.com" }
                 });
 
             migrationBuilder.CreateIndex(

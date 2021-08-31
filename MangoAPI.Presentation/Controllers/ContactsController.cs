@@ -1,19 +1,19 @@
-﻿namespace MangoAPI.Presentation.Controllers
-{
-    using BusinessLogic.ApiCommands.Contacts;
-    using BusinessLogic.ApiQueries.Contacts;
-    using BusinessLogic.Responses;
-    using Extensions;
-    using Interfaces;
-    using MediatR;
-    using Microsoft.AspNetCore.Authentication.JwtBearer;
-    using Microsoft.AspNetCore.Authorization;
-    using Microsoft.AspNetCore.Http;
-    using Microsoft.AspNetCore.Mvc;
-    using Swashbuckle.AspNetCore.Annotations;
-    using System.Threading;
-    using System.Threading.Tasks;
+﻿using System.Threading;
+using System.Threading.Tasks;
+using MangoAPI.BusinessLogic.ApiCommands.Contacts;
+using MangoAPI.BusinessLogic.ApiQueries.Contacts;
+using MangoAPI.BusinessLogic.Responses;
+using MangoAPI.Presentation.Extensions;
+using MangoAPI.Presentation.Interfaces;
+using MediatR;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Swashbuckle.AspNetCore.Annotations;
 
+namespace MangoAPI.Presentation.Controllers
+{
     /// <summary>
     /// Controller responsible for Contacts Entity.
     /// </summary>
@@ -40,7 +40,7 @@
         [HttpPost("{contactId}")]
         [SwaggerOperation(Summary = "Adds particular user to the contacts. Fetches user by user ID. " +
                                     "Requires role: User.")]
-        [ProducesResponseType(typeof(AddContactResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ResponseBase), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
@@ -65,7 +65,7 @@
         [HttpDelete("{contactId}")]
         [SwaggerOperation(Summary = "Deletes particular contact from the contacts. Fetches user by user ID. " +
                                     "Requires role: User")]
-        [ProducesResponseType(typeof(DeleteContactResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ResponseBase), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
@@ -73,7 +73,7 @@
             CancellationToken cancellationToken)
         {
             var currentUserId = HttpContext.User.GetUserId();
-            var command = new DeleteContactCommand()
+            var command = new DeleteContactCommand
             {
                 UserId = currentUserId,
                 ContactId = contactId,

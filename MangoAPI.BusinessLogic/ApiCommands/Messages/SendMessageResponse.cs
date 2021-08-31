@@ -1,8 +1,8 @@
-﻿namespace MangoAPI.BusinessLogic.ApiCommands.Messages
-{
-    using Responses;
-    using Domain.Constants;
+﻿using MangoAPI.BusinessLogic.Responses;
+using MangoAPI.Domain.Constants;
 
+namespace MangoAPI.BusinessLogic.ApiCommands.Messages
+{
     public record SendMessageResponse : MessageResponseBase<SendMessageResponse>
     {
         public string MessageId { get; init; }

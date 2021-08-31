@@ -1,8 +1,8 @@
-﻿namespace MangoAPI.BusinessLogic.ApiCommands.Users
-{
-    using Enums;
-    using Newtonsoft.Json;
+﻿using MangoAPI.BusinessLogic.Enums;
+using Newtonsoft.Json;
 
+namespace MangoAPI.BusinessLogic.ApiCommands.Users
+{
     public record RegisterRequest
     {
         [JsonConstructor]

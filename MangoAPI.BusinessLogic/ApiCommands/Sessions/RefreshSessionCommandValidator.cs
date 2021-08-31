@@ -1,8 +1,8 @@
-﻿namespace MangoAPI.BusinessLogic.ApiCommands.Sessions
-{
-    using System;
-    using FluentValidation;
+﻿using System;
+using FluentValidation;
 
+namespace MangoAPI.BusinessLogic.ApiCommands.Sessions
+{
     public class RefreshSessionCommandValidator : AbstractValidator<RefreshSessionCommand>
     {
         public RefreshSessionCommandValidator()

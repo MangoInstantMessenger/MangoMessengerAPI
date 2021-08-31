@@ -1,12 +1,12 @@
-﻿namespace MangoAPI.Tests
-{
-    using System;
-    using System.Collections.Generic;
-    using DataAccess.Database;
-    using Domain.Entities;
-    using Domain.Enums;
-    using Microsoft.EntityFrameworkCore;
+﻿using System;
+using System.Collections.Generic;
+using MangoAPI.DataAccess.Database;
+using MangoAPI.Domain.Entities;
+using MangoAPI.Domain.Enums;
+using Microsoft.EntityFrameworkCore;
 
+namespace MangoAPI.Tests
+{
     public class DbContextFixture : IDisposable
     {
         public DbContextFixture()
@@ -186,7 +186,7 @@
                 Title = "Extreme Code Flood",
                 Id = "4",
             },
-            new ChatEntity()
+            new ChatEntity
             {
                 ChatType = ChatType.DirectChat,
                 Title = "Petro / Szymon",

@@ -1,8 +1,8 @@
-﻿namespace MangoAPI.BusinessLogic.ApiCommands.Chats
-{
-    using MangoAPI.Domain.Enums;
-    using Newtonsoft.Json;
+﻿using MangoAPI.Domain.Enums;
+using Newtonsoft.Json;
 
+namespace MangoAPI.BusinessLogic.ApiCommands.Chats
+{
     public record CreateGroupRequest
     {
         [JsonConstructor]

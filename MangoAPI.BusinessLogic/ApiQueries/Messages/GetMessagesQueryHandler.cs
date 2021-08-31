@@ -1,16 +1,14 @@
-﻿using MangoAPI.DataAccess.Database.Extensions;
+﻿using System.Threading;
+using System.Threading.Tasks;
+using MangoAPI.BusinessLogic.BusinessExceptions;
+using MangoAPI.DataAccess.Database;
+using MangoAPI.DataAccess.Database.Extensions;
+using MangoAPI.Domain.Constants;
+using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 namespace MangoAPI.BusinessLogic.ApiQueries.Messages
 {
-    using BusinessExceptions;
-    using DataAccess.Database;
-    using Domain.Constants;
-    using MediatR;
-    using Microsoft.EntityFrameworkCore;
-    using System.Linq;
-    using System.Threading;
-    using System.Threading.Tasks;
-
     public class GetMessagesQueryHandler : IRequestHandler<GetMessagesQuery, GetMessagesResponse>
     {
         private readonly MangoPostgresDbContext _postgresDbContext;

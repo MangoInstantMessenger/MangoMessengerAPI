@@ -1,8 +1,9 @@
-﻿namespace MangoAPI.BusinessLogic.ApiCommands.Messages
-{
-    using MediatR;
+﻿using MangoAPI.BusinessLogic.Responses;
+using MediatR;
 
-    public record EditMessageCommand : IRequest<EditMessageResponse>
+namespace MangoAPI.BusinessLogic.ApiCommands.Messages
+{
+    public record EditMessageCommand : IRequest<ResponseBase>
     {
         public string MessageId { get; init; }
         public string UserId { get; init; }

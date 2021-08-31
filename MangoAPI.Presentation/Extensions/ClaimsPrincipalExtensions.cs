@@ -1,9 +1,9 @@
-﻿namespace MangoAPI.Presentation.Extensions
-{
-    using System;
-    using System.IdentityModel.Tokens.Jwt;
-    using System.Security.Claims;
+﻿using System;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 
+namespace MangoAPI.Presentation.Extensions
+{
     public static class ClaimsPrincipalExtensions
     {
         public static string GetUserId(this ClaimsPrincipal principal)

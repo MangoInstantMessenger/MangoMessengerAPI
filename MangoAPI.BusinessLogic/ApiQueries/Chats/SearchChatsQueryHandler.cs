@@ -1,17 +1,17 @@
 ﻿
 
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
+using MangoAPI.BusinessLogic.Models;
+using MangoAPI.DataAccess.Database;
+using MangoAPI.DataAccess.Database.Extensions;
+using MediatR;
+using Microsoft.EntityFrameworkCore;
+
 namespace MangoAPI.BusinessLogic.ApiQueries.Chats
 {
-    using DataAccess.Database;
-    using MangoAPI.BusinessLogic.Models;
-    using MediatR;
-    using Microsoft.EntityFrameworkCore;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Threading;
-    using System.Threading.Tasks;
-    using MangoAPI.DataAccess.Database.Extensions;
-
     public class SearchChatsQueryHandler : IRequestHandler<SearchChatsQuery, SearchChatsResponse>
     {
         private readonly MangoPostgresDbContext _postgresDbContext;

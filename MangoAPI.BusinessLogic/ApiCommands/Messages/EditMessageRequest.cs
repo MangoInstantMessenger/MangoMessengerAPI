@@ -1,7 +1,7 @@
-﻿namespace MangoAPI.BusinessLogic.ApiCommands.Messages
-{
-    using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 
+namespace MangoAPI.BusinessLogic.ApiCommands.Messages
+{
     public record EditMessageRequest
     {
         [JsonConstructor]

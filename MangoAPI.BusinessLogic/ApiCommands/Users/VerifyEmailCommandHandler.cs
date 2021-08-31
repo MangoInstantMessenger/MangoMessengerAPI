@@ -1,15 +1,16 @@
-﻿namespace MangoAPI.BusinessLogic.ApiCommands.Users
-{
-    using System.Threading;
-    using System.Threading.Tasks;
-    using BusinessExceptions;
-    using DataAccess.Database;
-    using DataAccess.Database.Extensions;
-    using Domain.Constants;
-    using MediatR;
-    using Microsoft.AspNetCore.Identity;
+﻿using System.Threading;
+using System.Threading.Tasks;
+using MangoAPI.BusinessLogic.BusinessExceptions;
+using MangoAPI.BusinessLogic.Responses;
+using MangoAPI.DataAccess.Database;
+using MangoAPI.DataAccess.Database.Extensions;
+using MangoAPI.Domain.Constants;
+using MediatR;
+using Microsoft.AspNetCore.Identity;
 
-    public class VerifyEmailCommandHandler : IRequestHandler<VerifyEmailCommand, VerifyEmailResponse>
+namespace MangoAPI.BusinessLogic.ApiCommands.Users
+{
+    public class VerifyEmailCommandHandler : IRequestHandler<VerifyEmailCommand, ResponseBase>
     {
         private readonly MangoPostgresDbContext _postgresDbContext;
 
@@ -18,7 +19,7 @@
             _postgresDbContext = postgresDbContext;
         }
 
-        public async Task<VerifyEmailResponse> Handle(VerifyEmailCommand request, CancellationToken cancellationToken)
+        public async Task<ResponseBase> Handle(VerifyEmailCommand request, CancellationToken cancellationToken)
         {
             var user = await _postgresDbContext.Users.FindUserByIdAsync(request.UserId, cancellationToken);
 
@@ -50,7 +51,7 @@
 
             await _postgresDbContext.SaveChangesAsync(cancellationToken);
 
-            return VerifyEmailResponse.SuccessResponse;
+            return ResponseBase.SuccessResponse;
         }
     }
 }

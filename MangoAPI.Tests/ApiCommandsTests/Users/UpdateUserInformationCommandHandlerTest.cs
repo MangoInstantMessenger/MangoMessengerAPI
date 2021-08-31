@@ -1,16 +1,15 @@
+using System;
 using System.Globalization;
+using System.Threading;
+using System.Threading.Tasks;
+using FluentAssertions;
+using MangoAPI.BusinessLogic.ApiCommands.Users;
+using MangoAPI.BusinessLogic.BusinessExceptions;
+using MangoAPI.Domain.Constants;
+using NUnit.Framework;
 
 namespace MangoAPI.Tests.ApiCommandsTests.Users
 {
-    using System;
-    using System.Threading;
-    using System.Threading.Tasks;
-    using FluentAssertions;
-    using MangoAPI.BusinessLogic.ApiCommands.Users;
-    using BusinessLogic.BusinessExceptions;
-    using Domain.Constants;
-    using NUnit.Framework;
-
     [TestFixture]
     public class UpdateUserInformationCommandHandlerTest
     {

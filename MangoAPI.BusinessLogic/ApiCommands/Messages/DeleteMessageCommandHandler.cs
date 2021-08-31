@@ -1,14 +1,13 @@
-﻿using MangoAPI.DataAccess.Database.Extensions;
+﻿using System.Threading;
+using System.Threading.Tasks;
+using MangoAPI.BusinessLogic.BusinessExceptions;
+using MangoAPI.DataAccess.Database;
+using MangoAPI.DataAccess.Database.Extensions;
+using MangoAPI.Domain.Constants;
+using MediatR;
 
 namespace MangoAPI.BusinessLogic.ApiCommands.Messages
 {
-    using BusinessExceptions;
-    using DataAccess.Database;
-    using Domain.Constants;
-    using MediatR;
-    using System.Threading;
-    using System.Threading.Tasks;
-
     public class DeleteMessageCommandHandler : IRequestHandler<DeleteMessageCommand, DeleteMessageResponse>
     {
         private readonly MangoPostgresDbContext _postgresDbContext;

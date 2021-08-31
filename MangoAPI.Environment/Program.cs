@@ -1,8 +1,8 @@
-﻿namespace MangoAPI.Environment
-{
-    using System;
-    using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
+namespace MangoAPI.Environment
+{
     public static class Program
     {
         private static void Main()
@@ -26,12 +26,12 @@
 
             foreach (var item in dictionary)
             {
-                if (Environment.GetEnvironmentVariable(item.Key) != null)
+                if (System.Environment.GetEnvironmentVariable(item.Key) != null)
                 {
                     continue;
                 }
 
-                Environment.SetEnvironmentVariable(item.Key, item.Value, EnvironmentVariableTarget.User);
+                System.Environment.SetEnvironmentVariable(item.Key, item.Value, EnvironmentVariableTarget.User);
             }
         }
     }
