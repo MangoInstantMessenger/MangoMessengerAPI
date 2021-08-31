@@ -7,9 +7,9 @@ namespace MangoAPI.Domain.Entities
     {
         public string DisplayName { get; set; }
 
-        public string? Image { get; set; }
+        public string Image { get; set; }
 
-        public string? Bio { get; set; }
+        public string Bio { get; set; }
 
         public int? ConfirmationCode { get; set; }
 

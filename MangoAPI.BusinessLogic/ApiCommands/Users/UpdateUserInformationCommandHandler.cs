@@ -48,6 +48,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
             user.UserInformation.Twitter = request.Twitter ?? user.UserInformation.Twitter;
             user.UserInformation.Instagram = request.Instagram ?? user.UserInformation.Instagram;
             user.UserInformation.LinkedIn = request.LinkedIn ?? user.UserInformation.LinkedIn;
+            user.UserInformation.UpdatedAt = DateTime.UtcNow;
 
             _postgresDbContext.UserInformation.Update(user.UserInformation);
             await _postgresDbContext.SaveChangesAsync(cancellationToken);

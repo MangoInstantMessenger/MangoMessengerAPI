@@ -22,8 +22,14 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
             _userManager = userManager;
         }
 
-        public async Task<ChangePasswordResponse> Handle(ChangePasswordCommand request, CancellationToken cancellationToken)
+        public async Task<ChangePasswordResponse> Handle(ChangePasswordCommand request,
+            CancellationToken cancellationToken)
         {
+            if (request.CurrentPassword == request.NewPassword)
+            {
+                throw new BusinessException(ResponseMessageCodes.OldAndNewPasswordsAreSame);
+            }
+
             var user = await _postgresDbContext.Users.FindUserByIdAsync(request.UserId, cancellationToken);
 
             if (user is null)
@@ -37,7 +43,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
             {
                 throw new BusinessException(ResponseMessageCodes.InvalidCredentials);
             }
-            
+
             await _userManager.RemovePasswordAsync(user);
 
             var result = await _userManager.AddPasswordAsync(user, request.NewPassword);
@@ -46,7 +52,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
             {
                 throw new BusinessException(ResponseMessageCodes.WeakPassword);
             }
-            
+
             await _postgresDbContext.SaveChangesAsync(cancellationToken);
 
             return ChangePasswordResponse.SuccessResponse;

@@ -20,11 +20,8 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
         private readonly UserManager<UserEntity> _userManager;
         private readonly IJwtGenerator _jwtGenerator;
 
-        public RegisterCommandHandler(
-            UserManager<UserEntity> userManager,
-            MangoPostgresDbContext postgresDbContext,
-            IEmailSenderService emailSenderService,
-            IJwtGenerator jwtGenerator)
+        public RegisterCommandHandler(UserManager<UserEntity> userManager, MangoPostgresDbContext postgresDbContext,
+            IEmailSenderService emailSenderService, IJwtGenerator jwtGenerator)
         {
             _userManager = userManager;
             _postgresDbContext = postgresDbContext;
@@ -73,6 +70,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
             {
                 Id = Guid.NewGuid().ToString(),
                 UserId = newUser.Id,
+                CreatedAt = DateTime.UtcNow,
             };
 
             await _emailSenderService.SendVerificationEmailAsync(newUser, cancellationToken);
@@ -95,14 +93,14 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
 
             var jwtToken = _jwtGenerator.GenerateJwtToken(
                 newUser,
-                new List<string> { SeedDataConstants.UnverifiedRole });
+                new List<string> {SeedDataConstants.UnverifiedRole});
 
             await _postgresDbContext.UserRoles.AddAsync(
                 new IdentityUserRole<string>
-            {
-                UserId = newUser.Id,
-                RoleId = SeedDataConstants.UnverifiedRoleId,
-            }, cancellationToken);
+                {
+                    UserId = newUser.Id,
+                    RoleId = SeedDataConstants.UnverifiedRoleId,
+                }, cancellationToken);
 
             await _postgresDbContext.Sessions.AddAsync(newSession, cancellationToken);
             await _postgresDbContext.UserInformation.AddAsync(userInfo, cancellationToken);
