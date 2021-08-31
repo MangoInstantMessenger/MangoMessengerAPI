@@ -19,7 +19,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
 
             RuleFor(x => x.UserId)
                 .Must(x => Guid.TryParse(x, out _))
-                .WithMessage("Change Password: User Id can not be parsed.");
+                .WithMessage("User Id can not be parsed.");
         }
     }
 }

@@ -1,6 +1,4 @@
-﻿
-
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -27,7 +25,9 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Chats
 
             if (!string.IsNullOrEmpty(request.DisplayName) || !string.IsNullOrWhiteSpace(request.DisplayName))
             {
-                chats = await _postgresDbContext.Chats.SearchChatsByDisplayNameAsync(request.DisplayName, cancellationToken);
+                chats = chats
+                    .Where(x => x.Title.ToUpper().Contains(request.DisplayName.ToUpper()))
+                    .ToList();
             }
 
             var resultList = new List<Chat>();
@@ -44,15 +44,15 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Chats
                     Image = chat.Image,
                     Description = chat.Description,
                     LastMessage = chat.Messages.Any()
-                            ? chat.Messages.OrderBy(x => x.CreatedAt).Last().Content
-                            : null,
+                        ? chat.Messages.OrderBy(x => x.CreatedAt).Last().Content
+                        : null,
                     LastMessageAuthor = chat.Messages.Any()
-                            ? chat.Messages.OrderBy(x => x.CreatedAt).Last().User.DisplayName
-                            : null,
+                        ? chat.Messages.OrderBy(x => x.CreatedAt).Last().User.DisplayName
+                        : null,
                     LastMessageAt = chat.UpdatedAt?.ToShortTimeString() ?? (chat.Messages.Any()
                         ? chat.Messages.OrderBy(messageEntity => messageEntity.CreatedAt)
-                                                      .Last().CreatedAt
-                                                      .ToShortTimeString()
+                            .Last().CreatedAt
+                            .ToShortTimeString()
                         : null),
                     MembersCount = chat.MembersCount,
                     ChatType = chat.ChatType,
