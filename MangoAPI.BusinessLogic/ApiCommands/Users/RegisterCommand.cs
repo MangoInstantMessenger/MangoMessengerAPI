@@ -1,9 +1,10 @@
 ﻿using MangoAPI.BusinessLogic.Enums;
+using MangoAPI.BusinessLogic.Responses;
 using MediatR;
 
 namespace MangoAPI.BusinessLogic.ApiCommands.Users
 {
-    public record RegisterCommand : IRequest<RegisterResponse>
+    public record RegisterCommand : IRequest<TokensResponse>
     {
         public string PhoneNumber { get; init; }
         public string Email { get; init; }

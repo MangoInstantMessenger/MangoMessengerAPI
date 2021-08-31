@@ -40,7 +40,7 @@ namespace MangoAPI.Presentation.Controllers
         [AllowAnonymous]
         [SwaggerOperation(Summary =
             "Logins to the system. Returns pair of the access/refresh tokens. Does not requires authorization.")]
-        [ProducesResponseType(typeof(LoginResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(TokensResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
         public async Task<IActionResult> LoginAsync(
@@ -61,7 +61,7 @@ namespace MangoAPI.Presentation.Controllers
         [SwaggerOperation(Summary = "Refreshes current user's session. " +
                                     "Returns pair of the access/refresh tokens. " +
                                     "Requires valid refresh token.")]
-        [ProducesResponseType(typeof(RefreshSessionResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(TokensResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]

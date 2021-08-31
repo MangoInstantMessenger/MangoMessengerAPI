@@ -1,8 +1,9 @@
-﻿using MediatR;
+﻿using MangoAPI.BusinessLogic.Responses;
+using MediatR;
 
 namespace MangoAPI.BusinessLogic.ApiCommands.Sessions
 {
-    public record RefreshSessionCommand : IRequest<RefreshSessionResponse>
+    public record RefreshSessionCommand : IRequest<TokensResponse>
     {
         public string RefreshToken { get; init; }
     }

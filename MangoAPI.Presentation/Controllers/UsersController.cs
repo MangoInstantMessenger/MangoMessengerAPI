@@ -47,7 +47,7 @@ namespace MangoAPI.Presentation.Controllers
             "Does not require any authorization or users role. " +
             "After registration user receives pair of access/refresh tokens. " +
             "Access token claim role is Unverified. ")]
-        [ProducesResponseType(typeof(RegisterResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(TokensResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
         public async Task<IActionResult> RegisterAsync([FromBody] RegisterRequest request,

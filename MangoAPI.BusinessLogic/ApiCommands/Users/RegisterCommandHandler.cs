@@ -4,6 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using MangoAPI.Application.Interfaces;
 using MangoAPI.BusinessLogic.BusinessExceptions;
+using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.DataAccess.Database;
 using MangoAPI.DataAccess.Database.Extensions;
 using MangoAPI.Domain.Constants;
@@ -13,7 +14,7 @@ using Microsoft.AspNetCore.Identity;
 
 namespace MangoAPI.BusinessLogic.ApiCommands.Users
 {
-    public class RegisterCommandHandler : IRequestHandler<RegisterCommand, RegisterResponse>
+    public class RegisterCommandHandler : IRequestHandler<RegisterCommand, TokensResponse>
     {
         private readonly IEmailSenderService _emailSenderService;
         private readonly MangoPostgresDbContext _postgresDbContext;
@@ -29,7 +30,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
             _jwtGenerator = jwtGenerator;
         }
 
-        public async Task<RegisterResponse> Handle(RegisterCommand request, CancellationToken cancellationToken)
+        public async Task<TokensResponse> Handle(RegisterCommand request, CancellationToken cancellationToken)
         {
             if (request.Email == EnvironmentConstants.EmailSenderAddress)
             {
@@ -106,7 +107,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
             await _postgresDbContext.UserInformation.AddAsync(userInfo, cancellationToken);
             await _postgresDbContext.SaveChangesAsync(cancellationToken);
 
-            return RegisterResponse.FromSuccess(jwtToken, newSession.RefreshToken);
+            return TokensResponse.FromSuccess(jwtToken, newSession.RefreshToken);
         }
     }
 }

@@ -1,6 +1,4 @@
-﻿// ReSharper disable RedundantNameQualifier
-
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 using MangoAPI.BusinessLogic.ApiCommands.Sessions;
 using Microsoft.AspNetCore.Mvc;

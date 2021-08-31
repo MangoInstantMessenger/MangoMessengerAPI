@@ -4,6 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using MangoAPI.Application.Interfaces;
 using MangoAPI.BusinessLogic.BusinessExceptions;
+using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.DataAccess.Database;
 using MangoAPI.DataAccess.Database.Extensions;
 using MangoAPI.Domain.Constants;
@@ -13,7 +14,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace MangoAPI.BusinessLogic.ApiCommands.Sessions
 {
-    public class RefreshSessionCommandHandler : IRequestHandler<RefreshSessionCommand, RefreshSessionResponse>
+    public class RefreshSessionCommandHandler : IRequestHandler<RefreshSessionCommand, TokensResponse>
     {
         private readonly IJwtGenerator _jwtGenerator;
         private readonly MangoPostgresDbContext _postgresDbContext;
@@ -24,9 +25,11 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Sessions
             _jwtGenerator = jwtGenerator;
         }
 
-        public async Task<RefreshSessionResponse> Handle(RefreshSessionCommand request, CancellationToken cancellationToken)
+        public async Task<TokensResponse> Handle(RefreshSessionCommand request, CancellationToken cancellationToken)
         {
-            var session = await _postgresDbContext.Sessions.GetSessionByRefreshTokenAsync(request.RefreshToken, cancellationToken);
+            var session =
+                await _postgresDbContext.Sessions.GetSessionByRefreshTokenAsync(request.RefreshToken,
+                    cancellationToken);
 
             if (session is null || session.IsExpired)
             {
@@ -81,7 +84,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Sessions
             await _postgresDbContext.Sessions.AddAsync(newSession, cancellationToken);
             await _postgresDbContext.SaveChangesAsync(cancellationToken);
 
-            return RefreshSessionResponse.FromSuccess(jwtToken, newSession.RefreshToken);
+            return TokensResponse.FromSuccess(jwtToken, newSession.RefreshToken);
         }
     }
 }
