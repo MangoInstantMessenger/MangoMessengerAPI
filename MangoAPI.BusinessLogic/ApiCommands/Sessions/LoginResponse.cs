@@ -1,8 +1,8 @@
-﻿namespace MangoAPI.BusinessLogic.ApiCommands.Sessions
-{
-    using Responses;
-    using Domain.Constants;
+﻿using MangoAPI.BusinessLogic.Responses;
+using MangoAPI.Domain.Constants;
 
+namespace MangoAPI.BusinessLogic.ApiCommands.Sessions
+{
     public record LoginResponse : ResponseBase<LoginResponse>
     {
         public string AccessToken { get; init; }

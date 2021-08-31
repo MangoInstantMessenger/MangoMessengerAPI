@@ -1,7 +1,7 @@
+using MediatR;
+
 namespace MangoAPI.BusinessLogic.ApiCommands.Users
 {
-    using MediatR;
-
     public class UpdateUserInformationCommand : IRequest<UpdateUserInformationResponse>
     {
         public string UserId { get; init; }

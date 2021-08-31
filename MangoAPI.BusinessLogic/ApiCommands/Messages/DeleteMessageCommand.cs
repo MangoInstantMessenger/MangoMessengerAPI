@@ -1,7 +1,7 @@
-﻿namespace MangoAPI.BusinessLogic.ApiCommands.Messages
-{
-    using MediatR;
+﻿using MediatR;
 
+namespace MangoAPI.BusinessLogic.ApiCommands.Messages
+{
     public record DeleteMessageCommand : IRequest<DeleteMessageResponse>
     {
         public string MessageId { get; init; }

@@ -1,7 +1,7 @@
-﻿namespace MangoAPI.BusinessLogic.ApiCommands.Users
-{
-    using System.Text.Json.Serialization;
+﻿using System.Text.Json.Serialization;
 
+namespace MangoAPI.BusinessLogic.ApiCommands.Users
+{
     public record VerifyEmailRequest
     {
         [JsonConstructor]

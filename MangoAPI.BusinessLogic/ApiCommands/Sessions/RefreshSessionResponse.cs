@@ -1,8 +1,8 @@
+using MangoAPI.BusinessLogic.Responses;
+using MangoAPI.Domain.Constants;
+
 namespace MangoAPI.BusinessLogic.ApiCommands.Sessions
 {
-    using Responses;
-    using Domain.Constants;
-
     public record RefreshSessionResponse : AuthResponseBase<RefreshSessionResponse>
     {
         public string AccessToken { get; init; }

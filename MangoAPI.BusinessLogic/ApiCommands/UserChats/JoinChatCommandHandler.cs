@@ -1,17 +1,15 @@
-﻿using MangoAPI.DataAccess.Database.Extensions;
+﻿using System.Threading;
+using System.Threading.Tasks;
+using MangoAPI.BusinessLogic.BusinessExceptions;
+using MangoAPI.DataAccess.Database;
+using MangoAPI.DataAccess.Database.Extensions;
+using MangoAPI.Domain.Constants;
+using MangoAPI.Domain.Entities;
+using MangoAPI.Domain.Enums;
+using MediatR;
 
 namespace MangoAPI.BusinessLogic.ApiCommands.UserChats
 {
-    using System.Threading;
-    using System.Threading.Tasks;
-    using BusinessExceptions;
-    using DataAccess.Database;
-    using Domain.Constants;
-    using Domain.Entities;
-    using MangoAPI.Domain.Enums;
-    using MediatR;
-    using Microsoft.EntityFrameworkCore;
-
     public class JoinChatCommandHandler : IRequestHandler<JoinChatCommand, JoinChatResponse>
     {
         private readonly MangoPostgresDbContext _postgresDbContext;

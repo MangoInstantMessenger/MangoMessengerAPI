@@ -1,14 +1,14 @@
-﻿namespace MangoAPI.Tests.ApiQueriesTests.Chats
-{
-    using System;
-    using System.Threading;
-    using System.Threading.Tasks;
-    using FluentAssertions;
-    using MangoAPI.BusinessLogic.ApiQueries.Chats;
-    using BusinessLogic.BusinessExceptions;
-    using Domain.Constants;
-    using NUnit.Framework;
+﻿using System;
+using System.Threading;
+using System.Threading.Tasks;
+using FluentAssertions;
+using MangoAPI.BusinessLogic.ApiQueries.Chats;
+using MangoAPI.BusinessLogic.BusinessExceptions;
+using MangoAPI.Domain.Constants;
+using NUnit.Framework;
 
+namespace MangoAPI.Tests.ApiQueriesTests.Chats
+{
     [TestFixture]
     public class GetCurrentUserChatsQueryHandlerTest
     {

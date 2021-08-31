@@ -1,6 +1,6 @@
-﻿namespace MangoAPI.BusinessLogic.ApiCommands.Messages
-{
-    using Responses;
+﻿using MangoAPI.BusinessLogic.Responses;
 
+namespace MangoAPI.BusinessLogic.ApiCommands.Messages
+{
     public record EditMessageResponse : MessageResponseBase<EditMessageResponse>;
 }

@@ -1,7 +1,7 @@
-﻿namespace MangoAPI.Domain.Entities
-{
-    using Enums;
+﻿using MangoAPI.Domain.Enums;
 
+namespace MangoAPI.Domain.Entities
+{
     public sealed class UserChatEntity
     {
         public string UserId { get; set; }

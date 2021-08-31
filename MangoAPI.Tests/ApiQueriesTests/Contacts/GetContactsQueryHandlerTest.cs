@@ -1,14 +1,14 @@
-﻿namespace MangoAPI.Tests.ApiQueriesTests.Contacts
-{
-    using System;
-    using System.Threading;
-    using System.Threading.Tasks;
-    using FluentAssertions;
-    using MangoAPI.BusinessLogic.ApiQueries.Contacts;
-    using BusinessLogic.BusinessExceptions;
-    using Domain.Constants;
-    using NUnit.Framework;
+﻿using System;
+using System.Threading;
+using System.Threading.Tasks;
+using FluentAssertions;
+using MangoAPI.BusinessLogic.ApiQueries.Contacts;
+using MangoAPI.BusinessLogic.BusinessExceptions;
+using MangoAPI.Domain.Constants;
+using NUnit.Framework;
 
+namespace MangoAPI.Tests.ApiQueriesTests.Contacts
+{
     [TestFixture]
     public class GetContactsQueryHandlerTest
     {

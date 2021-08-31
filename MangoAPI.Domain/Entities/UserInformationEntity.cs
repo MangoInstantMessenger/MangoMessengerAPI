@@ -1,8 +1,8 @@
-﻿namespace MangoAPI.Domain.Entities
-{
-    using System;
+﻿using System;
 
-    public class UserInformationEntity
+namespace MangoAPI.Domain.Entities
+{
+    public sealed class UserInformationEntity
     {
         public string Id { get; set; }
 
@@ -32,6 +32,6 @@
 
         public DateTime? UpdatedAt { get; set; }
 
-        public virtual UserEntity User { get; set; }
+        public UserEntity User { get; set; }
     }
 }

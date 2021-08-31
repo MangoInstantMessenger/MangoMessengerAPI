@@ -1,15 +1,15 @@
-﻿namespace MangoAPI.BusinessLogic.ApiCommands.Users
-{
-    using System.Threading;
-    using System.Threading.Tasks;
-    using BusinessExceptions;
-    using DataAccess.Database;
-    using DataAccess.Database.Extensions;
-    using Domain.Constants;
-    using Domain.Entities;
-    using MediatR;
-    using Microsoft.AspNetCore.Identity;
+﻿using System.Threading;
+using System.Threading.Tasks;
+using MangoAPI.BusinessLogic.BusinessExceptions;
+using MangoAPI.DataAccess.Database;
+using MangoAPI.DataAccess.Database.Extensions;
+using MangoAPI.Domain.Constants;
+using MangoAPI.Domain.Entities;
+using MediatR;
+using Microsoft.AspNetCore.Identity;
 
+namespace MangoAPI.BusinessLogic.ApiCommands.Users
+{
     public class ChangePasswordCommandHandler : IRequestHandler<ChangePasswordCommand, ChangePasswordResponse>
     {
         private readonly MangoPostgresDbContext _postgresDbContext;

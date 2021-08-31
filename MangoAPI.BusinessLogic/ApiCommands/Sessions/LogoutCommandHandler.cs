@@ -1,15 +1,13 @@
-﻿using MangoAPI.DataAccess.Database.Extensions;
+﻿using System.Threading;
+using System.Threading.Tasks;
+using MangoAPI.BusinessLogic.BusinessExceptions;
+using MangoAPI.DataAccess.Database;
+using MangoAPI.DataAccess.Database.Extensions;
+using MangoAPI.Domain.Constants;
+using MediatR;
 
 namespace MangoAPI.BusinessLogic.ApiCommands.Sessions
 {
-    using System.Threading;
-    using System.Threading.Tasks;
-    using BusinessExceptions;
-    using DataAccess.Database;
-    using Domain.Constants;
-    using MediatR;
-    using Microsoft.EntityFrameworkCore;
-
     public class LogoutCommandHandler : IRequestHandler<LogoutCommand, LogoutResponse>
     {
         private readonly MangoPostgresDbContext _postgresDbContext;

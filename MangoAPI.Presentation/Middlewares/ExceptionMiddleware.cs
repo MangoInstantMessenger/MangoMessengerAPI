@@ -1,13 +1,13 @@
-﻿namespace MangoAPI.Presentation.Middlewares
-{
-    using System;
-    using System.Net;
-    using System.Threading.Tasks;
-    using FluentValidation;
-    using BusinessLogic.BusinessExceptions;
-    using BusinessLogic.Responses;
-    using Microsoft.AspNetCore.Http;
+﻿using System;
+using System.Net;
+using System.Threading.Tasks;
+using FluentValidation;
+using MangoAPI.BusinessLogic.BusinessExceptions;
+using MangoAPI.BusinessLogic.Responses;
+using Microsoft.AspNetCore.Http;
 
+namespace MangoAPI.Presentation.Middlewares
+{
     public class ExceptionMiddleware
     {
         private readonly RequestDelegate _next;

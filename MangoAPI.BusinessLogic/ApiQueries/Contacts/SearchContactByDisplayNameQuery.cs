@@ -1,7 +1,7 @@
-﻿namespace MangoAPI.BusinessLogic.ApiQueries.Contacts
-{
-    using MediatR;
+﻿using MediatR;
 
+namespace MangoAPI.BusinessLogic.ApiQueries.Contacts
+{
     public record SearchContactByDisplayNameQuery : IRequest<SearchContactByDisplayNameResponse>
     {
         public string UserId { get; set; }

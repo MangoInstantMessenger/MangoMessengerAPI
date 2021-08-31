@@ -1,8 +1,8 @@
-﻿namespace MangoAPI.BusinessLogic.ApiCommands.Users
-{
-    using System;
-    using FluentValidation;
+﻿using System;
+using FluentValidation;
 
+namespace MangoAPI.BusinessLogic.ApiCommands.Users
+{
     public class VerifyEmailCommandValidator : AbstractValidator<VerifyEmailCommand>
     {
         public VerifyEmailCommandValidator()

@@ -1,7 +1,7 @@
-﻿namespace MangoAPI.BusinessLogic.ApiCommands.Chats
-{
-    using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 
+namespace MangoAPI.BusinessLogic.ApiCommands.Chats
+{
     public record CreateDirectChatRequest
     {
         [JsonConstructor]

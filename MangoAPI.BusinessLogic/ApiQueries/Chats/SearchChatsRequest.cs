@@ -1,7 +1,7 @@
-﻿namespace MangoAPI.BusinessLogic.ApiQueries.Chats
-{
-    using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 
+namespace MangoAPI.BusinessLogic.ApiQueries.Chats
+{
     public record SearchChatsRequest
     {
         [JsonConstructor]

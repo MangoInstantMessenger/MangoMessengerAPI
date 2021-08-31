@@ -1,11 +1,10 @@
-﻿using MangoAPI.DataAccess.Database;
-using MediatR;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
 using MangoAPI.BusinessLogic.BusinessExceptions;
+using MangoAPI.DataAccess.Database;
 using MangoAPI.DataAccess.Database.Extensions;
 using MangoAPI.Domain.Constants;
+using MediatR;
 
 namespace MangoAPI.BusinessLogic.ApiCommands.UserChats
 {

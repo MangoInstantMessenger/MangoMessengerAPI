@@ -1,8 +1,8 @@
-﻿namespace MangoAPI.BusinessLogic.ApiQueries.Contacts
-{
-    using System;
-    using FluentValidation;
+﻿using System;
+using FluentValidation;
 
+namespace MangoAPI.BusinessLogic.ApiQueries.Contacts
+{
     public class GetContactsQueryValidator : AbstractValidator<GetContactsQuery>
     {
         public GetContactsQueryValidator()

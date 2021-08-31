@@ -1,7 +1,7 @@
-﻿namespace MangoAPI.BusinessLogic.Responses
-{
-    using System.Text.Json;
+﻿using System.Text.Json;
 
+namespace MangoAPI.BusinessLogic.Responses
+{
     public record ErrorResponse
     {
         public string ErrorMessage { get; init; }

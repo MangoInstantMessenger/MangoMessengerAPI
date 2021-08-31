@@ -1,7 +1,7 @@
-﻿namespace MangoAPI.BusinessLogic.Responses
-{
-    using Domain.Constants;
+﻿using MangoAPI.Domain.Constants;
 
+namespace MangoAPI.BusinessLogic.Responses
+{
     public abstract record ResponseBase
     {
         public string Message { get; init; }

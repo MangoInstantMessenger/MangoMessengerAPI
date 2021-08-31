@@ -1,14 +1,14 @@
+using System;
+using System.Threading;
+using System.Threading.Tasks;
+using MangoAPI.BusinessLogic.BusinessExceptions;
+using MangoAPI.DataAccess.Database;
+using MangoAPI.DataAccess.Database.Extensions;
+using MangoAPI.Domain.Constants;
+using MediatR;
+
 namespace MangoAPI.BusinessLogic.ApiCommands.Users
 {
-    using System;
-    using System.Threading;
-    using System.Threading.Tasks;
-    using BusinessExceptions;
-    using DataAccess.Database;
-    using DataAccess.Database.Extensions;
-    using Domain.Constants;
-    using MediatR;
-
     public class UpdateUserInformationCommandHandler : IRequestHandler<UpdateUserInformationCommand,
         UpdateUserInformationResponse>
     {

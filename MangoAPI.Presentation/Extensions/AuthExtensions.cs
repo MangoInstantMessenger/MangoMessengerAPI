@@ -1,12 +1,12 @@
-﻿namespace MangoAPI.Presentation.Extensions
-{
-    using System.Text;
-    using Domain.Constants;
-    using Microsoft.AspNetCore.Authentication.JwtBearer;
-    using Microsoft.AspNetCore.Authorization;
-    using Microsoft.Extensions.DependencyInjection;
-    using Microsoft.IdentityModel.Tokens;
+﻿using System.Text;
+using MangoAPI.Domain.Constants;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Tokens;
 
+namespace MangoAPI.Presentation.Extensions
+{
     public static class AuthExtensions
     {
         public static IServiceCollection AddAppAuthorization(this IServiceCollection services)

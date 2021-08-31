@@ -1,13 +1,13 @@
-﻿namespace MangoAPI.BusinessLogic.ApiQueries.Users
-{
-    using System.Threading;
-    using System.Threading.Tasks;
-    using BusinessExceptions;
-    using DataAccess.Database;
-    using DataAccess.Database.Extensions;
-    using Domain.Constants;
-    using MediatR;
+﻿using System.Threading;
+using System.Threading.Tasks;
+using MangoAPI.BusinessLogic.BusinessExceptions;
+using MangoAPI.DataAccess.Database;
+using MangoAPI.DataAccess.Database.Extensions;
+using MangoAPI.Domain.Constants;
+using MediatR;
 
+namespace MangoAPI.BusinessLogic.ApiQueries.Users
+{
     public class GetUserQueryHandler : IRequestHandler<GetUserQuery, GetUserResponse>
     {
         private readonly MangoPostgresDbContext _postgresDbContext;

@@ -1,14 +1,14 @@
-﻿namespace MangoAPI.Tests.ApiQueriesTests.Messages
-{
-    using System;
-    using System.Threading;
-    using System.Threading.Tasks;
-    using FluentAssertions;
-    using MangoAPI.BusinessLogic.ApiQueries.Messages;
-    using BusinessLogic.BusinessExceptions;
-    using Domain.Constants;
-    using NUnit.Framework;
+﻿using System;
+using System.Threading;
+using System.Threading.Tasks;
+using FluentAssertions;
+using MangoAPI.BusinessLogic.ApiQueries.Messages;
+using MangoAPI.BusinessLogic.BusinessExceptions;
+using MangoAPI.Domain.Constants;
+using NUnit.Framework;
 
+namespace MangoAPI.Tests.ApiQueriesTests.Messages
+{
     [TestFixture]
     public class GetMessagesQueryHandlerTest
     {

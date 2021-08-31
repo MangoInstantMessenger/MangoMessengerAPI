@@ -1,10 +1,10 @@
-﻿namespace MangoAPI.Presentation.Extensions
-{
-    using DataAccess.Database;
-    using Domain.Entities;
-    using Microsoft.AspNetCore.Identity;
-    using Microsoft.Extensions.DependencyInjection;
+﻿using MangoAPI.DataAccess.Database;
+using MangoAPI.Domain.Entities;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.DependencyInjection;
 
+namespace MangoAPI.Presentation.Extensions
+{
     public static class IdentityExtensions
     {
         public static IServiceCollection AddIdentityUsers(this IServiceCollection services)

@@ -1,8 +1,8 @@
-﻿namespace MangoAPI.BusinessLogic.ApiCommands.Users
-{
-    using Responses;
-    using Domain.Constants;
+﻿using MangoAPI.BusinessLogic.Responses;
+using MangoAPI.Domain.Constants;
 
+namespace MangoAPI.BusinessLogic.ApiCommands.Users
+{
     public record RegisterResponse : AuthResponseBase<RegisterResponse>
     {
         public string AccessToken { get; init; }

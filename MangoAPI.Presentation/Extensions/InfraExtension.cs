@@ -1,11 +1,11 @@
-﻿namespace MangoAPI.Presentation.Extensions
-{
-    using FluentValidation;
-    using BusinessLogic.ApiCommands.Sessions;
-    using BusinessLogic.Pipelines;
-    using MediatR;
-    using Microsoft.Extensions.DependencyInjection;
+﻿using FluentValidation;
+using MangoAPI.BusinessLogic.ApiCommands.Sessions;
+using MangoAPI.BusinessLogic.Pipelines;
+using MediatR;
+using Microsoft.Extensions.DependencyInjection;
 
+namespace MangoAPI.Presentation.Extensions
+{
     public static class InfraExtension
     {
         public static IServiceCollection AddAppInfrastructure(this IServiceCollection services)

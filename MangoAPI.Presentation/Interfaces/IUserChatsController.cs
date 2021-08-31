@@ -1,10 +1,10 @@
-﻿namespace MangoAPI.Presentation.Interfaces
-{
-    using System.Threading;
-    using System.Threading.Tasks;
-    using BusinessLogic.ApiCommands.UserChats;
-    using Microsoft.AspNetCore.Mvc;
+﻿using System.Threading;
+using System.Threading.Tasks;
+using MangoAPI.BusinessLogic.ApiCommands.UserChats;
+using Microsoft.AspNetCore.Mvc;
 
+namespace MangoAPI.Presentation.Interfaces
+{
     public interface IUserChatsController
     {
         Task<IActionResult> JoinChatAsync(string chatId, CancellationToken cancellationToken);

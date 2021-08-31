@@ -1,7 +1,7 @@
-﻿namespace MangoAPI.Domain.Constants
-{
-    using System;
+﻿using System;
 
+namespace MangoAPI.Domain.Constants
+{
     public static class EnvironmentConstants
     {
         public static string MangoTokenKey => Environment.GetEnvironmentVariable("MANGO_TOKEN_KEY");

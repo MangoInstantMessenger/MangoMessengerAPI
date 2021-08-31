@@ -1,7 +1,7 @@
-﻿namespace MangoAPI.BusinessLogic.ApiCommands.Users
-{
-    using MediatR;
+﻿using MediatR;
 
+namespace MangoAPI.BusinessLogic.ApiCommands.Users
+{
     public record ChangePasswordCommand : IRequest<ChangePasswordResponse>
     {
         public string UserId { get; set; }

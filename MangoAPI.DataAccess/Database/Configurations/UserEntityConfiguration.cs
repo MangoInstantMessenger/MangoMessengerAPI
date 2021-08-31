@@ -1,12 +1,12 @@
-﻿namespace MangoAPI.DataAccess.Database.Configurations
-{
-    using System;
-    using Application.Services;
-    using Domain.Constants;
-    using Domain.Entities;
-    using Microsoft.EntityFrameworkCore;
-    using Microsoft.EntityFrameworkCore.Metadata.Builders;
+﻿using System;
+using MangoAPI.Application.Services;
+using MangoAPI.Domain.Constants;
+using MangoAPI.Domain.Entities;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
+namespace MangoAPI.DataAccess.Database.Configurations
+{
     public class UserEntityConfiguration : IEntityTypeConfiguration<UserEntity>
     {
         public void Configure(EntityTypeBuilder<UserEntity> builder)

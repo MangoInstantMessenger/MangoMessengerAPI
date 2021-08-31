@@ -1,8 +1,8 @@
-﻿namespace MangoAPI.BusinessLogic.ApiCommands.Users
-{
-    using Enums;
-    using MediatR;
+﻿using MangoAPI.BusinessLogic.Enums;
+using MediatR;
 
+namespace MangoAPI.BusinessLogic.ApiCommands.Users
+{
     public record RegisterCommand : IRequest<RegisterResponse>
     {
         public string PhoneNumber { get; init; }

@@ -1,19 +1,19 @@
-﻿namespace MangoAPI.Presentation.Controllers
-{
-    using System.Threading;
-    using System.Threading.Tasks;
-    using BusinessLogic.ApiCommands.Messages;
-    using BusinessLogic.ApiQueries.Messages;
-    using BusinessLogic.Responses;
-    using Extensions;
-    using Interfaces;
-    using MediatR;
-    using Microsoft.AspNetCore.Authentication.JwtBearer;
-    using Microsoft.AspNetCore.Authorization;
-    using Microsoft.AspNetCore.Http;
-    using Microsoft.AspNetCore.Mvc;
-    using Swashbuckle.AspNetCore.Annotations;
+﻿using System.Threading;
+using System.Threading.Tasks;
+using MangoAPI.BusinessLogic.ApiCommands.Messages;
+using MangoAPI.BusinessLogic.ApiQueries.Messages;
+using MangoAPI.BusinessLogic.Responses;
+using MangoAPI.Presentation.Extensions;
+using MangoAPI.Presentation.Interfaces;
+using MediatR;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Swashbuckle.AspNetCore.Annotations;
 
+namespace MangoAPI.Presentation.Controllers
+{
     /// <summary>
     /// Controller responsible for Messages Entity.
     /// </summary>

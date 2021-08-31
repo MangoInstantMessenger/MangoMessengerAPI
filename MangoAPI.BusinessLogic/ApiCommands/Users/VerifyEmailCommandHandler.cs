@@ -1,14 +1,14 @@
-﻿namespace MangoAPI.BusinessLogic.ApiCommands.Users
-{
-    using System.Threading;
-    using System.Threading.Tasks;
-    using BusinessExceptions;
-    using DataAccess.Database;
-    using DataAccess.Database.Extensions;
-    using Domain.Constants;
-    using MediatR;
-    using Microsoft.AspNetCore.Identity;
+﻿using System.Threading;
+using System.Threading.Tasks;
+using MangoAPI.BusinessLogic.BusinessExceptions;
+using MangoAPI.DataAccess.Database;
+using MangoAPI.DataAccess.Database.Extensions;
+using MangoAPI.Domain.Constants;
+using MediatR;
+using Microsoft.AspNetCore.Identity;
 
+namespace MangoAPI.BusinessLogic.ApiCommands.Users
+{
     public class VerifyEmailCommandHandler : IRequestHandler<VerifyEmailCommand, VerifyEmailResponse>
     {
         private readonly MangoPostgresDbContext _postgresDbContext;

@@ -1,10 +1,10 @@
-﻿namespace MangoAPI.DataAccess.Database.Configurations
-{
-    using Domain.Constants;
-    using Microsoft.AspNetCore.Identity;
-    using Microsoft.EntityFrameworkCore;
-    using Microsoft.EntityFrameworkCore.Metadata.Builders;
+﻿using MangoAPI.Domain.Constants;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
+namespace MangoAPI.DataAccess.Database.Configurations
+{
     public class IdentityRolesConfiguration : IEntityTypeConfiguration<IdentityRole>
     {
         public void Configure(EntityTypeBuilder<IdentityRole> builder)

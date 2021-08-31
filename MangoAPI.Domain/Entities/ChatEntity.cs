@@ -1,9 +1,9 @@
-﻿namespace MangoAPI.Domain.Entities
-{
-    using Enums;
-    using System;
-    using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using MangoAPI.Domain.Enums;
 
+namespace MangoAPI.Domain.Entities
+{
     public sealed class ChatEntity
     {
         public string Id { get; set; }

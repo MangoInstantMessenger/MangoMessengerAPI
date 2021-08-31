@@ -1,10 +1,10 @@
-﻿namespace MangoAPI.Presentation.Interfaces
-{
-    using BusinessLogic.ApiCommands.Users;
-    using Microsoft.AspNetCore.Mvc;
-    using System.Threading;
-    using System.Threading.Tasks;
+﻿using System.Threading;
+using System.Threading.Tasks;
+using MangoAPI.BusinessLogic.ApiCommands.Users;
+using Microsoft.AspNetCore.Mvc;
 
+namespace MangoAPI.Presentation.Interfaces
+{
     public interface IUsersController
     {
         Task<IActionResult> RegisterAsync(RegisterRequest request, CancellationToken cancellationToken);

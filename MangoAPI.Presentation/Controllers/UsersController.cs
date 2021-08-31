@@ -1,20 +1,19 @@
-﻿namespace MangoAPI.Presentation.Controllers
-{
-    using BusinessLogic.ApiCommands.Users;
-    using BusinessLogic.ApiQueries.Users;
-    using BusinessLogic.Responses;
-    using Extensions;
-    using Interfaces;
-    using MangoAPI.BusinessLogic.ApiQueries.Contacts;
-    using MediatR;
-    using Microsoft.AspNetCore.Authentication.JwtBearer;
-    using Microsoft.AspNetCore.Authorization;
-    using Microsoft.AspNetCore.Http;
-    using Microsoft.AspNetCore.Mvc;
-    using Swashbuckle.AspNetCore.Annotations;
-    using System.Threading;
-    using System.Threading.Tasks;
+﻿using System.Threading;
+using System.Threading.Tasks;
+using MangoAPI.BusinessLogic.ApiCommands.Users;
+using MangoAPI.BusinessLogic.ApiQueries.Users;
+using MangoAPI.BusinessLogic.Responses;
+using MangoAPI.Presentation.Extensions;
+using MangoAPI.Presentation.Interfaces;
+using MediatR;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Swashbuckle.AspNetCore.Annotations;
 
+namespace MangoAPI.Presentation.Controllers
+{
     /// <summary>
     /// Controller responsible for User Entity.
     /// </summary>

@@ -1,18 +1,15 @@
-﻿using MangoAPI.DataAccess.Database.Extensions;
+﻿using System;
+using System.Threading;
+using System.Threading.Tasks;
+using MangoAPI.BusinessLogic.BusinessExceptions;
+using MangoAPI.DataAccess.Database;
+using MangoAPI.DataAccess.Database.Extensions;
+using MangoAPI.Domain.Constants;
+using MangoAPI.Domain.Entities;
+using MediatR;
 
 namespace MangoAPI.BusinessLogic.ApiCommands.Contacts
 {
-    using System;
-    using System.Linq;
-    using System.Threading;
-    using System.Threading.Tasks;
-    using BusinessExceptions;
-    using DataAccess.Database;
-    using Domain.Constants;
-    using Domain.Entities;
-    using MediatR;
-    using Microsoft.EntityFrameworkCore;
-
     public class AddContactCommandHandler : IRequestHandler<AddContactCommand, AddContactResponse>
     {
         private readonly MangoPostgresDbContext _postgresDbContext;
