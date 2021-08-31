@@ -33,6 +33,7 @@ namespace MangoAPI.Tests
         {
             PostgresDbContext.Database.EnsureDeleted();
             PostgresDbContext.Dispose();
+            GC.SuppressFinalize(this);
         }
 
         private void SeedUsers()
@@ -80,7 +81,7 @@ namespace MangoAPI.Tests
 
     internal static class SeedData
     {
-        public static List<UserEntity> Users => new ()
+        public static List<UserEntity> Users => new()
         {
             new UserEntity
             {
@@ -110,7 +111,7 @@ namespace MangoAPI.Tests
             },
         };
 
-        public static List<UserInformationEntity> UserInfo => new ()
+        public static List<UserInformationEntity> UserInfo => new()
         {
             new UserInformationEntity
             {
@@ -140,7 +141,7 @@ namespace MangoAPI.Tests
             },
         };
 
-        public static List<SessionEntity> UserSessions => new ()
+        public static List<SessionEntity> UserSessions => new()
         {
             new SessionEntity
             {
@@ -160,7 +161,7 @@ namespace MangoAPI.Tests
             },
         };
 
-        public static List<ChatEntity> Chats => new ()
+        public static List<ChatEntity> Chats => new()
         {
             new ChatEntity
             {
@@ -194,7 +195,7 @@ namespace MangoAPI.Tests
             }
         };
 
-        public static List<UserChatEntity> UserChats => new ()
+        public static List<UserChatEntity> UserChats => new()
         {
             new UserChatEntity
             {
@@ -222,7 +223,7 @@ namespace MangoAPI.Tests
             },
         };
 
-        public static List<MessageEntity> Messages => new ()
+        public static List<MessageEntity> Messages => new()
         {
             new MessageEntity
             {
@@ -254,7 +255,7 @@ namespace MangoAPI.Tests
             },
         };
 
-        public static List<UserContactEntity> Contacts => new ()
+        public static List<UserContactEntity> Contacts => new()
         {
             new UserContactEntity
             {

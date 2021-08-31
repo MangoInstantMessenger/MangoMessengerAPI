@@ -297,6 +297,9 @@ paket-files/
 .idea/
 *.sln.iml
 
+# SonarQube
+.sonarqube/
+
 # CodeRush personal settings
 .cr/personal
 

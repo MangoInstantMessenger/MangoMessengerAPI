@@ -20,6 +20,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
         private readonly MangoPostgresDbContext _postgresDbContext;
         private readonly UserManager<UserEntity> _userManager;
         private readonly IJwtGenerator _jwtGenerator;
+        private readonly Random _random;
 
         public RegisterCommandHandler(UserManager<UserEntity> userManager, MangoPostgresDbContext postgresDbContext,
             IEmailSenderService emailSenderService, IJwtGenerator jwtGenerator)
@@ -28,6 +29,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
             _postgresDbContext = postgresDbContext;
             _emailSenderService = emailSenderService;
             _jwtGenerator = jwtGenerator;
+            _random = new Random();
         }
 
         public async Task<TokensResponse> Handle(RegisterCommand request, CancellationToken cancellationToken)
@@ -57,7 +59,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
                 DisplayName = request.DisplayName,
                 UserName = Guid.NewGuid().ToString(),
                 Email = request.Email,
-                ConfirmationCode = new Random().Next(100000, 999999),
+                ConfirmationCode = _random.Next(100000, 999999),
             };
 
             var result = await _userManager.CreateAsync(newUser, request.Password);

@@ -3,13 +3,14 @@ using System.Threading;
 using System.Threading.Tasks;
 using MangoAPI.BusinessLogic.Models;
 using MangoAPI.DataAccess.Database;
-using MangoAPI.DataAccess.Database.Extensions;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
 namespace MangoAPI.BusinessLogic.ApiQueries.Contacts
 {
-    public class SearchContactByDisplayNameQueryHandler : IRequestHandler<SearchContactByDisplayNameQuery, SearchContactByDisplayNameResponse>
+    public class
+        SearchContactByDisplayNameQueryHandler : IRequestHandler<SearchContactByDisplayNameQuery,
+            SearchContactByDisplayNameResponse>
     {
         private readonly MangoPostgresDbContext _postgresDbContext;
 
@@ -18,10 +19,9 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Contacts
             _postgresDbContext = postgresDbContext;
         }
 
-        public async Task<SearchContactByDisplayNameResponse> Handle(SearchContactByDisplayNameQuery request, CancellationToken cancellationToken)
+        public async Task<SearchContactByDisplayNameResponse> Handle(SearchContactByDisplayNameQuery request,
+            CancellationToken cancellationToken)
         {
-            // TODO: optimize this part, goes two requests to DB.
-
             var users = await _postgresDbContext.Users
                 .AsNoTracking()
                 .Include(x => x.UserInformation)
@@ -29,7 +29,8 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Contacts
 
             if (!string.IsNullOrEmpty(request.DisplayName) || !string.IsNullOrWhiteSpace(request.DisplayName))
             {
-                users = await _postgresDbContext.Users.SearchUsersByDisplayNameAsync(request.DisplayName, cancellationToken);
+                users = users.Where(x => x.DisplayName.ToUpper().Contains(request.DisplayName.ToUpper()))
+                    .ToList();
             }
 
             var contacts = users.Select(x => new Contact
