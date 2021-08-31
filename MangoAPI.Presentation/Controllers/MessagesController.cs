@@ -78,7 +78,7 @@ namespace MangoAPI.Presentation.Controllers
         /// <returns>Possible codes: 200, 400, 409.</returns>
         [HttpPut]
         [SwaggerOperation(Summary = "Updates particular message. Requires role: User.")]
-        [ProducesResponseType(typeof(EditMessageResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ResponseBase), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]

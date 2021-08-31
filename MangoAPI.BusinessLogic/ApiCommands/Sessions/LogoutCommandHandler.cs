@@ -1,6 +1,7 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 using MangoAPI.BusinessLogic.BusinessExceptions;
+using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.DataAccess.Database;
 using MangoAPI.DataAccess.Database.Extensions;
 using MangoAPI.Domain.Constants;
@@ -8,7 +9,7 @@ using MediatR;
 
 namespace MangoAPI.BusinessLogic.ApiCommands.Sessions
 {
-    public class LogoutCommandHandler : IRequestHandler<LogoutCommand, LogoutResponse>
+    public class LogoutCommandHandler : IRequestHandler<LogoutCommand, ResponseBase>
     {
         private readonly MangoPostgresDbContext _postgresDbContext;
 
@@ -17,7 +18,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Sessions
             _postgresDbContext = postgresDbContext;
         }
 
-        public async Task<LogoutResponse> Handle(LogoutCommand request, CancellationToken cancellationToken)
+        public async Task<ResponseBase> Handle(LogoutCommand request, CancellationToken cancellationToken)
         {
             var session = await _postgresDbContext.Sessions
                 .GetSessionByRefreshTokenAsync(request.RefreshToken, cancellationToken);
@@ -37,7 +38,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Sessions
             _postgresDbContext.Sessions.Remove(session);
             await _postgresDbContext.SaveChangesAsync(cancellationToken);
 
-            return LogoutResponse.SuccessResponse;
+            return ResponseBase.SuccessResponse;
         }
     }
 }

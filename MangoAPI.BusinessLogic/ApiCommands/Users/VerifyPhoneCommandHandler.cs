@@ -1,6 +1,7 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 using MangoAPI.BusinessLogic.BusinessExceptions;
+using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.DataAccess.Database;
 using MangoAPI.DataAccess.Database.Extensions;
 using MangoAPI.Domain.Constants;
@@ -9,7 +10,7 @@ using Microsoft.AspNetCore.Identity;
 
 namespace MangoAPI.BusinessLogic.ApiCommands.Users
 {
-    public class VerifyPhoneCommandHandler : IRequestHandler<VerifyPhoneCommand, VerifyPhoneResponse>
+    public class VerifyPhoneCommandHandler : IRequestHandler<VerifyPhoneCommand, ResponseBase>
     {
         private readonly MangoPostgresDbContext _postgresDbContext;
 
@@ -18,7 +19,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
             _postgresDbContext = postgresDbContext;
         }
 
-        public async Task<VerifyPhoneResponse> Handle(VerifyPhoneCommand request, CancellationToken cancellationToken)
+        public async Task<ResponseBase> Handle(VerifyPhoneCommand request, CancellationToken cancellationToken)
         {
             var user = await _postgresDbContext.Users.FindUserByIdAsync(request.UserId, cancellationToken);
 
@@ -51,7 +52,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
 
             await _postgresDbContext.SaveChangesAsync(cancellationToken);
 
-            return VerifyPhoneResponse.SuccessResponse;
+            return ResponseBase.SuccessResponse;
         }
     }
 }

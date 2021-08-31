@@ -2,16 +2,22 @@
 
 namespace MangoAPI.BusinessLogic.Responses
 {
-    public abstract record ResponseBase
+    public record ResponseBase
     {
         public string Message { get; init; }
         public bool Success { get; init; }
+
+        public static ResponseBase SuccessResponse => new()
+        {
+            Message = ResponseMessageCodes.Success,
+            Success = true,
+        };
     }
 
     public abstract record ResponseBase<T> : ResponseBase
         where T : ResponseBase, new()
     {
-        public static T SuccessResponse => new ()
+        public new static T SuccessResponse => new()
         {
             Success = true,
             Message = ResponseMessageCodes.Success,

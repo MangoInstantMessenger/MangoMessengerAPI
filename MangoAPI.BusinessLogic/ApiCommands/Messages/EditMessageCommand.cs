@@ -1,8 +1,9 @@
-﻿using MediatR;
+﻿using MangoAPI.BusinessLogic.Responses;
+using MediatR;
 
 namespace MangoAPI.BusinessLogic.ApiCommands.Messages
 {
-    public record EditMessageCommand : IRequest<EditMessageResponse>
+    public record EditMessageCommand : IRequest<ResponseBase>
     {
         public string MessageId { get; init; }
         public string UserId { get; init; }

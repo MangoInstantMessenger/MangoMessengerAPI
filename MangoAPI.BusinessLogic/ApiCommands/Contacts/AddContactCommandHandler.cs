@@ -2,6 +2,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using MangoAPI.BusinessLogic.BusinessExceptions;
+using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.DataAccess.Database;
 using MangoAPI.DataAccess.Database.Extensions;
 using MangoAPI.Domain.Constants;
@@ -10,7 +11,7 @@ using MediatR;
 
 namespace MangoAPI.BusinessLogic.ApiCommands.Contacts
 {
-    public class AddContactCommandHandler : IRequestHandler<AddContactCommand, AddContactResponse>
+    public class AddContactCommandHandler : IRequestHandler<AddContactCommand, ResponseBase>
     {
         private readonly MangoPostgresDbContext _postgresDbContext;
 
@@ -19,7 +20,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Contacts
             _postgresDbContext = postgresDbContext;
         }
 
-        public async Task<AddContactResponse> Handle(AddContactCommand request, CancellationToken cancellationToken)
+        public async Task<ResponseBase> Handle(AddContactCommand request, CancellationToken cancellationToken)
         {
             var contact = await _postgresDbContext.Users.FindUserByIdAsync(request.UserId, cancellationToken);
 
@@ -51,7 +52,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Contacts
             await _postgresDbContext.UserContacts.AddAsync(contactEntity, cancellationToken);
             await _postgresDbContext.SaveChangesAsync(cancellationToken);
 
-            return AddContactResponse.SuccessResponse;
+            return ResponseBase.SuccessResponse;
         }
     }
 }

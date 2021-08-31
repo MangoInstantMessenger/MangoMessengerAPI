@@ -69,7 +69,7 @@ namespace MangoAPI.Presentation.Controllers
         [SwaggerOperation(Summary = "Confirms user's email address. Adds a User role to the current user. " +
                                     "This endpoint may be accessed by both roles: Unverified, User. " +
                                     "On refresh session user receives new access token with updated roles. ")]
-        [ProducesResponseType(typeof(VerifyEmailResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ResponseBase), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
         public async Task<IActionResult> EmailConfirmationAsync([FromBody] VerifyEmailRequest request,
@@ -92,7 +92,7 @@ namespace MangoAPI.Presentation.Controllers
         [SwaggerOperation(Summary = "Confirms user's phone number. Adds a User role to the current user. " +
                                     "This endpoint may be accessed by both roles: Unverified, User. " +
                                     "On refresh session user receives new access token with updated roles. ")]
-        [ProducesResponseType(typeof(VerifyPhoneResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ResponseBase), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
         public async Task<IActionResult> PhoneConfirmationAsync([FromRoute] int phoneCode,
@@ -117,7 +117,7 @@ namespace MangoAPI.Presentation.Controllers
         [HttpPut("password")]
         [Authorize(Roles = "User")]
         [SwaggerOperation(Summary = "Changes password by current password. Required role: User")]
-        [ProducesResponseType(typeof(ChangePasswordResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ResponseBase), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
@@ -145,7 +145,7 @@ namespace MangoAPI.Presentation.Controllers
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> GetUserById([FromRoute] string userId, CancellationToken cancellationToken)
         {
-            var query = new GetUserQuery { UserId = userId };
+            var query = new GetUserQuery {UserId = userId};
             return await RequestAsync(query, cancellationToken);
         }
 
@@ -166,7 +166,7 @@ namespace MangoAPI.Presentation.Controllers
         public async Task<IActionResult> GetCurrentUser(CancellationToken cancellationToken)
         {
             var userId = HttpContext.User.GetUserId();
-            var request = new GetUserQuery { UserId = userId };
+            var request = new GetUserQuery {UserId = userId};
             return await RequestAsync(request, cancellationToken);
         }
 
@@ -179,7 +179,7 @@ namespace MangoAPI.Presentation.Controllers
         [HttpPut("information")]
         [Authorize(Roles = "User")]
         [SwaggerOperation(Summary = "Updates user's personal information. Requires role: User.")]
-        [ProducesResponseType(typeof(UpdateUserInformationResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ResponseBase), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]

@@ -86,7 +86,7 @@ namespace MangoAPI.Presentation.Controllers
         [HttpDelete("{refreshToken}")]
         [Authorize(Roles = "Unverified, User")]
         [SwaggerOperation(Summary = "Deletes current user's session. Requires roles: Unverified, User.")]
-        [ProducesResponseType(typeof(LogoutResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ResponseBase), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
@@ -94,7 +94,7 @@ namespace MangoAPI.Presentation.Controllers
             [FromRoute] string refreshToken,
             CancellationToken cancellationToken)
         {
-            var command = new LogoutCommand { RefreshToken = refreshToken };
+            var command = new LogoutCommand {RefreshToken = refreshToken};
             return await RequestAsync(command, cancellationToken);
         }
 
@@ -106,14 +106,14 @@ namespace MangoAPI.Presentation.Controllers
         [HttpDelete]
         [Authorize(Roles = "Unverified, User")]
         [SwaggerOperation(Summary = "Deletes all current user's sessions. Requires roles: Unverified, User.")]
-        [ProducesResponseType(typeof(LogoutResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ResponseBase), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> LogoutAllAsync(CancellationToken cancellationToken)
         {
             var userId = HttpContext.User.GetUserId();
-            var command = new LogoutAllCommand { UserId = userId };
+            var command = new LogoutAllCommand {UserId = userId};
             return await RequestAsync(command, cancellationToken);
         }
     }

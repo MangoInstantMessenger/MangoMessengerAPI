@@ -1,6 +1,7 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 using MangoAPI.BusinessLogic.BusinessExceptions;
+using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.DataAccess.Database;
 using MangoAPI.DataAccess.Database.Extensions;
 using MangoAPI.Domain.Constants;
@@ -10,7 +11,7 @@ using Microsoft.AspNetCore.Identity;
 
 namespace MangoAPI.BusinessLogic.ApiCommands.Users
 {
-    public class ChangePasswordCommandHandler : IRequestHandler<ChangePasswordCommand, ChangePasswordResponse>
+    public class ChangePasswordCommandHandler : IRequestHandler<ChangePasswordCommand, ResponseBase>
     {
         private readonly MangoPostgresDbContext _postgresDbContext;
         private readonly UserManager<UserEntity> _userManager;
@@ -22,8 +23,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
             _userManager = userManager;
         }
 
-        public async Task<ChangePasswordResponse> Handle(ChangePasswordCommand request,
-            CancellationToken cancellationToken)
+        public async Task<ResponseBase> Handle(ChangePasswordCommand request, CancellationToken cancellationToken)
         {
             if (request.CurrentPassword == request.NewPassword)
             {
@@ -55,7 +55,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
 
             await _postgresDbContext.SaveChangesAsync(cancellationToken);
 
-            return ChangePasswordResponse.SuccessResponse;
+            return ResponseBase.SuccessResponse;
         }
     }
 }

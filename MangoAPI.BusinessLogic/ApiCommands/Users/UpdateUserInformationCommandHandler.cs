@@ -2,6 +2,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using MangoAPI.BusinessLogic.BusinessExceptions;
+using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.DataAccess.Database;
 using MangoAPI.DataAccess.Database.Extensions;
 using MangoAPI.Domain.Constants;
@@ -9,8 +10,7 @@ using MediatR;
 
 namespace MangoAPI.BusinessLogic.ApiCommands.Users
 {
-    public class UpdateUserInformationCommandHandler : IRequestHandler<UpdateUserInformationCommand,
-        UpdateUserInformationResponse>
+    public class UpdateUserInformationCommandHandler : IRequestHandler<UpdateUserInformationCommand, ResponseBase>
     {
         private readonly MangoPostgresDbContext _postgresDbContext;
 
@@ -19,8 +19,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
             _postgresDbContext = postgresDbContext;
         }
 
-        public async Task<UpdateUserInformationResponse> Handle(
-            UpdateUserInformationCommand request,
+        public async Task<ResponseBase> Handle(UpdateUserInformationCommand request,
             CancellationToken cancellationToken)
         {
             var user = await _postgresDbContext.Users.FindUserByIdIncludeInfoAsync(request.UserId, cancellationToken);
@@ -53,7 +52,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
             _postgresDbContext.UserInformation.Update(user.UserInformation);
             await _postgresDbContext.SaveChangesAsync(cancellationToken);
 
-            return UpdateUserInformationResponse.SuccessResponse;
+            return ResponseBase.SuccessResponse;
         }
     }
 }

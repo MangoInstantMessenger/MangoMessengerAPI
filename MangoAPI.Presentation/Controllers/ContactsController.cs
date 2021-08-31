@@ -40,7 +40,7 @@ namespace MangoAPI.Presentation.Controllers
         [HttpPost("{contactId}")]
         [SwaggerOperation(Summary = "Adds particular user to the contacts. Fetches user by user ID. " +
                                     "Requires role: User.")]
-        [ProducesResponseType(typeof(AddContactResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ResponseBase), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
@@ -65,7 +65,7 @@ namespace MangoAPI.Presentation.Controllers
         [HttpDelete("{contactId}")]
         [SwaggerOperation(Summary = "Deletes particular contact from the contacts. Fetches user by user ID. " +
                                     "Requires role: User")]
-        [ProducesResponseType(typeof(DeleteContactResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ResponseBase), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
