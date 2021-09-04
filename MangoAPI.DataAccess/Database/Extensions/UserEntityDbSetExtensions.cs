@@ -1,8 +1,7 @@
-﻿using System.Threading;
-using System.Threading.Tasks;
-using MangoAPI.Domain.Entities;
-using MangoAPI.Domain.Enums;
+﻿using MangoAPI.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace MangoAPI.DataAccess.Database.Extensions
 {
@@ -14,17 +13,11 @@ namespace MangoAPI.DataAccess.Database.Extensions
             return await dbSet.FirstOrDefaultAsync(x => x.Id == userId, cancellationToken);
         }
 
-        public static async Task<UserEntity> FindUserByEmailOrPhoneAsync(this DbSet<UserEntity> dbSet, string credential,
-            VerificationMethod verificationMethod, CancellationToken cancellationToken)
+        public static async Task<UserEntity> FindUserByEmailOrPhoneAsync(this DbSet<UserEntity> dbSet, string phoneOrEmail, CancellationToken cancellationToken)
         {
-            if (verificationMethod == VerificationMethod.Email)
-            {
-                return await dbSet.FirstOrDefaultAsync(x => x.Email == credential, cancellationToken);
-            }
-            
-            return await dbSet.FirstOrDefaultAsync(x => x.PhoneNumber == credential, cancellationToken);
+            return await dbSet.FirstOrDefaultAsync(x => x.PhoneNumber == phoneOrEmail || x.Email == phoneOrEmail, cancellationToken);
         }
-        
+
         public static async Task<UserEntity> FindUserByIdIncludeInfoAsync(this DbSet<UserEntity> dbSet, string userId,
             CancellationToken cancellationToken)
         {
@@ -44,6 +37,5 @@ namespace MangoAPI.DataAccess.Database.Extensions
         {
             return await dbSet.FirstOrDefaultAsync(x => x.PhoneNumber == phone, cancellationToken);
         }
-
     }
 }

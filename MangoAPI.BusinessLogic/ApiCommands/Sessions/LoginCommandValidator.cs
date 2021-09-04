@@ -11,10 +11,6 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Sessions
                 .NotEmpty()
                 .Length(1, 300);
 
-            RuleFor(x => x.VerificationMethod)
-                .Cascade(CascadeMode.Stop)
-                .IsInEnum();
-
             RuleFor(x => x.Password)
                 .Cascade(CascadeMode.Stop)
                 .NotEmpty()

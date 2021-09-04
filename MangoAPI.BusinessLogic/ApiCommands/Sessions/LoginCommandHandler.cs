@@ -1,8 +1,4 @@
-﻿using System;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
-using MangoAPI.Application.Interfaces;
+﻿using MangoAPI.Application.Interfaces;
 using MangoAPI.BusinessLogic.BusinessExceptions;
 using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.DataAccess.Database;
@@ -12,6 +8,10 @@ using MangoAPI.Domain.Entities;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using System;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace MangoAPI.BusinessLogic.ApiCommands.Sessions
 {
@@ -21,9 +21,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Sessions
         private readonly MangoPostgresDbContext _postgresDbContext;
         private readonly SignInManager<UserEntity> _signInManager;
 
-        public LoginCommandHandler(
-            SignInManager<UserEntity> signInManager,
-            IJwtGenerator jwtGenerator,
+        public LoginCommandHandler(SignInManager<UserEntity> signInManager, IJwtGenerator jwtGenerator,
             MangoPostgresDbContext postgresDbContext)
         {
             _signInManager = signInManager;
@@ -32,10 +30,9 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Sessions
         }
 
         public async Task<TokensResponse> Handle(LoginCommand request, CancellationToken cancellationToken)
-        { 
-            var user = await _postgresDbContext.Users.FindUserByEmailOrPhoneAsync(request.EmailOrPhone,
-                request.VerificationMethod, cancellationToken);
-            
+        {
+            var user = await _postgresDbContext.Users.FindUserByEmailOrPhoneAsync(request.EmailOrPhone, cancellationToken);
+
             if (user is null)
             {
                 throw new BusinessException(ResponseMessageCodes.InvalidCredentials);
