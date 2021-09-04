@@ -1,4 +1,4 @@
-﻿using MangoAPI.BusinessLogic.Enums;
+﻿using MangoAPI.Domain.Enums;
 using Newtonsoft.Json;
 
 namespace MangoAPI.BusinessLogic.ApiCommands.Users
