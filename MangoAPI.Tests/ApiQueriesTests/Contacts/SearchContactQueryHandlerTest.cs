@@ -7,14 +7,14 @@ using NUnit.Framework;
 namespace MangoAPI.Tests.ApiQueriesTests.Contacts
 {
     [TestFixture]
-    public class SearchContactByDisplayNameQueryHandlerTest
+    public class SearchContactQueryHandlerTest
     {
         [Test]
         public async Task UserSearchQueryHandlerTest_Success()
         {
             using var dbContextFixture = new DbContextFixture();
             var handler = new SearchContactByDisplayNameQueryHandler(dbContextFixture.PostgresDbContext);
-            var query = new SearchContactByDisplayNameQuery { DisplayName = "Petro" };
+            var query = new SearchContactQuery { Data = "Petro" };
 
             var response = await handler.Handle(query, CancellationToken.None);
 

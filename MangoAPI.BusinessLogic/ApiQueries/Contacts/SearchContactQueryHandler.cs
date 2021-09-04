@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore;
 namespace MangoAPI.BusinessLogic.ApiQueries.Contacts
 {
     public class
-        SearchContactByDisplayNameQueryHandler : IRequestHandler<SearchContactByDisplayNameQuery,
-            SearchContactByDisplayNameResponse>
+        SearchContactByDisplayNameQueryHandler : IRequestHandler<SearchContactQuery,
+            SearchContactResponse>
     {
         private readonly MangoPostgresDbContext _postgresDbContext;
 
@@ -19,7 +19,7 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Contacts
             _postgresDbContext = postgresDbContext;
         }
 
-        public async Task<SearchContactByDisplayNameResponse> Handle(SearchContactByDisplayNameQuery request,
+        public async Task<SearchContactResponse> Handle(SearchContactQuery request,
             CancellationToken cancellationToken)
         {
             var users = await _postgresDbContext.Users
@@ -27,9 +27,12 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Contacts
                 .Include(x => x.UserInformation)
                 .ToListAsync(cancellationToken);
 
-            if (!string.IsNullOrEmpty(request.DisplayName) || !string.IsNullOrWhiteSpace(request.DisplayName))
+            if (!string.IsNullOrEmpty(request.Data) || !string.IsNullOrWhiteSpace(request.Data))
             {
-                users = users.Where(x => x.DisplayName.ToUpper().Contains(request.DisplayName.ToUpper()))
+                users = users
+                    .Where(x => x.DisplayName.ToUpper().Contains(request.Data.ToUpper())
+                           || x.Email.Contains(request.Data)
+                           || x.PhoneNumber.Contains(request.Data))
                     .ToList();
             }
 
@@ -49,7 +52,7 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Contacts
                 contact.IsContact = isContact;
             }
 
-            return SearchContactByDisplayNameResponse.FromSuccess(contacts);
+            return SearchContactResponse.FromSuccess(contacts);
         }
     }
 }

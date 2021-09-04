@@ -103,24 +103,21 @@ namespace MangoAPI.Presentation.Controllers
         /// <summary>
         /// Searches user by his display name. Requires role: User.
         /// </summary>
-        /// <param name="displayName">User's display name, string.</param>
+        /// <param name="data">User's display name, string.</param>
         /// <param name="cancellationToken">CancellationToken instance.</param>
         /// <returns>Possible codes: 200, 400, 409.</returns>
-        [HttpGet("searches")]
+        [HttpPost("searches")]
         [Authorize(Roles = "User")]
         [SwaggerOperation(Summary = "Searches user by his display name. Requires role: User.")]
-        [ProducesResponseType(typeof(SearchContactByDisplayNameResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(SearchContactResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public async Task<IActionResult> SearchesAsync(string displayName, CancellationToken cancellationToken)
+        public async Task<IActionResult> SearchesAsync([FromBody] SearchContactRequest request, 
+            CancellationToken cancellationToken)
         {
             var currentUserId = HttpContext.User.GetUserId();
-            var command = new SearchContactByDisplayNameQuery
-            {
-                DisplayName = displayName,
-                UserId = currentUserId,
-            };
+            var command = request.ToCommand(currentUserId);
 
             return await RequestAsync(command, cancellationToken);
         }
