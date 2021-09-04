@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore;
 namespace MangoAPI.BusinessLogic.ApiQueries.Contacts
 {
     public class
-        SearchContactByDisplayNameQueryHandler : IRequestHandler<SearchContactByDisplayNameQuery,
-            SearchContactByDisplayNameResponse>
+        SearchContactByDisplayNameQueryHandler : IRequestHandler<SearchContactQuery,
+            SearchContactResponse>
     {
         private readonly MangoPostgresDbContext _postgresDbContext;
 
@@ -19,7 +19,7 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Contacts
             _postgresDbContext = postgresDbContext;
         }
 
-        public async Task<SearchContactByDisplayNameResponse> Handle(SearchContactByDisplayNameQuery request,
+        public async Task<SearchContactResponse> Handle(SearchContactQuery request,
             CancellationToken cancellationToken)
         {
             var users = await _postgresDbContext.Users
@@ -27,10 +27,12 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Contacts
                 .Include(x => x.UserInformation)
                 .ToListAsync(cancellationToken);
 
-            if (!string.IsNullOrEmpty(request.DisplayName) || !string.IsNullOrWhiteSpace(request.DisplayName))
+            if (!string.IsNullOrEmpty(request.SearchQuery) || !string.IsNullOrWhiteSpace(request.SearchQuery))
             {
-                users = users.Where(x => x.DisplayName.ToUpper().Contains(request.DisplayName.ToUpper()))
-                    .ToList();
+                users = users
+                    .Where(x => x.DisplayName.ToUpper().Contains(request.SearchQuery.ToUpper())
+                                || x.Email.ToUpper().Contains(request.SearchQuery.ToUpper())
+                                || x.PhoneNumber.ToUpper().Contains(request.SearchQuery.ToUpper())).ToList();
             }
 
             var contacts = users.Select(x => new Contact
@@ -49,7 +51,7 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Contacts
                 contact.IsContact = isContact;
             }
 
-            return SearchContactByDisplayNameResponse.FromSuccess(contacts);
+            return SearchContactResponse.FromSuccess(contacts);
         }
     }
 }

@@ -5,11 +5,11 @@ using MangoAPI.Domain.Constants;
 
 namespace MangoAPI.BusinessLogic.ApiQueries.Contacts
 {
-    public record SearchContactByDisplayNameResponse : ResponseBase<SearchContactByDisplayNameResponse>
+    public record SearchContactResponse : ResponseBase<SearchContactResponse>
     {
         public List<Contact> Contacts { get; init; }
 
-        public static SearchContactByDisplayNameResponse FromSuccess(List<Contact> contacts)
+        public static SearchContactResponse FromSuccess(List<Contact> contacts)
         {
             return new()
             {

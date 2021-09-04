@@ -12,6 +12,6 @@ namespace MangoAPI.Presentation.Interfaces
 
         Task<IActionResult> GetContacts(CancellationToken cancellationToken);
 
-        Task<IActionResult> SearchesAsync(string displayName, CancellationToken cancellationToken);
+        Task<IActionResult> SearchesAsync(string searchQuery, CancellationToken cancellationToken);
     }
 }

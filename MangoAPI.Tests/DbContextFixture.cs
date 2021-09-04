@@ -1,9 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using MangoAPI.DataAccess.Database;
+﻿using MangoAPI.DataAccess.Database;
 using MangoAPI.Domain.Entities;
 using MangoAPI.Domain.Enums;
 using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
 
 namespace MangoAPI.Tests
 {
@@ -96,6 +96,7 @@ namespace MangoAPI.Tests
             {
                 Id = "2",
                 DisplayName = "Szymon",
+                Email = "szymon.murawski@wp.pl",
                 PhoneNumber = "+1 234 45 67",
                 ConfirmationCode = 524675,
             },
