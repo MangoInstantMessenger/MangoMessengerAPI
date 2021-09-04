@@ -6,15 +6,15 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Sessions
     public record LoginRequest
     {
         [JsonConstructor]
-        public LoginRequest(string emailOrPhone, VerificationMethod verificationMethod, 
+        public LoginRequest(string credential, VerificationMethod verificationMethod, 
             string password)
         {
-            EmailOrPhone = emailOrPhone;
+            Credential = credential;
             VerificationMethod = verificationMethod;
             Password = password;
         }
 
-        public string EmailOrPhone { get; }
+        public string Credential { get; }
         public VerificationMethod VerificationMethod { get; }
         public string Password { get; }
     }
@@ -25,7 +25,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Sessions
         {
             return new ()
             {
-                EmailOrPhone = model.EmailOrPhone,
+                Credential = model.Credential,
                 VerificationMethod = model.VerificationMethod,
                 Password = model.Password,
             };

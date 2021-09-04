@@ -14,7 +14,7 @@ namespace MangoAPI.DataAccess.Database.Extensions
             return await dbSet.FirstOrDefaultAsync(x => x.Id == userId, cancellationToken);
         }
 
-        public static async Task<UserEntity> FindUserByCredentialAsync(this DbSet<UserEntity> dbSet, string credential,
+        public static async Task<UserEntity> FindUserByEmailOrPhoneAsync(this DbSet<UserEntity> dbSet, string credential,
             VerificationMethod verificationMethod, CancellationToken cancellationToken)
         {
             if (verificationMethod == VerificationMethod.Email)

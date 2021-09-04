@@ -6,7 +6,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Sessions
     {
         public LoginCommandValidator()
         {
-            RuleFor(x => x.EmailOrPhone)
+            RuleFor(x => x.Credential)
                 .Cascade(CascadeMode.Stop)
                 .NotEmpty()
                 .Length(1, 300);
