@@ -6,7 +6,10 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Contacts
     {
         public SearchContactValidator()
         {
-            RuleFor(x => x.Data)
+            RuleFor(x => x.SearchQuery)
+                .Cascade(CascadeMode.Stop)
+                .NotEmpty()
+                .Length(1, 300);
         }
     }
 }

@@ -27,12 +27,12 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Contacts
                 .Include(x => x.UserInformation)
                 .ToListAsync(cancellationToken);
 
-            if (!string.IsNullOrEmpty(request.Data) || !string.IsNullOrWhiteSpace(request.Data))
+            if (!string.IsNullOrEmpty(request.SearchQuery) || !string.IsNullOrWhiteSpace(request.SearchQuery))
             {
                 users = users
-                    .Where(x => x.DisplayName.ToUpper().Contains(request.Data.ToUpper())
-                           || x.Email.Contains(request.Data)
-                           || x.PhoneNumber.Contains(request.Data))
+                    .Where(x => x.DisplayName.ToUpper().Contains(request.SearchQuery.ToUpper())
+                           || x.Email.Contains(request.SearchQuery)
+                           || x.PhoneNumber.Contains(request.SearchQuery))
                     .ToList();
             }
 

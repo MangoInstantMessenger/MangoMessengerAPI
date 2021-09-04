@@ -1,6 +1,5 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
-using MangoAPI.BusinessLogic.ApiQueries.Contacts;
 using Microsoft.AspNetCore.Mvc;
 
 namespace MangoAPI.Presentation.Interfaces
@@ -13,6 +12,6 @@ namespace MangoAPI.Presentation.Interfaces
 
         Task<IActionResult> GetContacts(CancellationToken cancellationToken);
 
-        Task<IActionResult> SearchesAsync(SearchContactRequest request, CancellationToken cancellationToken);
+        Task<IActionResult> SearchesAsync(string searchQuery, CancellationToken cancellationToken);
     }
 }

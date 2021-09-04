@@ -14,7 +14,7 @@ namespace MangoAPI.Tests.ApiQueriesTests.Contacts
         {
             using var dbContextFixture = new DbContextFixture();
             var handler = new SearchContactByDisplayNameQueryHandler(dbContextFixture.PostgresDbContext);
-            var query = new SearchContactQuery { Data = "Petro" };
+            var query = new SearchContactQuery { SearchQuery = "Petro" };
 
             var response = await handler.Handle(query, CancellationToken.None);
 

@@ -6,6 +6,6 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Contacts
     {
         public string UserId { get; set; }
 
-        public string Data { get; init; }
+        public string SearchQuery { get; init; }
     }
 }

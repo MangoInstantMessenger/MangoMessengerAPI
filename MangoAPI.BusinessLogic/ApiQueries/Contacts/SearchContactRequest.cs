@@ -4,12 +4,12 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Contacts
 {
     public record SearchContactRequest
     {
-        public string Data { get; }
+        public string SearchQuery { get; }
 
         [JsonConstructor]
-        public SearchContactRequest(string data)
+        public SearchContactRequest(string searchQuery)
         {
-            Data = data;
+            SearchQuery = searchQuery;
         }
     }
 
@@ -19,7 +19,7 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Contacts
         {
             return new()
             {
-                Data = request.Data,
+                SearchQuery = request.SearchQuery,
                 UserId = userId,
             };
         }
