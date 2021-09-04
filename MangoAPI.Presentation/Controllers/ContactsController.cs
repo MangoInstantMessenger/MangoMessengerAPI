@@ -108,7 +108,7 @@ namespace MangoAPI.Presentation.Controllers
         /// <returns>Possible codes: 200, 400, 409.</returns>
         [HttpGet("searches")]
         [Authorize(Roles = "User")]
-        [SwaggerOperation(Summary = "Searches user by his display name. Requires role: User.")]
+        [SwaggerOperation(Summary = "Searches user by display name, phone number or e-mail address. Requires role: User.")]
         [ProducesResponseType(typeof(SearchContactResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
