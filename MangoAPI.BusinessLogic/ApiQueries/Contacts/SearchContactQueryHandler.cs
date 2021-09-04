@@ -31,9 +31,8 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Contacts
             {
                 users = users
                     .Where(x => x.DisplayName.ToUpper().Contains(request.SearchQuery.ToUpper())
-                           || x.Email.Contains(request.SearchQuery)
-                           || x.PhoneNumber.Contains(request.SearchQuery))
-                    .ToList();
+                                || x.Email.ToUpper().Contains(request.SearchQuery.ToUpper())
+                                || x.PhoneNumber.ToUpper().Contains(request.SearchQuery.ToUpper())).ToList();
             }
 
             var contacts = users.Select(x => new Contact
