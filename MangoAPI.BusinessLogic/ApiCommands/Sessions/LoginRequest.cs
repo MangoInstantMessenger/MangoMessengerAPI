@@ -1,17 +1,21 @@
-﻿using Newtonsoft.Json;
+﻿using MangoAPI.Domain.Enums;
+using Newtonsoft.Json;
 
 namespace MangoAPI.BusinessLogic.ApiCommands.Sessions
 {
     public record LoginRequest
     {
         [JsonConstructor]
-        public LoginRequest(string email, string password)
+        public LoginRequest(string credential, VerificationMethod verificationMethod, 
+            string password)
         {
-            Email = email;
+            Credential = credential;
+            VerificationMethod = verificationMethod;
             Password = password;
         }
 
-        public string Email { get; }
+        public string Credential { get; }
+        public VerificationMethod VerificationMethod { get; }
         public string Password { get; }
     }
 
@@ -21,7 +25,8 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Sessions
         {
             return new ()
             {
-                Email = model.Email,
+                Credential = model.Credential,
+                VerificationMethod = model.VerificationMethod,
                 Password = model.Password,
             };
         }

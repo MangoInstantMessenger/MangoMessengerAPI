@@ -1,5 +1,5 @@
-﻿using MangoAPI.BusinessLogic.Enums;
-using MangoAPI.BusinessLogic.Responses;
+﻿using MangoAPI.BusinessLogic.Responses;
+using MangoAPI.Domain.Enums;
 using MediatR;
 
 namespace MangoAPI.BusinessLogic.ApiCommands.Users

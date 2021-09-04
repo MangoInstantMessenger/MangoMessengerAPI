@@ -32,9 +32,10 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Sessions
         }
 
         public async Task<TokensResponse> Handle(LoginCommand request, CancellationToken cancellationToken)
-        {
-            var user = await _postgresDbContext.Users.FindUserByEmailAsync(request.Email, cancellationToken);
-
+        { 
+            var user = await _postgresDbContext.Users.FindUserByCredentialAsync(request.Credential,
+                request.VerificationMethod, cancellationToken);
+            
             if (user is null)
             {
                 throw new BusinessException(ResponseMessageCodes.InvalidCredentials);
