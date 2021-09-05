@@ -11,7 +11,7 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Messages
                 .WithMessage("GetMessagesQuery: User Id cannot be parsed.");
 
             RuleFor(x => x.ChatId).Must(x => Guid.TryParse(x, out _))
-                .WithMessage("GetMessagesQuery: User Id cannot be parsed.");
+                .WithMessage("GetMessagesQuery: Chat Id cannot be parsed.");
         }
     }
 }
