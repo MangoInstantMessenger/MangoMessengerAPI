@@ -154,7 +154,7 @@ namespace MangoAPI.Tests.ApiCommandsTests.Users
             var command = new RegisterCommand
             {
                 PhoneNumber = "+1 234 567 89",
-                Email = "kolosovp94@gmail.com",
+                Email = "kolosovp99@gmail.com",
                 DisplayName = "Test User",
                 Password = "WzLxl12{#@>?24",
                 TermsAccepted = true,

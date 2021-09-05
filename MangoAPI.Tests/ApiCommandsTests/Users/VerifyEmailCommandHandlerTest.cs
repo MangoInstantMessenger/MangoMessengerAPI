@@ -20,7 +20,7 @@ namespace MangoAPI.Tests.ApiCommandsTests.Users
             var command = new VerifyEmailCommand
             {
                 UserId = "1",
-                Email = "kolosovp94@gmail.com",
+                Email = "kolosovp99@gmail.com",
             };
 
             var result = await handler.Handle(command, CancellationToken.None);

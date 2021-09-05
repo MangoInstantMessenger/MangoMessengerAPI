@@ -15,6 +15,8 @@ namespace MangoAPI.Domain.Entities
 
         public int PublicKey { get; set; }
 
+        public ICollection<PasswordRestoreRequestEntity> PasswordRestoreRequests { get; set; }
+        
         public ICollection<SessionEntity> Sessions { get; set; }
 
         public ICollection<MessageEntity> Messages { get; set; }
