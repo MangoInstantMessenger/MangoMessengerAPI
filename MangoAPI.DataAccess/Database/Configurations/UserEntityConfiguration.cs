@@ -11,6 +11,10 @@ namespace MangoAPI.DataAccess.Database.Configurations
     {
         public void Configure(EntityTypeBuilder<UserEntity> builder)
         {
+            builder.HasMany(x => x.PasswordRestoreRequests)
+                .WithOne(x => x.UserEntity)
+                .HasForeignKey(x => x.UserId);
+            
             builder.HasMany(x => x.Sessions)
                 .WithOne(x => x.UserEntity)
                 .HasForeignKey(x => x.UserId);

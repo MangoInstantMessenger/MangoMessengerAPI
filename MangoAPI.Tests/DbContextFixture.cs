@@ -87,7 +87,7 @@ namespace MangoAPI.Tests
             {
                 Id = "1",
                 DisplayName = "Petro",
-                Email = "kolosovp94@gmail.com",
+                Email = "kolosovp99@gmail.com",
                 NormalizedEmail = "KOLOSOVP94@GMAIL.COM",
                 PhoneNumber = "+1 987 65 43 21",
                 PhoneNumberConfirmed = true,

@@ -56,7 +56,7 @@ namespace MangoAPI.Application.Services
             var body =
                 "<!DOCTYPE html>" +
                 "<head>" +
-                "<meta charset='utf-8'" +
+                "<meta charset='utf-8'>" +
                 "</head>" +
                 "<body>" +
                 $"<p>Hi, {user.DisplayName}, please follow this link.</p>" +
