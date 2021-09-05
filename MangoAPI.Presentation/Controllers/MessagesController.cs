@@ -49,6 +49,26 @@ namespace MangoAPI.Presentation.Controllers
             return await RequestAsync(query, cancellationToken);
         }
 
+        [HttpGet("searches/{chatId}")]
+        [SwaggerOperation(Summary = "Searches messages by content in particular chat")]
+        [ProducesResponseType(typeof(SearchChatMessagesResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        public async Task<IActionResult> SearchChatMessages(string chatId, string messageText, 
+            CancellationToken cancellationToken)
+        {
+            var currentUserId = HttpContext.User.GetUserId();
+            var query = new SearchChatMessagesQuery
+            {
+                ChatId = chatId,
+                MessageText = messageText,
+                UserId = currentUserId
+            };
+
+            return await RequestAsync(query, cancellationToken);
+        }
+
         /// <summary>
         /// Sends message to the particular chat. Requires role: User.
         /// </summary>
