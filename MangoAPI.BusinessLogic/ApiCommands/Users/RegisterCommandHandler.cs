@@ -60,6 +60,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
                 UserName = Guid.NewGuid().ToString(),
                 Email = request.Email,
                 ConfirmationCode = _random.Next(100000, 999999),
+                PublicKey = 0,
             };
 
             var result = await _userManager.CreateAsync(newUser, request.Password);

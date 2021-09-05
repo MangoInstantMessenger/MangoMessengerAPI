@@ -13,6 +13,8 @@ namespace MangoAPI.Domain.Entities
 
         public int? ConfirmationCode { get; set; }
 
+        public int PublicKey { get; set; }
+
         public ICollection<SessionEntity> Sessions { get; set; }
 
         public ICollection<MessageEntity> Messages { get; set; }
