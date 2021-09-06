@@ -7,5 +7,6 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Messages
         public string MessageText { get; init; }
         public string UserId { get; init; }
         public string ChatId { get; init; }
+        public bool IsEncrypted { get; init; }
     }
 }
