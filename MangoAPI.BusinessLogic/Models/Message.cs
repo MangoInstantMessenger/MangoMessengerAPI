@@ -8,10 +8,14 @@
 
         public string MessageText { get; init; }
 
-        public string SentAt { get; init; }
+        public string CreatedAt { get; init; }
 
-        public string EditedAt { get; init; }
+        public string UpdatedAt { get; init; }
 
         public bool Self { get; init; }
+
+        public bool IsEncrypted { get; init; }
+
+        public int AuthorPublicKey { get; init; }
     }
 }

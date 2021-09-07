@@ -34,7 +34,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.PasswordRestoreRequests
 
             await _emailSenderService.SendVerificationEmailAsync(user, cancellationToken);
 
-            var passwordRestoreRequestEntity = new PasswordRestoreRequestEntity()
+            var passwordRestoreRequestEntity = new PasswordRestoreRequestEntity
             {
                 Id = Guid.NewGuid().ToString(),
                 UserId = user.Id,

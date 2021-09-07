@@ -117,7 +117,7 @@ namespace MangoAPI.Presentation.Controllers
             CancellationToken cancellationToken)
         {
             var currentUserId = HttpContext.User.GetUserId();
-            var query = new SearchContactQuery()
+            var query = new SearchContactQuery
             {
                 SearchQuery = searchQuery,
                 UserId = currentUserId

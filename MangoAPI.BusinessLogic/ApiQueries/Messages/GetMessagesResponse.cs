@@ -22,10 +22,12 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Messages
                     {
                         MessageId = messageEntity.Id,
                         MessageText = messageEntity.Content,
-                        EditedAt = messageEntity.UpdatedAt?.ToShortTimeString(),
-                        SentAt = messageEntity.CreatedAt.ToShortTimeString(),
+                        UpdatedAt = messageEntity.UpdatedAt?.ToShortTimeString(),
+                        CreatedAt = messageEntity.CreatedAt.ToShortTimeString(),
                         UserDisplayName = messageEntity.User.DisplayName,
                         Self = messageEntity.User.Id == user.Id,
+                        IsEncrypted = messageEntity.IsEncrypted,
+                        AuthorPublicKey = messageEntity.AuthorPublicKey,
                     }).ToList(),
 
                 Success = true,
