@@ -13,6 +13,7 @@ namespace MangoAPI.Presentation.Extensions
             services.AddMediatR(typeof(RegisterCommandHandler).Assembly);
             services.AddScoped<IJwtGenerator, JwtGenerator>();
             services.AddScoped<IEmailSenderService, EmailSenderService>();
+            services.AddScoped<PasswordHashService>();
             return services;
         }
     }

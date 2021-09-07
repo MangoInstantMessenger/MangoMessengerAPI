@@ -41,12 +41,33 @@ namespace MangoAPI.Presentation.Controllers
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public async Task<IActionResult> RestorePasswordAsync(string emailOrPhone, CancellationToken cancellationToken)
+        public async Task<IActionResult> RestorePasswordRequestAsync(string emailOrPhone, CancellationToken cancellationToken)
         {
             var command = new RestorePasswordCommand
             {
                 EmailOrPhone = emailOrPhone
             };
+
+            return await RequestAsync(command, cancellationToken);
+        }
+
+        /// <summary>
+        /// Updates users password hash in database.
+        /// </summary>
+        /// <param name="request">Request instance.</param>
+        /// <param name="cancellationToken">Cancellation token instance.</param>
+        /// <returns>Possible codes: 200, 400, 409.</returns>
+        [HttpPut]
+        [AllowAnonymous]
+        [SwaggerOperation(Summary = "Updates users password hash in database.")]
+        [ProducesResponseType(typeof(ResponseBase), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        public async Task<IActionResult> RestorePasswordAsync(PasswordRestoreRequest request,
+            CancellationToken cancellationToken)
+        {
+            var command = request.ToCommand();
 
             return await RequestAsync(command, cancellationToken);
         }
