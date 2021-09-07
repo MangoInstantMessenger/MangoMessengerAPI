@@ -21,8 +21,8 @@ namespace MangoAPI.Tests.ApiCommandsTests.PasswordRestoreRequests
             var emailSender = new Mock<IEmailSenderService>();
             emailSender.Setup(x =>
                 x.SendVerificationEmailAsync(It.IsAny<UserEntity>(), It.IsAny<CancellationToken>()));
-            var handler = new RestorePasswordCommandHandler(dbContextFixture.PostgresDbContext, emailSender.Object);
-            var command = new RestorePasswordCommand
+            var handler = new RequestPasswordRestoreCommandHandler(dbContextFixture.PostgresDbContext, emailSender.Object);
+            var command = new RequestPasswordRestoreCommand
             {
                 EmailOrPhone = "kolosovp99@gmail.com"
             };
@@ -30,7 +30,6 @@ namespace MangoAPI.Tests.ApiCommandsTests.PasswordRestoreRequests
             var result = await handler.Handle(command, CancellationToken.None);
 
             result.Success.Should().BeTrue();
-            Guid.TryParse(result.RestorePasswordRequestId, out _).Should().BeTrue();
         }
         
         [Test]
@@ -40,8 +39,8 @@ namespace MangoAPI.Tests.ApiCommandsTests.PasswordRestoreRequests
             var emailSender = new Mock<IEmailSenderService>();
             emailSender.Setup(x =>
                 x.SendVerificationEmailAsync(It.IsAny<UserEntity>(), It.IsAny<CancellationToken>()));
-            var handler = new RestorePasswordCommandHandler(dbContextFixture.PostgresDbContext, emailSender.Object);
-            var command = new RestorePasswordCommand
+            var handler = new RequestPasswordRestoreCommandHandler(dbContextFixture.PostgresDbContext, emailSender.Object);
+            var command = new RequestPasswordRestoreCommand
             {
                 EmailOrPhone = "hello world"
             };

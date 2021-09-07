@@ -9,6 +9,9 @@ namespace MangoAPI.Domain.Entities
         public string Email { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime ExpiresAt { get; set; }
+
+        public bool IsValid => ExpiresAt >= DateTime.Now;
+
         public UserEntity UserEntity { get; set; }
     }
 }
