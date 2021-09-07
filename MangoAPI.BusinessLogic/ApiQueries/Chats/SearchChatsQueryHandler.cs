@@ -43,20 +43,22 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Chats
                     Title = chat.Title,
                     Image = chat.Image,
                     Description = chat.Description,
-                    LastMessage = chat.Messages.Any()
-                        ? chat.Messages.OrderBy(x => x.CreatedAt).Last().Content
-                        : null,
-                    LastMessageAuthor = chat.Messages.Any()
-                        ? chat.Messages.OrderBy(x => x.CreatedAt).Last().User.DisplayName
-                        : null,
-                    LastMessageAt = chat.UpdatedAt?.ToShortTimeString() ?? (chat.Messages.Any()
-                        ? chat.Messages.OrderBy(messageEntity => messageEntity.CreatedAt)
-                            .Last().CreatedAt
-                            .ToShortTimeString()
-                        : null),
                     MembersCount = chat.MembersCount,
                     ChatType = chat.ChatType,
                     IsMember = isMember,
+                    LastMessage = chat.Messages.Any()
+                        ? chat.Messages.OrderBy(x => x.CreatedAt).Select(x =>
+                            new Message
+                            {
+                                MessageId = x.Id,
+                                UserDisplayName = x.User.DisplayName,
+                                MessageText = x.Content,
+                                CreatedAt = x.CreatedAt.ToShortTimeString(),
+                                UpdatedAt = x.UpdatedAt?.ToShortTimeString(),
+                                IsEncrypted = x.IsEncrypted,
+                                AuthorPublicKey = x.AuthorPublicKey
+                            }).Last()
+                        : null,
                 });
             }
 
