@@ -1,8 +1,8 @@
-﻿namespace MangoAPI.BusinessLogic.ApiQueries.Chats
-{
-    using System;
-    using FluentValidation;
+﻿using System;
+using FluentValidation;
 
+namespace MangoAPI.BusinessLogic.ApiQueries.Chats
+{
     public class GetCurrentUserChatsQueryValidator : AbstractValidator<GetCurrentUserChatsQuery>
     {
         public GetCurrentUserChatsQueryValidator()

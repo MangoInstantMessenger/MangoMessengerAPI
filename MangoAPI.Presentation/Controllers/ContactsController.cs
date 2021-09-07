@@ -1,19 +1,19 @@
-﻿namespace MangoAPI.Presentation.Controllers
-{
-    using System.Threading;
-    using System.Threading.Tasks;
-    using BusinessLogic.ApiCommands.Contacts;
-    using BusinessLogic.ApiQueries.Contacts;
-    using BusinessLogic.Responses;
-    using Extensions;
-    using Interfaces;
-    using MediatR;
-    using Microsoft.AspNetCore.Authentication.JwtBearer;
-    using Microsoft.AspNetCore.Authorization;
-    using Microsoft.AspNetCore.Http;
-    using Microsoft.AspNetCore.Mvc;
-    using Swashbuckle.AspNetCore.Annotations;
+﻿using System.Threading;
+using System.Threading.Tasks;
+using MangoAPI.BusinessLogic.ApiCommands.Contacts;
+using MangoAPI.BusinessLogic.ApiQueries.Contacts;
+using MangoAPI.BusinessLogic.Responses;
+using MangoAPI.Presentation.Extensions;
+using MangoAPI.Presentation.Interfaces;
+using MediatR;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Swashbuckle.AspNetCore.Annotations;
 
+namespace MangoAPI.Presentation.Controllers
+{
     /// <summary>
     /// Controller responsible for Contacts Entity.
     /// </summary>
@@ -40,7 +40,7 @@
         [HttpPost("{contactId}")]
         [SwaggerOperation(Summary = "Adds particular user to the contacts. Fetches user by user ID. " +
                                     "Requires role: User.")]
-        [ProducesResponseType(typeof(AddContactResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ResponseBase), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
@@ -65,7 +65,7 @@
         [HttpDelete("{contactId}")]
         [SwaggerOperation(Summary = "Deletes particular contact from the contacts. Fetches user by user ID. " +
                                     "Requires role: User")]
-        [ProducesResponseType(typeof(DeleteContactResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ResponseBase), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
@@ -73,7 +73,7 @@
             CancellationToken cancellationToken)
         {
             var currentUserId = HttpContext.User.GetUserId();
-            var command = new DeleteContactCommand()
+            var command = new DeleteContactCommand
             {
                 UserId = currentUserId,
                 ContactId = contactId,
@@ -96,6 +96,32 @@
         public async Task<IActionResult> GetContacts(CancellationToken cancellationToken)
         {
             var query = new GetContactsQuery { UserId = HttpContext.User.GetUserId() };
+
+            return await RequestAsync(query, cancellationToken);
+        }
+
+        /// <summary>
+        /// Searches user by his display name. Requires role: User.
+        /// </summary>
+        /// <param name="data">User's display name, string.</param>
+        /// <param name="cancellationToken">CancellationToken instance.</param>
+        /// <returns>Possible codes: 200, 400, 409.</returns>
+        [HttpGet("searches")]
+        [Authorize(Roles = "User")]
+        [SwaggerOperation(Summary = "Searches user by display name, phone number or e-mail address. Requires role: User.")]
+        [ProducesResponseType(typeof(SearchContactResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        public async Task<IActionResult> SearchesAsync(string searchQuery, 
+            CancellationToken cancellationToken)
+        {
+            var currentUserId = HttpContext.User.GetUserId();
+            var query = new SearchContactQuery()
+            {
+                SearchQuery = searchQuery,
+                UserId = currentUserId
+            };
 
             return await RequestAsync(query, cancellationToken);
         }

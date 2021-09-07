@@ -1,16 +1,16 @@
-﻿namespace MangoAPI.Application.Services
-{
-    using System;
-    using System.Collections.Generic;
-    using System.IdentityModel.Tokens.Jwt;
-    using System.Security.Claims;
-    using System.Text;
-    using Interfaces;
-    using Domain.Constants;
-    using Domain.Entities;
-    using Microsoft.IdentityModel.Tokens;
-    using JwtRegisteredClaimNames = Microsoft.IdentityModel.JsonWebTokens.JwtRegisteredClaimNames;
+﻿using System;
+using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
+using MangoAPI.Application.Interfaces;
+using MangoAPI.Domain.Constants;
+using MangoAPI.Domain.Entities;
+using Microsoft.IdentityModel.Tokens;
+using JwtRegisteredClaimNames = Microsoft.IdentityModel.JsonWebTokens.JwtRegisteredClaimNames;
 
+namespace MangoAPI.Application.Services
+{
     public class JwtGenerator : IJwtGenerator
     {
         private readonly SymmetricSecurityKey _key;
@@ -21,7 +21,7 @@
 
             if (tokenKey == null)
             {
-                throw new NullReferenceException("Mango token key is null");
+                throw new InvalidOperationException("Mango token key is null");
             }
 
             _key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(tokenKey));

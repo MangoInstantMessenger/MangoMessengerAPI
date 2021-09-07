@@ -1,14 +1,14 @@
-﻿namespace MangoAPI.Tests.ApiCommandsTests.Users
-{
-    using System;
-    using System.Threading;
-    using System.Threading.Tasks;
-    using FluentAssertions;
-    using MangoAPI.BusinessLogic.ApiCommands.Users;
-    using BusinessLogic.BusinessExceptions;
-    using Domain.Constants;
-    using NUnit.Framework;
+﻿using System;
+using System.Threading;
+using System.Threading.Tasks;
+using FluentAssertions;
+using MangoAPI.BusinessLogic.ApiCommands.Users;
+using MangoAPI.BusinessLogic.BusinessExceptions;
+using MangoAPI.Domain.Constants;
+using NUnit.Framework;
 
+namespace MangoAPI.Tests.ApiCommandsTests.Users
+{
     [TestFixture]
     public class VerifyEmailCommandHandlerTest
     {
@@ -20,7 +20,7 @@
             var command = new VerifyEmailCommand
             {
                 UserId = "1",
-                Email = "kolosovp94@gmail.com",
+                Email = "kolosovp99@gmail.com",
             };
 
             var result = await handler.Handle(command, CancellationToken.None);

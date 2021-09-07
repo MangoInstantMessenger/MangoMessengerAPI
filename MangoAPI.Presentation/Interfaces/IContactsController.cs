@@ -1,15 +1,17 @@
-﻿namespace MangoAPI.Presentation.Interfaces
-{
-    using System.Threading;
-    using System.Threading.Tasks;
-    using Microsoft.AspNetCore.Mvc;
+﻿using System.Threading;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
 
+namespace MangoAPI.Presentation.Interfaces
+{
     public interface IContactsController
     {
-        public Task<IActionResult> AddContact(string contactId, CancellationToken cancellationToken);
+        Task<IActionResult> AddContact(string contactId, CancellationToken cancellationToken);
 
-        public Task<IActionResult> DeleteContact(string contactId, CancellationToken cancellationToken);
+        Task<IActionResult> DeleteContact(string contactId, CancellationToken cancellationToken);
 
-        public Task<IActionResult> GetContacts(CancellationToken cancellationToken);
+        Task<IActionResult> GetContacts(CancellationToken cancellationToken);
+
+        Task<IActionResult> SearchesAsync(string searchQuery, CancellationToken cancellationToken);
     }
 }

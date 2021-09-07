@@ -1,17 +1,17 @@
-﻿namespace MangoAPI.BusinessLogic.ApiCommands.Sessions
-{
-    using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 
+namespace MangoAPI.BusinessLogic.ApiCommands.Sessions
+{
     public record LoginRequest
     {
         [JsonConstructor]
-        public LoginRequest(string email, string password)
+        public LoginRequest(string emailOrPhone, string password)
         {
-            Email = email;
+            EmailOrPhone = emailOrPhone;
             Password = password;
         }
 
-        public string Email { get; }
+        public string EmailOrPhone { get; }
         public string Password { get; }
     }
 
@@ -19,9 +19,9 @@
     {
         public static LoginCommand ToCommand(this LoginRequest model)
         {
-            return new ()
+            return new()
             {
-                Email = model.Email,
+                EmailOrPhone = model.EmailOrPhone,
                 Password = model.Password,
             };
         }

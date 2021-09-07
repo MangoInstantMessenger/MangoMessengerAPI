@@ -1,10 +1,11 @@
-﻿namespace MangoAPI.BusinessLogic.ApiCommands.Sessions
-{
-    using MediatR;
+﻿using MangoAPI.BusinessLogic.Responses;
+using MediatR;
 
-    public record LoginCommand : IRequest<LoginResponse>
+namespace MangoAPI.BusinessLogic.ApiCommands.Sessions
+{
+    public record LoginCommand : IRequest<TokensResponse>
     {
-        public string Email { get; init; }
+        public string EmailOrPhone { get; init; }
         public string Password { get; init; }
     }
 }

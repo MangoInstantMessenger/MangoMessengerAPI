@@ -1,17 +1,15 @@
-﻿using MangoAPI.DataAccess.Database.Extensions;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
+using MangoAPI.BusinessLogic.Models;
+using MangoAPI.DataAccess.Database;
+using MangoAPI.DataAccess.Database.Extensions;
+using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 namespace MangoAPI.BusinessLogic.ApiQueries.Chats
 {
-    using DataAccess.Database;
-    using MangoAPI.BusinessLogic.Models;
-    using MangoAPI.Domain.Enums;
-    using MediatR;
-    using Microsoft.EntityFrameworkCore;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Threading;
-    using System.Threading.Tasks;
-
     public class SearchChatsQueryHandler : IRequestHandler<SearchChatsQuery, SearchChatsResponse>
     {
         private readonly MangoPostgresDbContext _postgresDbContext;
@@ -23,8 +21,14 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Chats
 
         public async Task<SearchChatsResponse> Handle(SearchChatsQuery request, CancellationToken cancellationToken)
         {
-            var chats = await _postgresDbContext
-                .Chats.SearchChatsByDisplayNameAsync(request.DisplayName, cancellationToken);
+            var chats = await _postgresDbContext.Chats.GetPublicChatsIncludeMessagesUsersAsync(cancellationToken);
+
+            if (!string.IsNullOrEmpty(request.DisplayName) || !string.IsNullOrWhiteSpace(request.DisplayName))
+            {
+                chats = chats
+                    .Where(x => x.Title.ToUpper().Contains(request.DisplayName.ToUpper()))
+                    .ToList();
+            }
 
             var resultList = new List<Chat>();
 
@@ -40,14 +44,16 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Chats
                     Image = chat.Image,
                     Description = chat.Description,
                     LastMessage = chat.Messages.Any()
-                            ? chat.Messages.Last().Content
-                            : null,
+                        ? chat.Messages.OrderBy(x => x.CreatedAt).Last().Content
+                        : null,
                     LastMessageAuthor = chat.Messages.Any()
-                            ? chat.Messages.Last().User.DisplayName
-                            : null,
-                    LastMessageAt = chat.Messages.Any()
-                            ? chat.Messages.Last().CreatedAt.ToShortTimeString()
-                            : null,
+                        ? chat.Messages.OrderBy(x => x.CreatedAt).Last().User.DisplayName
+                        : null,
+                    LastMessageAt = chat.UpdatedAt?.ToShortTimeString() ?? (chat.Messages.Any()
+                        ? chat.Messages.OrderBy(messageEntity => messageEntity.CreatedAt)
+                            .Last().CreatedAt
+                            .ToShortTimeString()
+                        : null),
                     MembersCount = chat.MembersCount,
                     ChatType = chat.ChatType,
                     IsMember = isMember,

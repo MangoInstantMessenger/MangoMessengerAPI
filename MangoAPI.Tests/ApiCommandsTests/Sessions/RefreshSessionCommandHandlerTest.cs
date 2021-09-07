@@ -1,18 +1,18 @@
-﻿namespace MangoAPI.Tests.ApiCommandsTests.Sessions
-{
-    using System;
-    using System.Collections.Generic;
-    using System.Threading;
-    using System.Threading.Tasks;
-    using FluentAssertions;
-    using Application.Interfaces;
-    using MangoAPI.BusinessLogic.ApiCommands.Sessions;
-    using BusinessLogic.BusinessExceptions;
-    using Domain.Constants;
-    using Domain.Entities;
-    using Moq;
-    using NUnit.Framework;
+﻿using System;
+using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
+using FluentAssertions;
+using MangoAPI.Application.Interfaces;
+using MangoAPI.BusinessLogic.ApiCommands.Sessions;
+using MangoAPI.BusinessLogic.BusinessExceptions;
+using MangoAPI.Domain.Constants;
+using MangoAPI.Domain.Entities;
+using Moq;
+using NUnit.Framework;
 
+namespace MangoAPI.Tests.ApiCommandsTests.Sessions
+{
     [TestFixture]
     public class RefreshSessionCommandHandlerTest
     {

@@ -1,12 +1,12 @@
-﻿namespace MangoAPI.DataAccess.Database.Configurations
-{
-    using System;
-    using Domain.Constants;
-    using Domain.Entities;
-    using Domain.Enums;
-    using Microsoft.EntityFrameworkCore;
-    using Microsoft.EntityFrameworkCore.Metadata.Builders;
+﻿using System;
+using MangoAPI.Domain.Constants;
+using MangoAPI.Domain.Entities;
+using MangoAPI.Domain.Enums;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
+namespace MangoAPI.DataAccess.Database.Configurations
+{
     public class ChatEntityConfiguration : IEntityTypeConfiguration<ChatEntity>
     {
         public void Configure(EntityTypeBuilder<ChatEntity> builder)

@@ -1,11 +1,10 @@
-﻿// ReSharper disable RedundantNameQualifier
+﻿using System.Threading;
+using System.Threading.Tasks;
+using MangoAPI.BusinessLogic.ApiCommands.Sessions;
+using Microsoft.AspNetCore.Mvc;
+
 namespace MangoAPI.Presentation.Interfaces
 {
-    using System.Threading;
-    using System.Threading.Tasks;
-    using MangoAPI.BusinessLogic.ApiCommands.Sessions;
-    using Microsoft.AspNetCore.Mvc;
-
     public interface ISessionsController
     {
         Task<IActionResult> LoginAsync(LoginRequest request, CancellationToken cancellationToken);

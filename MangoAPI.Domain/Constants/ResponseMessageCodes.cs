@@ -16,7 +16,6 @@
         public const string ChatNotFound = "CHAT_NOT_FOUND";
         public const string MessageNotFound = "MESSAGE_NOT_FOUND";
         public const string UserAlreadyJoinedGroup = "USER_ALREADY_JOINED_GROUP";
-        public const string DirectChatAlreadyExists = "DIRECT_CHAT_ALREADY_EXISTS";
         public const string InvalidPhoneCode = "INVALID_PHONE_CODE";
         public const string ContactAlreadyExist = "CONTACT_ALREADY_EXISTS";
         public const string ContactNotFound = "CONTACT_NOT_FOUND";
@@ -24,5 +23,6 @@
         public const string InvalidGroupType = "INVALID_GROUP_TYPE";
         public const string CannotAddSelfToContacts = "CANNOT_ADD_SELF_TO_CONTACTS";
         public const string CannotCreateSelfChat = "CANNOT_CREATE_SELF_CHAT";
+        public const string OldAndNewPasswordsAreSame = "OLD_AND_NEW_PASSWORDS_ARE_SAME";
     }
 }

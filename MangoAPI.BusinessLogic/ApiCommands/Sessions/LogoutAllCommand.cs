@@ -1,8 +1,9 @@
-﻿namespace MangoAPI.BusinessLogic.ApiCommands.Sessions
-{
-    using MediatR;
+﻿using MangoAPI.BusinessLogic.Responses;
+using MediatR;
 
-    public record LogoutAllCommand : IRequest<LogoutResponse>
+namespace MangoAPI.BusinessLogic.ApiCommands.Sessions
+{
+    public record LogoutAllCommand : IRequest<ResponseBase>
     {
         public string UserId { get; init; }
     }

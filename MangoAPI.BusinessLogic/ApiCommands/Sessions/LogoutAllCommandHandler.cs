@@ -1,17 +1,16 @@
-﻿using MangoAPI.DataAccess.Database.Extensions;
+﻿using System.Threading;
+using System.Threading.Tasks;
+using MangoAPI.BusinessLogic.BusinessExceptions;
+using MangoAPI.BusinessLogic.Responses;
+using MangoAPI.DataAccess.Database;
+using MangoAPI.DataAccess.Database.Extensions;
+using MangoAPI.Domain.Constants;
+using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 namespace MangoAPI.BusinessLogic.ApiCommands.Sessions
 {
-    using System.Linq;
-    using System.Threading;
-    using System.Threading.Tasks;
-    using BusinessExceptions;
-    using DataAccess.Database;
-    using Domain.Constants;
-    using MediatR;
-    using Microsoft.EntityFrameworkCore;
-
-    public class LogoutAllCommandHandler : IRequestHandler<LogoutAllCommand, LogoutResponse>
+    public class LogoutAllCommandHandler : IRequestHandler<LogoutAllCommand, ResponseBase>
     {
         private readonly MangoPostgresDbContext _postgresDbContext;
 
@@ -20,7 +19,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Sessions
             _postgresDbContext = postgresDbContext;
         }
 
-        public async Task<LogoutResponse> Handle(LogoutAllCommand request, CancellationToken cancellationToken)
+        public async Task<ResponseBase> Handle(LogoutAllCommand request, CancellationToken cancellationToken)
         {
             var userSessions = _postgresDbContext.Sessions.GetUserSessionsById(request.UserId);
 
@@ -33,7 +32,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Sessions
 
             await _postgresDbContext.SaveChangesAsync(cancellationToken);
 
-            return LogoutResponse.SuccessResponse;
+            return ResponseBase.SuccessResponse;
         }
     }
 }

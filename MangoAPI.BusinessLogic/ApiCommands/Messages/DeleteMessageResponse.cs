@@ -1,9 +1,9 @@
-﻿namespace MangoAPI.BusinessLogic.ApiCommands.Messages
-{
-    using MangoAPI.Domain.Constants;
-    using MangoAPI.Domain.Entities;
-    using Responses;
+﻿using MangoAPI.BusinessLogic.Responses;
+using MangoAPI.Domain.Constants;
+using MangoAPI.Domain.Entities;
 
+namespace MangoAPI.BusinessLogic.ApiCommands.Messages
+{
     public record DeleteMessageResponse : MessageResponseBase<DeleteMessageResponse>
     {
         public string MessageId { get; init; }

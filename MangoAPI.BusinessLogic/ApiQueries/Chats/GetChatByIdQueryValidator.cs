@@ -1,5 +1,5 @@
-﻿using FluentValidation;
-using System;
+﻿using System;
+using FluentValidation;
 
 namespace MangoAPI.BusinessLogic.ApiQueries.Chats
 {

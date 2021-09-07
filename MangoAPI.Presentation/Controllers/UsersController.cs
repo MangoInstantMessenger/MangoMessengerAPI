@@ -1,19 +1,19 @@
-﻿namespace MangoAPI.Presentation.Controllers
-{
-    using System.Threading;
-    using System.Threading.Tasks;
-    using BusinessLogic.ApiCommands.Users;
-    using BusinessLogic.ApiQueries.Users;
-    using BusinessLogic.Responses;
-    using Extensions;
-    using Interfaces;
-    using MediatR;
-    using Microsoft.AspNetCore.Authentication.JwtBearer;
-    using Microsoft.AspNetCore.Authorization;
-    using Microsoft.AspNetCore.Http;
-    using Microsoft.AspNetCore.Mvc;
-    using Swashbuckle.AspNetCore.Annotations;
+﻿using System.Threading;
+using System.Threading.Tasks;
+using MangoAPI.BusinessLogic.ApiCommands.Users;
+using MangoAPI.BusinessLogic.ApiQueries.Users;
+using MangoAPI.BusinessLogic.Responses;
+using MangoAPI.Presentation.Extensions;
+using MangoAPI.Presentation.Interfaces;
+using MediatR;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Swashbuckle.AspNetCore.Annotations;
 
+namespace MangoAPI.Presentation.Controllers
+{
     /// <summary>
     /// Controller responsible for User Entity.
     /// </summary>
@@ -47,11 +47,10 @@
             "Does not require any authorization or users role. " +
             "After registration user receives pair of access/refresh tokens. " +
             "Access token claim role is Unverified. ")]
-        [ProducesResponseType(typeof(RegisterResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(TokensResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
-        public async Task<IActionResult> RegisterAsync(
-            [FromBody] RegisterRequest request,
+        public async Task<IActionResult> RegisterAsync([FromBody] RegisterRequest request,
             CancellationToken cancellationToken)
         {
             return await RequestAsync(request.ToCommand(), cancellationToken);
@@ -70,11 +69,10 @@
         [SwaggerOperation(Summary = "Confirms user's email address. Adds a User role to the current user. " +
                                     "This endpoint may be accessed by both roles: Unverified, User. " +
                                     "On refresh session user receives new access token with updated roles. ")]
-        [ProducesResponseType(typeof(VerifyEmailResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ResponseBase), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
-        public async Task<IActionResult> EmailConfirmationAsync(
-            [FromBody] VerifyEmailRequest request,
+        public async Task<IActionResult> EmailConfirmationAsync([FromBody] VerifyEmailRequest request,
             CancellationToken cancellationToken)
         {
             var command = request.ToCommand();
@@ -94,11 +92,10 @@
         [SwaggerOperation(Summary = "Confirms user's phone number. Adds a User role to the current user. " +
                                     "This endpoint may be accessed by both roles: Unverified, User. " +
                                     "On refresh session user receives new access token with updated roles. ")]
-        [ProducesResponseType(typeof(VerifyPhoneResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ResponseBase), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
-        public async Task<IActionResult> PhoneConfirmationAsync(
-            [FromRoute] int phoneCode,
+        public async Task<IActionResult> PhoneConfirmationAsync([FromRoute] int phoneCode,
             CancellationToken cancellationToken)
         {
             var userId = HttpContext.User.GetUserId();
@@ -120,11 +117,11 @@
         [HttpPut("password")]
         [Authorize(Roles = "User")]
         [SwaggerOperation(Summary = "Changes password by current password. Required role: User")]
-        [ProducesResponseType(typeof(ChangePasswordResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ResponseBase), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public async Task<IActionResult> ChangePassword([FromBody] ChangePasswordRequest request, 
+        public async Task<IActionResult> ChangePassword([FromBody] ChangePasswordRequest request,
             CancellationToken cancellationToken)
         {
             var userId = HttpContext.User.GetUserId();
@@ -148,31 +145,8 @@
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> GetUserById([FromRoute] string userId, CancellationToken cancellationToken)
         {
-            var query = new GetUserQuery { UserId = userId };
+            var query = new GetUserQuery {UserId = userId};
             return await RequestAsync(query, cancellationToken);
-        }
-
-        /// <summary>
-        /// Searches user by his display name. Requires role: User.
-        /// </summary>
-        /// <param name="displayName">User's display name, string.</param>
-        /// <param name="cancellationToken">CancellationToken instance.</param>
-        /// <returns>Possible codes: 200, 400, 409.</returns>
-        [HttpGet("searches/{displayName}")]
-        [Authorize(Roles = "User")]
-        [SwaggerOperation(Summary = "Searches user by his display name. Requires role: User.")]
-        [ProducesResponseType(typeof(SearchUserByDisplayNameResponse), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
-        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public async Task<IActionResult> SearchesAsync(string displayName, CancellationToken cancellationToken)
-        {
-            var command = new SearchUserByDisplayNameQuery
-            {
-                DisplayName = displayName,
-            };
-
-            return await RequestAsync(command, cancellationToken);
         }
 
         /// <summary>
@@ -192,7 +166,7 @@
         public async Task<IActionResult> GetCurrentUser(CancellationToken cancellationToken)
         {
             var userId = HttpContext.User.GetUserId();
-            var request = new GetUserQuery { UserId = userId };
+            var request = new GetUserQuery {UserId = userId};
             return await RequestAsync(request, cancellationToken);
         }
 
@@ -205,16 +179,36 @@
         [HttpPut("information")]
         [Authorize(Roles = "User")]
         [SwaggerOperation(Summary = "Updates user's personal information. Requires role: User.")]
-        [ProducesResponseType(typeof(UpdateUserInformationResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ResponseBase), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public async Task<IActionResult> UpdateUserInformationAsync(
-            [FromBody] UpdateUserInformationRequest request,
+        public async Task<IActionResult> UpdateUserInformationAsync([FromBody] UpdateUserInformationRequest request,
             CancellationToken cancellationToken)
         {
             var userId = HttpContext.User.GetUserId();
             var command = request.ToCommand(userId);
+
+            return await RequestAsync(command, cancellationToken);
+        }
+
+        /// <summary>
+        /// Updates user's public key. Requires role: User.
+        /// </summary>
+        /// <param name="publicKey">New public key.</param>
+        /// <param name="cancellationToken">CancellationToken instance.</param>
+        /// <returns>Possible codes: 200, 400, 409.</returns>
+        [HttpPut("public-key/{publicKey:int}")]
+        [Authorize(Roles = "User")]
+        [SwaggerOperation(Summary = "Updates user's public key. Requires role: User.")]
+        [ProducesResponseType(typeof(ResponseBase), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        public async Task<IActionResult> UpdatePublicKeyAsync(int publicKey, CancellationToken cancellationToken)
+        {
+            var userId = HttpContext.User.GetUserId();
+            var command = new UpdatePublicKeyCommand(userId, publicKey);
 
             return await RequestAsync(command, cancellationToken);
         }

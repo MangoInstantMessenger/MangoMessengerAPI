@@ -1,9 +1,7 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using MangoAPI.Domain.Entities;
+using Microsoft.EntityFrameworkCore;
 using System.Threading;
 using System.Threading.Tasks;
-using MangoAPI.Domain.Entities;
-using Microsoft.EntityFrameworkCore;
 
 namespace MangoAPI.DataAccess.Database.Extensions
 {
@@ -15,6 +13,11 @@ namespace MangoAPI.DataAccess.Database.Extensions
             return await dbSet.FirstOrDefaultAsync(x => x.Id == userId, cancellationToken);
         }
 
+        public static async Task<UserEntity> FindUserByEmailOrPhoneAsync(this DbSet<UserEntity> dbSet, string phoneOrEmail, CancellationToken cancellationToken)
+        {
+            return await dbSet.FirstOrDefaultAsync(x => x.PhoneNumber == phoneOrEmail || x.Email == phoneOrEmail, cancellationToken);
+        }
+
         public static async Task<UserEntity> FindUserByIdIncludeInfoAsync(this DbSet<UserEntity> dbSet, string userId,
             CancellationToken cancellationToken)
         {
@@ -23,17 +26,6 @@ namespace MangoAPI.DataAccess.Database.Extensions
                 .FirstOrDefaultAsync(x => x.Id == userId, cancellationToken);
         }
 
-        public static async Task<List<UserEntity>> SearchUsersByDisplayNameAsync(
-            this DbSet<UserEntity> dbSet, string displayName,
-            CancellationToken cancellationToken)
-        {
-            return await dbSet
-                .Include(x => x.UserInformation)
-                .AsNoTracking()
-                .Where(x => x.DisplayName.ToUpper().Contains(displayName.ToUpper()))
-                .ToListAsync(cancellationToken);
-        }
-        
         public static async Task<UserEntity> FindUserByEmailAsync(this DbSet<UserEntity> dbSet, string email,
             CancellationToken cancellationToken)
         {
@@ -45,6 +37,5 @@ namespace MangoAPI.DataAccess.Database.Extensions
         {
             return await dbSet.FirstOrDefaultAsync(x => x.PhoneNumber == phone, cancellationToken);
         }
-
     }
 }

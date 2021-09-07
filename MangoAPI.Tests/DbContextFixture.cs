@@ -1,12 +1,12 @@
-﻿namespace MangoAPI.Tests
-{
-    using System;
-    using System.Collections.Generic;
-    using DataAccess.Database;
-    using Domain.Entities;
-    using Domain.Enums;
-    using Microsoft.EntityFrameworkCore;
+﻿using MangoAPI.DataAccess.Database;
+using MangoAPI.Domain.Entities;
+using MangoAPI.Domain.Enums;
+using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
 
+namespace MangoAPI.Tests
+{
     public class DbContextFixture : IDisposable
     {
         public DbContextFixture()
@@ -33,6 +33,7 @@
         {
             PostgresDbContext.Database.EnsureDeleted();
             PostgresDbContext.Dispose();
+            GC.SuppressFinalize(this);
         }
 
         private void SeedUsers()
@@ -80,13 +81,13 @@
 
     internal static class SeedData
     {
-        public static List<UserEntity> Users => new ()
+        public static List<UserEntity> Users => new()
         {
             new UserEntity
             {
                 Id = "1",
                 DisplayName = "Petro",
-                Email = "kolosovp94@gmail.com",
+                Email = "kolosovp99@gmail.com",
                 NormalizedEmail = "KOLOSOVP94@GMAIL.COM",
                 PhoneNumber = "+1 987 65 43 21",
                 PhoneNumberConfirmed = true,
@@ -95,6 +96,7 @@
             {
                 Id = "2",
                 DisplayName = "Szymon",
+                Email = "szymon.murawski@wp.pl",
                 PhoneNumber = "+1 234 45 67",
                 ConfirmationCode = 524675,
             },
@@ -110,7 +112,7 @@
             },
         };
 
-        public static List<UserInformationEntity> UserInfo => new ()
+        public static List<UserInformationEntity> UserInfo => new()
         {
             new UserInformationEntity
             {
@@ -140,7 +142,7 @@
             },
         };
 
-        public static List<SessionEntity> UserSessions => new ()
+        public static List<SessionEntity> UserSessions => new()
         {
             new SessionEntity
             {
@@ -160,7 +162,7 @@
             },
         };
 
-        public static List<ChatEntity> Chats => new ()
+        public static List<ChatEntity> Chats => new()
         {
             new ChatEntity
             {
@@ -186,7 +188,7 @@
                 Title = "Extreme Code Flood",
                 Id = "4",
             },
-            new ChatEntity()
+            new ChatEntity
             {
                 ChatType = ChatType.DirectChat,
                 Title = "Petro / Szymon",
@@ -194,7 +196,7 @@
             }
         };
 
-        public static List<UserChatEntity> UserChats => new ()
+        public static List<UserChatEntity> UserChats => new()
         {
             new UserChatEntity
             {
@@ -222,7 +224,7 @@
             },
         };
 
-        public static List<MessageEntity> Messages => new ()
+        public static List<MessageEntity> Messages => new()
         {
             new MessageEntity
             {
@@ -254,7 +256,7 @@
             },
         };
 
-        public static List<UserContactEntity> Contacts => new ()
+        public static List<UserContactEntity> Contacts => new()
         {
             new UserContactEntity
             {

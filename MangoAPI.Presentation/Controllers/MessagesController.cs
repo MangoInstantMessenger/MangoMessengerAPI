@@ -1,19 +1,19 @@
-﻿namespace MangoAPI.Presentation.Controllers
-{
-    using System.Threading;
-    using System.Threading.Tasks;
-    using BusinessLogic.ApiCommands.Messages;
-    using BusinessLogic.ApiQueries.Messages;
-    using BusinessLogic.Responses;
-    using Extensions;
-    using Interfaces;
-    using MediatR;
-    using Microsoft.AspNetCore.Authentication.JwtBearer;
-    using Microsoft.AspNetCore.Authorization;
-    using Microsoft.AspNetCore.Http;
-    using Microsoft.AspNetCore.Mvc;
-    using Swashbuckle.AspNetCore.Annotations;
+﻿using System.Threading;
+using System.Threading.Tasks;
+using MangoAPI.BusinessLogic.ApiCommands.Messages;
+using MangoAPI.BusinessLogic.ApiQueries.Messages;
+using MangoAPI.BusinessLogic.Responses;
+using MangoAPI.Presentation.Extensions;
+using MangoAPI.Presentation.Interfaces;
+using MediatR;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Swashbuckle.AspNetCore.Annotations;
 
+namespace MangoAPI.Presentation.Controllers
+{
     /// <summary>
     /// Controller responsible for Messages Entity.
     /// </summary>
@@ -45,7 +45,34 @@
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> GetChatMessages([FromRoute] string chatId, CancellationToken cancellationToken)
         {
-            var query = new GetMessagesQuery { ChatId = chatId, UserId = HttpContext.User.GetUserId() };
+            var query = new GetMessagesQuery {ChatId = chatId, UserId = HttpContext.User.GetUserId()};
+            return await RequestAsync(query, cancellationToken);
+        }
+
+        /// <summary>
+        /// Searches messages by content in particular chat. Requires role: User.
+        /// </summary>
+        /// <param name="chatId">Chat ID, UUID.</param>
+        /// <param name="messageText">Searched text.</param>
+        /// <param name="cancellationToken">Cancellation token instance.</param>
+        /// <returns>Possible codes: 200, 400, 409.</returns>
+        [HttpGet("searches/{chatId}")]
+        [SwaggerOperation(Summary = "Searches messages by content in particular chat. Requires role: User.")]
+        [ProducesResponseType(typeof(SearchChatMessagesResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        public async Task<IActionResult> SearchChatMessages(string chatId, string messageText,
+            CancellationToken cancellationToken)
+        {
+            var currentUserId = HttpContext.User.GetUserId();
+            var query = new SearchChatMessagesQuery
+            {
+                ChatId = chatId,
+                MessageText = messageText,
+                UserId = currentUserId
+            };
+
             return await RequestAsync(query, cancellationToken);
         }
 
@@ -78,7 +105,7 @@
         /// <returns>Possible codes: 200, 400, 409.</returns>
         [HttpPut]
         [SwaggerOperation(Summary = "Updates particular message. Requires role: User.")]
-        [ProducesResponseType(typeof(EditMessageResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ResponseBase), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]

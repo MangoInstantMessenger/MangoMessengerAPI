@@ -1,19 +1,19 @@
-﻿namespace MangoAPI.Presentation.Controllers
-{
-    using System.Threading;
-    using System.Threading.Tasks;
-    using BusinessLogic.ApiCommands.Chats;
-    using BusinessLogic.ApiQueries.Chats;
-    using BusinessLogic.Responses;
-    using Extensions;
-    using Interfaces;
-    using MediatR;
-    using Microsoft.AspNetCore.Authentication.JwtBearer;
-    using Microsoft.AspNetCore.Authorization;
-    using Microsoft.AspNetCore.Http;
-    using Microsoft.AspNetCore.Mvc;
-    using Swashbuckle.AspNetCore.Annotations;
+﻿using System.Threading;
+using System.Threading.Tasks;
+using MangoAPI.BusinessLogic.ApiCommands.Chats;
+using MangoAPI.BusinessLogic.ApiQueries.Chats;
+using MangoAPI.BusinessLogic.Responses;
+using MangoAPI.Presentation.Extensions;
+using MangoAPI.Presentation.Interfaces;
+using MediatR;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Swashbuckle.AspNetCore.Annotations;
 
+namespace MangoAPI.Presentation.Controllers
+{
     /// <summary>
     /// Controller responsible for Chats Entity.
     /// </summary>
@@ -45,7 +45,7 @@
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> GetChats(CancellationToken cancellationToken)
         {
-            var request = new GetCurrentUserChatsQuery {UserId = HttpContext.User.GetUserId()};
+            var request = new GetCurrentUserChatsQuery { UserId = HttpContext.User.GetUserId() };
             return await RequestAsync(request, cancellationToken);
         }
 
@@ -114,7 +114,7 @@
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public async Task<IActionResult> SearchById([FromRoute]string chatId,
+        public async Task<IActionResult> SearchById([FromRoute] string chatId,
             CancellationToken cancellationToken)
         {
             var currentUserId = HttpContext.User.GetUserId();
@@ -134,15 +134,13 @@
         /// <param name="displayName">Display name of the chat, string.</param>
         /// <param name="cancellationToken">Cancellation token instance.</param>
         /// <returns>Possible codes: 200, 400, 409.</returns>
-        [HttpGet("searches/{displayName}")]
+        [HttpGet("searches")]
         [SwaggerOperation(Summary = "Searches chats by display name. Requires role: User.")]
         [ProducesResponseType(typeof(SearchChatsResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public async Task<IActionResult> SearchAsync(
-            [FromRoute] string displayName,
-            CancellationToken cancellationToken)
+        public async Task<IActionResult> SearchAsync([FromQuery] string displayName, CancellationToken cancellationToken)
         {
             var userId = HttpContext.User.GetUserId();
             var command = new SearchChatsQuery

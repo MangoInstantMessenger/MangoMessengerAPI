@@ -1,15 +1,15 @@
-﻿namespace MangoAPI.Tests.ApiCommandsTests.Chats
-{
-    using System;
-    using System.Threading;
-    using System.Threading.Tasks;
-    using FluentAssertions;
-    using MangoAPI.BusinessLogic.ApiCommands.Chats;
-    using BusinessLogic.BusinessExceptions;
-    using Domain.Constants;
-    using Domain.Enums;
-    using NUnit.Framework;
+﻿using System;
+using System.Threading;
+using System.Threading.Tasks;
+using FluentAssertions;
+using MangoAPI.BusinessLogic.ApiCommands.Chats;
+using MangoAPI.BusinessLogic.BusinessExceptions;
+using MangoAPI.Domain.Constants;
+using MangoAPI.Domain.Enums;
+using NUnit.Framework;
 
+namespace MangoAPI.Tests.ApiCommandsTests.Chats
+{
     [TestFixture]
     public class CreateGroupCommandHandlerTest
     {

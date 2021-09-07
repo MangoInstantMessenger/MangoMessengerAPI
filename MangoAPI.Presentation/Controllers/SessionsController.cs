@@ -1,18 +1,18 @@
-﻿namespace MangoAPI.Presentation.Controllers
-{
-    using System.Threading;
-    using System.Threading.Tasks;
-    using BusinessLogic.ApiCommands.Sessions;
-    using BusinessLogic.Responses;
-    using Extensions;
-    using Interfaces;
-    using MediatR;
-    using Microsoft.AspNetCore.Authentication.JwtBearer;
-    using Microsoft.AspNetCore.Authorization;
-    using Microsoft.AspNetCore.Http;
-    using Microsoft.AspNetCore.Mvc;
-    using Swashbuckle.AspNetCore.Annotations;
+﻿using System.Threading;
+using System.Threading.Tasks;
+using MangoAPI.BusinessLogic.ApiCommands.Sessions;
+using MangoAPI.BusinessLogic.Responses;
+using MangoAPI.Presentation.Extensions;
+using MangoAPI.Presentation.Interfaces;
+using MediatR;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Swashbuckle.AspNetCore.Annotations;
 
+namespace MangoAPI.Presentation.Controllers
+{
     /// <summary>
     /// Controller responsible for Sessions Entity.
     /// </summary>
@@ -40,7 +40,7 @@
         [AllowAnonymous]
         [SwaggerOperation(Summary =
             "Logins to the system. Returns pair of the access/refresh tokens. Does not requires authorization.")]
-        [ProducesResponseType(typeof(LoginResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(TokensResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
         public async Task<IActionResult> LoginAsync(
@@ -61,7 +61,7 @@
         [SwaggerOperation(Summary = "Refreshes current user's session. " +
                                     "Returns pair of the access/refresh tokens. " +
                                     "Requires valid refresh token.")]
-        [ProducesResponseType(typeof(RefreshSessionResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(TokensResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
@@ -86,7 +86,7 @@
         [HttpDelete("{refreshToken}")]
         [Authorize(Roles = "Unverified, User")]
         [SwaggerOperation(Summary = "Deletes current user's session. Requires roles: Unverified, User.")]
-        [ProducesResponseType(typeof(LogoutResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ResponseBase), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
@@ -94,7 +94,7 @@
             [FromRoute] string refreshToken,
             CancellationToken cancellationToken)
         {
-            var command = new LogoutCommand { RefreshToken = refreshToken };
+            var command = new LogoutCommand {RefreshToken = refreshToken};
             return await RequestAsync(command, cancellationToken);
         }
 
@@ -106,14 +106,14 @@
         [HttpDelete]
         [Authorize(Roles = "Unverified, User")]
         [SwaggerOperation(Summary = "Deletes all current user's sessions. Requires roles: Unverified, User.")]
-        [ProducesResponseType(typeof(LogoutResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ResponseBase), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> LogoutAllAsync(CancellationToken cancellationToken)
         {
             var userId = HttpContext.User.GetUserId();
-            var command = new LogoutAllCommand { UserId = userId };
+            var command = new LogoutAllCommand {UserId = userId};
             return await RequestAsync(command, cancellationToken);
         }
     }

@@ -1,17 +1,16 @@
-﻿using MangoAPI.DataAccess.Database.Extensions;
+﻿using System;
+using System.Threading;
+using System.Threading.Tasks;
+using MangoAPI.BusinessLogic.BusinessExceptions;
+using MangoAPI.BusinessLogic.Responses;
+using MangoAPI.DataAccess.Database;
+using MangoAPI.DataAccess.Database.Extensions;
+using MangoAPI.Domain.Constants;
+using MediatR;
 
 namespace MangoAPI.BusinessLogic.ApiCommands.Messages
 {
-    using System;
-    using System.Threading;
-    using System.Threading.Tasks;
-    using BusinessExceptions;
-    using DataAccess.Database;
-    using Domain.Constants;
-    using MediatR;
-    using Microsoft.EntityFrameworkCore;
-
-    public class EditMessageCommandHandler : IRequestHandler<EditMessageCommand, EditMessageResponse>
+    public class EditMessageCommandHandler : IRequestHandler<EditMessageCommand, ResponseBase>
     {
         private readonly MangoPostgresDbContext _postgresDbContext;
 
@@ -20,7 +19,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Messages
             _postgresDbContext = postgresDbContext;
         }
 
-        public async Task<EditMessageResponse> Handle(EditMessageCommand request, CancellationToken cancellationToken)
+        public async Task<ResponseBase> Handle(EditMessageCommand request, CancellationToken cancellationToken)
         {
             var currentUser = await _postgresDbContext.Users.FindUserByIdAsync(request.UserId, cancellationToken);
 
@@ -44,7 +43,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Messages
 
             await _postgresDbContext.SaveChangesAsync(cancellationToken);
 
-            return EditMessageResponse.SuccessResponse;
+            return ResponseBase.SuccessResponse;
         }
     }
 }

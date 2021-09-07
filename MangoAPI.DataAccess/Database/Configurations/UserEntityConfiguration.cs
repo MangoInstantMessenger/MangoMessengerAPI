@@ -1,16 +1,20 @@
-﻿namespace MangoAPI.DataAccess.Database.Configurations
-{
-    using System;
-    using Application.Services;
-    using Domain.Constants;
-    using Domain.Entities;
-    using Microsoft.EntityFrameworkCore;
-    using Microsoft.EntityFrameworkCore.Metadata.Builders;
+﻿using System;
+using MangoAPI.Application.Services;
+using MangoAPI.Domain.Constants;
+using MangoAPI.Domain.Entities;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
+namespace MangoAPI.DataAccess.Database.Configurations
+{
     public class UserEntityConfiguration : IEntityTypeConfiguration<UserEntity>
     {
         public void Configure(EntityTypeBuilder<UserEntity> builder)
         {
+            builder.HasMany(x => x.PasswordRestoreRequests)
+                .WithOne(x => x.UserEntity)
+                .HasForeignKey(x => x.UserId);
+            
             builder.HasMany(x => x.Sessions)
                 .WithOne(x => x.UserEntity)
                 .HasForeignKey(x => x.UserId);
@@ -25,9 +29,9 @@
 
             var user1 = new UserEntity
             {
-                PhoneNumber = "+374 775 55 43 10",
+                PhoneNumber = "374775554310",
                 DisplayName = "Khachatur Khachatryan",
-                Bio = "13 y. o. | C# pozer",
+                Bio = "13 y. o. | C# pozer, Hearts Of Iron IV noob",
                 Id = SeedDataConstants.KhachaturId,
                 UserName = "KHACHATUR228",
                 Email = "xachulxx@gmail.com",
@@ -38,7 +42,7 @@
 
             var user2 = new UserEntity
             {
-                PhoneNumber = "+48 743 615 532",
+                PhoneNumber = "48743615532",
                 DisplayName = "razumovsky r",
                 Bio = "11011 y.o Dotnet Developer from $\"{cityName}\"",
                 Id = SeedDataConstants.RazumovskyId,
@@ -51,7 +55,7 @@
 
             var user3 = new UserEntity
             {
-                PhoneNumber = "+7 701 750 62 65",
+                PhoneNumber = "77017506265",
                 DisplayName = "Мусяка Колбасяка",
                 Bio = "Колбасятор.",
                 Id = SeedDataConstants.KolbasatorId,
@@ -64,7 +68,7 @@
 
             var user4 = new UserEntity
             {
-                PhoneNumber = "+1 202 555 0152",
+                PhoneNumber = "12025550152",
                 DisplayName = "Amelit",
                 Bio = "Дипломат",
                 Id = SeedDataConstants.AmelitId,
@@ -77,7 +81,7 @@
 
             var user5 = new UserEntity
             {
-                PhoneNumber = "+48 743 615 532",
+                PhoneNumber = "48743615532",
                 DisplayName = "Petro Kolosov",
                 Bio = "Third year student of WSB at Poznan",
                 Id = SeedDataConstants.PetroId,
@@ -90,7 +94,7 @@
 
             var user6 = new UserEntity
             {
-                PhoneNumber = "+48 743 615 532",
+                PhoneNumber = "48743615532",
                 DisplayName = "Szymon Murawski",
                 Bio = "Teacher of Computer Science at WSB Poznan",
                 Id = SeedDataConstants.SzymonId,
@@ -103,7 +107,7 @@
 
             var user7 = new UserEntity
             {
-                PhoneNumber = "+48 352 643 123",
+                PhoneNumber = "48352643123",
                 DisplayName = "Illia Zubachov",
                 Bio = "Third year student of WSB at Poznan",
                 Id = SeedDataConstants.IlliaId,
@@ -116,7 +120,7 @@
 
             var user8 = new UserEntity
             {
-                PhoneNumber = "+48 278 187 781",
+                PhoneNumber = "48278187781",
                 DisplayName = "Arslanbek Temirbekov",
                 Bio = "Third year student of WSB at Poznan",
                 Id = SeedDataConstants.ArslanbekId,
@@ -129,7 +133,7 @@
 
             var user9 = new UserEntity
             {
-                PhoneNumber = "+48 175 481 653",
+                PhoneNumber = "48175481653",
                 DisplayName = "Serhii Holishevskii",
                 Bio = "Third year student of WSB at Poznan",
                 Id = SeedDataConstants.SerhiiId,

@@ -28,8 +28,7 @@ namespace MangoAPI.DataAccess.Database.Extensions
         public static async Task<ChatEntity> FindChatByIdIncludeMessagesAsync(this DbSet<ChatEntity> dbSet,
             string chatId, CancellationToken cancellationToken)
         {
-            return await dbSet
-                .Include(x => x.Messages)
+            return await dbSet.Include(x => x.Messages)
                 .ThenInclude(x => x.User)
                 .FirstOrDefaultAsync(x => x.Id == chatId, cancellationToken);
         }
@@ -37,8 +36,7 @@ namespace MangoAPI.DataAccess.Database.Extensions
         public static async Task<ChatEntity> FindChatByIdIncludeChatUsersAsync(this DbSet<ChatEntity> dbSet,
             string chatId, CancellationToken cancellationToken)
         {
-            return await dbSet
-                .Include(x => x.ChatUsers)
+            return await dbSet.Include(x => x.ChatUsers)
                 .FirstOrDefaultAsync(x => x.Id == chatId, cancellationToken);
         }
 
@@ -50,13 +48,12 @@ namespace MangoAPI.DataAccess.Database.Extensions
                     x.ChatType != ChatType.PrivateChannel, cancellationToken);
         }
 
-        public static async Task<List<ChatEntity>> SearchChatsByDisplayNameAsync(this DbSet<ChatEntity> dbSet,
-            string displayName, CancellationToken cancellationToken)
+        public static async Task<List<ChatEntity>> GetPublicChatsIncludeMessagesUsersAsync(this DbSet<ChatEntity> dbSet, 
+            CancellationToken cancellationToken)
         {
             return await dbSet.AsNoTracking()
                 .Include(x => x.Messages)
                 .ThenInclude(x => x.User)
-                .Where(x => x.Title.ToLower().Contains(displayName.ToLower()))
                 .Where(x => x.ChatType != ChatType.PrivateChannel)
                 .Where(x => x.ChatType != ChatType.DirectChat)
                 .ToListAsync(cancellationToken);

@@ -1,8 +1,8 @@
-﻿namespace MangoAPI.BusinessLogic.ApiCommands.Messages
-{
-    using System;
-    using FluentValidation;
+﻿using System;
+using FluentValidation;
 
+namespace MangoAPI.BusinessLogic.ApiCommands.Messages
+{
     public class SendMessageCommandValidator : AbstractValidator<SendMessageCommand>
     {
         public SendMessageCommandValidator()

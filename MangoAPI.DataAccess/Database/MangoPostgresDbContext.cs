@@ -1,10 +1,10 @@
-﻿namespace MangoAPI.DataAccess.Database
-{
-    using System.Reflection;
-    using Domain.Entities;
-    using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-    using Microsoft.EntityFrameworkCore;
+﻿using System.Reflection;
+using MangoAPI.Domain.Entities;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 
+namespace MangoAPI.DataAccess.Database
+{
     public class MangoPostgresDbContext : IdentityDbContext<UserEntity>
     {
         public MangoPostgresDbContext()
@@ -27,6 +27,8 @@
         public DbSet<UserContactEntity> UserContacts { get; set; }
 
         public DbSet<UserInformationEntity> UserInformation { get; set; }
+        
+        public DbSet<PasswordRestoreRequestEntity> PasswordRestoreRequests { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

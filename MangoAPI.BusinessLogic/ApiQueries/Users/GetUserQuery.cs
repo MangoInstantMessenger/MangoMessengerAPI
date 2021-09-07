@@ -1,7 +1,7 @@
-﻿namespace MangoAPI.BusinessLogic.ApiQueries.Users
-{
-    using MediatR;
+﻿using MediatR;
 
+namespace MangoAPI.BusinessLogic.ApiQueries.Users
+{
     public record GetUserQuery : IRequest<GetUserResponse>
     {
         public string UserId { get; init; }

@@ -1,9 +1,9 @@
-﻿namespace MangoAPI.BusinessLogic.ApiCommands.Chats
-{
-    using Responses;
-    using Domain.Constants;
-    using Domain.Entities;
+﻿using MangoAPI.BusinessLogic.Responses;
+using MangoAPI.Domain.Constants;
+using MangoAPI.Domain.Entities;
 
+namespace MangoAPI.BusinessLogic.ApiCommands.Chats
+{
     public record CreateChatEntityResponse : ChatResponseBase<CreateChatEntityResponse>
     {
         public string ChatId { get; init; }

@@ -1,8 +1,8 @@
-﻿namespace MangoAPI.BusinessLogic.ApiCommands.Users
-{
-    using System;
-    using FluentValidation;
+﻿using System;
+using FluentValidation;
 
+namespace MangoAPI.BusinessLogic.ApiCommands.Users
+{
     public class ChangePasswordCommandValidator : AbstractValidator<ChangePasswordCommand>
     {
         public ChangePasswordCommandValidator()
@@ -19,7 +19,7 @@
 
             RuleFor(x => x.UserId)
                 .Must(x => Guid.TryParse(x, out _))
-                .WithMessage("Change Password: User Id can not be parsed.");
+                .WithMessage("User Id can not be parsed.");
         }
     }
 }

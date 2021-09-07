@@ -1,7 +1,7 @@
-﻿namespace MangoAPI.Domain.Entities
-{
-    using System;
+﻿using System;
 
+namespace MangoAPI.Domain.Entities
+{
     public sealed class SessionEntity
     {
         public string Id { get; set; }
