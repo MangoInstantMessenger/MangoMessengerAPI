@@ -31,5 +31,7 @@ namespace MangoAPI.BusinessLogic.Models
         public string Instagram { get; init; }
 
         public string LinkedIn { get; init; }
+
+        public int PublicKey { get; init; }
     }
 }

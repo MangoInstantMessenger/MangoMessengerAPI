@@ -1,6 +1,4 @@
-﻿using System.Threading;
-using System.Threading.Tasks;
-using MangoAPI.BusinessLogic.ApiCommands.Users;
+﻿using MangoAPI.BusinessLogic.ApiCommands.Users;
 using MangoAPI.BusinessLogic.ApiQueries.Users;
 using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.Presentation.Extensions;
@@ -11,6 +9,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace MangoAPI.Presentation.Controllers
 {
@@ -145,7 +145,7 @@ namespace MangoAPI.Presentation.Controllers
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> GetUserById([FromRoute] string userId, CancellationToken cancellationToken)
         {
-            var query = new GetUserQuery {UserId = userId};
+            var query = new GetUserQuery { UserId = userId };
             return await RequestAsync(query, cancellationToken);
         }
 
@@ -166,30 +166,8 @@ namespace MangoAPI.Presentation.Controllers
         public async Task<IActionResult> GetCurrentUser(CancellationToken cancellationToken)
         {
             var userId = HttpContext.User.GetUserId();
-            var request = new GetUserQuery {UserId = userId};
+            var request = new GetUserQuery { UserId = userId };
             return await RequestAsync(request, cancellationToken);
-        }
-
-        /// <summary>
-        /// Updates user's personal information. Requires role: User.
-        /// </summary>
-        /// <param name="request">UpdateUserInformationRequest instance.</param>
-        /// <param name="cancellationToken">CancellationToken instance.</param>
-        /// <returns>Possible codes: 200, 400, 409.</returns>
-        [HttpPut("information")]
-        [Authorize(Roles = "User")]
-        [SwaggerOperation(Summary = "Updates user's personal information. Requires role: User.")]
-        [ProducesResponseType(typeof(ResponseBase), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
-        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public async Task<IActionResult> UpdateUserInformationAsync([FromBody] UpdateUserInformationRequest request,
-            CancellationToken cancellationToken)
-        {
-            var userId = HttpContext.User.GetUserId();
-            var command = request.ToCommand(userId);
-
-            return await RequestAsync(command, cancellationToken);
         }
 
         /// <summary>
@@ -228,7 +206,7 @@ namespace MangoAPI.Presentation.Controllers
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public async Task<IActionResult> UpdateUserAccountInfoAsync([FromBody] UpdateUserAccountInfoRequest request, 
+        public async Task<IActionResult> UpdateUserAccountInfoAsync([FromBody] UpdateUserAccountInfoRequest request,
             CancellationToken cancellationToken)
         {
             var userId = HttpContext.User.GetUserId();

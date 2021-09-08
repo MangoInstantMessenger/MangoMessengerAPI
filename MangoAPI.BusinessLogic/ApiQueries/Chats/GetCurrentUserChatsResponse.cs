@@ -21,22 +21,23 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Chats
                 Title = userChatEntity.Chat.Title,
                 Image = userChatEntity.Chat.Image,
                 Description = userChatEntity.Chat.Description,
-                LastMessage = userChatEntity.Chat.Messages.Any()
-                      ? userChatEntity.Chat.Messages.OrderBy(messageEntity => messageEntity.CreatedAt).Last().Content
-                      : null,
-                LastMessageAuthor = userChatEntity.Chat.Messages.Any()
-                      ? userChatEntity.Chat.Messages.OrderBy(messageEntity => messageEntity.CreatedAt).Last().User
-                          .DisplayName
-                      : null,
-                LastMessageAt = userChatEntity.Chat.UpdatedAt?.ToShortTimeString() ?? (userChatEntity.Chat.Messages.Any()
-                        ? userChatEntity.Chat.Messages.OrderBy(messageEntity => messageEntity.CreatedAt)
-                                                      .Last().CreatedAt
-                                                      .ToShortTimeString()
-                        : null),
                 MembersCount = userChatEntity.Chat.MembersCount,
                 ChatType = userChatEntity.Chat.ChatType,
                 IsArchived = userChatEntity.IsArchived,
                 IsMember = true,
+                LastMessage = userChatEntity.Chat.Messages.Any()
+                    ? userChatEntity.Chat.Messages.OrderBy(messageEntity => messageEntity.CreatedAt).Select(x =>
+                        new Message
+                        {
+                            MessageId = x.Id,
+                            UserDisplayName = x.User.DisplayName,
+                            MessageText = x.Content,
+                            CreatedAt = x.CreatedAt.ToShortTimeString(),
+                            UpdatedAt = x.UpdatedAt?.ToShortTimeString(),
+                            IsEncrypted = x.IsEncrypted,
+                            AuthorPublicKey = x.AuthorPublicKey
+                        }).Last()
+                    : null,
             }).ToList(),
         };
     }

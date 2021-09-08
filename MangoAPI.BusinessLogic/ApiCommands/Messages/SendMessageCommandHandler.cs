@@ -51,6 +51,8 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Messages
                 ChatId = request.ChatId,
                 UserId = request.UserId,
                 Content = request.MessageText,
+                IsEncrypted = request.IsEncrypted,
+                AuthorPublicKey = user.PublicKey,
                 CreatedAt = DateTime.UtcNow
             };
 
@@ -63,9 +65,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Messages
             return SendMessageResponse.FromSuccess(messageEntity.Id);
         }
 
-        private async Task<bool> CheckUserPermissions(
-            UserEntity user,
-            ChatEntity chat,
+        private async Task<bool> CheckUserPermissions(UserEntity user, ChatEntity chat,
             CancellationToken cancellationToken)
         {
             return chat.ChatType switch
@@ -78,9 +78,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Messages
             };
         }
 
-        private async Task<bool> CheckReadOnlyChannelPermissions(
-            UserEntity user,
-            ChatEntity chat,
+        private async Task<bool> CheckReadOnlyChannelPermissions(UserEntity user, ChatEntity chat,
             CancellationToken cancellationToken)
         {
             return (await _postgresDbContext.UserChats
@@ -89,9 +87,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Messages
                 .Any(x => x.RoleId is UserRole.Moderator or UserRole.Admin or UserRole.Owner);
         }
 
-        private async Task<bool> CheckPublicChannelPermissions(
-            UserEntity user,
-            ChatEntity chat,
+        private async Task<bool> CheckPublicChannelPermissions(UserEntity user, ChatEntity chat,
             CancellationToken cancellationToken)
         {
             return await _postgresDbContext.UserChats
@@ -99,9 +95,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Messages
                 .AnyAsync(cancellationToken);
         }
 
-        private async Task<bool> CheckPrivateChannelPermissions(
-            UserEntity user,
-            ChatEntity chat,
+        private async Task<bool> CheckPrivateChannelPermissions(UserEntity user, ChatEntity chat,
             CancellationToken cancellationToken)
         {
             return await _postgresDbContext.UserChats

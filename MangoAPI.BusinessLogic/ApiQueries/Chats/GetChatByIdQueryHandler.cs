@@ -29,14 +29,17 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Chats
                 throw new BusinessException(ResponseMessageCodes.UserNotFound);
             }
 
-            var chatEntity = await _postgresDbContext.Chats.FindChatByIdIncludeMessagesAsync(request.ChatId, cancellationToken);
+            var chatEntity =
+                await _postgresDbContext.Chats.FindChatByIdIncludeMessagesAsync(request.ChatId, cancellationToken);
 
             if (chatEntity is null)
             {
                 throw new BusinessException(ResponseMessageCodes.ChatNotFound);
             }
 
-            var userChat = await _postgresDbContext.UserChats.FindUserChatByIdAsync(request.UserId, request.ChatId, cancellationToken);
+            var userChat =
+                await _postgresDbContext.UserChats.FindUserChatByIdAsync(request.UserId, request.ChatId,
+                    cancellationToken);
 
             switch (userChat)
             {
@@ -54,18 +57,21 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Chats
                 ChatType = chatEntity.ChatType,
                 Image = chatEntity.Image,
                 Description = chatEntity.Description,
-                LastMessageAuthor = chatEntity.Messages.Any()
-                    ? chatEntity.Messages.OrderBy(messageEntity => messageEntity.CreatedAt).Last().User.DisplayName
-                    : null,
-                LastMessage = chatEntity.Messages.Any()
-                    ? chatEntity.Messages.OrderBy(messageEntity => messageEntity.CreatedAt).Last().Content
-                    : null,
-                LastMessageAt = chatEntity.Messages.Any()
-                    ? chatEntity.Messages.OrderBy(messageEntity => messageEntity.CreatedAt).Last().CreatedAt.ToShortTimeString()
-                    : null,
                 MembersCount = chatEntity.MembersCount,
                 IsMember = userChat != null,
-                IsArchived = userChat != null && userChat.IsArchived,
+                IsArchived = userChat is {IsArchived: true},
+                LastMessage = chatEntity.Messages.Any()
+                    ? chatEntity.Messages.OrderBy(messageEntity => messageEntity.CreatedAt).Select(x => new Message
+                    {
+                        MessageId = x.Id,
+                        UserDisplayName = x.User.DisplayName,
+                        MessageText = x.Content,
+                        CreatedAt = x.CreatedAt.ToShortTimeString(),
+                        UpdatedAt = x.UpdatedAt?.ToShortTimeString(),
+                        IsEncrypted = x.IsEncrypted,
+                        AuthorPublicKey = x.AuthorPublicKey
+                    }).Last()
+                    : null,
             };
 
             return GetChatByIdResponse.FromSuccess(chat);

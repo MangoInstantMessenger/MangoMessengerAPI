@@ -32,6 +32,7 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Users
                     LinkedIn = user.UserInformation.LinkedIn,
                     Username = user.UserName,
                     Bio = user.Bio,
+                    PublicKey = user.PublicKey,
                 },
             };
         }
