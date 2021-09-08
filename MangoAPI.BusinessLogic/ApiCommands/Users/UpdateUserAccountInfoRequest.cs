@@ -5,16 +5,8 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
     public record UpdateUserAccountInfoRequest
     {
         [JsonConstructor]
-        public UpdateUserAccountInfoRequest(
-            string firstName,
-            string lastName,
-            string phoneNumber,
-            string birthdayDate,
-            string email,
-            string website,
-            string username,
-            string bio,
-            string address,
+        public UpdateUserAccountInfoRequest(string firstName, string lastName, string phoneNumber,
+            string birthdayDate, string email, string website, string username, string bio, string address,
             string displayName)
         {
             FirstName = firstName;
@@ -28,7 +20,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
             Address = address;
             DisplayName = displayName;
         }
-        
+
         public string FirstName { get; }
         public string LastName { get; }
         public string DisplayName { get; }
@@ -44,7 +36,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
     public static class UpdateUserAccountInfoRequestMapper
     {
         public static UpdateUserAccountInfoCommand ToCommand(this UpdateUserAccountInfoRequest model,
-            string userId) => new ()
+            string userId) => new()
         {
             UserId = userId,
             FirstName = model.FirstName,

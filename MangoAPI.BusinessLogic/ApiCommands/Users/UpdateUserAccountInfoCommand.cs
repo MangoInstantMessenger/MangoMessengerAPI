@@ -5,16 +5,16 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
 {
     public record UpdateUserAccountInfoCommand : IRequest<ResponseBase>
     {
-        public string UserId { get; set; }
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
-        public string PhoneNumber { get; set; }
-        public string BirthdayDate { get; set; }
-        public string Email { get; set; }
-        public string Website { get; set; }
-        public string Username { get; set; }
-        public string DisplayName { get; set; }
-        public string Bio { get; set; }
-        public string Address { get; set; }
+        public string UserId { get; init; }
+        public string FirstName { get; init; }
+        public string LastName { get; init; }
+        public string PhoneNumber { get; init; }
+        public string BirthdayDate { get; init; }
+        public string Email { get; init; }
+        public string Website { get; init; }
+        public string Username { get; init; }
+        public string DisplayName { get; init; }
+        public string Bio { get; init; }
+        public string Address { get; init; }
     }
 }
