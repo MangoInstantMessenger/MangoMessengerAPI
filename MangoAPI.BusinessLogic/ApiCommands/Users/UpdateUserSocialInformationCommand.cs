@@ -5,10 +5,10 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
 {
     public record UpdateUserSocialInformationCommand : IRequest<ResponseBase>
     {
-        public string UserId { get; set; }
-        public string Facebook { get; set; }
-        public string Twitter { get; set; }
-        public string Instagram { get; set; }
-        public string LinkedIn { get; set; }
+        public string UserId { get; init; }
+        public string Facebook { get; init; }
+        public string Twitter { get; init; }
+        public string Instagram { get; init; }
+        public string LinkedIn { get; init; }
     }
 }
