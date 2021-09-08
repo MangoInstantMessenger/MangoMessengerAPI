@@ -193,6 +193,28 @@ namespace MangoAPI.Presentation.Controllers
         }
 
         /// <summary>
+        /// Updates user's personal account information. Requires role: User.
+        /// </summary>
+        /// <param name="request">UpdateUserInformationRequest instance.</param>
+        /// <param name="cancellationToken">CancellationToken instance.</param>
+        /// <returns>Possible codes: 200, 400, 409.</returns>
+        [HttpPut("account")]
+        [Authorize(Roles = "User")]
+        [SwaggerOperation(Summary = "Updates user's personal account information. Requires role: User.")]
+        [ProducesResponseType(typeof(ResponseBase), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        public async Task<IActionResult> UpdateUserAccountInfoAsync([FromBody] UpdateUserAccountInfoRequest request, 
+            CancellationToken cancellationToken)
+        {
+            var userId = HttpContext.User.GetUserId();
+            var command = request.ToCommand(userId);
+
+            return await RequestAsync(command, cancellationToken);
+        }
+
+        /// <summary>
         /// Updates user's public key. Requires role: User.
         /// </summary>
         /// <param name="publicKey">New public key.</param>
