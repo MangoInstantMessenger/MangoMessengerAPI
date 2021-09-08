@@ -205,7 +205,8 @@ namespace MangoAPI.Presentation.Controllers
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public async Task<IActionResult> UpdateUserSocialInformationAsync(UpdateUserSocialInformationRequest request,
+        public async Task<IActionResult> UpdateUserSocialInformationAsync(
+            [FromBody] UpdateUserSocialInformationRequest request,
             CancellationToken cancellationToken)
         {
             var currentUserId = HttpContext.User.GetUserId();
