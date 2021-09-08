@@ -1,7 +1,7 @@
-﻿using System.Threading;
-using System.Threading.Tasks;
-using MangoAPI.BusinessLogic.ApiCommands.Users;
+﻿using MangoAPI.BusinessLogic.ApiCommands.Users;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace MangoAPI.Presentation.Interfaces
 {
@@ -19,9 +19,6 @@ namespace MangoAPI.Presentation.Interfaces
 
         Task<IActionResult> GetCurrentUser(CancellationToken cancellationToken);
 
-        Task<IActionResult> UpdateUserInformationAsync(UpdateUserInformationRequest request,
-            CancellationToken cancellationToken);
-        
         Task<IActionResult> UpdateUserAccountInfoAsync(UpdateUserAccountInfoRequest request,
             CancellationToken cancellationToken);
 
