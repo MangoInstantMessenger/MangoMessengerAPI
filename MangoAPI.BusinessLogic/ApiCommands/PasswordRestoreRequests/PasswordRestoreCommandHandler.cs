@@ -1,7 +1,5 @@
-﻿using System;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
-using MangoAPI.Application.Services;
 using MangoAPI.BusinessLogic.BusinessExceptions;
 using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.DataAccess.Database;
@@ -16,29 +14,27 @@ namespace MangoAPI.BusinessLogic.ApiCommands.PasswordRestoreRequests
     public class PasswordRestoreCommandHandler : IRequestHandler<PasswordRestoreCommand, ResponseBase>
     {
         private readonly MangoPostgresDbContext _postgresDbContext;
-        private readonly PasswordHashService _passwordHashService;
         private readonly UserManager<UserEntity> _userManager;
-        
+
         public PasswordRestoreCommandHandler(MangoPostgresDbContext postgresDbContext,
-            PasswordHashService passwordHashService, UserManager<UserEntity> userManager)
+            UserManager<UserEntity> userManager)
         {
             _postgresDbContext = postgresDbContext;
-            _passwordHashService = passwordHashService;
             _userManager = userManager;
         }
-        
+
         public async Task<ResponseBase> Handle(PasswordRestoreCommand request, CancellationToken cancellationToken)
         {
             if (request.NewPassword != request.RepeatPassword)
             {
                 throw new BusinessException(ResponseMessageCodes.OldAndNewPasswordsAreSame);
             }
-            
+
             var restorePasswordRequest =
                 await _postgresDbContext.PasswordRestoreRequests.FindPasswordRestoreRequestByIdAsync(request.RequestId,
                     cancellationToken);
-            
-            if (restorePasswordRequest.ExpiresAt < DateTime.Now || restorePasswordRequest is null)
+
+            if (restorePasswordRequest == null || !restorePasswordRequest.IsValid)
             {
                 throw new BusinessException(ResponseMessageCodes.InvalidOrExpiredRestorePasswordRequest);
             }
@@ -63,7 +59,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.PasswordRestoreRequests
             _postgresDbContext.Users.Update(user);
             _postgresDbContext.PasswordRestoreRequests.Remove(restorePasswordRequest);
             await _postgresDbContext.SaveChangesAsync(cancellationToken);
-            
+
             return ResponseBase.SuccessResponse;
         }
     }

@@ -1,11 +1,10 @@
-﻿using System;
-using FluentValidation;
+﻿using FluentValidation;
 
 namespace MangoAPI.BusinessLogic.ApiCommands.PasswordRestoreRequests
 {
-    public class RestorePasswordCommandValidator : AbstractValidator<RestorePasswordCommand>
+    public class RequestPasswordRestoreCommandValidator : AbstractValidator<RequestPasswordRestoreCommand>
     {
-        public RestorePasswordCommandValidator()
+        public RequestPasswordRestoreCommandValidator()
         {
             RuleFor(x => x.EmailOrPhone)
                 .Cascade(CascadeMode.Stop)
