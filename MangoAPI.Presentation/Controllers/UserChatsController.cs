@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 using MangoAPI.BusinessLogic.ApiCommands.UserChats;
 using MangoAPI.BusinessLogic.Responses;
@@ -42,7 +43,8 @@ namespace MangoAPI.Presentation.Controllers
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public async Task<IActionResult> ArchiveChat(ArchiveChatRequest request, CancellationToken cancellationToken)
+        public async Task<IActionResult> ArchiveChat([FromBody] ArchiveChatRequest request,
+            CancellationToken cancellationToken)
         {
             var userId = HttpContext.User.GetUserId();
             var command = request.ToCommand(userId);
@@ -56,16 +58,17 @@ namespace MangoAPI.Presentation.Controllers
         /// <param name="chatId">Chat ID, UUID.</param>
         /// <param name="cancellationToken">Cancellation token instance.</param>
         /// <returns>Possible codes: 200, 400, 409.</returns>
-        [HttpPost("{chatId}")]
+        [HttpPost("{chatId:guid}")]
         [SwaggerOperation(Summary =
             "Joins to the particular public group. Fetches group by ID. Requires roles: User.")]
         [ProducesResponseType(typeof(ResponseBase), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public async Task<IActionResult> JoinChatAsync([FromRoute] string chatId, CancellationToken cancellationToken)
+        public async Task<IActionResult> JoinChatAsync([FromRoute] Guid chatId, CancellationToken cancellationToken)
         {
             var userId = HttpContext.User.GetUserId();
+            
             var command = new JoinChatCommand
             {
                 UserId = userId,
@@ -81,16 +84,17 @@ namespace MangoAPI.Presentation.Controllers
         /// <param name="chatId">Chat ID, UUID.</param>
         /// <param name="cancellationToken">Cancellation token instance.</param>
         /// <returns>Possible codes: 200, 400, 409.</returns>
-        [HttpDelete("{chatId}")]
+        [HttpDelete("{chatId:guid}")]
         [SwaggerOperation(Summary =
             "Leaves from the particular public group. Fetches group by ID. Requires roles: User.")]
         [ProducesResponseType(typeof(LeaveGroupResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public async Task<IActionResult> LeaveGroup([FromRoute] string chatId, CancellationToken cancellationToken)
+        public async Task<IActionResult> LeaveGroup([FromRoute] Guid chatId, CancellationToken cancellationToken)
         {
             var userId = HttpContext.User.GetUserId();
+            
             var command = new LeaveGroupCommand
             {
                 UserId = userId,

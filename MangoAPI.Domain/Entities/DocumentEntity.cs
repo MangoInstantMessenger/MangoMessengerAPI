@@ -1,8 +1,10 @@
-﻿namespace MangoAPI.Domain.Entities
+﻿using System;
+
+namespace MangoAPI.Domain.Entities
 {
     public class DocumentEntity
     {
-        public string Id { get; set; }
+        public Guid Id { get; set; }
         public string FileName { get; set; }
         public string FilePath { get; set; }
     }

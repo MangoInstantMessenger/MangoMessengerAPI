@@ -1,16 +1,17 @@
-﻿using MangoAPI.Domain.Constants;
+﻿using System;
+using MangoAPI.Domain.Constants;
 
 namespace MangoAPI.BusinessLogic.Responses
 {
     public record TokensResponse : ResponseBase<TokensResponse>
     {
         public string AccessToken { get; init; }
-        
-        public string RefreshToken { get; init; }
 
-        public static TokensResponse FromSuccess(string accessToken, string refreshToken)
+        public Guid RefreshToken { get; init; }
+
+        public static TokensResponse FromSuccess(string accessToken, Guid refreshToken)
         {
-            return new ()
+            return new()
             {
                 Message = ResponseMessageCodes.Success,
                 AccessToken = accessToken,

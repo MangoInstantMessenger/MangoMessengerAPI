@@ -17,7 +17,7 @@ namespace MangoAPI.Tests.ApiCommandsTests.Users
         {
             using var dbContextFixture = new DbContextFixture();
             var handler = new UpdatePublicKeyCommandHandler(dbContextFixture.PostgresDbContext);
-            var command = new UpdatePublicKeyCommand("1", 1337);
+            var command = new UpdatePublicKeyCommand(SeedDataConstants.RazumovskyId, 1337);
 
             var response = await handler.Handle(command, CancellationToken.None);
 
@@ -29,7 +29,7 @@ namespace MangoAPI.Tests.ApiCommandsTests.Users
         {
             using var dbContextFixture = new DbContextFixture();
             var handler = new UpdatePublicKeyCommandHandler(dbContextFixture.PostgresDbContext);
-            var command = new UpdatePublicKeyCommand("1337", 1337);
+            var command = new UpdatePublicKeyCommand(Guid.NewGuid(), 1337);
 
             Func<Task> request = async () => await handler.Handle(command, CancellationToken.None);
 

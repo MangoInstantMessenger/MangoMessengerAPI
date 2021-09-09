@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -11,7 +12,7 @@ namespace MangoAPI.DataAccess.Database.Extensions
     public static class ChatEntityDbSetExtensions
     {
         public static async Task<List<ChatEntity>> GetUserPrivateChatsAsync(this DbSet<ChatEntity> dbSet,
-            string userId, CancellationToken cancellationToken)
+            Guid userId, CancellationToken cancellationToken)
         {
             return await dbSet.Include(chatEntity => chatEntity.ChatUsers)
                 .Where(chatEntity => chatEntity.ChatType == ChatType.DirectChat && chatEntity.ChatUsers
@@ -20,13 +21,13 @@ namespace MangoAPI.DataAccess.Database.Extensions
         }
 
         public static async Task<ChatEntity> FindChatByIdAsync(this DbSet<ChatEntity> dbSet,
-            string chatId, CancellationToken cancellationToken)
+            Guid chatId, CancellationToken cancellationToken)
         {
             return await dbSet.FirstOrDefaultAsync(x => x.Id == chatId, cancellationToken);
         }
 
         public static async Task<ChatEntity> FindChatByIdIncludeMessagesAsync(this DbSet<ChatEntity> dbSet,
-            string chatId, CancellationToken cancellationToken)
+            Guid chatId, CancellationToken cancellationToken)
         {
             return await dbSet.Include(x => x.Messages)
                 .ThenInclude(x => x.User)
@@ -34,21 +35,21 @@ namespace MangoAPI.DataAccess.Database.Extensions
         }
 
         public static async Task<ChatEntity> FindChatByIdIncludeChatUsersAsync(this DbSet<ChatEntity> dbSet,
-            string chatId, CancellationToken cancellationToken)
+            Guid chatId, CancellationToken cancellationToken)
         {
             return await dbSet.Include(x => x.ChatUsers)
                 .FirstOrDefaultAsync(x => x.Id == chatId, cancellationToken);
         }
 
         public static async Task<ChatEntity> FindPublicChanelByIdAsync(this DbSet<ChatEntity> dbSet,
-            string chatId, CancellationToken cancellationToken)
+            Guid chatId, CancellationToken cancellationToken)
         {
             return await dbSet.FirstOrDefaultAsync(x =>
-                    x.Id == chatId && x.ChatType != ChatType.DirectChat &&
-                    x.ChatType != ChatType.PrivateChannel, cancellationToken);
+                x.Id == chatId && x.ChatType != ChatType.DirectChat &&
+                x.ChatType != ChatType.PrivateChannel, cancellationToken);
         }
 
-        public static async Task<List<ChatEntity>> GetPublicChatsIncludeMessagesUsersAsync(this DbSet<ChatEntity> dbSet, 
+        public static async Task<List<ChatEntity>> GetPublicChatsIncludeMessagesUsersAsync(this DbSet<ChatEntity> dbSet,
             CancellationToken cancellationToken)
         {
             return await dbSet.AsNoTracking()

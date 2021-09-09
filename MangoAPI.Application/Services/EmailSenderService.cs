@@ -65,7 +65,7 @@ namespace MangoAPI.Application.Services
                 "Verify email" +
                 "</a>" +
                 "<br>" +
-                $"<p>Your phone confirmation code is: {user.ConfirmationCode} </p>" +
+                $"<p>Your phone confirmation code is: {user.PhoneCode} </p>" +
                 "</body>";
 
             message.IsBodyHtml = true;

@@ -21,10 +21,13 @@ namespace MangoAPI.Tests.ApiCommandsTests.Sessions
         {
             using var dbContextFixture = new DbContextFixture();
             var jwtGenerator = new Mock<IJwtGenerator>();
-            jwtGenerator.Setup(x => x.GenerateJwtToken(It.IsAny<UserEntity>(), It.IsAny<List<string>>()))
-                .Returns("Token");
+            jwtGenerator.Setup(x => x.GenerateJwtToken(It.IsAny<UserEntity>(), 
+                    It.IsAny<List<string>>())).Returns("Token");
             var handler = new RefreshSessionCommandHandler(dbContextFixture.PostgresDbContext, jwtGenerator.Object);
-            var command = new RefreshSessionCommand { RefreshToken = "69dbef09-de5a-4da7-9d67-abeba1510118" };
+            var command = new RefreshSessionCommand
+            {
+                RefreshToken = "69dbef09-de5a-4da7-9d67-abeba1510118".AsGuid()
+            };
 
             var result = await handler.Handle(command, CancellationToken.None);
 
@@ -37,10 +40,14 @@ namespace MangoAPI.Tests.ApiCommandsTests.Sessions
         {
             using var dbContextFixture = new DbContextFixture();
             var jwtGenerator = new Mock<IJwtGenerator>();
-            jwtGenerator.Setup(x => x.GenerateJwtToken(It.IsAny<UserEntity>(), It.IsAny<List<string>>()))
+            jwtGenerator.Setup(x => x.GenerateJwtToken(It.IsAny<UserEntity>(), 
+                    It.IsAny<List<string>>()))
                 .Returns("Token");
             var handler = new RefreshSessionCommandHandler(dbContextFixture.PostgresDbContext, jwtGenerator.Object);
-            var command = new RefreshSessionCommand { RefreshToken = "Invalid_ID" };
+            var command = new RefreshSessionCommand
+            {
+                RefreshToken = Guid.Empty
+            };
 
             Func<Task> execute = async () => await handler.Handle(command, CancellationToken.None);
 

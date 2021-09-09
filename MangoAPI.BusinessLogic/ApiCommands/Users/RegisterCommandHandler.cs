@@ -59,7 +59,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
                 DisplayName = request.DisplayName,
                 UserName = Guid.NewGuid().ToString(),
                 Email = request.Email,
-                ConfirmationCode = _random.Next(100000, 999999),
+                PhoneCode = _random.Next(100000, 999999),
                 PublicKey = 0,
             };
 
@@ -72,7 +72,6 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
 
             var userInfo = new UserInformationEntity
             {
-                Id = Guid.NewGuid().ToString(),
                 UserId = newUser.Id,
                 CreatedAt = DateTime.UtcNow,
             };
@@ -88,8 +87,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
 
             var newSession = new SessionEntity
             {
-                Id = Guid.NewGuid().ToString(),
-                RefreshToken = Guid.NewGuid().ToString(),
+                RefreshToken = Guid.NewGuid(),
                 UserId = newUser.Id,
                 ExpiresAt = DateTime.UtcNow.AddDays(refreshLifetimeParsed),
                 CreatedAt = DateTime.UtcNow,
@@ -100,7 +98,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
                 new List<string> {SeedDataConstants.UnverifiedRole});
 
             await _postgresDbContext.UserRoles.AddAsync(
-                new IdentityUserRole<string>
+                new IdentityUserRole<Guid>
                 {
                     UserId = newUser.Id,
                     RoleId = SeedDataConstants.UnverifiedRoleId,

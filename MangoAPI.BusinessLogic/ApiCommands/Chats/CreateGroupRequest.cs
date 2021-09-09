@@ -1,4 +1,5 @@
-﻿using MangoAPI.Domain.Enums;
+﻿using System;
+using MangoAPI.Domain.Enums;
 using Newtonsoft.Json;
 
 namespace MangoAPI.BusinessLogic.ApiCommands.Chats
@@ -21,14 +22,14 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Chats
 
     public static class CreateGroupCommandMapper
     {
-        public static CreateGroupCommand ToCommand(this CreateGroupRequest model, string userId)
+        public static CreateGroupCommand ToCommand(this CreateGroupRequest model, Guid userId)
         {
             return new ()
             {
                 GroupType = model.GroupType,
                 GroupTitle = model.GroupTitle,
                 GroupDescription = model.GroupDescription,
-                UserId = userId,
+                UserId = userId
             };
         }
     }

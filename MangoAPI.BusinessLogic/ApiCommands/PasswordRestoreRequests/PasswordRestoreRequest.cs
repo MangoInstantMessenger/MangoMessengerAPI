@@ -1,15 +1,16 @@
-﻿using Newtonsoft.Json;
+﻿using System;
+using Newtonsoft.Json;
 
 namespace MangoAPI.BusinessLogic.ApiCommands.PasswordRestoreRequests
 {
     public record PasswordRestoreRequest
     {
-        public string RequestId { get; }
+        public Guid RequestId { get; }
         public string NewPassword { get; }
         public string RepeatPassword { get; }
 
         [JsonConstructor]
-        public PasswordRestoreRequest(string requestId, string newPassword, string repeatPassword)
+        public PasswordRestoreRequest(Guid requestId, string newPassword, string repeatPassword)
         {
             RequestId = requestId;
             NewPassword = newPassword;

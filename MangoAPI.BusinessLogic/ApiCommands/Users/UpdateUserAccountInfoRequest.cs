@@ -1,12 +1,21 @@
-﻿using Newtonsoft.Json;
+﻿using System;
+using Newtonsoft.Json;
 
 namespace MangoAPI.BusinessLogic.ApiCommands.Users
 {
     public record UpdateUserAccountInfoRequest
     {
         [JsonConstructor]
-        public UpdateUserAccountInfoRequest(string firstName, string lastName, string phoneNumber,
-            string birthdayDate, string email, string website, string username, string bio, string address,
+        public UpdateUserAccountInfoRequest(
+            string firstName,
+            string lastName,
+            string phoneNumber,
+            string birthdayDate,
+            string email,
+            string website,
+            string username,
+            string bio,
+            string address,
             string displayName)
         {
             FirstName = firstName;
@@ -36,7 +45,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
     public static class UpdateUserAccountInfoRequestMapper
     {
         public static UpdateUserAccountInfoCommand ToCommand(this UpdateUserAccountInfoRequest model,
-            string userId) => new()
+            Guid userId) => new()
         {
             UserId = userId,
             FirstName = model.FirstName,

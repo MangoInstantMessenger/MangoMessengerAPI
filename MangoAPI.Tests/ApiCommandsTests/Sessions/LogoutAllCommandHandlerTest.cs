@@ -17,7 +17,11 @@ namespace MangoAPI.Tests.ApiCommandsTests.Sessions
         {
             using var dbContextFixture = new DbContextFixture();
             var handler = new LogoutAllCommandHandler(dbContextFixture.PostgresDbContext);
-            var command = new LogoutAllCommand { UserId = "1" };
+
+            var command = new LogoutAllCommand
+            {
+                UserId = SeedDataConstants.PetroId
+            };
 
             var result = await handler.Handle(command, CancellationToken.None);
 
@@ -29,7 +33,11 @@ namespace MangoAPI.Tests.ApiCommandsTests.Sessions
         {
             using var dbContextFixture = new DbContextFixture();
             var handler = new LogoutAllCommandHandler(dbContextFixture.PostgresDbContext);
-            var command = new LogoutAllCommand { UserId = "3" };
+
+            var command = new LogoutAllCommand
+            {
+                UserId = Guid.NewGuid()
+            };
 
             Func<Task> result = async () => await handler.Handle(command, CancellationToken.None);
 

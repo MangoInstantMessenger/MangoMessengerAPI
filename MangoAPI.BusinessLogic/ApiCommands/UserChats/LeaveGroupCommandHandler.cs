@@ -40,14 +40,16 @@ namespace MangoAPI.BusinessLogic.ApiCommands.UserChats
 
             if (chat.ChatType == ChatType.DirectChat)
             {
-                var messages = await _postgresDbContext.Messages.GetChatMessagesByIdAsync(chat.Id, cancellationToken);
+                var messages = await _postgresDbContext
+                    .Messages
+                    .GetChatMessagesByIdAsync(chat.Id, cancellationToken);
 
                 _postgresDbContext.Messages.RemoveRange(messages);
                 _postgresDbContext.UserChats.RemoveRange(chat.ChatUsers);
                 _postgresDbContext.Chats.Remove(chat);
 
                 await _postgresDbContext.SaveChangesAsync(cancellationToken);
-                return LeaveGroupResponse.FromSuccess(chat);
+                return LeaveGroupResponse.FromSuccess(chat.Id);
             }
 
             _postgresDbContext.UserChats.Remove(userChat);
@@ -56,7 +58,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.UserChats
             _postgresDbContext.Update(chat);
             await _postgresDbContext.SaveChangesAsync(cancellationToken);
 
-            return LeaveGroupResponse.FromSuccess(chat);
+            return LeaveGroupResponse.FromSuccess(chat.Id);
         }
     }
 }

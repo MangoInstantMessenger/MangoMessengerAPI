@@ -19,7 +19,7 @@ namespace MangoAPI.Tests.ApiCommandsTests.Users
             var handler = new UpdateUserSocialInformationCommandHandler(dbContextFixture.PostgresDbContext);
             var command = new UpdateUserSocialInformationCommand
             {
-                UserId = "1",
+                UserId = SeedDataConstants.PetroId,
                 Facebook = "kolosov.petro",
                 Twitter = "kolosovPetro",
                 Instagram = "razumovsky",
@@ -38,7 +38,7 @@ namespace MangoAPI.Tests.ApiCommandsTests.Users
             var handler = new UpdateUserSocialInformationCommandHandler(dbContextFixture.PostgresDbContext);
             var command = new UpdateUserSocialInformationCommand
             {
-                UserId = "145",
+                UserId = Guid.NewGuid(),
                 Facebook = "hello world",
                 Twitter = "hello world",
                 Instagram = "hello world",

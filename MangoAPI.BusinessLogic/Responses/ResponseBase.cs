@@ -14,13 +14,5 @@ namespace MangoAPI.BusinessLogic.Responses
         };
     }
 
-    public abstract record ResponseBase<T> : ResponseBase
-        where T : ResponseBase, new()
-    {
-        public new static T SuccessResponse => new()
-        {
-            Success = true,
-            Message = ResponseMessageCodes.Success,
-        };
-    }
+    public abstract record ResponseBase<T> : ResponseBase where T : ResponseBase, new();
 }

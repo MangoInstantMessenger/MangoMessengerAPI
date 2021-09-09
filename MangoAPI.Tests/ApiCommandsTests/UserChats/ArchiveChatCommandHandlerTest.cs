@@ -20,8 +20,8 @@ namespace MangoAPI.Tests.ApiCommandsTests.UserChats
             var command = new ArchiveChatCommand
             {
                 Archived = true,
-                UserId = "1",
-                ChatId = "3",
+                UserId = SeedDataConstants.RazumovskyId,
+                ChatId = SeedDataConstants.ExtremeCodeFloodId,
             };
 
             var result = await handler.Handle(command, CancellationToken.None);
@@ -37,8 +37,8 @@ namespace MangoAPI.Tests.ApiCommandsTests.UserChats
             var command = new ArchiveChatCommand
             {
                 Archived = true,
-                UserId = "111",
-                ChatId = "333",
+                UserId = SeedDataConstants.RazumovskyId,
+                ChatId = Guid.NewGuid(),
             };
 
             Func<Task> request = async () => await handler.Handle(command, CancellationToken.None);

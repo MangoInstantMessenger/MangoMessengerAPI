@@ -1,48 +1,49 @@
-﻿using MangoAPI.Domain.Constants;
+﻿using System;
+using MangoAPI.Domain.Constants;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace MangoAPI.DataAccess.Database.Configurations
 {
-    public class IdentityUserRoleConfiguration : IEntityTypeConfiguration<IdentityUserRole<string>>
+    public class UserRolesConfiguration : IEntityTypeConfiguration<IdentityUserRole<Guid>>
     {
-        public void Configure(EntityTypeBuilder<IdentityUserRole<string>> builder)
+        public void Configure(EntityTypeBuilder<IdentityUserRole<Guid>> builder)
         {
             builder.HasData(
-                new IdentityUserRole<string>
+                new IdentityUserRole<Guid>
                 {
                     RoleId = SeedDataConstants.UserRoleId,
                     UserId = SeedDataConstants.RazumovskyId,
-                }, new IdentityUserRole<string>
+                }, new IdentityUserRole<Guid>
                 {
                     RoleId = SeedDataConstants.UserRoleId,
                     UserId = SeedDataConstants.KhachaturId,
-                }, new IdentityUserRole<string>
+                }, new IdentityUserRole<Guid>
                 {
                     RoleId = SeedDataConstants.UserRoleId,
                     UserId = SeedDataConstants.KolbasatorId,
-                }, new IdentityUserRole<string>
+                }, new IdentityUserRole<Guid>
                 {
                     RoleId = SeedDataConstants.UserRoleId,
                     UserId = SeedDataConstants.AmelitId,
-                }, new IdentityUserRole<string>
+                }, new IdentityUserRole<Guid>
                 {
                     RoleId = SeedDataConstants.UserRoleId,
                     UserId = SeedDataConstants.PetroId,
-                }, new IdentityUserRole<string>
+                }, new IdentityUserRole<Guid>
                 {
                     RoleId = SeedDataConstants.UserRoleId,
                     UserId = SeedDataConstants.SzymonId,
-                }, new IdentityUserRole<string>
+                }, new IdentityUserRole<Guid>
                 {
                     RoleId = SeedDataConstants.UserRoleId,
                     UserId = SeedDataConstants.IlliaId,
-                }, new IdentityUserRole<string>
+                }, new IdentityUserRole<Guid>
                 {
                     RoleId = SeedDataConstants.UserRoleId,
                     UserId = SeedDataConstants.ArslanbekId,
-                }, new IdentityUserRole<string>
+                }, new IdentityUserRole<Guid>
                 {
                     RoleId = SeedDataConstants.UserRoleId,
                     UserId = SeedDataConstants.SerhiiId,

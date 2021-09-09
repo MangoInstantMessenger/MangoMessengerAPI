@@ -1,8 +1,10 @@
-﻿namespace MangoAPI.BusinessLogic.Models
+﻿using System;
+
+namespace MangoAPI.BusinessLogic.Models
 {
     public record Message
     {
-        public string MessageId { get; init; }
+        public Guid MessageId { get; init; }
 
         public string UserDisplayName { get; init; }
 

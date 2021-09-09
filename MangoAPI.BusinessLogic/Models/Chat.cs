@@ -1,10 +1,11 @@
-﻿using MangoAPI.Domain.Enums;
+﻿using System;
+using MangoAPI.Domain.Enums;
 
 namespace MangoAPI.BusinessLogic.Models
 {
     public record Chat
     {
-        public string ChatId { get; init; }
+        public Guid ChatId { get; init; }
 
         public string Title { get; init; }
 

@@ -19,8 +19,8 @@ namespace MangoAPI.Tests.ApiCommandsTests.Messages
             var handler = new SendMessageCommandHandler(dbContextFixture.PostgresDbContext);
             var command = new SendMessageCommand
             {
-                UserId = "1",
-                ChatId = "4",
+                UserId = SeedDataConstants.SzymonId,
+                ChatId = SeedDataConstants.WsbId,
                 MessageText = "hello world",
             };
 
@@ -36,8 +36,8 @@ namespace MangoAPI.Tests.ApiCommandsTests.Messages
             var handler = new SendMessageCommandHandler(dbContextFixture.PostgresDbContext);
             var command = new SendMessageCommand
             {
-                UserId = "15",
-                ChatId = "3",
+                UserId = Guid.NewGuid(),
+                ChatId = Guid.NewGuid(),
                 MessageText = "hello world",
             };
 
@@ -54,8 +54,8 @@ namespace MangoAPI.Tests.ApiCommandsTests.Messages
             var handler = new SendMessageCommandHandler(dbContextFixture.PostgresDbContext);
             var command = new SendMessageCommand
             {
-                UserId = "1",
-                ChatId = "24",
+                UserId = SeedDataConstants.SzymonId,
+                ChatId = Guid.Empty,
                 MessageText = "hello world",
             };
 
@@ -72,8 +72,8 @@ namespace MangoAPI.Tests.ApiCommandsTests.Messages
             var handler = new SendMessageCommandHandler(dbContextFixture.PostgresDbContext);
             var command = new SendMessageCommand
             {
-                UserId = "1",
-                ChatId = "2",
+                UserId = SeedDataConstants.KolbasatorId,
+                ChatId = SeedDataConstants.ExtremeCodeDotnetId,
                 MessageText = "hello world",
             };
 

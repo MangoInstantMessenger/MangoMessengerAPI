@@ -1,15 +1,16 @@
-﻿using MangoAPI.BusinessLogic.Responses;
+﻿using System;
+using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.Domain.Constants;
 
 namespace MangoAPI.BusinessLogic.ApiCommands.Messages
 {
-    public record SendMessageResponse : MessageResponseBase<SendMessageResponse>
+    public record SendMessageResponse : ResponseBase<SendMessageResponse>
     {
-        public string MessageId { get; init; }
+        public Guid MessageId { get; init; }
 
-        public static SendMessageResponse FromSuccess(string messageId)
+        public static SendMessageResponse FromSuccess(Guid messageId)
         {
-            return new ()
+            return new()
             {
                 Success = true,
                 Message = ResponseMessageCodes.Success,

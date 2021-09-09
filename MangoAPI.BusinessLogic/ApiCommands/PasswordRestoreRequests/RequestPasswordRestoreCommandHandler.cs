@@ -39,7 +39,6 @@ namespace MangoAPI.BusinessLogic.ApiCommands.PasswordRestoreRequests
 
             var passwordRestoreRequestEntity = new PasswordRestoreRequestEntity
             {
-                Id = Guid.NewGuid().ToString(),
                 UserId = user.Id,
                 Email = user.Email,
                 CreatedAt = DateTime.Now,

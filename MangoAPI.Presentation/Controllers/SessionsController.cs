@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 using MangoAPI.BusinessLogic.ApiCommands.Sessions;
 using MangoAPI.BusinessLogic.Responses;
@@ -43,11 +44,11 @@ namespace MangoAPI.Presentation.Controllers
         [ProducesResponseType(typeof(TokensResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
-        public async Task<IActionResult> LoginAsync(
-            [FromBody] LoginRequest request,
+        public async Task<IActionResult> LoginAsync([FromBody] LoginRequest request,
             CancellationToken cancellationToken)
         {
-            return await RequestAsync(request.ToCommand(), cancellationToken);
+            var command = request.ToCommand();
+            return await RequestAsync(command, cancellationToken);
         }
 
         /// <summary>
@@ -57,7 +58,7 @@ namespace MangoAPI.Presentation.Controllers
         /// <param name="cancellationToken">Cancellation token instance.</param>
         /// <returns>Possible codes: 200, 400, 409.</returns>
         [AllowAnonymous]
-        [HttpPost("{refreshToken}")]
+        [HttpPost("{refreshToken:guid}")]
         [SwaggerOperation(Summary = "Refreshes current user's session. " +
                                     "Returns pair of the access/refresh tokens. " +
                                     "Requires valid refresh token.")]
@@ -65,8 +66,7 @@ namespace MangoAPI.Presentation.Controllers
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public async Task<IActionResult> RefreshSession(
-            [FromRoute] string refreshToken,
+        public async Task<IActionResult> RefreshSession([FromRoute] Guid refreshToken,
             CancellationToken cancellationToken)
         {
             var command = new RefreshSessionCommand
@@ -83,18 +83,21 @@ namespace MangoAPI.Presentation.Controllers
         /// <param name="refreshToken">Refresh Token ID, UUID.</param>
         /// <param name="cancellationToken">Cancellation token instance.</param>
         /// <returns>Possible codes: 200, 400, 409.</returns>
-        [HttpDelete("{refreshToken}")]
+        [HttpDelete("{refreshToken:guid}")]
         [Authorize(Roles = "Unverified, User")]
         [SwaggerOperation(Summary = "Deletes current user's session. Requires roles: Unverified, User.")]
         [ProducesResponseType(typeof(ResponseBase), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public async Task<IActionResult> LogoutAsync(
-            [FromRoute] string refreshToken,
+        public async Task<IActionResult> LogoutAsync([FromRoute] Guid refreshToken,
             CancellationToken cancellationToken)
         {
-            var command = new LogoutCommand {RefreshToken = refreshToken};
+            var command = new LogoutCommand
+            {
+                RefreshToken = refreshToken
+            };
+            
             return await RequestAsync(command, cancellationToken);
         }
 
@@ -113,7 +116,12 @@ namespace MangoAPI.Presentation.Controllers
         public async Task<IActionResult> LogoutAllAsync(CancellationToken cancellationToken)
         {
             var userId = HttpContext.User.GetUserId();
-            var command = new LogoutAllCommand {UserId = userId};
+            
+            var command = new LogoutAllCommand
+            {
+                UserId = userId
+            };
+            
             return await RequestAsync(command, cancellationToken);
         }
     }

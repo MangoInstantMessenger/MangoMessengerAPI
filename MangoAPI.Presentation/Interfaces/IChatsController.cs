@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 using MangoAPI.BusinessLogic.ApiCommands.Chats;
 using Microsoft.AspNetCore.Mvc;
@@ -11,9 +12,9 @@ namespace MangoAPI.Presentation.Interfaces
 
         Task<IActionResult> CreateChatAsync(CreateGroupRequest request, CancellationToken cancellationToken);
 
-        Task<IActionResult> CreateChatAsync(string userId, CancellationToken cancellationToken);
+        Task<IActionResult> CreateChatAsync(Guid userId, CancellationToken cancellationToken);
 
-        Task<IActionResult> SearchById(string chatId, CancellationToken cancellationToken);
+        Task<IActionResult> SearchById(Guid chatId, CancellationToken cancellationToken);
         
         Task<IActionResult> SearchAsync(string displayName, CancellationToken cancellationToken);
     }

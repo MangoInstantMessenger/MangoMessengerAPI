@@ -19,15 +19,15 @@ namespace MangoAPI.Tests.ApiCommandsTests.Contacts
             var handler = new DeleteContactCommandHandler(dbContextFixture.PostgresDbContext);
             var command = new DeleteContactCommand
             {
-                UserId = "1",
-                ContactId = "2",
+                UserId = SeedDataConstants.PetroId,
+                ContactId = SeedDataConstants.SzymonId,
             };
 
             var result = await handler.Handle(command, CancellationToken.None);
 
             result.Success.Should().BeTrue();
         }
-        
+
         [Test]
         public async Task DeleteContactCommandHandler_ShouldThrowUserNotFound()
         {
@@ -35,8 +35,8 @@ namespace MangoAPI.Tests.ApiCommandsTests.Contacts
             var handler = new DeleteContactCommandHandler(dbContextFixture.PostgresDbContext);
             var command = new DeleteContactCommand
             {
-                UserId = "15",
-                ContactId = "2",
+                UserId = Guid.NewGuid(),
+                ContactId = SeedDataConstants.PetroId,
             };
 
             Func<Task> result = async () => await handler.Handle(command, CancellationToken.None);
@@ -44,7 +44,7 @@ namespace MangoAPI.Tests.ApiCommandsTests.Contacts
             await result.Should().ThrowAsync<BusinessException>()
                 .WithMessage(ResponseMessageCodes.UserNotFound);
         }
-        
+
         [Test]
         public async Task DeleteContactCommandHandler_ShouldThrowChatNotFound()
         {
@@ -52,8 +52,8 @@ namespace MangoAPI.Tests.ApiCommandsTests.Contacts
             var handler = new DeleteContactCommandHandler(dbContextFixture.PostgresDbContext);
             var command = new DeleteContactCommand
             {
-                UserId = "2",
-                ContactId = "25",
+                UserId = SeedDataConstants.PetroId,
+                ContactId = Guid.NewGuid(),
             };
 
             Func<Task> result = async () => await handler.Handle(command, CancellationToken.None);

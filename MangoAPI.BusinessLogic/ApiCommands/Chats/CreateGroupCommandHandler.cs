@@ -20,8 +20,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Chats
             _postgresDbContext = postgresDbContext;
         }
 
-        public async Task<CreateChatEntityResponse> Handle(
-            CreateGroupCommand request,
+        public async Task<CreateChatEntityResponse> Handle(CreateGroupCommand request,
             CancellationToken cancellationToken)
         {
             var user = await _postgresDbContext.Users.FindUserByIdAsync(request.UserId, cancellationToken);
@@ -38,7 +37,6 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Chats
 
             var group = new ChatEntity
             {
-                Id = Guid.NewGuid().ToString(),
                 ChatType = request.GroupType,
                 Title = request.GroupTitle,
                 CreatedAt = DateTime.UtcNow,
