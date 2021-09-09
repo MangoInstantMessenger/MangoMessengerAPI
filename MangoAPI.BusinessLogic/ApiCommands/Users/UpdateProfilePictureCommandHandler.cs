@@ -27,12 +27,13 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
                 throw new BusinessException(ResponseMessageCodes.UserNotFound);
             }
 
-            user.Image = request.Image;
+            var imageAddress = $"{EnvironmentConstants.BackendAddress}Uploads/{request.Image}";
+            user.Image = imageAddress;
 
             _postgresDbContext.Users.Update(user);
 
             await _postgresDbContext.SaveChangesAsync(cancellationToken);
-            
+
             return ResponseBase.SuccessResponse;
         }
     }

@@ -21,6 +21,8 @@ namespace MangoAPI.Domain.Constants
         public static string EmailSenderPassword => Environment.GetEnvironmentVariable("EMAIL_SENDER_PASSWORD");
 
         public static string FrontendAddress => Environment.GetEnvironmentVariable("FRONTEND_ADDRESS");
+        
+        public static string BackendAddress => Environment.GetEnvironmentVariable("BACKEND_ADDRESS");
 
         public static string SeedPassword => Environment.GetEnvironmentVariable("SEED_PASSWORD");
     }
