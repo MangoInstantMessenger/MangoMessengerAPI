@@ -23,10 +23,15 @@ namespace MangoAPI.Presentation.Controllers
         public DocumentsController(IMediator mediator) : base(mediator)
         {
         }
-
+        
+        /// <summary>
+        /// Uploads document to the server. Requires role: User.
+        /// </summary>
+        /// <param name="formFile">File to be uploaded.</param>
+        /// <param name="cancellationToken">Cancellation token instance.</param>
         [HttpPost]
         [SwaggerOperation(Summary = "Uploads document to the server. Requires role: User.")]
-        [ProducesResponseType(typeof(ResponseBase), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(UploadDocumentResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
