@@ -6,7 +6,7 @@ namespace MangoAPI.Domain.Entities
 {
     public sealed class ChatEntity
     {
-        public string Id { get; set; }
+        public Guid Id { get; set; }
 
         public string Title { get; set; }
 

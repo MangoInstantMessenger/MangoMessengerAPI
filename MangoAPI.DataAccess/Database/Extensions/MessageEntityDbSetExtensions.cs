@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -10,14 +11,15 @@ namespace MangoAPI.DataAccess.Database.Extensions
     public static class MessageEntityDbSetExtensions
     {
         public static async Task<List<MessageEntity>> GetChatMessagesByIdAsync(this DbSet<MessageEntity> dbSet,
-            string chatId, CancellationToken cancellationToken)
+            Guid chatId, CancellationToken cancellationToken)
         {
             return await dbSet.Where(x => x.ChatId == chatId)
                 .ToListAsync(cancellationToken);
         }
 
-        public static async Task<List<MessageEntity>> SearchChatMessagesIncludeUserAsync(this DbSet<MessageEntity> dbSet,
-            string messageText, string chatId, CancellationToken cancellationToken)
+        public static async Task<List<MessageEntity>> SearchChatMessagesIncludeUserAsync(
+            this DbSet<MessageEntity> dbSet,
+            string messageText, Guid chatId, CancellationToken cancellationToken)
         {
             return await dbSet
                 .Include(x => x.User)
@@ -28,7 +30,7 @@ namespace MangoAPI.DataAccess.Database.Extensions
         }
 
         public static IEnumerable<MessageEntity> GetChatMessagesByIdIncludeUser(this DbSet<MessageEntity> dbSet,
-            string chatId)
+            Guid chatId)
         {
             return dbSet.AsNoTracking()
                 .Include(x => x.User)
@@ -37,9 +39,9 @@ namespace MangoAPI.DataAccess.Database.Extensions
         }
 
         public static async Task<MessageEntity> FindMessageByUserIdAsync(this DbSet<MessageEntity> dbSet,
-            string messageId, string userId, CancellationToken cancellationToken)
+            Guid messageId, Guid userId, CancellationToken cancellationToken)
         {
-            return await dbSet.FirstOrDefaultAsync(x => x.Id == messageId && x.UserId == userId, 
+            return await dbSet.FirstOrDefaultAsync(x => x.Id == messageId && x.UserId == userId,
                 cancellationToken);
         }
     }

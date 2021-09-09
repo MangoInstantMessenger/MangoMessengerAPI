@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace MangoAPI.DataAccess.Database
 {
-    public class MangoPostgresDbContext : IdentityDbContext<UserEntity, UserRoleEntity, Guid>
+    public class MangoPostgresDbContext : IdentityDbContext<UserEntity, RoleEntity, Guid>
     {
         public MangoPostgresDbContext()
         {

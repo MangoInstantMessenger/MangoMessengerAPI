@@ -4,11 +4,11 @@ namespace MangoAPI.Domain.Entities
 {
     public sealed class SessionEntity
     {
-        public string Id { get; set; }
+        public Guid Id { get; set; }
 
-        public string UserId { get; set; }
+        public Guid UserId { get; set; }
 
-        public string RefreshToken { get; set; }
+        public Guid RefreshToken { get; set; }
 
         public DateTime CreatedAt { get; set; }
 

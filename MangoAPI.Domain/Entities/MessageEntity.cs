@@ -4,11 +4,11 @@ namespace MangoAPI.Domain.Entities
 {
     public sealed class MessageEntity
     {
-        public string Id { get; set; }
+        public Guid Id { get; set; }
 
-        public string UserId { get; set; }
+        public Guid UserId { get; set; }
 
-        public string ChatId { get; set; }
+        public Guid ChatId { get; set; }
 
         public string Content { get; set; }
 

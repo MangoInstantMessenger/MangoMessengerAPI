@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -11,7 +12,7 @@ namespace MangoAPI.DataAccess.Database.Extensions
     {
         public static async Task<List<UserChatEntity>> FindUserChatsByIdIncludeMessagesAsync(
             this DbSet<UserChatEntity> dbSet,
-            string userId, CancellationToken cancellationToken)
+            Guid userId, CancellationToken cancellationToken)
         {
             return await dbSet.AsNoTracking()
                 .Include(x => x.Chat)
@@ -22,7 +23,7 @@ namespace MangoAPI.DataAccess.Database.Extensions
         }
 
         public static async Task<UserChatEntity> FindUserChatByIdAsync(this DbSet<UserChatEntity> dbSet,
-            string userId, string chatId, CancellationToken cancellationToken)
+            Guid userId, Guid chatId, CancellationToken cancellationToken)
         {
             return await dbSet
                 .Where(x => x.UserId == userId)
@@ -30,7 +31,7 @@ namespace MangoAPI.DataAccess.Database.Extensions
         }
 
         public static async Task<bool> IsAlreadyJoinedAsync(this DbSet<UserChatEntity> dbSet,
-            string userId, string chatId, CancellationToken cancellationToken)
+            Guid userId, Guid chatId, CancellationToken cancellationToken)
         {
             return await dbSet.AnyAsync(x => x.UserId == userId && x.ChatId == chatId, cancellationToken);
         }

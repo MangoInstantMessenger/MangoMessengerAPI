@@ -14,7 +14,7 @@ namespace MangoAPI.DataAccess.Database.Configurations
             builder.HasData(
                 new UserInformationEntity
                 {
-                    Id = "e44583f1-62ca-4ca4-a6a2-3fc1a874ab0c",
+                    Id = Guid.NewGuid(),
                     UserId = SeedDataConstants.PetroId,
                     FirstName = "Petro",
                     LastName = "Kolosov",
@@ -28,7 +28,7 @@ namespace MangoAPI.DataAccess.Database.Configurations
                 },
                 new UserInformationEntity
                 {
-                    Id = "e44583f1-62ca-4ca4-a6a2-3fc1a874ab0d",
+                    Id = Guid.NewGuid(),
                     UserId = SeedDataConstants.IlliaId,
                     FirstName = "Illia",
                     LastName = "Zubachov",
@@ -41,7 +41,7 @@ namespace MangoAPI.DataAccess.Database.Configurations
                     Address = "Poznan, Poland",
                 }, new UserInformationEntity
                 {
-                    Id = "e44583f1-62ca-4ca4-a6a2-3fc1a874ab0e",
+                    Id = Guid.NewGuid(),
                     UserId = SeedDataConstants.SerhiiId,
                     FirstName = "Serhii",
                     LastName = "Holishevskii",
@@ -54,7 +54,7 @@ namespace MangoAPI.DataAccess.Database.Configurations
                     Address = "Poznan, Poland",
                 }, new UserInformationEntity
                 {
-                    Id = "e44583f1-62ca-4ca4-a6a2-3fc1a874ab0f",
+                    Id = Guid.NewGuid(),
                     UserId = SeedDataConstants.ArslanbekId,
                     FirstName = "Arslan",
                     LastName = "Temirbekov",
@@ -68,7 +68,7 @@ namespace MangoAPI.DataAccess.Database.Configurations
                 },
                 new UserInformationEntity
                 {
-                    Id = "f773c1da-c7d5-44e9-9a1a-04e1be0b4b55",
+                    Id = Guid.NewGuid(),
                     UserId = SeedDataConstants.SzymonId,
                     FirstName = "Szymon",
                     LastName = "Murawski",
@@ -82,7 +82,7 @@ namespace MangoAPI.DataAccess.Database.Configurations
                 },
                 new UserInformationEntity
                 {
-                    Id = "3067c801-da6d-4b03-ac5e-ad3fa0db5acf",
+                    Id = Guid.NewGuid(),
                     UserId = SeedDataConstants.KhachaturId,
                     FirstName = "Khachatur",
                     LastName = "Khachatryan",
@@ -94,7 +94,7 @@ namespace MangoAPI.DataAccess.Database.Configurations
                 },
                 new UserInformationEntity
                 {
-                    Id = "11da38d9-13e2-4056-80a7-a8a76b1c0682",
+                    Id = Guid.NewGuid(),
                     UserId = SeedDataConstants.RazumovskyId,
                     FirstName = "razumovsky",
                     LastName = "r",
@@ -108,7 +108,7 @@ namespace MangoAPI.DataAccess.Database.Configurations
                 },
                 new UserInformationEntity
                 {
-                    Id = "91d1d13e-e475-4f77-820a-0225c37035a4",
+                    Id = Guid.NewGuid(),
                     UserId = SeedDataConstants.KolbasatorId,
                     FirstName = "Мусяка",
                     LastName = "Колбасяка",
@@ -119,7 +119,7 @@ namespace MangoAPI.DataAccess.Database.Configurations
                 },
                 new UserInformationEntity
                 {
-                    Id = "f3fbbce4-b451-4d2b-bfb4-662a9c87c315",
+                    Id = Guid.NewGuid(),
                     UserId = SeedDataConstants.AmelitId,
                     FirstName = "Amelit",
                     Facebook = "TheMoonlightSonata",
