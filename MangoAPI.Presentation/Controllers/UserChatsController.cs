@@ -58,7 +58,7 @@ namespace MangoAPI.Presentation.Controllers
         /// <param name="chatId">Chat ID, UUID.</param>
         /// <param name="cancellationToken">Cancellation token instance.</param>
         /// <returns>Possible codes: 200, 400, 409.</returns>
-        [HttpPost("{chatId}")]
+        [HttpPost("{chatId:guid}")]
         [SwaggerOperation(Summary =
             "Joins to the particular public group. Fetches group by ID. Requires roles: User.")]
         [ProducesResponseType(typeof(ResponseBase), StatusCodes.Status200OK)]
@@ -84,7 +84,7 @@ namespace MangoAPI.Presentation.Controllers
         /// <param name="chatId">Chat ID, UUID.</param>
         /// <param name="cancellationToken">Cancellation token instance.</param>
         /// <returns>Possible codes: 200, 400, 409.</returns>
-        [HttpDelete("{chatId}")]
+        [HttpDelete("{chatId:guid}")]
         [SwaggerOperation(Summary =
             "Leaves from the particular public group. Fetches group by ID. Requires roles: User.")]
         [ProducesResponseType(typeof(LeaveGroupResponse), StatusCodes.Status200OK)]

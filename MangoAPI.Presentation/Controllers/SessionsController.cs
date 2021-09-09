@@ -59,7 +59,7 @@ namespace MangoAPI.Presentation.Controllers
         /// <param name="cancellationToken">Cancellation token instance.</param>
         /// <returns>Possible codes: 200, 400, 409.</returns>
         [AllowAnonymous]
-        [HttpPost("{refreshToken}")]
+        [HttpPost("{refreshToken:guid}")]
         [SwaggerOperation(Summary = "Refreshes current user's session. " +
                                     "Returns pair of the access/refresh tokens. " +
                                     "Requires valid refresh token.")]
@@ -84,7 +84,7 @@ namespace MangoAPI.Presentation.Controllers
         /// <param name="refreshToken">Refresh Token ID, UUID.</param>
         /// <param name="cancellationToken">Cancellation token instance.</param>
         /// <returns>Possible codes: 200, 400, 409.</returns>
-        [HttpDelete("{refreshToken}")]
+        [HttpDelete("{refreshToken:guid}")]
         [Authorize(Roles = "Unverified, User")]
         [SwaggerOperation(Summary = "Deletes current user's session. Requires roles: Unverified, User.")]
         [ProducesResponseType(typeof(ResponseBase), StatusCodes.Status200OK)]

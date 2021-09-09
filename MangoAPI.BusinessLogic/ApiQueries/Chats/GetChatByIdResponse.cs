@@ -4,7 +4,7 @@ using MangoAPI.Domain.Constants;
 
 namespace MangoAPI.BusinessLogic.ApiQueries.Chats
 {
-    public record GetChatByIdResponse : ChatResponseBase<GetChatByIdResponse>
+    public record GetChatByIdResponse : ResponseBase<GetChatByIdResponse>
     {
         public Chat Chat { get; init; }
 

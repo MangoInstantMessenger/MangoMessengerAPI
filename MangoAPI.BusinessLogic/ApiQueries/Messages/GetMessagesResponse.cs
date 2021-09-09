@@ -7,7 +7,7 @@ using MangoAPI.Domain.Entities;
 
 namespace MangoAPI.BusinessLogic.ApiQueries.Messages
 {
-    public record GetMessagesResponse : MessageResponseBase<GetMessagesResponse>
+    public record GetMessagesResponse : ResponseBase<GetMessagesResponse>
     {
         public List<Message> Messages { get; init; }
 

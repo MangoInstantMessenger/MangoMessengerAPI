@@ -5,7 +5,7 @@ using MangoAPI.Domain.Constants;
 
 namespace MangoAPI.BusinessLogic.ApiQueries.Chats
 {
-    public record SearchChatsResponse : ChatResponseBase<SearchChatsResponse>
+    public record SearchChatsResponse : ResponseBase<SearchChatsResponse>
     {
         public List<Chat> Chats { get; init; }
 

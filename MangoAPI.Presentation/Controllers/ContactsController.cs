@@ -38,7 +38,7 @@ namespace MangoAPI.Presentation.Controllers
         /// <param name="contactId">User ID to add, UUID.</param>
         /// <param name="cancellationToken">Cancellation token instance.</param>
         /// <returns>Possible codes: 200, 400, 409.</returns>
-        [HttpPost("{contactId}")]
+        [HttpPost("{contactId:guid}")]
         [SwaggerOperation(Summary = "Adds particular user to the contacts. Fetches user by user ID. " +
                                     "Requires role: User.")]
         [ProducesResponseType(typeof(ResponseBase), StatusCodes.Status200OK)]
@@ -64,7 +64,7 @@ namespace MangoAPI.Presentation.Controllers
         /// <param name="contactId">User ID to add, UUID.</param>
         /// <param name="cancellationToken">Cancellation token instance.</param>
         /// <returns>Possible codes: 200, 400, 409.</returns>
-        [HttpDelete("{contactId}")]
+        [HttpDelete("{contactId:guid}")]
         [SwaggerOperation(Summary = "Deletes particular contact from the contacts. Fetches user by user ID. " +
                                     "Requires role: User")]
         [ProducesResponseType(typeof(ResponseBase), StatusCodes.Status200OK)]
@@ -110,7 +110,6 @@ namespace MangoAPI.Presentation.Controllers
         /// <summary>
         /// Searches user by his display name. Requires role: User.
         /// </summary>
-        /// <param name="data">User's display name, string.</param>
         /// <param name="searchQuery">Search query string.</param>
         /// <param name="cancellationToken">CancellationToken instance.</param>
         /// <returns>Possible codes: 200, 400, 409.</returns>

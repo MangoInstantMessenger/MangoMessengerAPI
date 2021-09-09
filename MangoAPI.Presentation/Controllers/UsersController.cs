@@ -142,7 +142,7 @@ namespace MangoAPI.Presentation.Controllers
         /// <param name="userId">ID of the user to get, UUID.</param>
         /// <param name="cancellationToken">CancellationToken instance.</param>
         /// <returns>Possible codes: 200, 400, 409.</returns>
-        [HttpGet("{userId}")]
+        [HttpGet("{userId:guid}")]
         [Authorize(Roles = "User")]
         [SwaggerOperation(Summary = "Gets user by ID. Requires role: User.")]
         [ProducesResponseType(typeof(GetUserResponse), StatusCodes.Status200OK)]

@@ -80,7 +80,7 @@ namespace MangoAPI.Presentation.Controllers
         /// <param name="userId">User ID of colleague, UUID.</param>
         /// <param name="cancellationToken">Cancellation token instance.</param>
         /// <returns>Possible codes: 200, 400, 409.</returns>
-        [HttpPost("{userId}")]
+        [HttpPost("{userId:guid}")]
         [SwaggerOperation(Summary =
             "Creates new direct chat with specified user. User is fetched by parameter user ID. " +
             "Requires role: User.")]
@@ -108,7 +108,7 @@ namespace MangoAPI.Presentation.Controllers
         /// <param name="chatId">User ID of colleague, UUID.</param>
         /// <param name="cancellationToken">Cancellation token instance.</param>
         /// <returns>Possible codes: 200, 400, 409.</returns>
-        [HttpGet("{chatId}")]
+        [HttpGet("{chatId:guid}")]
         [SwaggerOperation(Summary = "Gets chat by ID. Requires role: User.")]
         [ProducesResponseType(typeof(GetChatByIdResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]

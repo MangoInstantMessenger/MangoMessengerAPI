@@ -7,7 +7,7 @@ using MangoAPI.Domain.Entities;
 
 namespace MangoAPI.BusinessLogic.ApiQueries.Contacts
 {
-    public record GetContactsResponse : ContactsResponseBase<GetContactsResponse>
+    public record GetContactsResponse : ResponseBase<GetContactsResponse>
     {
         public List<Contact> Contacts { get; init; }
 

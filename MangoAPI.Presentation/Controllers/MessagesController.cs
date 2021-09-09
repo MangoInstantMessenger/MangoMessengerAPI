@@ -38,7 +38,7 @@ namespace MangoAPI.Presentation.Controllers
         /// <param name="chatId">Chat ID, UUID.</param>
         /// <param name="cancellationToken">Cancellation token instance.</param>
         /// <returns>Possible codes: 200, 400, 409.</returns>
-        [HttpGet("{chatId}")]
+        [HttpGet("{chatId:guid}")]
         [SwaggerOperation(Summary = "Returns all chat messages by chat ID. Requires role: User.")]
         [ProducesResponseType(typeof(GetMessagesResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
@@ -58,13 +58,13 @@ namespace MangoAPI.Presentation.Controllers
         /// <param name="messageText">Searched text.</param>
         /// <param name="cancellationToken">Cancellation token instance.</param>
         /// <returns>Possible codes: 200, 400, 409.</returns>
-        [HttpGet("searches/{chatId}")]
+        [HttpGet("searches/{chatId:guid}")]
         [SwaggerOperation(Summary = "Searches messages by content in particular chat. Requires role: User.")]
         [ProducesResponseType(typeof(SearchChatMessagesResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public async Task<IActionResult> SearchChatMessages([FromQuery] Guid chatId, [FromQuery] string messageText,
+        public async Task<IActionResult> SearchChatMessages([FromRoute] Guid chatId, [FromQuery] string messageText,
             CancellationToken cancellationToken)
         {
             var currentUserId = HttpContext.User.GetUserId();
@@ -125,7 +125,7 @@ namespace MangoAPI.Presentation.Controllers
         /// <param name="messageId">Message ID, UUID.</param>
         /// <param name="cancellationToken">Cancellation token instance.</param>
         /// <returns>Possible codes: 200, 400, 409.</returns>
-        [HttpDelete("{messageId}")]
+        [HttpDelete("{messageId:guid}")]
         [SwaggerOperation(Summary = "Deletes particular message by message ID. Requires role: User.")]
         [ProducesResponseType(typeof(DeleteMessageResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]

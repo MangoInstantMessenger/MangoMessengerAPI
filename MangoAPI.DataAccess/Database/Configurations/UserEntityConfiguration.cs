@@ -11,8 +11,6 @@ namespace MangoAPI.DataAccess.Database.Configurations
     {
         public void Configure(EntityTypeBuilder<UserEntity> builder)
         {
-            builder.Property(x => x.Id).HasDefaultValueSql("newsequentialid()");
-            
             builder.HasMany(x => x.PasswordRestoreRequests)
                 .WithOne(x => x.UserEntity)
                 .HasForeignKey(x => x.UserId);

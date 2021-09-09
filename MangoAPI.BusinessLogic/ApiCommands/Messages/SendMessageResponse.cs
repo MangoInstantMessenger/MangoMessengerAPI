@@ -4,7 +4,7 @@ using MangoAPI.Domain.Constants;
 
 namespace MangoAPI.BusinessLogic.ApiCommands.Messages
 {
-    public record SendMessageResponse : MessageResponseBase<SendMessageResponse>
+    public record SendMessageResponse : ResponseBase<SendMessageResponse>
     {
         public Guid MessageId { get; init; }
 
