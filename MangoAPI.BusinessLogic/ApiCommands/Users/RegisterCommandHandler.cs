@@ -59,7 +59,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
                 DisplayName = request.DisplayName,
                 UserName = Guid.NewGuid().ToString(),
                 Email = request.Email,
-                ConfirmationCode = _random.Next(100000, 999999),
+                PhoneCode = _random.Next(100000, 999999),
                 PublicKey = 0,
             };
 

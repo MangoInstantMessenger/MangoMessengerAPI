@@ -55,7 +55,7 @@ namespace MangoAPI.Tests.ApiCommandsTests.Messages
             var command = new SendMessageCommand
             {
                 UserId = SeedDataConstants.SzymonId,
-                ChatId = SeedDataConstants.ExtremeCodeMainId,
+                ChatId = Guid.Empty,
                 MessageText = "hello world",
             };
 

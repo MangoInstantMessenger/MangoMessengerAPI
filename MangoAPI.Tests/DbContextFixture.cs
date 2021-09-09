@@ -134,8 +134,9 @@ namespace MangoAPI.Tests
                     UserName = "TheMoonlightSonata",
                     Email = "amelit@gmail.com",
                     NormalizedEmail = "AMELIT@GMAIL.COM",
-                    EmailConfirmed = true,
-                    PhoneNumberConfirmed = true,
+                    EmailConfirmed = false,
+                    PhoneNumberConfirmed = false,
+                    PhoneCode = 555555
                 };
 
                 var user5 = new UserEntity
@@ -382,6 +383,14 @@ namespace MangoAPI.Tests
                 ChatType = ChatType.DirectChat,
                 Title = "Petro / Szymon",
                 Id = SeedDataConstants.DirectPetroSzymon
+            },
+            new ChatEntity
+            {
+                Id = SeedDataConstants.WsbId,
+                Title = "WSB",
+                ChatType = ChatType.PublicChannel,
+                Description = "WSB Public Group",
+                MembersCount = 5,
             }
         };
 
@@ -579,7 +588,7 @@ namespace MangoAPI.Tests
         {
             new MessageEntity
             {
-                Id = Guid.Empty,
+                Id = "664b168f-565c-4a94-b2f5-7b199bd1c364".AsGuid(),
                 UserId = SeedDataConstants.SzymonId,
                 ChatId = SeedDataConstants.WsbId,
                 Content = "Hello guys, how your diploma project goes?",

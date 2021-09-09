@@ -17,7 +17,11 @@ namespace MangoAPI.Tests.ApiQueriesTests.Messages
         {
             using var dbContextFixture = new DbContextFixture();
             var handler = new GetMessagesQueryHandler(dbContextFixture.PostgresDbContext);
-            var query = new GetMessagesQuery { UserId = "1", ChatId = "3" };
+            var query = new GetMessagesQuery
+            {
+                UserId = SeedDataConstants.RazumovskyId, 
+                ChatId = SeedDataConstants.ExtremeCodeFloodId
+            };
 
             var response = await handler.Handle(query, CancellationToken.None);
 
@@ -30,7 +34,11 @@ namespace MangoAPI.Tests.ApiQueriesTests.Messages
         {
             using var dbContextFixture = new DbContextFixture();
             var handler = new GetMessagesQueryHandler(dbContextFixture.PostgresDbContext);
-            var query = new GetMessagesQuery { UserId = "24", ChatId = "3" };
+            var query = new GetMessagesQuery
+            {
+                UserId = Guid.NewGuid(), 
+                ChatId = SeedDataConstants.ExtremeCodeFloodId
+            };
 
             Func<Task> response = async () => await handler.Handle(query, CancellationToken.None);
 
@@ -43,7 +51,11 @@ namespace MangoAPI.Tests.ApiQueriesTests.Messages
         {
             using var dbContextFixture = new DbContextFixture();
             var handler = new GetMessagesQueryHandler(dbContextFixture.PostgresDbContext);
-            var query = new GetMessagesQuery { UserId = "1", ChatId = "1" };
+            var query = new GetMessagesQuery
+            {
+                UserId = SeedDataConstants.RazumovskyId, 
+                ChatId = SeedDataConstants.DirectPetroSzymon
+            };
 
             Func<Task> response = async () => await handler.Handle(query, CancellationToken.None);
 

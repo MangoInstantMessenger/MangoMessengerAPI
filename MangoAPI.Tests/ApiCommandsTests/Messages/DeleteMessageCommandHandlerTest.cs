@@ -20,7 +20,7 @@ namespace MangoAPI.Tests.ApiCommandsTests.Messages
             var command = new DeleteMessageCommand
             {
                 UserId = SeedDataConstants.SzymonId,
-                MessageId = Guid.Empty,
+                MessageId = "664b168f-565c-4a94-b2f5-7b199bd1c364".AsGuid(),
             };
 
             var result = await handler.Handle(command, CancellationToken.None);

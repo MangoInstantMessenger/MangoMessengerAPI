@@ -19,8 +19,8 @@ namespace MangoAPI.Tests.ApiQueriesTests.Chats
             var handler = new GetChatByIdQueryHandler(dbContextFixture.PostgresDbContext);
             var query = new GetChatByIdQuery
             {
-                UserId = "1",
-                ChatId = "1"
+                UserId = SeedDataConstants.RazumovskyId,
+                ChatId = SeedDataConstants.ExtremeCodeFloodId
             };
 
             var result = await handler.Handle(query, CancellationToken.None);
@@ -36,8 +36,8 @@ namespace MangoAPI.Tests.ApiQueriesTests.Chats
             var handler = new GetChatByIdQueryHandler(dbContextFixture.PostgresDbContext);
             var query = new GetChatByIdQuery
             {
-                UserId = "24",
-                ChatId = "1"
+                UserId = Guid.NewGuid(),
+                ChatId = SeedDataConstants.ExtremeCodeFloodId
             };
 
             Func<Task> result = async () => await handler.Handle(query, CancellationToken.None);
@@ -53,8 +53,8 @@ namespace MangoAPI.Tests.ApiQueriesTests.Chats
             var handler = new GetChatByIdQueryHandler(dbContextFixture.PostgresDbContext);
             var query = new GetChatByIdQuery
             {
-                UserId = "1",
-                ChatId = "15"
+                UserId = SeedDataConstants.SzymonId,
+                ChatId = new Guid()
             };
 
             Func<Task> result = async () => await handler.Handle(query, CancellationToken.None);
@@ -70,8 +70,8 @@ namespace MangoAPI.Tests.ApiQueriesTests.Chats
             var handler = new GetChatByIdQueryHandler(dbContextFixture.PostgresDbContext);
             var query = new GetChatByIdQuery
             {
-                UserId = "1",
-                ChatId = "5"
+                UserId = SeedDataConstants.RazumovskyId,
+                ChatId = SeedDataConstants.DirectAmelitRazumovsky
             };
 
             Func<Task> result = async () => await handler.Handle(query, CancellationToken.None);
@@ -87,8 +87,8 @@ namespace MangoAPI.Tests.ApiQueriesTests.Chats
             var handler = new GetChatByIdQueryHandler(dbContextFixture.PostgresDbContext);
             var query = new GetChatByIdQuery
             {
-                UserId = "1",
-                ChatId = "2"
+                UserId = SeedDataConstants.SzymonId,
+                ChatId = SeedDataConstants.ExtremeCodeCppId
             };
 
             Func<Task> result = async () => await handler.Handle(query, CancellationToken.None);

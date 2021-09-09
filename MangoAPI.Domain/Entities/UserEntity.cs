@@ -12,7 +12,7 @@ namespace MangoAPI.Domain.Entities
 
         public string Bio { get; set; }
 
-        public int? ConfirmationCode { get; set; }
+        public int? PhoneCode { get; set; }
 
         public int PublicKey { get; set; }
 

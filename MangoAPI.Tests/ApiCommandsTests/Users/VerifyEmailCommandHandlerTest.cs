@@ -19,8 +19,8 @@ namespace MangoAPI.Tests.ApiCommandsTests.Users
             var handler = new VerifyEmailCommandHandler(dbContextFixture.PostgresDbContext);
             var command = new VerifyEmailCommand
             {
-                UserId = SeedDataConstants.RazumovskyId,
-                Email = "kolosovp99@gmail.com",
+                UserId = SeedDataConstants.AmelitId,
+                Email = "amelit@gmail.com",
             };
 
             var result = await handler.Handle(command, CancellationToken.None);

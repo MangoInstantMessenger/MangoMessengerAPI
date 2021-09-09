@@ -19,8 +19,8 @@ namespace MangoAPI.Tests.ApiCommandsTests.Users
             var handler = new VerifyPhoneCommandHandler(dbContextFixture.PostgresDbContext);
             var command = new VerifyPhoneCommand
             {
-                UserId = SeedDataConstants.RazumovskyId,
-                ConfirmationCode = 524675,
+                UserId = SeedDataConstants.AmelitId,
+                ConfirmationCode = 555555,
             };
 
             var result = await handler.Handle(command, CancellationToken.None);
@@ -70,7 +70,7 @@ namespace MangoAPI.Tests.ApiCommandsTests.Users
             var command = new VerifyPhoneCommand
             {
                 UserId = SeedDataConstants.AmelitId,
-                ConfirmationCode = 543178,
+                ConfirmationCode = 555553,
             };
 
             Func<Task> result = async () => await handler.Handle(command, CancellationToken.None);

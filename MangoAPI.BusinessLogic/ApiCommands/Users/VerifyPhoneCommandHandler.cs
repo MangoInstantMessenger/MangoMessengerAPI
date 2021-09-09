@@ -34,7 +34,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
                 throw new BusinessException(ResponseMessageCodes.PhoneAlreadyVerified);
             }
 
-            if (user.ConfirmationCode != request.ConfirmationCode)
+            if (user.PhoneCode != request.ConfirmationCode)
             {
                 throw new BusinessException(ResponseMessageCodes.InvalidPhoneCode);
             }
@@ -47,7 +47,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
                 }, cancellationToken);
 
             user.PhoneNumberConfirmed = true;
-            user.ConfirmationCode = 0;
+            user.PhoneCode = 0;
 
             _postgresDbContext.Update(user);
 

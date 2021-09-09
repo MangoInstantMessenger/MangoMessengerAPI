@@ -38,12 +38,11 @@ namespace MangoAPI.Tests.ApiCommandsTests.UserChats
                 UserId = SeedDataConstants.RazumovskyId,
                 ChatId = SeedDataConstants.ExtremeCodeFloodId,
             };
-
-            await handler.Handle(command, CancellationToken.None);
+            
             Func<Task> result = async () => await handler.Handle(command, CancellationToken.None);
 
             await result.Should().ThrowAsync<BusinessException>()
-                .WithMessage("USER_ALREADY_JOINED_GROUP");
+                .WithMessage(ResponseMessageCodes.UserAlreadyJoinedGroup);
         }
 
         [Test]

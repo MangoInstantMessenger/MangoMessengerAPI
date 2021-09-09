@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using FluentAssertions;
 using MangoAPI.BusinessLogic.ApiQueries.Chats;
+using MangoAPI.Domain.Constants;
 using NUnit.Framework;
 
 namespace MangoAPI.Tests.ApiQueriesTests.Chats
@@ -16,7 +17,7 @@ namespace MangoAPI.Tests.ApiQueriesTests.Chats
             var handler = new SearchChatsQueryHandler(dbContextFixture.PostgresDbContext);
             var query = new SearchChatsQuery
             {
-                UserId = "1",
+                UserId = SeedDataConstants.RazumovskyId,
                 DisplayName = "Extreme",
             };
 

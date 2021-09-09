@@ -17,7 +17,10 @@ namespace MangoAPI.Tests.ApiQueriesTests.Contacts
         {
             using var dbContextFixture = new DbContextFixture();
             var handler = new GetContactsQueryHandler(dbContextFixture.PostgresDbContext);
-            var query = new GetContactsQuery { UserId = "1" };
+            var query = new GetContactsQuery
+            {
+                UserId = SeedDataConstants.RazumovskyId
+            };
 
             var response = await handler.Handle(query, CancellationToken.None);
 
@@ -30,7 +33,10 @@ namespace MangoAPI.Tests.ApiQueriesTests.Contacts
         {
             using var dbContextFixture = new DbContextFixture();
             var handler = new GetContactsQueryHandler(dbContextFixture.PostgresDbContext);
-            var query = new GetContactsQuery { UserId = "24" };
+            var query = new GetContactsQuery
+            {
+                UserId = Guid.NewGuid()
+            };
 
             Func<Task> response = async () => await handler.Handle(query, CancellationToken.None);
 
