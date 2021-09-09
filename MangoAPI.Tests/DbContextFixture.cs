@@ -579,7 +579,7 @@ namespace MangoAPI.Tests
         {
             new MessageEntity
             {
-                Id = Guid.NewGuid(),
+                Id = Guid.Empty,
                 UserId = SeedDataConstants.SzymonId,
                 ChatId = SeedDataConstants.WsbId,
                 Content = "Hello guys, how your diploma project goes?",

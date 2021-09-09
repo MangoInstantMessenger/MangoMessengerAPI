@@ -19,8 +19,8 @@ namespace MangoAPI.Tests.ApiCommandsTests.Messages
             var handler = new EditMessageCommandHandler(dbContextFixture.PostgresDbContext);
             var command = new EditMessageCommand
             {
-                UserId = "1",
-                MessageId = "3",
+                UserId = SeedDataConstants.SzymonId,
+                MessageId = Guid.Empty,
                 ModifiedText = "hello c#",
             };
 
@@ -36,8 +36,8 @@ namespace MangoAPI.Tests.ApiCommandsTests.Messages
             var handler = new EditMessageCommandHandler(dbContextFixture.PostgresDbContext);
             var command = new EditMessageCommand
             {
-                UserId = "1",
-                MessageId = "152",
+                UserId = SeedDataConstants.SzymonId,
+                MessageId = Guid.NewGuid(),
                 ModifiedText = "hello c#",
             };
 
@@ -54,7 +54,8 @@ namespace MangoAPI.Tests.ApiCommandsTests.Messages
             var handler = new EditMessageCommandHandler(dbContextFixture.PostgresDbContext);
             var command = new EditMessageCommand
             {
-                MessageId = "152",
+                UserId = Guid.NewGuid(),
+                MessageId = Guid.NewGuid(),
                 ModifiedText = "hello c#",
             };
 

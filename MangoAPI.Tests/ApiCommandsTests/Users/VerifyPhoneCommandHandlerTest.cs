@@ -19,7 +19,7 @@ namespace MangoAPI.Tests.ApiCommandsTests.Users
             var handler = new VerifyPhoneCommandHandler(dbContextFixture.PostgresDbContext);
             var command = new VerifyPhoneCommand
             {
-                UserId = "2",
+                UserId = SeedDataConstants.RazumovskyId,
                 ConfirmationCode = 524675,
             };
 
@@ -35,7 +35,7 @@ namespace MangoAPI.Tests.ApiCommandsTests.Users
             var handler = new VerifyPhoneCommandHandler(dbContextFixture.PostgresDbContext);
             var command = new VerifyPhoneCommand
             {
-                UserId = "24",
+                UserId = Guid.NewGuid(),
                 ConfirmationCode = 524675,
             };
 
@@ -52,7 +52,7 @@ namespace MangoAPI.Tests.ApiCommandsTests.Users
             var handler = new VerifyPhoneCommandHandler(dbContextFixture.PostgresDbContext);
             var command = new VerifyPhoneCommand
             {
-                UserId = "1",
+                UserId = SeedDataConstants.RazumovskyId,
                 ConfirmationCode = 524675,
             };
 
@@ -69,7 +69,7 @@ namespace MangoAPI.Tests.ApiCommandsTests.Users
             var handler = new VerifyPhoneCommandHandler(dbContextFixture.PostgresDbContext);
             var command = new VerifyPhoneCommand
             {
-                UserId = "3",
+                UserId = SeedDataConstants.AmelitId,
                 ConfirmationCode = 543178,
             };
 

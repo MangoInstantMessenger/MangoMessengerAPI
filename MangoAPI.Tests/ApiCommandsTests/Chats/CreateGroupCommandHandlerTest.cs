@@ -20,7 +20,7 @@ namespace MangoAPI.Tests.ApiCommandsTests.Chats
             var handler = new CreateGroupCommandHandler(dbContextFixture.PostgresDbContext);
             var command = new CreateGroupCommand
             {
-                UserId = "1",
+                UserId = SeedDataConstants.PetroId,
                 GroupType = ChatType.PublicChannel,
                 GroupTitle = "Extreme Code",
             };
@@ -37,7 +37,7 @@ namespace MangoAPI.Tests.ApiCommandsTests.Chats
             var handler = new CreateGroupCommandHandler(dbContextFixture.PostgresDbContext);
             var command = new CreateGroupCommand
             {
-                UserId = "12412512",
+                UserId = Guid.NewGuid(),
                 GroupType = ChatType.PublicChannel,
                 GroupTitle = "Extreme Code",
             };

@@ -19,8 +19,8 @@ namespace MangoAPI.Tests.ApiCommandsTests.UserChats
             var handler = new JoinChatCommandHandler(dbContextFixture.PostgresDbContext);
             var command = new JoinChatCommand
             {
-                UserId = "2",
-                ChatId = "1",
+                UserId = SeedDataConstants.RazumovskyId,
+                ChatId = SeedDataConstants.WsbId
             };
 
             var result = await handler.Handle(command, CancellationToken.None);
@@ -35,8 +35,8 @@ namespace MangoAPI.Tests.ApiCommandsTests.UserChats
             var handler = new JoinChatCommandHandler(dbContextFixture.PostgresDbContext);
             var command = new JoinChatCommand
             {
-                UserId = "2",
-                ChatId = "1",
+                UserId = SeedDataConstants.RazumovskyId,
+                ChatId = SeedDataConstants.ExtremeCodeFloodId,
             };
 
             await handler.Handle(command, CancellationToken.None);
@@ -53,8 +53,8 @@ namespace MangoAPI.Tests.ApiCommandsTests.UserChats
             var handler = new JoinChatCommandHandler(dbContextFixture.PostgresDbContext);
             var command = new JoinChatCommand
             {
-                UserId = "1241",
-                ChatId = "21512",
+                UserId = Guid.NewGuid(),
+                ChatId = Guid.NewGuid()
             };
 
             Func<Task> result = async () => await handler.Handle(command, CancellationToken.None);
@@ -70,8 +70,8 @@ namespace MangoAPI.Tests.ApiCommandsTests.UserChats
             var handler = new JoinChatCommandHandler(dbContextFixture.PostgresDbContext);
             var command = new JoinChatCommand
             {
-                UserId = "1",
-                ChatId = "21512",
+                UserId = SeedDataConstants.SzymonId,
+                ChatId = Guid.NewGuid(),
             };
 
             Func<Task> result = async () => await handler.Handle(command, CancellationToken.None);

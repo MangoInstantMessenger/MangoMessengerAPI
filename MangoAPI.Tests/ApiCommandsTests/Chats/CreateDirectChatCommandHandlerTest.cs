@@ -20,8 +20,8 @@ namespace MangoAPI.Tests.ApiCommandsTests.Chats
             
             var createChatCommand = new CreateDirectChatCommand
             {
-                UserId = "1",
-                PartnerId = "2",
+                UserId = SeedDataConstants.RazumovskyId,
+                PartnerId = SeedDataConstants.PetroId,
             };
 
             var result = await handler.Handle(createChatCommand, CancellationToken.None);
@@ -36,8 +36,8 @@ namespace MangoAPI.Tests.ApiCommandsTests.Chats
             var handler = new CreateDirectChatCommandHandler(dbContextFixture.PostgresDbContext);
             var createDirectChatCommand = new CreateDirectChatCommand
             {
-                UserId = "3421512523",
-                PartnerId = "15241412",
+                UserId = Guid.NewGuid(),
+                PartnerId = Guid.NewGuid()
             };
 
             Func<Task> result = async () => await handler.Handle(createDirectChatCommand, CancellationToken.None);
@@ -53,8 +53,8 @@ namespace MangoAPI.Tests.ApiCommandsTests.Chats
             var handler = new CreateDirectChatCommandHandler(dbContextFixture.PostgresDbContext);
             var createDirectChatCommand = new CreateDirectChatCommand
             {
-                UserId = "1",
-                PartnerId = "1",
+                UserId = SeedDataConstants.PetroId,
+                PartnerId = SeedDataConstants.PetroId,
             };
 
             Func<Task> result = async () => await handler.Handle(createDirectChatCommand, CancellationToken.None);

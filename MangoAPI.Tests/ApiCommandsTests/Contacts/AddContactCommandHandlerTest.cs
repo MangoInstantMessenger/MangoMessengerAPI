@@ -19,8 +19,8 @@ namespace MangoAPI.Tests.ApiCommandsTests.Contacts
             var handler = new AddContactCommandHandler(dbContextFixture.PostgresDbContext);
             var command = new AddContactCommand
             {
-                UserId = "1",
-                ContactId = "3",
+                UserId = SeedDataConstants.PetroId,
+                ContactId = SeedDataConstants.AmelitId
             };
 
             var result = await handler.Handle(command, CancellationToken.None);
@@ -35,8 +35,8 @@ namespace MangoAPI.Tests.ApiCommandsTests.Contacts
             var handler = new AddContactCommandHandler(dbContextFixture.PostgresDbContext);
             var command = new AddContactCommand
             {
-                UserId = "123",
-                ContactId = "212",
+                UserId = Guid.NewGuid(),
+                ContactId = Guid.NewGuid()
             };
 
             Func<Task> result = async () => await handler.Handle(command, CancellationToken.None);
@@ -52,8 +52,8 @@ namespace MangoAPI.Tests.ApiCommandsTests.Contacts
             var handler = new AddContactCommandHandler(dbContextFixture.PostgresDbContext);
             var command = new AddContactCommand
             {
-                UserId = "1",
-                ContactId = "2",
+                UserId = SeedDataConstants.PetroId,
+                ContactId = SeedDataConstants.SzymonId
             };
 
             Func<Task> result = async () => await handler.Handle(command, CancellationToken.None);

@@ -19,8 +19,8 @@ namespace MangoAPI.Tests.ApiCommandsTests.UserChats
             var handler = new LeaveGroupCommandHandler(dbContextFixture.PostgresDbContext);
             var command = new LeaveGroupCommand
             {
-                UserId = "1",
-                ChatId = "3",
+                UserId = SeedDataConstants.RazumovskyId,
+                ChatId = SeedDataConstants.ExtremeCodeFloodId
             };
 
             var result = await handler.Handle(command, CancellationToken.None);
@@ -35,8 +35,8 @@ namespace MangoAPI.Tests.ApiCommandsTests.UserChats
             var handler = new LeaveGroupCommandHandler(dbContextFixture.PostgresDbContext);
             var command = new LeaveGroupCommand
             {
-                UserId = "24",
-                ChatId = "3",
+                UserId = Guid.NewGuid(),
+                ChatId = SeedDataConstants.ExtremeCodeFloodId,
             };
 
             Func<Task> result = async () => await handler.Handle(command, CancellationToken.None);
@@ -52,8 +52,8 @@ namespace MangoAPI.Tests.ApiCommandsTests.UserChats
             var handler = new LeaveGroupCommandHandler(dbContextFixture.PostgresDbContext);
             var command = new LeaveGroupCommand
             {
-                UserId = "1",
-                ChatId = "35",
+                UserId = SeedDataConstants.RazumovskyId,
+                ChatId = Guid.NewGuid()
             };
 
             Func<Task> result = async () => await handler.Handle(command, CancellationToken.None);

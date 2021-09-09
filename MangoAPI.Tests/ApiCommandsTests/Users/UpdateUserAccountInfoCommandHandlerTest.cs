@@ -17,9 +17,9 @@ namespace MangoAPI.Tests.ApiCommandsTests.Users
         {
             using var dbContextFixture = new DbContextFixture();
             var handler = new UpdateUserAccountInfoCommandHandler(dbContextFixture.PostgresDbContext);
-            var command = new UpdateUserAccountInfoCommand()
+            var command = new UpdateUserAccountInfoCommand
             {
-                UserId = "1",
+                UserId = SeedDataConstants.PetroId,
                 FirstName = "Petro",
                 LastName = "Kolosov",
                 PhoneNumber = "544390737573",
@@ -36,15 +36,15 @@ namespace MangoAPI.Tests.ApiCommandsTests.Users
 
             result.Success.Should().BeTrue();
         }
-        
+
         [Test]
         public async Task UpdateUserAccountInformationCommandHandlerTest_ShouldThrowUserNotFound()
         {
             using var dbContextFixture = new DbContextFixture();
             var handler = new UpdateUserAccountInfoCommandHandler(dbContextFixture.PostgresDbContext);
-            var command = new UpdateUserAccountInfoCommand()
+            var command = new UpdateUserAccountInfoCommand
             {
-                UserId = "145",
+                UserId = Guid.NewGuid(),
                 FirstName = "Petro",
                 LastName = "Kolosov",
                 PhoneNumber = "544390737573",
