@@ -1,9 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Microsoft.AspNetCore.Identity;
 
 namespace MangoAPI.Domain.Entities
 {
-    public sealed class UserEntity : IdentityUser
+    public sealed class UserEntity : IdentityUser<Guid>
     {
         public string DisplayName { get; set; }
 
