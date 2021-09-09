@@ -202,9 +202,9 @@ namespace MangoAPI.Presentation.Controllers
             [FromBody] UpdateUserSocialInformationRequest request,
             CancellationToken cancellationToken)
         {
-            var currentUserId = HttpContext.User.GetUserId();
+            var userId = HttpContext.User.GetUserId();
             
-            var command = request.ToCommand(currentUserId);
+            var command = request.ToCommand(userId);
 
             return await RequestAsync(command, cancellationToken);
         }

@@ -46,7 +46,13 @@ namespace MangoAPI.Presentation.Controllers
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> GetChats(CancellationToken cancellationToken)
         {
-            var request = new GetCurrentUserChatsQuery {UserId = HttpContext.User.GetUserId()};
+            var userId = HttpContext.User.GetUserId();
+
+            var request = new GetCurrentUserChatsQuery
+            {
+                UserId = userId
+            };
+
             return await RequestAsync(request, cancellationToken);
         }
 

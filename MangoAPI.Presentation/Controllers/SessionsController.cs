@@ -3,7 +3,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using MangoAPI.BusinessLogic.ApiCommands.Sessions;
 using MangoAPI.BusinessLogic.Responses;
-using MangoAPI.Domain.Constants;
 using MangoAPI.Presentation.Extensions;
 using MangoAPI.Presentation.Interfaces;
 using MediatR;
@@ -45,11 +44,11 @@ namespace MangoAPI.Presentation.Controllers
         [ProducesResponseType(typeof(TokensResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
-        public async Task<IActionResult> LoginAsync(
-            [FromBody] LoginRequest request,
+        public async Task<IActionResult> LoginAsync([FromBody] LoginRequest request,
             CancellationToken cancellationToken)
         {
-            return await RequestAsync(request.ToCommand(), cancellationToken);
+            var command = request.ToCommand();
+            return await RequestAsync(command, cancellationToken);
         }
 
         /// <summary>
@@ -120,7 +119,6 @@ namespace MangoAPI.Presentation.Controllers
             
             var command = new LogoutAllCommand
             {
-                
                 UserId = userId
             };
             

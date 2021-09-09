@@ -47,7 +47,14 @@ namespace MangoAPI.Presentation.Controllers
         public async Task<IActionResult> GetChatMessages([FromRoute] Guid chatId,
             CancellationToken cancellationToken)
         {
-            var query = new GetMessagesQuery {ChatId = chatId, UserId = HttpContext.User.GetUserId()};
+            var userId = HttpContext.User.GetUserId();
+            
+            var query = new GetMessagesQuery
+            {
+                ChatId = chatId, 
+                UserId = userId
+            };
+            
             return await RequestAsync(query, cancellationToken);
         }
 
