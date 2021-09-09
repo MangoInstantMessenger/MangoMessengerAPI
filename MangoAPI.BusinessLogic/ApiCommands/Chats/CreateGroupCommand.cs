@@ -1,4 +1,5 @@
-﻿using MangoAPI.Domain.Enums;
+﻿using System;
+using MangoAPI.Domain.Enums;
 using MediatR;
 
 namespace MangoAPI.BusinessLogic.ApiCommands.Chats
@@ -9,6 +10,6 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Chats
         public string GroupTitle { get; init; }
         public string GroupDescription { get; init; }
 
-        public string UserId { get; init; }
+        public Guid UserId { get; init; }
     }
 }

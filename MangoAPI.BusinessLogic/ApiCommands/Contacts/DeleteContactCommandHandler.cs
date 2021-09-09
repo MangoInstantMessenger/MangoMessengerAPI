@@ -18,7 +18,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Contacts
         {
             _postgresDbContext = postgresDbContext;
         }
-        
+
         public async Task<ResponseBase> Handle(DeleteContactCommand request, CancellationToken cancellationToken)
         {
             var user = await _postgresDbContext.Users.FindUserByIdAsync(request.UserId, cancellationToken);
@@ -28,7 +28,9 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Contacts
                 throw new BusinessException(ResponseMessageCodes.UserNotFound);
             }
 
-            var userContacts = await _postgresDbContext.UserContacts.GetUserContactsAsync(user.Id, cancellationToken);
+            var userContacts = await _postgresDbContext
+                .UserContacts
+                .GetUserContactsAsync(user.Id, cancellationToken);
 
             var contact = userContacts.FirstOrDefault(x => x.ContactId == request.ContactId);
 
@@ -39,7 +41,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Contacts
 
             _postgresDbContext.UserContacts.Remove(contact);
             await _postgresDbContext.SaveChangesAsync(cancellationToken);
-            
+
             return ResponseBase.SuccessResponse;
         }
     }

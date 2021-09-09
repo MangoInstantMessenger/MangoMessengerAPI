@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 using MangoAPI.BusinessLogic.BusinessExceptions;
 using MangoAPI.BusinessLogic.Responses;
@@ -44,7 +43,6 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Contacts
 
             var contactEntity = new UserContactEntity
             {
-                Id = Guid.NewGuid().ToString(),
                 ContactId = request.ContactId,
                 UserId = request.UserId,
             };

@@ -1,4 +1,5 @@
-﻿using MangoAPI.Domain.Constants;
+﻿using System;
+using MangoAPI.Domain.Constants;
 
 namespace MangoAPI.BusinessLogic.Responses
 {
@@ -6,9 +7,9 @@ namespace MangoAPI.BusinessLogic.Responses
     {
         public string AccessToken { get; init; }
         
-        public string RefreshToken { get; init; }
+        public Guid RefreshToken { get; init; }
 
-        public static TokensResponse FromSuccess(string accessToken, string refreshToken)
+        public static TokensResponse FromSuccess(string accessToken, Guid refreshToken)
         {
             return new ()
             {

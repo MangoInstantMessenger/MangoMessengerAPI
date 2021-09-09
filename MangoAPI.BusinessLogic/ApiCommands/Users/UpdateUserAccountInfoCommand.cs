@@ -1,11 +1,12 @@
-﻿using MangoAPI.BusinessLogic.Responses;
+﻿using System;
+using MangoAPI.BusinessLogic.Responses;
 using MediatR;
 
 namespace MangoAPI.BusinessLogic.ApiCommands.Users
 {
     public record UpdateUserAccountInfoCommand : IRequest<ResponseBase>
     {
-        public string UserId { get; init; }
+        public Guid UserId { get; init; }
         public string FirstName { get; init; }
         public string LastName { get; init; }
         public string PhoneNumber { get; init; }

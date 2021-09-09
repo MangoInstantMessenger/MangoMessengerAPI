@@ -1,4 +1,5 @@
-﻿using MangoAPI.BusinessLogic.Responses;
+﻿using System;
+using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.Domain.Constants;
 using MangoAPI.Domain.Entities;
 
@@ -6,7 +7,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Chats
 {
     public record CreateChatEntityResponse : ChatResponseBase<CreateChatEntityResponse>
     {
-        public string ChatId { get; init; }
+        public Guid ChatId { get; init; }
 
         public static CreateChatEntityResponse FromSuccess(ChatEntity chatEntity)
         {

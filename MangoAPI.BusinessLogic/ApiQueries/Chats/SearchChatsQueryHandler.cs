@@ -21,7 +21,9 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Chats
 
         public async Task<SearchChatsResponse> Handle(SearchChatsQuery request, CancellationToken cancellationToken)
         {
-            var chats = await _postgresDbContext.Chats.GetPublicChatsIncludeMessagesUsersAsync(cancellationToken);
+            var chats = await _postgresDbContext
+                .Chats
+                .GetPublicChatsIncludeMessagesUsersAsync(cancellationToken);
 
             if (!string.IsNullOrEmpty(request.DisplayName) || !string.IsNullOrWhiteSpace(request.DisplayName))
             {
@@ -35,7 +37,8 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Chats
             foreach (var chat in chats)
             {
                 var isMember = await _postgresDbContext.UserChats
-                    .AnyAsync(x => x.ChatId == chat.Id && x.UserId == request.UserId, cancellationToken);
+                    .AnyAsync(x => x.ChatId == chat.Id && x.UserId == request.UserId, 
+                        cancellationToken);
 
                 resultList.Add(new Chat
                 {

@@ -1,5 +1,4 @@
 ﻿using FluentValidation;
-using System;
 
 namespace MangoAPI.BusinessLogic.ApiCommands.PasswordRestoreRequests
 {
@@ -7,10 +6,6 @@ namespace MangoAPI.BusinessLogic.ApiCommands.PasswordRestoreRequests
     {
         public PasswordRestoreCommandValidator()
         {
-            RuleFor(x => x.RequestId)
-                .Must(x => Guid.TryParse(x, out _))
-                .WithMessage("Password Restore: Request Id can not be parsed");
-
             RuleFor(x => x.NewPassword)
                 .Cascade(CascadeMode.Stop)
                 .NotEmpty()

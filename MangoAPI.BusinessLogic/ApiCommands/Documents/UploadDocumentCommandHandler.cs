@@ -31,7 +31,6 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Documents
 
             var documentEntity = new DocumentEntity
             {
-                Id = Guid.NewGuid().ToString(),
                 FileName = uniqueFileName,
                 FilePath = filePath
             };

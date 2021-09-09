@@ -17,6 +17,7 @@ namespace MangoAPI.Tests.ApiCommandsTests.Chats
         {
             using var dbContextFixture = new DbContextFixture();
             var handler = new CreateDirectChatCommandHandler(dbContextFixture.PostgresDbContext);
+            
             var createChatCommand = new CreateDirectChatCommand
             {
                 UserId = "1",

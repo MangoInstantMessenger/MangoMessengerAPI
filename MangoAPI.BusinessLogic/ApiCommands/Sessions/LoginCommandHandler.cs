@@ -54,9 +54,8 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Sessions
 
             var session = new SessionEntity
             {
-                Id = Guid.NewGuid().ToString(),
                 UserId = user.Id,
-                RefreshToken = Guid.NewGuid().ToString(),
+                RefreshToken = Guid.NewGuid(),
                 ExpiresAt = DateTime.UtcNow.AddDays(refreshLifetimeParsed),
                 CreatedAt = DateTime.UtcNow,
             };

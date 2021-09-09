@@ -1,10 +1,11 @@
-﻿using MediatR;
+﻿using System;
+using MediatR;
 
 namespace MangoAPI.BusinessLogic.ApiCommands.UserChats
 {
     public record LeaveGroupCommand : IRequest<LeaveGroupResponse>
     {
-        public string UserId { get; set; }
-        public string ChatId { get; set; }
+        public Guid UserId { get; init; }
+        public Guid ChatId { get; init; }
     }
 }

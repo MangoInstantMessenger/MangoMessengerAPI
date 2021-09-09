@@ -1,8 +1,10 @@
-﻿namespace MangoAPI.BusinessLogic.Models
+﻿using System;
+
+namespace MangoAPI.BusinessLogic.Models
 {
     public record Contact
     {
-        public string UserId { get; init; }
+        public Guid UserId { get; init; }
 
         public string DisplayName { get; init; }
 

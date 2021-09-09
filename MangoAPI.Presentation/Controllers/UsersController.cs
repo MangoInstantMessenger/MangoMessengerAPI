@@ -1,4 +1,5 @@
-﻿using MangoAPI.BusinessLogic.ApiCommands.Users;
+﻿using System;
+using MangoAPI.BusinessLogic.ApiCommands.Users;
 using MangoAPI.BusinessLogic.ApiQueries.Users;
 using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.Presentation.Extensions;
@@ -53,7 +54,9 @@ namespace MangoAPI.Presentation.Controllers
         public async Task<IActionResult> RegisterAsync([FromBody] RegisterRequest request,
             CancellationToken cancellationToken)
         {
-            return await RequestAsync(request.ToCommand(), cancellationToken);
+            var command = request.ToCommand();
+            
+            return await RequestAsync(command, cancellationToken);
         }
 
         /// <summary>
@@ -76,6 +79,7 @@ namespace MangoAPI.Presentation.Controllers
             CancellationToken cancellationToken)
         {
             var command = request.ToCommand();
+            
             return await RequestAsync(command, cancellationToken);
         }
 
@@ -99,6 +103,7 @@ namespace MangoAPI.Presentation.Controllers
             CancellationToken cancellationToken)
         {
             var userId = HttpContext.User.GetUserId();
+            
             var command = new VerifyPhoneCommand
             {
                 UserId = userId,
@@ -125,6 +130,7 @@ namespace MangoAPI.Presentation.Controllers
             CancellationToken cancellationToken)
         {
             var userId = HttpContext.User.GetUserId();
+            
             var command = request.ToCommand(userId);
 
             return await RequestAsync(command, cancellationToken);
@@ -143,9 +149,13 @@ namespace MangoAPI.Presentation.Controllers
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public async Task<IActionResult> GetUserById([FromRoute] string userId, CancellationToken cancellationToken)
+        public async Task<IActionResult> GetUserById([FromRoute] Guid userId, CancellationToken cancellationToken)
         {
-            var query = new GetUserQuery {UserId = userId};
+            var query = new GetUserQuery
+            {
+                UserId = userId
+            };
+            
             return await RequestAsync(query, cancellationToken);
         }
 
@@ -166,7 +176,12 @@ namespace MangoAPI.Presentation.Controllers
         public async Task<IActionResult> GetCurrentUser(CancellationToken cancellationToken)
         {
             var userId = HttpContext.User.GetUserId();
-            var request = new GetUserQuery {UserId = userId};
+            
+            var request = new GetUserQuery
+            {
+                UserId = userId
+            };
+            
             return await RequestAsync(request, cancellationToken);
         }
 
@@ -188,6 +203,7 @@ namespace MangoAPI.Presentation.Controllers
             CancellationToken cancellationToken)
         {
             var currentUserId = HttpContext.User.GetUserId();
+            
             var command = request.ToCommand(currentUserId);
 
             return await RequestAsync(command, cancellationToken);
@@ -210,6 +226,7 @@ namespace MangoAPI.Presentation.Controllers
             CancellationToken cancellationToken)
         {
             var userId = HttpContext.User.GetUserId();
+            
             var command = request.ToCommand(userId);
 
             return await RequestAsync(command, cancellationToken);
@@ -248,7 +265,12 @@ namespace MangoAPI.Presentation.Controllers
             CancellationToken cancellationToken)
         {
             var userId = HttpContext.User.GetUserId();
-            var command = new UpdateProfilePictureCommand {UserId = userId, Image = image};
+            
+            var command = new UpdateProfilePictureCommand
+            {
+                UserId = userId, 
+                Image = image
+            };
 
             return await RequestAsync(command, cancellationToken);
         }

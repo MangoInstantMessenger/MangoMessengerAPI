@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 using MangoAPI.BusinessLogic.BusinessExceptions;
 using MangoAPI.BusinessLogic.Responses;
@@ -39,7 +40,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
             }
 
             await _postgresDbContext.UserRoles.AddAsync(
-                new IdentityUserRole<string>
+                new IdentityUserRole<Guid>
                 {
                     UserId = user.Id,
                     RoleId = SeedDataConstants.UserRoleId,

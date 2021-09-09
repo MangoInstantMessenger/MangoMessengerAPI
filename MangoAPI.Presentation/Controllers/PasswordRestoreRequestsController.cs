@@ -25,7 +25,8 @@ namespace MangoAPI.Presentation.Controllers
         /// </summary>
         /// <param name="mediator">Instance of mediator.</param>
         public PasswordRestoreRequestsController(IMediator mediator) : base(mediator)
-        { }
+        {
+        }
 
         /// <summary>
         /// Creates new password restore request in database.
@@ -40,7 +41,8 @@ namespace MangoAPI.Presentation.Controllers
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public async Task<IActionResult> RestorePasswordRequestAsync(string emailOrPhone, CancellationToken cancellationToken)
+        public async Task<IActionResult> RestorePasswordRequestAsync([FromRoute] string emailOrPhone,
+            CancellationToken cancellationToken)
         {
             var command = new RequestPasswordRestoreCommand
             {
@@ -63,7 +65,7 @@ namespace MangoAPI.Presentation.Controllers
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public async Task<IActionResult> RestorePasswordAsync(PasswordRestoreRequest request,
+        public async Task<IActionResult> RestorePasswordAsync([FromBody] PasswordRestoreRequest request,
             CancellationToken cancellationToken)
         {
             var command = request.ToCommand();

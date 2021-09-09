@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 using MangoAPI.BusinessLogic.ApiCommands.Chats;
 using MangoAPI.BusinessLogic.ApiQueries.Chats;
@@ -45,7 +46,7 @@ namespace MangoAPI.Presentation.Controllers
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> GetChats(CancellationToken cancellationToken)
         {
-            var request = new GetCurrentUserChatsQuery { UserId = HttpContext.User.GetUserId() };
+            var request = new GetCurrentUserChatsQuery {UserId = HttpContext.User.GetUserId()};
             return await RequestAsync(request, cancellationToken);
         }
 
@@ -64,8 +65,7 @@ namespace MangoAPI.Presentation.Controllers
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public async Task<IActionResult> CreateChatAsync(
-            [FromBody] CreateGroupRequest request,
+        public async Task<IActionResult> CreateChatAsync([FromBody] CreateGroupRequest request,
             CancellationToken cancellationToken)
         {
             var userId = HttpContext.User.GetUserId();
@@ -88,11 +88,11 @@ namespace MangoAPI.Presentation.Controllers
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public async Task<IActionResult> CreateChatAsync(
-            [FromRoute] string userId,
+        public async Task<IActionResult> CreateChatAsync([FromRoute] Guid userId,
             CancellationToken cancellationToken)
         {
             var currentUserId = HttpContext.User.GetUserId();
+
             var command = new CreateDirectChatCommand
             {
                 PartnerId = userId,
@@ -114,10 +114,11 @@ namespace MangoAPI.Presentation.Controllers
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public async Task<IActionResult> SearchById([FromRoute] string chatId,
+        public async Task<IActionResult> SearchById([FromRoute] Guid chatId,
             CancellationToken cancellationToken)
         {
             var currentUserId = HttpContext.User.GetUserId();
+
             var query = new GetChatByIdQuery
             {
                 UserId = currentUserId,
@@ -140,9 +141,11 @@ namespace MangoAPI.Presentation.Controllers
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public async Task<IActionResult> SearchAsync([FromQuery] string displayName, CancellationToken cancellationToken)
+        public async Task<IActionResult> SearchAsync([FromQuery] string displayName,
+            CancellationToken cancellationToken)
         {
             var userId = HttpContext.User.GetUserId();
+
             var command = new SearchChatsQuery
             {
                 DisplayName = displayName,

@@ -1,4 +1,5 @@
-﻿using MangoAPI.BusinessLogic.ApiCommands.Users;
+﻿using System;
+using MangoAPI.BusinessLogic.ApiCommands.Users;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading;
 using System.Threading.Tasks;
@@ -15,7 +16,7 @@ namespace MangoAPI.Presentation.Interfaces
 
         Task<IActionResult> ChangePassword(ChangePasswordRequest request, CancellationToken cancellationToken);
 
-        Task<IActionResult> GetUserById(string userId, CancellationToken cancellationToken);
+        Task<IActionResult> GetUserById(Guid userId, CancellationToken cancellationToken);
 
         Task<IActionResult> GetCurrentUser(CancellationToken cancellationToken);
 

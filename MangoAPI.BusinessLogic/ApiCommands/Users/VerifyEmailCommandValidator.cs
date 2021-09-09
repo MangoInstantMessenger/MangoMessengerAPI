@@ -1,5 +1,4 @@
-﻿using System;
-using FluentValidation;
+﻿using FluentValidation;
 
 namespace MangoAPI.BusinessLogic.ApiCommands.Users
 {
@@ -11,9 +10,6 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
                 .Cascade(CascadeMode.Stop)
                 .NotEmpty()
                 .Length(1, 300);
-
-            RuleFor(x => x.UserId).Must(x => Guid.TryParse(x, out _))
-                .WithMessage("Verify  email: User Id cannot be parsed.");
         }
     }
 }

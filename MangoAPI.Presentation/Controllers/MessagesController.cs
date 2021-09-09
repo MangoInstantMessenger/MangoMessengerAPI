@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 using MangoAPI.BusinessLogic.ApiCommands.Messages;
 using MangoAPI.BusinessLogic.ApiQueries.Messages;
@@ -43,7 +44,8 @@ namespace MangoAPI.Presentation.Controllers
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public async Task<IActionResult> GetChatMessages([FromRoute] string chatId, CancellationToken cancellationToken)
+        public async Task<IActionResult> GetChatMessages([FromRoute] Guid chatId,
+            CancellationToken cancellationToken)
         {
             var query = new GetMessagesQuery {ChatId = chatId, UserId = HttpContext.User.GetUserId()};
             return await RequestAsync(query, cancellationToken);
@@ -62,10 +64,11 @@ namespace MangoAPI.Presentation.Controllers
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public async Task<IActionResult> SearchChatMessages(string chatId, string messageText,
+        public async Task<IActionResult> SearchChatMessages([FromQuery] Guid chatId, [FromQuery] string messageText,
             CancellationToken cancellationToken)
         {
             var currentUserId = HttpContext.User.GetUserId();
+
             var query = new SearchChatMessagesQuery
             {
                 ChatId = chatId,
@@ -88,8 +91,7 @@ namespace MangoAPI.Presentation.Controllers
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public async Task<IActionResult> SendMessage(
-            [FromBody] SendMessageRequest request,
+        public async Task<IActionResult> SendMessage([FromBody] SendMessageRequest request,
             CancellationToken cancellationToken)
         {
             var userId = HttpContext.User.GetUserId();
@@ -109,8 +111,7 @@ namespace MangoAPI.Presentation.Controllers
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public async Task<IActionResult> EditMessage(
-            [FromBody] EditMessageRequest request,
+        public async Task<IActionResult> EditMessage([FromBody] EditMessageRequest request,
             CancellationToken cancellationToken)
         {
             var userId = HttpContext.User.GetUserId();
@@ -130,11 +131,11 @@ namespace MangoAPI.Presentation.Controllers
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public async Task<IActionResult> DeleteMessage(
-            [FromRoute] string messageId,
+        public async Task<IActionResult> DeleteMessage([FromRoute] Guid messageId,
             CancellationToken cancellationToken)
         {
             var userId = HttpContext.User.GetUserId();
+
             var command = new DeleteMessageCommand
             {
                 MessageId = messageId,

@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using System;
+using Newtonsoft.Json;
 
 namespace MangoAPI.BusinessLogic.ApiCommands.Users
 {
@@ -23,7 +24,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
     public static class UpdateUserSocialInformationRequestMapper
     {
         public static UpdateUserSocialInformationCommand ToCommand(this UpdateUserSocialInformationRequest model,
-            string userId) => new()
+            Guid userId) => new()
         {
             UserId = userId,
             Facebook = model.Facebook,

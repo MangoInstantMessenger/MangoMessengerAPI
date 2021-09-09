@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 using MangoAPI.BusinessLogic.ApiCommands.Contacts;
 using MangoAPI.BusinessLogic.ApiQueries.Contacts;
@@ -44,9 +45,10 @@ namespace MangoAPI.Presentation.Controllers
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public async Task<IActionResult> AddContact([FromRoute] string contactId, CancellationToken cancellationToken)
+        public async Task<IActionResult> AddContact([FromRoute] Guid contactId, CancellationToken cancellationToken)
         {
             var currentUserId = HttpContext.User.GetUserId();
+
             var command = new AddContactCommand
             {
                 UserId = currentUserId,
@@ -69,7 +71,7 @@ namespace MangoAPI.Presentation.Controllers
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public async Task<IActionResult> DeleteContact([FromRoute] string contactId,
+        public async Task<IActionResult> DeleteContact([FromRoute] Guid contactId,
             CancellationToken cancellationToken)
         {
             var currentUserId = HttpContext.User.GetUserId();
@@ -95,7 +97,12 @@ namespace MangoAPI.Presentation.Controllers
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> GetContacts(CancellationToken cancellationToken)
         {
-            var query = new GetContactsQuery { UserId = HttpContext.User.GetUserId() };
+            var userId = HttpContext.User.GetUserId();
+
+            var query = new GetContactsQuery
+            {
+                UserId = userId
+            };
 
             return await RequestAsync(query, cancellationToken);
         }
@@ -104,19 +111,22 @@ namespace MangoAPI.Presentation.Controllers
         /// Searches user by his display name. Requires role: User.
         /// </summary>
         /// <param name="data">User's display name, string.</param>
+        /// <param name="searchQuery">Search query string.</param>
         /// <param name="cancellationToken">CancellationToken instance.</param>
         /// <returns>Possible codes: 200, 400, 409.</returns>
         [HttpGet("searches")]
         [Authorize(Roles = "User")]
-        [SwaggerOperation(Summary = "Searches user by display name, phone number or e-mail address. Requires role: User.")]
+        [SwaggerOperation(Summary =
+            "Searches user by display name, phone number or e-mail address. Requires role: User.")]
         [ProducesResponseType(typeof(SearchContactResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public async Task<IActionResult> SearchesAsync(string searchQuery, 
+        public async Task<IActionResult> SearchesAsync([FromRoute] string searchQuery,
             CancellationToken cancellationToken)
         {
             var currentUserId = HttpContext.User.GetUserId();
+
             var query = new SearchContactQuery
             {
                 SearchQuery = searchQuery,

@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using System;
+using Newtonsoft.Json;
 
 namespace MangoAPI.BusinessLogic.ApiCommands.Users
 {
@@ -17,7 +18,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
 
     public static class ChangePasswordRequestMapper
     {
-        public static ChangePasswordCommand ToCommand(this ChangePasswordRequest request, string userId) => new()
+        public static ChangePasswordCommand ToCommand(this ChangePasswordRequest request, Guid userId) => new()
         {
             UserId = userId,
             CurrentPassword = request.CurrentPassword,
