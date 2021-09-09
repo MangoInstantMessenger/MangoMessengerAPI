@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using MangoAPI.BusinessLogic.ApiCommands.Documents;
 using MangoAPI.Presentation.Interfaces;
 using MediatR;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace MangoAPI.Presentation.Controllers
@@ -14,10 +15,11 @@ namespace MangoAPI.Presentation.Controllers
         {
         }
 
-        [HttpPost("fileName")]
-        public async Task<IActionResult> UploadDocumentAsync(string fileName, CancellationToken cancellationToken)
+        [HttpPost]
+        public async Task<IActionResult> UploadDocumentAsync(IFormFile formFile,
+            CancellationToken cancellationToken)
         {
-            var command = new UploadDocumentCommand {FileName = fileName};
+            var command = new UploadDocumentCommand {FormFile = formFile};
 
             return await RequestAsync(command, cancellationToken);
         }

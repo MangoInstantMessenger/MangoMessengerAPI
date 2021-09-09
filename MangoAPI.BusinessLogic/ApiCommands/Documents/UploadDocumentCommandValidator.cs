@@ -6,7 +6,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Documents
     {
         public UploadDocumentCommandValidator()
         {
-            RuleFor(x => x.FileName).NotEmpty();
+            RuleFor(x => x.FormFile).NotEmpty();
         }
     }
 }

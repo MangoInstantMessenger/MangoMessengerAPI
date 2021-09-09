@@ -28,4 +28,8 @@
         <ProjectReference Include="..\MangoAPI.BusinessLogic\MangoAPI.BusinessLogic.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="wwwroot\Uploads" />
+    </ItemGroup>
+
 </Project>
