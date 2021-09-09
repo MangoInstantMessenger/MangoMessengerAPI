@@ -27,8 +27,10 @@ namespace MangoAPI.DataAccess.Database
         public DbSet<UserContactEntity> UserContacts { get; set; }
 
         public DbSet<UserInformationEntity> UserInformation { get; set; }
-        
+
         public DbSet<PasswordRestoreRequestEntity> PasswordRestoreRequests { get; set; }
+
+        public DbSet<DocumentEntity> Documents { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
