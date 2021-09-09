@@ -5,15 +5,15 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Documents
 {
     public record UploadDocumentResponse : ResponseBase<UploadDocumentResponse>
     {
-        public string DocumentId { get; init; }
+        public string FileName { get; init; }
 
-        public static UploadDocumentResponse FromSuccess(string documentId)
+        public static UploadDocumentResponse FromSuccess(string fileName)
         {
             return new()
             {
                 Success = true,
                 Message = ResponseMessageCodes.Success,
-                DocumentId = documentId
+                FileName = fileName,
             };
         }
     }

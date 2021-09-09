@@ -39,7 +39,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Documents
             await _postgresDbContext.Documents.AddAsync(documentEntity, cancellationToken);
             await _postgresDbContext.SaveChangesAsync(cancellationToken);
 
-            return UploadDocumentResponse.FromSuccess(documentEntity.Id);
+            return UploadDocumentResponse.FromSuccess(documentEntity.FileName);
         }
 
         private static string GetUniqueFileName(string fileName)
@@ -47,7 +47,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Documents
             fileName = Path.GetFileName(fileName);
             return Path.GetFileNameWithoutExtension(fileName)
                    + "_"
-                   + Guid.NewGuid().ToString()[..4]
+                   + Guid.NewGuid()
                    + Path.GetExtension(fileName);
         }
     }

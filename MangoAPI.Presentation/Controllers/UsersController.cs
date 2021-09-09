@@ -145,7 +145,7 @@ namespace MangoAPI.Presentation.Controllers
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> GetUserById([FromRoute] string userId, CancellationToken cancellationToken)
         {
-            var query = new GetUserQuery { UserId = userId };
+            var query = new GetUserQuery {UserId = userId};
             return await RequestAsync(query, cancellationToken);
         }
 
@@ -166,7 +166,7 @@ namespace MangoAPI.Presentation.Controllers
         public async Task<IActionResult> GetCurrentUser(CancellationToken cancellationToken)
         {
             var userId = HttpContext.User.GetUserId();
-            var request = new GetUserQuery { UserId = userId };
+            var request = new GetUserQuery {UserId = userId};
             return await RequestAsync(request, cancellationToken);
         }
 
@@ -228,10 +228,27 @@ namespace MangoAPI.Presentation.Controllers
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public async Task<IActionResult> UpdatePublicKeyAsync(int publicKey, CancellationToken cancellationToken)
+        public async Task<IActionResult> UpdatePublicKeyAsync([FromRoute] int publicKey,
+            CancellationToken cancellationToken)
         {
             var userId = HttpContext.User.GetUserId();
             var command = new UpdatePublicKeyCommand(userId, publicKey);
+
+            return await RequestAsync(command, cancellationToken);
+        }
+
+        [HttpPut("picture/{image}")]
+        [Authorize(Roles = "User")]
+        [SwaggerOperation(Summary = "Updates user's profile picture. Requires role: User.")]
+        [ProducesResponseType(typeof(ResponseBase), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        public async Task<IActionResult> UpdateProfilePictureAsync([FromRoute] string image,
+            CancellationToken cancellationToken)
+        {
+            var userId = HttpContext.User.GetUserId();
+            var command = new UpdateProfilePictureCommand {UserId = userId, Image = image};
 
             return await RequestAsync(command, cancellationToken);
         }
