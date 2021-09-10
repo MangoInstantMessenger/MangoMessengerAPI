@@ -35,7 +35,8 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Chats
                             CreatedAt = x.CreatedAt.ToShortTimeString(),
                             UpdatedAt = x.UpdatedAt?.ToShortTimeString(),
                             IsEncrypted = x.IsEncrypted,
-                            AuthorPublicKey = x.AuthorPublicKey
+                            AuthorPublicKey = x.AuthorPublicKey,
+                            PictureUrl = x.User.PictureUrl,
                         }).Last()
                     : null,
             }).ToList(),

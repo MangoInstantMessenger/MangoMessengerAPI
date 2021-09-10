@@ -33,6 +33,7 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Users
                     Username = user.UserName,
                     Bio = user.Bio,
                     PublicKey = user.PublicKey,
+                    PictureUrl = user.PictureUrl,
                 },
             };
         }

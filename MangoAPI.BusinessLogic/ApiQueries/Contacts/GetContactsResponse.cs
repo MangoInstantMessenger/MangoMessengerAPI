@@ -26,6 +26,7 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Contacts
                             Address = userEntity.UserInformation.Address,
                             Bio = userEntity.Bio,
                             IsContact = true,
+                            PictureUrl = userEntity.PictureUrl,
                         }).ToList(),
             };
         }

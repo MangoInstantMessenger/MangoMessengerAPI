@@ -28,7 +28,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
             }
 
             var imageAddress = $"{EnvironmentConstants.BackendAddress}Uploads/{request.Image}";
-            user.Image = imageAddress;
+            user.PictureUrl = imageAddress;
 
             _postgresDbContext.Users.Update(user);
 

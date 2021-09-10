@@ -19,5 +19,7 @@ namespace MangoAPI.BusinessLogic.Models
         public bool IsEncrypted { get; init; }
 
         public int AuthorPublicKey { get; init; }
+
+        public string PictureUrl { get; init; }
     }
 }

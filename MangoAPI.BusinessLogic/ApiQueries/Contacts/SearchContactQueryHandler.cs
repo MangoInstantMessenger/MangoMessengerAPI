@@ -40,6 +40,7 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Contacts
                 DisplayName = x.DisplayName,
                 Address = x.UserInformation.Address,
                 Bio = x.Bio,
+                PictureUrl = x.PictureUrl,
             }).ToList();
 
             foreach (var contact in contacts)

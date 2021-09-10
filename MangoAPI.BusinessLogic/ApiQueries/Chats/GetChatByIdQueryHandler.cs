@@ -1,13 +1,13 @@
-﻿using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
-using MangoAPI.BusinessLogic.BusinessExceptions;
+﻿using MangoAPI.BusinessLogic.BusinessExceptions;
 using MangoAPI.BusinessLogic.Models;
 using MangoAPI.DataAccess.Database;
 using MangoAPI.DataAccess.Database.Extensions;
 using MangoAPI.Domain.Constants;
 using MangoAPI.Domain.Enums;
 using MediatR;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace MangoAPI.BusinessLogic.ApiQueries.Chats
 {
@@ -59,7 +59,7 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Chats
                 Description = chatEntity.Description,
                 MembersCount = chatEntity.MembersCount,
                 IsMember = userChat != null,
-                IsArchived = userChat is {IsArchived: true},
+                IsArchived = userChat is { IsArchived: true },
                 LastMessage = chatEntity.Messages.Any()
                     ? chatEntity.Messages.OrderBy(messageEntity => messageEntity.CreatedAt).Select(x => new Message
                     {
@@ -69,7 +69,8 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Chats
                         CreatedAt = x.CreatedAt.ToShortTimeString(),
                         UpdatedAt = x.UpdatedAt?.ToShortTimeString(),
                         IsEncrypted = x.IsEncrypted,
-                        AuthorPublicKey = x.AuthorPublicKey
+                        AuthorPublicKey = x.AuthorPublicKey,
+                        PictureUrl = x.User.PictureUrl,
                     }).Last()
                     : null,
             };

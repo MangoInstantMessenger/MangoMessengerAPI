@@ -28,6 +28,7 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Messages
                         Self = messageEntity.User.Id == user.Id,
                         IsEncrypted = messageEntity.IsEncrypted,
                         AuthorPublicKey = messageEntity.AuthorPublicKey,
+                        PictureUrl = messageEntity.User.PictureUrl,
                     }).ToList(),
 
                 Success = true,

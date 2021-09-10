@@ -1,12 +1,12 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
-using MangoAPI.BusinessLogic.Models;
+﻿using MangoAPI.BusinessLogic.Models;
 using MangoAPI.DataAccess.Database;
 using MangoAPI.DataAccess.Database.Extensions;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace MangoAPI.BusinessLogic.ApiQueries.Chats
 {
@@ -37,7 +37,7 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Chats
             foreach (var chat in chats)
             {
                 var isMember = await _postgresDbContext.UserChats
-                    .AnyAsync(x => x.ChatId == chat.Id && x.UserId == request.UserId, 
+                    .AnyAsync(x => x.ChatId == chat.Id && x.UserId == request.UserId,
                         cancellationToken);
 
                 resultList.Add(new Chat
@@ -59,7 +59,8 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Chats
                                 CreatedAt = x.CreatedAt.ToShortTimeString(),
                                 UpdatedAt = x.UpdatedAt?.ToShortTimeString(),
                                 IsEncrypted = x.IsEncrypted,
-                                AuthorPublicKey = x.AuthorPublicKey
+                                AuthorPublicKey = x.AuthorPublicKey,
+                                PictureUrl = x.User.PictureUrl,
                             }).Last()
                         : null,
                 });

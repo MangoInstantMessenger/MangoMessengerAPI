@@ -13,5 +13,7 @@ namespace MangoAPI.BusinessLogic.Models
         public string Bio { get; init; }
 
         public bool IsContact { get; set; }
+
+        public string PictureUrl { get; init; }
     }
 }
