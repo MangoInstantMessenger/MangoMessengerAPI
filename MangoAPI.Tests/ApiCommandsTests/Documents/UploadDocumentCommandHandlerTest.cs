@@ -18,14 +18,15 @@ namespace MangoAPI.Tests.ApiCommandsTests.Documents
         public async Task UploadDocumentCommandHandlerTest_Success()
         {
             using var dbContextFixture = new DbContextFixture();
+            const string path = "../../../../MangoAPI.Presentation/wwwroot";
             var environment = new Mock<IHostingEnvironment>();
-            environment.Object.WebRootPath = "../../../../MangoAPI.Presentation/wwwroot"; 
+            environment.Object.WebRootPath = path;
             environment.Setup(m => m.WebRootPath)
-                .Returns("../../../../MangoAPI.Presentation/wwwroot");
+                .Returns(path);
             var handler = new UploadDocumentCommandHandler(dbContextFixture.PostgresDbContext, environment.Object);
-            var command = new UploadDocumentCommand()
+            var command = new UploadDocumentCommand
             {
-                FormFile = new FormFile(new MemoryStream(Encoding.UTF8.GetBytes("hello world")), 
+                FormFile = new FormFile(new MemoryStream(Encoding.UTF8.GetBytes("hello world")),
                     0, 0, "hello world", "helloworld.txt")
             };
 
