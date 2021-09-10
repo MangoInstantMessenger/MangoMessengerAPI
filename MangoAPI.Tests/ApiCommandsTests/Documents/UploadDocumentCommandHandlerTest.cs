@@ -33,7 +33,7 @@ namespace MangoAPI.Tests.ApiCommandsTests.Documents
             var result = await handler.Handle(command, CancellationToken.None);
 
             result.Success.Should().BeTrue();
-            result.FilePath.Should().NotBeNull();
+            result.FileName.Should().NotBeNull();
         }
     }
 }

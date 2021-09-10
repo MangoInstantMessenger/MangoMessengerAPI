@@ -13,7 +13,6 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Documents
     {
         private readonly MangoPostgresDbContext _postgresDbContext;
         private readonly IHostingEnvironment _environment;
-        private const string RootFolder = "../../../../MangoAPI.Presentation/wwwroot/Uploads";
 
         public UploadDocumentCommandHandler(MangoPostgresDbContext postgresDbContext, IHostingEnvironment environment)
         {
@@ -24,11 +23,6 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Documents
         public async Task<UploadDocumentResponse> Handle(UploadDocumentCommand request,
             CancellationToken cancellationToken)
         {
-            if (!Directory.Exists(RootFolder))
-            {
-                Directory.CreateDirectory(RootFolder);
-            }
-
             var uniqueFileName = GetUniqueFileName(request.FormFile.FileName);
             var uploads = Path.Combine(_environment.WebRootPath, "Uploads");
             var filePath = Path.Combine(uploads, uniqueFileName);
@@ -44,7 +38,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Documents
             await _postgresDbContext.Documents.AddAsync(documentEntity, cancellationToken);
             await _postgresDbContext.SaveChangesAsync(cancellationToken);
 
-            return UploadDocumentResponse.FromSuccess(documentEntity.FileName, documentEntity.FilePath);
+            return UploadDocumentResponse.FromSuccess(documentEntity.FileName);
         }
 
         private static string GetUniqueFileName(string fileName)
