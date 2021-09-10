@@ -11,8 +11,7 @@ namespace MangoAPI.DataAccess.Database.Extensions
     public static class UserChatDbSetExtensions
     {
         public static async Task<List<UserChatEntity>> FindUserChatsByIdIncludeMessagesAsync(
-            this DbSet<UserChatEntity> dbSet,
-            Guid userId, CancellationToken cancellationToken)
+            this DbSet<UserChatEntity> dbSet, Guid userId, CancellationToken cancellationToken)
         {
             return await dbSet.AsNoTracking()
                 .Include(x => x.Chat)

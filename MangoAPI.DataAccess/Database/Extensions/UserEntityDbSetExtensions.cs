@@ -9,15 +9,13 @@ namespace MangoAPI.DataAccess.Database.Extensions
     public static class UserEntityDbSetExtensions
     {
         public static async Task<UserEntity> FindUserByIdAsync(this DbSet<UserEntity> dbSet, 
-            Guid userId,
-            CancellationToken cancellationToken)
+            Guid userId, CancellationToken cancellationToken)
         {
             return await dbSet.FirstOrDefaultAsync(x => x.Id == userId, cancellationToken);
         }
 
         public static async Task<UserEntity> FindUserByEmailOrPhoneAsync(this DbSet<UserEntity> dbSet, 
-            string phoneOrEmail, 
-            CancellationToken cancellationToken)
+            string phoneOrEmail, CancellationToken cancellationToken)
         {
             return await dbSet
                 .FirstOrDefaultAsync(x => x.PhoneNumber == phoneOrEmail || x.Email == phoneOrEmail, 
@@ -25,8 +23,7 @@ namespace MangoAPI.DataAccess.Database.Extensions
         }
 
         public static async Task<UserEntity> FindUserByIdIncludeInfoAsync(this DbSet<UserEntity> dbSet, 
-            Guid userId,
-            CancellationToken cancellationToken)
+            Guid userId, CancellationToken cancellationToken)
         {
             return await dbSet
                 .Include(x => x.UserInformation)

@@ -29,20 +29,22 @@ namespace MangoAPI.DataAccess.Database.Extensions
                 .ToListAsync(cancellationToken);
         }
 
-        public static IEnumerable<MessageEntity> GetChatMessagesByIdIncludeUser(this DbSet<MessageEntity> dbSet,
-            Guid chatId)
+        public static async Task<List<MessageEntity>> GetChatMessagesByIdIncludeUser(this DbSet<MessageEntity> dbSet,
+            Guid chatId, CancellationToken cancellationToken)
         {
-            return dbSet.AsNoTracking()
+            return await dbSet
+                .AsNoTracking()
                 .Include(x => x.User)
                 .Where(x => x.ChatId == chatId)
-                .AsEnumerable();
+                .ToListAsync(cancellationToken);
         }
 
         public static async Task<MessageEntity> FindMessageByUserIdAsync(this DbSet<MessageEntity> dbSet,
             Guid messageId, Guid userId, CancellationToken cancellationToken)
         {
-            return await dbSet.FirstOrDefaultAsync(x => x.Id == messageId && x.UserId == userId,
-                cancellationToken);
+            return await dbSet
+                .FirstOrDefaultAsync(x => x.Id == messageId && x.UserId == userId,
+                    cancellationToken);
         }
     }
 }

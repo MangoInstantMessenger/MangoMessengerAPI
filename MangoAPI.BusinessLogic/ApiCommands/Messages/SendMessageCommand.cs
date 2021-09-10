@@ -9,5 +9,6 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Messages
         public Guid UserId { get; init; }
         public Guid ChatId { get; init; }
         public bool IsEncrypted { get; init; }
+        public string AttachmentPath { get; init; }
     }
 }
