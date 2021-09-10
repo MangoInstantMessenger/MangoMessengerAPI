@@ -3,6 +3,7 @@ using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 using MangoAPI.DataAccess.Database;
+using MangoAPI.Domain.Constants;
 using MangoAPI.Domain.Entities;
 using MediatR;
 using Microsoft.AspNetCore.Hosting;
@@ -38,7 +39,8 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Documents
             await _postgresDbContext.Documents.AddAsync(documentEntity, cancellationToken);
             await _postgresDbContext.SaveChangesAsync(cancellationToken);
 
-            return UploadDocumentResponse.FromSuccess(documentEntity.FileName);
+            var fileUrl = $"{EnvironmentConstants.BackendAddress}Uploads/{documentEntity.FileName}";
+            return UploadDocumentResponse.FromSuccess(documentEntity.FileName, fileUrl);
         }
 
         private static string GetUniqueFileName(string fileName)
