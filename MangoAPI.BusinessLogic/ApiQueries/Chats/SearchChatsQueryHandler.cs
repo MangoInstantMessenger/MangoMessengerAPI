@@ -2,6 +2,7 @@
 using MangoAPI.BusinessLogic.Models;
 using MangoAPI.DataAccess.Database;
 using MangoAPI.DataAccess.Database.Extensions;
+using MangoAPI.Domain.Enums;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
@@ -41,11 +42,11 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Chats
                     .AnyAsync(x => x.ChatId == chat.Id && x.UserId == request.UserId,
                         cancellationToken);
 
-                resultList.Add(new Chat
+                var currentChat = new Chat
                 {
                     ChatId = chat.Id,
                     Title = chat.Title,
-                    ChatLogoImageUrl = chat.Image,
+                    ChatLogoImageUrl = StringService.GetDocumentUrl(chat.Image),
                     Description = chat.Description,
                     MembersCount = chat.MembersCount,
                     ChatType = chat.ChatType,
@@ -64,7 +65,21 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Chats
                                 MessageAuthorPictureUrl = StringService.GetDocumentUrl(x.User.Image),
                             }).Last()
                         : null,
-                });
+                };
+
+                if (currentChat.ChatType == ChatType.DirectChat)
+                {
+                    var colleague = (await _postgresDbContext
+                        .UserChats
+                        .Include(x => x.User)
+                        .FirstOrDefaultAsync(x => x.ChatId == currentChat.ChatId && x.UserId != request.UserId,
+                        cancellationToken)).User;
+
+                    currentChat.Title = colleague.DisplayName;
+                    currentChat.ChatLogoImageUrl = StringService.GetDocumentUrl(colleague.Image);
+                }
+
+                resultList.Add(currentChat);
             }
 
             return SearchChatsResponse.FromSuccess(resultList);
