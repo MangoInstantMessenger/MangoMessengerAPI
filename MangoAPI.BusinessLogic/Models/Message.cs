@@ -20,6 +20,6 @@ namespace MangoAPI.BusinessLogic.Models
 
         public int AuthorPublicKey { get; init; }
 
-        public string PictureUrl { get; init; }
+        public string MessageAuthorPictureUrl { get; init; }
     }
 }

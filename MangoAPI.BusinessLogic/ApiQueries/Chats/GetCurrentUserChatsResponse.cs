@@ -20,7 +20,7 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Chats
             {
                 ChatId = userChatEntity.ChatId,
                 Title = userChatEntity.Chat.Title,
-                Image = userChatEntity.Chat.Image,
+                ChatLogoImageUrl = StringService.GetDocumentUrl(userChatEntity.Chat.Image),
                 Description = userChatEntity.Chat.Description,
                 MembersCount = userChatEntity.Chat.MembersCount,
                 ChatType = userChatEntity.Chat.ChatType,
@@ -37,7 +37,7 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Chats
                             UpdatedAt = x.UpdatedAt?.ToShortTimeString(),
                             IsEncrypted = x.IsEncrypted,
                             AuthorPublicKey = x.AuthorPublicKey,
-                            PictureUrl = StringService.GetDocumentUrl(x.User.Image),
+                            MessageAuthorPictureUrl = StringService.GetDocumentUrl(x.User.Image),
                         }).Last()
                     : null,
             }).ToList(),

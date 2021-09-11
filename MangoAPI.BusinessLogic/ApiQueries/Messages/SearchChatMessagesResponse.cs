@@ -26,7 +26,7 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Messages
                         Self = message.User.Id == user.Id,
                         IsEncrypted = message.IsEncrypted,
                         AuthorPublicKey = message.AuthorPublicKey,
-                        PictureUrl = StringService.GetDocumentUrl(message.User.Image),
+                        MessageAuthorPictureUrl = StringService.GetDocumentUrl(message.User.Image),
                     }).ToList(),
                 Message = ResponseMessageCodes.Success,
                 Success = true

@@ -29,7 +29,7 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Messages
                         Self = messageEntity.User.Id == user.Id,
                         IsEncrypted = messageEntity.IsEncrypted,
                         AuthorPublicKey = messageEntity.AuthorPublicKey,
-                        PictureUrl = StringService.GetDocumentUrl(messageEntity.User.Image),
+                        MessageAuthorPictureUrl = StringService.GetDocumentUrl(messageEntity.User.Image),
                     }).ToList(),
 
                 Success = true,
