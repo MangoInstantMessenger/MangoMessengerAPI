@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using MangoAPI.Application.Services;
 using MangoAPI.BusinessLogic.Models;
 using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.Domain.Constants;
@@ -36,7 +37,7 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Chats
                             UpdatedAt = x.UpdatedAt?.ToShortTimeString(),
                             IsEncrypted = x.IsEncrypted,
                             AuthorPublicKey = x.AuthorPublicKey,
-                            PictureUrl = x.User.PictureUrl,
+                            PictureUrl = StringService.GetDocumentUrl(x.User.Image),
                         }).Last()
                     : null,
             }).ToList(),

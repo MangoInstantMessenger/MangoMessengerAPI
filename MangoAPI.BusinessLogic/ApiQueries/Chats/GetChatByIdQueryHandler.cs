@@ -1,4 +1,5 @@
-﻿using MangoAPI.BusinessLogic.BusinessExceptions;
+﻿using MangoAPI.Application.Services;
+using MangoAPI.BusinessLogic.BusinessExceptions;
 using MangoAPI.BusinessLogic.Models;
 using MangoAPI.DataAccess.Database;
 using MangoAPI.DataAccess.Database.Extensions;
@@ -70,7 +71,7 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Chats
                         UpdatedAt = x.UpdatedAt?.ToShortTimeString(),
                         IsEncrypted = x.IsEncrypted,
                         AuthorPublicKey = x.AuthorPublicKey,
-                        PictureUrl = x.User.PictureUrl,
+                        PictureUrl = StringService.GetDocumentUrl(x.User.Image),
                     }).Last()
                     : null,
             };

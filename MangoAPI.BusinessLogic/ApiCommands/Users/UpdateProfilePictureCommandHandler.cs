@@ -27,8 +27,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
                 throw new BusinessException(ResponseMessageCodes.UserNotFound);
             }
 
-            var imageAddress = $"{EnvironmentConstants.BackendAddress}Uploads/{request.Image}";
-            user.PictureUrl = imageAddress;
+            user.Image = request.Image;
 
             _postgresDbContext.Users.Update(user);
 
