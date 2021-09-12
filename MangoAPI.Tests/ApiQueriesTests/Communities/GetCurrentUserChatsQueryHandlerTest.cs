@@ -2,12 +2,12 @@
 using System.Threading;
 using System.Threading.Tasks;
 using FluentAssertions;
-using MangoAPI.BusinessLogic.ApiQueries.Chats;
+using MangoAPI.BusinessLogic.ApiQueries.Communities;
 using MangoAPI.BusinessLogic.BusinessExceptions;
 using MangoAPI.Domain.Constants;
 using NUnit.Framework;
 
-namespace MangoAPI.Tests.ApiQueriesTests.Chats
+namespace MangoAPI.Tests.ApiQueriesTests.Communities
 {
     [TestFixture]
     public class GetCurrentUserChatsQueryHandlerTest

@@ -3,13 +3,13 @@ using MangoAPI.BusinessLogic.Models;
 using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.Domain.Constants;
 
-namespace MangoAPI.BusinessLogic.ApiQueries.Chats
+namespace MangoAPI.BusinessLogic.ApiQueries.Communities
 {
-    public record SearchChatsResponse : ResponseBase<SearchChatsResponse>
+    public record SearchCommunityResponse : ResponseBase<SearchCommunityResponse>
     {
         public List<Chat> Chats { get; init; }
 
-        public static SearchChatsResponse FromSuccess(List<Chat> chats)
+        public static SearchCommunityResponse FromSuccess(List<Chat> chats)
         {
             return new()
             {

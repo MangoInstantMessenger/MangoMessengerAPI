@@ -3,7 +3,7 @@ using MangoAPI.BusinessLogic.Enums;
 using MangoAPI.Domain.Enums;
 using Newtonsoft.Json;
 
-namespace MangoAPI.BusinessLogic.ApiCommands.Chats
+namespace MangoAPI.BusinessLogic.ApiCommands.Communities
 {
     public record CreateChannelRequest
     {

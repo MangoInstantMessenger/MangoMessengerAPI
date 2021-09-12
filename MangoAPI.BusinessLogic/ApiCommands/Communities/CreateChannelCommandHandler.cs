@@ -9,7 +9,7 @@ using MangoAPI.Domain.Entities;
 using MangoAPI.Domain.Enums;
 using MediatR;
 
-namespace MangoAPI.BusinessLogic.ApiCommands.Chats
+namespace MangoAPI.BusinessLogic.ApiCommands.Communities
 {
     public class CreateChannelCommandHandler : IRequestHandler<CreateChannelCommand, CreateCommunityResponse>
     {

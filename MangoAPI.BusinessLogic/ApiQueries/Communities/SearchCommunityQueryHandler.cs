@@ -1,27 +1,27 @@
-﻿using MangoAPI.Application.Services;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
+using MangoAPI.Application.Services;
 using MangoAPI.BusinessLogic.Models;
 using MangoAPI.DataAccess.Database;
 using MangoAPI.DataAccess.Database.Extensions;
 using MangoAPI.Domain.Enums;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
 
-namespace MangoAPI.BusinessLogic.ApiQueries.Chats
+namespace MangoAPI.BusinessLogic.ApiQueries.Communities
 {
-    public class SearchChatsQueryHandler : IRequestHandler<SearchChatsQuery, SearchChatsResponse>
+    public class SearchCommunityQueryHandler : IRequestHandler<SearchCommunityQuery, SearchCommunityResponse>
     {
         private readonly MangoPostgresDbContext _postgresDbContext;
 
-        public SearchChatsQueryHandler(MangoPostgresDbContext postgresDbContext)
+        public SearchCommunityQueryHandler(MangoPostgresDbContext postgresDbContext)
         {
             _postgresDbContext = postgresDbContext;
         }
 
-        public async Task<SearchChatsResponse> Handle(SearchChatsQuery request, CancellationToken cancellationToken)
+        public async Task<SearchCommunityResponse> Handle(SearchCommunityQuery request, CancellationToken cancellationToken)
         {
             var chats = await _postgresDbContext
                 .Chats
@@ -82,7 +82,7 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Chats
                 resultList.Add(currentChat);
             }
 
-            return SearchChatsResponse.FromSuccess(resultList);
+            return SearchCommunityResponse.FromSuccess(resultList);
         }
     }
 }

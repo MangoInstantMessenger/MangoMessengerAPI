@@ -2,16 +2,16 @@
 using System.Threading;
 using System.Threading.Tasks;
 using FluentAssertions;
-using MangoAPI.BusinessLogic.ApiCommands.Chats;
+using MangoAPI.BusinessLogic.ApiCommands.Communities;
 using MangoAPI.BusinessLogic.BusinessExceptions;
 using MangoAPI.Domain.Constants;
 using MangoAPI.Domain.Enums;
 using NUnit.Framework;
 
-namespace MangoAPI.Tests.ApiCommandsTests.Chats
+namespace MangoAPI.Tests.ApiCommandsTests.Communities
 {
     [TestFixture]
-    public class CreateGroupCommandHandlerTest
+    public class CreateChannelCommandHandlerTest
     {
         [Test]
         public async Task CreateGroupCommandHandlerTest_Success()

@@ -6,7 +6,7 @@ using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.Domain.Constants;
 using MangoAPI.Domain.Entities;
 
-namespace MangoAPI.BusinessLogic.ApiQueries.Chats
+namespace MangoAPI.BusinessLogic.ApiQueries.Communities
 {
     public record GetCurrentUserChatsResponse : ResponseBase<GetCurrentUserChatsResponse>
     {

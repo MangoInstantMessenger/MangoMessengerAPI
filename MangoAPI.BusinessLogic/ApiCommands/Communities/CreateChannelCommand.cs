@@ -2,7 +2,7 @@
 using MangoAPI.Domain.Enums;
 using MediatR;
 
-namespace MangoAPI.BusinessLogic.ApiCommands.Chats
+namespace MangoAPI.BusinessLogic.ApiCommands.Communities
 {
     public record CreateChannelCommand : IRequest<CreateCommunityResponse>
     {

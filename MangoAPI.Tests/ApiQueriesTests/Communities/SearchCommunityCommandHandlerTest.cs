@@ -1,21 +1,21 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 using FluentAssertions;
-using MangoAPI.BusinessLogic.ApiQueries.Chats;
+using MangoAPI.BusinessLogic.ApiQueries.Communities;
 using MangoAPI.Domain.Constants;
 using NUnit.Framework;
 
-namespace MangoAPI.Tests.ApiQueriesTests.Chats
+namespace MangoAPI.Tests.ApiQueriesTests.Communities
 {
     [TestFixture]
-    public class SearchChatsCommandHandlerTest
+    public class SearchCommunityCommandHandlerTest
     {
         [Test]
         public async Task SearchChatsQueryHandlerTest_Success()
         {
             using var dbContextFixture = new DbContextFixture();
-            var handler = new SearchChatsQueryHandler(dbContextFixture.PostgresDbContext);
-            var query = new SearchChatsQuery
+            var handler = new SearchCommunityQueryHandler(dbContextFixture.PostgresDbContext);
+            var query = new SearchCommunityQuery
             {
                 UserId = SeedDataConstants.RazumovskyId,
                 DisplayName = "Extreme",

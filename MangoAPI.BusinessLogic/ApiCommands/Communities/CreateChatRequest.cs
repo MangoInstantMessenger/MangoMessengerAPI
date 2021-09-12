@@ -1,8 +1,9 @@
 ﻿using System;
 using MangoAPI.BusinessLogic.Enums;
+using MangoAPI.Domain.Enums;
 using Newtonsoft.Json;
 
-namespace MangoAPI.BusinessLogic.ApiCommands.Chats
+namespace MangoAPI.BusinessLogic.ApiCommands.Communities
 {
     public record CreateChatRequest
     {
@@ -25,7 +26,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Chats
             return new()
             {
                 PartnerId = request.PartnerId,
-                ChatType = request.ChatType,
+                CommunityType = (CommunityType)request.ChatType,
                 UserId = userId,
             };
         }

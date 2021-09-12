@@ -1,4 +1,7 @@
-﻿using MangoAPI.Application.Services;
+﻿using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
+using MangoAPI.Application.Services;
 using MangoAPI.BusinessLogic.BusinessExceptions;
 using MangoAPI.BusinessLogic.Models;
 using MangoAPI.DataAccess.Database;
@@ -7,22 +10,19 @@ using MangoAPI.Domain.Constants;
 using MangoAPI.Domain.Enums;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
 
-namespace MangoAPI.BusinessLogic.ApiQueries.Chats
+namespace MangoAPI.BusinessLogic.ApiQueries.Communities
 {
-    public class GetChatByIdQueryHandler : IRequestHandler<GetChatByIdQuery, GetChatByIdResponse>
+    public class GetCommunityByIdQueryHandler : IRequestHandler<GetCommunityByIdQuery, GetCommunityByIdResponse>
     {
         private readonly MangoPostgresDbContext _postgresDbContext;
 
-        public GetChatByIdQueryHandler(MangoPostgresDbContext postgresDbContext)
+        public GetCommunityByIdQueryHandler(MangoPostgresDbContext postgresDbContext)
         {
             _postgresDbContext = postgresDbContext;
         }
 
-        public async Task<GetChatByIdResponse> Handle(GetChatByIdQuery request, CancellationToken cancellationToken)
+        public async Task<GetCommunityByIdResponse> Handle(GetCommunityByIdQuery request, CancellationToken cancellationToken)
         {
             var user = await _postgresDbContext.Users.FindUserByIdAsync(request.UserId, cancellationToken);
 
@@ -90,7 +90,7 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Chats
                     : null,
             };
 
-            return GetChatByIdResponse.FromSuccess(chat);
+            return GetCommunityByIdResponse.FromSuccess(chat);
         }
     }
 }

@@ -2,22 +2,22 @@
 using System.Threading;
 using System.Threading.Tasks;
 using FluentAssertions;
-using MangoAPI.BusinessLogic.ApiQueries.Chats;
+using MangoAPI.BusinessLogic.ApiQueries.Communities;
 using MangoAPI.BusinessLogic.BusinessExceptions;
 using MangoAPI.Domain.Constants;
 using NUnit.Framework;
 
-namespace MangoAPI.Tests.ApiQueriesTests.Chats
+namespace MangoAPI.Tests.ApiQueriesTests.Communities
 {
     [TestFixture]
-    public class GetChatByIdQueryHandlerTests
+    public class GetCommunityByIdQueryHandlerTests
     {
         [Test]
         public async Task GetChatByIdQueryHandlerTest_Success()
         {
             using var dbContextFixture = new DbContextFixture();
-            var handler = new GetChatByIdQueryHandler(dbContextFixture.PostgresDbContext);
-            var query = new GetChatByIdQuery
+            var handler = new GetCommunityByIdQueryHandler(dbContextFixture.PostgresDbContext);
+            var query = new GetCommunityByIdQuery
             {
                 UserId = SeedDataConstants.RazumovskyId,
                 ChatId = SeedDataConstants.ExtremeCodeFloodId
@@ -33,8 +33,8 @@ namespace MangoAPI.Tests.ApiQueriesTests.Chats
         public async Task GetChatByIdQueryHandlerTest_ShouldThrowUserNotFound()
         {
             using var dbContextFixture = new DbContextFixture();
-            var handler = new GetChatByIdQueryHandler(dbContextFixture.PostgresDbContext);
-            var query = new GetChatByIdQuery
+            var handler = new GetCommunityByIdQueryHandler(dbContextFixture.PostgresDbContext);
+            var query = new GetCommunityByIdQuery
             {
                 UserId = Guid.NewGuid(),
                 ChatId = SeedDataConstants.ExtremeCodeFloodId
@@ -50,8 +50,8 @@ namespace MangoAPI.Tests.ApiQueriesTests.Chats
         public async Task GetChatByIdQueryHandlerTest_ShouldThrowChatNotFound1()
         {
             using var dbContextFixture = new DbContextFixture();
-            var handler = new GetChatByIdQueryHandler(dbContextFixture.PostgresDbContext);
-            var query = new GetChatByIdQuery
+            var handler = new GetCommunityByIdQueryHandler(dbContextFixture.PostgresDbContext);
+            var query = new GetCommunityByIdQuery
             {
                 UserId = SeedDataConstants.SzymonId,
                 ChatId = new Guid()
@@ -67,8 +67,8 @@ namespace MangoAPI.Tests.ApiQueriesTests.Chats
         public async Task GetChatByIdQueryHandlerTest_ShouldThrowChatNotFound2()
         {
             using var dbContextFixture = new DbContextFixture();
-            var handler = new GetChatByIdQueryHandler(dbContextFixture.PostgresDbContext);
-            var query = new GetChatByIdQuery
+            var handler = new GetCommunityByIdQueryHandler(dbContextFixture.PostgresDbContext);
+            var query = new GetCommunityByIdQuery
             {
                 UserId = SeedDataConstants.RazumovskyId,
                 ChatId = SeedDataConstants.DirectAmelitRazumovsky
@@ -84,8 +84,8 @@ namespace MangoAPI.Tests.ApiQueriesTests.Chats
         public async Task GetChatByIdQueryHandlerTest_ShouldThrowChatNotFound3()
         {
             using var dbContextFixture = new DbContextFixture();
-            var handler = new GetChatByIdQueryHandler(dbContextFixture.PostgresDbContext);
-            var query = new GetChatByIdQuery
+            var handler = new GetCommunityByIdQueryHandler(dbContextFixture.PostgresDbContext);
+            var query = new GetCommunityByIdQuery
             {
                 UserId = SeedDataConstants.SzymonId,
                 ChatId = SeedDataConstants.ExtremeCodeCppId

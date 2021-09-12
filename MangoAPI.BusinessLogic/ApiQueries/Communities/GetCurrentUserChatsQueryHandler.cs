@@ -1,4 +1,5 @@
-﻿using MangoAPI.Application.Services;
+﻿using System.Threading;
+using System.Threading.Tasks;
 using MangoAPI.BusinessLogic.BusinessExceptions;
 using MangoAPI.DataAccess.Database;
 using MangoAPI.DataAccess.Database.Extensions;
@@ -6,10 +7,8 @@ using MangoAPI.Domain.Constants;
 using MangoAPI.Domain.Enums;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using System.Threading;
-using System.Threading.Tasks;
 
-namespace MangoAPI.BusinessLogic.ApiQueries.Chats
+namespace MangoAPI.BusinessLogic.ApiQueries.Communities
 {
     public class
         GetCurrentUserChatsQueryHandler : IRequestHandler<GetCurrentUserChatsQuery, GetCurrentUserChatsResponse>

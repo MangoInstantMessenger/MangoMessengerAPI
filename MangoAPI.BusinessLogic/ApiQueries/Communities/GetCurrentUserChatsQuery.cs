@@ -1,7 +1,7 @@
 ﻿using System;
 using MediatR;
 
-namespace MangoAPI.BusinessLogic.ApiQueries.Chats
+namespace MangoAPI.BusinessLogic.ApiQueries.Communities
 {
     public record GetCurrentUserChatsQuery : IRequest<GetCurrentUserChatsResponse>
     {

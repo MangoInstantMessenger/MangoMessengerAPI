@@ -10,7 +10,7 @@ using MangoAPI.Domain.Entities;
 using MangoAPI.Domain.Enums;
 using MediatR;
 
-namespace MangoAPI.BusinessLogic.ApiCommands.Chats
+namespace MangoAPI.BusinessLogic.ApiCommands.Communities
 {
     public class CreateChatCommandHandler : IRequestHandler<CreateChatCommand, CreateCommunityResponse>
     {
@@ -63,12 +63,17 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Chats
             var directChat = new ChatEntity
             {
                 Id = Guid.NewGuid(),
-                CommunityType = CommunityType.DirectChat,
+                CommunityType = request.CommunityType,
                 Title = $"{currentUser.DisplayName} / {partner.DisplayName}",
                 CreatedAt = DateTime.UtcNow,
                 Description = $"Direct chat between {currentUser.DisplayName} and {partner.DisplayName}",
                 MembersCount = 2,
             };
+
+            if (request.CommunityType == CommunityType.SecretChat)
+            {
+                directChat.Description = $"Secret chat between {currentUser.DisplayName} and {partner.DisplayName}";
+            }
 
             var userChats = new[]
             {

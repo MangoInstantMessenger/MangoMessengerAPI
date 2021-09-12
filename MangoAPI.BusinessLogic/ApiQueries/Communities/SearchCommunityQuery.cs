@@ -1,9 +1,9 @@
 ﻿using System;
 using MediatR;
 
-namespace MangoAPI.BusinessLogic.ApiQueries.Chats
+namespace MangoAPI.BusinessLogic.ApiQueries.Communities
 {
-    public record SearchChatsQuery : IRequest<SearchChatsResponse>
+    public record SearchCommunityQuery : IRequest<SearchCommunityResponse>
     {
         public string DisplayName { get; init; }
         public Guid UserId { get; init; }

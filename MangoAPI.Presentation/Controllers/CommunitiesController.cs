@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
-using MangoAPI.BusinessLogic.ApiCommands.Chats;
-using MangoAPI.BusinessLogic.ApiQueries.Chats;
+using MangoAPI.BusinessLogic.ApiCommands.Communities;
+using MangoAPI.BusinessLogic.ApiQueries.Communities;
 using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.Presentation.Extensions;
 using MangoAPI.Presentation.Interfaces;
@@ -19,16 +19,16 @@ namespace MangoAPI.Presentation.Controllers
     /// Controller responsible for CommunityType Entity.
     /// </summary>
     [ApiController]
-    [Route("api/chats")]
+    [Route("api/communities")]
     [Produces("application/json")]
     [Authorize(Roles = "User", AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-    public class ChatsController : ApiControllerBase, IChatsController
+    public class CommunitiesController : ApiControllerBase, ICommunitiesController
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="ChatsController"/> class.
+        /// Initializes a new instance of the <see cref="CommunitiesController"/> class.
         /// </summary>
         /// <param name="mediator">Mediator instance.</param>
-        public ChatsController(IMediator mediator)
+        public CommunitiesController(IMediator mediator)
             : base(mediator)
         {
         }
@@ -107,24 +107,23 @@ namespace MangoAPI.Presentation.Controllers
         /// <summary>
         /// Gets chat by ID. Requires role: User.
         /// </summary>
-        /// <param name="chatId">User ID of colleague, UUID.</param>
+        /// <param name="id">User ID of colleague, UUID.</param>
         /// <param name="cancellationToken">Cancellation token instance.</param>
         /// <returns>Possible codes: 200, 400, 409.</returns>
-        [HttpGet("{chatId:guid}")]
+        [HttpGet("{id:guid}")]
         [SwaggerOperation(Summary = "Gets chat by ID. Requires role: User.")]
-        [ProducesResponseType(typeof(GetChatByIdResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(GetCommunityByIdResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public async Task<IActionResult> SearchById([FromRoute] Guid chatId,
-            CancellationToken cancellationToken)
+        public async Task<IActionResult> GetCommunityById([FromRoute] Guid id, CancellationToken cancellationToken)
         {
             var currentUserId = HttpContext.User.GetUserId();
 
-            var query = new GetChatByIdQuery
+            var query = new GetCommunityByIdQuery
             {
                 UserId = currentUserId,
-                ChatId = chatId,
+                ChatId = id,
             };
 
             return await RequestAsync(query, cancellationToken);
@@ -139,7 +138,7 @@ namespace MangoAPI.Presentation.Controllers
         /// <returns>Possible codes: 200, 400, 409.</returns>
         [HttpGet("searches")]
         [SwaggerOperation(Summary = "Searches chats by display name. Requires role: User.")]
-        [ProducesResponseType(typeof(SearchChatsResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(SearchCommunityResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
@@ -148,7 +147,7 @@ namespace MangoAPI.Presentation.Controllers
         {
             var userId = HttpContext.User.GetUserId();
 
-            var command = new SearchChatsQuery
+            var command = new SearchCommunityQuery
             {
                 DisplayName = displayName,
                 UserId = userId,

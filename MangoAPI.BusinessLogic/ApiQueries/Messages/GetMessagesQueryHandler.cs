@@ -5,7 +5,6 @@ using MangoAPI.DataAccess.Database;
 using MangoAPI.DataAccess.Database.Extensions;
 using MangoAPI.Domain.Constants;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 
 namespace MangoAPI.BusinessLogic.ApiQueries.Messages
 {

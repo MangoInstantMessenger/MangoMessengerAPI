@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 
-namespace MangoAPI.BusinessLogic.ApiCommands.Chats
+namespace MangoAPI.BusinessLogic.ApiCommands.Communities
 {
     public class CreateChannelCommandValidator : AbstractValidator<CreateChannelCommand>
     {
