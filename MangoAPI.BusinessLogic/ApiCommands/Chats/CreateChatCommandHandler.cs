@@ -12,16 +12,16 @@ using MediatR;
 
 namespace MangoAPI.BusinessLogic.ApiCommands.Chats
 {
-    public class CreateDirectChatCommandHandler : IRequestHandler<CreateDirectChatCommand, CreateChatEntityResponse>
+    public class CreateChatCommandHandler : IRequestHandler<CreateChatCommand, CreateCommunityResponse>
     {
         private readonly MangoPostgresDbContext _postgresDbContext;
 
-        public CreateDirectChatCommandHandler(MangoPostgresDbContext postgresDbContext)
+        public CreateChatCommandHandler(MangoPostgresDbContext postgresDbContext)
         {
             _postgresDbContext = postgresDbContext;
         }
 
-        public async Task<CreateChatEntityResponse> Handle(CreateDirectChatCommand request,
+        public async Task<CreateCommunityResponse> Handle(CreateChatCommand request,
             CancellationToken cancellationToken)
         {
             var partner = await _postgresDbContext.Users.FindUserByIdAsync(request.PartnerId, cancellationToken);
@@ -46,7 +46,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Chats
 
             if (findCurrentUserDirectChat != null)
             {
-                return CreateChatEntityResponse.FromSuccess(findCurrentUserDirectChat);
+                return CreateCommunityResponse.FromSuccess(findCurrentUserDirectChat);
             }
 
             var partnerPrivateChats =
@@ -57,13 +57,13 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Chats
 
             if (findPartnerDirectChat != null)
             {
-                return CreateChatEntityResponse.FromSuccess(findPartnerDirectChat);
+                return CreateCommunityResponse.FromSuccess(findPartnerDirectChat);
             }
 
             var directChat = new ChatEntity
             {
                 Id = Guid.NewGuid(),
-                ChatType = ChatType.DirectChat,
+                CommunityType = CommunityType.DirectChat,
                 Title = $"{currentUser.DisplayName} / {partner.DisplayName}",
                 CreatedAt = DateTime.UtcNow,
                 Description = $"Direct chat between {currentUser.DisplayName} and {partner.DisplayName}",
@@ -79,7 +79,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Chats
             await _postgresDbContext.Chats.AddAsync(directChat, cancellationToken);
             await _postgresDbContext.UserChats.AddRangeAsync(userChats, cancellationToken);
             await _postgresDbContext.SaveChangesAsync(cancellationToken);
-            return CreateChatEntityResponse.FromSuccess(directChat);
+            return CreateCommunityResponse.FromSuccess(directChat);
         }
     }
 }

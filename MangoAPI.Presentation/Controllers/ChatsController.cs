@@ -16,7 +16,7 @@ using Swashbuckle.AspNetCore.Annotations;
 namespace MangoAPI.Presentation.Controllers
 {
     /// <summary>
-    /// Controller responsible for Chats Entity.
+    /// Controller responsible for CommunityType Entity.
     /// </summary>
     [ApiController]
     [Route("api/chats")]
@@ -57,21 +57,21 @@ namespace MangoAPI.Presentation.Controllers
         }
 
         /// <summary>
-        /// Creates new group of specified type: Private Channel (2), Public Channel (3), Readonly Channel (4).
+        /// Creates new group of specified type: Private Channel (3), Public Channel (4), Readonly Channel (5).
         /// Requires role: User.
         /// </summary>
-        /// <param name="request">CreateGroupRequest instance.</param>
+        /// <param name="request">CreateChannelRequest instance.</param>
         /// <param name="cancellationToken">Cancellation token instance.</param>
         /// <returns>Possible codes: 200, 400, 409.</returns>
-        [HttpPost]
+        [HttpPost("channel")]
         [SwaggerOperation(Summary =
             "Creates new group of specified type: Private Channel (3), Public Channel (4), Readonly Channel (5). " +
             "Requires role: User.")]
-        [ProducesResponseType(typeof(CreateChatEntityResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(CreateCommunityResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public async Task<IActionResult> CreateChatAsync([FromBody] CreateGroupRequest request,
+        public async Task<IActionResult> CreateChannelAsync([FromBody] CreateChannelRequest request,
             CancellationToken cancellationToken)
         {
             var userId = HttpContext.User.GetUserId();
@@ -83,27 +83,23 @@ namespace MangoAPI.Presentation.Controllers
         /// Creates new direct chat with specified user. User is fetched by parameter user ID.
         /// Requires role: User.
         /// </summary>
-        /// <param name="userId">User ID of colleague, UUID.</param>
+        /// <param name="request">CreateChatRequest instance.</param>
         /// <param name="cancellationToken">Cancellation token instance.</param>
         /// <returns>Possible codes: 200, 400, 409.</returns>
-        [HttpPost("{userId:guid}")]
+        [HttpPost("chat")]
         [SwaggerOperation(Summary =
             "Creates new direct chat with specified user. User is fetched by parameter user ID. " +
             "Requires role: User.")]
-        [ProducesResponseType(typeof(CreateChatEntityResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(CreateCommunityResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public async Task<IActionResult> CreateChatAsync([FromRoute] Guid userId,
+        public async Task<IActionResult> CreateChatAsync([FromBody] CreateChatRequest request,
             CancellationToken cancellationToken)
         {
-            var currentUserId = HttpContext.User.GetUserId();
+            var userId = HttpContext.User.GetUserId();
 
-            var command = new CreateDirectChatCommand
-            {
-                PartnerId = userId,
-                UserId = currentUserId,
-            };
+            var command = request.ToCommand(userId);
 
             return await RequestAsync(command, cancellationToken);
         }

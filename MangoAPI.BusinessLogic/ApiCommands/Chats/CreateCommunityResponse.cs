@@ -5,11 +5,11 @@ using MangoAPI.Domain.Entities;
 
 namespace MangoAPI.BusinessLogic.ApiCommands.Chats
 {
-    public record CreateChatEntityResponse : ResponseBase<CreateChatEntityResponse>
+    public record CreateCommunityResponse : ResponseBase<CreateCommunityResponse>
     {
         public Guid ChatId { get; init; }
 
-        public static CreateChatEntityResponse FromSuccess(ChatEntity chatEntity)
+        public static CreateCommunityResponse FromSuccess(ChatEntity chatEntity)
         {
             return new ()
             {

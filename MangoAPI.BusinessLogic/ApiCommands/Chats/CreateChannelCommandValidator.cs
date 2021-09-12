@@ -2,21 +2,21 @@
 
 namespace MangoAPI.BusinessLogic.ApiCommands.Chats
 {
-    public class CreateGroupCommandValidator : AbstractValidator<CreateGroupCommand>
+    public class CreateChannelCommandValidator : AbstractValidator<CreateChannelCommand>
     {
-        public CreateGroupCommandValidator()
+        public CreateChannelCommandValidator()
         {
-            RuleFor(x => x.GroupTitle)
+            RuleFor(x => x.ChannelTitle)
                 .Cascade(CascadeMode.Stop)
                 .NotEmpty()
                 .Length(1, 300);
                 
-            RuleFor(x => x.GroupDescription)
+            RuleFor(x => x.ChannelDescription)
                 .Cascade(CascadeMode.Stop)
                 .NotEmpty()
                 .Length(1, 300);
 
-            RuleFor(x => x.GroupType).IsInEnum();
+            RuleFor(x => x.CommunityType).IsInEnum();
         }
     }
 }

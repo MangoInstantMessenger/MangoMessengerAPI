@@ -9,7 +9,7 @@ namespace MangoAPI.BusinessLogic.Models
 
         public string Title { get; set; }
 
-        public ChatType ChatType { get; init; }
+        public CommunityType CommunityType { get; init; }
 
         public string ChatLogoImageUrl { get; set; }
 

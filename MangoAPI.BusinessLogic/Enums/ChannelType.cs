@@ -1,6 +1,6 @@
 ﻿namespace MangoAPI.BusinessLogic.Enums
 {
-    public enum Channels
+    public enum ChannelType
     {
         PrivateChannel = 3,
         PublicChannel = 4,

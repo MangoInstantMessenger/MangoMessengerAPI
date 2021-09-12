@@ -23,7 +23,7 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Chats
                 ChatLogoImageUrl = StringService.GetDocumentUrl(userChatEntity.Chat.Image),
                 Description = userChatEntity.Chat.Description,
                 MembersCount = userChatEntity.Chat.MembersCount,
-                ChatType = userChatEntity.Chat.ChatType,
+                CommunityType = userChatEntity.Chat.CommunityType,
                 IsArchived = userChatEntity.IsArchived,
                 IsMember = true,
                 LastMessage = userChatEntity.Chat.Messages.Any()

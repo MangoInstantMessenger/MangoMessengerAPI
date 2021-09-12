@@ -36,7 +36,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
             {
                 var userChats = await _postgresDbContext.UserChats
                     .Include(x => x.Chat)
-                    .Where(x => x.UserId == user.Id && x.Chat.ChatType == ChatType.DirectChat)
+                    .Where(x => x.UserId == user.Id && x.Chat.CommunityType == CommunityType.DirectChat)
                     .Select(x => x.Chat)
                     .ToListAsync(cancellationToken);
 

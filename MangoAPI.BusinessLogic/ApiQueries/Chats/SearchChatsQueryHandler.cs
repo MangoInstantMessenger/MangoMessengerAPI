@@ -49,7 +49,7 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Chats
                     ChatLogoImageUrl = StringService.GetDocumentUrl(chat.Image),
                     Description = chat.Description,
                     MembersCount = chat.MembersCount,
-                    ChatType = chat.ChatType,
+                    CommunityType = chat.CommunityType,
                     IsMember = isMember,
                     LastMessage = chat.Messages.Any()
                         ? chat.Messages.OrderBy(x => x.CreatedAt).Select(x =>
@@ -67,7 +67,7 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Chats
                         : null,
                 };
 
-                if (currentChat.ChatType == ChatType.DirectChat)
+                if (currentChat.CommunityType == CommunityType.DirectChat)
                 {
                     var colleague = (await _postgresDbContext
                         .UserChats

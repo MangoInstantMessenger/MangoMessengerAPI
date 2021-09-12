@@ -11,16 +11,16 @@ using MediatR;
 
 namespace MangoAPI.BusinessLogic.ApiCommands.Chats
 {
-    public class CreateGroupCommandHandler : IRequestHandler<CreateGroupCommand, CreateChatEntityResponse>
+    public class CreateChannelCommandHandler : IRequestHandler<CreateChannelCommand, CreateCommunityResponse>
     {
         private readonly MangoPostgresDbContext _postgresDbContext;
 
-        public CreateGroupCommandHandler(MangoPostgresDbContext postgresDbContext)
+        public CreateChannelCommandHandler(MangoPostgresDbContext postgresDbContext)
         {
             _postgresDbContext = postgresDbContext;
         }
 
-        public async Task<CreateChatEntityResponse> Handle(CreateGroupCommand request,
+        public async Task<CreateCommunityResponse> Handle(CreateChannelCommand request,
             CancellationToken cancellationToken)
         {
             var user = await _postgresDbContext.Users.FindUserByIdAsync(request.UserId, cancellationToken);
@@ -30,17 +30,17 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Chats
                 throw new BusinessException(ResponseMessageCodes.UserNotFound);
             }
 
-            if (request.GroupType == ChatType.DirectChat)
+            if (request.CommunityType == CommunityType.DirectChat)
             {
                 throw new BusinessException(ResponseMessageCodes.InvalidGroupType);
             }
 
             var group = new ChatEntity
             {
-                ChatType = request.GroupType,
-                Title = request.GroupTitle,
+                CommunityType = request.CommunityType,
+                Title = request.ChannelTitle,
                 CreatedAt = DateTime.UtcNow,
-                Description = request.GroupDescription,
+                Description = request.ChannelDescription,
                 MembersCount = 1,
             };
 
@@ -53,7 +53,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Chats
 
             await _postgresDbContext.SaveChangesAsync(cancellationToken);
 
-            return CreateChatEntityResponse.FromSuccess(group);
+            return CreateCommunityResponse.FromSuccess(group);
         }
     }
 }

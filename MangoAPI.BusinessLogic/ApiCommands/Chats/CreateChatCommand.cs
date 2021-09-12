@@ -1,10 +1,10 @@
 ﻿using System;
-using MangoAPI.Domain.Enums;
+using MangoAPI.BusinessLogic.Enums;
 using MediatR;
 
 namespace MangoAPI.BusinessLogic.ApiCommands.Chats
 {
-    public record CreateDirectChatCommand : IRequest<CreateChatEntityResponse>
+    public record CreateChatCommand : IRequest<CreateCommunityResponse>
     {
         public Guid PartnerId { get; init; }
         public Guid UserId { get; init; }

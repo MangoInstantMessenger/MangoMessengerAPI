@@ -17,12 +17,12 @@ namespace MangoAPI.Tests.ApiCommandsTests.Chats
         public async Task CreateGroupCommandHandlerTest_Success()
         {
             using var dbContextFixture = new DbContextFixture();
-            var handler = new CreateGroupCommandHandler(dbContextFixture.PostgresDbContext);
-            var command = new CreateGroupCommand
+            var handler = new CreateChannelCommandHandler(dbContextFixture.PostgresDbContext);
+            var command = new CreateChannelCommand
             {
                 UserId = SeedDataConstants.PetroId,
-                GroupType = ChatType.PublicChannel,
-                GroupTitle = "Extreme Code",
+                CommunityType = CommunityType.PublicChannel,
+                ChannelTitle = "Extreme Code",
             };
 
             var result = await handler.Handle(command, CancellationToken.None);
@@ -34,12 +34,12 @@ namespace MangoAPI.Tests.ApiCommandsTests.Chats
         public async Task CreateGroupCommandHandlerTest_ShouldThrowUserNotFound()
         {
             using var dbContextFixture = new DbContextFixture();
-            var handler = new CreateGroupCommandHandler(dbContextFixture.PostgresDbContext);
-            var command = new CreateGroupCommand
+            var handler = new CreateChannelCommandHandler(dbContextFixture.PostgresDbContext);
+            var command = new CreateChannelCommand
             {
                 UserId = Guid.NewGuid(),
-                GroupType = ChatType.PublicChannel,
-                GroupTitle = "Extreme Code",
+                CommunityType = CommunityType.PublicChannel,
+                ChannelTitle = "Extreme Code",
             };
 
             Func<Task> result = async () => await handler.Handle(command, CancellationToken.None);

@@ -1,6 +1,6 @@
 ﻿namespace MangoAPI.Domain.Enums
 {
-    public enum ChatType
+    public enum CommunityType
     {
         DirectChat = 1,
         SecretChat = 2,

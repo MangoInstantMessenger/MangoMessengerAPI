@@ -16,9 +16,9 @@ namespace MangoAPI.Tests.ApiCommandsTests.Chats
         public async Task CreateDirectChatCommandHandlerTest_Success()
         {
             using var dbContextFixture = new DbContextFixture();
-            var handler = new CreateDirectChatCommandHandler(dbContextFixture.PostgresDbContext);
+            var handler = new CreateChatCommandHandler(dbContextFixture.PostgresDbContext);
             
-            var createChatCommand = new CreateDirectChatCommand
+            var createChatCommand = new CreateChatCommand
             {
                 UserId = SeedDataConstants.RazumovskyId,
                 PartnerId = SeedDataConstants.PetroId,
@@ -33,8 +33,8 @@ namespace MangoAPI.Tests.ApiCommandsTests.Chats
         public async Task CreateDirectChatCommandHandler_ShouldThrowUserNotFound()
         {
             using var dbContextFixture = new DbContextFixture();
-            var handler = new CreateDirectChatCommandHandler(dbContextFixture.PostgresDbContext);
-            var createDirectChatCommand = new CreateDirectChatCommand
+            var handler = new CreateChatCommandHandler(dbContextFixture.PostgresDbContext);
+            var createDirectChatCommand = new CreateChatCommand
             {
                 UserId = Guid.NewGuid(),
                 PartnerId = Guid.NewGuid()
@@ -50,8 +50,8 @@ namespace MangoAPI.Tests.ApiCommandsTests.Chats
         public async Task CreateDirectChatCommandHandler_ShouldThrowCannotCreateSelf()
         {
             using var dbContextFixture = new DbContextFixture();
-            var handler = new CreateDirectChatCommandHandler(dbContextFixture.PostgresDbContext);
-            var createDirectChatCommand = new CreateDirectChatCommand
+            var handler = new CreateChatCommandHandler(dbContextFixture.PostgresDbContext);
+            var createDirectChatCommand = new CreateChatCommand
             {
                 UserId = SeedDataConstants.PetroId,
                 PartnerId = SeedDataConstants.PetroId,

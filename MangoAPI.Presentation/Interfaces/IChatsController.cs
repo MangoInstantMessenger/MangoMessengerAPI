@@ -10,9 +10,9 @@ namespace MangoAPI.Presentation.Interfaces
     {
         Task<IActionResult> GetChats(CancellationToken cancellationToken);
 
-        Task<IActionResult> CreateChatAsync(CreateGroupRequest request, CancellationToken cancellationToken);
+        Task<IActionResult> CreateChannelAsync(CreateChannelRequest request, CancellationToken cancellationToken);
 
-        Task<IActionResult> CreateChatAsync(Guid userId, CancellationToken cancellationToken);
+        Task<IActionResult> CreateChatAsync(CreateChatRequest request, CancellationToken cancellationToken);
 
         Task<IActionResult> SearchById(Guid chatId, CancellationToken cancellationToken);
         
