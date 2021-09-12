@@ -15,7 +15,9 @@ namespace MangoAPI.Presentation.Interfaces
         Task<IActionResult> CreateChatAsync(CreateChatRequest request, CancellationToken cancellationToken);
 
         Task<IActionResult> GetCommunityById(Guid id, CancellationToken cancellationToken);
-        
+
         Task<IActionResult> SearchAsync(string displayName, CancellationToken cancellationToken);
+
+        Task<IActionResult> GetSecretChatPublicKey(Guid chatId, CancellationToken cancellationToken);
     }
 }

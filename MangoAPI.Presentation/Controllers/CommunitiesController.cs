@@ -155,5 +155,19 @@ namespace MangoAPI.Presentation.Controllers
 
             return await RequestAsync(command, cancellationToken);
         }
+
+        [HttpGet("chats/public-key/{chatId:guid}")]
+        public async Task<IActionResult> GetSecretChatPublicKey([FromRoute] Guid chatId, CancellationToken cancellationToken)
+        {
+            var userId = HttpContext.User.GetUserId();
+
+            var query = new GetSecretChatPublicKeyQuery
+            {
+                ChatId = chatId,
+                UserId = userId
+            };
+
+            return await RequestAsync(query, cancellationToken);
+        }
     }
 }
