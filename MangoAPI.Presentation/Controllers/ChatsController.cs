@@ -65,7 +65,7 @@ namespace MangoAPI.Presentation.Controllers
         /// <returns>Possible codes: 200, 400, 409.</returns>
         [HttpPost]
         [SwaggerOperation(Summary =
-            "Creates new group of specified type: Private Channel (2), Public Channel (3), Readonly Channel (4). " +
+            "Creates new group of specified type: Private Channel (3), Public Channel (4), Readonly Channel (5). " +
             "Requires role: User.")]
         [ProducesResponseType(typeof(CreateChatEntityResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]

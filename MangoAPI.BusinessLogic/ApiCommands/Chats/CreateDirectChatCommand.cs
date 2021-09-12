@@ -1,4 +1,5 @@
 ﻿using System;
+using MangoAPI.Domain.Enums;
 using MediatR;
 
 namespace MangoAPI.BusinessLogic.ApiCommands.Chats
@@ -7,5 +8,6 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Chats
     {
         public Guid PartnerId { get; init; }
         public Guid UserId { get; init; }
+        public ChatType ChatType { get; init; }
     }
 }
