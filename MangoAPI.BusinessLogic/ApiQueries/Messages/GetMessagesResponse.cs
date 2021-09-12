@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using MangoAPI.Application.Services;
 using MangoAPI.BusinessLogic.Models;
 using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.Domain.Constants;
@@ -28,6 +29,7 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Messages
                         Self = messageEntity.User.Id == user.Id,
                         IsEncrypted = messageEntity.IsEncrypted,
                         AuthorPublicKey = messageEntity.AuthorPublicKey,
+                        MessageAuthorPictureUrl = StringService.GetDocumentUrl(messageEntity.User.Image),
                     }).ToList(),
 
                 Success = true,

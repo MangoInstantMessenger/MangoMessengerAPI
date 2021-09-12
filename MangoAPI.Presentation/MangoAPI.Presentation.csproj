@@ -29,7 +29,9 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="wwwroot\Uploads" />
+      <_ContentIncludedByDefault Remove="wwwroot\Uploads\floppa_03ac7bcb-5989-4f9e-9542-b92246d2baf0.JPG" />
+      <_ContentIncludedByDefault Remove="wwwroot\Uploads\floppa_20b7bf76-d95d-414c-8755-5182a7b5ab12.JPG" />
+      <_ContentIncludedByDefault Remove="wwwroot\Uploads\floppa_a859.JPG" />
     </ItemGroup>
 
 </Project>

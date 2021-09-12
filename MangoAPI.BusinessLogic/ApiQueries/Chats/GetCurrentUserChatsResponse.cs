@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using MangoAPI.Application.Services;
 using MangoAPI.BusinessLogic.Models;
 using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.Domain.Constants;
@@ -19,7 +20,7 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Chats
             {
                 ChatId = userChatEntity.ChatId,
                 Title = userChatEntity.Chat.Title,
-                Image = userChatEntity.Chat.Image,
+                ChatLogoImageUrl = StringService.GetDocumentUrl(userChatEntity.Chat.Image),
                 Description = userChatEntity.Chat.Description,
                 MembersCount = userChatEntity.Chat.MembersCount,
                 ChatType = userChatEntity.Chat.ChatType,
@@ -35,7 +36,8 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Chats
                             CreatedAt = x.CreatedAt.ToShortTimeString(),
                             UpdatedAt = x.UpdatedAt?.ToShortTimeString(),
                             IsEncrypted = x.IsEncrypted,
-                            AuthorPublicKey = x.AuthorPublicKey
+                            AuthorPublicKey = x.AuthorPublicKey,
+                            MessageAuthorPictureUrl = StringService.GetDocumentUrl(x.User.Image),
                         }).Last()
                     : null,
             }).ToList(),

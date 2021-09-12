@@ -1,12 +1,14 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
+﻿using MangoAPI.Application.Services;
 using MangoAPI.BusinessLogic.Models;
 using MangoAPI.DataAccess.Database;
 using MangoAPI.DataAccess.Database.Extensions;
+using MangoAPI.Domain.Enums;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace MangoAPI.BusinessLogic.ApiQueries.Chats
 {
@@ -37,14 +39,14 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Chats
             foreach (var chat in chats)
             {
                 var isMember = await _postgresDbContext.UserChats
-                    .AnyAsync(x => x.ChatId == chat.Id && x.UserId == request.UserId, 
+                    .AnyAsync(x => x.ChatId == chat.Id && x.UserId == request.UserId,
                         cancellationToken);
 
-                resultList.Add(new Chat
+                var currentChat = new Chat
                 {
                     ChatId = chat.Id,
                     Title = chat.Title,
-                    Image = chat.Image,
+                    ChatLogoImageUrl = StringService.GetDocumentUrl(chat.Image),
                     Description = chat.Description,
                     MembersCount = chat.MembersCount,
                     ChatType = chat.ChatType,
@@ -59,10 +61,25 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Chats
                                 CreatedAt = x.CreatedAt.ToShortTimeString(),
                                 UpdatedAt = x.UpdatedAt?.ToShortTimeString(),
                                 IsEncrypted = x.IsEncrypted,
-                                AuthorPublicKey = x.AuthorPublicKey
+                                AuthorPublicKey = x.AuthorPublicKey,
+                                MessageAuthorPictureUrl = StringService.GetDocumentUrl(x.User.Image),
                             }).Last()
                         : null,
-                });
+                };
+
+                if (currentChat.ChatType == ChatType.DirectChat)
+                {
+                    var colleague = (await _postgresDbContext
+                        .UserChats
+                        .Include(x => x.User)
+                        .FirstOrDefaultAsync(x => x.ChatId == currentChat.ChatId && x.UserId != request.UserId,
+                        cancellationToken)).User;
+
+                    currentChat.Title = colleague.DisplayName;
+                    currentChat.ChatLogoImageUrl = StringService.GetDocumentUrl(colleague.Image);
+                }
+
+                resultList.Add(currentChat);
             }
 
             return SearchChatsResponse.FromSuccess(resultList);

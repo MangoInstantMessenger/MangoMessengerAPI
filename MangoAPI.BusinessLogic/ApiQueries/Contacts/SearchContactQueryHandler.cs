@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using MangoAPI.Application.Services;
 using MangoAPI.BusinessLogic.Models;
 using MangoAPI.DataAccess.Database;
 using MediatR;
@@ -40,6 +41,7 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Contacts
                 DisplayName = x.DisplayName,
                 Address = x.UserInformation.Address,
                 Bio = x.Bio,
+                PictureUrl = StringService.GetDocumentUrl(x.Image),
             }).ToList();
 
             foreach (var contact in contacts)

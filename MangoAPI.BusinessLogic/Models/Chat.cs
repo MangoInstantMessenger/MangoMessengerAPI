@@ -7,11 +7,11 @@ namespace MangoAPI.BusinessLogic.Models
     {
         public Guid ChatId { get; init; }
 
-        public string Title { get; init; }
+        public string Title { get; set; }
 
         public ChatType ChatType { get; init; }
 
-        public string Image { get; init; }
+        public string ChatLogoImageUrl { get; set; }
 
         public string Description { get; init; }
 

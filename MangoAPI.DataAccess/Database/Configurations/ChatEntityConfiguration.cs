@@ -28,6 +28,7 @@ namespace MangoAPI.DataAccess.Database.Configurations
                     ChatType = ChatType.PublicChannel,
                     Description = "WSB Public Group",
                     MembersCount = 5,
+                    Image = "wsb_group_logo.png",
                 },
                 new ChatEntity
                 {
@@ -37,6 +38,7 @@ namespace MangoAPI.DataAccess.Database.Configurations
                     Description = "Extreme Code Main Public Group",
                     CreatedAt = new DateTime(2020, 2, 4),
                     MembersCount = 4,
+                    Image = "extreme_code_main.jpg"
                 },
                 new ChatEntity
                 {
@@ -46,6 +48,7 @@ namespace MangoAPI.DataAccess.Database.Configurations
                     Description = "Extreme Code Flood Public Group",
                     CreatedAt = new DateTime(2020, 4, 23),
                     MembersCount = 4,
+                    Image = "extremecode_rest_logo.jpg"
                 },
                 new ChatEntity
                 {
@@ -55,6 +58,7 @@ namespace MangoAPI.DataAccess.Database.Configurations
                     Description = "Extreme Code C++ Public Group",
                     CreatedAt = new DateTime(2020, 5, 12),
                     MembersCount = 4,
+                    Image = "extremecode_cpp_logo.jpg"
                 },
                 new ChatEntity
                 {
@@ -64,6 +68,7 @@ namespace MangoAPI.DataAccess.Database.Configurations
                     Description = "Extreme Code .NET Public Group",
                     CreatedAt = new DateTime(2020, 5, 12),
                     MembersCount = 4,
+                    Image = "extremecode_dotnet.png",
                 },
                 new ChatEntity
                 {

@@ -14,7 +14,7 @@ namespace MangoAPI.DataAccess.Database
 
             var connectionString = EnvironmentConstants.DbConnectionString;
 
-            connectionString = HerokuStringParser.Convert(connectionString);
+            connectionString = StringService.ConvertHerokuDbConnection(connectionString);
 
             optionsBuilder.UseNpgsql(connectionString ??
                                      throw new InvalidOperationException(

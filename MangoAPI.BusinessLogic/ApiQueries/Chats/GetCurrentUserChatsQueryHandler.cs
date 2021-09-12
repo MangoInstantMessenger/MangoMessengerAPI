@@ -1,10 +1,13 @@
-﻿using System.Threading;
-using System.Threading.Tasks;
+﻿using MangoAPI.Application.Services;
 using MangoAPI.BusinessLogic.BusinessExceptions;
 using MangoAPI.DataAccess.Database;
 using MangoAPI.DataAccess.Database.Extensions;
 using MangoAPI.Domain.Constants;
+using MangoAPI.Domain.Enums;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace MangoAPI.BusinessLogic.ApiQueries.Chats
 {
@@ -18,8 +21,7 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Chats
             _postgresDbContext = postgresDbContext;
         }
 
-        public async Task<GetCurrentUserChatsResponse> Handle(
-            GetCurrentUserChatsQuery request,
+        public async Task<GetCurrentUserChatsResponse> Handle(GetCurrentUserChatsQuery request,
             CancellationToken cancellationToken)
         {
             var currentUser = await _postgresDbContext.Users.FindUserByIdAsync(request.UserId, cancellationToken);
@@ -29,9 +31,27 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Chats
                 throw new BusinessException(ResponseMessageCodes.UserNotFound);
             }
 
-            var chats = await _postgresDbContext.UserChats.FindUserChatsByIdIncludeMessagesAsync(currentUser.Id, cancellationToken);
+            var userChats = await _postgresDbContext.UserChats
+                .FindUserChatsByIdIncludeMessagesAsync(request.UserId, cancellationToken);
 
-            return GetCurrentUserChatsResponse.FromSuccess(chats);
+            foreach (var userChat in userChats)
+            {
+                var currentChat = userChat.Chat;
+
+                if (currentChat.ChatType == ChatType.DirectChat)
+                {
+                    var colleague = (await _postgresDbContext
+                        .UserChats
+                        .Include(x => x.User)
+                        .FirstOrDefaultAsync(x => x.ChatId == currentChat.Id && x.UserId != request.UserId,
+                        cancellationToken)).User;
+
+                    currentChat.Title = colleague.DisplayName;
+                    currentChat.Image = colleague.Image;
+                }
+            }
+
+            return GetCurrentUserChatsResponse.FromSuccess(userChats);
         }
     }
 }

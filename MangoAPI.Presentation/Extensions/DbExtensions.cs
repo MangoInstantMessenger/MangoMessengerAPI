@@ -13,7 +13,7 @@ namespace MangoAPI.Presentation.Extensions
         {
             var connectionString = EnvironmentConstants.DbConnectionString;
 
-            connectionString = HerokuStringParser.Convert(connectionString);
+            connectionString = StringService.ConvertHerokuDbConnection(connectionString);
 
             services.AddDbContext<MangoPostgresDbContext>(options =>
             {

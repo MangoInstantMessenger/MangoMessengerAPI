@@ -1,6 +1,4 @@
-﻿using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
+﻿using MangoAPI.Application.Services;
 using MangoAPI.BusinessLogic.BusinessExceptions;
 using MangoAPI.BusinessLogic.Models;
 using MangoAPI.DataAccess.Database;
@@ -8,6 +6,10 @@ using MangoAPI.DataAccess.Database.Extensions;
 using MangoAPI.Domain.Constants;
 using MangoAPI.Domain.Enums;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace MangoAPI.BusinessLogic.ApiQueries.Chats
 {
@@ -30,7 +32,8 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Chats
             }
 
             var chatEntity =
-                await _postgresDbContext.Chats.FindChatByIdIncludeMessagesAsync(request.ChatId, cancellationToken);
+                await _postgresDbContext.Chats.FindChatByIdIncludeMessagesAsync(request.ChatId,
+                    cancellationToken);
 
             if (chatEntity is null)
             {
@@ -50,16 +53,28 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Chats
                     throw new BusinessException(ResponseMessageCodes.ChatNotFound);
             }
 
+            if (chatEntity.ChatType == ChatType.DirectChat)
+            {
+                var colleague = (await _postgresDbContext
+                        .UserChats
+                        .Include(x => x.User)
+                        .FirstOrDefaultAsync(x => x.ChatId == chatEntity.Id && x.UserId != request.UserId,
+                        cancellationToken)).User;
+
+                chatEntity.Title = colleague.DisplayName;
+                chatEntity.Image = colleague.Image;
+            }
+
             var chat = new Chat
             {
                 ChatId = chatEntity.Id,
                 Title = chatEntity.Title,
                 ChatType = chatEntity.ChatType,
-                Image = chatEntity.Image,
+                ChatLogoImageUrl = StringService.GetDocumentUrl(chatEntity.Image),
                 Description = chatEntity.Description,
                 MembersCount = chatEntity.MembersCount,
                 IsMember = userChat != null,
-                IsArchived = userChat is {IsArchived: true},
+                IsArchived = userChat is { IsArchived: true },
                 LastMessage = chatEntity.Messages.Any()
                     ? chatEntity.Messages.OrderBy(messageEntity => messageEntity.CreatedAt).Select(x => new Message
                     {
@@ -69,7 +84,8 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Chats
                         CreatedAt = x.CreatedAt.ToShortTimeString(),
                         UpdatedAt = x.UpdatedAt?.ToShortTimeString(),
                         IsEncrypted = x.IsEncrypted,
-                        AuthorPublicKey = x.AuthorPublicKey
+                        AuthorPublicKey = x.AuthorPublicKey,
+                        MessageAuthorPictureUrl = StringService.GetDocumentUrl(x.User.Image),
                     }).Last()
                     : null,
             };

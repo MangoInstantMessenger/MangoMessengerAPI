@@ -15,6 +15,8 @@ namespace MangoAPI.Domain.Entities
         public bool IsEncrypted { get; set; }
 
         public int AuthorPublicKey { get; set; }
+
+        public string AttachmentPath { get; set; }
         
         public DateTime CreatedAt { get; set; }
 
