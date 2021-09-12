@@ -53,7 +53,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Messages
                 IsEncrypted = request.IsEncrypted,
                 AuthorPublicKey = user.PublicKey,
                 CreatedAt = DateTime.UtcNow,
-                AttachmentPath = request.AttachmentPath
+                AttachmentPath = request.AttachmentUrl
             };
 
             chat.UpdatedAt = messageEntity.CreatedAt;
@@ -71,6 +71,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Messages
             return chat.CommunityType switch
             {
                 CommunityType.DirectChat => true,
+                CommunityType.SecretChat => true,
                 CommunityType.PrivateChannel => await CheckPrivateChannelPermissions(user, chat, cancellationToken),
                 CommunityType.PublicChannel => await CheckPublicChannelPermissions(user, chat, cancellationToken),
                 CommunityType.ReadOnlyChannel => await CheckReadOnlyChannelPermissions(user, chat, cancellationToken),

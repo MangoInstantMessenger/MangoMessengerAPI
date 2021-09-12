@@ -88,7 +88,7 @@ namespace MangoAPI.Presentation.Controllers
         /// <returns>Possible codes: 200, 400, 409.</returns>
         [HttpPost("chat")]
         [SwaggerOperation(Summary =
-            "Creates new direct chat with specified user. User is fetched by parameter user ID. " +
+            "Creates new chat with specified user. Chat types: Direct Chat (1), Secret Chat (2). " +
             "Requires role: User.")]
         [ProducesResponseType(typeof(CreateCommunityResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]

@@ -30,7 +30,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Communities
                 throw new BusinessException(ResponseMessageCodes.UserNotFound);
             }
 
-            if (request.CommunityType == CommunityType.DirectChat)
+            if (request.CommunityType is CommunityType.DirectChat or CommunityType.SecretChat)
             {
                 throw new BusinessException(ResponseMessageCodes.InvalidGroupType);
             }
@@ -48,7 +48,9 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Communities
 
             _postgresDbContext.UserChats.Add(new UserChatEntity
             {
-                ChatId = group.Id, RoleId = UserRole.Owner, UserId = user.Id,
+                ChatId = group.Id,
+                RoleId = UserRole.Owner,
+                UserId = user.Id,
             });
 
             await _postgresDbContext.SaveChangesAsync(cancellationToken);

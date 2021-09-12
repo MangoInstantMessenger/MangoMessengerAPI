@@ -31,6 +31,11 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Communities
                 throw new BusinessException(ResponseMessageCodes.UserNotFound);
             }
 
+            if (partner.PublicKey == 0)
+            {
+                throw new BusinessException(ResponseMessageCodes.UserPublicKeyIsNotGenerated);
+            }
+
             if (request.UserId == request.PartnerId)
             {
                 throw new BusinessException(ResponseMessageCodes.CannotCreateSelfChat);
@@ -38,27 +43,28 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Communities
 
             var currentUser = await _postgresDbContext.Users.FindUserByIdAsync(request.UserId, cancellationToken);
 
-            var userPrivateChats =
-                await _postgresDbContext.Chats.GetUserPrivateChatsAsync(currentUser.Id, cancellationToken);
+            var userPrivateChats = await _postgresDbContext.Chats
+                .GetUserChatsAsync(currentUser.Id, cancellationToken);
 
-            var findCurrentUserDirectChat = userPrivateChats
-                .FirstOrDefault(x => x.ChatUsers.Any(t => t.UserId == partner.Id));
+            var existingChat = userPrivateChats
+                .FirstOrDefault(x => x.ChatUsers.Any(t => t.UserId == partner.Id) 
+                                     && x.CommunityType == request.CommunityType);
 
-            if (findCurrentUserDirectChat != null)
+            if (existingChat != null)
             {
-                return CreateCommunityResponse.FromSuccess(findCurrentUserDirectChat);
+                return CreateCommunityResponse.FromSuccess(existingChat);
             }
 
-            var partnerPrivateChats =
-                await _postgresDbContext.Chats.GetUserPrivateChatsAsync(partner.Id, cancellationToken);
+            //var partnerChats =
+            //    await _postgresDbContext.Chats.GetUserChatsAsync(partner.Id, cancellationToken);
 
-            var findPartnerDirectChat = partnerPrivateChats
-                .FirstOrDefault(x => x.ChatUsers.Any(t => t.UserId == currentUser.Id));
+            //var existingPartnerChat = partnerChats
+            //    .FirstOrDefault(x => x.ChatUsers.Any(t => t.UserId == currentUser.Id));
 
-            if (findPartnerDirectChat != null)
-            {
-                return CreateCommunityResponse.FromSuccess(findPartnerDirectChat);
-            }
+            //if (existingPartnerChat != null && existingPartnerChat.CommunityType == request.CommunityType)
+            //{
+            //    return CreateCommunityResponse.FromSuccess(existingPartnerChat);
+            //}
 
             var directChat = new ChatEntity
             {
@@ -84,6 +90,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Communities
             await _postgresDbContext.Chats.AddAsync(directChat, cancellationToken);
             await _postgresDbContext.UserChats.AddRangeAsync(userChats, cancellationToken);
             await _postgresDbContext.SaveChangesAsync(cancellationToken);
+
             return CreateCommunityResponse.FromSuccess(directChat);
         }
     }

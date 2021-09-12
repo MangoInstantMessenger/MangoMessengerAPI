@@ -25,7 +25,7 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Communities
         {
             var chats = await _postgresDbContext
                 .Chats
-                .GetPublicChatsIncludeMessagesUsersAsync(cancellationToken);
+                .GetChannelsIncludeMessagesAsync(cancellationToken);
 
             if (!string.IsNullOrEmpty(request.DisplayName) || !string.IsNullOrWhiteSpace(request.DisplayName))
             {

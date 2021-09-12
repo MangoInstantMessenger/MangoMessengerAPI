@@ -37,7 +37,7 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Communities
             {
                 var currentChat = userChat.Chat;
 
-                if (currentChat.CommunityType == CommunityType.DirectChat)
+                if (currentChat.CommunityType is CommunityType.DirectChat or CommunityType.SecretChat)
                 {
                     var colleague = (await _postgresDbContext
                         .UserChats
