@@ -83,7 +83,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Sessions
             await _postgresDbContext.Sessions.AddAsync(newSession, cancellationToken);
             await _postgresDbContext.SaveChangesAsync(cancellationToken);
 
-            return TokensResponse.FromSuccess(jwtToken, newSession.RefreshToken);
+            return TokensResponse.FromSuccess(jwtToken, newSession.RefreshToken, user.Id);
         }
     }
 }

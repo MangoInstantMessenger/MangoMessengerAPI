@@ -38,7 +38,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.UserChats
 
             var chat = await _postgresDbContext.Chats.FindChatByIdIncludeChatUsersAsync(request.ChatId, cancellationToken);
 
-            if (chat.CommunityType == CommunityType.DirectChat)
+            if (chat.CommunityType is CommunityType.DirectChat or CommunityType.SecretChat)
             {
                 var messages = await _postgresDbContext
                     .Messages

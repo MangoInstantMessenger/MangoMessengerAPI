@@ -22,6 +22,7 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Messages
                     .Select(messageEntity => new Message
                     {
                         MessageId = messageEntity.Id,
+                        ChatId = messageEntity.ChatId,
                         MessageText = messageEntity.Content,
                         UpdatedAt = messageEntity.UpdatedAt?.ToShortTimeString(),
                         CreatedAt = messageEntity.CreatedAt.ToShortTimeString(),

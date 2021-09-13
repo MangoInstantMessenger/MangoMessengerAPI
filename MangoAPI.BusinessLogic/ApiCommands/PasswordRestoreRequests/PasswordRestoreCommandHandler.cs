@@ -34,7 +34,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.PasswordRestoreRequests
                 await _postgresDbContext.PasswordRestoreRequests.FindPasswordRestoreRequestByIdAsync(request.RequestId,
                     cancellationToken);
 
-            if (restorePasswordRequest == null || !restorePasswordRequest.IsValid)
+            if (restorePasswordRequest is not {IsValid: true})
             {
                 throw new BusinessException(ResponseMessageCodes.InvalidOrExpiredRestorePasswordRequest);
             }

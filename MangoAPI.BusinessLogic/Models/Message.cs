@@ -6,6 +6,8 @@ namespace MangoAPI.BusinessLogic.Models
     {
         public Guid MessageId { get; init; }
 
+        public Guid ChatId { get; init; }
+
         public string UserDisplayName { get; init; }
 
         public string MessageText { get; init; }
