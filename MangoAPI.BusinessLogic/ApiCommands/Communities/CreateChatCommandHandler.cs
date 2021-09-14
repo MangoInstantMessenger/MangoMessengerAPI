@@ -55,17 +55,6 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Communities
                 return CreateCommunityResponse.FromSuccess(existingChat);
             }
 
-            //var partnerChats =
-            //    await _postgresDbContext.Chats.GetUserChatsAsync(partner.Id, cancellationToken);
-
-            //var existingPartnerChat = partnerChats
-            //    .FirstOrDefault(x => x.ChatUsers.Any(t => t.UserId == currentUser.Id));
-
-            //if (existingPartnerChat != null && existingPartnerChat.CommunityType == request.CommunityType)
-            //{
-            //    return CreateCommunityResponse.FromSuccess(existingPartnerChat);
-            //}
-
             var directChat = new ChatEntity
             {
                 Id = Guid.NewGuid(),
