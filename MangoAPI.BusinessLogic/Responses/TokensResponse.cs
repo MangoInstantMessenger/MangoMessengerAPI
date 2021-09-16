@@ -9,13 +9,16 @@ namespace MangoAPI.BusinessLogic.Responses
 
         public Guid RefreshToken { get; init; }
 
-        public static TokensResponse FromSuccess(string accessToken, Guid refreshToken)
+        public Guid UserId { get; set; }
+
+        public static TokensResponse FromSuccess(string accessToken, Guid refreshToken, Guid userId)
         {
             return new()
             {
                 Message = ResponseMessageCodes.Success,
                 AccessToken = accessToken,
                 RefreshToken = refreshToken,
+                UserId = userId,
                 Success = true,
             };
         }

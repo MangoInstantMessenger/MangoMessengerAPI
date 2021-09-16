@@ -10,7 +10,7 @@ namespace MangoAPI.Domain.Entities
 
         public string Title { get; set; }
 
-        public ChatType ChatType { get; set; }
+        public CommunityType CommunityType { get; set; }
 
         public string Description { get; set; }
 

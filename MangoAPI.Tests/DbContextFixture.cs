@@ -356,31 +356,31 @@ namespace MangoAPI.Tests
         {
             new ChatEntity
             {
-                ChatType = ChatType.PublicChannel,
+                CommunityType = CommunityType.PublicChannel,
                 Title = "Extreme Code Main",
                 Id = SeedDataConstants.ExtremeCodeMainId,
             },
             new ChatEntity
             {
-                ChatType = ChatType.PrivateChannel,
+                CommunityType = CommunityType.PrivateChannel,
                 Title = "Extreme Code C++",
                 Id = SeedDataConstants.ExtremeCodeCppId,
             },
             new ChatEntity
             {
-                ChatType = ChatType.ReadOnlyChannel,
+                CommunityType = CommunityType.ReadOnlyChannel,
                 Title = "Extreme Code",
                 Id = SeedDataConstants.ExtremeCodeDotnetId,
             },
             new ChatEntity
             {
-                ChatType = ChatType.PrivateChannel,
+                CommunityType = CommunityType.PrivateChannel,
                 Title = "Extreme Code Flood",
                 Id = SeedDataConstants.ExtremeCodeFloodId,
             },
             new ChatEntity
             {
-                ChatType = ChatType.DirectChat,
+                CommunityType = CommunityType.DirectChat,
                 Title = "Petro / Szymon",
                 Id = SeedDataConstants.DirectPetroSzymon
             },
@@ -388,7 +388,7 @@ namespace MangoAPI.Tests
             {
                 Id = SeedDataConstants.WsbId,
                 Title = "WSB",
-                ChatType = ChatType.PublicChannel,
+                CommunityType = CommunityType.PublicChannel,
                 Description = "WSB Public Group",
                 MembersCount = 5,
             }

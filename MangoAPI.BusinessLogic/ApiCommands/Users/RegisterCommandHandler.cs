@@ -95,7 +95,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
 
             var jwtToken = _jwtGenerator.GenerateJwtToken(
                 newUser,
-                new List<string> {SeedDataConstants.UnverifiedRole});
+                new List<string> { SeedDataConstants.UnverifiedRole });
 
             await _postgresDbContext.UserRoles.AddAsync(
                 new IdentityUserRole<Guid>
@@ -108,7 +108,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
             await _postgresDbContext.UserInformation.AddAsync(userInfo, cancellationToken);
             await _postgresDbContext.SaveChangesAsync(cancellationToken);
 
-            return TokensResponse.FromSuccess(jwtToken, newSession.RefreshToken);
+            return TokensResponse.FromSuccess(jwtToken, newSession.RefreshToken, newUser.Id);
         }
     }
 }
