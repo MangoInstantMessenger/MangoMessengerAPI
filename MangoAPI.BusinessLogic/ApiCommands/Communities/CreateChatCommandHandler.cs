@@ -47,7 +47,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Communities
                 .GetUserChatsAsync(currentUser.Id, cancellationToken);
 
             var existingChat = userPrivateChats
-                .FirstOrDefault(x => x.ChatUsers.Any(t => t.UserId == partner.Id) 
+                .FirstOrDefault(x => x.ChatUsers.Any(t => t.UserId == partner.Id)
                                      && x.CommunityType == request.CommunityType);
 
             if (existingChat != null)
