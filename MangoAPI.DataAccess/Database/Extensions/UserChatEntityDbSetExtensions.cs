@@ -1,10 +1,10 @@
-﻿using System;
+﻿using MangoAPI.Domain.Entities;
+using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using MangoAPI.Domain.Entities;
-using Microsoft.EntityFrameworkCore;
 
 namespace MangoAPI.DataAccess.Database.Extensions
 {
@@ -13,7 +13,8 @@ namespace MangoAPI.DataAccess.Database.Extensions
         public static async Task<List<UserChatEntity>> FindUserChatsByIdIncludeMessagesAsync(
             this DbSet<UserChatEntity> dbSet, Guid userId, CancellationToken cancellationToken)
         {
-            return await dbSet.AsNoTracking()
+            return await dbSet
+                .AsNoTracking()
                 .Include(x => x.Chat)
                 .ThenInclude(x => x.Messages)
                 .ThenInclude(x => x.User)

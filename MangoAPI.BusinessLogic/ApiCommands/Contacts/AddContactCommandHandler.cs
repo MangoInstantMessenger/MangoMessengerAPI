@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 using MangoAPI.BusinessLogic.BusinessExceptions;
 using MangoAPI.BusinessLogic.Responses;
@@ -45,6 +46,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Contacts
             {
                 ContactId = request.ContactId,
                 UserId = request.UserId,
+                CreatedAt = DateTime.UtcNow,
             };
 
             await _postgresDbContext.UserContacts.AddAsync(contactEntity, cancellationToken);

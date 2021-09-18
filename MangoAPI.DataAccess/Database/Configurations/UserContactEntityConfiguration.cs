@@ -1,8 +1,8 @@
-﻿using System;
-using MangoAPI.Domain.Constants;
+﻿using MangoAPI.Domain.Constants;
 using MangoAPI.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using System;
 
 namespace MangoAPI.DataAccess.Database.Configurations
 {
@@ -20,24 +20,28 @@ namespace MangoAPI.DataAccess.Database.Configurations
                     Id = Guid.NewGuid(),
                     ContactId = SeedDataConstants.SzymonId,
                     UserId = SeedDataConstants.PetroId,
+                    CreatedAt = DateTime.UtcNow,
                 },
                 new UserContactEntity
                 {
                     Id = Guid.NewGuid(),
                     ContactId = SeedDataConstants.IlliaId,
                     UserId = SeedDataConstants.PetroId,
+                    CreatedAt = DateTime.UtcNow,
                 },
                 new UserContactEntity
                 {
                     Id = Guid.NewGuid(),
                     ContactId = SeedDataConstants.ArslanbekId,
                     UserId = SeedDataConstants.PetroId,
+                    CreatedAt = DateTime.UtcNow,
                 },
                 new UserContactEntity
                 {
                     Id = Guid.NewGuid(),
                     ContactId = SeedDataConstants.SerhiiId,
                     UserId = SeedDataConstants.PetroId,
+                    CreatedAt = DateTime.UtcNow,
                 },
 
                 // Szymon Contacts
@@ -46,24 +50,28 @@ namespace MangoAPI.DataAccess.Database.Configurations
                     Id = Guid.NewGuid(),
                     ContactId = SeedDataConstants.PetroId,
                     UserId = SeedDataConstants.SzymonId,
+                    CreatedAt = DateTime.UtcNow,
                 },
                 new UserContactEntity
                 {
                     Id = Guid.NewGuid(),
                     ContactId = SeedDataConstants.IlliaId,
                     UserId = SeedDataConstants.SzymonId,
+                    CreatedAt = DateTime.UtcNow,
                 },
                 new UserContactEntity
                 {
                     Id = Guid.NewGuid(),
                     ContactId = SeedDataConstants.ArslanbekId,
                     UserId = SeedDataConstants.SzymonId,
+                    CreatedAt = DateTime.UtcNow,
                 },
                 new UserContactEntity
                 {
                     Id = Guid.NewGuid(),
                     ContactId = SeedDataConstants.SerhiiId,
                     UserId = SeedDataConstants.SzymonId,
+                    CreatedAt = DateTime.UtcNow,
                 },
 
                 // Illia Contacts
@@ -72,24 +80,28 @@ namespace MangoAPI.DataAccess.Database.Configurations
                     Id = Guid.NewGuid(),
                     ContactId = SeedDataConstants.PetroId,
                     UserId = SeedDataConstants.IlliaId,
+                    CreatedAt = DateTime.UtcNow,
                 },
                 new UserContactEntity
                 {
                     Id = Guid.NewGuid(),
                     ContactId = SeedDataConstants.SzymonId,
                     UserId = SeedDataConstants.IlliaId,
+                    CreatedAt = DateTime.UtcNow,
                 },
                 new UserContactEntity
                 {
                     Id = Guid.NewGuid(),
                     ContactId = SeedDataConstants.ArslanbekId,
                     UserId = SeedDataConstants.IlliaId,
+                    CreatedAt = DateTime.UtcNow,
                 },
                 new UserContactEntity
                 {
                     Id = Guid.NewGuid(),
                     ContactId = SeedDataConstants.SerhiiId,
                     UserId = SeedDataConstants.IlliaId,
+                    CreatedAt = DateTime.UtcNow,
                 },
 
                 // Serhii Contacts
@@ -98,24 +110,28 @@ namespace MangoAPI.DataAccess.Database.Configurations
                     Id = Guid.NewGuid(),
                     ContactId = SeedDataConstants.PetroId,
                     UserId = SeedDataConstants.SerhiiId,
+                    CreatedAt = DateTime.UtcNow,
                 },
                 new UserContactEntity
                 {
                     Id = Guid.NewGuid(),
                     ContactId = SeedDataConstants.SzymonId,
                     UserId = SeedDataConstants.SerhiiId,
+                    CreatedAt = DateTime.UtcNow,
                 },
                 new UserContactEntity
                 {
                     Id = Guid.NewGuid(),
                     ContactId = SeedDataConstants.ArslanbekId,
                     UserId = SeedDataConstants.SerhiiId,
+                    CreatedAt = DateTime.UtcNow,
                 },
                 new UserContactEntity
                 {
                     Id = Guid.NewGuid(),
                     ContactId = SeedDataConstants.IlliaId,
                     UserId = SeedDataConstants.SerhiiId,
+                    CreatedAt = DateTime.UtcNow,
                 },
 
                 // Arslanbek Contacts
@@ -124,24 +140,28 @@ namespace MangoAPI.DataAccess.Database.Configurations
                     Id = Guid.NewGuid(),
                     ContactId = SeedDataConstants.PetroId,
                     UserId = SeedDataConstants.ArslanbekId,
+                    CreatedAt = DateTime.UtcNow,
                 },
                 new UserContactEntity
                 {
                     Id = Guid.NewGuid(),
                     ContactId = SeedDataConstants.SzymonId,
                     UserId = SeedDataConstants.ArslanbekId,
+                    CreatedAt = DateTime.UtcNow,
                 },
                 new UserContactEntity
                 {
                     Id = Guid.NewGuid(),
                     ContactId = SeedDataConstants.SerhiiId,
                     UserId = SeedDataConstants.ArslanbekId,
+                    CreatedAt = DateTime.UtcNow,
                 },
                 new UserContactEntity
                 {
                     Id = Guid.NewGuid(),
                     ContactId = SeedDataConstants.IlliaId,
                     UserId = SeedDataConstants.ArslanbekId,
+                    CreatedAt = DateTime.UtcNow,
                 },
 
                 // Khachatur Contacts
@@ -150,6 +170,7 @@ namespace MangoAPI.DataAccess.Database.Configurations
                     Id = Guid.NewGuid(),
                     ContactId = SeedDataConstants.RazumovskyId,
                     UserId = SeedDataConstants.KhachaturId,
+                    CreatedAt = DateTime.UtcNow,
                 },
 
                 // Razumovsky Contacts
@@ -158,26 +179,35 @@ namespace MangoAPI.DataAccess.Database.Configurations
                     Id = Guid.NewGuid(),
                     ContactId = SeedDataConstants.KhachaturId,
                     UserId = SeedDataConstants.RazumovskyId,
-                }, new UserContactEntity
+                    CreatedAt = DateTime.UtcNow,
+                },
+                new UserContactEntity
                 {
                     Id = Guid.NewGuid(),
                     ContactId = SeedDataConstants.SzymonId,
                     UserId = SeedDataConstants.RazumovskyId,
-                }, new UserContactEntity
+                    CreatedAt = DateTime.UtcNow,
+                },
+                new UserContactEntity
                 {
                     Id = Guid.NewGuid(),
                     ContactId = SeedDataConstants.IlliaId,
                     UserId = SeedDataConstants.RazumovskyId,
-                }, new UserContactEntity
+                    CreatedAt = DateTime.UtcNow,
+                },
+                new UserContactEntity
                 {
                     Id = Guid.NewGuid(),
                     ContactId = SeedDataConstants.KolbasatorId,
                     UserId = SeedDataConstants.RazumovskyId,
-                }, new UserContactEntity
+                    CreatedAt = DateTime.UtcNow,
+                },
+                new UserContactEntity
                 {
                     Id = Guid.NewGuid(),
                     ContactId = SeedDataConstants.AmelitId,
                     UserId = SeedDataConstants.RazumovskyId,
+                    CreatedAt = DateTime.UtcNow,
                 },
 
                 // Kolbasator Contacts
@@ -186,6 +216,7 @@ namespace MangoAPI.DataAccess.Database.Configurations
                     Id = Guid.NewGuid(),
                     ContactId = SeedDataConstants.KhachaturId,
                     UserId = SeedDataConstants.KolbasatorId,
+                    CreatedAt = DateTime.UtcNow,
                 },
 
                 // Amelit Contacts
@@ -194,6 +225,7 @@ namespace MangoAPI.DataAccess.Database.Configurations
                     Id = Guid.NewGuid(),
                     ContactId = SeedDataConstants.RazumovskyId,
                     UserId = SeedDataConstants.AmelitId,
+                    CreatedAt = DateTime.UtcNow,
                 });
         }
     }

@@ -10,6 +10,8 @@ namespace MangoAPI.Domain.Entities
 
         public Guid UserId { get; set; }
 
+        public DateTime CreatedAt { get; set; }
+
         public UserEntity User { get; set; }
     }
 }

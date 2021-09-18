@@ -22,8 +22,8 @@ namespace MangoAPI.DataAccess.Database.Extensions
             string messageText, Guid chatId, CancellationToken cancellationToken)
         {
             return await dbSet
-                .Include(x => x.User)
                 .AsNoTracking()
+                .Include(x => x.User)
                 .Where(x => x.ChatId == chatId)
                 .Where(x => x.Content.Contains(messageText))
                 .ToListAsync(cancellationToken);

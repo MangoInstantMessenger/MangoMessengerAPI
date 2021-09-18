@@ -30,23 +30,6 @@ namespace MangoAPI.Tests.ApiQueriesTests.Messages
         }
 
         [Test]
-        public async Task GetMessagesQueryHandlerTest_ShouldThrowUserNotFound()
-        {
-            using var dbContextFixture = new DbContextFixture();
-            var handler = new GetMessagesQueryHandler(dbContextFixture.PostgresDbContext);
-            var query = new GetMessagesQuery
-            {
-                UserId = Guid.NewGuid(), 
-                ChatId = SeedDataConstants.ExtremeCodeFloodId
-            };
-
-            Func<Task> response = async () => await handler.Handle(query, CancellationToken.None);
-
-            await response.Should().ThrowAsync<BusinessException>()
-                .WithMessage(ResponseMessageCodes.UserNotFound);
-        }
-
-        [Test]
         public async Task GetMessagesQueryHandlerTest_ShouldThrowPermissionDenied()
         {
             using var dbContextFixture = new DbContextFixture();

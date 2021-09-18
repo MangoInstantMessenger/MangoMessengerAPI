@@ -1,14 +1,14 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
-using MangoAPI.Application.Services;
+﻿using MangoAPI.Application.Services;
 using MangoAPI.BusinessLogic.Models;
 using MangoAPI.DataAccess.Database;
 using MangoAPI.DataAccess.Database.Extensions;
 using MangoAPI.Domain.Enums;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace MangoAPI.BusinessLogic.ApiQueries.Communities
 {
@@ -38,7 +38,7 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Communities
 
             foreach (var chat in chats)
             {
-                var isMember = await _postgresDbContext.UserChats
+                var isMember = await _postgresDbContext.UserChats.AsNoTracking()
                     .AnyAsync(x => x.ChatId == chat.Id && x.UserId == request.UserId,
                         cancellationToken);
 
@@ -71,6 +71,7 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Communities
                 {
                     var colleague = (await _postgresDbContext
                         .UserChats
+                        .AsNoTracking()
                         .Include(x => x.User)
                         .FirstOrDefaultAsync(x => x.ChatId == currentChat.ChatId && x.UserId != request.UserId,
                         cancellationToken)).User;
