@@ -1,24 +1,24 @@
-﻿using Newtonsoft.Json;
+﻿using System;
+using Newtonsoft.Json;
 
 namespace MangoAPI.BusinessLogic.ApiCommands.UserChats
 {
     public record ArchiveChatRequest
     {
         [JsonConstructor]
-        public ArchiveChatRequest(string chatId,
-            bool archived)
+        public ArchiveChatRequest(Guid chatId, bool archived)
         {
             ChatId = chatId;
             Archived = archived;
         }
-    
-        public string ChatId { get; }
+
+        public Guid ChatId { get; }
         public bool Archived { get; }
     }
 
     public static class ArchiveChatRequestMapper
     {
-        public static ArchiveChatCommand ToCommand(this ArchiveChatRequest request, string userId)
+        public static ArchiveChatCommand ToCommand(this ArchiveChatRequest request, Guid userId)
         {
             return new()
             {

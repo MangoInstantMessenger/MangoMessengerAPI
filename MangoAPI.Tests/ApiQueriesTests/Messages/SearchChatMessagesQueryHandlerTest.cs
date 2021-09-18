@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using FluentAssertions;
 using MangoAPI.BusinessLogic.ApiQueries.Messages;
 using MangoAPI.BusinessLogic.BusinessExceptions;
+using MangoAPI.Domain.Constants;
 using NUnit.Framework;
 
 namespace MangoAPI.Tests.ApiQueriesTests.Messages
@@ -18,8 +19,8 @@ namespace MangoAPI.Tests.ApiQueriesTests.Messages
             var handler = new SearchChatMessageQueryHandler(dbContextFixture.PostgresDbContext);
             var query = new SearchChatMessagesQuery
             {
-                UserId = "1",
-                ChatId = "2",
+                UserId = SeedDataConstants.RazumovskyId,
+                ChatId = SeedDataConstants.ExtremeCodeFloodId,
                 MessageText = "hello"
             };
 
@@ -28,7 +29,7 @@ namespace MangoAPI.Tests.ApiQueriesTests.Messages
             result.Success.Should().BeTrue();
             result.Messages.Should().NotBeNull();
         }
-        
+
         [Test]
         public async Task SearchChatMessagesQueryHandlerTest_ShouldThrowUserNotFound()
         {
@@ -36,14 +37,15 @@ namespace MangoAPI.Tests.ApiQueriesTests.Messages
             var handler = new SearchChatMessageQueryHandler(dbContextFixture.PostgresDbContext);
             var query = new SearchChatMessagesQuery
             {
-                UserId = "14",
-                ChatId = "2",
+                UserId = Guid.NewGuid(),
+                ChatId = SeedDataConstants.ExtremeCodeFloodId,
                 MessageText = "hello"
             };
 
             Func<Task> result = async () => await handler.Handle(query, CancellationToken.None);
 
-            await result.Should().ThrowAsync<BusinessException>();
+            await result.Should().ThrowAsync<BusinessException>()
+                .WithMessage(ResponseMessageCodes.UserNotFound);
         }
     }
 }

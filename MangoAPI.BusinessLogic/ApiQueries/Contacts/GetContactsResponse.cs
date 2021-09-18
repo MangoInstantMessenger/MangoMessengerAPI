@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using MangoAPI.Application.Services;
 using MangoAPI.BusinessLogic.Models;
 using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.Domain.Constants;
@@ -7,7 +8,7 @@ using MangoAPI.Domain.Entities;
 
 namespace MangoAPI.BusinessLogic.ApiQueries.Contacts
 {
-    public record GetContactsResponse : ContactsResponseBase<GetContactsResponse>
+    public record GetContactsResponse : ResponseBase<GetContactsResponse>
     {
         public List<Contact> Contacts { get; init; }
 
@@ -26,6 +27,7 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Contacts
                             Address = userEntity.UserInformation.Address,
                             Bio = userEntity.Bio,
                             IsContact = true,
+                            PictureUrl = StringService.GetDocumentUrl(userEntity.Image),
                         }).ToList(),
             };
         }

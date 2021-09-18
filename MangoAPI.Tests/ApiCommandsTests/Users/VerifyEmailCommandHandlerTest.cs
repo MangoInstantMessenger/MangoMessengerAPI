@@ -19,8 +19,8 @@ namespace MangoAPI.Tests.ApiCommandsTests.Users
             var handler = new VerifyEmailCommandHandler(dbContextFixture.PostgresDbContext);
             var command = new VerifyEmailCommand
             {
-                UserId = "1",
-                Email = "kolosovp99@gmail.com",
+                UserId = SeedDataConstants.AmelitId,
+                Email = "amelit@gmail.com",
             };
 
             var result = await handler.Handle(command, CancellationToken.None);
@@ -35,7 +35,7 @@ namespace MangoAPI.Tests.ApiCommandsTests.Users
             var handler = new VerifyEmailCommandHandler(dbContextFixture.PostgresDbContext);
             var command = new VerifyEmailCommand
             {
-                UserId = "1",
+                UserId = SeedDataConstants.RazumovskyId,
                 Email = "kolosovp@gmail.com",
             };
 
@@ -52,7 +52,7 @@ namespace MangoAPI.Tests.ApiCommandsTests.Users
             var handler = new VerifyEmailCommandHandler(dbContextFixture.PostgresDbContext);
             var command = new VerifyEmailCommand
             {
-                UserId = "24",
+                UserId = Guid.NewGuid(),
                 Email = "kolosovp94@gmail.com",
             };
 
@@ -69,7 +69,7 @@ namespace MangoAPI.Tests.ApiCommandsTests.Users
             var handler = new VerifyEmailCommandHandler(dbContextFixture.PostgresDbContext);
             var command = new VerifyEmailCommand
             {
-                UserId = "3",
+                UserId = SeedDataConstants.RazumovskyId,
                 Email = "kolosovp95@gmail.com",
             };
 

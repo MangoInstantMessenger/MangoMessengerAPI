@@ -11,8 +11,7 @@ namespace MangoAPI.Application.Services
 {
     public class EmailSenderService : IEmailSenderService
     {
-        public async Task SendVerificationEmailAsync(
-            UserEntity user,
+        public async Task SendVerificationEmailAsync(UserEntity user,
             CancellationToken cancellationToken)
         {
             var senderEmail = EnvironmentConstants.EmailSenderAddress;
@@ -65,7 +64,7 @@ namespace MangoAPI.Application.Services
                 "Verify email" +
                 "</a>" +
                 "<br>" +
-                $"<p>Your phone confirmation code is: {user.ConfirmationCode} </p>" +
+                $"<p>Your phone confirmation code is: {user.PhoneCode} </p>" +
                 "</body>";
 
             message.IsBodyHtml = true;

@@ -1,7 +1,8 @@
-﻿using System.Threading;
-using System.Threading.Tasks;
+﻿using System;
 using MangoAPI.BusinessLogic.ApiCommands.Users;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace MangoAPI.Presentation.Interfaces
 {
@@ -15,13 +16,18 @@ namespace MangoAPI.Presentation.Interfaces
 
         Task<IActionResult> ChangePassword(ChangePasswordRequest request, CancellationToken cancellationToken);
 
-        Task<IActionResult> GetUserById(string userId, CancellationToken cancellationToken);
+        Task<IActionResult> GetUserById(Guid userId, CancellationToken cancellationToken);
 
         Task<IActionResult> GetCurrentUser(CancellationToken cancellationToken);
 
-        Task<IActionResult> UpdateUserInformationAsync(UpdateUserInformationRequest request,
+        Task<IActionResult> UpdateUserAccountInfoAsync(UpdateUserAccountInfoRequest request,
+            CancellationToken cancellationToken);
+
+        Task<IActionResult> UpdateUserSocialInformationAsync(UpdateUserSocialInformationRequest request,
             CancellationToken cancellationToken);
 
         Task<IActionResult> UpdatePublicKeyAsync(int publicKey, CancellationToken cancellationToken);
+
+        Task<IActionResult> UpdateProfilePictureAsync(string image, CancellationToken cancellationToken);
     }
 }

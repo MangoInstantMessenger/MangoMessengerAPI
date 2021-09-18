@@ -37,7 +37,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.UserChats
                 throw new BusinessException(ResponseMessageCodes.UserAlreadyJoinedGroup);
             }
 
-            var chat = await _postgresDbContext.Chats.FindPublicChanelByIdAsync(request.ChatId, cancellationToken);
+            var chat = await _postgresDbContext.Chats.FindChannelByIdAsync(request.ChatId, cancellationToken);
 
             if (chat == null)
             {

@@ -19,8 +19,8 @@ namespace MangoAPI.Tests.ApiCommandsTests.Messages
             var handler = new DeleteMessageCommandHandler(dbContextFixture.PostgresDbContext);
             var command = new DeleteMessageCommand
             {
-                UserId = "1",
-                MessageId = "3",
+                UserId = SeedDataConstants.SzymonId,
+                MessageId = "664b168f-565c-4a94-b2f5-7b199bd1c364".AsGuid(),
             };
 
             var result = await handler.Handle(command, CancellationToken.None);
@@ -35,8 +35,8 @@ namespace MangoAPI.Tests.ApiCommandsTests.Messages
             var handler = new DeleteMessageCommandHandler(dbContextFixture.PostgresDbContext);
             var command = new DeleteMessageCommand
             {
-                UserId = "4",
-                MessageId = "3",
+                UserId = Guid.NewGuid(),
+                MessageId = Guid.NewGuid(),
             };
 
             Func<Task> result = async () => await handler.Handle(command, CancellationToken.None);
@@ -52,8 +52,8 @@ namespace MangoAPI.Tests.ApiCommandsTests.Messages
             var handler = new DeleteMessageCommandHandler(dbContextFixture.PostgresDbContext);
             var command = new DeleteMessageCommand
             {
-                UserId = "2",
-                MessageId = "21",
+                UserId = SeedDataConstants.SzymonId,
+                MessageId = Guid.NewGuid(),
             };
 
             Func<Task> result = async () => await handler.Handle(command, CancellationToken.None);

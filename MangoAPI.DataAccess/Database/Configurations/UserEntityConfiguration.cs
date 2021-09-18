@@ -14,7 +14,7 @@ namespace MangoAPI.DataAccess.Database.Configurations
             builder.HasMany(x => x.PasswordRestoreRequests)
                 .WithOne(x => x.UserEntity)
                 .HasForeignKey(x => x.UserId);
-            
+
             builder.HasMany(x => x.Sessions)
                 .WithOne(x => x.UserEntity)
                 .HasForeignKey(x => x.UserId);
@@ -38,6 +38,7 @@ namespace MangoAPI.DataAccess.Database.Configurations
                 NormalizedEmail = "XACHULXX@GMAIL.COM",
                 EmailConfirmed = true,
                 PhoneNumberConfirmed = true,
+                Image = "khachatur_picture.jpg",
             };
 
             var user2 = new UserEntity
@@ -51,6 +52,7 @@ namespace MangoAPI.DataAccess.Database.Configurations
                 NormalizedEmail = "KOLOSOVP94@GMAIL.COM",
                 EmailConfirmed = true,
                 PhoneNumberConfirmed = true,
+                Image = "razumovsky_picture.jpg"
             };
 
             var user3 = new UserEntity
@@ -64,6 +66,7 @@ namespace MangoAPI.DataAccess.Database.Configurations
                 NormalizedEmail = "KOLBASATOR@GMAIL.COM",
                 EmailConfirmed = true,
                 PhoneNumberConfirmed = true,
+                Image = "musyaka_picture.jpg",
             };
 
             var user4 = new UserEntity
@@ -77,6 +80,7 @@ namespace MangoAPI.DataAccess.Database.Configurations
                 NormalizedEmail = "AMELIT@GMAIL.COM",
                 EmailConfirmed = true,
                 PhoneNumberConfirmed = true,
+                Image = "amelit_picture.jpg"
             };
 
             var user5 = new UserEntity
@@ -90,6 +94,7 @@ namespace MangoAPI.DataAccess.Database.Configurations
                 NormalizedEmail = "PETRO.KOLOSOV@WP.PL",
                 EmailConfirmed = true,
                 PhoneNumberConfirmed = true,
+                Image = "razumovsky_picture.jpg"
             };
 
             var user6 = new UserEntity
@@ -103,6 +108,7 @@ namespace MangoAPI.DataAccess.Database.Configurations
                 NormalizedEmail = "SZYMON.MURAWSKI@WP.PL",
                 EmailConfirmed = true,
                 PhoneNumberConfirmed = true,
+                Image = "szymon_picture.png",
             };
 
             var user7 = new UserEntity
@@ -116,6 +122,7 @@ namespace MangoAPI.DataAccess.Database.Configurations
                 NormalizedEmail = "ILLIA.ZUBACHOW@WP.PL",
                 EmailConfirmed = true,
                 PhoneNumberConfirmed = true,
+                Image = "illia_picture.png",
             };
 
             var user8 = new UserEntity
@@ -129,6 +136,7 @@ namespace MangoAPI.DataAccess.Database.Configurations
                 NormalizedEmail = "ARSLANBEK.TEMIRBEKOV@WP.PL",
                 EmailConfirmed = true,
                 PhoneNumberConfirmed = true,
+                Image = "arslan_picture.png",
             };
 
             var user9 = new UserEntity
@@ -142,6 +150,7 @@ namespace MangoAPI.DataAccess.Database.Configurations
                 NormalizedEmail = "SERHII.HOLISHEVSKII@WP.PL",
                 EmailConfirmed = true,
                 PhoneNumberConfirmed = true,
+                Image = "serhii_picture.png",
             };
 
             var passwordHasher = new PasswordHashService();

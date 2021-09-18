@@ -1,4 +1,5 @@
-﻿using MangoAPI.BusinessLogic.Models;
+﻿using MangoAPI.Application.Services;
+using MangoAPI.BusinessLogic.Models;
 using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.Domain.Constants;
 using MangoAPI.Domain.Entities;
@@ -32,6 +33,8 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Users
                     LinkedIn = user.UserInformation.LinkedIn,
                     Username = user.UserName,
                     Bio = user.Bio,
+                    PublicKey = user.PublicKey,
+                    PictureUrl = StringService.GetDocumentUrl(user.Image),
                 },
             };
         }

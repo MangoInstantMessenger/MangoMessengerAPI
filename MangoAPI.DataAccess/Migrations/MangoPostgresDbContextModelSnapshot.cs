@@ -21,10 +21,11 @@ namespace MangoAPI.DataAccess.Migrations
 
             modelBuilder.Entity("MangoAPI.Domain.Entities.ChatEntity", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasColumnType("text");
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
 
-                    b.Property<int>("ChatType")
+                    b.Property<int>("CommunityType")
                         .HasColumnType("integer");
 
                     b.Property<DateTime>("CreatedAt")
@@ -53,53 +54,58 @@ namespace MangoAPI.DataAccess.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "b6ca4533-fc21-4f44-9747-687361e3031c",
-                            ChatType = 3,
+                            Id = new Guid("b6ca4533-fc21-4f44-9747-687361e3031c"),
+                            CommunityType = 4,
                             CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "WSB Public Group",
+                            Image = "wsb_group_logo.png",
                             MembersCount = 5,
                             Title = "WSB"
                         },
                         new
                         {
-                            Id = "0dae5a74-3528-4e85-95bb-2036bd80432c",
-                            ChatType = 3,
+                            Id = new Guid("0dae5a74-3528-4e85-95bb-2036bd80432c"),
+                            CommunityType = 4,
                             CreatedAt = new DateTime(2020, 2, 4, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "Extreme Code Main Public Group",
+                            Image = "extreme_code_main.jpg",
                             MembersCount = 4,
                             Title = "Extreme Code Main"
                         },
                         new
                         {
-                            Id = "5e656ec2-205f-471c-b095-1c80b93b7655",
-                            ChatType = 3,
+                            Id = new Guid("5e656ec2-205f-471c-b095-1c80b93b7655"),
+                            CommunityType = 4,
                             CreatedAt = new DateTime(2020, 4, 23, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "Extreme Code Flood Public Group",
+                            Image = "extremecode_rest_logo.jpg",
                             MembersCount = 4,
                             Title = "Extreme Code Flood"
                         },
                         new
                         {
-                            Id = "cd358b94-c3b9-4022-923a-13f787f70055",
-                            ChatType = 3,
+                            Id = new Guid("cd358b94-c3b9-4022-923a-13f787f70055"),
+                            CommunityType = 4,
                             CreatedAt = new DateTime(2020, 5, 12, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "Extreme Code C++ Public Group",
+                            Image = "extremecode_cpp_logo.jpg",
                             MembersCount = 4,
                             Title = "Extreme Code C++"
                         },
                         new
                         {
-                            Id = "6f66e318-1e94-44ae-9b33-fe001e070842",
-                            ChatType = 3,
+                            Id = new Guid("6f66e318-1e94-44ae-9b33-fe001e070842"),
+                            CommunityType = 4,
                             CreatedAt = new DateTime(2020, 5, 12, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "Extreme Code .NET Public Group",
+                            Image = "extremecode_dotnet.png",
                             MembersCount = 4,
                             Title = "Extreme Code .NET"
                         },
                         new
                         {
-                            Id = "f5b7824f-e52b-4246-9984-06fc8e964f0c",
-                            ChatType = 1,
+                            Id = new Guid("f5b7824f-e52b-4246-9984-06fc8e964f0c"),
+                            CommunityType = 1,
                             CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "Direct chat between Khachatur Khachatryan and razumovsky r",
                             MembersCount = 2,
@@ -107,8 +113,8 @@ namespace MangoAPI.DataAccess.Migrations
                         },
                         new
                         {
-                            Id = "f8729a12-5746-443f-ad31-378d846fce30",
-                            ChatType = 1,
+                            Id = new Guid("f8729a12-5746-443f-ad31-378d846fce30"),
+                            CommunityType = 1,
                             CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "Direct chat between Мусяка Колбасяка and razumovsky r",
                             MembersCount = 2,
@@ -116,8 +122,8 @@ namespace MangoAPI.DataAccess.Migrations
                         },
                         new
                         {
-                            Id = "b119914a-6d95-4047-bf8a-db27deeb7dc9",
-                            ChatType = 1,
+                            Id = new Guid("b119914a-6d95-4047-bf8a-db27deeb7dc9"),
+                            CommunityType = 1,
                             CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "Direct chat between Amelit and razumovsky r",
                             MembersCount = 2,
@@ -125,8 +131,8 @@ namespace MangoAPI.DataAccess.Migrations
                         },
                         new
                         {
-                            Id = "9f205dde-0ddc-401f-8fe9-6c794b661f5d",
-                            ChatType = 1,
+                            Id = new Guid("9f205dde-0ddc-401f-8fe9-6c794b661f5d"),
+                            CommunityType = 1,
                             CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "Direct chat between Khachatur Khachatryan and Мусяка Колбасяка",
                             MembersCount = 2,
@@ -134,8 +140,8 @@ namespace MangoAPI.DataAccess.Migrations
                         },
                         new
                         {
-                            Id = "3fce8b2c-252d-4514-a1bb-fbdf73c47b78",
-                            ChatType = 1,
+                            Id = new Guid("3fce8b2c-252d-4514-a1bb-fbdf73c47b78"),
+                            CommunityType = 1,
                             CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "Direct chat between Petro Kolosov and Szymon Murawski",
                             MembersCount = 2,
@@ -143,13 +149,37 @@ namespace MangoAPI.DataAccess.Migrations
                         });
                 });
 
-            modelBuilder.Entity("MangoAPI.Domain.Entities.MessageEntity", b =>
+            modelBuilder.Entity("MangoAPI.Domain.Entities.DocumentEntity", b =>
                 {
-                    b.Property<string>("Id")
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("FileName")
                         .HasColumnType("text");
 
-                    b.Property<string>("ChatId")
+                    b.Property<string>("FilePath")
                         .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Documents");
+                });
+
+            modelBuilder.Entity("MangoAPI.Domain.Entities.MessageEntity", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("AttachmentPath")
+                        .HasColumnType("text");
+
+                    b.Property<int>("AuthorPublicKey")
+                        .HasColumnType("integer");
+
+                    b.Property<Guid>("ChatId")
+                        .HasColumnType("uuid");
 
                     b.Property<string>("Content")
                         .IsRequired()
@@ -158,11 +188,14 @@ namespace MangoAPI.DataAccess.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp without time zone");
 
+                    b.Property<bool>("IsEncrypted")
+                        .HasColumnType("boolean");
+
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("timestamp without time zone");
 
-                    b.Property<string>("UserId")
-                        .HasColumnType("text");
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
 
                     b.HasKey("Id");
 
@@ -175,258 +208,321 @@ namespace MangoAPI.DataAccess.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "e8f26f7a-fc72-4925-b528-dbc8326b3476",
-                            ChatId = "b6ca4533-fc21-4f44-9747-687361e3031c",
+                            Id = new Guid("3fa74204-ff43-4cba-bbe9-42cbd6fd469b"),
+                            AuthorPublicKey = 0,
+                            ChatId = new Guid("b6ca4533-fc21-4f44-9747-687361e3031c"),
                             Content = "Hello guys, how your diploma project goes?",
                             CreatedAt = new DateTime(2021, 8, 11, 14, 48, 21, 0, DateTimeKind.Unspecified),
-                            UserId = "5e7274ad-3132-4ad7-be36-38778a8f7b1c"
+                            IsEncrypted = false,
+                            UserId = new Guid("5e7274ad-3132-4ad7-be36-38778a8f7b1c")
                         },
                         new
                         {
-                            Id = "e1918784-455a-42c7-998e-d0b94380c21f",
-                            ChatId = "b6ca4533-fc21-4f44-9747-687361e3031c",
+                            Id = new Guid("25acf15e-c3f6-466d-ad14-b83fa15b8324"),
+                            AuthorPublicKey = 0,
+                            ChatId = new Guid("b6ca4533-fc21-4f44-9747-687361e3031c"),
                             Content = "Well, I'm doing UI/UX part of the project",
                             CreatedAt = new DateTime(2021, 8, 11, 14, 53, 2, 0, DateTimeKind.Unspecified),
-                            UserId = "72a7a013-8bc4-4ae6-89cb-d9f19e0c9cf9"
+                            IsEncrypted = false,
+                            UserId = new Guid("72a7a013-8bc4-4ae6-89cb-d9f19e0c9cf9")
                         },
                         new
                         {
-                            Id = "5aca4139-5251-4e94-a6b1-459ebf80b3ee",
-                            ChatId = "b6ca4533-fc21-4f44-9747-687361e3031c",
+                            Id = new Guid("b048f83b-1c60-4c41-bd61-a274da534eaa"),
+                            AuthorPublicKey = 0,
+                            ChatId = new Guid("b6ca4533-fc21-4f44-9747-687361e3031c"),
                             Content = "Hi teacher, I perform QA of the current version",
                             CreatedAt = new DateTime(2021, 8, 11, 21, 53, 35, 0, DateTimeKind.Unspecified),
-                            UserId = "56d6294f-7b80-4a78-856a-92b141de2d1c"
+                            IsEncrypted = false,
+                            UserId = new Guid("56d6294f-7b80-4a78-856a-92b141de2d1c")
                         },
                         new
                         {
-                            Id = "a9e3d66a-9e19-4bd2-bf09-d02fe4540fdf",
-                            ChatId = "b6ca4533-fc21-4f44-9747-687361e3031c",
+                            Id = new Guid("b2e02aa5-0828-4c2b-9142-566c1f40924a"),
+                            AuthorPublicKey = 0,
+                            ChatId = new Guid("b6ca4533-fc21-4f44-9747-687361e3031c"),
                             Content = "Greetings. I currently workout the back-end part",
                             CreatedAt = new DateTime(2021, 8, 11, 21, 53, 57, 0, DateTimeKind.Unspecified),
-                            UserId = "2cd4b9a0-f70d-476d-a3cc-908da43f93c4"
+                            IsEncrypted = false,
+                            UserId = new Guid("2cd4b9a0-f70d-476d-a3cc-908da43f93c4")
                         },
                         new
                         {
-                            Id = "1dc37267-8f45-491b-9f43-d78421e79575",
-                            ChatId = "b6ca4533-fc21-4f44-9747-687361e3031c",
+                            Id = new Guid("6badafbf-738f-4371-98d7-36e09e65f1e0"),
+                            AuthorPublicKey = 0,
+                            ChatId = new Guid("b6ca4533-fc21-4f44-9747-687361e3031c"),
                             Content = "I work with backend too...",
                             CreatedAt = new DateTime(2021, 8, 11, 21, 55, 5, 0, DateTimeKind.Unspecified),
-                            UserId = "d1ae1de1-1aa8-4650-937c-4ed882038ad7"
+                            IsEncrypted = false,
+                            UserId = new Guid("d1ae1de1-1aa8-4650-937c-4ed882038ad7")
                         },
                         new
                         {
-                            Id = "e8f26f7a-fc72-4925-b528-dbc8326b3477",
-                            ChatId = "b6ca4533-fc21-4f44-9747-687361e3031c",
+                            Id = new Guid("3561bcec-f816-4c12-8afd-31a48b1b20b3"),
+                            AuthorPublicKey = 0,
+                            ChatId = new Guid("b6ca4533-fc21-4f44-9747-687361e3031c"),
                             Content = "Great! Good luck to all of you",
                             CreatedAt = new DateTime(2021, 8, 11, 21, 59, 5, 0, DateTimeKind.Unspecified),
-                            UserId = "5e7274ad-3132-4ad7-be36-38778a8f7b1c"
+                            IsEncrypted = false,
+                            UserId = new Guid("5e7274ad-3132-4ad7-be36-38778a8f7b1c")
                         },
                         new
                         {
-                            Id = "bb431cae-3df2-4c5b-9b63-cff0b74ff0d1",
-                            ChatId = "0dae5a74-3528-4e85-95bb-2036bd80432c",
+                            Id = new Guid("88a00115-e3fe-4c09-81c3-2f9c1fd027c6"),
+                            AuthorPublicKey = 0,
+                            ChatId = new Guid("0dae5a74-3528-4e85-95bb-2036bd80432c"),
                             Content = "Hello World",
                             CreatedAt = new DateTime(2021, 8, 1, 13, 49, 21, 0, DateTimeKind.Unspecified),
-                            UserId = "e77cf2cb-3f3a-4f0b-ac5a-90a3263d075a"
+                            IsEncrypted = false,
+                            UserId = new Guid("e77cf2cb-3f3a-4f0b-ac5a-90a3263d075a")
                         },
                         new
                         {
-                            Id = "0c9466df-1ea2-48b8-a9f5-d5d9bd57be15",
-                            ChatId = "0dae5a74-3528-4e85-95bb-2036bd80432c",
+                            Id = new Guid("a6bd02d8-65a0-403a-8308-fad27744ff87"),
+                            AuthorPublicKey = 0,
+                            ChatId = new Guid("0dae5a74-3528-4e85-95bb-2036bd80432c"),
                             Content = "F# The Best",
                             CreatedAt = new DateTime(2021, 8, 1, 14, 21, 56, 0, DateTimeKind.Unspecified),
-                            UserId = "fd3c67c5-c6ff-4a5d-a166-98ece1b7752b"
+                            IsEncrypted = false,
+                            UserId = new Guid("fd3c67c5-c6ff-4a5d-a166-98ece1b7752b")
                         },
                         new
                         {
-                            Id = "05597aa2a-4f7a-4d6d-8fdc-5d91dfce6101",
-                            ChatId = "0dae5a74-3528-4e85-95bb-2036bd80432c",
+                            Id = new Guid("c45ff344-576a-4bd8-9367-5a386bbf67be"),
+                            AuthorPublicKey = 0,
+                            ChatId = new Guid("0dae5a74-3528-4e85-95bb-2036bd80432c"),
                             Content = "C# The Best",
                             CreatedAt = new DateTime(2021, 8, 1, 14, 22, 12, 0, DateTimeKind.Unspecified),
-                            UserId = "5b515247-f6f5-47e1-ad06-95f317a0599b"
+                            IsEncrypted = false,
+                            UserId = new Guid("5b515247-f6f5-47e1-ad06-95f317a0599b")
                         },
                         new
                         {
-                            Id = "d6fe2012-3a5e-4b36-baa8-eec4ba6a87f2",
-                            ChatId = "0dae5a74-3528-4e85-95bb-2036bd80432c",
+                            Id = new Guid("f84f75e2-0d5d-42a8-bd99-b91c29002cf1"),
+                            AuthorPublicKey = 0,
+                            ChatId = new Guid("0dae5a74-3528-4e85-95bb-2036bd80432c"),
                             Content = "TypeScript The Best",
                             CreatedAt = new DateTime(2021, 8, 1, 14, 32, 32, 0, DateTimeKind.Unspecified),
-                            UserId = "d942706b-e4e2-48f9-bbdc-b022816471f0"
+                            IsEncrypted = false,
+                            UserId = new Guid("d942706b-e4e2-48f9-bbdc-b022816471f0")
                         },
                         new
                         {
-                            Id = "8c0f730d-6b36-4071-bac9-08a5db5a54bd",
-                            ChatId = "5e656ec2-205f-471c-b095-1c80b93b7655",
+                            Id = new Guid("018de4d7-c06d-4a6a-899b-e78d45dab868"),
+                            AuthorPublicKey = 0,
+                            ChatId = new Guid("5e656ec2-205f-471c-b095-1c80b93b7655"),
                             Content = "Слава Партии!!",
                             CreatedAt = new DateTime(2021, 8, 1, 18, 42, 14, 0, DateTimeKind.Unspecified),
-                            UserId = "e77cf2cb-3f3a-4f0b-ac5a-90a3263d075a"
+                            IsEncrypted = false,
+                            UserId = new Guid("e77cf2cb-3f3a-4f0b-ac5a-90a3263d075a")
                         },
                         new
                         {
-                            Id = "cded3336-015b-4b33-a0d2-66b5c06a97bf",
-                            ChatId = "5e656ec2-205f-471c-b095-1c80b93b7655",
+                            Id = new Guid("a0695bc8-09e6-40ca-b5f0-361079dd00e4"),
+                            AuthorPublicKey = 0,
+                            ChatId = new Guid("5e656ec2-205f-471c-b095-1c80b93b7655"),
                             Content = "Слава Партии!!",
                             CreatedAt = new DateTime(2021, 8, 1, 18, 43, 36, 0, DateTimeKind.Unspecified),
-                            UserId = "fd3c67c5-c6ff-4a5d-a166-98ece1b7752b"
+                            IsEncrypted = false,
+                            UserId = new Guid("fd3c67c5-c6ff-4a5d-a166-98ece1b7752b")
                         },
                         new
                         {
-                            Id = "83b3fe85-aa37-4692-b561-aa29c1c7b448",
-                            ChatId = "5e656ec2-205f-471c-b095-1c80b93b7655",
+                            Id = new Guid("fb2ded5d-9cca-4caa-884f-ba021d4e74f5"),
+                            AuthorPublicKey = 0,
+                            ChatId = new Guid("5e656ec2-205f-471c-b095-1c80b93b7655"),
                             Content = "Слава Партии!!",
                             CreatedAt = new DateTime(2021, 8, 1, 18, 45, 13, 0, DateTimeKind.Unspecified),
-                            UserId = "5b515247-f6f5-47e1-ad06-95f317a0599b"
+                            IsEncrypted = false,
+                            UserId = new Guid("5b515247-f6f5-47e1-ad06-95f317a0599b")
                         },
                         new
                         {
-                            Id = "af2b6605-7b5b-4151-abb6-dc7a28138215",
-                            ChatId = "5e656ec2-205f-471c-b095-1c80b93b7655",
+                            Id = new Guid("f4e0887a-0f11-44d1-929e-f83388209b21"),
+                            AuthorPublicKey = 0,
+                            ChatId = new Guid("5e656ec2-205f-471c-b095-1c80b93b7655"),
                             Content = "Слава Партии!!",
                             CreatedAt = new DateTime(2021, 8, 1, 18, 45, 56, 0, DateTimeKind.Unspecified),
-                            UserId = "d942706b-e4e2-48f9-bbdc-b022816471f0"
+                            IsEncrypted = false,
+                            UserId = new Guid("d942706b-e4e2-48f9-bbdc-b022816471f0")
                         },
                         new
                         {
-                            Id = "33ac80b1-0d3e-46cd-8175-e6e02350296e",
-                            ChatId = "cd358b94-c3b9-4022-923a-13f787f70055",
+                            Id = new Guid("b14d007a-6306-4fba-bf6d-349ff5241ab8"),
+                            AuthorPublicKey = 0,
+                            ChatId = new Guid("cd358b94-c3b9-4022-923a-13f787f70055"),
                             Content = "Hello World",
                             CreatedAt = new DateTime(2021, 8, 1, 18, 42, 14, 0, DateTimeKind.Unspecified),
-                            UserId = "e77cf2cb-3f3a-4f0b-ac5a-90a3263d075a"
+                            IsEncrypted = false,
+                            UserId = new Guid("e77cf2cb-3f3a-4f0b-ac5a-90a3263d075a")
                         },
                         new
                         {
-                            Id = "644efffa-b05c-4f12-9b51-19fd098835a5",
-                            ChatId = "cd358b94-c3b9-4022-923a-13f787f70055",
+                            Id = new Guid("dc473c0d-1ad8-44c5-b144-e4fe7478815c"),
+                            AuthorPublicKey = 0,
+                            ChatId = new Guid("cd358b94-c3b9-4022-923a-13f787f70055"),
                             Content = "Hello World",
                             CreatedAt = new DateTime(2021, 8, 1, 18, 43, 27, 0, DateTimeKind.Unspecified),
-                            UserId = "fd3c67c5-c6ff-4a5d-a166-98ece1b7752b"
+                            IsEncrypted = false,
+                            UserId = new Guid("fd3c67c5-c6ff-4a5d-a166-98ece1b7752b")
                         },
                         new
                         {
-                            Id = "7d525aac-81d3-4001-b1d3-373e449cbfa8",
-                            ChatId = "cd358b94-c3b9-4022-923a-13f787f70055",
+                            Id = new Guid("50606d38-e8d5-4e28-983d-2fb0e3f682bc"),
+                            AuthorPublicKey = 0,
+                            ChatId = new Guid("cd358b94-c3b9-4022-923a-13f787f70055"),
                             Content = "Hello World",
                             CreatedAt = new DateTime(2021, 8, 1, 18, 43, 32, 0, DateTimeKind.Unspecified),
-                            UserId = "5b515247-f6f5-47e1-ad06-95f317a0599b"
+                            IsEncrypted = false,
+                            UserId = new Guid("5b515247-f6f5-47e1-ad06-95f317a0599b")
                         },
                         new
                         {
-                            Id = "0f9e236f-f68b-48b7-a330-eb8079277b9e",
-                            ChatId = "cd358b94-c3b9-4022-923a-13f787f70055",
+                            Id = new Guid("1ccfb7a9-cdec-4fc2-8a23-f2d8ba37fa84"),
+                            AuthorPublicKey = 0,
+                            ChatId = new Guid("cd358b94-c3b9-4022-923a-13f787f70055"),
                             Content = "Hello World",
                             CreatedAt = new DateTime(2021, 8, 1, 18, 43, 53, 0, DateTimeKind.Unspecified),
-                            UserId = "d942706b-e4e2-48f9-bbdc-b022816471f0"
+                            IsEncrypted = false,
+                            UserId = new Guid("d942706b-e4e2-48f9-bbdc-b022816471f0")
                         },
                         new
                         {
-                            Id = "dd870cc5-0acd-4dfd-9f76-e60504a6df7f",
-                            ChatId = "6f66e318-1e94-44ae-9b33-fe001e070842",
+                            Id = new Guid("b18782da-c6c5-46c0-af90-96e7ef511640"),
+                            AuthorPublicKey = 0,
+                            ChatId = new Guid("6f66e318-1e94-44ae-9b33-fe001e070842"),
                             Content = "Hello World",
                             CreatedAt = new DateTime(2021, 8, 1, 18, 42, 14, 0, DateTimeKind.Unspecified),
-                            UserId = "e77cf2cb-3f3a-4f0b-ac5a-90a3263d075a"
+                            IsEncrypted = false,
+                            UserId = new Guid("e77cf2cb-3f3a-4f0b-ac5a-90a3263d075a")
                         },
                         new
                         {
-                            Id = "920a773e-828f-4cfe-9c05-5912a942eaa6",
-                            ChatId = "6f66e318-1e94-44ae-9b33-fe001e070842",
+                            Id = new Guid("fec44e33-a8b7-4548-aace-dc68e2e3a7b6"),
+                            AuthorPublicKey = 0,
+                            ChatId = new Guid("6f66e318-1e94-44ae-9b33-fe001e070842"),
                             Content = "Hello World",
                             CreatedAt = new DateTime(2021, 8, 1, 18, 43, 27, 0, DateTimeKind.Unspecified),
-                            UserId = "fd3c67c5-c6ff-4a5d-a166-98ece1b7752b"
+                            IsEncrypted = false,
+                            UserId = new Guid("fd3c67c5-c6ff-4a5d-a166-98ece1b7752b")
                         },
                         new
                         {
-                            Id = "b75ff619-8a7c-4b7d-837d-c8e46bd4579e",
-                            ChatId = "6f66e318-1e94-44ae-9b33-fe001e070842",
+                            Id = new Guid("70016dc6-f9ca-4dfc-a46b-174f7e5a7131"),
+                            AuthorPublicKey = 0,
+                            ChatId = new Guid("6f66e318-1e94-44ae-9b33-fe001e070842"),
                             Content = "Hello World",
                             CreatedAt = new DateTime(2021, 8, 1, 18, 43, 32, 0, DateTimeKind.Unspecified),
-                            UserId = "5b515247-f6f5-47e1-ad06-95f317a0599b"
+                            IsEncrypted = false,
+                            UserId = new Guid("5b515247-f6f5-47e1-ad06-95f317a0599b")
                         },
                         new
                         {
-                            Id = "6689401f-cb3e-484c-a3e9-a12f551b5e38",
-                            ChatId = "6f66e318-1e94-44ae-9b33-fe001e070842",
+                            Id = new Guid("3c74b5ad-9eba-46a6-b3d9-d70e74104702"),
+                            AuthorPublicKey = 0,
+                            ChatId = new Guid("6f66e318-1e94-44ae-9b33-fe001e070842"),
                             Content = "Hello World",
                             CreatedAt = new DateTime(2021, 8, 1, 18, 43, 53, 0, DateTimeKind.Unspecified),
-                            UserId = "d942706b-e4e2-48f9-bbdc-b022816471f0"
+                            IsEncrypted = false,
+                            UserId = new Guid("d942706b-e4e2-48f9-bbdc-b022816471f0")
                         },
                         new
                         {
-                            Id = "6d49b347-c544-4d57-8f06-cf1d6994cdd0",
-                            ChatId = "f5b7824f-e52b-4246-9984-06fc8e964f0c",
+                            Id = new Guid("3031a79b-3d44-48b5-b90e-3614b25dbc88"),
+                            AuthorPublicKey = 0,
+                            ChatId = new Guid("f5b7824f-e52b-4246-9984-06fc8e964f0c"),
                             Content = "Hello World",
                             CreatedAt = new DateTime(2021, 8, 1, 14, 42, 14, 0, DateTimeKind.Unspecified),
-                            UserId = "e77cf2cb-3f3a-4f0b-ac5a-90a3263d075a"
+                            IsEncrypted = false,
+                            UserId = new Guid("e77cf2cb-3f3a-4f0b-ac5a-90a3263d075a")
                         },
                         new
                         {
-                            Id = "462209ae-c7a1-4021-8e55-1dd84b0cc86d",
-                            ChatId = "f5b7824f-e52b-4246-9984-06fc8e964f0c",
+                            Id = new Guid("a31b85ae-0f3b-4d2c-b613-4cc0633811f0"),
+                            AuthorPublicKey = 0,
+                            ChatId = new Guid("f5b7824f-e52b-4246-9984-06fc8e964f0c"),
                             Content = "Hello World",
                             CreatedAt = new DateTime(2021, 8, 1, 14, 46, 29, 0, DateTimeKind.Unspecified),
-                            UserId = "fd3c67c5-c6ff-4a5d-a166-98ece1b7752b"
+                            IsEncrypted = false,
+                            UserId = new Guid("fd3c67c5-c6ff-4a5d-a166-98ece1b7752b")
                         },
                         new
                         {
-                            Id = "e5626507-b84d-4850-914c-a2ac8ae8d2d1",
-                            ChatId = "f8729a12-5746-443f-ad31-378d846fce30",
+                            Id = new Guid("2ea1e29d-8146-42af-aa8a-42499f137405"),
+                            AuthorPublicKey = 0,
+                            ChatId = new Guid("f8729a12-5746-443f-ad31-378d846fce30"),
                             Content = "Hello World",
                             CreatedAt = new DateTime(2021, 8, 1, 14, 44, 12, 0, DateTimeKind.Unspecified),
-                            UserId = "5b515247-f6f5-47e1-ad06-95f317a0599b"
+                            IsEncrypted = false,
+                            UserId = new Guid("5b515247-f6f5-47e1-ad06-95f317a0599b")
                         },
                         new
                         {
-                            Id = "c6552cd3-60a9-41b8-822a-57e07c84d805",
-                            ChatId = "f8729a12-5746-443f-ad31-378d846fce30",
+                            Id = new Guid("83c037c5-607a-45d4-9bc6-21a66f53a301"),
+                            AuthorPublicKey = 0,
+                            ChatId = new Guid("f8729a12-5746-443f-ad31-378d846fce30"),
                             Content = "Hello World",
                             CreatedAt = new DateTime(2021, 8, 1, 14, 44, 59, 0, DateTimeKind.Unspecified),
-                            UserId = "fd3c67c5-c6ff-4a5d-a166-98ece1b7752b"
+                            IsEncrypted = false,
+                            UserId = new Guid("fd3c67c5-c6ff-4a5d-a166-98ece1b7752b")
                         },
                         new
                         {
-                            Id = "d8792fca-23df-4ae1-b83a-8a9aa5cc827a",
-                            ChatId = "b119914a-6d95-4047-bf8a-db27deeb7dc9",
+                            Id = new Guid("8461b0aa-d360-4bbc-8fae-911661bc5847"),
+                            AuthorPublicKey = 0,
+                            ChatId = new Guid("b119914a-6d95-4047-bf8a-db27deeb7dc9"),
                             Content = "Hello World",
                             CreatedAt = new DateTime(2021, 8, 1, 14, 21, 5, 0, DateTimeKind.Unspecified),
-                            UserId = "d942706b-e4e2-48f9-bbdc-b022816471f0"
+                            IsEncrypted = false,
+                            UserId = new Guid("d942706b-e4e2-48f9-bbdc-b022816471f0")
                         },
                         new
                         {
-                            Id = "fbe0857c-dc77-44c7-9b3b-799a17e0869a",
-                            ChatId = "b119914a-6d95-4047-bf8a-db27deeb7dc9",
+                            Id = new Guid("7a782d74-38f7-4148-a9fb-20c0ec32238d"),
+                            AuthorPublicKey = 0,
+                            ChatId = new Guid("b119914a-6d95-4047-bf8a-db27deeb7dc9"),
                             Content = "Hello World",
                             CreatedAt = new DateTime(2021, 8, 1, 14, 31, 23, 0, DateTimeKind.Unspecified),
-                            UserId = "fd3c67c5-c6ff-4a5d-a166-98ece1b7752b"
+                            IsEncrypted = false,
+                            UserId = new Guid("fd3c67c5-c6ff-4a5d-a166-98ece1b7752b")
                         },
                         new
                         {
-                            Id = "c1d5d83c-447f-4320-8894-d5266090a9f5",
-                            ChatId = "9f205dde-0ddc-401f-8fe9-6c794b661f5d",
+                            Id = new Guid("7e03aee7-d647-4b2b-9f2e-8e530032a768"),
+                            AuthorPublicKey = 0,
+                            ChatId = new Guid("9f205dde-0ddc-401f-8fe9-6c794b661f5d"),
                             Content = "Hello World",
                             CreatedAt = new DateTime(2021, 8, 1, 14, 21, 5, 0, DateTimeKind.Unspecified),
-                            UserId = "e77cf2cb-3f3a-4f0b-ac5a-90a3263d075a"
+                            IsEncrypted = false,
+                            UserId = new Guid("e77cf2cb-3f3a-4f0b-ac5a-90a3263d075a")
                         },
                         new
                         {
-                            Id = "c4635d82-0703-4fe6-8836-be849482ec88",
-                            ChatId = "9f205dde-0ddc-401f-8fe9-6c794b661f5d",
+                            Id = new Guid("0c67a917-4f92-4ff3-a02e-012139caccb5"),
+                            AuthorPublicKey = 0,
+                            ChatId = new Guid("9f205dde-0ddc-401f-8fe9-6c794b661f5d"),
                             Content = "Hello World",
                             CreatedAt = new DateTime(2021, 8, 1, 14, 31, 23, 0, DateTimeKind.Unspecified),
-                            UserId = "5b515247-f6f5-47e1-ad06-95f317a0599b"
+                            IsEncrypted = false,
+                            UserId = new Guid("5b515247-f6f5-47e1-ad06-95f317a0599b")
                         },
                         new
                         {
-                            Id = "c4635d82-0703-4fe6-8836-be849482ec89",
-                            ChatId = "3fce8b2c-252d-4514-a1bb-fbdf73c47b78",
+                            Id = new Guid("06e4d185-00d3-4fdd-8a52-0d48654e4540"),
+                            AuthorPublicKey = 0,
+                            ChatId = new Guid("3fce8b2c-252d-4514-a1bb-fbdf73c47b78"),
                             Content = "Hi teacher",
                             CreatedAt = new DateTime(2021, 8, 1, 14, 31, 23, 0, DateTimeKind.Unspecified),
-                            UserId = "2cd4b9a0-f70d-476d-a3cc-908da43f93c4"
+                            IsEncrypted = false,
+                            UserId = new Guid("2cd4b9a0-f70d-476d-a3cc-908da43f93c4")
                         });
                 });
 
             modelBuilder.Entity("MangoAPI.Domain.Entities.PasswordRestoreRequestEntity", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasColumnType("text");
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp without time zone");
@@ -437,8 +533,8 @@ namespace MangoAPI.DataAccess.Migrations
                     b.Property<DateTime>("ExpiresAt")
                         .HasColumnType("timestamp without time zone");
 
-                    b.Property<string>("UserId")
-                        .HasColumnType("text");
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
 
                     b.HasKey("Id");
 
@@ -447,10 +543,54 @@ namespace MangoAPI.DataAccess.Migrations
                     b.ToTable("PasswordRestoreRequests");
                 });
 
+            modelBuilder.Entity("MangoAPI.Domain.Entities.RoleEntity", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Name")
+                        .HasMaxLength(256)
+                        .HasColumnType("character varying(256)");
+
+                    b.Property<string>("NormalizedName")
+                        .HasMaxLength(256)
+                        .HasColumnType("character varying(256)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("NormalizedName")
+                        .IsUnique()
+                        .HasDatabaseName("RoleNameIndex");
+
+                    b.ToTable("AspNetRoles");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("32904a05-6d7c-43cf-b915-223324ff480e"),
+                            ConcurrencyStamp = "3e1f6587-88e5-4b90-ae28-cfa585cd700b",
+                            Name = "User",
+                            NormalizedName = "USER"
+                        },
+                        new
+                        {
+                            Id = new Guid("1c48f8d5-01ed-4e47-8377-a22ffa58c150"),
+                            ConcurrencyStamp = "5f2b8db1-8f0d-44dc-8bed-f5bc04447d16",
+                            Name = "Unverified",
+                            NormalizedName = "UNVERIFIED"
+                        });
+                });
+
             modelBuilder.Entity("MangoAPI.Domain.Entities.SessionEntity", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasColumnType("text");
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp without time zone");
@@ -458,11 +598,11 @@ namespace MangoAPI.DataAccess.Migrations
                     b.Property<DateTime>("ExpiresAt")
                         .HasColumnType("timestamp without time zone");
 
-                    b.Property<string>("RefreshToken")
-                        .HasColumnType("text");
+                    b.Property<Guid>("RefreshToken")
+                        .HasColumnType("uuid");
 
-                    b.Property<string>("UserId")
-                        .HasColumnType("text");
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
 
                     b.HasKey("Id");
 
@@ -473,11 +613,11 @@ namespace MangoAPI.DataAccess.Migrations
 
             modelBuilder.Entity("MangoAPI.Domain.Entities.UserChatEntity", b =>
                 {
-                    b.Property<string>("ChatId")
-                        .HasColumnType("text");
+                    b.Property<Guid>("ChatId")
+                        .HasColumnType("uuid");
 
-                    b.Property<string>("UserId")
-                        .HasColumnType("text");
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
 
                     b.Property<bool>("IsArchived")
                         .HasColumnType("boolean");
@@ -494,218 +634,218 @@ namespace MangoAPI.DataAccess.Migrations
                     b.HasData(
                         new
                         {
-                            ChatId = "b6ca4533-fc21-4f44-9747-687361e3031c",
-                            UserId = "2cd4b9a0-f70d-476d-a3cc-908da43f93c4",
+                            ChatId = new Guid("b6ca4533-fc21-4f44-9747-687361e3031c"),
+                            UserId = new Guid("2cd4b9a0-f70d-476d-a3cc-908da43f93c4"),
                             IsArchived = false,
                             RoleId = 2
                         },
                         new
                         {
-                            ChatId = "b6ca4533-fc21-4f44-9747-687361e3031c",
-                            UserId = "5e7274ad-3132-4ad7-be36-38778a8f7b1c",
+                            ChatId = new Guid("b6ca4533-fc21-4f44-9747-687361e3031c"),
+                            UserId = new Guid("5e7274ad-3132-4ad7-be36-38778a8f7b1c"),
                             IsArchived = false,
                             RoleId = 4
                         },
                         new
                         {
-                            ChatId = "b6ca4533-fc21-4f44-9747-687361e3031c",
-                            UserId = "72a7a013-8bc4-4ae6-89cb-d9f19e0c9cf9",
+                            ChatId = new Guid("b6ca4533-fc21-4f44-9747-687361e3031c"),
+                            UserId = new Guid("72a7a013-8bc4-4ae6-89cb-d9f19e0c9cf9"),
                             IsArchived = false,
                             RoleId = 1
                         },
                         new
                         {
-                            ChatId = "b6ca4533-fc21-4f44-9747-687361e3031c",
-                            UserId = "56d6294f-7b80-4a78-856a-92b141de2d1c",
+                            ChatId = new Guid("b6ca4533-fc21-4f44-9747-687361e3031c"),
+                            UserId = new Guid("56d6294f-7b80-4a78-856a-92b141de2d1c"),
                             IsArchived = false,
                             RoleId = 1
                         },
                         new
                         {
-                            ChatId = "b6ca4533-fc21-4f44-9747-687361e3031c",
-                            UserId = "d1ae1de1-1aa8-4650-937c-4ed882038ad7",
+                            ChatId = new Guid("b6ca4533-fc21-4f44-9747-687361e3031c"),
+                            UserId = new Guid("d1ae1de1-1aa8-4650-937c-4ed882038ad7"),
                             IsArchived = false,
                             RoleId = 1
                         },
                         new
                         {
-                            ChatId = "0dae5a74-3528-4e85-95bb-2036bd80432c",
-                            UserId = "e77cf2cb-3f3a-4f0b-ac5a-90a3263d075a",
+                            ChatId = new Guid("0dae5a74-3528-4e85-95bb-2036bd80432c"),
+                            UserId = new Guid("e77cf2cb-3f3a-4f0b-ac5a-90a3263d075a"),
                             IsArchived = false,
                             RoleId = 1
                         },
                         new
                         {
-                            ChatId = "0dae5a74-3528-4e85-95bb-2036bd80432c",
-                            UserId = "fd3c67c5-c6ff-4a5d-a166-98ece1b7752b",
+                            ChatId = new Guid("0dae5a74-3528-4e85-95bb-2036bd80432c"),
+                            UserId = new Guid("fd3c67c5-c6ff-4a5d-a166-98ece1b7752b"),
                             IsArchived = false,
                             RoleId = 3
                         },
                         new
                         {
-                            ChatId = "0dae5a74-3528-4e85-95bb-2036bd80432c",
-                            UserId = "5b515247-f6f5-47e1-ad06-95f317a0599b",
+                            ChatId = new Guid("0dae5a74-3528-4e85-95bb-2036bd80432c"),
+                            UserId = new Guid("5b515247-f6f5-47e1-ad06-95f317a0599b"),
                             IsArchived = false,
                             RoleId = 2
                         },
                         new
                         {
-                            ChatId = "0dae5a74-3528-4e85-95bb-2036bd80432c",
-                            UserId = "d942706b-e4e2-48f9-bbdc-b022816471f0",
+                            ChatId = new Guid("0dae5a74-3528-4e85-95bb-2036bd80432c"),
+                            UserId = new Guid("d942706b-e4e2-48f9-bbdc-b022816471f0"),
                             IsArchived = false,
                             RoleId = 4
                         },
                         new
                         {
-                            ChatId = "5e656ec2-205f-471c-b095-1c80b93b7655",
-                            UserId = "fd3c67c5-c6ff-4a5d-a166-98ece1b7752b",
+                            ChatId = new Guid("5e656ec2-205f-471c-b095-1c80b93b7655"),
+                            UserId = new Guid("fd3c67c5-c6ff-4a5d-a166-98ece1b7752b"),
                             IsArchived = false,
                             RoleId = 4
                         },
                         new
                         {
-                            ChatId = "5e656ec2-205f-471c-b095-1c80b93b7655",
-                            UserId = "5b515247-f6f5-47e1-ad06-95f317a0599b",
+                            ChatId = new Guid("5e656ec2-205f-471c-b095-1c80b93b7655"),
+                            UserId = new Guid("5b515247-f6f5-47e1-ad06-95f317a0599b"),
                             IsArchived = false,
                             RoleId = 2
                         },
                         new
                         {
-                            ChatId = "5e656ec2-205f-471c-b095-1c80b93b7655",
-                            UserId = "e77cf2cb-3f3a-4f0b-ac5a-90a3263d075a",
+                            ChatId = new Guid("5e656ec2-205f-471c-b095-1c80b93b7655"),
+                            UserId = new Guid("e77cf2cb-3f3a-4f0b-ac5a-90a3263d075a"),
                             IsArchived = false,
                             RoleId = 1
                         },
                         new
                         {
-                            ChatId = "5e656ec2-205f-471c-b095-1c80b93b7655",
-                            UserId = "d942706b-e4e2-48f9-bbdc-b022816471f0",
+                            ChatId = new Guid("5e656ec2-205f-471c-b095-1c80b93b7655"),
+                            UserId = new Guid("d942706b-e4e2-48f9-bbdc-b022816471f0"),
                             IsArchived = false,
                             RoleId = 1
                         },
                         new
                         {
-                            ChatId = "cd358b94-c3b9-4022-923a-13f787f70055",
-                            UserId = "d942706b-e4e2-48f9-bbdc-b022816471f0",
+                            ChatId = new Guid("cd358b94-c3b9-4022-923a-13f787f70055"),
+                            UserId = new Guid("d942706b-e4e2-48f9-bbdc-b022816471f0"),
                             IsArchived = false,
                             RoleId = 4
                         },
                         new
                         {
-                            ChatId = "cd358b94-c3b9-4022-923a-13f787f70055",
-                            UserId = "fd3c67c5-c6ff-4a5d-a166-98ece1b7752b",
+                            ChatId = new Guid("cd358b94-c3b9-4022-923a-13f787f70055"),
+                            UserId = new Guid("fd3c67c5-c6ff-4a5d-a166-98ece1b7752b"),
                             IsArchived = false,
                             RoleId = 3
                         },
                         new
                         {
-                            ChatId = "cd358b94-c3b9-4022-923a-13f787f70055",
-                            UserId = "e77cf2cb-3f3a-4f0b-ac5a-90a3263d075a",
+                            ChatId = new Guid("cd358b94-c3b9-4022-923a-13f787f70055"),
+                            UserId = new Guid("e77cf2cb-3f3a-4f0b-ac5a-90a3263d075a"),
                             IsArchived = false,
                             RoleId = 1
                         },
                         new
                         {
-                            ChatId = "cd358b94-c3b9-4022-923a-13f787f70055",
-                            UserId = "5b515247-f6f5-47e1-ad06-95f317a0599b",
+                            ChatId = new Guid("cd358b94-c3b9-4022-923a-13f787f70055"),
+                            UserId = new Guid("5b515247-f6f5-47e1-ad06-95f317a0599b"),
                             IsArchived = false,
                             RoleId = 1
                         },
                         new
                         {
-                            ChatId = "6f66e318-1e94-44ae-9b33-fe001e070842",
-                            UserId = "fd3c67c5-c6ff-4a5d-a166-98ece1b7752b",
+                            ChatId = new Guid("6f66e318-1e94-44ae-9b33-fe001e070842"),
+                            UserId = new Guid("fd3c67c5-c6ff-4a5d-a166-98ece1b7752b"),
                             IsArchived = false,
                             RoleId = 4
                         },
                         new
                         {
-                            ChatId = "6f66e318-1e94-44ae-9b33-fe001e070842",
-                            UserId = "5b515247-f6f5-47e1-ad06-95f317a0599b",
+                            ChatId = new Guid("6f66e318-1e94-44ae-9b33-fe001e070842"),
+                            UserId = new Guid("5b515247-f6f5-47e1-ad06-95f317a0599b"),
                             IsArchived = false,
                             RoleId = 1
                         },
                         new
                         {
-                            ChatId = "6f66e318-1e94-44ae-9b33-fe001e070842",
-                            UserId = "e77cf2cb-3f3a-4f0b-ac5a-90a3263d075a",
+                            ChatId = new Guid("6f66e318-1e94-44ae-9b33-fe001e070842"),
+                            UserId = new Guid("e77cf2cb-3f3a-4f0b-ac5a-90a3263d075a"),
                             IsArchived = false,
                             RoleId = 1
                         },
                         new
                         {
-                            ChatId = "6f66e318-1e94-44ae-9b33-fe001e070842",
-                            UserId = "d942706b-e4e2-48f9-bbdc-b022816471f0",
+                            ChatId = new Guid("6f66e318-1e94-44ae-9b33-fe001e070842"),
+                            UserId = new Guid("d942706b-e4e2-48f9-bbdc-b022816471f0"),
                             IsArchived = false,
                             RoleId = 1
                         },
                         new
                         {
-                            ChatId = "f5b7824f-e52b-4246-9984-06fc8e964f0c",
-                            UserId = "e77cf2cb-3f3a-4f0b-ac5a-90a3263d075a",
+                            ChatId = new Guid("f5b7824f-e52b-4246-9984-06fc8e964f0c"),
+                            UserId = new Guid("e77cf2cb-3f3a-4f0b-ac5a-90a3263d075a"),
                             IsArchived = false,
                             RoleId = 1
                         },
                         new
                         {
-                            ChatId = "f5b7824f-e52b-4246-9984-06fc8e964f0c",
-                            UserId = "fd3c67c5-c6ff-4a5d-a166-98ece1b7752b",
+                            ChatId = new Guid("f5b7824f-e52b-4246-9984-06fc8e964f0c"),
+                            UserId = new Guid("fd3c67c5-c6ff-4a5d-a166-98ece1b7752b"),
                             IsArchived = false,
                             RoleId = 1
                         },
                         new
                         {
-                            ChatId = "f8729a12-5746-443f-ad31-378d846fce30",
-                            UserId = "5b515247-f6f5-47e1-ad06-95f317a0599b",
+                            ChatId = new Guid("f8729a12-5746-443f-ad31-378d846fce30"),
+                            UserId = new Guid("5b515247-f6f5-47e1-ad06-95f317a0599b"),
                             IsArchived = false,
                             RoleId = 1
                         },
                         new
                         {
-                            ChatId = "f8729a12-5746-443f-ad31-378d846fce30",
-                            UserId = "fd3c67c5-c6ff-4a5d-a166-98ece1b7752b",
+                            ChatId = new Guid("f8729a12-5746-443f-ad31-378d846fce30"),
+                            UserId = new Guid("fd3c67c5-c6ff-4a5d-a166-98ece1b7752b"),
                             IsArchived = false,
                             RoleId = 1
                         },
                         new
                         {
-                            ChatId = "b119914a-6d95-4047-bf8a-db27deeb7dc9",
-                            UserId = "d942706b-e4e2-48f9-bbdc-b022816471f0",
+                            ChatId = new Guid("b119914a-6d95-4047-bf8a-db27deeb7dc9"),
+                            UserId = new Guid("d942706b-e4e2-48f9-bbdc-b022816471f0"),
                             IsArchived = false,
                             RoleId = 1
                         },
                         new
                         {
-                            ChatId = "b119914a-6d95-4047-bf8a-db27deeb7dc9",
-                            UserId = "fd3c67c5-c6ff-4a5d-a166-98ece1b7752b",
+                            ChatId = new Guid("b119914a-6d95-4047-bf8a-db27deeb7dc9"),
+                            UserId = new Guid("fd3c67c5-c6ff-4a5d-a166-98ece1b7752b"),
                             IsArchived = false,
                             RoleId = 1
                         },
                         new
                         {
-                            ChatId = "9f205dde-0ddc-401f-8fe9-6c794b661f5d",
-                            UserId = "e77cf2cb-3f3a-4f0b-ac5a-90a3263d075a",
+                            ChatId = new Guid("9f205dde-0ddc-401f-8fe9-6c794b661f5d"),
+                            UserId = new Guid("e77cf2cb-3f3a-4f0b-ac5a-90a3263d075a"),
                             IsArchived = false,
                             RoleId = 1
                         },
                         new
                         {
-                            ChatId = "9f205dde-0ddc-401f-8fe9-6c794b661f5d",
-                            UserId = "5b515247-f6f5-47e1-ad06-95f317a0599b",
+                            ChatId = new Guid("9f205dde-0ddc-401f-8fe9-6c794b661f5d"),
+                            UserId = new Guid("5b515247-f6f5-47e1-ad06-95f317a0599b"),
                             IsArchived = false,
                             RoleId = 1
                         },
                         new
                         {
-                            ChatId = "3fce8b2c-252d-4514-a1bb-fbdf73c47b78",
-                            UserId = "2cd4b9a0-f70d-476d-a3cc-908da43f93c4",
+                            ChatId = new Guid("3fce8b2c-252d-4514-a1bb-fbdf73c47b78"),
+                            UserId = new Guid("2cd4b9a0-f70d-476d-a3cc-908da43f93c4"),
                             IsArchived = false,
                             RoleId = 1
                         },
                         new
                         {
-                            ChatId = "3fce8b2c-252d-4514-a1bb-fbdf73c47b78",
-                            UserId = "5e7274ad-3132-4ad7-be36-38778a8f7b1c",
+                            ChatId = new Guid("3fce8b2c-252d-4514-a1bb-fbdf73c47b78"),
+                            UserId = new Guid("5e7274ad-3132-4ad7-be36-38778a8f7b1c"),
                             IsArchived = false,
                             RoleId = 1
                         });
@@ -713,14 +853,15 @@ namespace MangoAPI.DataAccess.Migrations
 
             modelBuilder.Entity("MangoAPI.Domain.Entities.UserContactEntity", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasColumnType("text");
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
 
-                    b.Property<string>("ContactId")
-                        .HasColumnType("text");
+                    b.Property<Guid>("ContactId")
+                        .HasColumnType("uuid");
 
-                    b.Property<string>("UserId")
-                        .HasColumnType("text");
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
 
                     b.HasKey("Id");
 
@@ -731,178 +872,179 @@ namespace MangoAPI.DataAccess.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "3d69d8fc-fffd-4b6e-9978-84d8425340c4",
-                            ContactId = "5e7274ad-3132-4ad7-be36-38778a8f7b1c",
-                            UserId = "2cd4b9a0-f70d-476d-a3cc-908da43f93c4"
+                            Id = new Guid("63d47e28-1ee7-4a0c-8474-48ba8eab8790"),
+                            ContactId = new Guid("5e7274ad-3132-4ad7-be36-38778a8f7b1c"),
+                            UserId = new Guid("2cd4b9a0-f70d-476d-a3cc-908da43f93c4")
                         },
                         new
                         {
-                            Id = "6b3371b8-5a2d-4461-94ef-8fd499ba1d64",
-                            ContactId = "72a7a013-8bc4-4ae6-89cb-d9f19e0c9cf9",
-                            UserId = "2cd4b9a0-f70d-476d-a3cc-908da43f93c4"
+                            Id = new Guid("52f799b6-cbec-450c-8fe9-06c559d119cb"),
+                            ContactId = new Guid("72a7a013-8bc4-4ae6-89cb-d9f19e0c9cf9"),
+                            UserId = new Guid("2cd4b9a0-f70d-476d-a3cc-908da43f93c4")
                         },
                         new
                         {
-                            Id = "87badcbf-6e65-4fc2-8eb5-4e840c6527e1",
-                            ContactId = "56d6294f-7b80-4a78-856a-92b141de2d1c",
-                            UserId = "2cd4b9a0-f70d-476d-a3cc-908da43f93c4"
+                            Id = new Guid("e6bdf55a-e3a4-4c87-9b43-dc0aa8983206"),
+                            ContactId = new Guid("56d6294f-7b80-4a78-856a-92b141de2d1c"),
+                            UserId = new Guid("2cd4b9a0-f70d-476d-a3cc-908da43f93c4")
                         },
                         new
                         {
-                            Id = "d4e95646-707b-41f6-8e5f-d61623dd9bc4",
-                            ContactId = "d1ae1de1-1aa8-4650-937c-4ed882038ad7",
-                            UserId = "2cd4b9a0-f70d-476d-a3cc-908da43f93c4"
+                            Id = new Guid("7fe6f6ef-b99a-4de4-a9c2-bb7f660d8acb"),
+                            ContactId = new Guid("d1ae1de1-1aa8-4650-937c-4ed882038ad7"),
+                            UserId = new Guid("2cd4b9a0-f70d-476d-a3cc-908da43f93c4")
                         },
                         new
                         {
-                            Id = "fa0622ae-3718-46a9-9a86-4cd3afbbb06e",
-                            ContactId = "2cd4b9a0-f70d-476d-a3cc-908da43f93c4",
-                            UserId = "5e7274ad-3132-4ad7-be36-38778a8f7b1c"
+                            Id = new Guid("49fd523e-6c63-4250-af31-2423600164d4"),
+                            ContactId = new Guid("2cd4b9a0-f70d-476d-a3cc-908da43f93c4"),
+                            UserId = new Guid("5e7274ad-3132-4ad7-be36-38778a8f7b1c")
                         },
                         new
                         {
-                            Id = "c1c56d69-7ed6-4c11-b4d9-5eaf52e6afa5",
-                            ContactId = "72a7a013-8bc4-4ae6-89cb-d9f19e0c9cf9",
-                            UserId = "5e7274ad-3132-4ad7-be36-38778a8f7b1c"
+                            Id = new Guid("c2ff647c-2806-421d-ae39-bdd13b1fb59d"),
+                            ContactId = new Guid("72a7a013-8bc4-4ae6-89cb-d9f19e0c9cf9"),
+                            UserId = new Guid("5e7274ad-3132-4ad7-be36-38778a8f7b1c")
                         },
                         new
                         {
-                            Id = "e4141cf8-b54c-4805-a9e6-f1d80ecc26da",
-                            ContactId = "56d6294f-7b80-4a78-856a-92b141de2d1c",
-                            UserId = "5e7274ad-3132-4ad7-be36-38778a8f7b1c"
+                            Id = new Guid("06c67404-dce7-4589-9f40-c81effce93cf"),
+                            ContactId = new Guid("56d6294f-7b80-4a78-856a-92b141de2d1c"),
+                            UserId = new Guid("5e7274ad-3132-4ad7-be36-38778a8f7b1c")
                         },
                         new
                         {
-                            Id = "365ba3a3-4076-480d-bcf2-ee1ae2e2dfa7",
-                            ContactId = "d1ae1de1-1aa8-4650-937c-4ed882038ad7",
-                            UserId = "5e7274ad-3132-4ad7-be36-38778a8f7b1c"
+                            Id = new Guid("bb433b50-e2bf-44da-ad5c-270b46300685"),
+                            ContactId = new Guid("d1ae1de1-1aa8-4650-937c-4ed882038ad7"),
+                            UserId = new Guid("5e7274ad-3132-4ad7-be36-38778a8f7b1c")
                         },
                         new
                         {
-                            Id = "45ee4a8c-f080-4019-af9d-54675aee33b6",
-                            ContactId = "2cd4b9a0-f70d-476d-a3cc-908da43f93c4",
-                            UserId = "72a7a013-8bc4-4ae6-89cb-d9f19e0c9cf9"
+                            Id = new Guid("3130a431-f1b4-42d7-8102-d53d9da84023"),
+                            ContactId = new Guid("2cd4b9a0-f70d-476d-a3cc-908da43f93c4"),
+                            UserId = new Guid("72a7a013-8bc4-4ae6-89cb-d9f19e0c9cf9")
                         },
                         new
                         {
-                            Id = "c588c126-474a-4e99-9881-3dbf27615326",
-                            ContactId = "5e7274ad-3132-4ad7-be36-38778a8f7b1c",
-                            UserId = "72a7a013-8bc4-4ae6-89cb-d9f19e0c9cf9"
+                            Id = new Guid("1a32cbb6-66e0-4001-998b-1657d4bef588"),
+                            ContactId = new Guid("5e7274ad-3132-4ad7-be36-38778a8f7b1c"),
+                            UserId = new Guid("72a7a013-8bc4-4ae6-89cb-d9f19e0c9cf9")
                         },
                         new
                         {
-                            Id = "79880f5e-0d7a-4c45-a85a-7ab11c38ad8e",
-                            ContactId = "56d6294f-7b80-4a78-856a-92b141de2d1c",
-                            UserId = "72a7a013-8bc4-4ae6-89cb-d9f19e0c9cf9"
+                            Id = new Guid("1d2a1aa8-331e-48d7-963d-dc73077888d5"),
+                            ContactId = new Guid("56d6294f-7b80-4a78-856a-92b141de2d1c"),
+                            UserId = new Guid("72a7a013-8bc4-4ae6-89cb-d9f19e0c9cf9")
                         },
                         new
                         {
-                            Id = "f8845244-d31b-49d4-a90c-01d56955217b",
-                            ContactId = "d1ae1de1-1aa8-4650-937c-4ed882038ad7",
-                            UserId = "72a7a013-8bc4-4ae6-89cb-d9f19e0c9cf9"
+                            Id = new Guid("eeeb0b6f-02e7-47db-ad5f-ce087c73c75d"),
+                            ContactId = new Guid("d1ae1de1-1aa8-4650-937c-4ed882038ad7"),
+                            UserId = new Guid("72a7a013-8bc4-4ae6-89cb-d9f19e0c9cf9")
                         },
                         new
                         {
-                            Id = "4b00417a-a7f2-4db5-8428-a62369398875",
-                            ContactId = "2cd4b9a0-f70d-476d-a3cc-908da43f93c4",
-                            UserId = "d1ae1de1-1aa8-4650-937c-4ed882038ad7"
+                            Id = new Guid("a683efe6-367a-4b9d-923f-c627127f1ad2"),
+                            ContactId = new Guid("2cd4b9a0-f70d-476d-a3cc-908da43f93c4"),
+                            UserId = new Guid("d1ae1de1-1aa8-4650-937c-4ed882038ad7")
                         },
                         new
                         {
-                            Id = "64992406-0256-42d5-8fcf-e95167e9e2e1",
-                            ContactId = "5e7274ad-3132-4ad7-be36-38778a8f7b1c",
-                            UserId = "d1ae1de1-1aa8-4650-937c-4ed882038ad7"
+                            Id = new Guid("2180ae49-6c48-4d55-b172-e8c6454d099a"),
+                            ContactId = new Guid("5e7274ad-3132-4ad7-be36-38778a8f7b1c"),
+                            UserId = new Guid("d1ae1de1-1aa8-4650-937c-4ed882038ad7")
                         },
                         new
                         {
-                            Id = "36bca0d0-a95e-4e9f-8af1-fbeb37a6b1ee",
-                            ContactId = "56d6294f-7b80-4a78-856a-92b141de2d1c",
-                            UserId = "d1ae1de1-1aa8-4650-937c-4ed882038ad7"
+                            Id = new Guid("18fe0634-1699-4370-9a89-c78e9c42e386"),
+                            ContactId = new Guid("56d6294f-7b80-4a78-856a-92b141de2d1c"),
+                            UserId = new Guid("d1ae1de1-1aa8-4650-937c-4ed882038ad7")
                         },
                         new
                         {
-                            Id = "e9759e0b-f7c0-4de0-bbfb-df353aed6492",
-                            ContactId = "72a7a013-8bc4-4ae6-89cb-d9f19e0c9cf9",
-                            UserId = "d1ae1de1-1aa8-4650-937c-4ed882038ad7"
+                            Id = new Guid("5fcf5893-cf5f-4e69-a223-c26e9b322213"),
+                            ContactId = new Guid("72a7a013-8bc4-4ae6-89cb-d9f19e0c9cf9"),
+                            UserId = new Guid("d1ae1de1-1aa8-4650-937c-4ed882038ad7")
                         },
                         new
                         {
-                            Id = "9c1c1e15-18e8-4a36-b577-a48e534b4328",
-                            ContactId = "2cd4b9a0-f70d-476d-a3cc-908da43f93c4",
-                            UserId = "56d6294f-7b80-4a78-856a-92b141de2d1c"
+                            Id = new Guid("2ed85e4e-8069-4864-88ce-e7f1ccef914c"),
+                            ContactId = new Guid("2cd4b9a0-f70d-476d-a3cc-908da43f93c4"),
+                            UserId = new Guid("56d6294f-7b80-4a78-856a-92b141de2d1c")
                         },
                         new
                         {
-                            Id = "9b678811-b365-41ef-85ee-ffffc1b848c8",
-                            ContactId = "5e7274ad-3132-4ad7-be36-38778a8f7b1c",
-                            UserId = "56d6294f-7b80-4a78-856a-92b141de2d1c"
+                            Id = new Guid("2eca9109-6f9c-4ec8-a284-2ae8f1a1f7c5"),
+                            ContactId = new Guid("5e7274ad-3132-4ad7-be36-38778a8f7b1c"),
+                            UserId = new Guid("56d6294f-7b80-4a78-856a-92b141de2d1c")
                         },
                         new
                         {
-                            Id = "13716e59-9a96-40ae-8dc7-6a7e61282711",
-                            ContactId = "d1ae1de1-1aa8-4650-937c-4ed882038ad7",
-                            UserId = "56d6294f-7b80-4a78-856a-92b141de2d1c"
+                            Id = new Guid("212c9185-e5da-4d26-9341-b8a5d6d62b99"),
+                            ContactId = new Guid("d1ae1de1-1aa8-4650-937c-4ed882038ad7"),
+                            UserId = new Guid("56d6294f-7b80-4a78-856a-92b141de2d1c")
                         },
                         new
                         {
-                            Id = "c9ac19e1-f5d2-4544-b255-0b75fe145162",
-                            ContactId = "72a7a013-8bc4-4ae6-89cb-d9f19e0c9cf9",
-                            UserId = "56d6294f-7b80-4a78-856a-92b141de2d1c"
+                            Id = new Guid("b5a7a8dd-4075-4048-98ba-77a9806f4797"),
+                            ContactId = new Guid("72a7a013-8bc4-4ae6-89cb-d9f19e0c9cf9"),
+                            UserId = new Guid("56d6294f-7b80-4a78-856a-92b141de2d1c")
                         },
                         new
                         {
-                            Id = "2f71da07-8dac-4a31-b09e-82940d42e79d",
-                            ContactId = "fd3c67c5-c6ff-4a5d-a166-98ece1b7752b",
-                            UserId = "e77cf2cb-3f3a-4f0b-ac5a-90a3263d075a"
+                            Id = new Guid("d9fc380d-d04e-4f1f-8aab-89ecaef888c8"),
+                            ContactId = new Guid("fd3c67c5-c6ff-4a5d-a166-98ece1b7752b"),
+                            UserId = new Guid("e77cf2cb-3f3a-4f0b-ac5a-90a3263d075a")
                         },
                         new
                         {
-                            Id = "950750fc-91af-4bdc-b9cb-46c8b0fd5073",
-                            ContactId = "e77cf2cb-3f3a-4f0b-ac5a-90a3263d075a",
-                            UserId = "fd3c67c5-c6ff-4a5d-a166-98ece1b7752b"
+                            Id = new Guid("c7052264-da24-4546-beb7-c5ffa967c8b0"),
+                            ContactId = new Guid("e77cf2cb-3f3a-4f0b-ac5a-90a3263d075a"),
+                            UserId = new Guid("fd3c67c5-c6ff-4a5d-a166-98ece1b7752b")
                         },
                         new
                         {
-                            Id = "950750fc-91af-4bdc-b9cb-46c8b0fd5074",
-                            ContactId = "5e7274ad-3132-4ad7-be36-38778a8f7b1c",
-                            UserId = "fd3c67c5-c6ff-4a5d-a166-98ece1b7752b"
+                            Id = new Guid("3fb971ca-c668-46c4-8f75-9f924cc030e2"),
+                            ContactId = new Guid("5e7274ad-3132-4ad7-be36-38778a8f7b1c"),
+                            UserId = new Guid("fd3c67c5-c6ff-4a5d-a166-98ece1b7752b")
                         },
                         new
                         {
-                            Id = "950750fc-91af-4bdc-b9cb-46c8b0fd5075",
-                            ContactId = "72a7a013-8bc4-4ae6-89cb-d9f19e0c9cf9",
-                            UserId = "fd3c67c5-c6ff-4a5d-a166-98ece1b7752b"
+                            Id = new Guid("5e515edf-e806-42b5-b16e-780b2e4414ed"),
+                            ContactId = new Guid("72a7a013-8bc4-4ae6-89cb-d9f19e0c9cf9"),
+                            UserId = new Guid("fd3c67c5-c6ff-4a5d-a166-98ece1b7752b")
                         },
                         new
                         {
-                            Id = "950750fc-91af-4bdc-b9cb-46c8b0fd5076",
-                            ContactId = "5b515247-f6f5-47e1-ad06-95f317a0599b",
-                            UserId = "fd3c67c5-c6ff-4a5d-a166-98ece1b7752b"
+                            Id = new Guid("8d1438a2-02aa-441d-895a-d316fb74059d"),
+                            ContactId = new Guid("5b515247-f6f5-47e1-ad06-95f317a0599b"),
+                            UserId = new Guid("fd3c67c5-c6ff-4a5d-a166-98ece1b7752b")
                         },
                         new
                         {
-                            Id = "950750fc-91af-4bdc-b9cb-46c8b0fd5077",
-                            ContactId = "d942706b-e4e2-48f9-bbdc-b022816471f0",
-                            UserId = "fd3c67c5-c6ff-4a5d-a166-98ece1b7752b"
+                            Id = new Guid("360f21b1-190f-4faa-809c-b7c9e4618903"),
+                            ContactId = new Guid("d942706b-e4e2-48f9-bbdc-b022816471f0"),
+                            UserId = new Guid("fd3c67c5-c6ff-4a5d-a166-98ece1b7752b")
                         },
                         new
                         {
-                            Id = "f11d2294-1db9-41f0-8a40-601800967889",
-                            ContactId = "e77cf2cb-3f3a-4f0b-ac5a-90a3263d075a",
-                            UserId = "5b515247-f6f5-47e1-ad06-95f317a0599b"
+                            Id = new Guid("5e5a8f75-bd66-4964-bdcf-92eba69b5239"),
+                            ContactId = new Guid("e77cf2cb-3f3a-4f0b-ac5a-90a3263d075a"),
+                            UserId = new Guid("5b515247-f6f5-47e1-ad06-95f317a0599b")
                         },
                         new
                         {
-                            Id = "14b62bb7-bacd-457c-8b2b-c9effc83d838",
-                            ContactId = "fd3c67c5-c6ff-4a5d-a166-98ece1b7752b",
-                            UserId = "d942706b-e4e2-48f9-bbdc-b022816471f0"
+                            Id = new Guid("fed6f1af-2101-4e04-b785-b5c2916cceb4"),
+                            ContactId = new Guid("fd3c67c5-c6ff-4a5d-a166-98ece1b7752b"),
+                            UserId = new Guid("d942706b-e4e2-48f9-bbdc-b022816471f0")
                         });
                 });
 
             modelBuilder.Entity("MangoAPI.Domain.Entities.UserEntity", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasColumnType("text");
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
 
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("integer");
@@ -913,9 +1055,6 @@ namespace MangoAPI.DataAccess.Migrations
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
                         .HasColumnType("text");
-
-                    b.Property<int?>("ConfirmationCode")
-                        .HasColumnType("integer");
 
                     b.Property<string>("DisplayName")
                         .HasColumnType("text");
@@ -946,6 +1085,9 @@ namespace MangoAPI.DataAccess.Migrations
 
                     b.Property<string>("PasswordHash")
                         .HasColumnType("text");
+
+                    b.Property<int?>("PhoneCode")
+                        .HasColumnType("integer");
 
                     b.Property<string>("PhoneNumber")
                         .HasColumnType("text");
@@ -980,172 +1122,172 @@ namespace MangoAPI.DataAccess.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "e77cf2cb-3f3a-4f0b-ac5a-90a3263d075a",
+                            Id = new Guid("e77cf2cb-3f3a-4f0b-ac5a-90a3263d075a"),
                             AccessFailedCount = 0,
                             Bio = "13 y. o. | C# pozer, Hearts Of Iron IV noob",
-                            ConcurrencyStamp = "3b09e668-32eb-4554-ab79-06e970d8a900",
+                            ConcurrencyStamp = "4b306d5a-7da0-4999-8239-6e8bc8058ed9",
                             DisplayName = "Khachatur Khachatryan",
                             Email = "xachulxx@gmail.com",
                             EmailConfirmed = true,
+                            Image = "khachatur_picture.jpg",
                             LockoutEnabled = false,
                             NormalizedEmail = "XACHULXX@GMAIL.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAEGViKYcxJq8E+yBd829o8x+zVV8+9aPXa6DhTLeWN/tv5V4d5U7lSVjSXnN1GLj30A==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEAcNRErQ8fl72OOK871TMuxBdvtAI3aF1aTk3zFN65kvLtWyzOJhEFN8ZnhyUXeLtA==",
                             PhoneNumber = "374775554310",
                             PhoneNumberConfirmed = true,
                             PublicKey = 0,
-                            SecurityStamp = "7cb9af00-ccdb-482c-81f0-1f067ba5bc34",
                             TwoFactorEnabled = false,
                             UserName = "KHACHATUR228"
                         },
                         new
                         {
-                            Id = "fd3c67c5-c6ff-4a5d-a166-98ece1b7752b",
+                            Id = new Guid("fd3c67c5-c6ff-4a5d-a166-98ece1b7752b"),
                             AccessFailedCount = 0,
                             Bio = "11011 y.o Dotnet Developer from $\"{cityName}\"",
-                            ConcurrencyStamp = "114046d0-99df-40bf-8823-87f964e8a83b",
+                            ConcurrencyStamp = "749c0b05-c006-4136-b5ba-b37b82ca7f42",
                             DisplayName = "razumovsky r",
                             Email = "kolosovp95@gmail.com",
                             EmailConfirmed = true,
+                            Image = "razumovsky_picture.jpg",
                             LockoutEnabled = false,
                             NormalizedEmail = "KOLOSOVP94@GMAIL.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAEDi3R71p47c5aE3tDDnYf0gx4YeO+wU9aXCZ35gm1/B3QZnqfIauKHiVHBPIF51pYA==",
+                            PasswordHash = "AQAAAAEAACcQAAAAECwHDwTazp73ocSXalZvFAksLK/DHS1QBr4msh3+ZBoUSbq5wFJdEpMhGd29/pBv+w==",
                             PhoneNumber = "48743615532",
                             PhoneNumberConfirmed = true,
                             PublicKey = 0,
-                            SecurityStamp = "28cf37b7-2c9d-48f6-92ea-326a423fc455",
                             TwoFactorEnabled = false,
                             UserName = "razumovsky_r"
                         },
                         new
                         {
-                            Id = "5b515247-f6f5-47e1-ad06-95f317a0599b",
+                            Id = new Guid("5b515247-f6f5-47e1-ad06-95f317a0599b"),
                             AccessFailedCount = 0,
                             Bio = "Колбасятор.",
-                            ConcurrencyStamp = "63924ff9-3490-42f8-b0f5-4715a0cb7348",
+                            ConcurrencyStamp = "42f60a57-e734-4d38-b135-5446bb899271",
                             DisplayName = "Мусяка Колбасяка",
                             Email = "kolbasator@gmail.com",
                             EmailConfirmed = true,
+                            Image = "musyaka_picture.jpg",
                             LockoutEnabled = false,
                             NormalizedEmail = "KOLBASATOR@GMAIL.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAEN/urHnwQaVA0l3dMJ3p6bZcd6Fsg+i2uz0gmwC9p6ZvF/y1TjrcJnu4WjgMthGxjw==",
+                            PasswordHash = "AQAAAAEAACcQAAAAENy1v5+xGNriES48ZPLANRY1XKbs9ufwdneDBeJzC2IZqMpt6f1vqtpM6pl/y6Ko2g==",
                             PhoneNumber = "77017506265",
                             PhoneNumberConfirmed = true,
                             PublicKey = 0,
-                            SecurityStamp = "17316390-cc94-47e9-a9d7-8fa7c5723615",
                             TwoFactorEnabled = false,
                             UserName = "kolbasator"
                         },
                         new
                         {
-                            Id = "d942706b-e4e2-48f9-bbdc-b022816471f0",
+                            Id = new Guid("d942706b-e4e2-48f9-bbdc-b022816471f0"),
                             AccessFailedCount = 0,
                             Bio = "Дипломат",
-                            ConcurrencyStamp = "9cf0e1b4-c228-4451-91d9-ac9e0f76dc8d",
+                            ConcurrencyStamp = "5559e043-b6a0-4a4d-b5d1-c5783353acdc",
                             DisplayName = "Amelit",
                             Email = "amelit@gmail.com",
                             EmailConfirmed = true,
+                            Image = "amelit_picture.jpg",
                             LockoutEnabled = false,
                             NormalizedEmail = "AMELIT@GMAIL.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAECF3x3MsS+vdzy8u6/pzgzA6g5hIr5+ldm22q8kFSTZEpjLpQ/RaetKWlrXjF5FYEQ==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEN+CUv7BWyPORZPZW4ijcDwKQe6n+j2sjGc+pjPW99ZjcOz3ej62tnyJNyoTFV/wcg==",
                             PhoneNumber = "12025550152",
                             PhoneNumberConfirmed = true,
                             PublicKey = 0,
-                            SecurityStamp = "e32afa62-22fe-40f2-8302-7e98d2b378eb",
                             TwoFactorEnabled = false,
                             UserName = "TheMoonlightSonata"
                         },
                         new
                         {
-                            Id = "2cd4b9a0-f70d-476d-a3cc-908da43f93c4",
+                            Id = new Guid("2cd4b9a0-f70d-476d-a3cc-908da43f93c4"),
                             AccessFailedCount = 0,
                             Bio = "Third year student of WSB at Poznan",
-                            ConcurrencyStamp = "49604002-d4ac-42c0-ac4c-2887f8f5f151",
+                            ConcurrencyStamp = "d8948210-00b0-4135-862e-c2c10cb1a285",
                             DisplayName = "Petro Kolosov",
                             Email = "petro.kolosov@wp.pl",
                             EmailConfirmed = true,
+                            Image = "razumovsky_picture.jpg",
                             LockoutEnabled = false,
                             NormalizedEmail = "PETRO.KOLOSOV@WP.PL",
-                            PasswordHash = "AQAAAAEAACcQAAAAEAVhI7XkdU6xBBOmK9skvnUlUxWY8xy4FWdmSkjLfHkESRZHmV9BsK/6p5QmZWhAhA==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEHgGnSjWjxHKnHzvZVw5CSKrKnDQvgL/puubDAuE5UY1+5VbNeG7aIpozZhTQWQihA==",
                             PhoneNumber = "48743615532",
                             PhoneNumberConfirmed = true,
                             PublicKey = 0,
-                            SecurityStamp = "ae70fe0a-0f25-45f0-8ee3-f6fd0851f19f",
                             TwoFactorEnabled = false,
                             UserName = "petro.kolosov"
                         },
                         new
                         {
-                            Id = "5e7274ad-3132-4ad7-be36-38778a8f7b1c",
+                            Id = new Guid("5e7274ad-3132-4ad7-be36-38778a8f7b1c"),
                             AccessFailedCount = 0,
                             Bio = "Teacher of Computer Science at WSB Poznan",
-                            ConcurrencyStamp = "8ce09c5a-a299-4f67-b123-5b9982d415f6",
+                            ConcurrencyStamp = "2b3f35c1-476e-44f4-b871-95d1ac4d3ba4",
                             DisplayName = "Szymon Murawski",
                             Email = "szymon.murawski@wp.pl",
                             EmailConfirmed = true,
+                            Image = "szymon_picture.png",
                             LockoutEnabled = false,
                             NormalizedEmail = "SZYMON.MURAWSKI@WP.PL",
-                            PasswordHash = "AQAAAAEAACcQAAAAEHQ7RLrYH+lfIwIZq57avUmW3Mx72OvvANZF8mGJixws2SoD6QizdmHvpBIbB8bS8g==",
+                            PasswordHash = "AQAAAAEAACcQAAAAENyMGDWWScSlmSvL5eJ3wv7oxhX32PKAbdpgShcJEVmTwU8F3W6yhXbJbXodHZiYbQ==",
                             PhoneNumber = "48743615532",
                             PhoneNumberConfirmed = true,
                             PublicKey = 0,
-                            SecurityStamp = "73b5a3ff-8696-474f-9462-4b180db4d050",
                             TwoFactorEnabled = false,
                             UserName = "szymon.murawski"
                         },
                         new
                         {
-                            Id = "72a7a013-8bc4-4ae6-89cb-d9f19e0c9cf9",
+                            Id = new Guid("72a7a013-8bc4-4ae6-89cb-d9f19e0c9cf9"),
                             AccessFailedCount = 0,
                             Bio = "Third year student of WSB at Poznan",
-                            ConcurrencyStamp = "c52beadd-60a7-4849-a072-64769a4f7d26",
+                            ConcurrencyStamp = "6fe40c38-b44d-4ba2-b9f3-bc953670a65e",
                             DisplayName = "Illia Zubachov",
                             Email = "illia.zubachov@wp.pl",
                             EmailConfirmed = true,
+                            Image = "illia_picture.png",
                             LockoutEnabled = false,
                             NormalizedEmail = "ILLIA.ZUBACHOW@WP.PL",
-                            PasswordHash = "AQAAAAEAACcQAAAAEFffyHTJM5Zrb2ItHZnyJl5D2turj6xx2ZrJgAAIzaXNfLUISfvXqMEZLHD3DMj+iA==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEDKoQWlWIaHg5eY4jmYHOn+Q0rba+8jfwMAG2fGltqnMMyHhQwkqSm8L8R14kGyuaA==",
                             PhoneNumber = "48352643123",
                             PhoneNumberConfirmed = true,
                             PublicKey = 0,
-                            SecurityStamp = "08332328-bd47-4fec-8c42-d38b5bd5797f",
                             TwoFactorEnabled = false,
                             UserName = "illia.zubachov"
                         },
                         new
                         {
-                            Id = "56d6294f-7b80-4a78-856a-92b141de2d1c",
+                            Id = new Guid("56d6294f-7b80-4a78-856a-92b141de2d1c"),
                             AccessFailedCount = 0,
                             Bio = "Third year student of WSB at Poznan",
-                            ConcurrencyStamp = "1c3716fd-ba4c-4871-b8b6-3d2ac38a7c77",
+                            ConcurrencyStamp = "112a7c4e-8d2d-41a0-838f-df2603a918af",
                             DisplayName = "Arslanbek Temirbekov",
                             Email = "arslanbek.temirbekov@wp.pl",
                             EmailConfirmed = true,
+                            Image = "arslan_picture.png",
                             LockoutEnabled = false,
                             NormalizedEmail = "ARSLANBEK.TEMIRBEKOV@WP.PL",
-                            PasswordHash = "AQAAAAEAACcQAAAAEJU/TkLlHGvIfkpiZPKWfEuJ8eOXjQ0WUL+2zbw/tvKS+oqd85xgJYMsXOa7r78yZg==",
+                            PasswordHash = "AQAAAAEAACcQAAAAELoBmmMXM5+DfCl9DiAzIhoiUCzwdFzXPgW7Bssnu3iIQ9LeWWb5vc6MtJOOCJBVIQ==",
                             PhoneNumber = "48278187781",
                             PhoneNumberConfirmed = true,
                             PublicKey = 0,
-                            SecurityStamp = "e909ef2e-b95c-44c1-ba42-b3db7c0f12ea",
                             TwoFactorEnabled = false,
                             UserName = "arslanbek.temirbekov"
                         },
                         new
                         {
-                            Id = "d1ae1de1-1aa8-4650-937c-4ed882038ad7",
+                            Id = new Guid("d1ae1de1-1aa8-4650-937c-4ed882038ad7"),
                             AccessFailedCount = 0,
                             Bio = "Third year student of WSB at Poznan",
-                            ConcurrencyStamp = "4374546f-c1e1-42bc-aef4-7d26e83c70ea",
+                            ConcurrencyStamp = "143e1749-3085-4b36-896f-685a8a823124",
                             DisplayName = "Serhii Holishevskii",
                             Email = "serhii.holishevskii@wp.pl",
                             EmailConfirmed = true,
+                            Image = "serhii_picture.png",
                             LockoutEnabled = false,
                             NormalizedEmail = "SERHII.HOLISHEVSKII@WP.PL",
-                            PasswordHash = "AQAAAAEAACcQAAAAEPf6SzL5ls6NiLGCq1bPBgc6mexs0MC+H6q2MbBdAyn6ZhPT5PQCaGT91+T3TFjVwg==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEM+HuvoDGnnuV37ap8fZYdqOd7sLl+Va31A14zTkK0AZXrAHrZNendxPMCTJHgQ8XA==",
                             PhoneNumber = "48175481653",
                             PhoneNumberConfirmed = true,
                             PublicKey = 0,
-                            SecurityStamp = "36438afc-84dd-4d88-a983-dfe59266a9cc",
                             TwoFactorEnabled = false,
                             UserName = "serhii.holishevskii"
                         });
@@ -1153,8 +1295,9 @@ namespace MangoAPI.DataAccess.Migrations
 
             modelBuilder.Entity("MangoAPI.Domain.Entities.UserInformationEntity", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasColumnType("text");
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
 
                     b.Property<string>("Address")
                         .HasColumnType("text");
@@ -1189,8 +1332,8 @@ namespace MangoAPI.DataAccess.Migrations
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("timestamp without time zone");
 
-                    b.Property<string>("UserId")
-                        .HasColumnType("text");
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
 
                     b.Property<string>("Website")
                         .HasColumnType("text");
@@ -1205,7 +1348,7 @@ namespace MangoAPI.DataAccess.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "e44583f1-62ca-4ca4-a6a2-3fc1a874ab0c",
+                            Id = new Guid("98e41cb6-dd19-46ce-b7eb-d52a759ce346"),
                             Address = "Poznan, Poland",
                             BirthDay = new DateTime(1994, 6, 12, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -1215,12 +1358,12 @@ namespace MangoAPI.DataAccess.Migrations
                             LastName = "Kolosov",
                             LinkedIn = "petro.kolosov",
                             Twitter = "petro.kolosov",
-                            UserId = "2cd4b9a0-f70d-476d-a3cc-908da43f93c4",
+                            UserId = new Guid("2cd4b9a0-f70d-476d-a3cc-908da43f93c4"),
                             Website = "petro.kolosov.com"
                         },
                         new
                         {
-                            Id = "e44583f1-62ca-4ca4-a6a2-3fc1a874ab0d",
+                            Id = new Guid("20bbad3a-cb53-4e63-9251-f6c9cab2efc8"),
                             Address = "Poznan, Poland",
                             BirthDay = new DateTime(1994, 6, 12, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -1230,12 +1373,12 @@ namespace MangoAPI.DataAccess.Migrations
                             LastName = "Zubachov",
                             LinkedIn = "illia.zubachov",
                             Twitter = "illia.zubachov",
-                            UserId = "72a7a013-8bc4-4ae6-89cb-d9f19e0c9cf9",
+                            UserId = new Guid("72a7a013-8bc4-4ae6-89cb-d9f19e0c9cf9"),
                             Website = "illia.zubachov.com"
                         },
                         new
                         {
-                            Id = "e44583f1-62ca-4ca4-a6a2-3fc1a874ab0e",
+                            Id = new Guid("b3809555-3652-41fa-bc6f-559443c6c514"),
                             Address = "Poznan, Poland",
                             BirthDay = new DateTime(1994, 6, 12, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -1245,12 +1388,12 @@ namespace MangoAPI.DataAccess.Migrations
                             LastName = "Holishevskii",
                             LinkedIn = "serhii.holishevskii",
                             Twitter = "serhii.holishevskii",
-                            UserId = "d1ae1de1-1aa8-4650-937c-4ed882038ad7",
+                            UserId = new Guid("d1ae1de1-1aa8-4650-937c-4ed882038ad7"),
                             Website = "serhii.holishevskii.com"
                         },
                         new
                         {
-                            Id = "e44583f1-62ca-4ca4-a6a2-3fc1a874ab0f",
+                            Id = new Guid("92daf23d-4f6a-4645-857e-ec69d33367c6"),
                             Address = "Poznan, Poland",
                             BirthDay = new DateTime(1994, 6, 12, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -1260,12 +1403,12 @@ namespace MangoAPI.DataAccess.Migrations
                             LastName = "Temirbekov",
                             LinkedIn = "arslan.temirbekov",
                             Twitter = "arslan.temirbekov",
-                            UserId = "56d6294f-7b80-4a78-856a-92b141de2d1c",
+                            UserId = new Guid("56d6294f-7b80-4a78-856a-92b141de2d1c"),
                             Website = "arslan.temirbekov.com"
                         },
                         new
                         {
-                            Id = "f773c1da-c7d5-44e9-9a1a-04e1be0b4b55",
+                            Id = new Guid("2a8f1bc3-22d0-4a6e-90d6-dac961423d56"),
                             Address = "Poznan, Poland",
                             BirthDay = new DateTime(1983, 5, 25, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -1275,12 +1418,12 @@ namespace MangoAPI.DataAccess.Migrations
                             LastName = "Murawski",
                             LinkedIn = "szymon.murawski",
                             Twitter = "szymon.murawski",
-                            UserId = "5e7274ad-3132-4ad7-be36-38778a8f7b1c",
+                            UserId = new Guid("5e7274ad-3132-4ad7-be36-38778a8f7b1c"),
                             Website = "szymon.murawski.com"
                         },
                         new
                         {
-                            Id = "3067c801-da6d-4b03-ac5e-ad3fa0db5acf",
+                            Id = new Guid("40bb9b10-4c1d-470d-951a-ced9a74a6b86"),
                             Address = "Moscow, Russia",
                             BirthDay = new DateTime(2008, 3, 7, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -1288,12 +1431,12 @@ namespace MangoAPI.DataAccess.Migrations
                             Instagram = "khachapur.mudrenych",
                             LastName = "Khachatryan",
                             LinkedIn = "khachapur.mudrenych",
-                            UserId = "e77cf2cb-3f3a-4f0b-ac5a-90a3263d075a",
+                            UserId = new Guid("e77cf2cb-3f3a-4f0b-ac5a-90a3263d075a"),
                             Website = "khachapur.com"
                         },
                         new
                         {
-                            Id = "11da38d9-13e2-4056-80a7-a8a76b1c0682",
+                            Id = new Guid("8adad8d5-83c3-49bd-916f-9bad2f176099"),
                             Address = "Odessa, Ukraine",
                             BirthDay = new DateTime(1994, 7, 21, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -1303,77 +1446,35 @@ namespace MangoAPI.DataAccess.Migrations
                             LastName = "r",
                             LinkedIn = "razumovsky_r",
                             Twitter = "razumovsky_r",
-                            UserId = "fd3c67c5-c6ff-4a5d-a166-98ece1b7752b",
+                            UserId = new Guid("fd3c67c5-c6ff-4a5d-a166-98ece1b7752b"),
                             Website = "razumovsky.com"
                         },
                         new
                         {
-                            Id = "91d1d13e-e475-4f77-820a-0225c37035a4",
+                            Id = new Guid("dc2a582b-eaf2-4408-988f-6f93c3d244e6"),
                             Address = "Saint-Petersburg, Russia",
                             CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Facebook = "kolbasator",
                             FirstName = "Мусяка",
                             LastName = "Колбасяка",
                             ProfilePicture = "profile.png",
-                            UserId = "5b515247-f6f5-47e1-ad06-95f317a0599b",
+                            UserId = new Guid("5b515247-f6f5-47e1-ad06-95f317a0599b"),
                             Website = "kolbasator.com"
                         },
                         new
                         {
-                            Id = "f3fbbce4-b451-4d2b-bfb4-662a9c87c315",
+                            Id = new Guid("5254b0c5-e8d8-485e-80e8-5d26e4426faf"),
                             Address = "Moscow, Russia",
                             CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Facebook = "TheMoonlightSonata",
                             FirstName = "Amelit",
                             Instagram = "TheMoonlightSonata",
                             Twitter = "TheMoonlightSonata",
-                            UserId = "d942706b-e4e2-48f9-bbdc-b022816471f0"
+                            UserId = new Guid("d942706b-e4e2-48f9-bbdc-b022816471f0")
                         });
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("text");
-
-                    b.Property<string>("ConcurrencyStamp")
-                        .IsConcurrencyToken()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Name")
-                        .HasMaxLength(256)
-                        .HasColumnType("character varying(256)");
-
-                    b.Property<string>("NormalizedName")
-                        .HasMaxLength(256)
-                        .HasColumnType("character varying(256)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("NormalizedName")
-                        .IsUnique()
-                        .HasDatabaseName("RoleNameIndex");
-
-                    b.ToTable("AspNetRoles");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = "32904a05-6d7c-43cf-b915-223324ff480e",
-                            ConcurrencyStamp = "9c10fafc-67a2-489d-8aa6-1dac7aa07b06",
-                            Name = "User",
-                            NormalizedName = "USER"
-                        },
-                        new
-                        {
-                            Id = "1c48f8d5-01ed-4e47-8377-a22ffa58c150",
-                            ConcurrencyStamp = "73f37b30-3322-4fb9-83ee-a871186a194e",
-                            Name = "Unverified",
-                            NormalizedName = "UNVERIFIED"
-                        });
-                });
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -1386,9 +1487,8 @@ namespace MangoAPI.DataAccess.Migrations
                     b.Property<string>("ClaimValue")
                         .HasColumnType("text");
 
-                    b.Property<string>("RoleId")
-                        .IsRequired()
-                        .HasColumnType("text");
+                    b.Property<Guid>("RoleId")
+                        .HasColumnType("uuid");
 
                     b.HasKey("Id");
 
@@ -1397,7 +1497,7 @@ namespace MangoAPI.DataAccess.Migrations
                     b.ToTable("AspNetRoleClaims");
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<System.Guid>", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -1410,9 +1510,8 @@ namespace MangoAPI.DataAccess.Migrations
                     b.Property<string>("ClaimValue")
                         .HasColumnType("text");
 
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("text");
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
 
                     b.HasKey("Id");
 
@@ -1421,7 +1520,7 @@ namespace MangoAPI.DataAccess.Migrations
                     b.ToTable("AspNetUserClaims");
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<System.Guid>", b =>
                 {
                     b.Property<string>("LoginProvider")
                         .HasColumnType("text");
@@ -1432,9 +1531,8 @@ namespace MangoAPI.DataAccess.Migrations
                     b.Property<string>("ProviderDisplayName")
                         .HasColumnType("text");
 
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("text");
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
 
                     b.HasKey("LoginProvider", "ProviderKey");
 
@@ -1443,13 +1541,13 @@ namespace MangoAPI.DataAccess.Migrations
                     b.ToTable("AspNetUserLogins");
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<System.Guid>", b =>
                 {
-                    b.Property<string>("UserId")
-                        .HasColumnType("text");
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
 
-                    b.Property<string>("RoleId")
-                        .HasColumnType("text");
+                    b.Property<Guid>("RoleId")
+                        .HasColumnType("uuid");
 
                     b.HasKey("UserId", "RoleId");
 
@@ -1460,55 +1558,55 @@ namespace MangoAPI.DataAccess.Migrations
                     b.HasData(
                         new
                         {
-                            UserId = "fd3c67c5-c6ff-4a5d-a166-98ece1b7752b",
-                            RoleId = "32904a05-6d7c-43cf-b915-223324ff480e"
+                            UserId = new Guid("fd3c67c5-c6ff-4a5d-a166-98ece1b7752b"),
+                            RoleId = new Guid("32904a05-6d7c-43cf-b915-223324ff480e")
                         },
                         new
                         {
-                            UserId = "e77cf2cb-3f3a-4f0b-ac5a-90a3263d075a",
-                            RoleId = "32904a05-6d7c-43cf-b915-223324ff480e"
+                            UserId = new Guid("e77cf2cb-3f3a-4f0b-ac5a-90a3263d075a"),
+                            RoleId = new Guid("32904a05-6d7c-43cf-b915-223324ff480e")
                         },
                         new
                         {
-                            UserId = "5b515247-f6f5-47e1-ad06-95f317a0599b",
-                            RoleId = "32904a05-6d7c-43cf-b915-223324ff480e"
+                            UserId = new Guid("5b515247-f6f5-47e1-ad06-95f317a0599b"),
+                            RoleId = new Guid("32904a05-6d7c-43cf-b915-223324ff480e")
                         },
                         new
                         {
-                            UserId = "d942706b-e4e2-48f9-bbdc-b022816471f0",
-                            RoleId = "32904a05-6d7c-43cf-b915-223324ff480e"
+                            UserId = new Guid("d942706b-e4e2-48f9-bbdc-b022816471f0"),
+                            RoleId = new Guid("32904a05-6d7c-43cf-b915-223324ff480e")
                         },
                         new
                         {
-                            UserId = "2cd4b9a0-f70d-476d-a3cc-908da43f93c4",
-                            RoleId = "32904a05-6d7c-43cf-b915-223324ff480e"
+                            UserId = new Guid("2cd4b9a0-f70d-476d-a3cc-908da43f93c4"),
+                            RoleId = new Guid("32904a05-6d7c-43cf-b915-223324ff480e")
                         },
                         new
                         {
-                            UserId = "5e7274ad-3132-4ad7-be36-38778a8f7b1c",
-                            RoleId = "32904a05-6d7c-43cf-b915-223324ff480e"
+                            UserId = new Guid("5e7274ad-3132-4ad7-be36-38778a8f7b1c"),
+                            RoleId = new Guid("32904a05-6d7c-43cf-b915-223324ff480e")
                         },
                         new
                         {
-                            UserId = "72a7a013-8bc4-4ae6-89cb-d9f19e0c9cf9",
-                            RoleId = "32904a05-6d7c-43cf-b915-223324ff480e"
+                            UserId = new Guid("72a7a013-8bc4-4ae6-89cb-d9f19e0c9cf9"),
+                            RoleId = new Guid("32904a05-6d7c-43cf-b915-223324ff480e")
                         },
                         new
                         {
-                            UserId = "56d6294f-7b80-4a78-856a-92b141de2d1c",
-                            RoleId = "32904a05-6d7c-43cf-b915-223324ff480e"
+                            UserId = new Guid("56d6294f-7b80-4a78-856a-92b141de2d1c"),
+                            RoleId = new Guid("32904a05-6d7c-43cf-b915-223324ff480e")
                         },
                         new
                         {
-                            UserId = "d1ae1de1-1aa8-4650-937c-4ed882038ad7",
-                            RoleId = "32904a05-6d7c-43cf-b915-223324ff480e"
+                            UserId = new Guid("d1ae1de1-1aa8-4650-937c-4ed882038ad7"),
+                            RoleId = new Guid("32904a05-6d7c-43cf-b915-223324ff480e")
                         });
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<System.Guid>", b =>
                 {
-                    b.Property<string>("UserId")
-                        .HasColumnType("text");
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
 
                     b.Property<string>("LoginProvider")
                         .HasColumnType("text");
@@ -1528,11 +1626,15 @@ namespace MangoAPI.DataAccess.Migrations
                 {
                     b.HasOne("MangoAPI.Domain.Entities.ChatEntity", "Chat")
                         .WithMany("Messages")
-                        .HasForeignKey("ChatId");
+                        .HasForeignKey("ChatId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("MangoAPI.Domain.Entities.UserEntity", "User")
                         .WithMany("Messages")
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Chat");
 
@@ -1543,7 +1645,9 @@ namespace MangoAPI.DataAccess.Migrations
                 {
                     b.HasOne("MangoAPI.Domain.Entities.UserEntity", "UserEntity")
                         .WithMany("PasswordRestoreRequests")
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("UserEntity");
                 });
@@ -1552,7 +1656,9 @@ namespace MangoAPI.DataAccess.Migrations
                 {
                     b.HasOne("MangoAPI.Domain.Entities.UserEntity", "UserEntity")
                         .WithMany("Sessions")
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("UserEntity");
                 });
@@ -1580,7 +1686,9 @@ namespace MangoAPI.DataAccess.Migrations
                 {
                     b.HasOne("MangoAPI.Domain.Entities.UserEntity", "User")
                         .WithMany("Contacts")
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("User");
                 });
@@ -1589,21 +1697,23 @@ namespace MangoAPI.DataAccess.Migrations
                 {
                     b.HasOne("MangoAPI.Domain.Entities.UserEntity", "User")
                         .WithOne("UserInformation")
-                        .HasForeignKey("MangoAPI.Domain.Entities.UserInformationEntity", "UserId");
+                        .HasForeignKey("MangoAPI.Domain.Entities.UserInformationEntity", "UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
+                    b.HasOne("MangoAPI.Domain.Entities.RoleEntity", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<System.Guid>", b =>
                 {
                     b.HasOne("MangoAPI.Domain.Entities.UserEntity", null)
                         .WithMany()
@@ -1612,7 +1722,7 @@ namespace MangoAPI.DataAccess.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<System.Guid>", b =>
                 {
                     b.HasOne("MangoAPI.Domain.Entities.UserEntity", null)
                         .WithMany()
@@ -1621,9 +1731,9 @@ namespace MangoAPI.DataAccess.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<System.Guid>", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
+                    b.HasOne("MangoAPI.Domain.Entities.RoleEntity", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1636,7 +1746,7 @@ namespace MangoAPI.DataAccess.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<System.Guid>", b =>
                 {
                     b.HasOne("MangoAPI.Domain.Entities.UserEntity", null)
                         .WithMany()

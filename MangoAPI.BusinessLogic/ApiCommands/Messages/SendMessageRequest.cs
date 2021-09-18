@@ -1,29 +1,37 @@
-﻿using Newtonsoft.Json;
+﻿using System;
+using Newtonsoft.Json;
 
 namespace MangoAPI.BusinessLogic.ApiCommands.Messages
 {
     public record SendMessageRequest
     {
         [JsonConstructor]
-        public SendMessageRequest(string messageText, string chatId)
+        public SendMessageRequest(string messageText, Guid chatId, bool isEncrypted, 
+            string attachmentUrl)
         {
             MessageText = messageText;
             ChatId = chatId;
+            IsEncrypted = isEncrypted;
+            AttachmentUrl = attachmentUrl;
         }
 
         public string MessageText { get; }
-        public string ChatId { get; }
+        public Guid ChatId { get; }
+        public bool IsEncrypted { get; }
+        public string AttachmentUrl { get; }
     }
 
     public static class SendMessageCommandMapper
     {
-        public static SendMessageCommand ToCommand(this SendMessageRequest model, string userId)
+        public static SendMessageCommand ToCommand(this SendMessageRequest request, Guid userId)
         {
-            return new ()
+            return new()
             {
-                ChatId = model.ChatId,
-                MessageText = model.MessageText,
+                ChatId = request.ChatId,
+                MessageText = request.MessageText,
+                IsEncrypted = request.IsEncrypted,
                 UserId = userId,
+                AttachmentUrl = request.AttachmentUrl
             };
         }
     }

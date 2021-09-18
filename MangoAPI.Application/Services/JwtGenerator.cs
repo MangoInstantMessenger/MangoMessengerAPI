@@ -31,7 +31,7 @@ namespace MangoAPI.Application.Services
         {
             var claims = new List<Claim>
             {
-                new (JwtRegisteredClaimNames.Jti, userEntity.Id),
+                new (JwtRegisteredClaimNames.Jti, userEntity.Id.ToString()),
             };
 
             roles.ForEach(x => claims.Add(new Claim(ClaimsIdentity.DefaultRoleClaimType, x)));

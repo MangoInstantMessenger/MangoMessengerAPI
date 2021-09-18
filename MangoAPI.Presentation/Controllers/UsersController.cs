@@ -1,5 +1,4 @@
-﻿using System.Threading;
-using System.Threading.Tasks;
+﻿using System;
 using MangoAPI.BusinessLogic.ApiCommands.Users;
 using MangoAPI.BusinessLogic.ApiQueries.Users;
 using MangoAPI.BusinessLogic.Responses;
@@ -11,6 +10,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace MangoAPI.Presentation.Controllers
 {
@@ -53,7 +54,9 @@ namespace MangoAPI.Presentation.Controllers
         public async Task<IActionResult> RegisterAsync([FromBody] RegisterRequest request,
             CancellationToken cancellationToken)
         {
-            return await RequestAsync(request.ToCommand(), cancellationToken);
+            var command = request.ToCommand();
+            
+            return await RequestAsync(command, cancellationToken);
         }
 
         /// <summary>
@@ -76,6 +79,7 @@ namespace MangoAPI.Presentation.Controllers
             CancellationToken cancellationToken)
         {
             var command = request.ToCommand();
+            
             return await RequestAsync(command, cancellationToken);
         }
 
@@ -99,6 +103,7 @@ namespace MangoAPI.Presentation.Controllers
             CancellationToken cancellationToken)
         {
             var userId = HttpContext.User.GetUserId();
+            
             var command = new VerifyPhoneCommand
             {
                 UserId = userId,
@@ -125,6 +130,7 @@ namespace MangoAPI.Presentation.Controllers
             CancellationToken cancellationToken)
         {
             var userId = HttpContext.User.GetUserId();
+            
             var command = request.ToCommand(userId);
 
             return await RequestAsync(command, cancellationToken);
@@ -136,16 +142,20 @@ namespace MangoAPI.Presentation.Controllers
         /// <param name="userId">ID of the user to get, UUID.</param>
         /// <param name="cancellationToken">CancellationToken instance.</param>
         /// <returns>Possible codes: 200, 400, 409.</returns>
-        [HttpGet("{userId}")]
+        [HttpGet("{userId:guid}")]
         [Authorize(Roles = "User")]
         [SwaggerOperation(Summary = "Gets user by ID. Requires role: User.")]
         [ProducesResponseType(typeof(GetUserResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public async Task<IActionResult> GetUserById([FromRoute] string userId, CancellationToken cancellationToken)
+        public async Task<IActionResult> GetUserById([FromRoute] Guid userId, CancellationToken cancellationToken)
         {
-            var query = new GetUserQuery {UserId = userId};
+            var query = new GetUserQuery
+            {
+                UserId = userId
+            };
+            
             return await RequestAsync(query, cancellationToken);
         }
 
@@ -166,27 +176,57 @@ namespace MangoAPI.Presentation.Controllers
         public async Task<IActionResult> GetCurrentUser(CancellationToken cancellationToken)
         {
             var userId = HttpContext.User.GetUserId();
-            var request = new GetUserQuery {UserId = userId};
+            
+            var request = new GetUserQuery
+            {
+                UserId = userId
+            };
+            
             return await RequestAsync(request, cancellationToken);
         }
 
         /// <summary>
-        /// Updates user's personal information. Requires role: User.
+        /// Updates user's social network user names. Requires role: User.
         /// </summary>
-        /// <param name="request">UpdateUserInformationRequest instance.</param>
+        /// <param name="request">UpdateUserSocialInformationRequest instance.</param>
         /// <param name="cancellationToken">CancellationToken instance.</param>
-        /// <returns>Possible codes: 200, 400, 409.</returns>
-        [HttpPut("information")]
+        /// <returns></returns>
+        [HttpPut("socials")]
         [Authorize(Roles = "User")]
-        [SwaggerOperation(Summary = "Updates user's personal information. Requires role: User.")]
+        [SwaggerOperation(Summary = "Updates user's social network user names. Requires role: User.")]
         [ProducesResponseType(typeof(ResponseBase), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public async Task<IActionResult> UpdateUserInformationAsync([FromBody] UpdateUserInformationRequest request,
+        public async Task<IActionResult> UpdateUserSocialInformationAsync(
+            [FromBody] UpdateUserSocialInformationRequest request,
             CancellationToken cancellationToken)
         {
             var userId = HttpContext.User.GetUserId();
+            
+            var command = request.ToCommand(userId);
+
+            return await RequestAsync(command, cancellationToken);
+        }
+
+        /// <summary>
+        /// Updates user's personal account information. Requires role: User.
+        /// </summary>
+        /// <param name="request">UpdateUserInformationRequest instance.</param>
+        /// <param name="cancellationToken">CancellationToken instance.</param>
+        /// <returns>Possible codes: 200, 400, 409.</returns>
+        [HttpPut("account")]
+        [Authorize(Roles = "User")]
+        [SwaggerOperation(Summary = "Updates user's personal account information. Requires role: User.")]
+        [ProducesResponseType(typeof(ResponseBase), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        public async Task<IActionResult> UpdateUserAccountInfoAsync([FromBody] UpdateUserAccountInfoRequest request,
+            CancellationToken cancellationToken)
+        {
+            var userId = HttpContext.User.GetUserId();
+            
             var command = request.ToCommand(userId);
 
             return await RequestAsync(command, cancellationToken);
@@ -205,10 +245,32 @@ namespace MangoAPI.Presentation.Controllers
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public async Task<IActionResult> UpdatePublicKeyAsync(int publicKey, CancellationToken cancellationToken)
+        public async Task<IActionResult> UpdatePublicKeyAsync([FromRoute] int publicKey,
+            CancellationToken cancellationToken)
         {
             var userId = HttpContext.User.GetUserId();
             var command = new UpdatePublicKeyCommand(userId, publicKey);
+
+            return await RequestAsync(command, cancellationToken);
+        }
+
+        [HttpPut("picture/{image}")]
+        [Authorize(Roles = "User")]
+        [SwaggerOperation(Summary = "Updates user's profile picture. Requires role: User.")]
+        [ProducesResponseType(typeof(ResponseBase), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        public async Task<IActionResult> UpdateProfilePictureAsync([FromRoute] string image,
+            CancellationToken cancellationToken)
+        {
+            var userId = HttpContext.User.GetUserId();
+            
+            var command = new UpdateProfilePictureCommand
+            {
+                UserId = userId, 
+                Image = image
+            };
 
             return await RequestAsync(command, cancellationToken);
         }

@@ -1,4 +1,3 @@
-using System;
 using MangoAPI.Presentation.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -7,6 +6,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using System;
+using MangoAPI.BusinessLogic.HubConfig;
 
 namespace MangoAPI.Presentation
 {
@@ -39,6 +40,7 @@ namespace MangoAPI.Presentation
 
             app.UseHttpsRedirection();
             app.UseRouting();
+            app.UseStaticFiles();
 
             app.UseSwagger();
             app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "MangoAPI v1"));
@@ -51,17 +53,22 @@ namespace MangoAPI.Presentation
                                    ForwardedHeaders.XForwardedProto,
             });
 
-            app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllers();
+                endpoints.MapHub<ChatHub>("/notify");
+            });
         }
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddSignalR();
             services.AddControllers();
             services.AddAppInfrastructure();
             services.AddSwaggerGen(c =>
             {
                 c.EnableAnnotations();
-                c.SwaggerDoc("v1", new OpenApiInfo {Title = "MangoAPI", Version = "v1"});
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "MangoAPI", Version = "v1" });
                 c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
                 {
                     In = ParameterLocation.Header,

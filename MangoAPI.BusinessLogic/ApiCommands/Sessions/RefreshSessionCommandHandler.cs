@@ -62,8 +62,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Sessions
 
             var newSession = new SessionEntity
             {
-                Id = Guid.NewGuid().ToString(),
-                RefreshToken = Guid.NewGuid().ToString(),
+                RefreshToken = Guid.NewGuid(),
                 UserId = user.Id,
                 ExpiresAt = DateTime.UtcNow.AddDays(refreshLifetimeParsed),
                 CreatedAt = DateTime.UtcNow,
@@ -84,7 +83,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Sessions
             await _postgresDbContext.Sessions.AddAsync(newSession, cancellationToken);
             await _postgresDbContext.SaveChangesAsync(cancellationToken);
 
-            return TokensResponse.FromSuccess(jwtToken, newSession.RefreshToken);
+            return TokensResponse.FromSuccess(jwtToken, newSession.RefreshToken, user.Id);
         }
     }
 }

@@ -17,7 +17,11 @@ namespace MangoAPI.Tests.ApiCommandsTests.Sessions
         {
             using var dbContextFixture = new DbContextFixture();
             var handler = new LogoutCommandHandler(dbContextFixture.PostgresDbContext);
-            var command = new LogoutCommand { RefreshToken = "69dbef09-de5a-4da7-9d67-abeba1510118" };
+            
+            var command = new LogoutCommand
+            {
+                RefreshToken = "69dbef09-de5a-4da7-9d67-abeba1510118".AsGuid()
+            };
 
             var result = await handler.Handle(command, CancellationToken.None);
 
@@ -29,7 +33,11 @@ namespace MangoAPI.Tests.ApiCommandsTests.Sessions
         {
             using var dbContextFixture = new DbContextFixture();
             var handler = new LogoutCommandHandler(dbContextFixture.PostgresDbContext);
-            var command = new LogoutCommand { RefreshToken = "69dbef09-de5a-4da7-9d67-abeba1510135" };
+            
+            var command = new LogoutCommand
+            {
+                RefreshToken = "69dbef09-de5a-4da7-9d67-abeba1510135".AsGuid()
+            };
 
             Func<Task> result = async () => await handler.Handle(command, CancellationToken.None);
 
@@ -42,7 +50,11 @@ namespace MangoAPI.Tests.ApiCommandsTests.Sessions
         {
             using var dbContextFixture = new DbContextFixture();
             var handler = new LogoutCommandHandler(dbContextFixture.PostgresDbContext);
-            var command = new LogoutCommand { RefreshToken = "219d9df3-9bc0-4679-baaa-c18b1c7524e8" };
+            
+            var command = new LogoutCommand
+            {
+                RefreshToken = "219d9df3-9bc0-4679-baaa-c18b1c7524e8".AsGuid()
+            };
 
             Func<Task> result = async () => await handler.Handle(command, CancellationToken.None);
 

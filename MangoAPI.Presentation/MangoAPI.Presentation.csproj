@@ -12,6 +12,7 @@
         <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="10.3.0" />
         <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="5.0.9" />
         <PackageReference Include="Microsoft.AspNetCore.Cors" Version="2.2.0" />
+        <PackageReference Include="Microsoft.AspNetCore.SignalR" Version="1.1.0" />
         <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="6.11.1" />
         <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.10.14" />
         <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="5.0.7" />
@@ -26,6 +27,12 @@
 
     <ItemGroup>
         <ProjectReference Include="..\MangoAPI.BusinessLogic\MangoAPI.BusinessLogic.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <_ContentIncludedByDefault Remove="wwwroot\Uploads\floppa_03ac7bcb-5989-4f9e-9542-b92246d2baf0.JPG" />
+      <_ContentIncludedByDefault Remove="wwwroot\Uploads\floppa_20b7bf76-d95d-414c-8755-5182a7b5ab12.JPG" />
+      <_ContentIncludedByDefault Remove="wwwroot\Uploads\floppa_a859.JPG" />
     </ItemGroup>
 
 </Project>

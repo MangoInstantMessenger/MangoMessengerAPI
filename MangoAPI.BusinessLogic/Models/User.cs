@@ -1,8 +1,10 @@
+using System;
+
 namespace MangoAPI.BusinessLogic.Models
 {
     public record User
     {
-        public string UserId { get; set; }
+        public Guid UserId { get; set; }
 
         public string FirstName { get; init; }
 
@@ -31,5 +33,9 @@ namespace MangoAPI.BusinessLogic.Models
         public string Instagram { get; init; }
 
         public string LinkedIn { get; init; }
+
+        public int PublicKey { get; init; }
+
+        public string PictureUrl { get; init; }
     }
 }
