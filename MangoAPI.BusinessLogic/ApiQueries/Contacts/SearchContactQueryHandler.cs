@@ -26,6 +26,7 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Contacts
             var users = await _postgresDbContext.Users
                 .AsNoTracking()
                 .Include(x => x.UserInformation)
+                .Where(x => x.Id != request.UserId)
                 .ToListAsync(cancellationToken);
 
             if (!string.IsNullOrEmpty(request.SearchQuery) || !string.IsNullOrWhiteSpace(request.SearchQuery))
@@ -46,7 +47,7 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Contacts
 
             foreach (var contact in contacts)
             {
-                var isContact = await _postgresDbContext.UserContacts
+                var isContact = await _postgresDbContext.UserContacts.AsNoTracking()
                     .AnyAsync(x => x.UserId == request.UserId && x.ContactId == contact.UserId, cancellationToken);
 
                 contact.IsContact = isContact;

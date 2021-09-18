@@ -24,6 +24,7 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Communities
             CancellationToken cancellationToken)
         {
             var userChat = await _postgresDbContext.UserChats
+                .AsNoTracking()
                 .Include(x => x.Chat)
                 .FirstOrDefaultAsync(x => x.ChatId == request.ChatId && x.UserId != request.UserId,
                     cancellationToken);

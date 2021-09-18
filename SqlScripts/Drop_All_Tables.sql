@@ -11,3 +11,6 @@ DROP TABLE public."Sessions" CASCADE;
 DROP TABLE public."UserChats" CASCADE;
 DROP TABLE public."UserContacts" CASCADE;
 DROP TABLE public."UserInformation" CASCADE;
+DROP TABLE public."Documents" CASCADE;
+DROP TABLE public."PasswordRestoreRequests" CASCADE;
+DROP TABLE public."__EFMigrationsHistory" CASCADE;
