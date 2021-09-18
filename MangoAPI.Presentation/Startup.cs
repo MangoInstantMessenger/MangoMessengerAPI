@@ -7,7 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using System;
-using MangoAPI.Presentation.HubConfig;
+using MangoAPI.BusinessLogic.HubConfig;
 
 namespace MangoAPI.Presentation
 {
@@ -56,7 +56,7 @@ namespace MangoAPI.Presentation
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
-                endpoints.MapHub<ChatHub>("/chats");
+                endpoints.MapHub<ChatHub>("/notify");
             });
         }
 
