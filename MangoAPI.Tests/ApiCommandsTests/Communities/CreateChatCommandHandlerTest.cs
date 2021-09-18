@@ -5,6 +5,7 @@ using FluentAssertions;
 using MangoAPI.BusinessLogic.ApiCommands.Communities;
 using MangoAPI.BusinessLogic.BusinessExceptions;
 using MangoAPI.Domain.Constants;
+using MangoAPI.Domain.Enums;
 using NUnit.Framework;
 
 namespace MangoAPI.Tests.ApiCommandsTests.Communities
@@ -22,6 +23,7 @@ namespace MangoAPI.Tests.ApiCommandsTests.Communities
             {
                 UserId = SeedDataConstants.RazumovskyId,
                 PartnerId = SeedDataConstants.PetroId,
+                CommunityType = CommunityType.DirectChat
             };
 
             var result = await handler.Handle(createChatCommand, CancellationToken.None);

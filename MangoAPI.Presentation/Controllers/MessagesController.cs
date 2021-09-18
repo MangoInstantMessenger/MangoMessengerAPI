@@ -1,7 +1,4 @@
-﻿using System;
-using System.Threading;
-using System.Threading.Tasks;
-using MangoAPI.BusinessLogic.ApiCommands.Messages;
+﻿using MangoAPI.BusinessLogic.ApiCommands.Messages;
 using MangoAPI.BusinessLogic.ApiQueries.Messages;
 using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.Presentation.Extensions;
@@ -12,6 +9,9 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
+using System;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace MangoAPI.Presentation.Controllers
 {
@@ -48,13 +48,13 @@ namespace MangoAPI.Presentation.Controllers
             CancellationToken cancellationToken)
         {
             var userId = HttpContext.User.GetUserId();
-            
+
             var query = new GetMessagesQuery
             {
-                ChatId = chatId, 
+                ChatId = chatId,
                 UserId = userId
             };
-            
+
             return await RequestAsync(query, cancellationToken);
         }
 

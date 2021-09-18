@@ -16,8 +16,8 @@ namespace MangoAPI.DataAccess.Database.Extensions
         {
             return await dbSet
                 .Include(chatEntity => chatEntity.ChatUsers)
-                .Where(chatEntity => chatEntity.CommunityType == CommunityType.DirectChat ||
-                                     chatEntity.CommunityType == CommunityType.SecretChat &&
+                .Where(chatEntity => (chatEntity.CommunityType == CommunityType.DirectChat ||
+                                     chatEntity.CommunityType == CommunityType.SecretChat) &&
                                      chatEntity.ChatUsers.Any(userChatEntity => userChatEntity.UserId == userId))
                 .ToListAsync(cancellationToken);
         }

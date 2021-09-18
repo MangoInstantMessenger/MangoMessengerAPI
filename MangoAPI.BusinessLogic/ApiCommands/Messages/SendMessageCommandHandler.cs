@@ -3,12 +3,14 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using MangoAPI.BusinessLogic.BusinessExceptions;
+using MangoAPI.BusinessLogic.HubConfig;
 using MangoAPI.DataAccess.Database;
 using MangoAPI.DataAccess.Database.Extensions;
 using MangoAPI.Domain.Constants;
 using MangoAPI.Domain.Entities;
 using MangoAPI.Domain.Enums;
 using MediatR;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 
 namespace MangoAPI.BusinessLogic.ApiCommands.Messages
@@ -16,10 +18,13 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Messages
     public class SendMessageCommandHandler : IRequestHandler<SendMessageCommand, SendMessageResponse>
     {
         private readonly MangoPostgresDbContext _postgresDbContext;
+        private readonly IHubContext<ChatHub, IHubClient> _hubContext;
 
-        public SendMessageCommandHandler(MangoPostgresDbContext postgresDbContext)
+        public SendMessageCommandHandler(MangoPostgresDbContext postgresDbContext,
+            IHubContext<ChatHub, IHubClient> hubContext)
         {
             _postgresDbContext = postgresDbContext;
+            _hubContext = hubContext;
         }
 
         public async Task<SendMessageResponse> Handle(SendMessageCommand request, CancellationToken cancellationToken)
@@ -61,7 +66,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Messages
             _postgresDbContext.Chats.Update(chat);
             await _postgresDbContext.Messages.AddAsync(messageEntity, cancellationToken);
             await _postgresDbContext.SaveChangesAsync(cancellationToken);
-
+            await _hubContext.Clients.All.BroadcastMessage();
             return SendMessageResponse.FromSuccess(messageEntity.Id);
         }
 
