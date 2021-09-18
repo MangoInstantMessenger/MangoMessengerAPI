@@ -24,13 +24,6 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Communities
 
         public async Task<GetCommunityByIdResponse> Handle(GetCommunityByIdQuery request, CancellationToken cancellationToken)
         {
-            var user = await _postgresDbContext.Users.FindUserByIdAsync(request.UserId, cancellationToken);
-
-            if (user is null)
-            {
-                throw new BusinessException(ResponseMessageCodes.UserNotFound);
-            }
-
             var chatEntity =
                 await _postgresDbContext.Chats.FindChatByIdIncludeMessagesAsync(request.ChatId,
                     cancellationToken);
@@ -57,6 +50,7 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Communities
             {
                 var colleague = (await _postgresDbContext
                         .UserChats
+                        .AsNoTracking()
                         .Include(x => x.User)
                         .FirstOrDefaultAsync(x => x.ChatId == chatEntity.Id && x.UserId != request.UserId,
                         cancellationToken)).User;

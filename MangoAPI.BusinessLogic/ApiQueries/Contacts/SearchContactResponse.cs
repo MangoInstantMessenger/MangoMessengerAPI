@@ -15,7 +15,7 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Contacts
             {
                 Message = ResponseMessageCodes.Success,
                 Success = true,
-                Contacts = contacts,
+                Contacts = contacts
             };
         }
     }

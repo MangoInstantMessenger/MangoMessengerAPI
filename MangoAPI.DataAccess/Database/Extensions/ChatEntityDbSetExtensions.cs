@@ -56,7 +56,8 @@ namespace MangoAPI.DataAccess.Database.Extensions
         public static async Task<List<ChatEntity>> GetChannelsIncludeMessagesAsync(this DbSet<ChatEntity> dbSet,
             CancellationToken cancellationToken)
         {
-            return await dbSet.AsNoTracking()
+            return await dbSet
+                .AsNoTracking()
                 .Include(x => x.Messages)
                 .ThenInclude(x => x.User)
                 .Where(x => x.CommunityType != CommunityType.PrivateChannel)

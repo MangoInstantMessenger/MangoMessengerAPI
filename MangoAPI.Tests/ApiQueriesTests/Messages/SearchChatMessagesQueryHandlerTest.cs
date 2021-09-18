@@ -29,23 +29,5 @@ namespace MangoAPI.Tests.ApiQueriesTests.Messages
             result.Success.Should().BeTrue();
             result.Messages.Should().NotBeNull();
         }
-
-        [Test]
-        public async Task SearchChatMessagesQueryHandlerTest_ShouldThrowUserNotFound()
-        {
-            using var dbContextFixture = new DbContextFixture();
-            var handler = new SearchChatMessageQueryHandler(dbContextFixture.PostgresDbContext);
-            var query = new SearchChatMessagesQuery
-            {
-                UserId = Guid.NewGuid(),
-                ChatId = SeedDataConstants.ExtremeCodeFloodId,
-                MessageText = "hello"
-            };
-
-            Func<Task> result = async () => await handler.Handle(query, CancellationToken.None);
-
-            await result.Should().ThrowAsync<BusinessException>()
-                .WithMessage(ResponseMessageCodes.UserNotFound);
-        }
     }
 }

@@ -1,11 +1,9 @@
-﻿using System;
-using System.Threading;
-using System.Threading.Tasks;
-using FluentAssertions;
+﻿using FluentAssertions;
 using MangoAPI.BusinessLogic.ApiQueries.Communities;
-using MangoAPI.BusinessLogic.BusinessExceptions;
 using MangoAPI.Domain.Constants;
 using NUnit.Framework;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace MangoAPI.Tests.ApiQueriesTests.Communities
 {
@@ -26,22 +24,6 @@ namespace MangoAPI.Tests.ApiQueriesTests.Communities
 
             response.Success.Should().BeTrue();
             response.Chats.Should().NotBeEmpty();
-        }
-
-        [Test]
-        public async Task GetCurrentUserChatsQueryHandlerTest_ShouldThrowUserNotFound()
-        {
-            using var dbContextFixture = new DbContextFixture();
-            var handler = new GetCurrentUserChatsQueryHandler(dbContextFixture.PostgresDbContext);
-            var query = new GetCurrentUserChatsQuery
-            {
-                UserId = Guid.NewGuid()
-            };
-
-            Func<Task> response = async () => await handler.Handle(query, CancellationToken.None);
-
-            await response.Should().ThrowAsync<BusinessException>()
-                .WithMessage(ResponseMessageCodes.UserNotFound);
         }
     }
 }

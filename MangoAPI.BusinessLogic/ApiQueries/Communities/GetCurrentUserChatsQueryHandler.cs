@@ -1,9 +1,7 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
-using MangoAPI.BusinessLogic.BusinessExceptions;
 using MangoAPI.DataAccess.Database;
 using MangoAPI.DataAccess.Database.Extensions;
-using MangoAPI.Domain.Constants;
 using MangoAPI.Domain.Enums;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -23,13 +21,6 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Communities
         public async Task<GetCurrentUserChatsResponse> Handle(GetCurrentUserChatsQuery request,
             CancellationToken cancellationToken)
         {
-            var currentUser = await _postgresDbContext.Users.FindUserByIdAsync(request.UserId, cancellationToken);
-
-            if (currentUser == null)
-            {
-                throw new BusinessException(ResponseMessageCodes.UserNotFound);
-            }
-
             var userChats = await _postgresDbContext.UserChats
                 .FindUserChatsByIdIncludeMessagesAsync(request.UserId, cancellationToken);
 
@@ -37,10 +28,10 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Communities
             {
                 var currentChat = userChat.Chat;
 
-                if (currentChat.CommunityType is CommunityType.DirectChat or CommunityType.SecretChat)
+                if (currentChat.CommunityType is CommunityType.DirectChat)
                 {
                     var colleague = (await _postgresDbContext
-                        .UserChats
+                        .UserChats.AsNoTracking()
                         .Include(x => x.User)
                         .FirstOrDefaultAsync(x => x.ChatId == currentChat.Id && x.UserId != request.UserId,
                         cancellationToken)).User;

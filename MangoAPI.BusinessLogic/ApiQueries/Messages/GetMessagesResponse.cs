@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using MangoAPI.Application.Services;
 using MangoAPI.BusinessLogic.Models;
@@ -12,7 +13,7 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Messages
     {
         public List<Message> Messages { get; init; }
 
-        public static GetMessagesResponse FromSuccess(IEnumerable<MessageEntity> messages, UserEntity user)
+        public static GetMessagesResponse FromSuccess(IEnumerable<MessageEntity> messages, Guid userId)
         {
             return new()
             {
@@ -27,7 +28,7 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Messages
                         UpdatedAt = messageEntity.UpdatedAt?.ToShortTimeString(),
                         CreatedAt = messageEntity.CreatedAt.ToShortTimeString(),
                         UserDisplayName = messageEntity.User.DisplayName,
-                        Self = messageEntity.User.Id == user.Id,
+                        Self = messageEntity.User.Id == userId,
                         IsEncrypted = messageEntity.IsEncrypted,
                         AuthorPublicKey = messageEntity.AuthorPublicKey,
                         MessageAuthorPictureUrl = StringService.GetDocumentUrl(messageEntity.User.Image),
