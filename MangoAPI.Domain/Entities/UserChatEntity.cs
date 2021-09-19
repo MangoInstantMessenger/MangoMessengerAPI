@@ -9,7 +9,7 @@ namespace MangoAPI.Domain.Entities
 
         public Guid ChatId { get; set; }
 
-        public UserRole RoleId { get; set; }
+        public int RoleId { get; set; }
 
         public bool IsArchived { get; set; }
 

@@ -25,7 +25,7 @@ namespace MangoAPI.DataAccess.Database.Configurations
                 {
                     Id = SeedDataConstants.WsbId,
                     Title = "WSB",
-                    CommunityType = CommunityType.PublicChannel,
+                    CommunityType = (int) CommunityType.PublicChannel,
                     Description = "WSB Public Group",
                     MembersCount = 5,
                     Image = "wsb_group_logo.png",
@@ -34,7 +34,7 @@ namespace MangoAPI.DataAccess.Database.Configurations
                 {
                     Id = SeedDataConstants.ExtremeCodeMainId,
                     Title = "Extreme Code Main",
-                    CommunityType = CommunityType.PublicChannel,
+                    CommunityType = (int) CommunityType.PublicChannel,
                     Description = "Extreme Code Main Public Group",
                     CreatedAt = new DateTime(2020, 2, 4),
                     MembersCount = 4,
@@ -44,7 +44,7 @@ namespace MangoAPI.DataAccess.Database.Configurations
                 {
                     Id = SeedDataConstants.ExtremeCodeFloodId,
                     Title = "Extreme Code Flood",
-                    CommunityType = CommunityType.PublicChannel,
+                    CommunityType = (int) CommunityType.PublicChannel,
                     Description = "Extreme Code Flood Public Group",
                     CreatedAt = new DateTime(2020, 4, 23),
                     MembersCount = 4,
@@ -54,7 +54,7 @@ namespace MangoAPI.DataAccess.Database.Configurations
                 {
                     Id = SeedDataConstants.ExtremeCodeCppId,
                     Title = "Extreme Code C++",
-                    CommunityType = CommunityType.PublicChannel,
+                    CommunityType = (int) CommunityType.PublicChannel,
                     Description = "Extreme Code C++ Public Group",
                     CreatedAt = new DateTime(2020, 5, 12),
                     MembersCount = 4,
@@ -64,7 +64,7 @@ namespace MangoAPI.DataAccess.Database.Configurations
                 {
                     Id = SeedDataConstants.ExtremeCodeDotnetId,
                     Title = "Extreme Code .NET",
-                    CommunityType = CommunityType.PublicChannel,
+                    CommunityType = (int) CommunityType.PublicChannel,
                     Description = "Extreme Code .NET Public Group",
                     CreatedAt = new DateTime(2020, 5, 12),
                     MembersCount = 4,
@@ -75,7 +75,7 @@ namespace MangoAPI.DataAccess.Database.Configurations
                     Id = SeedDataConstants.DirectKhachaturRazumovsky,
                     Title = "Khachatur Khachatryan / razumovsky r",
                     Description = "Direct chat between Khachatur Khachatryan and razumovsky r",
-                    CommunityType = CommunityType.DirectChat,
+                    CommunityType = (int) CommunityType.DirectChat,
                     MembersCount = 2,
                 },
                 new ChatEntity
@@ -83,7 +83,7 @@ namespace MangoAPI.DataAccess.Database.Configurations
                     Id = SeedDataConstants.DirectKolbasatorRazumovsky,
                     Title = "Мусяка Колбасяка / razumovsky r",
                     Description = "Direct chat between Мусяка Колбасяка and razumovsky r",
-                    CommunityType = CommunityType.DirectChat,
+                    CommunityType = (int) CommunityType.DirectChat,
                     MembersCount = 2,
                 },
                 new ChatEntity
@@ -91,7 +91,7 @@ namespace MangoAPI.DataAccess.Database.Configurations
                     Id = SeedDataConstants.DirectAmelitRazumovsky,
                     Title = "Amelit / razumovsky r",
                     Description = "Direct chat between Amelit and razumovsky r",
-                    CommunityType = CommunityType.DirectChat,
+                    CommunityType = (int) CommunityType.DirectChat,
                     MembersCount = 2,
                 },
                 new ChatEntity
@@ -99,7 +99,7 @@ namespace MangoAPI.DataAccess.Database.Configurations
                     Id = SeedDataConstants.DirectKhachaturKolbasator,
                     Title = "Khachatur Khachatryan / Мусяка Колбасяка",
                     Description = "Direct chat between Khachatur Khachatryan and Мусяка Колбасяка",
-                    CommunityType = CommunityType.DirectChat,
+                    CommunityType = (int) CommunityType.DirectChat,
                     MembersCount = 2,
                 },
                 new ChatEntity
@@ -107,7 +107,7 @@ namespace MangoAPI.DataAccess.Database.Configurations
                     Id = SeedDataConstants.DirectPetroSzymon,
                     Title = "Petro Kolosov / Szymon Murawski",
                     Description = "Direct chat between Petro Kolosov and Szymon Murawski",
-                    CommunityType = CommunityType.DirectChat,
+                    CommunityType = (int) CommunityType.DirectChat,
                     MembersCount = 2,
                 });
         }

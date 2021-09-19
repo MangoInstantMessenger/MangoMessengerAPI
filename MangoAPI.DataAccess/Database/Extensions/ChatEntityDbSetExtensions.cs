@@ -16,8 +16,8 @@ namespace MangoAPI.DataAccess.Database.Extensions
         {
             return await dbSet
                 .Include(chatEntity => chatEntity.ChatUsers)
-                .Where(chatEntity => (chatEntity.CommunityType == CommunityType.DirectChat ||
-                                     chatEntity.CommunityType == CommunityType.SecretChat) &&
+                .Where(chatEntity => (chatEntity.CommunityType == (int) CommunityType.DirectChat ||
+                                      chatEntity.CommunityType == (int) CommunityType.SecretChat) &&
                                      chatEntity.ChatUsers.Any(userChatEntity => userChatEntity.UserId == userId))
                 .ToListAsync(cancellationToken);
         }
@@ -49,8 +49,10 @@ namespace MangoAPI.DataAccess.Database.Extensions
             Guid chatId, CancellationToken cancellationToken)
         {
             return await dbSet
-                .FirstOrDefaultAsync(x => x.Id == chatId && x.CommunityType != CommunityType.DirectChat &&
-                                                        x.CommunityType != CommunityType.PrivateChannel, cancellationToken);
+                .FirstOrDefaultAsync(x => x.Id == chatId 
+                                          && x.CommunityType != (int) CommunityType.DirectChat 
+                                          && x.CommunityType != (int) CommunityType.PrivateChannel, 
+                    cancellationToken);
         }
 
         public static async Task<List<ChatEntity>> GetChannelsIncludeMessagesAsync(this DbSet<ChatEntity> dbSet,
@@ -60,9 +62,9 @@ namespace MangoAPI.DataAccess.Database.Extensions
                 .AsNoTracking()
                 .Include(x => x.Messages)
                 .ThenInclude(x => x.User)
-                .Where(x => x.CommunityType != CommunityType.PrivateChannel)
-                .Where(x => x.CommunityType != CommunityType.DirectChat)
-                .Where(x => x.CommunityType != CommunityType.SecretChat)
+                .Where(x => x.CommunityType != (int) CommunityType.PrivateChannel)
+                .Where(x => x.CommunityType != (int) CommunityType.DirectChat)
+                .Where(x => x.CommunityType != (int) CommunityType.SecretChat)
                 .ToListAsync(cancellationToken);
         }
     }

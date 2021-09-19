@@ -5,6 +5,7 @@ using MangoAPI.BusinessLogic.Models;
 using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.Domain.Constants;
 using MangoAPI.Domain.Entities;
+using MangoAPI.Domain.Enums;
 
 namespace MangoAPI.BusinessLogic.ApiQueries.Communities
 {
@@ -23,7 +24,7 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Communities
                 ChatLogoImageUrl = StringService.GetDocumentUrl(userChatEntity.Chat.Image),
                 Description = userChatEntity.Chat.Description,
                 MembersCount = userChatEntity.Chat.MembersCount,
-                CommunityType = userChatEntity.Chat.CommunityType,
+                CommunityType = (CommunityType) userChatEntity.Chat.CommunityType,
                 IsArchived = userChatEntity.IsArchived,
                 IsMember = true,
                 LastMessage = userChatEntity.Chat.Messages.Any()

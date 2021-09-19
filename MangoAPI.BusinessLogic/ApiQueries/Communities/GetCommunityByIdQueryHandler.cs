@@ -39,14 +39,14 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Communities
 
             switch (userChat)
             {
-                case null when chatEntity.CommunityType == CommunityType.DirectChat:
+                case null when chatEntity.CommunityType == (int) CommunityType.DirectChat:
                     throw new BusinessException(ResponseMessageCodes.ChatNotFound);
 
-                case null when chatEntity.CommunityType == CommunityType.PrivateChannel:
+                case null when chatEntity.CommunityType == (int) CommunityType.PrivateChannel:
                     throw new BusinessException(ResponseMessageCodes.ChatNotFound);
             }
 
-            if (chatEntity.CommunityType == CommunityType.DirectChat)
+            if (chatEntity.CommunityType == (int) CommunityType.DirectChat)
             {
                 var colleague = (await _postgresDbContext
                         .UserChats
@@ -63,7 +63,7 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Communities
             {
                 ChatId = chatEntity.Id,
                 Title = chatEntity.Title,
-                CommunityType = chatEntity.CommunityType,
+                CommunityType = (CommunityType) chatEntity.CommunityType,
                 ChatLogoImageUrl = StringService.GetDocumentUrl(chatEntity.Image),
                 Description = chatEntity.Description,
                 MembersCount = chatEntity.MembersCount,
