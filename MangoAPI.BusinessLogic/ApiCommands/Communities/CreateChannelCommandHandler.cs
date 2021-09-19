@@ -37,7 +37,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Communities
 
             var group = new ChatEntity
             {
-                CommunityType = request.CommunityType,
+                CommunityType = (int) request.CommunityType,
                 Title = request.ChannelTitle,
                 CreatedAt = DateTime.UtcNow,
                 Description = request.ChannelDescription,
@@ -49,7 +49,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Communities
             _postgresDbContext.UserChats.Add(new UserChatEntity
             {
                 ChatId = group.Id,
-                RoleId = UserRole.Owner,
+                RoleId = (int) UserRole.Owner,
                 UserId = user.Id,
             });
 

@@ -29,7 +29,7 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Communities
                 .FirstOrDefaultAsync(x => x.ChatId == request.ChatId && x.UserId != request.UserId,
                     cancellationToken);
 
-            if (userChat == null || userChat.Chat.CommunityType != CommunityType.SecretChat)
+            if (userChat == null || userChat.Chat.CommunityType != (int) CommunityType.SecretChat)
             {
                 throw new BusinessException(ResponseMessageCodes.ChatNotFound);
             }

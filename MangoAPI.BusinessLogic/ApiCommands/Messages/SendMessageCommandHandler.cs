@@ -75,11 +75,11 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Messages
         {
             return chat.CommunityType switch
             {
-                CommunityType.DirectChat => true,
-                CommunityType.SecretChat => true,
-                CommunityType.PrivateChannel => await CheckPrivateChannelPermissions(user, chat, cancellationToken),
-                CommunityType.PublicChannel => await CheckPublicChannelPermissions(user, chat, cancellationToken),
-                CommunityType.ReadOnlyChannel => await CheckReadOnlyChannelPermissions(user, chat, cancellationToken),
+                (int) CommunityType.DirectChat => true,
+                (int) CommunityType.SecretChat => true,
+                (int) CommunityType.PrivateChannel => await CheckPrivateChannelPermissions(user, chat, cancellationToken),
+                (int) CommunityType.PublicChannel => await CheckPublicChannelPermissions(user, chat, cancellationToken),
+                (int) CommunityType.ReadOnlyChannel => await CheckReadOnlyChannelPermissions(user, chat, cancellationToken),
                 _ => false,
             };
         }
@@ -90,7 +90,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Messages
             return (await _postgresDbContext.UserChats
                     .Where(x => x.UserId == user.Id && x.ChatId == chat.Id)
                     .ToListAsync(cancellationToken))
-                .Any(x => x.RoleId is UserRole.Moderator or UserRole.Admin or UserRole.Owner);
+                .Any(x => x.RoleId is (int) UserRole.Moderator or (int) UserRole.Admin or (int) UserRole.Owner);
         }
 
         private async Task<bool> CheckPublicChannelPermissions(UserEntity user, ChatEntity chat,

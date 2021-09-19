@@ -48,7 +48,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Communities
 
             var existingChat = userPrivateChats
                 .FirstOrDefault(x => x.ChatUsers.Any(t => t.UserId == partner.Id)
-                                     && x.CommunityType == request.CommunityType);
+                                     && x.CommunityType == (int) request.CommunityType);
 
             if (existingChat != null)
             {
@@ -58,7 +58,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Communities
             var directChat = new ChatEntity
             {
                 Id = Guid.NewGuid(),
-                CommunityType = request.CommunityType,
+                CommunityType = (int) request.CommunityType,
                 Title = $"{currentUser.DisplayName} / {partner.DisplayName}",
                 CreatedAt = DateTime.UtcNow,
                 Description = $"Direct chat between {currentUser.DisplayName} and {partner.DisplayName}",
@@ -72,8 +72,8 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Communities
 
             var userChats = new[]
             {
-                new UserChatEntity {ChatId = directChat.Id, RoleId = UserRole.User, UserId = currentUser.Id},
-                new UserChatEntity {ChatId = directChat.Id, RoleId = UserRole.User, UserId = request.PartnerId},
+                new UserChatEntity {ChatId = directChat.Id, RoleId = (int) UserRole.User, UserId = currentUser.Id},
+                new UserChatEntity {ChatId = directChat.Id, RoleId = (int) UserRole.User, UserId = request.PartnerId},
             };
 
             await _postgresDbContext.Chats.AddAsync(directChat, cancellationToken);
