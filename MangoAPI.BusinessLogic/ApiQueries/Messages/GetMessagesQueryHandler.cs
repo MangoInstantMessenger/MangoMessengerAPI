@@ -1,8 +1,11 @@
-﻿using System.Threading;
-using System.Threading.Tasks;
+﻿using MangoAPI.BusinessLogic.Models;
 using MangoAPI.DataAccess.Database;
-using MangoAPI.DataAccess.Database.Extensions;
+using MangoAPI.Domain.Constants;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace MangoAPI.BusinessLogic.ApiQueries.Messages
 {
@@ -19,9 +22,24 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Messages
         {
             var chat = await _postgresDbContext
                 .Messages
-                .GetChatMessagesByIdIncludeUser(request.ChatId, cancellationToken);
+                .AsNoTracking()
+                .Include(x => x.Chat)
+                .Where(x => x.ChatId == request.ChatId)
+                .OrderBy(x => x.CreatedAt)
+                .Select(messageEntity => new Message
+                {
+                    MessageId = messageEntity.Id,
+                    MessageText = messageEntity.Content,
+                    UpdatedAt = messageEntity.UpdatedAt.HasValue ? messageEntity.UpdatedAt.Value.ToShortTimeString() : null,
+                    CreatedAt = messageEntity.CreatedAt.ToShortTimeString(),
+                    UserDisplayName = messageEntity.User.DisplayName,
+                    Self = messageEntity.User.Id == request.UserId,
+                    IsEncrypted = messageEntity.IsEncrypted,
+                    AuthorPublicKey = messageEntity.AuthorPublicKey,
+                    MessageAuthorPictureUrl = messageEntity.User.Image != null ? $"{EnvironmentConstants.BackendAddress}Uploads/{messageEntity.User.Image}" : null,
+                }).ToListAsync(cancellationToken);
 
-            return GetMessagesResponse.FromSuccess(chat, request.UserId);
+            return GetMessagesResponse.FromSuccess(chat);
         }
     }
 }
