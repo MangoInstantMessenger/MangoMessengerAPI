@@ -15,7 +15,7 @@ namespace MangoAPI.DataAccess.Database.Extensions
         {
             var query = dbSet
                 .AsNoTracking()
-                .Include(x  => x.Chat)
+                .Include(x => x.Chat)
                 .ThenInclude(x => x.Messages)
                 .ThenInclude(x => x.User)
                 .Where(x => x.UserId == userId);
