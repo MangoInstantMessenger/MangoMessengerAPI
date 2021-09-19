@@ -49,7 +49,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.UserChats
                 {
                     ChatId = request.ChatId,
                     UserId = currentUser.Id,
-                    RoleId = UserRole.User,
+                    RoleId = (int) UserRole.User,
                 }, cancellationToken);
 
             chat.MembersCount += 1;

@@ -4,7 +4,6 @@ using MangoAPI.DataAccess.Database;
 using MangoAPI.DataAccess.Database.Extensions;
 using MangoAPI.Domain.Enums;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -21,11 +20,16 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Communities
             _postgresDbContext = postgresDbContext;
         }
 
-        public async Task<SearchCommunityResponse> Handle(SearchCommunityQuery request, CancellationToken cancellationToken)
+        public async Task<SearchCommunityResponse> Handle(SearchCommunityQuery request,
+            CancellationToken cancellationToken)
         {
             var chats = await _postgresDbContext
                 .Chats
                 .GetChannelsIncludeMessagesAsync(cancellationToken);
+
+            var userChats =
+                await _postgresDbContext.UserChats
+                    .FindUserChatsByIdIncludeMessagesAsync(request.UserId, cancellationToken);
 
             if (!string.IsNullOrEmpty(request.DisplayName) || !string.IsNullOrWhiteSpace(request.DisplayName))
             {
@@ -38,10 +42,8 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Communities
 
             foreach (var chat in chats)
             {
-                var isMember = await _postgresDbContext.UserChats.AsNoTracking()
-                    .AnyAsync(x => x.ChatId == chat.Id && x.UserId == request.UserId,
-                        cancellationToken);
-
+                var isMember = userChats.Any(x => x.Chat.Id == chat.Id);
+                
                 var currentChat = new Chat
                 {
                     ChatId = chat.Id,
@@ -49,7 +51,7 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Communities
                     ChatLogoImageUrl = StringService.GetDocumentUrl(chat.Image),
                     Description = chat.Description,
                     MembersCount = chat.MembersCount,
-                    CommunityType = chat.CommunityType,
+                    CommunityType = (CommunityType) chat.CommunityType,
                     IsMember = isMember,
                     LastMessage = chat.Messages.Any()
                         ? chat.Messages.OrderBy(x => x.CreatedAt).Select(x =>
@@ -67,18 +69,18 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Communities
                         : null,
                 };
 
-                if (currentChat.CommunityType == CommunityType.DirectChat)
-                {
-                    var colleague = (await _postgresDbContext
-                        .UserChats
-                        .AsNoTracking()
-                        .Include(x => x.User)
-                        .FirstOrDefaultAsync(x => x.ChatId == currentChat.ChatId && x.UserId != request.UserId,
-                        cancellationToken)).User;
-
-                    currentChat.Title = colleague.DisplayName;
-                    currentChat.ChatLogoImageUrl = StringService.GetDocumentUrl(colleague.Image);
-                }
+                // if (currentChat.CommunityType == CommunityType.DirectChat)
+                // {
+                //     var colleague = (await _postgresDbContext
+                //         .UserChats
+                //         .AsNoTracking()
+                //         .Include(x => x.User)
+                //         .FirstOrDefaultAsync(x => x.ChatId == currentChat.ChatId && x.UserId != request.UserId,
+                //             cancellationToken)).User;
+                //
+                //     currentChat.Title = colleague.DisplayName;
+                //     currentChat.ChatLogoImageUrl = StringService.GetDocumentUrl(colleague.Image);
+                // }
 
                 resultList.Add(currentChat);
             }

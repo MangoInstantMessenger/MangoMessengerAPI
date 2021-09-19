@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using MangoAPI.Application.Services;
-using MangoAPI.BusinessLogic.Models;
+﻿using MangoAPI.BusinessLogic.Models;
 using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.Domain.Constants;
-using MangoAPI.Domain.Entities;
+using System.Collections.Generic;
 
 namespace MangoAPI.BusinessLogic.ApiQueries.Messages
 {
@@ -13,27 +9,12 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Messages
     {
         public List<Message> Messages { get; init; }
 
-        public static GetMessagesResponse FromSuccess(IEnumerable<MessageEntity> messages, Guid userId)
+        public static GetMessagesResponse FromSuccess(List<Message> messages)
         {
             return new()
             {
                 Message = ResponseMessageCodes.Success,
-
-                Messages = messages.OrderBy(messageEntity => messageEntity.CreatedAt)
-                    .Select(messageEntity => new Message
-                    {
-                        MessageId = messageEntity.Id,
-                        ChatId = messageEntity.ChatId,
-                        MessageText = messageEntity.Content,
-                        UpdatedAt = messageEntity.UpdatedAt?.ToShortTimeString(),
-                        CreatedAt = messageEntity.CreatedAt.ToShortTimeString(),
-                        UserDisplayName = messageEntity.User.DisplayName,
-                        Self = messageEntity.User.Id == userId,
-                        IsEncrypted = messageEntity.IsEncrypted,
-                        AuthorPublicKey = messageEntity.AuthorPublicKey,
-                        MessageAuthorPictureUrl = StringService.GetDocumentUrl(messageEntity.User.Image),
-                    }).ToList(),
-
+                Messages = messages,
                 Success = true,
             };
         }
