@@ -44,6 +44,7 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Communities
                         new Message
                         {
                             MessageId = x.Id,
+                            ChatId = x.ChatId,
                             UserDisplayName = x.User.DisplayName,
                             MessageText = x.Content,
                             CreatedAt = x.CreatedAt.ToShortTimeString(),
