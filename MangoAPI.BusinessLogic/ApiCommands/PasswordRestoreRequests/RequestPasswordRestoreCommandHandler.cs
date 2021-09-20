@@ -35,18 +35,19 @@ namespace MangoAPI.BusinessLogic.ApiCommands.PasswordRestoreRequests
                 throw new BusinessException(ResponseMessageCodes.UserNotFound);
             }
 
-            await _emailSenderService.SendVerificationEmailAsync(user, cancellationToken);
-
-            var passwordRestoreRequestEntity = new PasswordRestoreRequestEntity
+            var passwordRestoreRequest = new PasswordRestoreRequestEntity
             {
+                Id = Guid.NewGuid(),
                 UserId = user.Id,
                 Email = user.Email,
                 CreatedAt = DateTime.Now,
                 ExpiresAt = DateTime.Now.AddHours(3),
             };
 
-            await _postgresDbContext.PasswordRestoreRequests.AddAsync(passwordRestoreRequestEntity, cancellationToken);
+            await _postgresDbContext.PasswordRestoreRequests.AddAsync(passwordRestoreRequest, cancellationToken);
             await _postgresDbContext.SaveChangesAsync(cancellationToken);
+
+            await _emailSenderService.SendPasswordRestoreRequest(user, passwordRestoreRequest.Id, cancellationToken);
 
             return ResponseBase.SuccessResponse;
         }

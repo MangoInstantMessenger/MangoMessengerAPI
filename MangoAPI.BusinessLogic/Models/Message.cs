@@ -10,6 +10,8 @@ namespace MangoAPI.BusinessLogic.Models
 
         public Guid ChatId { get; init; }
 
+        public Guid UserId { get; init; }
+
         public string UserDisplayName { get; init; }
 
         public string MessageText { get; init; }
@@ -34,6 +36,7 @@ namespace MangoAPI.BusinessLogic.Models
             return new()
             {
                 MessageId = message.Id,
+                UserId = message.UserId,
                 ChatId = message.ChatId,
                 UserDisplayName = user.DisplayName,
                 MessageText = message.Content,
