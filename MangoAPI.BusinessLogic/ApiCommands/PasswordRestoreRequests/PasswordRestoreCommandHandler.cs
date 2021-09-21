@@ -27,7 +27,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.PasswordRestoreRequests
         {
             if (request.NewPassword != request.RepeatPassword)
             {
-                throw new BusinessException(ResponseMessageCodes.OldAndNewPasswordsAreSame);
+                throw new BusinessException(ResponseMessageCodes.PasswordsAreNotSame);
             }
 
             var restorePasswordRequest =

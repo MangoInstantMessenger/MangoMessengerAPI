@@ -23,7 +23,8 @@
         public const string InvalidGroupType = "INVALID_GROUP_TYPE";
         public const string CannotAddSelfToContacts = "CANNOT_ADD_SELF_TO_CONTACTS";
         public const string CannotCreateSelfChat = "CANNOT_CREATE_SELF_CHAT";
-        public const string OldAndNewPasswordsAreSame = "OLD_AND_NEW_PASSWORDS_ARE_SAME";
+        public const string PasswordsAreNotSame = "PASSWORDS_ARE_NOT_SAME";
+        public const string PasswordsAreSame = "PASSWORDS_ARE_SAME";
         public const string InvalidOrExpiredRestorePasswordRequest = "INVALID_OR_EXPIRED_RESTORE_PASSWORD_REQUEST";
         public const string UserPublicKeyIsNotGenerated = "USER_PUBLIC_KEY_IS_NOT_GENERATED";
     }

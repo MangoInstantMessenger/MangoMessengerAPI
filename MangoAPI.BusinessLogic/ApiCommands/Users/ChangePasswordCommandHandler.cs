@@ -27,7 +27,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
         {
             if (request.CurrentPassword == request.NewPassword)
             {
-                throw new BusinessException(ResponseMessageCodes.OldAndNewPasswordsAreSame);
+                throw new BusinessException(ResponseMessageCodes.PasswordsAreSame);
             }
 
             var user = await _postgresDbContext.Users.FindUserByIdAsync(request.UserId, cancellationToken);
