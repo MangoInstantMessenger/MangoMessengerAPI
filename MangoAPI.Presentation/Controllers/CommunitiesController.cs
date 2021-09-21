@@ -39,11 +39,11 @@ namespace MangoAPI.Presentation.Controllers
         /// <param name="cancellationToken">Cancellation token instance.</param>
         /// <returns>Possible codes: 200, 400, 409.</returns>
         [HttpGet]
-        [SwaggerOperation(Summary = "Gets all current user's chats. Requires role: User.")]
+        [SwaggerOperation(Description = "Gets all current user's chats. Requires role: User.",
+            Summary = "Gets all user's chats.")]
         [ProducesResponseType(typeof(GetCurrentUserChatsResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
-        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> GetChats(CancellationToken cancellationToken)
         {
             var userId = HttpContext.User.GetUserId();
@@ -64,13 +64,13 @@ namespace MangoAPI.Presentation.Controllers
         /// <param name="cancellationToken">Cancellation token instance.</param>
         /// <returns>Possible codes: 200, 400, 409.</returns>
         [HttpPost("channel")]
-        [SwaggerOperation(Summary =
+        [SwaggerOperation(Description =
             "Creates new group of specified type: Private Channel (3), Public Channel (4), Readonly Channel (5). " +
-            "Requires role: User.")]
+            "Requires role: User.",
+            Summary = "Creates new group of specified type.")]
         [ProducesResponseType(typeof(CreateCommunityResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
-        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> CreateChannelAsync([FromBody] CreateChannelRequest request,
             CancellationToken cancellationToken)
         {
@@ -87,13 +87,13 @@ namespace MangoAPI.Presentation.Controllers
         /// <param name="cancellationToken">Cancellation token instance.</param>
         /// <returns>Possible codes: 200, 400, 409.</returns>
         [HttpPost("chat")]
-        [SwaggerOperation(Summary =
+        [SwaggerOperation(Description =
             "Creates new chat with specified user. Chat types: Direct Chat (1), Secret Chat (2). " +
-            "Requires role: User.")]
+            "Requires role: User.",
+            Summary = "Creates new chat with specified user.")]
         [ProducesResponseType(typeof(CreateCommunityResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
-        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> CreateChatAsync([FromBody] CreateChatRequest request,
             CancellationToken cancellationToken)
         {
@@ -111,11 +111,11 @@ namespace MangoAPI.Presentation.Controllers
         /// <param name="cancellationToken">Cancellation token instance.</param>
         /// <returns>Possible codes: 200, 400, 409.</returns>
         [HttpGet("{id:guid}")]
-        [SwaggerOperation(Summary = "Gets chat by ID. Requires role: User.")]
+        [SwaggerOperation(Description = "Gets chat by ID. Requires role: User.",
+            Summary = "Gets chat by ID.")]
         [ProducesResponseType(typeof(GetCommunityByIdResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
-        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> GetCommunityById([FromRoute] Guid id, CancellationToken cancellationToken)
         {
             var currentUserId = HttpContext.User.GetUserId();
@@ -137,11 +137,11 @@ namespace MangoAPI.Presentation.Controllers
         /// <param name="cancellationToken">Cancellation token instance.</param>
         /// <returns>Possible codes: 200, 400, 409.</returns>
         [HttpGet("searches")]
-        [SwaggerOperation(Summary = "Searches chats by display name. Requires role: User.")]
+        [SwaggerOperation(Description = "Searches chats by display name. Requires role: User.",
+            Summary = "Searches chats by display name.")]
         [ProducesResponseType(typeof(SearchCommunityResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
-        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> SearchAsync([FromQuery] string displayName,
             CancellationToken cancellationToken)
         {
@@ -156,7 +156,18 @@ namespace MangoAPI.Presentation.Controllers
             return await RequestAsync(command, cancellationToken);
         }
 
+        /// <summary>
+        /// Returns secret chat public key. Required role: User
+        /// </summary>
+        /// <param name="displayName">ID of the chat, string.</param>
+        /// <param name="cancellationToken">Cancellation token instance.</param>
+        /// <returns>Possible codes: 200, 400, 409.</returns>
         [HttpGet("chats/public-key/{chatId:guid}")]
+        [SwaggerOperation(Description = "Returns secret chat public key. Required role: User",
+            Summary = "Returns secret chat public key.")]
+        [ProducesResponseType(typeof(SearchCommunityResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
         public async Task<IActionResult> GetSecretChatPublicKey([FromRoute] Guid chatId, CancellationToken cancellationToken)
         {
             var userId = HttpContext.User.GetUserId();

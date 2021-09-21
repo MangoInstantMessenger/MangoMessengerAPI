@@ -36,11 +36,11 @@ namespace MangoAPI.Presentation.Controllers
         /// <returns></returns>
         [AllowAnonymous]
         [HttpPost("{emailOrPhone}")]
-        [SwaggerOperation(Summary = "Creates new password restore request in database.")]
+        [SwaggerOperation(Description = "Creates new password restore request in database. Allow anonymous.",
+            Summary = "Creates new password restore request in database.")]
         [ProducesResponseType(typeof(ResponseBase), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
-        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> RestorePasswordRequestAsync([FromRoute] string emailOrPhone,
             CancellationToken cancellationToken)
         {
@@ -60,11 +60,11 @@ namespace MangoAPI.Presentation.Controllers
         /// <returns>Possible codes: 200, 400, 409.</returns>
         [HttpPut]
         [AllowAnonymous]
-        [SwaggerOperation(Summary = "Updates users password hash in database.")]
+        [SwaggerOperation(Description = "Updates users password hash in database. Allow anonymous.",
+            Summary = "Updates users password hash in database.")]
         [ProducesResponseType(typeof(ResponseBase), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
-        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> RestorePasswordAsync([FromBody] PasswordRestoreRequest request,
             CancellationToken cancellationToken)
         {

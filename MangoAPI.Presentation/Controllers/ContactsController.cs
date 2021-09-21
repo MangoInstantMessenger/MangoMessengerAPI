@@ -39,12 +39,11 @@ namespace MangoAPI.Presentation.Controllers
         /// <param name="cancellationToken">Cancellation token instance.</param>
         /// <returns>Possible codes: 200, 400, 409.</returns>
         [HttpPost("{contactId:guid}")]
-        [SwaggerOperation(Summary = "Adds particular user to the contacts. Fetches user by user ID. " +
-                                    "Requires role: User.")]
+        [SwaggerOperation(Description = "Adds particular user to the contacts. Fetches user by user ID. " +
+            "Requires role: User.", Summary = "Adds particular user to the contacts")]
         [ProducesResponseType(typeof(ResponseBase), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
-        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> AddContact([FromRoute] Guid contactId, CancellationToken cancellationToken)
         {
             var currentUserId = HttpContext.User.GetUserId();
@@ -65,12 +64,12 @@ namespace MangoAPI.Presentation.Controllers
         /// <param name="cancellationToken">Cancellation token instance.</param>
         /// <returns>Possible codes: 200, 400, 409.</returns>
         [HttpDelete("{contactId:guid}")]
-        [SwaggerOperation(Summary = "Deletes particular contact from the contacts. Fetches user by user ID. " +
-                                    "Requires role: User")]
+        [SwaggerOperation(Description = "Deletes particular contact from the contacts. Fetches user by user ID. " +
+            "Requires role: User", 
+            Summary = "Deletes particular contact from the contacts.")]
         [ProducesResponseType(typeof(ResponseBase), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
-        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> DeleteContact([FromRoute] Guid contactId,
             CancellationToken cancellationToken)
         {
@@ -90,11 +89,11 @@ namespace MangoAPI.Presentation.Controllers
         /// <param name="cancellationToken">Cancellation token instance.</param>
         /// <returns>Possible codes: 200, 400, 409.</returns>
         [HttpGet]
-        [SwaggerOperation(Summary = "Returns list of current user's contacts. Requires role: User.")]
+        [SwaggerOperation(Description = "Returns list of current user's contacts. Requires role: User.",
+            Summary = "Returns list of user's contacts.")]
         [ProducesResponseType(typeof(GetContactsResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
-        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> GetContacts(CancellationToken cancellationToken)
         {
             var userId = HttpContext.User.GetUserId();
@@ -115,12 +114,12 @@ namespace MangoAPI.Presentation.Controllers
         /// <returns>Possible codes: 200, 400, 409.</returns>
         [HttpGet("searches")]
         [Authorize(Roles = "User")]
-        [SwaggerOperation(Summary =
-            "Searches user by display name, phone number or e-mail address. Requires role: User.")]
+        [SwaggerOperation(Description =
+            "Searches user by display name, phone number or e-mail address. Requires role: User.",
+            Summary = "Searches user by credential.")]
         [ProducesResponseType(typeof(SearchContactResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
-        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> SearchesAsync([FromRoute] string searchQuery,
             CancellationToken cancellationToken)
         {

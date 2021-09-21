@@ -30,11 +30,11 @@ namespace MangoAPI.Presentation.Controllers
         /// <param name="formFile">File to be uploaded.</param>
         /// <param name="cancellationToken">Cancellation token instance.</param>
         [HttpPost]
-        [SwaggerOperation(Summary = "Uploads document to the server. Requires role: User.")]
+        [SwaggerOperation(Description = "Uploads document to the server. Requires role: User.",
+            Summary = "Uploads document to the server.")]
         [ProducesResponseType(typeof(UploadDocumentResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
-        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> UploadDocumentAsync(IFormFile formFile,
             CancellationToken cancellationToken)
         {
