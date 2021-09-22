@@ -39,8 +39,9 @@ namespace MangoAPI.Presentation.Controllers
         /// <returns>Possible codes: 200, 400, 409.</returns>
         [HttpPost]
         [AllowAnonymous]
-        [SwaggerOperation(Summary =
-            "Logins to the system. Returns pair of the access/refresh tokens. Does not requires authorization.")]
+        [SwaggerOperation(Description = 
+            "Logins to the system. Returns pair of the access/refresh tokens. Does not requires authorization.",
+            Summary = "Logins to the system.")]
         [ProducesResponseType(typeof(TokensResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
@@ -59,13 +60,13 @@ namespace MangoAPI.Presentation.Controllers
         /// <returns>Possible codes: 200, 400, 409.</returns>
         [AllowAnonymous]
         [HttpPost("{refreshToken:guid}")]
-        [SwaggerOperation(Summary = "Refreshes current user's session. " +
-                                    "Returns pair of the access/refresh tokens. " +
-                                    "Requires valid refresh token.")]
+        [SwaggerOperation(Description = "Refreshes current user's session. " +
+            "Returns pair of the access/refresh tokens. " +
+            "Requires valid refresh token. Allow anonymous.",
+            Summary = "Refreshes current user's session.")]
         [ProducesResponseType(typeof(TokensResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
-        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> RefreshSession([FromRoute] Guid refreshToken,
             CancellationToken cancellationToken)
         {
@@ -85,11 +86,11 @@ namespace MangoAPI.Presentation.Controllers
         /// <returns>Possible codes: 200, 400, 409.</returns>
         [HttpDelete("{refreshToken:guid}")]
         [Authorize(Roles = "Unverified, User")]
-        [SwaggerOperation(Summary = "Deletes current user's session. Requires roles: Unverified, User.")]
+        [SwaggerOperation(Description = "Deletes current user's session. Requires roles: Unverified, User.",
+            Summary = "Deletes current user's session.")]
         [ProducesResponseType(typeof(ResponseBase), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
-        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> LogoutAsync([FromRoute] Guid refreshToken,
             CancellationToken cancellationToken)
         {
@@ -108,11 +109,11 @@ namespace MangoAPI.Presentation.Controllers
         /// <returns>Possible codes: 200, 400, 409.</returns>
         [HttpDelete]
         [Authorize(Roles = "Unverified, User")]
-        [SwaggerOperation(Summary = "Deletes all current user's sessions. Requires roles: Unverified, User.")]
+        [SwaggerOperation(Description = "Deletes all current user's sessions. Requires roles: Unverified, User.",
+            Summary = "Deletes all current user's sessions.")]
         [ProducesResponseType(typeof(ResponseBase), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
-        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> LogoutAllAsync(CancellationToken cancellationToken)
         {
             var userId = HttpContext.User.GetUserId();

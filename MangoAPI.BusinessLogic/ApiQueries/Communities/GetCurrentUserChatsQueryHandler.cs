@@ -23,7 +23,7 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Communities
         public async Task<GetCurrentUserChatsResponse> Handle(GetCurrentUserChatsQuery request,
             CancellationToken cancellationToken)
         {
-            var userChats = await _postgresDbContext.UserChats
+            var query = _postgresDbContext.UserChats
                 .AsNoTracking()
                 .Include(x => x.Chat)
                 .ThenInclude(x => x.Messages)
@@ -34,27 +34,34 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Communities
                     ChatId = x.ChatId,
                     Title = x.Chat.Title,
                     CommunityType = (CommunityType)x.Chat.CommunityType,
-                    ChatLogoImageUrl = x.Chat.Image != null ? $"{EnvironmentConstants.BackendAddress}Uploads/{x.Chat.Image}" : null,
+                    ChatLogoImageUrl = x.Chat.Image != null
+                        ? $"{EnvironmentConstants.BackendAddress}Uploads/{x.Chat.Image}"
+                        : null,
                     Description = x.Chat.Description,
                     MembersCount = x.Chat.MembersCount,
                     IsArchived = x.IsArchived,
                     IsMember = true,
                     LastMessage = x.Chat.Messages.Any()
-                    ? x.Chat.Messages.OrderBy(messageEntity => messageEntity.CreatedAt).Select(x =>
-                        new Message
-                        {
-                            MessageId = x.Id,
-                            ChatId = x.ChatId,
-                            UserDisplayName = x.User.DisplayName,
-                            MessageText = x.Content,
-                            CreatedAt = x.CreatedAt.ToShortTimeString(),
-                            UpdatedAt = x.UpdatedAt.HasValue ? x.UpdatedAt.Value.ToShortTimeString() : null,
-                            IsEncrypted = x.IsEncrypted,
-                            AuthorPublicKey = x.AuthorPublicKey,
-                            MessageAuthorPictureUrl = x.User.Image != null ? $"{EnvironmentConstants.BackendAddress}Uploads/{x.User.Image}" : null,
-                            Self = x.UserId == request.UserId,
-                        }).Last() : null,
-                }).ToListAsync(cancellationToken);
+                        ? x.Chat.Messages.OrderBy(messageEntity => messageEntity.CreatedAt).Select(messageEntity =>
+                            new Message
+                            {
+                                MessageId = messageEntity.Id,
+                                ChatId = messageEntity.ChatId,
+                                UserDisplayName = messageEntity.User.DisplayName,
+                                MessageText = messageEntity.Content,
+                                CreatedAt = messageEntity.CreatedAt.ToShortTimeString(),
+                                UpdatedAt = messageEntity.UpdatedAt.HasValue ? messageEntity.UpdatedAt.Value.ToShortTimeString() : null,
+                                IsEncrypted = messageEntity.IsEncrypted,
+                                AuthorPublicKey = messageEntity.AuthorPublicKey,
+                                MessageAuthorPictureUrl = messageEntity.User.Image != null
+                                    ? $"{EnvironmentConstants.BackendAddress}Uploads/{messageEntity.User.Image}"
+                                    : null,
+                                Self = messageEntity.UserId == request.UserId,
+                            }).Last()
+                        : null,
+                });
+
+            var userChats = await query.ToListAsync(cancellationToken);
 
             var directChatsIds = userChats
                 .Where(x => x.CommunityType == CommunityType.DirectChat)

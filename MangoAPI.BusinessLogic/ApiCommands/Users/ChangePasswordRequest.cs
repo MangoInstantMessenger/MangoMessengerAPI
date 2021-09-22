@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using Newtonsoft.Json;
 
 namespace MangoAPI.BusinessLogic.ApiCommands.Users
@@ -12,7 +13,10 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
             NewPassword = newPassword;
         }
 
+        [DefaultValue("x[?6dME#xrp=nr7q")]
         public string CurrentPassword { get; }
+        
+        [DefaultValue("W[?64Ms#xdp=Qr7q")]
         public string NewPassword { get; }
     }
 

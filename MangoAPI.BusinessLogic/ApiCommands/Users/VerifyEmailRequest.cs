@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Text.Json.Serialization;
 
 namespace MangoAPI.BusinessLogic.ApiCommands.Users
@@ -12,7 +13,10 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
             UserId = userId;
         }
 
+        [DefaultValue("test@gmail.com")]
         public string Email { get; }
+        
+        [DefaultValue("d1ab1de1-1aa8-4650-937c-4ed882038ad7")]
         public Guid UserId { get; }
     }
 

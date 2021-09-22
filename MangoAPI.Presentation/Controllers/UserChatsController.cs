@@ -38,11 +38,11 @@ namespace MangoAPI.Presentation.Controllers
         /// <param name="cancellationToken">Cancellation token instance.</param>
         /// <returns>Possible codes: 200, 400, 409.</returns>
         [HttpPut]
-        [SwaggerOperation(Summary = "Archives or un-archives chat. Requires roles: User.")]
+        [SwaggerOperation(Description = "Archives or un-archives chat. Requires roles: User.",
+            Summary = "Archives or un-archives chat.")]
         [ProducesResponseType(typeof(ResponseBase), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
-        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> ArchiveChat([FromBody] ArchiveChatRequest request,
             CancellationToken cancellationToken)
         {
@@ -59,12 +59,12 @@ namespace MangoAPI.Presentation.Controllers
         /// <param name="cancellationToken">Cancellation token instance.</param>
         /// <returns>Possible codes: 200, 400, 409.</returns>
         [HttpPost("{chatId:guid}")]
-        [SwaggerOperation(Summary =
-            "Joins to the particular public group. Fetches group by ID. Requires roles: User.")]
+        [SwaggerOperation(Description = 
+            "Joins to the particular public group. Fetches group by ID. Requires roles: User.",
+            Summary = "Joins to the particular public group.")]
         [ProducesResponseType(typeof(ResponseBase), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
-        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> JoinChatAsync([FromRoute] Guid chatId, CancellationToken cancellationToken)
         {
             var userId = HttpContext.User.GetUserId();
@@ -85,12 +85,12 @@ namespace MangoAPI.Presentation.Controllers
         /// <param name="cancellationToken">Cancellation token instance.</param>
         /// <returns>Possible codes: 200, 400, 409.</returns>
         [HttpDelete("{chatId:guid}")]
-        [SwaggerOperation(Summary =
-            "Leaves from the particular public group. Fetches group by ID. Requires roles: User.")]
+        [SwaggerOperation(Description = 
+            "Leaves from the particular public group. Fetches group by ID. Requires roles: User.",
+            Summary = "Leaves from the particular public group.")]
         [ProducesResponseType(typeof(LeaveGroupResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
-        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> LeaveGroup([FromRoute] Guid chatId, CancellationToken cancellationToken)
         {
             var userId = HttpContext.User.GetUserId();
