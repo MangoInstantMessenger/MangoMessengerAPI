@@ -13,6 +13,9 @@ namespace MangoAPI.BusinessLogic.Models
         [DefaultValue("00aed827-db8c-47de-bc81-78647030918f")]
         public Guid ChatId { get; init; }
 
+        [DefaultValue("11aed827-db8a-47de-bc81-13337703091f")]
+        public Guid UserId { get; init; }
+
         [DefaultValue("Amelit")]
         public string UserDisplayName { get; init; }
 
