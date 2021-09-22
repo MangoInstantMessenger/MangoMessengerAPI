@@ -165,7 +165,7 @@ namespace MangoAPI.Presentation.Controllers
         [HttpGet("chats/public-key/{chatId:guid}")]
         [SwaggerOperation(Description = "Returns secret chat public key. Required role: User",
             Summary = "Returns secret chat public key.")]
-        [ProducesResponseType(typeof(SearchCommunityResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(GetSecretChatPublicKeyResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
         public async Task<IActionResult> GetSecretChatPublicKey([FromRoute] Guid chatId, CancellationToken cancellationToken)

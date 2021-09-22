@@ -11,7 +11,7 @@ namespace MangoAPI.BusinessLogic.Models
         [DefaultValue("razumovsky r")]
         public string DisplayName { get; init; }
 
-        [DefaultValue("Poznan, Poland")]
+        [DefaultValue("Odessa, Ukraine")]
         public string Address { get; init; }
 
         [DefaultValue("11011 y.o Dotnet Developer from $\"{cityName}\"")]
