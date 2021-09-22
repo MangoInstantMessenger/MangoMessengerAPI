@@ -1,6 +1,4 @@
-﻿using System.Threading;
-using System.Threading.Tasks;
-using MangoAPI.BusinessLogic.BusinessExceptions;
+﻿using MangoAPI.BusinessLogic.BusinessExceptions;
 using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.DataAccess.Database;
 using MangoAPI.DataAccess.Database.Extensions;
@@ -8,6 +6,8 @@ using MangoAPI.Domain.Constants;
 using MangoAPI.Domain.Entities;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace MangoAPI.BusinessLogic.ApiCommands.PasswordRestoreRequests
 {
@@ -27,14 +27,14 @@ namespace MangoAPI.BusinessLogic.ApiCommands.PasswordRestoreRequests
         {
             if (request.NewPassword != request.RepeatPassword)
             {
-                throw new BusinessException(ResponseMessageCodes.OldAndNewPasswordsAreSame);
+                throw new BusinessException(ResponseMessageCodes.PasswordsAreNotSame);
             }
 
             var restorePasswordRequest =
                 await _postgresDbContext.PasswordRestoreRequests.FindPasswordRestoreRequestByIdAsync(request.RequestId,
                     cancellationToken);
 
-            if (restorePasswordRequest is not {IsValid: true})
+            if (restorePasswordRequest is not { IsValid: true })
             {
                 throw new BusinessException(ResponseMessageCodes.InvalidOrExpiredRestorePasswordRequest);
             }
