@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using MangoAPI.BusinessLogic.Enums;
 using MangoAPI.Domain.Enums;
 using Newtonsoft.Json;
@@ -15,8 +16,13 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Communities
             ChannelDescription = channelDescription;
         }
 
+        [DefaultValue(4)]
         public ChannelType ChannelType { get; }
+        
+        [DefaultValue("Test Chat")]
         public string ChannelTitle { get; }
+        
+        [DefaultValue("Test Chat Public Group")]
         public string ChannelDescription { get; }
     }
 

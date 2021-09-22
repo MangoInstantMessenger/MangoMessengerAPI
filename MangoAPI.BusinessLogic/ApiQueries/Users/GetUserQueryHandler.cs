@@ -19,8 +19,10 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Users
 
         public async Task<GetUserResponse> Handle(GetUserQuery request, CancellationToken cancellationToken)
         {
-            var user = await _postgresDbContext.Users.AsNoTracking().Include(x => x.UserInformation)
-                .FirstOrDefaultAsync(x => x.Id == request.UserId, cancellationToken);
+            var user = await _postgresDbContext.Users.AsNoTracking()
+                .Include(x => x.UserInformation)
+                .FirstOrDefaultAsync(x => x.Id == request.UserId, 
+                    cancellationToken);
 
             if (user is null)
             {

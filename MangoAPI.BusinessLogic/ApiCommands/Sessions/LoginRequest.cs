@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using System.ComponentModel;
+using Newtonsoft.Json;
 
 namespace MangoAPI.BusinessLogic.ApiCommands.Sessions
 {
@@ -11,7 +12,10 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Sessions
             Password = password;
         }
 
+        [DefaultValue("test@gmail.com")]
         public string EmailOrPhone { get; }
+        
+        [DefaultValue("x[?6dME#xrp=nr7q")]
         public string Password { get; }
     }
 

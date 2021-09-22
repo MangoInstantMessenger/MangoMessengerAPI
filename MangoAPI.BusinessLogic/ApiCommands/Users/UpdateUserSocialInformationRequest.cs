@@ -1,13 +1,21 @@
 ﻿using System;
+using System.ComponentModel;
 using Newtonsoft.Json;
 
 namespace MangoAPI.BusinessLogic.ApiCommands.Users
 {
     public record UpdateUserSocialInformationRequest
     {
+        [DefaultValue("test.user")]
         public string Facebook { get; }
+        
+        [DefaultValue("test.user")]
         public string Twitter { get; }
+        
+        [DefaultValue("test.user")]
         public string Instagram { get; }
+        
+        [DefaultValue("test.user")]
         public string LinkedIn { get; }
 
         [JsonConstructor]
