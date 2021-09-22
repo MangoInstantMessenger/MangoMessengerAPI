@@ -39,11 +39,11 @@ namespace MangoAPI.Presentation.Controllers
         /// <param name="cancellationToken">Cancellation token instance.</param>
         /// <returns>Possible codes: 200, 400, 409.</returns>
         [HttpGet("{chatId:guid}")]
-        [SwaggerOperation(Summary = "Returns all chat messages by chat ID. Requires role: User.")]
+        [SwaggerOperation(Description = "Returns all chat messages by chat ID. Requires role: User.",
+            Summary = "Returns chat messages by ID.")]
         [ProducesResponseType(typeof(GetMessagesResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
-        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> GetChatMessages([FromRoute] Guid chatId,
             CancellationToken cancellationToken)
         {
@@ -66,11 +66,11 @@ namespace MangoAPI.Presentation.Controllers
         /// <param name="cancellationToken">Cancellation token instance.</param>
         /// <returns>Possible codes: 200, 400, 409.</returns>
         [HttpGet("searches/{chatId:guid}")]
-        [SwaggerOperation(Summary = "Searches messages by content in particular chat. Requires role: User.")]
+        [SwaggerOperation(Description = "Searches messages by content in particular chat. Requires role: User.",
+            Summary = "Searches messages in chat.")]
         [ProducesResponseType(typeof(SearchChatMessagesResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
-        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> SearchChatMessages([FromRoute] Guid chatId, [FromQuery] string messageText,
             CancellationToken cancellationToken)
         {
@@ -93,11 +93,11 @@ namespace MangoAPI.Presentation.Controllers
         /// <param name="cancellationToken">Cancellation token instance.</param>
         /// <returns>Possible codes: 200, 400, 409.</returns>
         [HttpPost]
-        [SwaggerOperation(Summary = "Sends message to the particular chat. Requires role: User.")]
+        [SwaggerOperation(Description = "Sends message to the particular chat. Requires role: User.",
+            Summary = "Sends message to the chat.")]
         [ProducesResponseType(typeof(SendMessageResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
-        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> SendMessage([FromBody] SendMessageRequest request,
             CancellationToken cancellationToken)
         {
@@ -113,11 +113,11 @@ namespace MangoAPI.Presentation.Controllers
         /// <param name="cancellationToken">Cancellation token instance.</param>
         /// <returns>Possible codes: 200, 400, 409.</returns>
         [HttpPut]
-        [SwaggerOperation(Summary = "Updates particular message. Requires role: User.")]
+        [SwaggerOperation(Description = "Updates particular message. Requires role: User.",
+            Summary = "Updates particular message.")]
         [ProducesResponseType(typeof(ResponseBase), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
-        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> EditMessage([FromBody] EditMessageRequest request,
             CancellationToken cancellationToken)
         {
@@ -133,11 +133,11 @@ namespace MangoAPI.Presentation.Controllers
         /// <param name="cancellationToken">Cancellation token instance.</param>
         /// <returns>Possible codes: 200, 400, 409.</returns>
         [HttpDelete("{messageId:guid}")]
-        [SwaggerOperation(Summary = "Deletes particular message by message ID. Requires role: User.")]
+        [SwaggerOperation(Description = "Deletes particular message by message ID. Requires role: User.",
+            Summary = "Updates particular message.")]
         [ProducesResponseType(typeof(DeleteMessageResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
-        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> DeleteMessage([FromRoute] Guid messageId,
             CancellationToken cancellationToken)
         {
