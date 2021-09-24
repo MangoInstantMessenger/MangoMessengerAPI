@@ -39,6 +39,9 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Messages
                     MessageAuthorPictureUrl = x.User.Image != null
                         ? $"{EnvironmentConstants.BackendAddress}Uploads/{x.User.Image}"
                         : null,
+                    MessageAttachmentUrl = x.Attachment != null
+                        ? $"{EnvironmentConstants.BackendAddress}Uploads/{x.Attachment}"
+                        : null,
                 });
 
             if (!string.IsNullOrEmpty(request.MessageText) || !string.IsNullOrWhiteSpace(request.MessageText))

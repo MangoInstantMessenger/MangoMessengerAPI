@@ -37,8 +37,11 @@ namespace MangoAPI.BusinessLogic.Models
         [DefaultValue(569712)]
         public int AuthorPublicKey { get; init; }
 
-        [DefaultValue("Uploads/amelit_picture_png")]
+        [DefaultValue("https://localhost:5001/Uploads/amelit_picture.jpg")]
         public string MessageAuthorPictureUrl { get; set; }
+
+        [DefaultValue("https://localhost:5001/Uploads/message_attachment.pdf")]
+        public string MessageAttachmentUrl { get; set; }
     }
 
     public static class MessageMapper

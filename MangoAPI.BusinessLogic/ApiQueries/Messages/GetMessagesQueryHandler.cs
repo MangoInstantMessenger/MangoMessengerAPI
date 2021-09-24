@@ -38,6 +38,7 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Messages
                     IsEncrypted = messageEntity.IsEncrypted,
                     AuthorPublicKey = messageEntity.AuthorPublicKey,
                     MessageAuthorPictureUrl = messageEntity.User.Image != null ? $"{EnvironmentConstants.BackendAddress}Uploads/{messageEntity.User.Image}" : null,
+                    MessageAttachmentUrl = messageEntity.Attachment != null ? $"{EnvironmentConstants.BackendAddress}Uploads/{messageEntity.Attachment}" : null,
                 }).ToListAsync(cancellationToken);
 
             return GetMessagesResponse.FromSuccess(chat);

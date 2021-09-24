@@ -59,7 +59,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Messages
                 IsEncrypted = request.IsEncrypted,
                 AuthorPublicKey = user.PublicKey,
                 CreatedAt = DateTime.UtcNow,
-                AttachmentPath = request.AttachmentUrl
+                Attachment = request.AttachmentUrl
             };
 
             chat.UpdatedAt = messageEntity.CreatedAt;
