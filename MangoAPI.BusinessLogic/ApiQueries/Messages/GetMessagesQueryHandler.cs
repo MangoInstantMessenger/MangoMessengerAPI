@@ -30,6 +30,7 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Messages
                 {
                     MessageId = messageEntity.Id,
                     ChatId = messageEntity.ChatId,
+                    UserId = messageEntity.UserId,
                     MessageText = messageEntity.Content,
                     UpdatedAt = messageEntity.UpdatedAt.HasValue ? messageEntity.UpdatedAt.Value.ToShortTimeString() : null,
                     CreatedAt = messageEntity.CreatedAt.ToShortTimeString(),
