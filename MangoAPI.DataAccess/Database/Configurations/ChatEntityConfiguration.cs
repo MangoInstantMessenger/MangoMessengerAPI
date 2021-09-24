@@ -29,6 +29,7 @@ namespace MangoAPI.DataAccess.Database.Configurations
                     Description = "WSB Public Group",
                     MembersCount = 5,
                     Image = "wsb_group_logo.png",
+                    UpdatedAt = DateTime.Now,
                 },
                 new ChatEntity
                 {
@@ -38,7 +39,8 @@ namespace MangoAPI.DataAccess.Database.Configurations
                     Description = "Extreme Code Main Public Group",
                     CreatedAt = new DateTime(2020, 2, 4),
                     MembersCount = 4,
-                    Image = "extreme_code_main.jpg"
+                    Image = "extreme_code_main.jpg",
+                    UpdatedAt = DateTime.Now,
                 },
                 new ChatEntity
                 {
@@ -48,7 +50,8 @@ namespace MangoAPI.DataAccess.Database.Configurations
                     Description = "Extreme Code Flood Public Group",
                     CreatedAt = new DateTime(2020, 4, 23),
                     MembersCount = 4,
-                    Image = "extremecode_rest_logo.jpg"
+                    Image = "extremecode_rest_logo.jpg",
+                    UpdatedAt = DateTime.Now,
                 },
                 new ChatEntity
                 {
@@ -58,7 +61,8 @@ namespace MangoAPI.DataAccess.Database.Configurations
                     Description = "Extreme Code C++ Public Group",
                     CreatedAt = new DateTime(2020, 5, 12),
                     MembersCount = 4,
-                    Image = "extremecode_cpp_logo.jpg"
+                    Image = "extremecode_cpp_logo.jpg",
+                    UpdatedAt = DateTime.Now,
                 },
                 new ChatEntity
                 {
@@ -69,6 +73,7 @@ namespace MangoAPI.DataAccess.Database.Configurations
                     CreatedAt = new DateTime(2020, 5, 12),
                     MembersCount = 4,
                     Image = "extremecode_dotnet.png",
+                    UpdatedAt = DateTime.Now,
                 },
                 new ChatEntity
                 {
@@ -77,6 +82,7 @@ namespace MangoAPI.DataAccess.Database.Configurations
                     Description = "Direct chat between Khachatur Khachatryan and razumovsky r",
                     CommunityType = (int) CommunityType.DirectChat,
                     MembersCount = 2,
+                    UpdatedAt = DateTime.Now,
                 },
                 new ChatEntity
                 {
@@ -85,6 +91,7 @@ namespace MangoAPI.DataAccess.Database.Configurations
                     Description = "Direct chat between Мусяка Колбасяка and razumovsky r",
                     CommunityType = (int) CommunityType.DirectChat,
                     MembersCount = 2,
+                    UpdatedAt = DateTime.Now,
                 },
                 new ChatEntity
                 {
@@ -93,6 +100,7 @@ namespace MangoAPI.DataAccess.Database.Configurations
                     Description = "Direct chat between Amelit and razumovsky r",
                     CommunityType = (int) CommunityType.DirectChat,
                     MembersCount = 2,
+                    UpdatedAt = DateTime.Now,
                 },
                 new ChatEntity
                 {
@@ -101,6 +109,7 @@ namespace MangoAPI.DataAccess.Database.Configurations
                     Description = "Direct chat between Khachatur Khachatryan and Мусяка Колбасяка",
                     CommunityType = (int) CommunityType.DirectChat,
                     MembersCount = 2,
+                    UpdatedAt = DateTime.Now,
                 },
                 new ChatEntity
                 {
@@ -109,6 +118,7 @@ namespace MangoAPI.DataAccess.Database.Configurations
                     Description = "Direct chat between Petro Kolosov and Szymon Murawski",
                     CommunityType = (int) CommunityType.DirectChat,
                     MembersCount = 2,
+                    UpdatedAt = DateTime.Now,
                 });
         }
     }

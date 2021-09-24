@@ -29,6 +29,7 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Communities
                 .ThenInclude(x => x.Messages)
                 .ThenInclude(x => x.User)
                 .Where(x => x.UserId == request.UserId)
+                .OrderByDescending(x => x.Chat.UpdatedAt)
                 .Select(x => new Chat
                 {
                     ChatId = x.ChatId,
