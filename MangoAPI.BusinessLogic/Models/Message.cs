@@ -48,7 +48,7 @@ namespace MangoAPI.BusinessLogic.Models
     {
         public static Message ToMessage(this MessageEntity message, UserEntity user)
         {
-            return new()
+            var messageDto = new Message()
             {
                 MessageId = message.Id,
                 UserId = message.UserId,
@@ -63,7 +63,12 @@ namespace MangoAPI.BusinessLogic.Models
                 MessageAuthorPictureUrl = user.Image != null
                     ? $"{EnvironmentConstants.BackendAddress}Uploads/{user.Image}"
                     : null,
+                MessageAttachmentUrl = message.Attachment != null
+                    ? $"{EnvironmentConstants.BackendAddress}Uploads/{message.Attachment}"
+                    : null,
             };
+
+            return messageDto;
         }
     }
 }
