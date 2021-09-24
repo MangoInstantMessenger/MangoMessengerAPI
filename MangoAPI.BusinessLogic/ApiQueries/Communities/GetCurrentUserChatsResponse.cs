@@ -1,11 +1,7 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using MangoAPI.Application.Services;
-using MangoAPI.BusinessLogic.Models;
+﻿using MangoAPI.BusinessLogic.Models;
 using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.Domain.Constants;
-using MangoAPI.Domain.Entities;
-using MangoAPI.Domain.Enums;
+using System.Collections.Generic;
 
 namespace MangoAPI.BusinessLogic.ApiQueries.Communities
 {

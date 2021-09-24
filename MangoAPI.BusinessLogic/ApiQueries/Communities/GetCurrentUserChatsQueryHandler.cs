@@ -29,7 +29,6 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Communities
                 .ThenInclude(x => x.Messages)
                 .ThenInclude(x => x.User)
                 .Where(x => x.UserId == request.UserId)
-                .OrderByDescending(x => x.Chat.UpdatedAt)
                 .Select(x => new Chat
                 {
                     ChatId = x.ChatId,
@@ -42,6 +41,7 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Communities
                     MembersCount = x.Chat.MembersCount,
                     IsArchived = x.IsArchived,
                     IsMember = true,
+                    UpdatedAt = x.Chat.UpdatedAt,
                     LastMessage = x.Chat.Messages.Any()
                         ? x.Chat.Messages.OrderBy(messageEntity => messageEntity.CreatedAt).Select(messageEntity =>
                             new Message
@@ -93,6 +93,8 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Communities
                     ? $"{EnvironmentConstants.BackendAddress}Uploads/{colleague.Image}"
                     : null;
             }
+
+            userChats = userChats.OrderByDescending(x => x.UpdatedAt).ToList();
 
             return GetCurrentUserChatsResponse.FromSuccess(userChats);
         }

@@ -29,6 +29,8 @@ namespace MangoAPI.BusinessLogic.Models
 
         [DefaultValue(true)]
         public bool IsMember { get; init; }
+
+        public DateTime? UpdatedAt { get; init; }
         
         public Message LastMessage { get; init; }
     }
