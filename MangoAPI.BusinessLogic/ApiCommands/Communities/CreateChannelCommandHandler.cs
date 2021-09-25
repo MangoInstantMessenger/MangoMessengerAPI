@@ -8,8 +8,10 @@ using MangoAPI.Domain.Enums;
 using MediatR;
 using Microsoft.AspNetCore.SignalR;
 using System;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace MangoAPI.BusinessLogic.ApiCommands.Communities
 {
@@ -30,6 +32,16 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Communities
             if (request.CommunityType is CommunityType.DirectChat or CommunityType.SecretChat)
             {
                 throw new BusinessException(ResponseMessageCodes.InvalidGroupType);
+            }
+
+            var ownerChatsCount =
+                await _postgresDbContext.UserChats
+                    .Where(x => x.RoleId == (int)UserRole.Owner && x.UserId == request.UserId)
+                    .CountAsync(cancellationToken: cancellationToken);
+
+            if (ownerChatsCount >= 100)
+            {
+                throw new BusinessException(ResponseMessageCodes.MaximumOwnerChatsExceeded100);
             }
 
             var channel = new ChatEntity
