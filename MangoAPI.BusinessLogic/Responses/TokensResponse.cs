@@ -15,9 +15,12 @@ namespace MangoAPI.BusinessLogic.Responses
         public Guid RefreshToken { get; init; }
 
         [DefaultValue("28aac181-2a67-4d09-a1fc-749fd3705804")]
-        public Guid UserId { get; set; }
+        public Guid UserId { get; init; }
 
-        public static TokensResponse FromSuccess(string accessToken, Guid refreshToken, Guid userId)
+        [DefaultValue(1633084830)]
+        public long Expires { get; init; }
+
+        public static TokensResponse FromSuccess(string accessToken, Guid refreshToken, Guid userId, long expires)
         {
             return new()
             {
@@ -25,6 +28,7 @@ namespace MangoAPI.BusinessLogic.Responses
                 AccessToken = accessToken,
                 RefreshToken = refreshToken,
                 UserId = userId,
+                Expires = expires,
                 Success = true,
             };
         }

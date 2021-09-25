@@ -37,15 +37,18 @@ namespace MangoAPI.BusinessLogic.Models
         [DefaultValue(569712)]
         public int AuthorPublicKey { get; init; }
 
-        [DefaultValue("Uploads/amelit_picture_png")]
+        [DefaultValue("https://localhost:5001/Uploads/amelit_picture.jpg")]
         public string MessageAuthorPictureUrl { get; set; }
+
+        [DefaultValue("https://localhost:5001/Uploads/message_attachment.pdf")]
+        public string MessageAttachmentUrl { get; set; }
     }
 
     public static class MessageMapper
     {
         public static Message ToMessage(this MessageEntity message, UserEntity user)
         {
-            return new()
+            var messageDto = new Message()
             {
                 MessageId = message.Id,
                 UserId = message.UserId,
@@ -60,7 +63,12 @@ namespace MangoAPI.BusinessLogic.Models
                 MessageAuthorPictureUrl = user.Image != null
                     ? $"{EnvironmentConstants.BackendAddress}Uploads/{user.Image}"
                     : null,
+                MessageAttachmentUrl = message.Attachment != null
+                    ? $"{EnvironmentConstants.BackendAddress}Uploads/{message.Attachment}"
+                    : null,
             };
+
+            return messageDto;
         }
     }
 }
