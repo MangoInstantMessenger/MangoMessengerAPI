@@ -84,9 +84,11 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Sessions
             await _postgresDbContext.Sessions.AddAsync(session, cancellationToken);
             await _postgresDbContext.SaveChangesAsync(cancellationToken);
 
-            var expires = ((DateTimeOffset) session.ExpiresAt).ToUnixTimeSeconds();
+            var expires = ((DateTimeOffset)session.ExpiresAt).ToUnixTimeSeconds();
 
-            return TokensResponse.FromSuccess(jwtToken, session.RefreshToken, user.Id, expires);
+            return roles.Contains(SeedDataConstants.UnverifiedRole)
+                ? TokensResponse.FromSuccess(jwtToken, session.RefreshToken, userId: null, expires)
+                : TokensResponse.FromSuccess(jwtToken, session.RefreshToken, user.Id, expires);
         }
     }
 }
