@@ -1,9 +1,12 @@
-﻿using AutoMapper;
+﻿using System;
+using AutoMapper;
 using MangoAPI.BusinessLogic.ApiCommands.Communities;
 using MangoAPI.BusinessLogic.ApiCommands.Messages;
 using MangoAPI.BusinessLogic.ApiCommands.PasswordRestoreRequests;
 using MangoAPI.BusinessLogic.ApiCommands.Sessions;
 using MangoAPI.BusinessLogic.ApiCommands.Users;
+using MangoAPI.BusinessLogic.Enums;
+using MangoAPI.Domain.Enums;
 
 namespace MangoAPI.Presentation.Profiles
 {
@@ -11,8 +14,13 @@ namespace MangoAPI.Presentation.Profiles
     {
         public PresentationProfile()
         {
-            CreateMap<CreateChannelRequest, CreateChannelCommand>();
-            CreateMap<CreateChatRequest, CreateChatCommand>();
+            CreateMap<CreateChannelRequest, CreateChannelCommand>()
+                .ForMember(x => x.CommunityType,
+                    expression => expression.MapFrom(z => (CommunityType)z.ChannelType));
+
+            CreateMap<CreateChatRequest, CreateChatCommand>().ForMember(x => x.CommunityType,
+                expression => expression.MapFrom(z => (CommunityType)z.ChatType));
+
             CreateMap<SendMessageRequest, SendMessageCommand>();
             CreateMap<EditMessageRequest, EditMessageCommand>();
             CreateMap<PasswordRestoreRequest, PasswordRestoreCommand>();
