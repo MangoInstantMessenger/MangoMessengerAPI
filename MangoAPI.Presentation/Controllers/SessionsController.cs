@@ -1,6 +1,4 @@
-﻿using System;
-using System.Threading;
-using System.Threading.Tasks;
+﻿using AutoMapper;
 using MangoAPI.BusinessLogic.ApiCommands.Sessions;
 using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.Presentation.Extensions;
@@ -11,6 +9,9 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
+using System;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace MangoAPI.Presentation.Controllers
 {
@@ -22,12 +23,7 @@ namespace MangoAPI.Presentation.Controllers
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class SessionsController : ApiControllerBase, ISessionsController
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="SessionsController"/> class.
-        /// </summary>
-        /// <param name="mediator">Mediator instance.</param>
-        public SessionsController(IMediator mediator)
-            : base(mediator)
+        public SessionsController(IMediator mediator, IMapper mapper) : base(mediator, mapper)
         {
         }
 
@@ -39,7 +35,7 @@ namespace MangoAPI.Presentation.Controllers
         /// <returns>Possible codes: 200, 400, 409.</returns>
         [HttpPost]
         [AllowAnonymous]
-        [SwaggerOperation(Description = 
+        [SwaggerOperation(Description =
             "Logins to the system. Returns pair of the access/refresh tokens. Does not requires authorization.",
             Summary = "Logins to the system.")]
         [ProducesResponseType(typeof(TokensResponse), StatusCodes.Status200OK)]
@@ -48,7 +44,7 @@ namespace MangoAPI.Presentation.Controllers
         public async Task<IActionResult> LoginAsync([FromBody] LoginRequest request,
             CancellationToken cancellationToken)
         {
-            var command = request.ToCommand();
+            var command = Mapper.Map<LoginCommand>(request);
             return await RequestAsync(command, cancellationToken);
         }
 
@@ -98,7 +94,7 @@ namespace MangoAPI.Presentation.Controllers
             {
                 RefreshToken = refreshToken
             };
-            
+
             return await RequestAsync(command, cancellationToken);
         }
 
@@ -117,12 +113,12 @@ namespace MangoAPI.Presentation.Controllers
         public async Task<IActionResult> LogoutAllAsync(CancellationToken cancellationToken)
         {
             var userId = HttpContext.User.GetUserId();
-            
+
             var command = new LogoutAllCommand
             {
                 UserId = userId
             };
-            
+
             return await RequestAsync(command, cancellationToken);
         }
     }

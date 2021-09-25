@@ -1,5 +1,4 @@
-﻿using System.Threading;
-using System.Threading.Tasks;
+﻿using AutoMapper;
 using MangoAPI.BusinessLogic.ApiCommands.Documents;
 using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.Presentation.Interfaces;
@@ -9,6 +8,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace MangoAPI.Presentation.Controllers
 {
@@ -20,10 +21,10 @@ namespace MangoAPI.Presentation.Controllers
     [Authorize(Roles = "User", AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class DocumentsController : ApiControllerBase, IDocumentsController
     {
-        public DocumentsController(IMediator mediator) : base(mediator)
+        public DocumentsController(IMediator mediator, IMapper mapper) : base(mediator, mapper)
         {
         }
-        
+
         /// <summary>
         /// Uploads document to the server. Requires role: User.
         /// </summary>
@@ -38,7 +39,7 @@ namespace MangoAPI.Presentation.Controllers
         public async Task<IActionResult> UploadDocumentAsync(IFormFile formFile,
             CancellationToken cancellationToken)
         {
-            var command = new UploadDocumentCommand {FormFile = formFile};
+            var command = new UploadDocumentCommand { FormFile = formFile };
 
             return await RequestAsync(command, cancellationToken);
         }

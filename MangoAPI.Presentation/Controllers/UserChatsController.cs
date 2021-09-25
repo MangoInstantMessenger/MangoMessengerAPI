@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
+using AutoMapper;
 using MangoAPI.BusinessLogic.ApiCommands.UserChats;
 using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.Presentation.Extensions;
@@ -22,12 +23,7 @@ namespace MangoAPI.Presentation.Controllers
     [Authorize(Roles = "User", AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class UserChatsController : ApiControllerBase, IUserChatsController
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="UserChatsController"/> class.
-        /// </summary>
-        /// <param name="mediator">Mediator instance.</param>
-        public UserChatsController(IMediator mediator)
-            : base(mediator)
+        public UserChatsController(IMediator mediator, IMapper mapper) : base(mediator, mapper)
         {
         }
 
@@ -47,7 +43,7 @@ namespace MangoAPI.Presentation.Controllers
             CancellationToken cancellationToken)
         {
             var userId = HttpContext.User.GetUserId();
-            var command = new ArchiveChatCommand()
+            var command = new ArchiveChatCommand
             {
                 UserId = userId,
                 ChatId = chatId

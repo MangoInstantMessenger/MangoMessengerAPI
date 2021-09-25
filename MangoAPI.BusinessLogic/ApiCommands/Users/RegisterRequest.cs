@@ -41,20 +41,4 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
         [DefaultValue(true)]
         public bool TermsAccepted { get; }
     }
-
-    public static class RegisterCommandMapper
-    {
-        public static RegisterCommand ToCommand(this RegisterRequest model)
-        {
-            return new ()
-            {
-                PhoneNumber = model.PhoneNumber,
-                Email = model.Email,
-                DisplayName = model.DisplayName,
-                Password = model.Password,
-                VerificationMethod = model.VerificationMethod,
-                TermsAccepted = model.TermsAccepted,
-            };
-        }
-    }
 }

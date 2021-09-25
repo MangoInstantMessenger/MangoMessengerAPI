@@ -1,5 +1,4 @@
-﻿using System;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using Newtonsoft.Json;
 
 namespace MangoAPI.BusinessLogic.ApiCommands.Users
@@ -18,15 +17,5 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
         
         [DefaultValue("W[?64Ms#xdp=Qr7q")]
         public string NewPassword { get; }
-    }
-
-    public static class ChangePasswordRequestMapper
-    {
-        public static ChangePasswordCommand ToCommand(this ChangePasswordRequest request, Guid userId) => new()
-        {
-            UserId = userId,
-            CurrentPassword = request.CurrentPassword,
-            NewPassword = request.NewPassword,
-        };
     }
 }
