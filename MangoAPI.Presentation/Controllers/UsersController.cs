@@ -164,12 +164,12 @@ namespace MangoAPI.Presentation.Controllers
 
         /// <summary>
         /// Gets info about current user himself.
-        /// This endpoint may be accessed by both roles: Unverified, User.
+        /// This endpoint may be accessed by both roles: User.
         /// </summary>
         /// <param name="cancellationToken">CancellationToken instance.</param>
         /// <returns>Possible codes: 200, 400, 409.</returns>
         [HttpGet]
-        [Authorize(Roles = "Unverified, User")]
+        [Authorize(Roles = "User")]
         [SwaggerOperation(Description = "Gets info about current user himself. " +
                                     "This endpoint may be accessed by both roles: Unverified, User.",
             Summary = "Gets info about current user himself.")]
