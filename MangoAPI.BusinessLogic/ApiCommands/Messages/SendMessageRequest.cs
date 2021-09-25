@@ -28,19 +28,4 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Messages
         [DefaultValue("https://localhost:5001/Uploads/khachatur_picture.jpg")]
         public string AttachmentUrl { get; }
     }
-
-    public static class SendMessageCommandMapper
-    {
-        public static SendMessageCommand ToCommand(this SendMessageRequest request, Guid userId)
-        {
-            return new()
-            {
-                ChatId = request.ChatId,
-                MessageText = request.MessageText,
-                IsEncrypted = request.IsEncrypted,
-                UserId = userId,
-                AttachmentUrl = request.AttachmentUrl
-            };
-        }
-    }
 }

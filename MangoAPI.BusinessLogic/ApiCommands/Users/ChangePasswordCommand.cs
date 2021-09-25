@@ -6,7 +6,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
 {
     public record ChangePasswordCommand : IRequest<ResponseBase>
     {
-        public Guid UserId { get; init; }
+        public Guid UserId { get; set; }
         public string CurrentPassword { get; init; }
         public string NewPassword { get; init; }
     }

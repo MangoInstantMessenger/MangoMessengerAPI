@@ -7,7 +7,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Communities
     public record CreateChatCommand : IRequest<CreateCommunityResponse>
     {
         public Guid PartnerId { get; init; }
-        public Guid UserId { get; init; }
+        public Guid UserId { get; set; }
         public CommunityType CommunityType { get; init; }
     }
 }

@@ -18,16 +18,4 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Sessions
         [DefaultValue("x[?6dME#xrp=nr7q")]
         public string Password { get; }
     }
-
-    public static class LoginCommandMapper
-    {
-        public static LoginCommand ToCommand(this LoginRequest model)
-        {
-            return new()
-            {
-                EmailOrPhone = model.EmailOrPhone,
-                Password = model.Password,
-            };
-        }
-    }
 }

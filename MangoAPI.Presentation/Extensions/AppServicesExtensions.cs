@@ -1,6 +1,7 @@
 ﻿using MangoAPI.Application.Interfaces;
 using MangoAPI.Application.Services;
 using MangoAPI.BusinessLogic.ApiCommands.Users;
+using MangoAPI.Presentation.Controllers;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -14,6 +15,7 @@ namespace MangoAPI.Presentation.Extensions
             services.AddScoped<IJwtGenerator, JwtGenerator>();
             services.AddScoped<IEmailSenderService, EmailSenderService>();
             services.AddScoped<PasswordHashService>();
+            services.AddAutoMapper(typeof(ApiControllerBase));
             return services;
         }
     }

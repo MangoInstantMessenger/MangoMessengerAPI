@@ -1,4 +1,5 @@
-﻿using MangoAPI.BusinessLogic.ApiCommands.Messages;
+﻿using AutoMapper;
+using MangoAPI.BusinessLogic.ApiCommands.Messages;
 using MangoAPI.BusinessLogic.ApiQueries.Messages;
 using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.Presentation.Extensions;
@@ -23,12 +24,7 @@ namespace MangoAPI.Presentation.Controllers
     [Authorize(Roles = "User", AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class MessagesController : ApiControllerBase, IMessagesController
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="MessagesController"/> class.
-        /// </summary>
-        /// <param name="mediator">Mediator instance.</param>
-        public MessagesController(IMediator mediator)
-            : base(mediator)
+        public MessagesController(IMediator mediator, IMapper mapper) : base(mediator, mapper)
         {
         }
 
@@ -102,7 +98,8 @@ namespace MangoAPI.Presentation.Controllers
             CancellationToken cancellationToken)
         {
             var userId = HttpContext.User.GetUserId();
-            var command = request.ToCommand(userId);
+            var command = Mapper.Map<SendMessageCommand>(request);
+            command.UserId = userId;
             return await RequestAsync(command, cancellationToken);
         }
 
@@ -122,7 +119,8 @@ namespace MangoAPI.Presentation.Controllers
             CancellationToken cancellationToken)
         {
             var userId = HttpContext.User.GetUserId();
-            var command = request.ToCommand(userId);
+            var command = Mapper.Map<EditMessageCommand>(request);
+            command.UserId = userId;
             return await RequestAsync(command, cancellationToken);
         }
 

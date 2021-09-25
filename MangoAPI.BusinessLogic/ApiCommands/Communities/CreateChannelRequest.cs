@@ -1,7 +1,5 @@
-﻿using System;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using MangoAPI.BusinessLogic.Enums;
-using MangoAPI.Domain.Enums;
 using Newtonsoft.Json;
 
 namespace MangoAPI.BusinessLogic.ApiCommands.Communities
@@ -24,19 +22,5 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Communities
         
         [DefaultValue("Test Chat Public Group")]
         public string ChannelDescription { get; }
-    }
-
-    public static class CreateGroupCommandMapper
-    {
-        public static CreateChannelCommand ToCommand(this CreateChannelRequest request, Guid userId)
-        {
-            return new()
-            {
-                CommunityType = (CommunityType) request.ChannelType,
-                ChannelTitle = request.ChannelTitle,
-                ChannelDescription = request.ChannelDescription,
-                UserId = userId
-            };
-        }
     }
 }

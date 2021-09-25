@@ -23,14 +23,4 @@ namespace MangoAPI.BusinessLogic.ApiCommands.PasswordRestoreRequests
             RepeatPassword = repeatPassword;
         }
     }
-
-    public static class PasswordRestoreRequestMapper
-    {
-        public static PasswordRestoreCommand ToCommand(this PasswordRestoreRequest model) => new()
-        {
-            RequestId = model.RequestId,
-            NewPassword = model.NewPassword,
-            RepeatPassword = model.RepeatPassword
-        };
-    }
 }
