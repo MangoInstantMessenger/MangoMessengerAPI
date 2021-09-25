@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using MangoAPI.Domain.Enums;
 
 namespace MangoAPI.Domain.Entities
 {

@@ -11,7 +11,7 @@ namespace MangoAPI.BusinessLogic.HubConfig
             return Groups.AddToGroupAsync(Context.ConnectionId, chatId);
         }
 
-        public Task NofifyChatGroup(string chatId, Message message)
+        public Task NotifyChatGroup(string chatId, Message message)
         {
             return Clients.Group(chatId).BroadcastMessage(message);
         }

@@ -16,7 +16,7 @@ namespace MangoAPI.Domain.Entities
 
         public int AuthorPublicKey { get; set; }
 
-        public string AttachmentPath { get; set; }
+        public string Attachment { get; set; }
         
         public DateTime CreatedAt { get; set; }
 

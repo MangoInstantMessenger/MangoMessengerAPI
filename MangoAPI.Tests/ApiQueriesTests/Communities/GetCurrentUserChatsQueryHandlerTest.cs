@@ -1,9 +1,4 @@
-﻿using FluentAssertions;
-using MangoAPI.BusinessLogic.ApiQueries.Communities;
-using MangoAPI.Domain.Constants;
-using NUnit.Framework;
-using System.Threading;
-using System.Threading.Tasks;
+﻿using NUnit.Framework;
 
 namespace MangoAPI.Tests.ApiQueriesTests.Communities
 {
