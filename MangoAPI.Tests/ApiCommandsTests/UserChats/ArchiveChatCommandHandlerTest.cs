@@ -19,7 +19,6 @@ namespace MangoAPI.Tests.ApiCommandsTests.UserChats
             var handler = new ArchiveChatCommandHandler(dbContextFixture.PostgresDbContext);
             var command = new ArchiveChatCommand
             {
-                Archived = true,
                 UserId = SeedDataConstants.RazumovskyId,
                 ChatId = SeedDataConstants.ExtremeCodeFloodId,
             };
@@ -36,7 +35,6 @@ namespace MangoAPI.Tests.ApiCommandsTests.UserChats
             var handler = new ArchiveChatCommandHandler(dbContextFixture.PostgresDbContext);
             var command = new ArchiveChatCommand
             {
-                Archived = true,
                 UserId = SeedDataConstants.RazumovskyId,
                 ChatId = Guid.NewGuid(),
             };

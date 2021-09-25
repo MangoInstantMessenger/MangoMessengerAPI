@@ -6,7 +6,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
 {
     public record UpdateUserSocialInformationCommand : IRequest<ResponseBase>
     {
-        public Guid UserId { get; init; }
+        public Guid UserId { get; set; }
         public string Facebook { get; init; }
         public string Twitter { get; init; }
         public string Instagram { get; init; }

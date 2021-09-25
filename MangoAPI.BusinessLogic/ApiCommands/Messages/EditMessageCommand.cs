@@ -7,7 +7,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Messages
     public record EditMessageCommand : IRequest<ResponseBase>
     {
         public Guid MessageId { get; init; }
-        public Guid UserId { get; init; }
+        public Guid UserId { get; set; }
         public string ModifiedText { get; init; }
     }
 }

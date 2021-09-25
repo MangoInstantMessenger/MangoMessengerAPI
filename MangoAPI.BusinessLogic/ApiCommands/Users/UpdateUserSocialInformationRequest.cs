@@ -1,5 +1,4 @@
-﻿using System;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using Newtonsoft.Json;
 
 namespace MangoAPI.BusinessLogic.ApiCommands.Users
@@ -27,18 +26,5 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
             Instagram = instagram;
             LinkedIn = linkedIn;
         }
-    }
-
-    public static class UpdateUserSocialInformationRequestMapper
-    {
-        public static UpdateUserSocialInformationCommand ToCommand(this UpdateUserSocialInformationRequest model,
-            Guid userId) => new()
-        {
-            UserId = userId,
-            Facebook = model.Facebook,
-            Twitter = model.Twitter,
-            Instagram = model.Instagram,
-            LinkedIn = model.LinkedIn
-        };
     }
 }

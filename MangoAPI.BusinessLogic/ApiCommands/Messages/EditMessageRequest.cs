@@ -19,17 +19,4 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Messages
         [DefaultValue("test message")]
         public string ModifiedText { get; }
     }
-
-    public static class EditMessageCommandMapper
-    {
-        public static EditMessageCommand ToCommand(this EditMessageRequest model, Guid userId)
-        {
-            return new()
-            {
-                MessageId = model.MessageId,
-                ModifiedText = model.ModifiedText,
-                UserId = userId
-            };
-        }
-    }
 }

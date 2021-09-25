@@ -19,16 +19,4 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
         [DefaultValue("d1ab1de1-1aa8-4650-937c-4ed882038ad7")]
         public Guid UserId { get; }
     }
-
-    public static class VerifyEmailRequestMapper
-    {
-        public static VerifyEmailCommand ToCommand(this VerifyEmailRequest model)
-        {
-            return new()
-            {
-                Email = model.Email,
-                UserId = model.UserId,
-            };
-        }
-    }
 }

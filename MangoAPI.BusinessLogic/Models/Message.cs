@@ -48,7 +48,7 @@ namespace MangoAPI.BusinessLogic.Models
     {
         public static Message ToMessage(this MessageEntity message, UserEntity user)
         {
-            var messageDto = new Message()
+            var messageDto = new Message
             {
                 MessageId = message.Id,
                 UserId = message.UserId,

@@ -1,5 +1,6 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
+using AutoMapper;
 using MangoAPI.BusinessLogic.Responses;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -7,23 +8,26 @@ using Microsoft.AspNetCore.Mvc;
 namespace MangoAPI.Presentation.Controllers
 {
     /// <summary>
-    /// Base controller class. Encapsulates common logics.
+    /// Base controller class. Encapsulates common logic.
     /// </summary>
     public class ApiControllerBase : ControllerBase
     {
         private readonly IMediator _mediator;
+        protected readonly IMapper Mapper;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ApiControllerBase"/> class.
         /// </summary>
         /// <param name="mediator">Mediator instance.</param>
-        public ApiControllerBase(IMediator mediator)
+        /// <param name="mapper">Automapper instance.</param>
+        public ApiControllerBase(IMediator mediator, IMapper mapper)
         {
             _mediator = mediator;
+            Mapper = mapper;
         }
 
         /// <summary>
-        /// Common request logics over all controllers.
+        /// Common request logic over all controllers.
         /// </summary>
         /// <typeparam name="T">Generic data type.</typeparam>
         /// <param name="request">Generic request type.</param>

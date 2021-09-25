@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
+using AutoMapper;
 using MangoAPI.BusinessLogic.ApiCommands.Communities;
 using MangoAPI.BusinessLogic.ApiQueries.Communities;
 using MangoAPI.BusinessLogic.Responses;
@@ -24,14 +25,10 @@ namespace MangoAPI.Presentation.Controllers
     [Authorize(Roles = "User", AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class CommunitiesController : ApiControllerBase, ICommunitiesController
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="CommunitiesController"/> class.
-        /// </summary>
-        /// <param name="mediator">Mediator instance.</param>
-        public CommunitiesController(IMediator mediator)
-            : base(mediator)
+        public CommunitiesController(IMediator mediator, IMapper mapper) : base(mediator, mapper)
         {
         }
+
 
         /// <summary>
         /// Gets all current user's chats. Requires role: User.
@@ -75,7 +72,8 @@ namespace MangoAPI.Presentation.Controllers
             CancellationToken cancellationToken)
         {
             var userId = HttpContext.User.GetUserId();
-            var command = request.ToCommand(userId);
+            var command = Mapper.Map<CreateChannelCommand>(request);
+            command.UserId = userId;
             return await RequestAsync(command, cancellationToken);
         }
 
@@ -99,7 +97,8 @@ namespace MangoAPI.Presentation.Controllers
         {
             var userId = HttpContext.User.GetUserId();
 
-            var command = request.ToCommand(userId);
+            var command = Mapper.Map<CreateChatCommand>(request);
+            command.UserId = userId;
 
             return await RequestAsync(command, cancellationToken);
         }

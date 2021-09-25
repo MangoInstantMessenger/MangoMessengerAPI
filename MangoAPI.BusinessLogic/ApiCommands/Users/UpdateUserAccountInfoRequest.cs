@@ -1,5 +1,4 @@
-﻿using System;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using Newtonsoft.Json;
 
 namespace MangoAPI.BusinessLogic.ApiCommands.Users
@@ -60,24 +59,5 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
         
         [DefaultValue("Finland, Helsinki")]
         public string Address { get; }
-    }
-
-    public static class UpdateUserAccountInfoRequestMapper
-    {
-        public static UpdateUserAccountInfoCommand ToCommand(this UpdateUserAccountInfoRequest model,
-            Guid userId) => new()
-        {
-            UserId = userId,
-            FirstName = model.FirstName,
-            LastName = model.LastName,
-            DisplayName = model.DisplayName,
-            PhoneNumber = model.PhoneNumber,
-            BirthdayDate = model.BirthdayDate,
-            Email = model.Email,
-            Website = model.Website,
-            Username = model.Username,
-            Bio = model.Bio,
-            Address = model.Address,
-        };
     }
 }

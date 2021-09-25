@@ -9,6 +9,6 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Communities
         public CommunityType CommunityType { get; init; }
         public string ChannelTitle { get; init; }
         public string ChannelDescription { get; init; }
-        public Guid UserId { get; init; }
+        public Guid UserId { get; set; }
     }
 }

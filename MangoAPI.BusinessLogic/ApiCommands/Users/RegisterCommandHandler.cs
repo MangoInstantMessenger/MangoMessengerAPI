@@ -110,7 +110,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
 
             var expires = ((DateTimeOffset)newSession.ExpiresAt).ToUnixTimeSeconds();
 
-            return TokensResponse.FromSuccess(jwtToken, newSession.RefreshToken, newUser.Id, expires);
+            return TokensResponse.FromSuccess(jwtToken, newSession.RefreshToken, userId: null, expires);
         }
     }
 }

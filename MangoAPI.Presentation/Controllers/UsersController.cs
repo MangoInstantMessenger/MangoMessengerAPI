@@ -1,4 +1,4 @@
-﻿using System;
+﻿using AutoMapper;
 using MangoAPI.BusinessLogic.ApiCommands.Users;
 using MangoAPI.BusinessLogic.ApiQueries.Users;
 using MangoAPI.BusinessLogic.Responses;
@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -23,12 +24,7 @@ namespace MangoAPI.Presentation.Controllers
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class UsersController : ApiControllerBase, IUsersController
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="UsersController"/> class.
-        /// </summary>
-        /// <param name="mediator">Instance of mediator.</param>
-        public UsersController(IMediator mediator)
-            : base(mediator)
+        public UsersController(IMediator mediator, IMapper mapper) : base(mediator, mapper)
         {
         }
 
@@ -43,7 +39,7 @@ namespace MangoAPI.Presentation.Controllers
         /// <returns>Possible codes: 200, 400, 409.</returns>
         [HttpPost]
         [AllowAnonymous]
-        [SwaggerOperation(Description = 
+        [SwaggerOperation(Description =
             "Registers user in the system. There are two possibilities to verify account: Phone (1), Email (2). " +
             "Does not require any authorization or users role. " +
             "After registration user receives pair of access/refresh tokens. " +
@@ -55,8 +51,8 @@ namespace MangoAPI.Presentation.Controllers
         public async Task<IActionResult> RegisterAsync([FromBody] RegisterRequest request,
             CancellationToken cancellationToken)
         {
-            var command = request.ToCommand();
-            
+            var command = Mapper.Map<RegisterCommand>(request);
+
             return await RequestAsync(command, cancellationToken);
         }
 
@@ -80,8 +76,8 @@ namespace MangoAPI.Presentation.Controllers
         public async Task<IActionResult> EmailConfirmationAsync([FromBody] VerifyEmailRequest request,
             CancellationToken cancellationToken)
         {
-            var command = request.ToCommand();
-            
+            var command = Mapper.Map<VerifyEmailCommand>(request);
+
             return await RequestAsync(command, cancellationToken);
         }
 
@@ -106,7 +102,7 @@ namespace MangoAPI.Presentation.Controllers
             CancellationToken cancellationToken)
         {
             var userId = HttpContext.User.GetUserId();
-            
+
             var command = new VerifyPhoneCommand
             {
                 UserId = userId,
@@ -133,8 +129,9 @@ namespace MangoAPI.Presentation.Controllers
             CancellationToken cancellationToken)
         {
             var userId = HttpContext.User.GetUserId();
-            
-            var command = request.ToCommand(userId);
+
+            var command = Mapper.Map<ChangePasswordCommand>(request);
+            command.UserId = userId;
 
             return await RequestAsync(command, cancellationToken);
         }
@@ -158,18 +155,18 @@ namespace MangoAPI.Presentation.Controllers
             {
                 UserId = userId
             };
-            
+
             return await RequestAsync(query, cancellationToken);
         }
 
         /// <summary>
         /// Gets info about current user himself.
-        /// This endpoint may be accessed by both roles: Unverified, User.
+        /// This endpoint may be accessed by both roles: User.
         /// </summary>
         /// <param name="cancellationToken">CancellationToken instance.</param>
         /// <returns>Possible codes: 200, 400, 409.</returns>
         [HttpGet]
-        [Authorize(Roles = "Unverified, User")]
+        [Authorize(Roles = "User")]
         [SwaggerOperation(Description = "Gets info about current user himself. " +
                                     "This endpoint may be accessed by both roles: Unverified, User.",
             Summary = "Gets info about current user himself.")]
@@ -179,12 +176,12 @@ namespace MangoAPI.Presentation.Controllers
         public async Task<IActionResult> GetCurrentUser(CancellationToken cancellationToken)
         {
             var userId = HttpContext.User.GetUserId();
-            
+
             var request = new GetUserQuery
             {
                 UserId = userId
             };
-            
+
             return await RequestAsync(request, cancellationToken);
         }
 
@@ -206,8 +203,9 @@ namespace MangoAPI.Presentation.Controllers
             CancellationToken cancellationToken)
         {
             var userId = HttpContext.User.GetUserId();
-            
-            var command = request.ToCommand(userId);
+
+            var command = Mapper.Map<UpdateUserSocialInformationCommand>(request);
+            command.UserId = userId;
 
             return await RequestAsync(command, cancellationToken);
         }
@@ -229,8 +227,9 @@ namespace MangoAPI.Presentation.Controllers
             CancellationToken cancellationToken)
         {
             var userId = HttpContext.User.GetUserId();
-            
-            var command = request.ToCommand(userId);
+
+            var command = Mapper.Map<UpdateUserAccountInfoCommand>(request);
+            command.UserId = userId;
 
             return await RequestAsync(command, cancellationToken);
         }
@@ -268,10 +267,10 @@ namespace MangoAPI.Presentation.Controllers
             CancellationToken cancellationToken)
         {
             var userId = HttpContext.User.GetUserId();
-            
+
             var command = new UpdateProfilePictureCommand
             {
-                UserId = userId, 
+                UserId = userId,
                 Image = image
             };
 

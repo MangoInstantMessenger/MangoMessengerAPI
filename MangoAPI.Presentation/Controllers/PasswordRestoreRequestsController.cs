@@ -1,4 +1,5 @@
-﻿using MangoAPI.BusinessLogic.ApiCommands.PasswordRestoreRequests;
+﻿using AutoMapper;
+using MangoAPI.BusinessLogic.ApiCommands.PasswordRestoreRequests;
 using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.Presentation.Interfaces;
 using MediatR;
@@ -20,11 +21,7 @@ namespace MangoAPI.Presentation.Controllers
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class PasswordRestoreRequestsController : ApiControllerBase, IPasswordRestoreRequestsController
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="PasswordRestoreRequestsController"/> class.
-        /// </summary>
-        /// <param name="mediator">Instance of mediator.</param>
-        public PasswordRestoreRequestsController(IMediator mediator) : base(mediator)
+        public PasswordRestoreRequestsController(IMediator mediator, IMapper mapper) : base(mediator, mapper)
         {
         }
 
@@ -68,7 +65,7 @@ namespace MangoAPI.Presentation.Controllers
         public async Task<IActionResult> RestorePasswordAsync([FromBody] PasswordRestoreRequest request,
             CancellationToken cancellationToken)
         {
-            var command = request.ToCommand();
+            var command = Mapper.Map<PasswordRestoreCommand>(request);
 
             return await RequestAsync(command, cancellationToken);
         }

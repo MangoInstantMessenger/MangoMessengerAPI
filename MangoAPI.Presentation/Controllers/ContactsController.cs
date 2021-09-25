@@ -1,6 +1,4 @@
-﻿using System;
-using System.Threading;
-using System.Threading.Tasks;
+﻿using AutoMapper;
 using MangoAPI.BusinessLogic.ApiCommands.Contacts;
 using MangoAPI.BusinessLogic.ApiQueries.Contacts;
 using MangoAPI.BusinessLogic.Responses;
@@ -12,6 +10,9 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
+using System;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace MangoAPI.Presentation.Controllers
 {
@@ -23,12 +24,7 @@ namespace MangoAPI.Presentation.Controllers
     [Authorize(Roles = "User", AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class ContactsController : ApiControllerBase, IContactsController
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ContactsController"/> class.
-        /// </summary>
-        /// <param name="mediator">Mediator instance.</param>
-        public ContactsController(IMediator mediator)
-            : base(mediator)
+        public ContactsController(IMediator mediator, IMapper mapper) : base(mediator, mapper)
         {
         }
 
@@ -65,7 +61,7 @@ namespace MangoAPI.Presentation.Controllers
         /// <returns>Possible codes: 200, 400, 409.</returns>
         [HttpDelete("{contactId:guid}")]
         [SwaggerOperation(Description = "Deletes particular contact from the contacts. Fetches user by user ID. " +
-            "Requires role: User", 
+            "Requires role: User",
             Summary = "Deletes particular contact from the contacts.")]
         [ProducesResponseType(typeof(ResponseBase), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
