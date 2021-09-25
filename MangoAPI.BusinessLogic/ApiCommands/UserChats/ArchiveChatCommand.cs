@@ -8,6 +8,5 @@ namespace MangoAPI.BusinessLogic.ApiCommands.UserChats
     {
         public Guid ChatId { get; init; }
         public Guid UserId { get; init; }
-        public bool Archived { get; init; }
     }
 }

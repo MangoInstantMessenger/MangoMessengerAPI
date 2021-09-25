@@ -10,6 +10,6 @@ namespace MangoAPI.Presentation.Interfaces
     {
         Task<IActionResult> JoinChatAsync(Guid chatId, CancellationToken cancellationToken);
         Task<IActionResult> LeaveGroup(Guid chatId, CancellationToken cancellationToken);
-        Task<IActionResult> ArchiveChat(ArchiveChatRequest request, CancellationToken cancellationToken);
+        Task<IActionResult> ArchiveChat(Guid chatId, CancellationToken cancellationToken);
     }
 }
