@@ -85,8 +85,8 @@ namespace MangoAPI.Presentation.Controllers
         /// <param name="cancellationToken">Cancellation token instance.</param>
         /// <returns>Possible codes: 200, 400, 409.</returns>
         [HttpDelete("{refreshToken:guid}")]
-        [Authorize(Roles = "Unverified, User")]
-        [SwaggerOperation(Description = "Deletes current user's session. Requires roles: Unverified, User.",
+        [Authorize(Roles = "User")]
+        [SwaggerOperation(Description = "Deletes current user's session. Requires roles: User.",
             Summary = "Deletes current user's session.")]
         [ProducesResponseType(typeof(ResponseBase), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
@@ -108,8 +108,8 @@ namespace MangoAPI.Presentation.Controllers
         /// <param name="cancellationToken">Cancellation token instance.</param>
         /// <returns>Possible codes: 200, 400, 409.</returns>
         [HttpDelete]
-        [Authorize(Roles = "Unverified, User")]
-        [SwaggerOperation(Description = "Deletes all current user's sessions. Requires roles: Unverified, User.",
+        [Authorize(Roles = "User")]
+        [SwaggerOperation(Description = "Deletes all current user's sessions. Requires roles: User.",
             Summary = "Deletes all current user's sessions.")]
         [ProducesResponseType(typeof(ResponseBase), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
