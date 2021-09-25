@@ -1,5 +1,4 @@
 ﻿using System;
-using MangoAPI.Domain.Enums;
 
 namespace MangoAPI.Domain.Entities
 {
