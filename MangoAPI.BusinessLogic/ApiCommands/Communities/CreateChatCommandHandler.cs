@@ -1,24 +1,29 @@
-﻿using System;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
-using MangoAPI.BusinessLogic.BusinessExceptions;
+﻿using MangoAPI.BusinessLogic.BusinessExceptions;
+using MangoAPI.BusinessLogic.HubConfig;
+using MangoAPI.BusinessLogic.Models;
 using MangoAPI.DataAccess.Database;
 using MangoAPI.DataAccess.Database.Extensions;
 using MangoAPI.Domain.Constants;
 using MangoAPI.Domain.Entities;
 using MangoAPI.Domain.Enums;
 using MediatR;
+using Microsoft.AspNetCore.SignalR;
+using System;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace MangoAPI.BusinessLogic.ApiCommands.Communities
 {
     public class CreateChatCommandHandler : IRequestHandler<CreateChatCommand, CreateCommunityResponse>
     {
         private readonly MangoPostgresDbContext _postgresDbContext;
+        private readonly IHubContext<ChatHub, IHubClient> _hubContext;
 
-        public CreateChatCommandHandler(MangoPostgresDbContext postgresDbContext)
+        public CreateChatCommandHandler(MangoPostgresDbContext postgresDbContext, IHubContext<ChatHub, IHubClient> hubContext)
         {
             _postgresDbContext = postgresDbContext;
+            _hubContext = hubContext;
         }
 
         public async Task<CreateCommunityResponse> Handle(CreateChatCommand request,
@@ -48,17 +53,17 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Communities
 
             var existingChat = userPrivateChats
                 .FirstOrDefault(x => x.ChatUsers.Any(t => t.UserId == partner.Id)
-                                     && x.CommunityType == (int) request.CommunityType);
+                                     && x.CommunityType == (int)request.CommunityType);
 
             if (existingChat != null)
             {
                 return CreateCommunityResponse.FromSuccess(existingChat);
             }
 
-            var directChat = new ChatEntity
+            var chatEntity = new ChatEntity
             {
                 Id = Guid.NewGuid(),
-                CommunityType = (int) request.CommunityType,
+                CommunityType = (int)request.CommunityType,
                 Title = $"{currentUser.DisplayName} / {partner.DisplayName}",
                 CreatedAt = DateTime.UtcNow,
                 Description = $"Direct chat between {currentUser.DisplayName} and {partner.DisplayName}",
@@ -67,20 +72,23 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Communities
 
             if (request.CommunityType == CommunityType.SecretChat)
             {
-                directChat.Description = $"Secret chat between {currentUser.DisplayName} and {partner.DisplayName}";
+                chatEntity.Description = $"Secret chat between {currentUser.DisplayName} and {partner.DisplayName}";
             }
 
             var userChats = new[]
             {
-                new UserChatEntity {ChatId = directChat.Id, RoleId = (int) UserRole.User, UserId = currentUser.Id},
-                new UserChatEntity {ChatId = directChat.Id, RoleId = (int) UserRole.User, UserId = request.PartnerId},
+                new UserChatEntity {ChatId = chatEntity.Id, RoleId = (int) UserRole.User, UserId = currentUser.Id},
+                new UserChatEntity {ChatId = chatEntity.Id, RoleId = (int) UserRole.User, UserId = request.PartnerId},
             };
 
-            await _postgresDbContext.Chats.AddAsync(directChat, cancellationToken);
+            await _postgresDbContext.Chats.AddAsync(chatEntity, cancellationToken);
             await _postgresDbContext.UserChats.AddRangeAsync(userChats, cancellationToken);
             await _postgresDbContext.SaveChangesAsync(cancellationToken);
 
-            return CreateCommunityResponse.FromSuccess(directChat);
+            var chatDto = chatEntity.ToChatDto();
+            await _hubContext.Clients.Group(request.UserId.ToString()).UpdateUserChats(chatDto);
+
+            return CreateCommunityResponse.FromSuccess(chatEntity);
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using MangoAPI.Domain.Entities;
 using MangoAPI.Domain.Enums;
 
 namespace MangoAPI.BusinessLogic.Models
@@ -31,7 +32,25 @@ namespace MangoAPI.BusinessLogic.Models
         public bool IsMember { get; init; }
 
         public DateTime? UpdatedAt { get; init; }
-        
+
         public Message LastMessage { get; init; }
+    }
+
+    public static class ChatEntityMapper
+    {
+        public static Chat ToChatDto(this ChatEntity entity)
+        {
+            return new Chat
+            {
+                ChatId = entity.Id,
+                Title =entity.Title,
+                CommunityType = (CommunityType) entity.CommunityType,
+                Description = entity.Description,
+                MembersCount = entity.MembersCount,
+                IsArchived = false,
+                IsMember = true,
+                UpdatedAt = entity.UpdatedAt
+            };
+        }
     }
 }
