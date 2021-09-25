@@ -34,20 +34,24 @@ namespace MangoAPI.Presentation.Controllers
         /// <summary>
         /// Archives or un-archives chat. Requires roles: User.
         /// </summary>
-        /// <param name="request">ArchiveChatRequest instance.</param>
+        /// <param name="chatId">Chat ID, UUID.</param>
         /// <param name="cancellationToken">Cancellation token instance.</param>
         /// <returns>Possible codes: 200, 400, 409.</returns>
-        [HttpPut]
+        [HttpPut("{chatId:guid}")]
         [SwaggerOperation(Description = "Archives or un-archives chat. Requires roles: User.",
             Summary = "Archives or un-archives chat.")]
         [ProducesResponseType(typeof(ResponseBase), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
-        public async Task<IActionResult> ArchiveChat([FromBody] ArchiveChatRequest request,
+        public async Task<IActionResult> ArchiveChat([FromRoute] Guid chatId,
             CancellationToken cancellationToken)
         {
             var userId = HttpContext.User.GetUserId();
-            var command = request.ToCommand(userId);
+            var command = new ArchiveChatCommand()
+            {
+                UserId = userId,
+                ChatId = chatId
+            };
 
             return await RequestAsync(command, cancellationToken);
         }

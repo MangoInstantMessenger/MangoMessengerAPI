@@ -28,7 +28,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.UserChats
                 throw new BusinessException(ResponseMessageCodes.ChatNotFound);
             }
 
-            chat.IsArchived = request.Archived;
+            chat.IsArchived = !chat.IsArchived;
 
             _postgresDbContext.UserChats.Update(chat);
 
