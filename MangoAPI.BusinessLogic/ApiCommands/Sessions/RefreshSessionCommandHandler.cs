@@ -85,7 +85,9 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Sessions
 
             var expires = ((DateTimeOffset)session.ExpiresAt).ToUnixTimeSeconds();
 
-            return TokensResponse.FromSuccess(jwtToken, newSession.RefreshToken, user.Id, expires);
+            return roles.Contains(SeedDataConstants.UnverifiedRole)
+                    ? TokensResponse.FromSuccess(jwtToken, newSession.RefreshToken, userId: null, expires)
+                    : TokensResponse.FromSuccess(jwtToken, newSession.RefreshToken, user.Id, expires);
         }
     }
 }
