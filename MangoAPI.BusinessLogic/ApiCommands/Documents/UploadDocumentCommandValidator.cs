@@ -7,6 +7,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Documents
         public UploadDocumentCommandValidator()
         {
             RuleFor(x => x.FormFile).NotEmpty();
+            RuleFor(x => x.FormFile.Length).LessThanOrEqualTo(5 * 1024 * 1024);
         }
     }
 }
