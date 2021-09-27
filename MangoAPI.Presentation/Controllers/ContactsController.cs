@@ -116,7 +116,7 @@ namespace MangoAPI.Presentation.Controllers
         [ProducesResponseType(typeof(SearchContactResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
-        public async Task<IActionResult> SearchesAsync([FromRoute] string searchQuery,
+        public async Task<IActionResult> SearchesAsync([FromQuery] string searchQuery,
             CancellationToken cancellationToken)
         {
             var currentUserId = HttpContext.User.GetUserId();
