@@ -1,6 +1,6 @@
-﻿using System;
-using MangoAPI.BusinessLogic.Responses;
+﻿using MangoAPI.BusinessLogic.Responses;
 using MediatR;
+using System;
 
 namespace MangoAPI.BusinessLogic.ApiCommands.Users
 {
