@@ -8,6 +8,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Documents
         {
             RuleFor(x => x.FormFile).NotEmpty();
             RuleFor(x => x.FormFile.Length).LessThanOrEqualTo(5 * 1024 * 1024);
+            RuleFor(x => x.FormFile.FileName).Must(t => t.ToLower().Contains(".jpg"));
         }
     }
 }
