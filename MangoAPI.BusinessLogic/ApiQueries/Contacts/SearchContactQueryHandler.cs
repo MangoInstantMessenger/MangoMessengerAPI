@@ -45,12 +45,16 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Contacts
                 PictureUrl = StringService.GetDocumentUrl(x.Image),
             }).ToList();
 
+            var contactsUserIds = contacts.Select(x => x.UserId);
+
+            var commonContacts = await _postgresDbContext.UserContacts.AsNoTracking()
+                .Where(x => x.UserId == request.UserId && contactsUserIds.Contains(x.UserId))
+                .Select(x => x.UserId)
+                .ToListAsync(cancellationToken);
+
             foreach (var contact in contacts)
             {
-                var isContact = await _postgresDbContext.UserContacts.AsNoTracking()
-                    .AnyAsync(x => x.UserId == request.UserId && x.ContactId == contact.UserId, cancellationToken);
-
-                contact.IsContact = isContact;
+                contact.IsContact = commonContacts.Contains(contact.UserId);
             }
 
             return SearchContactResponse.FromSuccess(contacts);

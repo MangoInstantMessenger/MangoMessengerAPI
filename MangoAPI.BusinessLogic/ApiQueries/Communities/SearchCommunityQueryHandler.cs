@@ -23,6 +23,8 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Communities
         public async Task<SearchCommunityResponse> Handle(SearchCommunityQuery request,
             CancellationToken cancellationToken)
         {
+            // TODO: optimize this query
+
             var chats = await _postgresDbContext
                 .Chats
                 .GetChannelsIncludeMessagesAsync(cancellationToken);
@@ -68,19 +70,6 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Communities
                             }).Last()
                         : null,
                 };
-
-                // if (currentChat.CommunityType == CommunityType.DirectChat)
-                // {
-                //     var colleague = (await _postgresDbContext
-                //         .UserChats
-                //         .AsNoTracking()
-                //         .Include(x => x.User)
-                //         .FirstOrDefaultAsync(x => x.ChatId == currentChat.ChatId && x.UserId != request.UserId,
-                //             cancellationToken)).User;
-                //
-                //     currentChat.Title = colleague.DisplayName;
-                //     currentChat.ChatLogoImageUrl = StringService.GetDocumentUrl(colleague.Image);
-                // }
 
                 resultList.Add(currentChat);
             }
