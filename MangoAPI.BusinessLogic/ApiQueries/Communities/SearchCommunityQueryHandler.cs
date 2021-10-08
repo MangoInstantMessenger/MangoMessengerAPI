@@ -26,6 +26,8 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Communities
                 .AsNoTracking()
                 .Where(x => x.CommunityType == (int)CommunityType.PublicChannel
                             || x.CommunityType == (int)CommunityType.ReadOnlyChannel)
+                .Where(x => request.DisplayName == null
+                            || EF.Functions.ILike(x.Title, $"%{request.DisplayName}%"))
                 .Include(x => x.Messages)
                 .ThenInclude(x => x.User)
                 .Select(x => new Chat
@@ -64,11 +66,6 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Communities
                 }).Distinct();
 
             var chats = await query.ToListAsync(cancellationToken);
-
-            if (!string.IsNullOrEmpty(request.DisplayName) || !string.IsNullOrWhiteSpace(request.DisplayName))
-            {
-                chats = chats.Where(x => x.Title.ToUpper().Contains(request.DisplayName.ToUpper())).ToList();
-            }
 
             var joinedChatIds = await _postgresDbContext.UserChats.AsNoTracking()
                 .Where(x => x.UserId == request.UserId)
