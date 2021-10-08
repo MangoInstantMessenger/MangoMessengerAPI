@@ -30,7 +30,8 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Messages
 
         public async Task<SendMessageResponse> Handle(SendMessageCommand request, CancellationToken cancellationToken)
         {
-            var user = await _postgresDbContext.Users.FindUserByIdAsync(request.UserId, cancellationToken);
+            var user = await _postgresDbContext.Users.AsNoTracking()
+                .FirstOrDefaultAsync(x => x.Id == request.UserId, cancellationToken);
 
             if (user == null)
             {
@@ -70,6 +71,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Messages
 
             var messageDto = messageEntity.ToMessage(user);
             await _hubContext.Clients.Group(chat.Id.ToString()).BroadcastMessage(messageDto);
+
             return SendMessageResponse.FromSuccess(messageEntity.Id);
         }
 
@@ -80,8 +82,8 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Messages
             {
                 (int)CommunityType.DirectChat => true,
                 (int)CommunityType.SecretChat => true,
-                (int)CommunityType.PrivateChannel => await CheckPrivateChannelPermissions(user, chat, cancellationToken),
-                (int)CommunityType.PublicChannel => await CheckPublicChannelPermissions(user, chat, cancellationToken),
+                (int)CommunityType.PrivateChannel => await CheckChannelPermissions(user, chat, cancellationToken),
+                (int)CommunityType.PublicChannel => await CheckChannelPermissions(user, chat, cancellationToken),
                 (int)CommunityType.ReadOnlyChannel => await CheckReadOnlyChannelPermissions(user, chat, cancellationToken),
                 _ => false,
             };
@@ -90,24 +92,16 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Messages
         private async Task<bool> CheckReadOnlyChannelPermissions(UserEntity user, ChatEntity chat,
             CancellationToken cancellationToken)
         {
-            return (await _postgresDbContext.UserChats
+            return (await _postgresDbContext.UserChats.AsNoTracking()
                     .Where(x => x.UserId == user.Id && x.ChatId == chat.Id)
                     .ToListAsync(cancellationToken))
                 .Any(x => x.RoleId is (int)UserRole.Moderator or (int)UserRole.Admin or (int)UserRole.Owner);
         }
 
-        private async Task<bool> CheckPublicChannelPermissions(UserEntity user, ChatEntity chat,
+        private async Task<bool> CheckChannelPermissions(UserEntity user, ChatEntity chat,
             CancellationToken cancellationToken)
         {
-            return await _postgresDbContext.UserChats
-                .Where(x => x.UserId == user.Id && x.ChatId == chat.Id)
-                .AnyAsync(cancellationToken);
-        }
-
-        private async Task<bool> CheckPrivateChannelPermissions(UserEntity user, ChatEntity chat,
-            CancellationToken cancellationToken)
-        {
-            return await _postgresDbContext.UserChats
+            return await _postgresDbContext.UserChats.AsNoTracking()
                 .Where(x => x.UserId == user.Id && x.ChatId == chat.Id)
                 .AnyAsync(cancellationToken);
         }

@@ -1,8 +1,8 @@
-﻿using System;
-using System.Reflection;
-using MangoAPI.Domain.Entities;
+﻿using MangoAPI.Domain.Entities;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using System;
+using System.Reflection;
 
 namespace MangoAPI.DataAccess.Database
 {
@@ -12,8 +12,7 @@ namespace MangoAPI.DataAccess.Database
         {
         }
 
-        public MangoPostgresDbContext(DbContextOptions options)
-            : base(options)
+        public MangoPostgresDbContext(DbContextOptions options) : base(options)
         {
         }
 

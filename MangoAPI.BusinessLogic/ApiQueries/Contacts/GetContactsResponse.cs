@@ -1,10 +1,7 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using MangoAPI.Application.Services;
-using MangoAPI.BusinessLogic.Models;
+﻿using MangoAPI.BusinessLogic.Models;
 using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.Domain.Constants;
-using MangoAPI.Domain.Entities;
+using System.Collections.Generic;
 
 namespace MangoAPI.BusinessLogic.ApiQueries.Contacts
 {
@@ -12,23 +9,13 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Contacts
     {
         public List<Contact> Contacts { get; init; }
 
-        public static GetContactsResponse FromSuccess(IEnumerable<UserEntity> contacts)
+        public static GetContactsResponse FromSuccess(List<Contact> contacts)
         {
-            return new()
+            return new GetContactsResponse
             {
                 Message = ResponseMessageCodes.Success,
                 Success = true,
-                Contacts = contacts
-                    .Select(userEntity =>
-                        new Contact
-                        {
-                            UserId = userEntity.Id,
-                            DisplayName = userEntity.DisplayName,
-                            Address = userEntity.UserInformation.Address,
-                            Bio = userEntity.Bio,
-                            IsContact = true,
-                            PictureUrl = StringService.GetDocumentUrl(userEntity.Image),
-                        }).ToList(),
+                Contacts = contacts,
             };
         }
     }

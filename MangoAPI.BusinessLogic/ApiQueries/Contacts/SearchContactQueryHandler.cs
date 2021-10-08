@@ -23,37 +23,43 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Contacts
         public async Task<SearchContactResponse> Handle(SearchContactQuery request,
             CancellationToken cancellationToken)
         {
-            var users = await _postgresDbContext.Users
+            var query = _postgresDbContext.Users
                 .AsNoTracking()
                 .Include(x => x.UserInformation)
                 .Where(x => x.Id != request.UserId)
-                .ToListAsync(cancellationToken);
+                .Select(x => new Contact
+                {
+                    UserId = x.Id,
+                    DisplayName = x.DisplayName,
+                    Address = x.UserInformation.Address,
+                    Bio = x.Bio,
+                    PictureUrl = StringService.GetDocumentUrl(x.Image),
+                    Email = x.Email,
+                    PhoneNumber = x.PhoneNumber
+                });
 
             if (!string.IsNullOrEmpty(request.SearchQuery) || !string.IsNullOrWhiteSpace(request.SearchQuery))
             {
-                users = users.Where(x => x.DisplayName.ToUpper().Contains(request.SearchQuery.ToUpper())
-                                         || x.Email.ToUpper().Contains(request.SearchQuery.ToUpper())
-                                         || x.PhoneNumber.ToUpper().Contains(request.SearchQuery.ToUpper())).ToList();
+                query = query.Where(x => x.DisplayName.Contains(request.SearchQuery) ||
+                                         x.PhoneNumber.Contains(request.SearchQuery) ||
+                                         x.Email.Contains(request.SearchQuery));
             }
 
-            var contacts = users.Select(x => new Contact
-            {
-                UserId = x.Id,
-                DisplayName = x.DisplayName,
-                Address = x.UserInformation.Address,
-                Bio = x.Bio,
-                PictureUrl = StringService.GetDocumentUrl(x.Image),
-            }).ToList();
+            var searchResult = await query.ToListAsync(cancellationToken);
 
-            foreach (var contact in contacts)
-            {
-                var isContact = await _postgresDbContext.UserContacts.AsNoTracking()
-                    .AnyAsync(x => x.UserId == request.UserId && x.ContactId == contact.UserId, cancellationToken);
+            var contactsUserIds = searchResult.Select(x => x.UserId);
 
-                contact.IsContact = isContact;
+            var commonContacts = await _postgresDbContext.UserContacts.AsNoTracking()
+                .Where(x => x.UserId == request.UserId && contactsUserIds.Contains(x.UserId))
+                .Select(x => x.UserId)
+                .ToListAsync(cancellationToken);
+
+            foreach (var contact in searchResult)
+            {
+                contact.IsContact = commonContacts.Contains(contact.UserId);
             }
 
-            return SearchContactResponse.FromSuccess(contacts);
+            return SearchContactResponse.FromSuccess(searchResult);
         }
     }
 }

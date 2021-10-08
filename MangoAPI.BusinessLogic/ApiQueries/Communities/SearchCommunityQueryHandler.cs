@@ -1,13 +1,12 @@
-﻿using MangoAPI.Application.Services;
-using MangoAPI.BusinessLogic.Models;
+﻿using MangoAPI.BusinessLogic.Models;
 using MangoAPI.DataAccess.Database;
-using MangoAPI.DataAccess.Database.Extensions;
 using MangoAPI.Domain.Enums;
 using MediatR;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using MangoAPI.Domain.Constants;
+using Microsoft.EntityFrameworkCore;
 
 namespace MangoAPI.BusinessLogic.ApiQueries.Communities
 {
@@ -23,69 +22,59 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Communities
         public async Task<SearchCommunityResponse> Handle(SearchCommunityQuery request,
             CancellationToken cancellationToken)
         {
-            var chats = await _postgresDbContext
-                .Chats
-                .GetChannelsIncludeMessagesAsync(cancellationToken);
-
-            var userChats =
-                await _postgresDbContext.UserChats
-                    .FindUserChatsByIdIncludeMessagesAsync(request.UserId, cancellationToken);
-
-            if (!string.IsNullOrEmpty(request.DisplayName) || !string.IsNullOrWhiteSpace(request.DisplayName))
-            {
-                chats = chats
-                    .Where(x => x.Title.ToUpper().Contains(request.DisplayName.ToUpper()))
-                    .ToList();
-            }
-
-            var resultList = new List<Chat>();
-
-            foreach (var chat in chats)
-            {
-                var isMember = userChats.Any(x => x.Chat.Id == chat.Id);
-                
-                var currentChat = new Chat
+            var query = _postgresDbContext.Chats
+                .AsNoTracking()
+                .Where(x => x.CommunityType == (int)CommunityType.PublicChannel
+                            || x.CommunityType == (int)CommunityType.ReadOnlyChannel)
+                .Where(x => request.DisplayName == null
+                            || EF.Functions.ILike(x.Title, $"%{request.DisplayName}%"))
+                .Include(x => x.Messages)
+                .ThenInclude(x => x.User)
+                .Select(x => new Chat
                 {
-                    ChatId = chat.Id,
-                    Title = chat.Title,
-                    ChatLogoImageUrl = StringService.GetDocumentUrl(chat.Image),
-                    Description = chat.Description,
-                    MembersCount = chat.MembersCount,
-                    CommunityType = (CommunityType) chat.CommunityType,
-                    IsMember = isMember,
-                    LastMessage = chat.Messages.Any()
-                        ? chat.Messages.OrderBy(x => x.CreatedAt).Select(x =>
+                    ChatId = x.Id,
+                    Title = x.Title,
+                    CommunityType = (CommunityType)x.CommunityType,
+                    ChatLogoImageUrl = x.Image != null
+                        ? $"{EnvironmentConstants.BackendAddress}Uploads/{x.Image}"
+                        : null,
+                    Description = x.Description,
+                    MembersCount = x.MembersCount,
+                    IsArchived = false,
+                    IsMember = false,
+                    UpdatedAt = x.UpdatedAt,
+                    LastMessage = x.Messages.Any()
+                        ? x.Messages.OrderBy(messageEntity => messageEntity.CreatedAt).Select(messageEntity =>
                             new Message
                             {
-                                MessageId = x.Id,
-                                UserDisplayName = x.User.DisplayName,
-                                MessageText = x.Content,
-                                CreatedAt = x.CreatedAt.ToShortTimeString(),
-                                UpdatedAt = x.UpdatedAt?.ToShortTimeString(),
-                                IsEncrypted = x.IsEncrypted,
-                                AuthorPublicKey = x.AuthorPublicKey,
-                                MessageAuthorPictureUrl = StringService.GetDocumentUrl(x.User.Image),
+                                MessageId = messageEntity.Id,
+                                ChatId = messageEntity.ChatId,
+                                UserDisplayName = messageEntity.User.DisplayName,
+                                MessageText = messageEntity.Content,
+                                CreatedAt = messageEntity.CreatedAt.ToShortTimeString(),
+                                UpdatedAt = messageEntity.UpdatedAt.HasValue
+                                    ? messageEntity.UpdatedAt.Value.ToShortTimeString()
+                                    : null,
+                                IsEncrypted = messageEntity.IsEncrypted,
+                                AuthorPublicKey = messageEntity.AuthorPublicKey,
+                                MessageAuthorPictureUrl = messageEntity.User.Image != null
+                                    ? $"{EnvironmentConstants.BackendAddress}Uploads/{messageEntity.User.Image}"
+                                    : null,
+                                Self = messageEntity.UserId == request.UserId,
                             }).Last()
                         : null,
-                };
+                }).Distinct();
 
-                // if (currentChat.CommunityType == CommunityType.DirectChat)
-                // {
-                //     var colleague = (await _postgresDbContext
-                //         .UserChats
-                //         .AsNoTracking()
-                //         .Include(x => x.User)
-                //         .FirstOrDefaultAsync(x => x.ChatId == currentChat.ChatId && x.UserId != request.UserId,
-                //             cancellationToken)).User;
-                //
-                //     currentChat.Title = colleague.DisplayName;
-                //     currentChat.ChatLogoImageUrl = StringService.GetDocumentUrl(colleague.Image);
-                // }
+            var chats = await query.ToListAsync(cancellationToken);
 
-                resultList.Add(currentChat);
-            }
+            var joinedChatIds = await _postgresDbContext.UserChats.AsNoTracking()
+                .Where(x => x.UserId == request.UserId)
+                .Select(x => x.ChatId)
+                .ToListAsync(cancellationToken);
 
-            return SearchCommunityResponse.FromSuccess(resultList);
+            chats = chats.Where(x => !joinedChatIds.Contains(x.ChatId)).ToList();
+
+            return SearchCommunityResponse.FromSuccess(chats);
         }
     }
 }
