@@ -22,5 +22,11 @@ namespace MangoAPI.BusinessLogic.Models
 
         [DefaultValue("Uploads/razumovsky_picture.jpg")]
         public string PictureUrl { get; init; }
+
+        [DefaultValue("my-email@gmail.com")]
+        public string Email { get; init; }
+
+        [DefaultValue("123456789")]
+        public string PhoneNumber { get; init; }
     }
 }

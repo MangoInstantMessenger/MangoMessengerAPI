@@ -104,6 +104,7 @@ namespace MangoAPI.Presentation
                         .AllowAnyHeader();
                 });
             });
+
             services.AddMvc();
         }
     }

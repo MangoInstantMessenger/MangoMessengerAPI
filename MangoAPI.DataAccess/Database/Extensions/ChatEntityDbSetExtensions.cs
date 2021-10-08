@@ -54,18 +54,5 @@ namespace MangoAPI.DataAccess.Database.Extensions
                                           && x.CommunityType != (int) CommunityType.PrivateChannel, 
                     cancellationToken);
         }
-
-        public static async Task<List<ChatEntity>> GetChannelsIncludeMessagesAsync(this DbSet<ChatEntity> dbSet,
-            CancellationToken cancellationToken)
-        {
-            return await dbSet
-                .AsNoTracking()
-                .Include(x => x.Messages)
-                .ThenInclude(x => x.User)
-                .Where(x => x.CommunityType != (int) CommunityType.PrivateChannel)
-                .Where(x => x.CommunityType != (int) CommunityType.DirectChat)
-                .Where(x => x.CommunityType != (int) CommunityType.SecretChat)
-                .ToListAsync(cancellationToken);
-        }
     }
 }

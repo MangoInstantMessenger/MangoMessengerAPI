@@ -1,10 +1,10 @@
-﻿using System;
+﻿using MangoAPI.Domain.Entities;
+using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using MangoAPI.Domain.Entities;
-using Microsoft.EntityFrameworkCore;
 
 namespace MangoAPI.DataAccess.Database.Extensions
 {

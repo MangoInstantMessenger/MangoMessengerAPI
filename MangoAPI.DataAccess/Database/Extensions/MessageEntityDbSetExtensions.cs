@@ -1,10 +1,10 @@
-﻿using System;
+﻿using MangoAPI.Domain.Entities;
+using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using MangoAPI.Domain.Entities;
-using Microsoft.EntityFrameworkCore;
 
 namespace MangoAPI.DataAccess.Database.Extensions
 {
@@ -14,28 +14,6 @@ namespace MangoAPI.DataAccess.Database.Extensions
             Guid chatId, CancellationToken cancellationToken)
         {
             return await dbSet.Where(x => x.ChatId == chatId)
-                .ToListAsync(cancellationToken);
-        }
-
-        public static async Task<List<MessageEntity>> SearchChatMessagesIncludeUserAsync(
-            this DbSet<MessageEntity> dbSet,
-            string messageText, Guid chatId, CancellationToken cancellationToken)
-        {
-            return await dbSet
-                .AsNoTracking()
-                .Include(x => x.User)
-                .Where(x => x.ChatId == chatId)
-                .Where(x => x.Content.Contains(messageText))
-                .ToListAsync(cancellationToken);
-        }
-
-        public static async Task<List<MessageEntity>> GetChatMessagesByIdIncludeUser(this DbSet<MessageEntity> dbSet,
-            Guid chatId, CancellationToken cancellationToken)
-        {
-            return await dbSet
-                .AsNoTracking()
-                .Include(x => x.User)
-                .Where(x => x.ChatId == chatId)
                 .ToListAsync(cancellationToken);
         }
 

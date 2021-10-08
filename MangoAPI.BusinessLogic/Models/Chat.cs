@@ -29,7 +29,7 @@ namespace MangoAPI.BusinessLogic.Models
         public bool IsArchived { get; init; }
 
         [DefaultValue(true)]
-        public bool IsMember { get; init; }
+        public bool IsMember { get; set; }
 
         public DateTime? UpdatedAt { get; init; }
 
@@ -43,8 +43,8 @@ namespace MangoAPI.BusinessLogic.Models
             return new Chat
             {
                 ChatId = entity.Id,
-                Title =entity.Title,
-                CommunityType = (CommunityType) entity.CommunityType,
+                Title = entity.Title,
+                CommunityType = (CommunityType)entity.CommunityType,
                 Description = entity.Description,
                 MembersCount = entity.MembersCount,
                 IsArchived = false,

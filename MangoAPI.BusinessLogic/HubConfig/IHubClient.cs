@@ -6,6 +6,7 @@ namespace MangoAPI.BusinessLogic.HubConfig
     public interface IHubClient
     {
         Task BroadcastMessage(Message message);
+
         Task UpdateUserChats(Chat chat);
     }
 }
