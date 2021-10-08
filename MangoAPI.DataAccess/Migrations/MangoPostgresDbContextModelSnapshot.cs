@@ -61,7 +61,7 @@ namespace MangoAPI.DataAccess.Migrations
                             Image = "wsb_group_logo.png",
                             MembersCount = 5,
                             Title = "WSB",
-                            UpdatedAt = new DateTime(2021, 9, 24, 13, 4, 52, 892, DateTimeKind.Local).AddTicks(7470)
+                            UpdatedAt = new DateTime(2021, 10, 8, 14, 56, 46, 310, DateTimeKind.Local).AddTicks(6963)
                         },
                         new
                         {
@@ -72,7 +72,7 @@ namespace MangoAPI.DataAccess.Migrations
                             Image = "extreme_code_main.jpg",
                             MembersCount = 4,
                             Title = "Extreme Code Main",
-                            UpdatedAt = new DateTime(2021, 9, 24, 13, 4, 52, 895, DateTimeKind.Local).AddTicks(4516)
+                            UpdatedAt = new DateTime(2021, 10, 8, 14, 56, 46, 313, DateTimeKind.Local).AddTicks(6760)
                         },
                         new
                         {
@@ -83,7 +83,7 @@ namespace MangoAPI.DataAccess.Migrations
                             Image = "extremecode_rest_logo.jpg",
                             MembersCount = 4,
                             Title = "Extreme Code Flood",
-                            UpdatedAt = new DateTime(2021, 9, 24, 13, 4, 52, 895, DateTimeKind.Local).AddTicks(4553)
+                            UpdatedAt = new DateTime(2021, 10, 8, 14, 56, 46, 313, DateTimeKind.Local).AddTicks(6799)
                         },
                         new
                         {
@@ -94,7 +94,7 @@ namespace MangoAPI.DataAccess.Migrations
                             Image = "extremecode_cpp_logo.jpg",
                             MembersCount = 4,
                             Title = "Extreme Code C++",
-                            UpdatedAt = new DateTime(2021, 9, 24, 13, 4, 52, 895, DateTimeKind.Local).AddTicks(4560)
+                            UpdatedAt = new DateTime(2021, 10, 8, 14, 56, 46, 313, DateTimeKind.Local).AddTicks(6805)
                         },
                         new
                         {
@@ -105,7 +105,7 @@ namespace MangoAPI.DataAccess.Migrations
                             Image = "extremecode_dotnet.png",
                             MembersCount = 4,
                             Title = "Extreme Code .NET",
-                            UpdatedAt = new DateTime(2021, 9, 24, 13, 4, 52, 895, DateTimeKind.Local).AddTicks(4564)
+                            UpdatedAt = new DateTime(2021, 10, 8, 14, 56, 46, 313, DateTimeKind.Local).AddTicks(6808)
                         },
                         new
                         {
@@ -115,7 +115,7 @@ namespace MangoAPI.DataAccess.Migrations
                             Description = "Direct chat between Khachatur Khachatryan and razumovsky r",
                             MembersCount = 2,
                             Title = "Khachatur Khachatryan / razumovsky r",
-                            UpdatedAt = new DateTime(2021, 9, 24, 13, 4, 52, 895, DateTimeKind.Local).AddTicks(4567)
+                            UpdatedAt = new DateTime(2021, 10, 8, 14, 56, 46, 313, DateTimeKind.Local).AddTicks(6811)
                         },
                         new
                         {
@@ -125,7 +125,7 @@ namespace MangoAPI.DataAccess.Migrations
                             Description = "Direct chat between Мусяка Колбасяка and razumovsky r",
                             MembersCount = 2,
                             Title = "Мусяка Колбасяка / razumovsky r",
-                            UpdatedAt = new DateTime(2021, 9, 24, 13, 4, 52, 895, DateTimeKind.Local).AddTicks(4570)
+                            UpdatedAt = new DateTime(2021, 10, 8, 14, 56, 46, 313, DateTimeKind.Local).AddTicks(6815)
                         },
                         new
                         {
@@ -135,7 +135,7 @@ namespace MangoAPI.DataAccess.Migrations
                             Description = "Direct chat between Amelit and razumovsky r",
                             MembersCount = 2,
                             Title = "Amelit / razumovsky r",
-                            UpdatedAt = new DateTime(2021, 9, 24, 13, 4, 52, 895, DateTimeKind.Local).AddTicks(4573)
+                            UpdatedAt = new DateTime(2021, 10, 8, 14, 56, 46, 313, DateTimeKind.Local).AddTicks(6819)
                         },
                         new
                         {
@@ -145,7 +145,7 @@ namespace MangoAPI.DataAccess.Migrations
                             Description = "Direct chat between Khachatur Khachatryan and Мусяка Колбасяка",
                             MembersCount = 2,
                             Title = "Khachatur Khachatryan / Мусяка Колбасяка",
-                            UpdatedAt = new DateTime(2021, 9, 24, 13, 4, 52, 895, DateTimeKind.Local).AddTicks(4576)
+                            UpdatedAt = new DateTime(2021, 10, 8, 14, 56, 46, 313, DateTimeKind.Local).AddTicks(6822)
                         },
                         new
                         {
@@ -155,7 +155,7 @@ namespace MangoAPI.DataAccess.Migrations
                             Description = "Direct chat between Petro Kolosov and Szymon Murawski",
                             MembersCount = 2,
                             Title = "Petro Kolosov / Szymon Murawski",
-                            UpdatedAt = new DateTime(2021, 9, 24, 13, 4, 52, 895, DateTimeKind.Local).AddTicks(4580)
+                            UpdatedAt = new DateTime(2021, 10, 8, 14, 56, 46, 313, DateTimeKind.Local).AddTicks(6825)
                         });
                 });
 
@@ -218,7 +218,7 @@ namespace MangoAPI.DataAccess.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("34718a9c-6255-4a54-9e42-18ce0172a3cd"),
+                            Id = new Guid("cd7ddef4-6501-4b4e-b1c4-3679287e5436"),
                             AuthorPublicKey = 0,
                             ChatId = new Guid("b6ca4533-fc21-4f44-9747-687361e3031c"),
                             Content = "Hello guys, how your diploma project goes?",
@@ -228,7 +228,7 @@ namespace MangoAPI.DataAccess.Migrations
                         },
                         new
                         {
-                            Id = new Guid("5ee9309a-dd22-4e79-92b9-ccdc2ffe3d56"),
+                            Id = new Guid("d142f07f-dcfb-4946-94f4-9339358ff119"),
                             AuthorPublicKey = 0,
                             ChatId = new Guid("b6ca4533-fc21-4f44-9747-687361e3031c"),
                             Content = "Well, I'm doing UI/UX part of the project",
@@ -238,7 +238,7 @@ namespace MangoAPI.DataAccess.Migrations
                         },
                         new
                         {
-                            Id = new Guid("907b3735-c7d9-428d-918c-566b39157c4a"),
+                            Id = new Guid("db5d8070-9d69-4bd6-8f62-a93872512058"),
                             AuthorPublicKey = 0,
                             ChatId = new Guid("b6ca4533-fc21-4f44-9747-687361e3031c"),
                             Content = "Hi teacher, I perform QA of the current version",
@@ -248,7 +248,7 @@ namespace MangoAPI.DataAccess.Migrations
                         },
                         new
                         {
-                            Id = new Guid("34fb4181-dc11-4c39-b52e-2830946e9f40"),
+                            Id = new Guid("fdcaeff1-cc10-4c62-8a42-fb499a85a7a9"),
                             AuthorPublicKey = 0,
                             ChatId = new Guid("b6ca4533-fc21-4f44-9747-687361e3031c"),
                             Content = "Greetings. I currently workout the back-end part",
@@ -258,7 +258,7 @@ namespace MangoAPI.DataAccess.Migrations
                         },
                         new
                         {
-                            Id = new Guid("e5fc23ee-204c-4601-9016-0be5cd555c5e"),
+                            Id = new Guid("005405c1-0f35-4283-98b1-021b5ffc3da7"),
                             AuthorPublicKey = 0,
                             ChatId = new Guid("b6ca4533-fc21-4f44-9747-687361e3031c"),
                             Content = "I work with backend too...",
@@ -268,7 +268,7 @@ namespace MangoAPI.DataAccess.Migrations
                         },
                         new
                         {
-                            Id = new Guid("59c0d215-2e5a-4c79-a977-428d9255b25b"),
+                            Id = new Guid("3ad8c9a1-bee1-455f-8dc1-3a554ac76cbf"),
                             AuthorPublicKey = 0,
                             ChatId = new Guid("b6ca4533-fc21-4f44-9747-687361e3031c"),
                             Content = "Great! Good luck to all of you",
@@ -278,7 +278,7 @@ namespace MangoAPI.DataAccess.Migrations
                         },
                         new
                         {
-                            Id = new Guid("36acf8bf-1040-4643-ad36-a548173e8c35"),
+                            Id = new Guid("18e124b0-063a-41bb-bb98-aba2e784cf4e"),
                             AuthorPublicKey = 0,
                             ChatId = new Guid("0dae5a74-3528-4e85-95bb-2036bd80432c"),
                             Content = "Hello World",
@@ -288,7 +288,7 @@ namespace MangoAPI.DataAccess.Migrations
                         },
                         new
                         {
-                            Id = new Guid("6f8fc072-bc60-4b1d-b7dc-00931798a37a"),
+                            Id = new Guid("6457f534-07fe-4fb0-9847-ceee5edac26c"),
                             AuthorPublicKey = 0,
                             ChatId = new Guid("0dae5a74-3528-4e85-95bb-2036bd80432c"),
                             Content = "F# The Best",
@@ -298,7 +298,7 @@ namespace MangoAPI.DataAccess.Migrations
                         },
                         new
                         {
-                            Id = new Guid("81c64b06-75f9-4745-89cd-2bb0f257d96c"),
+                            Id = new Guid("c415a453-5b3e-463c-b9ed-fe364f235970"),
                             AuthorPublicKey = 0,
                             ChatId = new Guid("0dae5a74-3528-4e85-95bb-2036bd80432c"),
                             Content = "C# The Best",
@@ -308,7 +308,7 @@ namespace MangoAPI.DataAccess.Migrations
                         },
                         new
                         {
-                            Id = new Guid("7039ac97-f67d-43a5-93a9-ab007c8f05c8"),
+                            Id = new Guid("d91834ba-7162-4f73-807b-e368f0e3a840"),
                             AuthorPublicKey = 0,
                             ChatId = new Guid("0dae5a74-3528-4e85-95bb-2036bd80432c"),
                             Content = "TypeScript The Best",
@@ -318,7 +318,7 @@ namespace MangoAPI.DataAccess.Migrations
                         },
                         new
                         {
-                            Id = new Guid("7b499d3a-f032-4954-b92b-c94c91aea247"),
+                            Id = new Guid("885f11bd-b261-4b5f-a486-95c85e411fd5"),
                             AuthorPublicKey = 0,
                             ChatId = new Guid("5e656ec2-205f-471c-b095-1c80b93b7655"),
                             Content = "Слава Партии!!",
@@ -328,7 +328,7 @@ namespace MangoAPI.DataAccess.Migrations
                         },
                         new
                         {
-                            Id = new Guid("3c3e8057-14ac-44b2-9b89-80d3133ead7f"),
+                            Id = new Guid("6dd92c0c-7bde-4ea1-aad0-0ab3cf5c6130"),
                             AuthorPublicKey = 0,
                             ChatId = new Guid("5e656ec2-205f-471c-b095-1c80b93b7655"),
                             Content = "Слава Партии!!",
@@ -338,7 +338,7 @@ namespace MangoAPI.DataAccess.Migrations
                         },
                         new
                         {
-                            Id = new Guid("247d26f9-012c-4d03-9c68-c553bcc86fde"),
+                            Id = new Guid("7a0c51e0-f57f-4025-b119-bc0ee4f506f2"),
                             AuthorPublicKey = 0,
                             ChatId = new Guid("5e656ec2-205f-471c-b095-1c80b93b7655"),
                             Content = "Слава Партии!!",
@@ -348,7 +348,7 @@ namespace MangoAPI.DataAccess.Migrations
                         },
                         new
                         {
-                            Id = new Guid("20395c70-6ff9-4442-8fcf-7393465f94fa"),
+                            Id = new Guid("95338e01-a66f-4b37-ac6e-c4418b42397f"),
                             AuthorPublicKey = 0,
                             ChatId = new Guid("5e656ec2-205f-471c-b095-1c80b93b7655"),
                             Content = "Слава Партии!!",
@@ -358,7 +358,7 @@ namespace MangoAPI.DataAccess.Migrations
                         },
                         new
                         {
-                            Id = new Guid("b2df700d-4879-43b1-aecc-c852d994d62f"),
+                            Id = new Guid("705754d3-10c2-45ac-8ba8-0663fe21e574"),
                             AuthorPublicKey = 0,
                             ChatId = new Guid("cd358b94-c3b9-4022-923a-13f787f70055"),
                             Content = "Hello World",
@@ -368,7 +368,7 @@ namespace MangoAPI.DataAccess.Migrations
                         },
                         new
                         {
-                            Id = new Guid("e9c72e35-dc60-4181-92bf-c47de0db60ff"),
+                            Id = new Guid("7896e951-f870-4093-8975-61cb2fefc965"),
                             AuthorPublicKey = 0,
                             ChatId = new Guid("cd358b94-c3b9-4022-923a-13f787f70055"),
                             Content = "Hello World",
@@ -378,7 +378,7 @@ namespace MangoAPI.DataAccess.Migrations
                         },
                         new
                         {
-                            Id = new Guid("0f9cbda4-dfce-41e6-a03e-7165a66546a6"),
+                            Id = new Guid("b4238e4f-64ec-41b6-b252-e7b69c44820b"),
                             AuthorPublicKey = 0,
                             ChatId = new Guid("cd358b94-c3b9-4022-923a-13f787f70055"),
                             Content = "Hello World",
@@ -388,7 +388,7 @@ namespace MangoAPI.DataAccess.Migrations
                         },
                         new
                         {
-                            Id = new Guid("e44ffb9e-883f-48b6-815d-a1559a31f856"),
+                            Id = new Guid("ee467bd0-08de-44e3-ad7e-8cd2ab65d052"),
                             AuthorPublicKey = 0,
                             ChatId = new Guid("cd358b94-c3b9-4022-923a-13f787f70055"),
                             Content = "Hello World",
@@ -398,7 +398,7 @@ namespace MangoAPI.DataAccess.Migrations
                         },
                         new
                         {
-                            Id = new Guid("66f30b0f-fe1f-4149-b453-5de2f9b5e19b"),
+                            Id = new Guid("ae6c7190-2f13-40b2-a1a2-9e7dcef6e90e"),
                             AuthorPublicKey = 0,
                             ChatId = new Guid("6f66e318-1e94-44ae-9b33-fe001e070842"),
                             Content = "Hello World",
@@ -408,7 +408,7 @@ namespace MangoAPI.DataAccess.Migrations
                         },
                         new
                         {
-                            Id = new Guid("dcdde5b3-85f2-4d78-9db5-705b680248c8"),
+                            Id = new Guid("adafc17a-2590-4024-9530-de02a0c68be4"),
                             AuthorPublicKey = 0,
                             ChatId = new Guid("6f66e318-1e94-44ae-9b33-fe001e070842"),
                             Content = "Hello World",
@@ -418,7 +418,7 @@ namespace MangoAPI.DataAccess.Migrations
                         },
                         new
                         {
-                            Id = new Guid("1698bc59-b707-4701-8143-07b4b022b8b1"),
+                            Id = new Guid("88d7166d-320e-4618-bcb9-0992503af953"),
                             AuthorPublicKey = 0,
                             ChatId = new Guid("6f66e318-1e94-44ae-9b33-fe001e070842"),
                             Content = "Hello World",
@@ -428,7 +428,7 @@ namespace MangoAPI.DataAccess.Migrations
                         },
                         new
                         {
-                            Id = new Guid("94fbf555-a8b7-4e86-ad92-08cf2eca91f8"),
+                            Id = new Guid("4ab1963a-f165-4bb0-ac62-830ee0e18e28"),
                             AuthorPublicKey = 0,
                             ChatId = new Guid("6f66e318-1e94-44ae-9b33-fe001e070842"),
                             Content = "Hello World",
@@ -438,7 +438,7 @@ namespace MangoAPI.DataAccess.Migrations
                         },
                         new
                         {
-                            Id = new Guid("da10de55-4c5a-4405-8000-117847569838"),
+                            Id = new Guid("5f424d14-54ef-436b-a387-7b430fd459d1"),
                             AuthorPublicKey = 0,
                             ChatId = new Guid("f5b7824f-e52b-4246-9984-06fc8e964f0c"),
                             Content = "Hello World",
@@ -448,7 +448,7 @@ namespace MangoAPI.DataAccess.Migrations
                         },
                         new
                         {
-                            Id = new Guid("d421f1ba-a4d7-4ca2-9d1a-f44f2023d7cc"),
+                            Id = new Guid("f146d410-f6bb-4a63-bf98-4558e700948f"),
                             AuthorPublicKey = 0,
                             ChatId = new Guid("f5b7824f-e52b-4246-9984-06fc8e964f0c"),
                             Content = "Hello World",
@@ -458,7 +458,7 @@ namespace MangoAPI.DataAccess.Migrations
                         },
                         new
                         {
-                            Id = new Guid("ddfe22fd-fa90-43b6-97ec-d3ff628acb8e"),
+                            Id = new Guid("27c4f22b-b010-4f75-97f7-899844c97466"),
                             AuthorPublicKey = 0,
                             ChatId = new Guid("f8729a12-5746-443f-ad31-378d846fce30"),
                             Content = "Hello World",
@@ -468,7 +468,7 @@ namespace MangoAPI.DataAccess.Migrations
                         },
                         new
                         {
-                            Id = new Guid("95d5dc6b-a659-4b8f-bc14-6fd06ddcd2ba"),
+                            Id = new Guid("9aab91b8-cb7f-46b3-aaf4-4922f640fd77"),
                             AuthorPublicKey = 0,
                             ChatId = new Guid("f8729a12-5746-443f-ad31-378d846fce30"),
                             Content = "Hello World",
@@ -478,7 +478,7 @@ namespace MangoAPI.DataAccess.Migrations
                         },
                         new
                         {
-                            Id = new Guid("362dc241-5901-43e8-bb77-1e8d28616872"),
+                            Id = new Guid("413a8d3d-6787-4ae8-9534-207d7ff6a6b6"),
                             AuthorPublicKey = 0,
                             ChatId = new Guid("b119914a-6d95-4047-bf8a-db27deeb7dc9"),
                             Content = "Hello World",
@@ -488,7 +488,7 @@ namespace MangoAPI.DataAccess.Migrations
                         },
                         new
                         {
-                            Id = new Guid("7dd2ad05-083c-480a-a523-48eb3daa0ad4"),
+                            Id = new Guid("062e653c-1df4-4c45-a54e-8fad27740fd6"),
                             AuthorPublicKey = 0,
                             ChatId = new Guid("b119914a-6d95-4047-bf8a-db27deeb7dc9"),
                             Content = "Hello World",
@@ -498,7 +498,7 @@ namespace MangoAPI.DataAccess.Migrations
                         },
                         new
                         {
-                            Id = new Guid("59cf702f-4ccc-440b-9e09-daf00dfba34e"),
+                            Id = new Guid("73418edb-d536-46b6-87c3-b5a3b8635035"),
                             AuthorPublicKey = 0,
                             ChatId = new Guid("9f205dde-0ddc-401f-8fe9-6c794b661f5d"),
                             Content = "Hello World",
@@ -508,7 +508,7 @@ namespace MangoAPI.DataAccess.Migrations
                         },
                         new
                         {
-                            Id = new Guid("13eace36-15fa-4ef4-a852-d67658ed8a8b"),
+                            Id = new Guid("965fdbca-21cf-4eab-914b-001418658afa"),
                             AuthorPublicKey = 0,
                             ChatId = new Guid("9f205dde-0ddc-401f-8fe9-6c794b661f5d"),
                             Content = "Hello World",
@@ -518,7 +518,7 @@ namespace MangoAPI.DataAccess.Migrations
                         },
                         new
                         {
-                            Id = new Guid("d7034678-2385-4a92-9269-9f41d67c5bab"),
+                            Id = new Guid("84378e6f-6eb2-4b3d-ad13-b2b8edffcf2d"),
                             AuthorPublicKey = 0,
                             ChatId = new Guid("3fce8b2c-252d-4514-a1bb-fbdf73c47b78"),
                             Content = "Hi teacher",
@@ -583,14 +583,14 @@ namespace MangoAPI.DataAccess.Migrations
                         new
                         {
                             Id = new Guid("32904a05-6d7c-43cf-b915-223324ff480e"),
-                            ConcurrencyStamp = "96a589c8-4b32-4aa2-b0b0-31e19626122a",
+                            ConcurrencyStamp = "6953d964-9212-4474-9444-275773086db9",
                             Name = "User",
                             NormalizedName = "USER"
                         },
                         new
                         {
                             Id = new Guid("1c48f8d5-01ed-4e47-8377-a22ffa58c150"),
-                            ConcurrencyStamp = "5ac2e105-da18-4fa7-97b5-34829663721e",
+                            ConcurrencyStamp = "ed8a13d5-0111-470e-8e64-826052dd1614",
                             Name = "Unverified",
                             NormalizedName = "UNVERIFIED"
                         });
@@ -885,198 +885,198 @@ namespace MangoAPI.DataAccess.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("f4ac98f8-c0a9-42d2-877e-4169e94e874d"),
+                            Id = new Guid("149d82b1-3d72-4ea5-ac48-bee03f2e11f8"),
                             ContactId = new Guid("5e7274ad-3132-4ad7-be36-38778a8f7b1c"),
-                            CreatedAt = new DateTime(2021, 9, 24, 11, 4, 52, 913, DateTimeKind.Utc).AddTicks(2126),
+                            CreatedAt = new DateTime(2021, 10, 8, 12, 56, 46, 330, DateTimeKind.Utc).AddTicks(2448),
                             UserId = new Guid("2cd4b9a0-f70d-476d-a3cc-908da43f93c4")
                         },
                         new
                         {
-                            Id = new Guid("e7217afd-ef65-44ab-ab1d-d8089e7a334d"),
+                            Id = new Guid("4b7617a0-c01c-41ee-bc26-db29d7bbfa5d"),
                             ContactId = new Guid("72a7a013-8bc4-4ae6-89cb-d9f19e0c9cf9"),
-                            CreatedAt = new DateTime(2021, 9, 24, 11, 4, 52, 913, DateTimeKind.Utc).AddTicks(2495),
+                            CreatedAt = new DateTime(2021, 10, 8, 12, 56, 46, 330, DateTimeKind.Utc).AddTicks(2773),
                             UserId = new Guid("2cd4b9a0-f70d-476d-a3cc-908da43f93c4")
                         },
                         new
                         {
-                            Id = new Guid("f11cf31f-df9a-4005-8b11-916521d64106"),
+                            Id = new Guid("0bb26195-bb92-4ad6-94eb-3a5f59b9e294"),
                             ContactId = new Guid("56d6294f-7b80-4a78-856a-92b141de2d1c"),
-                            CreatedAt = new DateTime(2021, 9, 24, 11, 4, 52, 913, DateTimeKind.Utc).AddTicks(2498),
+                            CreatedAt = new DateTime(2021, 10, 8, 12, 56, 46, 330, DateTimeKind.Utc).AddTicks(2777),
                             UserId = new Guid("2cd4b9a0-f70d-476d-a3cc-908da43f93c4")
                         },
                         new
                         {
-                            Id = new Guid("f6bd2cef-2d93-414c-bc6d-c0e124caf5dc"),
+                            Id = new Guid("d408a2b2-5417-4eab-9f3f-9296b6ce1056"),
                             ContactId = new Guid("d1ae1de1-1aa8-4650-937c-4ed882038ad7"),
-                            CreatedAt = new DateTime(2021, 9, 24, 11, 4, 52, 913, DateTimeKind.Utc).AddTicks(2500),
+                            CreatedAt = new DateTime(2021, 10, 8, 12, 56, 46, 330, DateTimeKind.Utc).AddTicks(2780),
                             UserId = new Guid("2cd4b9a0-f70d-476d-a3cc-908da43f93c4")
                         },
                         new
                         {
-                            Id = new Guid("03b6e923-8a3e-49d0-a086-e13b3a56e097"),
+                            Id = new Guid("72b9750a-14f2-4a9b-becd-f0f2536ba3b9"),
                             ContactId = new Guid("2cd4b9a0-f70d-476d-a3cc-908da43f93c4"),
-                            CreatedAt = new DateTime(2021, 9, 24, 11, 4, 52, 913, DateTimeKind.Utc).AddTicks(2501),
+                            CreatedAt = new DateTime(2021, 10, 8, 12, 56, 46, 330, DateTimeKind.Utc).AddTicks(2782),
                             UserId = new Guid("5e7274ad-3132-4ad7-be36-38778a8f7b1c")
                         },
                         new
                         {
-                            Id = new Guid("87b351d7-138a-4ca5-82e4-094cb00831c6"),
+                            Id = new Guid("688f6024-e068-4b7c-a584-a232f7b14212"),
                             ContactId = new Guid("72a7a013-8bc4-4ae6-89cb-d9f19e0c9cf9"),
-                            CreatedAt = new DateTime(2021, 9, 24, 11, 4, 52, 913, DateTimeKind.Utc).AddTicks(2503),
+                            CreatedAt = new DateTime(2021, 10, 8, 12, 56, 46, 330, DateTimeKind.Utc).AddTicks(2795),
                             UserId = new Guid("5e7274ad-3132-4ad7-be36-38778a8f7b1c")
                         },
                         new
                         {
-                            Id = new Guid("1e93ce63-cb1e-4623-98b6-8089efe22def"),
+                            Id = new Guid("fbc5bb7d-b50b-46db-9c2b-f0fb42c7d368"),
                             ContactId = new Guid("56d6294f-7b80-4a78-856a-92b141de2d1c"),
-                            CreatedAt = new DateTime(2021, 9, 24, 11, 4, 52, 913, DateTimeKind.Utc).AddTicks(2516),
+                            CreatedAt = new DateTime(2021, 10, 8, 12, 56, 46, 330, DateTimeKind.Utc).AddTicks(2797),
                             UserId = new Guid("5e7274ad-3132-4ad7-be36-38778a8f7b1c")
                         },
                         new
                         {
-                            Id = new Guid("534bc6c3-3fb9-4e3f-b571-17a7d9c828ec"),
+                            Id = new Guid("19bfb09f-d10e-4581-96de-dc82a0fa888f"),
                             ContactId = new Guid("d1ae1de1-1aa8-4650-937c-4ed882038ad7"),
-                            CreatedAt = new DateTime(2021, 9, 24, 11, 4, 52, 913, DateTimeKind.Utc).AddTicks(2518),
+                            CreatedAt = new DateTime(2021, 10, 8, 12, 56, 46, 330, DateTimeKind.Utc).AddTicks(2799),
                             UserId = new Guid("5e7274ad-3132-4ad7-be36-38778a8f7b1c")
                         },
                         new
                         {
-                            Id = new Guid("2cbec99b-e58a-47f0-b722-f469c42a639d"),
+                            Id = new Guid("d201c1ee-8768-491f-b2d5-2f516e43492d"),
                             ContactId = new Guid("2cd4b9a0-f70d-476d-a3cc-908da43f93c4"),
-                            CreatedAt = new DateTime(2021, 9, 24, 11, 4, 52, 913, DateTimeKind.Utc).AddTicks(2520),
+                            CreatedAt = new DateTime(2021, 10, 8, 12, 56, 46, 330, DateTimeKind.Utc).AddTicks(2801),
                             UserId = new Guid("72a7a013-8bc4-4ae6-89cb-d9f19e0c9cf9")
                         },
                         new
                         {
-                            Id = new Guid("391b4851-27a4-46aa-a403-fb9519cb1ac2"),
+                            Id = new Guid("9d52c1f8-0ef8-462b-8f2f-5446f39a29ed"),
                             ContactId = new Guid("5e7274ad-3132-4ad7-be36-38778a8f7b1c"),
-                            CreatedAt = new DateTime(2021, 9, 24, 11, 4, 52, 913, DateTimeKind.Utc).AddTicks(2522),
+                            CreatedAt = new DateTime(2021, 10, 8, 12, 56, 46, 330, DateTimeKind.Utc).AddTicks(2803),
                             UserId = new Guid("72a7a013-8bc4-4ae6-89cb-d9f19e0c9cf9")
                         },
                         new
                         {
-                            Id = new Guid("ac2a8a59-3412-4064-9855-91bd2b5f534d"),
+                            Id = new Guid("76134c78-4e34-4c81-ae80-e94827ddb511"),
                             ContactId = new Guid("56d6294f-7b80-4a78-856a-92b141de2d1c"),
-                            CreatedAt = new DateTime(2021, 9, 24, 11, 4, 52, 913, DateTimeKind.Utc).AddTicks(2523),
+                            CreatedAt = new DateTime(2021, 10, 8, 12, 56, 46, 330, DateTimeKind.Utc).AddTicks(2805),
                             UserId = new Guid("72a7a013-8bc4-4ae6-89cb-d9f19e0c9cf9")
                         },
                         new
                         {
-                            Id = new Guid("77c67636-f10e-465e-b8a4-6db19e52f88b"),
+                            Id = new Guid("a92cb467-b742-4f02-9961-a91cefbb0a39"),
                             ContactId = new Guid("d1ae1de1-1aa8-4650-937c-4ed882038ad7"),
-                            CreatedAt = new DateTime(2021, 9, 24, 11, 4, 52, 913, DateTimeKind.Utc).AddTicks(2525),
+                            CreatedAt = new DateTime(2021, 10, 8, 12, 56, 46, 330, DateTimeKind.Utc).AddTicks(2807),
                             UserId = new Guid("72a7a013-8bc4-4ae6-89cb-d9f19e0c9cf9")
                         },
                         new
                         {
-                            Id = new Guid("207cfb0b-f5bd-4478-b888-03225b7a4242"),
+                            Id = new Guid("962d180d-6a4d-49eb-a761-d774a67c1f7a"),
                             ContactId = new Guid("2cd4b9a0-f70d-476d-a3cc-908da43f93c4"),
-                            CreatedAt = new DateTime(2021, 9, 24, 11, 4, 52, 913, DateTimeKind.Utc).AddTicks(2527),
+                            CreatedAt = new DateTime(2021, 10, 8, 12, 56, 46, 330, DateTimeKind.Utc).AddTicks(2809),
                             UserId = new Guid("d1ae1de1-1aa8-4650-937c-4ed882038ad7")
                         },
                         new
                         {
-                            Id = new Guid("43a7d4eb-a706-45cd-b5ca-fc8d6056e561"),
+                            Id = new Guid("721ee722-cecb-46ef-b442-e6a10fa343e8"),
                             ContactId = new Guid("5e7274ad-3132-4ad7-be36-38778a8f7b1c"),
-                            CreatedAt = new DateTime(2021, 9, 24, 11, 4, 52, 913, DateTimeKind.Utc).AddTicks(2529),
+                            CreatedAt = new DateTime(2021, 10, 8, 12, 56, 46, 330, DateTimeKind.Utc).AddTicks(2813),
                             UserId = new Guid("d1ae1de1-1aa8-4650-937c-4ed882038ad7")
                         },
                         new
                         {
-                            Id = new Guid("6de7f068-107d-416a-be45-95b32e1992ec"),
+                            Id = new Guid("5a5d5991-b891-4c36-8d72-262bfc9e571f"),
                             ContactId = new Guid("56d6294f-7b80-4a78-856a-92b141de2d1c"),
-                            CreatedAt = new DateTime(2021, 9, 24, 11, 4, 52, 913, DateTimeKind.Utc).AddTicks(2534),
+                            CreatedAt = new DateTime(2021, 10, 8, 12, 56, 46, 330, DateTimeKind.Utc).AddTicks(2815),
                             UserId = new Guid("d1ae1de1-1aa8-4650-937c-4ed882038ad7")
                         },
                         new
                         {
-                            Id = new Guid("15ba5d4f-80e8-4189-8ea4-53505c7b93bd"),
+                            Id = new Guid("f4dc4454-64b0-428a-96b7-52886d52b4dc"),
                             ContactId = new Guid("72a7a013-8bc4-4ae6-89cb-d9f19e0c9cf9"),
-                            CreatedAt = new DateTime(2021, 9, 24, 11, 4, 52, 913, DateTimeKind.Utc).AddTicks(2536),
+                            CreatedAt = new DateTime(2021, 10, 8, 12, 56, 46, 330, DateTimeKind.Utc).AddTicks(2817),
                             UserId = new Guid("d1ae1de1-1aa8-4650-937c-4ed882038ad7")
                         },
                         new
                         {
-                            Id = new Guid("bae0ea4e-f4cb-47de-9bab-7910add53c2e"),
+                            Id = new Guid("09ded447-67c8-410c-aa58-c0fb4ef1832d"),
                             ContactId = new Guid("2cd4b9a0-f70d-476d-a3cc-908da43f93c4"),
-                            CreatedAt = new DateTime(2021, 9, 24, 11, 4, 52, 913, DateTimeKind.Utc).AddTicks(2538),
+                            CreatedAt = new DateTime(2021, 10, 8, 12, 56, 46, 330, DateTimeKind.Utc).AddTicks(2819),
                             UserId = new Guid("56d6294f-7b80-4a78-856a-92b141de2d1c")
                         },
                         new
                         {
-                            Id = new Guid("d98c1429-7642-4966-a71d-a186a063befb"),
+                            Id = new Guid("ec8c261a-bc60-4f2d-87c0-1de05f538fa5"),
                             ContactId = new Guid("5e7274ad-3132-4ad7-be36-38778a8f7b1c"),
-                            CreatedAt = new DateTime(2021, 9, 24, 11, 4, 52, 913, DateTimeKind.Utc).AddTicks(2539),
+                            CreatedAt = new DateTime(2021, 10, 8, 12, 56, 46, 330, DateTimeKind.Utc).AddTicks(2821),
                             UserId = new Guid("56d6294f-7b80-4a78-856a-92b141de2d1c")
                         },
                         new
                         {
-                            Id = new Guid("16c06477-b43e-4e89-af22-3f167bbeee32"),
+                            Id = new Guid("036b13a7-1a3b-4f9c-8b14-134a75c0a360"),
                             ContactId = new Guid("d1ae1de1-1aa8-4650-937c-4ed882038ad7"),
-                            CreatedAt = new DateTime(2021, 9, 24, 11, 4, 52, 913, DateTimeKind.Utc).AddTicks(2541),
+                            CreatedAt = new DateTime(2021, 10, 8, 12, 56, 46, 330, DateTimeKind.Utc).AddTicks(2823),
                             UserId = new Guid("56d6294f-7b80-4a78-856a-92b141de2d1c")
                         },
                         new
                         {
-                            Id = new Guid("58ecbac7-69b3-471b-8a1e-cff78b04b462"),
+                            Id = new Guid("986e99c7-ca08-46f7-9c02-6a344a397c12"),
                             ContactId = new Guid("72a7a013-8bc4-4ae6-89cb-d9f19e0c9cf9"),
-                            CreatedAt = new DateTime(2021, 9, 24, 11, 4, 52, 913, DateTimeKind.Utc).AddTicks(2543),
+                            CreatedAt = new DateTime(2021, 10, 8, 12, 56, 46, 330, DateTimeKind.Utc).AddTicks(2825),
                             UserId = new Guid("56d6294f-7b80-4a78-856a-92b141de2d1c")
                         },
                         new
                         {
-                            Id = new Guid("3f406b3b-c266-41b8-a717-8656b928cc4f"),
+                            Id = new Guid("6b90e6a8-ea3b-42fa-9017-a1bb9737d417"),
                             ContactId = new Guid("fd3c67c5-c6ff-4a5d-a166-98ece1b7752b"),
-                            CreatedAt = new DateTime(2021, 9, 24, 11, 4, 52, 913, DateTimeKind.Utc).AddTicks(2545),
+                            CreatedAt = new DateTime(2021, 10, 8, 12, 56, 46, 330, DateTimeKind.Utc).AddTicks(2827),
                             UserId = new Guid("e77cf2cb-3f3a-4f0b-ac5a-90a3263d075a")
                         },
                         new
                         {
-                            Id = new Guid("e6938a4c-a500-4f58-91c4-2ebc0b3f4577"),
+                            Id = new Guid("4111d324-30fc-4609-b5b5-291c9f6fc75b"),
                             ContactId = new Guid("e77cf2cb-3f3a-4f0b-ac5a-90a3263d075a"),
-                            CreatedAt = new DateTime(2021, 9, 24, 11, 4, 52, 913, DateTimeKind.Utc).AddTicks(2547),
+                            CreatedAt = new DateTime(2021, 10, 8, 12, 56, 46, 330, DateTimeKind.Utc).AddTicks(2832),
                             UserId = new Guid("fd3c67c5-c6ff-4a5d-a166-98ece1b7752b")
                         },
                         new
                         {
-                            Id = new Guid("ef9481d9-bbb7-4f1d-95c9-37a3af2ae6c7"),
+                            Id = new Guid("11fc2b75-02b5-469f-80f3-46b2d55cffd0"),
                             ContactId = new Guid("5e7274ad-3132-4ad7-be36-38778a8f7b1c"),
-                            CreatedAt = new DateTime(2021, 9, 24, 11, 4, 52, 913, DateTimeKind.Utc).AddTicks(2551),
+                            CreatedAt = new DateTime(2021, 10, 8, 12, 56, 46, 330, DateTimeKind.Utc).AddTicks(2833),
                             UserId = new Guid("fd3c67c5-c6ff-4a5d-a166-98ece1b7752b")
                         },
                         new
                         {
-                            Id = new Guid("1f1f577c-efa3-4a09-9bbf-86622229d914"),
+                            Id = new Guid("f045066b-f9e9-4cbe-9ac2-9f519f243326"),
                             ContactId = new Guid("72a7a013-8bc4-4ae6-89cb-d9f19e0c9cf9"),
-                            CreatedAt = new DateTime(2021, 9, 24, 11, 4, 52, 913, DateTimeKind.Utc).AddTicks(2553),
+                            CreatedAt = new DateTime(2021, 10, 8, 12, 56, 46, 330, DateTimeKind.Utc).AddTicks(2835),
                             UserId = new Guid("fd3c67c5-c6ff-4a5d-a166-98ece1b7752b")
                         },
                         new
                         {
-                            Id = new Guid("7d3e8bae-61cb-460b-9e79-52ec5b60242e"),
+                            Id = new Guid("9af4706e-8eb5-4a5d-9920-4326458537ff"),
                             ContactId = new Guid("5b515247-f6f5-47e1-ad06-95f317a0599b"),
-                            CreatedAt = new DateTime(2021, 9, 24, 11, 4, 52, 913, DateTimeKind.Utc).AddTicks(2554),
+                            CreatedAt = new DateTime(2021, 10, 8, 12, 56, 46, 330, DateTimeKind.Utc).AddTicks(2837),
                             UserId = new Guid("fd3c67c5-c6ff-4a5d-a166-98ece1b7752b")
                         },
                         new
                         {
-                            Id = new Guid("79c419b7-fb40-4490-8c0b-5c6fe8484e67"),
+                            Id = new Guid("b9c10fcc-f133-4b24-b9da-92296a21f99c"),
                             ContactId = new Guid("d942706b-e4e2-48f9-bbdc-b022816471f0"),
-                            CreatedAt = new DateTime(2021, 9, 24, 11, 4, 52, 913, DateTimeKind.Utc).AddTicks(2556),
+                            CreatedAt = new DateTime(2021, 10, 8, 12, 56, 46, 330, DateTimeKind.Utc).AddTicks(2839),
                             UserId = new Guid("fd3c67c5-c6ff-4a5d-a166-98ece1b7752b")
                         },
                         new
                         {
-                            Id = new Guid("e9093b44-6ce5-4249-89e6-f9f00f08cb79"),
+                            Id = new Guid("7c26a1a7-3297-4221-9202-21fa5a190eca"),
                             ContactId = new Guid("e77cf2cb-3f3a-4f0b-ac5a-90a3263d075a"),
-                            CreatedAt = new DateTime(2021, 9, 24, 11, 4, 52, 913, DateTimeKind.Utc).AddTicks(2558),
+                            CreatedAt = new DateTime(2021, 10, 8, 12, 56, 46, 330, DateTimeKind.Utc).AddTicks(2841),
                             UserId = new Guid("5b515247-f6f5-47e1-ad06-95f317a0599b")
                         },
                         new
                         {
-                            Id = new Guid("c310fef0-7f1f-4b4a-ad93-8d0974b8fd7e"),
+                            Id = new Guid("99ba8543-0d0b-4670-b0dd-82dc18f60dcd"),
                             ContactId = new Guid("fd3c67c5-c6ff-4a5d-a166-98ece1b7752b"),
-                            CreatedAt = new DateTime(2021, 9, 24, 11, 4, 52, 913, DateTimeKind.Utc).AddTicks(2560),
+                            CreatedAt = new DateTime(2021, 10, 8, 12, 56, 46, 330, DateTimeKind.Utc).AddTicks(2842),
                             UserId = new Guid("d942706b-e4e2-48f9-bbdc-b022816471f0")
                         });
                 });
@@ -1166,14 +1166,14 @@ namespace MangoAPI.DataAccess.Migrations
                             Id = new Guid("e77cf2cb-3f3a-4f0b-ac5a-90a3263d075a"),
                             AccessFailedCount = 0,
                             Bio = "13 y. o. | C# pozer, Hearts Of Iron IV noob",
-                            ConcurrencyStamp = "7de3a4dd-ac6e-4e6f-8fa9-8fee4e3d3655",
+                            ConcurrencyStamp = "7b908b82-5ae4-4f3c-b66c-a22fe1f53a0e",
                             DisplayName = "Khachatur Khachatryan",
                             Email = "xachulxx@gmail.com",
                             EmailConfirmed = true,
                             Image = "khachatur_picture.jpg",
                             LockoutEnabled = false,
                             NormalizedEmail = "XACHULXX@GMAIL.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAECuk0w1LK22CCUHoaPvdU7nZ3sHr3BK3BJTamop9K3hmeOPzF75g+8v3pgSgwUbjFQ==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEJxhjNmvFUn18tEs1fcgjNqOgaFJWIXYTwiIg7l0TWxkCn9tqQQTnbR3V5SZ+idpDQ==",
                             PhoneNumber = "374775554310",
                             PhoneNumberConfirmed = true,
                             PublicKey = 0,
@@ -1185,14 +1185,14 @@ namespace MangoAPI.DataAccess.Migrations
                             Id = new Guid("fd3c67c5-c6ff-4a5d-a166-98ece1b7752b"),
                             AccessFailedCount = 0,
                             Bio = "11011 y.o Dotnet Developer from $\"{cityName}\"",
-                            ConcurrencyStamp = "514fcaf4-cc20-4a6f-885f-d6309bfbf304",
+                            ConcurrencyStamp = "82bb6553-a7c1-42bb-b15e-a2b377363984",
                             DisplayName = "razumovsky r",
                             Email = "kolosovp95@gmail.com",
                             EmailConfirmed = true,
                             Image = "razumovsky_picture.jpg",
                             LockoutEnabled = false,
                             NormalizedEmail = "KOLOSOVP94@GMAIL.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAEM3UOjgDj01BasS0wilVv7jr2NB84hn5zupgVW65xSWjocNiiZ1WjM8UtgP6LfOhmQ==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEF7MPSLrCjNCLLIJAGPY9hAfA2IxcxTmQ+Cqp2psMBNgmXiMmJURUoz8t38h7+9oIw==",
                             PhoneNumber = "48743615532",
                             PhoneNumberConfirmed = true,
                             PublicKey = 0,
@@ -1204,14 +1204,14 @@ namespace MangoAPI.DataAccess.Migrations
                             Id = new Guid("5b515247-f6f5-47e1-ad06-95f317a0599b"),
                             AccessFailedCount = 0,
                             Bio = "Колбасятор.",
-                            ConcurrencyStamp = "5fd7bcdd-6110-4ca2-8892-fa5665d78c1b",
+                            ConcurrencyStamp = "0f81f31e-7f6f-461e-b0d0-bc41fd07e5b3",
                             DisplayName = "Мусяка Колбасяка",
                             Email = "kolbasator@gmail.com",
                             EmailConfirmed = true,
                             Image = "musyaka_picture.jpg",
                             LockoutEnabled = false,
                             NormalizedEmail = "KOLBASATOR@GMAIL.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAEG5Ui0VOJ0R/lCgGRtYlYkNZg8uHnVjdgFSP1P2YzvMckUDhn1DruYu71JTBdjD8ZA==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEGBCFk0T9EmpIpH9LPO0rvM4hYj6l1Gralz2Y6nA/8ur4Y84iTyNGr+OVrumIWAJ8Q==",
                             PhoneNumber = "77017506265",
                             PhoneNumberConfirmed = true,
                             PublicKey = 0,
@@ -1223,14 +1223,14 @@ namespace MangoAPI.DataAccess.Migrations
                             Id = new Guid("d942706b-e4e2-48f9-bbdc-b022816471f0"),
                             AccessFailedCount = 0,
                             Bio = "Дипломат",
-                            ConcurrencyStamp = "6509bddc-df09-468e-b1cb-529604ab9dec",
+                            ConcurrencyStamp = "ec8f96d5-dddb-4ddc-bfcb-0bc208c55ccf",
                             DisplayName = "Amelit",
                             Email = "amelit@gmail.com",
                             EmailConfirmed = true,
                             Image = "amelit_picture.jpg",
                             LockoutEnabled = false,
                             NormalizedEmail = "AMELIT@GMAIL.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAEIemHD/GpqrPGn/d32N3mBO0/0EeGwMDGnj55vny9aiv3e5xYmJft2Z6VAzWx54lLg==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEKtO9aLcKX5hh1T/SQEJX7dBFIWxhWo97SO7MSJVzIV4YQ5+pv0n+SJy5QU8FQg0Ag==",
                             PhoneNumber = "12025550152",
                             PhoneNumberConfirmed = true,
                             PublicKey = 0,
@@ -1242,14 +1242,14 @@ namespace MangoAPI.DataAccess.Migrations
                             Id = new Guid("2cd4b9a0-f70d-476d-a3cc-908da43f93c4"),
                             AccessFailedCount = 0,
                             Bio = "Third year student of WSB at Poznan",
-                            ConcurrencyStamp = "b63c64f4-07c6-49c4-a9e4-b5ae7fefdd2b",
+                            ConcurrencyStamp = "a4c7b995-eb85-4d6a-bf40-9f09adb76811",
                             DisplayName = "Petro Kolosov",
                             Email = "petro.kolosov@wp.pl",
                             EmailConfirmed = true,
                             Image = "razumovsky_picture.jpg",
                             LockoutEnabled = false,
                             NormalizedEmail = "PETRO.KOLOSOV@WP.PL",
-                            PasswordHash = "AQAAAAEAACcQAAAAECDPbTZw/zQQZn+BFwRJzdSnHafAl+IJxTmC0MdkfqKnm7crHy0J67YhTdBji4pmgg==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEGSyRNl6Dl+BTf5Iaz+Gtk1zfje3/l+wGTeExZH6dy3gygakg0YY6HCx85pmZZrNuA==",
                             PhoneNumber = "48743615532",
                             PhoneNumberConfirmed = true,
                             PublicKey = 0,
@@ -1261,14 +1261,14 @@ namespace MangoAPI.DataAccess.Migrations
                             Id = new Guid("5e7274ad-3132-4ad7-be36-38778a8f7b1c"),
                             AccessFailedCount = 0,
                             Bio = "Teacher of Computer Science at WSB Poznan",
-                            ConcurrencyStamp = "08e539cc-03e0-4853-bc6b-c74e79414a72",
+                            ConcurrencyStamp = "bb618ceb-9705-476a-a06d-b03c682fd39a",
                             DisplayName = "Szymon Murawski",
                             Email = "szymon.murawski@wp.pl",
                             EmailConfirmed = true,
                             Image = "szymon_picture.png",
                             LockoutEnabled = false,
                             NormalizedEmail = "SZYMON.MURAWSKI@WP.PL",
-                            PasswordHash = "AQAAAAEAACcQAAAAEEwoCNB5l2yh6Nr6cqCDpsXS37b2SthxYdIsIHJHPo117dA/CSDfnSSd4b2QIwsYjg==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEOy50RPjqyGos+v7MAqGQJCR8s4Hs4+D9qVlfF+3oe6xg1/W7gQHbnldZ9DcQVxRrQ==",
                             PhoneNumber = "48743615532",
                             PhoneNumberConfirmed = true,
                             PublicKey = 0,
@@ -1280,14 +1280,14 @@ namespace MangoAPI.DataAccess.Migrations
                             Id = new Guid("72a7a013-8bc4-4ae6-89cb-d9f19e0c9cf9"),
                             AccessFailedCount = 0,
                             Bio = "Third year student of WSB at Poznan",
-                            ConcurrencyStamp = "f3cc3769-2382-4706-8ed7-81ca9854b2e2",
+                            ConcurrencyStamp = "e9fd6eae-f0a0-462f-be2a-3120685a762d",
                             DisplayName = "Illia Zubachov",
                             Email = "illia.zubachov@wp.pl",
                             EmailConfirmed = true,
                             Image = "illia_picture.png",
                             LockoutEnabled = false,
                             NormalizedEmail = "ILLIA.ZUBACHOW@WP.PL",
-                            PasswordHash = "AQAAAAEAACcQAAAAEDq24gdbAv/wfInCOwa3embaGazyMkkms6YCReniJ2g5LlmV3aOiERVkOq3h2a/pjg==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEJXlKYkACuT5NG9KySs2xflCWYzZvv9ymEwbWTsATdD9ElBKaLZTSkq5MblY1GEdiQ==",
                             PhoneNumber = "48352643123",
                             PhoneNumberConfirmed = true,
                             PublicKey = 0,
@@ -1299,14 +1299,14 @@ namespace MangoAPI.DataAccess.Migrations
                             Id = new Guid("56d6294f-7b80-4a78-856a-92b141de2d1c"),
                             AccessFailedCount = 0,
                             Bio = "Third year student of WSB at Poznan",
-                            ConcurrencyStamp = "e052078a-a6c4-4eae-89c1-f4cfe064cb9e",
+                            ConcurrencyStamp = "ddfa2ae1-7a5d-4f11-8282-9e12806866ef",
                             DisplayName = "Arslanbek Temirbekov",
                             Email = "arslanbek.temirbekov@wp.pl",
                             EmailConfirmed = true,
                             Image = "arslan_picture.png",
                             LockoutEnabled = false,
                             NormalizedEmail = "ARSLANBEK.TEMIRBEKOV@WP.PL",
-                            PasswordHash = "AQAAAAEAACcQAAAAEC+wJyMiQwm6R7LJcAa9OQqWlYl5VmELofmlL43NO/xYXVvXgsIYPkxMgg0SeOZbWQ==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEBeeP9WOzgfgqmHE2wnhrcYbxd3f04fx18U8gOXE+ERTFLbxUFIdu08VStfdoyx1jQ==",
                             PhoneNumber = "48278187781",
                             PhoneNumberConfirmed = true,
                             PublicKey = 0,
@@ -1318,14 +1318,14 @@ namespace MangoAPI.DataAccess.Migrations
                             Id = new Guid("d1ae1de1-1aa8-4650-937c-4ed882038ad7"),
                             AccessFailedCount = 0,
                             Bio = "Third year student of WSB at Poznan",
-                            ConcurrencyStamp = "fc7ed746-c980-47a6-a444-cb94bafa80ca",
+                            ConcurrencyStamp = "f9c7a39a-4136-447b-9cfa-6f97acc64942",
                             DisplayName = "Serhii Holishevskii",
                             Email = "serhii.holishevskii@wp.pl",
                             EmailConfirmed = true,
                             Image = "serhii_picture.png",
                             LockoutEnabled = false,
                             NormalizedEmail = "SERHII.HOLISHEVSKII@WP.PL",
-                            PasswordHash = "AQAAAAEAACcQAAAAELMV/dkrt1MpHqznTI4vTGnDzsnHnxuYu3a9sjll0DdB+g45aeFjXUH2St82IpuegQ==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEDL/egGud1NMP2WnhDlx/FdHmPca1OyfB9DNS2hQkYurWpDcXBiEZzuq7JztebzFyQ==",
                             PhoneNumber = "48175481653",
                             PhoneNumberConfirmed = true,
                             PublicKey = 0,
@@ -1389,7 +1389,7 @@ namespace MangoAPI.DataAccess.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("4955a474-cf5f-4086-880e-7ebdf3ff68af"),
+                            Id = new Guid("dfe65c77-911b-4222-b474-6e5fc7430256"),
                             Address = "Poznan, Poland",
                             BirthDay = new DateTime(1994, 6, 12, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -1404,7 +1404,7 @@ namespace MangoAPI.DataAccess.Migrations
                         },
                         new
                         {
-                            Id = new Guid("43f03d89-7f3a-4cca-81ff-2210aa73f93b"),
+                            Id = new Guid("e3b84485-b6d0-4ccf-bfc6-45c0a7f97c14"),
                             Address = "Poznan, Poland",
                             BirthDay = new DateTime(1994, 6, 12, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -1419,7 +1419,7 @@ namespace MangoAPI.DataAccess.Migrations
                         },
                         new
                         {
-                            Id = new Guid("fdf85bf9-99d6-4ecb-99b2-11f13eb2871f"),
+                            Id = new Guid("9adc394d-7d23-41f4-af6d-c179fd90282c"),
                             Address = "Poznan, Poland",
                             BirthDay = new DateTime(1994, 6, 12, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -1434,7 +1434,7 @@ namespace MangoAPI.DataAccess.Migrations
                         },
                         new
                         {
-                            Id = new Guid("f246928a-d84e-44cc-b6c4-6a6460d4ae2c"),
+                            Id = new Guid("fb417ead-99f9-4735-84c8-36891ab1f740"),
                             Address = "Poznan, Poland",
                             BirthDay = new DateTime(1994, 6, 12, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -1449,7 +1449,7 @@ namespace MangoAPI.DataAccess.Migrations
                         },
                         new
                         {
-                            Id = new Guid("94cd6e70-62f9-4227-aa08-39b82ab66528"),
+                            Id = new Guid("8886b810-c0ea-4e3b-b29e-531a43f51445"),
                             Address = "Poznan, Poland",
                             BirthDay = new DateTime(1983, 5, 25, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -1464,7 +1464,7 @@ namespace MangoAPI.DataAccess.Migrations
                         },
                         new
                         {
-                            Id = new Guid("5d26b236-0128-40a9-aac6-031c25831907"),
+                            Id = new Guid("5869904c-01d2-4a76-9a4d-d0955fdff930"),
                             Address = "Moscow, Russia",
                             BirthDay = new DateTime(2008, 3, 7, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -1477,7 +1477,7 @@ namespace MangoAPI.DataAccess.Migrations
                         },
                         new
                         {
-                            Id = new Guid("5a1c5392-ce6e-477b-ab41-7e35f9a66639"),
+                            Id = new Guid("c0007336-7a6d-4c2f-85ef-a5996a8d7641"),
                             Address = "Odessa, Ukraine",
                             BirthDay = new DateTime(1994, 7, 21, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -1492,7 +1492,7 @@ namespace MangoAPI.DataAccess.Migrations
                         },
                         new
                         {
-                            Id = new Guid("528b1db3-3fd4-4e32-ac30-f812b2341aa7"),
+                            Id = new Guid("a1a93ef8-ee12-40db-ba90-50cb86683562"),
                             Address = "Saint-Petersburg, Russia",
                             CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Facebook = "kolbasator",
@@ -1504,7 +1504,7 @@ namespace MangoAPI.DataAccess.Migrations
                         },
                         new
                         {
-                            Id = new Guid("4f4c7478-5f27-44ab-a1a3-c5ee769d4651"),
+                            Id = new Guid("6fe36625-d03f-4dc5-89cb-0a941dda7d42"),
                             Address = "Moscow, Russia",
                             CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Facebook = "TheMoonlightSonata",
