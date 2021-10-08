@@ -1,9 +1,9 @@
-﻿using System;
+﻿using MangoAPI.Domain.Entities;
+using Microsoft.EntityFrameworkCore;
+using System;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using MangoAPI.Domain.Entities;
-using Microsoft.EntityFrameworkCore;
 
 namespace MangoAPI.DataAccess.Database.Extensions
 {
@@ -17,7 +17,7 @@ namespace MangoAPI.DataAccess.Database.Extensions
         public static async Task<SessionEntity> GetSessionByRefreshTokenAsync(this DbSet<SessionEntity> dbSet,
             Guid refreshToken, CancellationToken cancellationToken)
         {
-            return await dbSet.FirstOrDefaultAsync(entity => entity.RefreshToken == refreshToken, 
+            return await dbSet.FirstOrDefaultAsync(entity => entity.RefreshToken == refreshToken,
                 cancellationToken);
         }
     }

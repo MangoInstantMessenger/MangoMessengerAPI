@@ -8,8 +8,8 @@ namespace MangoAPI.DataAccess.Database.Extensions
 {
     public static class PasswordRestoreRequestEntityDbSetExtensions
     {
-        public static async Task<PasswordRestoreRequestEntity> FindPasswordRestoreRequestByIdAsync(
-            this DbSet<PasswordRestoreRequestEntity> dbSet, Guid requestId, CancellationToken cancellationToken)
+        public static async Task<PasswordRestoreRequestEntity> FindPasswordRestoreRequestByIdAsync(this DbSet<PasswordRestoreRequestEntity> dbSet, 
+            Guid requestId, CancellationToken cancellationToken)
         {
             return await dbSet.FirstOrDefaultAsync(entity => entity.Id == requestId, cancellationToken);
         }
