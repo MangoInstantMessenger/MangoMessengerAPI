@@ -20,7 +20,7 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Messages
 
         public async Task<SearchChatMessagesResponse> Handle(SearchChatMessagesQuery request, CancellationToken cancellationToken)
         {
-            IQueryable<Message> query = _postgresDbContext.Messages.AsNoTracking()
+            var query = _postgresDbContext.Messages.AsNoTracking()
                 .Include(x => x.User)
                 .Where(x => x.ChatId == request.ChatId)
                 .OrderBy(x => x.CreatedAt)
