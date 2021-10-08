@@ -6,19 +6,9 @@ namespace MangoAPI.BusinessLogic.HubConfig
 {
     public class ChatHub : Hub<IHubClient>
     {
-        public Task JoinChatGroup(string chatId)
+        public Task JoinGroup(string groupName)
         {
-            return Groups.AddToGroupAsync(Context.ConnectionId, chatId);
-        }
-
-        public Task ConnectUser(string userId)
-        {
-            return Groups.AddToGroupAsync(Context.ConnectionId, userId);
-        }
-
-        public Task NotifyChatGroup(string chatId, Message message)
-        {
-            return Clients.Group(chatId).BroadcastMessage(message);
+            return Groups.AddToGroupAsync(Context.ConnectionId, groupName);
         }
     }
 }
