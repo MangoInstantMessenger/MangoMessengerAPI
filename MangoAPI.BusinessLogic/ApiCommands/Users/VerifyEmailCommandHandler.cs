@@ -22,7 +22,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
 
         public async Task<ResponseBase> Handle(VerifyEmailCommand request, CancellationToken cancellationToken)
         {
-            var user = await _postgresDbContext.Users.FindUserByIdAsync(request.UserId, cancellationToken);
+            var user = await _postgresDbContext.Users.FindUserByIdAsync(request.EmailCode, cancellationToken);
 
             if (user is null)
             {
