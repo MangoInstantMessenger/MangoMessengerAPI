@@ -47,11 +47,9 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Contacts
 
             var searchResult = await query.ToListAsync(cancellationToken);
 
-            var contactsUserIds = searchResult.Select(x => x.UserId);
-
             var commonContacts = await _postgresDbContext.UserContacts.AsNoTracking()
-                .Where(x => x.UserId == request.UserId && contactsUserIds.Contains(x.UserId))
-                .Select(x => x.UserId)
+                .Where(x => x.UserId == request.UserId)
+                .Select(x => x.ContactId)
                 .ToListAsync(cancellationToken);
 
             foreach (var contact in searchResult)

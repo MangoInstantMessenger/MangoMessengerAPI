@@ -17,7 +17,7 @@ namespace MangoAPI.Tests.ApiQueriesTests.Communities
             //var handler = new SearchCommunityQueryHandler(dbContextFixture.PostgresDbContext);
             //var query = new SearchCommunityQuery
             //{
-            //    UserId = SeedDataConstants.RazumovskyId,
+            //    EmailCode = SeedDataConstants.RazumovskyId,
             //    DisplayName = "Extreme",
             //};
 

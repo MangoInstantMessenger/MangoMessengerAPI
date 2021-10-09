@@ -12,7 +12,7 @@ namespace MangoAPI.Tests.ApiQueriesTests.Communities
         //    var handler = new GetCurrentUserChatsQueryHandler(dbContextFixture.PostgresDbContext);
         //    var query = new GetCurrentUserChatsQuery
         //    {
-        //        UserId = SeedDataConstants.RazumovskyId
+        //        EmailCode = SeedDataConstants.RazumovskyId
         //    };
 
         //    var response = await handler.Handle(query, CancellationToken.None);

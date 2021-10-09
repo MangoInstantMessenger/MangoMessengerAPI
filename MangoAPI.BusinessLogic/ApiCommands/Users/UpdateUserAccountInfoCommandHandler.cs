@@ -1,8 +1,4 @@
-﻿using System;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
-using MangoAPI.BusinessLogic.BusinessExceptions;
+﻿using MangoAPI.BusinessLogic.BusinessExceptions;
 using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.DataAccess.Database;
 using MangoAPI.DataAccess.Database.Extensions;
@@ -10,6 +6,10 @@ using MangoAPI.Domain.Constants;
 using MangoAPI.Domain.Enums;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using System;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace MangoAPI.BusinessLogic.ApiCommands.Users
 {
@@ -36,8 +36,8 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
             {
                 var userChats = await _postgresDbContext.UserChats
                     .Include(x => x.Chat)
-                    .Where(x => x.UserId == user.Id && 
-                                x.Chat.CommunityType == (int) CommunityType.DirectChat)
+                    .Where(x => x.UserId == user.Id &&
+                                x.Chat.CommunityType == (int)CommunityType.DirectChat)
                     .Select(x => x.Chat)
                     .ToListAsync(cancellationToken);
 
@@ -56,49 +56,29 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
                 ? newDate
                 : user.UserInformation.BirthDay;
 
-            user.PhoneNumber = StringIsValid(request.PhoneNumber)
-                ? request.PhoneNumber
-                : user.PhoneNumber;
+            user.PhoneNumber = request.PhoneNumber;
 
-            user.UserInformation.FirstName = StringIsValid(request.FirstName)
-                ? request.FirstName
-                : user.UserInformation.FirstName;
+            user.UserInformation.FirstName = request.FirstName;
 
-            user.UserInformation.LastName = StringIsValid(request.LastName)
-                ? request.LastName
-                : user.UserInformation.LastName;
+            user.UserInformation.LastName = request.LastName;
 
-            user.Email = StringIsValid(request.Email)
-                ? request.Email
-                : user.Email;
+            user.Email = request.Email;
 
-            user.UserInformation.Website = StringIsValid(request.Website)
-                ? request.Website
-                : user.UserInformation.Website;
+            user.UserInformation.Website = request.Website;
 
-            user.UserName = StringIsValid(request.Username)
-                ? request.Username
-                : user.UserName;
+            user.UserName = request.Username;
 
-            user.Bio = StringIsValid(request.Bio)
-                ? request.Bio
-                : user.Bio;
+            user.Bio = request.Bio;
 
-            user.UserInformation.Address = StringIsValid(request.Address)
-                ? request.Address
-                : user.UserInformation.Address;
+            user.UserInformation.Address = request.Address;
 
             user.UserInformation.UpdatedAt = DateTime.UtcNow;
 
             _postgresDbContext.UserInformation.Update(user.UserInformation);
+
             await _postgresDbContext.SaveChangesAsync(cancellationToken);
 
             return ResponseBase.SuccessResponse;
-        }
-
-        private static bool StringIsValid(string str)
-        {
-            return !string.IsNullOrEmpty(str) && !string.IsNullOrWhiteSpace(str);
         }
     }
 }

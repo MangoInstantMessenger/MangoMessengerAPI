@@ -59,6 +59,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
                 DisplayName = request.DisplayName,
                 UserName = Guid.NewGuid().ToString(),
                 Email = request.Email,
+                EmailCode = Guid.NewGuid(),
                 PhoneCode = _random.Next(100000, 999999),
                 PublicKey = 0,
             };
@@ -110,7 +111,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
 
             var expires = ((DateTimeOffset)newSession.ExpiresAt).ToUnixTimeSeconds();
 
-            return TokensResponse.FromSuccess(jwtToken, newSession.RefreshToken, userId: null, expires);
+            return TokensResponse.FromSuccess(jwtToken, newSession.RefreshToken, newUser.Id, expires);
         }
     }
 }

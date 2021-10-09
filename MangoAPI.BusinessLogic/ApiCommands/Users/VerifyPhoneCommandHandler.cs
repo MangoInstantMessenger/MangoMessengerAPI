@@ -8,6 +8,7 @@ using MangoAPI.DataAccess.Database.Extensions;
 using MangoAPI.Domain.Constants;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace MangoAPI.BusinessLogic.ApiCommands.Users
 {
@@ -22,7 +23,8 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
 
         public async Task<ResponseBase> Handle(VerifyPhoneCommand request, CancellationToken cancellationToken)
         {
-            var user = await _postgresDbContext.Users.FindUserByIdAsync(request.UserId, cancellationToken);
+            var user = await _postgresDbContext.Users
+                .FirstOrDefaultAsync(x => x.Id == request.UserId, cancellationToken);
 
             if (user == null)
             {
@@ -39,12 +41,16 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
                 throw new BusinessException(ResponseMessageCodes.InvalidPhoneCode);
             }
 
-            await _postgresDbContext.UserRoles.AddAsync(
-                new IdentityUserRole<Guid>
-                {
-                    UserId = user.Id,
-                    RoleId = SeedDataConstants.UserRoleId,
-                }, cancellationToken);
+            var role = new IdentityUserRole<Guid>
+            {
+                UserId = user.Id,
+                RoleId = SeedDataConstants.UserRoleId,
+            };
+
+            if (!user.EmailConfirmed)
+            {
+                _postgresDbContext.UserRoles.Add(role);
+            }
 
             user.PhoneNumberConfirmed = true;
             user.PhoneCode = 0;
