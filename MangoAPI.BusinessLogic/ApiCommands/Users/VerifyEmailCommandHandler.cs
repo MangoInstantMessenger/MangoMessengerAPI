@@ -8,6 +8,7 @@ using MangoAPI.DataAccess.Database.Extensions;
 using MangoAPI.Domain.Constants;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace MangoAPI.BusinessLogic.ApiCommands.Users
 {
@@ -22,7 +23,8 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
 
         public async Task<ResponseBase> Handle(VerifyEmailCommand request, CancellationToken cancellationToken)
         {
-            var user = await _postgresDbContext.Users.FindUserByIdAsync(request.EmailCode, cancellationToken);
+            var user = await _postgresDbContext.Users.AsNoTracking()
+                .FirstOrDefaultAsync(x => x.Email == request.Email, cancellationToken);
 
             if (user is null)
             {
