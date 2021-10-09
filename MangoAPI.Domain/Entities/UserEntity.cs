@@ -1,6 +1,6 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Identity;
+using System;
 using System.Collections.Generic;
-using Microsoft.AspNetCore.Identity;
 
 namespace MangoAPI.Domain.Entities
 {
@@ -14,10 +14,12 @@ namespace MangoAPI.Domain.Entities
 
         public int? PhoneCode { get; set; }
 
+        public Guid EmailCode { get; set; }
+
         public int PublicKey { get; set; }
 
         public ICollection<PasswordRestoreRequestEntity> PasswordRestoreRequests { get; set; }
-        
+
         public ICollection<SessionEntity> Sessions { get; set; }
 
         public ICollection<MessageEntity> Messages { get; set; }
