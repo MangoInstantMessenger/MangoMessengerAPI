@@ -30,6 +30,7 @@ namespace MangoAPI.Presentation.Profiles
             CreateMap<UpdateUserSocialInformationRequest, UpdateUserSocialInformationCommand>();
             CreateMap<UpdateUserAccountInfoRequest, UpdateUserAccountInfoCommand>();
             CreateMap<LoginRequest, LoginCommand>();
+            CreateMap<UpdateChanelPictureRequest, UpdateChanelPictureCommand>();
         }
     }
 }

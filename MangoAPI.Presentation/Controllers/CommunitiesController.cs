@@ -158,7 +158,7 @@ namespace MangoAPI.Presentation.Controllers
         /// <summary>
         /// Returns secret chat public key. Required role: User
         /// </summary>
-        /// <param name="displayName">ID of the chat, string.</param>
+        /// <param name="chatId">ID of the chat, Guid.</param>
         /// <param name="cancellationToken">Cancellation token instance.</param>
         /// <returns>Possible codes: 200, 400, 409.</returns>
         [HttpGet("chats/public-key/{chatId:guid}")]
@@ -178,6 +178,26 @@ namespace MangoAPI.Presentation.Controllers
             };
 
             return await RequestAsync(query, cancellationToken);
+        }
+        
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="request"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        [HttpPut("picture")]
+        [SwaggerOperation(Description = "Updates picture of particular channel. Required role: User",
+            Summary = "Updates picture of particular channel.")]
+        [ProducesResponseType(typeof(ResponseBase), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
+        public async Task<IActionResult> UpdateChannelPicture(UpdateChanelPictureRequest request, CancellationToken cancellationToken)
+        {
+            var command = Mapper.Map<UpdateChanelPictureCommand>(request);
+            command.UserId = HttpContext.User.GetUserId();
+
+            return await RequestAsync(command, cancellationToken);
         }
     }
 }
