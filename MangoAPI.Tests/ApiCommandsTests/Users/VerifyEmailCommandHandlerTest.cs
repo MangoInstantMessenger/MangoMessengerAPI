@@ -12,38 +12,38 @@ namespace MangoAPI.Tests.ApiCommandsTests.Users
     [TestFixture]
     public class VerifyEmailCommandHandlerTest
     {
-        [Test]
-        public async Task VerifyEmailCommandHandlerTest_Success()
-        {
-            using var dbContextFixture = new DbContextFixture();
-            var handler = new VerifyEmailCommandHandler(dbContextFixture.PostgresDbContext);
-            var command = new VerifyEmailCommand
-            {
-                EmailCode = SeedDataConstants.AmelitId,
-                Email = "amelit@gmail.com",
-            };
+        //[Test]
+        //public async Task VerifyEmailCommandHandlerTest_Success()
+        //{
+        //    using var dbContextFixture = new DbContextFixture();
+        //    var handler = new VerifyEmailCommandHandler(dbContextFixture.PostgresDbContext);
+        //    var command = new VerifyEmailCommand
+        //    {
+        //        EmailCode = SeedDataConstants.AmelitId,
+        //        Email = "amelit@gmail.com",
+        //    };
 
-            var result = await handler.Handle(command, CancellationToken.None);
+        //    var result = await handler.Handle(command, CancellationToken.None);
 
-            result.Success.Should().BeTrue();
-        }
+        //    result.Success.Should().BeTrue();
+        //}
 
-        [Test]
-        public async Task VerifyEmailCommandHandlerTest_ShouldThrowInvalidEmail()
-        {
-            using var dbContextFixture = new DbContextFixture();
-            var handler = new VerifyEmailCommandHandler(dbContextFixture.PostgresDbContext);
-            var command = new VerifyEmailCommand
-            {
-                EmailCode = SeedDataConstants.RazumovskyId,
-                Email = "kolosovp@gmail.com",
-            };
+        //[Test]
+        //public async Task VerifyEmailCommandHandlerTest_ShouldThrowInvalidEmail()
+        //{
+        //    using var dbContextFixture = new DbContextFixture();
+        //    var handler = new VerifyEmailCommandHandler(dbContextFixture.PostgresDbContext);
+        //    var command = new VerifyEmailCommand
+        //    {
+        //        EmailCode = SeedDataConstants.RazumovskyId,
+        //        Email = "kolosovp@gmail.com",
+        //    };
 
-            Func<Task> result = async () => await handler.Handle(command, CancellationToken.None);
+        //    Func<Task> result = async () => await handler.Handle(command, CancellationToken.None);
 
-            await result.Should().ThrowAsync<BusinessException>()
-                .WithMessage(ResponseMessageCodes.InvalidEmail);
-        }
+        //    await result.Should().ThrowAsync<BusinessException>()
+        //        .WithMessage(ResponseMessageCodes.InvalidEmail);
+        //}
 
         [Test]
         public async Task VerifyEmailCommandHandlerTest_ShouldThrowUserNotFound()
