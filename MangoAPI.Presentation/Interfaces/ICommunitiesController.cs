@@ -19,5 +19,7 @@ namespace MangoAPI.Presentation.Interfaces
         Task<IActionResult> SearchAsync(string displayName, CancellationToken cancellationToken);
 
         Task<IActionResult> GetSecretChatPublicKey(Guid chatId, CancellationToken cancellationToken);
+
+        Task<IActionResult> UpdateChannelPicture(UpdateChanelPictureRequest request, CancellationToken cancellationToken);
     }
 }
