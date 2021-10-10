@@ -1,12 +1,12 @@
-﻿using System.Threading;
-using System.Threading.Tasks;
-using MangoAPI.BusinessLogic.BusinessExceptions;
+﻿using MangoAPI.BusinessLogic.BusinessExceptions;
 using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.DataAccess.Database;
-using MangoAPI.DataAccess.Database.Extensions;
 using MangoAPI.Domain.Constants;
 using MangoAPI.Domain.Enums;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace MangoAPI.BusinessLogic.ApiCommands.Communities
 {
@@ -18,33 +18,27 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Communities
         {
             _postgresDbContext = postgresDbContext;
         }
-        
+
         public async Task<ResponseBase> Handle(UpdateChanelPictureCommand request, CancellationToken cancellationToken)
         {
-            var user = await _postgresDbContext.Users.FindUserByIdAsync(request.UserId, cancellationToken);
-            
-            if (user is null)
-            {
-               throw new BusinessException(ResponseMessageCodes.UserNotFound);
-            }
+            var userChat = await _postgresDbContext.UserChats.AsNoTracking()
+                .Include(x => x.Chat)
+                .FirstOrDefaultAsync(x => x.ChatId == request.ChatId &&
+                                          x.UserId == request.UserId &&
+                                          x.RoleId == (int)UserRole.Owner &&
+                                          x.Chat.CommunityType != (int)CommunityType.DirectChat,
+                    cancellationToken);
 
-            var chat = await _postgresDbContext.Chats.FindChatByIdAsync(request.ChatId, cancellationToken);
-
-            if (chat is null)
+            if (userChat is null)
             {
                 throw new BusinessException(ResponseMessageCodes.ChatNotFound);
             }
 
-            if (chat.CommunityType == (int) CommunityType.DirectChat)
-            {
-                throw new BusinessException(ResponseMessageCodes.PermissionDenied);
-            }
+            userChat.Chat.Image = request.Image;
 
-            chat.Image = request.Image;
-
-            _postgresDbContext.Chats.Update(chat);
+            _postgresDbContext.Update(userChat.Chat);
             await _postgresDbContext.SaveChangesAsync(cancellationToken);
-            
+
             return ResponseBase.SuccessResponse;
         }
     }

@@ -21,7 +21,7 @@ namespace MangoAPI.Tests.ApiCommandsTests.Sessions
         {
             using var dbContextFixture = new DbContextFixture();
             var jwtGenerator = new Mock<IJwtGenerator>();
-            jwtGenerator.Setup(x => x.GenerateJwtToken(It.IsAny<UserEntity>(), 
+            jwtGenerator.Setup(x => x.GenerateJwtToken(It.IsAny<Guid>(), 
                     It.IsAny<List<string>>())).Returns("Token");
             var handler = new RefreshSessionCommandHandler(dbContextFixture.PostgresDbContext, jwtGenerator.Object);
             var command = new RefreshSessionCommand
@@ -40,7 +40,7 @@ namespace MangoAPI.Tests.ApiCommandsTests.Sessions
         {
             using var dbContextFixture = new DbContextFixture();
             var jwtGenerator = new Mock<IJwtGenerator>();
-            jwtGenerator.Setup(x => x.GenerateJwtToken(It.IsAny<UserEntity>(), 
+            jwtGenerator.Setup(x => x.GenerateJwtToken(It.IsAny<Guid>(), 
                     It.IsAny<List<string>>()))
                 .Returns("Token");
             var handler = new RefreshSessionCommandHandler(dbContextFixture.PostgresDbContext, jwtGenerator.Object);

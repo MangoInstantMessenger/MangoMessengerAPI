@@ -22,15 +22,8 @@ namespace MangoAPI.BusinessLogic.ApiCommands.UserChats
 
         public async Task<ResponseBase> Handle(JoinChatCommand request, CancellationToken cancellationToken)
         {
-            var currentUser = await _postgresDbContext.Users.FindUserByIdAsync(request.UserId, cancellationToken);
-
-            if (currentUser == null)
-            {
-                throw new BusinessException(ResponseMessageCodes.UserNotFound);
-            }
-
             var alreadyJoined = await
-                _postgresDbContext.UserChats.IsAlreadyJoinedAsync(currentUser.Id, request.ChatId, cancellationToken);
+                _postgresDbContext.UserChats.IsAlreadyJoinedAsync(request.UserId, request.ChatId, cancellationToken);
 
             if (alreadyJoined)
             {
@@ -44,13 +37,13 @@ namespace MangoAPI.BusinessLogic.ApiCommands.UserChats
                 throw new BusinessException(ResponseMessageCodes.ChatNotFound);
             }
 
-            await _postgresDbContext.UserChats.AddAsync(
+            _postgresDbContext.UserChats.Add(
                 new UserChatEntity
                 {
                     ChatId = request.ChatId,
-                    UserId = currentUser.Id,
+                    UserId = request.UserId,
                     RoleId = (int) UserRole.User,
-                }, cancellationToken);
+                });
 
             chat.MembersCount += 1;
 

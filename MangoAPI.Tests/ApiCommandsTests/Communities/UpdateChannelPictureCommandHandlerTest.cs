@@ -13,41 +13,6 @@ namespace MangoAPI.Tests.ApiCommandsTests.Communities
     public class UpdateChannelPictureCommandHandlerTest
     {
         [Test]
-        public async Task UpdateChannelPictureCommandHandlerTest_Success()
-        {
-            using var dbContextFixture = new DbContextFixture();
-            var handler = new UpdateChannelPictureCommandHandler(dbContextFixture.PostgresDbContext);
-            var command = new UpdateChanelPictureCommand
-            {
-                UserId = SeedDataConstants.RazumovskyId,
-                ChatId = SeedDataConstants.ExtremeCodeCppId,
-                Image = "../../../MangoAPI.Presentation/wwwroot/extremecode_dotnet.png"
-            };
-
-            var result = await handler.Handle(command, CancellationToken.None);
-
-            result.Success.Should().BeTrue();
-        }
-        
-        [Test]
-        public async Task UpdateChannelPictureCommandHandlerTest_ShouldThrowUserNotFound()
-        {
-            using var dbContextFixture = new DbContextFixture();
-            var handler = new UpdateChannelPictureCommandHandler(dbContextFixture.PostgresDbContext);
-            var command = new UpdateChanelPictureCommand
-            {
-                UserId = Guid.NewGuid(),
-                ChatId = SeedDataConstants.ExtremeCodeCppId,
-                Image = "../../../MangoAPI.Presentation/wwwroot/extremecode_dotnet.png"
-            };
-
-            Func<Task> result = async () => await handler.Handle(command, CancellationToken.None);
-
-            await result.Should().ThrowAsync<BusinessException>()
-                .WithMessage(ResponseMessageCodes.UserNotFound);
-        }
-        
-        [Test]
         public async Task UpdateChannelPictureCommandHandlerTest_ShouldThrowChatNotFound()
         {
             using var dbContextFixture = new DbContextFixture();

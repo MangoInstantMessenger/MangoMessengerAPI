@@ -44,7 +44,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.PasswordRestoreRequests
                 ExpiresAt = DateTime.Now.AddHours(3),
             };
 
-            await _postgresDbContext.PasswordRestoreRequests.AddAsync(passwordRestoreRequest, cancellationToken);
+            _postgresDbContext.PasswordRestoreRequests.Add(passwordRestoreRequest);
             await _postgresDbContext.SaveChangesAsync(cancellationToken);
 
             await _emailSenderService.SendPasswordRestoreRequest(user, passwordRestoreRequest.Id, cancellationToken);

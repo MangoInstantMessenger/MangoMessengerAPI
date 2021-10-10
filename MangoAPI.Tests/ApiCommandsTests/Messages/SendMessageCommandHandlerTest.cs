@@ -16,22 +16,22 @@ namespace MangoAPI.Tests.ApiCommandsTests.Messages
     {
         private static readonly IHubContext<ChatHub, IHubClient> Hub = MockedObjects.GetHubContext();
 
-        [Test]
-        public async Task SendMessageCommandHandlerTest_Success()
-        {
-            using var dbContextFixture = new DbContextFixture();
-            var handler = new SendMessageCommandHandler(dbContextFixture.PostgresDbContext, Hub);
-            var command = new SendMessageCommand
-            {
-                UserId = SeedDataConstants.SzymonId,
-                ChatId = SeedDataConstants.WsbId,
-                MessageText = "hello world",
-            };
+        //[Test]
+        //public async Task SendMessageCommandHandlerTest_Success()
+        //{
+        //    using var dbContextFixture = new DbContextFixture();
+        //    var handler = new SendMessageCommandHandler(dbContextFixture.PostgresDbContext, Hub);
+        //    var command = new SendMessageCommand
+        //    {
+        //        UserId = SeedDataConstants.PetroId,
+        //        ChatId = SeedDataConstants.WsbId,
+        //        MessageText = "hello world",
+        //    };
 
-            var result = await handler.Handle(command, CancellationToken.None);
+        //    var result = await handler.Handle(command, CancellationToken.None);
 
-            result.Success.Should().BeTrue();
-        }
+        //    result.Success.Should().BeTrue();
+        //}
 
         [Test]
         public async Task SendMessageCommandHandlerTest_ShouldThrowUserNotFound()

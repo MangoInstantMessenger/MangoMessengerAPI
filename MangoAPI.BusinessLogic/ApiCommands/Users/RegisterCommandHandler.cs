@@ -1,16 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
-using MangoAPI.Application.Interfaces;
+﻿using MangoAPI.Application.Interfaces;
 using MangoAPI.BusinessLogic.BusinessExceptions;
 using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.DataAccess.Database;
-using MangoAPI.DataAccess.Database.Extensions;
 using MangoAPI.Domain.Constants;
 using MangoAPI.Domain.Entities;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
+using System;
+using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace MangoAPI.BusinessLogic.ApiCommands.Users
 {
@@ -39,18 +39,14 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
                 throw new BusinessException(ResponseMessageCodes.InvalidEmail);
             }
 
-            var exists = await _postgresDbContext.Users.FindUserByEmailAsync(request.Email, cancellationToken);
+            var exists = await _postgresDbContext.Users
+                .AsNoTracking()
+                .FirstOrDefaultAsync(x => x.PhoneNumber == request.PhoneNumber || 
+                                          x.Email == request.Email, cancellationToken);
 
             if (exists != null)
             {
-                throw new BusinessException(ResponseMessageCodes.EmailOccupied);
-            }
-
-            var user = await _postgresDbContext.Users.FindUserByPhoneAsync(request.PhoneNumber, cancellationToken);
-
-            if (user != null)
-            {
-                throw new BusinessException(ResponseMessageCodes.PhoneOccupied);
+                throw new BusinessException(ResponseMessageCodes.UserAlreadyExists);
             }
 
             var newUser = new UserEntity
@@ -94,19 +90,20 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
                 CreatedAt = DateTime.UtcNow,
             };
 
-            var jwtToken = _jwtGenerator.GenerateJwtToken(
-                newUser,
-                new List<string> { SeedDataConstants.UnverifiedRole });
+            var jwtToken = _jwtGenerator.GenerateJwtToken(newUser.Id, new List<string>
+            {
+                SeedDataConstants.UnverifiedRole
+            });
 
-            await _postgresDbContext.UserRoles.AddAsync(
-                new IdentityUserRole<Guid>
-                {
-                    UserId = newUser.Id,
-                    RoleId = SeedDataConstants.UnverifiedRoleId,
-                }, cancellationToken);
+            _postgresDbContext.UserRoles.Add(new IdentityUserRole<Guid>
+            {
+                UserId = newUser.Id,
+                RoleId = SeedDataConstants.UnverifiedRoleId,
+            });
 
-            await _postgresDbContext.Sessions.AddAsync(newSession, cancellationToken);
-            await _postgresDbContext.UserInformation.AddAsync(userInfo, cancellationToken);
+            _postgresDbContext.Sessions.Add(newSession);
+            _postgresDbContext.UserInformation.Add(userInfo);
+
             await _postgresDbContext.SaveChangesAsync(cancellationToken);
 
             var expires = ((DateTimeOffset)newSession.ExpiresAt).ToUnixTimeSeconds();

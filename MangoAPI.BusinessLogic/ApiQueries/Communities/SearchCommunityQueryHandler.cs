@@ -65,7 +65,7 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Communities
                         : null,
                 }).Distinct();
 
-            var chats = await query.ToListAsync(cancellationToken);
+            var chats = await query.Take(200).ToListAsync(cancellationToken);
 
             var joinedChatIds = await _postgresDbContext.UserChats.AsNoTracking()
                 .Where(x => x.UserId == request.UserId)

@@ -21,7 +21,7 @@ namespace MangoAPI.DataAccess.Database.Extensions
         public static async Task<bool> IsContactExistAsync(this DbSet<UserContactEntity> dbSet,
             Guid userId, Guid contactId, CancellationToken cancellationToken)
         {
-            return await dbSet
+            return await dbSet.AsNoTracking()
                 .Where(x => x.UserId == userId)
                 .AnyAsync(x => x.ContactId == contactId, cancellationToken);
         }

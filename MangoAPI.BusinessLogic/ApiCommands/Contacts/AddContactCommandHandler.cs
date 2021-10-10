@@ -22,13 +22,6 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Contacts
 
         public async Task<ResponseBase> Handle(AddContactCommand request, CancellationToken cancellationToken)
         {
-            var contact = await _postgresDbContext.Users.FindUserByIdAsync(request.UserId, cancellationToken);
-
-            if (contact is null)
-            {
-                throw new BusinessException(ResponseMessageCodes.UserNotFound);
-            }
-
             if (request.UserId == request.ContactId)
             {
                 throw new BusinessException(ResponseMessageCodes.CannotAddSelfToContacts);
@@ -49,7 +42,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Contacts
                 CreatedAt = DateTime.UtcNow,
             };
 
-            await _postgresDbContext.UserContacts.AddAsync(contactEntity, cancellationToken);
+            _postgresDbContext.UserContacts.Add(contactEntity);
             await _postgresDbContext.SaveChangesAsync(cancellationToken);
 
             return ResponseBase.SuccessResponse;

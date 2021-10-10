@@ -45,7 +45,7 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Contacts
                                          x.Email.Contains(request.SearchQuery));
             }
 
-            var searchResult = await query.ToListAsync(cancellationToken);
+            var searchResult = await query.Take(200).ToListAsync(cancellationToken);
 
             var commonContacts = await _postgresDbContext.UserContacts.AsNoTracking()
                 .Where(x => x.UserId == request.UserId)

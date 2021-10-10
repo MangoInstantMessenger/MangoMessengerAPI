@@ -37,7 +37,7 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Contacts
                             IsContact = true,
                         };
 
-            var contacts = await query.ToListAsync(cancellationToken);
+            var contacts = await query.Take(200).ToListAsync(cancellationToken);
 
             return GetContactsResponse.FromSuccess(contacts);
         }

@@ -10,7 +10,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
         public string FirstName { get; init; }
         public string LastName { get; init; }
         public string PhoneNumber { get; init; }
-        public string BirthdayDate { get; init; }
+        public DateTime? BirthdayDate { get; init; }
         public string Email { get; init; }
         public string Website { get; init; }
         public string Username { get; init; }
