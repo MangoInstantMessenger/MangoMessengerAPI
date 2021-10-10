@@ -66,10 +66,11 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Messages
             chat.UpdatedAt = messageEntity.CreatedAt;
 
             _postgresDbContext.Chats.Update(chat);
-            await _postgresDbContext.Messages.AddAsync(messageEntity, cancellationToken);
+            _postgresDbContext.Messages.Add(messageEntity);
             await _postgresDbContext.SaveChangesAsync(cancellationToken);
 
             var messageDto = messageEntity.ToMessage(user);
+
             await _hubContext.Clients.Group(chat.Id.ToString()).BroadcastMessage(messageDto);
 
             return SendMessageResponse.FromSuccess(messageEntity.Id);

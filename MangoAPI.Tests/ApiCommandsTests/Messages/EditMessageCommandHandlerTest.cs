@@ -1,11 +1,11 @@
-﻿using System;
-using System.Threading;
-using System.Threading.Tasks;
-using FluentAssertions;
+﻿using FluentAssertions;
 using MangoAPI.BusinessLogic.ApiCommands.Messages;
 using MangoAPI.BusinessLogic.BusinessExceptions;
 using MangoAPI.Domain.Constants;
 using NUnit.Framework;
+using System;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace MangoAPI.Tests.ApiCommandsTests.Messages
 {
@@ -16,7 +16,7 @@ namespace MangoAPI.Tests.ApiCommandsTests.Messages
         public async Task EditMessageCommandHandlerTest_Success()
         {
             using var dbContextFixture = new DbContextFixture();
-            var handler = new EditMessageCommandHandler(dbContextFixture.PostgresDbContext);
+            var handler = new EditMessageCommandHandler(dbContextFixture.PostgresDbContext, MockedObjects.GetHubContext());
             var command = new EditMessageCommand
             {
                 UserId = SeedDataConstants.SzymonId,
@@ -33,7 +33,7 @@ namespace MangoAPI.Tests.ApiCommandsTests.Messages
         public async Task EditMessageCommandHandlerTest_ShouldThrowMessageNotFound()
         {
             using var dbContextFixture = new DbContextFixture();
-            var handler = new EditMessageCommandHandler(dbContextFixture.PostgresDbContext);
+            var handler = new EditMessageCommandHandler(dbContextFixture.PostgresDbContext, MockedObjects.GetHubContext());
             var command = new EditMessageCommand
             {
                 UserId = SeedDataConstants.SzymonId,
@@ -51,7 +51,7 @@ namespace MangoAPI.Tests.ApiCommandsTests.Messages
         public async Task EditMessageCommandHandlerTest_ShouldThrowUserNotFound()
         {
             using var dbContextFixture = new DbContextFixture();
-            var handler = new EditMessageCommandHandler(dbContextFixture.PostgresDbContext);
+            var handler = new EditMessageCommandHandler(dbContextFixture.PostgresDbContext, MockedObjects.GetHubContext());
             var command = new EditMessageCommand
             {
                 UserId = Guid.NewGuid(),

@@ -16,7 +16,7 @@ namespace MangoAPI.Tests.ApiCommandsTests.Messages
         public async Task DeleteMessageCommandHandlerTest_Success()
         {
             using var dbContextFixture = new DbContextFixture();
-            var handler = new DeleteMessageCommandHandler(dbContextFixture.PostgresDbContext);
+            var handler = new DeleteMessageCommandHandler(dbContextFixture.PostgresDbContext, MockedObjects.GetHubContext());
             var command = new DeleteMessageCommand
             {
                 UserId = SeedDataConstants.SzymonId,
@@ -32,7 +32,7 @@ namespace MangoAPI.Tests.ApiCommandsTests.Messages
         public async Task DeleteMessageCommandHandlerTest_ShouldThrowUserNotFound()
         {
             using var dbContextFixture = new DbContextFixture();
-            var handler = new DeleteMessageCommandHandler(dbContextFixture.PostgresDbContext);
+            var handler = new DeleteMessageCommandHandler(dbContextFixture.PostgresDbContext, MockedObjects.GetHubContext());
             var command = new DeleteMessageCommand
             {
                 UserId = Guid.NewGuid(),
@@ -49,7 +49,7 @@ namespace MangoAPI.Tests.ApiCommandsTests.Messages
         public async Task DeleteMessageCommandHandlerTest_ShouldThrowMessageNotFound()
         {
             using var dbContextFixture = new DbContextFixture();
-            var handler = new DeleteMessageCommandHandler(dbContextFixture.PostgresDbContext);
+            var handler = new DeleteMessageCommandHandler(dbContextFixture.PostgresDbContext, MockedObjects.GetHubContext());
             var command = new DeleteMessageCommand
             {
                 UserId = SeedDataConstants.SzymonId,
