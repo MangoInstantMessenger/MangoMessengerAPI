@@ -6,6 +6,8 @@ using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using MangoAPI.BusinessLogic.BusinessExceptions;
+using MangoAPI.DataAccess.Database.Extensions;
 
 namespace MangoAPI.BusinessLogic.ApiQueries.Messages
 {
@@ -20,6 +22,13 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Messages
 
         public async Task<SearchChatMessagesResponse> Handle(SearchChatMessagesQuery request, CancellationToken cancellationToken)
         {
+            var userChat = await _postgresDbContext.UserChats.FindUserChatByIdAsync(request.UserId, request.ChatId, cancellationToken);
+
+            if (userChat is null)
+            {
+                throw new BusinessException(ResponseMessageCodes.PermissionDenied);
+            }
+            
             var query = _postgresDbContext.Messages.AsNoTracking()
                 .Include(x => x.User)
                 .Where(x => x.ChatId == request.ChatId)
