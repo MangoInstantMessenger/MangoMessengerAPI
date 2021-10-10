@@ -27,11 +27,11 @@ namespace MangoAPI.Application.Services
             _key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(tokenKey));
         }
 
-        public string GenerateJwtToken(UserEntity userEntity, List<string> roles)
+        public string GenerateJwtToken(Guid userId, List<string> roles)
         {
             var claims = new List<Claim>
             {
-                new (JwtRegisteredClaimNames.Jti, userEntity.Id.ToString()),
+                new (JwtRegisteredClaimNames.Jti, userId.ToString()),
             };
 
             roles.ForEach(x => claims.Add(new Claim(ClaimsIdentity.DefaultRoleClaimType, x)));

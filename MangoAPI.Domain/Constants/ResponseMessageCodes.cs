@@ -4,7 +4,7 @@
     {
         public const string Success = "SUCCESS";
         public const string InvalidOrExpiredRefreshToken = "INVALID_OR_EXPIRED_REFRESH_TOKEN";
-        public const string EmailOccupied = "EMAIL_OCCUPIED";
+        public const string UserAlreadyExists = "USER_ALREADY_EXISTS";
         public const string InvalidCredentials = "INVALID_CREDENTIALS";
         public const string InvalidEmail = "INVALID_EMAIL";
         public const string WeakPassword = "WEAK_PASSWORD";

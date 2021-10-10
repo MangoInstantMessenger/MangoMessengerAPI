@@ -37,7 +37,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Communities
             var ownerChatsCount =
                 await _postgresDbContext.UserChats
                     .Where(x => x.RoleId == (int)UserRole.Owner && x.UserId == request.UserId)
-                    .CountAsync(cancellationToken: cancellationToken);
+                    .CountAsync(cancellationToken);
 
             if (ownerChatsCount >= 100)
             {
@@ -53,7 +53,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Communities
                 MembersCount = 1,
             };
 
-            await _postgresDbContext.Chats.AddAsync(channel, cancellationToken);
+            _postgresDbContext.Chats.Add(channel);
 
             _postgresDbContext.UserChats.Add(new UserChatEntity
             {

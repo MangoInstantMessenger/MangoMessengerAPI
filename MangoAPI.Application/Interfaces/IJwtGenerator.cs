@@ -1,10 +1,10 @@
-﻿using System.Collections.Generic;
-using MangoAPI.Domain.Entities;
+﻿using System;
+using System.Collections.Generic;
 
 namespace MangoAPI.Application.Interfaces
 {
     public interface IJwtGenerator
     {
-        string GenerateJwtToken(UserEntity userEntity, List<string> roles);
+        string GenerateJwtToken(Guid userId, List<string> roles);
     }
 }

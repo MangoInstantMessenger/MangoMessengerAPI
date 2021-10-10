@@ -8,6 +8,7 @@ using MangoAPI.Domain.Entities;
 using MangoAPI.Domain.Enums;
 using MediatR;
 using Microsoft.AspNetCore.SignalR;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
 using System.Threading;
@@ -29,7 +30,8 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Communities
         public async Task<CreateCommunityResponse> Handle(CreateChatCommand request,
             CancellationToken cancellationToken)
         {
-            var partner = await _postgresDbContext.Users.FindUserByIdAsync(request.PartnerId, cancellationToken);
+            var partner = await _postgresDbContext.Users.AsNoTracking()
+                .FirstOrDefaultAsync(x => x.Id == request.PartnerId, cancellationToken);
 
             if (partner is null)
             {
@@ -46,10 +48,12 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Communities
                 throw new BusinessException(ResponseMessageCodes.CannotCreateSelfChat);
             }
 
-            var currentUser = await _postgresDbContext.Users.FindUserByIdAsync(request.UserId, cancellationToken);
+            var currentUserDisplayName = await _postgresDbContext.Users.Where(x => x.Id == request.UserId)
+                .Select(x => x.DisplayName)
+                .FirstOrDefaultAsync(cancellationToken);
 
             var userPrivateChats = await _postgresDbContext.Chats
-                .GetUserChatsAsync(currentUser.Id, cancellationToken);
+                .GetUserChatsAsync(request.UserId, cancellationToken);
 
             var existingChat = userPrivateChats
                 .FirstOrDefault(x => x.ChatUsers.Any(t => t.UserId == partner.Id)
@@ -64,25 +68,26 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Communities
             {
                 Id = Guid.NewGuid(),
                 CommunityType = (int)request.CommunityType,
-                Title = $"{currentUser.DisplayName} / {partner.DisplayName}",
+                Title = $"{currentUserDisplayName} / {partner.DisplayName}",
                 CreatedAt = DateTime.UtcNow,
-                Description = $"Direct chat between {currentUser.DisplayName} and {partner.DisplayName}",
+                Description = $"Direct chat between {currentUserDisplayName} and {partner.DisplayName}",
                 MembersCount = 2,
             };
 
             if (request.CommunityType == CommunityType.SecretChat)
             {
-                chatEntity.Description = $"Secret chat between {currentUser.DisplayName} and {partner.DisplayName}";
+                chatEntity.Description = $"Secret chat between {currentUserDisplayName} and {partner.DisplayName}";
             }
 
             var userChats = new[]
             {
-                new UserChatEntity {ChatId = chatEntity.Id, RoleId = (int) UserRole.User, UserId = currentUser.Id},
+                new UserChatEntity {ChatId = chatEntity.Id, RoleId = (int) UserRole.User, UserId = request.UserId},
                 new UserChatEntity {ChatId = chatEntity.Id, RoleId = (int) UserRole.User, UserId = request.PartnerId},
             };
 
-            await _postgresDbContext.Chats.AddAsync(chatEntity, cancellationToken);
-            await _postgresDbContext.UserChats.AddRangeAsync(userChats, cancellationToken);
+            _postgresDbContext.Chats.Add(chatEntity);
+            _postgresDbContext.UserChats.AddRange(userChats);
+
             await _postgresDbContext.SaveChangesAsync(cancellationToken);
 
             var chatDto = chatEntity.ToChatDto();

@@ -48,7 +48,7 @@ namespace MangoAPI.DataAccess.Database.Extensions
         public static async Task<ChatEntity> FindChannelByIdAsync(this DbSet<ChatEntity> dbSet,
             Guid chatId, CancellationToken cancellationToken)
         {
-            return await dbSet
+            return await dbSet.AsNoTracking()
                 .FirstOrDefaultAsync(x => x.Id == chatId 
                                           && x.CommunityType != (int) CommunityType.DirectChat 
                                           && x.CommunityType != (int) CommunityType.PrivateChannel, 
