@@ -1,14 +1,13 @@
-﻿using System;
-using System.Threading;
-using System.Threading.Tasks;
-using MangoAPI.BusinessLogic.BusinessExceptions;
+﻿using MangoAPI.BusinessLogic.BusinessExceptions;
 using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.DataAccess.Database;
-using MangoAPI.DataAccess.Database.Extensions;
 using MangoAPI.Domain.Constants;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using System;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace MangoAPI.BusinessLogic.ApiCommands.Users
 {

@@ -17,8 +17,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
 
             RuleFor(x => x.BirthdayDate)
                 .Cascade(CascadeMode.Stop)
-                .NotEmpty()
-                .Length(1, 40);
+                .NotEmpty();
 
             RuleFor(x => x.Email)
                 .Cascade(CascadeMode.Stop)
