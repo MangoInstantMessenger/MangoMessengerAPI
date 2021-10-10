@@ -42,7 +42,7 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Messages
                     MessageAttachmentUrl = x.Attachment != null
                         ? $"{EnvironmentConstants.BackendAddress}Uploads/{x.Attachment}"
                         : null,
-                });
+                }).Take(200);
 
             if (!string.IsNullOrEmpty(request.MessageText) || !string.IsNullOrWhiteSpace(request.MessageText))
             {

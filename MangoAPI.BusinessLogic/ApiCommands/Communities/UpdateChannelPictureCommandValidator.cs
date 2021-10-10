@@ -7,6 +7,8 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Communities
         public UpdateChanelPictureCommandValidator()
         {
             RuleFor(x => x.Image).NotEmpty();
+            RuleFor(x => x.ChatId).NotEmpty();
+            RuleFor(x => x.UserId).NotEmpty();
         }
     }
 }

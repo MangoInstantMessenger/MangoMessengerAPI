@@ -52,9 +52,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
                 _postgresDbContext.Chats.UpdateRange(userChats);
             }
 
-            user.UserInformation.BirthDay = DateTime.TryParse(request.BirthdayDate, out var newDate)
-                ? newDate
-                : user.UserInformation.BirthDay;
+            user.UserInformation.BirthDay = request.BirthdayDate;
 
             user.PhoneNumber = request.PhoneNumber;
 
