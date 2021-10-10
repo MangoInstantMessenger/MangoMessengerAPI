@@ -62,7 +62,7 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Communities
                         : null,
                 });
 
-            var userChats = await query.ToListAsync(cancellationToken);
+            var userChats = await query.Take(200).ToListAsync(cancellationToken);
 
             var directChatsIds = userChats
                 .Where(x => x.CommunityType == CommunityType.DirectChat)

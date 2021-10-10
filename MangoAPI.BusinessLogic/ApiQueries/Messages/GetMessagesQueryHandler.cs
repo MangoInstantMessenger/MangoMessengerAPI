@@ -40,7 +40,7 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Messages
                     AuthorPublicKey = messageEntity.AuthorPublicKey,
                     MessageAuthorPictureUrl = messageEntity.User.Image != null ? $"{EnvironmentConstants.BackendAddress}Uploads/{messageEntity.User.Image}" : null,
                     MessageAttachmentUrl = messageEntity.Attachment != null ? $"{EnvironmentConstants.BackendAddress}Uploads/{messageEntity.Attachment}" : null,
-                }).ToListAsync(cancellationToken);
+                }).Take(200).ToListAsync(cancellationToken);
 
             return GetMessagesResponse.FromSuccess(chat);
         }
