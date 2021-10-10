@@ -8,12 +8,6 @@ namespace MangoAPI.BusinessLogic.Models
         [DefaultValue("8e08f435-8bd9-4eae-8c0b-e981f9424f19")]
         public Guid UserId { get; set; }
 
-        [DefaultValue("Ivan")]
-        public string FirstName { get; init; }
-
-        [DefaultValue("Ivanov")]
-        public string LastName { get; init; }
-
         [DefaultValue("Ivan Ivanov")]
         public string DisplayName { get; init; }
 
