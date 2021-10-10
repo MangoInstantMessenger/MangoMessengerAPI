@@ -2,7 +2,6 @@
 using MangoAPI.BusinessLogic.HubConfig;
 using MangoAPI.BusinessLogic.Models;
 using MangoAPI.DataAccess.Database;
-using MangoAPI.DataAccess.Database.Extensions;
 using MangoAPI.Domain.Constants;
 using MangoAPI.Domain.Entities;
 using MangoAPI.Domain.Enums;
@@ -31,14 +30,16 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Messages
         public async Task<SendMessageResponse> Handle(SendMessageCommand request, CancellationToken cancellationToken)
         {
             var user = await _postgresDbContext.Users.AsNoTracking()
-                .FirstOrDefaultAsync(x => x.Id == request.UserId, cancellationToken);
+                .FirstOrDefaultAsync(x => x.Id == request.UserId,
+                    cancellationToken);
 
             if (user == null)
             {
                 throw new BusinessException(ResponseMessageCodes.UserNotFound);
             }
 
-            var chat = await _postgresDbContext.Chats.FindChatByIdAsync(request.ChatId, cancellationToken);
+            var chat = await _postgresDbContext.Chats.AsNoTracking()
+                .FirstOrDefaultAsync(x => x.Id == request.ChatId, cancellationToken);
 
             if (chat == null)
             {
@@ -93,10 +94,10 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Messages
         private async Task<bool> CheckReadOnlyChannelPermissions(UserEntity user, ChatEntity chat,
             CancellationToken cancellationToken)
         {
-            return (await _postgresDbContext.UserChats.AsNoTracking()
-                    .Where(x => x.UserId == user.Id && x.ChatId == chat.Id)
-                    .ToListAsync(cancellationToken))
-                .Any(x => x.RoleId is (int)UserRole.Moderator or (int)UserRole.Admin or (int)UserRole.Owner);
+            return await _postgresDbContext.UserChats
+                .AsNoTracking()
+                .AnyAsync(x => x.UserId == user.Id && x.ChatId == chat.Id && x.RoleId == (int) UserRole.Owner,
+                    cancellationToken);
         }
 
         private async Task<bool> CheckChannelPermissions(UserEntity user, ChatEntity chat,
