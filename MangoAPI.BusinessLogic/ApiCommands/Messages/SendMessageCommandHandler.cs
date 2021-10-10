@@ -68,6 +68,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Messages
 
             _postgresDbContext.Chats.Update(chat);
             _postgresDbContext.Messages.Add(messageEntity);
+
             await _postgresDbContext.SaveChangesAsync(cancellationToken);
 
             var messageDto = messageEntity.ToMessage(user);
