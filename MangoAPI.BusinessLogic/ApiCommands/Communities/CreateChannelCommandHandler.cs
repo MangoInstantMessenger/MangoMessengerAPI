@@ -53,7 +53,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Communities
                 MembersCount = 1,
             };
 
-            await _postgresDbContext.Chats.AddAsync(channel, cancellationToken);
+            _postgresDbContext.Chats.Add(channel);
 
             _postgresDbContext.UserChats.Add(new UserChatEntity
             {

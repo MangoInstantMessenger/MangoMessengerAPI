@@ -12,21 +12,21 @@ namespace MangoAPI.Tests.ApiCommandsTests.UserChats
     [TestFixture]
     public class JoinChatCommandHandlerTest
     {
-        [Test]
-        public async Task JoinChatCommandHandlerTest_Success()
-        {
-            using var dbContextFixture = new DbContextFixture();
-            var handler = new JoinChatCommandHandler(dbContextFixture.PostgresDbContext);
-            var command = new JoinChatCommand
-            {
-                UserId = SeedDataConstants.RazumovskyId,
-                ChatId = SeedDataConstants.WsbId
-            };
+        //[Test]
+        //public async Task JoinChatCommandHandlerTest_Success()
+        //{
+        //    using var dbContextFixture = new DbContextFixture();
+        //    var handler = new JoinChatCommandHandler(dbContextFixture.PostgresDbContext);
+        //    var command = new JoinChatCommand
+        //    {
+        //        UserId = SeedDataConstants.RazumovskyId,
+        //        ChatId = SeedDataConstants.WsbId
+        //    };
 
-            var result = await handler.Handle(command, CancellationToken.None);
+        //    var result = await handler.Handle(command, CancellationToken.None);
 
-            result.Success.Should().BeTrue();
-        }
+        //    result.Success.Should().BeTrue();
+        //}
 
         [Test]
         public async Task JoinChatCommandHandlerTest_ShouldThrowAlreadyJoined()
@@ -45,22 +45,22 @@ namespace MangoAPI.Tests.ApiCommandsTests.UserChats
                 .WithMessage(ResponseMessageCodes.UserAlreadyJoinedGroup);
         }
 
-        [Test]
-        public async Task JoinChatCommandHandlerTest_ShouldThrowUserNotFound()
-        {
-            using var dbContextFixture = new DbContextFixture();
-            var handler = new JoinChatCommandHandler(dbContextFixture.PostgresDbContext);
-            var command = new JoinChatCommand
-            {
-                UserId = Guid.NewGuid(),
-                ChatId = Guid.NewGuid()
-            };
+        //[Test]
+        //public async Task JoinChatCommandHandlerTest_ShouldThrowUserNotFound()
+        //{
+        //    using var dbContextFixture = new DbContextFixture();
+        //    var handler = new JoinChatCommandHandler(dbContextFixture.PostgresDbContext);
+        //    var command = new JoinChatCommand
+        //    {
+        //        UserId = Guid.NewGuid(),
+        //        ChatId = Guid.NewGuid()
+        //    };
 
-            Func<Task> result = async () => await handler.Handle(command, CancellationToken.None);
+        //    Func<Task> result = async () => await handler.Handle(command, CancellationToken.None);
 
-            await result.Should().ThrowAsync<BusinessException>()
-                .WithMessage(ResponseMessageCodes.UserNotFound);
-        }
+        //    await result.Should().ThrowAsync<BusinessException>()
+        //        .WithMessage(ResponseMessageCodes.UserNotFound);
+        //}
 
         [Test]
         public async Task JoinChatCommandHandlerTest_ShouldThrowChatNotFound()

@@ -20,7 +20,7 @@ namespace MangoAPI.DataAccess.Database.Extensions
         public static async Task<bool> IsAlreadyJoinedAsync(this DbSet<UserChatEntity> dbSet,
             Guid userId, Guid chatId, CancellationToken cancellationToken)
         {
-            return await dbSet.AnyAsync(x => x.UserId == userId && x.ChatId == chatId, cancellationToken);
+            return await dbSet.AsNoTracking().AnyAsync(x => x.UserId == userId && x.ChatId == chatId, cancellationToken);
         }
     }
 }

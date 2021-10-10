@@ -60,17 +60,14 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Sessions
                 CreatedAt = DateTime.UtcNow,
             };
 
-            var roleIds = await _postgresDbContext.UserRoles
-                .Where(x => x.UserId == user.Id)
-                .Select(x => x.RoleId)
-                .ToListAsync(cancellationToken);
+            var rolesQuery = from userRole in _postgresDbContext.UserRoles.AsNoTracking()
+                             join role in _postgresDbContext.Roles on userRole.RoleId equals role.Id
+                             where userRole.UserId == session.UserId
+                             select role.Name;
 
-            var roles = await _postgresDbContext.Roles
-                .Where(x => roleIds.Contains(x.Id))
-                .Select(x => x.Name)
-                .ToListAsync(cancellationToken);
+            var roles = await rolesQuery.ToListAsync(cancellationToken);
 
-            var jwtToken = _jwtGenerator.GenerateJwtToken(user, roles);
+            var jwtToken = _jwtGenerator.GenerateJwtToken(user.Id, roles);
 
             var userSessions = _postgresDbContext.Sessions.GetUserSessionsById(user.Id);
 
@@ -81,7 +78,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Sessions
                 _postgresDbContext.Sessions.RemoveRange(userSessions);
             }
 
-            await _postgresDbContext.Sessions.AddAsync(session, cancellationToken);
+            _postgresDbContext.Sessions.Add(session);
             await _postgresDbContext.SaveChangesAsync(cancellationToken);
 
             var expires = ((DateTimeOffset)session.ExpiresAt).ToUnixTimeSeconds();

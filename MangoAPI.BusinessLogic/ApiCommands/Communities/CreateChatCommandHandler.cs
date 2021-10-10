@@ -81,8 +81,9 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Communities
                 new UserChatEntity {ChatId = chatEntity.Id, RoleId = (int) UserRole.User, UserId = request.PartnerId},
             };
 
-            await _postgresDbContext.Chats.AddAsync(chatEntity, cancellationToken);
-            await _postgresDbContext.UserChats.AddRangeAsync(userChats, cancellationToken);
+            _postgresDbContext.Chats.Add(chatEntity);
+            _postgresDbContext.UserChats.AddRange(userChats);
+
             await _postgresDbContext.SaveChangesAsync(cancellationToken);
 
             var chatDto = chatEntity.ToChatDto();
