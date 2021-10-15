@@ -29,8 +29,6 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Users
                     UserId = user.Id,
                     DisplayName = user.DisplayName,
                     Address = user.UserInformation.Address,
-                    FirstName = user.UserInformation.FirstName,
-                    LastName = user.UserInformation.LastName,
                     BirthdayDate = user.UserInformation.BirthDay.HasValue
                         ? user.UserInformation.BirthDay.Value.ToString("yyyy-MM-dd")
                         : null,

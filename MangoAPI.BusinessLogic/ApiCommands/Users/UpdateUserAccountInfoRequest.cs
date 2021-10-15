@@ -8,8 +8,6 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
     {
         [JsonConstructor]
         public UpdateUserAccountInfoRequest(
-            string firstName,
-            string lastName,
             string phoneNumber,
             DateTime? birthdayDate,
             string email,
@@ -19,8 +17,6 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
             string address,
             string displayName)
         {
-            FirstName = firstName;
-            LastName = lastName;
             PhoneNumber = phoneNumber;
             BirthdayDate = birthdayDate;
             Email = email;
@@ -30,12 +26,6 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
             Address = address;
             DisplayName = displayName;
         }
-
-        [DefaultValue("Test")]
-        public string FirstName { get; }
-
-        [DefaultValue("User")]
-        public string LastName { get; }
 
         [DefaultValue("Test User")]
         public string DisplayName { get; }

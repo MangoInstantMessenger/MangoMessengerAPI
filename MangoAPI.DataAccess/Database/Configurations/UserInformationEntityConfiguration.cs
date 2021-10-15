@@ -16,8 +16,6 @@ namespace MangoAPI.DataAccess.Database.Configurations
                 {
                     Id = Guid.NewGuid(),
                     UserId = SeedDataConstants.PetroId,
-                    FirstName = "Petro",
-                    LastName = "Kolosov",
                     BirthDay = new DateTime(1994, 6, 12),
                     Website = "petro.kolosov.com",
                     Instagram = "petro.kolosov",
@@ -30,8 +28,6 @@ namespace MangoAPI.DataAccess.Database.Configurations
                 {
                     Id = Guid.NewGuid(),
                     UserId = SeedDataConstants.IlliaId,
-                    FirstName = "Illia",
-                    LastName = "Zubachov",
                     BirthDay = new DateTime(1994, 6, 12),
                     Website = "illia.zubachov.com",
                     Instagram = "illia.zubachov",
@@ -43,8 +39,6 @@ namespace MangoAPI.DataAccess.Database.Configurations
                 {
                     Id = Guid.NewGuid(),
                     UserId = SeedDataConstants.SerhiiId,
-                    FirstName = "Serhii",
-                    LastName = "Holishevskii",
                     BirthDay = new DateTime(1994, 6, 12),
                     Website = "serhii.holishevskii.com",
                     Instagram = "serhii.holishevskii",
@@ -56,8 +50,6 @@ namespace MangoAPI.DataAccess.Database.Configurations
                 {
                     Id = Guid.NewGuid(),
                     UserId = SeedDataConstants.ArslanbekId,
-                    FirstName = "Arslan",
-                    LastName = "Temirbekov",
                     BirthDay = new DateTime(1994, 6, 12),
                     Website = "arslan.temirbekov.com",
                     Instagram = "arslan.temirbekov",
@@ -70,8 +62,6 @@ namespace MangoAPI.DataAccess.Database.Configurations
                 {
                     Id = Guid.NewGuid(),
                     UserId = SeedDataConstants.SzymonId,
-                    FirstName = "Szymon",
-                    LastName = "Murawski",
                     BirthDay = new DateTime(1983, 5, 25),
                     Website = "szymon.murawski.com",
                     Instagram = "szymon.murawski",
@@ -84,8 +74,6 @@ namespace MangoAPI.DataAccess.Database.Configurations
                 {
                     Id = Guid.NewGuid(),
                     UserId = SeedDataConstants.KhachaturId,
-                    FirstName = "Khachatur",
-                    LastName = "Khachatryan",
                     BirthDay = new DateTime(2008, 3, 7),
                     Website = "khachapur.com",
                     Instagram = "khachapur.mudrenych",
@@ -96,8 +84,6 @@ namespace MangoAPI.DataAccess.Database.Configurations
                 {
                     Id = Guid.NewGuid(),
                     UserId = SeedDataConstants.RazumovskyId,
-                    FirstName = "razumovsky",
-                    LastName = "r",
                     BirthDay = new DateTime(1994, 7, 21),
                     Address = "Odessa, Ukraine",
                     Website = "razumovsky.com",
@@ -110,8 +96,6 @@ namespace MangoAPI.DataAccess.Database.Configurations
                 {
                     Id = Guid.NewGuid(),
                     UserId = SeedDataConstants.KolbasatorId,
-                    FirstName = "Мусяка",
-                    LastName = "Колбасяка",
                     Website = "kolbasator.com",
                     Facebook = "kolbasator",
                     ProfilePicture = "profile.png",
@@ -121,7 +105,6 @@ namespace MangoAPI.DataAccess.Database.Configurations
                 {
                     Id = Guid.NewGuid(),
                     UserId = SeedDataConstants.AmelitId,
-                    FirstName = "Amelit",
                     Facebook = "TheMoonlightSonata",
                     Instagram = "TheMoonlightSonata",
                     Twitter = "TheMoonlightSonata",
