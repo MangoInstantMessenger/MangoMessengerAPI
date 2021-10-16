@@ -20,7 +20,7 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Messages
 
         public async Task<GetMessagesResponse> Handle(GetMessagesQuery request, CancellationToken cancellationToken)
         {
-            var chat = await _postgresDbContext
+            var messages = await _postgresDbContext
                 .Messages
                 .AsNoTracking()
                 .Include(x => x.Chat)
@@ -38,11 +38,19 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Messages
                     Self = messageEntity.User.Id == request.UserId,
                     IsEncrypted = messageEntity.IsEncrypted,
                     AuthorPublicKey = messageEntity.AuthorPublicKey,
-                    MessageAuthorPictureUrl = messageEntity.User.Image != null ? $"{EnvironmentConstants.BackendAddress}Uploads/{messageEntity.User.Image}" : null,
-                    MessageAttachmentUrl = messageEntity.Attachment != null ? $"{EnvironmentConstants.BackendAddress}Uploads/{messageEntity.Attachment}" : null,
+                    InReplayToAuthor = messageEntity.InReplayToAuthor,
+                    InReplayToText = messageEntity.InReplayToText,
+
+                    MessageAuthorPictureUrl = messageEntity.User.Image != null
+                        ? $"{EnvironmentConstants.BackendAddress}Uploads/{messageEntity.User.Image}"
+                        : null,
+
+                    MessageAttachmentUrl = messageEntity.Attachment != null
+                        ? $"{EnvironmentConstants.BackendAddress}Uploads/{messageEntity.Attachment}"
+                        : null,
                 }).Take(200).ToListAsync(cancellationToken);
 
-            return GetMessagesResponse.FromSuccess(chat);
+            return GetMessagesResponse.FromSuccess(messages);
         }
     }
 }

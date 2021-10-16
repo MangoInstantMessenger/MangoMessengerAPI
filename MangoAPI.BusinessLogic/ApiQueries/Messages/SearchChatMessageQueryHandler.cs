@@ -1,13 +1,13 @@
-﻿using MangoAPI.BusinessLogic.Models;
+﻿using MangoAPI.BusinessLogic.BusinessExceptions;
+using MangoAPI.BusinessLogic.Models;
 using MangoAPI.DataAccess.Database;
+using MangoAPI.DataAccess.Database.Extensions;
 using MangoAPI.Domain.Constants;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using MangoAPI.BusinessLogic.BusinessExceptions;
-using MangoAPI.DataAccess.Database.Extensions;
 
 namespace MangoAPI.BusinessLogic.ApiQueries.Messages
 {
@@ -28,7 +28,7 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Messages
             {
                 throw new BusinessException(ResponseMessageCodes.PermissionDenied);
             }
-            
+
             var query = _postgresDbContext.Messages.AsNoTracking()
                 .Include(x => x.User)
                 .Where(x => x.ChatId == request.ChatId)
@@ -45,9 +45,13 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Messages
                     Self = x.User.Id == request.UserId,
                     IsEncrypted = x.IsEncrypted,
                     AuthorPublicKey = x.AuthorPublicKey,
+                    InReplayToAuthor = x.InReplayToAuthor,
+                    InReplayToText = x.InReplayToText,
+
                     MessageAuthorPictureUrl = x.User.Image != null
                         ? $"{EnvironmentConstants.BackendAddress}Uploads/{x.User.Image}"
                         : null,
+
                     MessageAttachmentUrl = x.Attachment != null
                         ? $"{EnvironmentConstants.BackendAddress}Uploads/{x.Attachment}"
                         : null,
