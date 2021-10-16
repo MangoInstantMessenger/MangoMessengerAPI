@@ -42,6 +42,12 @@ namespace MangoAPI.BusinessLogic.Models
 
         [DefaultValue("https://localhost:5001/Uploads/message_attachment.pdf")]
         public string MessageAttachmentUrl { get; set; }
+
+        [DefaultValue("John Doe")]
+        public string InReplayToAuthor { get; set; }
+
+        [DefaultValue("Hello world!")]
+        public string InReplayToText { get; set; }
     }
 
     public static class MessageMapper
@@ -60,6 +66,8 @@ namespace MangoAPI.BusinessLogic.Models
                 Self = true,
                 IsEncrypted = message.IsEncrypted,
                 AuthorPublicKey = message.AuthorPublicKey,
+                InReplayToAuthor = message.InReplayToAuthor,
+                InReplayToText = message.InReplayToText,
                 MessageAuthorPictureUrl = user.Image != null
                     ? $"{EnvironmentConstants.BackendAddress}Uploads/{user.Image}"
                     : null,

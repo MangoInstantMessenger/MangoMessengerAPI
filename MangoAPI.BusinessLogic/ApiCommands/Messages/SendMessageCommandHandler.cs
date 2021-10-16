@@ -61,7 +61,9 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Messages
                 IsEncrypted = request.IsEncrypted,
                 AuthorPublicKey = user.PublicKey,
                 CreatedAt = DateTime.UtcNow,
-                Attachment = request.AttachmentUrl
+                Attachment = request.AttachmentUrl,
+                InReplayToAuthor = request.InReplayToAuthor,
+                InReplayToText = request.InReplayToText,
             };
 
             chat.UpdatedAt = messageEntity.CreatedAt;
@@ -97,7 +99,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Messages
         {
             return await _postgresDbContext.UserChats
                 .AsNoTracking()
-                .AnyAsync(x => x.UserId == user.Id && x.ChatId == chat.Id && x.RoleId == (int) UserRole.Owner,
+                .AnyAsync(x => x.UserId == user.Id && x.ChatId == chat.Id && x.RoleId == (int)UserRole.Owner,
                     cancellationToken);
         }
 

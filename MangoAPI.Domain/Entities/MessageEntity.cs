@@ -16,8 +16,12 @@ namespace MangoAPI.Domain.Entities
 
         public int AuthorPublicKey { get; set; }
 
+        public string InReplayToAuthor { get; set; }
+
+        public string InReplayToText { get; set; }
+
         public string Attachment { get; set; }
-        
+
         public DateTime CreatedAt { get; set; }
 
         public DateTime? UpdatedAt { get; set; }

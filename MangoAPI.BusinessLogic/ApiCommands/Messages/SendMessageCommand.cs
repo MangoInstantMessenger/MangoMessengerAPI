@@ -1,5 +1,5 @@
-﻿using System;
-using MediatR;
+﻿using MediatR;
+using System;
 
 namespace MangoAPI.BusinessLogic.ApiCommands.Messages
 {
@@ -10,5 +10,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Messages
         public Guid ChatId { get; init; }
         public bool IsEncrypted { get; init; }
         public string AttachmentUrl { get; init; }
+        public string InReplayToAuthor { get; init; }
+        public string InReplayToText { get; init; }
     }
 }
