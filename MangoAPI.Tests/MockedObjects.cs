@@ -24,7 +24,7 @@ namespace MangoAPI.Tests
                 .NotifyOnMessageDelete(It.IsAny<Guid>())).Returns(Task.CompletedTask);
 
             hubMock.Setup(x => x.Clients.Group(It.IsAny<string>())
-                .NotifyOnMessageEdit(It.IsAny<EditMessageCommand>())).Returns(Task.CompletedTask);
+                .NotifyOnMessageEdit(It.IsAny<MessageEditNotification>())).Returns(Task.CompletedTask);
 
             return hubMock.Object;
         }

@@ -31,7 +31,11 @@ namespace MangoAPI.BusinessLogic.Models
         [DefaultValue(true)]
         public bool IsMember { get; set; }
 
+        [DefaultValue("1994-07-21")]
         public DateTime? UpdatedAt { get; init; }
+
+        [DefaultValue(1)]
+        public int RoleId { get; set; }
 
         public Message LastMessage { get; init; }
     }
