@@ -42,6 +42,7 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Communities
                     IsArchived = x.IsArchived,
                     IsMember = true,
                     UpdatedAt = x.Chat.UpdatedAt,
+                    RoleId = x.RoleId,
                     LastMessage = x.Chat.Messages.Any()
                         ? x.Chat.Messages.OrderBy(messageEntity => messageEntity.CreatedAt).Select(messageEntity =>
                             new Message
