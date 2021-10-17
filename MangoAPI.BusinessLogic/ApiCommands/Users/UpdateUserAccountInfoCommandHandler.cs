@@ -56,10 +56,6 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
 
             user.PhoneNumber = request.PhoneNumber;
 
-            user.UserInformation.FirstName = request.FirstName;
-
-            user.UserInformation.LastName = request.LastName;
-
             user.Email = request.Email;
 
             user.UserInformation.Website = request.Website;

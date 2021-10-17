@@ -25,6 +25,6 @@ namespace MangoAPI.BusinessLogic.HubConfig
         /// <summary>
         /// Notifies chat subscribers on the message edit via SignalR.
         /// </summary>
-        Task NotifyOnMessageEdit(EditMessageCommand command);
+        Task NotifyOnMessageEdit(MessageEditNotification notification);
     }
 }

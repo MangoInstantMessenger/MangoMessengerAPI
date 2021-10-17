@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.SignalR;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using MangoAPI.BusinessLogic.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace MangoAPI.BusinessLogic.ApiCommands.Messages
@@ -41,7 +42,14 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Messages
 
             await _postgresDbContext.SaveChangesAsync(cancellationToken);
 
-            await _hubContext.Clients.Groups(message.ChatId.ToString()).NotifyOnMessageEdit(request);
+            var notification = new MessageEditNotification
+            {
+                MessageId = message.Id,
+                ModifiedText = message.Content,
+                UpdatedAt = message.UpdatedAt.Value.ToShortTimeString(),
+            };
+
+            await _hubContext.Clients.Groups(message.ChatId.ToString()).NotifyOnMessageEdit(notification);
 
             return ResponseBase.SuccessResponse;
         }
