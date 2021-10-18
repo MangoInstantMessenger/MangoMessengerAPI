@@ -25,8 +25,8 @@ namespace MangoAPI.Tests.ApiQueriesTests.Communities
 
             var result = await handler.Handle(query, CancellationToken.None);
 
-            result.Success.Should().BeTrue();
-            result.Chat.Should().NotBeNull();
+            result.Response.Success.Should().BeTrue();
+            result.Response.Chat.Should().NotBeNull();
         }
 
         [Test]

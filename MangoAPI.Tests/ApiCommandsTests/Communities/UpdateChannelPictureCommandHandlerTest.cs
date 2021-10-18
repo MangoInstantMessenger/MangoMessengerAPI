@@ -13,6 +13,23 @@ namespace MangoAPI.Tests.ApiCommandsTests.Communities
     public class UpdateChannelPictureCommandHandlerTest
     {
         [Test]
+        public async Task UpdateChannelPictureCommandHandlerTest_Success()
+        {
+            using var dbContextFixture = new DbContextFixture();
+            var handler = new UpdateChannelPictureCommandHandler(dbContextFixture.PostgresDbContext);
+            var command = new UpdateChanelPictureCommand
+            {
+                UserId = SeedDataConstants.RazumovskyId,
+                ChatId = SeedDataConstants.WsbId,
+                Image = "../../../MangoAPI.Presentation/wwwroot/extremecode_main.jpg"
+            };
+
+            var result = await handler.Handle(command, CancellationToken.None);
+
+            result.Response.Success.Should().BeTrue();
+        }
+        
+        [Test]
         public async Task UpdateChannelPictureCommandHandlerTest_ShouldThrowChatNotFound()
         {
             using var dbContextFixture = new DbContextFixture();
