@@ -9,12 +9,12 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Sessions
             RuleFor(x => x.EmailOrPhone)
                 .Cascade(CascadeMode.Stop)
                 .NotEmpty()
-                .Length(1, 300);
+                .Length(1, 50);
 
             RuleFor(x => x.Password)
                 .Cascade(CascadeMode.Stop)
                 .NotEmpty()
-                .Length(1, 300);
+                .Length(1, 50);
         }
     }
 }
