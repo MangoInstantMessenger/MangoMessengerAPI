@@ -10,7 +10,8 @@ using System.Threading.Tasks;
 
 namespace MangoAPI.BusinessLogic.ApiCommands.Communities
 {
-    public class UpdateChannelPictureCommandHandler : IRequestHandler<UpdateChanelPictureCommand, ResponseBase>
+    public class UpdateChannelPictureCommandHandler : IRequestHandler<UpdateChanelPictureCommand, 
+        GenericResponse<ResponseBase, ErrorResponse>>
     {
         private readonly MangoPostgresDbContext _postgresDbContext;
 
@@ -19,7 +20,8 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Communities
             _postgresDbContext = postgresDbContext;
         }
 
-        public async Task<ResponseBase> Handle(UpdateChanelPictureCommand request, CancellationToken cancellationToken)
+        public async Task<GenericResponse<ResponseBase, ErrorResponse>> Handle(UpdateChanelPictureCommand request, 
+            CancellationToken cancellationToken)
         {
             var userChat = await _postgresDbContext.UserChats.AsNoTracking()
                 .Include(x => x.Chat)
@@ -31,7 +33,18 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Communities
 
             if (userChat is null)
             {
-                throw new BusinessException(ResponseMessageCodes.ChatNotFound);
+                return new GenericResponse<ResponseBase, ErrorResponse>
+                {
+                    Error = new ErrorResponse
+                    {
+                        ErrorMessage = ResponseMessageCodes.ChatNotFound,
+                        ErrorDetails = ResponseMessageCodes.ErrorDictionary[ResponseMessageCodes.ChatNotFound],
+                        Success = false,
+                        StatusCode = 409
+                    },
+                    Response = null,
+                    StatusCode = 409
+                };
             }
 
             userChat.Chat.Image = request.Image;
@@ -39,7 +52,12 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Communities
             _postgresDbContext.Update(userChat.Chat);
             await _postgresDbContext.SaveChangesAsync(cancellationToken);
 
-            return ResponseBase.SuccessResponse;
+            return new GenericResponse<ResponseBase, ErrorResponse>
+            {
+                Error = null,
+                Response = ResponseBase.SuccessResponse,
+                StatusCode = 200
+            };
         }
     }
 }

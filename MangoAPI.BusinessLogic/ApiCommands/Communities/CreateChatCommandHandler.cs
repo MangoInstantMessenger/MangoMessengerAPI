@@ -13,10 +13,12 @@ using System;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using MangoAPI.BusinessLogic.Responses;
 
 namespace MangoAPI.BusinessLogic.ApiCommands.Communities
 {
-    public class CreateChatCommandHandler : IRequestHandler<CreateChatCommand, CreateCommunityResponse>
+    public class CreateChatCommandHandler : IRequestHandler<CreateChatCommand, 
+        GenericResponse<CreateCommunityResponse, ErrorResponse>>
     {
         private readonly MangoPostgresDbContext _postgresDbContext;
         private readonly IHubContext<ChatHub, IHubClient> _hubContext;
@@ -27,7 +29,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Communities
             _hubContext = hubContext;
         }
 
-        public async Task<CreateCommunityResponse> Handle(CreateChatCommand request,
+        public async Task<GenericResponse<CreateCommunityResponse, ErrorResponse>> Handle(CreateChatCommand request,
             CancellationToken cancellationToken)
         {
             var partner = await _postgresDbContext.Users.AsNoTracking()
@@ -35,17 +37,50 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Communities
 
             if (partner is null)
             {
-                throw new BusinessException(ResponseMessageCodes.UserNotFound);
+                return new GenericResponse<CreateCommunityResponse, ErrorResponse>
+                {
+                    Error = new ErrorResponse()
+                    {
+                        ErrorMessage = ResponseMessageCodes.UserNotFound,
+                        ErrorDetails = ResponseMessageCodes.ErrorDictionary[ResponseMessageCodes.UserNotFound],
+                        Success = false,
+                        StatusCode = 409
+                    },
+                    Response = null,
+                    StatusCode = 409
+                };
             }
 
             if (partner.PublicKey == 0 && request.CommunityType == CommunityType.SecretChat)
             {
-                throw new BusinessException(ResponseMessageCodes.UserPublicKeyIsNotGenerated);
+                return new GenericResponse<CreateCommunityResponse, ErrorResponse>
+                {
+                    Error = new ErrorResponse()
+                    {
+                        ErrorMessage = ResponseMessageCodes.UserPublicKeyIsNotGenerated,
+                        ErrorDetails = ResponseMessageCodes.ErrorDictionary[ResponseMessageCodes.UserPublicKeyIsNotGenerated],
+                        Success = false,
+                        StatusCode = 409
+                    },
+                    Response = null,
+                    StatusCode = 409
+                };
             }
 
             if (request.UserId == request.PartnerId)
             {
-                throw new BusinessException(ResponseMessageCodes.CannotCreateSelfChat);
+                return new GenericResponse<CreateCommunityResponse, ErrorResponse>
+                {
+                    Error = new ErrorResponse()
+                    {
+                        ErrorMessage = ResponseMessageCodes.CannotCreateSelfChat,
+                        ErrorDetails = ResponseMessageCodes.ErrorDictionary[ResponseMessageCodes.CannotCreateSelfChat],
+                        Success = false,
+                        StatusCode = 409
+                    },
+                    Response = null,
+                    StatusCode = 409
+                };
             }
 
             var currentUserDisplayName = await _postgresDbContext.Users.Where(x => x.Id == request.UserId)
@@ -61,7 +96,12 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Communities
 
             if (existingChat != null)
             {
-                return CreateCommunityResponse.FromSuccess(existingChat);
+                return new GenericResponse<CreateCommunityResponse, ErrorResponse>
+                {
+                    Error = null,
+                    Response = CreateCommunityResponse.FromSuccess(existingChat),
+                    StatusCode = 200
+                };
             }
 
             var chatEntity = new ChatEntity
@@ -93,7 +133,12 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Communities
             var chatDto = chatEntity.ToChatDto();
             await _hubContext.Clients.Group(request.UserId.ToString()).UpdateUserChats(chatDto);
 
-            return CreateCommunityResponse.FromSuccess(chatEntity);
+            return new GenericResponse<CreateCommunityResponse, ErrorResponse>
+            {
+                Error = null,
+                Response = CreateCommunityResponse.FromSuccess(chatEntity),
+                StatusCode = 200
+            };
         }
     }
 }

@@ -5,12 +5,13 @@ using MediatR;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.Domain.Constants;
 using Microsoft.EntityFrameworkCore;
 
 namespace MangoAPI.BusinessLogic.ApiQueries.Communities
 {
-    public class SearchCommunityQueryHandler : IRequestHandler<SearchCommunityQuery, SearchCommunityResponse>
+    public class SearchCommunityQueryHandler : IRequestHandler<SearchCommunityQuery, GenericResponse<SearchCommunityResponse, ErrorResponse>>
     {
         private readonly MangoPostgresDbContext _postgresDbContext;
 
@@ -19,7 +20,7 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Communities
             _postgresDbContext = postgresDbContext;
         }
 
-        public async Task<SearchCommunityResponse> Handle(SearchCommunityQuery request,
+        public async Task<GenericResponse<SearchCommunityResponse, ErrorResponse>> Handle(SearchCommunityQuery request,
             CancellationToken cancellationToken)
         {
             var query = _postgresDbContext.Chats
@@ -74,7 +75,12 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Communities
 
             chats = chats.Where(x => !joinedChatIds.Contains(x.ChatId)).ToList();
 
-            return SearchCommunityResponse.FromSuccess(chats);
+            return new GenericResponse<SearchCommunityResponse, ErrorResponse>
+            {
+                Error = null,
+                Response = SearchCommunityResponse.FromSuccess(chats),
+                StatusCode = 200
+            };
         }
     }
 }
