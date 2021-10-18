@@ -17,9 +17,6 @@ namespace MangoAPI.BusinessLogic.Responses
         [DefaultValue(false)]
         public bool Success { get; init; }
 
-        public override string ToString()
-        {
-            return JsonSerializer.Serialize(this);
-        }
+        public override string ToString() => JsonSerializer.Serialize(this);
     }
 }
