@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
-using MangoAPI.BusinessLogic.BusinessExceptions;
 using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.DataAccess.Database;
 using MangoAPI.DataAccess.Database.Extensions;
@@ -21,7 +20,8 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Contacts
             _postgresDbContext = postgresDbContext;
         }
 
-        public async Task<GenericResponse<ResponseBase, ErrorResponse>> Handle(AddContactCommand request, CancellationToken cancellationToken)
+        public async Task<GenericResponse<ResponseBase, ErrorResponse>> Handle(AddContactCommand request, 
+            CancellationToken cancellationToken)
         {
             if (request.UserId == request.ContactId)
             {

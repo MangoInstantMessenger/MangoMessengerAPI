@@ -1,5 +1,4 @@
-﻿using MangoAPI.BusinessLogic.BusinessExceptions;
-using MangoAPI.BusinessLogic.HubConfig;
+﻿using MangoAPI.BusinessLogic.HubConfig;
 using MangoAPI.BusinessLogic.Models;
 using MangoAPI.DataAccess.Database;
 using MangoAPI.Domain.Constants;
@@ -12,10 +11,12 @@ using System;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using MangoAPI.BusinessLogic.Responses;
 
 namespace MangoAPI.BusinessLogic.ApiCommands.Messages
 {
-    public class SendMessageCommandHandler : IRequestHandler<SendMessageCommand, SendMessageResponse>
+    public class SendMessageCommandHandler 
+        : IRequestHandler<SendMessageCommand, GenericResponse<SendMessageResponse,ErrorResponse>>
     {
         private readonly MangoPostgresDbContext _postgresDbContext;
         private readonly IHubContext<ChatHub, IHubClient> _hubContext;
@@ -27,7 +28,8 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Messages
             _hubContext = hubContext;
         }
 
-        public async Task<SendMessageResponse> Handle(SendMessageCommand request, CancellationToken cancellationToken)
+        public async Task<GenericResponse<SendMessageResponse,ErrorResponse>> Handle(SendMessageCommand request, 
+            CancellationToken cancellationToken)
         {
             var user = await _postgresDbContext.Users.AsNoTracking()
                 .FirstOrDefaultAsync(x => x.Id == request.UserId,
@@ -35,7 +37,18 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Messages
 
             if (user == null)
             {
-                throw new BusinessException(ResponseMessageCodes.UserNotFound);
+                return new GenericResponse<SendMessageResponse, ErrorResponse>
+                {
+                    Error = new ErrorResponse
+                    {
+                        ErrorMessage = ResponseMessageCodes.UserNotFound,
+                        ErrorDetails = ResponseMessageCodes.ErrorDictionary[ResponseMessageCodes.UserNotFound],
+                        Success = false,
+                        StatusCode = 409
+                    },
+                    Response = null,
+                    StatusCode = 409
+                };
             }
 
             var chat = await _postgresDbContext.Chats.AsNoTracking()
@@ -43,14 +56,36 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Messages
 
             if (chat == null)
             {
-                throw new BusinessException(ResponseMessageCodes.ChatNotFound);
+                return new GenericResponse<SendMessageResponse, ErrorResponse>
+                {
+                    Error = new ErrorResponse
+                    {
+                        ErrorMessage = ResponseMessageCodes.ChatNotFound,
+                        ErrorDetails = ResponseMessageCodes.ErrorDictionary[ResponseMessageCodes.ChatNotFound],
+                        Success = false,
+                        StatusCode = 409
+                    },
+                    Response = null,
+                    StatusCode = 409
+                };
             }
 
             var permitted = await CheckUserPermissions(user, chat, cancellationToken);
 
             if (!permitted)
             {
-                throw new BusinessException(ResponseMessageCodes.PermissionDenied);
+                return new GenericResponse<SendMessageResponse, ErrorResponse>
+                {
+                    Error = new ErrorResponse
+                    {
+                        ErrorMessage = ResponseMessageCodes.PermissionDenied,
+                        ErrorDetails = ResponseMessageCodes.ErrorDictionary[ResponseMessageCodes.PermissionDenied],
+                        Success = false,
+                        StatusCode = 409
+                    },
+                    Response = null,
+                    StatusCode = 409
+                };
             }
 
             var messageEntity = new MessageEntity
@@ -77,7 +112,12 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Messages
 
             await _hubContext.Clients.Group(chat.Id.ToString()).BroadcastMessage(messageDto);
 
-            return SendMessageResponse.FromSuccess(messageEntity.Id);
+            return new GenericResponse<SendMessageResponse, ErrorResponse>
+            {
+                Error = null,
+                Response = SendMessageResponse.FromSuccess(messageEntity.Id),
+                StatusCode = 200
+            };
         }
 
         private async Task<bool> CheckUserPermissions(UserEntity user, ChatEntity chat,

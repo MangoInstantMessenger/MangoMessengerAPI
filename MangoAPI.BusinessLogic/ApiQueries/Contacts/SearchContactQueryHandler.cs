@@ -57,7 +57,6 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Contacts
                 contact.IsContact = commonContacts.Contains(contact.UserId);
             }
 
-            //return SearchContactResponse.FromSuccess(searchResult);
             return new GenericResponse<SearchContactResponse, ErrorResponse>
             {
                 Error = null,
