@@ -1,5 +1,4 @@
 ﻿using MangoAPI.Application.Interfaces;
-using MangoAPI.BusinessLogic.BusinessExceptions;
 using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.DataAccess.Database;
 using MangoAPI.DataAccess.Database.Extensions;
@@ -12,7 +11,8 @@ using System.Threading.Tasks;
 
 namespace MangoAPI.BusinessLogic.ApiCommands.PasswordRestoreRequests
 {
-    public class RequestPasswordRestoreCommandHandler : IRequestHandler<RequestPasswordRestoreCommand, ResponseBase>
+    public class RequestPasswordRestoreCommandHandler 
+        : IRequestHandler<RequestPasswordRestoreCommand, GenericResponse<ResponseBase,ErrorResponse>>
     {
         private readonly MangoPostgresDbContext _postgresDbContext;
         private readonly IEmailSenderService _emailSenderService;
@@ -24,7 +24,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.PasswordRestoreRequests
             _emailSenderService = emailSenderService;
         }
 
-        public async Task<ResponseBase> Handle(RequestPasswordRestoreCommand request,
+        public async Task<GenericResponse<ResponseBase, ErrorResponse>> Handle(RequestPasswordRestoreCommand request,
             CancellationToken cancellationToken)
         {
             var user = await _postgresDbContext.Users.FindUserByEmailOrPhoneAsync(request.EmailOrPhone,
@@ -32,7 +32,18 @@ namespace MangoAPI.BusinessLogic.ApiCommands.PasswordRestoreRequests
 
             if (user is null)
             {
-                throw new BusinessException(ResponseMessageCodes.UserNotFound);
+                return new GenericResponse<ResponseBase, ErrorResponse>
+                {
+                    Error = new ErrorResponse
+                    {
+                        ErrorMessage = ResponseMessageCodes.UserNotFound,
+                        ErrorDetails = ResponseMessageCodes.ErrorDictionary[ResponseMessageCodes.UserNotFound],
+                        Success = false,
+                        StatusCode = 409
+                    },
+                    Response = null,
+                    StatusCode = 409
+                };
             }
 
             var passwordRestoreRequest = new PasswordRestoreRequestEntity
@@ -49,7 +60,12 @@ namespace MangoAPI.BusinessLogic.ApiCommands.PasswordRestoreRequests
 
             await _emailSenderService.SendPasswordRestoreRequest(user, passwordRestoreRequest.Id, cancellationToken);
 
-            return ResponseBase.SuccessResponse;
+            return new GenericResponse<ResponseBase, ErrorResponse>
+            {
+                Error = null,
+                Response = ResponseBase.SuccessResponse,
+                StatusCode = 200
+            };
         }
     }
 }

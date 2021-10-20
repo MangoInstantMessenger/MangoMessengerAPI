@@ -1,5 +1,4 @@
-﻿using MangoAPI.BusinessLogic.BusinessExceptions;
-using MangoAPI.BusinessLogic.Responses;
+﻿using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.DataAccess.Database;
 using MangoAPI.DataAccess.Database.Extensions;
 using MangoAPI.Domain.Constants;
@@ -11,7 +10,8 @@ using System.Threading.Tasks;
 
 namespace MangoAPI.BusinessLogic.ApiCommands.PasswordRestoreRequests
 {
-    public class PasswordRestoreCommandHandler : IRequestHandler<PasswordRestoreCommand, ResponseBase>
+    public class PasswordRestoreCommandHandler 
+        : IRequestHandler<PasswordRestoreCommand, GenericResponse<ResponseBase,ErrorResponse>>
     {
         private readonly MangoPostgresDbContext _postgresDbContext;
         private readonly UserManager<UserEntity> _userManager;
@@ -23,11 +23,23 @@ namespace MangoAPI.BusinessLogic.ApiCommands.PasswordRestoreRequests
             _userManager = userManager;
         }
 
-        public async Task<ResponseBase> Handle(PasswordRestoreCommand request, CancellationToken cancellationToken)
+        public async Task<GenericResponse<ResponseBase,ErrorResponse>> Handle(PasswordRestoreCommand request, 
+            CancellationToken cancellationToken)
         {
             if (request.NewPassword != request.RepeatPassword)
             {
-                throw new BusinessException(ResponseMessageCodes.PasswordsAreNotSame);
+                return new GenericResponse<ResponseBase, ErrorResponse>
+                {
+                    Error = new ErrorResponse
+                    {
+                        ErrorMessage = ResponseMessageCodes.PasswordsAreNotSame,
+                        ErrorDetails = ResponseMessageCodes.ErrorDictionary[ResponseMessageCodes.PasswordsAreNotSame],
+                        Success = false,
+                        StatusCode = 409
+                    },
+                    Response = null,
+                    StatusCode = 409
+                };
             }
 
             var restorePasswordRequest =
@@ -36,7 +48,19 @@ namespace MangoAPI.BusinessLogic.ApiCommands.PasswordRestoreRequests
 
             if (restorePasswordRequest is not { IsValid: true })
             {
-                throw new BusinessException(ResponseMessageCodes.InvalidOrExpiredRestorePasswordRequest);
+                return new GenericResponse<ResponseBase, ErrorResponse>
+                {
+                    Error = new ErrorResponse
+                    {
+                        ErrorMessage = ResponseMessageCodes.InvalidOrExpiredRestorePasswordRequest,
+                        ErrorDetails = 
+                            ResponseMessageCodes.ErrorDictionary[ResponseMessageCodes.InvalidOrExpiredRestorePasswordRequest],
+                        Success = false,
+                        StatusCode = 409
+                    },
+                    Response = null,
+                    StatusCode = 409
+                };
             }
 
             var user = await _postgresDbContext.Users.FindUserByIdAsync(restorePasswordRequest.UserId,
@@ -44,7 +68,18 @@ namespace MangoAPI.BusinessLogic.ApiCommands.PasswordRestoreRequests
 
             if (user is null)
             {
-                throw new BusinessException(ResponseMessageCodes.UserNotFound);
+                return new GenericResponse<ResponseBase, ErrorResponse>
+                {
+                    Error = new ErrorResponse
+                    {
+                        ErrorMessage = ResponseMessageCodes.UserNotFound,
+                        ErrorDetails = ResponseMessageCodes.ErrorDictionary[ResponseMessageCodes.UserNotFound],
+                        Success = false,
+                        StatusCode = 409
+                    },
+                    Response = null,
+                    StatusCode = 409
+                };
             }
 
             await _userManager.RemovePasswordAsync(user);
@@ -53,14 +88,30 @@ namespace MangoAPI.BusinessLogic.ApiCommands.PasswordRestoreRequests
 
             if (!result.Succeeded)
             {
-                throw new BusinessException(ResponseMessageCodes.WeakPassword);
+                return new GenericResponse<ResponseBase, ErrorResponse>
+                {
+                    Error = new ErrorResponse
+                    {
+                        ErrorMessage = ResponseMessageCodes.WeakPassword,
+                        ErrorDetails = ResponseMessageCodes.ErrorDictionary[ResponseMessageCodes.WeakPassword],
+                        Success = false,
+                        StatusCode = 409
+                    },
+                    Response = null,
+                    StatusCode = 409
+                };
             }
 
             _postgresDbContext.Users.Update(user);
             _postgresDbContext.PasswordRestoreRequests.Remove(restorePasswordRequest);
             await _postgresDbContext.SaveChangesAsync(cancellationToken);
 
-            return ResponseBase.SuccessResponse;
+            return new GenericResponse<ResponseBase, ErrorResponse>
+            {
+                Error = null,
+                Response = ResponseBase.SuccessResponse,
+                StatusCode = 200
+            };
         }
     }
 }
