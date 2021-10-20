@@ -11,7 +11,8 @@ using MediatR;
 
 namespace MangoAPI.BusinessLogic.ApiCommands.Contacts
 {
-    public class AddContactCommandHandler : IRequestHandler<AddContactCommand, ResponseBase>
+    public class AddContactCommandHandler 
+        : IRequestHandler<AddContactCommand, GenericResponse<ResponseBase,ErrorResponse>>
     {
         private readonly MangoPostgresDbContext _postgresDbContext;
 
@@ -20,11 +21,22 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Contacts
             _postgresDbContext = postgresDbContext;
         }
 
-        public async Task<ResponseBase> Handle(AddContactCommand request, CancellationToken cancellationToken)
+        public async Task<GenericResponse<ResponseBase, ErrorResponse>> Handle(AddContactCommand request, CancellationToken cancellationToken)
         {
             if (request.UserId == request.ContactId)
             {
-                throw new BusinessException(ResponseMessageCodes.CannotAddSelfToContacts);
+                return new GenericResponse<ResponseBase, ErrorResponse>
+                {
+                    Error = new ErrorResponse
+                    {
+                        ErrorMessage = ResponseMessageCodes.CannotAddSelfToContacts,
+                        ErrorDetails = ResponseMessageCodes.ErrorDictionary[ResponseMessageCodes.CannotAddSelfToContacts],
+                        Success = false,
+                        StatusCode = 409
+                    },
+                    Response = null,
+                    StatusCode = 409
+                };
             }
 
             var userContactExist = await _postgresDbContext.UserContacts
@@ -32,7 +44,18 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Contacts
 
             if (userContactExist)
             {
-                throw new BusinessException(ResponseMessageCodes.ContactAlreadyExist);
+                return new GenericResponse<ResponseBase, ErrorResponse>
+                {
+                    Error = new ErrorResponse
+                    {
+                        ErrorMessage = ResponseMessageCodes.ContactAlreadyExist,
+                        ErrorDetails = ResponseMessageCodes.ErrorDictionary[ResponseMessageCodes.ContactAlreadyExist],
+                        Success = false,
+                        StatusCode = 409
+                    },
+                    Response = null,
+                    StatusCode = 409
+                };
             }
 
             var contactEntity = new UserContactEntity
@@ -45,7 +68,12 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Contacts
             _postgresDbContext.UserContacts.Add(contactEntity);
             await _postgresDbContext.SaveChangesAsync(cancellationToken);
 
-            return ResponseBase.SuccessResponse;
+            return new GenericResponse<ResponseBase, ErrorResponse>
+            {
+                Error = null,
+                Response = ResponseBase.SuccessResponse,
+                StatusCode = 200
+            };
         }
     }
 }

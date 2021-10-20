@@ -17,8 +17,8 @@ using MangoAPI.BusinessLogic.Responses;
 
 namespace MangoAPI.BusinessLogic.ApiCommands.Communities
 {
-    public class CreateChatCommandHandler : IRequestHandler<CreateChatCommand, 
-        GenericResponse<CreateCommunityResponse, ErrorResponse>>
+    public class CreateChatCommandHandler 
+        : IRequestHandler<CreateChatCommand, GenericResponse<CreateCommunityResponse, ErrorResponse>>
     {
         private readonly MangoPostgresDbContext _postgresDbContext;
         private readonly IHubContext<ChatHub, IHubClient> _hubContext;
