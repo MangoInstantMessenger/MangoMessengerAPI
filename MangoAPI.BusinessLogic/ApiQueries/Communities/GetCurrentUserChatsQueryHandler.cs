@@ -7,11 +7,12 @@ using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using MangoAPI.BusinessLogic.Responses;
 
 namespace MangoAPI.BusinessLogic.ApiQueries.Communities
 {
-    public class
-        GetCurrentUserChatsQueryHandler : IRequestHandler<GetCurrentUserChatsQuery, GetCurrentUserChatsResponse>
+    public class GetCurrentUserChatsQueryHandler : IRequestHandler<GetCurrentUserChatsQuery, 
+        GenericResponse<GetCurrentUserChatsResponse, ErrorResponse>>
     {
         private readonly MangoPostgresDbContext _postgresDbContext;
 
@@ -20,7 +21,7 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Communities
             _postgresDbContext = postgresDbContext;
         }
 
-        public async Task<GetCurrentUserChatsResponse> Handle(GetCurrentUserChatsQuery request,
+        public async Task<GenericResponse<GetCurrentUserChatsResponse, ErrorResponse>> Handle(GetCurrentUserChatsQuery request,
             CancellationToken cancellationToken)
         {
             var query = _postgresDbContext.UserChats
@@ -97,7 +98,12 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Communities
 
             userChats = userChats.OrderByDescending(x => x.UpdatedAt).ToList();
 
-            return GetCurrentUserChatsResponse.FromSuccess(userChats);
+            return new GenericResponse<GetCurrentUserChatsResponse, ErrorResponse>
+            {
+                Error = null,
+                Response = GetCurrentUserChatsResponse.FromSuccess(userChats),
+                StatusCode = 200
+            };
         }
     }
 }

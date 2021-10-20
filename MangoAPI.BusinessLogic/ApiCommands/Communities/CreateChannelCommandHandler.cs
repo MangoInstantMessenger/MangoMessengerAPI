@@ -1,21 +1,22 @@
 ﻿using MangoAPI.BusinessLogic.BusinessExceptions;
 using MangoAPI.BusinessLogic.HubConfig;
 using MangoAPI.BusinessLogic.Models;
+using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.DataAccess.Database;
 using MangoAPI.Domain.Constants;
 using MangoAPI.Domain.Entities;
 using MangoAPI.Domain.Enums;
 using MediatR;
 using Microsoft.AspNetCore.SignalR;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
 
 namespace MangoAPI.BusinessLogic.ApiCommands.Communities
 {
-    public class CreateChannelCommandHandler : IRequestHandler<CreateChannelCommand, CreateCommunityResponse>
+    public class CreateChannelCommandHandler : IRequestHandler<CreateChannelCommand, GenericResponse<CreateCommunityResponse, ErrorResponse>>
     {
         private readonly MangoPostgresDbContext _postgresDbContext;
         private readonly IHubContext<ChatHub, IHubClient> _hubContext;
@@ -26,12 +27,24 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Communities
             _hubContext = hubContext;
         }
 
-        public async Task<CreateCommunityResponse> Handle(CreateChannelCommand request,
+        public async Task<GenericResponse<CreateCommunityResponse, ErrorResponse>> Handle(CreateChannelCommand request,
             CancellationToken cancellationToken)
         {
             if (request.CommunityType is CommunityType.DirectChat or CommunityType.SecretChat)
             {
-                throw new BusinessException(ResponseMessageCodes.InvalidGroupType);
+                return new GenericResponse<CreateCommunityResponse, ErrorResponse>
+                {
+                    Error = new ErrorResponse
+                    {
+                        ErrorMessage = ResponseMessageCodes.InvalidGroupType,
+                        ErrorDetails = ResponseMessageCodes.ErrorDictionary[ResponseMessageCodes.InvalidGroupType],
+                        StatusCode = 409,
+                        Success = false,
+                    },
+
+                    Response = null,
+                    StatusCode = 409
+                };
             }
 
             var ownerChatsCount =
@@ -41,6 +54,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Communities
 
             if (ownerChatsCount >= 100)
             {
+                // TODO: same like line 33, 84
                 throw new BusinessException(ResponseMessageCodes.MaximumOwnerChatsExceeded100);
             }
 
@@ -67,7 +81,12 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Communities
             var chatDto = channel.ToChatDto();
             await _hubContext.Clients.Group(request.UserId.ToString()).UpdateUserChats(chatDto);
 
-            return CreateCommunityResponse.FromSuccess(channel);
+            return new GenericResponse<CreateCommunityResponse, ErrorResponse>()
+            {
+                Error = null,
+                Response = CreateCommunityResponse.FromSuccess(channel),
+                StatusCode = 200
+            };
         }
     }
 }

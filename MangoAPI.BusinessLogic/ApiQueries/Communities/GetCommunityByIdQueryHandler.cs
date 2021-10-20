@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using MangoAPI.Application.Services;
 using MangoAPI.BusinessLogic.BusinessExceptions;
 using MangoAPI.BusinessLogic.Models;
+using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.DataAccess.Database;
 using MangoAPI.DataAccess.Database.Extensions;
 using MangoAPI.Domain.Constants;
@@ -13,7 +14,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace MangoAPI.BusinessLogic.ApiQueries.Communities
 {
-    public class GetCommunityByIdQueryHandler : IRequestHandler<GetCommunityByIdQuery, GetCommunityByIdResponse>
+    public class GetCommunityByIdQueryHandler : IRequestHandler<GetCommunityByIdQuery, 
+        GenericResponse<GetCommunityByIdResponse, ErrorResponse>>
     {
         private readonly MangoPostgresDbContext _postgresDbContext;
 
@@ -22,7 +24,7 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Communities
             _postgresDbContext = postgresDbContext;
         }
 
-        public async Task<GetCommunityByIdResponse> Handle(GetCommunityByIdQuery request, CancellationToken cancellationToken)
+        public async Task<GenericResponse<GetCommunityByIdResponse, ErrorResponse>> Handle(GetCommunityByIdQuery request, CancellationToken cancellationToken)
         {
             var chatEntity =
                 await _postgresDbContext.Chats.FindChatByIdIncludeMessagesAsync(request.ChatId,
@@ -30,7 +32,18 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Communities
 
             if (chatEntity is null)
             {
-                throw new BusinessException(ResponseMessageCodes.ChatNotFound);
+                return new GenericResponse<GetCommunityByIdResponse, ErrorResponse>
+                {
+                    Error = new ErrorResponse()
+                    {
+                        ErrorMessage = ResponseMessageCodes.ChatNotFound,
+                        ErrorDetails = ResponseMessageCodes.ErrorDictionary[ResponseMessageCodes.ChatNotFound],
+                        Success = false,
+                        StatusCode = 409
+                    },
+                    Response = null,
+                    StatusCode = 409
+                };
             }
 
             var userChat =
@@ -40,10 +53,32 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Communities
             switch (userChat)
             {
                 case null when chatEntity.CommunityType == (int) CommunityType.DirectChat:
-                    throw new BusinessException(ResponseMessageCodes.ChatNotFound);
+                    return new GenericResponse<GetCommunityByIdResponse, ErrorResponse>
+                    {
+                        Error = new ErrorResponse()
+                        {
+                            ErrorMessage = ResponseMessageCodes.ChatNotFound,
+                            ErrorDetails = ResponseMessageCodes.ErrorDictionary[ResponseMessageCodes.ChatNotFound],
+                            Success = false,
+                            StatusCode = 409
+                        },
+                        Response = null,
+                        StatusCode = 409
+                    };
 
                 case null when chatEntity.CommunityType == (int) CommunityType.PrivateChannel:
-                    throw new BusinessException(ResponseMessageCodes.ChatNotFound);
+                    return new GenericResponse<GetCommunityByIdResponse, ErrorResponse>
+                    {
+                        Error = new ErrorResponse()
+                        {
+                            ErrorMessage = ResponseMessageCodes.ChatNotFound,
+                            ErrorDetails = ResponseMessageCodes.ErrorDictionary[ResponseMessageCodes.ChatNotFound],
+                            Success = false,
+                            StatusCode = 409
+                        },
+                        Response = null,
+                        StatusCode = 409
+                    };
             }
 
             if (chatEntity.CommunityType == (int) CommunityType.DirectChat)
@@ -84,7 +119,12 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Communities
                     : null,
             };
 
-            return GetCommunityByIdResponse.FromSuccess(chat);
+            return new GenericResponse<GetCommunityByIdResponse, ErrorResponse>
+            {
+                Error = null,
+                Response = GetCommunityByIdResponse.FromSuccess(chat),
+                StatusCode = 200
+            };
         }
     }
 }
