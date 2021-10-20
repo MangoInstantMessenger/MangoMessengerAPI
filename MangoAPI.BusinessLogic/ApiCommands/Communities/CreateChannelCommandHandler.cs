@@ -16,7 +16,8 @@ using System.Threading.Tasks;
 
 namespace MangoAPI.BusinessLogic.ApiCommands.Communities
 {
-    public class CreateChannelCommandHandler : IRequestHandler<CreateChannelCommand, GenericResponse<CreateCommunityResponse, ErrorResponse>>
+    public class CreateChannelCommandHandler 
+        : IRequestHandler<CreateChannelCommand, GenericResponse<CreateCommunityResponse, ErrorResponse>>
     {
         private readonly MangoPostgresDbContext _postgresDbContext;
         private readonly IHubContext<ChatHub, IHubClient> _hubContext;

@@ -10,8 +10,8 @@ using System.Threading.Tasks;
 
 namespace MangoAPI.BusinessLogic.ApiCommands.Communities
 {
-    public class UpdateChannelPictureCommandHandler : IRequestHandler<UpdateChanelPictureCommand, 
-        GenericResponse<ResponseBase, ErrorResponse>>
+    public class UpdateChannelPictureCommandHandler 
+        : IRequestHandler<UpdateChanelPictureCommand, GenericResponse<ResponseBase, ErrorResponse>>
     {
         private readonly MangoPostgresDbContext _postgresDbContext;
 
