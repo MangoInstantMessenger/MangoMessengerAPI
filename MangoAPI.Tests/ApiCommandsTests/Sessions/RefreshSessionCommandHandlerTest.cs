@@ -31,8 +31,8 @@ namespace MangoAPI.Tests.ApiCommandsTests.Sessions
 
             var result = await handler.Handle(command, CancellationToken.None);
 
-            result.Success.Should().BeTrue();
-            result.AccessToken.Should().Be("Token");
+            result.Response.Success.Should().BeTrue();
+            result.Response.AccessToken.Should().Be("Token");
         }
 
         [Test]
