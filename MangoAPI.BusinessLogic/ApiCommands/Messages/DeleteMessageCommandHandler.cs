@@ -1,7 +1,7 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
-using MangoAPI.BusinessLogic.BusinessExceptions;
 using MangoAPI.BusinessLogic.HubConfig;
+using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.DataAccess.Database;
 using MangoAPI.DataAccess.Database.Extensions;
 using MangoAPI.Domain.Constants;
@@ -10,7 +10,8 @@ using Microsoft.AspNetCore.SignalR;
 
 namespace MangoAPI.BusinessLogic.ApiCommands.Messages
 {
-    public class DeleteMessageCommandHandler : IRequestHandler<DeleteMessageCommand, DeleteMessageResponse>
+    public class DeleteMessageCommandHandler 
+        : IRequestHandler<DeleteMessageCommand, GenericResponse<DeleteMessageResponse,ErrorResponse>>
     {
         private readonly MangoPostgresDbContext _postgresDbContext;
         private readonly IHubContext<ChatHub, IHubClient> _hubContext;
@@ -21,7 +22,8 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Messages
             _hubContext = hubContext;
         }
 
-        public async Task<DeleteMessageResponse> Handle(DeleteMessageCommand request, CancellationToken cancellationToken)
+        public async Task<GenericResponse<DeleteMessageResponse,ErrorResponse>> Handle(DeleteMessageCommand request, 
+            CancellationToken cancellationToken)
         {
 
             var message = await _postgresDbContext.Messages
@@ -29,7 +31,18 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Messages
 
             if (message == null)
             {
-                throw new BusinessException(ResponseMessageCodes.MessageNotFound);
+                return new GenericResponse<DeleteMessageResponse, ErrorResponse>
+                {
+                    Error = new ErrorResponse
+                    {
+                        ErrorMessage = ResponseMessageCodes.MessageNotFound,
+                        ErrorDetails = ResponseMessageCodes.ErrorDictionary[ResponseMessageCodes.MessageNotFound],
+                        Success = false,
+                        StatusCode = 409
+                    },
+                    Response = null,
+                    StatusCode = 409
+                };
             }
 
             _postgresDbContext.Messages.Remove(message);
@@ -37,7 +50,12 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Messages
 
             await _hubContext.Clients.Group(message.ChatId.ToString()).NotifyOnMessageDelete(request.MessageId);
 
-            return DeleteMessageResponse.FromSuccess(message);
+            return new GenericResponse<DeleteMessageResponse, ErrorResponse>
+            {
+                Error = null,
+                Response = DeleteMessageResponse.FromSuccess(message),
+                StatusCode = 200
+            };
         }
     }
 }

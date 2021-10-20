@@ -1,5 +1,4 @@
-﻿using MangoAPI.BusinessLogic.BusinessExceptions;
-using MangoAPI.BusinessLogic.HubConfig;
+﻿using MangoAPI.BusinessLogic.HubConfig;
 using MangoAPI.BusinessLogic.Models;
 using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.DataAccess.Database;
@@ -55,8 +54,18 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Communities
 
             if (ownerChatsCount >= 100)
             {
-                // TODO: same like line 33, 84
-                throw new BusinessException(ResponseMessageCodes.MaximumOwnerChatsExceeded100);
+                return new GenericResponse<CreateCommunityResponse, ErrorResponse>
+                {
+                    Error = new ErrorResponse
+                    {
+                        ErrorMessage = ResponseMessageCodes.MaximumOwnerChatsExceeded100,
+                        ErrorDetails = ResponseMessageCodes.ErrorDictionary[ResponseMessageCodes.MaximumOwnerChatsExceeded100],
+                        Success = false,
+                        StatusCode = 409
+                    },
+                    Response = null,
+                    StatusCode = 409
+                };
             }
 
             var channel = new ChatEntity

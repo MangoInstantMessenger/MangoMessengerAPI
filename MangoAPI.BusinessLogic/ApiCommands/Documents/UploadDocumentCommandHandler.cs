@@ -11,7 +11,8 @@ using Microsoft.AspNetCore.Hosting;
 
 namespace MangoAPI.BusinessLogic.ApiCommands.Documents
 {
-    public class UploadDocumentCommandHandler : IRequestHandler<UploadDocumentCommand, GenericResponse<UploadDocumentResponse,ErrorResponse>>
+    public class UploadDocumentCommandHandler 
+        : IRequestHandler<UploadDocumentCommand, GenericResponse<UploadDocumentResponse,ErrorResponse>>
     {
         private readonly MangoPostgresDbContext _postgresDbContext;
         private readonly IHostingEnvironment _environment;

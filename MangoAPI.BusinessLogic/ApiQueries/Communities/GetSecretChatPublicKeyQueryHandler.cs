@@ -1,6 +1,5 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
-using MangoAPI.BusinessLogic.BusinessExceptions;
 using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.DataAccess.Database;
 using MangoAPI.DataAccess.Database.Extensions;
@@ -34,7 +33,7 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Communities
             {
                 return new GenericResponse<GetSecretChatPublicKeyResponse, ErrorResponse>
                 {
-                    Error = new ErrorResponse()
+                    Error = new ErrorResponse
                     {
                         ErrorMessage = ResponseMessageCodes.ChatNotFound,
                         ErrorDetails = ResponseMessageCodes.ErrorDictionary[ResponseMessageCodes.ChatNotFound],
@@ -48,7 +47,6 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Communities
 
             var user = await _postgresDbContext.Users.FindUserByIdAsync(userChat.UserId, cancellationToken);
 
-            //return GetSecretChatPublicKeyResponse.FromSuccess(user.PublicKey);
             return new GenericResponse<GetSecretChatPublicKeyResponse, ErrorResponse>
             {
                 Error = null,

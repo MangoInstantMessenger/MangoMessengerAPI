@@ -25,8 +25,8 @@ namespace MangoAPI.Tests.ApiQueriesTests.Messages
 
             var response = await handler.Handle(query, CancellationToken.None);
 
-            response.Success.Should().BeTrue();
-            response.Messages.Should().NotBeEmpty();
+            response.Response.Success.Should().BeTrue();
+            response.Response.Messages.Should().NotBeEmpty();
         }
 
         [Test]
