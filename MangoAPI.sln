@@ -19,6 +19,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 	ProjectSection(SolutionItems) = preProject
 		.dockerignore = .dockerignore
 		.gitignore = .gitignore
+		.github\workflows\azure.yml = .github\workflows\azure.yml
 		SqlScripts\Check_Db_Size.sql = SqlScripts\Check_Db_Size.sql
 		DeleteMyUser.sql = DeleteMyUser.sql
 		Dockerfile = Dockerfile
