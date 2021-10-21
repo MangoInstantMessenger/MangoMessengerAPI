@@ -10,23 +10,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v1
-    - name: Login to Azure
-      env: 
-        HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
-      run: heroku container:login 
-    - name: Build and push
-      env:
-        HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
-      run: heroku container:push -a ${{ secrets.HEROKU_APP_NAME }} web
-    - name: Update database
-      run: |
-        dotnet tool install --global dotnet-ef
-        dotnet tool restore
-        dotnet ef database update --project MangoAPI.DataAccess
-      env:
-        DATABASE_URL: ${{ secrets.DATABASE_URL }}
-        SEED_PASSWORD: ${{ secrets.SEED_PASSWORD }}
-    - name: Release
-      env:
-        HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
-      run: heroku container:release -a ${{ secrets.HEROKU_APP_NAME }} web 
+    - name: Release application Linux x64
+      run: | 
+        dotnet publish "MangoAPI.Presentation.csproj" -r linux-x64 -o /mango-linux-build/src
+        ssh -i ${{ secrets.AZURE_SSH_KEY }} razumovsky_r@mangoback.sveshnikov.work "sudo systemctl stop mangoback.service"
+        scp -r -i ${{ secrets.AZURE_SSH_KEY }} /mango-linux-build/src/* razumovsky_r@mangoback.sveshnikov.work:/home/razumovsky_r/mango-backend
+        ssh -i ${{ secrets.AZURE_SSH_KEY }} razumovsky_r@mangoback.sveshnikov.work "sudo systemctl start mangoback.service"
