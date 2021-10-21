@@ -12,8 +12,7 @@ jobs:
     - uses: actions/checkout@v1
     - name: Release application Linux x64
       run: | 
-        cd /
-        cd etc
+        cd /etc
         ls -l
         dotnet publish "MangoAPI.Presentation/MangoAPI.Presentation.csproj" -r linux-x64 -o /mango-linux-build/src
         ssh -i ${{ secrets.AZURE_SSH_KEY }} razumovsky_r@mangoback.sveshnikov.work "sudo systemctl stop mangoback.service"
