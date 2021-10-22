@@ -40,10 +40,10 @@ jobs:
         SSH_HOST: ${{ secrets.SSH_HOST }}
           
     - name: Stop service
-      run: ssh -i ~/.ssh/id_rsa ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "sudo systemctl stop mangoback"
+      run: ssh staging "sudo systemctl stop mangoback"
       
     - name: Copy Release to Remote
       run: scp -r -i ~/.ssh/id_rsa ~/mango-linux-build/src/* ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/home/razumovsky_r/mango-backend
       
     - name: Start service
-      run: ssh -i ~/.ssh/id_rsa ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "sudo systemctl start mangoback"
+      run: ssh staging "sudo systemctl start mangoback"
