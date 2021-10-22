@@ -23,7 +23,7 @@ jobs:
         dotnet publish "MangoAPI.Presentation/MangoAPI.Presentation.csproj" -r linux-x64 -o /mango-linux-build/src
 
     - name: Configure SSH
-        run: |
+      run: |
           mkdir -p ~/.ssh/
           echo "$SSH_KEY" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
@@ -34,16 +34,16 @@ jobs:
             IdentityFile ~/.ssh/id_rsa
             StrictHostKeyChecking no
           END
-        env:
-          SSH_USER: ${{ secrets.SSH_USER }}
-          SSH_KEY: ${{ secrets.AZURE_SSH_KEY }}
-          SSH_HOST: ${{ secrets.SSH_HOST }}
+      env: 
+        SSH_USER: ${{ secrets.SSH_USER }}
+        SSH_KEY: ${{ secrets.AZURE_SSH_KEY }}
+        SSH_HOST: ${{ secrets.SSH_HOST }}
           
     - name: Stop service
       run: ssh -i ~/.ssh/id_rsa razumovsky_r@mangoback.sveshnikov.work "sudo systemctl stop mangoback"
       
-    -name: Copy Release to Remote
+    - name: Copy Release to Remote
       run: scp -r -i ~/.ssh/id_rsa /mango-linux-build/src/* razumovsky_r@mangoback.sveshnikov.work:/home/razumovsky_r/mango-backend
       
-    -name: Start service
+    - name: Start service
       run: ssh -i ~/.ssh/id_rsa razumovsky_r@mangoback.sveshnikov.work "sudo systemctl start mangoback"
