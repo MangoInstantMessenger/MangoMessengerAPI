@@ -4,7 +4,7 @@ using MediatR;
 
 namespace MangoAPI.BusinessLogic.ApiCommands.UserChats
 {
-    public record JoinChatCommand : IRequest<ResponseBase>
+    public record JoinChatCommand : IRequest<GenericResponse<ResponseBase,ErrorResponse>>
     {
         public Guid ChatId { get; init; }
         public Guid UserId { get; init; }
