@@ -1,6 +1,5 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
-using MangoAPI.BusinessLogic.BusinessExceptions;
 using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.DataAccess.Database;
 using MangoAPI.DataAccess.Database.Extensions;
@@ -11,7 +10,7 @@ using MediatR;
 
 namespace MangoAPI.BusinessLogic.ApiCommands.UserChats
 {
-    public class JoinChatCommandHandler : IRequestHandler<JoinChatCommand, ResponseBase>
+    public class JoinChatCommandHandler : IRequestHandler<JoinChatCommand, GenericResponse<ResponseBase,ErrorResponse>>
     {
         private readonly MangoPostgresDbContext _postgresDbContext;
 
@@ -20,21 +19,43 @@ namespace MangoAPI.BusinessLogic.ApiCommands.UserChats
             _postgresDbContext = postgresDbContext;
         }
 
-        public async Task<ResponseBase> Handle(JoinChatCommand request, CancellationToken cancellationToken)
+        public async Task<GenericResponse<ResponseBase,ErrorResponse>> Handle(JoinChatCommand request, CancellationToken cancellationToken)
         {
             var alreadyJoined = await
                 _postgresDbContext.UserChats.IsAlreadyJoinedAsync(request.UserId, request.ChatId, cancellationToken);
 
             if (alreadyJoined)
             {
-                throw new BusinessException(ResponseMessageCodes.UserAlreadyJoinedGroup);
+                return new GenericResponse<ResponseBase, ErrorResponse>
+                {
+                    Error = new ErrorResponse
+                    {
+                        ErrorMessage = ResponseMessageCodes.UserAlreadyJoinedGroup,
+                        ErrorDetails = ResponseMessageCodes.ErrorDictionary[ResponseMessageCodes.UserAlreadyJoinedGroup],
+                        Success = false,
+                        StatusCode = 409
+                    },
+                    Response = null,
+                    StatusCode = 409
+                };
             }
 
             var chat = await _postgresDbContext.Chats.FindChannelByIdAsync(request.ChatId, cancellationToken);
 
             if (chat == null)
             {
-                throw new BusinessException(ResponseMessageCodes.ChatNotFound);
+                return new GenericResponse<ResponseBase, ErrorResponse>
+                {
+                    Error = new ErrorResponse
+                    {
+                        ErrorMessage = ResponseMessageCodes.ChatNotFound,
+                        ErrorDetails = ResponseMessageCodes.ErrorDictionary[ResponseMessageCodes.ChatNotFound],
+                        Success = false,
+                        StatusCode = 409
+                    },
+                    Response = null,
+                    StatusCode = 409
+                };
             }
 
             _postgresDbContext.UserChats.Add(
@@ -50,7 +71,12 @@ namespace MangoAPI.BusinessLogic.ApiCommands.UserChats
             _postgresDbContext.Update(chat);
             await _postgresDbContext.SaveChangesAsync(cancellationToken);
 
-            return ResponseBase.SuccessResponse;
+            return new GenericResponse<ResponseBase, ErrorResponse>
+            {
+                Error = null,
+                Response = ResponseBase.SuccessResponse,
+                StatusCode = 200
+            };
         }
     }
 }
