@@ -1,11 +1,9 @@
-﻿using System;
-using AutoMapper;
+﻿using AutoMapper;
 using MangoAPI.BusinessLogic.ApiCommands.Communities;
 using MangoAPI.BusinessLogic.ApiCommands.Messages;
 using MangoAPI.BusinessLogic.ApiCommands.PasswordRestoreRequests;
 using MangoAPI.BusinessLogic.ApiCommands.Sessions;
 using MangoAPI.BusinessLogic.ApiCommands.Users;
-using MangoAPI.BusinessLogic.Enums;
 using MangoAPI.Domain.Enums;
 
 namespace MangoAPI.Presentation.Profiles
@@ -24,7 +22,10 @@ namespace MangoAPI.Presentation.Profiles
             CreateMap<SendMessageRequest, SendMessageCommand>();
             CreateMap<EditMessageRequest, EditMessageCommand>();
             CreateMap<PasswordRestoreRequest, PasswordRestoreCommand>();
-            CreateMap<RegisterRequest, RegisterCommand>();
+
+            CreateMap<RegisterRequest, RegisterCommand>().ForMember(x => x.PhoneNumber,
+                ex => ex.MapFrom(z => z.PhoneNumber.ToString()));
+
             CreateMap<VerifyEmailRequest, VerifyEmailCommand>();
             CreateMap<ChangePasswordRequest, ChangePasswordCommand>();
             CreateMap<UpdateUserSocialInformationRequest, UpdateUserSocialInformationCommand>();

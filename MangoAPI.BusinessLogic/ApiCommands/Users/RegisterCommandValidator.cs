@@ -25,8 +25,9 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
 
             RuleFor(x => x.PhoneNumber)
                 .Cascade(CascadeMode.Stop)
-                .NotEmpty()
-                .Length(1, 14);
+                .NotEmpty();
+
+            RuleFor(x => x.PhoneNumber).Must(x => x.Length <= 14);
 
             RuleFor(x => x.TermsAccepted).Equal(true);
         }
