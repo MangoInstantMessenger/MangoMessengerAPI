@@ -9,7 +9,8 @@ using MediatR;
 
 namespace MangoAPI.BusinessLogic.ApiCommands.UserChats
 {
-    public class LeaveGroupCommandHandler : IRequestHandler<LeaveGroupCommand, GenericResponse<LeaveGroupResponse,ErrorResponse>>
+    public class LeaveGroupCommandHandler 
+        : IRequestHandler<LeaveGroupCommand, GenericResponse<LeaveGroupResponse,ErrorResponse>>
     {
         private readonly MangoPostgresDbContext _postgresDbContext;
 
@@ -18,7 +19,8 @@ namespace MangoAPI.BusinessLogic.ApiCommands.UserChats
             _postgresDbContext = postgresDbContext;
         }
 
-        public async Task<GenericResponse<LeaveGroupResponse,ErrorResponse>> Handle(LeaveGroupCommand request, CancellationToken cancellationToken)
+        public async Task<GenericResponse<LeaveGroupResponse,ErrorResponse>> Handle(LeaveGroupCommand request, 
+            CancellationToken cancellationToken)
         {
             var user = await _postgresDbContext.Users.FindUserByIdAsync(request.UserId, cancellationToken);
 

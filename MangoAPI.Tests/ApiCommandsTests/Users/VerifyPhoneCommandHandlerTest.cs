@@ -25,7 +25,7 @@ namespace MangoAPI.Tests.ApiCommandsTests.Users
 
             var result = await handler.Handle(command, CancellationToken.None);
 
-            result.Success.Should().BeTrue();
+            result.Response.Success.Should().BeTrue();
         }
 
         [Test]

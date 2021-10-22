@@ -8,7 +8,8 @@ using MediatR;
 
 namespace MangoAPI.BusinessLogic.ApiCommands.UserChats
 {
-    public class ArchiveChatCommandHandler : IRequestHandler<ArchiveChatCommand, GenericResponse<ResponseBase,ErrorResponse>>
+    public class ArchiveChatCommandHandler 
+        : IRequestHandler<ArchiveChatCommand, GenericResponse<ResponseBase,ErrorResponse>>
     {
         private readonly MangoPostgresDbContext _postgresDbContext;
 
@@ -17,7 +18,8 @@ namespace MangoAPI.BusinessLogic.ApiCommands.UserChats
             _postgresDbContext = postgresDbContext;
         }
 
-        public async Task<GenericResponse<ResponseBase,ErrorResponse>> Handle(ArchiveChatCommand request, CancellationToken cancellationToken)
+        public async Task<GenericResponse<ResponseBase,ErrorResponse>> Handle(ArchiveChatCommand request, 
+            CancellationToken cancellationToken)
         {
             var chat = await _postgresDbContext.UserChats.FindUserChatByIdAsync(request.UserId, request.ChatId,
                 cancellationToken);
