@@ -1,6 +1,5 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
-using MangoAPI.BusinessLogic.BusinessExceptions;
 using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.DataAccess.Database;
 using MangoAPI.DataAccess.Database.Extensions;
@@ -9,7 +8,8 @@ using MediatR;
 
 namespace MangoAPI.BusinessLogic.ApiCommands.Users
 {
-    public class UpdatePublicKeyCommandHandler : IRequestHandler<UpdatePublicKeyCommand, ResponseBase>
+    public class UpdatePublicKeyCommandHandler 
+        : IRequestHandler<UpdatePublicKeyCommand, GenericResponse<ResponseBase,ErrorResponse>>
     {
         private readonly MangoPostgresDbContext _postgresDbContext;
 
@@ -18,13 +18,25 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
             _postgresDbContext = postgresDbContext;
         }
 
-        public async Task<ResponseBase> Handle(UpdatePublicKeyCommand request, CancellationToken cancellationToken)
+        public async Task<GenericResponse<ResponseBase,ErrorResponse>> Handle(UpdatePublicKeyCommand request, 
+            CancellationToken cancellationToken)
         {
             var user = await _postgresDbContext.Users.FindUserByIdAsync(request.UserId, cancellationToken);
 
             if (user is null)
             {
-                throw new BusinessException(ResponseMessageCodes.UserNotFound);
+                return new GenericResponse<ResponseBase, ErrorResponse>
+                {
+                    Error = new ErrorResponse
+                    {
+                        ErrorMessage = ResponseMessageCodes.UserNotFound,
+                        ErrorDetails = ResponseMessageCodes.ErrorDictionary[ResponseMessageCodes.UserNotFound],
+                        Success = false,
+                        StatusCode = 409
+                    },
+                    Response = null,
+                    StatusCode = 409
+                };
             }
 
             user.PublicKey = request.PublicKey;
@@ -32,7 +44,12 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
 
             await _postgresDbContext.SaveChangesAsync(cancellationToken);
 
-            return ResponseBase.SuccessResponse;
+            return new GenericResponse<ResponseBase, ErrorResponse>
+            {
+                Error = null,
+                Response = ResponseBase.SuccessResponse,
+                StatusCode = 200
+            };
         }
     }
 }

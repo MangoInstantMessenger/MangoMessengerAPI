@@ -1,5 +1,4 @@
-﻿using MangoAPI.BusinessLogic.BusinessExceptions;
-using MangoAPI.BusinessLogic.Responses;
+﻿using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.DataAccess.Database;
 using MangoAPI.Domain.Constants;
 using MediatR;
@@ -11,7 +10,8 @@ using System.Threading.Tasks;
 
 namespace MangoAPI.BusinessLogic.ApiCommands.Users
 {
-    public class VerifyPhoneCommandHandler : IRequestHandler<VerifyPhoneCommand, ResponseBase>
+    public class VerifyPhoneCommandHandler 
+        : IRequestHandler<VerifyPhoneCommand, GenericResponse<ResponseBase,ErrorResponse>>
     {
         private readonly MangoPostgresDbContext _postgresDbContext;
 
@@ -20,24 +20,58 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
             _postgresDbContext = postgresDbContext;
         }
 
-        public async Task<ResponseBase> Handle(VerifyPhoneCommand request, CancellationToken cancellationToken)
+        public async Task<GenericResponse<ResponseBase,ErrorResponse>> Handle(VerifyPhoneCommand request, 
+            CancellationToken cancellationToken)
         {
             var user = await _postgresDbContext.Users
                 .FirstOrDefaultAsync(x => x.Id == request.UserId, cancellationToken);
 
             if (user == null)
             {
-                throw new BusinessException(ResponseMessageCodes.UserNotFound);
+                return new GenericResponse<ResponseBase, ErrorResponse>
+                {
+                    Error = new ErrorResponse
+                    {
+                        ErrorMessage = ResponseMessageCodes.UserNotFound,
+                        ErrorDetails = ResponseMessageCodes.ErrorDictionary[ResponseMessageCodes.UserNotFound],
+                        Success = false,
+                        StatusCode = 409
+                    },
+                    Response = null,
+                    StatusCode = 409
+                };
             }
 
             if (user.PhoneNumberConfirmed)
             {
-                throw new BusinessException(ResponseMessageCodes.PhoneAlreadyVerified);
+                return new GenericResponse<ResponseBase, ErrorResponse>
+                {
+                    Error = new ErrorResponse
+                    {
+                        ErrorMessage = ResponseMessageCodes.PhoneAlreadyVerified,
+                        ErrorDetails = ResponseMessageCodes.ErrorDictionary[ResponseMessageCodes.PhoneAlreadyVerified],
+                        Success = false,
+                        StatusCode = 409
+                    },
+                    Response = null,
+                    StatusCode = 409
+                };
             }
 
             if (user.PhoneCode != request.ConfirmationCode)
             {
-                throw new BusinessException(ResponseMessageCodes.InvalidPhoneCode);
+                return new GenericResponse<ResponseBase, ErrorResponse>
+                {
+                    Error = new ErrorResponse
+                    {
+                        ErrorMessage = ResponseMessageCodes.InvalidPhoneCode,
+                        ErrorDetails = ResponseMessageCodes.ErrorDictionary[ResponseMessageCodes.InvalidPhoneCode],
+                        Success = false,
+                        StatusCode = 409
+                    },
+                    Response = null,
+                    StatusCode = 409
+                };
             }
 
             var role = new IdentityUserRole<Guid>
@@ -58,7 +92,12 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
 
             await _postgresDbContext.SaveChangesAsync(cancellationToken);
 
-            return ResponseBase.SuccessResponse;
+            return new GenericResponse<ResponseBase, ErrorResponse>
+            {
+                Error = null,
+                Response = ResponseBase.SuccessResponse,
+                StatusCode = 200
+            };
         }
     }
 }

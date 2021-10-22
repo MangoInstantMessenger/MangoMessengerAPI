@@ -19,7 +19,8 @@ namespace MangoAPI.BusinessLogic.ApiCommands.UserChats
             _postgresDbContext = postgresDbContext;
         }
 
-        public async Task<GenericResponse<ResponseBase,ErrorResponse>> Handle(JoinChatCommand request, CancellationToken cancellationToken)
+        public async Task<GenericResponse<ResponseBase,ErrorResponse>> Handle(JoinChatCommand request, 
+            CancellationToken cancellationToken)
         {
             var alreadyJoined = await
                 _postgresDbContext.UserChats.IsAlreadyJoinedAsync(request.UserId, request.ChatId, cancellationToken);

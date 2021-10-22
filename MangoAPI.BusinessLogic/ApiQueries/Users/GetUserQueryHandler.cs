@@ -1,5 +1,4 @@
 ﻿using System.Linq;
-using MangoAPI.BusinessLogic.BusinessExceptions;
 using MangoAPI.DataAccess.Database;
 using MangoAPI.Domain.Constants;
 using MediatR;
@@ -8,10 +7,11 @@ using System.Threading;
 using System.Threading.Tasks;
 using MangoAPI.Application.Services;
 using MangoAPI.BusinessLogic.Models;
+using MangoAPI.BusinessLogic.Responses;
 
 namespace MangoAPI.BusinessLogic.ApiQueries.Users
 {
-    public class GetUserQueryHandler : IRequestHandler<GetUserQuery, GetUserResponse>
+    public class GetUserQueryHandler : IRequestHandler<GetUserQuery, GenericResponse<GetUserResponse,ErrorResponse>>
     {
         private readonly MangoPostgresDbContext _postgresDbContext;
 
@@ -20,7 +20,8 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Users
             _postgresDbContext = postgresDbContext;
         }
 
-        public async Task<GetUserResponse> Handle(GetUserQuery request, CancellationToken cancellationToken)
+        public async Task<GenericResponse<GetUserResponse,ErrorResponse>> Handle(GetUserQuery request, 
+            CancellationToken cancellationToken)
         {
             var user = await _postgresDbContext.Users.AsNoTracking()
                 .Include(x => x.UserInformation)
@@ -47,10 +48,26 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Users
 
             if (user is null)
             {
-                throw new BusinessException(ResponseMessageCodes.UserNotFound);
+                return new GenericResponse<GetUserResponse, ErrorResponse>
+                {
+                    Error = new ErrorResponse
+                    {
+                        ErrorMessage = ResponseMessageCodes.UserNotFound,
+                        ErrorDetails = ResponseMessageCodes.ErrorDictionary[ResponseMessageCodes.UserNotFound],
+                        Success = false,
+                        StatusCode = 409
+                    },
+                    Response = null,
+                    StatusCode = 409
+                };
             }
 
-            return GetUserResponse.FromSuccess(user);
+            return new GenericResponse<GetUserResponse, ErrorResponse>
+            {
+                Error = null,
+                Response = GetUserResponse.FromSuccess(user),
+                StatusCode = 200
+            };
         }
     }
 }

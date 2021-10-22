@@ -1,5 +1,4 @@
 ﻿using MangoAPI.Application.Interfaces;
-using MangoAPI.BusinessLogic.BusinessExceptions;
 using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.DataAccess.Database;
 using MangoAPI.Domain.Constants;
@@ -14,7 +13,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace MangoAPI.BusinessLogic.ApiCommands.Users
 {
-    public class RegisterCommandHandler : IRequestHandler<RegisterCommand, TokensResponse>
+    public class RegisterCommandHandler : IRequestHandler<RegisterCommand, GenericResponse<TokensResponse,ErrorResponse>>
     {
         private readonly IEmailSenderService _emailSenderService;
         private readonly MangoPostgresDbContext _postgresDbContext;
@@ -32,11 +31,22 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
             _random = new Random();
         }
 
-        public async Task<TokensResponse> Handle(RegisterCommand request, CancellationToken cancellationToken)
+        public async Task<GenericResponse<TokensResponse,ErrorResponse>> Handle(RegisterCommand request, CancellationToken cancellationToken)
         {
             if (request.Email == EnvironmentConstants.EmailSenderAddress)
             {
-                throw new BusinessException(ResponseMessageCodes.InvalidEmail);
+                return new GenericResponse<TokensResponse, ErrorResponse>
+                {
+                    Error = new ErrorResponse
+                    {
+                        ErrorMessage = ResponseMessageCodes.InvalidEmail,
+                        ErrorDetails = ResponseMessageCodes.ErrorDictionary[ResponseMessageCodes.InvalidEmail],
+                        Success = false,
+                        StatusCode = 409
+                    },
+                    Response = null,
+                    StatusCode = 409
+                };
             }
 
             var exists = await _postgresDbContext.Users
@@ -46,7 +56,18 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
 
             if (exists != null)
             {
-                throw new BusinessException(ResponseMessageCodes.UserAlreadyExists);
+                return new GenericResponse<TokensResponse, ErrorResponse>
+                {
+                    Error = new ErrorResponse
+                    {
+                        ErrorMessage = ResponseMessageCodes.UserAlreadyExists,
+                        ErrorDetails = ResponseMessageCodes.ErrorDictionary[ResponseMessageCodes.UserAlreadyExists],
+                        Success = false,
+                        StatusCode = 409
+                    },
+                    Response = null,
+                    StatusCode = 409
+                };
             }
 
             var newUser = new UserEntity
@@ -64,7 +85,18 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
 
             if (!result.Succeeded)
             {
-                throw new BusinessException(ResponseMessageCodes.WeakPassword);
+                return new GenericResponse<TokensResponse, ErrorResponse>
+                {
+                    Error = new ErrorResponse
+                    {
+                        ErrorMessage = ResponseMessageCodes.WeakPassword,
+                        ErrorDetails = ResponseMessageCodes.ErrorDictionary[ResponseMessageCodes.WeakPassword],
+                        Success = false,
+                        StatusCode = 409
+                    },
+                    Response = null,
+                    StatusCode = 409
+                };
             }
 
             var userInfo = new UserInformationEntity
@@ -79,7 +111,18 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
 
             if (refreshLifetime == null || !int.TryParse(refreshLifetime, out var refreshLifetimeParsed))
             {
-                throw new BusinessException(ResponseMessageCodes.RefreshTokenLifeTimeError);
+                return new GenericResponse<TokensResponse, ErrorResponse>
+                {
+                    Error = new ErrorResponse
+                    {
+                        ErrorMessage = ResponseMessageCodes.RefreshTokenLifeTimeError,
+                        ErrorDetails = ResponseMessageCodes.ErrorDictionary[ResponseMessageCodes.RefreshTokenLifeTimeError],
+                        Success = false,
+                        StatusCode = 409
+                    },
+                    Response = null,
+                    StatusCode = 409
+                };
             }
 
             var newSession = new SessionEntity
@@ -108,7 +151,12 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
 
             var expires = ((DateTimeOffset)newSession.ExpiresAt).ToUnixTimeSeconds();
 
-            return TokensResponse.FromSuccess(jwtToken, newSession.RefreshToken, newUser.Id, expires);
+            return new GenericResponse<TokensResponse, ErrorResponse>
+            {
+                Error = null,
+                Response = TokensResponse.FromSuccess(jwtToken, newSession.RefreshToken, newUser.Id, expires),
+                StatusCode = 200
+            };
         }
     }
 }
