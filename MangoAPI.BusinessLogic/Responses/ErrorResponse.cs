@@ -8,7 +8,7 @@ namespace MangoAPI.BusinessLogic.Responses
         [DefaultValue("ERROR_MESSAGE")]
         public string ErrorMessage { get; init; }
         
-        [DefaultValue("Exception stack trace")]
+        [DefaultValue("Error description")]
         public string ErrorDetails { get; init; }
         
         [DefaultValue(409)]

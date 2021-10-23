@@ -7,6 +7,7 @@ namespace MangoAPI.Domain.Constants
         public static readonly Dictionary<string, string> ErrorDictionary = new()
         {
             { "INVALID_OR_EXPIRED_REFRESH_TOKEN", "Refresh token is invalid or expired" },
+            { "INVALID_CREDENTIALS", "Email or phone or password is not valid" },
             { "USER_ALREADY_EXISTS", "User already exists" },
             { "INVALID_EMAIL", "Email is invalid" },
             { "WEAK_PASSWORD", "Password is weak" },

@@ -51,7 +51,6 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Messages
                         : null,
                 }).Take(200).ToListAsync(cancellationToken);
 
-            //return GetMessagesResponse.FromSuccess(messages);
             return new GenericResponse<GetMessagesResponse, ErrorResponse>
             {
                 Error = null,

@@ -71,7 +71,6 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Sessions
 
             if (refreshLifetime == null || !int.TryParse(refreshLifetime, out var refreshLifetimeParsed))
             {
-                //throw new BusinessException(ResponseMessageCodes.RefreshTokenLifeTimeError);
                 return new GenericResponse<TokensResponse, ErrorResponse>
                 {
                     Error = new ErrorResponse
