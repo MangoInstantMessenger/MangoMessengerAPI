@@ -8,6 +8,8 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using System;
 using MangoAPI.BusinessLogic.HubConfig;
+using MangoAPI.DataAccess.Database;
+using Microsoft.EntityFrameworkCore;
 
 namespace MangoAPI.Presentation
 {
@@ -58,6 +60,8 @@ namespace MangoAPI.Presentation
                 endpoints.MapControllers();
                 endpoints.MapHub<ChatHub>("/notify");
             });
+
+            UpdateDatabase(app);
         }
 
         public void ConfigureServices(IServiceCollection services)
@@ -106,6 +110,16 @@ namespace MangoAPI.Presentation
             });
 
             services.AddMvc();
+        }
+
+        private static void UpdateDatabase(IApplicationBuilder app)
+        {
+            using var serviceScope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>()
+                .CreateScope();
+
+            using var context = serviceScope.ServiceProvider.GetService<MangoPostgresDbContext>();
+
+            context?.Database.Migrate();
         }
     }
 }
