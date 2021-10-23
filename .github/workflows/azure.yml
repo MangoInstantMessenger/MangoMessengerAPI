@@ -3,7 +3,7 @@
 on: 
   push:
     branches:
-      - master
+      - azure-deploy
 
 jobs:
   build:

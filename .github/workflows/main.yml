@@ -3,7 +3,7 @@ name: Push Container to Heroku
 on: 
   push:
     branches:
-      - develop
+      - master
 
 jobs:
   build:
