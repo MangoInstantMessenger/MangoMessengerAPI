@@ -4,7 +4,7 @@ using MediatR;
 
 namespace MangoAPI.BusinessLogic.ApiCommands.Users
 {
-    public record UpdatePublicKeyCommand : IRequest<GenericResponse<ResponseBase,ErrorResponse>>
+    public record UpdatePublicKeyCommand : IRequest<GenericResponse<ResponseBase>>
     {
         public Guid UserId { get; }
         public int PublicKey { get; }

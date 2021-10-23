@@ -5,7 +5,7 @@ using MediatR;
 
 namespace MangoAPI.BusinessLogic.ApiCommands.Communities
 {
-    public record CreateChatCommand : IRequest<GenericResponse<CreateCommunityResponse, ErrorResponse>>
+    public record CreateChatCommand : IRequest<GenericResponse<CreateCommunityResponse>>
     {
         public Guid PartnerId { get; init; }
         public Guid UserId { get; set; }

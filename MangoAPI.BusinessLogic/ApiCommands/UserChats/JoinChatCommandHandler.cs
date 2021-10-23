@@ -10,7 +10,7 @@ using MediatR;
 
 namespace MangoAPI.BusinessLogic.ApiCommands.UserChats
 {
-    public class JoinChatCommandHandler : IRequestHandler<JoinChatCommand, GenericResponse<ResponseBase,ErrorResponse>>
+    public class JoinChatCommandHandler : IRequestHandler<JoinChatCommand, GenericResponse<ResponseBase>>
     {
         private readonly MangoPostgresDbContext _postgresDbContext;
 
@@ -19,7 +19,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.UserChats
             _postgresDbContext = postgresDbContext;
         }
 
-        public async Task<GenericResponse<ResponseBase,ErrorResponse>> Handle(JoinChatCommand request, 
+        public async Task<GenericResponse<ResponseBase>> Handle(JoinChatCommand request, 
             CancellationToken cancellationToken)
         {
             var alreadyJoined = await
@@ -27,7 +27,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.UserChats
 
             if (alreadyJoined)
             {
-                return new GenericResponse<ResponseBase, ErrorResponse>
+                return new GenericResponse<ResponseBase>
                 {
                     Error = new ErrorResponse
                     {
@@ -45,7 +45,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.UserChats
 
             if (chat == null)
             {
-                return new GenericResponse<ResponseBase, ErrorResponse>
+                return new GenericResponse<ResponseBase>
                 {
                     Error = new ErrorResponse
                     {
@@ -72,7 +72,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.UserChats
             _postgresDbContext.Update(chat);
             await _postgresDbContext.SaveChangesAsync(cancellationToken);
 
-            return new GenericResponse<ResponseBase, ErrorResponse>
+            return new GenericResponse<ResponseBase>
             {
                 Error = null,
                 Response = ResponseBase.SuccessResponse,

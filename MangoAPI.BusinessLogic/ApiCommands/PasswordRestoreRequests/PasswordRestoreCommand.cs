@@ -4,7 +4,7 @@ using System;
 
 namespace MangoAPI.BusinessLogic.ApiCommands.PasswordRestoreRequests
 {
-    public record PasswordRestoreCommand : IRequest<GenericResponse<ResponseBase,ErrorResponse>>
+    public record PasswordRestoreCommand : IRequest<GenericResponse<ResponseBase>>
     {
         public Guid RequestId { get; init; }
         public string NewPassword { get; init; }

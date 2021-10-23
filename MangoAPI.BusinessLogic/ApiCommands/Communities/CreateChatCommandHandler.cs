@@ -17,7 +17,7 @@ using MangoAPI.BusinessLogic.Responses;
 namespace MangoAPI.BusinessLogic.ApiCommands.Communities
 {
     public class CreateChatCommandHandler 
-        : IRequestHandler<CreateChatCommand, GenericResponse<CreateCommunityResponse, ErrorResponse>>
+        : IRequestHandler<CreateChatCommand, GenericResponse<CreateCommunityResponse>>
     {
         private readonly MangoPostgresDbContext _postgresDbContext;
         private readonly IHubContext<ChatHub, IHubClient> _hubContext;
@@ -28,7 +28,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Communities
             _hubContext = hubContext;
         }
 
-        public async Task<GenericResponse<CreateCommunityResponse, ErrorResponse>> Handle(CreateChatCommand request,
+        public async Task<GenericResponse<CreateCommunityResponse>> Handle(CreateChatCommand request,
             CancellationToken cancellationToken)
         {
             var partner = await _postgresDbContext.Users.AsNoTracking()
@@ -36,7 +36,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Communities
 
             if (partner is null)
             {
-                return new GenericResponse<CreateCommunityResponse, ErrorResponse>
+                return new GenericResponse<CreateCommunityResponse>
                 {
                     Error = new ErrorResponse()
                     {
@@ -52,7 +52,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Communities
 
             if (partner.PublicKey == 0 && request.CommunityType == CommunityType.SecretChat)
             {
-                return new GenericResponse<CreateCommunityResponse, ErrorResponse>
+                return new GenericResponse<CreateCommunityResponse>
                 {
                     Error = new ErrorResponse()
                     {
@@ -68,7 +68,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Communities
 
             if (request.UserId == request.PartnerId)
             {
-                return new GenericResponse<CreateCommunityResponse, ErrorResponse>
+                return new GenericResponse<CreateCommunityResponse>
                 {
                     Error = new ErrorResponse()
                     {
@@ -95,7 +95,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Communities
 
             if (existingChat != null)
             {
-                return new GenericResponse<CreateCommunityResponse, ErrorResponse>
+                return new GenericResponse<CreateCommunityResponse>
                 {
                     Error = null,
                     Response = CreateCommunityResponse.FromSuccess(existingChat),
@@ -132,7 +132,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Communities
             var chatDto = chatEntity.ToChatDto();
             await _hubContext.Clients.Group(request.UserId.ToString()).UpdateUserChats(chatDto);
 
-            return new GenericResponse<CreateCommunityResponse, ErrorResponse>
+            return new GenericResponse<CreateCommunityResponse>
             {
                 Error = null,
                 Response = CreateCommunityResponse.FromSuccess(chatEntity),

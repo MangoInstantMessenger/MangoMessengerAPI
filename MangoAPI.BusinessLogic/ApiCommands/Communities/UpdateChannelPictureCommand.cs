@@ -4,7 +4,7 @@ using System;
 
 namespace MangoAPI.BusinessLogic.ApiCommands.Communities
 {
-    public record UpdateChanelPictureCommand : IRequest<GenericResponse<ResponseBase, ErrorResponse>>
+    public record UpdateChanelPictureCommand : IRequest<GenericResponse<ResponseBase>>
     {
         public Guid UserId { get; set; }
         public Guid ChatId { get; set; }

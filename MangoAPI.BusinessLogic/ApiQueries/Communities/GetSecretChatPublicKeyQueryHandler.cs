@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore;
 namespace MangoAPI.BusinessLogic.ApiQueries.Communities
 {
     public class GetSecretChatPublicKeyQueryHandler : IRequestHandler<GetSecretChatPublicKeyQuery,
-        GenericResponse<GetSecretChatPublicKeyResponse, ErrorResponse>>
+        GenericResponse<GetSecretChatPublicKeyResponse>>
     {
         private readonly MangoPostgresDbContext _postgresDbContext;
 
@@ -20,7 +20,7 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Communities
             _postgresDbContext = postgresDbContext;
         }
 
-        public async Task<GenericResponse<GetSecretChatPublicKeyResponse, ErrorResponse>> Handle(GetSecretChatPublicKeyQuery request,
+        public async Task<GenericResponse<GetSecretChatPublicKeyResponse>> Handle(GetSecretChatPublicKeyQuery request,
             CancellationToken cancellationToken)
         {
             var userChat = await _postgresDbContext.UserChats
@@ -31,7 +31,7 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Communities
 
             if (userChat == null || userChat.Chat.CommunityType != (int) CommunityType.SecretChat)
             {
-                return new GenericResponse<GetSecretChatPublicKeyResponse, ErrorResponse>
+                return new GenericResponse<GetSecretChatPublicKeyResponse>
                 {
                     Error = new ErrorResponse
                     {
@@ -47,7 +47,7 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Communities
 
             var user = await _postgresDbContext.Users.FindUserByIdAsync(userChat.UserId, cancellationToken);
 
-            return new GenericResponse<GetSecretChatPublicKeyResponse, ErrorResponse>
+            return new GenericResponse<GetSecretChatPublicKeyResponse>
             {
                 Error = null,
                 Response = GetSecretChatPublicKeyResponse.FromSuccess(user.PublicKey),

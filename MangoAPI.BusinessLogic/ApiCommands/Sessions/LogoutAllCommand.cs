@@ -4,7 +4,7 @@ using MediatR;
 
 namespace MangoAPI.BusinessLogic.ApiCommands.Sessions
 {
-    public record LogoutAllCommand : IRequest<GenericResponse<ResponseBase,ErrorResponse>>
+    public record LogoutAllCommand : IRequest<GenericResponse<ResponseBase>>
     {
         public Guid UserId { get; init; }
     }

@@ -8,7 +8,7 @@ using MediatR;
 
 namespace MangoAPI.BusinessLogic.ApiCommands.Sessions
 {
-    public class LogoutCommandHandler : IRequestHandler<LogoutCommand, GenericResponse<ResponseBase,ErrorResponse>>
+    public class LogoutCommandHandler : IRequestHandler<LogoutCommand, GenericResponse<ResponseBase>>
     {
         private readonly MangoPostgresDbContext _postgresDbContext;
 
@@ -17,7 +17,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Sessions
             _postgresDbContext = postgresDbContext;
         }
 
-        public async Task<GenericResponse<ResponseBase,ErrorResponse>> Handle(LogoutCommand request, 
+        public async Task<GenericResponse<ResponseBase>> Handle(LogoutCommand request, 
             CancellationToken cancellationToken)
         {
             var session = await _postgresDbContext.Sessions
@@ -25,7 +25,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Sessions
 
             if (session is null)
             {
-                return new GenericResponse<ResponseBase, ErrorResponse>
+                return new GenericResponse<ResponseBase>
                 {
                     Error = new ErrorResponse
                     {
@@ -43,8 +43,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Sessions
 
             if (user is null || session.UserId != user.Id)
             {
-                //throw new BusinessException(ResponseMessageCodes.UserNotFound);
-                return new GenericResponse<ResponseBase, ErrorResponse>
+                return new GenericResponse<ResponseBase>
                 {
                     Error = new ErrorResponse
                     {
@@ -61,7 +60,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Sessions
             _postgresDbContext.Sessions.Remove(session);
             await _postgresDbContext.SaveChangesAsync(cancellationToken);
 
-            return new GenericResponse<ResponseBase, ErrorResponse>
+            return new GenericResponse<ResponseBase>
             {
                 Error = null,
                 Response = ResponseBase.SuccessResponse,

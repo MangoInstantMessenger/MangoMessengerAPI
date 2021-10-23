@@ -16,7 +16,7 @@ using MangoAPI.BusinessLogic.Responses;
 namespace MangoAPI.BusinessLogic.ApiCommands.Messages
 {
     public class SendMessageCommandHandler 
-        : IRequestHandler<SendMessageCommand, GenericResponse<SendMessageResponse,ErrorResponse>>
+        : IRequestHandler<SendMessageCommand, GenericResponse<SendMessageResponse>>
     {
         private readonly MangoPostgresDbContext _postgresDbContext;
         private readonly IHubContext<ChatHub, IHubClient> _hubContext;
@@ -28,7 +28,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Messages
             _hubContext = hubContext;
         }
 
-        public async Task<GenericResponse<SendMessageResponse,ErrorResponse>> Handle(SendMessageCommand request, 
+        public async Task<GenericResponse<SendMessageResponse>> Handle(SendMessageCommand request, 
             CancellationToken cancellationToken)
         {
             var user = await _postgresDbContext.Users.AsNoTracking()
@@ -37,7 +37,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Messages
 
             if (user == null)
             {
-                return new GenericResponse<SendMessageResponse, ErrorResponse>
+                return new GenericResponse<SendMessageResponse>
                 {
                     Error = new ErrorResponse
                     {
@@ -56,7 +56,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Messages
 
             if (chat == null)
             {
-                return new GenericResponse<SendMessageResponse, ErrorResponse>
+                return new GenericResponse<SendMessageResponse>
                 {
                     Error = new ErrorResponse
                     {
@@ -74,7 +74,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Messages
 
             if (!permitted)
             {
-                return new GenericResponse<SendMessageResponse, ErrorResponse>
+                return new GenericResponse<SendMessageResponse>
                 {
                     Error = new ErrorResponse
                     {
@@ -112,7 +112,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Messages
 
             await _hubContext.Clients.Group(chat.Id.ToString()).BroadcastMessage(messageDto);
 
-            return new GenericResponse<SendMessageResponse, ErrorResponse>
+            return new GenericResponse<SendMessageResponse>
             {
                 Error = null,
                 Response = SendMessageResponse.FromSuccess(messageEntity.Id),

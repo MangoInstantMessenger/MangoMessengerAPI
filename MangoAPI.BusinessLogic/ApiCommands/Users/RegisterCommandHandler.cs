@@ -13,7 +13,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace MangoAPI.BusinessLogic.ApiCommands.Users
 {
-    public class RegisterCommandHandler : IRequestHandler<RegisterCommand, GenericResponse<TokensResponse,ErrorResponse>>
+    public class RegisterCommandHandler : IRequestHandler<RegisterCommand, GenericResponse<TokensResponse>>
     {
         private readonly IEmailSenderService _emailSenderService;
         private readonly MangoPostgresDbContext _postgresDbContext;
@@ -31,11 +31,11 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
             _random = new Random();
         }
 
-        public async Task<GenericResponse<TokensResponse,ErrorResponse>> Handle(RegisterCommand request, CancellationToken cancellationToken)
+        public async Task<GenericResponse<TokensResponse>> Handle(RegisterCommand request, CancellationToken cancellationToken)
         {
             if (request.Email == EnvironmentConstants.EmailSenderAddress)
             {
-                return new GenericResponse<TokensResponse, ErrorResponse>
+                return new GenericResponse<TokensResponse>
                 {
                     Error = new ErrorResponse
                     {
@@ -56,7 +56,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
 
             if (exists != null)
             {
-                return new GenericResponse<TokensResponse, ErrorResponse>
+                return new GenericResponse<TokensResponse>
                 {
                     Error = new ErrorResponse
                     {
@@ -85,7 +85,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
 
             if (!result.Succeeded)
             {
-                return new GenericResponse<TokensResponse, ErrorResponse>
+                return new GenericResponse<TokensResponse>
                 {
                     Error = new ErrorResponse
                     {
@@ -111,7 +111,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
 
             if (refreshLifetime == null || !int.TryParse(refreshLifetime, out var refreshLifetimeParsed))
             {
-                return new GenericResponse<TokensResponse, ErrorResponse>
+                return new GenericResponse<TokensResponse>
                 {
                     Error = new ErrorResponse
                     {
@@ -151,7 +151,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
 
             var expires = ((DateTimeOffset)newSession.ExpiresAt).ToUnixTimeSeconds();
 
-            return new GenericResponse<TokensResponse, ErrorResponse>
+            return new GenericResponse<TokensResponse>
             {
                 Error = null,
                 Response = TokensResponse.FromSuccess(jwtToken, newSession.RefreshToken, newUser.Id, expires),

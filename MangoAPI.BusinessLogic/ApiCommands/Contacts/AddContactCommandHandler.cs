@@ -11,7 +11,7 @@ using MediatR;
 namespace MangoAPI.BusinessLogic.ApiCommands.Contacts
 {
     public class AddContactCommandHandler 
-        : IRequestHandler<AddContactCommand, GenericResponse<ResponseBase,ErrorResponse>>
+        : IRequestHandler<AddContactCommand, GenericResponse<ResponseBase>>
     {
         private readonly MangoPostgresDbContext _postgresDbContext;
 
@@ -20,12 +20,12 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Contacts
             _postgresDbContext = postgresDbContext;
         }
 
-        public async Task<GenericResponse<ResponseBase, ErrorResponse>> Handle(AddContactCommand request, 
+        public async Task<GenericResponse<ResponseBase>> Handle(AddContactCommand request, 
             CancellationToken cancellationToken)
         {
             if (request.UserId == request.ContactId)
             {
-                return new GenericResponse<ResponseBase, ErrorResponse>
+                return new GenericResponse<ResponseBase>
                 {
                     Error = new ErrorResponse
                     {
@@ -44,7 +44,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Contacts
 
             if (userContactExist)
             {
-                return new GenericResponse<ResponseBase, ErrorResponse>
+                return new GenericResponse<ResponseBase>
                 {
                     Error = new ErrorResponse
                     {
@@ -68,7 +68,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Contacts
             _postgresDbContext.UserContacts.Add(contactEntity);
             await _postgresDbContext.SaveChangesAsync(cancellationToken);
 
-            return new GenericResponse<ResponseBase, ErrorResponse>
+            return new GenericResponse<ResponseBase>
             {
                 Error = null,
                 Response = ResponseBase.SuccessResponse,

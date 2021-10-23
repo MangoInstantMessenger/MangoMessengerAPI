@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 namespace MangoAPI.BusinessLogic.ApiCommands.PasswordRestoreRequests
 {
     public class PasswordRestoreCommandHandler 
-        : IRequestHandler<PasswordRestoreCommand, GenericResponse<ResponseBase,ErrorResponse>>
+        : IRequestHandler<PasswordRestoreCommand, GenericResponse<ResponseBase>>
     {
         private readonly MangoPostgresDbContext _postgresDbContext;
         private readonly UserManager<UserEntity> _userManager;
@@ -23,12 +23,12 @@ namespace MangoAPI.BusinessLogic.ApiCommands.PasswordRestoreRequests
             _userManager = userManager;
         }
 
-        public async Task<GenericResponse<ResponseBase,ErrorResponse>> Handle(PasswordRestoreCommand request, 
+        public async Task<GenericResponse<ResponseBase>> Handle(PasswordRestoreCommand request, 
             CancellationToken cancellationToken)
         {
             if (request.NewPassword != request.RepeatPassword)
             {
-                return new GenericResponse<ResponseBase, ErrorResponse>
+                return new GenericResponse<ResponseBase>
                 {
                     Error = new ErrorResponse
                     {
@@ -48,7 +48,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.PasswordRestoreRequests
 
             if (restorePasswordRequest is not { IsValid: true })
             {
-                return new GenericResponse<ResponseBase, ErrorResponse>
+                return new GenericResponse<ResponseBase>
                 {
                     Error = new ErrorResponse
                     {
@@ -68,7 +68,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.PasswordRestoreRequests
 
             if (user is null)
             {
-                return new GenericResponse<ResponseBase, ErrorResponse>
+                return new GenericResponse<ResponseBase>
                 {
                     Error = new ErrorResponse
                     {
@@ -88,7 +88,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.PasswordRestoreRequests
 
             if (!result.Succeeded)
             {
-                return new GenericResponse<ResponseBase, ErrorResponse>
+                return new GenericResponse<ResponseBase>
                 {
                     Error = new ErrorResponse
                     {
@@ -106,7 +106,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.PasswordRestoreRequests
             _postgresDbContext.PasswordRestoreRequests.Remove(restorePasswordRequest);
             await _postgresDbContext.SaveChangesAsync(cancellationToken);
 
-            return new GenericResponse<ResponseBase, ErrorResponse>
+            return new GenericResponse<ResponseBase>
             {
                 Error = null,
                 Response = ResponseBase.SuccessResponse,

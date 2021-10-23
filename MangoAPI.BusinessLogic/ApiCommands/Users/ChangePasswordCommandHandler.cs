@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Identity;
 namespace MangoAPI.BusinessLogic.ApiCommands.Users
 {
     public class ChangePasswordCommandHandler 
-        : IRequestHandler<ChangePasswordCommand, GenericResponse<ResponseBase,ErrorResponse>>
+        : IRequestHandler<ChangePasswordCommand, GenericResponse<ResponseBase>>
     {
         private readonly MangoPostgresDbContext _postgresDbContext;
         private readonly UserManager<UserEntity> _userManager;
@@ -23,12 +23,12 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
             _userManager = userManager;
         }
 
-        public async Task<GenericResponse<ResponseBase,ErrorResponse>> Handle(ChangePasswordCommand request, 
+        public async Task<GenericResponse<ResponseBase>> Handle(ChangePasswordCommand request, 
             CancellationToken cancellationToken)
         {
             if (request.CurrentPassword == request.NewPassword)
             {
-                return new GenericResponse<ResponseBase, ErrorResponse>
+                return new GenericResponse<ResponseBase>
                 {
                     Error = new ErrorResponse
                     {
@@ -46,7 +46,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
 
             if (user is null)
             {
-                return new GenericResponse<ResponseBase, ErrorResponse>
+                return new GenericResponse<ResponseBase>
                 {
                     Error = new ErrorResponse
                     {
@@ -64,7 +64,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
 
             if (!currentPasswordVerified)
             {
-                return new GenericResponse<ResponseBase, ErrorResponse>
+                return new GenericResponse<ResponseBase>
                 {
                     Error = new ErrorResponse
                     {
@@ -84,7 +84,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
 
             if (!result.Succeeded)
             {
-                return new GenericResponse<ResponseBase, ErrorResponse>
+                return new GenericResponse<ResponseBase>
                 {
                     Error = new ErrorResponse
                     {
@@ -100,7 +100,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
 
             await _postgresDbContext.SaveChangesAsync(cancellationToken);
 
-            return new GenericResponse<ResponseBase, ErrorResponse>
+            return new GenericResponse<ResponseBase>
             {
                 Error = null,
                 Response = ResponseBase.SuccessResponse,

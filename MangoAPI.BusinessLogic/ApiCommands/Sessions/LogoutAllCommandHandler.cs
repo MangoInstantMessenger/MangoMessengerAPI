@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore;
 namespace MangoAPI.BusinessLogic.ApiCommands.Sessions
 {
     public class LogoutAllCommandHandler 
-        : IRequestHandler<LogoutAllCommand, GenericResponse<ResponseBase,ErrorResponse>>
+        : IRequestHandler<LogoutAllCommand, GenericResponse<ResponseBase>>
     {
         private readonly MangoPostgresDbContext _postgresDbContext;
 
@@ -19,14 +19,14 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Sessions
             _postgresDbContext = postgresDbContext;
         }
 
-        public async Task<GenericResponse<ResponseBase,ErrorResponse>> Handle(LogoutAllCommand request, 
+        public async Task<GenericResponse<ResponseBase>> Handle(LogoutAllCommand request, 
             CancellationToken cancellationToken)
         {
             var userSessions = _postgresDbContext.Sessions.GetUserSessionsById(request.UserId);
 
             if (!await userSessions.AnyAsync(cancellationToken))
             {
-                return new GenericResponse<ResponseBase, ErrorResponse>
+                return new GenericResponse<ResponseBase>
                 {
                     Error = new ErrorResponse
                     {
@@ -44,7 +44,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Sessions
 
             await _postgresDbContext.SaveChangesAsync(cancellationToken);
 
-            return new GenericResponse<ResponseBase, ErrorResponse>
+            return new GenericResponse<ResponseBase>
             {
                 Error = null,
                 Response = ResponseBase.SuccessResponse,

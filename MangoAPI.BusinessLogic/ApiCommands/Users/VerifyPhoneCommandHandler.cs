@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 namespace MangoAPI.BusinessLogic.ApiCommands.Users
 {
     public class VerifyPhoneCommandHandler 
-        : IRequestHandler<VerifyPhoneCommand, GenericResponse<ResponseBase,ErrorResponse>>
+        : IRequestHandler<VerifyPhoneCommand, GenericResponse<ResponseBase>>
     {
         private readonly MangoPostgresDbContext _postgresDbContext;
 
@@ -20,7 +20,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
             _postgresDbContext = postgresDbContext;
         }
 
-        public async Task<GenericResponse<ResponseBase,ErrorResponse>> Handle(VerifyPhoneCommand request, 
+        public async Task<GenericResponse<ResponseBase>> Handle(VerifyPhoneCommand request, 
             CancellationToken cancellationToken)
         {
             var user = await _postgresDbContext.Users
@@ -28,7 +28,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
 
             if (user == null)
             {
-                return new GenericResponse<ResponseBase, ErrorResponse>
+                return new GenericResponse<ResponseBase>
                 {
                     Error = new ErrorResponse
                     {
@@ -44,7 +44,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
 
             if (user.PhoneNumberConfirmed)
             {
-                return new GenericResponse<ResponseBase, ErrorResponse>
+                return new GenericResponse<ResponseBase>
                 {
                     Error = new ErrorResponse
                     {
@@ -60,7 +60,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
 
             if (user.PhoneCode != request.ConfirmationCode)
             {
-                return new GenericResponse<ResponseBase, ErrorResponse>
+                return new GenericResponse<ResponseBase>
                 {
                     Error = new ErrorResponse
                     {
@@ -92,7 +92,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
 
             await _postgresDbContext.SaveChangesAsync(cancellationToken);
 
-            return new GenericResponse<ResponseBase, ErrorResponse>
+            return new GenericResponse<ResponseBase>
             {
                 Error = null,
                 Response = ResponseBase.SuccessResponse,

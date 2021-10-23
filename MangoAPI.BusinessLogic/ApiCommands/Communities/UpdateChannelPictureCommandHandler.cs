@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 namespace MangoAPI.BusinessLogic.ApiCommands.Communities
 {
     public class UpdateChannelPictureCommandHandler 
-        : IRequestHandler<UpdateChanelPictureCommand, GenericResponse<ResponseBase, ErrorResponse>>
+        : IRequestHandler<UpdateChanelPictureCommand, GenericResponse<ResponseBase>>
     {
         private readonly MangoPostgresDbContext _postgresDbContext;
 
@@ -19,7 +19,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Communities
             _postgresDbContext = postgresDbContext;
         }
 
-        public async Task<GenericResponse<ResponseBase, ErrorResponse>> Handle(UpdateChanelPictureCommand request, 
+        public async Task<GenericResponse<ResponseBase>> Handle(UpdateChanelPictureCommand request, 
             CancellationToken cancellationToken)
         {
             var userChat = await _postgresDbContext.UserChats.AsNoTracking()
@@ -32,7 +32,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Communities
 
             if (userChat is null)
             {
-                return new GenericResponse<ResponseBase, ErrorResponse>
+                return new GenericResponse<ResponseBase>
                 {
                     Error = new ErrorResponse
                     {
@@ -51,7 +51,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Communities
             _postgresDbContext.Update(userChat.Chat);
             await _postgresDbContext.SaveChangesAsync(cancellationToken);
 
-            return new GenericResponse<ResponseBase, ErrorResponse>
+            return new GenericResponse<ResponseBase>
             {
                 Error = null,
                 Response = ResponseBase.SuccessResponse,

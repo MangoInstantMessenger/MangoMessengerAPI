@@ -10,7 +10,7 @@ using MediatR;
 namespace MangoAPI.BusinessLogic.ApiCommands.UserChats
 {
     public class LeaveGroupCommandHandler 
-        : IRequestHandler<LeaveGroupCommand, GenericResponse<LeaveGroupResponse,ErrorResponse>>
+        : IRequestHandler<LeaveGroupCommand, GenericResponse<LeaveGroupResponse>>
     {
         private readonly MangoPostgresDbContext _postgresDbContext;
 
@@ -19,14 +19,14 @@ namespace MangoAPI.BusinessLogic.ApiCommands.UserChats
             _postgresDbContext = postgresDbContext;
         }
 
-        public async Task<GenericResponse<LeaveGroupResponse,ErrorResponse>> Handle(LeaveGroupCommand request, 
+        public async Task<GenericResponse<LeaveGroupResponse>> Handle(LeaveGroupCommand request, 
             CancellationToken cancellationToken)
         {
             var user = await _postgresDbContext.Users.FindUserByIdAsync(request.UserId, cancellationToken);
 
             if (user is null)
             {
-                return new GenericResponse<LeaveGroupResponse, ErrorResponse>
+                return new GenericResponse<LeaveGroupResponse>
                 {
                     Error = new ErrorResponse
                     {
@@ -46,7 +46,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.UserChats
 
             if (userChat is null)
             {
-                return new GenericResponse<LeaveGroupResponse, ErrorResponse>
+                return new GenericResponse<LeaveGroupResponse>
                 {
                     Error = new ErrorResponse
                     {
@@ -75,7 +75,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.UserChats
 
                 await _postgresDbContext.SaveChangesAsync(cancellationToken);
                 
-                return new GenericResponse<LeaveGroupResponse, ErrorResponse>
+                return new GenericResponse<LeaveGroupResponse>
                 {
                     Error = null,
                     Response = LeaveGroupResponse.FromSuccess(chat.Id),
@@ -89,7 +89,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.UserChats
             _postgresDbContext.Update(chat);
             await _postgresDbContext.SaveChangesAsync(cancellationToken);
 
-            return new GenericResponse<LeaveGroupResponse, ErrorResponse>
+            return new GenericResponse<LeaveGroupResponse>
             {
                 Error = null,
                 Response = LeaveGroupResponse.FromSuccess(chat.Id),

@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Http;
 
 namespace MangoAPI.BusinessLogic.ApiCommands.Documents
 {
-    public record UploadDocumentCommand : IRequest<GenericResponse<UploadDocumentResponse,ErrorResponse>>
+    public record UploadDocumentCommand : IRequest<GenericResponse<UploadDocumentResponse>>
     {
         public IFormFile FormFile { get; init; }
     }

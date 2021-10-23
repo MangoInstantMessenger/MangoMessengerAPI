@@ -4,7 +4,7 @@ using MediatR;
 
 namespace MangoAPI.BusinessLogic.ApiCommands.Messages
 {
-    public record DeleteMessageCommand : IRequest<GenericResponse<DeleteMessageResponse,ErrorResponse>>
+    public record DeleteMessageCommand : IRequest<GenericResponse<DeleteMessageResponse>>
     {
         public Guid MessageId { get; init; }
         public Guid UserId { get; init; }
