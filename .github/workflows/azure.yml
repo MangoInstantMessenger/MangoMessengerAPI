@@ -1,0 +1,49 @@
+﻿name: Azure Deploy
+
+on: 
+  push:
+    branches:
+      - azure-deploy
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 5.0.x
+
+    - name: Build with dotnet
+      run: dotnet build --configuration Release
+    - name: dotnet publish
+      run: |
+        dotnet restore
+        dotnet publish "MangoAPI.Presentation/MangoAPI.Presentation.csproj" -r linux-x64 -o ~/mango-linux-build/src
+
+    - name: Configure SSH
+      run: |
+          mkdir -p ~/.ssh/
+          echo "$SSH_KEY" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          cat >>~/.ssh/config <<END
+          Host staging
+            HostName $SSH_HOST
+            User $SSH_USER
+            IdentityFile ~/.ssh/id_rsa
+            StrictHostKeyChecking no
+          END
+      env: 
+        SSH_USER: ${{ secrets.SSH_USER }}
+        SSH_KEY: ${{ secrets.AZURE_SSH_KEY }}
+        SSH_HOST: ${{ secrets.SSH_HOST }}
+          
+    - name: Stop service
+      run: ssh staging "sudo systemctl stop mangoback"
+      
+    - name: Copy Release to Remote
+      run: scp -r -i ~/.ssh/id_rsa ~/mango-linux-build/src/* ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/home/${{ secrets.SSH_USER }}/mango-backend
+      
+    - name: Start service
+      run: ssh staging "sudo systemctl start mangoback"
