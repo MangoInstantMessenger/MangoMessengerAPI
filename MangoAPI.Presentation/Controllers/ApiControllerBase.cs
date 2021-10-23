@@ -1,9 +1,9 @@
-﻿using System.Threading;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
 using MangoAPI.BusinessLogic.Responses;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace MangoAPI.Presentation.Controllers
 {
@@ -34,17 +34,16 @@ namespace MangoAPI.Presentation.Controllers
         /// <param name="cancellationToken">Cancellation token instance.</param>
         /// <returns>A <see cref="Task{TResult}"/> representing the result of the asynchronous operation.</returns>
         [NonAction]
-        protected async Task<IActionResult> RequestAsync<T>(IRequest<T> request, CancellationToken cancellationToken)
-            where T : ResponseBase
+        protected async Task<IActionResult> RequestAsync<TResponse, TError>(IRequest<GenericResponse<TResponse, TError>> request, CancellationToken cancellationToken)
         {
             var response = await _mediator.Send(request, cancellationToken);
 
-            if (!response.Success)
+            return response.StatusCode switch
             {
-                return Conflict(response);
-            }
-
-            return Ok(response);
+                400 => BadRequest(response.Error),
+                409 => Conflict(response.Error),
+                _ => Ok(response.Response)
+            };
         }
     }
 }
