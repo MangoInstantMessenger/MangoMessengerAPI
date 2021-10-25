@@ -5,7 +5,7 @@ using MediatR;
 
 namespace MangoAPI.BusinessLogic.ApiCommands.Communities
 {
-    public record CreateChannelCommand : IRequest<GenericResponse<CreateCommunityResponse>>
+    public record CreateChannelCommand : IRequest<Result<CreateCommunityResponse>>
     {
         public CommunityType CommunityType { get; init; }
         public string ChannelTitle { get; init; }

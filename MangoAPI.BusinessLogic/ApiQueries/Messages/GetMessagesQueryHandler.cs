@@ -10,7 +10,7 @@ using MangoAPI.BusinessLogic.Responses;
 
 namespace MangoAPI.BusinessLogic.ApiQueries.Messages
 {
-    public class GetMessagesQueryHandler : IRequestHandler<GetMessagesQuery, GenericResponse<GetMessagesResponse>>
+    public class GetMessagesQueryHandler : IRequestHandler<GetMessagesQuery, Result<GetMessagesResponse>>
     {
         private readonly MangoPostgresDbContext _postgresDbContext;
 
@@ -19,7 +19,7 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Messages
             _postgresDbContext = postgresDbContext;
         }
 
-        public async Task<GenericResponse<GetMessagesResponse>> Handle(GetMessagesQuery request, CancellationToken cancellationToken)
+        public async Task<Result<GetMessagesResponse>> Handle(GetMessagesQuery request, CancellationToken cancellationToken)
         {
             var messages = await _postgresDbContext
                 .Messages
@@ -51,7 +51,7 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Messages
                         : null,
                 }).Take(200).ToListAsync(cancellationToken);
 
-            return new GenericResponse<GetMessagesResponse>
+            return new Result<GetMessagesResponse>
             {
                 Error = null,
                 Response = GetMessagesResponse.FromSuccess(messages),

@@ -34,7 +34,7 @@ namespace MangoAPI.Presentation.Controllers
         /// <param name="cancellationToken">Cancellation token instance.</param>
         /// <returns>A <see cref="Task{TResult}"/> representing the result of the asynchronous operation.</returns>
         [NonAction]
-        protected async Task<IActionResult> RequestAsync<TResponse>(IRequest<GenericResponse<TResponse>> request, CancellationToken cancellationToken)
+        protected async Task<IActionResult> RequestAsync<TResponse>(IRequest<Result<TResponse>> request, CancellationToken cancellationToken)
         {
             var response = await _mediator.Send(request, cancellationToken);
 

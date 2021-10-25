@@ -16,7 +16,7 @@ using System.Threading.Tasks;
 namespace MangoAPI.BusinessLogic.ApiCommands.Communities
 {
     public class CreateChannelCommandHandler 
-        : IRequestHandler<CreateChannelCommand, GenericResponse<CreateCommunityResponse>>
+        : IRequestHandler<CreateChannelCommand, Result<CreateCommunityResponse>>
     {
         private readonly MangoPostgresDbContext _postgresDbContext;
         private readonly IHubContext<ChatHub, IHubClient> _hubContext;
@@ -27,12 +27,12 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Communities
             _hubContext = hubContext;
         }
 
-        public async Task<GenericResponse<CreateCommunityResponse>> Handle(CreateChannelCommand request,
+        public async Task<Result<CreateCommunityResponse>> Handle(CreateChannelCommand request,
             CancellationToken cancellationToken)
         {
             if (request.CommunityType is CommunityType.DirectChat or CommunityType.SecretChat)
             {
-                return new GenericResponse<CreateCommunityResponse>
+                return new Result<CreateCommunityResponse>
                 {
                     Error = new ErrorResponse
                     {
@@ -54,7 +54,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Communities
 
             if (ownerChatsCount >= 100)
             {
-                return new GenericResponse<CreateCommunityResponse>
+                return new Result<CreateCommunityResponse>
                 {
                     Error = new ErrorResponse
                     {
@@ -91,7 +91,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Communities
             var chatDto = channel.ToChatDto();
             await _hubContext.Clients.Group(request.UserId.ToString()).UpdateUserChats(chatDto);
 
-            return new GenericResponse<CreateCommunityResponse>()
+            return new Result<CreateCommunityResponse>()
             {
                 Error = null,
                 Response = CreateCommunityResponse.FromSuccess(channel),

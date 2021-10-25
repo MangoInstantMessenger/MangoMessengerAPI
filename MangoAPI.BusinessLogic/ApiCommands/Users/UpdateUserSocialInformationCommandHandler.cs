@@ -10,7 +10,7 @@ using MediatR;
 namespace MangoAPI.BusinessLogic.ApiCommands.Users
 {
     public class UpdateUserSocialInformationCommandHandler 
-        : IRequestHandler<UpdateUserSocialInformationCommand, GenericResponse<ResponseBase>>
+        : IRequestHandler<UpdateUserSocialInformationCommand, Result<ResponseBase>>
     {
         private readonly MangoPostgresDbContext _postgresDbContext;
 
@@ -19,14 +19,14 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
             _postgresDbContext = postgresDbContext;
         }
 
-        public async Task<GenericResponse<ResponseBase>> Handle(UpdateUserSocialInformationCommand request,
+        public async Task<Result<ResponseBase>> Handle(UpdateUserSocialInformationCommand request,
             CancellationToken cancellationToken)
         {
             var user = await _postgresDbContext.Users.FindUserByIdIncludeInfoAsync(request.UserId, cancellationToken);
 
             if (user is null)
             {
-                return new GenericResponse<ResponseBase>
+                return new Result<ResponseBase>
                 {
                     Error = new ErrorResponse
                     {
@@ -61,7 +61,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
             _postgresDbContext.UserInformation.Update(user.UserInformation);
             await _postgresDbContext.SaveChangesAsync(cancellationToken);
 
-            return new GenericResponse<ResponseBase>
+            return new Result<ResponseBase>
             {
                 Error = null,
                 Response = ResponseBase.SuccessResponse,

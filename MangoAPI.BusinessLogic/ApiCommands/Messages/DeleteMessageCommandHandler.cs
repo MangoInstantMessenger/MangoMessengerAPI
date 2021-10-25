@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.SignalR;
 namespace MangoAPI.BusinessLogic.ApiCommands.Messages
 {
     public class DeleteMessageCommandHandler 
-        : IRequestHandler<DeleteMessageCommand, GenericResponse<DeleteMessageResponse>>
+        : IRequestHandler<DeleteMessageCommand, Result<DeleteMessageResponse>>
     {
         private readonly MangoPostgresDbContext _postgresDbContext;
         private readonly IHubContext<ChatHub, IHubClient> _hubContext;
@@ -22,7 +22,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Messages
             _hubContext = hubContext;
         }
 
-        public async Task<GenericResponse<DeleteMessageResponse>> Handle(DeleteMessageCommand request, 
+        public async Task<Result<DeleteMessageResponse>> Handle(DeleteMessageCommand request, 
             CancellationToken cancellationToken)
         {
 
@@ -31,7 +31,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Messages
 
             if (message == null)
             {
-                return new GenericResponse<DeleteMessageResponse>
+                return new Result<DeleteMessageResponse>
                 {
                     Error = new ErrorResponse
                     {
@@ -50,7 +50,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Messages
 
             await _hubContext.Clients.Group(message.ChatId.ToString()).NotifyOnMessageDelete(request.MessageId);
 
-            return new GenericResponse<DeleteMessageResponse>
+            return new Result<DeleteMessageResponse>
             {
                 Error = null,
                 Response = DeleteMessageResponse.FromSuccess(message),

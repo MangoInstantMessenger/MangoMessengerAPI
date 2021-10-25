@@ -13,8 +13,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace MangoAPI.BusinessLogic.ApiQueries.Communities
 {
-    public class GetCommunityByIdQueryHandler : IRequestHandler<GetCommunityByIdQuery, 
-        GenericResponse<GetCommunityByIdResponse>>
+    public class GetCommunityByIdQueryHandler 
+        : IRequestHandler<GetCommunityByIdQuery, Result<GetCommunityByIdResponse>>
     {
         private readonly MangoPostgresDbContext _postgresDbContext;
 
@@ -23,7 +23,7 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Communities
             _postgresDbContext = postgresDbContext;
         }
 
-        public async Task<GenericResponse<GetCommunityByIdResponse>> Handle(GetCommunityByIdQuery request, CancellationToken cancellationToken)
+        public async Task<Result<GetCommunityByIdResponse>> Handle(GetCommunityByIdQuery request, CancellationToken cancellationToken)
         {
             var chatEntity =
                 await _postgresDbContext.Chats.FindChatByIdIncludeMessagesAsync(request.ChatId,
@@ -31,7 +31,7 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Communities
 
             if (chatEntity is null)
             {
-                return new GenericResponse<GetCommunityByIdResponse>
+                return new Result<GetCommunityByIdResponse>
                 {
                     Error = new ErrorResponse()
                     {
@@ -52,7 +52,7 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Communities
             switch (userChat)
             {
                 case null when chatEntity.CommunityType == (int) CommunityType.DirectChat:
-                    return new GenericResponse<GetCommunityByIdResponse>
+                    return new Result<GetCommunityByIdResponse>
                     {
                         Error = new ErrorResponse()
                         {
@@ -66,7 +66,7 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Communities
                     };
 
                 case null when chatEntity.CommunityType == (int) CommunityType.PrivateChannel:
-                    return new GenericResponse<GetCommunityByIdResponse>
+                    return new Result<GetCommunityByIdResponse>
                     {
                         Error = new ErrorResponse()
                         {
@@ -118,7 +118,7 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Communities
                     : null,
             };
 
-            return new GenericResponse<GetCommunityByIdResponse>
+            return new Result<GetCommunityByIdResponse>
             {
                 Error = null,
                 Response = GetCommunityByIdResponse.FromSuccess(chat),

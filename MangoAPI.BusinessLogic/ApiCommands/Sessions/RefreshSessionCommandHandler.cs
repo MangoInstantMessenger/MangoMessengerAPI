@@ -13,7 +13,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace MangoAPI.BusinessLogic.ApiCommands.Sessions
 {
-    public class RefreshSessionCommandHandler : IRequestHandler<RefreshSessionCommand, GenericResponse<TokensResponse>>
+    public class RefreshSessionCommandHandler : IRequestHandler<RefreshSessionCommand, Result<TokensResponse>>
     {
         private readonly IJwtGenerator _jwtGenerator;
         private readonly MangoPostgresDbContext _postgresDbContext;
@@ -24,14 +24,14 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Sessions
             _jwtGenerator = jwtGenerator;
         }
 
-        public async Task<GenericResponse<TokensResponse>> Handle(RefreshSessionCommand request, CancellationToken cancellationToken)
+        public async Task<Result<TokensResponse>> Handle(RefreshSessionCommand request, CancellationToken cancellationToken)
         {
             var session = await _postgresDbContext.Sessions.GetSessionByRefreshTokenAsync(request.RefreshToken,
                     cancellationToken);
 
             if (session is null || session.IsExpired)
             {
-                return new GenericResponse<TokensResponse>
+                return new Result<TokensResponse>
                 {
                     Error = new ErrorResponse
                     {
@@ -64,7 +64,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Sessions
 
             if (refreshLifetime == null || !int.TryParse(refreshLifetime, out var refreshLifetimeParsed))
             {
-                return new GenericResponse<TokensResponse>
+                return new Result<TokensResponse>
                 {
                     Error = new ErrorResponse
                     {
@@ -100,7 +100,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Sessions
 
             var expires = ((DateTimeOffset)session.ExpiresAt).ToUnixTimeSeconds();
 
-            return new GenericResponse<TokensResponse>
+            return new Result<TokensResponse>
             {
                 Error = null,
                 Response = TokensResponse.FromSuccess(jwtToken, newSession.RefreshToken, session.UserId, expires),

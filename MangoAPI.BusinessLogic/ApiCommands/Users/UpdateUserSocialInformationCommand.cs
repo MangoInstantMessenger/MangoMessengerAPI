@@ -4,7 +4,7 @@ using MediatR;
 
 namespace MangoAPI.BusinessLogic.ApiCommands.Users
 {
-    public record UpdateUserSocialInformationCommand : IRequest<GenericResponse<ResponseBase>>
+    public record UpdateUserSocialInformationCommand : IRequest<Result<ResponseBase>>
     {
         public Guid UserId { get; set; }
         public string Facebook { get; init; }

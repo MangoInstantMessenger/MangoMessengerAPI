@@ -4,7 +4,7 @@ using MediatR;
 
 namespace MangoAPI.BusinessLogic.ApiQueries.Contacts
 {
-    public record GetContactsQuery : IRequest<GenericResponse<GetContactsResponse>>
+    public record GetContactsQuery : IRequest<Result<GetContactsResponse>>
     {
         public Guid UserId { get; init; }
     }

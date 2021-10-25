@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore;
 namespace MangoAPI.BusinessLogic.ApiCommands.Users
 {
     public class VerifyEmailCommandHandler 
-        : IRequestHandler<VerifyEmailCommand, GenericResponse<ResponseBase>>
+        : IRequestHandler<VerifyEmailCommand, Result<ResponseBase>>
     {
         private readonly MangoPostgresDbContext _postgresDbContext;
 
@@ -20,7 +20,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
             _postgresDbContext = postgresDbContext;
         }
 
-        public async Task<GenericResponse<ResponseBase>> Handle(VerifyEmailCommand request, 
+        public async Task<Result<ResponseBase>> Handle(VerifyEmailCommand request, 
             CancellationToken cancellationToken)
         {
             var user = await _postgresDbContext.Users.AsNoTracking()
@@ -28,7 +28,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
 
             if (user is null)
             {
-                return new GenericResponse<ResponseBase>
+                return new Result<ResponseBase>
                 {
                     Error = new ErrorResponse
                     {
@@ -44,7 +44,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
 
             if (user.Email != request.Email)
             {
-                return new GenericResponse<ResponseBase>
+                return new Result<ResponseBase>
                 {
                     Error = new ErrorResponse
                     {
@@ -60,7 +60,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
 
             if (user.EmailConfirmed)
             {
-                return new GenericResponse<ResponseBase>
+                return new Result<ResponseBase>
                 {
                     Error = new ErrorResponse
                     {
@@ -91,7 +91,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
 
             await _postgresDbContext.SaveChangesAsync(cancellationToken);
 
-            return new GenericResponse<ResponseBase>
+            return new Result<ResponseBase>
             {
                 Error = null,
                 Response = ResponseBase.SuccessResponse,

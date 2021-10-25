@@ -10,7 +10,7 @@ using MediatR;
 namespace MangoAPI.BusinessLogic.ApiCommands.Contacts
 {
     public class DeleteContactCommandHandler 
-        : IRequestHandler<DeleteContactCommand, GenericResponse<ResponseBase>>
+        : IRequestHandler<DeleteContactCommand, Result<ResponseBase>>
     {
         private readonly MangoPostgresDbContext _postgresDbContext;
 
@@ -19,14 +19,14 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Contacts
             _postgresDbContext = postgresDbContext;
         }
 
-        public async Task<GenericResponse<ResponseBase>> Handle(DeleteContactCommand request, 
+        public async Task<Result<ResponseBase>> Handle(DeleteContactCommand request, 
             CancellationToken cancellationToken)
         {
             var user = await _postgresDbContext.Users.FindUserByIdAsync(request.UserId, cancellationToken);
 
             if (user is null)
             {
-                return new GenericResponse<ResponseBase>
+                return new Result<ResponseBase>
                 {
                     Error = new ErrorResponse
                     {
@@ -48,7 +48,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Contacts
 
             if (contact is null)
             {
-                return new GenericResponse<ResponseBase>
+                return new Result<ResponseBase>
                 {
                     Error = new ErrorResponse
                     {
@@ -65,7 +65,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Contacts
             _postgresDbContext.UserContacts.Remove(contact);
             await _postgresDbContext.SaveChangesAsync(cancellationToken);
 
-            return new GenericResponse<ResponseBase>
+            return new Result<ResponseBase>
             {
                 Error = null,
                 Response = ResponseBase.SuccessResponse,

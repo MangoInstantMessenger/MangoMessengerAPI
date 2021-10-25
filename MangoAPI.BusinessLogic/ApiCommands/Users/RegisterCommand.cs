@@ -4,7 +4,7 @@ using MediatR;
 
 namespace MangoAPI.BusinessLogic.ApiCommands.Users
 {
-    public record RegisterCommand : IRequest<GenericResponse<TokensResponse>>
+    public record RegisterCommand : IRequest<Result<TokensResponse>>
     {
         public string PhoneNumber { get; init; }
         public string Email { get; init; }

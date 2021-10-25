@@ -11,7 +11,7 @@ using MangoAPI.BusinessLogic.Responses;
 namespace MangoAPI.BusinessLogic.ApiQueries.Contacts
 {
     public class GetContactsQueryHandler 
-        : IRequestHandler<GetContactsQuery, GenericResponse<GetContactsResponse>>
+        : IRequestHandler<GetContactsQuery, Result<GetContactsResponse>>
     {
         private readonly MangoPostgresDbContext _postgresDbContext;
 
@@ -20,7 +20,7 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Contacts
             _postgresDbContext = postgresDbContext;
         }
 
-        public async Task<GenericResponse<GetContactsResponse>> Handle(GetContactsQuery request, CancellationToken cancellationToken)
+        public async Task<Result<GetContactsResponse>> Handle(GetContactsQuery request, CancellationToken cancellationToken)
         {
             var query = from userContact in _postgresDbContext.UserContacts.AsNoTracking()
                         join userEntity in _postgresDbContext.Users.Include(x => x.UserInformation)
@@ -41,7 +41,7 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Contacts
 
             var contacts = await query.Take(200).ToListAsync(cancellationToken);
 
-            return new GenericResponse<GetContactsResponse>
+            return new Result<GetContactsResponse>
             {
                 Error = null,
                 Response = GetContactsResponse.FromSuccess(contacts),

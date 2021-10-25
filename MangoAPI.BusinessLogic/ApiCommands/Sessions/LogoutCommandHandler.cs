@@ -8,7 +8,7 @@ using MediatR;
 
 namespace MangoAPI.BusinessLogic.ApiCommands.Sessions
 {
-    public class LogoutCommandHandler : IRequestHandler<LogoutCommand, GenericResponse<ResponseBase>>
+    public class LogoutCommandHandler : IRequestHandler<LogoutCommand, Result<ResponseBase>>
     {
         private readonly MangoPostgresDbContext _postgresDbContext;
 
@@ -17,7 +17,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Sessions
             _postgresDbContext = postgresDbContext;
         }
 
-        public async Task<GenericResponse<ResponseBase>> Handle(LogoutCommand request, 
+        public async Task<Result<ResponseBase>> Handle(LogoutCommand request, 
             CancellationToken cancellationToken)
         {
             var session = await _postgresDbContext.Sessions
@@ -25,7 +25,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Sessions
 
             if (session is null)
             {
-                return new GenericResponse<ResponseBase>
+                return new Result<ResponseBase>
                 {
                     Error = new ErrorResponse
                     {
@@ -43,7 +43,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Sessions
 
             if (user is null || session.UserId != user.Id)
             {
-                return new GenericResponse<ResponseBase>
+                return new Result<ResponseBase>
                 {
                     Error = new ErrorResponse
                     {
@@ -60,7 +60,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Sessions
             _postgresDbContext.Sessions.Remove(session);
             await _postgresDbContext.SaveChangesAsync(cancellationToken);
 
-            return new GenericResponse<ResponseBase>
+            return new Result<ResponseBase>
             {
                 Error = null,
                 Response = ResponseBase.SuccessResponse,

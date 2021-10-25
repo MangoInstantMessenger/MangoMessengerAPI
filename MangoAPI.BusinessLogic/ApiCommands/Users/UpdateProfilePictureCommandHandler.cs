@@ -9,7 +9,7 @@ using MediatR;
 namespace MangoAPI.BusinessLogic.ApiCommands.Users
 {
     public class UpdateProfilePictureCommandHandler 
-        : IRequestHandler<UpdateProfilePictureCommand, GenericResponse<ResponseBase>>
+        : IRequestHandler<UpdateProfilePictureCommand, Result<ResponseBase>>
     {
         private readonly MangoPostgresDbContext _postgresDbContext;
 
@@ -18,14 +18,14 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
             _postgresDbContext = postgresDbContext;
         }
 
-        public async Task<GenericResponse<ResponseBase>> Handle(UpdateProfilePictureCommand request, 
+        public async Task<Result<ResponseBase>> Handle(UpdateProfilePictureCommand request, 
             CancellationToken cancellationToken)
         {
             var user = await _postgresDbContext.Users.FindUserByIdAsync(request.UserId, cancellationToken);
 
             if (user == null)
             {
-                return new GenericResponse<ResponseBase>
+                return new Result<ResponseBase>
                 {
                     Error = new ErrorResponse
                     {
@@ -45,7 +45,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
 
             await _postgresDbContext.SaveChangesAsync(cancellationToken);
 
-            return new GenericResponse<ResponseBase>
+            return new Result<ResponseBase>
             {
                 Error = null,
                 Response = ResponseBase.SuccessResponse,

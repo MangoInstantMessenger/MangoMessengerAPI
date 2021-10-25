@@ -4,7 +4,7 @@ using MediatR;
 
 namespace MangoAPI.BusinessLogic.ApiQueries.Messages
 {
-    public record GetMessagesQuery : IRequest<GenericResponse<GetMessagesResponse>>
+    public record GetMessagesQuery : IRequest<Result<GetMessagesResponse>>
     {
         public Guid ChatId { get; init; }
         public Guid UserId { get; init; }

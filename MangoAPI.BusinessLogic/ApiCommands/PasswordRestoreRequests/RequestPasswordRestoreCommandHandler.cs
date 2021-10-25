@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 namespace MangoAPI.BusinessLogic.ApiCommands.PasswordRestoreRequests
 {
     public class RequestPasswordRestoreCommandHandler 
-        : IRequestHandler<RequestPasswordRestoreCommand, GenericResponse<ResponseBase>>
+        : IRequestHandler<RequestPasswordRestoreCommand, Result<ResponseBase>>
     {
         private readonly MangoPostgresDbContext _postgresDbContext;
         private readonly IEmailSenderService _emailSenderService;
@@ -24,7 +24,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.PasswordRestoreRequests
             _emailSenderService = emailSenderService;
         }
 
-        public async Task<GenericResponse<ResponseBase>> Handle(RequestPasswordRestoreCommand request,
+        public async Task<Result<ResponseBase>> Handle(RequestPasswordRestoreCommand request,
             CancellationToken cancellationToken)
         {
             var user = await _postgresDbContext.Users.FindUserByEmailOrPhoneAsync(request.EmailOrPhone,
@@ -32,7 +32,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.PasswordRestoreRequests
 
             if (user is null)
             {
-                return new GenericResponse<ResponseBase>
+                return new Result<ResponseBase>
                 {
                     Error = new ErrorResponse
                     {
@@ -60,7 +60,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.PasswordRestoreRequests
 
             await _emailSenderService.SendPasswordRestoreRequest(user, passwordRestoreRequest.Id, cancellationToken);
 
-            return new GenericResponse<ResponseBase>
+            return new Result<ResponseBase>
             {
                 Error = null,
                 Response = ResponseBase.SuccessResponse,

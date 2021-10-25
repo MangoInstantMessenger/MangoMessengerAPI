@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace MangoAPI.BusinessLogic.ApiCommands.Sessions
 {
-    public class LoginCommandHandler : IRequestHandler<LoginCommand, GenericResponse<TokensResponse>>
+    public class LoginCommandHandler : IRequestHandler<LoginCommand, Result<TokensResponse>>
     {
         private readonly IJwtGenerator _jwtGenerator;
         private readonly MangoPostgresDbContext _postgresDbContext;
@@ -28,14 +28,14 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Sessions
             _postgresDbContext = postgresDbContext;
         }
 
-        public async Task<GenericResponse<TokensResponse>> Handle(LoginCommand request, 
+        public async Task<Result<TokensResponse>> Handle(LoginCommand request, 
             CancellationToken cancellationToken)
         {
             var user = await _postgresDbContext.Users.FindUserByEmailOrPhoneAsync(request.EmailOrPhone, cancellationToken);
 
             if (user is null)
             {
-                return new GenericResponse<TokensResponse>
+                return new Result<TokensResponse>
                 {
                     Error = new ErrorResponse
                     {
@@ -53,7 +53,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Sessions
 
             if (!result.Succeeded)
             {
-                return new GenericResponse<TokensResponse>
+                return new Result<TokensResponse>
                 {
                     Error = new ErrorResponse
                     {
@@ -71,7 +71,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Sessions
 
             if (refreshLifetime == null || !int.TryParse(refreshLifetime, out var refreshLifetimeParsed))
             {
-                return new GenericResponse<TokensResponse>
+                return new Result<TokensResponse>
                 {
                     Error = new ErrorResponse
                     {
@@ -116,7 +116,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Sessions
 
             var expires = ((DateTimeOffset)session.ExpiresAt).ToUnixTimeSeconds();
 
-            return new GenericResponse<TokensResponse>
+            return new Result<TokensResponse>
             {
                 Error = null,
                 Response = TokensResponse.FromSuccess(jwtToken, session.RefreshToken, user.Id, expires),

@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore;
 namespace MangoAPI.BusinessLogic.ApiQueries.Contacts
 {
     public class SearchContactByDisplayNameQueryHandler 
-        : IRequestHandler<SearchContactQuery, GenericResponse<SearchContactResponse>>
+        : IRequestHandler<SearchContactQuery, Result<SearchContactResponse>>
     {
         private readonly MangoPostgresDbContext _postgresDbContext;
 
@@ -20,7 +20,7 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Contacts
             _postgresDbContext = postgresDbContext;
         }
 
-        public async Task<GenericResponse<SearchContactResponse>> Handle(SearchContactQuery request,
+        public async Task<Result<SearchContactResponse>> Handle(SearchContactQuery request,
             CancellationToken cancellationToken)
         {
             var query = _postgresDbContext.Users
@@ -57,7 +57,7 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Contacts
                 contact.IsContact = commonContacts.Contains(contact.UserId);
             }
 
-            return new GenericResponse<SearchContactResponse>
+            return new Result<SearchContactResponse>
             {
                 Error = null,
                 Response = SearchContactResponse.FromSuccess(searchResult),

@@ -12,7 +12,7 @@ using MangoAPI.BusinessLogic.Responses;
 namespace MangoAPI.BusinessLogic.ApiQueries.Messages
 {
     public class SearchChatMessageQueryHandler 
-        : IRequestHandler<SearchChatMessagesQuery, GenericResponse<SearchChatMessagesResponse>>
+        : IRequestHandler<SearchChatMessagesQuery, Result<SearchChatMessagesResponse>>
     {
         private readonly MangoPostgresDbContext _postgresDbContext;
 
@@ -21,13 +21,13 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Messages
             _postgresDbContext = postgresDbContext;
         }
 
-        public async Task<GenericResponse<SearchChatMessagesResponse>> Handle(SearchChatMessagesQuery request, CancellationToken cancellationToken)
+        public async Task<Result<SearchChatMessagesResponse>> Handle(SearchChatMessagesQuery request, CancellationToken cancellationToken)
         {
             var userChat = await _postgresDbContext.UserChats.FindUserChatByIdAsync(request.UserId, request.ChatId, cancellationToken);
 
             if (userChat is null)
             {
-                return new GenericResponse<SearchChatMessagesResponse>
+                return new Result<SearchChatMessagesResponse>
                 {
                     Error = new ErrorResponse
                     {
@@ -76,7 +76,7 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Messages
 
             var result = await query.ToListAsync(cancellationToken);
 
-            return new GenericResponse<SearchChatMessagesResponse>
+            return new Result<SearchChatMessagesResponse>
             {
                 Error = null,
                 Response = SearchChatMessagesResponse.FromSuccess(result),

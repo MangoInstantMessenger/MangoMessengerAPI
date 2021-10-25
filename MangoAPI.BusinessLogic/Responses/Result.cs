@@ -1,6 +1,6 @@
 ﻿namespace MangoAPI.BusinessLogic.Responses
 {
-    public record GenericResponse<TResponse>
+    public record Result<TResponse>
     {
         public TResponse Response { get; init; }
 

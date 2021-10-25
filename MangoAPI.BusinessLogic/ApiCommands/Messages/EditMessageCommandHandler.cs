@@ -13,7 +13,7 @@ using Microsoft.EntityFrameworkCore;
 namespace MangoAPI.BusinessLogic.ApiCommands.Messages
 {
     public class EditMessageCommandHandler 
-        : IRequestHandler<EditMessageCommand, GenericResponse<ResponseBase>>
+        : IRequestHandler<EditMessageCommand, Result<ResponseBase>>
     {
         private readonly MangoPostgresDbContext _postgresDbContext;
         private readonly IHubContext<ChatHub, IHubClient> _hubContext;
@@ -24,7 +24,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Messages
             _hubContext = hubContext;
         }
 
-        public async Task<GenericResponse<ResponseBase>> Handle(EditMessageCommand request, 
+        public async Task<Result<ResponseBase>> Handle(EditMessageCommand request, 
             CancellationToken cancellationToken)
         {
             var message = await _postgresDbContext.Messages
@@ -33,7 +33,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Messages
 
             if (message == null)
             {
-                return new GenericResponse<ResponseBase>
+                return new Result<ResponseBase>
                 {
                     Error = new ErrorResponse
                     {
@@ -63,7 +63,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Messages
 
             await _hubContext.Clients.Groups(message.ChatId.ToString()).NotifyOnMessageEdit(notification);
 
-            return new GenericResponse<ResponseBase>
+            return new Result<ResponseBase>
             {
                 Error = null,
                 Response = ResponseBase.SuccessResponse,

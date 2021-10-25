@@ -12,7 +12,7 @@ using Microsoft.AspNetCore.Hosting;
 namespace MangoAPI.BusinessLogic.ApiCommands.Documents
 {
     public class UploadDocumentCommandHandler 
-        : IRequestHandler<UploadDocumentCommand, GenericResponse<UploadDocumentResponse>>
+        : IRequestHandler<UploadDocumentCommand, Result<UploadDocumentResponse>>
     {
         private readonly MangoPostgresDbContext _postgresDbContext;
         private readonly IHostingEnvironment _environment;
@@ -23,7 +23,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Documents
             _environment = environment;
         }
 
-        public async Task<GenericResponse<UploadDocumentResponse>> Handle(UploadDocumentCommand request,
+        public async Task<Result<UploadDocumentResponse>> Handle(UploadDocumentCommand request,
             CancellationToken cancellationToken)
         {
             var uniqueFileName = GetUniqueFileName(request.FormFile.FileName);
@@ -43,7 +43,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Documents
 
             var fileUrl = $"{EnvironmentConstants.BackendAddress}Uploads/{documentEntity.FileName}";
             
-            return new GenericResponse<UploadDocumentResponse>
+            return new Result<UploadDocumentResponse>
             {
                 Error = null,
                 Response = UploadDocumentResponse.FromSuccess(documentEntity.FileName, fileUrl),
