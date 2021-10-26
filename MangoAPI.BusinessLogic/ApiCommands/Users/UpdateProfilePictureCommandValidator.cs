@@ -6,7 +6,12 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
     {
         public UpdateProfilePictureCommandValidator()
         {
-            RuleFor(x => x.Image).NotEmpty();
+            RuleFor(x => x.Image)
+                .Cascade(CascadeMode.Stop)
+                .NotEmpty()
+                .Length(1, 50);
+
+            RuleFor(x => x.UserId).NotEmpty();
         }
     }
 }

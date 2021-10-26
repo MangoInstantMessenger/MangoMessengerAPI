@@ -8,7 +8,8 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
         {
             RuleFor(x => x.ConfirmationCode)
                 .Cascade(CascadeMode.Stop)
-                .NotEmpty();
+                .NotEmpty()
+                .Must(x => x < 1_000_000);
         }
     }
 }

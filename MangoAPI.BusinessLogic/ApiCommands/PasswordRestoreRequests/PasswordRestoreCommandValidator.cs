@@ -9,12 +9,14 @@ namespace MangoAPI.BusinessLogic.ApiCommands.PasswordRestoreRequests
             RuleFor(x => x.NewPassword)
                 .Cascade(CascadeMode.Stop)
                 .NotEmpty()
-                .Length(1, 300);
+                .Length(1, 50);
 
             RuleFor(x => x.RepeatPassword)
                 .Cascade(CascadeMode.Stop)
                 .NotEmpty()
-                .Length(1, 300);
+                .Length(1, 50);
+
+            RuleFor(x => x.RequestId).NotEmpty();
         }
     }
 }
