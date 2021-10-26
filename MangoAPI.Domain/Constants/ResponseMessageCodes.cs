@@ -4,7 +4,7 @@ namespace MangoAPI.Domain.Constants
 {
     public static class ResponseMessageCodes
     {
-        public static readonly Dictionary<string,string> ErrorDictionary = new Dictionary<string, string>()
+        public static readonly Dictionary<string, string> ErrorDictionary = new Dictionary<string, string>()
         {
             { "INVALID_OR_EXPIRED_REFRESH_TOKEN", "Refresh token is invalid or expired" },
             { "USER_ALREADY_EXISTS", "User already exists" },
@@ -30,7 +30,7 @@ namespace MangoAPI.Domain.Constants
             { "INVALID_OR_EXPIRED_RESTORE_PASSWORD_REQUEST", "Invalid or expired restore password request" },
             { "MAXIMUM_OWNER_CHATS_EXCEEDED_100", "The count of admins in the chat should not exceed 100 people" },
         };
-        
+
         public const string Success = "SUCCESS";
         public const string InvalidOrExpiredRefreshToken = "INVALID_OR_EXPIRED_REFRESH_TOKEN";
         public const string UserAlreadyExists = "USER_ALREADY_EXISTS";
@@ -40,8 +40,10 @@ namespace MangoAPI.Domain.Constants
         public const string UserNotFound = "USER_NOT_FOUND";
         public const string EmailAlreadyVerified = "EMAIL_ALREADY_VERIFIED";
         public const string PhoneAlreadyVerified = "PHONE_ALREADY_VERIFIED";
+
         //public const string PhoneOccupied = "PHONE_NUMBER_OCCUPIED";
         public const string PermissionDenied = "PERMISSION_DENIED";
+
         public const string ChatNotFound = "CHAT_NOT_FOUND";
         public const string MessageNotFound = "MESSAGE_NOT_FOUND";
         public const string UserAlreadyJoinedGroup = "USER_ALREADY_JOINED_GROUP";
@@ -57,5 +59,8 @@ namespace MangoAPI.Domain.Constants
         public const string InvalidOrExpiredRestorePasswordRequest = "INVALID_OR_EXPIRED_RESTORE_PASSWORD_REQUEST";
         public const string UserPublicKeyIsNotGenerated = "USER_PUBLIC_KEY_IS_NOT_GENERATED";
         public const string MaximumOwnerChatsExceeded100 = "MAXIMUM_OWNER_CHATS_EXCEEDED_100";
+
+        // TODO: add to dictionary
+        public const string InvalidEmailConfirmationCode = "INVALID_EMAIL_CONFIRMATION_CODE";
     }
 }
