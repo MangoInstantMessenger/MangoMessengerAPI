@@ -10,7 +10,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Documents
         {
             var allowedExtensions = new List<string>
             {
-                ".jpg", ".JPG", ".txt", ".TXT", ".pdf", ".PDF", ".gif", ".GIF", ".png", ".PNG"
+                "jpg", "JPG", "txt", "TXT", "pdf", "PDF", "gif", "GIF", "png", "PNG"
             };
 
             RuleFor(x => x.FormFile).NotEmpty();
