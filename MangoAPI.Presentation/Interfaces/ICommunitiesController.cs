@@ -1,8 +1,7 @@
-﻿using System;
+﻿using MangoAPI.BusinessLogic.ApiCommands.Communities;
+using Microsoft.AspNetCore.Mvc;
 using System.Threading;
 using System.Threading.Tasks;
-using MangoAPI.BusinessLogic.ApiCommands.Communities;
-using Microsoft.AspNetCore.Mvc;
 
 namespace MangoAPI.Presentation.Interfaces
 {
@@ -13,8 +12,6 @@ namespace MangoAPI.Presentation.Interfaces
         Task<IActionResult> CreateChannelAsync(CreateChannelRequest request, CancellationToken cancellationToken);
 
         Task<IActionResult> CreateChatAsync(CreateChatRequest request, CancellationToken cancellationToken);
-
-        Task<IActionResult> GetCommunityById(Guid id, CancellationToken cancellationToken);
 
         Task<IActionResult> SearchAsync(string displayName, CancellationToken cancellationToken);
 

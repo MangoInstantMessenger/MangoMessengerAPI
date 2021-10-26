@@ -65,6 +65,9 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Messages
             };
 
             chat.UpdatedAt = messageEntity.CreatedAt;
+            chat.LastMessageAuthor = user.DisplayName;
+            chat.LastMessageText = messageEntity.Content;
+            chat.LastMessageTime = messageEntity.CreatedAt.ToShortTimeString();
 
             _postgresDbContext.Chats.Update(chat);
             _postgresDbContext.Messages.Add(messageEntity);

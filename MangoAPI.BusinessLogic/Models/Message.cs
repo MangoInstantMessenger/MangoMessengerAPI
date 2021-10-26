@@ -5,6 +5,9 @@ using System.ComponentModel;
 
 namespace MangoAPI.BusinessLogic.Models
 {
+    /// <summary>
+    /// Model used to display message in chat window.
+    /// </summary>
     public record Message
     {
         [DefaultValue("5547b250-4d14-4a4a-88fd-66a779d4f1d2")]
@@ -19,7 +22,7 @@ namespace MangoAPI.BusinessLogic.Models
         [DefaultValue("Amelit")]
         public string UserDisplayName { get; init; }
 
-        [DefaultValue("Hello World")]
+        [DefaultValue("Hello World!")]
         public string MessageText { get; init; }
 
         [DefaultValue("12:56")]
@@ -31,23 +34,17 @@ namespace MangoAPI.BusinessLogic.Models
         [DefaultValue(false)]
         public bool Self { get; init; }
 
-        [DefaultValue(false)]
-        public bool IsEncrypted { get; init; }
-
-        [DefaultValue(569712)]
-        public int AuthorPublicKey { get; init; }
-
         [DefaultValue("https://localhost:5001/Uploads/amelit_picture.jpg")]
-        public string MessageAuthorPictureUrl { get; set; }
+        public string MessageAuthorPictureUrl { get; init; }
 
         [DefaultValue("https://localhost:5001/Uploads/message_attachment.pdf")]
-        public string MessageAttachmentUrl { get; set; }
+        public string MessageAttachmentUrl { get; init; }
 
         [DefaultValue("John Doe")]
-        public string InReplayToAuthor { get; set; }
+        public string InReplayToAuthor { get; init; }
 
         [DefaultValue("Hello world!")]
-        public string InReplayToText { get; set; }
+        public string InReplayToText { get; init; }
     }
 
     public static class MessageMapper
@@ -63,7 +60,7 @@ namespace MangoAPI.BusinessLogic.Models
                 MessageText = message.Content,
                 CreatedAt = message.CreatedAt.ToShortTimeString(),
                 UpdatedAt = message.UpdatedAt?.ToShortTimeString(),
-                Self = true,
+                Self = message.UserId == user.Id,
                 InReplayToAuthor = message.InReplayToAuthor,
                 InReplayToText = message.InReplayToText,
 

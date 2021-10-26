@@ -1,7 +1,4 @@
-﻿using System;
-using System.Threading;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
 using MangoAPI.BusinessLogic.ApiCommands.Communities;
 using MangoAPI.BusinessLogic.ApiQueries.Communities;
 using MangoAPI.BusinessLogic.Responses;
@@ -13,6 +10,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace MangoAPI.Presentation.Controllers
 {
@@ -28,7 +27,6 @@ namespace MangoAPI.Presentation.Controllers
         public CommunitiesController(IMediator mediator, IMapper mapper) : base(mediator, mapper)
         {
         }
-
 
         /// <summary>
         /// Gets all current user's chats. Requires role: User.
@@ -104,32 +102,6 @@ namespace MangoAPI.Presentation.Controllers
         }
 
         /// <summary>
-        /// Gets chat by ID. Requires role: User.
-        /// </summary>
-        /// <param name="id">User ID of colleague, UUID.</param>
-        /// <param name="cancellationToken">Cancellation token instance.</param>
-        /// <returns>Possible codes: 200, 400, 409.</returns>
-        [HttpGet("{id:guid}")]
-        [SwaggerOperation(Description = "Gets chat by ID. Requires role: User.",
-            Summary = "Gets chat by ID.")]
-        [ProducesResponseType(typeof(GetCommunityByIdResponse), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
-        public async Task<IActionResult> GetCommunityById([FromRoute] Guid id, CancellationToken cancellationToken)
-        {
-            var currentUserId = HttpContext.User.GetUserId();
-
-            var query = new GetCommunityByIdQuery
-            {
-                UserId = currentUserId,
-                ChatId = id,
-            };
-
-            return await RequestAsync(query, cancellationToken);
-        }
-
-
-        /// <summary>
         /// Searches chats by display name. Requires role: User.
         /// </summary>
         /// <param name="displayName">Display name of the chat, string.</param>
@@ -156,7 +128,7 @@ namespace MangoAPI.Presentation.Controllers
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="request"></param>
         /// <param name="cancellationToken"></param>
