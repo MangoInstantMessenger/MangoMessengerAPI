@@ -16,11 +16,15 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Documents
             RuleFor(x => x.FormFile).NotEmpty();
             RuleFor(x => x.FormFile.Length).LessThanOrEqualTo(10 * 1024 * 1024);
 
-            RuleFor(x => x.FormFile.FileName).Must(t =>
-            {
-                var last = t.Split('.').Last();
-                return allowedExtensions.Contains(last);
-            });
+            RuleFor(x => x.FormFile.FileName)
+                .Cascade(CascadeMode.Stop)
+                .NotEmpty()
+                .Must(t =>
+                {
+                    var last = t.Split('.').Last();
+                    return allowedExtensions.Contains(last);
+                })
+                .Length(1, 50);
         }
     }
 }

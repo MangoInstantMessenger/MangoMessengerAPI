@@ -9,7 +9,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Communities
             RuleFor(x => x.ChannelTitle)
                 .Cascade(CascadeMode.Stop)
                 .NotEmpty()
-                .Length(1, 300);
+                .Length(1, 50);
                 
             RuleFor(x => x.ChannelDescription)
                 .Cascade(CascadeMode.Stop)
