@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using System.Net;
+using System.Threading;
 using System.Threading.Tasks;
 using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.DataAccess.Database;
@@ -35,10 +36,10 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
                         ErrorMessage = ResponseMessageCodes.PasswordsAreSame,
                         ErrorDetails = ResponseMessageCodes.ErrorDictionary[ResponseMessageCodes.PasswordsAreSame],
                         Success = false,
-                        StatusCode = 409
+                        StatusCode = HttpStatusCode.Conflict
                     },
                     Response = null,
-                    StatusCode = 409
+                    StatusCode = HttpStatusCode.Conflict
                 };
             }
 
@@ -53,10 +54,10 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
                         ErrorMessage = ResponseMessageCodes.UserNotFound,
                         ErrorDetails = ResponseMessageCodes.ErrorDictionary[ResponseMessageCodes.UserNotFound],
                         Success = false,
-                        StatusCode = 409
+                        StatusCode = HttpStatusCode.Conflict
                     },
                     Response = null,
-                    StatusCode = 409
+                    StatusCode = HttpStatusCode.Conflict
                 };
             }
 
@@ -71,10 +72,10 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
                         ErrorMessage = ResponseMessageCodes.InvalidCredentials,
                         ErrorDetails = ResponseMessageCodes.ErrorDictionary[ResponseMessageCodes.InvalidCredentials],
                         Success = false,
-                        StatusCode = 409
+                        StatusCode = HttpStatusCode.Conflict
                     },
                     Response = null,
-                    StatusCode = 409
+                    StatusCode = HttpStatusCode.Conflict
                 };
             }
 
@@ -91,10 +92,10 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
                         ErrorMessage = ResponseMessageCodes.WeakPassword,
                         ErrorDetails = ResponseMessageCodes.ErrorDictionary[ResponseMessageCodes.WeakPassword],
                         Success = false,
-                        StatusCode = 409
+                        StatusCode = HttpStatusCode.Conflict
                     },
                     Response = null,
-                    StatusCode = 409
+                    StatusCode = HttpStatusCode.Conflict
                 };
             }
 
@@ -104,7 +105,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
             {
                 Error = null,
                 Response = ResponseBase.SuccessResponse,
-                StatusCode = 200
+                StatusCode = HttpStatusCode.OK
             };
         }
     }

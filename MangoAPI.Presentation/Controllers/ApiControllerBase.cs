@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using System.Net;
+using AutoMapper;
 using MangoAPI.BusinessLogic.Responses;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -40,8 +41,8 @@ namespace MangoAPI.Presentation.Controllers
 
             return response.StatusCode switch
             {
-                400 => BadRequest(response.Error),
-                409 => Conflict(response.Error),
+                HttpStatusCode.BadRequest => BadRequest(response.Error),
+                HttpStatusCode.Conflict => Conflict(response.Error),
                 _ => Ok(response.Response)
             };
         }

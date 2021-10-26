@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
+using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -38,12 +39,12 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Communities
                     {
                         ErrorMessage = ResponseMessageCodes.InvalidGroupType,
                         ErrorDetails = ResponseMessageCodes.ErrorDictionary[ResponseMessageCodes.InvalidGroupType],
-                        StatusCode = 409,
+                        StatusCode = HttpStatusCode.Conflict,
                         Success = false,
                     },
 
                     Response = null,
-                    StatusCode = 409
+                    StatusCode = HttpStatusCode.Conflict
                 };
             }
 
@@ -61,10 +62,10 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Communities
                         ErrorMessage = ResponseMessageCodes.MaximumOwnerChatsExceeded100,
                         ErrorDetails = ResponseMessageCodes.ErrorDictionary[ResponseMessageCodes.MaximumOwnerChatsExceeded100],
                         Success = false,
-                        StatusCode = 409
+                        StatusCode = HttpStatusCode.Conflict
                     },
                     Response = null,
-                    StatusCode = 409
+                    StatusCode = HttpStatusCode.Conflict
                 };
             }
 
@@ -95,7 +96,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Communities
             {
                 Error = null,
                 Response = CreateCommunityResponse.FromSuccess(channel),
-                StatusCode = 200
+                StatusCode = HttpStatusCode.OK
             };
         }
     }

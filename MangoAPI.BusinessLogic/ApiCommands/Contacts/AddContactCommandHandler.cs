@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using MangoAPI.BusinessLogic.Responses;
@@ -32,10 +33,10 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Contacts
                         ErrorMessage = ResponseMessageCodes.CannotAddSelfToContacts,
                         ErrorDetails = ResponseMessageCodes.ErrorDictionary[ResponseMessageCodes.CannotAddSelfToContacts],
                         Success = false,
-                        StatusCode = 409
+                        StatusCode = HttpStatusCode.Conflict
                     },
                     Response = null,
-                    StatusCode = 409
+                    StatusCode = HttpStatusCode.Conflict
                 };
             }
 
@@ -51,10 +52,10 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Contacts
                         ErrorMessage = ResponseMessageCodes.ContactAlreadyExist,
                         ErrorDetails = ResponseMessageCodes.ErrorDictionary[ResponseMessageCodes.ContactAlreadyExist],
                         Success = false,
-                        StatusCode = 409
+                        StatusCode = HttpStatusCode.Conflict
                     },
                     Response = null,
-                    StatusCode = 409
+                    StatusCode = HttpStatusCode.Conflict
                 };
             }
 
@@ -72,7 +73,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Contacts
             {
                 Error = null,
                 Response = ResponseBase.SuccessResponse,
-                StatusCode = 200
+                StatusCode = HttpStatusCode.OK
             };
         }
     }

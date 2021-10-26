@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using System.Net;
+using System.Threading;
 using System.Threading.Tasks;
 using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.DataAccess.Database;
@@ -38,10 +39,10 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Communities
                         ErrorMessage = ResponseMessageCodes.ChatNotFound,
                         ErrorDetails = ResponseMessageCodes.ErrorDictionary[ResponseMessageCodes.ChatNotFound],
                         Success = false,
-                        StatusCode = 409
+                        StatusCode = HttpStatusCode.Conflict
                     },
                     Response = null,
-                    StatusCode = 409
+                    StatusCode = HttpStatusCode.Conflict
                 };
             }
 
@@ -51,7 +52,7 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Communities
             {
                 Error = null,
                 Response = GetSecretChatPublicKeyResponse.FromSuccess(user.PublicKey),
-                StatusCode = 200
+                StatusCode = HttpStatusCode.OK
             };
         }
     }

@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using MangoAPI.Application.Services;
@@ -61,7 +62,7 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Contacts
             {
                 Error = null,
                 Response = SearchContactResponse.FromSuccess(searchResult),
-                StatusCode = 200
+                StatusCode = HttpStatusCode.OK
             };
         }
     }

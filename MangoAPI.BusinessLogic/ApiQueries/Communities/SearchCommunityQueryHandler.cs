@@ -3,6 +3,7 @@ using MangoAPI.DataAccess.Database;
 using MangoAPI.Domain.Enums;
 using MediatR;
 using System.Linq;
+using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using MangoAPI.BusinessLogic.Responses;
@@ -80,7 +81,7 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Communities
             {
                 Error = null,
                 Response = SearchCommunityResponse.FromSuccess(chats),
-                StatusCode = 200
+                StatusCode = HttpStatusCode.OK
             };
         }
     }

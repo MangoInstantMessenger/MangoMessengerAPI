@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using System.Net;
+using System.Threading;
 using System.Threading.Tasks;
 using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.DataAccess.Database;
@@ -33,10 +34,10 @@ namespace MangoAPI.BusinessLogic.ApiCommands.UserChats
                         ErrorMessage = ResponseMessageCodes.UserNotFound,
                         ErrorDetails = ResponseMessageCodes.ErrorDictionary[ResponseMessageCodes.UserNotFound],
                         Success = false,
-                        StatusCode = 409
+                        StatusCode = HttpStatusCode.Conflict
                     },
                     Response = null,
-                    StatusCode = 409
+                    StatusCode = HttpStatusCode.Conflict
                 };
             }
 
@@ -53,10 +54,10 @@ namespace MangoAPI.BusinessLogic.ApiCommands.UserChats
                         ErrorMessage = ResponseMessageCodes.ChatNotFound,
                         ErrorDetails = ResponseMessageCodes.ErrorDictionary[ResponseMessageCodes.ChatNotFound],
                         Success = false,
-                        StatusCode = 409
+                        StatusCode = HttpStatusCode.Conflict
                     },
                     Response = null,
-                    StatusCode = 409
+                    StatusCode = HttpStatusCode.Conflict
                 };
             }
 
@@ -79,7 +80,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.UserChats
                 {
                     Error = null,
                     Response = LeaveGroupResponse.FromSuccess(chat.Id),
-                    StatusCode = 200
+                    StatusCode = HttpStatusCode.OK
                 };
             }
 
@@ -93,7 +94,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.UserChats
             {
                 Error = null,
                 Response = LeaveGroupResponse.FromSuccess(chat.Id),
-                StatusCode = 200
+                StatusCode = HttpStatusCode.OK
             };
         }
     }

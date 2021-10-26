@@ -5,6 +5,7 @@ using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -35,10 +36,10 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
                         ErrorMessage = ResponseMessageCodes.UserNotFound,
                         ErrorDetails = ResponseMessageCodes.ErrorDictionary[ResponseMessageCodes.UserNotFound],
                         Success = false,
-                        StatusCode = 409
+                        StatusCode = HttpStatusCode.Conflict
                     },
                     Response = null,
-                    StatusCode = 409
+                    StatusCode = HttpStatusCode.Conflict
                 };
             }
 
@@ -51,10 +52,10 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
                         ErrorMessage = ResponseMessageCodes.PhoneAlreadyVerified,
                         ErrorDetails = ResponseMessageCodes.ErrorDictionary[ResponseMessageCodes.PhoneAlreadyVerified],
                         Success = false,
-                        StatusCode = 409
+                        StatusCode = HttpStatusCode.Conflict
                     },
                     Response = null,
-                    StatusCode = 409
+                    StatusCode = HttpStatusCode.Conflict
                 };
             }
 
@@ -67,10 +68,10 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
                         ErrorMessage = ResponseMessageCodes.InvalidPhoneCode,
                         ErrorDetails = ResponseMessageCodes.ErrorDictionary[ResponseMessageCodes.InvalidPhoneCode],
                         Success = false,
-                        StatusCode = 409
+                        StatusCode = HttpStatusCode.Conflict
                     },
                     Response = null,
-                    StatusCode = 409
+                    StatusCode = HttpStatusCode.Conflict
                 };
             }
 
@@ -96,7 +97,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
             {
                 Error = null,
                 Response = ResponseBase.SuccessResponse,
-                StatusCode = 200
+                StatusCode = HttpStatusCode.OK
             };
         }
     }

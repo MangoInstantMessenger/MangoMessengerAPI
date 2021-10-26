@@ -1,4 +1,5 @@
-﻿using MangoAPI.BusinessLogic.Responses;
+﻿using System.Net;
+using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.DataAccess.Database;
 using MangoAPI.DataAccess.Database.Extensions;
 using MangoAPI.Domain.Constants;
@@ -35,10 +36,10 @@ namespace MangoAPI.BusinessLogic.ApiCommands.PasswordRestoreRequests
                         ErrorMessage = ResponseMessageCodes.PasswordsAreNotSame,
                         ErrorDetails = ResponseMessageCodes.ErrorDictionary[ResponseMessageCodes.PasswordsAreNotSame],
                         Success = false,
-                        StatusCode = 409
+                        StatusCode = HttpStatusCode.Conflict
                     },
                     Response = null,
-                    StatusCode = 409
+                    StatusCode = HttpStatusCode.Conflict
                 };
             }
 
@@ -56,10 +57,10 @@ namespace MangoAPI.BusinessLogic.ApiCommands.PasswordRestoreRequests
                         ErrorDetails = 
                             ResponseMessageCodes.ErrorDictionary[ResponseMessageCodes.InvalidOrExpiredRestorePasswordRequest],
                         Success = false,
-                        StatusCode = 409
+                        StatusCode = HttpStatusCode.Conflict
                     },
                     Response = null,
-                    StatusCode = 409
+                    StatusCode = HttpStatusCode.Conflict
                 };
             }
 
@@ -75,10 +76,10 @@ namespace MangoAPI.BusinessLogic.ApiCommands.PasswordRestoreRequests
                         ErrorMessage = ResponseMessageCodes.UserNotFound,
                         ErrorDetails = ResponseMessageCodes.ErrorDictionary[ResponseMessageCodes.UserNotFound],
                         Success = false,
-                        StatusCode = 409
+                        StatusCode = HttpStatusCode.Conflict
                     },
                     Response = null,
-                    StatusCode = 409
+                    StatusCode = HttpStatusCode.Conflict
                 };
             }
 
@@ -95,10 +96,10 @@ namespace MangoAPI.BusinessLogic.ApiCommands.PasswordRestoreRequests
                         ErrorMessage = ResponseMessageCodes.WeakPassword,
                         ErrorDetails = ResponseMessageCodes.ErrorDictionary[ResponseMessageCodes.WeakPassword],
                         Success = false,
-                        StatusCode = 409
+                        StatusCode = HttpStatusCode.Conflict
                     },
                     Response = null,
-                    StatusCode = 409
+                    StatusCode = HttpStatusCode.Conflict
                 };
             }
 
@@ -110,7 +111,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.PasswordRestoreRequests
             {
                 Error = null,
                 Response = ResponseBase.SuccessResponse,
-                StatusCode = 200
+                StatusCode = HttpStatusCode.OK
             };
         }
     }

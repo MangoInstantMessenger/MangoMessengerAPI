@@ -7,6 +7,7 @@ using MediatR;
 using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
+using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
@@ -42,10 +43,10 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
                         ErrorMessage = ResponseMessageCodes.InvalidEmail,
                         ErrorDetails = ResponseMessageCodes.ErrorDictionary[ResponseMessageCodes.InvalidEmail],
                         Success = false,
-                        StatusCode = 409
+                        StatusCode = HttpStatusCode.Conflict
                     },
                     Response = null,
-                    StatusCode = 409
+                    StatusCode = HttpStatusCode.Conflict
                 };
             }
 
@@ -63,10 +64,10 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
                         ErrorMessage = ResponseMessageCodes.UserAlreadyExists,
                         ErrorDetails = ResponseMessageCodes.ErrorDictionary[ResponseMessageCodes.UserAlreadyExists],
                         Success = false,
-                        StatusCode = 409
+                        StatusCode = HttpStatusCode.Conflict
                     },
                     Response = null,
-                    StatusCode = 409
+                    StatusCode = HttpStatusCode.Conflict
                 };
             }
 
@@ -92,10 +93,10 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
                         ErrorMessage = ResponseMessageCodes.WeakPassword,
                         ErrorDetails = ResponseMessageCodes.ErrorDictionary[ResponseMessageCodes.WeakPassword],
                         Success = false,
-                        StatusCode = 409
+                        StatusCode = HttpStatusCode.Conflict
                     },
                     Response = null,
-                    StatusCode = 409
+                    StatusCode = HttpStatusCode.Conflict
                 };
             }
 
@@ -118,10 +119,10 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
                         ErrorMessage = ResponseMessageCodes.RefreshTokenLifeTimeError,
                         ErrorDetails = ResponseMessageCodes.ErrorDictionary[ResponseMessageCodes.RefreshTokenLifeTimeError],
                         Success = false,
-                        StatusCode = 409
+                        StatusCode = HttpStatusCode.Conflict
                     },
                     Response = null,
-                    StatusCode = 409
+                    StatusCode = HttpStatusCode.Conflict
                 };
             }
 
@@ -155,7 +156,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
             {
                 Error = null,
                 Response = TokensResponse.FromSuccess(jwtToken, newSession.RefreshToken, newUser.Id, expires),
-                StatusCode = 200
+                StatusCode = HttpStatusCode.OK
             };
         }
     }

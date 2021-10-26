@@ -1,4 +1,6 @@
-﻿namespace MangoAPI.BusinessLogic.Responses
+﻿using System.Net;
+
+namespace MangoAPI.BusinessLogic.Responses
 {
     public record Result<TResponse>
     {
@@ -6,6 +8,6 @@
 
         public ErrorResponse Error { get; init; }
 
-        public int StatusCode { get; init; }
+        public HttpStatusCode StatusCode { get; init; }
     }
 }

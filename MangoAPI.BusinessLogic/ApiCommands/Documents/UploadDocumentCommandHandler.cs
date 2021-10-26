@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using MangoAPI.BusinessLogic.Responses;
@@ -47,7 +48,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Documents
             {
                 Error = null,
                 Response = UploadDocumentResponse.FromSuccess(documentEntity.FileName, fileUrl),
-                StatusCode = 200
+                StatusCode = HttpStatusCode.OK
             };
         }
 

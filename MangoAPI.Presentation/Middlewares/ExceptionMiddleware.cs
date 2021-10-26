@@ -53,7 +53,7 @@ namespace MangoAPI.Presentation.Middlewares
                 Success = false,
                 ErrorMessage = errorContext.ErrorMessage,
                 ErrorDetails = errorContext.Exception.StackTrace,
-                StatusCode = (int)errorContext.StatusCode,
+                StatusCode = errorContext.StatusCode,
             }.ToString());
         }
     }

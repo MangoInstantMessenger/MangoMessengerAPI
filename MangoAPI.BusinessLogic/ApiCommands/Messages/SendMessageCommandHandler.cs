@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
+using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using MangoAPI.BusinessLogic.Responses;
@@ -44,10 +45,10 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Messages
                         ErrorMessage = ResponseMessageCodes.UserNotFound,
                         ErrorDetails = ResponseMessageCodes.ErrorDictionary[ResponseMessageCodes.UserNotFound],
                         Success = false,
-                        StatusCode = 409
+                        StatusCode = HttpStatusCode.Conflict
                     },
                     Response = null,
-                    StatusCode = 409
+                    StatusCode = HttpStatusCode.Conflict
                 };
             }
 
@@ -63,10 +64,10 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Messages
                         ErrorMessage = ResponseMessageCodes.ChatNotFound,
                         ErrorDetails = ResponseMessageCodes.ErrorDictionary[ResponseMessageCodes.ChatNotFound],
                         Success = false,
-                        StatusCode = 409
+                        StatusCode = HttpStatusCode.Conflict
                     },
                     Response = null,
-                    StatusCode = 409
+                    StatusCode = HttpStatusCode.Conflict
                 };
             }
 
@@ -81,10 +82,10 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Messages
                         ErrorMessage = ResponseMessageCodes.PermissionDenied,
                         ErrorDetails = ResponseMessageCodes.ErrorDictionary[ResponseMessageCodes.PermissionDenied],
                         Success = false,
-                        StatusCode = 409
+                        StatusCode = HttpStatusCode.Conflict
                     },
                     Response = null,
-                    StatusCode = 409
+                    StatusCode = HttpStatusCode.Conflict
                 };
             }
 
@@ -116,7 +117,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Messages
             {
                 Error = null,
                 Response = SendMessageResponse.FromSuccess(messageEntity.Id),
-                StatusCode = 200
+                StatusCode = HttpStatusCode.OK
             };
         }
 

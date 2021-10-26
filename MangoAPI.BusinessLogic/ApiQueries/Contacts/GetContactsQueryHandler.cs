@@ -4,6 +4,7 @@ using MangoAPI.DataAccess.Database;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
+using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using MangoAPI.BusinessLogic.Responses;
@@ -45,7 +46,7 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Contacts
             {
                 Error = null,
                 Response = GetContactsResponse.FromSuccess(contacts),
-                StatusCode = 200
+                StatusCode = HttpStatusCode.OK
             };
         }
     }

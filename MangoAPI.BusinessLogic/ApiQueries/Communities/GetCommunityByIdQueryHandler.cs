@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using MangoAPI.Application.Services;
@@ -38,10 +39,10 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Communities
                         ErrorMessage = ResponseMessageCodes.ChatNotFound,
                         ErrorDetails = ResponseMessageCodes.ErrorDictionary[ResponseMessageCodes.ChatNotFound],
                         Success = false,
-                        StatusCode = 409
+                        StatusCode = HttpStatusCode.Conflict
                     },
                     Response = null,
-                    StatusCode = 409
+                    StatusCode = HttpStatusCode.Conflict
                 };
             }
 
@@ -59,10 +60,10 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Communities
                             ErrorMessage = ResponseMessageCodes.ChatNotFound,
                             ErrorDetails = ResponseMessageCodes.ErrorDictionary[ResponseMessageCodes.ChatNotFound],
                             Success = false,
-                            StatusCode = 409
+                            StatusCode = HttpStatusCode.Conflict
                         },
                         Response = null,
-                        StatusCode = 409
+                        StatusCode = HttpStatusCode.Conflict
                     };
 
                 case null when chatEntity.CommunityType == (int) CommunityType.PrivateChannel:
@@ -73,10 +74,10 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Communities
                             ErrorMessage = ResponseMessageCodes.ChatNotFound,
                             ErrorDetails = ResponseMessageCodes.ErrorDictionary[ResponseMessageCodes.ChatNotFound],
                             Success = false,
-                            StatusCode = 409
+                            StatusCode = HttpStatusCode.Conflict
                         },
                         Response = null,
-                        StatusCode = 409
+                        StatusCode = HttpStatusCode.Conflict
                     };
             }
 
@@ -122,7 +123,7 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Communities
             {
                 Error = null,
                 Response = GetCommunityByIdResponse.FromSuccess(chat),
-                StatusCode = 200
+                StatusCode = HttpStatusCode.OK
             };
         }
     }

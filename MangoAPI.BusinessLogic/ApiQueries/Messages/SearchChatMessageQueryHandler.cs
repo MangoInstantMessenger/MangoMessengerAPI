@@ -5,6 +5,7 @@ using MangoAPI.Domain.Constants;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
+using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using MangoAPI.BusinessLogic.Responses;
@@ -34,10 +35,10 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Messages
                         ErrorMessage = ResponseMessageCodes.PermissionDenied,
                         ErrorDetails = ResponseMessageCodes.ErrorDictionary[ResponseMessageCodes.PermissionDenied],
                         Success = false,
-                        StatusCode = 409
+                        StatusCode = HttpStatusCode.Conflict
                     },
                     Response = null,
-                    StatusCode = 409
+                    StatusCode = HttpStatusCode.Conflict
                 };
             }
 
@@ -80,7 +81,7 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Messages
             {
                 Error = null,
                 Response = SearchChatMessagesResponse.FromSuccess(result),
-                StatusCode = 200
+                StatusCode = HttpStatusCode.OK
             };
         }
     }

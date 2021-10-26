@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using MangoAPI.BusinessLogic.Responses;
@@ -35,10 +36,10 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
                         ErrorMessage = ResponseMessageCodes.UserNotFound,
                         ErrorDetails = ResponseMessageCodes.ErrorDictionary[ResponseMessageCodes.UserNotFound],
                         Success = false,
-                        StatusCode = 409
+                        StatusCode = HttpStatusCode.Conflict
                     },
                     Response = null,
-                    StatusCode = 409
+                    StatusCode = HttpStatusCode.Conflict
                 };
             }
 
@@ -51,10 +52,10 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
                         ErrorMessage = ResponseMessageCodes.InvalidEmail,
                         ErrorDetails = ResponseMessageCodes.ErrorDictionary[ResponseMessageCodes.InvalidEmail],
                         Success = false,
-                        StatusCode = 409
+                        StatusCode = HttpStatusCode.Conflict
                     },
                     Response = null,
-                    StatusCode = 409
+                    StatusCode = HttpStatusCode.Conflict
                 };
             }
 
@@ -67,16 +68,28 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
                         ErrorMessage = ResponseMessageCodes.EmailAlreadyVerified,
                         ErrorDetails = ResponseMessageCodes.ErrorDictionary[ResponseMessageCodes.EmailAlreadyVerified],
                         Success = false,
-                        StatusCode = 409
+                        StatusCode = HttpStatusCode.Conflict
                     },
                     Response = null,
-                    StatusCode = 409
+                    StatusCode = HttpStatusCode.Conflict
                 };
             }
 
             if (user.EmailCode != request.EmailCode)
             {
-                throw new BusinessException(ResponseMessageCodes.InvalidEmailConfirmationCode);
+                return new Result<ResponseBase>
+                {
+                    Error = new ErrorResponse
+                    {
+                        ErrorMessage = ResponseMessageCodes.InvalidEmailConfirmationCode,
+                        ErrorDetails =
+                            ResponseMessageCodes.ErrorDictionary[ResponseMessageCodes.InvalidEmailConfirmationCode],
+                        Success = false,
+                        StatusCode = HttpStatusCode.Conflict
+                    },
+                    Response = null,
+                    StatusCode = HttpStatusCode.Conflict
+                };
             }
 
             user.EmailConfirmed = true;
@@ -100,7 +113,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
             {
                 Error = null,
                 Response = ResponseBase.SuccessResponse,
-                StatusCode = 200
+                StatusCode = HttpStatusCode.OK
             };
         }
     }

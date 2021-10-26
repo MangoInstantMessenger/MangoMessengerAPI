@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
+using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -42,10 +43,10 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Sessions
                         ErrorMessage = ResponseMessageCodes.InvalidCredentials,
                         ErrorDetails = ResponseMessageCodes.ErrorDictionary[ResponseMessageCodes.InvalidCredentials],
                         Success = false,
-                        StatusCode = 409
+                        StatusCode = HttpStatusCode.Conflict
                     },
                     Response = null,
-                    StatusCode = 409
+                    StatusCode = HttpStatusCode.Conflict
                 };
             }
 
@@ -60,10 +61,10 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Sessions
                         ErrorMessage = ResponseMessageCodes.InvalidCredentials,
                         ErrorDetails = ResponseMessageCodes.ErrorDictionary[ResponseMessageCodes.InvalidCredentials],
                         Success = false,
-                        StatusCode = 409
+                        StatusCode = HttpStatusCode.Conflict
                     },
                     Response = null,
-                    StatusCode = 409
+                    StatusCode = HttpStatusCode.Conflict
                 };
             }
 
@@ -78,10 +79,10 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Sessions
                         ErrorMessage = ResponseMessageCodes.RefreshTokenLifeTimeError,
                         ErrorDetails = ResponseMessageCodes.ErrorDictionary[ResponseMessageCodes.RefreshTokenLifeTimeError],
                         Success = false,
-                        StatusCode = 409
+                        StatusCode = HttpStatusCode.Conflict
                     },
                     Response = null,
-                    StatusCode = 409
+                    StatusCode = HttpStatusCode.Conflict
                 };
             }
 
@@ -120,7 +121,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Sessions
             {
                 Error = null,
                 Response = TokensResponse.FromSuccess(jwtToken, session.RefreshToken, user.Id, expires),
-                StatusCode = 200
+                StatusCode = HttpStatusCode.OK
             };
         }
     }

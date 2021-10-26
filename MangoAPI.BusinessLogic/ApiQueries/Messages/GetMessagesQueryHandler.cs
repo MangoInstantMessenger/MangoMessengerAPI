@@ -4,6 +4,7 @@ using MangoAPI.Domain.Constants;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
+using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using MangoAPI.BusinessLogic.Responses;
@@ -55,7 +56,7 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Messages
             {
                 Error = null,
                 Response = GetMessagesResponse.FromSuccess(messages),
-                StatusCode = 200
+                StatusCode = HttpStatusCode.OK
             };
         }
     }

@@ -1,4 +1,5 @@
-﻿using MangoAPI.BusinessLogic.Responses;
+﻿using System.Net;
+using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.DataAccess.Database;
 using MangoAPI.Domain.Constants;
 using MangoAPI.Domain.Enums;
@@ -39,10 +40,10 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Communities
                         ErrorMessage = ResponseMessageCodes.ChatNotFound,
                         ErrorDetails = ResponseMessageCodes.ErrorDictionary[ResponseMessageCodes.ChatNotFound],
                         Success = false,
-                        StatusCode = 409
+                        StatusCode = HttpStatusCode.Conflict
                     },
                     Response = null,
-                    StatusCode = 409
+                    StatusCode = HttpStatusCode.Conflict
                 };
             }
 
@@ -55,7 +56,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Communities
             {
                 Error = null,
                 Response = ResponseBase.SuccessResponse,
-                StatusCode = 200
+                StatusCode = HttpStatusCode.OK
             };
         }
     }

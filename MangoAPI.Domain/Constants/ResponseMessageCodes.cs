@@ -30,6 +30,7 @@ namespace MangoAPI.Domain.Constants
             { "USER_PUBLIC_KEY_IS_NOT_GENERATED", "User has not public key" },
             { "INVALID_OR_EXPIRED_RESTORE_PASSWORD_REQUEST", "Invalid or expired restore password request" },
             { "MAXIMUM_OWNER_CHATS_EXCEEDED_100", "The count of admins in the chat should not exceed 100 people" },
+            { "INVALID_EMAIL_CONFIRMATION_CODE", "Email confirmation code is not valid" }
         };
 
         public const string Success = "SUCCESS";
@@ -58,5 +59,6 @@ namespace MangoAPI.Domain.Constants
         public const string InvalidOrExpiredRestorePasswordRequest = "INVALID_OR_EXPIRED_RESTORE_PASSWORD_REQUEST";
         public const string UserPublicKeyIsNotGenerated = "USER_PUBLIC_KEY_IS_NOT_GENERATED";
         public const string MaximumOwnerChatsExceeded100 = "MAXIMUM_OWNER_CHATS_EXCEEDED_100";
+        public const string InvalidEmailConfirmationCode = "INVALID_EMAIL_CONFIRMATION_CODE";
     }
 }

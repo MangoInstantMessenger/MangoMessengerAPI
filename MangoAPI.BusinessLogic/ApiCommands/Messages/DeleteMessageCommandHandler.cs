@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using System.Net;
+using System.Threading;
 using System.Threading.Tasks;
 using MangoAPI.BusinessLogic.HubConfig;
 using MangoAPI.BusinessLogic.Responses;
@@ -38,10 +39,10 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Messages
                         ErrorMessage = ResponseMessageCodes.MessageNotFound,
                         ErrorDetails = ResponseMessageCodes.ErrorDictionary[ResponseMessageCodes.MessageNotFound],
                         Success = false,
-                        StatusCode = 409
+                        StatusCode = HttpStatusCode.Conflict
                     },
                     Response = null,
-                    StatusCode = 409
+                    StatusCode = HttpStatusCode.Conflict
                 };
             }
 
@@ -54,7 +55,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Messages
             {
                 Error = null,
                 Response = DeleteMessageResponse.FromSuccess(message),
-                StatusCode = 200
+                StatusCode = HttpStatusCode.OK
             };
         }
     }

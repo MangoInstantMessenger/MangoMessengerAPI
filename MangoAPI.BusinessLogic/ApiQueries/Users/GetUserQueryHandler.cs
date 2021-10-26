@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using System.Net;
 using MangoAPI.DataAccess.Database;
 using MangoAPI.Domain.Constants;
 using MediatR;
@@ -55,10 +56,10 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Users
                         ErrorMessage = ResponseMessageCodes.UserNotFound,
                         ErrorDetails = ResponseMessageCodes.ErrorDictionary[ResponseMessageCodes.UserNotFound],
                         Success = false,
-                        StatusCode = 409
+                        StatusCode = HttpStatusCode.Conflict
                     },
                     Response = null,
-                    StatusCode = 409
+                    StatusCode = HttpStatusCode.Conflict
                 };
             }
 
@@ -66,7 +67,7 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Users
             {
                 Error = null,
                 Response = GetUserResponse.FromSuccess(user),
-                StatusCode = 200
+                StatusCode = HttpStatusCode.OK
             };
         }
     }

@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel;
+using System.Net;
 using System.Text.Json;
 
 namespace MangoAPI.BusinessLogic.Responses
@@ -12,7 +13,7 @@ namespace MangoAPI.BusinessLogic.Responses
         public string ErrorDetails { get; init; }
         
         [DefaultValue(409)]
-        public int StatusCode { get; init; }
+        public HttpStatusCode StatusCode { get; init; }
         
         [DefaultValue(false)]
         public bool Success { get; init; }

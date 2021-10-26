@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
+using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using MangoAPI.BusinessLogic.Responses;
@@ -38,15 +39,15 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Communities
             {
                 return new Result<CreateCommunityResponse>
                 {
-                    Error = new ErrorResponse()
+                    Error = new ErrorResponse
                     {
                         ErrorMessage = ResponseMessageCodes.UserNotFound,
                         ErrorDetails = ResponseMessageCodes.ErrorDictionary[ResponseMessageCodes.UserNotFound],
                         Success = false,
-                        StatusCode = 409
+                        StatusCode = HttpStatusCode.Conflict
                     },
                     Response = null,
-                    StatusCode = 409
+                    StatusCode = HttpStatusCode.Conflict
                 };
             }
 
@@ -54,15 +55,15 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Communities
             {
                 return new Result<CreateCommunityResponse>
                 {
-                    Error = new ErrorResponse()
+                    Error = new ErrorResponse
                     {
                         ErrorMessage = ResponseMessageCodes.UserPublicKeyIsNotGenerated,
                         ErrorDetails = ResponseMessageCodes.ErrorDictionary[ResponseMessageCodes.UserPublicKeyIsNotGenerated],
                         Success = false,
-                        StatusCode = 409
+                        StatusCode = HttpStatusCode.Conflict
                     },
                     Response = null,
-                    StatusCode = 409
+                    StatusCode = HttpStatusCode.Conflict
                 };
             }
 
@@ -70,15 +71,15 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Communities
             {
                 return new Result<CreateCommunityResponse>
                 {
-                    Error = new ErrorResponse()
+                    Error = new ErrorResponse
                     {
                         ErrorMessage = ResponseMessageCodes.CannotCreateSelfChat,
                         ErrorDetails = ResponseMessageCodes.ErrorDictionary[ResponseMessageCodes.CannotCreateSelfChat],
                         Success = false,
-                        StatusCode = 409
+                        StatusCode = HttpStatusCode.Conflict
                     },
                     Response = null,
-                    StatusCode = 409
+                    StatusCode = HttpStatusCode.Conflict
                 };
             }
 
@@ -99,7 +100,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Communities
                 {
                     Error = null,
                     Response = CreateCommunityResponse.FromSuccess(existingChat),
-                    StatusCode = 200
+                    StatusCode = HttpStatusCode.OK
                 };
             }
 
@@ -136,7 +137,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Communities
             {
                 Error = null,
                 Response = CreateCommunityResponse.FromSuccess(chatEntity),
-                StatusCode = 200
+                StatusCode = HttpStatusCode.OK
             };
         }
     }

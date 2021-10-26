@@ -5,6 +5,7 @@ using MangoAPI.Domain.Constants;
 using MediatR;
 using Microsoft.AspNetCore.SignalR;
 using System;
+using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using MangoAPI.BusinessLogic.Models;
@@ -40,10 +41,10 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Messages
                         ErrorMessage = ResponseMessageCodes.MessageNotFound,
                         ErrorDetails = ResponseMessageCodes.ErrorDictionary[ResponseMessageCodes.MessageNotFound],
                         Success = false,
-                        StatusCode = 409
+                        StatusCode = HttpStatusCode.Conflict
                     },
                     Response = null,
-                    StatusCode = 409
+                    StatusCode = HttpStatusCode.Conflict
                 };
             }
 
@@ -67,7 +68,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Messages
             {
                 Error = null,
                 Response = ResponseBase.SuccessResponse,
-                StatusCode = 200
+                StatusCode = HttpStatusCode.OK
             };
         }
     }
