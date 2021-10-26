@@ -40,6 +40,11 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
                 throw new BusinessException(ResponseMessageCodes.EmailAlreadyVerified);
             }
 
+            if (user.EmailCode != request.EmailCode)
+            {
+                throw new BusinessException(ResponseMessageCodes.InvalidEmailConfirmationCode);
+            }
+
             user.EmailConfirmed = true;
 
             var role = new IdentityUserRole<Guid>
