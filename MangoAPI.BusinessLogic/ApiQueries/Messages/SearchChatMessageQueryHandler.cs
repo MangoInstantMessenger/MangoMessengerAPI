@@ -43,7 +43,6 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Messages
                     CreatedAt = x.CreatedAt.ToShortTimeString(),
                     UpdatedAt = x.UpdatedAt.HasValue ? x.UpdatedAt.Value.ToShortTimeString() : null,
                     Self = x.User.Id == request.UserId,
-                    IsEncrypted = x.IsEncrypted,
                     InReplayToAuthor = x.InReplayToAuthor,
                     InReplayToText = x.InReplayToText,
 

@@ -52,13 +52,15 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Communities
                                 UserDisplayName = messageEntity.User.DisplayName,
                                 MessageText = messageEntity.Content,
                                 CreatedAt = messageEntity.CreatedAt.ToShortTimeString(),
+
                                 UpdatedAt = messageEntity.UpdatedAt.HasValue
                                     ? messageEntity.UpdatedAt.Value.ToShortTimeString()
                                     : null,
-                                IsEncrypted = messageEntity.IsEncrypted,
+
                                 MessageAuthorPictureUrl = messageEntity.User.Image != null
                                     ? $"{EnvironmentConstants.BackendAddress}Uploads/{messageEntity.User.Image}"
                                     : null,
+
                                 Self = messageEntity.UserId == request.UserId,
                             }).Last()
                         : null,

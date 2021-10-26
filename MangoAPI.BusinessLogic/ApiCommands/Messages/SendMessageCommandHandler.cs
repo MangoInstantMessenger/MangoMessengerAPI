@@ -58,7 +58,6 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Messages
                 ChatId = request.ChatId,
                 UserId = request.UserId,
                 Content = request.MessageText,
-                IsEncrypted = request.IsEncrypted,
                 CreatedAt = DateTime.UtcNow,
                 Attachment = request.AttachmentUrl,
                 InReplayToAuthor = request.InReplayToAuthor,

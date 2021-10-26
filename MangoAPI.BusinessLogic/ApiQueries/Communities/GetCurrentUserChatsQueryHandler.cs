@@ -53,7 +53,6 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Communities
                                 MessageText = messageEntity.Content,
                                 CreatedAt = messageEntity.CreatedAt.ToShortTimeString(),
                                 UpdatedAt = messageEntity.UpdatedAt.HasValue ? messageEntity.UpdatedAt.Value.ToShortTimeString() : null,
-                                IsEncrypted = messageEntity.IsEncrypted,
                                 MessageAuthorPictureUrl = messageEntity.User.Image != null
                                     ? $"{EnvironmentConstants.BackendAddress}Uploads/{messageEntity.User.Image}"
                                     : null,

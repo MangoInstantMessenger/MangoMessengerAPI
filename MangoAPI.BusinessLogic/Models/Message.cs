@@ -64,7 +64,6 @@ namespace MangoAPI.BusinessLogic.Models
                 CreatedAt = message.CreatedAt.ToShortTimeString(),
                 UpdatedAt = message.UpdatedAt?.ToShortTimeString(),
                 Self = true,
-                IsEncrypted = message.IsEncrypted,
                 InReplayToAuthor = message.InReplayToAuthor,
                 InReplayToText = message.InReplayToText,
 

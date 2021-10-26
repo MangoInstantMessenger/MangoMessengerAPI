@@ -36,7 +36,6 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Messages
                     CreatedAt = messageEntity.CreatedAt.ToShortTimeString(),
                     UserDisplayName = messageEntity.User.DisplayName,
                     Self = messageEntity.User.Id == request.UserId,
-                    IsEncrypted = messageEntity.IsEncrypted,
                     InReplayToAuthor = messageEntity.InReplayToAuthor,
                     InReplayToText = messageEntity.InReplayToText,
 
