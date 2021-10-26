@@ -14,8 +14,6 @@ namespace MangoAPI.Domain.Entities
 
         public bool IsEncrypted { get; set; }
 
-        public int AuthorPublicKey { get; set; }
-
         public string InReplayToAuthor { get; set; }
 
         public string InReplayToText { get; set; }

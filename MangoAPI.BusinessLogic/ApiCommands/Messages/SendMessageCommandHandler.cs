@@ -59,7 +59,6 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Messages
                 UserId = request.UserId,
                 Content = request.MessageText,
                 IsEncrypted = request.IsEncrypted,
-                AuthorPublicKey = user.PublicKey,
                 CreatedAt = DateTime.UtcNow,
                 Attachment = request.AttachmentUrl,
                 InReplayToAuthor = request.InReplayToAuthor,

@@ -78,7 +78,6 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Communities
                         CreatedAt = x.CreatedAt.ToShortTimeString(),
                         UpdatedAt = x.UpdatedAt?.ToShortTimeString(),
                         IsEncrypted = x.IsEncrypted,
-                        AuthorPublicKey = x.AuthorPublicKey,
                         MessageAuthorPictureUrl = StringService.GetDocumentUrl(x.User.Image),
                     }).Last()
                     : null,

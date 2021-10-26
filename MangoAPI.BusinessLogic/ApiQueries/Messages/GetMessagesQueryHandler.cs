@@ -37,7 +37,6 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Messages
                     UserDisplayName = messageEntity.User.DisplayName,
                     Self = messageEntity.User.Id == request.UserId,
                     IsEncrypted = messageEntity.IsEncrypted,
-                    AuthorPublicKey = messageEntity.AuthorPublicKey,
                     InReplayToAuthor = messageEntity.InReplayToAuthor,
                     InReplayToText = messageEntity.InReplayToText,
 

@@ -65,12 +65,13 @@ namespace MangoAPI.BusinessLogic.Models
                 UpdatedAt = message.UpdatedAt?.ToShortTimeString(),
                 Self = true,
                 IsEncrypted = message.IsEncrypted,
-                AuthorPublicKey = message.AuthorPublicKey,
                 InReplayToAuthor = message.InReplayToAuthor,
                 InReplayToText = message.InReplayToText,
+
                 MessageAuthorPictureUrl = user.Image != null
                     ? $"{EnvironmentConstants.BackendAddress}Uploads/{user.Image}"
                     : null,
+
                 MessageAttachmentUrl = message.Attachment != null
                     ? $"{EnvironmentConstants.BackendAddress}Uploads/{message.Attachment}"
                     : null,

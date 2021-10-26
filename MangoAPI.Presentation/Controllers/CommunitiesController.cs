@@ -156,31 +156,6 @@ namespace MangoAPI.Presentation.Controllers
         }
 
         /// <summary>
-        /// Returns secret chat public key. Required role: User
-        /// </summary>
-        /// <param name="chatId">ID of the chat, Guid.</param>
-        /// <param name="cancellationToken">Cancellation token instance.</param>
-        /// <returns>Possible codes: 200, 400, 409.</returns>
-        [HttpGet("chats/public-key/{chatId:guid}")]
-        [SwaggerOperation(Description = "Returns secret chat public key. Required role: User",
-            Summary = "Returns secret chat public key.")]
-        [ProducesResponseType(typeof(GetSecretChatPublicKeyResponse), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
-        public async Task<IActionResult> GetSecretChatPublicKey([FromRoute] Guid chatId, CancellationToken cancellationToken)
-        {
-            var userId = HttpContext.User.GetUserId();
-
-            var query = new GetSecretChatPublicKeyQuery
-            {
-                ChatId = chatId,
-                UserId = userId
-            };
-
-            return await RequestAsync(query, cancellationToken);
-        }
-        
-        /// <summary>
         /// 
         /// </summary>
         /// <param name="request"></param>
