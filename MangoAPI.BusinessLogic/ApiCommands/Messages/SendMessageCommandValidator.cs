@@ -10,6 +10,24 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Messages
                 .Cascade(CascadeMode.Stop)
                 .NotEmpty()
                 .Length(1, 300);
+
+            RuleFor(x => x.InReplayToAuthor)
+                .Cascade(CascadeMode.Stop)
+                .NotEmpty()
+                .Length(1, 50);
+
+            RuleFor(x => x.InReplayToText)
+                .Cascade(CascadeMode.Stop)
+                .NotEmpty()
+                .Length(1, 300);
+
+            RuleFor(x => x.AttachmentUrl)
+                .Cascade(CascadeMode.Stop)
+                .NotEmpty()
+                .Length(1, 150);
+
+            RuleFor(x => x.ChatId).NotEmpty();
+            RuleFor(x => x.UserId).NotEmpty();
         }
     }
 }

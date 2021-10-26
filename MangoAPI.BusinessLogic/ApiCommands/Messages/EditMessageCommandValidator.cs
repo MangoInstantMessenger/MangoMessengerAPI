@@ -10,6 +10,9 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Messages
                 .Cascade(CascadeMode.Stop)
                 .NotEmpty()
                 .Length(1, 300);
+
+            RuleFor(x => x.MessageId).NotEmpty();
+            RuleFor(x => x.UserId).NotEmpty();
         }
     }
 }
