@@ -59,22 +59,6 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
                 };
             }
 
-            if (user.EmailConfirmed)
-            {
-                return new Result<ResponseBase>
-                {
-                    Error = new ErrorResponse
-                    {
-                        ErrorMessage = ResponseMessageCodes.EmailAlreadyVerified,
-                        ErrorDetails = ResponseMessageCodes.ErrorDictionary[ResponseMessageCodes.EmailAlreadyVerified],
-                        Success = false,
-                        StatusCode = HttpStatusCode.Conflict
-                    },
-                    Response = null,
-                    StatusCode = HttpStatusCode.Conflict
-                };
-            }
-
             if (user.EmailCode != request.EmailCode)
             {
                 return new Result<ResponseBase>
@@ -84,6 +68,22 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
                         ErrorMessage = ResponseMessageCodes.InvalidEmailConfirmationCode,
                         ErrorDetails =
                             ResponseMessageCodes.ErrorDictionary[ResponseMessageCodes.InvalidEmailConfirmationCode],
+                        Success = false,
+                        StatusCode = HttpStatusCode.Conflict
+                    },
+                    Response = null,
+                    StatusCode = HttpStatusCode.Conflict
+                };
+            }
+
+            if (user.EmailConfirmed)
+            {
+                return new Result<ResponseBase>
+                {
+                    Error = new ErrorResponse
+                    {
+                        ErrorMessage = ResponseMessageCodes.EmailAlreadyVerified,
+                        ErrorDetails = ResponseMessageCodes.ErrorDictionary[ResponseMessageCodes.EmailAlreadyVerified],
                         Success = false,
                         StatusCode = HttpStatusCode.Conflict
                     },
