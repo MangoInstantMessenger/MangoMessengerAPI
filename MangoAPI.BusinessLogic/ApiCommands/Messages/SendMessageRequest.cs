@@ -35,9 +35,9 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Messages
         public string AttachmentUrl { get; }
 
         [DefaultValue("John Doe")]
-        public string InReplayToAuthor { get; set; }
+        public string InReplayToAuthor { get; }
 
         [DefaultValue("Hello world!")]
-        public string InReplayToText { get; set; }
+        public string InReplayToText { get; }
     }
 }
