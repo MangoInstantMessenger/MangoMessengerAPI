@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using FluentAssertions;
 using MangoAPI.Application.Interfaces;
 using MangoAPI.BusinessLogic.ApiCommands.Users;
-using MangoAPI.BusinessLogic.BusinessExceptions;
 using MangoAPI.Domain.Constants;
 using MangoAPI.Domain.Entities;
 using Microsoft.AspNetCore.Identity;
@@ -65,6 +64,8 @@ namespace MangoAPI.Tests.ApiCommandsTests.Users
             var result = await handler.Handle(command, CancellationToken.None);
 
             result.Response.Success.Should().BeTrue();
+            result.Error.Should().BeNull();
+            
         }
 
         [Test]
@@ -110,10 +111,11 @@ namespace MangoAPI.Tests.ApiCommandsTests.Users
                 TermsAccepted = true,
             };
 
-            Func<Task> result = async () => await handler.Handle(command, CancellationToken.None);
+            var result = await handler.Handle(command, CancellationToken.None);
 
-            await result.Should().ThrowAsync<BusinessException>()
-                .WithMessage(ResponseMessageCodes.InvalidEmail);
+            result.Error.Success.Should().BeFalse();
+            result.Error.ErrorMessage.Should().Be(ResponseMessageCodes.InvalidEmail);
+            result.Response.Should().BeNull();
         }
 
         [Test]
@@ -160,10 +162,11 @@ namespace MangoAPI.Tests.ApiCommandsTests.Users
                 TermsAccepted = true,
             };
 
-            Func<Task> result = async () => await handler.Handle(command, CancellationToken.None);
+            var result = await handler.Handle(command, CancellationToken.None);
 
-            await result.Should().ThrowAsync<BusinessException>()
-                .WithMessage(ResponseMessageCodes.UserAlreadyExists);
+            result.Error.Success.Should().BeFalse();
+            result.Error.ErrorMessage.Should().Be(ResponseMessageCodes.UserAlreadyExists);
+            result.Response.Should().BeNull();
         }
 
         //[Test]

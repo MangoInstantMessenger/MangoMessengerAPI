@@ -5,9 +5,7 @@ using System.Threading.Tasks;
 using FluentAssertions;
 using MangoAPI.Application.Interfaces;
 using MangoAPI.BusinessLogic.ApiCommands.Sessions;
-using MangoAPI.BusinessLogic.BusinessExceptions;
 using MangoAPI.Domain.Constants;
-using MangoAPI.Domain.Entities;
 using Moq;
 using NUnit.Framework;
 
@@ -49,10 +47,11 @@ namespace MangoAPI.Tests.ApiCommandsTests.Sessions
                 RefreshToken = Guid.Empty
             };
 
-            Func<Task> execute = async () => await handler.Handle(command, CancellationToken.None);
+            var result = await handler.Handle(command, CancellationToken.None);
 
-            await execute.Should().ThrowAsync<BusinessException>()
-                .WithMessage(ResponseMessageCodes.InvalidOrExpiredRefreshToken);
+            result.Error.Success.Should().BeFalse();
+            result.Error.ErrorMessage.Should().Be(ResponseMessageCodes.InvalidOrExpiredRefreshToken);
+            result.Response.Should().BeNull();
         }
     }
 }

@@ -3,7 +3,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using FluentAssertions;
 using MangoAPI.BusinessLogic.ApiCommands.Contacts;
-using MangoAPI.BusinessLogic.BusinessExceptions;
 using MangoAPI.Domain.Constants;
 using NUnit.Framework;
 
@@ -26,6 +25,7 @@ namespace MangoAPI.Tests.ApiCommandsTests.Contacts
             var result = await handler.Handle(command, CancellationToken.None);
 
             result.Response.Success.Should().BeTrue();
+            result.Error.Should().BeNull();
         }
 
         [Test]
@@ -39,14 +39,15 @@ namespace MangoAPI.Tests.ApiCommandsTests.Contacts
                 ContactId = SeedDataConstants.PetroId,
             };
 
-            Func<Task> result = async () => await handler.Handle(command, CancellationToken.None);
+            var result = await handler.Handle(command, CancellationToken.None);
 
-            await result.Should().ThrowAsync<BusinessException>()
-                .WithMessage(ResponseMessageCodes.UserNotFound);
+            result.Error.Success.Should().BeFalse();
+            result.Error.ErrorMessage.Should().Be(ResponseMessageCodes.UserNotFound);
+            result.Response.Should().BeNull();
         }
 
         [Test]
-        public async Task DeleteContactCommandHandler_ShouldThrowChatNotFound()
+        public async Task DeleteContactCommandHandler_ShouldThrowContactNotFound()
         {
             using var dbContextFixture = new DbContextFixture();
             var handler = new DeleteContactCommandHandler(dbContextFixture.PostgresDbContext);
@@ -56,10 +57,11 @@ namespace MangoAPI.Tests.ApiCommandsTests.Contacts
                 ContactId = Guid.NewGuid(),
             };
 
-            Func<Task> result = async () => await handler.Handle(command, CancellationToken.None);
+            var result = await handler.Handle(command, CancellationToken.None);
 
-            await result.Should().ThrowAsync<BusinessException>()
-                .WithMessage(ResponseMessageCodes.ContactNotFound);
+            result.Error.Success.Should().BeFalse();
+            result.Error.ErrorMessage.Should().Be(ResponseMessageCodes.ContactNotFound);
+            result.Response.Should().BeNull();
         }
     }
 }

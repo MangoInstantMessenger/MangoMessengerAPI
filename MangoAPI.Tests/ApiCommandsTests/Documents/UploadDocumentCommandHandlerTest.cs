@@ -34,6 +34,7 @@ namespace MangoAPI.Tests.ApiCommandsTests.Documents
 
             result.Response.Success.Should().BeTrue();
             result.Response.FileName.Should().NotBeNull();
+            result.Error.Should().BeNull();
         }
     }
 }

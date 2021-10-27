@@ -3,7 +3,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using FluentAssertions;
 using MangoAPI.BusinessLogic.ApiCommands.UserChats;
-using MangoAPI.BusinessLogic.BusinessExceptions;
 using MangoAPI.Domain.Constants;
 using NUnit.Framework;
 
@@ -26,6 +25,7 @@ namespace MangoAPI.Tests.ApiCommandsTests.UserChats
             var result = await handler.Handle(command, CancellationToken.None);
 
             result.Response.Success.Should().BeTrue();
+            result.Error.Should().BeNull();
         }
 
         [Test]
@@ -39,10 +39,11 @@ namespace MangoAPI.Tests.ApiCommandsTests.UserChats
                 ChatId = Guid.NewGuid(),
             };
 
-            Func<Task> request = async () => await handler.Handle(command, CancellationToken.None);
+            var result = await handler.Handle(command, CancellationToken.None);
 
-            await request.Should().ThrowAsync<BusinessException>()
-                .WithMessage(ResponseMessageCodes.ChatNotFound);
+            result.Error.Success.Should().BeFalse();
+            result.Error.ErrorMessage.Should().Be(ResponseMessageCodes.ChatNotFound);
+            result.Response.Should().BeNull();
         }
     }
 }

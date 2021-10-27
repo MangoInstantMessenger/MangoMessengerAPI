@@ -3,7 +3,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using FluentAssertions;
 using MangoAPI.BusinessLogic.ApiCommands.UserChats;
-using MangoAPI.BusinessLogic.BusinessExceptions;
 using MangoAPI.Domain.Constants;
 using NUnit.Framework;
 
@@ -12,21 +11,22 @@ namespace MangoAPI.Tests.ApiCommandsTests.UserChats
     [TestFixture]
     public class JoinChatCommandHandlerTest
     {
-        //[Test]
-        //public async Task JoinChatCommandHandlerTest_Success()
-        //{
-        //    using var dbContextFixture = new DbContextFixture();
-        //    var handler = new JoinChatCommandHandler(dbContextFixture.PostgresDbContext);
-        //    var command = new JoinChatCommand
-        //    {
-        //        UserId = SeedDataConstants.RazumovskyId,
-        //        ChatId = SeedDataConstants.WsbId
-        //    };
-
-        //    var result = await handler.Handle(command, CancellationToken.None);
-
-        //    result.Success.Should().BeTrue();
-        //}
+        // [Test]
+        // public async Task JoinChatCommandHandlerTest_Success()
+        // {
+        //     using var dbContextFixture = new DbContextFixture();
+        //     var handler = new JoinChatCommandHandler(dbContextFixture.PostgresDbContext);
+        //     var command = new JoinChatCommand
+        //     {
+        //         UserId = SeedDataConstants.RazumovskyId,
+        //         ChatId = SeedDataConstants.WsbId
+        //     };
+        //
+        //     var result = await handler.Handle(command, CancellationToken.None);
+        //
+        //     result.Response.Success.Should().BeTrue();
+        //     result.Error.Should().BeNull();
+        // }
 
         [Test]
         public async Task JoinChatCommandHandlerTest_ShouldThrowAlreadyJoined()
@@ -39,28 +39,30 @@ namespace MangoAPI.Tests.ApiCommandsTests.UserChats
                 ChatId = SeedDataConstants.ExtremeCodeFloodId,
             };
             
-            Func<Task> result = async () => await handler.Handle(command, CancellationToken.None);
+            var result = await handler.Handle(command, CancellationToken.None);
 
-            await result.Should().ThrowAsync<BusinessException>()
-                .WithMessage(ResponseMessageCodes.UserAlreadyJoinedGroup);
+            result.Error.Success.Should().BeFalse();
+            result.Error.ErrorMessage.Should().Be(ResponseMessageCodes.UserAlreadyJoinedGroup);
+            result.Response.Should().BeNull();
         }
 
-        //[Test]
-        //public async Task JoinChatCommandHandlerTest_ShouldThrowUserNotFound()
-        //{
-        //    using var dbContextFixture = new DbContextFixture();
-        //    var handler = new JoinChatCommandHandler(dbContextFixture.PostgresDbContext);
-        //    var command = new JoinChatCommand
-        //    {
-        //        UserId = Guid.NewGuid(),
-        //        ChatId = Guid.NewGuid()
-        //    };
-
-        //    Func<Task> result = async () => await handler.Handle(command, CancellationToken.None);
-
-        //    await result.Should().ThrowAsync<BusinessException>()
-        //        .WithMessage(ResponseMessageCodes.UserNotFound);
-        //}
+        // [Test]
+        // public async Task JoinChatCommandHandlerTest_ShouldThrowUserNotFound()
+        // {
+        //     using var dbContextFixture = new DbContextFixture();
+        //     var handler = new JoinChatCommandHandler(dbContextFixture.PostgresDbContext);
+        //     var command = new JoinChatCommand
+        //     {
+        //         UserId = Guid.NewGuid(),
+        //         ChatId = SeedDataConstants.ExtremeCodeDotnetId
+        //     };
+        //
+        //     var result = await handler.Handle(command, CancellationToken.None);
+        //
+        //     result.Error.Success.Should().BeFalse();
+        //     result.Error.ErrorMessage.Should().Be(ResponseMessageCodes.UserNotFound);
+        //     result.Response.Should().BeNull();
+        // }
 
         [Test]
         public async Task JoinChatCommandHandlerTest_ShouldThrowChatNotFound()
@@ -73,10 +75,11 @@ namespace MangoAPI.Tests.ApiCommandsTests.UserChats
                 ChatId = Guid.NewGuid(),
             };
 
-            Func<Task> result = async () => await handler.Handle(command, CancellationToken.None);
+            var result = await handler.Handle(command, CancellationToken.None);
 
-            await result.Should().ThrowAsync<BusinessException>()
-                .WithMessage(ResponseMessageCodes.ChatNotFound);
+            result.Error.Success.Should().BeFalse();
+            result.Error.ErrorMessage.Should().Be(ResponseMessageCodes.ChatNotFound);
+            result.Response.Should().BeNull();
         }
     }
 }
