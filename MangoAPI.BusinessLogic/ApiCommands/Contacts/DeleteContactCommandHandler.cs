@@ -1,7 +1,7 @@
 ﻿using System.Linq;
+using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
-using MangoAPI.BusinessLogic.BusinessExceptions;
 using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.DataAccess.Database;
 using MangoAPI.DataAccess.Database.Extensions;
@@ -10,7 +10,8 @@ using MediatR;
 
 namespace MangoAPI.BusinessLogic.ApiCommands.Contacts
 {
-    public class DeleteContactCommandHandler : IRequestHandler<DeleteContactCommand, ResponseBase>
+    public class DeleteContactCommandHandler 
+        : IRequestHandler<DeleteContactCommand, Result<ResponseBase>>
     {
         private readonly MangoPostgresDbContext _postgresDbContext;
 
@@ -19,13 +20,25 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Contacts
             _postgresDbContext = postgresDbContext;
         }
 
-        public async Task<ResponseBase> Handle(DeleteContactCommand request, CancellationToken cancellationToken)
+        public async Task<Result<ResponseBase>> Handle(DeleteContactCommand request, 
+            CancellationToken cancellationToken)
         {
             var user = await _postgresDbContext.Users.FindUserByIdAsync(request.UserId, cancellationToken);
 
             if (user is null)
             {
-                throw new BusinessException(ResponseMessageCodes.UserNotFound);
+                return new Result<ResponseBase>
+                {
+                    Error = new ErrorResponse
+                    {
+                        ErrorMessage = ResponseMessageCodes.UserNotFound,
+                        ErrorDetails = ResponseMessageCodes.ErrorDictionary[ResponseMessageCodes.UserNotFound],
+                        Success = false,
+                        StatusCode = HttpStatusCode.Conflict
+                    },
+                    Response = null,
+                    StatusCode = HttpStatusCode.Conflict
+                };
             }
 
             var userContacts = await _postgresDbContext
@@ -36,13 +49,29 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Contacts
 
             if (contact is null)
             {
-                throw new BusinessException(ResponseMessageCodes.ContactNotFound);
+                return new Result<ResponseBase>
+                {
+                    Error = new ErrorResponse
+                    {
+                        ErrorMessage = ResponseMessageCodes.ContactNotFound,
+                        ErrorDetails = ResponseMessageCodes.ErrorDictionary[ResponseMessageCodes.ContactNotFound],
+                        Success = false,
+                        StatusCode = HttpStatusCode.Conflict
+                    },
+                    Response = null,
+                    StatusCode = HttpStatusCode.Conflict
+                };
             }
 
             _postgresDbContext.UserContacts.Remove(contact);
             await _postgresDbContext.SaveChangesAsync(cancellationToken);
 
-            return ResponseBase.SuccessResponse;
+            return new Result<ResponseBase>
+            {
+                Error = null,
+                Response = ResponseBase.SuccessResponse,
+                StatusCode = HttpStatusCode.OK
+            };
         }
     }
 }

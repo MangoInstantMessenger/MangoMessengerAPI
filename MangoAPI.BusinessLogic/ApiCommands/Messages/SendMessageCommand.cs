@@ -1,9 +1,10 @@
 ﻿using MediatR;
 using System;
+using MangoAPI.BusinessLogic.Responses;
 
 namespace MangoAPI.BusinessLogic.ApiCommands.Messages
 {
-    public record SendMessageCommand : IRequest<SendMessageResponse>
+    public record SendMessageCommand : IRequest<Result<SendMessageResponse>>
     {
         public string MessageText { get; init; }
         public Guid UserId { get; set; }

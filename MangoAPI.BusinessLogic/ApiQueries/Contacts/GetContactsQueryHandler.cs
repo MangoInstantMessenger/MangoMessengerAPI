@@ -4,12 +4,15 @@ using MangoAPI.DataAccess.Database;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
+using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
+using MangoAPI.BusinessLogic.Responses;
 
 namespace MangoAPI.BusinessLogic.ApiQueries.Contacts
 {
-    public class GetContactsQueryHandler : IRequestHandler<GetContactsQuery, GetContactsResponse>
+    public class GetContactsQueryHandler 
+        : IRequestHandler<GetContactsQuery, Result<GetContactsResponse>>
     {
         private readonly MangoPostgresDbContext _postgresDbContext;
 
@@ -18,7 +21,7 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Contacts
             _postgresDbContext = postgresDbContext;
         }
 
-        public async Task<GetContactsResponse> Handle(GetContactsQuery request, CancellationToken cancellationToken)
+        public async Task<Result<GetContactsResponse>> Handle(GetContactsQuery request, CancellationToken cancellationToken)
         {
             var query = from userContact in _postgresDbContext.UserContacts.AsNoTracking()
                         join userEntity in _postgresDbContext.Users.Include(x => x.UserInformation)
@@ -39,7 +42,12 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Contacts
 
             var contacts = await query.Take(200).ToListAsync(cancellationToken);
 
-            return GetContactsResponse.FromSuccess(contacts);
+            return new Result<GetContactsResponse>
+            {
+                Error = null,
+                Response = GetContactsResponse.FromSuccess(contacts),
+                StatusCode = HttpStatusCode.OK
+            };
         }
     }
 }

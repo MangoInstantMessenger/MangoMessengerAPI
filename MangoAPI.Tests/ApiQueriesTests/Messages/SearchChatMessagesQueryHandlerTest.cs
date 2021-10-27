@@ -1,9 +1,7 @@
-﻿using System;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 using FluentAssertions;
 using MangoAPI.BusinessLogic.ApiQueries.Messages;
-using MangoAPI.BusinessLogic.BusinessExceptions;
 using MangoAPI.Domain.Constants;
 using NUnit.Framework;
 
@@ -26,8 +24,8 @@ namespace MangoAPI.Tests.ApiQueriesTests.Messages
 
             var result = await handler.Handle(query, CancellationToken.None);
 
-            result.Success.Should().BeTrue();
-            result.Messages.Should().NotBeNull();
+            result.Response.Success.Should().BeTrue();
+            result.Response.Messages.Should().NotBeNull();
         }
 
         [Test]
@@ -42,11 +40,11 @@ namespace MangoAPI.Tests.ApiQueriesTests.Messages
                 MessageText = "hello"
             };
 
-            Func<Task> result = async () => await handler.Handle(query, CancellationToken.None);
+            var result = await handler.Handle(query, CancellationToken.None);
 
-            await result.Should().ThrowAsync<BusinessException>()
-                .WithMessage(ResponseMessageCodes.PermissionDenied);
-            
+            result.Error.Success.Should().BeFalse();
+            result.Error.ErrorMessage.Should().Be(ResponseMessageCodes.PermissionDenied);
+            result.Response.Should().BeNull();
         }
     }
 }

@@ -1,6 +1,5 @@
 ﻿using FluentAssertions;
 using MangoAPI.BusinessLogic.ApiCommands.Communities;
-using MangoAPI.BusinessLogic.BusinessExceptions;
 using MangoAPI.BusinessLogic.HubConfig;
 using MangoAPI.Domain.Constants;
 using MangoAPI.Domain.Enums;
@@ -32,7 +31,8 @@ namespace MangoAPI.Tests.ApiCommandsTests.Communities
 
             var result = await handler.Handle(createChatCommand, CancellationToken.None);
 
-            result.Success.Should().BeTrue();
+            result.Response.Success.Should().BeTrue();
+            result.Error.Should().BeNull();
         }
 
         [Test]
@@ -46,10 +46,11 @@ namespace MangoAPI.Tests.ApiCommandsTests.Communities
                 PartnerId = Guid.NewGuid()
             };
 
-            Func<Task> result = async () => await handler.Handle(createDirectChatCommand, CancellationToken.None);
+            var result = await handler.Handle(createDirectChatCommand, CancellationToken.None);
 
-            await result.Should().ThrowAsync<BusinessException>()
-                .WithMessage(ResponseMessageCodes.UserNotFound);
+            result.Error.Success.Should().BeFalse();
+            result.Error.ErrorMessage.Should().Be(ResponseMessageCodes.UserNotFound);
+            result.Response.Should().BeNull();
         }
 
         [Test]
@@ -63,10 +64,11 @@ namespace MangoAPI.Tests.ApiCommandsTests.Communities
                 PartnerId = SeedDataConstants.PetroId,
             };
 
-            Func<Task> result = async () => await handler.Handle(createDirectChatCommand, CancellationToken.None);
+            var result = await handler.Handle(createDirectChatCommand, CancellationToken.None);
 
-            await result.Should().ThrowAsync<BusinessException>()
-                .WithMessage(ResponseMessageCodes.CannotCreateSelfChat);
+            result.Error.Success.Should().BeFalse();
+            result.Error.ErrorMessage.Should().Be(ResponseMessageCodes.CannotCreateSelfChat);
+            result.Response.Should().BeNull();
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿using MangoAPI.BusinessLogic.BusinessExceptions;
+﻿using System.Net;
 using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.DataAccess.Database;
 using MangoAPI.Domain.Constants;
@@ -10,7 +10,8 @@ using System.Threading.Tasks;
 
 namespace MangoAPI.BusinessLogic.ApiCommands.Communities
 {
-    public class UpdateChannelPictureCommandHandler : IRequestHandler<UpdateChanelPictureCommand, ResponseBase>
+    public class UpdateChannelPictureCommandHandler 
+        : IRequestHandler<UpdateChanelPictureCommand, Result<ResponseBase>>
     {
         private readonly MangoPostgresDbContext _postgresDbContext;
 
@@ -19,7 +20,8 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Communities
             _postgresDbContext = postgresDbContext;
         }
 
-        public async Task<ResponseBase> Handle(UpdateChanelPictureCommand request, CancellationToken cancellationToken)
+        public async Task<Result<ResponseBase>> Handle(UpdateChanelPictureCommand request, 
+            CancellationToken cancellationToken)
         {
             var userChat = await _postgresDbContext.UserChats.AsNoTracking()
                 .Include(x => x.Chat)
@@ -31,7 +33,18 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Communities
 
             if (userChat is null)
             {
-                throw new BusinessException(ResponseMessageCodes.ChatNotFound);
+                return new Result<ResponseBase>
+                {
+                    Error = new ErrorResponse
+                    {
+                        ErrorMessage = ResponseMessageCodes.ChatNotFound,
+                        ErrorDetails = ResponseMessageCodes.ErrorDictionary[ResponseMessageCodes.ChatNotFound],
+                        Success = false,
+                        StatusCode = HttpStatusCode.Conflict
+                    },
+                    Response = null,
+                    StatusCode = HttpStatusCode.Conflict
+                };
             }
 
             userChat.Chat.Image = request.Image;
@@ -39,7 +52,12 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Communities
             _postgresDbContext.Update(userChat.Chat);
             await _postgresDbContext.SaveChangesAsync(cancellationToken);
 
-            return ResponseBase.SuccessResponse;
+            return new Result<ResponseBase>
+            {
+                Error = null,
+                Response = ResponseBase.SuccessResponse,
+                StatusCode = HttpStatusCode.OK
+            };
         }
     }
 }

@@ -1,5 +1,4 @@
-﻿using MangoAPI.BusinessLogic.BusinessExceptions;
-using MangoAPI.BusinessLogic.Responses;
+﻿using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.DataAccess.Database;
 using MangoAPI.DataAccess.Database.Extensions;
 using MangoAPI.Domain.Constants;
@@ -8,12 +7,14 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
+using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace MangoAPI.BusinessLogic.ApiCommands.Users
 {
-    public class UpdateUserAccountInfoCommandHandler : IRequestHandler<UpdateUserAccountInfoCommand, ResponseBase>
+    public class UpdateUserAccountInfoCommandHandler 
+        : IRequestHandler<UpdateUserAccountInfoCommand, Result<ResponseBase>>
     {
         private readonly MangoPostgresDbContext _postgresDbContext;
 
@@ -22,14 +23,25 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
             _postgresDbContext = postgresDbContext;
         }
 
-        public async Task<ResponseBase> Handle(UpdateUserAccountInfoCommand request,
+        public async Task<Result<ResponseBase>> Handle(UpdateUserAccountInfoCommand request,
             CancellationToken cancellationToken)
         {
             var user = await _postgresDbContext.Users.FindUserByIdIncludeInfoAsync(request.UserId, cancellationToken);
 
             if (user is null)
             {
-                throw new BusinessException(ResponseMessageCodes.UserNotFound);
+                return new Result<ResponseBase>
+                {
+                    Error = new ErrorResponse
+                    {
+                        ErrorMessage = ResponseMessageCodes.UserNotFound,
+                        ErrorDetails = ResponseMessageCodes.ErrorDictionary[ResponseMessageCodes.UserNotFound],
+                        Success = false,
+                        StatusCode = HttpStatusCode.Conflict
+                    },
+                    Response = null,
+                    StatusCode = HttpStatusCode.Conflict
+                };
             }
 
             if (user.DisplayName != request.DisplayName)
@@ -72,7 +84,12 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
 
             await _postgresDbContext.SaveChangesAsync(cancellationToken);
 
-            return ResponseBase.SuccessResponse;
+            return new Result<ResponseBase>
+            {
+                Error = null,
+                Response = ResponseBase.SuccessResponse,
+                StatusCode = HttpStatusCode.OK
+            };
         }
     }
 }

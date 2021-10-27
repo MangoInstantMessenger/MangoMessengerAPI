@@ -1,6 +1,6 @@
-﻿using System.Threading;
+﻿using System.Net;
+using System.Threading;
 using System.Threading.Tasks;
-using MangoAPI.BusinessLogic.BusinessExceptions;
 using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.DataAccess.Database;
 using MangoAPI.DataAccess.Database.Extensions;
@@ -9,7 +9,8 @@ using MediatR;
 
 namespace MangoAPI.BusinessLogic.ApiCommands.UserChats
 {
-    public class ArchiveChatCommandHandler : IRequestHandler<ArchiveChatCommand, ResponseBase>
+    public class ArchiveChatCommandHandler 
+        : IRequestHandler<ArchiveChatCommand, Result<ResponseBase>>
     {
         private readonly MangoPostgresDbContext _postgresDbContext;
 
@@ -18,14 +19,26 @@ namespace MangoAPI.BusinessLogic.ApiCommands.UserChats
             _postgresDbContext = postgresDbContext;
         }
 
-        public async Task<ResponseBase> Handle(ArchiveChatCommand request, CancellationToken cancellationToken)
+        public async Task<Result<ResponseBase>> Handle(ArchiveChatCommand request, 
+            CancellationToken cancellationToken)
         {
             var chat = await _postgresDbContext.UserChats.FindUserChatByIdAsync(request.UserId, request.ChatId,
                 cancellationToken);
 
             if (chat == null)
             {
-                throw new BusinessException(ResponseMessageCodes.ChatNotFound);
+                return new Result<ResponseBase>
+                {
+                    Error = new ErrorResponse
+                    {
+                        ErrorMessage = ResponseMessageCodes.ChatNotFound,
+                        ErrorDetails = ResponseMessageCodes.ErrorDictionary[ResponseMessageCodes.ChatNotFound],
+                        Success = false,
+                        StatusCode = HttpStatusCode.Conflict
+                    },
+                    Response = null,
+                    StatusCode = HttpStatusCode.Conflict
+                };
             }
 
             chat.IsArchived = !chat.IsArchived;
@@ -34,7 +47,12 @@ namespace MangoAPI.BusinessLogic.ApiCommands.UserChats
 
             await _postgresDbContext.SaveChangesAsync(cancellationToken);
 
-            return ResponseBase.SuccessResponse;
+            return new Result<ResponseBase>
+            {
+                Error = null,
+                Response = ResponseBase.SuccessResponse,
+                StatusCode = HttpStatusCode.OK
+            };
         }
     }
 }

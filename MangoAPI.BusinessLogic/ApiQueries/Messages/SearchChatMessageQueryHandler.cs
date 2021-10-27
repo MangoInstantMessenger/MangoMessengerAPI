@@ -1,17 +1,19 @@
-﻿using MangoAPI.BusinessLogic.BusinessExceptions;
-using MangoAPI.BusinessLogic.Models;
+﻿using MangoAPI.BusinessLogic.Models;
 using MangoAPI.DataAccess.Database;
 using MangoAPI.DataAccess.Database.Extensions;
 using MangoAPI.Domain.Constants;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
+using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
+using MangoAPI.BusinessLogic.Responses;
 
 namespace MangoAPI.BusinessLogic.ApiQueries.Messages
 {
-    public class SearchChatMessageQueryHandler : IRequestHandler<SearchChatMessagesQuery, SearchChatMessagesResponse>
+    public class SearchChatMessageQueryHandler 
+        : IRequestHandler<SearchChatMessagesQuery, Result<SearchChatMessagesResponse>>
     {
         private readonly MangoPostgresDbContext _postgresDbContext;
 
@@ -20,13 +22,24 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Messages
             _postgresDbContext = postgresDbContext;
         }
 
-        public async Task<SearchChatMessagesResponse> Handle(SearchChatMessagesQuery request, CancellationToken cancellationToken)
+        public async Task<Result<SearchChatMessagesResponse>> Handle(SearchChatMessagesQuery request, CancellationToken cancellationToken)
         {
             var userChat = await _postgresDbContext.UserChats.FindUserChatByIdAsync(request.UserId, request.ChatId, cancellationToken);
 
             if (userChat is null)
             {
-                throw new BusinessException(ResponseMessageCodes.PermissionDenied);
+                return new Result<SearchChatMessagesResponse>
+                {
+                    Error = new ErrorResponse
+                    {
+                        ErrorMessage = ResponseMessageCodes.PermissionDenied,
+                        ErrorDetails = ResponseMessageCodes.ErrorDictionary[ResponseMessageCodes.PermissionDenied],
+                        Success = false,
+                        StatusCode = HttpStatusCode.Conflict
+                    },
+                    Response = null,
+                    StatusCode = HttpStatusCode.Conflict
+                };
             }
 
             var query = _postgresDbContext.Messages.AsNoTracking()
@@ -61,7 +74,12 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Messages
 
             var result = await query.ToListAsync(cancellationToken);
 
-            return SearchChatMessagesResponse.FromSuccess(result);
+            return new Result<SearchChatMessagesResponse>
+            {
+                Error = null,
+                Response = SearchChatMessagesResponse.FromSuccess(result),
+                StatusCode = HttpStatusCode.OK
+            };
         }
     }
 }

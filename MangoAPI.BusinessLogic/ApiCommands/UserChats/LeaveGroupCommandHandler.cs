@@ -1,6 +1,7 @@
-﻿using System.Threading;
+﻿using System.Net;
+using System.Threading;
 using System.Threading.Tasks;
-using MangoAPI.BusinessLogic.BusinessExceptions;
+using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.DataAccess.Database;
 using MangoAPI.DataAccess.Database.Extensions;
 using MangoAPI.Domain.Constants;
@@ -9,7 +10,8 @@ using MediatR;
 
 namespace MangoAPI.BusinessLogic.ApiCommands.UserChats
 {
-    public class LeaveGroupCommandHandler : IRequestHandler<LeaveGroupCommand, LeaveGroupResponse>
+    public class LeaveGroupCommandHandler 
+        : IRequestHandler<LeaveGroupCommand, Result<LeaveGroupResponse>>
     {
         private readonly MangoPostgresDbContext _postgresDbContext;
 
@@ -18,13 +20,25 @@ namespace MangoAPI.BusinessLogic.ApiCommands.UserChats
             _postgresDbContext = postgresDbContext;
         }
 
-        public async Task<LeaveGroupResponse> Handle(LeaveGroupCommand request, CancellationToken cancellationToken)
+        public async Task<Result<LeaveGroupResponse>> Handle(LeaveGroupCommand request, 
+            CancellationToken cancellationToken)
         {
             var user = await _postgresDbContext.Users.FindUserByIdAsync(request.UserId, cancellationToken);
 
             if (user is null)
             {
-                throw new BusinessException(ResponseMessageCodes.UserNotFound);
+                return new Result<LeaveGroupResponse>
+                {
+                    Error = new ErrorResponse
+                    {
+                        ErrorMessage = ResponseMessageCodes.UserNotFound,
+                        ErrorDetails = ResponseMessageCodes.ErrorDictionary[ResponseMessageCodes.UserNotFound],
+                        Success = false,
+                        StatusCode = HttpStatusCode.Conflict
+                    },
+                    Response = null,
+                    StatusCode = HttpStatusCode.Conflict
+                };
             }
 
             var userChat =
@@ -33,7 +47,18 @@ namespace MangoAPI.BusinessLogic.ApiCommands.UserChats
 
             if (userChat is null)
             {
-                throw new BusinessException(ResponseMessageCodes.ChatNotFound);
+                return new Result<LeaveGroupResponse>
+                {
+                    Error = new ErrorResponse
+                    {
+                        ErrorMessage = ResponseMessageCodes.ChatNotFound,
+                        ErrorDetails = ResponseMessageCodes.ErrorDictionary[ResponseMessageCodes.ChatNotFound],
+                        Success = false,
+                        StatusCode = HttpStatusCode.Conflict
+                    },
+                    Response = null,
+                    StatusCode = HttpStatusCode.Conflict
+                };
             }
 
             var chat = await _postgresDbContext.Chats.FindChatByIdIncludeChatUsersAsync(request.ChatId,
@@ -50,7 +75,13 @@ namespace MangoAPI.BusinessLogic.ApiCommands.UserChats
                 _postgresDbContext.Chats.Remove(chat);
 
                 await _postgresDbContext.SaveChangesAsync(cancellationToken);
-                return LeaveGroupResponse.FromSuccess(chat.Id);
+                
+                return new Result<LeaveGroupResponse>
+                {
+                    Error = null,
+                    Response = LeaveGroupResponse.FromSuccess(chat.Id),
+                    StatusCode = HttpStatusCode.OK
+                };
             }
 
             _postgresDbContext.UserChats.Remove(userChat);
@@ -59,7 +90,12 @@ namespace MangoAPI.BusinessLogic.ApiCommands.UserChats
             _postgresDbContext.Update(chat);
             await _postgresDbContext.SaveChangesAsync(cancellationToken);
 
-            return LeaveGroupResponse.FromSuccess(chat.Id);
+            return new Result<LeaveGroupResponse>
+            {
+                Error = null,
+                Response = LeaveGroupResponse.FromSuccess(chat.Id),
+                StatusCode = HttpStatusCode.OK
+            };
         }
     }
 }

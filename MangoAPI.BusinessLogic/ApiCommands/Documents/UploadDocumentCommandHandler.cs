@@ -1,7 +1,9 @@
 ﻿using System;
 using System.IO;
+using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
+using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.DataAccess.Database;
 using MangoAPI.Domain.Constants;
 using MangoAPI.Domain.Entities;
@@ -10,7 +12,8 @@ using Microsoft.AspNetCore.Hosting;
 
 namespace MangoAPI.BusinessLogic.ApiCommands.Documents
 {
-    public class UploadDocumentCommandHandler : IRequestHandler<UploadDocumentCommand, UploadDocumentResponse>
+    public class UploadDocumentCommandHandler 
+        : IRequestHandler<UploadDocumentCommand, Result<UploadDocumentResponse>>
     {
         private readonly MangoPostgresDbContext _postgresDbContext;
         private readonly IHostingEnvironment _environment;
@@ -21,7 +24,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Documents
             _environment = environment;
         }
 
-        public async Task<UploadDocumentResponse> Handle(UploadDocumentCommand request,
+        public async Task<Result<UploadDocumentResponse>> Handle(UploadDocumentCommand request,
             CancellationToken cancellationToken)
         {
             var uniqueFileName = GetUniqueFileName(request.FormFile.FileName);
@@ -40,7 +43,13 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Documents
             await _postgresDbContext.SaveChangesAsync(cancellationToken);
 
             var fileUrl = $"{EnvironmentConstants.BackendAddress}Uploads/{documentEntity.FileName}";
-            return UploadDocumentResponse.FromSuccess(documentEntity.FileName, fileUrl);
+            
+            return new Result<UploadDocumentResponse>
+            {
+                Error = null,
+                Response = UploadDocumentResponse.FromSuccess(documentEntity.FileName, fileUrl),
+                StatusCode = HttpStatusCode.OK
+            };
         }
 
         private static string GetUniqueFileName(string fileName)

@@ -1,5 +1,4 @@
-﻿using MangoAPI.BusinessLogic.BusinessExceptions;
-using MangoAPI.BusinessLogic.HubConfig;
+﻿using MangoAPI.BusinessLogic.HubConfig;
 using MangoAPI.BusinessLogic.Models;
 using MangoAPI.DataAccess.Database;
 using MangoAPI.DataAccess.Database.Extensions;
@@ -11,12 +10,15 @@ using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
+using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
+using MangoAPI.BusinessLogic.Responses;
 
 namespace MangoAPI.BusinessLogic.ApiCommands.Communities
 {
-    public class CreateChatCommandHandler : IRequestHandler<CreateChatCommand, CreateCommunityResponse>
+    public class CreateChatCommandHandler 
+        : IRequestHandler<CreateChatCommand, Result<CreateCommunityResponse>>
     {
         private readonly MangoPostgresDbContext _postgresDbContext;
         private readonly IHubContext<ChatHub, IHubClient> _hubContext;
@@ -27,7 +29,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Communities
             _hubContext = hubContext;
         }
 
-        public async Task<CreateCommunityResponse> Handle(CreateChatCommand request,
+        public async Task<Result<CreateCommunityResponse>> Handle(CreateChatCommand request,
             CancellationToken cancellationToken)
         {
             var partner = await _postgresDbContext.Users.AsNoTracking()
@@ -35,12 +37,34 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Communities
 
             if (partner is null)
             {
-                throw new BusinessException(ResponseMessageCodes.UserNotFound);
+                return new Result<CreateCommunityResponse>
+                {
+                    Error = new ErrorResponse
+                    {
+                        ErrorMessage = ResponseMessageCodes.UserNotFound,
+                        ErrorDetails = ResponseMessageCodes.ErrorDictionary[ResponseMessageCodes.UserNotFound],
+                        Success = false,
+                        StatusCode = HttpStatusCode.Conflict
+                    },
+                    Response = null,
+                    StatusCode = HttpStatusCode.Conflict
+                };
             }
 
             if (request.UserId == request.PartnerId)
             {
-                throw new BusinessException(ResponseMessageCodes.CannotCreateSelfChat);
+                return new Result<CreateCommunityResponse>
+                {
+                    Error = new ErrorResponse
+                    {
+                        ErrorMessage = ResponseMessageCodes.CannotCreateSelfChat,
+                        ErrorDetails = ResponseMessageCodes.ErrorDictionary[ResponseMessageCodes.CannotCreateSelfChat],
+                        Success = false,
+                        StatusCode = HttpStatusCode.Conflict
+                    },
+                    Response = null,
+                    StatusCode = HttpStatusCode.Conflict
+                };
             }
 
             var currentUserDisplayName = await _postgresDbContext.Users.Where(x => x.Id == request.UserId)
@@ -56,7 +80,12 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Communities
 
             if (existingChat != null)
             {
-                return CreateCommunityResponse.FromSuccess(existingChat);
+                return new Result<CreateCommunityResponse>
+                {
+                    Error = null,
+                    Response = CreateCommunityResponse.FromSuccess(existingChat),
+                    StatusCode = HttpStatusCode.OK
+                };
             }
 
             var chatEntity = new ChatEntity
@@ -88,7 +117,12 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Communities
             var chatDto = chatEntity.ToChatDto();
             await _hubContext.Clients.Group(request.UserId.ToString()).UpdateUserChats(chatDto);
 
-            return CreateCommunityResponse.FromSuccess(chatEntity);
+            return new Result<CreateCommunityResponse>
+            {
+                Error = null,
+                Response = CreateCommunityResponse.FromSuccess(chatEntity),
+                StatusCode = HttpStatusCode.OK
+            };
         }
     }
 }

@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Linq;
+using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using MangoAPI.Application.Interfaces;
-using MangoAPI.BusinessLogic.BusinessExceptions;
 using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.DataAccess.Database;
 using MangoAPI.DataAccess.Database.Extensions;
@@ -14,7 +14,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace MangoAPI.BusinessLogic.ApiCommands.Sessions
 {
-    public class RefreshSessionCommandHandler : IRequestHandler<RefreshSessionCommand, TokensResponse>
+    public class RefreshSessionCommandHandler : IRequestHandler<RefreshSessionCommand, Result<TokensResponse>>
     {
         private readonly IJwtGenerator _jwtGenerator;
         private readonly MangoPostgresDbContext _postgresDbContext;
@@ -25,14 +25,25 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Sessions
             _jwtGenerator = jwtGenerator;
         }
 
-        public async Task<TokensResponse> Handle(RefreshSessionCommand request, CancellationToken cancellationToken)
+        public async Task<Result<TokensResponse>> Handle(RefreshSessionCommand request, CancellationToken cancellationToken)
         {
             var session = await _postgresDbContext.Sessions.GetSessionByRefreshTokenAsync(request.RefreshToken,
                     cancellationToken);
 
             if (session is null || session.IsExpired)
             {
-                throw new BusinessException(ResponseMessageCodes.InvalidOrExpiredRefreshToken);
+                return new Result<TokensResponse>
+                {
+                    Error = new ErrorResponse
+                    {
+                        ErrorMessage = ResponseMessageCodes.InvalidOrExpiredRefreshToken,
+                        ErrorDetails = ResponseMessageCodes.ErrorDictionary[ResponseMessageCodes.InvalidOrExpiredRefreshToken],
+                        Success = false,
+                        StatusCode = HttpStatusCode.Conflict
+                    },
+                    Response = null,
+                    StatusCode = HttpStatusCode.Conflict
+                };
             }
 
             var userSessions = _postgresDbContext.Sessions
@@ -54,7 +65,18 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Sessions
 
             if (refreshLifetime == null || !int.TryParse(refreshLifetime, out var refreshLifetimeParsed))
             {
-                throw new BusinessException(ResponseMessageCodes.RefreshTokenLifeTimeError);
+                return new Result<TokensResponse>
+                {
+                    Error = new ErrorResponse
+                    {
+                        ErrorMessage = ResponseMessageCodes.RefreshTokenLifeTimeError,
+                        ErrorDetails = ResponseMessageCodes.ErrorDictionary[ResponseMessageCodes.RefreshTokenLifeTimeError],
+                        Success = false,
+                        StatusCode = HttpStatusCode.Conflict
+                    },
+                    Response = null,
+                    StatusCode = HttpStatusCode.Conflict
+                };
             }
 
             var newSession = new SessionEntity
@@ -79,7 +101,12 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Sessions
 
             var expires = ((DateTimeOffset)session.ExpiresAt).ToUnixTimeSeconds();
 
-            return TokensResponse.FromSuccess(jwtToken, newSession.RefreshToken, session.UserId, expires);
+            return new Result<TokensResponse>
+            {
+                Error = null,
+                Response = TokensResponse.FromSuccess(jwtToken, newSession.RefreshToken, session.UserId, expires),
+                StatusCode = HttpStatusCode.OK
+            };
         }
     }
 }

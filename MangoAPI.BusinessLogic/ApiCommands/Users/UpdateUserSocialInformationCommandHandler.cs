@@ -1,7 +1,7 @@
 ﻿using System;
+using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
-using MangoAPI.BusinessLogic.BusinessExceptions;
 using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.DataAccess.Database;
 using MangoAPI.DataAccess.Database.Extensions;
@@ -10,8 +10,8 @@ using MediatR;
 
 namespace MangoAPI.BusinessLogic.ApiCommands.Users
 {
-    public class
-        UpdateUserSocialInformationCommandHandler : IRequestHandler<UpdateUserSocialInformationCommand, ResponseBase>
+    public class UpdateUserSocialInformationCommandHandler 
+        : IRequestHandler<UpdateUserSocialInformationCommand, Result<ResponseBase>>
     {
         private readonly MangoPostgresDbContext _postgresDbContext;
 
@@ -20,14 +20,25 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
             _postgresDbContext = postgresDbContext;
         }
 
-        public async Task<ResponseBase> Handle(UpdateUserSocialInformationCommand request,
+        public async Task<Result<ResponseBase>> Handle(UpdateUserSocialInformationCommand request,
             CancellationToken cancellationToken)
         {
             var user = await _postgresDbContext.Users.FindUserByIdIncludeInfoAsync(request.UserId, cancellationToken);
 
             if (user is null)
             {
-                throw new BusinessException(ResponseMessageCodes.UserNotFound);
+                return new Result<ResponseBase>
+                {
+                    Error = new ErrorResponse
+                    {
+                        ErrorMessage = ResponseMessageCodes.UserNotFound,
+                        ErrorDetails = ResponseMessageCodes.ErrorDictionary[ResponseMessageCodes.UserNotFound],
+                        Success = false,
+                        StatusCode = HttpStatusCode.Conflict
+                    },
+                    Response = null,
+                    StatusCode = HttpStatusCode.Conflict
+                };
             }
 
             user.UserInformation.Facebook = StringIsValid(request.Facebook) 
@@ -51,7 +62,12 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
             _postgresDbContext.UserInformation.Update(user.UserInformation);
             await _postgresDbContext.SaveChangesAsync(cancellationToken);
 
-            return ResponseBase.SuccessResponse;
+            return new Result<ResponseBase>
+            {
+                Error = null,
+                Response = ResponseBase.SuccessResponse,
+                StatusCode = HttpStatusCode.OK
+            };
         }
 
         private static bool StringIsValid(string str)

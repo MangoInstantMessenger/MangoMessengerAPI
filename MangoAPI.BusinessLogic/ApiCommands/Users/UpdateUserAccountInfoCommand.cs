@@ -4,7 +4,7 @@ using System;
 
 namespace MangoAPI.BusinessLogic.ApiCommands.Users
 {
-    public record UpdateUserAccountInfoCommand : IRequest<ResponseBase>
+    public record UpdateUserAccountInfoCommand : IRequest<Result<ResponseBase>>
     {
         public Guid UserId { get; set; }
         public string PhoneNumber { get; init; }

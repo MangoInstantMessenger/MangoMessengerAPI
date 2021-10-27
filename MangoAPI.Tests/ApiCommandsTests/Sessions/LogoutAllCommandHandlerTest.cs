@@ -3,7 +3,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using FluentAssertions;
 using MangoAPI.BusinessLogic.ApiCommands.Sessions;
-using MangoAPI.BusinessLogic.BusinessExceptions;
 using MangoAPI.Domain.Constants;
 using NUnit.Framework;
 
@@ -25,7 +24,8 @@ namespace MangoAPI.Tests.ApiCommandsTests.Sessions
 
             var result = await handler.Handle(command, CancellationToken.None);
 
-            result.Success.Should().BeTrue();
+            result.Response.Success.Should().BeTrue();
+            result.Error.Should().BeNull();
         }
 
         [Test]
@@ -39,10 +39,11 @@ namespace MangoAPI.Tests.ApiCommandsTests.Sessions
                 UserId = Guid.NewGuid()
             };
 
-            Func<Task> result = async () => await handler.Handle(command, CancellationToken.None);
+            var result = await handler.Handle(command, CancellationToken.None);
 
-            await result.Should().ThrowAsync<BusinessException>()
-                .WithMessage(ResponseMessageCodes.InvalidOrExpiredRefreshToken);
+            result.Error.Success.Should().BeFalse();
+            result.Error.ErrorMessage.Should().Be(ResponseMessageCodes.InvalidOrExpiredRefreshToken);
+            result.Response.Should().BeNull();
         }
     }
 }

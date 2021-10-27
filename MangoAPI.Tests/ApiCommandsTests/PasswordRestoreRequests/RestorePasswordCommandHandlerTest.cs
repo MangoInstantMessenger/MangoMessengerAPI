@@ -1,10 +1,9 @@
-﻿using System;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 using FluentAssertions;
 using MangoAPI.Application.Interfaces;
 using MangoAPI.BusinessLogic.ApiCommands.PasswordRestoreRequests;
-using MangoAPI.BusinessLogic.BusinessExceptions;
+using MangoAPI.Domain.Constants;
 using MangoAPI.Domain.Entities;
 using Moq;
 using NUnit.Framework;
@@ -29,7 +28,8 @@ namespace MangoAPI.Tests.ApiCommandsTests.PasswordRestoreRequests
 
             var result = await handler.Handle(command, CancellationToken.None);
 
-            result.Success.Should().BeTrue();
+            result.Response.Success.Should().BeTrue();
+            result.Error.Should().BeNull();
         }
         
         [Test]
@@ -45,9 +45,11 @@ namespace MangoAPI.Tests.ApiCommandsTests.PasswordRestoreRequests
                 EmailOrPhone = "hello world"
             };
 
-            Func<Task> result = async () => await handler.Handle(command, CancellationToken.None);
+            var result = await handler.Handle(command, CancellationToken.None);
 
-            await result.Should().ThrowAsync<BusinessException>();
+            result.Error.Success.Should().BeFalse();
+            result.Error.ErrorMessage.Should().Be(ResponseMessageCodes.UserNotFound);
+            result.Response.Should().BeNull();
         }
     }
 }

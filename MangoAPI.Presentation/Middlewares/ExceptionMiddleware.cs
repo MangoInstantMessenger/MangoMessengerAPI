@@ -2,8 +2,8 @@
 using System.Net;
 using System.Threading.Tasks;
 using FluentValidation;
-using MangoAPI.BusinessLogic.BusinessExceptions;
 using MangoAPI.BusinessLogic.Responses;
+using MangoAPI.Domain.Constants;
 using Microsoft.AspNetCore.Http;
 
 namespace MangoAPI.Presentation.Middlewares
@@ -36,7 +36,6 @@ namespace MangoAPI.Presentation.Middlewares
                 StatusCode = exception switch
                 {
                     ValidationException => HttpStatusCode.BadRequest,
-                    BusinessException => HttpStatusCode.Conflict,
                     _ => HttpStatusCode.InternalServerError,
                 },
             };
@@ -52,8 +51,8 @@ namespace MangoAPI.Presentation.Middlewares
             {
                 Success = false,
                 ErrorMessage = errorContext.ErrorMessage,
-                ErrorDetails = errorContext.Exception.StackTrace,
-                StatusCode = (int)errorContext.StatusCode,
+                ErrorDetails = ResponseMessageCodes.ErrorDictionary[ResponseMessageCodes.InvalidRequestModel],
+                StatusCode = errorContext.StatusCode,
             }.ToString());
         }
     }

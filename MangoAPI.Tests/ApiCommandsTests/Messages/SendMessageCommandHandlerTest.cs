@@ -1,6 +1,5 @@
 ﻿using FluentAssertions;
 using MangoAPI.BusinessLogic.ApiCommands.Messages;
-using MangoAPI.BusinessLogic.BusinessExceptions;
 using MangoAPI.BusinessLogic.HubConfig;
 using MangoAPI.Domain.Constants;
 using Microsoft.AspNetCore.SignalR;
@@ -16,22 +15,23 @@ namespace MangoAPI.Tests.ApiCommandsTests.Messages
     {
         private static readonly IHubContext<ChatHub, IHubClient> Hub = MockedObjects.GetHubContext();
 
-        //[Test]
-        //public async Task SendMessageCommandHandlerTest_Success()
-        //{
-        //    using var dbContextFixture = new DbContextFixture();
-        //    var handler = new SendMessageCommandHandler(dbContextFixture.PostgresDbContext, Hub);
-        //    var command = new SendMessageCommand
-        //    {
-        //        UserId = SeedDataConstants.PetroId,
-        //        ChatId = SeedDataConstants.WsbId,
-        //        MessageText = "hello world",
-        //    };
-
-        //    var result = await handler.Handle(command, CancellationToken.None);
-
-        //    result.Success.Should().BeTrue();
-        //}
+        // [Test]
+        // public async Task SendMessageCommandHandlerTest_Success()
+        // {
+        //     using var dbContextFixture = new DbContextFixture();
+        //     var handler = new SendMessageCommandHandler(dbContextFixture.PostgresDbContext, Hub);
+        //     var command = new SendMessageCommand
+        //     {
+        //         UserId = SeedDataConstants.PetroId,
+        //         ChatId = SeedDataConstants.WsbId,
+        //         MessageText = "hello world",
+        //     };
+        //
+        //     var result = await handler.Handle(command, CancellationToken.None);
+        //
+        //     result.Response.Success.Should().BeTrue();
+        //     result.Error.Should().BeNull();
+        // }
 
         [Test]
         public async Task SendMessageCommandHandlerTest_ShouldThrowUserNotFound()
@@ -45,10 +45,11 @@ namespace MangoAPI.Tests.ApiCommandsTests.Messages
                 MessageText = "hello world",
             };
 
-            Func<Task> result = async () => await handler.Handle(command, CancellationToken.None);
+            var result = await handler.Handle(command, CancellationToken.None);
 
-            await result.Should().ThrowAsync<BusinessException>()
-                .WithMessage(ResponseMessageCodes.UserNotFound);
+            result.Error.Success.Should().BeFalse();
+            result.Error.ErrorMessage.Should().Be(ResponseMessageCodes.UserNotFound);
+            result.Response.Should().BeNull();
         }
 
         [Test]
@@ -63,10 +64,11 @@ namespace MangoAPI.Tests.ApiCommandsTests.Messages
                 MessageText = "hello world",
             };
 
-            Func<Task> result = async () => await handler.Handle(command, CancellationToken.None);
+            var result = await handler.Handle(command, CancellationToken.None);
 
-            await result.Should().ThrowAsync<BusinessException>()
-                .WithMessage(ResponseMessageCodes.ChatNotFound);
+            result.Error.Success.Should().BeFalse();
+            result.Error.ErrorMessage.Should().Be(ResponseMessageCodes.ChatNotFound);
+            result.Response.Should().BeNull();
         }
 
         [Test]
@@ -81,10 +83,11 @@ namespace MangoAPI.Tests.ApiCommandsTests.Messages
                 MessageText = "hello world",
             };
 
-            Func<Task> result = async () => await handler.Handle(command, CancellationToken.None);
+            var result = await handler.Handle(command, CancellationToken.None);
 
-            await result.Should().ThrowAsync<BusinessException>()
-                .WithMessage(ResponseMessageCodes.PermissionDenied);
+            result.Error.Success.Should().BeFalse();
+            result.Error.ErrorMessage.Should().Be(ResponseMessageCodes.PermissionDenied);
+            result.Response.Should().BeNull();
         }
     }
 }

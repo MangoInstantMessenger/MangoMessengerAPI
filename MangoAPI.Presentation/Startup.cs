@@ -1,20 +1,22 @@
+using MangoAPI.BusinessLogic.HubConfig;
+using MangoAPI.DataAccess.Database;
 using MangoAPI.Presentation.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpOverrides;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using System;
-using MangoAPI.BusinessLogic.HubConfig;
-using MangoAPI.DataAccess.Database;
-using Microsoft.EntityFrameworkCore;
 
 namespace MangoAPI.Presentation
 {
     public class Startup
     {
+        private const string CorsPolicy = "MyDefaultCorsPolicy";
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -31,17 +33,12 @@ namespace MangoAPI.Presentation
 
             app.ConfigureExceptionHandler();
 
-            app.UseCors(builder =>
-            {
-                builder
-                    .AllowAnyMethod()
-                    .AllowAnyHeader()
-                    .SetIsOriginAllowed(_ => true)
-                    .AllowCredentials();
-            });
 
             app.UseHttpsRedirection();
+
             app.UseRouting();
+            app.UseCors(CorsPolicy);
+
             app.UseStaticFiles();
 
             app.UseSwagger();
@@ -57,8 +54,8 @@ namespace MangoAPI.Presentation
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapControllers();
-                endpoints.MapHub<ChatHub>("/notify");
+                endpoints.MapControllers().RequireCors(CorsPolicy);
+                endpoints.MapHub<ChatHub>("/notify").RequireCors(CorsPolicy);
             });
 
             UpdateDatabase(app);
@@ -100,10 +97,12 @@ namespace MangoAPI.Presentation
 
             services.AddCors(options =>
             {
-                options.AddPolicy("DefaultPolicy", builder =>
+                options.AddPolicy(CorsPolicy, builder =>
                 {
-                    builder.WithOrigins(Configuration.GetSection("AllowedOrigins").Get<string[]>())
-                        .WithMethods("GET", "POST", "PUT", "PATCH", "DELETE")
+                    var allowedOrigins = Configuration.GetSection("AllowedOrigins").Get<string[]>();
+
+                    builder.WithOrigins(allowedOrigins)
+                        .AllowAnyMethod()
                         .AllowCredentials()
                         .AllowAnyHeader();
                 });

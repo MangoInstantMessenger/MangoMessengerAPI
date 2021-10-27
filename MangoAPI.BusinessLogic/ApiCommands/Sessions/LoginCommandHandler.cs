@@ -1,5 +1,4 @@
 ﻿using MangoAPI.Application.Interfaces;
-using MangoAPI.BusinessLogic.BusinessExceptions;
 using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.DataAccess.Database;
 using MangoAPI.DataAccess.Database.Extensions;
@@ -10,12 +9,13 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
+using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace MangoAPI.BusinessLogic.ApiCommands.Sessions
 {
-    public class LoginCommandHandler : IRequestHandler<LoginCommand, TokensResponse>
+    public class LoginCommandHandler : IRequestHandler<LoginCommand, Result<TokensResponse>>
     {
         private readonly IJwtGenerator _jwtGenerator;
         private readonly MangoPostgresDbContext _postgresDbContext;
@@ -29,27 +29,61 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Sessions
             _postgresDbContext = postgresDbContext;
         }
 
-        public async Task<TokensResponse> Handle(LoginCommand request, CancellationToken cancellationToken)
+        public async Task<Result<TokensResponse>> Handle(LoginCommand request, 
+            CancellationToken cancellationToken)
         {
             var user = await _postgresDbContext.Users.FindUserByEmailOrPhoneAsync(request.EmailOrPhone, cancellationToken);
 
             if (user is null)
             {
-                throw new BusinessException(ResponseMessageCodes.InvalidCredentials);
+                return new Result<TokensResponse>
+                {
+                    Error = new ErrorResponse
+                    {
+                        ErrorMessage = ResponseMessageCodes.InvalidCredentials,
+                        ErrorDetails = ResponseMessageCodes.ErrorDictionary[ResponseMessageCodes.InvalidCredentials],
+                        Success = false,
+                        StatusCode = HttpStatusCode.Conflict
+                    },
+                    Response = null,
+                    StatusCode = HttpStatusCode.Conflict
+                };
             }
 
             var result = await _signInManager.CheckPasswordSignInAsync(user, request.Password, false);
 
             if (!result.Succeeded)
             {
-                throw new BusinessException(ResponseMessageCodes.InvalidCredentials);
+                return new Result<TokensResponse>
+                {
+                    Error = new ErrorResponse
+                    {
+                        ErrorMessage = ResponseMessageCodes.InvalidCredentials,
+                        ErrorDetails = ResponseMessageCodes.ErrorDictionary[ResponseMessageCodes.InvalidCredentials],
+                        Success = false,
+                        StatusCode = HttpStatusCode.Conflict
+                    },
+                    Response = null,
+                    StatusCode = HttpStatusCode.Conflict
+                };
             }
 
             var refreshLifetime = EnvironmentConstants.RefreshTokenLifeTime;
 
             if (refreshLifetime == null || !int.TryParse(refreshLifetime, out var refreshLifetimeParsed))
             {
-                throw new BusinessException(ResponseMessageCodes.RefreshTokenLifeTimeError);
+                return new Result<TokensResponse>
+                {
+                    Error = new ErrorResponse
+                    {
+                        ErrorMessage = ResponseMessageCodes.RefreshTokenLifeTimeError,
+                        ErrorDetails = ResponseMessageCodes.ErrorDictionary[ResponseMessageCodes.RefreshTokenLifeTimeError],
+                        Success = false,
+                        StatusCode = HttpStatusCode.Conflict
+                    },
+                    Response = null,
+                    StatusCode = HttpStatusCode.Conflict
+                };
             }
 
             var session = new SessionEntity
@@ -83,7 +117,12 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Sessions
 
             var expires = ((DateTimeOffset)session.ExpiresAt).ToUnixTimeSeconds();
 
-            return TokensResponse.FromSuccess(jwtToken, session.RefreshToken, user.Id, expires);
+            return new Result<TokensResponse>
+            {
+                Error = null,
+                Response = TokensResponse.FromSuccess(jwtToken, session.RefreshToken, user.Id, expires),
+                StatusCode = HttpStatusCode.OK
+            };
         }
     }
 }

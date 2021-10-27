@@ -3,7 +3,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using FluentAssertions;
 using MangoAPI.BusinessLogic.ApiCommands.Messages;
-using MangoAPI.BusinessLogic.BusinessExceptions;
 using MangoAPI.Domain.Constants;
 using NUnit.Framework;
 
@@ -25,25 +24,27 @@ namespace MangoAPI.Tests.ApiCommandsTests.Messages
 
             var result = await handler.Handle(command, CancellationToken.None);
 
-            result.Success.Should().BeTrue();
+            result.Response.Success.Should().BeTrue();
+            result.Error.Should().BeNull();
         }
 
-        //[Test]
-        //public async Task DeleteMessageCommandHandlerTest_ShouldThrowUserNotFound()
-        //{
-        //    using var dbContextFixture = new DbContextFixture();
-        //    var handler = new DeleteMessageCommandHandler(dbContextFixture.PostgresDbContext, MockedObjects.GetHubContext());
-        //    var command = new DeleteMessageCommand
-        //    {
-        //        UserId = Guid.NewGuid(),
-        //        MessageId = Guid.NewGuid(),
-        //    };
-
-        //    Func<Task> result = async () => await handler.Handle(command, CancellationToken.None);
-
-        //    await result.Should().ThrowAsync<BusinessException>()
-        //        .WithMessage(ResponseMessageCodes.UserNotFound);
-        //}
+        // [Test]
+        // public async Task DeleteMessageCommandHandlerTest_ShouldThrowUserNotFound()
+        // {
+        //     using var dbContextFixture = new DbContextFixture();
+        //     var handler = new DeleteMessageCommandHandler(dbContextFixture.PostgresDbContext, MockedObjects.GetHubContext());
+        //     var command = new DeleteMessageCommand
+        //     {
+        //         UserId = Guid.NewGuid(),
+        //         MessageId = Guid.NewGuid(),
+        //     };
+        //
+        //     var result = await handler.Handle(command, CancellationToken.None);
+        //
+        //     result.Error.Success.Should().BeFalse();
+        //     result.Error.ErrorMessage.Should().Be(ResponseMessageCodes.UserNotFound);
+        //     result.Response.Should().BeNull();
+        // }
 
         [Test]
         public async Task DeleteMessageCommandHandlerTest_ShouldThrowMessageNotFound()
@@ -56,10 +57,11 @@ namespace MangoAPI.Tests.ApiCommandsTests.Messages
                 MessageId = Guid.NewGuid(),
             };
 
-            Func<Task> result = async () => await handler.Handle(command, CancellationToken.None);
+            var result = await handler.Handle(command, CancellationToken.None);
 
-            await result.Should().ThrowAsync<BusinessException>()
-                .WithMessage(ResponseMessageCodes.MessageNotFound);
+            result.Error.Success.Should().BeFalse();
+            result.Error.ErrorMessage.Should().Be(ResponseMessageCodes.MessageNotFound);
+            result.Response.Should().BeNull();
         }
     }
 }

@@ -1,6 +1,6 @@
-﻿using System.Threading;
+﻿using System.Net;
+using System.Threading;
 using System.Threading.Tasks;
-using MangoAPI.BusinessLogic.BusinessExceptions;
 using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.DataAccess.Database;
 using MangoAPI.DataAccess.Database.Extensions;
@@ -10,7 +10,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace MangoAPI.BusinessLogic.ApiCommands.Sessions
 {
-    public class LogoutAllCommandHandler : IRequestHandler<LogoutAllCommand, ResponseBase>
+    public class LogoutAllCommandHandler 
+        : IRequestHandler<LogoutAllCommand, Result<ResponseBase>>
     {
         private readonly MangoPostgresDbContext _postgresDbContext;
 
@@ -19,20 +20,37 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Sessions
             _postgresDbContext = postgresDbContext;
         }
 
-        public async Task<ResponseBase> Handle(LogoutAllCommand request, CancellationToken cancellationToken)
+        public async Task<Result<ResponseBase>> Handle(LogoutAllCommand request, 
+            CancellationToken cancellationToken)
         {
             var userSessions = _postgresDbContext.Sessions.GetUserSessionsById(request.UserId);
 
             if (!await userSessions.AnyAsync(cancellationToken))
             {
-                throw new BusinessException(ResponseMessageCodes.InvalidOrExpiredRefreshToken);
+                return new Result<ResponseBase>
+                {
+                    Error = new ErrorResponse
+                    {
+                        ErrorMessage = ResponseMessageCodes.InvalidOrExpiredRefreshToken,
+                        ErrorDetails = ResponseMessageCodes.ErrorDictionary[ResponseMessageCodes.InvalidOrExpiredRefreshToken],
+                        Success = false,
+                        StatusCode = HttpStatusCode.Conflict
+                    },
+                    Response = null,
+                    StatusCode = HttpStatusCode.Conflict
+                };
             }
 
             _postgresDbContext.Sessions.RemoveRange(userSessions);
 
             await _postgresDbContext.SaveChangesAsync(cancellationToken);
 
-            return ResponseBase.SuccessResponse;
+            return new Result<ResponseBase>
+            {
+                Error = null,
+                Response = ResponseBase.SuccessResponse,
+                StatusCode = HttpStatusCode.OK
+            };
         }
     }
 }

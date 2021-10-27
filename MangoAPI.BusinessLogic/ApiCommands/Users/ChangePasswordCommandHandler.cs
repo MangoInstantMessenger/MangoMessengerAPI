@@ -1,6 +1,6 @@
-﻿using System.Threading;
+﻿using System.Net;
+using System.Threading;
 using System.Threading.Tasks;
-using MangoAPI.BusinessLogic.BusinessExceptions;
 using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.DataAccess.Database;
 using MangoAPI.DataAccess.Database.Extensions;
@@ -11,7 +11,8 @@ using Microsoft.AspNetCore.Identity;
 
 namespace MangoAPI.BusinessLogic.ApiCommands.Users
 {
-    public class ChangePasswordCommandHandler : IRequestHandler<ChangePasswordCommand, ResponseBase>
+    public class ChangePasswordCommandHandler 
+        : IRequestHandler<ChangePasswordCommand, Result<ResponseBase>>
     {
         private readonly MangoPostgresDbContext _postgresDbContext;
         private readonly UserManager<UserEntity> _userManager;
@@ -23,25 +24,59 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
             _userManager = userManager;
         }
 
-        public async Task<ResponseBase> Handle(ChangePasswordCommand request, CancellationToken cancellationToken)
+        public async Task<Result<ResponseBase>> Handle(ChangePasswordCommand request, 
+            CancellationToken cancellationToken)
         {
             if (request.CurrentPassword == request.NewPassword)
             {
-                throw new BusinessException(ResponseMessageCodes.PasswordsAreSame);
+                return new Result<ResponseBase>
+                {
+                    Error = new ErrorResponse
+                    {
+                        ErrorMessage = ResponseMessageCodes.PasswordsAreSame,
+                        ErrorDetails = ResponseMessageCodes.ErrorDictionary[ResponseMessageCodes.PasswordsAreSame],
+                        Success = false,
+                        StatusCode = HttpStatusCode.Conflict
+                    },
+                    Response = null,
+                    StatusCode = HttpStatusCode.Conflict
+                };
             }
 
             var user = await _postgresDbContext.Users.FindUserByIdAsync(request.UserId, cancellationToken);
 
             if (user is null)
             {
-                throw new BusinessException(ResponseMessageCodes.UserNotFound);
+                return new Result<ResponseBase>
+                {
+                    Error = new ErrorResponse
+                    {
+                        ErrorMessage = ResponseMessageCodes.UserNotFound,
+                        ErrorDetails = ResponseMessageCodes.ErrorDictionary[ResponseMessageCodes.UserNotFound],
+                        Success = false,
+                        StatusCode = HttpStatusCode.Conflict
+                    },
+                    Response = null,
+                    StatusCode = HttpStatusCode.Conflict
+                };
             }
 
             var currentPasswordVerified = await _userManager.CheckPasswordAsync(user, request.CurrentPassword);
 
             if (!currentPasswordVerified)
             {
-                throw new BusinessException(ResponseMessageCodes.InvalidCredentials);
+                return new Result<ResponseBase>
+                {
+                    Error = new ErrorResponse
+                    {
+                        ErrorMessage = ResponseMessageCodes.InvalidCredentials,
+                        ErrorDetails = ResponseMessageCodes.ErrorDictionary[ResponseMessageCodes.InvalidCredentials],
+                        Success = false,
+                        StatusCode = HttpStatusCode.Conflict
+                    },
+                    Response = null,
+                    StatusCode = HttpStatusCode.Conflict
+                };
             }
 
             await _userManager.RemovePasswordAsync(user);
@@ -50,12 +85,28 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
 
             if (!result.Succeeded)
             {
-                throw new BusinessException(ResponseMessageCodes.WeakPassword);
+                return new Result<ResponseBase>
+                {
+                    Error = new ErrorResponse
+                    {
+                        ErrorMessage = ResponseMessageCodes.WeakPassword,
+                        ErrorDetails = ResponseMessageCodes.ErrorDictionary[ResponseMessageCodes.WeakPassword],
+                        Success = false,
+                        StatusCode = HttpStatusCode.Conflict
+                    },
+                    Response = null,
+                    StatusCode = HttpStatusCode.Conflict
+                };
             }
 
             await _postgresDbContext.SaveChangesAsync(cancellationToken);
 
-            return ResponseBase.SuccessResponse;
+            return new Result<ResponseBase>
+            {
+                Error = null,
+                Response = ResponseBase.SuccessResponse,
+                StatusCode = HttpStatusCode.OK
+            };
         }
     }
 }

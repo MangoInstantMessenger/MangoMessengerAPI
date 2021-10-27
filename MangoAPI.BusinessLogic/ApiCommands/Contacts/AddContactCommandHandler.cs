@@ -1,7 +1,7 @@
 ﻿using System;
+using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
-using MangoAPI.BusinessLogic.BusinessExceptions;
 using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.DataAccess.Database;
 using MangoAPI.DataAccess.Database.Extensions;
@@ -11,7 +11,8 @@ using MediatR;
 
 namespace MangoAPI.BusinessLogic.ApiCommands.Contacts
 {
-    public class AddContactCommandHandler : IRequestHandler<AddContactCommand, ResponseBase>
+    public class AddContactCommandHandler 
+        : IRequestHandler<AddContactCommand, Result<ResponseBase>>
     {
         private readonly MangoPostgresDbContext _postgresDbContext;
 
@@ -20,11 +21,23 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Contacts
             _postgresDbContext = postgresDbContext;
         }
 
-        public async Task<ResponseBase> Handle(AddContactCommand request, CancellationToken cancellationToken)
+        public async Task<Result<ResponseBase>> Handle(AddContactCommand request, 
+            CancellationToken cancellationToken)
         {
             if (request.UserId == request.ContactId)
             {
-                throw new BusinessException(ResponseMessageCodes.CannotAddSelfToContacts);
+                return new Result<ResponseBase>
+                {
+                    Error = new ErrorResponse
+                    {
+                        ErrorMessage = ResponseMessageCodes.CannotAddSelfToContacts,
+                        ErrorDetails = ResponseMessageCodes.ErrorDictionary[ResponseMessageCodes.CannotAddSelfToContacts],
+                        Success = false,
+                        StatusCode = HttpStatusCode.Conflict
+                    },
+                    Response = null,
+                    StatusCode = HttpStatusCode.Conflict
+                };
             }
 
             var userContactExist = await _postgresDbContext.UserContacts
@@ -32,7 +45,18 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Contacts
 
             if (userContactExist)
             {
-                throw new BusinessException(ResponseMessageCodes.ContactAlreadyExist);
+                return new Result<ResponseBase>
+                {
+                    Error = new ErrorResponse
+                    {
+                        ErrorMessage = ResponseMessageCodes.ContactAlreadyExist,
+                        ErrorDetails = ResponseMessageCodes.ErrorDictionary[ResponseMessageCodes.ContactAlreadyExist],
+                        Success = false,
+                        StatusCode = HttpStatusCode.Conflict
+                    },
+                    Response = null,
+                    StatusCode = HttpStatusCode.Conflict
+                };
             }
 
             var contactEntity = new UserContactEntity
@@ -45,7 +69,12 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Contacts
             _postgresDbContext.UserContacts.Add(contactEntity);
             await _postgresDbContext.SaveChangesAsync(cancellationToken);
 
-            return ResponseBase.SuccessResponse;
+            return new Result<ResponseBase>
+            {
+                Error = null,
+                Response = ResponseBase.SuccessResponse,
+                StatusCode = HttpStatusCode.OK
+            };
         }
     }
 }

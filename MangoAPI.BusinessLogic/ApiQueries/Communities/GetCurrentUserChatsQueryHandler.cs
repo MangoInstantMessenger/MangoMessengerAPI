@@ -1,16 +1,19 @@
 ﻿using MangoAPI.BusinessLogic.Models;
+using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.DataAccess.Database;
 using MangoAPI.Domain.Constants;
 using MangoAPI.Domain.Enums;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
+using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace MangoAPI.BusinessLogic.ApiQueries.Communities
 {
-    public class GetCurrentUserChatsQueryHandler : IRequestHandler<GetCurrentUserChatsQuery, GetCurrentUserChatsResponse>
+    public class GetCurrentUserChatsQueryHandler
+        : IRequestHandler<GetCurrentUserChatsQuery, Result<GetCurrentUserChatsResponse>>
     {
         private readonly MangoPostgresDbContext _postgresDbContext;
 
@@ -19,7 +22,7 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Communities
             _postgresDbContext = postgresDbContext;
         }
 
-        public async Task<GetCurrentUserChatsResponse> Handle(GetCurrentUserChatsQuery request,
+        public async Task<Result<GetCurrentUserChatsResponse>> Handle(GetCurrentUserChatsQuery request,
             CancellationToken cancellationToken)
         {
             var query = _postgresDbContext.UserChats
@@ -45,12 +48,9 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Communities
                     LastMessageAuthor = x.Chat.LastMessageAuthor,
                     LastMessageText = x.Chat.LastMessageText,
                     LastMessageTime = x.Chat.LastMessageTime,
-                });
+                }).OrderByDescending(x => x.UpdatedAt).Take(200);
 
-            var userChats = await query
-                .OrderByDescending(x => x.UpdatedAt)
-                .Take(200)
-                .ToListAsync(cancellationToken);
+            var userChats = await query.ToListAsync(cancellationToken);
 
             var directChatsIds = userChats
                 .Where(x => x.CommunityType == CommunityType.DirectChat)
@@ -82,9 +82,12 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Communities
                     : null;
             }
 
-            //userChats = userChats.OrderByDescending(x => x.UpdatedAt).ToList();
-
-            return GetCurrentUserChatsResponse.FromSuccess(userChats);
+            return new Result<GetCurrentUserChatsResponse>
+            {
+                Error = null,
+                Response = GetCurrentUserChatsResponse.FromSuccess(userChats),
+                StatusCode = HttpStatusCode.OK
+            };
         }
     }
 }

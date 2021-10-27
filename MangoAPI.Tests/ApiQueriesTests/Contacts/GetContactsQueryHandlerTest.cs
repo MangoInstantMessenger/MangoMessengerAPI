@@ -22,8 +22,8 @@ namespace MangoAPI.Tests.ApiQueriesTests.Contacts
 
             var response = await handler.Handle(query, CancellationToken.None);
 
-            response.Success.Should().BeTrue();
-            response.Contacts.Should().NotBeEmpty();
+            response.Response.Success.Should().BeTrue();
+            response.Response.Contacts.Should().NotBeEmpty();
         }
     }
 }

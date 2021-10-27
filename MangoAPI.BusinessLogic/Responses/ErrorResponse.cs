@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel;
+using System.Net;
 using System.Text.Json;
 
 namespace MangoAPI.BusinessLogic.Responses
@@ -8,18 +9,15 @@ namespace MangoAPI.BusinessLogic.Responses
         [DefaultValue("ERROR_MESSAGE")]
         public string ErrorMessage { get; init; }
         
-        [DefaultValue("Exception stack trace")]
+        [DefaultValue("Error description")]
         public string ErrorDetails { get; init; }
         
         [DefaultValue(409)]
-        public int StatusCode { get; init; }
+        public HttpStatusCode StatusCode { get; init; }
         
         [DefaultValue(false)]
         public bool Success { get; init; }
 
-        public override string ToString()
-        {
-            return JsonSerializer.Serialize(this);
-        }
+        public override string ToString() => JsonSerializer.Serialize(this);
     }
 }
