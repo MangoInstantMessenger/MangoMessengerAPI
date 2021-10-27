@@ -30,7 +30,6 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Messages
             }
 
             var query = _postgresDbContext.Messages.AsNoTracking()
-                .Include(x => x.User)
                 .Where(x => x.ChatId == request.ChatId)
                 .OrderBy(x => x.CreatedAt)
                 .Select(x => new Message

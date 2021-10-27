@@ -23,7 +23,6 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Messages
             var messages = await _postgresDbContext
                 .Messages
                 .AsNoTracking()
-                .Include(x => x.Chat)
                 .Where(x => x.ChatId == request.ChatId)
                 .OrderBy(x => x.CreatedAt)
                 .Select(messageEntity => new Message

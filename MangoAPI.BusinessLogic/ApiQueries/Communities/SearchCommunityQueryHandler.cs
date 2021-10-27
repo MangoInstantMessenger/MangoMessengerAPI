@@ -24,12 +24,8 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Communities
         {
             var query = _postgresDbContext.Chats
                 .AsNoTracking()
-                .Where(x => x.CommunityType == (int)CommunityType.PublicChannel
-                            || x.CommunityType == (int)CommunityType.ReadOnlyChannel)
-                .Where(x => request.DisplayName == null
-                            || EF.Functions.ILike(x.Title, $"%{request.DisplayName}%"))
-                .Include(x => x.Messages)
-                .ThenInclude(x => x.User)
+                .Where(x => x.CommunityType == (int)CommunityType.PublicChannel || x.CommunityType == (int)CommunityType.ReadOnlyChannel)
+                .Where(x => request.DisplayName == null || EF.Functions.ILike(x.Title, $"%{request.DisplayName}%"))
                 .Select(x => new Chat
                 {
                     ChatId = x.Id,
@@ -49,13 +45,6 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Communities
                 }).Distinct();
 
             var chats = await query.Take(200).ToListAsync(cancellationToken);
-
-            //var joinedChatIds = await _postgresDbContext.UserChats.AsNoTracking()
-            //    .Where(x => x.UserId == request.UserId)
-            //    .Select(x => x.ChatId)
-            //    .ToListAsync(cancellationToken);
-
-            //chats = chats.Where(x => !joinedChatIds.Contains(x.ChatId)).ToList();
 
             return SearchCommunityResponse.FromSuccess(chats);
         }
