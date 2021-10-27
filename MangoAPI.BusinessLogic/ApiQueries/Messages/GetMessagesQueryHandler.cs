@@ -25,7 +25,6 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Messages
             var messages = await _postgresDbContext
                 .Messages
                 .AsNoTracking()
-                .Include(x => x.Chat)
                 .Where(x => x.ChatId == request.ChatId)
                 .OrderBy(x => x.CreatedAt)
                 .Select(messageEntity => new Message
@@ -38,8 +37,6 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Messages
                     CreatedAt = messageEntity.CreatedAt.ToShortTimeString(),
                     UserDisplayName = messageEntity.User.DisplayName,
                     Self = messageEntity.User.Id == request.UserId,
-                    IsEncrypted = messageEntity.IsEncrypted,
-                    AuthorPublicKey = messageEntity.AuthorPublicKey,
                     InReplayToAuthor = messageEntity.InReplayToAuthor,
                     InReplayToText = messageEntity.InReplayToText,
 

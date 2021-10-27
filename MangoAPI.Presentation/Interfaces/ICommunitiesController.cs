@@ -1,8 +1,7 @@
-﻿using System;
+﻿using MangoAPI.BusinessLogic.ApiCommands.Communities;
+using Microsoft.AspNetCore.Mvc;
 using System.Threading;
 using System.Threading.Tasks;
-using MangoAPI.BusinessLogic.ApiCommands.Communities;
-using Microsoft.AspNetCore.Mvc;
 
 namespace MangoAPI.Presentation.Interfaces
 {
@@ -14,11 +13,7 @@ namespace MangoAPI.Presentation.Interfaces
 
         Task<IActionResult> CreateChatAsync(CreateChatRequest request, CancellationToken cancellationToken);
 
-        Task<IActionResult> GetCommunityById(Guid id, CancellationToken cancellationToken);
-
         Task<IActionResult> SearchAsync(string displayName, CancellationToken cancellationToken);
-
-        Task<IActionResult> GetSecretChatPublicKey(Guid chatId, CancellationToken cancellationToken);
 
         Task<IActionResult> UpdateChannelPicture(UpdateChanelPictureRequest request, CancellationToken cancellationToken);
     }

@@ -22,21 +22,6 @@ namespace MangoAPI.DataAccess.Database.Extensions
                 .ToListAsync(cancellationToken);
         }
 
-        public static async Task<ChatEntity> FindChatByIdAsync(this DbSet<ChatEntity> dbSet,
-            Guid chatId, CancellationToken cancellationToken)
-        {
-            return await dbSet.FirstOrDefaultAsync(x => x.Id == chatId, cancellationToken);
-        }
-
-        public static async Task<ChatEntity> FindChatByIdIncludeMessagesAsync(this DbSet<ChatEntity> dbSet,
-            Guid chatId, CancellationToken cancellationToken)
-        {
-            return await dbSet
-                .Include(x => x.Messages)
-                .ThenInclude(x => x.User)
-                .FirstOrDefaultAsync(x => x.Id == chatId, cancellationToken);
-        }
-
         public static async Task<ChatEntity> FindChatByIdIncludeChatUsersAsync(this DbSet<ChatEntity> dbSet,
             Guid chatId, CancellationToken cancellationToken)
         {

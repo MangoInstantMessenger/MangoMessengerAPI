@@ -26,8 +26,6 @@ namespace MangoAPI.Presentation.Interfaces
         Task<IActionResult> UpdateUserSocialInformationAsync(UpdateUserSocialInformationRequest request,
             CancellationToken cancellationToken);
 
-        Task<IActionResult> UpdatePublicKeyAsync(int publicKey, CancellationToken cancellationToken);
-
         Task<IActionResult> UpdateProfilePictureAsync(string image, CancellationToken cancellationToken);
     }
 }

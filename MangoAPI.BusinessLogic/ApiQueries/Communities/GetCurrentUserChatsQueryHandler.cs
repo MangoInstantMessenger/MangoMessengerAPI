@@ -45,27 +45,15 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Communities
                     IsMember = true,
                     UpdatedAt = x.Chat.UpdatedAt,
                     RoleId = x.RoleId,
-                    LastMessage = x.Chat.Messages.Any()
-                        ? x.Chat.Messages.OrderBy(messageEntity => messageEntity.CreatedAt).Select(messageEntity =>
-                            new Message
-                            {
-                                MessageId = messageEntity.Id,
-                                ChatId = messageEntity.ChatId,
-                                UserDisplayName = messageEntity.User.DisplayName,
-                                MessageText = messageEntity.Content,
-                                CreatedAt = messageEntity.CreatedAt.ToShortTimeString(),
-                                UpdatedAt = messageEntity.UpdatedAt.HasValue ? messageEntity.UpdatedAt.Value.ToShortTimeString() : null,
-                                IsEncrypted = messageEntity.IsEncrypted,
-                                AuthorPublicKey = messageEntity.AuthorPublicKey,
-                                MessageAuthorPictureUrl = messageEntity.User.Image != null
-                                    ? $"{EnvironmentConstants.BackendAddress}Uploads/{messageEntity.User.Image}"
-                                    : null,
-                                Self = messageEntity.UserId == request.UserId,
-                            }).Last()
-                        : null,
+                    LastMessageAuthor = x.Chat.LastMessageAuthor,
+                    LastMessageText = x.Chat.LastMessageText,
+                    LastMessageTime = x.Chat.LastMessageTime,
                 });
 
-            var userChats = await query.Take(200).ToListAsync(cancellationToken);
+            var userChats = await query
+                .OrderByDescending(x => x.UpdatedAt)
+                .Take(200)
+                .ToListAsync(cancellationToken);
 
             var directChatsIds = userChats
                 .Where(x => x.CommunityType == CommunityType.DirectChat)
@@ -97,7 +85,7 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Communities
                     : null;
             }
 
-            userChats = userChats.OrderByDescending(x => x.UpdatedAt).ToList();
+            //userChats = userChats.OrderByDescending(x => x.UpdatedAt).ToList();
 
             return new Result<GetCurrentUserChatsResponse>
             {

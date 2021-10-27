@@ -43,7 +43,6 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Users
                     LinkedIn = user.UserInformation.LinkedIn,
                     Username = user.UserName,
                     Bio = user.Bio,
-                    PublicKey = user.PublicKey,
                     PictureUrl = StringService.GetDocumentUrl(user.Image),
                 }).FirstOrDefaultAsync(x => x.UserId == request.UserId, cancellationToken);
 

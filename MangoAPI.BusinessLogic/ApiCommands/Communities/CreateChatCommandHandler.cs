@@ -51,22 +51,6 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Communities
                 };
             }
 
-            if (partner.PublicKey == 0 && request.CommunityType == CommunityType.SecretChat)
-            {
-                return new Result<CreateCommunityResponse>
-                {
-                    Error = new ErrorResponse
-                    {
-                        ErrorMessage = ResponseMessageCodes.UserPublicKeyIsNotGenerated,
-                        ErrorDetails = ResponseMessageCodes.ErrorDictionary[ResponseMessageCodes.UserPublicKeyIsNotGenerated],
-                        Success = false,
-                        StatusCode = HttpStatusCode.Conflict
-                    },
-                    Response = null,
-                    StatusCode = HttpStatusCode.Conflict
-                };
-            }
-
             if (request.UserId == request.PartnerId)
             {
                 return new Result<CreateCommunityResponse>

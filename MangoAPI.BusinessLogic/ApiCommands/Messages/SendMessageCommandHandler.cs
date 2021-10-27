@@ -94,8 +94,6 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Messages
                 ChatId = request.ChatId,
                 UserId = request.UserId,
                 Content = request.MessageText,
-                IsEncrypted = request.IsEncrypted,
-                AuthorPublicKey = user.PublicKey,
                 CreatedAt = DateTime.UtcNow,
                 Attachment = request.AttachmentUrl,
                 InReplayToAuthor = request.InReplayToAuthor,
@@ -103,6 +101,9 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Messages
             };
 
             chat.UpdatedAt = messageEntity.CreatedAt;
+            chat.LastMessageAuthor = user.DisplayName;
+            chat.LastMessageText = messageEntity.Content;
+            chat.LastMessageTime = messageEntity.CreatedAt.ToShortTimeString();
 
             _postgresDbContext.Chats.Update(chat);
             _postgresDbContext.Messages.Add(messageEntity);
