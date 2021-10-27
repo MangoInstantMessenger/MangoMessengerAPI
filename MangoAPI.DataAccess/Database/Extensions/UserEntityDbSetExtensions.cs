@@ -29,17 +29,5 @@ namespace MangoAPI.DataAccess.Database.Extensions
                 .Include(x => x.UserInformation)
                 .FirstOrDefaultAsync(x => x.Id == userId, cancellationToken);
         }
-
-        public static async Task<UserEntity> FindUserByEmailAsync(this DbSet<UserEntity> dbSet, string email,
-            CancellationToken cancellationToken)
-        {
-            return await dbSet.FirstOrDefaultAsync(x => x.Email == email, cancellationToken);
-        }
-
-        public static async Task<UserEntity> FindUserByPhoneAsync(this DbSet<UserEntity> dbSet, string phone,
-            CancellationToken cancellationToken)
-        {
-            return await dbSet.FirstOrDefaultAsync(x => x.PhoneNumber == phone, cancellationToken);
-        }
     }
 }

@@ -234,28 +234,6 @@ namespace MangoAPI.Presentation.Controllers
             return await RequestAsync(command, cancellationToken);
         }
 
-        /// <summary>
-        /// Updates user's public key. Requires role: User.
-        /// </summary>
-        /// <param name="publicKey">New public key.</param>
-        /// <param name="cancellationToken">CancellationToken instance.</param>
-        /// <returns>Possible codes: 200, 400, 409.</returns>
-        [HttpPut("public-key/{publicKey:int}")]
-        [Authorize(Roles = "User")]
-        [SwaggerOperation(Description = "Updates user's public key. Requires role: User.",
-            Summary = "Updates user's public key.")]
-        [ProducesResponseType(typeof(ResponseBase), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
-        public async Task<IActionResult> UpdatePublicKeyAsync([FromRoute] int publicKey,
-            CancellationToken cancellationToken)
-        {
-            var userId = HttpContext.User.GetUserId();
-            var command = new UpdatePublicKeyCommand(userId, publicKey);
-
-            return await RequestAsync(command, cancellationToken);
-        }
-
         [HttpPut("picture/{image}")]
         [Authorize(Roles = "User")]
         [SwaggerOperation(Description = "Updates user's profile picture. Requires role: User.",
