@@ -1,4 +1,5 @@
 ﻿using MangoAPI.BusinessLogic.Models;
+using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.DataAccess.Database;
 using MangoAPI.Domain.Constants;
 using MangoAPI.Domain.Enums;
@@ -8,11 +9,10 @@ using System.Linq;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
-using MangoAPI.BusinessLogic.Responses;
 
 namespace MangoAPI.BusinessLogic.ApiQueries.Communities
 {
-    public class GetCurrentUserChatsQueryHandler 
+    public class GetCurrentUserChatsQueryHandler
         : IRequestHandler<GetCurrentUserChatsQuery, Result<GetCurrentUserChatsResponse>>
     {
         private readonly MangoPostgresDbContext _postgresDbContext;
@@ -48,12 +48,9 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Communities
                     LastMessageAuthor = x.Chat.LastMessageAuthor,
                     LastMessageText = x.Chat.LastMessageText,
                     LastMessageTime = x.Chat.LastMessageTime,
-                });
+                }).OrderByDescending(x => x.UpdatedAt).Take(200);
 
-            var userChats = await query
-                .OrderByDescending(x => x.UpdatedAt)
-                .Take(200)
-                .ToListAsync(cancellationToken);
+            var userChats = await query.ToListAsync(cancellationToken);
 
             var directChatsIds = userChats
                 .Where(x => x.CommunityType == CommunityType.DirectChat)
@@ -84,8 +81,6 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Communities
                     ? $"{EnvironmentConstants.BackendAddress}Uploads/{colleague.Image}"
                     : null;
             }
-
-            //userChats = userChats.OrderByDescending(x => x.UpdatedAt).ToList();
 
             return new Result<GetCurrentUserChatsResponse>
             {
