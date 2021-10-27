@@ -34,7 +34,8 @@ namespace MangoAPI.Domain.Constants
             { UserPublicKeyIsNotGenerated, "User has not generated his public key yet." },
             { InvalidOrExpiredRestorePasswordRequest, "Invalid or expired restore password request. Try again." },
             { MaximumOwnerChatsExceeded100, "One user cannot create more than 100 channels." },
-            { InvalidEmailConfirmationCode, "Email confirmation code is invalid. Try again." }
+            { InvalidEmailConfirmationCode, "Email confirmation code is invalid. Try again." },
+            { InvalidRequestModel, "Invalid request format. Correct input data and try again." }
         };
 
         public const string Success = "SUCCESS";
@@ -63,5 +64,6 @@ namespace MangoAPI.Domain.Constants
         public const string UserPublicKeyIsNotGenerated = "USER_PUBLIC_KEY_IS_NOT_GENERATED";
         public const string MaximumOwnerChatsExceeded100 = "MAXIMUM_OWNER_CHATS_EXCEEDED_100";
         public const string InvalidEmailConfirmationCode = "INVALID_EMAIL_CONFIRMATION_CODE";
+        public const string InvalidRequestModel = "INVALID_REQUEST_FORMAT";
     }
 }

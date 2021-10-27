@@ -3,6 +3,7 @@ using System.Net;
 using System.Threading.Tasks;
 using FluentValidation;
 using MangoAPI.BusinessLogic.Responses;
+using MangoAPI.Domain.Constants;
 using Microsoft.AspNetCore.Http;
 
 namespace MangoAPI.Presentation.Middlewares
@@ -50,7 +51,7 @@ namespace MangoAPI.Presentation.Middlewares
             {
                 Success = false,
                 ErrorMessage = errorContext.ErrorMessage,
-                ErrorDetails = errorContext.Exception.StackTrace,
+                ErrorDetails = ResponseMessageCodes.ErrorDictionary[ResponseMessageCodes.InvalidRequestModel],
                 StatusCode = errorContext.StatusCode,
             }.ToString());
         }
