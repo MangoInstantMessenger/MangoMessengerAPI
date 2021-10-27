@@ -38,11 +38,6 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Communities
                 throw new BusinessException(ResponseMessageCodes.UserNotFound);
             }
 
-            if (partner.PublicKey == 0 && request.CommunityType == CommunityType.SecretChat)
-            {
-                throw new BusinessException(ResponseMessageCodes.UserPublicKeyIsNotGenerated);
-            }
-
             if (request.UserId == request.PartnerId)
             {
                 throw new BusinessException(ResponseMessageCodes.CannotCreateSelfChat);

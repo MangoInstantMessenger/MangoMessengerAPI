@@ -21,6 +21,12 @@ namespace MangoAPI.Domain.Entities
 
         public int MembersCount { get; set; }
 
+        public string LastMessageAuthor { get; set; }
+
+        public string LastMessageText { get; set; }
+
+        public string LastMessageTime { get; set; }
+
         public ICollection<MessageEntity> Messages { get; set; }
 
         public ICollection<UserChatEntity> ChatUsers { get; set; }

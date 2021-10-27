@@ -24,12 +24,8 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Communities
         {
             var query = _postgresDbContext.Chats
                 .AsNoTracking()
-                .Where(x => x.CommunityType == (int)CommunityType.PublicChannel
-                            || x.CommunityType == (int)CommunityType.ReadOnlyChannel)
-                .Where(x => request.DisplayName == null
-                            || EF.Functions.ILike(x.Title, $"%{request.DisplayName}%"))
-                .Include(x => x.Messages)
-                .ThenInclude(x => x.User)
+                .Where(x => x.CommunityType == (int)CommunityType.PublicChannel || x.CommunityType == (int)CommunityType.ReadOnlyChannel)
+                .Where(x => request.DisplayName == null || EF.Functions.ILike(x.Title, $"%{request.DisplayName}%"))
                 .Select(x => new Chat
                 {
                     ChatId = x.Id,
@@ -43,36 +39,12 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Communities
                     IsArchived = false,
                     IsMember = false,
                     UpdatedAt = x.UpdatedAt,
-                    LastMessage = x.Messages.Any()
-                        ? x.Messages.OrderBy(messageEntity => messageEntity.CreatedAt).Select(messageEntity =>
-                            new Message
-                            {
-                                MessageId = messageEntity.Id,
-                                ChatId = messageEntity.ChatId,
-                                UserDisplayName = messageEntity.User.DisplayName,
-                                MessageText = messageEntity.Content,
-                                CreatedAt = messageEntity.CreatedAt.ToShortTimeString(),
-                                UpdatedAt = messageEntity.UpdatedAt.HasValue
-                                    ? messageEntity.UpdatedAt.Value.ToShortTimeString()
-                                    : null,
-                                IsEncrypted = messageEntity.IsEncrypted,
-                                AuthorPublicKey = messageEntity.AuthorPublicKey,
-                                MessageAuthorPictureUrl = messageEntity.User.Image != null
-                                    ? $"{EnvironmentConstants.BackendAddress}Uploads/{messageEntity.User.Image}"
-                                    : null,
-                                Self = messageEntity.UserId == request.UserId,
-                            }).Last()
-                        : null,
+                    LastMessageAuthor = x.LastMessageAuthor,
+                    LastMessageText = x.LastMessageText,
+                    LastMessageTime = x.LastMessageTime,
                 }).Distinct();
 
             var chats = await query.Take(200).ToListAsync(cancellationToken);
-
-            var joinedChatIds = await _postgresDbContext.UserChats.AsNoTracking()
-                .Where(x => x.UserId == request.UserId)
-                .Select(x => x.ChatId)
-                .ToListAsync(cancellationToken);
-
-            chats = chats.Where(x => !joinedChatIds.Contains(x.ChatId)).ToList();
 
             return SearchCommunityResponse.FromSuccess(chats);
         }

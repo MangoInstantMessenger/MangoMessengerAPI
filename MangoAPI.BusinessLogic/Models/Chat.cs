@@ -1,7 +1,7 @@
-﻿using System;
-using System.ComponentModel;
-using MangoAPI.Domain.Entities;
+﻿using MangoAPI.Domain.Entities;
 using MangoAPI.Domain.Enums;
+using System;
+using System.ComponentModel;
 
 namespace MangoAPI.BusinessLogic.Models
 {
@@ -29,15 +29,22 @@ namespace MangoAPI.BusinessLogic.Models
         public bool IsArchived { get; init; }
 
         [DefaultValue(true)]
-        public bool IsMember { get; set; }
-
-        [DefaultValue("1994-07-21")]
-        public DateTime? UpdatedAt { get; init; }
+        public bool IsMember { get; init; }
 
         [DefaultValue(1)]
-        public int RoleId { get; set; }
+        public int RoleId { get; init; }
 
-        public Message LastMessage { get; init; }
+        [DefaultValue("MyDisplayName")]
+        public string LastMessageAuthor { get; init; }
+
+        [DefaultValue("Hello world!")]
+        public string LastMessageText { get; init; }
+
+        [DefaultValue("10:21 PM")]
+        public string LastMessageTime { get; init; }
+
+        [DefaultValue("10/02/2021")]
+        public DateTime? UpdatedAt { get; set; }
     }
 
     public static class ChatEntityMapper
@@ -52,8 +59,7 @@ namespace MangoAPI.BusinessLogic.Models
                 Description = entity.Description,
                 MembersCount = entity.MembersCount,
                 IsArchived = false,
-                IsMember = true,
-                UpdatedAt = entity.UpdatedAt
+                IsMember = true
             };
         }
     }
