@@ -49,23 +49,23 @@ namespace MangoAPI.BusinessLogic.Models
 
     public static class MessageMapper
     {
-        public static Message ToMessage(this MessageEntity message, UserEntity user)
+        public static Message ToMessage(this MessageEntity message, string displayName, Guid userId, string image)
         {
             var messageDto = new Message
             {
                 MessageId = message.Id,
                 UserId = message.UserId,
                 ChatId = message.ChatId,
-                UserDisplayName = user.DisplayName,
+                UserDisplayName = displayName,
                 MessageText = message.Content,
                 CreatedAt = message.CreatedAt.ToShortTimeString(),
                 UpdatedAt = message.UpdatedAt?.ToShortTimeString(),
-                Self = message.UserId == user.Id,
+                Self = message.UserId == userId,
                 InReplayToAuthor = message.InReplayToAuthor,
                 InReplayToText = message.InReplayToText,
 
-                MessageAuthorPictureUrl = user.Image != null
-                    ? $"{EnvironmentConstants.BackendAddress}Uploads/{user.Image}"
+                MessageAuthorPictureUrl = image != null
+                    ? $"{EnvironmentConstants.BackendAddress}Uploads/{image}"
                     : null,
 
                 MessageAttachmentUrl = message.Attachment != null
