@@ -24,6 +24,24 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Contacts
         public async Task<Result<ResponseBase>> Handle(AddContactCommand request, 
             CancellationToken cancellationToken)
         {
+            var contact = await _postgresDbContext.Users.FindUserByIdAsync(request.ContactId, cancellationToken);
+
+            if (contact is null)
+            {
+                return new Result<ResponseBase>
+                {
+                    Error = new ErrorResponse
+                    {
+                        ErrorMessage = ResponseMessageCodes.ContactNotFound,
+                        ErrorDetails = ResponseMessageCodes.ErrorDictionary[ResponseMessageCodes.ContactNotFound],
+                        Success = false,
+                        StatusCode = HttpStatusCode.Conflict
+                    },
+                    Response = null,
+                    StatusCode = HttpStatusCode.Conflict
+                };
+            }
+        
             if (request.UserId == request.ContactId)
             {
                 return new Result<ResponseBase>
