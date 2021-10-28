@@ -16,7 +16,7 @@ using MangoAPI.BusinessLogic.Responses;
 
 namespace MangoAPI.BusinessLogic.ApiCommands.Messages
 {
-    public class SendMessageCommandHandler 
+    public class SendMessageCommandHandler
         : IRequestHandler<SendMessageCommand, Result<SendMessageResponse>>
     {
         private readonly MangoPostgresDbContext _postgresDbContext;
@@ -29,11 +29,16 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Messages
             _hubContext = hubContext;
         }
 
-        public async Task<Result<SendMessageResponse>> Handle(SendMessageCommand request, 
+        public async Task<Result<SendMessageResponse>> Handle(SendMessageCommand request,
             CancellationToken cancellationToken)
         {
             var user = await _postgresDbContext.Users.AsNoTracking()
-                .FirstOrDefaultAsync(x => x.Id == request.UserId,
+                .Select(x => new
+                {
+                    x.DisplayName,
+                    x.Image,
+                    x.Id,
+                }).FirstOrDefaultAsync(x => x.Id == request.UserId, 
                     cancellationToken);
 
             if (user == null)
@@ -52,10 +57,16 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Messages
                 };
             }
 
-            var chat = await _postgresDbContext.Chats.AsNoTracking()
-                .FirstOrDefaultAsync(x => x.Id == request.ChatId, cancellationToken);
+            var userChat = await _postgresDbContext.UserChats.AsNoTracking()
+                .Select(x => new
+                {
+                    x.ChatId,
+                    x.RoleId,
+                    x.Chat
+                }).FirstOrDefaultAsync(x => x.ChatId == request.ChatId,
+                    cancellationToken);
 
-            if (chat == null)
+            if (userChat == null)
             {
                 return new Result<SendMessageResponse>
                 {
@@ -71,9 +82,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Messages
                 };
             }
 
-            var permitted = await CheckUserPermissions(user, chat, cancellationToken);
-
-            if (!permitted)
+            if (userChat.Chat.CommunityType == (int)CommunityType.ReadOnlyChannel)
             {
                 return new Result<SendMessageResponse>
                 {
@@ -100,19 +109,19 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Messages
                 InReplayToText = request.InReplayToText,
             };
 
-            chat.UpdatedAt = messageEntity.CreatedAt;
-            chat.LastMessageAuthor = user.DisplayName;
-            chat.LastMessageText = messageEntity.Content;
-            chat.LastMessageTime = messageEntity.CreatedAt.ToShortTimeString();
+            userChat.Chat.UpdatedAt = messageEntity.CreatedAt;
+            userChat.Chat.LastMessageAuthor = user.DisplayName;
+            userChat.Chat.LastMessageText = messageEntity.Content;
+            userChat.Chat.LastMessageTime = messageEntity.CreatedAt.ToShortTimeString();
 
-            _postgresDbContext.Chats.Update(chat);
+            _postgresDbContext.Chats.Update(userChat.Chat);
             _postgresDbContext.Messages.Add(messageEntity);
 
             await _postgresDbContext.SaveChangesAsync(cancellationToken);
 
-            var messageDto = messageEntity.ToMessage(user);
+            var messageDto = messageEntity.ToMessage(user.DisplayName, user.Id, user.Image);
 
-            await _hubContext.Clients.Group(chat.Id.ToString()).BroadcastMessage(messageDto);
+            await _hubContext.Clients.Group(request.ChatId.ToString()).BroadcastMessage(messageDto);
 
             return new Result<SendMessageResponse>
             {
@@ -120,37 +129,6 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Messages
                 Response = SendMessageResponse.FromSuccess(messageEntity.Id),
                 StatusCode = HttpStatusCode.OK
             };
-        }
-
-        private async Task<bool> CheckUserPermissions(UserEntity user, ChatEntity chat,
-            CancellationToken cancellationToken)
-        {
-            return chat.CommunityType switch
-            {
-                (int)CommunityType.DirectChat => true,
-                (int)CommunityType.SecretChat => true,
-                (int)CommunityType.PrivateChannel => await CheckChannelPermissions(user, chat, cancellationToken),
-                (int)CommunityType.PublicChannel => await CheckChannelPermissions(user, chat, cancellationToken),
-                (int)CommunityType.ReadOnlyChannel => await CheckReadOnlyChannelPermissions(user, chat, cancellationToken),
-                _ => false,
-            };
-        }
-
-        private async Task<bool> CheckReadOnlyChannelPermissions(UserEntity user, ChatEntity chat,
-            CancellationToken cancellationToken)
-        {
-            return await _postgresDbContext.UserChats
-                .AsNoTracking()
-                .AnyAsync(x => x.UserId == user.Id && x.ChatId == chat.Id && x.RoleId == (int)UserRole.Owner,
-                    cancellationToken);
-        }
-
-        private async Task<bool> CheckChannelPermissions(UserEntity user, ChatEntity chat,
-            CancellationToken cancellationToken)
-        {
-            return await _postgresDbContext.UserChats.AsNoTracking()
-                .Where(x => x.UserId == user.Id && x.ChatId == chat.Id)
-                .AnyAsync(cancellationToken);
         }
     }
 }
