@@ -7,6 +7,7 @@ using NUnit.Framework;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using MangoAPI.BusinessLogic.Responses;
 
 namespace MangoAPI.Tests.ApiCommandsTests.Messages
 {
@@ -37,7 +38,8 @@ namespace MangoAPI.Tests.ApiCommandsTests.Messages
         public async Task SendMessageCommandHandlerTest_ShouldThrowUserNotFound()
         {
             using var dbContextFixture = new DbContextFixture();
-            var handler = new SendMessageCommandHandler(dbContextFixture.PostgresDbContext, Hub);
+            var responseFactory = new ResponseFactory<SendMessageResponse>();
+            var handler = new SendMessageCommandHandler(dbContextFixture.PostgresDbContext, Hub, responseFactory);
             var command = new SendMessageCommand
             {
                 UserId = Guid.NewGuid(),
@@ -56,7 +58,8 @@ namespace MangoAPI.Tests.ApiCommandsTests.Messages
         public async Task SendMessageCommandHandlerTest_ShouldThrowChatNotFound()
         {
             using var dbContextFixture = new DbContextFixture();
-            var handler = new SendMessageCommandHandler(dbContextFixture.PostgresDbContext, Hub);
+            var responseFactory = new ResponseFactory<SendMessageResponse>();
+            var handler = new SendMessageCommandHandler(dbContextFixture.PostgresDbContext, Hub, responseFactory);
             var command = new SendMessageCommand
             {
                 UserId = SeedDataConstants.SzymonId,
@@ -75,7 +78,8 @@ namespace MangoAPI.Tests.ApiCommandsTests.Messages
         public async Task SendMessageCommandHandlerTest_ShouldThrowPermissionDenied()
         {
             using var dbContextFixture = new DbContextFixture();
-            var handler = new SendMessageCommandHandler(dbContextFixture.PostgresDbContext, Hub);
+            var responseFactory = new ResponseFactory<SendMessageResponse>();
+            var handler = new SendMessageCommandHandler(dbContextFixture.PostgresDbContext, Hub, responseFactory);
             var command = new SendMessageCommand
             {
                 UserId = SeedDataConstants.KolbasatorId,

@@ -8,6 +8,7 @@ using NUnit.Framework;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using MangoAPI.BusinessLogic.Responses;
 
 namespace MangoAPI.Tests.ApiCommandsTests.Communities
 {
@@ -20,8 +21,8 @@ namespace MangoAPI.Tests.ApiCommandsTests.Communities
         public async Task CreateDirectChatCommandHandlerTest_Success()
         {
             using var dbContextFixture = new DbContextFixture();
-            var handler = new CreateChatCommandHandler(dbContextFixture.PostgresDbContext, Hub);
-
+            var responseFactory = new ResponseFactory<CreateCommunityResponse>();
+            var handler = new CreateChatCommandHandler(dbContextFixture.PostgresDbContext, Hub, responseFactory);
             var createChatCommand = new CreateChatCommand
             {
                 UserId = SeedDataConstants.RazumovskyId,
@@ -39,7 +40,8 @@ namespace MangoAPI.Tests.ApiCommandsTests.Communities
         public async Task CreateDirectChatCommandHandler_ShouldThrowUserNotFound()
         {
             using var dbContextFixture = new DbContextFixture();
-            var handler = new CreateChatCommandHandler(dbContextFixture.PostgresDbContext, Hub);
+            var responseFactory = new ResponseFactory<CreateCommunityResponse>();
+            var handler = new CreateChatCommandHandler(dbContextFixture.PostgresDbContext, Hub, responseFactory);
             var createDirectChatCommand = new CreateChatCommand
             {
                 UserId = Guid.NewGuid(),
@@ -57,7 +59,8 @@ namespace MangoAPI.Tests.ApiCommandsTests.Communities
         public async Task CreateDirectChatCommandHandler_ShouldThrowCannotCreateSelf()
         {
             using var dbContextFixture = new DbContextFixture();
-            var handler = new CreateChatCommandHandler(dbContextFixture.PostgresDbContext, Hub);
+            var responseFactory = new ResponseFactory<CreateCommunityResponse>();
+            var handler = new CreateChatCommandHandler(dbContextFixture.PostgresDbContext, Hub, responseFactory);
             var createDirectChatCommand = new CreateChatCommand
             {
                 UserId = SeedDataConstants.PetroId,

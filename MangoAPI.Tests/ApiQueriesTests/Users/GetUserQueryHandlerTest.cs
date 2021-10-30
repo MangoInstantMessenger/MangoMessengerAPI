@@ -3,6 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using FluentAssertions;
 using MangoAPI.BusinessLogic.ApiQueries.Users;
+using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.Domain.Constants;
 using NUnit.Framework;
 
@@ -15,7 +16,8 @@ namespace MangoAPI.Tests.ApiQueriesTests.Users
         public async Task GetUserQueryHandlerTest_Success()
         {
             using var dbContextFixture = new DbContextFixture();
-            var handler = new GetUserQueryHandler(dbContextFixture.PostgresDbContext);
+            var responseFactory = new ResponseFactory<GetUserResponse>();
+            var handler = new GetUserQueryHandler(dbContextFixture.PostgresDbContext, responseFactory);
             var query = new GetUserQuery
             {
                 UserId = SeedDataConstants.RazumovskyId
@@ -30,7 +32,8 @@ namespace MangoAPI.Tests.ApiQueriesTests.Users
         public async Task GetUserQueryHandlerTest_ShouldThrowUserNotFound()
         {
             using var dbContextFixture = new DbContextFixture();
-            var handler = new GetUserQueryHandler(dbContextFixture.PostgresDbContext);
+            var responseFactory = new ResponseFactory<GetUserResponse>();
+            var handler = new GetUserQueryHandler(dbContextFixture.PostgresDbContext, responseFactory);
             var query = new GetUserQuery
             {
                 UserId = Guid.NewGuid()

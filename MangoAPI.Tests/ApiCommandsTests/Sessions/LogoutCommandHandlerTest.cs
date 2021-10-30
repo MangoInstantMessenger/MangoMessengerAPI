@@ -1,8 +1,8 @@
-﻿using System;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 using FluentAssertions;
 using MangoAPI.BusinessLogic.ApiCommands.Sessions;
+using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.Domain.Constants;
 using NUnit.Framework;
 
@@ -15,7 +15,8 @@ namespace MangoAPI.Tests.ApiCommandsTests.Sessions
         public async Task LogoutCommandHandlerTest_Success()
         {
             using var dbContextFixture = new DbContextFixture();
-            var handler = new LogoutCommandHandler(dbContextFixture.PostgresDbContext);
+            var responseFactory = new ResponseFactory<ResponseBase>();
+            var handler = new LogoutCommandHandler(dbContextFixture.PostgresDbContext, responseFactory);
             
             var command = new LogoutCommand
             {
@@ -31,8 +32,8 @@ namespace MangoAPI.Tests.ApiCommandsTests.Sessions
         public async Task LogoutCommandHandlerTest_ShouldThrowInvalidOrExpiredRefreshToken()
         {
             using var dbContextFixture = new DbContextFixture();
-            var handler = new LogoutCommandHandler(dbContextFixture.PostgresDbContext);
-            
+            var responseFactory = new ResponseFactory<ResponseBase>();
+            var handler = new LogoutCommandHandler(dbContextFixture.PostgresDbContext, responseFactory);
             var command = new LogoutCommand
             {
                 RefreshToken = "69dbef09-de5a-4da7-9d67-abeba1510135".AsGuid()
@@ -49,8 +50,8 @@ namespace MangoAPI.Tests.ApiCommandsTests.Sessions
         public async Task LogoutCommandHandlerTest_ShouldThrowUserNotFound()
         {
             using var dbContextFixture = new DbContextFixture();
-            var handler = new LogoutCommandHandler(dbContextFixture.PostgresDbContext);
-            
+            var responseFactory = new ResponseFactory<ResponseBase>();
+            var handler = new LogoutCommandHandler(dbContextFixture.PostgresDbContext, responseFactory);
             var command = new LogoutCommand
             {
                 RefreshToken = "219d9df3-9bc0-4679-baaa-c18b1c7524e8".AsGuid()

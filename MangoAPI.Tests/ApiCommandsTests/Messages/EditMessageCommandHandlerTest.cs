@@ -5,6 +5,7 @@ using NUnit.Framework;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using MangoAPI.BusinessLogic.Responses;
 
 namespace MangoAPI.Tests.ApiCommandsTests.Messages
 {
@@ -33,7 +34,9 @@ namespace MangoAPI.Tests.ApiCommandsTests.Messages
         public async Task EditMessageCommandHandlerTest_ShouldThrowMessageNotFound()
         {
             using var dbContextFixture = new DbContextFixture();
-            var handler = new EditMessageCommandHandler(dbContextFixture.PostgresDbContext, MockedObjects.GetHubContext());
+            var responseFactory = new ResponseFactory<ResponseBase>(); 
+            var handler = new EditMessageCommandHandler(dbContextFixture.PostgresDbContext, MockedObjects.GetHubContext(),
+                responseFactory);
             var command = new EditMessageCommand
             {
                 UserId = SeedDataConstants.SzymonId,

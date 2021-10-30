@@ -3,6 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using FluentAssertions;
 using MangoAPI.BusinessLogic.ApiCommands.Users;
+using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.Domain.Constants;
 using NUnit.Framework;
 
@@ -15,7 +16,8 @@ namespace MangoAPI.Tests.ApiCommandsTests.Users
         public async Task UpdateUserAccountInformationCommandHandlerTest_Success()
         {
             using var dbContextFixture = new DbContextFixture();
-            var handler = new UpdateUserAccountInfoCommandHandler(dbContextFixture.PostgresDbContext);
+            var responseFactory = new ResponseFactory<ResponseBase>();
+            var handler = new UpdateUserAccountInfoCommandHandler(dbContextFixture.PostgresDbContext,responseFactory);
             var command = new UpdateUserAccountInfoCommand
             {
                 UserId = SeedDataConstants.PetroId,
@@ -39,7 +41,8 @@ namespace MangoAPI.Tests.ApiCommandsTests.Users
         public async Task UpdateUserAccountInformationCommandHandlerTest_ShouldThrowUserNotFound()
         {
             using var dbContextFixture = new DbContextFixture();
-            var handler = new UpdateUserAccountInfoCommandHandler(dbContextFixture.PostgresDbContext);
+            var responseFactory = new ResponseFactory<ResponseBase>();
+            var handler = new UpdateUserAccountInfoCommandHandler(dbContextFixture.PostgresDbContext,responseFactory);
             var command = new UpdateUserAccountInfoCommand
             {
                 UserId = Guid.NewGuid(),

@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using FluentAssertions;
 using MangoAPI.Application.Interfaces;
 using MangoAPI.BusinessLogic.ApiCommands.Sessions;
+using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.Domain.Constants;
 using Moq;
 using NUnit.Framework;
@@ -21,7 +22,9 @@ namespace MangoAPI.Tests.ApiCommandsTests.Sessions
             var jwtGenerator = new Mock<IJwtGenerator>();
             jwtGenerator.Setup(x => x.GenerateJwtToken(It.IsAny<Guid>(), 
                     It.IsAny<List<string>>())).Returns("Token");
-            var handler = new RefreshSessionCommandHandler(dbContextFixture.PostgresDbContext, jwtGenerator.Object);
+            var responseFactory = new ResponseFactory<TokensResponse>();
+            var handler = new RefreshSessionCommandHandler(dbContextFixture.PostgresDbContext, jwtGenerator.Object,
+                responseFactory);
             var command = new RefreshSessionCommand
             {
                 RefreshToken = "69dbef09-de5a-4da7-9d67-abeba1510118".AsGuid()
@@ -41,7 +44,9 @@ namespace MangoAPI.Tests.ApiCommandsTests.Sessions
             jwtGenerator.Setup(x => x.GenerateJwtToken(It.IsAny<Guid>(), 
                     It.IsAny<List<string>>()))
                 .Returns("Token");
-            var handler = new RefreshSessionCommandHandler(dbContextFixture.PostgresDbContext, jwtGenerator.Object);
+            var responseFactory = new ResponseFactory<TokensResponse>();
+            var handler = new RefreshSessionCommandHandler(dbContextFixture.PostgresDbContext, jwtGenerator.Object,
+                responseFactory);
             var command = new RefreshSessionCommand
             {
                 RefreshToken = Guid.Empty

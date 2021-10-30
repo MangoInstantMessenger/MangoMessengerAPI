@@ -1,8 +1,8 @@
-﻿using System;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 using FluentAssertions;
 using MangoAPI.BusinessLogic.ApiCommands.Contacts;
+using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.Domain.Constants;
 using NUnit.Framework;
 
@@ -15,7 +15,8 @@ namespace MangoAPI.Tests.ApiCommandsTests.Contacts
         public async Task AddContactCommandHandlerTest_Success()
         {
             using var dbContextFixture = new DbContextFixture();
-            var handler = new AddContactCommandHandler(dbContextFixture.PostgresDbContext);
+            var responseFactory = new ResponseFactory<ResponseBase>();
+            var handler = new AddContactCommandHandler(dbContextFixture.PostgresDbContext, responseFactory);
             var command = new AddContactCommand
             {
                 UserId = SeedDataConstants.PetroId,
@@ -50,7 +51,8 @@ namespace MangoAPI.Tests.ApiCommandsTests.Contacts
         public async Task AddContactCommandHandlerTest_ShouldThrowContactAlreadyExists()
         {
             using var dbContextFixture = new DbContextFixture();
-            var handler = new AddContactCommandHandler(dbContextFixture.PostgresDbContext);
+            var responseFactory = new ResponseFactory<ResponseBase>();
+            var handler = new AddContactCommandHandler(dbContextFixture.PostgresDbContext, responseFactory);
             var command = new AddContactCommand
             {
                 UserId = SeedDataConstants.PetroId,

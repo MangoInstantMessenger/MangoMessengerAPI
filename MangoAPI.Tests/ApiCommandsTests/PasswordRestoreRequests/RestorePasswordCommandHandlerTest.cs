@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using FluentAssertions;
 using MangoAPI.Application.Interfaces;
 using MangoAPI.BusinessLogic.ApiCommands.PasswordRestoreRequests;
+using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.Domain.Constants;
 using MangoAPI.Domain.Entities;
 using Moq;
@@ -20,7 +21,9 @@ namespace MangoAPI.Tests.ApiCommandsTests.PasswordRestoreRequests
             var emailSender = new Mock<IEmailSenderService>();
             emailSender.Setup(x =>
                 x.SendVerificationEmailAsync(It.IsAny<UserEntity>(), It.IsAny<CancellationToken>()));
-            var handler = new RequestPasswordRestoreCommandHandler(dbContextFixture.PostgresDbContext, emailSender.Object);
+            var responseFactory = new ResponseFactory<ResponseBase>();
+            var handler = new RequestPasswordRestoreCommandHandler(dbContextFixture.PostgresDbContext, emailSender.Object,
+                responseFactory);
             var command = new RequestPasswordRestoreCommand
             {
                 EmailOrPhone = "petro.kolosov@wp.pl"
@@ -39,7 +42,9 @@ namespace MangoAPI.Tests.ApiCommandsTests.PasswordRestoreRequests
             var emailSender = new Mock<IEmailSenderService>();
             emailSender.Setup(x =>
                 x.SendVerificationEmailAsync(It.IsAny<UserEntity>(), It.IsAny<CancellationToken>()));
-            var handler = new RequestPasswordRestoreCommandHandler(dbContextFixture.PostgresDbContext, emailSender.Object);
+            var responseFactory = new ResponseFactory<ResponseBase>();
+            var handler = new RequestPasswordRestoreCommandHandler(dbContextFixture.PostgresDbContext, emailSender.Object,
+                responseFactory);
             var command = new RequestPasswordRestoreCommand
             {
                 EmailOrPhone = "hello world"

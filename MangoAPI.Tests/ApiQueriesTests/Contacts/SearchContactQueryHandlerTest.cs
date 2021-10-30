@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using FluentAssertions;
 using MangoAPI.BusinessLogic.ApiQueries.Contacts;
+using MangoAPI.BusinessLogic.Responses;
 using NUnit.Framework;
 
 namespace MangoAPI.Tests.ApiQueriesTests.Contacts
@@ -13,7 +14,8 @@ namespace MangoAPI.Tests.ApiQueriesTests.Contacts
         public async Task UserSearchQueryHandlerTest_Success()
         {
             using var dbContextFixture = new DbContextFixture();
-            var handler = new SearchContactByDisplayNameQueryHandler(dbContextFixture.PostgresDbContext);
+            var responseFactory = new ResponseFactory<SearchContactResponse>();
+            var handler = new SearchContactByDisplayNameQueryHandler(dbContextFixture.PostgresDbContext, responseFactory);
             var query = new SearchContactQuery
             {
                 SearchQuery = "Petro"

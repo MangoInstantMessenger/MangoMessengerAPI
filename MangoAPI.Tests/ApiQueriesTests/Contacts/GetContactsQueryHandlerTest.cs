@@ -4,6 +4,7 @@ using MangoAPI.Domain.Constants;
 using NUnit.Framework;
 using System.Threading;
 using System.Threading.Tasks;
+using MangoAPI.BusinessLogic.Responses;
 
 namespace MangoAPI.Tests.ApiQueriesTests.Contacts
 {
@@ -14,7 +15,8 @@ namespace MangoAPI.Tests.ApiQueriesTests.Contacts
         public async Task GetContactsQueryHandlerTest_Success()
         {
             using var dbContextFixture = new DbContextFixture();
-            var handler = new GetContactsQueryHandler(dbContextFixture.PostgresDbContext);
+            var responseFactory = new ResponseFactory<GetContactsResponse>();
+            var handler = new GetContactsQueryHandler(dbContextFixture.PostgresDbContext, responseFactory);
             var query = new GetContactsQuery
             {
                 UserId = SeedDataConstants.RazumovskyId
