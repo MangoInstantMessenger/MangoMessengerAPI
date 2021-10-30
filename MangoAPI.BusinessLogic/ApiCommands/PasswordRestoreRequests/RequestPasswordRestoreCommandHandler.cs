@@ -6,7 +6,6 @@ using MangoAPI.Domain.Constants;
 using MangoAPI.Domain.Entities;
 using MediatR;
 using System;
-using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -17,12 +16,14 @@ namespace MangoAPI.BusinessLogic.ApiCommands.PasswordRestoreRequests
     {
         private readonly MangoPostgresDbContext _postgresDbContext;
         private readonly IEmailSenderService _emailSenderService;
+        private readonly ResponseFactory<ResponseBase> _responseFactory;
 
         public RequestPasswordRestoreCommandHandler(MangoPostgresDbContext postgresDbContext,
-            IEmailSenderService emailSenderService)
+            IEmailSenderService emailSenderService, ResponseFactory<ResponseBase> responseFactory)
         {
             _postgresDbContext = postgresDbContext;
             _emailSenderService = emailSenderService;
+            _responseFactory = responseFactory;
         }
 
         public async Task<Result<ResponseBase>> Handle(RequestPasswordRestoreCommand request,
@@ -33,18 +34,10 @@ namespace MangoAPI.BusinessLogic.ApiCommands.PasswordRestoreRequests
 
             if (user is null)
             {
-                return new Result<ResponseBase>
-                {
-                    Error = new ErrorResponse
-                    {
-                        ErrorMessage = ResponseMessageCodes.UserNotFound,
-                        ErrorDetails = ResponseMessageCodes.ErrorDictionary[ResponseMessageCodes.UserNotFound],
-                        Success = false,
-                        StatusCode = HttpStatusCode.Conflict
-                    },
-                    Response = null,
-                    StatusCode = HttpStatusCode.Conflict
-                };
+                const string errorMessage = ResponseMessageCodes.UserNotFound;
+                var errorDescription = ResponseMessageCodes.ErrorDictionary[errorMessage];
+
+                return _responseFactory.ConflictResponse(errorMessage, errorDescription);
             }
 
             var passwordRestoreRequest = new PasswordRestoreRequestEntity
@@ -61,12 +54,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.PasswordRestoreRequests
 
             await _emailSenderService.SendPasswordRestoreRequest(user, passwordRestoreRequest.Id, cancellationToken);
 
-            return new Result<ResponseBase>
-            {
-                Error = null,
-                Response = ResponseBase.SuccessResponse,
-                StatusCode = HttpStatusCode.OK
-            };
+            return _responseFactory.SuccessResponse(ResponseBase.SuccessResponse);
         }
     }
 }

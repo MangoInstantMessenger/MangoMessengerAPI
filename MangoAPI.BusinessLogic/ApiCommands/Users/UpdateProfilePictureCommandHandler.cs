@@ -1,5 +1,4 @@
-﻿using System.Net;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.DataAccess.Database;
@@ -13,10 +12,13 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
         : IRequestHandler<UpdateProfilePictureCommand, Result<ResponseBase>>
     {
         private readonly MangoPostgresDbContext _postgresDbContext;
+        private readonly ResponseFactory<ResponseBase> _responseFactory;
 
-        public UpdateProfilePictureCommandHandler(MangoPostgresDbContext postgresDbContext)
+        public UpdateProfilePictureCommandHandler(MangoPostgresDbContext postgresDbContext,
+            ResponseFactory<ResponseBase> responseFactory)
         {
             _postgresDbContext = postgresDbContext;
+            _responseFactory = responseFactory;
         }
 
         public async Task<Result<ResponseBase>> Handle(UpdateProfilePictureCommand request, 
@@ -26,18 +28,10 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
 
             if (user == null)
             {
-                return new Result<ResponseBase>
-                {
-                    Error = new ErrorResponse
-                    {
-                        ErrorMessage = ResponseMessageCodes.UserNotFound,
-                        ErrorDetails = ResponseMessageCodes.ErrorDictionary[ResponseMessageCodes.UserNotFound],
-                        Success = false,
-                        StatusCode = HttpStatusCode.Conflict
-                    },
-                    Response = null,
-                    StatusCode = HttpStatusCode.Conflict
-                };
+                const string errorMessage = ResponseMessageCodes.UserNotFound;
+                var details = ResponseMessageCodes.ErrorDictionary[errorMessage];
+
+                return _responseFactory.ConflictResponse(errorMessage, details);
             }
 
             user.Image = request.Image;
@@ -46,12 +40,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
 
             await _postgresDbContext.SaveChangesAsync(cancellationToken);
 
-            return new Result<ResponseBase>
-            {
-                Error = null,
-                Response = ResponseBase.SuccessResponse,
-                StatusCode = HttpStatusCode.OK
-            };
+            return _responseFactory.SuccessResponse(ResponseBase.SuccessResponse);
         }
     }
 }

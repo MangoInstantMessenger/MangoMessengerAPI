@@ -29,18 +29,18 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Contacts
 
             if (contact is null)
             {
-                const string message = ResponseMessageCodes.ContactNotFound;
-                var description = ResponseMessageCodes.ErrorDictionary[ResponseMessageCodes.ContactNotFound];
+                const string errorMessage = ResponseMessageCodes.ContactNotFound;
+                var errorDescription = ResponseMessageCodes.ErrorDictionary[errorMessage];
 
-                return _responseFactory.ConflictResponse(message, description);
+                return _responseFactory.ConflictResponse(errorMessage, errorDescription);
             }
 
             if (request.UserId == request.ContactId)
             {
-                const string message = ResponseMessageCodes.CannotAddSelfToContacts;
-                var description = ResponseMessageCodes.ErrorDictionary[ResponseMessageCodes.CannotAddSelfToContacts];
+                const string errorMessage = ResponseMessageCodes.CannotAddSelfToContacts;
+                var errorDescription = ResponseMessageCodes.ErrorDictionary[errorMessage];
 
-                return _responseFactory.ConflictResponse(message, description);
+                return _responseFactory.ConflictResponse(errorMessage, errorDescription);
             }
 
             var userContactExist = await _postgresDbContext.UserContacts
@@ -48,10 +48,10 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Contacts
 
             if (userContactExist)
             {
-                const string message = ResponseMessageCodes.ContactAlreadyExist;
-                var description = ResponseMessageCodes.ErrorDictionary[ResponseMessageCodes.ContactAlreadyExist];
+                const string errorMessage = ResponseMessageCodes.ContactAlreadyExist;
+                var errorDescription = ResponseMessageCodes.ErrorDictionary[errorMessage];
 
-                return _responseFactory.ConflictResponse(message, description);
+                return _responseFactory.ConflictResponse(errorMessage, errorDescription);
             }
 
             var contactEntity = new UserContactEntity

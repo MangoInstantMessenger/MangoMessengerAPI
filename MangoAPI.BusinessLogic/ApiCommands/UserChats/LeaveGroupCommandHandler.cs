@@ -1,5 +1,4 @@
-﻿using System.Net;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.DataAccess.Database;
@@ -14,10 +13,13 @@ namespace MangoAPI.BusinessLogic.ApiCommands.UserChats
         : IRequestHandler<LeaveGroupCommand, Result<LeaveGroupResponse>>
     {
         private readonly MangoPostgresDbContext _postgresDbContext;
+        private readonly ResponseFactory<LeaveGroupResponse> _responseFactory;
 
-        public LeaveGroupCommandHandler(MangoPostgresDbContext postgresDbContext)
+        public LeaveGroupCommandHandler(MangoPostgresDbContext postgresDbContext, 
+            ResponseFactory<LeaveGroupResponse> responseFactory)
         {
             _postgresDbContext = postgresDbContext;
+            _responseFactory = responseFactory;
         }
 
         public async Task<Result<LeaveGroupResponse>> Handle(LeaveGroupCommand request, 
@@ -27,18 +29,10 @@ namespace MangoAPI.BusinessLogic.ApiCommands.UserChats
 
             if (user is null)
             {
-                return new Result<LeaveGroupResponse>
-                {
-                    Error = new ErrorResponse
-                    {
-                        ErrorMessage = ResponseMessageCodes.UserNotFound,
-                        ErrorDetails = ResponseMessageCodes.ErrorDictionary[ResponseMessageCodes.UserNotFound],
-                        Success = false,
-                        StatusCode = HttpStatusCode.Conflict
-                    },
-                    Response = null,
-                    StatusCode = HttpStatusCode.Conflict
-                };
+                const string errorMessage = ResponseMessageCodes.UserNotFound;
+                var details = ResponseMessageCodes.ErrorDictionary[errorMessage];
+
+                return _responseFactory.ConflictResponse(errorMessage, details);
             }
 
             var userChat =
@@ -47,18 +41,10 @@ namespace MangoAPI.BusinessLogic.ApiCommands.UserChats
 
             if (userChat is null)
             {
-                return new Result<LeaveGroupResponse>
-                {
-                    Error = new ErrorResponse
-                    {
-                        ErrorMessage = ResponseMessageCodes.ChatNotFound,
-                        ErrorDetails = ResponseMessageCodes.ErrorDictionary[ResponseMessageCodes.ChatNotFound],
-                        Success = false,
-                        StatusCode = HttpStatusCode.Conflict
-                    },
-                    Response = null,
-                    StatusCode = HttpStatusCode.Conflict
-                };
+                const string errorMessage = ResponseMessageCodes.ChatNotFound;
+                var details = ResponseMessageCodes.ErrorDictionary[errorMessage];
+
+                return _responseFactory.ConflictResponse(errorMessage, details);
             }
 
             var chat = await _postgresDbContext.Chats.FindChatByIdIncludeChatUsersAsync(request.ChatId,
@@ -76,12 +62,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.UserChats
 
                 await _postgresDbContext.SaveChangesAsync(cancellationToken);
                 
-                return new Result<LeaveGroupResponse>
-                {
-                    Error = null,
-                    Response = LeaveGroupResponse.FromSuccess(chat.Id),
-                    StatusCode = HttpStatusCode.OK
-                };
+                return _responseFactory.SuccessResponse(LeaveGroupResponse.FromSuccess(chat.Id));
             }
 
             _postgresDbContext.UserChats.Remove(userChat);
@@ -90,12 +71,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.UserChats
             _postgresDbContext.Update(chat);
             await _postgresDbContext.SaveChangesAsync(cancellationToken);
 
-            return new Result<LeaveGroupResponse>
-            {
-                Error = null,
-                Response = LeaveGroupResponse.FromSuccess(chat.Id),
-                StatusCode = HttpStatusCode.OK
-            };
+            return _responseFactory.SuccessResponse(LeaveGroupResponse.FromSuccess(chat.Id));
         }
     }
 }

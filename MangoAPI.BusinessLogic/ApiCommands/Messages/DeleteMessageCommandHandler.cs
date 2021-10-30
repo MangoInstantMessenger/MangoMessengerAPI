@@ -1,5 +1,4 @@
-﻿using System.Net;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 using MangoAPI.BusinessLogic.HubConfig;
 using MangoAPI.BusinessLogic.Responses;
@@ -16,47 +15,36 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Messages
     {
         private readonly MangoPostgresDbContext _postgresDbContext;
         private readonly IHubContext<ChatHub, IHubClient> _hubContext;
+        private readonly ResponseFactory<DeleteMessageResponse> _responseFactory;
 
-        public DeleteMessageCommandHandler(MangoPostgresDbContext postgresDbContext, IHubContext<ChatHub, IHubClient> hubContext)
+        public DeleteMessageCommandHandler(MangoPostgresDbContext postgresDbContext, 
+            IHubContext<ChatHub, IHubClient> hubContext, ResponseFactory<DeleteMessageResponse> responseFactory)
         {
             _postgresDbContext = postgresDbContext;
             _hubContext = hubContext;
+            _responseFactory = responseFactory;
         }
 
         public async Task<Result<DeleteMessageResponse>> Handle(DeleteMessageCommand request, 
             CancellationToken cancellationToken)
         {
-
             var message = await _postgresDbContext.Messages
                 .FindMessageByUserIdAsync(request.MessageId, request.UserId, cancellationToken);
 
             if (message == null)
             {
-                return new Result<DeleteMessageResponse>
-                {
-                    Error = new ErrorResponse
-                    {
-                        ErrorMessage = ResponseMessageCodes.MessageNotFound,
-                        ErrorDetails = ResponseMessageCodes.ErrorDictionary[ResponseMessageCodes.MessageNotFound],
-                        Success = false,
-                        StatusCode = HttpStatusCode.Conflict
-                    },
-                    Response = null,
-                    StatusCode = HttpStatusCode.Conflict
-                };
+                const string errorMessage = ResponseMessageCodes.MessageNotFound;
+                var errorDescription = ResponseMessageCodes.ErrorDictionary[errorMessage];
+
+                return _responseFactory.ConflictResponse(errorMessage, errorDescription);
             }
 
             _postgresDbContext.Messages.Remove(message);
             await _postgresDbContext.SaveChangesAsync(cancellationToken);
 
             await _hubContext.Clients.Group(message.ChatId.ToString()).NotifyOnMessageDelete(request.MessageId);
-
-            return new Result<DeleteMessageResponse>
-            {
-                Error = null,
-                Response = DeleteMessageResponse.FromSuccess(message),
-                StatusCode = HttpStatusCode.OK
-            };
+            
+            return _responseFactory.SuccessResponse(DeleteMessageResponse.FromSuccess(message));
         }
     }
 }

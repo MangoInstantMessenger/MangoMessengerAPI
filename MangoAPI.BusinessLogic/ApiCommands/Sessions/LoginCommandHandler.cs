@@ -37,30 +37,30 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Sessions
 
             if (user is null)
             {
-                const string message = ResponseMessageCodes.InvalidCredentials;
-                var details = ResponseMessageCodes.ErrorDictionary[message];
+                const string errorMessage = ResponseMessageCodes.InvalidCredentials;
+                var details = ResponseMessageCodes.ErrorDictionary[errorMessage];
 
-                return _responseFactory.ConflictResponse(message, details);
+                return _responseFactory.ConflictResponse(errorMessage, details);
             }
 
             var result = await _signInManager.CheckPasswordSignInAsync(user, request.Password, false);
 
             if (!result.Succeeded)
             {
-                const string message = ResponseMessageCodes.InvalidCredentials;
-                var details = ResponseMessageCodes.ErrorDictionary[message];
+                const string errorMessage = ResponseMessageCodes.InvalidCredentials;
+                var details = ResponseMessageCodes.ErrorDictionary[errorMessage];
 
-                return _responseFactory.ConflictResponse(message, details);
+                return _responseFactory.ConflictResponse(errorMessage, details);
             }
 
             var refreshLifetime = EnvironmentConstants.RefreshTokenLifeTime;
 
             if (refreshLifetime == null || !int.TryParse(refreshLifetime, out var refreshLifetimeParsed))
             {
-                const string message = ResponseMessageCodes.RefreshTokenLifeTimeError;
-                var details = ResponseMessageCodes.ErrorDictionary[message];
+                const string errorMessage = ResponseMessageCodes.RefreshTokenLifeTimeError;
+                var details = ResponseMessageCodes.ErrorDictionary[errorMessage];
 
-                return _responseFactory.ConflictResponse(message, details);
+                return _responseFactory.ConflictResponse(errorMessage, details);
             }
 
             var session = new SessionEntity

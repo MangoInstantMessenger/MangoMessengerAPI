@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using MangoAPI.BusinessLogic.Responses;
@@ -14,10 +13,13 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
         : IRequestHandler<UpdateUserSocialInformationCommand, Result<ResponseBase>>
     {
         private readonly MangoPostgresDbContext _postgresDbContext;
+        private readonly ResponseFactory<ResponseBase> _responseFactory;
 
-        public UpdateUserSocialInformationCommandHandler(MangoPostgresDbContext postgresDbContext)
+        public UpdateUserSocialInformationCommandHandler(MangoPostgresDbContext postgresDbContext,
+            ResponseFactory<ResponseBase> responseFactory)
         {
             _postgresDbContext = postgresDbContext;
+            _responseFactory = responseFactory;
         }
 
         public async Task<Result<ResponseBase>> Handle(UpdateUserSocialInformationCommand request,
@@ -27,18 +29,10 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
 
             if (user is null)
             {
-                return new Result<ResponseBase>
-                {
-                    Error = new ErrorResponse
-                    {
-                        ErrorMessage = ResponseMessageCodes.UserNotFound,
-                        ErrorDetails = ResponseMessageCodes.ErrorDictionary[ResponseMessageCodes.UserNotFound],
-                        Success = false,
-                        StatusCode = HttpStatusCode.Conflict
-                    },
-                    Response = null,
-                    StatusCode = HttpStatusCode.Conflict
-                };
+                const string errorMessage = ResponseMessageCodes.UserNotFound;
+                var details = ResponseMessageCodes.ErrorDictionary[errorMessage];
+
+                return _responseFactory.ConflictResponse(errorMessage, details);
             }
 
             user.UserInformation.Facebook = StringIsValid(request.Facebook) 
@@ -62,12 +56,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
             _postgresDbContext.UserInformation.Update(user.UserInformation);
             await _postgresDbContext.SaveChangesAsync(cancellationToken);
 
-            return new Result<ResponseBase>
-            {
-                Error = null,
-                Response = ResponseBase.SuccessResponse,
-                StatusCode = HttpStatusCode.OK
-            };
+            return _responseFactory.SuccessResponse(ResponseBase.SuccessResponse);
         }
 
         private static bool StringIsValid(string str)

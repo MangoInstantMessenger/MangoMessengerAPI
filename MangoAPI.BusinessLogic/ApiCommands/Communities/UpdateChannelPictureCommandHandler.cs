@@ -1,5 +1,4 @@
-﻿using System.Net;
-using MangoAPI.BusinessLogic.Responses;
+﻿using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.DataAccess.Database;
 using MangoAPI.Domain.Constants;
 using MangoAPI.Domain.Enums;
@@ -14,10 +13,13 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Communities
         : IRequestHandler<UpdateChanelPictureCommand, Result<ResponseBase>>
     {
         private readonly MangoPostgresDbContext _postgresDbContext;
+        private readonly ResponseFactory<ResponseBase> _responseFactory;
 
-        public UpdateChannelPictureCommandHandler(MangoPostgresDbContext postgresDbContext)
+        public UpdateChannelPictureCommandHandler(MangoPostgresDbContext postgresDbContext, 
+            ResponseFactory<ResponseBase> responseFactory)
         {
             _postgresDbContext = postgresDbContext;
+            _responseFactory = responseFactory;
         }
 
         public async Task<Result<ResponseBase>> Handle(UpdateChanelPictureCommand request, 
@@ -33,18 +35,10 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Communities
 
             if (userChat is null)
             {
-                return new Result<ResponseBase>
-                {
-                    Error = new ErrorResponse
-                    {
-                        ErrorMessage = ResponseMessageCodes.ChatNotFound,
-                        ErrorDetails = ResponseMessageCodes.ErrorDictionary[ResponseMessageCodes.ChatNotFound],
-                        Success = false,
-                        StatusCode = HttpStatusCode.Conflict
-                    },
-                    Response = null,
-                    StatusCode = HttpStatusCode.Conflict
-                };
+                const string errorMessage = ResponseMessageCodes.ChatNotFound;
+                var errorDescription = ResponseMessageCodes.ErrorDictionary[errorMessage];
+
+                return _responseFactory.ConflictResponse(errorMessage, errorDescription);
             }
 
             userChat.Chat.Image = request.Image;
@@ -52,12 +46,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Communities
             _postgresDbContext.Update(userChat.Chat);
             await _postgresDbContext.SaveChangesAsync(cancellationToken);
 
-            return new Result<ResponseBase>
-            {
-                Error = null,
-                Response = ResponseBase.SuccessResponse,
-                StatusCode = HttpStatusCode.OK
-            };
+            return _responseFactory.SuccessResponse(ResponseBase.SuccessResponse);
         }
     }
 }

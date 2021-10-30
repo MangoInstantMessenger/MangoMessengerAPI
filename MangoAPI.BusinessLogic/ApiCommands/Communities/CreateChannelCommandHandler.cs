@@ -10,7 +10,6 @@ using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
-using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -36,10 +35,10 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Communities
         {
             if (request.CommunityType is CommunityType.DirectChat or CommunityType.SecretChat)
             {
-                const string message = ResponseMessageCodes.InvalidGroupType;
-                var description = ResponseMessageCodes.ErrorDictionary[message];
+                const string errorMessage = ResponseMessageCodes.InvalidGroupType;
+                var description = ResponseMessageCodes.ErrorDictionary[errorMessage];
 
-                return _responseFactory.ConflictResponse(message, description);
+                return _responseFactory.ConflictResponse(errorMessage, description);
             }
 
             var ownerChatsCount =
@@ -49,10 +48,10 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Communities
 
             if (ownerChatsCount >= 100)
             {
-                const string message = ResponseMessageCodes.MaximumOwnerChatsExceeded100;
-                var description = ResponseMessageCodes.ErrorDictionary[message];
+                const string errorMessage = ResponseMessageCodes.MaximumOwnerChatsExceeded100;
+                var description = ResponseMessageCodes.ErrorDictionary[errorMessage];
 
-                return _responseFactory.ConflictResponse(message, description);
+                return _responseFactory.ConflictResponse(errorMessage, description);
             }
 
             var channel = new ChatEntity
@@ -78,12 +77,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Communities
             var chatDto = channel.ToChatDto();
             await _hubContext.Clients.Group(request.UserId.ToString()).UpdateUserChats(chatDto);
 
-            return new Result<CreateCommunityResponse>()
-            {
-                Error = null,
-                Response = CreateCommunityResponse.FromSuccess(channel),
-                StatusCode = HttpStatusCode.OK
-            };
+            return _responseFactory.SuccessResponse(CreateCommunityResponse.FromSuccess(channel));
         }
     }
 }
