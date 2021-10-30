@@ -5,7 +5,6 @@ using MangoAPI.Domain.Constants;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
-using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using MangoAPI.BusinessLogic.Responses;
@@ -16,30 +15,26 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Messages
         : IRequestHandler<SearchChatMessagesQuery, Result<SearchChatMessagesResponse>>
     {
         private readonly MangoPostgresDbContext _postgresDbContext;
+        private readonly ResponseFactory<SearchChatMessagesResponse> _responseFactory;
 
-        public SearchChatMessageQueryHandler(MangoPostgresDbContext postgresDbContext)
+        public SearchChatMessageQueryHandler(MangoPostgresDbContext postgresDbContext,
+            ResponseFactory<SearchChatMessagesResponse> responseFactory)
         {
             _postgresDbContext = postgresDbContext;
+            _responseFactory = responseFactory;
         }
 
-        public async Task<Result<SearchChatMessagesResponse>> Handle(SearchChatMessagesQuery request, CancellationToken cancellationToken)
+        public async Task<Result<SearchChatMessagesResponse>> Handle(SearchChatMessagesQuery request, 
+            CancellationToken cancellationToken)
         {
             var userChat = await _postgresDbContext.UserChats.FindUserChatByIdAsync(request.UserId, request.ChatId, cancellationToken);
 
             if (userChat is null)
             {
-                return new Result<SearchChatMessagesResponse>
-                {
-                    Error = new ErrorResponse
-                    {
-                        ErrorMessage = ResponseMessageCodes.PermissionDenied,
-                        ErrorDetails = ResponseMessageCodes.ErrorDictionary[ResponseMessageCodes.PermissionDenied],
-                        Success = false,
-                        StatusCode = HttpStatusCode.Conflict
-                    },
-                    Response = null,
-                    StatusCode = HttpStatusCode.Conflict
-                };
+                const string errorMessage = ResponseMessageCodes.PermissionDenied;
+                var details = ResponseMessageCodes.ErrorDictionary[errorMessage];
+
+                return _responseFactory.ConflictResponse(errorMessage, details);
             }
 
             var query = _postgresDbContext.Messages.AsNoTracking()
@@ -74,12 +69,7 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Messages
 
             var result = await query.ToListAsync(cancellationToken);
 
-            return new Result<SearchChatMessagesResponse>
-            {
-                Error = null,
-                Response = SearchChatMessagesResponse.FromSuccess(result),
-                StatusCode = HttpStatusCode.OK
-            };
+            return _responseFactory.SuccessResponse(SearchChatMessagesResponse.FromSuccess(result));
         }
     }
 }
