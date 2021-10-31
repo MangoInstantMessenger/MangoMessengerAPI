@@ -1,5 +1,4 @@
 ﻿using System.Linq;
-using System.Net;
 using MangoAPI.DataAccess.Database;
 using MangoAPI.Domain.Constants;
 using MediatR;
@@ -15,10 +14,13 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Users
     public class GetUserQueryHandler : IRequestHandler<GetUserQuery, Result<GetUserResponse>>
     {
         private readonly MangoPostgresDbContext _postgresDbContext;
+        private readonly ResponseFactory<GetUserResponse> _responseFactory;
 
-        public GetUserQueryHandler(MangoPostgresDbContext postgresDbContext)
+        public GetUserQueryHandler(MangoPostgresDbContext postgresDbContext,
+            ResponseFactory<GetUserResponse> responseFactory)
         {
             _postgresDbContext = postgresDbContext;
+            _responseFactory = responseFactory;
         }
 
         public async Task<Result<GetUserResponse>> Handle(GetUserQuery request, 
@@ -48,26 +50,13 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Users
 
             if (user is null)
             {
-                return new Result<GetUserResponse>
-                {
-                    Error = new ErrorResponse
-                    {
-                        ErrorMessage = ResponseMessageCodes.UserNotFound,
-                        ErrorDetails = ResponseMessageCodes.ErrorDictionary[ResponseMessageCodes.UserNotFound],
-                        Success = false,
-                        StatusCode = HttpStatusCode.Conflict
-                    },
-                    Response = null,
-                    StatusCode = HttpStatusCode.Conflict
-                };
+                const string errorMessage = ResponseMessageCodes.UserNotFound;
+                var details = ResponseMessageCodes.ErrorDictionary[errorMessage];
+
+                return _responseFactory.ConflictResponse(errorMessage, details);
             }
 
-            return new Result<GetUserResponse>
-            {
-                Error = null,
-                Response = GetUserResponse.FromSuccess(user),
-                StatusCode = HttpStatusCode.OK
-            };
+            return _responseFactory.SuccessResponse(GetUserResponse.FromSuccess(user));
         }
     }
 }

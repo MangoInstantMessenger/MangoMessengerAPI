@@ -1,6 +1,5 @@
 ﻿using System;
 using System.IO;
-using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using MangoAPI.BusinessLogic.Responses;
@@ -17,11 +16,14 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Documents
     {
         private readonly MangoPostgresDbContext _postgresDbContext;
         private readonly IHostingEnvironment _environment;
+        private readonly ResponseFactory<UploadDocumentResponse> _responseFactory;
 
-        public UploadDocumentCommandHandler(MangoPostgresDbContext postgresDbContext, IHostingEnvironment environment)
+        public UploadDocumentCommandHandler(MangoPostgresDbContext postgresDbContext, IHostingEnvironment environment,
+            ResponseFactory<UploadDocumentResponse> responseFactory)
         {
             _postgresDbContext = postgresDbContext;
             _environment = environment;
+            _responseFactory = responseFactory;
         }
 
         public async Task<Result<UploadDocumentResponse>> Handle(UploadDocumentCommand request,
@@ -44,12 +46,8 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Documents
 
             var fileUrl = $"{EnvironmentConstants.BackendAddress}Uploads/{documentEntity.FileName}";
             
-            return new Result<UploadDocumentResponse>
-            {
-                Error = null,
-                Response = UploadDocumentResponse.FromSuccess(documentEntity.FileName, fileUrl),
-                StatusCode = HttpStatusCode.OK
-            };
+            return _responseFactory.SuccessResponse(
+                UploadDocumentResponse.FromSuccess(documentEntity.FileName, fileUrl));
         }
 
         private static string GetUniqueFileName(string fileName)

@@ -3,6 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using FluentAssertions;
 using MangoAPI.BusinessLogic.ApiCommands.Users;
+using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.Domain.Constants;
 using NUnit.Framework;
 
@@ -32,7 +33,8 @@ namespace MangoAPI.Tests.ApiCommandsTests.Users
         public async Task VerifyEmailCommandHandlerTest_ShouldThrowInvalidEmail()
         {
             using var dbContextFixture = new DbContextFixture();
-            var handler = new VerifyEmailCommandHandler(dbContextFixture.PostgresDbContext);
+            var responseFactory = new ResponseFactory<ResponseBase>();
+            var handler = new VerifyEmailCommandHandler(dbContextFixture.PostgresDbContext, responseFactory);
             var command = new VerifyEmailCommand
             {
                 EmailCode = SeedDataConstants.RazumovskyId,
@@ -50,7 +52,8 @@ namespace MangoAPI.Tests.ApiCommandsTests.Users
         public async Task VerifyEmailCommandHandlerTest_ShouldThrowUserNotFound()
         {
             using var dbContextFixture = new DbContextFixture();
-            var handler = new VerifyEmailCommandHandler(dbContextFixture.PostgresDbContext);
+            var responseFactory = new ResponseFactory<ResponseBase>();
+            var handler = new VerifyEmailCommandHandler(dbContextFixture.PostgresDbContext, responseFactory);
             var command = new VerifyEmailCommand
             {
                 EmailCode = Guid.NewGuid(),
@@ -68,7 +71,8 @@ namespace MangoAPI.Tests.ApiCommandsTests.Users
         public async Task VerifyEmailCommandHandlerTest_ShouldThrowInvalidEmailCode()
         {
             using var dbContextFixture = new DbContextFixture();
-            var handler = new VerifyEmailCommandHandler(dbContextFixture.PostgresDbContext);
+            var responseFactory = new ResponseFactory<ResponseBase>();
+            var handler = new VerifyEmailCommandHandler(dbContextFixture.PostgresDbContext, responseFactory);
             var command = new VerifyEmailCommand
             {
                 EmailCode = SeedDataConstants.RazumovskyId,

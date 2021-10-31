@@ -1,5 +1,4 @@
-﻿using System.Net;
-using MangoAPI.BusinessLogic.Responses;
+﻿using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.DataAccess.Database;
 using MangoAPI.DataAccess.Database.Extensions;
 using MangoAPI.Domain.Constants;
@@ -16,12 +15,14 @@ namespace MangoAPI.BusinessLogic.ApiCommands.PasswordRestoreRequests
     {
         private readonly MangoPostgresDbContext _postgresDbContext;
         private readonly UserManager<UserEntity> _userManager;
+        private readonly ResponseFactory<ResponseBase> _responseFactory;
 
         public PasswordRestoreCommandHandler(MangoPostgresDbContext postgresDbContext,
-            UserManager<UserEntity> userManager)
+            UserManager<UserEntity> userManager, ResponseFactory<ResponseBase> responseFactory)
         {
             _postgresDbContext = postgresDbContext;
             _userManager = userManager;
+            _responseFactory = responseFactory;
         }
 
         public async Task<Result<ResponseBase>> Handle(PasswordRestoreCommand request, 
@@ -29,18 +30,10 @@ namespace MangoAPI.BusinessLogic.ApiCommands.PasswordRestoreRequests
         {
             if (request.NewPassword != request.RepeatPassword)
             {
-                return new Result<ResponseBase>
-                {
-                    Error = new ErrorResponse
-                    {
-                        ErrorMessage = ResponseMessageCodes.PasswordsAreNotSame,
-                        ErrorDetails = ResponseMessageCodes.ErrorDictionary[ResponseMessageCodes.PasswordsAreNotSame],
-                        Success = false,
-                        StatusCode = HttpStatusCode.Conflict
-                    },
-                    Response = null,
-                    StatusCode = HttpStatusCode.Conflict
-                };
+                const string errorMessage = ResponseMessageCodes.PasswordsAreNotSame;
+                var errorDescription = ResponseMessageCodes.ErrorDictionary[errorMessage];
+
+                return _responseFactory.ConflictResponse(errorMessage, errorDescription);
             }
 
             var restorePasswordRequest =
@@ -49,19 +42,10 @@ namespace MangoAPI.BusinessLogic.ApiCommands.PasswordRestoreRequests
 
             if (restorePasswordRequest is not { IsValid: true })
             {
-                return new Result<ResponseBase>
-                {
-                    Error = new ErrorResponse
-                    {
-                        ErrorMessage = ResponseMessageCodes.InvalidOrExpiredRestorePasswordRequest,
-                        ErrorDetails = 
-                            ResponseMessageCodes.ErrorDictionary[ResponseMessageCodes.InvalidOrExpiredRestorePasswordRequest],
-                        Success = false,
-                        StatusCode = HttpStatusCode.Conflict
-                    },
-                    Response = null,
-                    StatusCode = HttpStatusCode.Conflict
-                };
+                const string errorMessage = ResponseMessageCodes.InvalidOrExpiredRestorePasswordRequest;
+                var errorDescription = ResponseMessageCodes.ErrorDictionary[errorMessage];
+
+                return _responseFactory.ConflictResponse(errorMessage, errorDescription);
             }
 
             var user = await _postgresDbContext.Users.FindUserByIdAsync(restorePasswordRequest.UserId,
@@ -69,18 +53,10 @@ namespace MangoAPI.BusinessLogic.ApiCommands.PasswordRestoreRequests
 
             if (user is null)
             {
-                return new Result<ResponseBase>
-                {
-                    Error = new ErrorResponse
-                    {
-                        ErrorMessage = ResponseMessageCodes.UserNotFound,
-                        ErrorDetails = ResponseMessageCodes.ErrorDictionary[ResponseMessageCodes.UserNotFound],
-                        Success = false,
-                        StatusCode = HttpStatusCode.Conflict
-                    },
-                    Response = null,
-                    StatusCode = HttpStatusCode.Conflict
-                };
+                const string errorMessage = ResponseMessageCodes.UserNotFound;
+                var errorDescription = ResponseMessageCodes.ErrorDictionary[errorMessage];
+
+                return _responseFactory.ConflictResponse(errorMessage, errorDescription);
             }
 
             await _userManager.RemovePasswordAsync(user);
@@ -89,30 +65,17 @@ namespace MangoAPI.BusinessLogic.ApiCommands.PasswordRestoreRequests
 
             if (!result.Succeeded)
             {
-                return new Result<ResponseBase>
-                {
-                    Error = new ErrorResponse
-                    {
-                        ErrorMessage = ResponseMessageCodes.WeakPassword,
-                        ErrorDetails = ResponseMessageCodes.ErrorDictionary[ResponseMessageCodes.WeakPassword],
-                        Success = false,
-                        StatusCode = HttpStatusCode.Conflict
-                    },
-                    Response = null,
-                    StatusCode = HttpStatusCode.Conflict
-                };
+                const string errorMessage = ResponseMessageCodes.WeakPassword;
+                var errorDescription = ResponseMessageCodes.ErrorDictionary[errorMessage];
+
+                return _responseFactory.ConflictResponse(errorMessage, errorDescription);
             }
 
             _postgresDbContext.Users.Update(user);
             _postgresDbContext.PasswordRestoreRequests.Remove(restorePasswordRequest);
             await _postgresDbContext.SaveChangesAsync(cancellationToken);
 
-            return new Result<ResponseBase>
-            {
-                Error = null,
-                Response = ResponseBase.SuccessResponse,
-                StatusCode = HttpStatusCode.OK
-            };
+            return _responseFactory.SuccessResponse(ResponseBase.SuccessResponse);
         }
     }
 }

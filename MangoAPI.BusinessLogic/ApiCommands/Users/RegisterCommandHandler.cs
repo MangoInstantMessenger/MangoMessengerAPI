@@ -7,7 +7,6 @@ using MediatR;
 using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
-using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
@@ -21,33 +20,28 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
         private readonly UserManager<UserEntity> _userManager;
         private readonly IJwtGenerator _jwtGenerator;
         private readonly Random _random;
+        private readonly ResponseFactory<TokensResponse> _responseFactory;
 
         public RegisterCommandHandler(UserManager<UserEntity> userManager, MangoPostgresDbContext postgresDbContext,
-            IEmailSenderService emailSenderService, IJwtGenerator jwtGenerator)
+            IEmailSenderService emailSenderService, IJwtGenerator jwtGenerator, 
+            ResponseFactory<TokensResponse> responseFactory)
         {
             _userManager = userManager;
             _postgresDbContext = postgresDbContext;
             _emailSenderService = emailSenderService;
             _jwtGenerator = jwtGenerator;
             _random = new Random();
+            _responseFactory = responseFactory;
         }
 
         public async Task<Result<TokensResponse>> Handle(RegisterCommand request, CancellationToken cancellationToken)
         {
             if (request.Email == EnvironmentConstants.EmailSenderAddress)
             {
-                return new Result<TokensResponse>
-                {
-                    Error = new ErrorResponse
-                    {
-                        ErrorMessage = ResponseMessageCodes.InvalidEmail,
-                        ErrorDetails = ResponseMessageCodes.ErrorDictionary[ResponseMessageCodes.InvalidEmail],
-                        Success = false,
-                        StatusCode = HttpStatusCode.Conflict
-                    },
-                    Response = null,
-                    StatusCode = HttpStatusCode.Conflict
-                };
+                const string errorMessage = ResponseMessageCodes.InvalidEmail;
+                var details = ResponseMessageCodes.ErrorDictionary[errorMessage];
+
+                return _responseFactory.ConflictResponse(errorMessage, details);
             }
 
             var exists = await _postgresDbContext.Users
@@ -57,18 +51,10 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
 
             if (exists != null)
             {
-                return new Result<TokensResponse>
-                {
-                    Error = new ErrorResponse
-                    {
-                        ErrorMessage = ResponseMessageCodes.UserAlreadyExists,
-                        ErrorDetails = ResponseMessageCodes.ErrorDictionary[ResponseMessageCodes.UserAlreadyExists],
-                        Success = false,
-                        StatusCode = HttpStatusCode.Conflict
-                    },
-                    Response = null,
-                    StatusCode = HttpStatusCode.Conflict
-                };
+                const string errorMessage = ResponseMessageCodes.UserAlreadyExists;
+                var details = ResponseMessageCodes.ErrorDictionary[errorMessage];
+
+                return _responseFactory.ConflictResponse(errorMessage, details);
             }
 
             var newUser = new UserEntity
@@ -85,18 +71,10 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
 
             if (!result.Succeeded)
             {
-                return new Result<TokensResponse>
-                {
-                    Error = new ErrorResponse
-                    {
-                        ErrorMessage = ResponseMessageCodes.WeakPassword,
-                        ErrorDetails = ResponseMessageCodes.ErrorDictionary[ResponseMessageCodes.WeakPassword],
-                        Success = false,
-                        StatusCode = HttpStatusCode.Conflict
-                    },
-                    Response = null,
-                    StatusCode = HttpStatusCode.Conflict
-                };
+                const string errorMessage = ResponseMessageCodes.WeakPassword;
+                var details = ResponseMessageCodes.ErrorDictionary[errorMessage];
+
+                return _responseFactory.ConflictResponse(errorMessage, details);
             }
 
             var userInfo = new UserInformationEntity
@@ -111,18 +89,10 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
 
             if (refreshLifetime == null || !int.TryParse(refreshLifetime, out var refreshLifetimeParsed))
             {
-                return new Result<TokensResponse>
-                {
-                    Error = new ErrorResponse
-                    {
-                        ErrorMessage = ResponseMessageCodes.RefreshTokenLifeTimeError,
-                        ErrorDetails = ResponseMessageCodes.ErrorDictionary[ResponseMessageCodes.RefreshTokenLifeTimeError],
-                        Success = false,
-                        StatusCode = HttpStatusCode.Conflict
-                    },
-                    Response = null,
-                    StatusCode = HttpStatusCode.Conflict
-                };
+                const string errorMessage = ResponseMessageCodes.RefreshTokenLifeTimeError;
+                var details = ResponseMessageCodes.ErrorDictionary[errorMessage];
+
+                return _responseFactory.ConflictResponse(errorMessage, details);
             }
 
             var newSession = new SessionEntity
@@ -151,12 +121,8 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
 
             var expires = ((DateTimeOffset)newSession.ExpiresAt).ToUnixTimeSeconds();
 
-            return new Result<TokensResponse>
-            {
-                Error = null,
-                Response = TokensResponse.FromSuccess(jwtToken, newSession.RefreshToken, newUser.Id, expires),
-                StatusCode = HttpStatusCode.OK
-            };
+            return _responseFactory.SuccessResponse(TokensResponse.FromSuccess(jwtToken, newSession.RefreshToken,
+                newUser.Id, expires));
         }
     }
 }

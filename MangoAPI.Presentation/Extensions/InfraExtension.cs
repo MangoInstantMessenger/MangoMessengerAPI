@@ -1,6 +1,7 @@
 ﻿using FluentValidation;
 using MangoAPI.BusinessLogic.ApiCommands.Sessions;
 using MangoAPI.BusinessLogic.Pipelines;
+using MangoAPI.BusinessLogic.Responses;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -17,6 +18,7 @@ namespace MangoAPI.Presentation.Extensions
             services.AddAppAuthentication();
             services.AddValidatorsFromAssembly(typeof(LoginCommandValidator).Assembly);
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehaviour<,>));
+            services.AddTransient(typeof(ResponseFactory<>));
             return services;
         }
     }

@@ -10,7 +10,6 @@ using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
-using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using MangoAPI.BusinessLogic.Responses;
@@ -22,11 +21,14 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Communities
     {
         private readonly MangoPostgresDbContext _postgresDbContext;
         private readonly IHubContext<ChatHub, IHubClient> _hubContext;
+        private readonly ResponseFactory<CreateCommunityResponse> _responseFactory;
 
-        public CreateChatCommandHandler(MangoPostgresDbContext postgresDbContext, IHubContext<ChatHub, IHubClient> hubContext)
+        public CreateChatCommandHandler(MangoPostgresDbContext postgresDbContext, 
+            IHubContext<ChatHub, IHubClient> hubContext, ResponseFactory<CreateCommunityResponse> responseFactory)
         {
             _postgresDbContext = postgresDbContext;
             _hubContext = hubContext;
+            _responseFactory = responseFactory;
         }
 
         public async Task<Result<CreateCommunityResponse>> Handle(CreateChatCommand request,
@@ -37,34 +39,18 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Communities
 
             if (partner is null)
             {
-                return new Result<CreateCommunityResponse>
-                {
-                    Error = new ErrorResponse
-                    {
-                        ErrorMessage = ResponseMessageCodes.UserNotFound,
-                        ErrorDetails = ResponseMessageCodes.ErrorDictionary[ResponseMessageCodes.UserNotFound],
-                        Success = false,
-                        StatusCode = HttpStatusCode.Conflict
-                    },
-                    Response = null,
-                    StatusCode = HttpStatusCode.Conflict
-                };
+                const string errorMessage = ResponseMessageCodes.UserNotFound;
+                var errorDescription = ResponseMessageCodes.ErrorDictionary[errorMessage];
+
+                return _responseFactory.ConflictResponse(errorMessage, errorDescription);
             }
 
             if (request.UserId == request.PartnerId)
             {
-                return new Result<CreateCommunityResponse>
-                {
-                    Error = new ErrorResponse
-                    {
-                        ErrorMessage = ResponseMessageCodes.CannotCreateSelfChat,
-                        ErrorDetails = ResponseMessageCodes.ErrorDictionary[ResponseMessageCodes.CannotCreateSelfChat],
-                        Success = false,
-                        StatusCode = HttpStatusCode.Conflict
-                    },
-                    Response = null,
-                    StatusCode = HttpStatusCode.Conflict
-                };
+                const string errorMessage = ResponseMessageCodes.CannotCreateSelfChat;
+                var errorDescription = ResponseMessageCodes.ErrorDictionary[errorMessage];
+
+                return _responseFactory.ConflictResponse(errorMessage, errorDescription);
             }
 
             var currentUserDisplayName = await _postgresDbContext.Users.Where(x => x.Id == request.UserId)
@@ -80,12 +66,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Communities
 
             if (existingChat != null)
             {
-                return new Result<CreateCommunityResponse>
-                {
-                    Error = null,
-                    Response = CreateCommunityResponse.FromSuccess(existingChat),
-                    StatusCode = HttpStatusCode.OK
-                };
+                return _responseFactory.SuccessResponse(CreateCommunityResponse.FromSuccess(existingChat));
             }
 
             var chatEntity = new ChatEntity
@@ -117,12 +98,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Communities
             var chatDto = chatEntity.ToChatDto();
             await _hubContext.Clients.Group(request.UserId.ToString()).UpdateUserChats(chatDto);
 
-            return new Result<CreateCommunityResponse>
-            {
-                Error = null,
-                Response = CreateCommunityResponse.FromSuccess(chatEntity),
-                StatusCode = HttpStatusCode.OK
-            };
+            return _responseFactory.SuccessResponse(CreateCommunityResponse.FromSuccess(chatEntity));
         }
     }
 }

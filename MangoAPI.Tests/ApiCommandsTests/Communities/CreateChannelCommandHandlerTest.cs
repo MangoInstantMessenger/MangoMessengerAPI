@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.SignalR;
 using NUnit.Framework;
 using System.Threading;
 using System.Threading.Tasks;
+using MangoAPI.BusinessLogic.Responses;
 
 namespace MangoAPI.Tests.ApiCommandsTests.Communities
 {
@@ -19,7 +20,8 @@ namespace MangoAPI.Tests.ApiCommandsTests.Communities
         public async Task CreateGroupCommandHandlerTest_Success()
         {
             using var dbContextFixture = new DbContextFixture();
-            var handler = new CreateChannelCommandHandler(dbContextFixture.PostgresDbContext, Hub);
+            var responseFactory = new ResponseFactory<CreateCommunityResponse>();
+            var handler = new CreateChannelCommandHandler(dbContextFixture.PostgresDbContext, Hub, responseFactory);
             var command = new CreateChannelCommand
             {
                 UserId = SeedDataConstants.PetroId,

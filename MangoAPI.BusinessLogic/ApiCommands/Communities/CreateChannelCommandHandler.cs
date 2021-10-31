@@ -10,7 +10,6 @@ using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
-using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -21,11 +20,14 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Communities
     {
         private readonly MangoPostgresDbContext _postgresDbContext;
         private readonly IHubContext<ChatHub, IHubClient> _hubContext;
+        private readonly ResponseFactory<CreateCommunityResponse> _responseFactory;
 
-        public CreateChannelCommandHandler(MangoPostgresDbContext postgresDbContext, IHubContext<ChatHub, IHubClient> hubContext)
+        public CreateChannelCommandHandler(MangoPostgresDbContext postgresDbContext, 
+            IHubContext<ChatHub, IHubClient> hubContext, ResponseFactory<CreateCommunityResponse> responseFactory)
         {
             _postgresDbContext = postgresDbContext;
             _hubContext = hubContext;
+            _responseFactory = responseFactory;
         }
 
         public async Task<Result<CreateCommunityResponse>> Handle(CreateChannelCommand request,
@@ -33,19 +35,10 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Communities
         {
             if (request.CommunityType is CommunityType.DirectChat or CommunityType.SecretChat)
             {
-                return new Result<CreateCommunityResponse>
-                {
-                    Error = new ErrorResponse
-                    {
-                        ErrorMessage = ResponseMessageCodes.InvalidGroupType,
-                        ErrorDetails = ResponseMessageCodes.ErrorDictionary[ResponseMessageCodes.InvalidGroupType],
-                        StatusCode = HttpStatusCode.Conflict,
-                        Success = false,
-                    },
+                const string errorMessage = ResponseMessageCodes.InvalidGroupType;
+                var description = ResponseMessageCodes.ErrorDictionary[errorMessage];
 
-                    Response = null,
-                    StatusCode = HttpStatusCode.Conflict
-                };
+                return _responseFactory.ConflictResponse(errorMessage, description);
             }
 
             var ownerChatsCount =
@@ -55,18 +48,10 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Communities
 
             if (ownerChatsCount >= 100)
             {
-                return new Result<CreateCommunityResponse>
-                {
-                    Error = new ErrorResponse
-                    {
-                        ErrorMessage = ResponseMessageCodes.MaximumOwnerChatsExceeded100,
-                        ErrorDetails = ResponseMessageCodes.ErrorDictionary[ResponseMessageCodes.MaximumOwnerChatsExceeded100],
-                        Success = false,
-                        StatusCode = HttpStatusCode.Conflict
-                    },
-                    Response = null,
-                    StatusCode = HttpStatusCode.Conflict
-                };
+                const string errorMessage = ResponseMessageCodes.MaximumOwnerChatsExceeded100;
+                var description = ResponseMessageCodes.ErrorDictionary[errorMessage];
+
+                return _responseFactory.ConflictResponse(errorMessage, description);
             }
 
             var channel = new ChatEntity
@@ -92,12 +77,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Communities
             var chatDto = channel.ToChatDto();
             await _hubContext.Clients.Group(request.UserId.ToString()).UpdateUserChats(chatDto);
 
-            return new Result<CreateCommunityResponse>()
-            {
-                Error = null,
-                Response = CreateCommunityResponse.FromSuccess(channel),
-                StatusCode = HttpStatusCode.OK
-            };
+            return _responseFactory.SuccessResponse(CreateCommunityResponse.FromSuccess(channel));
         }
     }
 }

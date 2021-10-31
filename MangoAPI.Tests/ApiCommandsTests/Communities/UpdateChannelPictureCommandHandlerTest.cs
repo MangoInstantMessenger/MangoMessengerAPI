@@ -3,6 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using FluentAssertions;
 using MangoAPI.BusinessLogic.ApiCommands.Communities;
+using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.Domain.Constants;
 using NUnit.Framework;
 
@@ -33,7 +34,8 @@ namespace MangoAPI.Tests.ApiCommandsTests.Communities
         public async Task UpdateChannelPictureCommandHandlerTest_ShouldThrowChatNotFound()
         {
             using var dbContextFixture = new DbContextFixture();
-            var handler = new UpdateChannelPictureCommandHandler(dbContextFixture.PostgresDbContext);
+            var responseFactory = new ResponseFactory<ResponseBase>();
+            var handler = new UpdateChannelPictureCommandHandler(dbContextFixture.PostgresDbContext, responseFactory);
             var command = new UpdateChanelPictureCommand
             {
                 UserId = SeedDataConstants.RazumovskyId,

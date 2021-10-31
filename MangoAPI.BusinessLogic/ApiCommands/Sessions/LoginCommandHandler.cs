@@ -9,7 +9,6 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
-using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -20,70 +19,48 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Sessions
         private readonly IJwtGenerator _jwtGenerator;
         private readonly MangoPostgresDbContext _postgresDbContext;
         private readonly SignInManager<UserEntity> _signInManager;
+        private readonly ResponseFactory<TokensResponse> _responseFactory;
 
         public LoginCommandHandler(SignInManager<UserEntity> signInManager, IJwtGenerator jwtGenerator,
-            MangoPostgresDbContext postgresDbContext)
+            MangoPostgresDbContext postgresDbContext, ResponseFactory<TokensResponse> responseFactory)
         {
             _signInManager = signInManager;
             _jwtGenerator = jwtGenerator;
             _postgresDbContext = postgresDbContext;
+            _responseFactory = responseFactory;
         }
 
-        public async Task<Result<TokensResponse>> Handle(LoginCommand request, 
+        public async Task<Result<TokensResponse>> Handle(LoginCommand request,
             CancellationToken cancellationToken)
         {
             var user = await _postgresDbContext.Users.FindUserByEmailOrPhoneAsync(request.EmailOrPhone, cancellationToken);
 
             if (user is null)
             {
-                return new Result<TokensResponse>
-                {
-                    Error = new ErrorResponse
-                    {
-                        ErrorMessage = ResponseMessageCodes.InvalidCredentials,
-                        ErrorDetails = ResponseMessageCodes.ErrorDictionary[ResponseMessageCodes.InvalidCredentials],
-                        Success = false,
-                        StatusCode = HttpStatusCode.Conflict
-                    },
-                    Response = null,
-                    StatusCode = HttpStatusCode.Conflict
-                };
+                const string errorMessage = ResponseMessageCodes.InvalidCredentials;
+                var details = ResponseMessageCodes.ErrorDictionary[errorMessage];
+
+                return _responseFactory.ConflictResponse(errorMessage, details);
             }
 
             var result = await _signInManager.CheckPasswordSignInAsync(user, request.Password, false);
 
             if (!result.Succeeded)
             {
-                return new Result<TokensResponse>
-                {
-                    Error = new ErrorResponse
-                    {
-                        ErrorMessage = ResponseMessageCodes.InvalidCredentials,
-                        ErrorDetails = ResponseMessageCodes.ErrorDictionary[ResponseMessageCodes.InvalidCredentials],
-                        Success = false,
-                        StatusCode = HttpStatusCode.Conflict
-                    },
-                    Response = null,
-                    StatusCode = HttpStatusCode.Conflict
-                };
+                const string errorMessage = ResponseMessageCodes.InvalidCredentials;
+                var details = ResponseMessageCodes.ErrorDictionary[errorMessage];
+
+                return _responseFactory.ConflictResponse(errorMessage, details);
             }
 
             var refreshLifetime = EnvironmentConstants.RefreshTokenLifeTime;
 
             if (refreshLifetime == null || !int.TryParse(refreshLifetime, out var refreshLifetimeParsed))
             {
-                return new Result<TokensResponse>
-                {
-                    Error = new ErrorResponse
-                    {
-                        ErrorMessage = ResponseMessageCodes.RefreshTokenLifeTimeError,
-                        ErrorDetails = ResponseMessageCodes.ErrorDictionary[ResponseMessageCodes.RefreshTokenLifeTimeError],
-                        Success = false,
-                        StatusCode = HttpStatusCode.Conflict
-                    },
-                    Response = null,
-                    StatusCode = HttpStatusCode.Conflict
-                };
+                const string errorMessage = ResponseMessageCodes.RefreshTokenLifeTimeError;
+                var details = ResponseMessageCodes.ErrorDictionary[errorMessage];
+
+                return _responseFactory.ConflictResponse(errorMessage, details);
             }
 
             var session = new SessionEntity
@@ -116,13 +93,9 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Sessions
             await _postgresDbContext.SaveChangesAsync(cancellationToken);
 
             var expires = ((DateTimeOffset)session.ExpiresAt).ToUnixTimeSeconds();
+            var tokens = TokensResponse.FromSuccess(jwtToken, session.RefreshToken, user.Id, expires);
 
-            return new Result<TokensResponse>
-            {
-                Error = null,
-                Response = TokensResponse.FromSuccess(jwtToken, session.RefreshToken, user.Id, expires),
-                StatusCode = HttpStatusCode.OK
-            };
+            return _responseFactory.SuccessResponse(tokens);
         }
     }
 }

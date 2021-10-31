@@ -3,7 +3,6 @@ using MangoAPI.DataAccess.Database;
 using MangoAPI.Domain.Enums;
 using MediatR;
 using System.Linq;
-using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using MangoAPI.BusinessLogic.Responses;
@@ -16,10 +15,13 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Communities
         : IRequestHandler<SearchCommunityQuery, Result<SearchCommunityResponse>>
     {
         private readonly MangoPostgresDbContext _postgresDbContext;
+        private readonly ResponseFactory<SearchCommunityResponse> _responseFactory;
 
-        public SearchCommunityQueryHandler(MangoPostgresDbContext postgresDbContext)
+        public SearchCommunityQueryHandler(MangoPostgresDbContext postgresDbContext,
+            ResponseFactory<SearchCommunityResponse> responseFactory)
         {
             _postgresDbContext = postgresDbContext;
+            _responseFactory = responseFactory;
         }
 
         public async Task<Result<SearchCommunityResponse>> Handle(SearchCommunityQuery request,
@@ -49,14 +51,7 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Communities
 
             var chats = await query.Take(200).ToListAsync(cancellationToken);
 
-
-
-            return new Result<SearchCommunityResponse>
-            {
-                Error = null,
-                Response = SearchCommunityResponse.FromSuccess(chats),
-                StatusCode = HttpStatusCode.OK
-            };
+            return _responseFactory.SuccessResponse(SearchCommunityResponse.FromSuccess(chats));
         }
     }
 }

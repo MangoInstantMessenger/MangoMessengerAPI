@@ -1,5 +1,4 @@
 ﻿using System.Linq;
-using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using MangoAPI.Application.Services;
@@ -15,10 +14,13 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Contacts
         : IRequestHandler<SearchContactQuery, Result<SearchContactResponse>>
     {
         private readonly MangoPostgresDbContext _postgresDbContext;
+        private readonly ResponseFactory<SearchContactResponse> _responseFactory;
 
-        public SearchContactByDisplayNameQueryHandler(MangoPostgresDbContext postgresDbContext)
+        public SearchContactByDisplayNameQueryHandler(MangoPostgresDbContext postgresDbContext,
+            ResponseFactory<SearchContactResponse> responseFactory)
         {
             _postgresDbContext = postgresDbContext;
+            _responseFactory = responseFactory;
         }
 
         public async Task<Result<SearchContactResponse>> Handle(SearchContactQuery request,
@@ -58,12 +60,7 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Contacts
                 contact.IsContact = commonContacts.Contains(contact.UserId);
             }
 
-            return new Result<SearchContactResponse>
-            {
-                Error = null,
-                Response = SearchContactResponse.FromSuccess(searchResult),
-                StatusCode = HttpStatusCode.OK
-            };
+            return _responseFactory.SuccessResponse(SearchContactResponse.FromSuccess(searchResult));
         }
     }
 }

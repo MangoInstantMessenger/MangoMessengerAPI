@@ -4,6 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using FluentAssertions;
 using MangoAPI.BusinessLogic.ApiCommands.Documents;
+using MangoAPI.BusinessLogic.Responses;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http.Internal;
 using Moq;
@@ -23,7 +24,9 @@ namespace MangoAPI.Tests.ApiCommandsTests.Documents
             environment.Object.WebRootPath = path;
             environment.Setup(m => m.WebRootPath)
                 .Returns(path);
-            var handler = new UploadDocumentCommandHandler(dbContextFixture.PostgresDbContext, environment.Object);
+            var responseFactory = new ResponseFactory<UploadDocumentResponse>();
+            var handler = new UploadDocumentCommandHandler(dbContextFixture.PostgresDbContext, environment.Object,
+                responseFactory);
             var command = new UploadDocumentCommand
             {
                 FormFile = new FormFile(new MemoryStream(Encoding.UTF8.GetBytes("hello world")),

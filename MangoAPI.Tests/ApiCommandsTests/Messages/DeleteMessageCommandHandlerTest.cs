@@ -3,6 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using FluentAssertions;
 using MangoAPI.BusinessLogic.ApiCommands.Messages;
+using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.Domain.Constants;
 using NUnit.Framework;
 
@@ -15,7 +16,9 @@ namespace MangoAPI.Tests.ApiCommandsTests.Messages
         public async Task DeleteMessageCommandHandlerTest_Success()
         {
             using var dbContextFixture = new DbContextFixture();
-            var handler = new DeleteMessageCommandHandler(dbContextFixture.PostgresDbContext, MockedObjects.GetHubContext());
+            var responseFactory = new ResponseFactory<DeleteMessageResponse>(); 
+            var handler = new DeleteMessageCommandHandler(dbContextFixture.PostgresDbContext, MockedObjects.GetHubContext(),
+                responseFactory);
             var command = new DeleteMessageCommand
             {
                 UserId = SeedDataConstants.SzymonId,
@@ -50,7 +53,9 @@ namespace MangoAPI.Tests.ApiCommandsTests.Messages
         public async Task DeleteMessageCommandHandlerTest_ShouldThrowMessageNotFound()
         {
             using var dbContextFixture = new DbContextFixture();
-            var handler = new DeleteMessageCommandHandler(dbContextFixture.PostgresDbContext, MockedObjects.GetHubContext());
+            var responseFactory = new ResponseFactory<DeleteMessageResponse>(); 
+            var handler = new DeleteMessageCommandHandler(dbContextFixture.PostgresDbContext, MockedObjects.GetHubContext(),
+                responseFactory);
             var command = new DeleteMessageCommand
             {
                 UserId = SeedDataConstants.SzymonId,

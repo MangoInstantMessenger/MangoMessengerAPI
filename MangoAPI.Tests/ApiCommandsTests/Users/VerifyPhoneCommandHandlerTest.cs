@@ -3,6 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using FluentAssertions;
 using MangoAPI.BusinessLogic.ApiCommands.Users;
+using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.Domain.Constants;
 using NUnit.Framework;
 
@@ -15,7 +16,8 @@ namespace MangoAPI.Tests.ApiCommandsTests.Users
         public async Task VerifyPhoneCommandHandlerTest_Success()
         {
             using var dbContextFixture = new DbContextFixture();
-            var handler = new VerifyPhoneCommandHandler(dbContextFixture.PostgresDbContext);
+            var responseFactory = new ResponseFactory<ResponseBase>();
+            var handler = new VerifyPhoneCommandHandler(dbContextFixture.PostgresDbContext, responseFactory);
             var command = new VerifyPhoneCommand
             {
                 UserId = SeedDataConstants.AmelitId,
@@ -32,7 +34,8 @@ namespace MangoAPI.Tests.ApiCommandsTests.Users
         public async Task VerifyPhoneCommandHandlerTest_ShouldThrowUserNotFound()
         {
             using var dbContextFixture = new DbContextFixture();
-            var handler = new VerifyPhoneCommandHandler(dbContextFixture.PostgresDbContext);
+            var responseFactory = new ResponseFactory<ResponseBase>();
+            var handler = new VerifyPhoneCommandHandler(dbContextFixture.PostgresDbContext, responseFactory);
             var command = new VerifyPhoneCommand
             {
                 UserId = Guid.NewGuid(),
@@ -50,7 +53,8 @@ namespace MangoAPI.Tests.ApiCommandsTests.Users
         public async Task VerifyPhoneCommandHandlerTest_ShouldThrowPhoneAlreadyVerified()
         {
             using var dbContextFixture = new DbContextFixture();
-            var handler = new VerifyPhoneCommandHandler(dbContextFixture.PostgresDbContext);
+            var responseFactory = new ResponseFactory<ResponseBase>();
+            var handler = new VerifyPhoneCommandHandler(dbContextFixture.PostgresDbContext, responseFactory);
             var command = new VerifyPhoneCommand
             {
                 UserId = SeedDataConstants.RazumovskyId,
@@ -68,7 +72,8 @@ namespace MangoAPI.Tests.ApiCommandsTests.Users
         public async Task VerifyPhoneCommandHandlerTest_ShouldThrowInvalidPhoneCode()
         {
             using var dbContextFixture = new DbContextFixture();
-            var handler = new VerifyPhoneCommandHandler(dbContextFixture.PostgresDbContext);
+            var responseFactory = new ResponseFactory<ResponseBase>();
+            var handler = new VerifyPhoneCommandHandler(dbContextFixture.PostgresDbContext, responseFactory);
             var command = new VerifyPhoneCommand
             {
                 UserId = SeedDataConstants.AmelitId,

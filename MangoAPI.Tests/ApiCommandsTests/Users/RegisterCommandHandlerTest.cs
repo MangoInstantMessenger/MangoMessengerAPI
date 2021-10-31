@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using FluentAssertions;
 using MangoAPI.Application.Interfaces;
 using MangoAPI.BusinessLogic.ApiCommands.Users;
+using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.Domain.Constants;
 using MangoAPI.Domain.Entities;
 using Microsoft.AspNetCore.Identity;
@@ -50,8 +51,9 @@ namespace MangoAPI.Tests.ApiCommandsTests.Users
             emailSender.Setup(x =>
                 x.SendVerificationEmailAsync(It.IsAny<UserEntity>(), It.IsAny<CancellationToken>()));
 
+            var responseFactory = new ResponseFactory<TokensResponse>();
             var handler = new RegisterCommandHandler(userManager.Object, dbContextFixture.PostgresDbContext,
-                emailSender.Object, jwtGenerator.Object);
+                emailSender.Object, jwtGenerator.Object, responseFactory);
             var command = new RegisterCommand
             {
                 PhoneNumber = "+1 234 567 89",
@@ -99,9 +101,10 @@ namespace MangoAPI.Tests.ApiCommandsTests.Users
             var emailSender = new Mock<IEmailSenderService>();
             emailSender.Setup(x =>
                 x.SendVerificationEmailAsync(It.IsAny<UserEntity>(), It.IsAny<CancellationToken>()));
-
+            
+            var responseFactory = new ResponseFactory<TokensResponse>();
             var handler = new RegisterCommandHandler(userManager.Object, dbContextFixture.PostgresDbContext,
-                emailSender.Object, jwtGenerator.Object);
+                emailSender.Object, jwtGenerator.Object, responseFactory);
             var command = new RegisterCommand
             {
                 PhoneNumber = "+1 234 567 89",
@@ -151,8 +154,9 @@ namespace MangoAPI.Tests.ApiCommandsTests.Users
             emailSender.Setup(x =>
                 x.SendVerificationEmailAsync(It.IsAny<UserEntity>(), It.IsAny<CancellationToken>()));
 
+            var responseFactory = new ResponseFactory<TokensResponse>();
             var handler = new RegisterCommandHandler(userManager.Object, dbContextFixture.PostgresDbContext,
-                emailSender.Object, jwtGenerator.Object);
+                emailSender.Object, jwtGenerator.Object, responseFactory);
             var command = new RegisterCommand
             {
                 PhoneNumber = "+1 234 567 89",

@@ -3,6 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using FluentAssertions;
 using MangoAPI.BusinessLogic.ApiCommands.UserChats;
+using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.Domain.Constants;
 using NUnit.Framework;
 
@@ -32,7 +33,8 @@ namespace MangoAPI.Tests.ApiCommandsTests.UserChats
         public async Task JoinChatCommandHandlerTest_ShouldThrowAlreadyJoined()
         {
             using var dbContextFixture = new DbContextFixture();
-            var handler = new JoinChatCommandHandler(dbContextFixture.PostgresDbContext);
+            var responseFactory = new ResponseFactory<ResponseBase>();
+            var handler = new JoinChatCommandHandler(dbContextFixture.PostgresDbContext, responseFactory);
             var command = new JoinChatCommand
             {
                 UserId = SeedDataConstants.RazumovskyId,
@@ -68,7 +70,8 @@ namespace MangoAPI.Tests.ApiCommandsTests.UserChats
         public async Task JoinChatCommandHandlerTest_ShouldThrowChatNotFound()
         {
             using var dbContextFixture = new DbContextFixture();
-            var handler = new JoinChatCommandHandler(dbContextFixture.PostgresDbContext);
+            var responseFactory = new ResponseFactory<ResponseBase>();
+            var handler = new JoinChatCommandHandler(dbContextFixture.PostgresDbContext, responseFactory);
             var command = new JoinChatCommand
             {
                 UserId = SeedDataConstants.SzymonId,

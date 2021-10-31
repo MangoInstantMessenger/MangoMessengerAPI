@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using FluentAssertions;
 using MangoAPI.BusinessLogic.ApiQueries.Messages;
+using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.Domain.Constants;
 using NUnit.Framework;
 
@@ -14,7 +15,8 @@ namespace MangoAPI.Tests.ApiQueriesTests.Messages
         public async Task SearchChatMessagesQueryHandlerTest_Success()
         {
             using var dbContextFixture = new DbContextFixture();
-            var handler = new SearchChatMessageQueryHandler(dbContextFixture.PostgresDbContext);
+            var responseFactory = new ResponseFactory<SearchChatMessagesResponse>();
+            var handler = new SearchChatMessageQueryHandler(dbContextFixture.PostgresDbContext, responseFactory);
             var query = new SearchChatMessagesQuery
             {
                 UserId = SeedDataConstants.RazumovskyId,
@@ -32,7 +34,8 @@ namespace MangoAPI.Tests.ApiQueriesTests.Messages
         public async Task SearchChatMessagesQueryHandlerTest_ShouldThrowPermissionDenied()
         {
             using var dbContextFixture = new DbContextFixture();
-            var handler = new SearchChatMessageQueryHandler(dbContextFixture.PostgresDbContext);
+            var responseFactory = new ResponseFactory<SearchChatMessagesResponse>();
+            var handler = new SearchChatMessageQueryHandler(dbContextFixture.PostgresDbContext, responseFactory);
             var query = new SearchChatMessagesQuery
             {
                 UserId = SeedDataConstants.KhachaturId,

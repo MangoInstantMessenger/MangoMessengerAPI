@@ -4,7 +4,6 @@ using MangoAPI.Domain.Constants;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
-using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using MangoAPI.BusinessLogic.Responses;
@@ -14,10 +13,13 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Messages
     public class GetMessagesQueryHandler : IRequestHandler<GetMessagesQuery, Result<GetMessagesResponse>>
     {
         private readonly MangoPostgresDbContext _postgresDbContext;
+        private readonly ResponseFactory<GetMessagesResponse> _responseFactory;
 
-        public GetMessagesQueryHandler(MangoPostgresDbContext postgresDbContext)
+        public GetMessagesQueryHandler(MangoPostgresDbContext postgresDbContext,
+            ResponseFactory<GetMessagesResponse> responseFactory)
         {
             _postgresDbContext = postgresDbContext;
+            _responseFactory = responseFactory;
         }
 
         public async Task<Result<GetMessagesResponse>> Handle(GetMessagesQuery request, CancellationToken cancellationToken)
@@ -49,12 +51,7 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Messages
                         : null,
                 }).Take(200).ToListAsync(cancellationToken);
 
-            return new Result<GetMessagesResponse>
-            {
-                Error = null,
-                Response = GetMessagesResponse.FromSuccess(messages),
-                StatusCode = HttpStatusCode.OK
-            };
+            return _responseFactory.SuccessResponse(GetMessagesResponse.FromSuccess(messages));
         }
     }
 }

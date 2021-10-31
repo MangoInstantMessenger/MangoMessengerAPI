@@ -9,7 +9,6 @@ using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
-using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using MangoAPI.BusinessLogic.Responses;
@@ -21,12 +20,14 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Messages
     {
         private readonly MangoPostgresDbContext _postgresDbContext;
         private readonly IHubContext<ChatHub, IHubClient> _hubContext;
+        private readonly ResponseFactory<SendMessageResponse> _responseFactory;
 
         public SendMessageCommandHandler(MangoPostgresDbContext postgresDbContext,
-            IHubContext<ChatHub, IHubClient> hubContext)
+            IHubContext<ChatHub, IHubClient> hubContext, ResponseFactory<SendMessageResponse> responseFactory)
         {
             _postgresDbContext = postgresDbContext;
             _hubContext = hubContext;
+            _responseFactory = responseFactory;
         }
 
         public async Task<Result<SendMessageResponse>> Handle(SendMessageCommand request,
@@ -43,18 +44,10 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Messages
 
             if (user == null)
             {
-                return new Result<SendMessageResponse>
-                {
-                    Error = new ErrorResponse
-                    {
-                        ErrorMessage = ResponseMessageCodes.UserNotFound,
-                        ErrorDetails = ResponseMessageCodes.ErrorDictionary[ResponseMessageCodes.UserNotFound],
-                        Success = false,
-                        StatusCode = HttpStatusCode.Conflict
-                    },
-                    Response = null,
-                    StatusCode = HttpStatusCode.Conflict
-                };
+                const string errorMessage = ResponseMessageCodes.UserNotFound;
+                var errorDescription = ResponseMessageCodes.ErrorDictionary[ResponseMessageCodes.UserNotFound];
+
+                return _responseFactory.ConflictResponse(errorMessage, errorDescription);
             }
 
             var userChat = await _postgresDbContext.UserChats.AsNoTracking()
@@ -68,34 +61,18 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Messages
 
             if (userChat == null)
             {
-                return new Result<SendMessageResponse>
-                {
-                    Error = new ErrorResponse
-                    {
-                        ErrorMessage = ResponseMessageCodes.ChatNotFound,
-                        ErrorDetails = ResponseMessageCodes.ErrorDictionary[ResponseMessageCodes.ChatNotFound],
-                        Success = false,
-                        StatusCode = HttpStatusCode.Conflict
-                    },
-                    Response = null,
-                    StatusCode = HttpStatusCode.Conflict
-                };
+                const string errorMessage = ResponseMessageCodes.ChatNotFound;
+                var errorDescription = ResponseMessageCodes.ErrorDictionary[errorMessage];
+
+                return _responseFactory.ConflictResponse(errorMessage, errorDescription);
             }
 
             if (userChat.Chat.CommunityType == (int)CommunityType.ReadOnlyChannel)
             {
-                return new Result<SendMessageResponse>
-                {
-                    Error = new ErrorResponse
-                    {
-                        ErrorMessage = ResponseMessageCodes.PermissionDenied,
-                        ErrorDetails = ResponseMessageCodes.ErrorDictionary[ResponseMessageCodes.PermissionDenied],
-                        Success = false,
-                        StatusCode = HttpStatusCode.Conflict
-                    },
-                    Response = null,
-                    StatusCode = HttpStatusCode.Conflict
-                };
+                const string errorMessage = ResponseMessageCodes.PermissionDenied;
+                var errorDescription = ResponseMessageCodes.ErrorDictionary[errorMessage];
+
+                return _responseFactory.ConflictResponse(errorMessage, errorDescription);
             }
 
             var messageEntity = new MessageEntity
@@ -123,12 +100,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Messages
 
             await _hubContext.Clients.Group(request.ChatId.ToString()).BroadcastMessage(messageDto);
 
-            return new Result<SendMessageResponse>
-            {
-                Error = null,
-                Response = SendMessageResponse.FromSuccess(messageEntity.Id),
-                StatusCode = HttpStatusCode.OK
-            };
+            return _responseFactory.SuccessResponse(SendMessageResponse.FromSuccess(messageEntity.Id));
         }
     }
 }

@@ -6,7 +6,6 @@ using MangoAPI.Domain.Enums;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
-using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -16,10 +15,13 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Communities
         : IRequestHandler<GetCurrentUserChatsQuery, Result<GetCurrentUserChatsResponse>>
     {
         private readonly MangoPostgresDbContext _postgresDbContext;
+        private readonly ResponseFactory<GetCurrentUserChatsResponse> _responseFactory;
 
-        public GetCurrentUserChatsQueryHandler(MangoPostgresDbContext postgresDbContext)
+        public GetCurrentUserChatsQueryHandler(MangoPostgresDbContext postgresDbContext,
+            ResponseFactory<GetCurrentUserChatsResponse> responseFactory)
         {
             _postgresDbContext = postgresDbContext;
+            _responseFactory = responseFactory;
         }
 
         public async Task<Result<GetCurrentUserChatsResponse>> Handle(GetCurrentUserChatsQuery request,
@@ -82,12 +84,7 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Communities
                     : null;
             }
 
-            return new Result<GetCurrentUserChatsResponse>
-            {
-                Error = null,
-                Response = GetCurrentUserChatsResponse.FromSuccess(userChats),
-                StatusCode = HttpStatusCode.OK
-            };
+            return _responseFactory.SuccessResponse(GetCurrentUserChatsResponse.FromSuccess(userChats));
         }
     }
 }

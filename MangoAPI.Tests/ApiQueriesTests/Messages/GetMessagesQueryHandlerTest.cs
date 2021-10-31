@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using FluentAssertions;
 using MangoAPI.BusinessLogic.ApiQueries.Messages;
+using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.Domain.Constants;
 using NUnit.Framework;
 
@@ -14,7 +15,8 @@ namespace MangoAPI.Tests.ApiQueriesTests.Messages
         public async Task GetMessagesQueryHandlerTest_Success()
         {
             using var dbContextFixture = new DbContextFixture();
-            var handler = new GetMessagesQueryHandler(dbContextFixture.PostgresDbContext);
+            var responseFactory = new ResponseFactory<GetMessagesResponse>();
+            var handler = new GetMessagesQueryHandler(dbContextFixture.PostgresDbContext, responseFactory);
             var query = new GetMessagesQuery
             {
                 UserId = SeedDataConstants.RazumovskyId, 

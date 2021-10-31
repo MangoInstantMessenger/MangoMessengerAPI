@@ -3,6 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using FluentAssertions;
 using MangoAPI.BusinessLogic.ApiCommands.UserChats;
+using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.Domain.Constants;
 using NUnit.Framework;
 
@@ -15,7 +16,8 @@ namespace MangoAPI.Tests.ApiCommandsTests.UserChats
         public async Task LeaveChatCommandHandler_Success()
         {
             using var dbContextFixture = new DbContextFixture();
-            var handler = new LeaveGroupCommandHandler(dbContextFixture.PostgresDbContext);
+            var responseFactory = new ResponseFactory<LeaveGroupResponse>();
+            var handler = new LeaveGroupCommandHandler(dbContextFixture.PostgresDbContext, responseFactory);
             var command = new LeaveGroupCommand
             {
                 UserId = SeedDataConstants.RazumovskyId,
@@ -32,7 +34,8 @@ namespace MangoAPI.Tests.ApiCommandsTests.UserChats
         public async Task LeaveChatCommandHandler_ShouldThrowUserNotFound()
         {
             using var dbContextFixture = new DbContextFixture();
-            var handler = new LeaveGroupCommandHandler(dbContextFixture.PostgresDbContext);
+            var responseFactory = new ResponseFactory<LeaveGroupResponse>();
+            var handler = new LeaveGroupCommandHandler(dbContextFixture.PostgresDbContext, responseFactory);
             var command = new LeaveGroupCommand
             {
                 UserId = Guid.NewGuid(),
@@ -50,7 +53,8 @@ namespace MangoAPI.Tests.ApiCommandsTests.UserChats
         public async Task LeaveChatCommandHandler_ShouldThrowChatNotFound()
         {
             using var dbContextFixture = new DbContextFixture();
-            var handler = new LeaveGroupCommandHandler(dbContextFixture.PostgresDbContext);
+            var responseFactory = new ResponseFactory<LeaveGroupResponse>();
+            var handler = new LeaveGroupCommandHandler(dbContextFixture.PostgresDbContext, responseFactory);
             var command = new LeaveGroupCommand
             {
                 UserId = SeedDataConstants.RazumovskyId,

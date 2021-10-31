@@ -5,7 +5,6 @@ using MangoAPI.Domain.Constants;
 using MediatR;
 using Microsoft.AspNetCore.SignalR;
 using System;
-using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using MangoAPI.BusinessLogic.Models;
@@ -18,11 +17,14 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Messages
     {
         private readonly MangoPostgresDbContext _postgresDbContext;
         private readonly IHubContext<ChatHub, IHubClient> _hubContext;
+        private readonly ResponseFactory<ResponseBase> _responseFactory;
 
-        public EditMessageCommandHandler(MangoPostgresDbContext postgresDbContext, IHubContext<ChatHub, IHubClient> hubContext)
+        public EditMessageCommandHandler(MangoPostgresDbContext postgresDbContext, 
+            IHubContext<ChatHub, IHubClient> hubContext, ResponseFactory<ResponseBase> responseFactory)
         {
             _postgresDbContext = postgresDbContext;
             _hubContext = hubContext;
+            _responseFactory = responseFactory;
         }
 
         public async Task<Result<ResponseBase>> Handle(EditMessageCommand request, 
@@ -34,18 +36,10 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Messages
 
             if (message == null)
             {
-                return new Result<ResponseBase>
-                {
-                    Error = new ErrorResponse
-                    {
-                        ErrorMessage = ResponseMessageCodes.MessageNotFound,
-                        ErrorDetails = ResponseMessageCodes.ErrorDictionary[ResponseMessageCodes.MessageNotFound],
-                        Success = false,
-                        StatusCode = HttpStatusCode.Conflict
-                    },
-                    Response = null,
-                    StatusCode = HttpStatusCode.Conflict
-                };
+                const string errorMessage = ResponseMessageCodes.MessageNotFound;
+                var errorDescription = ResponseMessageCodes.ErrorDictionary[errorMessage];
+
+                return _responseFactory.ConflictResponse(errorMessage, errorDescription);
             }
 
             message.Content = request.ModifiedText;
@@ -64,12 +58,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Messages
 
             await _hubContext.Clients.Groups(message.ChatId.ToString()).NotifyOnMessageEdit(notification);
 
-            return new Result<ResponseBase>
-            {
-                Error = null,
-                Response = ResponseBase.SuccessResponse,
-                StatusCode = HttpStatusCode.OK
-            };
+            return _responseFactory.SuccessResponse(ResponseBase.SuccessResponse);
         }
     }
 }
