@@ -67,14 +67,13 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Messages
                 return _responseFactory.ConflictResponse(errorMessage, errorDescription);
             }
 
-            var messages = await _postgresDbContext.Messages
+            var messageCount = await _postgresDbContext.Messages
                 .AsNoTracking()
                 .Where(x => x.UserId == request.UserId) 
-                .Where(x => x.ChatId == request.ChatId)
                 .Where(x => x.CreatedAt >= DateTime.Now.Date.AddMinutes(-5))
-                .ToListAsync(cancellationToken);
+                .CountAsync(cancellationToken);
 
-            if (messages.Count >= 100)
+            if (messageCount >= 100)
             {
                 const string errorMessage = ResponseMessageCodes.MaximumMessageCountInLast5MinutesExceeded100;
                 var errorDescription = ResponseMessageCodes.ErrorDictionary[errorMessage];
