@@ -31,11 +31,14 @@ namespace MangoAPI.Domain.Constants
             { CannotCreateSelfChat, "You cannot create a direct chat with yourself." },
             { PasswordsAreNotSame, "New password and repeat password are not the same." },
             { PasswordsAreSame, "New password and current password are the same." },
-            { UserPublicKeyIsNotGenerated, "User has not generated his public key yet." },
             { InvalidOrExpiredRestorePasswordRequest, "Invalid or expired restore password request. Try again." },
             { MaximumOwnerChatsExceeded100, "One user cannot create more than 100 channels." },
             { InvalidEmailConfirmationCode, "Email confirmation code is invalid. Try again." },
-            { InvalidRequestModel, "Invalid request format. Correct input data and try again." }
+            { InvalidRequestModel, "Invalid request format. Correct input data and try again." },
+            { 
+                MaximumMessageCountInLast5MinutesExceeded100, 
+                "One user cannot send message more then 100 to particular chat in last 5 minutes"
+            }
         };
 
         public const string Success = "SUCCESS";
@@ -61,9 +64,9 @@ namespace MangoAPI.Domain.Constants
         public const string PasswordsAreNotSame = "PASSWORDS_ARE_NOT_SAME";
         public const string PasswordsAreSame = "PASSWORDS_ARE_SAME";
         public const string InvalidOrExpiredRestorePasswordRequest = "INVALID_OR_EXPIRED_RESTORE_PASSWORD_REQUEST";
-        public const string UserPublicKeyIsNotGenerated = "USER_PUBLIC_KEY_IS_NOT_GENERATED";
         public const string MaximumOwnerChatsExceeded100 = "MAXIMUM_OWNER_CHATS_EXCEEDED_100";
         public const string InvalidEmailConfirmationCode = "INVALID_EMAIL_CONFIRMATION_CODE";
         public const string InvalidRequestModel = "INVALID_REQUEST_FORMAT";
+        public const string MaximumMessageCountInLast5MinutesExceeded100 = "MAXIMUM_MESSAGE_COUNT_IN_LAST_5_MINUTES_EXCEEDED_100";
     }
 }
