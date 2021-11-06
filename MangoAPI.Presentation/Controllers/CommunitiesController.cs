@@ -138,7 +138,7 @@ namespace MangoAPI.Presentation.Controllers
         }
 
         /// <summary>
-        ///
+        /// Updates picture of particular channel. Required role: User
         /// </summary>
         /// <param name="request"></param>
         /// <param name="cancellationToken"></param>
