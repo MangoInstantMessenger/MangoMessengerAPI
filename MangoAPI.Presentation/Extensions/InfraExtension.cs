@@ -19,6 +19,7 @@ namespace MangoAPI.Presentation.Extensions
             services.AddValidatorsFromAssembly(typeof(LoginCommandValidator).Assembly);
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehaviour<,>));
             services.AddTransient(typeof(ResponseFactory<>));
+            services.AddMemoryCache();
             return services;
         }
     }

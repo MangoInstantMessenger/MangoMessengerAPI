@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 using System.Threading;
 using System.Threading.Tasks;
+using MangoAPI.Application.Services;
 
 namespace MangoAPI.Presentation.Controllers
 {
@@ -21,7 +22,8 @@ namespace MangoAPI.Presentation.Controllers
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class PasswordRestoreRequestsController : ApiControllerBase, IPasswordRestoreRequestsController
     {
-        public PasswordRestoreRequestsController(IMediator mediator, IMapper mapper) : base(mediator, mapper)
+        public PasswordRestoreRequestsController(IMediator mediator, IMapper mapper,
+            RequestValidationService requestValidationService) : base(mediator, mapper, requestValidationService)
         {
         }
 

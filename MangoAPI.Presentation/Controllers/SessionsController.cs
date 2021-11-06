@@ -12,6 +12,7 @@ using Swashbuckle.AspNetCore.Annotations;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using MangoAPI.Application.Services;
 
 namespace MangoAPI.Presentation.Controllers
 {
@@ -23,7 +24,8 @@ namespace MangoAPI.Presentation.Controllers
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class SessionsController : ApiControllerBase, ISessionsController
     {
-        public SessionsController(IMediator mediator, IMapper mapper) : base(mediator, mapper)
+        public SessionsController(IMediator mediator, IMapper mapper, RequestValidationService requestValidationService)
+            : base(mediator, mapper, requestValidationService)
         {
         }
 
@@ -36,7 +38,7 @@ namespace MangoAPI.Presentation.Controllers
         [HttpPost]
         [AllowAnonymous]
         [SwaggerOperation(Description =
-            "Logins to the system. Returns pair of the access/refresh tokens. Does not requires authorization.",
+                "Logins to the system. Returns pair of the access/refresh tokens. Does not requires authorization.",
             Summary = "Logins to the system.")]
         [ProducesResponseType(typeof(TokensResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
@@ -44,6 +46,14 @@ namespace MangoAPI.Presentation.Controllers
         public async Task<IActionResult> LoginAsync([FromBody] LoginRequest request,
             CancellationToken cancellationToken)
         {
+            var validateRequest = RequestValidationService
+                .ValidateRequest(HttpContext, "Login", 20);
+
+            if (!validateRequest)
+            {
+                return TooFrequentResponse();
+            }
+
             var command = Mapper.Map<LoginCommand>(request);
             return await RequestAsync(command, cancellationToken);
         }
@@ -57,8 +67,8 @@ namespace MangoAPI.Presentation.Controllers
         [AllowAnonymous]
         [HttpPost("{refreshToken:guid}")]
         [SwaggerOperation(Description = "Refreshes current user's session. " +
-            "Returns pair of the access/refresh tokens. " +
-            "Requires valid refresh token. Allow anonymous.",
+                                        "Returns pair of the access/refresh tokens. " +
+                                        "Requires valid refresh token. Allow anonymous.",
             Summary = "Refreshes current user's session.")]
         [ProducesResponseType(typeof(TokensResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
@@ -66,6 +76,14 @@ namespace MangoAPI.Presentation.Controllers
         public async Task<IActionResult> RefreshSession([FromRoute] Guid refreshToken,
             CancellationToken cancellationToken)
         {
+            var validateRequest = RequestValidationService
+                .ValidateRequest(HttpContext, "RefreshToken", 20);
+
+            if (!validateRequest)
+            {
+                return TooFrequentResponse();
+            }
+
             var command = new RefreshSessionCommand
             {
                 RefreshToken = refreshToken,
@@ -90,6 +108,14 @@ namespace MangoAPI.Presentation.Controllers
         public async Task<IActionResult> LogoutAsync([FromRoute] Guid refreshToken,
             CancellationToken cancellationToken)
         {
+            var validateRequest = RequestValidationService
+                .ValidateRequest(HttpContext, "Logout", 20);
+
+            if (!validateRequest)
+            {
+                return TooFrequentResponse();
+            }
+            
             var command = new LogoutCommand
             {
                 RefreshToken = refreshToken
@@ -112,8 +138,16 @@ namespace MangoAPI.Presentation.Controllers
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
         public async Task<IActionResult> LogoutAllAsync(CancellationToken cancellationToken)
         {
-            var userId = HttpContext.User.GetUserId();
+            var validateRequest = RequestValidationService
+                .ValidateRequest(HttpContext, "LogoutAll", 20);
 
+            if (!validateRequest)
+            {
+                return TooFrequentResponse();
+            }
+            
+            var userId = HttpContext.User.GetUserId();
+            
             var command = new LogoutAllCommand
             {
                 UserId = userId

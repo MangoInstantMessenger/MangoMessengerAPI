@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 using System.Threading;
 using System.Threading.Tasks;
+using MangoAPI.Application.Services;
 
 namespace MangoAPI.Presentation.Controllers
 {
@@ -21,7 +22,8 @@ namespace MangoAPI.Presentation.Controllers
     [Authorize(Roles = "User", AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class DocumentsController : ApiControllerBase, IDocumentsController
     {
-        public DocumentsController(IMediator mediator, IMapper mapper) : base(mediator, mapper)
+        public DocumentsController(IMediator mediator, IMapper mapper,
+            RequestValidationService requestValidationService) : base(mediator, mapper, requestValidationService)
         {
         }
 
@@ -42,7 +44,15 @@ namespace MangoAPI.Presentation.Controllers
         public async Task<IActionResult> UploadDocumentAsync(IFormFile formFile,
             CancellationToken cancellationToken)
         {
-            var command = new UploadDocumentCommand { FormFile = formFile };
+            var validateRequest = RequestValidationService
+                .ValidateRequest(HttpContext, "Documents", 20);
+
+            if (!validateRequest)
+            {
+                return TooFrequentResponse();
+            }
+            
+            var command = new UploadDocumentCommand {FormFile = formFile};
 
             return await RequestAsync(command, cancellationToken);
         }
