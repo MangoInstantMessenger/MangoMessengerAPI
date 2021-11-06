@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 using System.Threading;
 using System.Threading.Tasks;
+using MangoAPI.Application.Services;
 
 namespace MangoAPI.Presentation.Controllers
 {
@@ -24,7 +25,8 @@ namespace MangoAPI.Presentation.Controllers
     [Authorize(Roles = "User", AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class CommunitiesController : ApiControllerBase, ICommunitiesController
     {
-        public CommunitiesController(IMediator mediator, IMapper mapper) : base(mediator, mapper)
+        public CommunitiesController(IMediator mediator, IMapper mapper,
+            RequestValidationService requestValidationService) : base(mediator, mapper, requestValidationService)
         {
         }
 
@@ -39,7 +41,7 @@ namespace MangoAPI.Presentation.Controllers
         [ProducesResponseType(typeof(GetCurrentUserChatsResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
-        public async Task<IActionResult> GetChats(CancellationToken cancellationToken)
+        public async Task<IActionResult> GetChatsAsync(CancellationToken cancellationToken)
         {
             var userId = HttpContext.User.GetUserId();
 
@@ -60,8 +62,8 @@ namespace MangoAPI.Presentation.Controllers
         /// <returns>Possible codes: 200, 400, 409.</returns>
         [HttpPost("channel")]
         [SwaggerOperation(Description =
-            "Creates new group of specified type: Private Channel (3), Public Channel (4), Readonly Channel (5). " +
-            "Requires role: User.",
+                "Creates new group of specified type: Private Channel (3), Public Channel (4), Readonly Channel (5). " +
+                "Requires role: User.",
             Summary = "Creates new group of specified type.")]
         [ProducesResponseType(typeof(CreateCommunityResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
@@ -69,6 +71,14 @@ namespace MangoAPI.Presentation.Controllers
         public async Task<IActionResult> CreateChannelAsync([FromBody] CreateChannelRequest request,
             CancellationToken cancellationToken)
         {
+            var validateRequest = RequestValidationService
+                .ValidateRequest(HttpContext, "CreateChannel", 20);
+
+            if (!validateRequest)
+            {
+                return TooFrequentResponse();
+            }
+            
             var userId = HttpContext.User.GetUserId();
             var command = Mapper.Map<CreateChannelCommand>(request);
             command.UserId = userId;
@@ -84,8 +94,8 @@ namespace MangoAPI.Presentation.Controllers
         /// <returns>Possible codes: 200, 400, 409.</returns>
         [HttpPost("chat")]
         [SwaggerOperation(Description =
-            "Creates new chat with specified user. Chat types: Direct Chat (1), Secret Chat (2). " +
-            "Requires role: User.",
+                "Creates new chat with specified user. Chat types: Direct Chat (1), Secret Chat (2). " +
+                "Requires role: User.",
             Summary = "Creates new chat with specified user.")]
         [ProducesResponseType(typeof(CreateCommunityResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
@@ -139,8 +149,17 @@ namespace MangoAPI.Presentation.Controllers
         [ProducesResponseType(typeof(ResponseBase), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
-        public async Task<IActionResult> UpdateChannelPicture(UpdateChanelPictureRequest request, CancellationToken cancellationToken)
+        public async Task<IActionResult> UpdateChannelPictureAsync(UpdateChanelPictureRequest request,
+            CancellationToken cancellationToken)
         {
+            var validateRequest = RequestValidationService
+                .ValidateRequest(HttpContext, "UpdateChannelPicture", 20);
+
+            if (!validateRequest)
+            {
+                return TooFrequentResponse();
+            }
+            
             var command = Mapper.Map<UpdateChanelPictureCommand>(request);
             command.UserId = HttpContext.User.GetUserId();
 

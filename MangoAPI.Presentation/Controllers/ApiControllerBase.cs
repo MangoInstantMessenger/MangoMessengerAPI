@@ -5,6 +5,8 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading;
 using System.Threading.Tasks;
+using MangoAPI.Application.Services;
+using MangoAPI.Domain.Constants;
 
 namespace MangoAPI.Presentation.Controllers
 {
@@ -15,16 +17,19 @@ namespace MangoAPI.Presentation.Controllers
     {
         private readonly IMediator _mediator;
         protected readonly IMapper Mapper;
+        protected readonly RequestValidationService RequestValidationService;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ApiControllerBase"/> class.
         /// </summary>
         /// <param name="mediator">Mediator instance.</param>
         /// <param name="mapper">Automapper instance.</param>
-        public ApiControllerBase(IMediator mediator, IMapper mapper)
+        /// <param name="requestValidationService">Request validator.</param>
+        public ApiControllerBase(IMediator mediator, IMapper mapper, RequestValidationService requestValidationService)
         {
             _mediator = mediator;
             Mapper = mapper;
+            RequestValidationService = requestValidationService;
         }
 
         /// <summary>
@@ -46,6 +51,15 @@ namespace MangoAPI.Presentation.Controllers
                 HttpStatusCode.Conflict => Conflict(response.Error),
                 _ => Ok(response.Response)
             };
+        }
+
+        protected IActionResult TooFrequentResponse()
+        {
+            var requestFactory = new ResponseFactory<TokensResponse>();
+            const string message = ResponseMessageCodes.TooFrequentRequest;
+            var details = ResponseMessageCodes.ErrorDictionary[message];
+            var response = requestFactory.ConflictResponse(message, details);
+            return BadRequest(response.Error);
         }
     }
 }

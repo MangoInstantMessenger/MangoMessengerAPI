@@ -13,6 +13,7 @@ using Swashbuckle.AspNetCore.Annotations;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using MangoAPI.Application.Services;
 
 namespace MangoAPI.Presentation.Controllers
 {
@@ -24,7 +25,8 @@ namespace MangoAPI.Presentation.Controllers
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class UsersController : ApiControllerBase, IUsersController
     {
-        public UsersController(IMediator mediator, IMapper mapper) : base(mediator, mapper)
+        public UsersController(IMediator mediator, IMapper mapper, RequestValidationService requestValidationService) :
+            base(mediator, mapper, requestValidationService)
         {
         }
 
@@ -40,10 +42,10 @@ namespace MangoAPI.Presentation.Controllers
         [HttpPost]
         [AllowAnonymous]
         [SwaggerOperation(Description =
-            "Registers user in the system. There are two possibilities to verify account: Phone (1), Email (2). " +
-            "Does not require any authorization or users role. " +
-            "After registration user receives pair of access/refresh tokens. " +
-            "Access token claim role is Unverified. ",
+                "Registers user in the system. There are two possibilities to verify account: Phone (1), Email (2). " +
+                "Does not require any authorization or users role. " +
+                "After registration user receives pair of access/refresh tokens. " +
+                "Access token claim role is Unverified. ",
             Summary = "Registers user in the system.")]
         [ProducesResponseType(typeof(TokensResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
@@ -51,6 +53,14 @@ namespace MangoAPI.Presentation.Controllers
         public async Task<IActionResult> RegisterAsync([FromBody] RegisterRequest request,
             CancellationToken cancellationToken)
         {
+            var validateRequest = RequestValidationService
+                .ValidateRequest(HttpContext, "Register", 20);
+
+            if (!validateRequest)
+            {
+                return TooFrequentResponse();
+            }
+            
             var command = Mapper.Map<RegisterCommand>(request);
 
             return await RequestAsync(command, cancellationToken);
@@ -67,8 +77,8 @@ namespace MangoAPI.Presentation.Controllers
         [HttpPut("email-confirmation")]
         [Authorize(Roles = "Unverified, User")]
         [SwaggerOperation(Description = "Confirms user's email address. Adds a User role to the current user. " +
-                                    "This endpoint may be accessed by both roles: Unverified, User. " +
-                                    "On refresh session user receives new access token with updated roles.",
+                                        "This endpoint may be accessed by both roles: Unverified, User. " +
+                                        "On refresh session user receives new access token with updated roles.",
             Summary = "Confirms user's email address.")]
         [ProducesResponseType(typeof(ResponseBase), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
@@ -76,6 +86,14 @@ namespace MangoAPI.Presentation.Controllers
         public async Task<IActionResult> EmailConfirmationAsync([FromBody] VerifyEmailRequest request,
             CancellationToken cancellationToken)
         {
+            var validateRequest = RequestValidationService
+                .ValidateRequest(HttpContext, "EmailConfirmation", 20);
+
+            if (!validateRequest)
+            {
+                return TooFrequentResponse();
+            }
+            
             var command = Mapper.Map<VerifyEmailCommand>(request);
 
             return await RequestAsync(command, cancellationToken);
@@ -92,8 +110,8 @@ namespace MangoAPI.Presentation.Controllers
         [HttpPut("{phoneCode:int}")]
         [Authorize(Roles = "Unverified, User")]
         [SwaggerOperation(Description = "Confirms user's phone number. Adds a User role to the current user. " +
-            "This endpoint may be accessed by both roles: Unverified, User. " +
-            "On refresh session user receives new access token with updated roles. ",
+                                        "This endpoint may be accessed by both roles: Unverified, User. " +
+                                        "On refresh session user receives new access token with updated roles. ",
             Summary = "Confirms user's phone number.")]
         [ProducesResponseType(typeof(ResponseBase), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
@@ -101,6 +119,14 @@ namespace MangoAPI.Presentation.Controllers
         public async Task<IActionResult> PhoneConfirmationAsync([FromRoute] int phoneCode,
             CancellationToken cancellationToken)
         {
+            var validateRequest = RequestValidationService
+                .ValidateRequest(HttpContext, "PhoneConfirmation", 20);
+
+            if (!validateRequest)
+            {
+                return TooFrequentResponse();
+            }
+            
             var userId = HttpContext.User.GetUserId();
 
             var command = new VerifyPhoneCommand
@@ -168,7 +194,7 @@ namespace MangoAPI.Presentation.Controllers
         [HttpGet]
         [Authorize(Roles = "User")]
         [SwaggerOperation(Description = "Gets info about current user himself. " +
-                                    "This endpoint may be accessed by both roles: Unverified, User.",
+                                        "This endpoint may be accessed by both roles: Unverified, User.",
             Summary = "Gets info about current user himself.")]
         [ProducesResponseType(typeof(GetUserResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
@@ -202,6 +228,14 @@ namespace MangoAPI.Presentation.Controllers
             [FromBody] UpdateUserSocialInformationRequest request,
             CancellationToken cancellationToken)
         {
+            var validateRequest = RequestValidationService
+                .ValidateRequest(HttpContext, "UpdateUserSocialInformation", 20);
+
+            if (!validateRequest)
+            {
+                return TooFrequentResponse();
+            }
+            
             var userId = HttpContext.User.GetUserId();
 
             var command = Mapper.Map<UpdateUserSocialInformationCommand>(request);
@@ -226,6 +260,14 @@ namespace MangoAPI.Presentation.Controllers
         public async Task<IActionResult> UpdateUserAccountInfoAsync([FromBody] UpdateUserAccountInfoRequest request,
             CancellationToken cancellationToken)
         {
+            var validateRequest = RequestValidationService
+                .ValidateRequest(HttpContext, "UpdateUserAccountInfo", 20);
+
+            if (!validateRequest)
+            {
+                return TooFrequentResponse();
+            }
+            
             var userId = HttpContext.User.GetUserId();
 
             var command = Mapper.Map<UpdateUserAccountInfoCommand>(request);
@@ -244,6 +286,14 @@ namespace MangoAPI.Presentation.Controllers
         public async Task<IActionResult> UpdateProfilePictureAsync([FromRoute] string image,
             CancellationToken cancellationToken)
         {
+            var validateRequest = RequestValidationService
+                .ValidateRequest(HttpContext, "UpdateProfilePicture", 20);
+
+            if (!validateRequest)
+            {
+                return TooFrequentResponse();
+            }
+            
             var userId = HttpContext.User.GetUserId();
 
             var command = new UpdateProfilePictureCommand

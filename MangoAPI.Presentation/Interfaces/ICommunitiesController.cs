@@ -7,7 +7,7 @@ namespace MangoAPI.Presentation.Interfaces
 {
     public interface ICommunitiesController
     {
-        Task<IActionResult> GetChats(CancellationToken cancellationToken);
+        Task<IActionResult> GetChatsAsync(CancellationToken cancellationToken);
 
         Task<IActionResult> CreateChannelAsync(CreateChannelRequest request, CancellationToken cancellationToken);
 
@@ -15,6 +15,6 @@ namespace MangoAPI.Presentation.Interfaces
 
         Task<IActionResult> SearchAsync(string displayName, CancellationToken cancellationToken);
 
-        Task<IActionResult> UpdateChannelPicture(UpdateChanelPictureRequest request, CancellationToken cancellationToken);
+        Task<IActionResult> UpdateChannelPictureAsync(UpdateChanelPictureRequest request, CancellationToken cancellationToken);
     }
 }

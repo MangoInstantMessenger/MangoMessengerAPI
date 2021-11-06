@@ -13,6 +13,7 @@ using Swashbuckle.AspNetCore.Annotations;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using MangoAPI.Application.Services;
 
 namespace MangoAPI.Presentation.Controllers
 {
@@ -24,7 +25,8 @@ namespace MangoAPI.Presentation.Controllers
     [Authorize(Roles = "User", AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class ContactsController : ApiControllerBase, IContactsController
     {
-        public ContactsController(IMediator mediator, IMapper mapper) : base(mediator, mapper)
+        public ContactsController(IMediator mediator, IMapper mapper, RequestValidationService requestValidationService)
+            : base(mediator, mapper, requestValidationService)
         {
         }
 
@@ -36,7 +38,7 @@ namespace MangoAPI.Presentation.Controllers
         /// <returns>Possible codes: 200, 400, 409.</returns>
         [HttpPost("{contactId:guid}")]
         [SwaggerOperation(Description = "Adds particular user to the contacts. Fetches user by user ID. " +
-            "Requires role: User.", Summary = "Adds particular user to the contacts")]
+                                        "Requires role: User.", Summary = "Adds particular user to the contacts")]
         [ProducesResponseType(typeof(ResponseBase), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
@@ -61,7 +63,7 @@ namespace MangoAPI.Presentation.Controllers
         /// <returns>Possible codes: 200, 400, 409.</returns>
         [HttpDelete("{contactId:guid}")]
         [SwaggerOperation(Description = "Deletes particular contact from the contacts. Fetches user by user ID. " +
-            "Requires role: User",
+                                        "Requires role: User",
             Summary = "Deletes particular contact from the contacts.")]
         [ProducesResponseType(typeof(ResponseBase), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
@@ -111,7 +113,7 @@ namespace MangoAPI.Presentation.Controllers
         [HttpGet("searches")]
         [Authorize(Roles = "User")]
         [SwaggerOperation(Description =
-            "Searches user by display name, phone number or e-mail address. Requires role: User.",
+                "Searches user by display name, phone number or e-mail address. Requires role: User.",
             Summary = "Searches user by credential.")]
         [ProducesResponseType(typeof(SearchContactResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
