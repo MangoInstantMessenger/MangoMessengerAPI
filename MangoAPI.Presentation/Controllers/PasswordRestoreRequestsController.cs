@@ -43,6 +43,14 @@ namespace MangoAPI.Presentation.Controllers
         public async Task<IActionResult> RestorePasswordRequestAsync([FromRoute] string emailOrPhone,
             CancellationToken cancellationToken)
         {
+            var validateRequest = RequestValidationService
+                .ValidateRequest(HttpContext, "RestorePasswordRequest", 30);
+
+            if (!validateRequest)
+            {
+                return TooFrequentResponse();
+            }
+
             var command = new RequestPasswordRestoreCommand
             {
                 EmailOrPhone = emailOrPhone
@@ -67,6 +75,14 @@ namespace MangoAPI.Presentation.Controllers
         public async Task<IActionResult> RestorePasswordAsync([FromBody] PasswordRestoreRequest request,
             CancellationToken cancellationToken)
         {
+            var validateRequest = RequestValidationService
+                .ValidateRequest(HttpContext, "RestorePassword", 30);
+
+            if (!validateRequest)
+            {
+                return TooFrequentResponse();
+            }
+
             var command = Mapper.Map<PasswordRestoreCommand>(request);
 
             return await RequestAsync(command, cancellationToken);
