@@ -153,7 +153,7 @@ namespace MangoAPI.Presentation.Controllers
             CancellationToken cancellationToken)
         {
             var validateRequest = RequestValidationService
-                .ValidateRequest(HttpContext, "UpdateChannelPicture", 20);
+                .ValidateRequest(HttpContext, "UpdateChannelPicture", 30);
 
             if (!validateRequest)
             {

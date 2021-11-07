@@ -21,10 +21,10 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Documents
                 .NotEmpty()
                 .Must(t =>
                 {
-                    var last = t.Split('.').Last();
-                    return allowedExtensions.Contains(last);
+                    var validExtension = t.Split('.').Last();
+                    return allowedExtensions.Contains(validExtension);
                 })
-                .Length(1, 50);
+                .Length(1, 20);
         }
     }
 }

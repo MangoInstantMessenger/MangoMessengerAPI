@@ -47,7 +47,7 @@ namespace MangoAPI.Presentation.Controllers
             CancellationToken cancellationToken)
         {
             var validateRequest = RequestValidationService
-                .ValidateRequest(HttpContext, "Login", 20);
+                .ValidateRequest(HttpContext, "Login", 30);
 
             if (!validateRequest)
             {
@@ -77,7 +77,7 @@ namespace MangoAPI.Presentation.Controllers
             CancellationToken cancellationToken)
         {
             var validateRequest = RequestValidationService
-                .ValidateRequest(HttpContext, "RefreshToken", 20);
+                .ValidateRequest(HttpContext, "RefreshToken", 30);
 
             if (!validateRequest)
             {
@@ -109,7 +109,7 @@ namespace MangoAPI.Presentation.Controllers
             CancellationToken cancellationToken)
         {
             var validateRequest = RequestValidationService
-                .ValidateRequest(HttpContext, "Logout", 20);
+                .ValidateRequest(HttpContext, "Logout", 30);
 
             if (!validateRequest)
             {
@@ -139,7 +139,7 @@ namespace MangoAPI.Presentation.Controllers
         public async Task<IActionResult> LogoutAllAsync(CancellationToken cancellationToken)
         {
             var validateRequest = RequestValidationService
-                .ValidateRequest(HttpContext, "LogoutAll", 20);
+                .ValidateRequest(HttpContext, "LogoutAll", 30);
 
             if (!validateRequest)
             {

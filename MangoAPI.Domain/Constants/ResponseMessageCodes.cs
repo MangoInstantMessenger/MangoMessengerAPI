@@ -39,7 +39,7 @@ namespace MangoAPI.Domain.Constants
                 MaximumMessageCountInLast5MinutesExceeded100,
                 "One user cannot send message more then 100 to particular chat in last 5 minutes"
             },
-            {TooFrequentRequest, "Your request is too frequent. Try again later."}
+            {TooFrequentRequest, "Your request is too frequent. Try again in 30 seconds."}
         };
 
         public const string Success = "SUCCESS";

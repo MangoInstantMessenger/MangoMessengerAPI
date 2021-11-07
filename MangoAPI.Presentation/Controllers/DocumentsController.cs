@@ -45,7 +45,7 @@ namespace MangoAPI.Presentation.Controllers
             CancellationToken cancellationToken)
         {
             var validateRequest = RequestValidationService
-                .ValidateRequest(HttpContext, "Documents", 20);
+                .ValidateRequest(HttpContext, "Documents", 30);
 
             if (!validateRequest)
             {
