@@ -31,6 +31,7 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Communities
                 .AsNoTracking()
                 .Where(x => x.CommunityType == (int)CommunityType.PublicChannel || x.CommunityType == (int)CommunityType.ReadOnlyChannel)
                 .Where(x => request.DisplayName == null || EF.Functions.ILike(x.Title, $"%{request.DisplayName}%"))
+                .Where(x => x.ChatUsers.All(u => u.UserId != request.UserId))
                 .Select(x => new Chat
                 {
                     ChatId = x.Id,
