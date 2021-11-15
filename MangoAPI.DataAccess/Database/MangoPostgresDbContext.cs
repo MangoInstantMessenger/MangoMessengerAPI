@@ -32,6 +32,10 @@ namespace MangoAPI.DataAccess.Database
 
         public DbSet<DocumentEntity> Documents { get; set; }
 
+        public DbSet<SecretChatRequestEntity> SecretChatRequests { get; set; }
+
+        public DbSet<SecretChatPublicKeyEntity> SecretChatPublicKeys { get; set; }
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
