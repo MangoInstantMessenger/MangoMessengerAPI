@@ -8,7 +8,8 @@ namespace MangoAPI.DataAccess.Database.Configurations
     {
         public void Configure(EntityTypeBuilder<SecretChatRequestEntity> builder)
         {
-            builder.HasKey(x => x.UserId);
+            builder.HasKey(x => x.Id);
+
             builder.Property(x => x.SenderId).IsRequired();
             builder.Property(x => x.SenderPublicKey).IsRequired();
             builder.Property(x => x.UserId).IsRequired();
