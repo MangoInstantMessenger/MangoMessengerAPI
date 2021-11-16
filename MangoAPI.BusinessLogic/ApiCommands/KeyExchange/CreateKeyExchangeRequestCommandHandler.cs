@@ -10,19 +10,19 @@ using Microsoft.EntityFrameworkCore;
 namespace MangoAPI.BusinessLogic.ApiCommands.KeyExchange
 {
     public class CreateKeyExchangeRequestCommandHandler : IRequestHandler<CreateKeyExchangeRequestCommand,
-        Result<ResponseBase>>
+        Result<CreateKeyExchangeResponse>>
     {
         private readonly MangoPostgresDbContext _postgresDbContext;
-        private readonly ResponseFactory<ResponseBase> _responseFactory;
+        private readonly ResponseFactory<CreateKeyExchangeResponse> _responseFactory;
 
         public CreateKeyExchangeRequestCommandHandler(MangoPostgresDbContext postgresDbContext,
-            ResponseFactory<ResponseBase> responseFactory)
+            ResponseFactory<CreateKeyExchangeResponse> responseFactory)
         {
             _postgresDbContext = postgresDbContext;
             _responseFactory = responseFactory;
         }
 
-        public async Task<Result<ResponseBase>> Handle(CreateKeyExchangeRequestCommand request,
+        public async Task<Result<CreateKeyExchangeResponse>> Handle(CreateKeyExchangeRequestCommand request,
             CancellationToken cancellationToken)
         {
             var requestedUserExists = await _postgresDbContext.Users.AnyAsync(
@@ -35,15 +35,17 @@ namespace MangoAPI.BusinessLogic.ApiCommands.KeyExchange
 
                 return _responseFactory.ConflictResponse(message, details);
             }
-            
+
             var alreadyRequested = await _postgresDbContext.KeyExchangeRequests
-                .AnyAsync(x => x.SenderId == request.UserId, cancellationToken);
+                .AnyAsync(
+                    x => x.SenderId == request.UserId && x.UserId == request.RequestedUserId, 
+                    cancellationToken);
 
             if (alreadyRequested)
             {
-                const string message = ResponseMessageCodes.SecretChatRequestAlreadyExists;
+                const string message = ResponseMessageCodes.KeyExchangeRequestAlreadyExists;
                 var details = ResponseMessageCodes.ErrorDictionary[message];
-                
+
                 return _responseFactory.ConflictResponse(message, details);
             }
 
@@ -58,7 +60,14 @@ namespace MangoAPI.BusinessLogic.ApiCommands.KeyExchange
 
             await _postgresDbContext.SaveChangesAsync(cancellationToken);
 
-            return _responseFactory.SuccessResponse(ResponseBase.SuccessResponse);
+            var response = new CreateKeyExchangeResponse
+            {
+                Message = ResponseMessageCodes.Success,
+                RequestId = secretChatRequest.Id,
+                Success = true
+            };
+
+            return _responseFactory.SuccessResponse(response);
         }
     }
 }

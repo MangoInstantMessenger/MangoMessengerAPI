@@ -31,7 +31,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.KeyExchange
 
             if (chatRequest == null)
             {
-                const string message = ResponseMessageCodes.SecretChatRequestNotFound;
+                const string message = ResponseMessageCodes.KeyExchangeRequestNotFound;
                 var details = ResponseMessageCodes.ErrorDictionary[message];
 
                 return _responseFactory.ConflictResponse(message, details);

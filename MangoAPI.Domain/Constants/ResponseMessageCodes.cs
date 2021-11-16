@@ -41,12 +41,12 @@ namespace MangoAPI.Domain.Constants
             },
             { TooFrequentRequest, "Your request is too frequent. Try again in 30 seconds." },
             {
-                SecretChatRequestAlreadyExists,
-                "You have already requested current user for secret chat. Wait for response."
+                KeyExchangeRequestAlreadyExists,
+                "You have already requested current user for key exchange. Wait for response."
             },
             {
-                SecretChatRequestNotFound,
-                "Secret chat request not found. Either request is not submitted yet or declined."
+                KeyExchangeRequestNotFound,
+                "Key exchange request not found. Either request is not submitted yet or declined."
             }
         };
 
@@ -81,7 +81,7 @@ namespace MangoAPI.Domain.Constants
             "MAXIMUM_MESSAGE_COUNT_IN_LAST_5_MINUTES_EXCEEDED_100";
 
         public const string TooFrequentRequest = "TOO_FREQUENT_REQUEST";
-        public const string SecretChatRequestAlreadyExists = "SECRET_CHAT_REQUEST_ALREADY_EXISTS";
-        public const string SecretChatRequestNotFound = "SECRET_CHAT_REQUEST_NOT_FOUND";
+        public const string KeyExchangeRequestAlreadyExists = "KEY_EXCHANGE_REQUEST_ALREADY_EXISTS";
+        public const string KeyExchangeRequestNotFound = "KEY_EXCHANGE_REQUEST_NOT_FOUND";
     }
 }

@@ -28,6 +28,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		.github\workflows\main.yml = .github\workflows\main.yml
 		README.md = README.md
 		SqlScripts\Truncate_All_Tables.sql = SqlScripts\Truncate_All_Tables.sql
+		MANGO_API_POSTMAN_ENVIRONMENT.json = MANGO_API_POSTMAN_ENVIRONMENT.json
+		MANGO_API_POSTMAN_GLOBALS.json = MANGO_API_POSTMAN_GLOBALS.json
 	EndProjectSection
 EndProject
 Global
