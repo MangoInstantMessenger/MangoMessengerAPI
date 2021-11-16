@@ -18,27 +18,27 @@
 		},
 		{
 			"key": "KHACHATUR_ID",
-			"value": "",
+			"value": "e77cf2cb-3f3a-4f0b-ac5a-90a3263d075a",
 			"enabled": true
 		},
 		{
 			"key": "RAZUMOVSKY_ID",
-			"value": "",
+			"value": "fd3c67c5-c6ff-4a5d-a166-98ece1b7752b",
 			"enabled": true
 		},
 		{
 			"key": "PETRO_ID",
-			"value": "",
+			"value": "2cd4b9a0-f70d-476d-a3cc-908da43f93c4",
 			"enabled": true
 		},
 		{
 			"key": "SZYMON_ID",
-			"value": "",
+			"value": "5e7274ad-3132-4ad7-be36-38778a8f7b1c",
 			"enabled": true
 		}
 	],
 	"name": "My Workspace Globals",
 	"_postman_variable_scope": "globals",
-	"_postman_exported_at": "2021-11-16T23:35:15.614Z",
+	"_postman_exported_at": "2021-11-16T23:48:43.561Z",
 	"_postman_exported_using": "Postman/8.12.2"
 }
