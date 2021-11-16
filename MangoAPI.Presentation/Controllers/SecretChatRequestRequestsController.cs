@@ -31,22 +31,25 @@ namespace MangoAPI.Presentation.Controllers
             throw new NotImplementedException();
         }
 
-        [HttpPost("{requestedUserId:guid}")]
-        public async Task<IActionResult> CreateSecretChatRequest([FromRoute] Guid requestedUserId,
+        [HttpPost]
+        public async Task<IActionResult> CreateSecretChatRequest([FromBody] CreateSecretChatRequest request,
             CancellationToken cancellationToken)
         {
             var userId = HttpContext.User.GetUserId();
+
             var command = new CreateSecretChatRequestCommand
             {
-                RequestedUserId = requestedUserId,
+                RequestedUserId = request.RequestedUserId,
+                PublicKey = request.PublicKey,
                 UserId = userId
             };
 
             return await RequestAsync(command, cancellationToken);
         }
 
-        [HttpDelete("{requestId:guid}")]
-        public async Task<IActionResult> ConfirmOrDeclineSecretChatRequest(Guid requestId, bool confirmed,
+        [HttpDelete]
+        public async Task<IActionResult> ConfirmOrDeclineSecretChatRequest(
+            [FromBody] ConfirmOrDeclineSecretChatRequest request,
             CancellationToken cancellationToken)
         {
             throw new NotImplementedException();

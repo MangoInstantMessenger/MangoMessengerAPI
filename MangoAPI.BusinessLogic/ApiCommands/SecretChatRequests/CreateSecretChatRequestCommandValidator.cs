@@ -8,6 +8,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.SecretChatRequests
         {
             RuleFor(x => x.UserId).NotEmpty();
             RuleFor(x => x.RequestedUserId).NotEmpty();
+            RuleFor(x => x.PublicKey).NotEmpty();
         }
     }
 }

@@ -25,18 +25,11 @@ namespace MangoAPI.BusinessLogic.ApiCommands.SecretChatRequests
         public async Task<Result<ResponseBase>> Handle(CreateSecretChatRequestCommand request,
             CancellationToken cancellationToken)
         {
-            using var alice = new ECDiffieHellmanCng();
-            alice.KeyDerivationFunction = ECDiffieHellmanKeyDerivationFunction.Hash;
-            alice.HashAlgorithm = CngAlgorithm.Sha256;
-
-            var publicKeyBytes = alice.PublicKey.ToByteArray();
-            var publicKey = publicKeyBytes.BytesAsString();
-
             var secretChatRequest = new SecretChatRequestEntity
             {
                 UserId = request.RequestedUserId,
                 SenderId = request.RequestedUserId,
-                SenderPublicKey = publicKey
+                SenderPublicKey = request.PublicKey
             };
 
             _postgresDbContext.SecretChatRequests.Add(secretChatRequest);
