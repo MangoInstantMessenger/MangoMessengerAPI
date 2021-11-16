@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.DataAccess.Database;
 using MangoAPI.Domain.Constants;
+using MangoAPI.Domain.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
@@ -44,7 +45,21 @@ namespace MangoAPI.BusinessLogic.ApiCommands.KeyExchange
                 return _responseFactory.SuccessResponse(ResponseBase.SuccessResponse);
             }
 
-            return null;
+            _postgresDbContext.PublicKeys.AddRange(new PublicKeyEntity
+            {
+                UserId = chatRequest.SenderId,
+                PartnerId = request.UserId,
+                PartnerPublicKey = request.PublicKey
+            }, new PublicKeyEntity
+            {
+                UserId = request.UserId,
+                PartnerId = chatRequest.SenderId,
+                PartnerPublicKey = chatRequest.SenderPublicKey
+            });
+
+            await _postgresDbContext.SaveChangesAsync(cancellationToken);
+
+            return _responseFactory.SuccessResponse(ResponseBase.SuccessResponse);
         }
     }
 }

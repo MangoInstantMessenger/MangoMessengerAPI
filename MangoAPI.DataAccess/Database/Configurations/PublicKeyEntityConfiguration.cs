@@ -10,7 +10,7 @@ namespace MangoAPI.DataAccess.Database.Configurations
         {
             builder.HasKey(x => x.UserId);
             builder.Property(x => x.UserId).IsRequired();
-            builder.Property(x => x.SecretChatId).IsRequired();
+            builder.Property(x => x.PartnerId).IsRequired();
             builder.Property(x => x.PartnerPublicKey).IsRequired();
 
             builder.HasOne(x => x.User)

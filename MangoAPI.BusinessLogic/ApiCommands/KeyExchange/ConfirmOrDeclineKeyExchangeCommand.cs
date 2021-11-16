@@ -9,5 +9,6 @@ namespace MangoAPI.BusinessLogic.ApiCommands.KeyExchange
         public Guid UserId { get; init; }
         public Guid RequestId { get; init; }
         public bool Confirmed { get; init; }
+        public string PublicKey { get; init; }
     }
 }
