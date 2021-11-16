@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace MangoAPI.Presentation.Controllers
 {
     [ApiController]
-    [Route("api/communities")]
+    [Route("api/public-keys")]
     [Produces("application/json")]
     [Authorize(Roles = "User", AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class PublicKeysController : ApiControllerBase, IPublicKeysController

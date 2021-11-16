@@ -1,9 +1,9 @@
-﻿using System;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
 using MangoAPI.Application.Services;
 using MangoAPI.BusinessLogic.ApiCommands.KeyExchange;
+using MangoAPI.BusinessLogic.ApiQueries.KeyExchange;
 using MangoAPI.Presentation.Extensions;
 using MangoAPI.Presentation.Interfaces;
 using MediatR;
@@ -28,7 +28,14 @@ namespace MangoAPI.Presentation.Controllers
         [HttpGet]
         public async Task<IActionResult> GetKeyExchangeRequests(CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            var userId = HttpContext.User.GetUserId();
+
+            var request = new GetKeyExchangeRequestsQuery
+            {
+                UserId = userId
+            };
+
+            return await RequestAsync(request, cancellationToken);
         }
 
         [HttpPost]
@@ -52,7 +59,17 @@ namespace MangoAPI.Presentation.Controllers
             [FromBody] ConfirmOrDeclineKeyExchangeRequest request,
             CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            var userId = HttpContext.User.GetUserId();
+
+            var command = new ConfirmOrDeclineKeyExchangeCommand
+            {
+                UserId = userId,
+                Confirmed = request.Confirmed,
+                PublicKey = request.PublicKey,
+                RequestId = request.RequestId
+            };
+
+            return await RequestAsync(command, cancellationToken);
         }
     }
 }
