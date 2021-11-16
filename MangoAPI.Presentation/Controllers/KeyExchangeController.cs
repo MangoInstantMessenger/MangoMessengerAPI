@@ -3,7 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
 using MangoAPI.Application.Services;
-using MangoAPI.BusinessLogic.ApiCommands.SecretChatRequests;
+using MangoAPI.BusinessLogic.ApiCommands.KeyExchange;
 using MangoAPI.Presentation.Extensions;
 using MangoAPI.Presentation.Interfaces;
 using MediatR;
@@ -14,30 +14,30 @@ using Microsoft.AspNetCore.Mvc;
 namespace MangoAPI.Presentation.Controllers
 {
     [ApiController]
-    [Route("api/secret-chat-requests")]
+    [Route("api/key-exchange")]
     [Produces("application/json")]
     [Authorize(Roles = "User", AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-    public class SecretChatRequestRequestsController : ApiControllerBase, ISecretChatRequestsController
+    public class KeyExchangeController : ApiControllerBase, IKeyExchangeController
     {
-        public SecretChatRequestRequestsController(IMediator mediator, IMapper mapper,
+        public KeyExchangeController(IMediator mediator, IMapper mapper,
             RequestValidationService requestValidationService)
             : base(mediator, mapper, requestValidationService)
         {
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetSecretChatRequests(CancellationToken cancellationToken)
+        public async Task<IActionResult> GetKeyExchangeRequests(CancellationToken cancellationToken)
         {
             throw new NotImplementedException();
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateSecretChatRequest([FromBody] CreateSecretChatRequest request,
+        public async Task<IActionResult> CreteKeyExchangeRequest([FromBody] CreateKeyExchangeRequest request,
             CancellationToken cancellationToken)
         {
             var userId = HttpContext.User.GetUserId();
 
-            var command = new CreateSecretChatRequestCommand
+            var command = new CreateKeyExchangeRequestCommand
             {
                 RequestedUserId = request.RequestedUserId,
                 PublicKey = request.PublicKey,
@@ -48,8 +48,8 @@ namespace MangoAPI.Presentation.Controllers
         }
 
         [HttpDelete]
-        public async Task<IActionResult> ConfirmOrDeclineSecretChatRequest(
-            [FromBody] ConfirmOrDeclineSecretChatRequest request,
+        public async Task<IActionResult> ConfirmOrDeclineKeyExchangeRequest(
+            [FromBody] ConfirmOrDeclineKeyExchangeRequest request,
             CancellationToken cancellationToken)
         {
             throw new NotImplementedException();

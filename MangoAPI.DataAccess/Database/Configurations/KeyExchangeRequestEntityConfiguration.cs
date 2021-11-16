@@ -4,9 +4,9 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace MangoAPI.DataAccess.Database.Configurations
 {
-    public class SecretChatRequestEntityConfiguration : IEntityTypeConfiguration<SecretChatRequestEntity>
+    public class KeyExchangeRequestEntityConfiguration : IEntityTypeConfiguration<KeyExchangeRequestEntity>
     {
-        public void Configure(EntityTypeBuilder<SecretChatRequestEntity> builder)
+        public void Configure(EntityTypeBuilder<KeyExchangeRequestEntity> builder)
         {
             builder.HasKey(x => x.Id);
 

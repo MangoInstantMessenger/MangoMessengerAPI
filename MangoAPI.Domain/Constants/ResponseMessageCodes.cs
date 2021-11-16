@@ -43,6 +43,10 @@ namespace MangoAPI.Domain.Constants
             {
                 SecretChatRequestAlreadyExists,
                 "You have already requested current user for secret chat. Wait for response."
+            },
+            {
+                SecretChatRequestNotFound,
+                "Secret chat request not found. Either request is not submitted yet or declined."
             }
         };
 
@@ -78,5 +82,6 @@ namespace MangoAPI.Domain.Constants
 
         public const string TooFrequentRequest = "TOO_FREQUENT_REQUEST";
         public const string SecretChatRequestAlreadyExists = "SECRET_CHAT_REQUEST_ALREADY_EXISTS";
+        public const string SecretChatRequestNotFound = "SECRET_CHAT_REQUEST_NOT_FOUND";
     }
 }

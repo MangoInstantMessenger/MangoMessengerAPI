@@ -2,7 +2,7 @@
 
 namespace MangoAPI.Domain.Entities
 {
-    public class SecretChatRequestEntity
+    public class KeyExchangeRequestEntity
     {
         public Guid Id { get; set; }
         public Guid SenderId { get; set; }
