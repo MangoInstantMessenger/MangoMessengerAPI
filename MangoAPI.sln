@@ -32,6 +32,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		MANGO_API_POSTMAN_GLOBALS.json = MANGO_API_POSTMAN_GLOBALS.json
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MangoAPI.DiffieHellmanConsole", "MangoAPI.DiffieHellmanConsole\MangoAPI.DiffieHellmanConsole.csproj", "{85D35610-B0C7-4439-871C-0578E1FC7BB5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -62,6 +64,10 @@ Global
 		{006BE543-524D-417E-BA7E-744DDBBED768}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{006BE543-524D-417E-BA7E-744DDBBED768}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{006BE543-524D-417E-BA7E-744DDBBED768}.Release|Any CPU.Build.0 = Release|Any CPU
+		{85D35610-B0C7-4439-871C-0578E1FC7BB5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{85D35610-B0C7-4439-871C-0578E1FC7BB5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{85D35610-B0C7-4439-871C-0578E1FC7BB5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{85D35610-B0C7-4439-871C-0578E1FC7BB5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
