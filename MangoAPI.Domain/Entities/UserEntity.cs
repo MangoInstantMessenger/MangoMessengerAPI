@@ -27,5 +27,9 @@ namespace MangoAPI.Domain.Entities
         public UserInformationEntity UserInformation { get; set; }
 
         public ICollection<UserContactEntity> Contacts { get; set; }
+
+        public ICollection<KeyExchangeRequestEntity> SecretChatRequests { get; set; }
+
+        public ICollection<PublicKeyEntity> SecretChatPublicKeys { get; set; }
     }
 }
