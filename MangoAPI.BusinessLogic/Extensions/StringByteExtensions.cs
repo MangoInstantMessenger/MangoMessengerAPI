@@ -4,7 +4,7 @@ namespace MangoAPI.BusinessLogic.Extensions
 {
     public static class StringByteExtensions
     {
-        public static byte[] StringAsBytes(this string str)
+        public static byte[] Base64StringAsBytes(this string str)
         {
             return Convert.FromBase64String(str);
         }
