@@ -9,7 +9,7 @@ namespace MangoAPI.BusinessLogic.Extensions
             return Convert.FromBase64String(str);
         }
 
-        public static string BytesAsString(this byte[] byteArray)
+        public static string AsBase64String(this byte[] byteArray)
         {
             return Convert.ToBase64String(byteArray);
         }
