@@ -12,7 +12,7 @@ namespace MangoAPI.DiffieHellmanConsole
         public static async Task<string> PostWithBodyAsync(HttpClient client, string route, object body)
         {
             var json = JsonConvert.SerializeObject(body);
-            var uri = new Uri(route);
+            var uri = new Uri(route, UriKind.Absolute);
             var data = new StringContent(json, Encoding.UTF8, "application/json");
             var response = await client.PostAsync(uri, data);
             response.EnsureSuccessStatusCode();

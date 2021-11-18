@@ -23,7 +23,7 @@ namespace MangoAPI.DiffieHellmanConsole.Services
 
         public async Task<GetKeyExchangeResponse> GetKeyExchangesAsync()
         {
-            const string route = Urls.ApiUrl + Route;
+            var route = Urls.ApiUrl + Route;
             var result = await HttpRequest.GetAsync(_httpClient, route);
             var response = JsonConvert.DeserializeObject<GetKeyExchangeResponse>(result);
             return response;
@@ -31,7 +31,7 @@ namespace MangoAPI.DiffieHellmanConsole.Services
 
         public async Task<CreateKeyExchangeResponse> CreateKeyExchangeAsync(CreateKeyExchangeRequest request)
         {
-            const string route = Urls.ApiUrl + Route;
+            var route = Urls.ApiUrl + Route;
             var result = await HttpRequest.PostWithBodyAsync(_httpClient, route, request);
             var response = JsonConvert.DeserializeObject<CreateKeyExchangeResponse>(result);
             return response;
@@ -39,7 +39,7 @@ namespace MangoAPI.DiffieHellmanConsole.Services
 
         public async Task<ResponseBase> ConfirmOrDeclineKeyExchange(ConfirmOrDeclineKeyExchangeRequest request)
         {
-            const string route = Urls.ApiUrl + Route;
+            var route = Urls.ApiUrl + Route;
             var result = await HttpRequest.DeleteWithBodyAsync(_httpClient, route, request);
             var response = JsonConvert.DeserializeObject<CreateKeyExchangeResponse>(result);
             return response;
