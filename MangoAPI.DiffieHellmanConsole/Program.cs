@@ -1,51 +1,68 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Net.Http;
 using System.Threading.Tasks;
 using MangoAPI.BusinessLogic.ApiCommands.Sessions;
 using MangoAPI.DiffieHellmanConsole.Services;
+using Newtonsoft.Json;
 
 namespace MangoAPI.DiffieHellmanConsole
 {
-    public class Program
+    public static class Program
     {
         private static readonly SessionsService SessionsService = new();
 
         public static async Task Main(string[] args)
         {
-            string email;
-            string pass;
-
-            if (args.Length >= 2)
+            if (args.Length == 0)
             {
-                email = args[0];
-                pass = args[1];
-            }
-            else
-            {
-                email = "";
-                pass = "";
+                Console.WriteLine("Unrecognized command.");
+                return;
             }
 
-            var loginCommand = new LoginCommand
+            var method = args[0];
+
+            switch (method)
             {
-                EmailOrPhone = email,
-                Password = pass
-            };
+                case "login":
+                    await Login(args);
+                    break;
+                default:
+                    Console.WriteLine("Unrecognized command.");
+                    break;
+            }
+        }
 
-            var loginResponse = await SessionsService.LoginAsync(loginCommand);
+        private static async Task Login(IReadOnlyList<string> args)
+        {
+            try
+            {
+                var email = args[1];
+                var pass = args[2];
 
-            Console.WriteLine("Login operation: ");
-            Console.WriteLine(loginResponse.AccessToken);
-            Console.WriteLine(loginResponse.RefreshToken);
+                var loginCommand = new LoginCommand
+                {
+                    EmailOrPhone = email,
+                    Password = pass
+                };
 
-            var refreshTokenResponse = await SessionsService.RefreshTokenAsync(loginResponse.RefreshToken);
+                var loginResponse = await SessionsService.LoginAsync(loginCommand);
 
-            Console.WriteLine("Refresh token operation: ");
-            Console.WriteLine(refreshTokenResponse.AccessToken);
-            Console.WriteLine(refreshTokenResponse.RefreshToken);
-
-            Console.ReadKey();
-            
-            
+                var serialize = JsonConvert.SerializeObject(loginResponse);
+                await File.WriteAllTextAsync(Path
+                        .Combine(AppContext.BaseDirectory, $"Tokens_{loginResponse.UserId}.txt"), serialize);
+                Console.WriteLine("Tokens written to file.");
+                Console.WriteLine("Login operation success.");
+            }
+            catch (ArgumentOutOfRangeException)
+            {
+                Console.WriteLine("Invalid number of parameters.");
+            }
+            catch (HttpRequestException)
+            {
+                Console.WriteLine("Invalid credentials.");
+            }
         }
     }
 }
