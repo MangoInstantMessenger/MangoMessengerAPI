@@ -43,6 +43,12 @@ namespace MangoAPI.DiffieHellmanConsole
                 case "confirm-key-exchange":
                     await ConfirmKeyExchangeRequest(args);
                     break;
+                case "print-public-keys":
+                    await PrintPublicKeys(args);
+                    break;
+                case "create-common-secret":
+                    await CreateCommonSecret(args);
+                    break;
                 default:
                     Console.WriteLine("Unrecognized command.");
                     break;
@@ -257,6 +263,66 @@ namespace MangoAPI.DiffieHellmanConsole
             stream.Close();
 
             Console.WriteLine("Key exchange request confirmed successfully.");
+        }
+
+        private static async Task PrintPublicKeys(IReadOnlyList<string> args)
+        {
+            var tokensPath = Path.Combine(AppContext.BaseDirectory, "Tokens.txt");
+            var readTokens = await File.ReadAllTextAsync(tokensPath);
+            var tokens = JsonConvert.DeserializeObject<TokensResponse>(readTokens);
+
+            var publicKeysService = new PublicKeysService(tokens!.AccessToken);
+
+            var response = await publicKeysService.GetPublicKeys();
+
+            Console.WriteLine("Your public keys");
+
+            foreach (var key in response.PublicKeys)
+            {
+                Console.WriteLine($"Partner Id: {key.PartnerId}");
+                Console.WriteLine($"Partner public key: {key.PartnerPublicKey}");
+                Console.WriteLine();
+            }
+        }
+
+        private static async Task CreateCommonSecret(IReadOnlyList<string> args)
+        {
+            var partnerId = Guid.Parse(args[1]);
+
+            var tokensPath = Path.Combine(AppContext.BaseDirectory, "Tokens.txt");
+            var readTokens = await File.ReadAllTextAsync(tokensPath);
+            var tokens = JsonConvert.DeserializeObject<TokensResponse>(readTokens);
+
+            var publicKeysService = new PublicKeysService(tokens!.AccessToken);
+
+            var response = await publicKeysService.GetPublicKeys();
+
+            var publicKeyModel = response.PublicKeys.FirstOrDefault(x => x.PartnerId == partnerId);
+            var publicKey = publicKeyModel!.PartnerPublicKey.Base64StringAsBytes();
+
+            var privateKeyPath = Path.Combine(AppContext.BaseDirectory, $"Keys_{tokens.UserId}",
+                $"PrivateKey_{tokens.UserId}_{partnerId}.txt");
+
+            var formatter = new BinaryFormatter();
+            var stream = File.OpenRead(privateKeyPath);
+            Console.WriteLine("Deserializing vector");
+            var v = formatter.Deserialize(stream).ToString();
+            var stringAsBytes = v.Base64StringAsBytes();
+            stream.Close();
+
+            var newEcdh = new ECDiffieHellmanCng(CngKey.Import(stringAsBytes, CngKeyBlobFormat.EccPrivateBlob));
+
+            var commonSecret = newEcdh.DeriveKeyMaterial(CngKey.Import(publicKey,
+                CngKeyBlobFormat.EccPublicBlob));
+
+            Console.WriteLine("Writing common secret to file...");
+            var commonSecretPath = Path.Combine(AppContext.BaseDirectory, $"Keys_{tokens.UserId}",
+                $"CommonSecret_{tokens.UserId}_{publicKeyModel.PartnerId}.txt");
+            stream = File.Create(commonSecretPath);
+            formatter.Serialize(stream, commonSecret);
+            stream.Close();
+
+            Console.WriteLine("Common secret generated successfully.");
         }
     }
 }
