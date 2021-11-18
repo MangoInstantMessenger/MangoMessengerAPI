@@ -12,7 +12,6 @@ using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 using System.Threading;
 using System.Threading.Tasks;
-using MangoAPI.Application.Services;
 
 namespace MangoAPI.Presentation.Controllers
 {
@@ -25,8 +24,8 @@ namespace MangoAPI.Presentation.Controllers
     [Authorize(Roles = "User", AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class CommunitiesController : ApiControllerBase, ICommunitiesController
     {
-        public CommunitiesController(IMediator mediator, IMapper mapper,
-            RequestValidationService requestValidationService) : base(mediator, mapper, requestValidationService)
+        public CommunitiesController(IMediator mediator, IMapper mapper)
+            : base(mediator, mapper)
         {
         }
 
@@ -71,14 +70,6 @@ namespace MangoAPI.Presentation.Controllers
         public async Task<IActionResult> CreateChannelAsync([FromBody] CreateChannelRequest request,
             CancellationToken cancellationToken)
         {
-            var validateRequest = RequestValidationService
-                .ValidateRequest(HttpContext, "CreateChannel", 20);
-
-            if (!validateRequest)
-            {
-                return TooFrequentResponse();
-            }
-            
             var userId = HttpContext.User.GetUserId();
             var command = Mapper.Map<CreateChannelCommand>(request);
             command.UserId = userId;
@@ -152,14 +143,6 @@ namespace MangoAPI.Presentation.Controllers
         public async Task<IActionResult> UpdateChannelPictureAsync(UpdateChanelPictureRequest request,
             CancellationToken cancellationToken)
         {
-            var validateRequest = RequestValidationService
-                .ValidateRequest(HttpContext, "UpdateChannelPicture", 30);
-
-            if (!validateRequest)
-            {
-                return TooFrequentResponse();
-            }
-            
             var command = Mapper.Map<UpdateChanelPictureCommand>(request);
             command.UserId = HttpContext.User.GetUserId();
 

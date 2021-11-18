@@ -13,7 +13,6 @@ using Swashbuckle.AspNetCore.Annotations;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using MangoAPI.Application.Services;
 
 namespace MangoAPI.Presentation.Controllers
 {
@@ -25,8 +24,7 @@ namespace MangoAPI.Presentation.Controllers
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class UsersController : ApiControllerBase, IUsersController
     {
-        public UsersController(IMediator mediator, IMapper mapper, RequestValidationService requestValidationService) :
-            base(mediator, mapper, requestValidationService)
+        public UsersController(IMediator mediator, IMapper mapper) : base(mediator, mapper)
         {
         }
 
@@ -53,16 +51,7 @@ namespace MangoAPI.Presentation.Controllers
         public async Task<IActionResult> RegisterAsync([FromBody] RegisterRequest request,
             CancellationToken cancellationToken)
         {
-            var validateRequest = RequestValidationService
-                .ValidateRequest(HttpContext, "Register", 20);
-
-            if (!validateRequest)
-            {
-                return TooFrequentResponse();
-            }
-            
             var command = Mapper.Map<RegisterCommand>(request);
-
             return await RequestAsync(command, cancellationToken);
         }
 
@@ -86,16 +75,8 @@ namespace MangoAPI.Presentation.Controllers
         public async Task<IActionResult> EmailConfirmationAsync([FromBody] VerifyEmailRequest request,
             CancellationToken cancellationToken)
         {
-            var validateRequest = RequestValidationService
-                .ValidateRequest(HttpContext, "EmailConfirmation", 20);
-
-            if (!validateRequest)
-            {
-                return TooFrequentResponse();
-            }
             
             var command = Mapper.Map<VerifyEmailCommand>(request);
-
             return await RequestAsync(command, cancellationToken);
         }
 
@@ -119,13 +100,6 @@ namespace MangoAPI.Presentation.Controllers
         public async Task<IActionResult> PhoneConfirmationAsync([FromRoute] int phoneCode,
             CancellationToken cancellationToken)
         {
-            var validateRequest = RequestValidationService
-                .ValidateRequest(HttpContext, "PhoneConfirmation", 20);
-
-            if (!validateRequest)
-            {
-                return TooFrequentResponse();
-            }
             
             var userId = HttpContext.User.GetUserId();
 
@@ -228,14 +202,6 @@ namespace MangoAPI.Presentation.Controllers
             [FromBody] UpdateUserSocialInformationRequest request,
             CancellationToken cancellationToken)
         {
-            var validateRequest = RequestValidationService
-                .ValidateRequest(HttpContext, "UpdateUserSocialInformation", 20);
-
-            if (!validateRequest)
-            {
-                return TooFrequentResponse();
-            }
-            
             var userId = HttpContext.User.GetUserId();
 
             var command = Mapper.Map<UpdateUserSocialInformationCommand>(request);
@@ -260,14 +226,6 @@ namespace MangoAPI.Presentation.Controllers
         public async Task<IActionResult> UpdateUserAccountInfoAsync([FromBody] UpdateUserAccountInfoRequest request,
             CancellationToken cancellationToken)
         {
-            var validateRequest = RequestValidationService
-                .ValidateRequest(HttpContext, "UpdateUserAccountInfo", 20);
-
-            if (!validateRequest)
-            {
-                return TooFrequentResponse();
-            }
-            
             var userId = HttpContext.User.GetUserId();
 
             var command = Mapper.Map<UpdateUserAccountInfoCommand>(request);
@@ -286,14 +244,6 @@ namespace MangoAPI.Presentation.Controllers
         public async Task<IActionResult> UpdateProfilePictureAsync([FromRoute] string image,
             CancellationToken cancellationToken)
         {
-            var validateRequest = RequestValidationService
-                .ValidateRequest(HttpContext, "UpdateProfilePicture", 20);
-
-            if (!validateRequest)
-            {
-                return TooFrequentResponse();
-            }
-            
             var userId = HttpContext.User.GetUserId();
 
             var command = new UpdateProfilePictureCommand

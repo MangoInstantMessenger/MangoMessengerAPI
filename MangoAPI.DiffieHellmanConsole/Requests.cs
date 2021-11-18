@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Net.Http;
+using System.Net.Http.Json;
 using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
@@ -8,31 +9,7 @@ namespace MangoAPI.DiffieHellmanConsole
 {
     public static class HttpRequest
     {
-        private static HttpRequestMessage Get(string route, object body)
-        {
-            var payload = JsonConvert.SerializeObject(body);
-            var request = new HttpRequestMessage
-            {
-                Method = HttpMethod.Get,
-                RequestUri = new Uri(route),
-                Content = new StringContent(payload, Encoding.Default, "application/json")
-            };
-
-            return request;
-        }
-
-        public static async Task<string> Get(HttpClient httpClient, string route, object model)
-        {
-            var request = Get(route, model);
-            var response = await httpClient.SendAsync(request).ConfigureAwait(false);
-            response.EnsureSuccessStatusCode();
-
-            var responseBody = await response.Content.ReadAsStringAsync()
-                .ConfigureAwait(false);
-            return responseBody;
-        }
-
-        public static async Task<string> Post(HttpClient client, string route, object body)
+        public static async Task<string> PostWithBodyAsync(HttpClient client, string route, object body)
         {
             var json = JsonConvert.SerializeObject(body);
             var uri = new Uri(route);
@@ -42,19 +19,28 @@ namespace MangoAPI.DiffieHellmanConsole
             var responseBody = await response.Content.ReadAsStringAsync();
             return responseBody;
         }
+        
+        public static async Task<string> PostWithoutBodyAsync(HttpClient client, string route)
+        {
+            var uri = new Uri(route);
+            var response = await client.PostAsync(uri, null!);
+            response.EnsureSuccessStatusCode();
+            var responseBody = await response.Content.ReadAsStringAsync();
+            return responseBody;
+        }
 
-        public static async Task<string> Put(HttpClient client, string route, object body)
+        public static async Task<string> PutWithBodyAsync(HttpClient client, string route, object body)
         {
             var json = JsonConvert.SerializeObject(body);
-            var uri = new Uri(route);
             var data = new StringContent(json, Encoding.UTF8, "application/json");
+            var uri = new Uri(route);
             var response = await client.PutAsync(uri, data);
             response.EnsureSuccessStatusCode();
             var responseBody = await response.Content.ReadAsStringAsync();
             return responseBody;
         }
 
-        public static async Task<string> Delete(HttpClient client, string route)
+        public static async Task<string> DeleteWithoutBodyAsync(HttpClient client, string route)
         {
             var uri = new Uri(route);
             var response = await client.DeleteAsync(uri);
@@ -62,8 +48,25 @@ namespace MangoAPI.DiffieHellmanConsole
             var responseBody = await response.Content.ReadAsStringAsync();
             return responseBody;
         }
+        
+        public static async Task<string> DeleteWithBodyAsync(HttpClient client, string route, object body)
+        {
+            var json = JsonContent.Create(body);
 
-        public static async Task<string> Get(HttpClient client, string route)
+            HttpRequestMessage request = new HttpRequestMessage
+            {
+                Content = json,
+                Method = HttpMethod.Delete,
+                RequestUri = new Uri(route)
+            };
+
+            var response = await client.SendAsync(request);
+            response.EnsureSuccessStatusCode();
+            var responseBody = await response.Content.ReadAsStringAsync();
+            return responseBody;
+        }
+
+        public static async Task<string> GetAsync(HttpClient client, string route)
         {
             var uri = new Uri(route);
             var response = await client.GetAsync(uri);

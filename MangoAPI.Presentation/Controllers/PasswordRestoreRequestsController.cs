@@ -10,7 +10,6 @@ using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 using System.Threading;
 using System.Threading.Tasks;
-using MangoAPI.Application.Services;
 
 namespace MangoAPI.Presentation.Controllers
 {
@@ -22,8 +21,8 @@ namespace MangoAPI.Presentation.Controllers
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class PasswordRestoreRequestsController : ApiControllerBase, IPasswordRestoreRequestsController
     {
-        public PasswordRestoreRequestsController(IMediator mediator, IMapper mapper,
-            RequestValidationService requestValidationService) : base(mediator, mapper, requestValidationService)
+        public PasswordRestoreRequestsController(IMediator mediator, IMapper mapper)
+            : base(mediator, mapper)
         {
         }
 
@@ -43,14 +42,6 @@ namespace MangoAPI.Presentation.Controllers
         public async Task<IActionResult> RestorePasswordRequestAsync([FromRoute] string emailOrPhone,
             CancellationToken cancellationToken)
         {
-            var validateRequest = RequestValidationService
-                .ValidateRequest(HttpContext, "RestorePasswordRequest", 30);
-
-            if (!validateRequest)
-            {
-                return TooFrequentResponse();
-            }
-
             var command = new RequestPasswordRestoreCommand
             {
                 EmailOrPhone = emailOrPhone
@@ -75,14 +66,6 @@ namespace MangoAPI.Presentation.Controllers
         public async Task<IActionResult> RestorePasswordAsync([FromBody] PasswordRestoreRequest request,
             CancellationToken cancellationToken)
         {
-            var validateRequest = RequestValidationService
-                .ValidateRequest(HttpContext, "RestorePassword", 30);
-
-            if (!validateRequest)
-            {
-                return TooFrequentResponse();
-            }
-
             var command = Mapper.Map<PasswordRestoreCommand>(request);
 
             return await RequestAsync(command, cancellationToken);

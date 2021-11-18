@@ -5,7 +5,6 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading;
 using System.Threading.Tasks;
-using MangoAPI.Application.Services;
 using MangoAPI.Domain.Constants;
 
 namespace MangoAPI.Presentation.Controllers
@@ -17,19 +16,16 @@ namespace MangoAPI.Presentation.Controllers
     {
         private readonly IMediator _mediator;
         protected readonly IMapper Mapper;
-        protected readonly RequestValidationService RequestValidationService;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ApiControllerBase"/> class.
         /// </summary>
         /// <param name="mediator">Mediator instance.</param>
         /// <param name="mapper">Automapper instance.</param>
-        /// <param name="requestValidationService">Request validator.</param>
-        public ApiControllerBase(IMediator mediator, IMapper mapper, RequestValidationService requestValidationService)
+        public ApiControllerBase(IMediator mediator, IMapper mapper)
         {
             _mediator = mediator;
             Mapper = mapper;
-            RequestValidationService = requestValidationService;
         }
 
         /// <summary>

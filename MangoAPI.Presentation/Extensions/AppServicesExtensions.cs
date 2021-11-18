@@ -16,7 +16,6 @@ namespace MangoAPI.Presentation.Extensions
             services.AddScoped<IEmailSenderService, EmailSenderService>();
             services.AddScoped<PasswordHashService>();
             services.AddAutoMapper(typeof(ApiControllerBase));
-            services.AddScoped<RequestValidationService>();
             return services;
         }
     }
