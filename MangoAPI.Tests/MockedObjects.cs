@@ -4,7 +4,6 @@ using MangoAPI.BusinessLogic.Models;
 using Microsoft.AspNetCore.SignalR;
 using Moq;
 using System.Threading.Tasks;
-using MangoAPI.BusinessLogic.ApiCommands.Messages;
 
 namespace MangoAPI.Tests
 {

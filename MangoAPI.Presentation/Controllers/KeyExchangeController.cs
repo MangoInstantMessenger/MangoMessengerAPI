@@ -1,7 +1,6 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
-using MangoAPI.Application.Services;
 using MangoAPI.BusinessLogic.ApiCommands.KeyExchange;
 using MangoAPI.BusinessLogic.ApiQueries.KeyExchange;
 using MangoAPI.Presentation.Extensions;
@@ -19,9 +18,8 @@ namespace MangoAPI.Presentation.Controllers
     [Authorize(Roles = "User", AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class KeyExchangeController : ApiControllerBase, IKeyExchangeController
     {
-        public KeyExchangeController(IMediator mediator, IMapper mapper,
-            RequestValidationService requestValidationService)
-            : base(mediator, mapper, requestValidationService)
+        public KeyExchangeController(IMediator mediator, IMapper mapper) 
+            : base(mediator, mapper)
         {
         }
 

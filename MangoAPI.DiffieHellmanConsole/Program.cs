@@ -8,11 +8,22 @@ namespace MangoAPI.DiffieHellmanConsole
     public class Program
     {
         private static readonly SessionsService SessionsService = new();
-        
+
         public static async Task Main(string[] args)
         {
-            var email = args[0];
-            var pass = args[1];
+            string email;
+            string pass;
+
+            if (args.Length >= 2)
+            {
+                email = args[0];
+                pass = args[1];
+            }
+            else
+            {
+                email = "";
+                pass = "";
+            }
 
             var loginCommand = new LoginCommand
             {
@@ -22,9 +33,19 @@ namespace MangoAPI.DiffieHellmanConsole
 
             var loginResponse = await SessionsService.LoginAsync(loginCommand);
 
+            Console.WriteLine("Login operation: ");
             Console.WriteLine(loginResponse.AccessToken);
             Console.WriteLine(loginResponse.RefreshToken);
+
+            var refreshTokenResponse = await SessionsService.RefreshTokenAsync(loginResponse.RefreshToken);
+
+            Console.WriteLine("Refresh token operation: ");
+            Console.WriteLine(refreshTokenResponse.AccessToken);
+            Console.WriteLine(refreshTokenResponse.RefreshToken);
+
             Console.ReadKey();
+            
+            
         }
     }
 }

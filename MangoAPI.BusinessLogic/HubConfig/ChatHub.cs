@@ -1,5 +1,4 @@
-﻿using MangoAPI.BusinessLogic.Models;
-using Microsoft.AspNetCore.SignalR;
+﻿using Microsoft.AspNetCore.SignalR;
 using System.Threading.Tasks;
 
 namespace MangoAPI.BusinessLogic.HubConfig

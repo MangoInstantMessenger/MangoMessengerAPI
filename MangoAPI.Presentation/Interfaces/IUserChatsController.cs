@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
-using MangoAPI.BusinessLogic.ApiCommands.UserChats;
 using Microsoft.AspNetCore.Mvc;
 
 namespace MangoAPI.Presentation.Interfaces

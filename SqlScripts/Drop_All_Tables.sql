@@ -13,4 +13,6 @@ DROP TABLE public."UserContacts" CASCADE;
 DROP TABLE public."UserInformation" CASCADE;
 DROP TABLE public."Documents" CASCADE;
 DROP TABLE public."PasswordRestoreRequests" CASCADE;
+DROP TABLE public."KeyExchangeRequests" CASCADE;
+DROP TABLE public."PublicKeys" CASCADE;
 DROP TABLE public."__EFMigrationsHistory" CASCADE;
