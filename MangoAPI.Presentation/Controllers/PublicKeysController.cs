@@ -1,6 +1,8 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
+using MangoAPI.BusinessLogic.ApiQueries.PublicKeys;
+using MangoAPI.Presentation.Extensions;
 using MangoAPI.Presentation.Interfaces;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -15,7 +17,7 @@ namespace MangoAPI.Presentation.Controllers
     [Authorize(Roles = "User", AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class PublicKeysController : ApiControllerBase, IPublicKeysController
     {
-        public PublicKeysController(IMediator mediator, IMapper mapper) 
+        public PublicKeysController(IMediator mediator, IMapper mapper)
             : base(mediator, mapper)
         {
         }
@@ -23,7 +25,11 @@ namespace MangoAPI.Presentation.Controllers
         [HttpGet]
         public async Task<IActionResult> GetPublicKeys(CancellationToken cancellationToken)
         {
-            throw new System.NotImplementedException();
+            var userId = HttpContext.User.GetUserId();
+
+            var query = new GetPublicKeysQuery { UserId = userId };
+
+            return await RequestAsync(query, cancellationToken);
         }
     }
 }
