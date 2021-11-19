@@ -39,7 +39,6 @@ namespace MangoAPI.Presentation.Controllers
             Summary = "Gets all user's chats.")]
         [ProducesResponseType(typeof(GetCurrentUserChatsResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
         public async Task<IActionResult> GetChatsAsync(CancellationToken cancellationToken)
         {
             var userId = HttpContext.User.GetUserId();
@@ -113,7 +112,6 @@ namespace MangoAPI.Presentation.Controllers
             Summary = "Searches chats by display name.")]
         [ProducesResponseType(typeof(SearchCommunityResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
         public async Task<IActionResult> SearchAsync([FromQuery] string displayName,
             CancellationToken cancellationToken)
         {

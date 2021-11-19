@@ -39,7 +39,6 @@ namespace MangoAPI.Presentation.Controllers
             Summary = "Uploads document to the server.")]
         [ProducesResponseType(typeof(UploadDocumentResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
         public async Task<IActionResult> UploadDocumentAsync(IFormFile formFile,
             CancellationToken cancellationToken)
         {
