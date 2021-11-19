@@ -90,7 +90,6 @@ namespace MangoAPI.Presentation.Controllers
             Summary = "Returns list of user's contacts.")]
         [ProducesResponseType(typeof(GetContactsResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
         public async Task<IActionResult> GetContacts(CancellationToken cancellationToken)
         {
             var userId = HttpContext.User.GetUserId();
@@ -116,7 +115,6 @@ namespace MangoAPI.Presentation.Controllers
             Summary = "Searches user by credential.")]
         [ProducesResponseType(typeof(SearchContactResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
         public async Task<IActionResult> SearchesAsync([FromQuery] string searchQuery,
             CancellationToken cancellationToken)
         {

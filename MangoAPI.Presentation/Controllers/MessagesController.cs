@@ -39,7 +39,6 @@ namespace MangoAPI.Presentation.Controllers
             Summary = "Returns chat messages by ID.")]
         [ProducesResponseType(typeof(GetMessagesResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
         public async Task<IActionResult> GetChatMessages([FromRoute] Guid chatId,
             CancellationToken cancellationToken)
         {
