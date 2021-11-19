@@ -22,7 +22,7 @@ namespace MangoAPI.DiffieHellmanConsole.Services
 
         public async Task<GetPublicKeysResponse> GetPublicKeys()
         {
-            const string route = Urls.ApiUrl + Route;
+            var route = Urls.ApiUrl + Route;
             var result = await HttpRequest.GetAsync(_httpClient, route);
             var response = JsonConvert.DeserializeObject<GetPublicKeysResponse>(result);
             return response;
