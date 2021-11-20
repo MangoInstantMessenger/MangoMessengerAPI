@@ -27,7 +27,8 @@ namespace MangoAPI.BusinessLogic.ApiCommands.KeyExchange
             CancellationToken cancellationToken)
         {
             var keyExchangeRequest = await _postgresDbContext.KeyExchangeRequests
-                .FirstOrDefaultAsync(x => x.Id == request.RequestId, cancellationToken);
+                .FirstOrDefaultAsync(x => x.Id == request.RequestId,
+                    cancellationToken);
 
             if (keyExchangeRequest == null)
             {
@@ -38,7 +39,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.KeyExchange
             }
 
             _postgresDbContext.KeyExchangeRequests.Remove(keyExchangeRequest);
-            
+
             if (!request.Confirmed)
             {
                 await _postgresDbContext.SaveChangesAsync(cancellationToken);
@@ -46,17 +47,41 @@ namespace MangoAPI.BusinessLogic.ApiCommands.KeyExchange
                 return _responseFactory.SuccessResponse(ResponseBase.SuccessResponse);
             }
 
-            _postgresDbContext.PublicKeys.AddRange(new PublicKeyEntity
+            var senderPublicKey = await _postgresDbContext.PublicKeys.FirstOrDefaultAsync(x =>
+                x.UserId == keyExchangeRequest.SenderId && x.PartnerId == request.UserId, cancellationToken);
+
+            if (senderPublicKey != null)
             {
-                UserId = keyExchangeRequest.SenderId,
-                PartnerId = request.UserId,
-                PartnerPublicKey = request.PublicKey
-            }, new PublicKeyEntity
+                senderPublicKey.PartnerPublicKey = request.PublicKey;
+            }
+            else
             {
-                UserId = request.UserId,
-                PartnerId = keyExchangeRequest.SenderId,
-                PartnerPublicKey = keyExchangeRequest.SenderPublicKey
-            });
+                _postgresDbContext.Add(new PublicKeyEntity
+                {
+                    UserId = keyExchangeRequest.SenderId,
+                    PartnerId = request.UserId,
+                    PartnerPublicKey = request.PublicKey
+                });
+            }
+
+            var userPublicKey = await _postgresDbContext.PublicKeys
+                .FirstOrDefaultAsync(x => x.UserId == request.UserId &&
+                                          x.PartnerId == keyExchangeRequest.SenderId,
+                    cancellationToken);
+
+            if (userPublicKey != null)
+            {
+                userPublicKey.PartnerPublicKey = keyExchangeRequest.SenderPublicKey;
+            }
+            else
+            {
+                _postgresDbContext.PublicKeys.Add(new PublicKeyEntity
+                {
+                    UserId = request.UserId,
+                    PartnerId = keyExchangeRequest.SenderId,
+                    PartnerPublicKey = keyExchangeRequest.SenderPublicKey
+                });
+            }
 
             await _postgresDbContext.SaveChangesAsync(cancellationToken);
 
