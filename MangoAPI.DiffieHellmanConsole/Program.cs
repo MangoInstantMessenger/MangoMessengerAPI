@@ -27,7 +27,7 @@ namespace MangoAPI.DiffieHellmanConsole
             }
             catch (FileNotFoundException)
             {
-                Console.WriteLine("Tokens file does not exist for current user...");
+                Console.WriteLine("Tokens file does not exist for current user.");
             }
         }
 
@@ -75,7 +75,7 @@ namespace MangoAPI.DiffieHellmanConsole
             Console.WriteLine("Writing tokens to file ...");
             await TokensService.WriteTokensAsync(loginResponse);
 
-            Console.WriteLine("Login operation success.");
+            Console.WriteLine("Login operation success.\n");
         }
 
         private static async Task RequestKeyExchange(IReadOnlyList<string> args)
@@ -86,7 +86,7 @@ namespace MangoAPI.DiffieHellmanConsole
 
             var response = await KeyExchangeService.CreateKeyExchangeRequestAsync(requestedUserId, publicKeyBase64);
 
-            Console.WriteLine($"Key exchange request with an ID ${response.RequestId} created successfully.");
+            Console.WriteLine($"Key exchange request with an ID {response.RequestId} created successfully.");
 
             var keysFolderPath = Path.Combine(AppContext.BaseDirectory, $"Keys_{Tokens.UserId}");
             var privateKeyPath = Path.Combine(keysFolderPath, $"PrivateKey_{Tokens.UserId}_{requestedUserId}.txt");
@@ -103,7 +103,7 @@ namespace MangoAPI.DiffieHellmanConsole
             Console.WriteLine("Writing public key to file ...");
             await File.WriteAllTextAsync(publicKeyPath, publicKeyBase64);
 
-            Console.WriteLine("Key exchange request sent successfully.");
+            Console.WriteLine("Key exchange request sent successfully.\n");
         }
 
         private static async Task PrintKeyExchangesList()
@@ -161,7 +161,7 @@ namespace MangoAPI.DiffieHellmanConsole
             Console.WriteLine("Writing common secret to file...");
             await File.WriteAllTextAsync(commonSecretPath, commonSecret);
 
-            Console.WriteLine("Key exchange request confirmed successfully.");
+            Console.WriteLine("Key exchange request confirmed successfully.\n");
         }
 
         private static async Task PrintPublicKeys()
@@ -197,7 +197,7 @@ namespace MangoAPI.DiffieHellmanConsole
             Console.WriteLine("Writing common secret to file...");
             await File.WriteAllTextAsync(commonSecretPath, commonSecretBase64);
 
-            Console.WriteLine("Common secret generated successfully.");
+            Console.WriteLine("Common secret generated successfully.\n");
         }
     }
 }

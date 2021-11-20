@@ -13,7 +13,7 @@ namespace MangoAPI.BusinessLogic.Models
 
         public override string ToString()
         {
-            return $"PartnerId: {PartnerId}, Public Key: {PartnerPublicKey}";
+            return $"PartnerId: {PartnerId}\nPublic Key: {PartnerPublicKey}\n";
         }
     }
 }

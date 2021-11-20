@@ -16,7 +16,7 @@ namespace MangoAPI.BusinessLogic.Models
 
         public override string ToString()
         {
-            return $"RequestId: {RequestId}, SenderId: {SenderId}, Sender Public Key: {SenderPublicKey}";
+            return $"RequestId: {RequestId}\nSenderId: {SenderId}\nSender Public Key: {SenderPublicKey}\n";
         }
     }
 }
