@@ -26,10 +26,10 @@ namespace MangoAPI.BusinessLogic.ApiCommands.KeyExchange
         public async Task<Result<ResponseBase>> Handle(ConfirmOrDeclineKeyExchangeCommand request,
             CancellationToken cancellationToken)
         {
-            var chatRequest = await _postgresDbContext.KeyExchangeRequests
+            var keyExchangeRequest = await _postgresDbContext.KeyExchangeRequests
                 .FirstOrDefaultAsync(x => x.Id == request.RequestId, cancellationToken);
 
-            if (chatRequest == null)
+            if (keyExchangeRequest == null)
             {
                 const string message = ResponseMessageCodes.KeyExchangeRequestNotFound;
                 var details = ResponseMessageCodes.ErrorDictionary[message];
@@ -37,9 +37,10 @@ namespace MangoAPI.BusinessLogic.ApiCommands.KeyExchange
                 return _responseFactory.ConflictResponse(message, details);
             }
 
+            _postgresDbContext.KeyExchangeRequests.Remove(keyExchangeRequest);
+            
             if (!request.Confirmed)
             {
-                _postgresDbContext.KeyExchangeRequests.Remove(chatRequest);
                 await _postgresDbContext.SaveChangesAsync(cancellationToken);
 
                 return _responseFactory.SuccessResponse(ResponseBase.SuccessResponse);
@@ -47,14 +48,14 @@ namespace MangoAPI.BusinessLogic.ApiCommands.KeyExchange
 
             _postgresDbContext.PublicKeys.AddRange(new PublicKeyEntity
             {
-                UserId = chatRequest.SenderId,
+                UserId = keyExchangeRequest.SenderId,
                 PartnerId = request.UserId,
                 PartnerPublicKey = request.PublicKey
             }, new PublicKeyEntity
             {
                 UserId = request.UserId,
-                PartnerId = chatRequest.SenderId,
-                PartnerPublicKey = chatRequest.SenderPublicKey
+                PartnerId = keyExchangeRequest.SenderId,
+                PartnerPublicKey = keyExchangeRequest.SenderPublicKey
             });
 
             await _postgresDbContext.SaveChangesAsync(cancellationToken);

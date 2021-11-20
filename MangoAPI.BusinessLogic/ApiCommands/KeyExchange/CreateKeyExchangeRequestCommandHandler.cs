@@ -49,21 +49,21 @@ namespace MangoAPI.BusinessLogic.ApiCommands.KeyExchange
                 return _responseFactory.ConflictResponse(message, details);
             }
 
-            var secretChatRequest = new KeyExchangeRequestEntity
+            var keyExchangeRequest = new KeyExchangeRequestEntity
             {
                 UserId = request.RequestedUserId,
                 SenderId = request.UserId,
                 SenderPublicKey = request.PublicKey
             };
 
-            _postgresDbContext.KeyExchangeRequests.Add(secretChatRequest);
+            _postgresDbContext.KeyExchangeRequests.Add(keyExchangeRequest);
 
             await _postgresDbContext.SaveChangesAsync(cancellationToken);
 
             var response = new CreateKeyExchangeResponse
             {
                 Message = ResponseMessageCodes.Success,
-                RequestId = secretChatRequest.Id,
+                RequestId = keyExchangeRequest.Id,
                 Success = true
             };
 
