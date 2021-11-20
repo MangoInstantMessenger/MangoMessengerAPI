@@ -28,8 +28,8 @@ namespace MangoAPI.Domain.Entities
 
         public ICollection<UserContactEntity> Contacts { get; set; }
 
-        public ICollection<KeyExchangeRequestEntity> SecretChatRequests { get; set; }
+        public ICollection<KeyExchangeRequestEntity> KeyExchangeRequests { get; set; }
 
-        public ICollection<PublicKeyEntity> SecretChatPublicKeys { get; set; }
+        public ICollection<PublicKeyEntity> PublicKeys { get; set; }
     }
 }

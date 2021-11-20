@@ -4,6 +4,7 @@ namespace MangoAPI.Domain.Entities
 {
     public class PublicKeyEntity
     {
+        public Guid Id { get; set; }
         public Guid UserId { get; set; }
         public Guid PartnerId { get; set; }
         public string PartnerPublicKey { get; set; }

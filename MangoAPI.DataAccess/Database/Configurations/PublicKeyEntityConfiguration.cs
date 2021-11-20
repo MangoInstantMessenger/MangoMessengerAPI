@@ -8,13 +8,13 @@ namespace MangoAPI.DataAccess.Database.Configurations
     {
         public void Configure(EntityTypeBuilder<PublicKeyEntity> builder)
         {
-            builder.HasKey(x => x.UserId);
+            builder.HasKey(x => x.Id);
             builder.Property(x => x.UserId).IsRequired();
             builder.Property(x => x.PartnerId).IsRequired();
             builder.Property(x => x.PartnerPublicKey).IsRequired();
 
             builder.HasOne(x => x.User)
-                .WithMany(x => x.SecretChatPublicKeys)
+                .WithMany(x => x.PublicKeys)
                 .HasForeignKey(x => x.UserId);
         }
     }

@@ -15,7 +15,7 @@ namespace MangoAPI.DataAccess.Database.Configurations
             builder.Property(x => x.UserId).IsRequired();
 
             builder.HasOne(x => x.User)
-                .WithMany(x => x.SecretChatRequests)
+                .WithMany(x => x.KeyExchangeRequests)
                 .HasForeignKey(x => x.UserId);
         }
     }
