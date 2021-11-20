@@ -5,7 +5,6 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading;
 using System.Threading.Tasks;
-using MangoAPI.Domain.Constants;
 
 namespace MangoAPI.Presentation.Controllers
 {
@@ -47,15 +46,6 @@ namespace MangoAPI.Presentation.Controllers
                 HttpStatusCode.Conflict => Conflict(response.Error),
                 _ => Ok(response.Response)
             };
-        }
-
-        protected IActionResult TooFrequentResponse()
-        {
-            var requestFactory = new ResponseFactory<TokensResponse>();
-            const string message = ResponseMessageCodes.TooFrequentRequest;
-            var details = ResponseMessageCodes.ErrorDictionary[message];
-            var response = requestFactory.ConflictResponse(message, details);
-            return BadRequest(response.Error);
         }
     }
 }

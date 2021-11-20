@@ -39,7 +39,6 @@ namespace MangoAPI.Domain.Constants
                 MaximumMessageCountInLast5MinutesExceeded100,
                 "One user cannot send message more then 100 to particular chat in last 5 minutes"
             },
-            { TooFrequentRequest, "Your request is too frequent. Try again in 30 seconds." },
             {
                 KeyExchangeRequestAlreadyExists,
                 "You have already requested current user for key exchange. Wait for response."
@@ -79,8 +78,7 @@ namespace MangoAPI.Domain.Constants
 
         public const string MaximumMessageCountInLast5MinutesExceeded100 =
             "MAXIMUM_MESSAGE_COUNT_IN_LAST_5_MINUTES_EXCEEDED_100";
-
-        public const string TooFrequentRequest = "TOO_FREQUENT_REQUEST";
+        
         public const string KeyExchangeRequestAlreadyExists = "KEY_EXCHANGE_REQUEST_ALREADY_EXISTS";
         public const string KeyExchangeRequestNotFound = "KEY_EXCHANGE_REQUEST_NOT_FOUND";
     }
