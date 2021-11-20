@@ -1,9 +1,7 @@
-﻿using System;
-
-namespace MangoAPI.DiffieHellmanConsole.Consts
+﻿namespace MangoAPI.DiffieHellmanConsole.Consts
 {
     public static class Urls
     {
-        public static readonly string ApiUrl = Environment.GetEnvironmentVariable("AZURE_BACKEND_URL");
+        public const string ApiUrl = "https://mango-messenger-app.herokuapp.com/api/";
     }
 }

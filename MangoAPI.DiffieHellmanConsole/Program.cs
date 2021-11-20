@@ -13,17 +13,22 @@ namespace MangoAPI.DiffieHellmanConsole
     public static class Program
     {
         private static readonly SessionsService SessionsService = new();
-        private static readonly TokensService TokensService = new();
-        private static readonly EcdhService DiffieHellmanService = new();
         private static readonly KeyExchangeService KeyExchangeService;
         private static readonly TokensResponse Tokens;
         private static readonly PublicKeysService PublicKeysService;
 
         static Program()
         {
-            Tokens = TokensService.GetTokensAsync().GetAwaiter().GetResult();
-            KeyExchangeService = new KeyExchangeService(Tokens.AccessToken);
-            PublicKeysService = new PublicKeysService(Tokens.AccessToken);
+            try
+            {
+                Tokens = TokensService.GetTokensAsync().GetAwaiter().GetResult();
+                KeyExchangeService = new KeyExchangeService(Tokens.AccessToken);
+                PublicKeysService = new PublicKeysService(Tokens.AccessToken);
+            }
+            catch (FileNotFoundException)
+            {
+                Console.WriteLine("Tokens file does not exist for current user...");
+            }
         }
 
         public static async Task Main(string[] args)
@@ -77,7 +82,7 @@ namespace MangoAPI.DiffieHellmanConsole
         {
             var requestedUserId = Guid.Parse(args[1]);
 
-            DiffieHellmanService.GenerateEcdhKeysPair(out var privateKeyBase64, out var publicKeyBase64);
+            EcdhService.GenerateEcdhKeysPair(out var privateKeyBase64, out var publicKeyBase64);
 
             var response = await KeyExchangeService.CreateKeyExchangeRequestAsync(requestedUserId, publicKeyBase64);
 
@@ -121,8 +126,8 @@ namespace MangoAPI.DiffieHellmanConsole
                 return;
             }
 
-            var ecDiffieHellmanCng = DiffieHellmanService
-                .GenerateEcdhKeysPair(out var privateKeyBase64, out var publicKeyBase64);
+            var ecDiffieHellmanCng =
+                EcdhService.GenerateEcdhKeysPair(out var privateKeyBase64, out var publicKeyBase64);
 
             var requestPublicKeyBytes = exchangeRequest.SenderPublicKey.Base64StringAsBytes();
             var requestPublicKey = CngKey.Import(requestPublicKeyBytes, CngKeyBlobFormat.EccPublicBlob);

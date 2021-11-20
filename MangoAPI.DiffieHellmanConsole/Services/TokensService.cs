@@ -6,9 +6,9 @@ using Newtonsoft.Json;
 
 namespace MangoAPI.DiffieHellmanConsole.Services
 {
-    public class TokensService
+    public static class TokensService
     {
-        public async Task WriteTokensAsync(TokensResponse loginResponse)
+        public static async Task WriteTokensAsync(TokensResponse loginResponse)
         {
             var serializedTokens = JsonConvert.SerializeObject(loginResponse);
             var path = Path.Combine(AppContext.BaseDirectory, "Tokens.txt");
@@ -16,7 +16,7 @@ namespace MangoAPI.DiffieHellmanConsole.Services
             await File.WriteAllTextAsync(path, serializedTokens);
         }
 
-        public async Task<TokensResponse> GetTokensAsync()
+        public static async Task<TokensResponse> GetTokensAsync()
         {
             var tokensPath = Path.Combine(AppContext.BaseDirectory, "Tokens.txt");
             var readTokens = await File.ReadAllTextAsync(tokensPath);

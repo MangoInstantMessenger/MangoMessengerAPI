@@ -4,7 +4,6 @@ using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using MangoAPI.BusinessLogic.ApiCommands.KeyExchange;
 using MangoAPI.BusinessLogic.ApiQueries.KeyExchange;
-using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.DiffieHellmanConsole.Consts;
 using Newtonsoft.Json;
 
@@ -24,7 +23,7 @@ namespace MangoAPI.DiffieHellmanConsole.Services
 
         public async Task<GetKeyExchangeResponse> GetKeyExchangesAsync()
         {
-            var route = Urls.ApiUrl + Route;
+            const string route = Urls.ApiUrl + Route;
             var result = await HttpRequest.GetAsync(_httpClient, route);
             var response = JsonConvert.DeserializeObject<GetKeyExchangeResponse>(result);
             return response;
@@ -39,13 +38,13 @@ namespace MangoAPI.DiffieHellmanConsole.Services
                 RequestedUserId = requestUserId
             };
 
-            var route = Urls.ApiUrl + Route;
+            const string route = Urls.ApiUrl + Route;
             var result = await HttpRequest.PostWithBodyAsync(_httpClient, route, command);
             var response = JsonConvert.DeserializeObject<CreateKeyExchangeResponse>(result);
             return response;
         }
 
-        public async Task<ResponseBase> ConfirmOrDeclineKeyExchange(Guid requestId, string publicKeyBase64)
+        public async Task ConfirmOrDeclineKeyExchange(Guid requestId, string publicKeyBase64)
         {
             var request = new ConfirmOrDeclineKeyExchangeRequest
             {
@@ -54,10 +53,8 @@ namespace MangoAPI.DiffieHellmanConsole.Services
                 RequestId = requestId
             };
 
-            var route = Urls.ApiUrl + Route;
-            var result = await HttpRequest.DeleteWithBodyAsync(_httpClient, route, request);
-            var response = JsonConvert.DeserializeObject<ResponseBase>(result);
-            return response;
+            const string route = Urls.ApiUrl + Route;
+            await HttpRequest.DeleteWithBodyAsync(_httpClient, route, request);
         }
     }
 }
