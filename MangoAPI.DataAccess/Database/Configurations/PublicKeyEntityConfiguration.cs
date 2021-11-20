@@ -8,7 +8,7 @@ namespace MangoAPI.DataAccess.Database.Configurations
     {
         public void Configure(EntityTypeBuilder<PublicKeyEntity> builder)
         {
-            builder.HasKey(x => x.Id);
+            builder.HasKey(x => new { x.UserId, x.PartnerId });
             builder.Property(x => x.UserId).IsRequired();
             builder.Property(x => x.PartnerId).IsRequired();
             builder.Property(x => x.PartnerPublicKey).IsRequired();
