@@ -2,22 +2,34 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Net.Http;
-using System.Runtime.Serialization.Formatters.Binary;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
-using MangoAPI.BusinessLogic.ApiCommands.KeyExchange;
-using MangoAPI.BusinessLogic.ApiCommands.Sessions;
 using MangoAPI.BusinessLogic.Extensions;
 using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.DiffieHellmanConsole.Services;
-using Newtonsoft.Json;
 
 namespace MangoAPI.DiffieHellmanConsole
 {
     public static class Program
     {
         private static readonly SessionsService SessionsService = new();
+        private static readonly KeyExchangeService KeyExchangeService;
+        private static readonly TokensResponse Tokens;
+        private static readonly PublicKeysService PublicKeysService;
+
+        static Program()
+        {
+            try
+            {
+                Tokens = TokensService.GetTokensAsync().GetAwaiter().GetResult();
+                KeyExchangeService = new KeyExchangeService(Tokens.AccessToken);
+                PublicKeysService = new PublicKeysService(Tokens.AccessToken);
+            }
+            catch (FileNotFoundException)
+            {
+                Console.WriteLine("Tokens file does not exist for current user.");
+            }
+        }
 
         public static async Task Main(string[] args)
         {
@@ -44,7 +56,7 @@ namespace MangoAPI.DiffieHellmanConsole
                     await ConfirmKeyExchangeRequest(args);
                     break;
                 case "print-public-keys":
-                    await PrintPublicKeys(args);
+                    await PrintPublicKeys();
                     break;
                 case "create-common-secret":
                     await CreateCommonSecret(args);
@@ -57,140 +69,55 @@ namespace MangoAPI.DiffieHellmanConsole
 
         private static async Task Login(IReadOnlyList<string> args)
         {
-            try
-            {
-                var email = args[1];
-                var pass = args[2];
+            Console.WriteLine("Attempting to login ...");
+            var loginResponse = await SessionsService.LoginAsync(args);
 
-                var loginCommand = new LoginCommand
-                {
-                    EmailOrPhone = email,
-                    Password = pass
-                };
+            Console.WriteLine("Writing tokens to file ...");
+            await TokensService.WriteTokensAsync(loginResponse);
 
-                var loginResponse = await SessionsService.LoginAsync(loginCommand);
-
-                var serializedTokens = JsonConvert.SerializeObject(loginResponse);
-                var path = Path.Combine(AppContext.BaseDirectory, "Tokens.txt");
-
-                await File.WriteAllTextAsync(path, serializedTokens);
-
-                Console.WriteLine("Tokens written to file.");
-                Console.WriteLine("Login operation success.");
-            }
-            catch (ArgumentOutOfRangeException)
-            {
-                Console.WriteLine("Invalid number of parameters.");
-            }
-            catch (HttpRequestException)
-            {
-                Console.WriteLine("Invalid credentials.");
-            }
+            Console.WriteLine("Login operation success.\n");
         }
 
         private static async Task RequestKeyExchange(IReadOnlyList<string> args)
         {
-            try
+            var requestedUserId = Guid.Parse(args[1]);
+
+            EcdhService.GenerateEcdhKeysPair(out var privateKeyBase64, out var publicKeyBase64);
+
+            var response = await KeyExchangeService.CreateKeyExchangeRequestAsync(requestedUserId, publicKeyBase64);
+
+            Console.WriteLine($"Key exchange request with an ID {response.RequestId} created successfully.");
+
+            var keysFolderPath = Path.Combine(AppContext.BaseDirectory, $"Keys_{Tokens.UserId}");
+            var privateKeyPath = Path.Combine(keysFolderPath, $"PrivateKey_{Tokens.UserId}_{requestedUserId}.txt");
+            var publicKeyPath = Path.Combine(keysFolderPath, $"PublicKey_{Tokens.UserId}_{requestedUserId}.txt");
+
+            if (!Directory.Exists(keysFolderPath))
             {
-                var requestedUserId = Guid.Parse(args[1]);
-                var tokensPath = Path.Combine(AppContext.BaseDirectory, "Tokens.txt");
-                var readTokens = await File.ReadAllTextAsync(tokensPath);
-                var tokens = JsonConvert.DeserializeObject<TokensResponse>(readTokens);
-
-                var parameters = new CngKeyCreationParameters
-                {
-                    ExportPolicy = CngExportPolicies.AllowPlaintextExport
-                };
-
-                var keys = CngKey.Create(CngAlgorithm.ECDiffieHellmanP256, null, parameters);
-
-                var ecdh = new ECDiffieHellmanCng(keys);
-
-                var privateKey = ecdh.Key
-                    .Export(CngKeyBlobFormat.EccPrivateBlob)
-                    .AsBase64String();
-
-                var publicKey = ecdh.PublicKey
-                    .ToByteArray()
-                    .AsBase64String();
-
-                var keyService = new KeyExchangeService(tokens!.AccessToken);
-
-                var command = new CreateKeyExchangeRequest
-                {
-                    PublicKey = publicKey,
-                    RequestedUserId = requestedUserId
-                };
-
-                await keyService.CreateKeyExchangeAsync(command);
-
-                var privateKeyPath = Path.Combine(AppContext.BaseDirectory, $"Keys_{tokens.UserId}",
-                    $"PrivateKey_{tokens.UserId}_{requestedUserId}.txt");
-
-                var publicKeyPath = Path.Combine(AppContext.BaseDirectory, $"Keys_{tokens.UserId}",
-                    $"PublicKey_{tokens.UserId}_{requestedUserId}.txt");
-
-                if (!Directory.Exists(Path.Combine(AppContext.BaseDirectory, $"Keys_{tokens.UserId}")))
-                {
-                    Directory
-                        .CreateDirectory(Path.Combine(AppContext.BaseDirectory, $"Keys_{tokens.UserId}"));
-                }
-
-                var stream = File.Create(privateKeyPath);
-
-                var formatter = new BinaryFormatter();
-
-                Console.WriteLine("Writing private key to file...");
-                formatter.Serialize(stream, privateKey);
-                stream.Close();
-
-                Console.WriteLine("Writing public key to file ...");
-                await File.WriteAllTextAsync(publicKeyPath, publicKey);
-
-                Console.WriteLine("Key exchange request sent successfully.");
+                Directory.CreateDirectory(keysFolderPath);
             }
-            catch (ArgumentOutOfRangeException)
-            {
-                Console.WriteLine("Invalid parameters count.");
-            }
-            catch (HttpRequestException)
-            {
-                Console.WriteLine("Invalid request.");
-            }
+
+            Console.WriteLine("Writing private key to file...");
+            await File.WriteAllTextAsync(privateKeyPath, privateKeyBase64);
+
+            Console.WriteLine("Writing public key to file ...");
+            await File.WriteAllTextAsync(publicKeyPath, publicKeyBase64);
+
+            Console.WriteLine("Key exchange request sent successfully.\n");
         }
 
         private static async Task PrintKeyExchangesList()
         {
-            var tokensPath = Path.Combine(AppContext.BaseDirectory, "Tokens.txt");
-            var readTokens = await File.ReadAllTextAsync(tokensPath);
-            var tokens = JsonConvert.DeserializeObject<TokensResponse>(readTokens);
-
-            var keyService = new KeyExchangeService(tokens!.AccessToken);
-
-            var exchangeList = await keyService.GetKeyExchangesAsync();
-
-            foreach (var request in exchangeList.KeyExchangeRequests)
-            {
-                Console.WriteLine($"Request Id: {request.RequestId}");
-                Console.WriteLine($"Sender Id: {request.SenderId}");
-                Console.WriteLine($"Sender public key: {request.SenderPublicKey}");
-                Console.WriteLine();
-            }
+            var response = await KeyExchangeService.GetKeyExchangesAsync();
+            response.KeyExchangeRequests.ForEach(Console.WriteLine);
         }
 
         private static async Task ConfirmKeyExchangeRequest(IReadOnlyList<string> args)
         {
             var requestId = Guid.Parse(args[1]);
 
-            var tokensPath = Path.Combine(AppContext.BaseDirectory, "Tokens.txt");
-            var readTokens = await File.ReadAllTextAsync(tokensPath);
-            var tokens = JsonConvert.DeserializeObject<TokensResponse>(readTokens);
-
-            var keyService = new KeyExchangeService(tokens!.AccessToken);
-
-            var exchangeRequests = await keyService.GetKeyExchangesAsync();
-
-            var exchangeRequest = exchangeRequests.KeyExchangeRequests
+            var exchangeRequest = (await KeyExchangeService.GetKeyExchangesAsync())
+                .KeyExchangeRequests
                 .FirstOrDefault(x => x.RequestId == requestId);
 
             if (exchangeRequest == null)
@@ -199,130 +126,78 @@ namespace MangoAPI.DiffieHellmanConsole
                 return;
             }
 
-            var parameters = new CngKeyCreationParameters
+            var ecDiffieHellmanCng =
+                EcdhService.GenerateEcdhKeysPair(out var privateKeyBase64, out var publicKeyBase64);
+
+            var requestPublicKeyBytes = exchangeRequest.SenderPublicKey.Base64StringAsBytes();
+            var requestPublicKey = CngKey.Import(requestPublicKeyBytes, CngKeyBlobFormat.EccPublicBlob);
+
+            var commonSecret = ecDiffieHellmanCng.DeriveKeyMaterial(requestPublicKey).AsBase64String();
+
+            await KeyExchangeService.ConfirmOrDeclineKeyExchange(requestId, publicKeyBase64);
+
+            var keysFolderPath = Path.Combine(AppContext.BaseDirectory, $"Keys_{Tokens.UserId}");
+
+            var privateKeyPath =
+                Path.Combine(keysFolderPath, $"PrivateKey_{Tokens.UserId}_{exchangeRequest.SenderId}.txt");
+
+            var publicKeyPath =
+                Path.Combine(keysFolderPath, $"PublicKey_{Tokens.UserId}_{exchangeRequest.SenderId}.txt");
+
+            var commonSecretPath =
+                Path.Combine(keysFolderPath, $"CommonSecret_{Tokens.UserId}_{exchangeRequest.SenderId}.txt");
+
+            if (!Directory.Exists(keysFolderPath))
             {
-                ExportPolicy = CngExportPolicies.AllowPlaintextExport
-            };
-
-            var keys = CngKey.Create(CngAlgorithm.ECDiffieHellmanP256, null, parameters);
-
-            var ecdh = new ECDiffieHellmanCng(keys);
-
-            var privateKey = ecdh.Key
-                .Export(CngKeyBlobFormat.EccPrivateBlob)
-                .AsBase64String();
-
-            var publicKey = ecdh.PublicKey
-                .ToByteArray()
-                .AsBase64String();
-
-            var requestPublicKey = exchangeRequest.SenderPublicKey.Base64StringAsBytes();
-
-            var commonSecret = ecdh.DeriveKeyMaterial(CngKey.Import(requestPublicKey,
-                CngKeyBlobFormat.EccPublicBlob));
-
-            var confirmOrDeclineKeyExchangeRequest = new ConfirmOrDeclineKeyExchangeRequest
-            {
-                Confirmed = true,
-                PublicKey = publicKey,
-                RequestId = requestId
-            };
-
-            await keyService.ConfirmOrDeclineKeyExchange(confirmOrDeclineKeyExchangeRequest);
-
-            var privateKeyPath = Path.Combine(AppContext.BaseDirectory, $"Keys_{tokens.UserId}",
-                $"PrivateKey_{tokens.UserId}_{exchangeRequest.SenderId}.txt");
-
-            var publicKeyPath = Path.Combine(AppContext.BaseDirectory, $"Keys_{tokens.UserId}",
-                $"PublicKey_{tokens.UserId}_{exchangeRequest.SenderId}.txt");
-
-            var commonSecretPath = Path.Combine(AppContext.BaseDirectory, $"Keys_{tokens.UserId}",
-                $"CommonSecret_{tokens.UserId}_{exchangeRequest.SenderId}.txt");
-
-            if (!Directory.Exists(Path.Combine(AppContext.BaseDirectory, $"Keys_{tokens.UserId}")))
-            {
-                Directory
-                    .CreateDirectory(Path.Combine(AppContext.BaseDirectory, $"Keys_{tokens.UserId}"));
+                Directory.CreateDirectory(keysFolderPath);
             }
-
-            var stream = File.Create(privateKeyPath);
-
-            var formatter = new BinaryFormatter();
 
             Console.WriteLine("Writing private key to file...");
-            formatter.Serialize(stream, privateKey);
-            stream.Close();
+            await File.WriteAllTextAsync(privateKeyPath, privateKeyBase64);
 
             Console.WriteLine("Writing public key to file ...");
-            await File.WriteAllTextAsync(publicKeyPath, publicKey);
-
-            stream = File.Create(commonSecretPath);
+            await File.WriteAllTextAsync(publicKeyPath, publicKeyBase64);
 
             Console.WriteLine("Writing common secret to file...");
-            formatter.Serialize(stream, commonSecret);
-            stream.Close();
+            await File.WriteAllTextAsync(commonSecretPath, commonSecret);
 
-            Console.WriteLine("Key exchange request confirmed successfully.");
+            Console.WriteLine("Key exchange request confirmed successfully.\n");
         }
 
-        private static async Task PrintPublicKeys(IReadOnlyList<string> args)
+        private static async Task PrintPublicKeys()
         {
-            var tokensPath = Path.Combine(AppContext.BaseDirectory, "Tokens.txt");
-            var readTokens = await File.ReadAllTextAsync(tokensPath);
-            var tokens = JsonConvert.DeserializeObject<TokensResponse>(readTokens);
-
-            var publicKeysService = new PublicKeysService(tokens!.AccessToken);
-
-            var response = await publicKeysService.GetPublicKeys();
-
-            Console.WriteLine("Your public keys");
-
-            foreach (var key in response.PublicKeys)
-            {
-                Console.WriteLine($"Partner Id: {key.PartnerId}");
-                Console.WriteLine($"Partner public key: {key.PartnerPublicKey}");
-                Console.WriteLine();
-            }
+            var response = await PublicKeysService.GetPublicKeys();
+            response.PublicKeys.ForEach(Console.WriteLine);
         }
 
         private static async Task CreateCommonSecret(IReadOnlyList<string> args)
         {
             var partnerId = Guid.Parse(args[1]);
 
-            var tokensPath = Path.Combine(AppContext.BaseDirectory, "Tokens.txt");
-            var readTokens = await File.ReadAllTextAsync(tokensPath);
-            var tokens = JsonConvert.DeserializeObject<TokensResponse>(readTokens);
+            var response = await PublicKeysService.GetPublicKeys();
 
-            var publicKeysService = new PublicKeysService(tokens!.AccessToken);
+            var partnerPublicKeyBytes = response.PublicKeys
+                .FirstOrDefault(x => x.PartnerId == partnerId)?
+                .PartnerPublicKey.Base64StringAsBytes();
 
-            var response = await publicKeysService.GetPublicKeys();
+            var privateKeyPath = Path.Combine(AppContext.BaseDirectory, $"Keys_{Tokens.UserId}",
+                $"PrivateKey_{Tokens.UserId}_{partnerId}.txt");
 
-            var publicKeyModel = response.PublicKeys.FirstOrDefault(x => x.PartnerId == partnerId);
-            var publicKey = publicKeyModel!.PartnerPublicKey.Base64StringAsBytes();
+            var commonSecretPath = Path.Combine(AppContext.BaseDirectory, $"Keys_{Tokens.UserId}",
+                $"CommonSecret_{Tokens.UserId}_{partnerId}.txt");
 
-            var privateKeyPath = Path.Combine(AppContext.BaseDirectory, $"Keys_{tokens.UserId}",
-                $"PrivateKey_{tokens.UserId}_{partnerId}.txt");
+            var privateKeyBytes = (await File.ReadAllTextAsync(privateKeyPath)).Base64StringAsBytes();
 
-            var formatter = new BinaryFormatter();
-            var stream = File.OpenRead(privateKeyPath);
-            Console.WriteLine("Deserializing vector");
-            var v = formatter.Deserialize(stream).ToString();
-            var stringAsBytes = v.Base64StringAsBytes();
-            stream.Close();
+            var privateKey = CngKey.Import(privateKeyBytes, CngKeyBlobFormat.EccPrivateBlob);
+            var ecDiffieHellmanCng = new ECDiffieHellmanCng(privateKey);
 
-            var newEcdh = new ECDiffieHellmanCng(CngKey.Import(stringAsBytes, CngKeyBlobFormat.EccPrivateBlob));
-
-            var commonSecret = newEcdh.DeriveKeyMaterial(CngKey.Import(publicKey,
-                CngKeyBlobFormat.EccPublicBlob));
+            var partnerPublicKey = CngKey.Import(partnerPublicKeyBytes!, CngKeyBlobFormat.EccPublicBlob);
+            var commonSecretBase64 = ecDiffieHellmanCng.DeriveKeyMaterial(partnerPublicKey).AsBase64String();
 
             Console.WriteLine("Writing common secret to file...");
-            var commonSecretPath = Path.Combine(AppContext.BaseDirectory, $"Keys_{tokens.UserId}",
-                $"CommonSecret_{tokens.UserId}_{publicKeyModel.PartnerId}.txt");
-            stream = File.Create(commonSecretPath);
-            formatter.Serialize(stream, commonSecret);
-            stream.Close();
+            await File.WriteAllTextAsync(commonSecretPath, commonSecretBase64);
 
-            Console.WriteLine("Common secret generated successfully.");
+            Console.WriteLine("Common secret generated successfully.\n");
         }
     }
 }

@@ -1,9 +1,9 @@
-﻿using System.Net.Http;
+﻿using System;
+using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using MangoAPI.BusinessLogic.ApiCommands.KeyExchange;
 using MangoAPI.BusinessLogic.ApiQueries.KeyExchange;
-using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.DiffieHellmanConsole.Consts;
 using Newtonsoft.Json;
 
@@ -23,26 +23,38 @@ namespace MangoAPI.DiffieHellmanConsole.Services
 
         public async Task<GetKeyExchangeResponse> GetKeyExchangesAsync()
         {
-            var route = Urls.ApiUrl + Route;
+            const string route = Urls.ApiUrl + Route;
             var result = await HttpRequest.GetAsync(_httpClient, route);
             var response = JsonConvert.DeserializeObject<GetKeyExchangeResponse>(result);
             return response;
         }
 
-        public async Task<CreateKeyExchangeResponse> CreateKeyExchangeAsync(CreateKeyExchangeRequest request)
+        public async Task<CreateKeyExchangeResponse> CreateKeyExchangeRequestAsync(Guid requestUserId,
+            string publicKey)
         {
-            var route = Urls.ApiUrl + Route;
-            var result = await HttpRequest.PostWithBodyAsync(_httpClient, route, request);
+            var command = new CreateKeyExchangeRequest
+            {
+                PublicKey = publicKey,
+                RequestedUserId = requestUserId
+            };
+
+            const string route = Urls.ApiUrl + Route;
+            var result = await HttpRequest.PostWithBodyAsync(_httpClient, route, command);
             var response = JsonConvert.DeserializeObject<CreateKeyExchangeResponse>(result);
             return response;
         }
 
-        public async Task<ResponseBase> ConfirmOrDeclineKeyExchange(ConfirmOrDeclineKeyExchangeRequest request)
+        public async Task ConfirmOrDeclineKeyExchange(Guid requestId, string publicKeyBase64)
         {
-            var route = Urls.ApiUrl + Route;
-            var result = await HttpRequest.DeleteWithBodyAsync(_httpClient, route, request);
-            var response = JsonConvert.DeserializeObject<CreateKeyExchangeResponse>(result);
-            return response;
+            var request = new ConfirmOrDeclineKeyExchangeRequest
+            {
+                Confirmed = true,
+                PublicKey = publicKeyBase64,
+                RequestId = requestId
+            };
+
+            const string route = Urls.ApiUrl + Route;
+            await HttpRequest.DeleteWithBodyAsync(_httpClient, route, request);
         }
     }
 }
