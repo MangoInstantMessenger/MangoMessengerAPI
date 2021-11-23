@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
 using MangoAPI.BusinessLogic.ApiCommands.Sessions;
@@ -13,8 +14,17 @@ namespace MangoAPI.DiffieHellmanConsole.Services
         private const string Route = "sessions/";
         private readonly HttpClient _httpClient = new();
 
-        public async Task<TokensResponse> LoginAsync(LoginCommand command)
+        public async Task<TokensResponse> LoginAsync(IReadOnlyList<string> args)
         {
+            var email = args[1];
+            var pass = args[2];
+
+            var command = new LoginCommand
+            {
+                EmailOrPhone = email,
+                Password = pass
+            };
+
             var response = await HttpRequest.PostWithBodyAsync(_httpClient, Urls.ApiUrl + Route, command);
             return JsonConvert.DeserializeObject<TokensResponse>(response);
         }

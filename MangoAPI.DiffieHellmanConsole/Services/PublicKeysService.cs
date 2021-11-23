@@ -1,7 +1,6 @@
 ﻿using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
-using MangoAPI.BusinessLogic.ApiQueries.KeyExchange;
 using MangoAPI.BusinessLogic.ApiQueries.PublicKeys;
 using MangoAPI.DiffieHellmanConsole.Consts;
 using Newtonsoft.Json;
@@ -22,7 +21,7 @@ namespace MangoAPI.DiffieHellmanConsole.Services
 
         public async Task<GetPublicKeysResponse> GetPublicKeys()
         {
-            var route = Urls.ApiUrl + Route;
+            const string route = Urls.ApiUrl + Route;
             var result = await HttpRequest.GetAsync(_httpClient, route);
             var response = JsonConvert.DeserializeObject<GetPublicKeysResponse>(result);
             return response;
