@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
+using MangoAPI.BusinessLogic.Enums;
 using MangoAPI.BusinessLogic.Extensions;
 using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.DiffieHellmanConsole.Services;
@@ -14,8 +15,9 @@ namespace MangoAPI.DiffieHellmanConsole
     {
         private static readonly SessionsService SessionsService = new();
         private static readonly KeyExchangeService KeyExchangeService;
-        private static readonly TokensResponse Tokens;
         private static readonly PublicKeysService PublicKeysService;
+        private static readonly ChatService ChatService;
+        private static readonly TokensResponse Tokens;
 
         static Program()
         {
@@ -24,6 +26,7 @@ namespace MangoAPI.DiffieHellmanConsole
                 Tokens = TokensService.GetTokensAsync().GetAwaiter().GetResult();
                 KeyExchangeService = new KeyExchangeService(Tokens.AccessToken);
                 PublicKeysService = new PublicKeysService(Tokens.AccessToken);
+                ChatService = new ChatService(Tokens.AccessToken);
             }
             catch (FileNotFoundException)
             {
@@ -60,6 +63,9 @@ namespace MangoAPI.DiffieHellmanConsole
                     break;
                 case "create-common-secret":
                     await CreateCommonSecret(args);
+                    break;
+                case "chat-list":
+                    await GetCurrentUserChats();
                     break;
                 default:
                     Console.WriteLine("Unrecognized command.");
@@ -198,6 +204,12 @@ namespace MangoAPI.DiffieHellmanConsole
             await File.WriteAllTextAsync(commonSecretPath, commonSecretBase64);
 
             Console.WriteLine("Common secret generated successfully.\n");
+        }
+        
+        private static async Task GetCurrentUserChats()
+        {
+            var response = await ChatService.GetCurrentUserChatsAsync();
+            response.Chats.ForEach(Console.WriteLine);
         }
     }
 }

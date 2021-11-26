@@ -45,6 +45,13 @@ namespace MangoAPI.BusinessLogic.Models
 
         [DefaultValue("10/02/2021")]
         public DateTime? UpdatedAt { get; set; }
+
+        public override string ToString()
+        {
+            return $"Chat Id: {ChatId} \n" +
+                   $"Chat Type: {CommunityType} \n" +
+                   $"Chat Title: {Title} \n";
+        }
     }
 
     public static class ChatEntityMapper
