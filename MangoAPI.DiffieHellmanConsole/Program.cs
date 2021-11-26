@@ -46,6 +46,9 @@ namespace MangoAPI.DiffieHellmanConsole
                 case "login":
                     await Login(args);
                     break;
+                case "refresh-token":
+                    await RefreshTokenAsync();
+                    break;
                 case "key-exchange":
                     await RequestKeyExchange(args);
                     break;
@@ -76,6 +79,25 @@ namespace MangoAPI.DiffieHellmanConsole
             await TokensService.WriteTokensAsync(loginResponse);
 
             Console.WriteLine("Login operation success.\n");
+        }
+
+        private static async Task RefreshTokenAsync()
+        {
+            if (Tokens is null)
+            {
+                //Console.WriteLine("User is not authorized. Please login.");
+                return;
+            }
+            
+            var refreshToken = Tokens.RefreshToken;
+
+            Console.WriteLine("Refreshing tokens ...");
+            var refreshTokenResponse = await SessionsService.RefreshTokenAsync(refreshToken);
+            
+            Console.WriteLine("Writing tokens to file ...");
+            await TokensService.WriteTokensAsync(refreshTokenResponse);
+
+            Console.WriteLine("Refresh token operation was succeeded. \n");
         }
 
         private static async Task RequestKeyExchange(IReadOnlyList<string> args)
