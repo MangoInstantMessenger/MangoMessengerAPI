@@ -3,7 +3,7 @@ name: Heroku Environment CI/CD
 on: 
   push:
     branches:
-      - master
+      - master, MANGO-294
 
 jobs:
   build:
