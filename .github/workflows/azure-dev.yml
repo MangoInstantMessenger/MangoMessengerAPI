@@ -1,4 +1,4 @@
-﻿name: Azure Deploy
+﻿name: Azure Development environment CI/CD
 
 on: 
   push:
