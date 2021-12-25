@@ -19,13 +19,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 	ProjectSection(SolutionItems) = preProject
 		.dockerignore = .dockerignore
 		.gitignore = .gitignore
-		.github\workflows\azure.yml = .github\workflows\azure.yml
 		SqlScripts\Check_Db_Size.sql = SqlScripts\Check_Db_Size.sql
 		SqlScripts\DeleteMyUser.sql = SqlScripts\DeleteMyUser.sql
 		Dockerfile = Dockerfile
 		SqlScripts\Drop_All_Tables.sql = SqlScripts\Drop_All_Tables.sql
 		LICENSE.txt = LICENSE.txt
-		.github\workflows\main.yml = .github\workflows\main.yml
 		README.md = README.md
 		SqlScripts\Truncate_All_Tables.sql = SqlScripts\Truncate_All_Tables.sql
 		MANGO_API_POSTMAN_ENVIRONMENT.json = MANGO_API_POSTMAN_ENVIRONMENT.json
@@ -34,6 +32,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		SqlScripts\Truncate_PublicKeys.sql = SqlScripts\Truncate_PublicKeys.sql
 		.github\workflows\heroku.yml = .github\workflows\heroku.yml
 		Environments-Back.jpg = Environments-Back.jpg
+		.github\workflows\azure-dev.yml = .github\workflows\azure-dev.yml
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MangoAPI.DiffieHellmanConsole", "MangoAPI.DiffieHellmanConsole\MangoAPI.DiffieHellmanConsole.csproj", "{85D35610-B0C7-4439-871C-0578E1FC7BB5}"
