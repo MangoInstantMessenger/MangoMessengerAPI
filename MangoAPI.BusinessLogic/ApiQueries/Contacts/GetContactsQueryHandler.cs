@@ -10,8 +10,7 @@ using MangoAPI.BusinessLogic.Responses;
 
 namespace MangoAPI.BusinessLogic.ApiQueries.Contacts
 {
-    public class GetContactsQueryHandler
-        : IRequestHandler<GetContactsQuery, Result<GetContactsResponse>>
+    public class GetContactsQueryHandler : IRequestHandler<GetContactsQuery, Result<GetContactsResponse>>
     {
         private readonly MangoPostgresDbContext _postgresDbContext;
         private readonly ResponseFactory<GetContactsResponse> _responseFactory;

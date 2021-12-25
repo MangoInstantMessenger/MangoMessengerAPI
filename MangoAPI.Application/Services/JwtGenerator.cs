@@ -20,7 +20,7 @@ namespace MangoAPI.Application.Services
 
             if (tokenKey == null)
             {
-                throw new InvalidOperationException("Mango token key is null");
+                throw new InvalidOperationException("Mango token key is null.");
             }
 
             _key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(tokenKey));
