@@ -34,19 +34,11 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
 
         public async Task<Result<TokensResponse>> Handle(RegisterCommand request, CancellationToken cancellationToken)
         {
-            if (request.Email == EnvironmentConstants.MangoEmailNotificationsAddress)
-            {
-                const string errorMessage = ResponseMessageCodes.InvalidEmail;
-                var details = ResponseMessageCodes.ErrorDictionary[errorMessage];
-
-                return _responseFactory.ConflictResponse(errorMessage, details);
-            }
-
-            var exists = await _postgresDbContext.Users
+            var userExists = await _postgresDbContext.Users
                 .AsNoTracking()
-                .FirstOrDefaultAsync(x => x.Email == request.Email, cancellationToken);
+                .AnyAsync(x => x.Email == request.Email, cancellationToken);
 
-            if (exists != null)
+            if (userExists)
             {
                 const string errorMessage = ResponseMessageCodes.UserAlreadyExists;
                 var details = ResponseMessageCodes.ErrorDictionary[errorMessage];
@@ -98,7 +90,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
                 CreatedAt = DateTime.UtcNow,
             };
 
-            var jwtToken = _jwtGenerator.GenerateJwtToken(newUser.Id, new List<string>
+            var jwtToken = _jwtGenerator.GenerateJwtToken(newUser.Id, lifetimeMinutes: 600, new List<string>
             {
                 SeedDataConstants.UnverifiedRole
             });

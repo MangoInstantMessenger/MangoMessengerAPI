@@ -42,6 +42,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SQL", "SQL", "{2A176CBC-BD4
 		SqlScripts\PostgresDropAllTablesCascade.sql = SqlScripts\PostgresDropAllTablesCascade.sql
 		SqlScripts\PostgresTruncateAllTablesCascade.sql = SqlScripts\PostgresTruncateAllTablesCascade.sql
 		SqlScripts\PostgresTruncateKeyExchangeRequests.sql = SqlScripts\PostgresTruncateKeyExchangeRequests.sql
+		PostgresTruncatePasswordRestoreRequests.sql = PostgresTruncatePasswordRestoreRequests.sql
 		SqlScripts\PostgresTruncatePublicKeys.sql = SqlScripts\PostgresTruncatePublicKeys.sql
 		SqlScripts\PostrgresValidateDatabaseSize.sql = SqlScripts\PostrgresValidateDatabaseSize.sql
 	EndProjectSection
