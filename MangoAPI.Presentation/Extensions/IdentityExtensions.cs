@@ -17,6 +17,7 @@ namespace MangoAPI.Presentation.Extensions
                 options.Password.RequireUppercase = true;
                 options.Password.RequireLowercase = true;
             });
+
             var identityBuilder = new IdentityBuilder(builder.UserType, builder.Services);
             identityBuilder.AddEntityFrameworkStores<MangoPostgresDbContext>();
             identityBuilder.AddSignInManager<SignInManager<UserEntity>>();

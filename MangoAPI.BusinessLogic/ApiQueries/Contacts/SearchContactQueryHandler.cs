@@ -15,12 +15,14 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Contacts
     {
         private readonly MangoPostgresDbContext _postgresDbContext;
         private readonly ResponseFactory<SearchContactResponse> _responseFactory;
+        private readonly StringService _stringService;
 
         public SearchContactByDisplayNameQueryHandler(MangoPostgresDbContext postgresDbContext,
-            ResponseFactory<SearchContactResponse> responseFactory)
+            ResponseFactory<SearchContactResponse> responseFactory, StringService stringService)
         {
             _postgresDbContext = postgresDbContext;
             _responseFactory = responseFactory;
+            _stringService = stringService;
         }
 
         public async Task<Result<SearchContactResponse>> Handle(SearchContactQuery request,
@@ -36,7 +38,7 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Contacts
                     DisplayName = x.DisplayName,
                     Address = x.UserInformation.Address,
                     Bio = x.Bio,
-                    PictureUrl = StringService.GetDocumentUrl(x.Image),
+                    PictureUrl = _stringService.GetDocumentUrl(x.Image),
                     Email = x.Email,
                     PhoneNumber = x.PhoneNumber
                 });

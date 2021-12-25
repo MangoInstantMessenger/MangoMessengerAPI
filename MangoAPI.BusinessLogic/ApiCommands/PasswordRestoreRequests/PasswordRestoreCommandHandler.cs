@@ -28,19 +28,11 @@ namespace MangoAPI.BusinessLogic.ApiCommands.PasswordRestoreRequests
         public async Task<Result<ResponseBase>> Handle(PasswordRestoreCommand request, 
             CancellationToken cancellationToken)
         {
-            if (request.NewPassword != request.RepeatPassword)
-            {
-                const string errorMessage = ResponseMessageCodes.PasswordsAreNotSame;
-                var errorDescription = ResponseMessageCodes.ErrorDictionary[errorMessage];
-
-                return _responseFactory.ConflictResponse(errorMessage, errorDescription);
-            }
-
             var restorePasswordRequest =
                 await _postgresDbContext.PasswordRestoreRequests.FindPasswordRestoreRequestByIdAsync(request.RequestId,
                     cancellationToken);
 
-            if (restorePasswordRequest is not { IsValid: true })
+            if (restorePasswordRequest == null || !restorePasswordRequest.IsValid)
             {
                 const string errorMessage = ResponseMessageCodes.InvalidOrExpiredRestorePasswordRequest;
                 var errorDescription = ResponseMessageCodes.ErrorDictionary[errorMessage];
@@ -73,6 +65,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.PasswordRestoreRequests
 
             _postgresDbContext.Users.Update(user);
             _postgresDbContext.PasswordRestoreRequests.Remove(restorePasswordRequest);
+
             await _postgresDbContext.SaveChangesAsync(cancellationToken);
 
             return _responseFactory.SuccessResponse(ResponseBase.SuccessResponse);

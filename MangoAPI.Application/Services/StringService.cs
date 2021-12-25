@@ -2,9 +2,9 @@
 
 namespace MangoAPI.Application.Services
 {
-    public static class StringService
+    public class StringService
     {
-        public static string ConvertHerokuDbConnection(string databaseUrl)
+        public string ConvertHerokuDbConnection(string databaseUrl)
         {
             if (string.IsNullOrEmpty(databaseUrl) || !databaseUrl.Contains("postgres"))
             {
@@ -23,7 +23,7 @@ namespace MangoAPI.Application.Services
             return connectionString;
         }
 
-        public static string GetDocumentUrl(string fileName)
+        public string GetDocumentUrl(string fileName)
         {
             if (string.IsNullOrEmpty(fileName) || string.IsNullOrWhiteSpace(fileName))
             {
