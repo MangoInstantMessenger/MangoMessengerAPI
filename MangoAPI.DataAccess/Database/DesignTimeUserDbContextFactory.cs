@@ -12,7 +12,7 @@ namespace MangoAPI.DataAccess.Database
         {
             var optionsBuilder = new DbContextOptionsBuilder<MangoPostgresDbContext>();
 
-            var connectionString = EnvironmentConstants.DbConnectionString;
+            var connectionString = EnvironmentConstants.MangoDatabaseUrl;
 
             connectionString = StringService.ConvertHerokuDbConnection(connectionString);
 

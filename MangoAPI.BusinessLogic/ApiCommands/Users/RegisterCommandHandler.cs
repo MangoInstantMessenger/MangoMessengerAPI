@@ -36,7 +36,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
 
         public async Task<Result<TokensResponse>> Handle(RegisterCommand request, CancellationToken cancellationToken)
         {
-            if (request.Email == EnvironmentConstants.EmailSenderAddress)
+            if (request.Email == EnvironmentConstants.MangoEmailNotificationsAddress)
             {
                 const string errorMessage = ResponseMessageCodes.InvalidEmail;
                 var details = ResponseMessageCodes.ErrorDictionary[errorMessage];
@@ -85,7 +85,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
 
             await _emailSenderService.SendVerificationEmailAsync(newUser, cancellationToken);
 
-            var refreshLifetime = EnvironmentConstants.RefreshTokenLifeTime;
+            var refreshLifetime = EnvironmentConstants.MangoRefreshTokenLifetime;
 
             if (refreshLifetime == null || !int.TryParse(refreshLifetime, out var refreshLifetimeParsed))
             {

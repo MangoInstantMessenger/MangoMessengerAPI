@@ -30,7 +30,7 @@ namespace MangoAPI.Application.Services
                 return null;
             }
 
-            return $"{EnvironmentConstants.BackendAddress}Uploads/{fileName}";
+            return $"{EnvironmentConstants.MangoBackendAddress}Uploads/{fileName}";
         }
     }
 }

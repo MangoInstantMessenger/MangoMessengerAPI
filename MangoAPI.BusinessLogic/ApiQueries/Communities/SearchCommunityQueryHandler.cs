@@ -38,7 +38,7 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Communities
                     Title = x.Title,
                     CommunityType = (CommunityType)x.CommunityType,
                     ChatLogoImageUrl = x.Image != null
-                        ? $"{EnvironmentConstants.BackendAddress}Uploads/{x.Image}"
+                        ? $"{EnvironmentConstants.MangoBackendAddress}Uploads/{x.Image}"
                         : null,
                     Description = x.Description,
                     MembersCount = x.MembersCount,

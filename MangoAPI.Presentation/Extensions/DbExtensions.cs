@@ -11,7 +11,7 @@ namespace MangoAPI.Presentation.Extensions
     {
         public static IServiceCollection AddPostgresDb(this IServiceCollection services)
         {
-            var connectionString = EnvironmentConstants.DbConnectionString;
+            var connectionString = EnvironmentConstants.MangoDatabaseUrl;
 
             connectionString = StringService.ConvertHerokuDbConnection(connectionString);
 

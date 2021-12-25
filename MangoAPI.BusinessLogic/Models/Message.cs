@@ -65,11 +65,11 @@ namespace MangoAPI.BusinessLogic.Models
                 InReplayToText = message.InReplayToText,
 
                 MessageAuthorPictureUrl = image != null
-                    ? $"{EnvironmentConstants.BackendAddress}Uploads/{image}"
+                    ? $"{EnvironmentConstants.MangoBackendAddress}Uploads/{image}"
                     : null,
 
                 MessageAttachmentUrl = message.Attachment != null
-                    ? $"{EnvironmentConstants.BackendAddress}Uploads/{message.Attachment}"
+                    ? $"{EnvironmentConstants.MangoBackendAddress}Uploads/{message.Attachment}"
                     : null,
             };
 
