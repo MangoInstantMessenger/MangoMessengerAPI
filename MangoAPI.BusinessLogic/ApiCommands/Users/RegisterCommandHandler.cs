@@ -19,7 +19,6 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
         private readonly MangoPostgresDbContext _postgresDbContext;
         private readonly UserManager<UserEntity> _userManager;
         private readonly IJwtGenerator _jwtGenerator;
-        private readonly Random _random;
         private readonly ResponseFactory<TokensResponse> _responseFactory;
 
         public RegisterCommandHandler(UserManager<UserEntity> userManager, MangoPostgresDbContext postgresDbContext,
@@ -30,7 +29,6 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
             _postgresDbContext = postgresDbContext;
             _emailSenderService = emailSenderService;
             _jwtGenerator = jwtGenerator;
-            _random = new Random();
             _responseFactory = responseFactory;
         }
 
