@@ -24,6 +24,12 @@
 - `MANGO_DATABASE_URL`     (default `Server=localhost;User Id=your_login;Password=your_password;Database=MangoApiDatabase;`)
 - `MANGO_SEED_PASSWORD`
 
+## Environments
+
+- Azure Dev: https://back.mangomessenger.company/swagger (valid till 28-Oct-2022)
+- Azure QA: https://back.mangomesenger.company/swagger (valid till 28-Oct-2022)
+- Heroku: https://mango-messenger-back.herokuapp.com/swagger
+
 ## Workflows
 
 - Azure Dev. Branch: `azure-dev` based on `develop`, workflow started after merge with actual `develop`. Url: https://back.mangomessenger.company/swagger

@@ -2,8 +2,7 @@
 
 on: 
   push:
-    branches:
-      - azure-deploy
+    branches: [ azure-dev ]
 
 jobs:
   build:
@@ -35,15 +34,18 @@ jobs:
             StrictHostKeyChecking no
           END
       env: 
-        SSH_USER: ${{ secrets.SSH_USER }}
-        SSH_KEY: ${{ secrets.AZURE_SSH_KEY }}
-        SSH_HOST: ${{ secrets.SSH_HOST }}
+        SSH_USER: ${{ secrets.AZURE_DEV_SSH_USER }}
+        SSH_KEY: ${{ secrets.AZURE_DEV_SSH_KEY }}
+        SSH_HOST: ${{ secrets.AZURE_DEV_SSH_HOST }}
           
     - name: Stop service
       run: ssh staging "sudo systemctl stop mangoback"
       
     - name: Copy Release to Remote
-      run: scp -r -i ~/.ssh/id_rsa ~/mango-linux-build/src/* ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/home/${{ secrets.SSH_USER }}/mango-backend
+      run: scp -r -i ~/.ssh/id_rsa ~/mango-linux-build/src/* $SSH_USER@$SSH_HOST:/home/$SSH_USER/mango-backend
+      env:
+        SSH_USER: ${{ secrets.AZURE_DEV_SSH_USER }}
+        SSH_HOST: ${{ secrets.AZURE_DEV_SSH_HOST }}
       
     - name: Start service
       run: ssh staging "sudo systemctl start mangoback"
