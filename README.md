@@ -24,6 +24,16 @@
 - `MANGO_DATABASE_URL`     (default `Server=localhost;User Id=your_login;Password=your_password;Database=MangoApiDatabase;`)
 - `MANGO_SEED_PASSWORD`
 
+## Workflows
+
+- Azure Dev. Branch: `azure-dev` based on `develop`, workflow started after merge with actual `develop`. Url: https://back.mangomessenger.company/swagger
+- Azure QA. Branch: `azure-qa` based on `develop`, workflow started after merge with actual `develop`. Url: https://back.mangomesenger.company/swagger
+- Heroku. Branch: `master` workflow started after actual `develop` merged to `master`. Url: https://mango-messenger-back.herokuapp.com/swagger
+
+As image below shows
+
+![Environments](Environments-Back.jpg?raw=true)
+
 ## About tasks management
 - Each task is assigned a number (MANGO-ID)
 - Tasks are at Trello board https://trello.com/b/Z7IlfrRb/mango-messenger-trello

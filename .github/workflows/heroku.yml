@@ -1,4 +1,4 @@
-name: Push Container to Heroku
+name: Heroku Environment CI/CD
 
 on: 
   push:
