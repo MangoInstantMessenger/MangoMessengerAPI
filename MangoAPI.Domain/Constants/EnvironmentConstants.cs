@@ -4,26 +4,29 @@ namespace MangoAPI.Domain.Constants
 {
     public static class EnvironmentConstants
     {
-        public static string MangoTokenKey => Environment.GetEnvironmentVariable("MANGO_TOKEN_KEY");
+        public static string MangoJwtIssuer => Environment.GetEnvironmentVariable("MANGO_JWT_ISSUER");
 
-        public static string MangoIssuer => Environment.GetEnvironmentVariable("MANGO_ISSUER");
+        public static string MangoJwtAudience => Environment.GetEnvironmentVariable("MANGO_JWT_AUDIENCE");
 
-        public static string MangoAudience => Environment.GetEnvironmentVariable("MANGO_AUDIENCE");
+        public static string MangoJwtSignKey => Environment.GetEnvironmentVariable("MANGO_JWT_SIGN_KEY");
 
-        public static string JwtLifeTime => Environment.GetEnvironmentVariable("JWT_LIFETIME");
+        public static string MangoJwtLifetime => Environment.GetEnvironmentVariable("MANGO_JWT_LIFETIME");
 
-        public static string RefreshTokenLifeTime => Environment.GetEnvironmentVariable("REFRESH_TOKEN_LIFETIME");
+        public static string MangoRefreshTokenLifetime =>
+            Environment.GetEnvironmentVariable("MANGO_REFRESH_TOKEN_LIFETIME");
 
-        public static string DbConnectionString => Environment.GetEnvironmentVariable("DATABASE_URL");
+        public static string MangoEmailNotificationsAddress =>
+            Environment.GetEnvironmentVariable("MANGO_EMAIL_NOTIFICATIONS_ADDRESS");
 
-        public static string EmailSenderAddress => Environment.GetEnvironmentVariable("EMAIL_SENDER_ADDRESS");
+        public static string MangoEmailNotificationsPassword =>
+            Environment.GetEnvironmentVariable("MANGO_EMAIL_NOTIFICATIONS_PASSWORD");
 
-        public static string EmailSenderPassword => Environment.GetEnvironmentVariable("EMAIL_SENDER_PASSWORD");
+        public static string MangoFrontendAddress => Environment.GetEnvironmentVariable("MANGO_FRONTEND_ADDRESS");
 
-        public static string FrontendAddress => Environment.GetEnvironmentVariable("FRONTEND_ADDRESS");
-        
-        public static string BackendAddress => Environment.GetEnvironmentVariable("BACKEND_ADDRESS");
+        public static string MangoBackendAddress => Environment.GetEnvironmentVariable("MANGO_BACKEND_ADDRESS");
 
-        public static string SeedPassword => Environment.GetEnvironmentVariable("SEED_PASSWORD");
+        public static string MangoDatabaseUrl => Environment.GetEnvironmentVariable("MANGO_DATABASE_URL");
+
+        public static string MangoSeedPassword => Environment.GetEnvironmentVariable("MANGO_SEED_PASSWORD");
     }
 }

@@ -55,7 +55,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Sessions
                     break;
             }
 
-            var refreshLifetime = EnvironmentConstants.RefreshTokenLifeTime;
+            var refreshLifetime = EnvironmentConstants.MangoRefreshTokenLifetime;
 
             if (refreshLifetime == null || !int.TryParse(refreshLifetime, out var refreshLifetimeParsed))
             {

@@ -10,24 +10,29 @@
 [![Mango Database Diagramm](https://img.shields.io/badge/Data%20Base%20Diagram-DbDiagram-lightgrey)](https://dbdiagram.io/d/60d66a13dd6a597148203e6b) 
 [![Heroku](https://img.shields.io/badge/Deploy-Heroku-yellowgreen)](https://mango-messenger-app.herokuapp.com/swagger/)
 
-## Database connection
+## Required Environment Variables
 
-- Setup System Environment variable `DATABASE_URL` with value `Server=localhost;User Id=your_login;Password=your_password;Database=MangoApiDatabase;`
-- Replace the `your_login` and `your_password` by your credentials
-- Reload project in your IDE
+- `MANGO_JWT_ISSUER`   (default http://localhost:4200)
+- `MANGO_JWT_AUDIENCE` (default http://localhost:5001)
+- `MANGO_JWT_SIGN_KEY`
+- `MANGO_JWT_LIFETIME` 			 (default 5 mins)
+- `MANGO_REFRESH_TOKEN_LIFETIME` (default 7 days)
+- `MANGO_EMAIL_NOTIFICATIONS_ADDRESS`
+- `MANGO_EMAIL_NOTIFICATIONS_PASSWORD`
+- `MANGO_FRONTEND_ADDRESS` (default http://localhost:4200/)
+- `MANGO_BACKEND_ADDRESS`  (default http://localhost:5001/)
+- `MANGO_DATABASE_URL`     (default `Server=localhost;User Id=your_login;Password=your_password;Database=MangoApiDatabase;`)
+- `MANGO_SEED_PASSWORD`
 
-## Other Environment Variables
+## Workflows
 
-- `MANGO_ISSUER`, `https://localhost:5001`
-- `MANGO_AUDIENCE`, `https://localhost:5000`
-- `MANGO_TOKEN_KEY`, `Private RSA key`
-- `SEED_PASSWORD`, string
-- `JWT_LIFETIME`, integer
-- `REFRESH_TOKEN_LIFETIME`, integer
-- `EMAIL_SENDER_ADDRESS`, string
-- `EMAIL_SENDER_PASSWORD`, string
-- `FRONTEND_ADDRESS`, string (default http://localhost:4200)
-- `BACKEND_ADDRESS`, string (default http://localhost:5001)
+- Azure Dev. Branch: `azure-dev` based on `develop`, workflow started after merge with actual `develop`. Url: https://back.mangomessenger.company/swagger
+- Azure QA. Branch: `azure-qa` based on `develop`, workflow started after merge with actual `develop`. Url: https://back.mangomesenger.company/swagger
+- Heroku. Branch: `master` workflow started after actual `develop` merged to `master`. Url: https://mango-messenger-back.herokuapp.com/swagger
+
+As image below shows
+
+![Environments](Environments-Back.jpg?raw=true)
 
 ## About tasks management
 - Each task is assigned a number (MANGO-ID)

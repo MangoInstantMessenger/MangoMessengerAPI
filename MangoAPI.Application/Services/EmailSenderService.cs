@@ -14,7 +14,7 @@ namespace MangoAPI.Application.Services
     {
         public async Task SendVerificationEmailAsync(UserEntity user, CancellationToken cancellationToken)
         {
-            var senderEmail = EnvironmentConstants.EmailSenderAddress;
+            var senderEmail = EnvironmentConstants.MangoEmailNotificationsAddress;
             var smtpClient = GetGmailSmtpClient();
 
             var verificationMessage = VerifyEmailMessage.GetVerificationMessage(senderEmail, user);
@@ -24,8 +24,8 @@ namespace MangoAPI.Application.Services
 
         private static SmtpClient GetGmailSmtpClient()
         {
-            var senderEmail = EnvironmentConstants.EmailSenderAddress;
-            var senderPassword = EnvironmentConstants.EmailSenderPassword;
+            var senderEmail = EnvironmentConstants.MangoEmailNotificationsAddress;
+            var senderPassword = EnvironmentConstants.MangoEmailNotificationsPassword;
             var credentials = new NetworkCredential(senderEmail, senderPassword);
 
             var smtpClient = new SmtpClient
@@ -41,7 +41,7 @@ namespace MangoAPI.Application.Services
 
         public async Task SendPasswordRestoreRequest(UserEntity user, Guid requestId, CancellationToken cancellationToken)
         {
-            var senderEmail = EnvironmentConstants.EmailSenderAddress;
+            var senderEmail = EnvironmentConstants.MangoEmailNotificationsAddress;
             var smtpClient = GetGmailSmtpClient();
 
             var verificationMessage = VerifyEmailMessage.GetPasswordRestoreMessage(senderEmail, user, requestId);
@@ -71,7 +71,7 @@ namespace MangoAPI.Application.Services
                 "<body>" +
                 $"<p>Hi, {user.DisplayName}, please follow this link.</p>" +
                 "<br>" +
-                $"<a href='{EnvironmentConstants.FrontendAddress}/verify-email?email={user.Email}&emailCode={user.EmailCode}'>" +
+                $"<a href='{EnvironmentConstants.MangoFrontendAddress}/verify-email?email={user.Email}&emailCode={user.EmailCode}'>" +
                 "Verify email" +
                 "</a>" +
                 "<br>" +
@@ -105,7 +105,7 @@ namespace MangoAPI.Application.Services
                 "<body>" +
                 $"<p>Hi, {user.DisplayName}, please follow the link to restore password.</p>" +
                 "<br>" +
-                $"<a href='{EnvironmentConstants.FrontendAddress}/restore-password-form?requestId={requestId}'>" +
+                $"<a href='{EnvironmentConstants.MangoFrontendAddress}/restore-password-form?requestId={requestId}'>" +
                 "Restore Password" +
                 "</a>" +
                 "<br>" +

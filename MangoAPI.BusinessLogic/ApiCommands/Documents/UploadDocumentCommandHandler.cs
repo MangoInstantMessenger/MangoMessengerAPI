@@ -44,7 +44,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Documents
             _postgresDbContext.Documents.Add(documentEntity);
             await _postgresDbContext.SaveChangesAsync(cancellationToken);
 
-            var fileUrl = $"{EnvironmentConstants.BackendAddress}Uploads/{documentEntity.FileName}";
+            var fileUrl = $"{EnvironmentConstants.MangoBackendAddress}Uploads/{documentEntity.FileName}";
             
             return _responseFactory.SuccessResponse(
                 UploadDocumentResponse.FromSuccess(documentEntity.FileName, fileUrl));

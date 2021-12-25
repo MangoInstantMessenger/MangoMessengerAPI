@@ -16,7 +16,7 @@ namespace MangoAPI.Application.Services
 
         public JwtGenerator()
         {
-            var tokenKey = EnvironmentConstants.MangoTokenKey;
+            var tokenKey = EnvironmentConstants.MangoJwtSignKey;
 
             if (tokenKey == null)
             {
@@ -35,7 +35,7 @@ namespace MangoAPI.Application.Services
 
             roles.ForEach(x => claims.Add(new Claim(ClaimsIdentity.DefaultRoleClaimType, x)));
 
-            var jwtLifetime = EnvironmentConstants.JwtLifeTime;
+            var jwtLifetime = EnvironmentConstants.MangoJwtLifetime;
 
             if (jwtLifetime == null || !int.TryParse(jwtLifetime, out var jwtLifetimeParsed))
             {
@@ -49,8 +49,8 @@ namespace MangoAPI.Application.Services
                 Subject = new ClaimsIdentity(claims),
                 Expires = DateTime.UtcNow.AddMinutes(jwtLifetimeParsed),
                 SigningCredentials = credentials,
-                Issuer = EnvironmentConstants.MangoIssuer,
-                Audience = EnvironmentConstants.MangoAudience,
+                Issuer = EnvironmentConstants.MangoJwtIssuer,
+                Audience = EnvironmentConstants.MangoJwtAudience,
             };
 
             var tokenHandler = new JwtSecurityTokenHandler();

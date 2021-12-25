@@ -11,6 +11,7 @@
 *.userosscache
 *.sln.docstates
 *.xlsx
+*.bak
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs

@@ -23,7 +23,7 @@ namespace MangoAPI.Presentation.Extensions
 
         public static IServiceCollection AddAppAuthentication(this IServiceCollection services)
         {
-            var tokenKey = EnvironmentConstants.MangoTokenKey;
+            var tokenKey = EnvironmentConstants.MangoJwtSignKey;
             var signingKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(tokenKey));
 
             services.AddAuthentication(options =>
@@ -37,9 +37,9 @@ namespace MangoAPI.Presentation.Extensions
                     configure.RequireHttpsMetadata = false;
                     configure.TokenValidationParameters = new TokenValidationParameters
                     {
-                        ValidIssuer = EnvironmentConstants.MangoIssuer,
+                        ValidIssuer = EnvironmentConstants.MangoJwtIssuer,
                         ValidateIssuer = true,
-                        ValidAudience = EnvironmentConstants.MangoAudience,
+                        ValidAudience = EnvironmentConstants.MangoJwtAudience,
                         ValidateAudience = true,
                         ValidateLifetime = true,
                         IssuerSigningKey = signingKey,

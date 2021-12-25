@@ -155,22 +155,22 @@ namespace MangoAPI.DataAccess.Database.Configurations
 
             var passwordHasher = new PasswordHashService();
 
-            var password = EnvironmentConstants.SeedPassword;
+            var password = EnvironmentConstants.MangoSeedPassword;
 
             if (password == null)
             {
                 throw new InvalidOperationException("SEED_PASSWORD_ENV_VARIABLE_ERROR");
             }
 
-            passwordHasher.HashPassword(user1, EnvironmentConstants.SeedPassword);
-            passwordHasher.HashPassword(user2, EnvironmentConstants.SeedPassword);
-            passwordHasher.HashPassword(user3, EnvironmentConstants.SeedPassword);
-            passwordHasher.HashPassword(user4, EnvironmentConstants.SeedPassword);
-            passwordHasher.HashPassword(user5, EnvironmentConstants.SeedPassword);
-            passwordHasher.HashPassword(user6, EnvironmentConstants.SeedPassword);
-            passwordHasher.HashPassword(user7, EnvironmentConstants.SeedPassword);
-            passwordHasher.HashPassword(user8, EnvironmentConstants.SeedPassword);
-            passwordHasher.HashPassword(user9, EnvironmentConstants.SeedPassword);
+            passwordHasher.HashPassword(user1, EnvironmentConstants.MangoSeedPassword);
+            passwordHasher.HashPassword(user2, EnvironmentConstants.MangoSeedPassword);
+            passwordHasher.HashPassword(user3, EnvironmentConstants.MangoSeedPassword);
+            passwordHasher.HashPassword(user4, EnvironmentConstants.MangoSeedPassword);
+            passwordHasher.HashPassword(user5, EnvironmentConstants.MangoSeedPassword);
+            passwordHasher.HashPassword(user6, EnvironmentConstants.MangoSeedPassword);
+            passwordHasher.HashPassword(user7, EnvironmentConstants.MangoSeedPassword);
+            passwordHasher.HashPassword(user8, EnvironmentConstants.MangoSeedPassword);
+            passwordHasher.HashPassword(user9, EnvironmentConstants.MangoSeedPassword);
 
             builder.HasData(user1, user2, user3, user4, user5, user6, user7, user8, user9);
         }

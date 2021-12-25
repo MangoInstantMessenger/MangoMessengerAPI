@@ -108,7 +108,7 @@ namespace MangoAPI.Tests.ApiCommandsTests.Users
             var command = new RegisterCommand
             {
                 PhoneNumber = "+1 234 567 89",
-                Email = EnvironmentConstants.EmailSenderAddress,
+                Email = EnvironmentConstants.MangoEmailNotificationsAddress,
                 DisplayName = "Test User",
                 Password = "WzLxl12{#@>?24",
                 TermsAccepted = true,
