@@ -12,8 +12,6 @@ namespace MangoAPI.Domain.Entities
 
         public string Bio { get; set; }
 
-        public int? PhoneCode { get; set; }
-
         public Guid EmailCode { get; set; }
 
         public ICollection<PasswordRestoreRequestEntity> PasswordRestoreRequests { get; set; }

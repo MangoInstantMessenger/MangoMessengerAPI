@@ -46,8 +46,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
 
             var exists = await _postgresDbContext.Users
                 .AsNoTracking()
-                .FirstOrDefaultAsync(x => x.PhoneNumber == request.PhoneNumber || 
-                                          x.Email == request.Email, cancellationToken);
+                .FirstOrDefaultAsync(x => x.Email == request.Email, cancellationToken);
 
             if (exists != null)
             {
@@ -59,12 +58,10 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
 
             var newUser = new UserEntity
             {
-                PhoneNumber = request.PhoneNumber,
                 DisplayName = request.DisplayName,
                 UserName = Guid.NewGuid().ToString(),
                 Email = request.Email,
                 EmailCode = Guid.NewGuid(),
-                PhoneCode = _random.Next(100000, 999999)
             };
 
             var result = await _userManager.CreateAsync(newUser, request.Password);

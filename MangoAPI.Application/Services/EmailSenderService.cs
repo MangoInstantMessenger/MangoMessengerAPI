@@ -17,11 +17,21 @@ namespace MangoAPI.Application.Services
             var senderEmail = EnvironmentConstants.MangoEmailNotificationsAddress;
             var smtpClient = GetGmailSmtpClient();
 
-            var verificationMessage = VerifyEmailMessage.GetVerificationMessage(senderEmail, user);
+            var verificationMessage = EmailMessages.GetVerificationMessage(senderEmail, user);
 
             await smtpClient.SendMailAsync(verificationMessage, cancellationToken);
         }
 
+        public async Task SendPasswordRestoreRequest(UserEntity user, Guid requestId, CancellationToken cancellationToken)
+        {
+            var senderEmail = EnvironmentConstants.MangoEmailNotificationsAddress;
+            var smtpClient = GetGmailSmtpClient();
+
+            var verificationMessage = EmailMessages.GetPasswordRestoreMessage(senderEmail, user, requestId);
+
+            await smtpClient.SendMailAsync(verificationMessage, cancellationToken);
+        }
+        
         private static SmtpClient GetGmailSmtpClient()
         {
             var senderEmail = EnvironmentConstants.MangoEmailNotificationsAddress;
@@ -38,19 +48,9 @@ namespace MangoAPI.Application.Services
 
             return smtpClient;
         }
-
-        public async Task SendPasswordRestoreRequest(UserEntity user, Guid requestId, CancellationToken cancellationToken)
-        {
-            var senderEmail = EnvironmentConstants.MangoEmailNotificationsAddress;
-            var smtpClient = GetGmailSmtpClient();
-
-            var verificationMessage = VerifyEmailMessage.GetPasswordRestoreMessage(senderEmail, user, requestId);
-
-            await smtpClient.SendMailAsync(verificationMessage, cancellationToken);
-        }
     }
 
-    public static class VerifyEmailMessage
+    public static class EmailMessages
     {
         public static MailMessage GetVerificationMessage(string senderEmail, UserEntity user)
         {
@@ -74,8 +74,6 @@ namespace MangoAPI.Application.Services
                 $"<a href='{EnvironmentConstants.MangoFrontendAddress}/verify-email?email={user.Email}&emailCode={user.EmailCode}'>" +
                 "Verify email" +
                 "</a>" +
-                "<br>" +
-                $"<p>Your phone confirmation code is: {user.PhoneCode} </p>" +
                 "</body>";
 
             message.IsBodyHtml = true;

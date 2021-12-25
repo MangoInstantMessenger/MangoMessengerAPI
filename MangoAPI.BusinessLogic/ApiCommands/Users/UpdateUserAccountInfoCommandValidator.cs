@@ -29,14 +29,6 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
                 .NotEmpty()
                 .Length(1, 40);
 
-            RuleFor(x => x.PhoneNumber)
-                .Cascade(CascadeMode.Stop)
-                .NotEmpty()
-                .Length(1, 40);
-
-            RuleFor(x => x.PhoneNumber)
-                .Must(x => long.TryParse(x, out var parsed) && parsed > 0 && parsed < 1_000_000_000_000);
-
             RuleFor(x => x.UserId).NotEmpty();
 
             RuleFor(x => x.Username)

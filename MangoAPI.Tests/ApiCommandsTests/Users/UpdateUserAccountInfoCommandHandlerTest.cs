@@ -21,7 +21,6 @@ namespace MangoAPI.Tests.ApiCommandsTests.Users
             var command = new UpdateUserAccountInfoCommand
             {
                 UserId = SeedDataConstants.PetroId,
-                PhoneNumber = "544390737573",
                 BirthdayDate = DateTime.UtcNow,
                 Email = "petro.kolosov@wp.pl",
                 Website = null,
@@ -46,7 +45,6 @@ namespace MangoAPI.Tests.ApiCommandsTests.Users
             var command = new UpdateUserAccountInfoCommand
             {
                 UserId = Guid.NewGuid(),
-                PhoneNumber = "544390737573",
                 BirthdayDate = DateTime.UtcNow,
                 Email = "petro.kolosov@wp.pl",
                 Website = null,

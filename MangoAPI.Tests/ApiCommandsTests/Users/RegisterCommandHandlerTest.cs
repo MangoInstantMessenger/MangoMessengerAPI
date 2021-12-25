@@ -56,7 +56,6 @@ namespace MangoAPI.Tests.ApiCommandsTests.Users
                 emailSender.Object, jwtGenerator.Object, responseFactory);
             var command = new RegisterCommand
             {
-                PhoneNumber = "+1 234 567 89",
                 Email = "test@mail.com",
                 DisplayName = "Test User",
                 Password = "WzLxl12{#@>?24",
@@ -107,7 +106,6 @@ namespace MangoAPI.Tests.ApiCommandsTests.Users
                 emailSender.Object, jwtGenerator.Object, responseFactory);
             var command = new RegisterCommand
             {
-                PhoneNumber = "+1 234 567 89",
                 Email = EnvironmentConstants.MangoEmailNotificationsAddress,
                 DisplayName = "Test User",
                 Password = "WzLxl12{#@>?24",
@@ -159,7 +157,6 @@ namespace MangoAPI.Tests.ApiCommandsTests.Users
                 emailSender.Object, jwtGenerator.Object, responseFactory);
             var command = new RegisterCommand
             {
-                PhoneNumber = "+1 234 567 89",
                 Email = "kolosovp95@gmail.com",
                 DisplayName = "Test User",
                 Password = "WzLxl12{#@>?24",

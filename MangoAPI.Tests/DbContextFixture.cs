@@ -96,7 +96,6 @@ namespace MangoAPI.Tests
                     Email = "xachulxx@gmail.com",
                     NormalizedEmail = "XACHULXX@GMAIL.COM",
                     EmailConfirmed = true,
-                    PhoneNumberConfirmed = true,
                 };
 
                 var user2 = new UserEntity
@@ -109,7 +108,6 @@ namespace MangoAPI.Tests
                     Email = "kolosovp95@gmail.com",
                     NormalizedEmail = "KOLOSOVP94@GMAIL.COM",
                     EmailConfirmed = true,
-                    PhoneNumberConfirmed = true,
                 };
 
                 var user3 = new UserEntity
@@ -122,7 +120,6 @@ namespace MangoAPI.Tests
                     Email = "kolbasator@gmail.com",
                     NormalizedEmail = "KOLBASATOR@GMAIL.COM",
                     EmailConfirmed = true,
-                    PhoneNumberConfirmed = true,
                 };
 
                 var user4 = new UserEntity
@@ -135,8 +132,6 @@ namespace MangoAPI.Tests
                     Email = "amelit@gmail.com",
                     NormalizedEmail = "AMELIT@GMAIL.COM",
                     EmailConfirmed = false,
-                    PhoneNumberConfirmed = false,
-                    PhoneCode = 555555
                 };
 
                 var user5 = new UserEntity
@@ -149,7 +144,6 @@ namespace MangoAPI.Tests
                     Email = "petro.kolosov@wp.pl",
                     NormalizedEmail = "PETRO.KOLOSOV@WP.PL",
                     EmailConfirmed = true,
-                    PhoneNumberConfirmed = true,
                 };
 
                 var user6 = new UserEntity
@@ -162,7 +156,6 @@ namespace MangoAPI.Tests
                     Email = "szymon.murawski@wp.pl",
                     NormalizedEmail = "SZYMON.MURAWSKI@WP.PL",
                     EmailConfirmed = true,
-                    PhoneNumberConfirmed = true,
                 };
 
                 var user7 = new UserEntity
@@ -175,7 +168,6 @@ namespace MangoAPI.Tests
                     Email = "illia.zubachov@wp.pl",
                     NormalizedEmail = "ILLIA.ZUBACHOW@WP.PL",
                     EmailConfirmed = true,
-                    PhoneNumberConfirmed = true,
                 };
 
                 var user8 = new UserEntity
@@ -188,7 +180,6 @@ namespace MangoAPI.Tests
                     Email = "arslanbek.temirbekov@wp.pl",
                     NormalizedEmail = "ARSLANBEK.TEMIRBEKOV@WP.PL",
                     EmailConfirmed = true,
-                    PhoneNumberConfirmed = true,
                 };
 
                 var user9 = new UserEntity
@@ -201,7 +192,6 @@ namespace MangoAPI.Tests
                     Email = "serhii.holishevskii@wp.pl",
                     NormalizedEmail = "SERHII.HOLISHEVSKII@WP.PL",
                     EmailConfirmed = true,
-                    PhoneNumberConfirmed = true,
                 };
 
                 return new List<UserEntity>
