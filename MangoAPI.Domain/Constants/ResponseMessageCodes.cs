@@ -8,7 +8,7 @@ namespace MangoAPI.Domain.Constants
         {
             { InvalidOrExpiredRefreshToken, "Your refresh token is invalid or expired." },
             { UserAlreadyExists, "User already exists in the system." },
-            { InvalidCredentials, "Invalid credentials. Please, enter valid email/phone and password." },
+            { InvalidCredentials, "Invalid credentials. Please, enter valid email and password." },
             { InvalidEmail, "Email address is invalid." },
             {
                 WeakPassword,

@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using System.Linq;
 
 namespace MangoAPI.BusinessLogic.ApiCommands.PasswordRestoreRequests
 {
@@ -7,16 +8,23 @@ namespace MangoAPI.BusinessLogic.ApiCommands.PasswordRestoreRequests
         public PasswordRestoreCommandValidator()
         {
             RuleFor(x => x.NewPassword)
-                .Cascade(CascadeMode.Stop)
+                .Equal(x => x.RepeatPassword)
+                .WithMessage("Passwords should be same.")
                 .NotEmpty()
-                .Length(1, 50);
-
-            RuleFor(x => x.RepeatPassword)
-                .Cascade(CascadeMode.Stop)
-                .NotEmpty()
-                .Length(1, 50);
+                .Must(PasswordIsStrong)
+                .WithMessage("Password must be at least 8 characters with: 1 uppercase, 1 lowercase, 1 digit, 1 symbol.")
+                .Length(8, 50);
 
             RuleFor(x => x.RequestId).NotEmpty();
+        }
+
+        private bool PasswordIsStrong(string pass)
+        {
+            return pass.Length >= 8
+                && pass.Any(char.IsUpper)
+                && pass.Any(char.IsLower)
+                && pass.Any(char.IsDigit)
+                && pass.Any(char.IsSymbol);
         }
     }
 }

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace MangoAPI.BusinessLogic.Extensions
+namespace MangoAPI.DiffieHellmanConsole.Extensions
 {
     public static class StringByteExtensions
     {

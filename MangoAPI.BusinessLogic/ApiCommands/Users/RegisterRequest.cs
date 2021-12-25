@@ -8,23 +8,16 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
     {
         [JsonConstructor]
         public RegisterRequest(
-            long phoneNumber,
             string email,
             string displayName,
             string password,
-            VerificationMethod verificationMethod,
             bool termsAccepted)
         {
-            PhoneNumber = phoneNumber;
             Email = email;
             DisplayName = displayName;
             Password = password;
-            VerificationMethod = verificationMethod;
             TermsAccepted = termsAccepted;
         }
-
-        [DefaultValue(38_094_228_93_22)]
-        public long PhoneNumber { get; }
 
         [DefaultValue("test@gmail.com")]
         public string Email { get; }
@@ -34,9 +27,6 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
 
         [DefaultValue("x[?6dME#xrp=nr7q")]
         public string Password { get; }
-
-        [DefaultValue(2)]
-        public VerificationMethod VerificationMethod { get; }
 
         [DefaultValue(true)]
         public bool TermsAccepted { get; }

@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using MangoAPI.Domain.Constants;
 
 namespace MangoAPI.BusinessLogic.ApiCommands.Users
 {
@@ -7,8 +8,12 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
         public RegisterCommandValidator()
         {
             RuleFor(x => x.Email)
-                .Cascade(CascadeMode.Stop)
                 .NotEmpty()
+                .WithMessage("Email address required.")
+                .EmailAddress()
+                .WithMessage("Email address should be in proper format.")
+                .NotEqual(EnvironmentConstants.MangoEmailNotificationsAddress)
+                .WithMessage("Prohibited email address")
                 .Length(1, 50);
 
             RuleFor(x => x.Password)
@@ -20,14 +25,6 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
                 .Cascade(CascadeMode.Stop)
                 .NotEmpty()
                 .Length(1, 50);
-
-            RuleFor(x => x.VerificationMethod).IsInEnum();
-
-            RuleFor(x => x.PhoneNumber)
-                .Cascade(CascadeMode.Stop)
-                .NotEmpty();
-
-            RuleFor(x => x.PhoneNumber).Must(x => x.Length <= 14);
 
             RuleFor(x => x.TermsAccepted).Equal(true);
         }

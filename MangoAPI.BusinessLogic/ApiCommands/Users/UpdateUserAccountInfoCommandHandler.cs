@@ -60,8 +60,6 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
 
             user.UserInformation.BirthDay = request.BirthdayDate;
 
-            user.PhoneNumber = request.PhoneNumber;
-
             user.Email = request.Email;
 
             user.UserInformation.Website = request.Website;

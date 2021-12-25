@@ -7,7 +7,6 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
     public record UpdateUserAccountInfoCommand : IRequest<Result<ResponseBase>>
     {
         public Guid UserId { get; set; }
-        public string PhoneNumber { get; init; }
         public DateTime? BirthdayDate { get; init; }
         public string Email { get; init; }
         public string Website { get; init; }
