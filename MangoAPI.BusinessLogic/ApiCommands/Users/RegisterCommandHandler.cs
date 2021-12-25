@@ -22,7 +22,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
         private readonly ResponseFactory<TokensResponse> _responseFactory;
 
         public RegisterCommandHandler(UserManager<UserEntity> userManager, MangoPostgresDbContext postgresDbContext,
-            IEmailSenderService emailSenderService, IJwtGenerator jwtGenerator, 
+            IEmailSenderService emailSenderService, IJwtGenerator jwtGenerator,
             ResponseFactory<TokensResponse> responseFactory)
         {
             _userManager = userManager;
