@@ -1,8 +1,8 @@
-﻿name: Azure Development environment CI/CD
+﻿name: Azure QA environment CI/CD
 
 on: 
   push:
-    branches: [ azure-dev ]
+    branches: [ azure-qa ]
 
 jobs:
   build:
@@ -34,9 +34,9 @@ jobs:
             StrictHostKeyChecking no
           END
       env: 
-        SSH_USER: ${{ secrets.AZURE_DEV_SSH_USER }}
-        SSH_KEY: ${{ secrets.AZURE_DEV_SSH_KEY }}
-        SSH_HOST: ${{ secrets.AZURE_DEV_SSH_HOST }}
+        SSH_USER: ${{ secrets.AZURE_QA_SSH_USER }}
+        SSH_KEY: ${{ secrets.AZURE_QA_SSH_KEY }}
+        SSH_HOST: ${{ secrets.AZURE_QA_SSH_HOST }}
           
     - name: Stop service
       run: ssh staging "sudo systemctl stop mangoback"
@@ -44,8 +44,8 @@ jobs:
     - name: Copy Release to Remote
       run: scp -r -i ~/.ssh/id_rsa ~/mango-linux-build/src/* $SSH_USER@$SSH_HOST:/home/$SSH_USER/mango-backend
       env:
-        SSH_USER: ${{ secrets.AZURE_DEV_SSH_USER }}
-        SSH_HOST: ${{ secrets.AZURE_DEV_SSH_HOST }}
+        SSH_USER: ${{ secrets.AZURE_QA_SSH_USER }}
+        SSH_HOST: ${{ secrets.AZURE_QA_SSH_HOST }}
       
     - name: Start service
       run: ssh staging "sudo systemctl start mangoback"
