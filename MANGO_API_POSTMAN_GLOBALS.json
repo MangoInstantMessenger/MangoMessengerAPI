@@ -1,5 +1,5 @@
 {
-	"id": "146e52f0-fd32-4814-8e58-8a3c0f4d5eb7",
+	"id": "7bbe36e4-2d7e-4e29-82d9-d4bc5ebd273a",
 	"values": [
 		{
 			"key": "API_URL",
@@ -35,10 +35,25 @@
 			"key": "SZYMON_ID",
 			"value": "5e7274ad-3132-4ad7-be36-38778a8f7b1c",
 			"enabled": true
+		},
+		{
+			"key": "KHACHATUR_EMAIL",
+			"value": "xachulxx@gmail.com",
+			"enabled": true
+		},
+		{
+			"key": "RAZUMOVSKY_EMAIL",
+			"value": "kolosovp95@gmail.com",
+			"enabled": true
+		},
+		{
+			"key": "SEED_USERS_PASSWORD",
+			"value": "z[?6dMR#xmp=nr6q",
+			"enabled": true
 		}
 	],
-	"name": "My Workspace Globals",
+	"name": "Globals",
 	"_postman_variable_scope": "globals",
-	"_postman_exported_at": "2021-11-16T23:48:43.561Z",
-	"_postman_exported_using": "Postman/8.12.2"
+	"_postman_exported_at": "2021-12-26T16:10:18.060Z",
+	"_postman_exported_using": "Postman/9.6.2"
 }
