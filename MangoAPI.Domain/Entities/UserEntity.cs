@@ -29,5 +29,7 @@ namespace MangoAPI.Domain.Entities
         public ICollection<KeyExchangeRequestEntity> KeyExchangeRequests { get; set; }
 
         public ICollection<PublicKeyEntity> PublicKeys { get; set; }
+
+        public ICollection<DocumentEntity> Documents { get; set; }
     }
 }

@@ -25,6 +25,8 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Documents
                     return allowedExtensions.Contains(validExtension);
                 })
                 .Length(1, 20);
+
+            RuleFor(x => x.UserId).NotEmpty();
         }
     }
 }

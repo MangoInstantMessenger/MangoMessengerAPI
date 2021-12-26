@@ -2,12 +2,12 @@
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
+using MangoAPI.Application.Interfaces;
 using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.DataAccess.Database;
 using MangoAPI.Domain.Constants;
 using MangoAPI.Domain.Entities;
 using MediatR;
-using Microsoft.AspNetCore.Hosting;
 
 namespace MangoAPI.BusinessLogic.ApiCommands.Documents
 {
@@ -15,36 +15,39 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Documents
         : IRequestHandler<UploadDocumentCommand, Result<UploadDocumentResponse>>
     {
         private readonly MangoPostgresDbContext _postgresDbContext;
-        private readonly IHostingEnvironment _environment;
         private readonly ResponseFactory<UploadDocumentResponse> _responseFactory;
+        private readonly IBlobService _blobService;
 
-        public UploadDocumentCommandHandler(MangoPostgresDbContext postgresDbContext, IHostingEnvironment environment,
-            ResponseFactory<UploadDocumentResponse> responseFactory)
+        public UploadDocumentCommandHandler(
+            MangoPostgresDbContext postgresDbContext,
+            ResponseFactory<UploadDocumentResponse> responseFactory, 
+            IBlobService blobService)
         {
             _postgresDbContext = postgresDbContext;
-            _environment = environment;
             _responseFactory = responseFactory;
+            _blobService = blobService;
         }
 
         public async Task<Result<UploadDocumentResponse>> Handle(UploadDocumentCommand request,
             CancellationToken cancellationToken)
         {
+            var blobContainerName = EnvironmentConstants.MangoBlobContainer;
             var uniqueFileName = GetUniqueFileName(request.FormFile.FileName);
-            var uploads = Path.Combine(_environment.WebRootPath, "Uploads");
-            var filePath = Path.Combine(uploads, uniqueFileName);
 
-            await request.FormFile.CopyToAsync(new FileStream(filePath, FileMode.Create), cancellationToken);
+            await _blobService.UploadFileBlob(uniqueFileName, request.FormFile, blobContainerName);
 
             var documentEntity = new DocumentEntity
             {
                 FileName = uniqueFileName,
-                FilePath = filePath
+                UserId = request.UserId,
+                UploadedAt = DateTime.Now
             };
 
             _postgresDbContext.Documents.Add(documentEntity);
+            
             await _postgresDbContext.SaveChangesAsync(cancellationToken);
 
-            var fileUrl = $"{EnvironmentConstants.MangoBackendAddress}Uploads/{documentEntity.FileName}";
+            var fileUrl = await _blobService.GetBlob(uniqueFileName, blobContainerName);
             
             return _responseFactory.SuccessResponse(
                 UploadDocumentResponse.FromSuccess(documentEntity.FileName, fileUrl));
