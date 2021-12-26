@@ -62,8 +62,6 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
 
             user.UserInformation.BirthDay = request.BirthdayDate;
 
-            user.Email = request.Email;
-
             user.UserInformation.Website = request.Website;
 
             user.UserName = request.Username;
