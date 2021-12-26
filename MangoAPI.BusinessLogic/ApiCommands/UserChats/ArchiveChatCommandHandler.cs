@@ -1,31 +1,34 @@
-﻿using System.Threading;
+﻿using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.DataAccess.Database;
-using MangoAPI.DataAccess.Database.Extensions;
 using MangoAPI.Domain.Constants;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 namespace MangoAPI.BusinessLogic.ApiCommands.UserChats
 {
-    public class ArchiveChatCommandHandler 
+    public class ArchiveChatCommandHandler
         : IRequestHandler<ArchiveChatCommand, Result<ResponseBase>>
     {
         private readonly MangoPostgresDbContext _postgresDbContext;
         private readonly ResponseFactory<ResponseBase> _responseFactory;
 
-        public ArchiveChatCommandHandler(MangoPostgresDbContext postgresDbContext, 
+        public ArchiveChatCommandHandler(MangoPostgresDbContext postgresDbContext,
             ResponseFactory<ResponseBase> responseFactory)
         {
             _postgresDbContext = postgresDbContext;
             _responseFactory = responseFactory;
         }
 
-        public async Task<Result<ResponseBase>> Handle(ArchiveChatCommand request, 
+        public async Task<Result<ResponseBase>> Handle(ArchiveChatCommand request,
             CancellationToken cancellationToken)
         {
-            var chat = await _postgresDbContext.UserChats.FindUserChatByIdAsync(request.UserId, request.ChatId,
-                cancellationToken);
+            var chat = await _postgresDbContext.UserChats
+                .Where(chatEntity => chatEntity.UserId == request.UserId)
+                .Where(chatEntity => chatEntity.ChatId == request.ChatId)
+                .FirstOrDefaultAsync(cancellationToken);
 
             if (chat == null)
             {

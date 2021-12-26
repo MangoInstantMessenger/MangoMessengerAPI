@@ -18,7 +18,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.PasswordRestoreRequests
             RuleFor(x => x.RequestId).NotEmpty();
         }
 
-        private bool PasswordIsStrong(string pass)
+        private static bool PasswordIsStrong(string pass)
         {
             return pass.Length >= 8
                 && pass.Any(char.IsUpper)

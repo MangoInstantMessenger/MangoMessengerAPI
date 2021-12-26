@@ -1,4 +1,4 @@
-﻿namespace MangoAPI.BusinessLogic.Enums
+﻿namespace MangoAPI.BusinessLogic.Models
 {
     public enum ChannelType
     {

@@ -25,8 +25,5 @@ namespace MangoAPI.BusinessLogic.Models
 
         [DefaultValue("my-email@gmail.com")]
         public string Email { get; init; }
-
-        [DefaultValue("123456789")]
-        public string PhoneNumber { get; init; }
     }
 }

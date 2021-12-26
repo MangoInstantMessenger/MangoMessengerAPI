@@ -74,6 +74,8 @@ namespace MangoAPI.Application.Services
                 $"<a href='{EnvironmentConstants.MangoFrontendAddress}/verify-email?email={user.Email}&emailCode={user.EmailCode}'>" +
                 "Verify email" +
                 "</a>" +
+                "<br>" +
+                $"<p>Confirmation Code: {user.EmailCode}</p>" +
                 "</body>";
 
             message.IsBodyHtml = true;
@@ -91,7 +93,7 @@ namespace MangoAPI.Application.Services
 
             var message = new MailMessage(fromAddress, toAddress)
             {
-                Subject = "Email Verification",
+                Subject = "Password Restore Request",
                 SubjectEncoding = Encoding.UTF8,
             };
 
@@ -103,10 +105,11 @@ namespace MangoAPI.Application.Services
                 "<body>" +
                 $"<p>Hi, {user.DisplayName}, please follow the link to restore password.</p>" +
                 "<br>" +
-                $"<a href='{EnvironmentConstants.MangoFrontendAddress}/restore-password-form?requestId={requestId}'>" +
+                $"<a href='{EnvironmentConstants.MangoFrontendAddress}restore-password-form?requestId={requestId}'>" +
                 "Restore Password" +
                 "</a>" +
                 "<br>" +
+                $"<p>Request ID: {requestId}.</p>" +
                 "</body>";
 
             message.IsBodyHtml = true;

@@ -38,7 +38,6 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Users
                     BirthdayDate = user.UserInformation.BirthDay.HasValue
                         ? user.UserInformation.BirthDay.Value.ToString("yyyy-MM-dd")
                         : null,
-                    PhoneNumber = user.PhoneNumber,
                     Email = user.Email,
                     Website = user.UserInformation.Website,
                     Facebook = user.UserInformation.Facebook,

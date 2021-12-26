@@ -2,13 +2,13 @@
 using System.Threading.Tasks;
 using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.DataAccess.Database;
-using MangoAPI.DataAccess.Database.Extensions;
 using MangoAPI.Domain.Constants;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 namespace MangoAPI.BusinessLogic.ApiCommands.Users
 {
-    public class UpdateProfilePictureCommandHandler 
+    public class UpdateProfilePictureCommandHandler
         : IRequestHandler<UpdateProfilePictureCommand, Result<ResponseBase>>
     {
         private readonly MangoPostgresDbContext _postgresDbContext;
@@ -21,10 +21,12 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
             _responseFactory = responseFactory;
         }
 
-        public async Task<Result<ResponseBase>> Handle(UpdateProfilePictureCommand request, 
+        public async Task<Result<ResponseBase>> Handle(UpdateProfilePictureCommand request,
             CancellationToken cancellationToken)
         {
-            var user = await _postgresDbContext.Users.FindUserByIdAsync(request.UserId, cancellationToken);
+            var user = await _postgresDbContext.Users
+                .FirstOrDefaultAsync(userEntity => userEntity.Id == request.UserId, 
+                    cancellationToken);
 
             if (user == null)
             {

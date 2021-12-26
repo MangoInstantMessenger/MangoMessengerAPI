@@ -6,7 +6,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Sessions
     {
         public LoginCommandValidator()
         {
-            RuleFor(x => x.EmailOrPhone)
+            RuleFor(x => x.Email)
                 .EmailAddress()
                 .WithMessage("Incorrect email address format.")
                 .NotEmpty()

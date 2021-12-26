@@ -22,8 +22,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		Dockerfile = Dockerfile
 		Environments-Back.jpg = Environments-Back.jpg
 		LICENSE.txt = LICENSE.txt
-		MANGO_API_POSTMAN_ENVIRONMENT.json = MANGO_API_POSTMAN_ENVIRONMENT.json
-		MANGO_API_POSTMAN_GLOBALS.json = MANGO_API_POSTMAN_GLOBALS.json
 		README.md = README.md
 	EndProjectSection
 EndProject
@@ -42,9 +40,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SQL", "SQL", "{2A176CBC-BD4
 		SqlScripts\PostgresDropAllTablesCascade.sql = SqlScripts\PostgresDropAllTablesCascade.sql
 		SqlScripts\PostgresTruncateAllTablesCascade.sql = SqlScripts\PostgresTruncateAllTablesCascade.sql
 		SqlScripts\PostgresTruncateKeyExchangeRequests.sql = SqlScripts\PostgresTruncateKeyExchangeRequests.sql
-		PostgresTruncatePasswordRestoreRequests.sql = PostgresTruncatePasswordRestoreRequests.sql
 		SqlScripts\PostgresTruncatePublicKeys.sql = SqlScripts\PostgresTruncatePublicKeys.sql
 		SqlScripts\PostrgresValidateDatabaseSize.sql = SqlScripts\PostrgresValidateDatabaseSize.sql
+		SqlScripts\PostgresTruncatePasswordRestoreRequests.sql = SqlScripts\PostgresTruncatePasswordRestoreRequests.sql
 	EndProjectSection
 EndProject
 Global
