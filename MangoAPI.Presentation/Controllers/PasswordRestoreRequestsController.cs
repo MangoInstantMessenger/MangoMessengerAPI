@@ -29,22 +29,24 @@ namespace MangoAPI.Presentation.Controllers
         /// <summary>
         /// Creates new password restore request in database.
         /// </summary>
-        /// <param name="emailOrPhone">Email or phone of user.</param>
+        /// <param name="email">Email or phone of user.</param>
         /// <param name="cancellationToken">Cancellation token instance.</param>
         /// <returns></returns>
         [AllowAnonymous]
-        [HttpPost("{emailOrPhone}")]
-        [SwaggerOperation(Description = "Creates new password restore request in database. Allow anonymous.",
+        [HttpPost]
+        [SwaggerOperation(Description = "Creates new password restore request in database. " +
+                                        "Request valid for 3 hours. " +
+                                        "Allow anonymous.",
             Summary = "Creates new password restore request in database.")]
         [ProducesResponseType(typeof(ResponseBase), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
-        public async Task<IActionResult> RestorePasswordRequestAsync([FromRoute] string emailOrPhone,
+        public async Task<IActionResult> RestorePasswordRequestAsync([FromQuery] string email,
             CancellationToken cancellationToken)
         {
             var command = new RequestPasswordRestoreCommand
             {
-                EmailOrPhone = emailOrPhone
+                EmailOrPhone = email
             };
 
             return await RequestAsync(command, cancellationToken);

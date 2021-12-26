@@ -62,8 +62,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.PasswordRestoreRequests
 
                 return _responseFactory.ConflictResponse(errorMessage, errorDescription);
             }
-
-            _postgresDbContext.Users.Update(user);
+            
             _postgresDbContext.PasswordRestoreRequests.Remove(restorePasswordRequest);
 
             await _postgresDbContext.SaveChangesAsync(cancellationToken);
