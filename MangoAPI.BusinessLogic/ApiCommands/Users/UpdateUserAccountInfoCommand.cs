@@ -8,7 +8,6 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
     {
         public Guid UserId { get; set; }
         public DateTime? BirthdayDate { get; init; }
-        public string Email { get; init; }
         public string Website { get; init; }
         public string Username { get; init; }
         public string Bio { get; init; }

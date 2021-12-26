@@ -9,7 +9,6 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
         [JsonConstructor]
         public UpdateUserAccountInfoRequest(
             DateTime? birthdayDate,
-            string email,
             string website,
             string username,
             string bio,
@@ -24,22 +23,11 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
             DisplayName = displayName;
         }
 
-        [DefaultValue("Test User")]
-        public string DisplayName { get; }
-
-        [DefaultValue("1995-04-07T00:00:00")]
-        public DateTime? BirthdayDate { get; }
-
-        [DefaultValue("test.com")]
-        public string Website { get; }
-
-        [DefaultValue("TestUser")]
-        public string Username { get; }
-
-        [DefaultValue("Test user from $'{cityName}'")]
-        public string Bio { get; }
-
-        [DefaultValue("Finland, Helsinki")]
-        public string Address { get; }
+        [DefaultValue("Test User")] public string DisplayName { get; }
+        [DefaultValue("1995-04-07T00:00:00")] public DateTime? BirthdayDate { get; }
+        [DefaultValue("test.com")] public string Website { get; }
+        [DefaultValue("TestUser")] public string Username { get; }
+        [DefaultValue("Test user from $'{cityName}'")] public string Bio { get; }
+        [DefaultValue("Finland, Helsinki")] public string Address { get; }
     }
 }
