@@ -25,6 +25,7 @@
 - `MANGO_SEED_PASSWORD`
 - `MANGO_BLOB_URL`
 - `MANGO_BLOB_CONTAINER`
+- `MANGO_BLOB_ACCESS` (address of public azure blob)
 
 ## Environments
 

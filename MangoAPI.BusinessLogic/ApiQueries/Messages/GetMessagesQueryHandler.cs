@@ -43,11 +43,11 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Messages
                     InReplayToText = messageEntity.InReplayToText,
 
                     MessageAuthorPictureUrl = messageEntity.User.Image != null
-                        ? $"{EnvironmentConstants.MangoBackendAddress}Uploads/{messageEntity.User.Image}"
+                        ? $"{EnvironmentConstants.MangoBlobAccess}/{messageEntity.User.Image}"
                         : null,
 
                     MessageAttachmentUrl = messageEntity.Attachment != null
-                        ? $"{EnvironmentConstants.MangoBackendAddress}Uploads/{messageEntity.Attachment}"
+                        ? $"{EnvironmentConstants.MangoBlobAccess}/{messageEntity.Attachment}"
                         : null,
                 }).Take(200).ToListAsync(cancellationToken);
 
