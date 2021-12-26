@@ -28,16 +28,9 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
         public async Task<Result<ResponseBase>> Handle(ChangePasswordCommand request,
             CancellationToken cancellationToken)
         {
-            if (request.CurrentPassword == request.NewPassword)
-            {
-                const string errorMessage = ResponseMessageCodes.PasswordsAreSame;
-                var details = ResponseMessageCodes.ErrorDictionary[errorMessage];
-
-                return _responseFactory.ConflictResponse(errorMessage, details);
-            }
-
             var user = await _postgresDbContext.Users
-                .FirstOrDefaultAsync(userEntity => userEntity.Id == request.UserId, cancellationToken);
+                .FirstOrDefaultAsync(userEntity => userEntity.Id == request.UserId, 
+                    cancellationToken);
 
             if (user is null)
             {
@@ -68,8 +61,6 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
 
                 return _responseFactory.ConflictResponse(errorMessage, details);
             }
-
-            await _postgresDbContext.SaveChangesAsync(cancellationToken);
 
             return _responseFactory.SuccessResponse(ResponseBase.SuccessResponse);
         }

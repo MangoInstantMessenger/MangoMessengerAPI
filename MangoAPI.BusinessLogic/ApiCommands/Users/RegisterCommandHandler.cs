@@ -35,8 +35,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
         public async Task<Result<TokensResponse>> Handle(RegisterCommand request, CancellationToken cancellationToken)
         {
             var userExists = await _postgresDbContext.Users
-                .AsNoTracking()
-                .AnyAsync(x => x.Email == request.Email, cancellationToken);
+                .AnyAsync(entity => entity.Email == request.Email, cancellationToken);
 
             if (userExists)
             {
