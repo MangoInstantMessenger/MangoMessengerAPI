@@ -3,13 +3,13 @@ using System.Threading;
 using System.Threading.Tasks;
 using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.DataAccess.Database;
-using MangoAPI.DataAccess.Database.Extensions;
 using MangoAPI.Domain.Constants;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 namespace MangoAPI.BusinessLogic.ApiCommands.Users
 {
-    public class UpdateUserSocialInformationCommandHandler 
+    public class UpdateUserSocialInformationCommandHandler
         : IRequestHandler<UpdateUserSocialInformationCommand, Result<ResponseBase>>
     {
         private readonly MangoPostgresDbContext _postgresDbContext;
@@ -25,7 +25,10 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
         public async Task<Result<ResponseBase>> Handle(UpdateUserSocialInformationCommand request,
             CancellationToken cancellationToken)
         {
-            var user = await _postgresDbContext.Users.FindUserByIdIncludeInfoAsync(request.UserId, cancellationToken);
+            var user = await _postgresDbContext.Users
+                .Include(userEntity => userEntity.UserInformation)
+                .FirstOrDefaultAsync(entity => entity.Id == request.UserId,
+                    cancellationToken);
 
             if (user is null)
             {
@@ -35,22 +38,22 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
                 return _responseFactory.ConflictResponse(errorMessage, details);
             }
 
-            user.UserInformation.Facebook = StringIsValid(request.Facebook) 
-                ? request.Facebook 
+            user.UserInformation.Facebook = StringIsValid(request.Facebook)
+                ? request.Facebook
                 : user.UserInformation.Facebook;
 
-            user.UserInformation.Twitter = StringIsValid(request.Twitter) 
-                ? request.Twitter 
+            user.UserInformation.Twitter = StringIsValid(request.Twitter)
+                ? request.Twitter
                 : user.UserInformation.Twitter;
 
-            user.UserInformation.Instagram = StringIsValid(request.Instagram) 
-                ? request.Instagram 
+            user.UserInformation.Instagram = StringIsValid(request.Instagram)
+                ? request.Instagram
                 : user.UserInformation.Instagram;
 
-            user.UserInformation.LinkedIn = StringIsValid(request.LinkedIn) 
-                ? request.LinkedIn 
+            user.UserInformation.LinkedIn = StringIsValid(request.LinkedIn)
+                ? request.LinkedIn
                 : user.UserInformation.LinkedIn;
-            
+
             user.UserInformation.UpdatedAt = DateTime.UtcNow;
 
             _postgresDbContext.UserInformation.Update(user.UserInformation);

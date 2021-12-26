@@ -1,12 +1,12 @@
 ﻿using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.DataAccess.Database;
-using MangoAPI.DataAccess.Database.Extensions;
 using MangoAPI.Domain.Constants;
 using MangoAPI.Domain.Entities;
 using MediatR;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace MangoAPI.BusinessLogic.ApiCommands.Contacts
 {
@@ -16,16 +16,18 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Contacts
         private readonly MangoPostgresDbContext _postgresDbContext;
         private readonly ResponseFactory<ResponseBase> _responseFactory;
 
-        public AddContactCommandHandler(MangoPostgresDbContext postgresDbContext, ResponseFactory<ResponseBase> responseFactory)
+        public AddContactCommandHandler(MangoPostgresDbContext postgresDbContext, 
+            ResponseFactory<ResponseBase> responseFactory)
         {
             _postgresDbContext = postgresDbContext;
             _responseFactory = responseFactory;
         }
 
-        public async Task<Result<ResponseBase>> Handle(AddContactCommand request,
-            CancellationToken cancellationToken)
+        public async Task<Result<ResponseBase>> Handle(AddContactCommand request, CancellationToken cancellationToken)
         {
-            var contact = await _postgresDbContext.Users.FindUserByIdAsync(request.ContactId, cancellationToken);
+            var contact = await _postgresDbContext.Users
+                .FirstOrDefaultAsync(x => x.Id == request.UserId, 
+                    cancellationToken);
 
             if (contact is null)
             {
@@ -44,7 +46,9 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Contacts
             }
 
             var userContactExist = await _postgresDbContext.UserContacts
-                .IsContactExistAsync(request.UserId, request.ContactId, cancellationToken);
+                .AnyAsync(userContactEntity => 
+                    userContactEntity.ContactId == request.ContactId && 
+                    userContactEntity.UserId == request.UserId, cancellationToken);
 
             if (userContactExist)
             {

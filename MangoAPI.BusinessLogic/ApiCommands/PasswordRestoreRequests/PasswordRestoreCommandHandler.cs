@@ -1,16 +1,16 @@
 ﻿using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.DataAccess.Database;
-using MangoAPI.DataAccess.Database.Extensions;
 using MangoAPI.Domain.Constants;
 using MangoAPI.Domain.Entities;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace MangoAPI.BusinessLogic.ApiCommands.PasswordRestoreRequests
 {
-    public class PasswordRestoreCommandHandler 
+    public class PasswordRestoreCommandHandler
         : IRequestHandler<PasswordRestoreCommand, Result<ResponseBase>>
     {
         private readonly MangoPostgresDbContext _postgresDbContext;
@@ -25,12 +25,12 @@ namespace MangoAPI.BusinessLogic.ApiCommands.PasswordRestoreRequests
             _responseFactory = responseFactory;
         }
 
-        public async Task<Result<ResponseBase>> Handle(PasswordRestoreCommand request, 
+        public async Task<Result<ResponseBase>> Handle(PasswordRestoreCommand request,
             CancellationToken cancellationToken)
         {
-            var restorePasswordRequest =
-                await _postgresDbContext.PasswordRestoreRequests.FindPasswordRestoreRequestByIdAsync(request.RequestId,
-                    cancellationToken);
+            var restorePasswordRequest = await _postgresDbContext.PasswordRestoreRequests
+                .FirstOrDefaultAsync(entity =>
+                    entity.Id == request.RequestId, cancellationToken);
 
             if (restorePasswordRequest == null || !restorePasswordRequest.IsValid)
             {
@@ -40,8 +40,8 @@ namespace MangoAPI.BusinessLogic.ApiCommands.PasswordRestoreRequests
                 return _responseFactory.ConflictResponse(errorMessage, errorDescription);
             }
 
-            var user = await _postgresDbContext.Users.FindUserByIdAsync(restorePasswordRequest.UserId,
-                cancellationToken);
+            var user = await _postgresDbContext.Users
+                .FirstOrDefaultAsync(entity => entity.Id == restorePasswordRequest.UserId, cancellationToken);
 
             if (user is null)
             {

@@ -1,7 +1,6 @@
 ﻿using MangoAPI.Application.Interfaces;
 using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.DataAccess.Database;
-using MangoAPI.DataAccess.Database.Extensions;
 using MangoAPI.Domain.Constants;
 using MangoAPI.Domain.Entities;
 using MediatR;
@@ -33,7 +32,9 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Sessions
         public async Task<Result<TokensResponse>> Handle(LoginCommand request,
             CancellationToken cancellationToken)
         {
-            var user = await _postgresDbContext.Users.FindUserByEmailOrPhoneAsync(request.EmailOrPhone, cancellationToken);
+            var user = await _postgresDbContext.Users
+                .FirstOrDefaultAsync(userEntity => userEntity.Email == request.EmailOrPhone,
+                    cancellationToken);
 
             if (user is null)
             {
@@ -72,15 +73,16 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Sessions
             };
 
             var rolesQuery = from userRole in _postgresDbContext.UserRoles.AsNoTracking()
-                             join role in _postgresDbContext.Roles on userRole.RoleId equals role.Id
-                             where userRole.UserId == session.UserId
-                             select role.Name;
+                join role in _postgresDbContext.Roles on userRole.RoleId equals role.Id
+                where userRole.UserId == session.UserId
+                select role.Name;
 
             var roles = await rolesQuery.ToListAsync(cancellationToken);
 
             var jwtToken = _jwtGenerator.GenerateJwtToken(user.Id, roles);
 
-            var userSessions = _postgresDbContext.Sessions.GetUserSessionsById(user.Id);
+            var userSessions = _postgresDbContext.Sessions
+                .Where(entity => entity.UserId == user.Id);
 
             var userSessionsCount = await userSessions.CountAsync(cancellationToken);
 
@@ -92,7 +94,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Sessions
             _postgresDbContext.Sessions.Add(session);
             await _postgresDbContext.SaveChangesAsync(cancellationToken);
 
-            var expires = ((DateTimeOffset)session.ExpiresAt).ToUnixTimeSeconds();
+            var expires = ((DateTimeOffset) session.ExpiresAt).ToUnixTimeSeconds();
             var tokens = TokensResponse.FromSuccess(jwtToken, session.RefreshToken, user.Id, expires);
 
             return _responseFactory.SuccessResponse(tokens);

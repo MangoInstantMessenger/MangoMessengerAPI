@@ -1,8 +1,8 @@
-﻿using System.Threading;
+﻿using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.DataAccess.Database;
-using MangoAPI.DataAccess.Database.Extensions;
 using MangoAPI.Domain.Constants;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -25,7 +25,8 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Sessions
         public async Task<Result<ResponseBase>> Handle(LogoutAllCommand request, 
             CancellationToken cancellationToken)
         {
-            var userSessions = _postgresDbContext.Sessions.GetUserSessionsById(request.UserId);
+            var userSessions = _postgresDbContext.Sessions
+                .Where(entity => entity.UserId == request.UserId);
 
             if (!await userSessions.AnyAsync(cancellationToken))
             {

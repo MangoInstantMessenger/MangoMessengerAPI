@@ -1,13 +1,13 @@
 ﻿using MangoAPI.Application.Interfaces;
 using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.DataAccess.Database;
-using MangoAPI.DataAccess.Database.Extensions;
 using MangoAPI.Domain.Constants;
 using MangoAPI.Domain.Entities;
 using MediatR;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace MangoAPI.BusinessLogic.ApiCommands.PasswordRestoreRequests
 {
@@ -29,8 +29,9 @@ namespace MangoAPI.BusinessLogic.ApiCommands.PasswordRestoreRequests
         public async Task<Result<ResponseBase>> Handle(RequestPasswordRestoreCommand request,
             CancellationToken cancellationToken)
         {
-            var user = await _postgresDbContext.Users.FindUserByEmailOrPhoneAsync(request.EmailOrPhone,
-                cancellationToken);
+            var user = await _postgresDbContext.Users
+                .FirstOrDefaultAsync(userEntity => userEntity.Email == request.EmailOrPhone, 
+                    cancellationToken);
 
             if (user is null)
             {

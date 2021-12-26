@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using MangoAPI.Application.Interfaces;
 using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.DataAccess.Database;
-using MangoAPI.DataAccess.Database.Extensions;
 using MangoAPI.Domain.Constants;
 using MangoAPI.Domain.Entities;
 using MediatR;
@@ -27,9 +26,11 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Sessions
             _responseFactory = responseFactory;
         }
 
-        public async Task<Result<TokensResponse>> Handle(RefreshSessionCommand request, CancellationToken cancellationToken)
+        public async Task<Result<TokensResponse>> Handle(RefreshSessionCommand request,
+            CancellationToken cancellationToken)
         {
-            var session = await _postgresDbContext.Sessions.GetSessionByRefreshTokenAsync(request.RefreshToken,
+            var session = await _postgresDbContext.Sessions
+                .FirstOrDefaultAsync(entity => entity.RefreshToken == request.RefreshToken,
                     cancellationToken);
 
             if (session is null || session.IsExpired)
@@ -74,9 +75,9 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Sessions
             };
 
             var rolesQuery = from userRole in _postgresDbContext.UserRoles.AsNoTracking()
-                             join role in _postgresDbContext.Roles on userRole.RoleId equals role.Id
-                             where userRole.UserId == session.UserId
-                             select role.Name;
+                join role in _postgresDbContext.Roles on userRole.RoleId equals role.Id
+                where userRole.UserId == session.UserId
+                select role.Name;
 
             var roles = await rolesQuery.ToListAsync(cancellationToken);
 
@@ -85,7 +86,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Sessions
             _postgresDbContext.Sessions.Add(newSession);
             await _postgresDbContext.SaveChangesAsync(cancellationToken);
 
-            var expires = ((DateTimeOffset)session.ExpiresAt).ToUnixTimeSeconds();
+            var expires = ((DateTimeOffset) session.ExpiresAt).ToUnixTimeSeconds();
 
             return _responseFactory.SuccessResponse(TokensResponse.FromSuccess(jwtToken, newSession.RefreshToken,
                 session.UserId, expires));

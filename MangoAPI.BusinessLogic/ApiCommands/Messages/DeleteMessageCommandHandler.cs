@@ -3,10 +3,10 @@ using System.Threading.Tasks;
 using MangoAPI.BusinessLogic.HubConfig;
 using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.DataAccess.Database;
-using MangoAPI.DataAccess.Database.Extensions;
 using MangoAPI.Domain.Constants;
 using MediatR;
 using Microsoft.AspNetCore.SignalR;
+using Microsoft.EntityFrameworkCore;
 
 namespace MangoAPI.BusinessLogic.ApiCommands.Messages
 {
@@ -29,7 +29,9 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Messages
             CancellationToken cancellationToken)
         {
             var message = await _postgresDbContext.Messages
-                .FindMessageByUserIdAsync(request.MessageId, request.UserId, cancellationToken);
+                .FirstOrDefaultAsync(messageEntity => 
+                        messageEntity.Id == request.MessageId && 
+                        messageEntity.UserId == request.UserId, cancellationToken);
 
             if (message == null)
             {
