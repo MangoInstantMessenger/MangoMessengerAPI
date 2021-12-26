@@ -28,5 +28,9 @@ namespace MangoAPI.Domain.Constants
         public static string MangoDatabaseUrl => Environment.GetEnvironmentVariable("MANGO_DATABASE_URL");
 
         public static string MangoSeedPassword => Environment.GetEnvironmentVariable("MANGO_SEED_PASSWORD");
+
+        public static string MangoBlobUrl => Environment.GetEnvironmentVariable("MANGO_BLOB_URL");
+        
+        public static string MangoBlobContainer => Environment.GetEnvironmentVariable("MANGO_BLOB_CONTAINER");
     }
 }

@@ -1,6 +1,8 @@
-﻿using MangoAPI.Application.Interfaces;
+﻿using Azure.Storage.Blobs;
+using MangoAPI.Application.Interfaces;
 using MangoAPI.Application.Services;
 using MangoAPI.BusinessLogic.ApiCommands.Users;
+using MangoAPI.Domain.Constants;
 using MangoAPI.Presentation.Controllers;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
@@ -16,6 +18,11 @@ namespace MangoAPI.Presentation.Extensions
             services.AddScoped<IEmailSenderService, EmailSenderService>();
             services.AddScoped<PasswordHashService>();
             services.AddAutoMapper(typeof(ApiControllerBase));
+            
+            var blobConnection = EnvironmentConstants.MangoBlobUrl;
+            services.AddSingleton(_ => new BlobServiceClient(blobConnection));
+            services.AddScoped<IBlobService, BlobService>();
+            
             return services;
         }
     }
