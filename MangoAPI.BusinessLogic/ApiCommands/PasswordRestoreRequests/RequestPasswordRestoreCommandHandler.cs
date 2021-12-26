@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace MangoAPI.BusinessLogic.ApiCommands.PasswordRestoreRequests
 {
-    public class RequestPasswordRestoreCommandHandler 
+    public class RequestPasswordRestoreCommandHandler
         : IRequestHandler<RequestPasswordRestoreCommand, Result<ResponseBase>>
     {
         private readonly MangoPostgresDbContext _postgresDbContext;
@@ -30,12 +30,23 @@ namespace MangoAPI.BusinessLogic.ApiCommands.PasswordRestoreRequests
             CancellationToken cancellationToken)
         {
             var user = await _postgresDbContext.Users
-                .FirstOrDefaultAsync(userEntity => userEntity.Email == request.EmailOrPhone, 
+                .FirstOrDefaultAsync(userEntity => userEntity.Email == request.EmailOrPhone,
                     cancellationToken);
 
             if (user is null)
             {
                 const string errorMessage = ResponseMessageCodes.UserNotFound;
+                var errorDescription = ResponseMessageCodes.ErrorDictionary[errorMessage];
+
+                return _responseFactory.ConflictResponse(errorMessage, errorDescription);
+            }
+
+            var existingRequest = await _postgresDbContext.PasswordRestoreRequests
+                .FirstOrDefaultAsync(entity => entity.UserId == user.Id, cancellationToken);
+
+            if (existingRequest != null && existingRequest.IsValid)
+            {
+                const string errorMessage = ResponseMessageCodes.ChangePasswordRequestExists;
                 var errorDescription = ResponseMessageCodes.ErrorDictionary[errorMessage];
 
                 return _responseFactory.ConflictResponse(errorMessage, errorDescription);
@@ -51,6 +62,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.PasswordRestoreRequests
             };
 
             _postgresDbContext.PasswordRestoreRequests.Add(passwordRestoreRequest);
+
             await _postgresDbContext.SaveChangesAsync(cancellationToken);
 
             await _emailSenderService.SendPasswordRestoreRequest(user, passwordRestoreRequest.Id, cancellationToken);
