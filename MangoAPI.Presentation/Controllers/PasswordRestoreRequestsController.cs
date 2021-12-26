@@ -46,7 +46,7 @@ namespace MangoAPI.Presentation.Controllers
         {
             var command = new RequestPasswordRestoreCommand
             {
-                EmailOrPhone = email
+                Email = email
             };
 
             return await RequestAsync(command, cancellationToken);

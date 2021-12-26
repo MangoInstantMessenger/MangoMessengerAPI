@@ -33,7 +33,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Sessions
             CancellationToken cancellationToken)
         {
             var user = await _postgresDbContext.Users
-                .FirstOrDefaultAsync(userEntity => userEntity.Email == request.EmailOrPhone,
+                .FirstOrDefaultAsync(userEntity => userEntity.Email == request.Email,
                     cancellationToken);
 
             if (user is null)
