@@ -40,14 +40,13 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Contacts
                     Bio = x.Bio,
                     PictureUrl = _stringService.GetDocumentUrl(x.Image),
                     Email = x.Email,
-                    PhoneNumber = x.PhoneNumber
                 });
 
             if (!string.IsNullOrEmpty(request.SearchQuery) || !string.IsNullOrWhiteSpace(request.SearchQuery))
             {
-                query = query.Where(x => x.DisplayName.Contains(request.SearchQuery) ||
-                                         x.PhoneNumber.Contains(request.SearchQuery) ||
-                                         x.Email.Contains(request.SearchQuery));
+                query = query.Where(x => 
+                    x.DisplayName.Contains(request.SearchQuery) ||
+                    x.Email.Contains(request.SearchQuery));
             }
 
             var searchResult = await query.Take(200).ToListAsync(cancellationToken);

@@ -11,8 +11,8 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
         public string Email { get; init; }
         public string Website { get; init; }
         public string Username { get; init; }
-        public string DisplayName { get; init; }
         public string Bio { get; init; }
         public string Address { get; init; }
+        public string DisplayName { get; init; }
     }
 }

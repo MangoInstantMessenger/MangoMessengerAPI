@@ -39,7 +39,6 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Contacts
                             Bio = userEntity.Bio,
                             PictureUrl = _stringService.GetDocumentUrl(userEntity.Image),
                             Email = userEntity.Email,
-                            PhoneNumber = userEntity.PhoneNumber,
                             IsContact = true,
                         };
 
