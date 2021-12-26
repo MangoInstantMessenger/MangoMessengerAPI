@@ -12,15 +12,15 @@
 
 ## Required Environment Variables
 
-- `MANGO_JWT_ISSUER`   (default http://localhost:4200)
-- `MANGO_JWT_AUDIENCE` (default http://localhost:5001)
+- `MANGO_JWT_ISSUER`   (default https://localhost:4200)
+- `MANGO_JWT_AUDIENCE` (default https://localhost:5001)
 - `MANGO_JWT_SIGN_KEY`
-- `MANGO_JWT_LIFETIME` 			 (default 5 mins)
+- `MANGO_JWT_LIFETIME` 			 (default 5 minutes)
 - `MANGO_REFRESH_TOKEN_LIFETIME` (default 7 days)
 - `MANGO_EMAIL_NOTIFICATIONS_ADDRESS`
 - `MANGO_EMAIL_NOTIFICATIONS_PASSWORD`
-- `MANGO_FRONTEND_ADDRESS` (default http://localhost:4200/)
-- `MANGO_BACKEND_ADDRESS`  (default http://localhost:5001/)
+- `MANGO_FRONTEND_ADDRESS` (default https://localhost:4200/)
+- `MANGO_BACKEND_ADDRESS`  (default https://localhost:5001/)
 - `MANGO_DATABASE_URL`     (default `Server=localhost;User Id=your_login;Password=your_password;Database=MangoApiDatabase;`)
 - `MANGO_SEED_PASSWORD`
 
