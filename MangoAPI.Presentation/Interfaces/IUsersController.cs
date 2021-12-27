@@ -16,8 +16,6 @@ namespace MangoAPI.Presentation.Interfaces
 
         Task<IActionResult> GetUserById(Guid userId, CancellationToken cancellationToken);
 
-        Task<IActionResult> GetCurrentUser(CancellationToken cancellationToken);
-
         Task<IActionResult> UpdateUserAccountInfoAsync(UpdateUserAccountInfoRequest request,
             CancellationToken cancellationToken);
 
