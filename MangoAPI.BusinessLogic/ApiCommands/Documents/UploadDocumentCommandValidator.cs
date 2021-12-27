@@ -18,7 +18,8 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Documents
             RuleFor(x => x.FormFile).NotEmpty();
             RuleFor(x => x.FormFile.Length)
                 .GreaterThan(0)
-                .LessThanOrEqualTo(10 * 1024 * 1024);
+                .LessThanOrEqualTo(5 * 1024 * 1024)
+                .WithMessage("File size should not exceed 5 MB.");
 
             RuleFor(x => x.FormFile.FileName)
                 .NotEmpty()

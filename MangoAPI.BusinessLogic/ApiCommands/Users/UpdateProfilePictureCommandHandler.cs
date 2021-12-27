@@ -32,6 +32,17 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
         public async Task<Result<ResponseBase>> Handle(UpdateProfilePictureCommand request,
             CancellationToken cancellationToken)
         {
+            var totalUploadedDocsCount = await _postgresDbContext.Documents.CountAsync(x =>
+                x.UserId == request.UserId &&
+                x.UploadedAt > DateTime.Now.AddHours(-1), cancellationToken);
+
+            if (totalUploadedDocsCount > 10)
+            {
+                const string message = ResponseMessageCodes.UploadedDocumentsLimitReached;
+                var details = ResponseMessageCodes.ErrorDictionary[message];
+                return _responseFactory.ConflictResponse(message, details);
+            }
+
             var user = await _postgresDbContext.Users
                 .FirstOrDefaultAsync(userEntity => userEntity.Id == request.UserId,
                     cancellationToken);
@@ -48,7 +59,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
             var uniqueFileName = GetUniqueFileName(request.PictureFile.FileName);
 
             await _blobService.UploadFileBlobAsync(uniqueFileName, request.PictureFile, blobContainerName);
-            
+
             var newUserPicture = new DocumentEntity
             {
                 FileName = uniqueFileName,
@@ -58,21 +69,9 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
 
             _postgresDbContext.Documents.Add(newUserPicture);
 
-            var oldUserPictureName = user.Image;
-
-            var oldUserPicture = await _postgresDbContext.Documents
-                .FirstOrDefaultAsync(x => x.FileName == oldUserPictureName, cancellationToken);
-
-            await _blobService.DeleteBlobAsync(oldUserPictureName, blobContainerName);
-
             user.Image = uniqueFileName;
 
             _postgresDbContext.Users.Update(user);
-
-            if (oldUserPicture != null)
-            {
-                _postgresDbContext.Documents.Remove(oldUserPicture);
-            }
 
             await _postgresDbContext.SaveChangesAsync(cancellationToken);
 
