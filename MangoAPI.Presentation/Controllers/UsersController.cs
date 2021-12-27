@@ -75,7 +75,6 @@ namespace MangoAPI.Presentation.Controllers
         public async Task<IActionResult> EmailConfirmationAsync([FromBody] VerifyEmailRequest request,
             CancellationToken cancellationToken)
         {
-            
             var command = Mapper.Map<VerifyEmailCommand>(request);
             return await RequestAsync(command, cancellationToken);
         }
@@ -202,14 +201,14 @@ namespace MangoAPI.Presentation.Controllers
             return await RequestAsync(command, cancellationToken);
         }
 
-        [HttpPut("picture/{image}")]
+        [HttpPost("picture")]
         [Authorize(Roles = "User")]
         [SwaggerOperation(Description = "Updates user's profile picture. Requires role: User.",
             Summary = "Updates user's profile picture.")]
         [ProducesResponseType(typeof(ResponseBase), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
-        public async Task<IActionResult> UpdateProfilePictureAsync([FromRoute] string image,
+        public async Task<IActionResult> UpdateProfilePictureAsync(IFormFile pictureFile,
             CancellationToken cancellationToken)
         {
             var userId = HttpContext.User.GetUserId();
@@ -217,7 +216,7 @@ namespace MangoAPI.Presentation.Controllers
             var command = new UpdateProfilePictureCommand
             {
                 UserId = userId,
-                Image = image
+                PictureFile = pictureFile
             };
 
             return await RequestAsync(command, cancellationToken);

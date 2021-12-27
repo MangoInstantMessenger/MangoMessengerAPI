@@ -6,12 +6,12 @@ namespace MangoAPI.Application.Interfaces
 {
     public interface IBlobService
     {
-        Task<string> GetBlob(string name, string containerName);
+        Task<string> GetBlobAsync(string name, string containerName);
         
-        Task<IEnumerable<string>> AllBlobs(string containerName);
+        Task<IEnumerable<string>> AllBlobsAsync(string containerName);
         
-        Task<bool> UploadFileBlob(string name, IFormFile file, string containerName);
+        Task<bool> UploadFileBlobAsync(string name, IFormFile file, string containerName);
         
-        Task<bool> DeleteBlob(string name, string containerName);
+        Task<bool> DeleteBlobAsync(string name, string containerName);
     }
 }

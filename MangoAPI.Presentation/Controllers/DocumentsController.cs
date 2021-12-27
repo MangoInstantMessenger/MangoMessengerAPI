@@ -44,7 +44,7 @@ namespace MangoAPI.Presentation.Controllers
             CancellationToken cancellationToken)
         {
             var userId = HttpContext.User.GetUserId();
-            
+
             var command = new UploadDocumentCommand
             {
                 FormFile = formFile,

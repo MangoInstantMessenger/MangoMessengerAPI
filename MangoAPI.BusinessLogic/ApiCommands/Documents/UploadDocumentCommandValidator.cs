@@ -21,7 +21,6 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Documents
                 .LessThanOrEqualTo(10 * 1024 * 1024);
 
             RuleFor(x => x.FormFile.FileName)
-                .Cascade(CascadeMode.Stop)
                 .NotEmpty()
                 .Must(HaveAllowedExtension)
                 .WithMessage(

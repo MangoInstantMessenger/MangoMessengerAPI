@@ -34,7 +34,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Documents
             var blobContainerName = EnvironmentConstants.MangoBlobContainer;
             var uniqueFileName = GetUniqueFileName(request.FormFile.FileName);
 
-            await _blobService.UploadFileBlob(uniqueFileName, request.FormFile, blobContainerName);
+            await _blobService.UploadFileBlobAsync(uniqueFileName, request.FormFile, blobContainerName);
 
             var documentEntity = new DocumentEntity
             {
@@ -47,7 +47,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Documents
             
             await _postgresDbContext.SaveChangesAsync(cancellationToken);
 
-            var fileUrl = await _blobService.GetBlob(uniqueFileName, blobContainerName);
+            var fileUrl = await _blobService.GetBlobAsync(uniqueFileName, blobContainerName);
             
             return _responseFactory.SuccessResponse(
                 UploadDocumentResponse.FromSuccess(documentEntity.FileName, fileUrl));

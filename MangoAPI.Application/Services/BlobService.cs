@@ -17,7 +17,7 @@ namespace MangoAPI.Application.Services
             _blobClient = blobClient;
         }
 
-        public Task<string> GetBlob(string name, string containerName)
+        public Task<string> GetBlobAsync(string name, string containerName)
         {
             // In order for us to get access to anything inside our blob 
             // We first need to connect to the blob container 
@@ -33,7 +33,7 @@ namespace MangoAPI.Application.Services
             return Task.FromResult(str);
         }
 
-        public async Task<IEnumerable<string>> AllBlobs(string containerName)
+        public async Task<IEnumerable<string>> AllBlobsAsync(string containerName)
         {
             // This will me to access data inside the personal container
             var containerClient = _blobClient.GetBlobContainerClient(containerName);
@@ -51,7 +51,7 @@ namespace MangoAPI.Application.Services
             return files;
         }
 
-        public async Task<bool> UploadFileBlob(string name, IFormFile file, string containerName)
+        public async Task<bool> UploadFileBlobAsync(string name, IFormFile file, string containerName)
         {
             try
             {
@@ -82,7 +82,7 @@ namespace MangoAPI.Application.Services
             return false;
         }
 
-        public async Task<bool> DeleteBlob(string name, string containerName)
+        public async Task<bool> DeleteBlobAsync(string name, string containerName)
         {
             // This will me to access data inside the personal container
             var containerClient = _blobClient.GetBlobContainerClient(containerName);
