@@ -35,7 +35,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Documents
             var totalUploadedDocsCount = await _postgresDbContext.Documents.CountAsync(x =>
                 x.UserId == request.UserId &&
                 x.UploadedAt > DateTime.Now.AddHours(-1), cancellationToken);
-
+            
             if (totalUploadedDocsCount > 10)
             {
                 const string message = ResponseMessageCodes.UploadedDocumentsLimitReached;
