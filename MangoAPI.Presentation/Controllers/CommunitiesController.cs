@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using System;
+using AutoMapper;
 using MangoAPI.BusinessLogic.ApiCommands.Communities;
 using MangoAPI.BusinessLogic.ApiQueries.Communities;
 using MangoAPI.BusinessLogic.Responses;
@@ -129,20 +130,27 @@ namespace MangoAPI.Presentation.Controllers
         /// <summary>
         /// Updates picture of particular channel. Required role: User
         /// </summary>
-        /// <param name="request"></param>
-        /// <param name="cancellationToken"></param>
+        /// <param name="chatId">Identifier of chat to be updated.</param>
+        /// <param name="newGroupPicture">Picture file.</param>
+        /// <param name="cancellationToken">Instance of cancellation token.</param>
         /// <returns></returns>
-        [HttpPut("picture")]
+        [HttpPost("picture/{chatId:guid}")]
         [SwaggerOperation(Description = "Updates picture of particular channel. Required role: User",
             Summary = "Updates picture of particular channel.")]
         [ProducesResponseType(typeof(ResponseBase), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
-        public async Task<IActionResult> UpdateChannelPictureAsync(UpdateChanelPictureRequest request,
+        public async Task<IActionResult> UpdateChannelPictureAsync([FromRoute] Guid chatId, IFormFile newGroupPicture,
             CancellationToken cancellationToken)
         {
-            var command = Mapper.Map<UpdateChanelPictureCommand>(request);
-            command.UserId = HttpContext.User.GetUserId();
+            var userId = HttpContext.User.GetUserId();
+
+            var command = new UpdateChanelPictureCommand
+            {
+                ChatId = chatId,
+                UserId = userId,
+                NewGroupPicture = newGroupPicture
+            };
 
             return await RequestAsync(command, cancellationToken);
         }

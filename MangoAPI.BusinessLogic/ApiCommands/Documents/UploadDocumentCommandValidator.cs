@@ -16,6 +16,8 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Documents
         public UploadDocumentCommandValidator()
         {
             RuleFor(x => x.FormFile).NotEmpty();
+            RuleFor(x => x.UserId).NotEmpty();
+            
             RuleFor(x => x.FormFile.Length)
                 .GreaterThan(0)
                 .LessThanOrEqualTo(5 * 1024 * 1024)
@@ -29,8 +31,6 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Documents
                 .Must(HaveValidName)
                 .WithMessage("Invalid file name.")
                 .Length(1, 20);
-
-            RuleFor(x => x.UserId).NotEmpty();
         }
 
         private static bool HaveValidName(string str)

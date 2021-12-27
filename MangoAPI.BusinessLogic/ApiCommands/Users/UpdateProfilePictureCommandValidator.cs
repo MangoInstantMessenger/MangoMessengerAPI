@@ -14,6 +14,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
 
         public UpdateProfilePictureCommandValidator()
         {
+            RuleFor(x => x.UserId).NotEmpty();
             RuleFor(x => x.PictureFile).NotEmpty();
 
             RuleFor(x => x.PictureFile.Length)
@@ -29,8 +30,6 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
                 .Must(HaveValidName)
                 .WithMessage("Invalid file name.")
                 .Length(1, 20);
-
-            RuleFor(x => x.UserId).NotEmpty();
         }
 
         private static bool HaveValidName(string str)
