@@ -128,32 +128,6 @@ namespace MangoAPI.Presentation.Controllers
         }
 
         /// <summary>
-        /// Gets info about current user himself.
-        /// This endpoint may be accessed by both roles: User.
-        /// </summary>
-        /// <param name="cancellationToken">CancellationToken instance.</param>
-        /// <returns>Possible codes: 200, 400, 409.</returns>
-        [HttpGet]
-        [Authorize(Roles = "User")]
-        [SwaggerOperation(Description = "Gets info about current user himself. " +
-                                        "This endpoint may be accessed by both roles: Unverified, User.",
-            Summary = "Gets info about current user himself.")]
-        [ProducesResponseType(typeof(GetUserResponse), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
-        public async Task<IActionResult> GetCurrentUser(CancellationToken cancellationToken)
-        {
-            var userId = HttpContext.User.GetUserId();
-
-            var request = new GetUserQuery
-            {
-                UserId = userId
-            };
-
-            return await RequestAsync(request, cancellationToken);
-        }
-
-        /// <summary>
         /// Updates user's social network user names. Requires role: User.
         /// </summary>
         /// <param name="request">UpdateUserSocialInformationRequest instance.</param>
