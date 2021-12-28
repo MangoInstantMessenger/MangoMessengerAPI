@@ -179,7 +179,7 @@ namespace MangoAPI.Presentation.Controllers
         [Authorize(Roles = "User")]
         [SwaggerOperation(Description = "Updates user's profile picture. Requires role: User.",
             Summary = "Updates user's profile picture.")]
-        [ProducesResponseType(typeof(ResponseBase), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(UpdateProfilePictureResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
         public async Task<IActionResult> UpdateProfilePictureAsync(IFormFile pictureFile,

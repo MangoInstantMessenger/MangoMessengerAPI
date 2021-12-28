@@ -13,15 +13,15 @@ using Microsoft.EntityFrameworkCore;
 namespace MangoAPI.BusinessLogic.ApiCommands.Users
 {
     public class UpdateProfilePictureCommandHandler
-        : IRequestHandler<UpdateProfilePictureCommand, Result<ResponseBase>>
+        : IRequestHandler<UpdateProfilePictureCommand, Result<UpdateProfilePictureResponse>>
     {
         private readonly MangoPostgresDbContext _postgresDbContext;
-        private readonly ResponseFactory<ResponseBase> _responseFactory;
+        private readonly ResponseFactory<UpdateProfilePictureResponse> _responseFactory;
         private readonly IBlobService _blobService;
 
         public UpdateProfilePictureCommandHandler(
             MangoPostgresDbContext postgresDbContext,
-            ResponseFactory<ResponseBase> responseFactory,
+            ResponseFactory<UpdateProfilePictureResponse> responseFactory,
             IBlobService blobService)
         {
             _postgresDbContext = postgresDbContext;
@@ -29,7 +29,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
             _blobService = blobService;
         }
 
-        public async Task<Result<ResponseBase>> Handle(UpdateProfilePictureCommand request,
+        public async Task<Result<UpdateProfilePictureResponse>> Handle(UpdateProfilePictureCommand request,
             CancellationToken cancellationToken)
         {
             var totalUploadedDocsCount = await _postgresDbContext.Documents.CountAsync(x =>
@@ -75,7 +75,10 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
 
             await _postgresDbContext.SaveChangesAsync(cancellationToken);
 
-            return _responseFactory.SuccessResponse(ResponseBase.SuccessResponse);
+            var newUserPictureUrl = await _blobService.GetBlobAsync(uniqueFileName, blobContainerName);
+            var response = UpdateProfilePictureResponse.FromSuccess(newUserPictureUrl);
+
+            return _responseFactory.SuccessResponse(response);
         }
 
         private static string GetUniqueFileName(string fileName)
