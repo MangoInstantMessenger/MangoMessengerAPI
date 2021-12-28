@@ -1,7 +1,9 @@
-﻿using MangoAPI.BusinessLogic.ApiCommands.Communities;
+﻿using System;
+using MangoAPI.BusinessLogic.ApiCommands.Communities;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 
 namespace MangoAPI.Presentation.Interfaces
 {
@@ -15,6 +17,7 @@ namespace MangoAPI.Presentation.Interfaces
 
         Task<IActionResult> SearchAsync(string displayName, CancellationToken cancellationToken);
 
-        Task<IActionResult> UpdateChannelPictureAsync(UpdateChanelPictureRequest request, CancellationToken cancellationToken);
+        Task<IActionResult> UpdateChannelPictureAsync(Guid chatId, IFormFile newGroupPicture,
+            CancellationToken cancellationToken);
     }
 }

@@ -1,4 +1,6 @@
-﻿using MangoAPI.BusinessLogic.Responses;
+﻿using System;
+using System.IO;
+using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.DataAccess.Database;
 using MangoAPI.Domain.Constants;
 using MangoAPI.Domain.Enums;
@@ -6,32 +8,51 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System.Threading;
 using System.Threading.Tasks;
+using MangoAPI.Application.Interfaces;
+using MangoAPI.Domain.Entities;
 
 namespace MangoAPI.BusinessLogic.ApiCommands.Communities
 {
-    public class UpdateChannelPictureCommandHandler 
-        : IRequestHandler<UpdateChanelPictureCommand, Result<ResponseBase>>
+    public class
+        UpdateChannelPictureCommandHandler : IRequestHandler<UpdateChanelPictureCommand,
+            Result<UpdateChannelLogoResponse>>
     {
         private readonly MangoPostgresDbContext _postgresDbContext;
-        private readonly ResponseFactory<ResponseBase> _responseFactory;
+        private readonly ResponseFactory<UpdateChannelLogoResponse> _responseFactory;
+        private readonly IBlobService _blobService;
 
-        public UpdateChannelPictureCommandHandler(MangoPostgresDbContext postgresDbContext, 
-            ResponseFactory<ResponseBase> responseFactory)
+        public UpdateChannelPictureCommandHandler(
+            MangoPostgresDbContext postgresDbContext,
+            ResponseFactory<UpdateChannelLogoResponse> responseFactory,
+            IBlobService blobService)
         {
             _postgresDbContext = postgresDbContext;
             _responseFactory = responseFactory;
+            _blobService = blobService;
         }
 
-        public async Task<Result<ResponseBase>> Handle(UpdateChanelPictureCommand request, 
+        public async Task<Result<UpdateChannelLogoResponse>> Handle(UpdateChanelPictureCommand request,
             CancellationToken cancellationToken)
         {
-            var userChat = await _postgresDbContext.UserChats.AsNoTracking()
+            var totalUploadedDocsCount = await _postgresDbContext.Documents.CountAsync(x =>
+                x.UserId == request.UserId &&
+                x.UploadedAt > DateTime.Now.AddHours(-1), cancellationToken);
+
+            if (totalUploadedDocsCount > 10)
+            {
+                const string message = ResponseMessageCodes.UploadedDocumentsLimitReached;
+                var details = ResponseMessageCodes.ErrorDictionary[message];
+                return _responseFactory.ConflictResponse(message, details);
+            }
+
+            var userChat = await _postgresDbContext.UserChats
                 .Include(x => x.Chat)
-                .FirstOrDefaultAsync(x => x.ChatId == request.ChatId &&
-                                          x.UserId == request.UserId &&
-                                          x.RoleId == (int)UserRole.Owner &&
-                                          x.Chat.CommunityType != (int)CommunityType.DirectChat,
-                    cancellationToken);
+                .FirstOrDefaultAsync(x =>
+                    x.ChatId == request.ChatId &&
+                    x.UserId == request.UserId &&
+                    x.RoleId == (int) UserRole.Owner &&
+                    x.Chat.CommunityType != (int) CommunityType.DirectChat &&
+                    x.Chat.CommunityType != (int) CommunityType.SecretChat, cancellationToken);
 
             if (userChat is null)
             {
@@ -41,12 +62,39 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Communities
                 return _responseFactory.ConflictResponse(errorMessage, errorDescription);
             }
 
-            userChat.Chat.Image = request.Image;
+            var blobContainerName = EnvironmentConstants.MangoBlobContainer;
+            var uniqueFileName = GetUniqueFileName(request.NewGroupPicture.FileName);
+
+            await _blobService.UploadFileBlobAsync(uniqueFileName, request.NewGroupPicture, blobContainerName);
+
+            var newUserPicture = new DocumentEntity
+            {
+                FileName = uniqueFileName,
+                UserId = request.UserId,
+                UploadedAt = DateTime.Now
+            };
+
+            _postgresDbContext.Documents.Add(newUserPicture);
+
+            userChat.Chat.Image = uniqueFileName;
 
             _postgresDbContext.Update(userChat.Chat);
+
             await _postgresDbContext.SaveChangesAsync(cancellationToken);
 
-            return _responseFactory.SuccessResponse(ResponseBase.SuccessResponse);
+            var blobUrl = await _blobService.GetBlobAsync(uniqueFileName, blobContainerName);
+            var response = UpdateChannelLogoResponse.FromSuccess(blobUrl);
+
+            return _responseFactory.SuccessResponse(response);
+        }
+
+        private static string GetUniqueFileName(string fileName)
+        {
+            fileName = Path.GetFileName(fileName);
+            return Path.GetFileNameWithoutExtension(fileName)
+                   + "_"
+                   + Guid.NewGuid()
+                   + Path.GetExtension(fileName);
         }
     }
 }

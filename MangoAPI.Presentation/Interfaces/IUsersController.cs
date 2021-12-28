@@ -3,6 +3,7 @@ using MangoAPI.BusinessLogic.ApiCommands.Users;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 
 namespace MangoAPI.Presentation.Interfaces
 {
@@ -22,6 +23,6 @@ namespace MangoAPI.Presentation.Interfaces
         Task<IActionResult> UpdateUserSocialInformationAsync(UpdateUserSocialInformationRequest request,
             CancellationToken cancellationToken);
 
-        Task<IActionResult> UpdateProfilePictureAsync(string image, CancellationToken cancellationToken);
+        Task<IActionResult> UpdateProfilePictureAsync(IFormFile pictureFile, CancellationToken cancellationToken);
     }
 }
