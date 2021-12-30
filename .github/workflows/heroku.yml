@@ -2,7 +2,7 @@ name: Heroku Environment CI/CD
 
 on: 
   push:
-    branches: [ master, MANGO-318 ]
+    branches: [ master ]
 
 jobs:
   build:
@@ -27,9 +27,7 @@ jobs:
           
     # queries database with postgres client
     - name: Drop all tables
-      run: |
-        ls -l $GITHUB_WORKSPACE/SqlScripts
-        psql -h $MANGO_HEROKU_PGHOST -d $MANGO_HEROKU_PGDB -U $MANGO_HEROKU_USER -p 5432 -a -q -f $GITHUB_WORKSPACE/SqlScripts/PostgresDropAllTablesCascade.sql
+      run: psql -h $MANGO_HEROKU_PGHOST -d $MANGO_HEROKU_PGDB -U $MANGO_HEROKU_USER -p 5432 -a -q -f $GITHUB_WORKSPACE/SqlScripts/PostgresDropAllTablesCascade.sql
       env:
         PGPASSWORD: ${{ secrets.MANGO_HEROKU_PGPASSWORD }}
         MANGO_HEROKU_PGHOST: ${{ secrets.MANGO_HEROKU_PGHOST }}
