@@ -2,7 +2,7 @@ name: Heroku Environment CI/CD
 
 on: 
   push:
-    branches: [ master, MANGO-294 ]
+    branches: [ master, MANGO-318 ]
 
 jobs:
   build:
@@ -24,7 +24,7 @@ jobs:
         dotnet ef database drop --force --project MangoAPI.DataAccess
         dotnet ef database update --project MangoAPI.DataAccess
       env:
-        MANGO_DATABASE_URL: ${{ secrets.MANGO_DATABASE_URL }}
+        MANGO_DATABASE_URL: ${{ secrets.MANGO_HEROKU_DATABASE_URL }}
     #- name: Run unit tests
     #  run: |
     #    dotnet test MangoAPI.Tests/MangoAPI.Tests.csproj
