@@ -1,10 +1,8 @@
 using MangoAPI.BusinessLogic.HubConfig;
-using MangoAPI.DataAccess.Database;
 using MangoAPI.Presentation.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpOverrides;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -57,8 +55,6 @@ namespace MangoAPI.Presentation
                 endpoints.MapControllers().RequireCors(CorsPolicy);
                 endpoints.MapHub<ChatHub>("/notify").RequireCors(CorsPolicy);
             });
-
-            UpdateDatabase(app);
         }
 
         public void ConfigureServices(IServiceCollection services)
@@ -111,14 +107,14 @@ namespace MangoAPI.Presentation
             services.AddMvc();
         }
 
-        private static void UpdateDatabase(IApplicationBuilder app)
-        {
-            using var serviceScope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>()
-                .CreateScope();
-
-            using var context = serviceScope.ServiceProvider.GetService<MangoPostgresDbContext>();
-
-            context?.Database.Migrate();
-        }
+        // private static void UpdateDatabase(IApplicationBuilder app)
+        // {
+        //     using var serviceScope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>()
+        //         .CreateScope();
+        //
+        //     using var context = serviceScope.ServiceProvider.GetService<MangoPostgresDbContext>();
+        //
+        //     context?.Database.Migrate();
+        // }
     }
 }

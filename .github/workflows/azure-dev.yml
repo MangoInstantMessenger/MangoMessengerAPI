@@ -20,6 +20,15 @@ jobs:
       run: |
         dotnet restore
         dotnet publish "MangoAPI.Presentation/MangoAPI.Presentation.csproj" -r linux-x64 -o ~/mango-linux-build/src
+        
+    #- name: Run unit tests
+    #  run: |
+    #    dotnet test MangoAPI.Tests/MangoAPI.Tests.csproj
+    #  env: 
+    #    MANGO_TOKEN_KEY: ${{ secrets.MANGO_TOKEN_KEY }}
+    #    REFRESH_TOKEN_LIFETIME: ${{ secrets.REFRESH_TOKEN_LIFETIME }}
+    #    JWT_LIFETIME: ${{ secrets.JWT_LIFETIME }}
+    #    SEED_PASSWORD: ${{ secrets.SEED_PASSWORD }}
 
     - name: Configure SSH
       run: |
@@ -49,3 +58,12 @@ jobs:
       
     - name: Start service
       run: ssh staging "sudo systemctl start mangoback"
+      
+    - name: Drop and recreate database
+      run: |
+        dotnet tool install --global dotnet-ef
+        dotnet tool restore
+        dotnet ef database drop --force --project MangoAPI.DataAccess
+        dotnet ef database update --project MangoAPI.DataAccess
+      env:
+        MANGO_DATABASE_URL: ${{ secrets.MANGO_DATABASE_URL }}
