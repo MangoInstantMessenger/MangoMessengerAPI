@@ -2,7 +2,7 @@ name: Heroku Environment CI/CD
 
 on: 
   push:
-    branches: [ master, MANGO-318 ]
+    branches: [ master ]
 
 jobs:
   build:
@@ -13,27 +13,33 @@ jobs:
       env: 
         HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
       run: heroku container:login 
+      
     - name: Build and push
       env:
         HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
       run: heroku container:push -a ${{ secrets.HEROKU_APP_NAME }} web
-    - name: Drop and recreate database
+      
+    # Installs PostgreSQl client  
+    - name: Install PostgreSQL client
+      run: |
+        apt-get update
+        apt install -y --no-install-recommends postgresql-client
+          
+    # queries database with postgres client
+    - name: Drop all tables
+      run: psql -h postgres -d postgres_db -U postgres_user -c 'SELECT 1;'
+      env:
+        PGPASSWORD: postgres_password
+      
+    - name: Update Database
       run: |
         dotnet tool install --global dotnet-ef
         dotnet tool restore
-        dotnet ef database drop --force --project MangoAPI.DataAccess
         dotnet ef database update --project MangoAPI.DataAccess
       env:
         MANGO_DATABASE_URL: ${{ secrets.MANGO_HEROKU_DATABASE_URL }}
         MANGO_SEED_PASSWORD: ${{ secrets.MANGO_HEROKU_SEED_PASSWORD }}
-    #- name: Run unit tests
-    #  run: |
-    #    dotnet test MangoAPI.Tests/MangoAPI.Tests.csproj
-    #  env: 
-    #    MANGO_TOKEN_KEY: ${{ secrets.MANGO_TOKEN_KEY }}
-    #    REFRESH_TOKEN_LIFETIME: ${{ secrets.REFRESH_TOKEN_LIFETIME }}
-    #    JWT_LIFETIME: ${{ secrets.JWT_LIFETIME }}
-    #    SEED_PASSWORD: ${{ secrets.SEED_PASSWORD }}
+        
     - name: Release
       env:
         HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
