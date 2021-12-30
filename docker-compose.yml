@@ -1,0 +1,63 @@
+version: '3.4'
+
+networks:
+  mango_messenger_backend_network:
+    driver: bridge
+
+services:
+  mango_messenger_backend:
+    container_name: mango_messenger_backend
+    image: mango_messenger_backend:latest
+    depends_on:
+      - "postgres_image"
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8000:80"     
+    environment:
+      MANGO_JWT_ISSUER: "http://localhost:4200"
+      MANGO_JWT_AUDIENCE: "https://localhost:5001"
+      MANGO_JWT_SIGN_KEY: "5175824b-2587-48da-8b30-9252a528bda0"
+      MANGO_JWT_LIFETIME: "60"
+      MANGO_REFRESH_TOKEN_LIFETIME: "7"
+      MANGO_EMAIL_NOTIFICATIONS_ADDRESS: "NULL"
+      MANGO_EMAIL_NOTIFICATIONS_PASSWORD: "NULL"
+      MANGO_FRONTEND_ADDRESS: "http://localhost:4200/"
+      MANGO_BACKEND_ADDRESS: "https://localhost:5001/"
+      MANGO_DATABASE_URL: "host=postgres_db;port=5432;database=MangoMessengerDatabase;username=postgres;password=postgres"
+      MANGO_SEED_PASSWORD: "z[?6dMR#xmp=nr6q"
+      MANGO_BLOB_URL: "NULL"
+      MANGO_BLOB_CONTAINER: "NULL"
+      MANGO_BLOB_ACCESS: "NULL"
+      PORT: "8000"
+
+    networks:
+      - mango_messenger_backend_network  
+  
+  postgres_image:
+    container_name: postgres_db
+    image: postgres:latest
+    ports:
+      - "6000:5432"
+    restart: always
+    environment:
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "postgres"
+      POSTGRES_DB: "MangoMessengerDatabase"
+    networks:
+      - mango_messenger_backend_network
+        
+  pgadmin:
+    container_name: pgadmin4_container
+    image: dpage/pgadmin4
+    restart: always
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: root
+    ports:
+      - "5050:80"
+    networks:
+      - mango_messenger_backend_network
+volumes:
+  db_volume:

@@ -27,6 +27,8 @@
 - `MANGO_BLOB_CONTAINER`
 - `MANGO_BLOB_ACCESS` (address of public azure blob)
 
+## Run Docker Compose
+
 ## Environments
 
 - Azure Dev: https://back.mangomessenger.company/swagger (valid till 28-Oct-2022)
