@@ -70,12 +70,6 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
 
             await _emailSenderService.SendVerificationEmailAsync(newUser, cancellationToken);
 
-            _postgresDbContext.UserRoles.Add(new IdentityUserRole<Guid>
-            {
-                UserId = newUser.Id,
-                RoleId = SeedDataConstants.UnverifiedRoleId
-            });
-
             _postgresDbContext.UserInformation.Add(userInfo);
 
             await _postgresDbContext.SaveChangesAsync(cancellationToken);

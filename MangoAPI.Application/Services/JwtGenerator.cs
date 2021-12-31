@@ -38,7 +38,7 @@ namespace MangoAPI.Application.Services
             return GenerateJwtToken(userId, jwtLifetimeParsed);
         }
 
-        public string GenerateJwtToken(Guid userId, int lifetimeMinutes)
+        private string GenerateJwtToken(Guid userId, int lifetimeMinutes)
         {
             var claims = new List<Claim>
             {
