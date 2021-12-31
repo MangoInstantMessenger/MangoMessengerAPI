@@ -21,7 +21,7 @@ namespace MangoAPI.Presentation.Controllers
     /// </summary>
     [ApiController]
     [Route("api/contacts")]
-    [Authorize(Roles = "User", AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    [Authorize]
     public class ContactsController : ApiControllerBase, IContactsController
     {
         public ContactsController(IMediator mediator, IMapper mapper)

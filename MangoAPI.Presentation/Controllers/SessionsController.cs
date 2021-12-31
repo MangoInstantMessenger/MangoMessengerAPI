@@ -20,7 +20,7 @@ namespace MangoAPI.Presentation.Controllers
     /// </summary>
     [ApiController]
     [Route("api/sessions")]
-    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    [Authorize]
     public class SessionsController : ApiControllerBase, ISessionsController
     {
         public SessionsController(IMediator mediator, IMapper mapper)

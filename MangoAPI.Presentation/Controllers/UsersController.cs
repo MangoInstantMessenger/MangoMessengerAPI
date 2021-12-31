@@ -86,7 +86,7 @@ namespace MangoAPI.Presentation.Controllers
         /// <param name="cancellationToken">Cancellation Token Instance.</param>
         /// <returns></returns>
         [HttpPut("password")]
-        [Authorize(Roles = "User")]
+        [Authorize]
         [SwaggerOperation(Description = "Changes password by current password. Required role: User",
             Summary = "Changes password by current password.")]
         [ProducesResponseType(typeof(ResponseBase), StatusCodes.Status200OK)]
@@ -110,7 +110,7 @@ namespace MangoAPI.Presentation.Controllers
         /// <param name="cancellationToken">CancellationToken instance.</param>
         /// <returns>Possible codes: 200, 400, 409.</returns>
         [HttpGet("{userId:guid}")]
-        [Authorize(Roles = "User")]
+        [Authorize]
         [SwaggerOperation(Description = "Gets user by ID. Requires role: User.",
             Summary = "Gets user by ID.")]
         [ProducesResponseType(typeof(GetUserResponse), StatusCodes.Status200OK)]
@@ -133,7 +133,7 @@ namespace MangoAPI.Presentation.Controllers
         /// <param name="cancellationToken">CancellationToken instance.</param>
         /// <returns></returns>
         [HttpPut("socials")]
-        [Authorize(Roles = "User")]
+        [Authorize]
         [SwaggerOperation(Description = "Updates user's social network user names. Requires role: User.",
             Summary = "Updates user's social network user names.")]
         [ProducesResponseType(typeof(ResponseBase), StatusCodes.Status200OK)]
@@ -158,7 +158,7 @@ namespace MangoAPI.Presentation.Controllers
         /// <param name="cancellationToken">CancellationToken instance.</param>
         /// <returns>Possible codes: 200, 400, 409.</returns>
         [HttpPut("account")]
-        [Authorize(Roles = "User")]
+        [Authorize]
         [SwaggerOperation(Description = "Updates user's personal account information. Requires role: User.",
             Summary = "Updates user's personal account information.")]
         [ProducesResponseType(typeof(ResponseBase), StatusCodes.Status200OK)]
@@ -176,7 +176,7 @@ namespace MangoAPI.Presentation.Controllers
         }
 
         [HttpPost("picture")]
-        [Authorize(Roles = "User")]
+        [Authorize]
         [SwaggerOperation(Description = "Updates user's profile picture. Requires role: User.",
             Summary = "Updates user's profile picture.")]
         [ProducesResponseType(typeof(UpdateProfilePictureResponse), StatusCodes.Status200OK)]

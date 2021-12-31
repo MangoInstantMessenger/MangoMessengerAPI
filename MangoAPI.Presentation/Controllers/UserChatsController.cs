@@ -20,7 +20,7 @@ namespace MangoAPI.Presentation.Controllers
     /// </summary>
     [ApiController]
     [Route("api/user-chats/{chatId:guid}")]
-    [Authorize(Roles = "User", AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    [Authorize]
     public class UserChatsController : ApiControllerBase, IUserChatsController
     {
         public UserChatsController(IMediator mediator, IMapper mapper) : base(mediator, mapper)

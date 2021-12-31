@@ -19,7 +19,7 @@ namespace MangoAPI.Presentation.Controllers
     /// </summary>
     [ApiController]
     [Route("api/documents")]
-    [Authorize(Roles = "User", AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    [Authorize]
     public class DocumentsController : ApiControllerBase, IDocumentsController
     {
         public DocumentsController(IMediator mediator, IMapper mapper)

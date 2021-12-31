@@ -18,7 +18,7 @@ namespace MangoAPI.Presentation.Controllers
     /// </summary>
     [ApiController]
     [Route("api/password-restore-request")]
-    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    [Authorize]
     public class PasswordRestoreRequestsController : ApiControllerBase, IPasswordRestoreRequestsController
     {
         public PasswordRestoreRequestsController(IMediator mediator, IMapper mapper)

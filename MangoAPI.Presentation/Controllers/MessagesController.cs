@@ -21,7 +21,7 @@ namespace MangoAPI.Presentation.Controllers
     /// </summary>
     [ApiController]
     [Route("api/messages")]
-    [Authorize(Roles = "User", AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    [Authorize]
     public class MessagesController : ApiControllerBase, IMessagesController
     {
         public MessagesController(IMediator mediator, IMapper mapper) : base(mediator, mapper)

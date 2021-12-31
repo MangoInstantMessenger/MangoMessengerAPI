@@ -22,7 +22,7 @@ namespace MangoAPI.Presentation.Controllers
     [ApiController]
     [Route("api/communities")]
     [Produces("application/json")]
-    [Authorize(Roles = "User", AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    [Authorize]
     public class CommunitiesController : ApiControllerBase, ICommunitiesController
     {
         public CommunitiesController(IMediator mediator, IMapper mapper)

@@ -12,9 +12,8 @@ namespace MangoAPI.DataAccess.Database
         {
             var optionsBuilder = new DbContextOptionsBuilder<MangoPostgresDbContext>();
             var connectionString = EnvironmentConstants.MangoDatabaseUrl;
-            var stringService = new StringService();
 
-            connectionString = stringService.ConvertHerokuDbConnection(connectionString);
+            connectionString = StringService.ConvertHerokuDbConnection(connectionString);
 
             optionsBuilder.UseNpgsql(connectionString ??
                                      throw new InvalidOperationException(

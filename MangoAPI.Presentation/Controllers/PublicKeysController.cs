@@ -20,7 +20,7 @@ namespace MangoAPI.Presentation.Controllers
     [ApiController]
     [Route("api/public-keys")]
     [Produces("application/json")]
-    [Authorize(Roles = "User", AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    [Authorize]
     public class PublicKeysController : ApiControllerBase, IPublicKeysController
     {
         public PublicKeysController(IMediator mediator, IMapper mapper)

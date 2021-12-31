@@ -21,7 +21,7 @@ namespace MangoAPI.Presentation.Controllers
     [ApiController]
     [Route("api/key-exchange")]
     [Produces("application/json")]
-    [Authorize(Roles = "User", AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    [Authorize]
     public class KeyExchangeController : ApiControllerBase, IKeyExchangeController
     {
         public KeyExchangeController(IMediator mediator, IMapper mapper) 
