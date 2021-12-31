@@ -19,37 +19,25 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
         private readonly MangoPostgresDbContext _postgresDbContext;
         private readonly UserManager<UserEntity> _userManager;
         private readonly IJwtGenerator _jwtGenerator;
-        private readonly Random _random;
         private readonly ResponseFactory<TokensResponse> _responseFactory;
 
         public RegisterCommandHandler(UserManager<UserEntity> userManager, MangoPostgresDbContext postgresDbContext,
-            IEmailSenderService emailSenderService, IJwtGenerator jwtGenerator, 
+            IEmailSenderService emailSenderService, IJwtGenerator jwtGenerator,
             ResponseFactory<TokensResponse> responseFactory)
         {
             _userManager = userManager;
             _postgresDbContext = postgresDbContext;
             _emailSenderService = emailSenderService;
             _jwtGenerator = jwtGenerator;
-            _random = new Random();
             _responseFactory = responseFactory;
         }
 
         public async Task<Result<TokensResponse>> Handle(RegisterCommand request, CancellationToken cancellationToken)
         {
-            if (request.Email == EnvironmentConstants.MangoEmailNotificationsAddress)
-            {
-                const string errorMessage = ResponseMessageCodes.InvalidEmail;
-                var details = ResponseMessageCodes.ErrorDictionary[errorMessage];
+            var userExists = await _postgresDbContext.Users
+                .AnyAsync(entity => entity.Email == request.Email, cancellationToken);
 
-                return _responseFactory.ConflictResponse(errorMessage, details);
-            }
-
-            var exists = await _postgresDbContext.Users
-                .AsNoTracking()
-                .FirstOrDefaultAsync(x => x.PhoneNumber == request.PhoneNumber || 
-                                          x.Email == request.Email, cancellationToken);
-
-            if (exists != null)
+            if (userExists)
             {
                 const string errorMessage = ResponseMessageCodes.UserAlreadyExists;
                 var details = ResponseMessageCodes.ErrorDictionary[errorMessage];
@@ -59,12 +47,10 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
 
             var newUser = new UserEntity
             {
-                PhoneNumber = request.PhoneNumber,
                 DisplayName = request.DisplayName,
                 UserName = Guid.NewGuid().ToString(),
                 Email = request.Email,
                 EmailCode = Guid.NewGuid(),
-                PhoneCode = _random.Next(100000, 999999)
             };
 
             var result = await _userManager.CreateAsync(newUser, request.Password);
@@ -103,7 +89,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
                 CreatedAt = DateTime.UtcNow,
             };
 
-            var jwtToken = _jwtGenerator.GenerateJwtToken(newUser.Id, new List<string>
+            var jwtToken = _jwtGenerator.GenerateJwtToken(newUser.Id, lifetimeMinutes: 600, new List<string>
             {
                 SeedDataConstants.UnverifiedRole
             });

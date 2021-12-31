@@ -27,6 +27,10 @@ namespace MangoAPI.DataAccess.Database.Configurations
                 .WithOne(x => x.User)
                 .HasForeignKey(x => x.UserId);
 
+            builder.HasMany(x => x.Documents)
+                .WithOne(x => x.User)
+                .HasForeignKey(x => x.UserId);
+
             var user1 = new UserEntity
             {
                 PhoneNumber = "374775554310",

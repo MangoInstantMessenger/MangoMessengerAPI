@@ -1,5 +1,5 @@
 ﻿using System.Security.Cryptography;
-using MangoAPI.BusinessLogic.Extensions;
+using MangoAPI.DiffieHellmanConsole.Extensions;
 
 namespace MangoAPI.DiffieHellmanConsole.Services
 {

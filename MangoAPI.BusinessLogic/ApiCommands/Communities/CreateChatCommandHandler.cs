@@ -1,7 +1,6 @@
 ﻿using MangoAPI.BusinessLogic.HubConfig;
 using MangoAPI.BusinessLogic.Models;
 using MangoAPI.DataAccess.Database;
-using MangoAPI.DataAccess.Database.Extensions;
 using MangoAPI.Domain.Constants;
 using MangoAPI.Domain.Entities;
 using MangoAPI.Domain.Enums;
@@ -58,7 +57,11 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Communities
                 .FirstOrDefaultAsync(cancellationToken);
 
             var userPrivateChats = await _postgresDbContext.Chats
-                .GetUserChatsAsync(request.UserId, cancellationToken);
+                .Include(chatEntity => chatEntity.ChatUsers)
+                .Where(chatEntity => (chatEntity.CommunityType == (int)CommunityType.DirectChat ||
+                                      chatEntity.CommunityType == (int)CommunityType.SecretChat) &&
+                                     chatEntity.ChatUsers.Any(userChatEntity => userChatEntity.UserId == request.UserId))
+                .ToListAsync(cancellationToken);
 
             var existingChat = userPrivateChats
                 .FirstOrDefault(x => x.ChatUsers.Any(t => t.UserId == partner.Id)

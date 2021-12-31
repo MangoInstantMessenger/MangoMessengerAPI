@@ -9,10 +9,10 @@ namespace MangoAPI.BusinessLogic.ApiCommands.PasswordRestoreRequests
         [DefaultValue("432d97fb-7df5-4adc-abdd-22f4f4d29198")]
         public Guid RequestId { get; }
         
-        [DefaultValue("WzLxl534??]*&")]
+        [DefaultValue("XJ4S}HP$yaf.jky}")]
         public string NewPassword { get; }
         
-        [DefaultValue("WzLxl534??]*&")]
+        [DefaultValue("XJ4S}HP$yaf.jky}")]
         public string RepeatPassword { get; }
 
         [JsonConstructor]

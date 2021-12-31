@@ -9,5 +9,6 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
         public Guid UserId { get; set; }
         public string CurrentPassword { get; init; }
         public string NewPassword { get; init; }
+        public string RepeatNewPassword { get; init; }
     }
 }

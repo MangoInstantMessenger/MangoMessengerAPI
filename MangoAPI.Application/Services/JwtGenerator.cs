@@ -20,13 +20,25 @@ namespace MangoAPI.Application.Services
 
             if (tokenKey == null)
             {
-                throw new InvalidOperationException("Mango token key is null");
+                throw new InvalidOperationException("Mango token key is null.");
             }
 
             _key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(tokenKey));
         }
 
         public string GenerateJwtToken(Guid userId, List<string> roles)
+        {
+            var jwtLifetime = EnvironmentConstants.MangoJwtLifetime;
+
+            if (jwtLifetime == null || !int.TryParse(jwtLifetime, out var jwtLifetimeParsed))
+            {
+                throw new InvalidOperationException("Jwt lifetime environmental variable error.");
+            }
+
+            return GenerateJwtToken(userId, jwtLifetimeParsed, roles);
+        }
+
+        public string GenerateJwtToken(Guid userId, int lifetimeMinutes, List<string> roles)
         {
             var claims = new List<Claim>
             {
@@ -35,19 +47,12 @@ namespace MangoAPI.Application.Services
 
             roles.ForEach(x => claims.Add(new Claim(ClaimsIdentity.DefaultRoleClaimType, x)));
 
-            var jwtLifetime = EnvironmentConstants.MangoJwtLifetime;
-
-            if (jwtLifetime == null || !int.TryParse(jwtLifetime, out var jwtLifetimeParsed))
-            {
-                throw new InvalidOperationException("Jwt lifetime environmental variable error.");
-            }
-
             var credentials = new SigningCredentials(_key, SecurityAlgorithms.HmacSha256);
 
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(claims),
-                Expires = DateTime.UtcNow.AddMinutes(jwtLifetimeParsed),
+                Expires = DateTime.UtcNow.AddMinutes(lifetimeMinutes),
                 SigningCredentials = credentials,
                 Issuer = EnvironmentConstants.MangoJwtIssuer,
                 Audience = EnvironmentConstants.MangoJwtAudience,

@@ -1,6 +1,5 @@
 ﻿using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.DataAccess.Database;
-using MangoAPI.DataAccess.Database.Extensions;
 using MangoAPI.Domain.Constants;
 using MangoAPI.Domain.Enums;
 using MediatR;
@@ -12,8 +11,8 @@ using System.Threading.Tasks;
 
 namespace MangoAPI.BusinessLogic.ApiCommands.Users
 {
-    public class UpdateUserAccountInfoCommandHandler 
-        : IRequestHandler<UpdateUserAccountInfoCommand, Result<ResponseBase>>
+    public class
+        UpdateUserAccountInfoCommandHandler : IRequestHandler<UpdateUserAccountInfoCommand, Result<ResponseBase>>
     {
         private readonly MangoPostgresDbContext _postgresDbContext;
         private readonly ResponseFactory<ResponseBase> _responseFactory;
@@ -28,7 +27,9 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
         public async Task<Result<ResponseBase>> Handle(UpdateUserAccountInfoCommand request,
             CancellationToken cancellationToken)
         {
-            var user = await _postgresDbContext.Users.FindUserByIdIncludeInfoAsync(request.UserId, cancellationToken);
+            var user = await _postgresDbContext.Users
+                .Include(x => x.UserInformation)
+                .FirstOrDefaultAsync(x => x.Id == request.UserId, cancellationToken);
 
             if (user is null)
             {
@@ -42,8 +43,9 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
             {
                 var userChats = await _postgresDbContext.UserChats
                     .Include(x => x.Chat)
-                    .Where(x => x.UserId == user.Id &&
-                                x.Chat.CommunityType == (int)CommunityType.DirectChat)
+                    .Where(x => 
+                        x.UserId == user.Id && 
+                        x.Chat.CommunityType == (int) CommunityType.DirectChat)
                     .Select(x => x.Chat)
                     .ToListAsync(cancellationToken);
 
@@ -59,10 +61,6 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
             }
 
             user.UserInformation.BirthDay = request.BirthdayDate;
-
-            user.PhoneNumber = request.PhoneNumber;
-
-            user.Email = request.Email;
 
             user.UserInformation.Website = request.Website;
 

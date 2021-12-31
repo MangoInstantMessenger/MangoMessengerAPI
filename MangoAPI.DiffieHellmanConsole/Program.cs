@@ -4,9 +4,8 @@ using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
-using MangoAPI.BusinessLogic.Enums;
-using MangoAPI.BusinessLogic.Extensions;
 using MangoAPI.BusinessLogic.Responses;
+using MangoAPI.DiffieHellmanConsole.Extensions;
 using MangoAPI.DiffieHellmanConsole.Services;
 
 namespace MangoAPI.DiffieHellmanConsole

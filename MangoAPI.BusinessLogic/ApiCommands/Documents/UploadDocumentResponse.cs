@@ -14,7 +14,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Documents
 
         public static UploadDocumentResponse FromSuccess(string fileName, string fileUrl)
         {
-            return new()
+            return new UploadDocumentResponse
             {
                 Success = true,
                 Message = ResponseMessageCodes.Success,

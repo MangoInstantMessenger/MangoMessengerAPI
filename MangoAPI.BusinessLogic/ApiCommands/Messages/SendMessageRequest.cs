@@ -9,14 +9,12 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Messages
         [JsonConstructor]
         public SendMessageRequest(string messageText,
             Guid chatId,
-            bool isEncrypted,
             string attachmentUrl,
             string inReplayToAuthor,
             string inReplayToText)
         {
             MessageText = messageText;
             ChatId = chatId;
-            IsEncrypted = isEncrypted;
             AttachmentUrl = attachmentUrl;
             InReplayToAuthor = inReplayToAuthor;
             InReplayToText = inReplayToText;
@@ -27,9 +25,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Messages
 
         [DefaultValue("a8747c37-c5ef-4a87-943c-3ee3ae0a2871")]
         public Guid ChatId { get; }
-
-        [DefaultValue(false)]
-        public bool IsEncrypted { get; }
+        
 
         [DefaultValue("https://localhost:5001/Uploads/khachatur_picture.jpg")]
         public string AttachmentUrl { get; }

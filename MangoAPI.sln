@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.31410.357
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.32014.148
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MangoAPI.Presentation", "MangoAPI.Presentation\MangoAPI.Presentation.csproj", "{139143FA-4968-4269-883B-80DF7EECE7EA}"
 EndProject
@@ -19,23 +19,31 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 	ProjectSection(SolutionItems) = preProject
 		.dockerignore = .dockerignore
 		.gitignore = .gitignore
-		SqlScripts\Check_Db_Size.sql = SqlScripts\Check_Db_Size.sql
-		SqlScripts\DeleteMyUser.sql = SqlScripts\DeleteMyUser.sql
 		Dockerfile = Dockerfile
-		SqlScripts\Drop_All_Tables.sql = SqlScripts\Drop_All_Tables.sql
+		Environments-Back.jpg = Environments-Back.jpg
 		LICENSE.txt = LICENSE.txt
 		README.md = README.md
-		SqlScripts\Truncate_All_Tables.sql = SqlScripts\Truncate_All_Tables.sql
-		MANGO_API_POSTMAN_ENVIRONMENT.json = MANGO_API_POSTMAN_ENVIRONMENT.json
-		MANGO_API_POSTMAN_GLOBALS.json = MANGO_API_POSTMAN_GLOBALS.json
-		SqlScripts\Truncate_KeyExchangeRequest.sql = SqlScripts\Truncate_KeyExchangeRequest.sql
-		SqlScripts\Truncate_PublicKeys.sql = SqlScripts\Truncate_PublicKeys.sql
-		.github\workflows\heroku.yml = .github\workflows\heroku.yml
-		Environments-Back.jpg = Environments-Back.jpg
-		.github\workflows\azure-dev.yml = .github\workflows\azure-dev.yml
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MangoAPI.DiffieHellmanConsole", "MangoAPI.DiffieHellmanConsole\MangoAPI.DiffieHellmanConsole.csproj", "{85D35610-B0C7-4439-871C-0578E1FC7BB5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MangoAPI.DiffieHellmanConsole", "MangoAPI.DiffieHellmanConsole\MangoAPI.DiffieHellmanConsole.csproj", "{85D35610-B0C7-4439-871C-0578E1FC7BB5}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Workflows", "Workflows", "{CF4A9B6F-E77E-4DCD-8D08-32EDC9ACB978}"
+	ProjectSection(SolutionItems) = preProject
+		.github\workflows\azure-dev.yml = .github\workflows\azure-dev.yml
+		.github\workflows\azure-qa.yml = .github\workflows\azure-qa.yml
+		.github\workflows\heroku.yml = .github\workflows\heroku.yml
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SQL", "SQL", "{2A176CBC-BD4E-4ED5-AA92-B99D34C084BC}"
+	ProjectSection(SolutionItems) = preProject
+		SqlScripts\PostgresDeleteTestUser.sql = SqlScripts\PostgresDeleteTestUser.sql
+		SqlScripts\PostgresDropAllTablesCascade.sql = SqlScripts\PostgresDropAllTablesCascade.sql
+		SqlScripts\PostgresTruncateAllTablesCascade.sql = SqlScripts\PostgresTruncateAllTablesCascade.sql
+		SqlScripts\PostgresTruncateKeyExchangeRequests.sql = SqlScripts\PostgresTruncateKeyExchangeRequests.sql
+		SqlScripts\PostgresTruncatePublicKeys.sql = SqlScripts\PostgresTruncatePublicKeys.sql
+		SqlScripts\PostrgresValidateDatabaseSize.sql = SqlScripts\PostrgresValidateDatabaseSize.sql
+		SqlScripts\PostgresTruncatePasswordRestoreRequests.sql = SqlScripts\PostgresTruncatePasswordRestoreRequests.sql
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

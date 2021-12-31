@@ -10,17 +10,18 @@ using MangoAPI.BusinessLogic.Responses;
 
 namespace MangoAPI.BusinessLogic.ApiQueries.Contacts
 {
-    public class GetContactsQueryHandler 
-        : IRequestHandler<GetContactsQuery, Result<GetContactsResponse>>
+    public class GetContactsQueryHandler : IRequestHandler<GetContactsQuery, Result<GetContactsResponse>>
     {
         private readonly MangoPostgresDbContext _postgresDbContext;
         private readonly ResponseFactory<GetContactsResponse> _responseFactory;
+        private readonly StringService _stringService;
 
         public GetContactsQueryHandler(MangoPostgresDbContext postgresDbContext,
-            ResponseFactory<GetContactsResponse> responseFactory)
+            ResponseFactory<GetContactsResponse> responseFactory, StringService stringService)
         {
             _postgresDbContext = postgresDbContext;
             _responseFactory = responseFactory;
+            _stringService = stringService;
         }
 
         public async Task<Result<GetContactsResponse>> Handle(GetContactsQuery request, CancellationToken cancellationToken)
@@ -36,9 +37,8 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Contacts
                             DisplayName = userEntity.DisplayName,
                             Address = userEntity.UserInformation.Address,
                             Bio = userEntity.Bio,
-                            PictureUrl = StringService.GetDocumentUrl(userEntity.Image),
+                            PictureUrl = _stringService.GetDocumentUrl(userEntity.Image),
                             Email = userEntity.Email,
-                            PhoneNumber = userEntity.PhoneNumber,
                             IsContact = true,
                         };
 
