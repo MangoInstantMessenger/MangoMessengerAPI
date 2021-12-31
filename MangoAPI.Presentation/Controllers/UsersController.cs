@@ -64,7 +64,7 @@ namespace MangoAPI.Presentation.Controllers
         /// <param name="cancellationToken">CancellationToken instance.</param>
         /// <returns>Possible codes: 200, 400, 409.</returns>
         [HttpPut("email-confirmation")]
-        [Authorize(Roles = "Unverified, User")]
+        [AllowAnonymous]
         [SwaggerOperation(Description = "Confirms user's email address. Adds a User role to the current user. " +
                                         "This endpoint may be accessed by both roles: Unverified, User. " +
                                         "On refresh session user receives new access token with updated roles.",
