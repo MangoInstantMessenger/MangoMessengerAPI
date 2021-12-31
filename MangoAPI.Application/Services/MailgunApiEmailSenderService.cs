@@ -32,9 +32,14 @@ namespace MangoAPI.Application.Services
 
         public async Task SendVerificationEmailAsync(UserEntity user, CancellationToken cancellationToken)
         {
-            var message = GenerateEmailConfirmBody(user);
             var domain = EnvironmentConstants.MangoMailgunApiDomain;
 
+            if (domain == null)
+            {
+                throw new ArgumentNullException(nameof(domain));
+            }
+
+            var message = GenerateEmailConfirmBody(user);
             const string subject = "Mango Messenger email verification.";
 
             var emailContent = HttpContent(user.Email, subject, message);
@@ -43,15 +48,29 @@ namespace MangoAPI.Application.Services
             var response = await _httpClient.PostAsync(requestUri, emailContent, cancellationToken)
                 .ConfigureAwait(false);
 
-            if (false == response.IsSuccessStatusCode)
-            {
-                throw new HttpRequestException("Mailgun sender error.");
-            }
+            response.EnsureSuccessStatusCode();
         }
 
-        public Task SendPasswordRestoreRequest(UserEntity user, Guid requestId, CancellationToken cancellationToken)
+        public async Task SendPasswordRestoreRequest(UserEntity user, Guid requestId,
+            CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            var domain = EnvironmentConstants.MangoMailgunApiDomain;
+
+            if (domain == null)
+            {
+                throw new ArgumentNullException(nameof(domain));
+            }
+
+            var message = GeneratePasswordRestoreRequestBody(user, requestId);
+            const string subject = "Mango Messenger password restore request.";
+
+            var emailContent = HttpContent(user.Email, subject, message);
+            var requestUri = $"https://api.mailgun.net/v3/{domain}/messages";
+
+            var response = await _httpClient.PostAsync(requestUri, emailContent, cancellationToken)
+                .ConfigureAwait(false);
+
+            response.EnsureSuccessStatusCode();
         }
 
         private static string GenerateEmailConfirmBody(UserEntity user)
@@ -66,6 +85,20 @@ namespace MangoAPI.Application.Services
                 "\n" +
                 $"Confirmation Code: {user.EmailCode}";
 
+            return body;
+        }
+
+        private static string GeneratePasswordRestoreRequestBody(UserEntity user, Guid requestId)
+        {
+            var body =
+                "\n" +
+                $"Hi, {user.DisplayName}, in order to restore your password, please follow the link below:" +
+                "\n" +
+                "\n" +
+                $"{EnvironmentConstants.MangoFrontendAddress}restore-password-form?requestId={requestId}" +
+                "\n" +
+                "\n" +
+                $"Request ID: {requestId}";
 
             return body;
         }
@@ -85,20 +118,12 @@ namespace MangoAPI.Application.Services
         {
             const string sender = "mango.messenger.notify@gmail.com";
 
-            var emailSender = new KeyValuePair<string, string>("from", sender);
-
-            var emailRecipient = new KeyValuePair<string, string>("to", recipient);
-
-            var emailSubject = new KeyValuePair<string, string>("subject", subject);
-
-            var emailBody = new KeyValuePair<string, string>("text", message);
-
-            var content = new List<KeyValuePair<string, string>>
+            var content = new Dictionary<string, string>()
             {
-                emailSender,
-                emailRecipient,
-                emailSubject,
-                emailBody
+                {"from", sender},
+                {"to", recipient},
+                {"subject", subject},
+                {"text", message}
             };
 
             var urlEncodedContent = new FormUrlEncodedContent(content);
