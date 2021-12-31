@@ -22,7 +22,8 @@ namespace MangoAPI.Application.Services
             await smtpClient.SendMailAsync(verificationMessage, cancellationToken);
         }
 
-        public async Task SendPasswordRestoreRequest(UserEntity user, Guid requestId, CancellationToken cancellationToken)
+        public async Task SendPasswordRestoreRequest(UserEntity user, Guid requestId,
+            CancellationToken cancellationToken)
         {
             var senderEmail = EnvironmentConstants.MangoEmailNotificationsAddress;
             var smtpClient = GetGmailSmtpClient();
@@ -31,7 +32,7 @@ namespace MangoAPI.Application.Services
 
             await smtpClient.SendMailAsync(verificationMessage, cancellationToken);
         }
-        
+
         private static SmtpClient GetGmailSmtpClient()
         {
             var senderEmail = EnvironmentConstants.MangoEmailNotificationsAddress;
@@ -40,10 +41,12 @@ namespace MangoAPI.Application.Services
 
             var smtpClient = new SmtpClient
             {
+                EnableSsl = true,
+                UseDefaultCredentials = false,
+                Credentials = credentials,
                 Host = GmailConstants.GmailSmtpHost,
                 Port = GmailConstants.GmailPort,
-                Credentials = credentials,
-                EnableSsl = true,
+                DeliveryMethod = SmtpDeliveryMethod.Network
             };
 
             return smtpClient;
