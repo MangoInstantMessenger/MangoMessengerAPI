@@ -6,14 +6,14 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Sessions
     public record LoginRequest
     {
         [JsonConstructor]
-        public LoginRequest(string emailOrPhone, string password)
+        public LoginRequest(string email, string password)
         {
-            EmailOrPhone = emailOrPhone;
+            Email = email;
             Password = password;
         }
 
         [DefaultValue("test@gmail.com")]
-        public string EmailOrPhone { get; }
+        public string Email { get; }
         
         [DefaultValue("x[?6dME#xrp=nr7q")]
         public string Password { get; }

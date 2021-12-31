@@ -17,11 +17,21 @@ namespace MangoAPI.Application.Services
             var senderEmail = EnvironmentConstants.MangoEmailNotificationsAddress;
             var smtpClient = GetGmailSmtpClient();
 
-            var verificationMessage = VerifyEmailMessage.GetVerificationMessage(senderEmail, user);
+            var verificationMessage = EmailMessages.GetVerificationMessage(senderEmail, user);
 
             await smtpClient.SendMailAsync(verificationMessage, cancellationToken);
         }
 
+        public async Task SendPasswordRestoreRequest(UserEntity user, Guid requestId, CancellationToken cancellationToken)
+        {
+            var senderEmail = EnvironmentConstants.MangoEmailNotificationsAddress;
+            var smtpClient = GetGmailSmtpClient();
+
+            var verificationMessage = EmailMessages.GetPasswordRestoreMessage(senderEmail, user, requestId);
+
+            await smtpClient.SendMailAsync(verificationMessage, cancellationToken);
+        }
+        
         private static SmtpClient GetGmailSmtpClient()
         {
             var senderEmail = EnvironmentConstants.MangoEmailNotificationsAddress;
@@ -38,19 +48,9 @@ namespace MangoAPI.Application.Services
 
             return smtpClient;
         }
-
-        public async Task SendPasswordRestoreRequest(UserEntity user, Guid requestId, CancellationToken cancellationToken)
-        {
-            var senderEmail = EnvironmentConstants.MangoEmailNotificationsAddress;
-            var smtpClient = GetGmailSmtpClient();
-
-            var verificationMessage = VerifyEmailMessage.GetPasswordRestoreMessage(senderEmail, user, requestId);
-
-            await smtpClient.SendMailAsync(verificationMessage, cancellationToken);
-        }
     }
 
-    public static class VerifyEmailMessage
+    public static class EmailMessages
     {
         public static MailMessage GetVerificationMessage(string senderEmail, UserEntity user)
         {
@@ -75,7 +75,7 @@ namespace MangoAPI.Application.Services
                 "Verify email" +
                 "</a>" +
                 "<br>" +
-                $"<p>Your phone confirmation code is: {user.PhoneCode} </p>" +
+                $"<p>Confirmation Code: {user.EmailCode}</p>" +
                 "</body>";
 
             message.IsBodyHtml = true;
@@ -93,7 +93,7 @@ namespace MangoAPI.Application.Services
 
             var message = new MailMessage(fromAddress, toAddress)
             {
-                Subject = "Email Verification",
+                Subject = "Password Restore Request",
                 SubjectEncoding = Encoding.UTF8,
             };
 
@@ -105,10 +105,11 @@ namespace MangoAPI.Application.Services
                 "<body>" +
                 $"<p>Hi, {user.DisplayName}, please follow the link to restore password.</p>" +
                 "<br>" +
-                $"<a href='{EnvironmentConstants.MangoFrontendAddress}/restore-password-form?requestId={requestId}'>" +
+                $"<a href='{EnvironmentConstants.MangoFrontendAddress}restore-password-form?requestId={requestId}'>" +
                 "Restore Password" +
                 "</a>" +
                 "<br>" +
+                $"<p>Request ID: {requestId}.</p>" +
                 "</body>";
 
             message.IsBodyHtml = true;

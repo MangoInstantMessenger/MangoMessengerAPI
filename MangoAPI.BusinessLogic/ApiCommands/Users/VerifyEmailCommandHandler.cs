@@ -10,36 +10,29 @@ using Microsoft.EntityFrameworkCore;
 
 namespace MangoAPI.BusinessLogic.ApiCommands.Users
 {
-    public class VerifyEmailCommandHandler 
+    public class VerifyEmailCommandHandler
         : IRequestHandler<VerifyEmailCommand, Result<ResponseBase>>
     {
         private readonly MangoPostgresDbContext _postgresDbContext;
         private readonly ResponseFactory<ResponseBase> _responseFactory;
 
-        public VerifyEmailCommandHandler(MangoPostgresDbContext postgresDbContext, 
+        public VerifyEmailCommandHandler(MangoPostgresDbContext postgresDbContext,
             ResponseFactory<ResponseBase> responseFactory)
         {
             _postgresDbContext = postgresDbContext;
             _responseFactory = responseFactory;
         }
 
-        public async Task<Result<ResponseBase>> Handle(VerifyEmailCommand request, 
+        public async Task<Result<ResponseBase>> Handle(VerifyEmailCommand request,
             CancellationToken cancellationToken)
         {
-            var user = await _postgresDbContext.Users.AsNoTracking()
-                .FirstOrDefaultAsync(x => x.Email == request.Email, cancellationToken);
+            var user = await _postgresDbContext.Users
+                .FirstOrDefaultAsync(userEntity => userEntity.Email == request.Email,
+                    cancellationToken);
 
             if (user is null)
             {
                 const string errorMessage = ResponseMessageCodes.UserNotFound;
-                var details = ResponseMessageCodes.ErrorDictionary[errorMessage];
-
-                return _responseFactory.ConflictResponse(errorMessage, details);
-            }
-
-            if (user.Email != request.Email)
-            {
-                const string errorMessage = ResponseMessageCodes.InvalidEmail;
                 var details = ResponseMessageCodes.ErrorDictionary[errorMessage];
 
                 return _responseFactory.ConflictResponse(errorMessage, details);

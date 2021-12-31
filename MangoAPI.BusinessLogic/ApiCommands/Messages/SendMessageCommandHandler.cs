@@ -22,8 +22,10 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Messages
         private readonly IHubContext<ChatHub, IHubClient> _hubContext;
         private readonly ResponseFactory<SendMessageResponse> _responseFactory;
 
-        public SendMessageCommandHandler(MangoPostgresDbContext postgresDbContext,
-            IHubContext<ChatHub, IHubClient> hubContext, ResponseFactory<SendMessageResponse> responseFactory)
+        public SendMessageCommandHandler(
+            MangoPostgresDbContext postgresDbContext,
+            IHubContext<ChatHub, IHubClient> hubContext, 
+            ResponseFactory<SendMessageResponse> responseFactory)
         {
             _postgresDbContext = postgresDbContext;
             _hubContext = hubContext;

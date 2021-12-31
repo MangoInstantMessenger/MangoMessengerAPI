@@ -6,7 +6,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.PasswordRestoreRequests
     {
         public RequestPasswordRestoreCommandValidator()
         {
-            RuleFor(x => x.EmailOrPhone)
+            RuleFor(x => x.Email)
                 .Cascade(CascadeMode.Stop)
                 .NotEmpty()
                 .Length(1, 300);

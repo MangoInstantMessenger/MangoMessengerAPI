@@ -1,6 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
-using MangoAPI.BusinessLogic.Enums;
+using MangoAPI.BusinessLogic.Models;
 using Newtonsoft.Json;
 
 namespace MangoAPI.BusinessLogic.ApiCommands.Communities

@@ -29,8 +29,12 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Communities
         {
             var query = _postgresDbContext.Chats
                 .AsNoTracking()
-                .Where(x => x.CommunityType == (int)CommunityType.PublicChannel || x.CommunityType == (int)CommunityType.ReadOnlyChannel)
-                .Where(x => request.DisplayName == null || EF.Functions.ILike(x.Title, $"%{request.DisplayName}%"))
+                .Where(x => 
+                    x.CommunityType == (int)CommunityType.PublicChannel || 
+                    x.CommunityType == (int)CommunityType.ReadOnlyChannel)
+                .Where(x => 
+                    request.DisplayName == null || 
+                    EF.Functions.ILike(x.Title, $"%{request.DisplayName}%"))
                 .Where(x => x.ChatUsers.All(u => u.UserId != request.UserId))
                 .Select(x => new Chat
                 {
@@ -38,7 +42,7 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Communities
                     Title = x.Title,
                     CommunityType = (CommunityType)x.CommunityType,
                     ChatLogoImageUrl = x.Image != null
-                        ? $"{EnvironmentConstants.MangoBackendAddress}Uploads/{x.Image}"
+                        ? $"{EnvironmentConstants.MangoBlobAccess}/{x.Image}"
                         : null,
                     Description = x.Description,
                     MembersCount = x.MembersCount,

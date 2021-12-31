@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using MangoAPI.Application.Services;
 using MangoAPI.BusinessLogic.ApiCommands.Sessions;
 using MangoAPI.BusinessLogic.Pipelines;
 using MangoAPI.BusinessLogic.Responses;
@@ -19,7 +20,7 @@ namespace MangoAPI.Presentation.Extensions
             services.AddValidatorsFromAssembly(typeof(LoginCommandValidator).Assembly);
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehaviour<,>));
             services.AddTransient(typeof(ResponseFactory<>));
-            services.AddMemoryCache();
+            services.AddTransient<StringService>();
             return services;
         }
     }

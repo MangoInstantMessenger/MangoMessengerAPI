@@ -1,4 +1,5 @@
-﻿using FluentValidation;
+﻿using System.Linq;
+using FluentValidation;
 
 namespace MangoAPI.BusinessLogic.ApiCommands.Users
 {
@@ -7,14 +8,28 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
         public ChangePasswordCommandValidator()
         {
             RuleFor(x => x.CurrentPassword)
-                .Cascade(CascadeMode.Stop)
+                .NotEqual(x => x.NewPassword)
+                .WithMessage("New and old passwords cannot be same")
                 .NotEmpty()
-                .Length(1, 50);
+                .Length(8, 50);
 
             RuleFor(x => x.NewPassword)
-                .Cascade(CascadeMode.Stop)
+                .Equal(x => x.RepeatNewPassword)
+                .WithMessage("New password and repeat password should be same.")
+                .Must(PasswordIsStrong)
+                .WithMessage("Password must be at least 8 characters with: " +
+                             "1 uppercase, 1 lowercase, 1 digit, 1 symbol.")
                 .NotEmpty()
-                .Length(1, 50);
+                .Length(8, 50);
+        }
+
+        private static bool PasswordIsStrong(string pass)
+        {
+            return pass.Length >= 8
+                   && pass.Any(char.IsUpper)
+                   && pass.Any(char.IsLower)
+                   && pass.Any(char.IsDigit)
+                   && pass.Any(char.IsSymbol);
         }
     }
 }

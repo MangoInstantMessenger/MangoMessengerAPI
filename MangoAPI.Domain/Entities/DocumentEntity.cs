@@ -2,10 +2,16 @@
 
 namespace MangoAPI.Domain.Entities
 {
-    public class DocumentEntity
+    public sealed class DocumentEntity
     {
         public Guid Id { get; set; }
+
+        public Guid UserId { get; set; }
+        
         public string FileName { get; set; }
-        public string FilePath { get; set; }
+
+        public DateTime UploadedAt { get; set; }
+        
+        public UserEntity User { get; set; }
     }
 }

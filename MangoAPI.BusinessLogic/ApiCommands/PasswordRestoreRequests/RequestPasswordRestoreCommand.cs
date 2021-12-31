@@ -5,6 +5,6 @@ namespace MangoAPI.BusinessLogic.ApiCommands.PasswordRestoreRequests
 {
     public record RequestPasswordRestoreCommand : IRequest<Result<ResponseBase>>
     {
-        public string EmailOrPhone { get; init; }
+        public string Email { get; init; }
     }
 }

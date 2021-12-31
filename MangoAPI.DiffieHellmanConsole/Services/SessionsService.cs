@@ -16,12 +16,12 @@ namespace MangoAPI.DiffieHellmanConsole.Services
 
         public async Task<TokensResponse> LoginAsync(IReadOnlyList<string> args)
         {
-            var emailOrPhone= args[1];
+            var email= args[1];
             var pass = args[2];
 
             var command = new LoginCommand
             {
-                EmailOrPhone = emailOrPhone,
+                Email = email,
                 Password = pass
             };
 

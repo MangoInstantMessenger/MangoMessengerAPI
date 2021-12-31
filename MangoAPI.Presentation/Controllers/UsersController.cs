@@ -29,7 +29,7 @@ namespace MangoAPI.Presentation.Controllers
         }
 
         /// <summary>
-        /// Registers user in the system. There are two possibilities to verify account: Phone (1), Email (2).
+        /// Registers user in the system.
         /// Does not require any authorization or users role.
         /// After registration user receives pair of access/refresh tokens.
         /// Access token claim role is Unverified.
@@ -40,7 +40,7 @@ namespace MangoAPI.Presentation.Controllers
         [HttpPost]
         [AllowAnonymous]
         [SwaggerOperation(Description =
-                "Registers user in the system. There are two possibilities to verify account: Phone (1), Email (2). " +
+                "Registers user in the system. " +
                 "Does not require any authorization or users role. " +
                 "After registration user receives pair of access/refresh tokens. " +
                 "Access token claim role is Unverified. ",
@@ -75,40 +75,7 @@ namespace MangoAPI.Presentation.Controllers
         public async Task<IActionResult> EmailConfirmationAsync([FromBody] VerifyEmailRequest request,
             CancellationToken cancellationToken)
         {
-            
             var command = Mapper.Map<VerifyEmailCommand>(request);
-            return await RequestAsync(command, cancellationToken);
-        }
-
-        /// <summary>
-        /// Confirms user's phone number. Adds a User role to the current user.
-        /// This endpoint may be accessed by both roles: Unverified, User.
-        /// On refresh session user receives new access token with updated roles.
-        /// </summary>
-        /// <param name="phoneCode">Code user enters in order to validate his phone number.</param>
-        /// <param name="cancellationToken">CancellationToken instance.</param>
-        /// <returns>Possible codes: 200, 400, 409.</returns>
-        [HttpPut("{phoneCode:int}")]
-        [Authorize(Roles = "Unverified, User")]
-        [SwaggerOperation(Description = "Confirms user's phone number. Adds a User role to the current user. " +
-                                        "This endpoint may be accessed by both roles: Unverified, User. " +
-                                        "On refresh session user receives new access token with updated roles. ",
-            Summary = "Confirms user's phone number.")]
-        [ProducesResponseType(typeof(ResponseBase), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
-        public async Task<IActionResult> PhoneConfirmationAsync([FromRoute] int phoneCode,
-            CancellationToken cancellationToken)
-        {
-            
-            var userId = HttpContext.User.GetUserId();
-
-            var command = new VerifyPhoneCommand
-            {
-                UserId = userId,
-                ConfirmationCode = phoneCode,
-            };
-
             return await RequestAsync(command, cancellationToken);
         }
 
@@ -160,32 +127,6 @@ namespace MangoAPI.Presentation.Controllers
         }
 
         /// <summary>
-        /// Gets info about current user himself.
-        /// This endpoint may be accessed by both roles: User.
-        /// </summary>
-        /// <param name="cancellationToken">CancellationToken instance.</param>
-        /// <returns>Possible codes: 200, 400, 409.</returns>
-        [HttpGet]
-        [Authorize(Roles = "User")]
-        [SwaggerOperation(Description = "Gets info about current user himself. " +
-                                        "This endpoint may be accessed by both roles: Unverified, User.",
-            Summary = "Gets info about current user himself.")]
-        [ProducesResponseType(typeof(GetUserResponse), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
-        public async Task<IActionResult> GetCurrentUser(CancellationToken cancellationToken)
-        {
-            var userId = HttpContext.User.GetUserId();
-
-            var request = new GetUserQuery
-            {
-                UserId = userId
-            };
-
-            return await RequestAsync(request, cancellationToken);
-        }
-
-        /// <summary>
         /// Updates user's social network user names. Requires role: User.
         /// </summary>
         /// <param name="request">UpdateUserSocialInformationRequest instance.</param>
@@ -234,14 +175,14 @@ namespace MangoAPI.Presentation.Controllers
             return await RequestAsync(command, cancellationToken);
         }
 
-        [HttpPut("picture/{image}")]
+        [HttpPost("picture")]
         [Authorize(Roles = "User")]
         [SwaggerOperation(Description = "Updates user's profile picture. Requires role: User.",
             Summary = "Updates user's profile picture.")]
-        [ProducesResponseType(typeof(ResponseBase), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(UpdateProfilePictureResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
-        public async Task<IActionResult> UpdateProfilePictureAsync([FromRoute] string image,
+        public async Task<IActionResult> UpdateProfilePictureAsync(IFormFile pictureFile,
             CancellationToken cancellationToken)
         {
             var userId = HttpContext.User.GetUserId();
@@ -249,7 +190,7 @@ namespace MangoAPI.Presentation.Controllers
             var command = new UpdateProfilePictureCommand
             {
                 UserId = userId,
-                Image = image
+                PictureFile = pictureFile
             };
 
             return await RequestAsync(command, cancellationToken);

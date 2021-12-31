@@ -23,15 +23,13 @@ namespace MangoAPI.Presentation.Profiles
             CreateMap<EditMessageRequest, EditMessageCommand>();
             CreateMap<PasswordRestoreRequest, PasswordRestoreCommand>();
 
-            CreateMap<RegisterRequest, RegisterCommand>().ForMember(x => x.PhoneNumber,
-                ex => ex.MapFrom(z => z.PhoneNumber.ToString()));
+            CreateMap<RegisterRequest, RegisterCommand>();
 
             CreateMap<VerifyEmailRequest, VerifyEmailCommand>();
             CreateMap<ChangePasswordRequest, ChangePasswordCommand>();
             CreateMap<UpdateUserSocialInformationRequest, UpdateUserSocialInformationCommand>();
             CreateMap<UpdateUserAccountInfoRequest, UpdateUserAccountInfoCommand>();
             CreateMap<LoginRequest, LoginCommand>();
-            CreateMap<UpdateChanelPictureRequest, UpdateChanelPictureCommand>();
         }
     }
 }

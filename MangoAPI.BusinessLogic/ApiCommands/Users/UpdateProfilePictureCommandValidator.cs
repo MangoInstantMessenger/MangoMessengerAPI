@@ -1,17 +1,23 @@
-﻿using FluentValidation;
+﻿using System.Collections.Generic;
+using FluentValidation;
+using MangoAPI.BusinessLogic.Pipelines;
 
 namespace MangoAPI.BusinessLogic.ApiCommands.Users
 {
     public class UpdateProfilePictureCommandValidator : AbstractValidator<UpdateProfilePictureCommand>
     {
+        private readonly List<string> _allowedExtensions = new()
+        {
+            "jpg", "JPG", "png", "PNG"
+        };
+
         public UpdateProfilePictureCommandValidator()
         {
-            RuleFor(x => x.Image)
-                .Cascade(CascadeMode.Stop)
-                .NotEmpty()
-                .Length(1, 50);
-
             RuleFor(x => x.UserId).NotEmpty();
+            
+            RuleFor(x => x.PictureFile)
+                .NotNull()
+                .SetValidator(new CommonImageValidator());
         }
     }
 }

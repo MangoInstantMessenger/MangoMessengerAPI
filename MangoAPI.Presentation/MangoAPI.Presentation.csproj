@@ -35,6 +35,19 @@
       <_ContentIncludedByDefault Remove="wwwroot\Uploads\floppa_03ac7bcb-5989-4f9e-9542-b92246d2baf0.JPG" />
       <_ContentIncludedByDefault Remove="wwwroot\Uploads\floppa_20b7bf76-d95d-414c-8755-5182a7b5ab12.JPG" />
       <_ContentIncludedByDefault Remove="wwwroot\Uploads\floppa_a859.JPG" />
+      <_ContentIncludedByDefault Remove="wwwroot\Uploads\amelit_picture.jpg" />
+      <_ContentIncludedByDefault Remove="wwwroot\Uploads\arslan_picture.png" />
+      <_ContentIncludedByDefault Remove="wwwroot\Uploads\extremecode_cpp_logo.jpg" />
+      <_ContentIncludedByDefault Remove="wwwroot\Uploads\extremecode_dotnet.png" />
+      <_ContentIncludedByDefault Remove="wwwroot\Uploads\extremecode_rest_logo.jpg" />
+      <_ContentIncludedByDefault Remove="wwwroot\Uploads\extreme_code_main.jpg" />
+      <_ContentIncludedByDefault Remove="wwwroot\Uploads\illia_picture.png" />
+      <_ContentIncludedByDefault Remove="wwwroot\Uploads\khachatur_picture.jpg" />
+      <_ContentIncludedByDefault Remove="wwwroot\Uploads\musyaka_picture.jpg" />
+      <_ContentIncludedByDefault Remove="wwwroot\Uploads\razumovsky_picture.jpg" />
+      <_ContentIncludedByDefault Remove="wwwroot\Uploads\serhii_picture.png" />
+      <_ContentIncludedByDefault Remove="wwwroot\Uploads\szymon_picture.png" />
+      <_ContentIncludedByDefault Remove="wwwroot\Uploads\wsb_group_logo.png" />
     </ItemGroup>
 
 </Project>

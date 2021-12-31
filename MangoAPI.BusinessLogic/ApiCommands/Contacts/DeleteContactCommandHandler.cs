@@ -3,29 +3,31 @@ using System.Threading;
 using System.Threading.Tasks;
 using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.DataAccess.Database;
-using MangoAPI.DataAccess.Database.Extensions;
 using MangoAPI.Domain.Constants;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 namespace MangoAPI.BusinessLogic.ApiCommands.Contacts
 {
-    public class DeleteContactCommandHandler 
+    public class DeleteContactCommandHandler
         : IRequestHandler<DeleteContactCommand, Result<ResponseBase>>
     {
         private readonly MangoPostgresDbContext _postgresDbContext;
         private readonly ResponseFactory<ResponseBase> _responseFactory;
 
-        public DeleteContactCommandHandler(MangoPostgresDbContext postgresDbContext, 
+        public DeleteContactCommandHandler(MangoPostgresDbContext postgresDbContext,
             ResponseFactory<ResponseBase> responseFactory)
         {
             _postgresDbContext = postgresDbContext;
             _responseFactory = responseFactory;
         }
 
-        public async Task<Result<ResponseBase>> Handle(DeleteContactCommand request, 
+        public async Task<Result<ResponseBase>> Handle(DeleteContactCommand request,
             CancellationToken cancellationToken)
         {
-            var user = await _postgresDbContext.Users.FindUserByIdAsync(request.UserId, cancellationToken);
+            var user = await _postgresDbContext.Users
+                .FirstOrDefaultAsync(userEntity => userEntity.Id == request.UserId,
+                    cancellationToken);
 
             if (user is null)
             {
@@ -35,9 +37,9 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Contacts
                 return _responseFactory.ConflictResponse(errorMessage, errorDescription);
             }
 
-            var userContacts = await _postgresDbContext
-                .UserContacts
-                .GetUserContactsAsync(user.Id, cancellationToken);
+            var userContacts = await _postgresDbContext.UserContacts
+                .Where(x => x.UserId == user.Id)
+                .ToListAsync(cancellationToken);
 
             var contact = userContacts.FirstOrDefault(x => x.ContactId == request.ContactId);
 

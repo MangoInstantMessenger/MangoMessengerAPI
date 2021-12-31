@@ -39,7 +39,7 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Communities
                     Title = x.Chat.Title,
                     CommunityType = (CommunityType)x.Chat.CommunityType,
                     ChatLogoImageUrl = x.Chat.Image != null
-                        ? $"{EnvironmentConstants.MangoBackendAddress}Uploads/{x.Chat.Image}"
+                        ? $"{EnvironmentConstants.MangoBlobAccess}/{x.Chat.Image}"
                         : null,
                     Description = x.Chat.Description,
                     MembersCount = x.Chat.MembersCount,
@@ -80,7 +80,7 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Communities
 
                 currentChat.Title = colleague?.DisplayName;
                 currentChat.ChatLogoImageUrl = colleague?.Image != null
-                    ? $"{EnvironmentConstants.MangoBackendAddress}Uploads/{colleague.Image}"
+                    ? $"{EnvironmentConstants.MangoBlobAccess}/{colleague.Image}"
                     : null;
             }
 

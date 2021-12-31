@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 using System.Threading;
 using System.Threading.Tasks;
+using MangoAPI.Presentation.Extensions;
 
 namespace MangoAPI.Presentation.Controllers
 {
@@ -42,7 +43,13 @@ namespace MangoAPI.Presentation.Controllers
         public async Task<IActionResult> UploadDocumentAsync(IFormFile formFile,
             CancellationToken cancellationToken)
         {
-            var command = new UploadDocumentCommand { FormFile = formFile };
+            var userId = HttpContext.User.GetUserId();
+
+            var command = new UploadDocumentCommand
+            {
+                FormFile = formFile,
+                UserId = userId
+            };
 
             return await RequestAsync(command, cancellationToken);
         }

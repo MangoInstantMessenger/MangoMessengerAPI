@@ -1,6 +1,5 @@
 ﻿using MangoAPI.BusinessLogic.Models;
 using MangoAPI.DataAccess.Database;
-using MangoAPI.DataAccess.Database.Extensions;
 using MangoAPI.Domain.Constants;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -11,7 +10,7 @@ using MangoAPI.BusinessLogic.Responses;
 
 namespace MangoAPI.BusinessLogic.ApiQueries.Messages
 {
-    public class SearchChatMessageQueryHandler 
+    public class SearchChatMessageQueryHandler
         : IRequestHandler<SearchChatMessagesQuery, Result<SearchChatMessagesResponse>>
     {
         private readonly MangoPostgresDbContext _postgresDbContext;
@@ -24,10 +23,13 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Messages
             _responseFactory = responseFactory;
         }
 
-        public async Task<Result<SearchChatMessagesResponse>> Handle(SearchChatMessagesQuery request, 
+        public async Task<Result<SearchChatMessagesResponse>> Handle(SearchChatMessagesQuery request,
             CancellationToken cancellationToken)
         {
-            var userChat = await _postgresDbContext.UserChats.FindUserChatByIdAsync(request.UserId, request.ChatId, cancellationToken);
+            var userChat = await _postgresDbContext.UserChats
+                .Where(chatEntity => chatEntity.UserId == request.UserId)
+                .Where(chatEntity => chatEntity.ChatId == request.ChatId)
+                .FirstOrDefaultAsync(cancellationToken);
 
             if (userChat is null)
             {
@@ -54,11 +56,11 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Messages
                     InReplayToText = x.InReplayToText,
 
                     MessageAuthorPictureUrl = x.User.Image != null
-                        ? $"{EnvironmentConstants.MangoBackendAddress}Uploads/{x.User.Image}"
+                        ? $"{EnvironmentConstants.MangoBlobAccess}/{x.User.Image}"
                         : null,
 
                     MessageAttachmentUrl = x.Attachment != null
-                        ? $"{EnvironmentConstants.MangoBackendAddress}Uploads/{x.Attachment}"
+                        ? $"{EnvironmentConstants.MangoBlobAccess}/{x.Attachment}"
                         : null,
                 }).Take(200);
 

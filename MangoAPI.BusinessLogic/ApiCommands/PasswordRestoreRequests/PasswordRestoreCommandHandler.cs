@@ -1,16 +1,16 @@
 ﻿using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.DataAccess.Database;
-using MangoAPI.DataAccess.Database.Extensions;
 using MangoAPI.Domain.Constants;
 using MangoAPI.Domain.Entities;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace MangoAPI.BusinessLogic.ApiCommands.PasswordRestoreRequests
 {
-    public class PasswordRestoreCommandHandler 
+    public class PasswordRestoreCommandHandler
         : IRequestHandler<PasswordRestoreCommand, Result<ResponseBase>>
     {
         private readonly MangoPostgresDbContext _postgresDbContext;
@@ -25,22 +25,14 @@ namespace MangoAPI.BusinessLogic.ApiCommands.PasswordRestoreRequests
             _responseFactory = responseFactory;
         }
 
-        public async Task<Result<ResponseBase>> Handle(PasswordRestoreCommand request, 
+        public async Task<Result<ResponseBase>> Handle(PasswordRestoreCommand request,
             CancellationToken cancellationToken)
         {
-            if (request.NewPassword != request.RepeatPassword)
-            {
-                const string errorMessage = ResponseMessageCodes.PasswordsAreNotSame;
-                var errorDescription = ResponseMessageCodes.ErrorDictionary[errorMessage];
+            var restorePasswordRequest = await _postgresDbContext.PasswordRestoreRequests
+                .FirstOrDefaultAsync(entity =>
+                    entity.Id == request.RequestId, cancellationToken);
 
-                return _responseFactory.ConflictResponse(errorMessage, errorDescription);
-            }
-
-            var restorePasswordRequest =
-                await _postgresDbContext.PasswordRestoreRequests.FindPasswordRestoreRequestByIdAsync(request.RequestId,
-                    cancellationToken);
-
-            if (restorePasswordRequest is not { IsValid: true })
+            if (restorePasswordRequest == null || !restorePasswordRequest.IsValid)
             {
                 const string errorMessage = ResponseMessageCodes.InvalidOrExpiredRestorePasswordRequest;
                 var errorDescription = ResponseMessageCodes.ErrorDictionary[errorMessage];
@@ -48,8 +40,8 @@ namespace MangoAPI.BusinessLogic.ApiCommands.PasswordRestoreRequests
                 return _responseFactory.ConflictResponse(errorMessage, errorDescription);
             }
 
-            var user = await _postgresDbContext.Users.FindUserByIdAsync(restorePasswordRequest.UserId,
-                cancellationToken);
+            var user = await _postgresDbContext.Users
+                .FirstOrDefaultAsync(entity => entity.Id == restorePasswordRequest.UserId, cancellationToken);
 
             if (user is null)
             {
@@ -70,9 +62,9 @@ namespace MangoAPI.BusinessLogic.ApiCommands.PasswordRestoreRequests
 
                 return _responseFactory.ConflictResponse(errorMessage, errorDescription);
             }
-
-            _postgresDbContext.Users.Update(user);
+            
             _postgresDbContext.PasswordRestoreRequests.Remove(restorePasswordRequest);
+
             await _postgresDbContext.SaveChangesAsync(cancellationToken);
 
             return _responseFactory.SuccessResponse(ResponseBase.SuccessResponse);

@@ -11,9 +11,6 @@ namespace MangoAPI.BusinessLogic.Models
         [DefaultValue("Ivan Ivanov")]
         public string DisplayName { get; init; }
 
-        [DefaultValue("48743615532")]
-        public string PhoneNumber { get; init; }
-
         [DefaultValue("1983-05-25T00:00:00")]
         public string BirthdayDate { get; init; }
 
