@@ -9,7 +9,7 @@ namespace MangoAPI.BusinessLogic.Pipelines
     {
         private readonly List<string> _allowedExtensions = new()
         {
-            "jpg", "JPG", "txt", "TXT", "pdf", "PDF", "gif", "GIF", "png", "PNG"
+            "jpg", "JPG", "txt", "TXT", "pdf", "PDF", "png", "PNG"
         };
 
         public CommonFileValidator()
