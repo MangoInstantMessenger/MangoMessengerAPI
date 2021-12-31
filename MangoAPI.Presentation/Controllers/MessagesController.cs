@@ -28,13 +28,14 @@ namespace MangoAPI.Presentation.Controllers
         }
 
         /// <summary>
-        /// Returns all chat messages by chat ID. Requires role: User.
+        /// Returns all chat messages by chat ID.
         /// </summary>
         /// <param name="chatId">Chat ID, UUID.</param>
         /// <param name="cancellationToken">Cancellation token instance.</param>
         /// <returns>Possible codes: 200, 400, 409.</returns>
         [HttpGet("{chatId:guid}")]
-        [SwaggerOperation(Description = "Returns all chat messages by chat ID. Requires role: User.",
+        [SwaggerOperation(
+            Description = "Returns all chat messages by chat ID.",
             Summary = "Returns chat messages by ID.")]
         [ProducesResponseType(typeof(GetMessagesResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
@@ -53,14 +54,15 @@ namespace MangoAPI.Presentation.Controllers
         }
 
         /// <summary>
-        /// Searches messages by content in particular chat. Requires role: User.
+        /// Searches messages by content in particular chat.
         /// </summary>
         /// <param name="chatId">Chat ID, UUID.</param>
         /// <param name="messageText">Searched text.</param>
         /// <param name="cancellationToken">Cancellation token instance.</param>
         /// <returns>Possible codes: 200, 400, 409.</returns>
         [HttpGet("searches/{chatId:guid}")]
-        [SwaggerOperation(Description = "Searches messages by content in particular chat. Requires role: User.",
+        [SwaggerOperation(
+            Description = "Searches messages by content in particular chat.",
             Summary = "Searches messages in chat.")]
         [ProducesResponseType(typeof(SearchChatMessagesResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
@@ -81,13 +83,14 @@ namespace MangoAPI.Presentation.Controllers
         }
 
         /// <summary>
-        /// Sends message to the particular chat. Requires role: User.
+        /// Sends message to the particular chat.
         /// </summary>
         /// <param name="request">SendMessageRequest instance.</param>
         /// <param name="cancellationToken">Cancellation token instance.</param>
         /// <returns>Possible codes: 200, 400, 409.</returns>
         [HttpPost]
-        [SwaggerOperation(Description = "Sends message to the particular chat. Requires role: User.",
+        [SwaggerOperation(
+            Description = "Sends message to the particular chat.",
             Summary = "Sends message to the chat.")]
         [ProducesResponseType(typeof(SendMessageResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
@@ -102,13 +105,14 @@ namespace MangoAPI.Presentation.Controllers
         }
 
         /// <summary>
-        /// Updates particular message. Requires role: User.
+        /// Updates particular message.
         /// </summary>
         /// <param name="request">EditMessageRequest instance.</param>
         /// <param name="cancellationToken">Cancellation token instance.</param>
         /// <returns>Possible codes: 200, 400, 409.</returns>
         [HttpPut]
-        [SwaggerOperation(Description = "Updates particular message. Requires role: User.",
+        [SwaggerOperation(
+            Description = "Updates particular message.",
             Summary = "Updates particular message.")]
         [ProducesResponseType(typeof(ResponseBase), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
@@ -123,13 +127,14 @@ namespace MangoAPI.Presentation.Controllers
         }
 
         /// <summary>
-        /// Deletes particular message by message ID. Requires role: User.
+        /// Deletes particular message by message ID.
         /// </summary>
         /// <param name="messageId">Message ID, UUID.</param>
         /// <param name="cancellationToken">Cancellation token instance.</param>
         /// <returns>Possible codes: 200, 400, 409.</returns>
         [HttpDelete("{messageId:guid}")]
-        [SwaggerOperation(Description = "Deletes particular message by message ID. Requires role: User.",
+        [SwaggerOperation(
+            Description = "Deletes particular message by message ID.",
             Summary = "Updates particular message.")]
         [ProducesResponseType(typeof(DeleteMessageResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]

@@ -28,13 +28,14 @@ namespace MangoAPI.Presentation.Controllers
         }
 
         /// <summary>
-        /// Returns all user's Diffie-Hellman public keys. Required roles: User.
+        /// Returns all user's Diffie-Hellman public keys.
         /// </summary>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
         [HttpGet]
-        [SwaggerOperation(Summary = "Returns all user's public keys.",
-            Description = "Returns all user's Diffie-Hellman public keys. Required roles: User.")]
+        [SwaggerOperation(
+            Summary = "Returns all user's public keys.",
+            Description = "Returns all user's Diffie-Hellman public keys.")]
         [ProducesResponseType(typeof(GetPublicKeysResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> GetPublicKeys(CancellationToken cancellationToken)

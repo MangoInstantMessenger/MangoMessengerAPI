@@ -27,13 +27,14 @@ namespace MangoAPI.Presentation.Controllers
         }
 
         /// <summary>
-        /// Archives or un-archives chat. Requires roles: User.
+        /// Archives or un-archives chat.
         /// </summary>
         /// <param name="chatId">Chat ID, UUID.</param>
         /// <param name="cancellationToken">Cancellation token instance.</param>
         /// <returns>Possible codes: 200, 400, 409.</returns>
         [HttpPut]
-        [SwaggerOperation(Description = "Archives or un-archives chat. Requires roles: User.",
+        [SwaggerOperation(
+            Description = "Archives or un-archives chat.",
             Summary = "Archives or un-archives chat.")]
         [ProducesResponseType(typeof(ResponseBase), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
@@ -52,14 +53,14 @@ namespace MangoAPI.Presentation.Controllers
         }
 
         /// <summary>
-        /// Joins to the particular public group. Fetches group by ID. Requires roles: User.
+        /// Joins to the particular public group by group ID.
         /// </summary>
         /// <param name="chatId">Chat ID, UUID.</param>
         /// <param name="cancellationToken">Cancellation token instance.</param>
         /// <returns>Possible codes: 200, 400, 409.</returns>
         [HttpPost]
-        [SwaggerOperation(Description =
-                "Joins to the particular public group. Fetches group by ID. Requires roles: User.",
+        [SwaggerOperation(
+            Description = "Joins to the particular public group. Fetches group by ID.",
             Summary = "Joins to the particular public group.")]
         [ProducesResponseType(typeof(ResponseBase), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
@@ -78,14 +79,14 @@ namespace MangoAPI.Presentation.Controllers
         }
 
         /// <summary>
-        /// Leaves from the particular public group. Fetches group by ID. Requires roles: User.
+        /// Leaves from the particular public group. Fetches group by ID.
         /// </summary>
         /// <param name="chatId">Chat ID, UUID.</param>
         /// <param name="cancellationToken">Cancellation token instance.</param>
         /// <returns>Possible codes: 200, 400, 409.</returns>
         [HttpDelete]
-        [SwaggerOperation(Description =
-                "Leaves from the particular public group. Fetches group by ID. Requires roles: User.",
+        [SwaggerOperation(
+            Description = "Leaves from the particular public group. Fetches group by ID.",
             Summary = "Leaves from the particular public group.")]
         [ProducesResponseType(typeof(LeaveGroupResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
