@@ -15,14 +15,15 @@ namespace MangoAPI.Presentation.Extensions
         {
             services.AddMediatR(typeof(RegisterCommandHandler).Assembly);
             services.AddScoped<IJwtGenerator, JwtGenerator>();
-            services.AddScoped<IEmailSenderService, EmailSenderService>();
+            services.AddScoped<IEmailSenderService, MailgunApiEmailSenderService>();
             services.AddScoped<PasswordHashService>();
             services.AddAutoMapper(typeof(ApiControllerBase));
-            
+
             var blobConnection = EnvironmentConstants.MangoBlobUrl;
             services.AddSingleton(_ => new BlobServiceClient(blobConnection));
             services.AddScoped<IBlobService, BlobService>();
-            
+            services.AddHttpClient();
+
             return services;
         }
     }

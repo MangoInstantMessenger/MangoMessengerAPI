@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace MangoAPI.Application.Services
 {
-    public class EmailSenderService : IEmailSenderService
+    public class GmailSmtpSenderService : IEmailSenderService
     {
         public async Task SendVerificationEmailAsync(UserEntity user, CancellationToken cancellationToken)
         {
@@ -66,6 +66,18 @@ namespace MangoAPI.Application.Services
                 SubjectEncoding = Encoding.UTF8,
             };
 
+            var body = GenerateEmailConfirmBody(user);
+
+            message.IsBodyHtml = true;
+            message.BodyEncoding = Encoding.UTF8;
+
+            message.Body = body;
+
+            return message;
+        }
+
+        private static string GenerateEmailConfirmBody(UserEntity user)
+        {
             var body =
                 "<!DOCTYPE html>" +
                 "<head>" +
@@ -80,13 +92,8 @@ namespace MangoAPI.Application.Services
                 "<br>" +
                 $"<p>Confirmation Code: {user.EmailCode}</p>" +
                 "</body>";
-
-            message.IsBodyHtml = true;
-            message.BodyEncoding = Encoding.UTF8;
-
-            message.Body = body;
-
-            return message;
+            
+            return body;
         }
 
         public static MailMessage GetPasswordRestoreMessage(string senderEmail, UserEntity user, Guid requestId)
@@ -100,6 +107,18 @@ namespace MangoAPI.Application.Services
                 SubjectEncoding = Encoding.UTF8,
             };
 
+            var body = GeneratePasswordRestoreRequestBody(user, requestId);
+
+            message.IsBodyHtml = true;
+            message.BodyEncoding = Encoding.UTF8;
+
+            message.Body = body;
+
+            return message;
+        }
+
+        private static string GeneratePasswordRestoreRequestBody(UserEntity user, Guid requestId)
+        {
             var body =
                 "<!DOCTYPE html>" +
                 "<head>" +
@@ -114,13 +133,9 @@ namespace MangoAPI.Application.Services
                 "<br>" +
                 $"<p>Request ID: {requestId}.</p>" +
                 "</body>";
-
-            message.IsBodyHtml = true;
-            message.BodyEncoding = Encoding.UTF8;
-
-            message.Body = body;
-
-            return message;
+            
+            
+            return body;
         }
     }
 }

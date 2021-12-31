@@ -26,6 +26,9 @@
 - `MANGO_BLOB_URL`
 - `MANGO_BLOB_CONTAINER`
 - `MANGO_BLOB_ACCESS` (address of public azure blob)
+- `MANGO_MAILGUN_API_KEY`
+- `MANGO_MAILGUN_API_BASE_URL`
+- `MANGO_MAILGUN_API_DOMAIN`
 
 ## Environments
 
