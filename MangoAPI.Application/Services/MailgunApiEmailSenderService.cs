@@ -116,9 +116,9 @@ namespace MangoAPI.Application.Services
 
         private static FormUrlEncodedContent HttpContent(string recipient, string subject, string message)
         {
-            const string sender = "mango.messenger.notify@gmail.com";
+            var sender = EnvironmentConstants.MangoEmailNotificationsAddress;
 
-            var content = new Dictionary<string, string>()
+            var content = new Dictionary<string, string>
             {
                 {"from", sender},
                 {"to", recipient},
