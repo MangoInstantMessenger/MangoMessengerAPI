@@ -7,6 +7,9 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Messages
     public record DeleteMessageCommand : IRequest<Result<DeleteMessageResponse>>
     {
         public Guid MessageId { get; init; }
-        public Guid UserId { get; init; }
+        
+        public Guid UserId { get; set; }
+        
+        public Guid ChatId { get; set; }
     }
 }
