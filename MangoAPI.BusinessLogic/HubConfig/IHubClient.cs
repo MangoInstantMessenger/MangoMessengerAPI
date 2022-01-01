@@ -8,21 +8,21 @@ namespace MangoAPI.BusinessLogic.HubConfig
         /// <summary>
         /// Notifies chat subscribers on the message sent via SignalR.
         /// </summary>
-        Task BroadcastMessage(Message message);
+        Task BroadcastMessageAsync(Message message);
 
         /// <summary>
         /// Updates client list of chats via SignalR.
         /// </summary>
-        Task UpdateUserChats(Chat chat);
+        Task UpdateUserChatsAsync(Chat chat);
 
         /// <summary>
         /// Notifies chat subscribers on the message delete via SignalR.
         /// </summary>
-        Task NotifyOnMessageDelete(MessageDeleteNotification notification);
+        Task NotifyOnMessageDeleteAsync(MessageDeleteNotification notification);
 
         /// <summary>
         /// Notifies chat subscribers on the message edit via SignalR.
         /// </summary>
-        Task NotifyOnMessageEdit(MessageEditNotification notification);
+        Task NotifyOnMessageEditAsync(MessageEditNotification notification);
     }
 }

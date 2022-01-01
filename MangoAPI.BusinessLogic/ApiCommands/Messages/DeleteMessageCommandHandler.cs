@@ -84,7 +84,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Messages
 
             await _postgresDbContext.SaveChangesAsync(cancellationToken);
 
-            await _hubContext.Clients.Group(message.ChatId.ToString()).NotifyOnMessageDelete(messageDeleteNotification);
+            await _hubContext.Clients.Group(message.ChatId.ToString()).NotifyOnMessageDeleteAsync(messageDeleteNotification);
 
             return _responseFactory.SuccessResponse(DeleteMessageResponse.FromSuccess(message));
         }

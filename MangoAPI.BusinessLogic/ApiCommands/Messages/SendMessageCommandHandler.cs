@@ -116,7 +116,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Messages
 
             var messageDto = messageEntity.ToMessage(user.DisplayName, user.Id, user.Image);
 
-            await _hubContext.Clients.Group(request.ChatId.ToString()).BroadcastMessage(messageDto);
+            await _hubContext.Clients.Group(request.ChatId.ToString()).BroadcastMessageAsync(messageDto);
 
             return _responseFactory.SuccessResponse(SendMessageResponse.FromSuccess(messageEntity.Id));
         }
