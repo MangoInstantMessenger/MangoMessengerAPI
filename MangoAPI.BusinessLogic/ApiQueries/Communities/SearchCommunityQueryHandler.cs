@@ -49,6 +49,7 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Communities
                     LastMessageAuthor = x.LastMessageAuthor,
                     LastMessageText = x.LastMessageText,
                     LastMessageTime = x.LastMessageTime,
+                    LastMessageId = x.LastMessageId
                 }).Distinct();
 
             var chats = await query.Take(200).ToListAsync(cancellationToken);
