@@ -26,7 +26,7 @@ namespace MangoAPI.Application.Services
             _key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(tokenKey));
         }
 
-        public string GenerateJwtToken(Guid userId, List<string> roles)
+        public string GenerateJwtToken(Guid userId)
         {
             var jwtLifetime = EnvironmentConstants.MangoJwtLifetime;
 
@@ -35,17 +35,15 @@ namespace MangoAPI.Application.Services
                 throw new InvalidOperationException("Jwt lifetime environmental variable error.");
             }
 
-            return GenerateJwtToken(userId, jwtLifetimeParsed, roles);
+            return GenerateJwtToken(userId, jwtLifetimeParsed);
         }
 
-        public string GenerateJwtToken(Guid userId, int lifetimeMinutes, List<string> roles)
+        private string GenerateJwtToken(Guid userId, int lifetimeMinutes)
         {
             var claims = new List<Claim>
             {
                 new (JwtRegisteredClaimNames.Jti, userId.ToString()),
             };
-
-            roles.ForEach(x => claims.Add(new Claim(ClaimsIdentity.DefaultRoleClaimType, x)));
 
             var credentials = new SigningCredentials(_key, SecurityAlgorithms.HmacSha256);
 

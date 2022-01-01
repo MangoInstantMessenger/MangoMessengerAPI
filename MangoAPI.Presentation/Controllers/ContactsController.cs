@@ -5,7 +5,6 @@ using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.Presentation.Extensions;
 using MangoAPI.Presentation.Interfaces;
 using MediatR;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -21,7 +20,7 @@ namespace MangoAPI.Presentation.Controllers
     /// </summary>
     [ApiController]
     [Route("api/contacts")]
-    [Authorize(Roles = "User", AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    [Authorize]
     public class ContactsController : ApiControllerBase, IContactsController
     {
         public ContactsController(IMediator mediator, IMapper mapper)
@@ -30,14 +29,15 @@ namespace MangoAPI.Presentation.Controllers
         }
 
         /// <summary>
-        /// Adds particular user to the contacts. Fetches user by user ID. Requires role: User.
+        /// Adds particular user to the contacts by User ID.
         /// </summary>
         /// <param name="contactId">User ID to add, UUID.</param>
         /// <param name="cancellationToken">Cancellation token instance.</param>
         /// <returns>Possible codes: 200, 400, 409.</returns>
         [HttpPost("{contactId:guid}")]
-        [SwaggerOperation(Description = "Adds particular user to the contacts. Fetches user by user ID. " +
-                                        "Requires role: User.", Summary = "Adds particular user to the contacts")]
+        [SwaggerOperation(
+            Description = "Adds particular user to the contacts by User ID.",
+            Summary = "Adds particular user to the contacts")]
         [ProducesResponseType(typeof(ResponseBase), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
@@ -55,14 +55,14 @@ namespace MangoAPI.Presentation.Controllers
         }
 
         /// <summary>
-        /// Deletes particular contact from the contacts. Fetches user by user ID. Requires role: User
+        /// Deletes particular contact from the contacts by User ID.
         /// </summary>
         /// <param name="contactId">User ID to add, UUID.</param>
         /// <param name="cancellationToken">Cancellation token instance.</param>
         /// <returns>Possible codes: 200, 400, 409.</returns>
         [HttpDelete("{contactId:guid}")]
-        [SwaggerOperation(Description = "Deletes particular contact from the contacts. Fetches user by user ID. " +
-                                        "Requires role: User",
+        [SwaggerOperation(
+            Description = "Deletes particular contact from the contacts by User ID. ",
             Summary = "Deletes particular contact from the contacts.")]
         [ProducesResponseType(typeof(ResponseBase), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
@@ -81,12 +81,13 @@ namespace MangoAPI.Presentation.Controllers
         }
 
         /// <summary>
-        /// Returns list of current user's contacts. Requires role: User.
+        /// Returns list of current user's contacts.
         /// </summary>
         /// <param name="cancellationToken">Cancellation token instance.</param>
         /// <returns>Possible codes: 200, 400, 409.</returns>
         [HttpGet]
-        [SwaggerOperation(Description = "Returns list of current user's contacts. Requires role: User.",
+        [SwaggerOperation(
+            Description = "Returns list of current user's contacts.",
             Summary = "Returns list of user's contacts.")]
         [ProducesResponseType(typeof(GetContactsResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
@@ -103,16 +104,15 @@ namespace MangoAPI.Presentation.Controllers
         }
 
         /// <summary>
-        /// Searches user by his display name. Requires role: User.
+        /// Searches user by display name.
         /// </summary>
         /// <param name="searchQuery">Search query string.</param>
         /// <param name="cancellationToken">CancellationToken instance.</param>
         /// <returns>Possible codes: 200, 400, 409.</returns>
         [HttpGet("searches")]
-        [Authorize(Roles = "User")]
-        [SwaggerOperation(Description =
-                "Searches user by display name, phone number or e-mail address. Requires role: User.",
-            Summary = "Searches user by credential.")]
+        [SwaggerOperation(
+            Description = "Searches user by display name.",
+            Summary = "Searches user by display name.")]
         [ProducesResponseType(typeof(SearchContactResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> SearchesAsync([FromQuery] string searchQuery,

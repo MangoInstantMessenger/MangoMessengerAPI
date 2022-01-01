@@ -71,15 +71,8 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Sessions
                 ExpiresAt = DateTime.UtcNow.AddDays(refreshLifetimeParsed),
                 CreatedAt = DateTime.UtcNow,
             };
-
-            var rolesQuery = from userRole in _postgresDbContext.UserRoles.AsNoTracking()
-                join role in _postgresDbContext.Roles on userRole.RoleId equals role.Id
-                where userRole.UserId == session.UserId
-                select role.Name;
-
-            var roles = await rolesQuery.ToListAsync(cancellationToken);
-
-            var jwtToken = _jwtGenerator.GenerateJwtToken(user.Id, roles);
+            
+            var jwtToken = _jwtGenerator.GenerateJwtToken(user.Id);
 
             var userSessions = _postgresDbContext.Sessions
                 .Where(entity => entity.UserId == user.Id);

@@ -6,7 +6,6 @@ using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.Presentation.Extensions;
 using MangoAPI.Presentation.Interfaces;
 using MediatR;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -20,7 +19,7 @@ namespace MangoAPI.Presentation.Controllers
     [ApiController]
     [Route("api/public-keys")]
     [Produces("application/json")]
-    [Authorize(Roles = "User", AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    [Authorize]
     public class PublicKeysController : ApiControllerBase, IPublicKeysController
     {
         public PublicKeysController(IMediator mediator, IMapper mapper)
@@ -29,13 +28,14 @@ namespace MangoAPI.Presentation.Controllers
         }
 
         /// <summary>
-        /// Returns all user's Diffie-Hellman public keys. Required roles: User.
+        /// Returns all user's Diffie-Hellman public keys.
         /// </summary>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
         [HttpGet]
-        [SwaggerOperation(Summary = "Returns all user's public keys.",
-            Description = "Returns all user's Diffie-Hellman public keys. Required roles: User.")]
+        [SwaggerOperation(
+            Summary = "Returns all user's public keys.",
+            Description = "Returns all user's Diffie-Hellman public keys.")]
         [ProducesResponseType(typeof(GetPublicKeysResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> GetPublicKeys(CancellationToken cancellationToken)
