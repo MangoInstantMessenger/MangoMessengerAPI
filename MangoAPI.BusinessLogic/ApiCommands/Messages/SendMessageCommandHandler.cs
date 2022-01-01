@@ -24,7 +24,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Messages
 
         public SendMessageCommandHandler(
             MangoPostgresDbContext postgresDbContext,
-            IHubContext<ChatHub, IHubClient> hubContext, 
+            IHubContext<ChatHub, IHubClient> hubContext,
             ResponseFactory<SendMessageResponse> responseFactory)
         {
             _postgresDbContext = postgresDbContext;
@@ -41,7 +41,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Messages
                     x.DisplayName,
                     x.Image,
                     x.Id,
-                }).FirstOrDefaultAsync(x => x.Id == request.UserId, 
+                }).FirstOrDefaultAsync(x => x.Id == request.UserId,
                     cancellationToken);
 
             if (user == null)
@@ -71,7 +71,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Messages
 
             var messageCount = await _postgresDbContext.Messages
                 .AsNoTracking()
-                .Where(x => x.UserId == request.UserId) 
+                .Where(x => x.UserId == request.UserId)
                 .Where(x => x.CreatedAt >= DateTime.Now.Date.AddMinutes(-5))
                 .CountAsync(cancellationToken);
 
@@ -83,7 +83,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Messages
                 return _responseFactory.ConflictResponse(errorMessage, errorDescription);
             }
 
-            if (userChat.Chat.CommunityType == (int)CommunityType.ReadOnlyChannel)
+            if (userChat.Chat.CommunityType == (int) CommunityType.ReadOnlyChannel)
             {
                 const string errorMessage = ResponseMessageCodes.PermissionDenied;
                 var errorDescription = ResponseMessageCodes.ErrorDictionary[errorMessage];
@@ -93,6 +93,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Messages
 
             var messageEntity = new MessageEntity
             {
+                Id = Guid.NewGuid(),
                 ChatId = request.ChatId,
                 UserId = request.UserId,
                 Content = request.MessageText,
@@ -106,6 +107,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Messages
             userChat.Chat.LastMessageAuthor = user.DisplayName;
             userChat.Chat.LastMessageText = messageEntity.Content;
             userChat.Chat.LastMessageTime = messageEntity.CreatedAt.ToShortTimeString();
+            userChat.Chat.LastMessageId = messageEntity.Id;
 
             _postgresDbContext.Chats.Update(userChat.Chat);
             _postgresDbContext.Messages.Add(messageEntity);
