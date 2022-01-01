@@ -54,10 +54,10 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Messages
             _postgresDbContext.Entry(message.User).State = EntityState.Detached;
 
             var messageIsLast = chat.LastMessageId.HasValue && chat.LastMessageId == request.MessageId;
-            var updatedAtShortString = DateTime.Now.ToShortTimeString();
+            var updatedAtShortString = DateTime.UtcNow.ToShortTimeString();
 
             message.Content = request.ModifiedText;
-            message.UpdatedAt = DateTime.Now;
+            message.UpdatedAt = DateTime.UtcNow;
 
             if (messageIsLast)
             {
