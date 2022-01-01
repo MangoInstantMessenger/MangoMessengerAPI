@@ -20,8 +20,11 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Sessions
         private readonly SignInManager<UserEntity> _signInManager;
         private readonly ResponseFactory<TokensResponse> _responseFactory;
 
-        public LoginCommandHandler(SignInManager<UserEntity> signInManager, IJwtGenerator jwtGenerator,
-            MangoPostgresDbContext postgresDbContext, ResponseFactory<TokensResponse> responseFactory)
+        public LoginCommandHandler(
+            SignInManager<UserEntity> signInManager,
+            IJwtGenerator jwtGenerator,
+            MangoPostgresDbContext postgresDbContext,
+            ResponseFactory<TokensResponse> responseFactory)
         {
             _signInManager = signInManager;
             _jwtGenerator = jwtGenerator;
@@ -39,6 +42,14 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Sessions
             if (user is null)
             {
                 const string errorMessage = ResponseMessageCodes.InvalidCredentials;
+                var details = ResponseMessageCodes.ErrorDictionary[errorMessage];
+
+                return _responseFactory.ConflictResponse(errorMessage, details);
+            }
+
+            if (!user.EmailConfirmed)
+            {
+                const string errorMessage = ResponseMessageCodes.EmailIsNotVerified;
                 var details = ResponseMessageCodes.ErrorDictionary[errorMessage];
 
                 return _responseFactory.ConflictResponse(errorMessage, details);
@@ -71,7 +82,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Sessions
                 ExpiresAt = DateTime.UtcNow.AddDays(refreshLifetimeParsed),
                 CreatedAt = DateTime.UtcNow,
             };
-            
+
             var jwtToken = _jwtGenerator.GenerateJwtToken(user.Id);
 
             var userSessions = _postgresDbContext.Sessions
