@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace MangoAPI.BusinessLogic.ApiQueries.Contacts
 {
-    public class SearchContactByDisplayNameQueryHandler 
+    public class SearchContactByDisplayNameQueryHandler
         : IRequestHandler<SearchContactQuery, Result<SearchContactResponse>>
     {
         private readonly MangoPostgresDbContext _postgresDbContext;
@@ -31,6 +31,7 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Contacts
                 .AsNoTracking()
                 .Include(x => x.UserInformation)
                 .Where(x => x.Id != request.UserId)
+                .Where(x => EF.Functions.ILike(x.DisplayName, $"%{request.SearchQuery}%"))
                 .Select(x => new Contact
                 {
                     UserId = x.Id,
@@ -40,13 +41,6 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Contacts
                     PictureUrl = StringService.GetDocumentUrl(x.Image),
                     Email = x.Email,
                 });
-
-            if (!string.IsNullOrEmpty(request.SearchQuery) || !string.IsNullOrWhiteSpace(request.SearchQuery))
-            {
-                query = query.Where(x => 
-                    x.DisplayName.Contains(request.SearchQuery) ||
-                    x.Email.Contains(request.SearchQuery));
-            }
 
             var searchResult = await query.Take(200).ToListAsync(cancellationToken);
 

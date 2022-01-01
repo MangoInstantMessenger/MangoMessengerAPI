@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace MangoAPI.BusinessLogic.ApiQueries.Communities
 {
-    public class SearchCommunityQueryHandler 
+    public class SearchCommunityQueryHandler
         : IRequestHandler<SearchCommunityQuery, Result<SearchCommunityResponse>>
     {
         private readonly MangoPostgresDbContext _postgresDbContext;
@@ -29,18 +29,15 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Communities
         {
             var query = _postgresDbContext.Chats
                 .AsNoTracking()
-                .Where(x => 
-                    x.CommunityType == (int)CommunityType.PublicChannel || 
-                    x.CommunityType == (int)CommunityType.ReadOnlyChannel)
-                .Where(x => 
-                    request.DisplayName == null || 
-                    EF.Functions.ILike(x.Title, $"%{request.DisplayName}%"))
-                .Where(x => x.ChatUsers.All(u => u.UserId != request.UserId))
+                .Where(x =>
+                    x.CommunityType == (int) CommunityType.PublicChannel ||
+                    x.CommunityType == (int) CommunityType.ReadOnlyChannel)
+                .Where(x => EF.Functions.ILike(x.Title, $"%{request.DisplayName}%"))
                 .Select(x => new Chat
                 {
                     ChatId = x.Id,
                     Title = x.Title,
-                    CommunityType = (CommunityType)x.CommunityType,
+                    CommunityType = (CommunityType) x.CommunityType,
                     ChatLogoImageUrl = x.Image != null
                         ? $"{EnvironmentConstants.MangoBlobAccess}/{x.Image}"
                         : null,
