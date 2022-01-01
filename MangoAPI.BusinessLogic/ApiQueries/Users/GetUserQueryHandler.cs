@@ -15,14 +15,13 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Users
     {
         private readonly MangoPostgresDbContext _postgresDbContext;
         private readonly ResponseFactory<GetUserResponse> _responseFactory;
-        private readonly StringService _stringService;
 
-        public GetUserQueryHandler(MangoPostgresDbContext postgresDbContext,
-            ResponseFactory<GetUserResponse> responseFactory, StringService stringService)
+        public GetUserQueryHandler(
+            MangoPostgresDbContext postgresDbContext,
+            ResponseFactory<GetUserResponse> responseFactory)
         {
             _postgresDbContext = postgresDbContext;
             _responseFactory = responseFactory;
-            _stringService = stringService;
         }
 
         public async Task<Result<GetUserResponse>> Handle(GetUserQuery request,
@@ -46,7 +45,7 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Users
                     LinkedIn = user.UserInformation.LinkedIn,
                     Username = user.UserName,
                     Bio = user.Bio,
-                    PictureUrl = _stringService.GetDocumentUrl(user.Image),
+                    PictureUrl = StringService.GetDocumentUrl(user.Image),
                 }).FirstOrDefaultAsync(x => x.UserId == request.UserId, cancellationToken);
 
             if (user is null)

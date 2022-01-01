@@ -3,7 +3,6 @@ using MangoAPI.BusinessLogic.ApiCommands.PasswordRestoreRequests;
 using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.Presentation.Interfaces;
 using MediatR;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -18,7 +17,7 @@ namespace MangoAPI.Presentation.Controllers
     /// </summary>
     [ApiController]
     [Route("api/password-restore-request")]
-    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    [Authorize]
     public class PasswordRestoreRequestsController : ApiControllerBase, IPasswordRestoreRequestsController
     {
         public PasswordRestoreRequestsController(IMediator mediator, IMapper mapper)
@@ -34,9 +33,8 @@ namespace MangoAPI.Presentation.Controllers
         /// <returns></returns>
         [AllowAnonymous]
         [HttpPost]
-        [SwaggerOperation(Description = "Creates new password restore request in database. " +
-                                        "Request valid for 3 hours. " +
-                                        "Allow anonymous.",
+        [SwaggerOperation(
+            Description = "Creates new password restore request in database. Request valid for 3 hours.",
             Summary = "Creates new password restore request in database.")]
         [ProducesResponseType(typeof(ResponseBase), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
@@ -60,7 +58,8 @@ namespace MangoAPI.Presentation.Controllers
         /// <returns>Possible codes: 200, 400, 409.</returns>
         [HttpPut]
         [AllowAnonymous]
-        [SwaggerOperation(Description = "Updates users password hash in database. Allow anonymous.",
+        [SwaggerOperation(
+            Description = "Updates users password hash in database.",
             Summary = "Updates users password hash in database.")]
         [ProducesResponseType(typeof(ResponseBase), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]

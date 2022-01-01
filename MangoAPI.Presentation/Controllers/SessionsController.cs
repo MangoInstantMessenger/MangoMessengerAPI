@@ -4,7 +4,6 @@ using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.Presentation.Extensions;
 using MangoAPI.Presentation.Interfaces;
 using MediatR;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -20,7 +19,6 @@ namespace MangoAPI.Presentation.Controllers
     /// </summary>
     [ApiController]
     [Route("api/sessions")]
-    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class SessionsController : ApiControllerBase, ISessionsController
     {
         public SessionsController(IMediator mediator, IMapper mapper)
@@ -29,15 +27,15 @@ namespace MangoAPI.Presentation.Controllers
         }
 
         /// <summary>
-        /// Logins to the system. Returns pair of the access/refresh tokens. Does not requires authorization.
+        /// Logins to the system. Returns pair of the access/refresh tokens.
         /// </summary>
         /// <param name="request">LoginRequest instance.</param>
         /// <param name="cancellationToken">Cancellation token instance.</param>
         /// <returns>Possible codes: 200, 400, 409.</returns>
         [HttpPost]
         [AllowAnonymous]
-        [SwaggerOperation(Description =
-                "Logins to the system. Returns pair of the access/refresh tokens. Does not requires authorization.",
+        [SwaggerOperation(
+            Description = "Logins to the system. Returns pair of the access/refresh tokens.",
             Summary = "Logins to the system.")]
         [ProducesResponseType(typeof(TokensResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
@@ -76,14 +74,15 @@ namespace MangoAPI.Presentation.Controllers
         }
 
         /// <summary>
-        /// Deletes current user's session. Requires roles: Unverified, User.
+        /// Deletes current user's session.
         /// </summary>
         /// <param name="refreshToken">Refresh Token ID, UUID.</param>
         /// <param name="cancellationToken">Cancellation token instance.</param>
         /// <returns>Possible codes: 200, 400, 409.</returns>
         [HttpDelete("{refreshToken:guid}")]
-        [Authorize(Roles = "User")]
-        [SwaggerOperation(Description = "Deletes current user's session. Requires roles: User.",
+        [Authorize]
+        [SwaggerOperation(
+            Description = "Deletes current user's session.",
             Summary = "Deletes current user's session.")]
         [ProducesResponseType(typeof(ResponseBase), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
@@ -100,13 +99,14 @@ namespace MangoAPI.Presentation.Controllers
         }
 
         /// <summary>
-        /// Deletes all current user's sessions. Requires roles: Unverified, User.
+        /// Deletes all current user's sessions.
         /// </summary>
         /// <param name="cancellationToken">Cancellation token instance.</param>
         /// <returns>Possible codes: 200, 400, 409.</returns>
         [HttpDelete]
-        [Authorize(Roles = "User")]
-        [SwaggerOperation(Description = "Deletes all current user's sessions. Requires roles: User.",
+        [Authorize]
+        [SwaggerOperation(
+            Description = "Deletes all current user's sessions.",
             Summary = "Deletes all current user's sessions.")]
         [ProducesResponseType(typeof(ResponseBase), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]

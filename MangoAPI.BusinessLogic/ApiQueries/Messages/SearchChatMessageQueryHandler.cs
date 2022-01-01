@@ -16,7 +16,8 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Messages
         private readonly MangoPostgresDbContext _postgresDbContext;
         private readonly ResponseFactory<SearchChatMessagesResponse> _responseFactory;
 
-        public SearchChatMessageQueryHandler(MangoPostgresDbContext postgresDbContext,
+        public SearchChatMessageQueryHandler(
+            MangoPostgresDbContext postgresDbContext,
             ResponseFactory<SearchChatMessagesResponse> responseFactory)
         {
             _postgresDbContext = postgresDbContext;
@@ -41,6 +42,7 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Messages
 
             var query = _postgresDbContext.Messages.AsNoTracking()
                 .Where(x => x.ChatId == request.ChatId)
+                .Where(x => EF.Functions.ILike(x.Content, $"%{request.MessageText}%"))
                 .OrderBy(x => x.CreatedAt)
                 .Select(x => new Message
                 {
@@ -63,11 +65,6 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Messages
                         ? $"{EnvironmentConstants.MangoBlobAccess}/{x.Attachment}"
                         : null,
                 }).Take(200);
-
-            if (!string.IsNullOrEmpty(request.MessageText) || !string.IsNullOrWhiteSpace(request.MessageText))
-            {
-                query = query.Where(x => x.MessageText.Contains(request.MessageText));
-            }
 
             var result = await query.ToListAsync(cancellationToken);
 

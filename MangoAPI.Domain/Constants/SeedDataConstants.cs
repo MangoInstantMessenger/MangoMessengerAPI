@@ -28,14 +28,6 @@ namespace MangoAPI.Domain.Constants
         public static readonly Guid DirectKolbasatorRazumovsky = "f8729a12-5746-443f-ad31-378d846fce30".AsGuid();
         public static readonly Guid DirectAmelitRazumovsky = "b119914a-6d95-4047-bf8a-db27deeb7dc9".AsGuid();
         public static readonly Guid DirectPetroSzymon = "3fce8b2c-252d-4514-a1bb-fbdf73c47b78".AsGuid();
-
-        // Role ID
-        public static readonly Guid UserRoleId = "32904a05-6d7c-43cf-b915-223324ff480e".AsGuid();
-        public static readonly Guid UnverifiedRoleId = "1c48f8d5-01ed-4e47-8377-a22ffa58c150".AsGuid();
-
-        // Roles
-        public const string UserRole = "User";
-        public const string UnverifiedRole = "Unverified";
     }
 
     public static class StringExtensions

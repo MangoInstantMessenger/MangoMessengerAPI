@@ -50,6 +50,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
                 UserName = Guid.NewGuid().ToString(),
                 Email = request.Email,
                 EmailCode = Guid.NewGuid(),
+                Image = "default_avatar.png"
             };
 
             var result = await _userManager.CreateAsync(newUser, request.Password);
@@ -69,12 +70,6 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
             };
 
             await _emailSenderService.SendVerificationEmailAsync(newUser, cancellationToken);
-
-            _postgresDbContext.UserRoles.Add(new IdentityUserRole<Guid>
-            {
-                UserId = newUser.Id,
-                RoleId = SeedDataConstants.UnverifiedRoleId
-            });
 
             _postgresDbContext.UserInformation.Add(userInfo);
 
