@@ -75,7 +75,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Communities
             await _postgresDbContext.SaveChangesAsync(cancellationToken);
 
             var chatDto = channel.ToChatDto();
-            await _hubContext.Clients.Group(request.UserId.ToString()).UpdateUserChats(chatDto);
+            await _hubContext.Clients.Group(request.UserId.ToString()).UpdateUserChatsAsync(chatDto);
 
             return _responseFactory.SuccessResponse(CreateCommunityResponse.FromSuccess(channel));
         }
