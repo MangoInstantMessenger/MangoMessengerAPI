@@ -30,6 +30,7 @@ namespace MangoAPI.DataAccess.Database.Configurations
                     MembersCount = 5,
                     Image = "wsb_group_logo.png",
                     UpdatedAt = DateTime.UtcNow,
+                    LastMessageId = "2d3a5b2b-8898-42c6-9656-9719d8174723".AsGuid(),
                     LastMessageAuthor = "Szymon Murawski",
                     LastMessageText = "Great! Good luck to all of you",
                     LastMessageTime = "9:59 PM"
@@ -44,6 +45,7 @@ namespace MangoAPI.DataAccess.Database.Configurations
                     MembersCount = 4,
                     Image = "extreme_code_main.jpg",
                     UpdatedAt = DateTime.UtcNow,
+                    LastMessageId = "98bcb652-9e2d-4674-9ab0-1f63914fe77f".AsGuid(),
                     LastMessageAuthor = "Amelit",
                     LastMessageText = "TypeScript The Best",
                     LastMessageTime = "2:32 PM"
@@ -58,6 +60,7 @@ namespace MangoAPI.DataAccess.Database.Configurations
                     MembersCount = 4,
                     Image = "extremecode_rest_logo.jpg",
                     UpdatedAt = DateTime.UtcNow,
+                    LastMessageId = "cb914cf8-a511-4135-834a-8b0b51cf2879".AsGuid(),
                     LastMessageAuthor = "Amelit",
                     LastMessageText = "Слава Партии!!",
                     LastMessageTime = "6:45 PM"
@@ -72,6 +75,7 @@ namespace MangoAPI.DataAccess.Database.Configurations
                     MembersCount = 4,
                     Image = "extremecode_cpp_logo.jpg",
                     UpdatedAt = DateTime.UtcNow,
+                    LastMessageId = "6c30406d-7444-40b9-9378-3d21f899ca5e".AsGuid(),
                     LastMessageAuthor = "Amelit",
                     LastMessageText = "Hello world!",
                     LastMessageTime = "6:45 PM"
@@ -86,6 +90,7 @@ namespace MangoAPI.DataAccess.Database.Configurations
                     MembersCount = 4,
                     Image = "extremecode_dotnet.png",
                     UpdatedAt = DateTime.UtcNow,
+                    LastMessageId = "1bfc5ff4-b200-4ee7-bfa0-c9e77af7ce7b".AsGuid(),
                     LastMessageAuthor = "Amelit",
                     LastMessageText = "Hello world!",
                     LastMessageTime = "6:45 PM"
@@ -98,6 +103,7 @@ namespace MangoAPI.DataAccess.Database.Configurations
                     CommunityType = (int)CommunityType.DirectChat,
                     MembersCount = 2,
                     UpdatedAt = DateTime.UtcNow,
+                    LastMessageId = "7d7eb999-5264-445e-b455-726d4422d952".AsGuid(),
                     LastMessageAuthor = "razumovsky r",
                     LastMessageText = "Hello world!",
                     LastMessageTime = "2.46 PM"
@@ -110,6 +116,7 @@ namespace MangoAPI.DataAccess.Database.Configurations
                     CommunityType = (int)CommunityType.DirectChat,
                     MembersCount = 2,
                     UpdatedAt = DateTime.UtcNow,
+                    LastMessageId = "2ed3dfbd-0770-430c-a6e0-07259a6fa82e".AsGuid(),
                     LastMessageAuthor = "razumovsky r",
                     LastMessageText = "Hello world!",
                     LastMessageTime = "2.47 PM"
@@ -122,6 +129,7 @@ namespace MangoAPI.DataAccess.Database.Configurations
                     CommunityType = (int)CommunityType.DirectChat,
                     MembersCount = 2,
                     UpdatedAt = DateTime.UtcNow,
+                    LastMessageId = "039aa728-7139-4597-9a6b-fa9c8de98522".AsGuid(),
                     LastMessageAuthor = "razumovsky r",
                     LastMessageText = "Hello world!",
                     LastMessageTime = "2.49 PM"
@@ -134,6 +142,7 @@ namespace MangoAPI.DataAccess.Database.Configurations
                     CommunityType = (int)CommunityType.DirectChat,
                     MembersCount = 2,
                     UpdatedAt = DateTime.UtcNow,
+                    LastMessageId = "a07a1cab-1c10-4fef-b7fb-8bf73d373572".AsGuid(),
                     LastMessageAuthor = "Khachatur Khachatryan",
                     LastMessageText = "Hello world!",
                     LastMessageTime = "2.49 PM"
@@ -146,6 +155,7 @@ namespace MangoAPI.DataAccess.Database.Configurations
                     CommunityType = (int)CommunityType.DirectChat,
                     MembersCount = 2,
                     UpdatedAt = DateTime.UtcNow,
+                    LastMessageId = "e787f41e-e379-4be4-a4ec-1c229d55bac4".AsGuid(),
                     LastMessageAuthor = "Petro Kolosov",
                     LastMessageText = "Hello world!",
                     LastMessageTime = "2.49 PM"

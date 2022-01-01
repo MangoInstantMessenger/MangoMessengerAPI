@@ -52,7 +52,9 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Messages
                 return _responseFactory.ConflictResponse(errorMessage, errorDescription);
             }
 
-            var userChat = await _postgresDbContext.UserChats.AsNoTracking()
+            var userChat = await _postgresDbContext.UserChats
+                .AsNoTracking()
+                .Include(x => x.Chat)
                 .Select(x => new
                 {
                     x.ChatId,
@@ -103,6 +105,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Messages
             };
 
             userChat.Chat.UpdatedAt = messageEntity.CreatedAt;
+            userChat.Chat.LastMessageId = messageEntity.Id;
             userChat.Chat.LastMessageAuthor = user.DisplayName;
             userChat.Chat.LastMessageText = messageEntity.Content;
             userChat.Chat.LastMessageTime = messageEntity.CreatedAt.ToShortTimeString();

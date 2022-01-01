@@ -65,7 +65,7 @@ namespace MangoAPI.DataAccess.Database.Configurations
                 },
                 new MessageEntity
                 {
-                    Id = Guid.NewGuid(),
+                    Id = "2d3a5b2b-8898-42c6-9656-9719d8174723".AsGuid(),
                     UserId = SeedDataConstants.SzymonId,
                     ChatId = SeedDataConstants.WsbId,
                     Content = "Great! Good luck to all of you",
@@ -97,7 +97,7 @@ namespace MangoAPI.DataAccess.Database.Configurations
                 },
                 new MessageEntity
                 {
-                    Id = Guid.NewGuid(),
+                    Id = "98bcb652-9e2d-4674-9ab0-1f63914fe77f".AsGuid(),
                     UserId = SeedDataConstants.AmelitId,
                     ChatId = SeedDataConstants.ExtremeCodeMainId,
                     Content = "TypeScript The Best",
@@ -129,7 +129,7 @@ namespace MangoAPI.DataAccess.Database.Configurations
                 },
                 new MessageEntity
                 {
-                    Id = Guid.NewGuid(),
+                    Id = "cb914cf8-a511-4135-834a-8b0b51cf2879".AsGuid(),
                     UserId = SeedDataConstants.AmelitId,
                     ChatId = SeedDataConstants.ExtremeCodeFloodId,
                     Content = "Слава Партии!!",
@@ -161,7 +161,7 @@ namespace MangoAPI.DataAccess.Database.Configurations
                 },
                 new MessageEntity
                 {
-                    Id = Guid.NewGuid(),
+                    Id = "6c30406d-7444-40b9-9378-3d21f899ca5e".AsGuid(),
                     UserId = SeedDataConstants.AmelitId,
                     ChatId = SeedDataConstants.ExtremeCodeCppId,
                     Content = "Hello World",
@@ -193,7 +193,7 @@ namespace MangoAPI.DataAccess.Database.Configurations
                 },
                 new MessageEntity
                 {
-                    Id = Guid.NewGuid(),
+                    Id = "1bfc5ff4-b200-4ee7-bfa0-c9e77af7ce7b".AsGuid(),
                     UserId = SeedDataConstants.AmelitId,
                     ChatId = SeedDataConstants.ExtremeCodeDotnetId,
                     Content = "Hello World",
@@ -209,7 +209,7 @@ namespace MangoAPI.DataAccess.Database.Configurations
                 },
                 new MessageEntity
                 {
-                    Id = Guid.NewGuid(),
+                    Id = "7d7eb999-5264-445e-b455-726d4422d952".AsGuid(),
                     UserId = SeedDataConstants.RazumovskyId,
                     ChatId = SeedDataConstants.DirectKhachaturRazumovsky,
                     Content = "Hello World",
@@ -225,7 +225,7 @@ namespace MangoAPI.DataAccess.Database.Configurations
                 },
                 new MessageEntity
                 {
-                    Id = Guid.NewGuid(),
+                    Id = "2ed3dfbd-0770-430c-a6e0-07259a6fa82e".AsGuid(),
                     UserId = SeedDataConstants.RazumovskyId,
                     ChatId = SeedDataConstants.DirectKolbasatorRazumovsky,
                     Content = "Hello World",
@@ -241,7 +241,7 @@ namespace MangoAPI.DataAccess.Database.Configurations
                 },
                 new MessageEntity
                 {
-                    Id = Guid.NewGuid(),
+                    Id = "039aa728-7139-4597-9a6b-fa9c8de98522".AsGuid(),
                     UserId = SeedDataConstants.RazumovskyId,
                     ChatId = SeedDataConstants.DirectAmelitRazumovsky,
                     Content = "Hello World",
@@ -257,7 +257,7 @@ namespace MangoAPI.DataAccess.Database.Configurations
                 },
                 new MessageEntity
                 {
-                    Id = Guid.NewGuid(),
+                    Id = "a07a1cab-1c10-4fef-b7fb-8bf73d373572".AsGuid(),
                     UserId = SeedDataConstants.KolbasatorId,
                     ChatId = SeedDataConstants.DirectKhachaturKolbasator,
                     Content = "Hello World",
@@ -265,7 +265,7 @@ namespace MangoAPI.DataAccess.Database.Configurations
                 },
                 new MessageEntity
                 {
-                    Id = Guid.NewGuid(),
+                    Id = "e787f41e-e379-4be4-a4ec-1c229d55bac4".AsGuid(),
                     UserId = SeedDataConstants.PetroId,
                     ChatId = SeedDataConstants.DirectPetroSzymon,
                     Content = "Hi teacher",

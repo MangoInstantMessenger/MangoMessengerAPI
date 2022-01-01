@@ -31,8 +31,7 @@ namespace MangoAPI.BusinessLogic.Models
         [DefaultValue(true)]
         public bool IsMember { get; init; }
 
-        [DefaultValue(1)]
-        public int RoleId { get; init; }
+        [DefaultValue(1)] public int RoleId { get; init; }
 
         [DefaultValue("MyDisplayName")]
         public string LastMessageAuthor { get; init; }

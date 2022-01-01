@@ -20,6 +20,8 @@ namespace MangoAPI.Domain.Entities
         public DateTime? UpdatedAt { get; set; }
 
         public int MembersCount { get; set; }
+        
+        public Guid? LastMessageId { get; set; }
 
         public string LastMessageAuthor { get; set; }
 
