@@ -345,3 +345,6 @@ ASALocalRun/
 
 # BeatPulse healthcheck temp database
 healthchecksdb
+
+# code coverage temp
+coverage.opencover.xml
