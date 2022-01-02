@@ -37,5 +37,5 @@ jobs:
 
       - name: Codecov
         uses: codecov/codecov-action@v2
-        with: 
-          token: ${{ secrets.CODECOV_TOKEN }}
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
