@@ -29,9 +29,10 @@ namespace MangoAPI.Tests.ApiCommandsTests.SendMessageCommandHandlerTests
             var result = await handler.Handle(_sendMessageCommand, CancellationToken.None);
 
             result.Response.Success.Should().BeTrue();
-            var chat = context.Chats.First(x => x.Id == _chat.Id);
-            context.Entry(chat).State = EntityState.Detached;
+            var chat = context.Chats.AsNoTracking().First(x => x.Id == _chat.Id);
             chat.LastMessageText.Should().Be(_sendMessageCommand.MessageText);
+            chat.LastMessageId.Should().Be(result.Response.MessageId);
+            chat.LastMessageAuthor.Should().Be(_user.DisplayName);
         }
 
         public void Seed()
