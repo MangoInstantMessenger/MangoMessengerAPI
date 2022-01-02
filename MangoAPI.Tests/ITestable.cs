@@ -1,7 +1,7 @@
 ﻿using MangoAPI.BusinessLogic.Responses;
 using MediatR;
 
-namespace MangoAPI.Tests.ApiCommandsTests
+namespace MangoAPI.Tests
 {
     public interface ITestable<in TRequest, TResponse>
         where TResponse : ResponseBase
