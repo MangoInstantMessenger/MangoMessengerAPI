@@ -16,16 +16,16 @@ namespace MangoAPI.DiffieHellmanConsole
         private static readonly KeyExchangeService KeyExchangeService;
         private static readonly PublicKeysService PublicKeysService;
         private static readonly ChatService ChatService;
-        private static readonly TokensResponse Tokens;
+        private static readonly TokensResponse TokenResponse;
 
         static Program()
         {
             try
             {
-                Tokens = TokensService.GetTokensAsync().GetAwaiter().GetResult();
-                KeyExchangeService = new KeyExchangeService(Tokens.AccessToken);
-                PublicKeysService = new PublicKeysService(Tokens.AccessToken);
-                ChatService = new ChatService(Tokens.AccessToken);
+                TokenResponse = TokensService.GetTokensAsync().GetAwaiter().GetResult();
+                KeyExchangeService = new KeyExchangeService(TokenResponse.Tokens.AccessToken);
+                PublicKeysService = new PublicKeysService(TokenResponse.Tokens.AccessToken);
+                ChatService = new ChatService(TokenResponse.Tokens.AccessToken);
             }
             catch (FileNotFoundException)
             {
@@ -88,17 +88,17 @@ namespace MangoAPI.DiffieHellmanConsole
 
         private static async Task RefreshTokenAsync()
         {
-            if (Tokens is null)
+            if (TokenResponse is null)
             {
                 //Console.WriteLine("User is not authorized. Please login.");
                 return;
             }
-            
-            var refreshToken = Tokens.RefreshToken;
+
+            var refreshToken = TokenResponse.Tokens.RefreshToken;
 
             Console.WriteLine("Refreshing tokens ...");
             var refreshTokenResponse = await SessionsService.RefreshTokenAsync(refreshToken);
-            
+
             Console.WriteLine("Writing tokens to file ...");
             await TokensService.WriteTokensAsync(refreshTokenResponse);
 
@@ -115,9 +115,11 @@ namespace MangoAPI.DiffieHellmanConsole
 
             Console.WriteLine($"Key exchange request with an ID {response.RequestId} created successfully.");
 
-            var keysFolderPath = Path.Combine(AppContext.BaseDirectory, $"Keys_{Tokens.UserId}");
-            var privateKeyPath = Path.Combine(keysFolderPath, $"PrivateKey_{Tokens.UserId}_{requestedUserId}.txt");
-            var publicKeyPath = Path.Combine(keysFolderPath, $"PublicKey_{Tokens.UserId}_{requestedUserId}.txt");
+            var keysFolderPath = Path.Combine(AppContext.BaseDirectory, $"Keys_{TokenResponse.Tokens.UserId}");
+            var privateKeyPath =
+                Path.Combine(keysFolderPath, $"PrivateKey_{TokenResponse.Tokens.UserId}_{requestedUserId}.txt");
+            var publicKeyPath = Path.Combine(keysFolderPath,
+                $"PublicKey_{TokenResponse.Tokens.UserId}_{requestedUserId}.txt");
 
             if (!Directory.Exists(keysFolderPath))
             {
@@ -163,16 +165,18 @@ namespace MangoAPI.DiffieHellmanConsole
 
             await KeyExchangeService.ConfirmOrDeclineKeyExchange(requestId, publicKeyBase64);
 
-            var keysFolderPath = Path.Combine(AppContext.BaseDirectory, $"Keys_{Tokens.UserId}");
+            var keysFolderPath = Path.Combine(AppContext.BaseDirectory, $"Keys_{TokenResponse.Tokens.UserId}");
 
             var privateKeyPath =
-                Path.Combine(keysFolderPath, $"PrivateKey_{Tokens.UserId}_{exchangeRequest.SenderId}.txt");
+                Path.Combine(keysFolderPath,
+                    $"PrivateKey_{TokenResponse.Tokens.UserId}_{exchangeRequest.SenderId}.txt");
 
             var publicKeyPath =
-                Path.Combine(keysFolderPath, $"PublicKey_{Tokens.UserId}_{exchangeRequest.SenderId}.txt");
+                Path.Combine(keysFolderPath, $"PublicKey_{TokenResponse.Tokens.UserId}_{exchangeRequest.SenderId}.txt");
 
             var commonSecretPath =
-                Path.Combine(keysFolderPath, $"CommonSecret_{Tokens.UserId}_{exchangeRequest.SenderId}.txt");
+                Path.Combine(keysFolderPath,
+                    $"CommonSecret_{TokenResponse.Tokens.UserId}_{exchangeRequest.SenderId}.txt");
 
             if (!Directory.Exists(keysFolderPath))
             {
@@ -207,11 +211,11 @@ namespace MangoAPI.DiffieHellmanConsole
                 .FirstOrDefault(x => x.PartnerId == partnerId)?
                 .PartnerPublicKey.Base64StringAsBytes();
 
-            var privateKeyPath = Path.Combine(AppContext.BaseDirectory, $"Keys_{Tokens.UserId}",
-                $"PrivateKey_{Tokens.UserId}_{partnerId}.txt");
+            var privateKeyPath = Path.Combine(AppContext.BaseDirectory, $"Keys_{TokenResponse.Tokens.UserId}",
+                $"PrivateKey_{TokenResponse.Tokens.UserId}_{partnerId}.txt");
 
-            var commonSecretPath = Path.Combine(AppContext.BaseDirectory, $"Keys_{Tokens.UserId}",
-                $"CommonSecret_{Tokens.UserId}_{partnerId}.txt");
+            var commonSecretPath = Path.Combine(AppContext.BaseDirectory, $"Keys_{TokenResponse.Tokens.UserId}",
+                $"CommonSecret_{TokenResponse.Tokens.UserId}_{partnerId}.txt");
 
             var privateKeyBytes = (await File.ReadAllTextAsync(privateKeyPath)).Base64StringAsBytes();
 
@@ -226,7 +230,7 @@ namespace MangoAPI.DiffieHellmanConsole
 
             Console.WriteLine("Common secret generated successfully.\n");
         }
-        
+
         private static async Task GetCurrentUserChats()
         {
             var response = await ChatService.GetCurrentUserChatsAsync();
