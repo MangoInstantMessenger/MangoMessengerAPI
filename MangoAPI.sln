@@ -32,7 +32,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Workflows", "Workflows", "{
 		.github\workflows\azure-dev.yml = .github\workflows\azure-dev.yml
 		.github\workflows\azure-qa.yml = .github\workflows\azure-qa.yml
 		.github\workflows\heroku.yml = .github\workflows\heroku.yml
-		.github\workflows\run-tests.yml = .github\workflows\run-tests.yml
+		.github\workflows\build.yml = .github\workflows\build.yml
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SQL", "SQL", "{2A176CBC-BD4E-4ED5-AA92-B99D34C084BC}"

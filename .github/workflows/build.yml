@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - develop
+      - MANGO-368
   pull_request:
     branches:
       - develop
