@@ -18,3 +18,8 @@ jobs:
 
       - name: Run unit tests
         run: dotnet test MangoAPI.Tests/MangoAPI.Tests.csproj
+        env:
+          MANGO_SEED_PASSWORD: ${{ secrets.MANGO_SEED_PASSWORD }}
+          MANGO_REFRESH_TOKEN_LIFETIME: ${{ MANGO_REFRESH_TOKEN_LIFETIME }}
+          MANGO_JWT_SIGN_KEY: ${{ MANGO_JWT_SIGN_KEY }}
+          MANGO_JWT_LIFETIME: ${{ MANGO_JWT_LIFETIME }}
