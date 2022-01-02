@@ -1,6 +1,7 @@
 # Mango Messenger ASP NET Core WebAPI
 
-[![Build](https://github.com/kolosovpetro/MangoMessengerAPI/actions/workflows/build.yml/badge.svg)](https://github.com/kolosovpetro/MangoMessengerAPI/actions/workflows/build.yml/badge.svg)
+[![Build](https://github.com/MangoInstantMessenger/MangoMessengerAPI/actions/workflows/build.yml/badge.svg)](https://github.com/MangoInstantMessenger/MangoMessengerAPI/actions/workflows/build.yml/badge.svg)
+![contributors count](https://img.shields.io/github/contributors/MangoInstantMessenger/MangoMessengerAPI)
 
 ## Required Environment Variables
 
