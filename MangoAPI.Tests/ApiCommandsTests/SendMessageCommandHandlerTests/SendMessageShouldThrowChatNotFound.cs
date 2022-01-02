@@ -9,16 +9,15 @@ using MangoAPI.Domain.Constants;
 using MangoAPI.Domain.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using NUnit.Framework;
+using Xunit;
 
 namespace MangoAPI.Tests.ApiCommandsTests.SendMessageCommandHandlerTests
 {
-    [TestFixture]
     public class SendMessageShouldThrowChatNotFound : ITestable<SendMessageCommand, SendMessageResponse>
     {
         private readonly MangoDbFixture _mangoDbFixture = new();
 
-        [Test]
+        [Fact]
         public async Task SendMessage_ShouldThrow_ChatNotFound()
         {
             Seed();
@@ -38,11 +37,15 @@ namespace MangoAPI.Tests.ApiCommandsTests.SendMessageCommandHandlerTests
             result.Error.ErrorDetails.Should().Be(ResponseMessageCodes.ErrorDictionary[expectedMessage]);
         }
 
-        public void Seed()
+        public bool Seed()
         {
             _mangoDbFixture.Context.Users.Add(_user);
+            
             _mangoDbFixture.Context.SaveChanges();
+            
             _mangoDbFixture.Context.Entry(_user).State = EntityState.Detached;
+
+            return true;
         }
 
         public IRequestHandler<SendMessageCommand, Result<SendMessageResponse>> CreateHandler()

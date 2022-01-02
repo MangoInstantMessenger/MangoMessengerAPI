@@ -7,7 +7,7 @@ namespace MangoAPI.Tests
         where TResponse : ResponseBase
         where TRequest : IRequest<Result<TResponse>>
     {
-        void Seed();
+        bool Seed();
 
         IRequestHandler<TRequest, Result<TResponse>> CreateHandler();
     }
