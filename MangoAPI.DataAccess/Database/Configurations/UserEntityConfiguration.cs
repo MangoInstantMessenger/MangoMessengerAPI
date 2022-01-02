@@ -159,11 +159,11 @@ namespace MangoAPI.DataAccess.Database.Configurations
 
             var passwordHasher = new PasswordHashService();
 
-            var password = EnvironmentConstants.MangoSeedPassword;
+            var seedPassword = EnvironmentConstants.MangoSeedPassword;
 
-            if (password == null)
+            if (seedPassword == null)
             {
-                throw new InvalidOperationException("SEED_PASSWORD_ENV_VARIABLE_ERROR");
+                throw new ArgumentNullException(nameof(seedPassword));
             }
 
             passwordHasher.HashPassword(user1, EnvironmentConstants.MangoSeedPassword);
