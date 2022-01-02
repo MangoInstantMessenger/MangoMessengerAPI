@@ -2,9 +2,11 @@
 
 on:
   push:
-    branches: [ develop, MANGO-331 ]
+    branches:
+      - develop
   pull_request:
-    branches: [ develop, MANGO-331 ]
+    branches:
+      - develop
 
 jobs:
   build:
