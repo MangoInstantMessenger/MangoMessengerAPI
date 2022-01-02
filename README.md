@@ -2,6 +2,7 @@
 
 [![Build](https://github.com/MangoInstantMessenger/MangoMessengerAPI/actions/workflows/build.yml/badge.svg)](https://github.com/MangoInstantMessenger/MangoMessengerAPI/actions/workflows/build.yml/badge.svg)
 ![contributors count](https://img.shields.io/github/contributors/MangoInstantMessenger/MangoMessengerAPI)
+[![codecov](https://codecov.io/gh/MangoInstantMessenger/MangoMessengerAPI/branch/develop/graph/badge.svg?token=J4P0TD9Q1Q)](https://codecov.io/gh/MangoInstantMessenger/MangoMessengerAPI)
 
 ## Required Environment Variables
 
