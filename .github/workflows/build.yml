@@ -1,9 +1,10 @@
-﻿name: Run Unit Tests On PR/Merge
+﻿name: Build
 
 on:
   push:
     branches:
       - develop
+      - MANGO-368
   pull_request:
     branches:
       - develop
