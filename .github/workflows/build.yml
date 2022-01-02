@@ -36,6 +36,6 @@ jobs:
           MANGO_JWT_LIFETIME: ${{ secrets.MANGO_JWT_LIFETIME }}
 
       - name: Codecov
-        uses: codecov/codecov-action@v1
-        env:
-          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+        uses: codecov/codecov-action@v2
+        with: 
+          token: ${{ secrets.CODECOV_TOKEN }}
