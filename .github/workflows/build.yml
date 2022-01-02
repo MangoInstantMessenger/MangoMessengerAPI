@@ -1,4 +1,4 @@
-﻿name: Run Unit Tests On PR/Merge
+﻿name: Build
 
 on:
   push:
