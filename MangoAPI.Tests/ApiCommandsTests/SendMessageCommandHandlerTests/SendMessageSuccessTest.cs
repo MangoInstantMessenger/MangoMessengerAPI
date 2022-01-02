@@ -10,16 +10,15 @@ using MangoAPI.Domain.Entities;
 using MangoAPI.Domain.Enums;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using NUnit.Framework;
+using Xunit;
 
 namespace MangoAPI.Tests.ApiCommandsTests.SendMessageCommandHandlerTests
 {
-    [TestFixture]
     public class SendMessageSuccessTest : ITestable<SendMessageCommand, SendMessageResponse>
     {
         private readonly MangoDbFixture _mangoDbFixture = new();
 
-        [Test]
+        [Fact]
         public async Task SendMessage_Test_Success()
         {
             await using var context = _mangoDbFixture.Context;
@@ -35,15 +34,19 @@ namespace MangoAPI.Tests.ApiCommandsTests.SendMessageCommandHandlerTests
             chat.LastMessageAuthor.Should().Be(_user.DisplayName);
         }
 
-        public void Seed()
+        public bool Seed()
         {
             _mangoDbFixture.Context.Users.Add(_user);
             _mangoDbFixture.Context.Chats.Add(_chat);
             _mangoDbFixture.Context.UserChats.Add(_userChatEntity);
+
             _mangoDbFixture.Context.SaveChanges();
+
             _mangoDbFixture.Context.Entry(_user).State = EntityState.Detached;
             _mangoDbFixture.Context.Entry(_chat).State = EntityState.Detached;
             _mangoDbFixture.Context.Entry(_userChatEntity).State = EntityState.Detached;
+
+            return true;
         }
 
         public IRequestHandler<SendMessageCommand, Result<SendMessageResponse>> CreateHandler()

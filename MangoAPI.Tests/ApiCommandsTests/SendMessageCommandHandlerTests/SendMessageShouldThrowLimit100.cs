@@ -10,16 +10,15 @@ using MangoAPI.Domain.Entities;
 using MangoAPI.Domain.Enums;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using NUnit.Framework;
+using Xunit;
 
 namespace MangoAPI.Tests.ApiCommandsTests.SendMessageCommandHandlerTests
 {
-    [TestFixture]
     public class SendMessageShouldThrowLimit100 : ITestable<SendMessageCommand, SendMessageResponse>
     {
         private readonly MangoDbFixture _mangoDbFixture = new();
 
-        [Test]
+        [Fact]
         public async Task SendMessage_ShouldThrow_ExceedLimit100Per5Minutes()
         {
             Seed();
@@ -40,7 +39,7 @@ namespace MangoAPI.Tests.ApiCommandsTests.SendMessageCommandHandlerTests
             result.Error.ErrorDetails.Should().Be(expectedDetails);
         }
 
-        public void Seed()
+        public bool Seed()
         {
             _mangoDbFixture.Context.Users.Add(_user);
             _mangoDbFixture.Context.Chats.Add(_chat);
@@ -63,6 +62,8 @@ namespace MangoAPI.Tests.ApiCommandsTests.SendMessageCommandHandlerTests
             _mangoDbFixture.Context.Entry(_user).State = EntityState.Detached;
             _mangoDbFixture.Context.Entry(_chat).State = EntityState.Detached;
             _mangoDbFixture.Context.Entry(_userChatEntity).State = EntityState.Detached;
+
+            return true;
         }
 
         public IRequestHandler<SendMessageCommand, Result<SendMessageResponse>> CreateHandler()

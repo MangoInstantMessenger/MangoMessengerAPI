@@ -6,16 +6,15 @@ using MangoAPI.BusinessLogic.ApiCommands.Messages;
 using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.Domain.Constants;
 using MediatR;
-using NUnit.Framework;
+using Xunit;
 
 namespace MangoAPI.Tests.ApiCommandsTests.SendMessageCommandHandlerTests
 {
-    [TestFixture]
     public class SendMessageShouldThrowUserNotFound : ITestable<SendMessageCommand, SendMessageResponse>
     {
         private readonly MangoDbFixture _mangoDbFixture = new();
 
-        [Test]
+        [Fact]
         public async Task SendMessage_ShouldThrow_UserNotFound()
         {
             var handler = CreateHandler();
@@ -35,8 +34,9 @@ namespace MangoAPI.Tests.ApiCommandsTests.SendMessageCommandHandlerTests
             result.Error.ErrorDetails.Should().Be(expectedDetails);
         }
 
-        public void Seed()
+        public bool Seed()
         {
+            return true;
         }
 
         public IRequestHandler<SendMessageCommand, Result<SendMessageResponse>> CreateHandler()

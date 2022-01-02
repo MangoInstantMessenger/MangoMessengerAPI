@@ -13,8 +13,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MangoAPI.BusinessLogic", "M
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MangoAPI.Application", "MangoAPI.Application\MangoAPI.Application.csproj", "{18FF1265-DBFA-4AF7-8069-E895148848B2}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MangoAPI.Tests", "MangoAPI.Tests\MangoAPI.Tests.csproj", "{006BE543-524D-417E-BA7E-744DDBBED768}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{F8A0C2AF-AB92-4D4E-8EB9-FEC56B93DD01}"
 	ProjectSection(SolutionItems) = preProject
 		.dockerignore = .dockerignore
@@ -46,6 +44,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SQL", "SQL", "{2A176CBC-BD4
 		SqlScripts\PostgresTruncatePasswordRestoreRequests.sql = SqlScripts\PostgresTruncatePasswordRestoreRequests.sql
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MangoAPI.Tests", "MangoAPI.Tests\MangoAPI.Tests.csproj", "{7BE7D37C-B0FF-4231-A155-B8AA7CF8092B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -72,14 +72,14 @@ Global
 		{18FF1265-DBFA-4AF7-8069-E895148848B2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{18FF1265-DBFA-4AF7-8069-E895148848B2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{18FF1265-DBFA-4AF7-8069-E895148848B2}.Release|Any CPU.Build.0 = Release|Any CPU
-		{006BE543-524D-417E-BA7E-744DDBBED768}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{006BE543-524D-417E-BA7E-744DDBBED768}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{006BE543-524D-417E-BA7E-744DDBBED768}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{006BE543-524D-417E-BA7E-744DDBBED768}.Release|Any CPU.Build.0 = Release|Any CPU
 		{85D35610-B0C7-4439-871C-0578E1FC7BB5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{85D35610-B0C7-4439-871C-0578E1FC7BB5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{85D35610-B0C7-4439-871C-0578E1FC7BB5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{85D35610-B0C7-4439-871C-0578E1FC7BB5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7BE7D37C-B0FF-4231-A155-B8AA7CF8092B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7BE7D37C-B0FF-4231-A155-B8AA7CF8092B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7BE7D37C-B0FF-4231-A155-B8AA7CF8092B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7BE7D37C-B0FF-4231-A155-B8AA7CF8092B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
