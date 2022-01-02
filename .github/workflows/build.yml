@@ -4,7 +4,7 @@ on:
   push:
     branches:
       - develop
-      - MANGO-368
+      - MANGO-367
   pull_request:
     branches:
       - develop
@@ -19,10 +19,21 @@ jobs:
         with:
           dotnet-version: 5.0.x
 
+      - name: Restore dependencies
+        run: dotnet restore
+
+      - name: Build
+        run: dotnet build --no-restore /p:ContinuousIntegrationBuild=true
+
       - name: Run unit tests
-        run: dotnet test MangoAPI.Tests/MangoAPI.Tests.csproj
+        run: dotnet test MangoAPI.Tests/MangoAPI.Tests.csproj --no-build --verbosity normal /p:CollectCoverage=true /p:CoverletOutputFormat=opencover
         env:
           MANGO_SEED_PASSWORD: ${{ secrets.MANGO_SEED_PASSWORD }}
           MANGO_REFRESH_TOKEN_LIFETIME: ${{ secrets.MANGO_REFRESH_TOKEN_LIFETIME }}
           MANGO_JWT_SIGN_KEY: ${{ secrets.MANGO_JWT_SIGN_KEY }}
           MANGO_JWT_LIFETIME: ${{ secrets.MANGO_JWT_LIFETIME }}
+
+      - name: Codecov
+        uses: codecov/codecov-action@v1
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
