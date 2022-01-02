@@ -1,0 +1,20 @@
+﻿name: Run Unit Tests On PR/Merge
+
+on:
+  push:
+    branches: [ develop, MANGO-331 ]
+  pull_request:
+    branches: [ develop, MANGO-331 ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup .NET Core
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: 5.0.x
+
+      - name: Run unit tests
+        run: dotnet test MangoAPI.Tests/MangoAPI.Tests.csproj
