@@ -43,6 +43,8 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Messages
 
             var chat = await query.FirstOrDefaultAsync(cancellationToken);
 
+            // TODO: separate concerns, it is not immediately clear which is null, chat or message?
+            // TODO: update tests as well
             if (chat == null)
             {
                 const string errorMessage = ResponseMessageCodes.ChatNotFound;

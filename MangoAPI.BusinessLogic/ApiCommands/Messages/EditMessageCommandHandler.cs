@@ -20,8 +20,10 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Messages
         private readonly IHubContext<ChatHub, IHubClient> _hubContext;
         private readonly ResponseFactory<ResponseBase> _responseFactory;
 
-        public EditMessageCommandHandler(MangoPostgresDbContext postgresDbContext,
-            IHubContext<ChatHub, IHubClient> hubContext, ResponseFactory<ResponseBase> responseFactory)
+        public EditMessageCommandHandler(
+            MangoPostgresDbContext postgresDbContext,
+            IHubContext<ChatHub, IHubClient> hubContext,
+            ResponseFactory<ResponseBase> responseFactory)
         {
             _postgresDbContext = postgresDbContext;
             _hubContext = hubContext;
@@ -38,10 +40,11 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Messages
                 .Where(x => x.ChatId == request.ChatId && x.UserId == request.UserId)
                 .Select(x => x.Chat)
                 .Where(x => x.Messages.Any(t => t.Id == request.MessageId));
-
-
+            
             var chat = await query.FirstOrDefaultAsync(cancellationToken);
 
+            // TODO: separate concerns, it is not immediately clear which is null, chat or message?
+            // TODO: update tests as well
             if (chat == null)
             {
                 const string errorMessage = ResponseMessageCodes.ChatNotFound;
