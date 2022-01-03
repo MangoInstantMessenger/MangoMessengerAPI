@@ -4,6 +4,9 @@ on:
   push:
     branches:
       - develop
+      - azure-dev
+      - azure-qa
+      - master
   pull_request:
     branches:
       - develop
@@ -33,6 +36,9 @@ jobs:
           MANGO_JWT_LIFETIME: ${{ secrets.MANGO_JWT_LIFETIME }}
 
       - name: Codecov
-        uses: codecov/codecov-action@v1
-        env:
-          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+        uses: codecov/codecov-action@v2
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          flags: web, server
+          fail_ci_if_error: false
+          verbose: true
