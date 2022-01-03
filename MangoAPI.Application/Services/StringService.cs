@@ -1,4 +1,6 @@
-﻿using MangoAPI.Domain.Constants;
+﻿using System;
+using System.IO;
+using MangoAPI.Domain.Constants;
 
 namespace MangoAPI.Application.Services
 {
@@ -18,7 +20,7 @@ namespace MangoAPI.Application.Services
 
             var temp = databaseUrl.Split(@"://");
             var parameters = temp[1].Split(':', '@', '/');
-            
+
             var connectionString =
                 $"Server={parameters[2]};" +
                 $"Port={parameters[3]};" +
@@ -27,7 +29,7 @@ namespace MangoAPI.Application.Services
                 $"Database={parameters[4]};" +
                 "sslmode=Require;" +
                 "Trust Server Certificate=true;";
-            
+
             return connectionString;
         }
 
@@ -39,6 +41,15 @@ namespace MangoAPI.Application.Services
             }
 
             return $"{EnvironmentConstants.MangoBlobAccess}/{fileName}";
+        }
+
+        public static string GetUniqueFileName(string fileName)
+        {
+            fileName = Path.GetFileName(fileName);
+            return Path.GetFileNameWithoutExtension(fileName)
+                   + "_"
+                   + Guid.NewGuid()
+                   + Path.GetExtension(fileName);
         }
     }
 }

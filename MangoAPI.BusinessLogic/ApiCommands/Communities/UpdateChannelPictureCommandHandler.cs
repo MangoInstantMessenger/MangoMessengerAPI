@@ -1,5 +1,4 @@
 ﻿using System;
-using System.IO;
 using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.DataAccess.Database;
 using MangoAPI.Domain.Constants;
@@ -9,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Threading;
 using System.Threading.Tasks;
 using MangoAPI.Application.Interfaces;
+using MangoAPI.Application.Services;
 using MangoAPI.Domain.Entities;
 
 namespace MangoAPI.BusinessLogic.ApiCommands.Communities
@@ -63,7 +63,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Communities
             }
 
             var blobContainerName = EnvironmentConstants.MangoBlobContainer;
-            var uniqueFileName = GetUniqueFileName(request.NewGroupPicture.FileName);
+            var uniqueFileName = StringService.GetUniqueFileName(request.NewGroupPicture.FileName);
 
             await _blobService.UploadFileBlobAsync(uniqueFileName, request.NewGroupPicture, blobContainerName);
 
@@ -86,15 +86,6 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Communities
             var response = UpdateChannelLogoResponse.FromSuccess(blobUrl);
 
             return _responseFactory.SuccessResponse(response);
-        }
-
-        private static string GetUniqueFileName(string fileName)
-        {
-            fileName = Path.GetFileName(fileName);
-            return Path.GetFileNameWithoutExtension(fileName)
-                   + "_"
-                   + Guid.NewGuid()
-                   + Path.GetExtension(fileName);
         }
     }
 }
