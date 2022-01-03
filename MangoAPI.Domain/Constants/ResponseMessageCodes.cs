@@ -44,7 +44,7 @@ namespace MangoAPI.Domain.Constants
             },
             {ChangePasswordRequestExists, "Change password request already sent. Verify your email."},
             {
-                UploadedDocumentsLimitReached,
+                UploadedDocumentsLimitReached10,
                 "You have reached maximum amount of documents upload 10. Try again in 1 hour."
             },
             {EmailIsNotVerified, "Your email is not verified. Check your inbox for confirmation link."},
@@ -78,7 +78,7 @@ namespace MangoAPI.Domain.Constants
 
         public const string KeyExchangeRequestAlreadyExists = "KEY_EXCHANGE_REQUEST_ALREADY_EXISTS";
         public const string KeyExchangeRequestNotFound = "KEY_EXCHANGE_REQUEST_NOT_FOUND";
-        public const string UploadedDocumentsLimitReached = "UPLOADED_DOCUMENTS_LIMIT_REACHED";
+        public const string UploadedDocumentsLimitReached10 = "UPLOADED_DOCUMENTS_LIMIT_REACHED";
         public const string EmailIsNotVerified = "EMAIL_IS_NOT_VERIFIED";
     }
 }

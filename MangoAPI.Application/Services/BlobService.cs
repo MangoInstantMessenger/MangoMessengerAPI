@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using Azure.Storage.Blobs;
 using Azure.Storage.Blobs.Models;
@@ -27,27 +26,12 @@ namespace MangoAPI.Application.Services
             return Task.FromResult(str);
         }
 
-        public async Task<IEnumerable<string>> AllBlobsAsync(string containerName)
-        {
-            var containerClient = _blobClient.GetBlobContainerClient(containerName);
-            var files = new List<string>();
-
-            var blobs = containerClient.GetBlobsAsync();
-            
-            await foreach (var item in blobs)
-            {
-                files.Add(item.Name);
-            }
-
-            return files;
-        }
-
         public async Task<bool> UploadFileBlobAsync(string name, IFormFile file, string containerName)
         {
             try
             {
                 var containerClient = _blobClient.GetBlobContainerClient(containerName);
-                
+
                 var blobClient = containerClient.GetBlobClient(name);
 
                 var httpHeaders = new BlobHttpHeaders
@@ -68,13 +52,6 @@ namespace MangoAPI.Application.Services
             }
 
             return false;
-        }
-
-        public async Task<bool> DeleteBlobAsync(string name, string containerName)
-        {
-            var containerClient = _blobClient.GetBlobContainerClient(containerName);
-            var blobClient = containerClient.GetBlobClient(name);
-            return await blobClient.DeleteIfExistsAsync();
         }
     }
 }

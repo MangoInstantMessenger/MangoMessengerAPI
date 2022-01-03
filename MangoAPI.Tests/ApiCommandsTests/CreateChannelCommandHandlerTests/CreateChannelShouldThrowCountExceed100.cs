@@ -57,7 +57,7 @@ namespace MangoAPI.Tests.ApiCommandsTests.CreateChannelCommandHandlerTests
 
         public IRequestHandler<CreateChannelCommand, Result<CreateCommunityResponse>> CreateHandler()
         {
-            var hubContext = MockedObjects.GetHubContext();
+            var hubContext = MockedObjects.GetHubContextMock();
             var responseFactory = new ResponseFactory<CreateCommunityResponse>();
             var handler = new CreateChannelCommandHandler(_mangoDbFixture.Context, hubContext, responseFactory);
             return handler;

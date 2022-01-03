@@ -25,7 +25,7 @@ namespace MangoAPI.Tests.ApiCommandsTests.SendMessageCommandHandlerTests
             const string expectedMessage = ResponseMessageCodes.MaximumMessageCountInLast5MinutesExceeded100;
             var expectedDetails = ResponseMessageCodes.ErrorDictionary[expectedMessage];
             var handler = CreateHandler();
-            var sendMessageCommand = new SendMessageCommand()
+            var sendMessageCommand = new SendMessageCommand
             {
                 ChatId = SeedDataConstants.ExtremeCodeMainId,
                 UserId = SeedDataConstants.RazumovskyId,
@@ -68,7 +68,7 @@ namespace MangoAPI.Tests.ApiCommandsTests.SendMessageCommandHandlerTests
 
         public IRequestHandler<SendMessageCommand, Result<SendMessageResponse>> CreateHandler()
         {
-            var hubContext = MockedObjects.GetHubContext();
+            var hubContext = MockedObjects.GetHubContextMock();
             var responseFactory = new ResponseFactory<SendMessageResponse>();
             var handler = new SendMessageCommandHandler(_mangoDbFixture.Context, hubContext, responseFactory);
             return handler;
