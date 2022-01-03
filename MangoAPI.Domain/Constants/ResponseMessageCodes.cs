@@ -18,12 +18,10 @@ namespace MangoAPI.Domain.Constants
             {EmailAlreadyVerified, "Email address of your account is already confirmed."},
             {PermissionDenied, "You are not authorized to perform this action."},
             {ChatNotFound, "Cannot found this chat it the system."},
-            {MessageNotFound, "Message does not exists."},
             {UserAlreadyJoinedGroup, "You are already a member of the community."},
             {ContactAlreadyExist, "User is your contact already."},
             {ContactNotFound, "User is not found in your contact list."},
             {RefreshTokenLifeTimeError, "Refresh token lifetime can not be parsed."},
-            {InvalidGroupType, "Group type can not be parsed."},
             {CannotAddSelfToContacts, "You cannot add yourself to the contacts."},
             {CannotCreateSelfChat, "You cannot create a direct chat with yourself."},
             {InvalidOrExpiredRestorePasswordRequest, "Invalid or expired restore password request. Try again."},
@@ -59,12 +57,10 @@ namespace MangoAPI.Domain.Constants
         public const string EmailAlreadyVerified = "EMAIL_ALREADY_VERIFIED";
         public const string PermissionDenied = "PERMISSION_DENIED";
         public const string ChatNotFound = "CHAT_NOT_FOUND";
-        public const string MessageNotFound = "MESSAGE_NOT_FOUND";
         public const string UserAlreadyJoinedGroup = "USER_ALREADY_JOINED_GROUP";
         public const string ContactAlreadyExist = "CONTACT_ALREADY_EXISTS";
         public const string ContactNotFound = "CONTACT_NOT_FOUND";
         public const string RefreshTokenLifeTimeError = "REFRESH_TOKEN_LIFETIME_ERROR";
-        public const string InvalidGroupType = "INVALID_GROUP_TYPE";
         public const string CannotAddSelfToContacts = "CANNOT_ADD_SELF_TO_CONTACTS";
         public const string CannotCreateSelfChat = "CANNOT_CREATE_SELF_CHAT";
         public const string InvalidOrExpiredRestorePasswordRequest = "INVALID_OR_EXPIRED_RESTORE_PASSWORD_REQUEST";
