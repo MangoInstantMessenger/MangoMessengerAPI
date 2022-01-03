@@ -28,7 +28,7 @@ jobs:
         run: dotnet build --no-restore /p:ContinuousIntegrationBuild=true
         
       - name: Print Env Variable
-        run: echo $CODECOV_TOKEN
+        run: echo "$CODECOV_TOKEN"
         env:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 
