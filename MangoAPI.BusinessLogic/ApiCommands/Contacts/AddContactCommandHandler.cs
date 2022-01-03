@@ -25,13 +25,13 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Contacts
 
         public async Task<Result<ResponseBase>> Handle(AddContactCommand request, CancellationToken cancellationToken)
         {
-            var contact = await _postgresDbContext.Users
-                .FirstOrDefaultAsync(x => x.Id == request.UserId, 
+            var contactToAdd = await _postgresDbContext.Users
+                .FirstOrDefaultAsync(x => x.Id == request.ContactId, 
                     cancellationToken);
 
-            if (contact is null)
+            if (contactToAdd is null)
             {
-                const string errorMessage = ResponseMessageCodes.ContactNotFound;
+                const string errorMessage = ResponseMessageCodes.UserNotFound;
                 var errorDescription = ResponseMessageCodes.ErrorDictionary[errorMessage];
 
                 return _responseFactory.ConflictResponse(errorMessage, errorDescription);
@@ -45,12 +45,12 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Contacts
                 return _responseFactory.ConflictResponse(errorMessage, errorDescription);
             }
 
-            var userContactExist = await _postgresDbContext.UserContacts
+            var contactExist = await _postgresDbContext.UserContacts
                 .AnyAsync(userContactEntity => 
                     userContactEntity.ContactId == request.ContactId && 
                     userContactEntity.UserId == request.UserId, cancellationToken);
 
-            if (userContactExist)
+            if (contactExist)
             {
                 const string errorMessage = ResponseMessageCodes.ContactAlreadyExist;
                 var errorDescription = ResponseMessageCodes.ErrorDictionary[errorMessage];
