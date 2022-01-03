@@ -29,6 +29,8 @@ jobs:
         
       - name: Print Env Variable
         run: echo $CODECOV_TOKEN
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 
       - name: Run unit tests
         run: dotnet test MangoAPI.Tests/MangoAPI.Tests.csproj --no-build --verbosity normal /p:CollectCoverage=true /p:CoverletOutputFormat=opencover
