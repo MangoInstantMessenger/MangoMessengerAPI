@@ -19,7 +19,7 @@ namespace MangoAPI.Tests.ApiCommandsTests.CreateChatCommandHandlerTests
         private readonly MangoDbFixture _mangoDbFixture = new MangoDbFixture();
 
         [Fact]
-        public async Task CreateChatShouldThrow_UserNotFound()
+        public async Task CreateChatShouldThrow_CannotCreateSelfChat()
         {
             Seed();
             const string expectedMessage = ResponseMessageCodes.CannotCreateSelfChat;
