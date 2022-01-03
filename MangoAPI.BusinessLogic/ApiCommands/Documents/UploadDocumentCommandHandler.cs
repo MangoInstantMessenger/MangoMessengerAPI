@@ -38,7 +38,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Documents
 
             if (totalUploadedDocsCount > 10)
             {
-                const string message = ResponseMessageCodes.UploadedDocumentsLimitReached;
+                const string message = ResponseMessageCodes.UploadedDocumentsLimitReached10;
                 var details = ResponseMessageCodes.ErrorDictionary[message];
                 return _responseFactory.ConflictResponse(message, details);
             }
