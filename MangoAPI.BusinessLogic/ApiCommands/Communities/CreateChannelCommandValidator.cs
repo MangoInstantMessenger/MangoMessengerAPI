@@ -10,11 +10,11 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Communities
                 .Cascade(CascadeMode.Stop)
                 .NotEmpty()
                 .Length(1, 50);
-                
+
             RuleFor(x => x.ChannelDescription)
                 .Cascade(CascadeMode.Stop)
                 .NotEmpty()
-                .Length(1, 300);
+                .Length(1, 100);
 
             RuleFor(x => x.CommunityType).IsInEnum();
         }

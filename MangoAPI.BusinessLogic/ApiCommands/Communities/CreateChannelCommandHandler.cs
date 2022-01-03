@@ -33,14 +33,6 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Communities
         public async Task<Result<CreateCommunityResponse>> Handle(CreateChannelCommand request,
             CancellationToken cancellationToken)
         {
-            if (request.CommunityType is CommunityType.DirectChat or CommunityType.SecretChat)
-            {
-                const string errorMessage = ResponseMessageCodes.InvalidGroupType;
-                var description = ResponseMessageCodes.ErrorDictionary[errorMessage];
-
-                return _responseFactory.ConflictResponse(errorMessage, description);
-            }
-
             var ownerChatsCount =
                 await _postgresDbContext.UserChats
                     .Where(x => x.RoleId == (int)UserRole.Owner && x.UserId == request.UserId)
