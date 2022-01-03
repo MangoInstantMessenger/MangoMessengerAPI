@@ -35,6 +35,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Sessions
                 return _responseFactory.ConflictResponse(errorMessage, details);
             }
 
+            // TODO: add user id to re request, so that it wont call database
             var user = await _postgresDbContext.Users
                 .FirstOrDefaultAsync(userEntity => userEntity.Id == session.UserId, cancellationToken);
 
