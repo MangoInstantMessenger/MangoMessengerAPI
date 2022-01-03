@@ -28,7 +28,7 @@ jobs:
         run: dotnet build --no-restore /p:ContinuousIntegrationBuild=true
 
       - name: Run unit tests
-        run: dotnet test MangoAPI.Tests/MangoAPI.Tests.csproj --no-build --verbosity normal /p:CollectCoverage=true /p:CoverletOutputFormat=opencover
+        run: dotnet test MangoAPI.Tests/MangoAPI.Tests.csproj --no-build --verbosity normal /p:CollectCoverage=true /p:Exclude="[*DataAccess]*" /p:CoverletOutputFormat=opencover
         env:
           MANGO_SEED_PASSWORD: ${{ secrets.MANGO_SEED_PASSWORD }}
           MANGO_REFRESH_TOKEN_LIFETIME: ${{ secrets.MANGO_REFRESH_TOKEN_LIFETIME }}
