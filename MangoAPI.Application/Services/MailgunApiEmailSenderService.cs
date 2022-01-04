@@ -51,7 +51,7 @@ namespace MangoAPI.Application.Services
             response.EnsureSuccessStatusCode();
         }
 
-        public async Task SendPasswordRestoreRequest(UserEntity user, Guid requestId,
+        public async Task SendPasswordRestoreRequestAsync(UserEntity user, Guid requestId,
             CancellationToken cancellationToken)
         {
             var domain = EnvironmentConstants.MangoMailgunApiDomain;
