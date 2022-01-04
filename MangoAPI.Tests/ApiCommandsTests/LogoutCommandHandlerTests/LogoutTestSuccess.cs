@@ -3,34 +3,36 @@ using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using FluentAssertions;
-using MangoAPI.BusinessLogic.ApiCommands.Communities;
+using MangoAPI.BusinessLogic.ApiCommands.Sessions;
 using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.Domain.Constants;
 using MangoAPI.Domain.Entities;
-using MangoAPI.Domain.Enums;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Xunit;
 
-namespace MangoAPI.Tests.ApiCommandsTests.CreateChannelCommandHandlerTests
+namespace MangoAPI.Tests.ApiCommandsTests.LogoutCommandHandlerTests
 {
-    public class CreateChannelTestSuccess : ITestable<CreateChannelCommand, CreateCommunityResponse>
+    public class LogoutTestSuccess : ITestable<LogoutCommand, ResponseBase>
     {
         private readonly MangoDbFixture _mangoDbFixture = new();
 
         [Fact]
-        public async Task CreateChannelTest_Success()
+        public async Task LogoutTest_Success()
         {
             Seed();
             const string expectedMessage = ResponseMessageCodes.Success;
             var handler = CreateHandler();
+            var command = new LogoutCommand
+            {
+                RefreshToken = _session.RefreshToken
+            };
 
-            var result = await handler.Handle(_createChannelCommand, CancellationToken.None);
+            var result = await handler.Handle(command, CancellationToken.None);
 
             result.StatusCode.Should().Be(HttpStatusCode.OK);
             result.Response.Message.Should().Be(expectedMessage);
             result.Response.Success.Should().BeTrue();
-            result.Response.ChatId.Should().NotBe(Guid.Empty);
 
             result.Error.Should().BeNull();
         }
@@ -38,19 +40,22 @@ namespace MangoAPI.Tests.ApiCommandsTests.CreateChannelCommandHandlerTests
         public bool Seed()
         {
             _mangoDbFixture.Context.Users.Add(_user);
+            _mangoDbFixture.Context.Sessions.Add(_session);
 
             _mangoDbFixture.Context.SaveChanges();
 
             _mangoDbFixture.Context.Entry(_user).State = EntityState.Detached;
-
+            _mangoDbFixture.Context.Entry(_session).State = EntityState.Detached;
+            
             return true;
         }
 
-        public IRequestHandler<CreateChannelCommand, Result<CreateCommunityResponse>> CreateHandler()
+        public IRequestHandler<LogoutCommand, Result<ResponseBase>> CreateHandler()
         {
-            var hubContext = MockedObjects.GetHubContextMock();
-            var responseFactory = new ResponseFactory<CreateCommunityResponse>();
-            var handler = new CreateChannelCommandHandler(_mangoDbFixture.Context, hubContext, responseFactory);
+            var context = _mangoDbFixture.Context;
+            var responseFactory = new ResponseFactory<ResponseBase>();
+            var handler = new LogoutCommandHandler(context, responseFactory);
+
             return handler;
         }
 
@@ -67,11 +72,12 @@ namespace MangoAPI.Tests.ApiCommandsTests.CreateChannelCommandHandlerTests
             Image = "razumovsky_picture.jpg"
         };
 
-        private readonly CreateChannelCommand _createChannelCommand = new()
+        private readonly SessionEntity _session = new()
         {
-            ChannelDescription = "My test channel",
-            ChannelTitle = "Test channel",
-            CommunityType = CommunityType.PublicChannel,
+            CreatedAt = DateTime.Now,
+            ExpiresAt = DateTime.Now.AddDays(7),
+            Id = Guid.NewGuid(),
+            RefreshToken = Guid.NewGuid(),
             UserId = SeedDataConstants.RazumovskyId
         };
     }

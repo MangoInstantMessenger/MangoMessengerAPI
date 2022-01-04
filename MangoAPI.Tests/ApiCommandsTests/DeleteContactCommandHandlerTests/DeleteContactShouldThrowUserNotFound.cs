@@ -58,7 +58,6 @@ namespace MangoAPI.Tests.ApiCommandsTests.DeleteContactCommandHandlerTests
         
         private readonly UserEntity _user1 = new()
         {
-            PhoneNumber = "48743615532",
             DisplayName = "razumovsky r",
             Bio = "11011 y.o Dotnet Developer from $\"{cityName}\"",
             Id = SeedDataConstants.RazumovskyId,
@@ -72,7 +71,6 @@ namespace MangoAPI.Tests.ApiCommandsTests.DeleteContactCommandHandlerTests
 
         private readonly UserEntity _user2 = new()
         {
-            PhoneNumber = "12025550152",
             DisplayName = "Amelit",
             Bio = "Дипломат",
             Id = SeedDataConstants.AmelitId,

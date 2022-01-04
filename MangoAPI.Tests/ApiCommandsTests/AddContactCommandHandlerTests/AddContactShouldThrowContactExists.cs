@@ -62,7 +62,6 @@ namespace MangoAPI.Tests.ApiCommandsTests.AddContactCommandHandlerTests
 
         private readonly UserEntity _receiver = new()
         {
-            PhoneNumber = "374775554310",
             DisplayName = "Khachatur Khachatryan",
             Bio = "13 y. o. | C# pozer, Hearts Of Iron IV noob",
             Id = SeedDataConstants.KhachaturId,
@@ -76,7 +75,6 @@ namespace MangoAPI.Tests.ApiCommandsTests.AddContactCommandHandlerTests
 
         private readonly UserEntity _sender = new()
         {
-            PhoneNumber = "48743615532",
             DisplayName = "razumovsky r",
             Bio = "11011 y.o Dotnet Developer from $\"{cityName}\"",
             Id = SeedDataConstants.RazumovskyId,
