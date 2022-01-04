@@ -62,7 +62,6 @@ namespace MangoAPI.Tests.ApiCommandsTests.DeleteMessageCommandHandlerTests
         
         private readonly UserEntity _user = new()
         {
-            PhoneNumber = "48743615532",
             DisplayName = "razumovsky r",
             Bio = "11011 y.o Dotnet Developer from $\"{cityName}\"",
             Id = SeedDataConstants.RazumovskyId,
