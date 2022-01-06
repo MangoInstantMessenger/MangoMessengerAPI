@@ -69,28 +69,28 @@ As image below shows
 
 ## User stack of technologies
 
-- **Frameworks**: `ASP .NET 5`, `Angular 11.2.7`
-- **Persistence**:
+- **Frameworks:** `ASP .NET 5`, `Angular 11.2.7`
+- **Persistence:**
     - Database: `PostgreSQL 13`
     - ORM: `Entity Framework Core 5.0`
     - Storage: `Azure Blob Storage`
-- **Authorization**: `ASP .NET Identity Core`, `JWT Bearer`
-- **Business Logic**:
+- **Authorization:** `ASP .NET Identity Core`, `JWT Bearer`
+- **Business Logic:**
     - `MediatR`
     - `Fluent Validation`
     - `AutoMapper`
-- **Presentation**:
+- **Presentation:**
     - API Documentation: `OpenAPI`
     - Realtime Communication: `SignalR`
     - Frontend Development: `Angular`
     - Desktop Development: `ElectronJS`
-- **Unit and Integration Testing**: `XUnit`, `Moq`, `FluentAssertions`, `EntityFrameworkCore InMemory`
-- **Code Quality Tools**: `SonarQube`, `CodeCov`
-- **Containerization**: `Docker`
-- **Continuous Integration**: `GitHub Actions`
-- **Continuous Delivery**: `GitHub Actions`, `Heroku`, `Azure`
-- **Programming languages**: `C#`, `SQL`, `TypeScript`
-- **Tools**: `Visual Studio`, `Rider`, `VS Code`, `WebStorm`, `PgAdmin`, `Postman`
+- **Unit and Integration Testing:** `XUnit`, `Moq`, `FluentAssertions`, `EntityFrameworkCore InMemory`
+- **Code Quality Tools:** `SonarQube`, `CodeCov`
+- **Containerization:** `Docker`
+- **Continuous Integration:** `GitHub Actions`
+- **Continuous Delivery:** `GitHub Actions`, `Heroku`, `Azure`
+- **Programming languages:** `C#`, `SQL`, `TypeScript`
+- **Tools:** `Visual Studio`, `Rider`, `VS Code`, `WebStorm`, `PgAdmin`, `Postman`
 
 ## Tasks management
 
