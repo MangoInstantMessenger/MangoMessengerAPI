@@ -1,5 +1,9 @@
 # Mango Messenger WEB API
 
+<p align="center">
+  <img src="mango.png"  alt="Mango Messenger Logo"/>
+</p>
+
 [![Build](https://github.com/MangoInstantMessenger/MangoMessengerAPI/actions/workflows/build.yml/badge.svg)](https://github.com/MangoInstantMessenger/MangoMessengerAPI/actions/workflows/build.yml/badge.svg)
 [![Azure Dev Deploy](https://github.com/MangoInstantMessenger/MangoMessengerAPI/actions/workflows/azure-dev.yml/badge.svg)](https://github.com/MangoInstantMessenger/MangoMessengerAPI/actions/workflows/azure-dev.yml/badge.svg)
 [![Azure QA Deploy](https://github.com/MangoInstantMessenger/MangoMessengerAPI/actions/workflows/azure-qa.yml/badge.svg)](https://github.com/MangoInstantMessenger/MangoMessengerAPI/actions/workflows/azure-qa.yml/badge.svg)
@@ -9,15 +13,18 @@
 
 ## What is all about
 
-Mango Messenger is an opensource instant messaging system such that implemented using ASP NET 5
-platform as REST API backend along with Angular framework as frontend. In general, current project is considered to be a diploma
-project in order to get bachelor's degree of computer science. However, now it is considered to be a just example of ASP
-.NET Core API implementation using best practices in terms of architecture etc, where it is possible to apply different
-software development approaches and to see how it works on different environments such as Azure, Heroku etc. Moreover,
+Mango Messenger is an opensource instant messaging system such that implemented using ASP NET 5 platform as REST API
+backend along with Angular framework as frontend. In general, current project is considered to be a diploma project in
+order to get bachelor's degree of computer science. However, now it is considered to be a just example of ASP .NET Core
+API implementation using best practices in terms of architecture etc, where it is possible to apply different software
+development approaches and to see how it works on different environments such as Azure, Heroku etc. Moreover, a few
+cryptographical concepts are implemented such as DH key exchange that can be applied in order to implement secret chats
+in feature.
 
 ## Build and run
 
-In order to build and run current project, firstly set the following environment variables:
+Install latest SDK and Runtime from Microsoft. In order to build and run current project, firstly set the following
+environment variables:
 
 - `MANGO_JWT_ISSUER`: JWT issuer claim (default https://localhost:4200)
 - `MANGO_JWT_AUDIENCE`: JWT audience claim (default https://localhost:5001)
@@ -33,6 +40,8 @@ In order to build and run current project, firstly set the following environment
 - `MANGO_MAILGUN_API_KEY`: API key of the MailGun service, used for sending email notifications
 - `MANGO_MAILGUN_API_BASE_URL`: API base URL of the MailGun service
 - `MANGO_MAILGUN_API_DOMAIN`: Verified domain used in MailGunService
+
+Then restore packages using CLI `dotnet restore` and after build the solution `dotnet build`.
 
 ## Environments
 
@@ -84,3 +93,7 @@ Version control to be organized as follows:
 
 - Trello: https://trello.com/b/Z7IlfrRb/mango-messenger-trello
 - Database diagram: https://dbdiagram.io/d/60d66a13dd6a597148203e6b
+
+## Logo Attribution
+
+<div>Icons made by <a href="https://www.freepik.com" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></div>
