@@ -1,7 +1,7 @@
 # Mango Messenger WEB API
 
 <p align="center">
-  <img src="mango.png"  alt="Mango Messenger Logo"/>
+  <img src="img/mango.png"  alt="Mango Messenger Logo"/>
 </p>
 
 [![Build](https://github.com/MangoInstantMessenger/MangoMessengerAPI/actions/workflows/build.yml/badge.svg)](https://github.com/MangoInstantMessenger/MangoMessengerAPI/actions/workflows/build.yml/badge.svg)
@@ -19,7 +19,11 @@ order to get bachelor's degree of computer science. However, now it is considere
 API implementation using best practices in terms of architecture etc, where it is possible to apply different software
 development approaches and to see how it works on different environments such as Azure, Heroku etc. Moreover, a few
 cryptographical concepts are implemented such as DH key exchange that can be applied in order to implement secret chats
-in feature.
+in feature. Project has classical N-tier architecture as below picture shows
+
+<p align="center">
+  <img src="img/architecture.png" width="1920"  alt="Mango Messenger Logo"/>
+</p>
 
 ## Build and run
 
@@ -63,15 +67,39 @@ As image below shows
 
 ![Environments](Environments-Back.jpg?raw=true)
 
+## User stack of technologies
+
+- **Frameworks**: `ASP .NET 5`, `Angular 11.2.7`
+- **Persistence**:
+    - Database: `PostgreSQL 13`
+    - ORM: `Entity Framework Core 5.0`
+    - Storage: `Azure Blob Storage`
+- **Authorization**: `ASP .NET Identity Core`, `JWT Bearer`
+- **Business Logic**:
+    - `MediatR`
+    - `Fluent Validation`
+    - `AutoMapper`
+- **Presentation**:
+    - API Documentation: `OpenAPI`
+    - Realtime Communication: `SignalR`
+    - Frontend Development: `Angular`
+    - Desktop Development: `ElectronJS`
+- **Unit and Integration Testing**: `XUnit`, `Moq`, `FluentAssertions`, `EntityFrameworkCore InMemory`
+- **Code Quality Tools**: `SonarQube`, `CodeCov`
+- **Containerization**: `Docker`
+- **Continuous Integration**: `GitHub Actions`
+- **Continuous Delivery**: `GitHub Actions`, `Heroku`, `Azure`
+- **Programming languages**: `C#`, `SQL`, `TypeScript`
+- **Tools**: `Visual Studio`, `Rider`, `VS Code`, `WebStorm`, `PgAdmin`, `Postman`
+
 ## Tasks management
 
 The opened tasks and issues to be organized an handled as follows:
 
-- Each task is assigned a number (MANGO-ID)
-- Tasks are at Trello board https://trello.com/b/Z7IlfrRb/mango-messenger-trello
-- There are two main branches: `master` and `develop`
-- All work is merged to `develop`
-- Develop will be merged with master when diploma project will be ready
+- Each task has an assigned number in the format `MANGO-ID`
+- Active tasks are available on the Trello board: https://trello.com/b/Z7IlfrRb/mango-messenger-trello
+- Each task branch is based on the actual `develop` branch and pull requested there on complete
+- Branch `develop` then merged to `azure-dev`, `azure-qa`, `master` branches on particular milestone complete
 
 ## Git flow
 
