@@ -13,7 +13,7 @@
 
 ## What is all about
 
-Mango Messenger is an opensource instant messaging system such that implemented using ASP NET 5 platform as REST API
+Mango Messenger is an opensource instant messaging system such that implemented using ASP NET 5 framework as REST API
 backend along with Angular framework as frontend. In general, current project is considered to be a diploma project in
 order to get bachelor's degree of computer science. However, now it is considered to be a just example of ASP .NET Core
 API implementation using best practices in terms of architecture etc, where it is possible to apply different software
@@ -37,9 +37,9 @@ environment variables:
 - `MANGO_BLOB_URL`: Connection string of the blob Azure blob storage server
 - `MANGO_BLOB_CONTAINER`: Name of the Azure blob storage container
 - `MANGO_BLOB_ACCESS`: Azure blob URL where files are available
-- `MANGO_MAILGUN_API_KEY`: API key of the MailGun service, used for sending email notifications
+- `MANGO_MAILGUN_API_KEY`: API key of the MailGun service used for sending email notifications
 - `MANGO_MAILGUN_API_BASE_URL`: API base URL of the MailGun service
-- `MANGO_MAILGUN_API_DOMAIN`: Verified domain used in MailGunService
+- `MANGO_MAILGUN_API_DOMAIN`: Verified domain used in MailGun service
 
 Then restore packages using CLI `dotnet restore` and after build the solution `dotnet build`.
 
