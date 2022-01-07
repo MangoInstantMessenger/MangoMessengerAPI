@@ -29,9 +29,6 @@ namespace MangoAPI.Tests.ApiCommandsTests.RefreshSessionCommandHandlerTests
             };
 
             var result = await handler.Handle(command, CancellationToken.None);
-
-            Console.WriteLine(result.Error.ErrorMessage);
-            Console.WriteLine(result.StatusCode);
             
             result.StatusCode.Should().Be(HttpStatusCode.OK);
             result.Response.Success.Should().BeTrue();
