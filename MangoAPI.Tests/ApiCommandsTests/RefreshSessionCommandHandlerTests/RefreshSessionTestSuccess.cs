@@ -10,12 +10,14 @@ using MangoAPI.Domain.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Xunit;
+using Xunit.Abstractions;
 
 namespace MangoAPI.Tests.ApiCommandsTests.RefreshSessionCommandHandlerTests
 {
     public class RefreshSessionTestSuccess : ITestable<RefreshSessionCommand, TokensResponse>
     {
-        private readonly MangoDbFixture _mangoDbFixture = new MangoDbFixture();
+        private readonly ITestOutputHelper _testOutputHelper;
+        private readonly MangoDbFixture _mangoDbFixture = new();
 
         [Fact]
         public async Task RefreshSessionTest_Success()
@@ -29,13 +31,19 @@ namespace MangoAPI.Tests.ApiCommandsTests.RefreshSessionCommandHandlerTests
             };
 
             var result = await handler.Handle(command, CancellationToken.None);
-            
+
+            if (result.Error != null)
+            {
+                _testOutputHelper.WriteLine(result.Error.ErrorMessage);
+                _testOutputHelper.WriteLine(result.Error.ErrorDetails);
+            }
+
             result.StatusCode.Should().Be(HttpStatusCode.OK);
             result.Response.Success.Should().BeTrue();
             result.Response.Message.Should().Be(expectedMessage);
             result.Response.Tokens.UserId.Should().Be(_user.Id);
         }
-        
+
         public bool Seed()
         {
             _mangoDbFixture.Context.Users.Add(_user);
@@ -79,5 +87,10 @@ namespace MangoAPI.Tests.ApiCommandsTests.RefreshSessionCommandHandlerTests
         };
 
         private readonly Guid _refreshToken = Guid.NewGuid();
+
+        public RefreshSessionTestSuccess(ITestOutputHelper testOutputHelper)
+        {
+            _testOutputHelper = testOutputHelper;
+        }
     }
 }
