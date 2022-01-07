@@ -21,16 +21,12 @@ namespace MangoAPI.Tests.ApiCommandsTests.CreateChatCommandHandlerTests
         public async Task CreateChatTest_Success()
         {
             Seed();
-            const string expectedMessage = ResponseMessageCodes.Success;
             var handler = CreateHandler();
+            var assert = new Assert<CreateCommunityResponse>();
 
-            var result = await handler.Handle(_createChatCommand, CancellationToken.None);
+            var result = await handler.Handle(_command, CancellationToken.None);
 
-            result.StatusCode.Should().Be(HttpStatusCode.OK);
-            result.Response.Success.Should().BeTrue();
-            result.Response.Message.Should().Be(expectedMessage);
-            result.Response.ChatId.Should().NotBeEmpty();
-            result.Error.Should().BeNull();
+            assert.Pass(result);
         }
 
         public bool Seed()
@@ -79,7 +75,7 @@ namespace MangoAPI.Tests.ApiCommandsTests.CreateChatCommandHandlerTests
             Image = "amelit_picture.jpg"
         };
 
-        private readonly CreateChatCommand _createChatCommand = new()
+        private readonly CreateChatCommand _command = new()
         {
             UserId = SeedDataConstants.RazumovskyId,
             PartnerId = SeedDataConstants.AmelitId,

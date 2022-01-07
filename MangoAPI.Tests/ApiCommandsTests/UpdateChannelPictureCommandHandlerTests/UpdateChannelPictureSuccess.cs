@@ -19,12 +19,12 @@ namespace MangoAPI.Tests.ApiCommandsTests.UpdateChannelPictureCommandHandlerTest
         UpdateChannelPictureResponse>
     {
         private readonly MangoDbFixture _mangoDbFixture = new();
+        private readonly Assert<UpdateChannelPictureResponse> _assert = new();
 
         [Fact]
         public async Task UpdateChannelPicture_Success()
         {
             Seed();
-            const string expectedMessage = ResponseMessageCodes.Success;
             var handler = CreateHandler();
             var command = new UpdateChanelPictureCommand
             {
@@ -32,13 +32,10 @@ namespace MangoAPI.Tests.ApiCommandsTests.UpdateChannelPictureCommandHandlerTest
                 NewGroupPicture = new FormFile(null, 0, 120, null, null),
                 UserId = SeedDataConstants.RazumovskyId
             };
-
+            
             var result = await handler.Handle(command, CancellationToken.None);
 
-            result.StatusCode.Should().Be(HttpStatusCode.OK);
-            result.Error.Should().BeNull();
-            result.Response.Success.Should().BeTrue();
-            result.Response.Message.Should().Be(expectedMessage);
+            _assert.Pass(result);
         }
 
         public bool Seed()

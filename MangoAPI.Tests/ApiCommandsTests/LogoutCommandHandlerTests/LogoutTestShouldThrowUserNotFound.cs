@@ -16,13 +16,14 @@ namespace MangoAPI.Tests.ApiCommandsTests.LogoutCommandHandlerTests
     public class LogoutTestShouldThrowUserNotFound : ITestable<LogoutCommand,ResponseBase>
     {
         private readonly MangoDbFixture _mangoDbFixture = new MangoDbFixture();
+        private readonly Assert<ResponseBase> _assert = new();
 
         [Fact]
         public async Task LogoutTestShouldThrow_UserNotFound()
         {
             Seed();
             const string expectedMessage = ResponseMessageCodes.UserNotFound;
-            string expectedDescription = ResponseMessageCodes.ErrorDictionary[expectedMessage];
+            string expectedDetails = ResponseMessageCodes.ErrorDictionary[expectedMessage];
             var handler = CreateHandler();
             var command = new LogoutCommand
             {
@@ -31,11 +32,7 @@ namespace MangoAPI.Tests.ApiCommandsTests.LogoutCommandHandlerTests
 
             var result = await handler.Handle(command, CancellationToken.None);
 
-            result.StatusCode.Should().Be(HttpStatusCode.Conflict);
-            result.Error.Success.Should().BeFalse();
-            result.Error.ErrorMessage.Should().Be(expectedMessage);
-            result.Error.ErrorDetails.Should().Be(expectedDescription);
-            result.Response.Should().BeNull();
+            _assert.Fail(result, expectedMessage, expectedDetails);
         }
         
         public bool Seed()

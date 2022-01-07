@@ -17,6 +17,7 @@ namespace MangoAPI.Tests.ApiCommandsTests.CreateChannelCommandHandlerTests
     public class CreateChannelShouldThrowCountExceed100 : ITestable<CreateChannelCommand, CreateCommunityResponse>
     {
         private readonly MangoDbFixture _mangoDbFixture = new();
+        private readonly Assert<CreateCommunityResponse> _assert = new();
 
         [Fact]
         public async Task CreateChannel_ShouldThrow_CountExceed100()
@@ -28,20 +29,14 @@ namespace MangoAPI.Tests.ApiCommandsTests.CreateChannelCommandHandlerTests
 
             async void Action(int _)
             {
-                await handler.Handle(_createChannelCommand, CancellationToken.None);
+                await handler.Handle(_command, CancellationToken.None);
             }
             
             Enumerable.Range(1, 100).ToList().ForEach(Action);
 
-            var result = await handler.Handle(_createChannelCommand, CancellationToken.None);
+            var result = await handler.Handle(_command, CancellationToken.None);
 
-            result.StatusCode.Should().Be(HttpStatusCode.Conflict);
-            result.Error.ErrorMessage.Should().Be(expectedMessage);
-            result.Error.ErrorDetails.Should().Be(expectedDetails);
-            result.Error.Success.Should().BeFalse();
-            result.Error.StatusCode.Should().Be(HttpStatusCode.Conflict);
-
-            result.Response.Should().BeNull();
+            _assert.Fail(result, expectedMessage, expectedDetails);
         }
 
         public bool Seed()
@@ -76,7 +71,7 @@ namespace MangoAPI.Tests.ApiCommandsTests.CreateChannelCommandHandlerTests
             Image = "razumovsky_picture.jpg"
         };
 
-        private readonly CreateChannelCommand _createChannelCommand = new()
+        private readonly CreateChannelCommand _command = new()
         {
             ChannelDescription = "My test channel",
             ChannelTitle = "Test channel",

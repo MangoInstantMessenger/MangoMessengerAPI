@@ -18,6 +18,7 @@ namespace MangoAPI.Tests.ApiCommandsTests.CreateKeyExchangeRequestCommandHandler
 
     {
         private readonly MangoDbFixture _mangoDbFixture = new();
+        private readonly Assert<CreateKeyExchangeResponse> _assert = new();
 
         [Fact]
         public async Task CreateKeyExchangeRequestCommandHandlerTest_ShouldThrow_AlreadyExists()
@@ -36,12 +37,7 @@ namespace MangoAPI.Tests.ApiCommandsTests.CreateKeyExchangeRequestCommandHandler
             await handler.Handle(command, CancellationToken.None);
             var result = await handler.Handle(command, CancellationToken.None);
 
-            result.StatusCode.Should().Be(HttpStatusCode.Conflict);
-            result.Response.Should().BeNull();
-            result.Error.ErrorMessage.Should().Be(expectedMessage);
-            result.Error.ErrorDetails.Should().Be(expectedDetails);
-            result.Error.Success.Should().BeFalse();
-            result.Error.StatusCode.Should().Be(HttpStatusCode.Conflict);
+            _assert.Fail(result, expectedMessage, expectedDetails);
         }
 
         public bool Seed()

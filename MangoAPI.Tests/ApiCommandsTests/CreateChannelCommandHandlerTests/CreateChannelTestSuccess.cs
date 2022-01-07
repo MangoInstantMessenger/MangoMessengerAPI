@@ -17,22 +17,17 @@ namespace MangoAPI.Tests.ApiCommandsTests.CreateChannelCommandHandlerTests
     public class CreateChannelTestSuccess : ITestable<CreateChannelCommand, CreateCommunityResponse>
     {
         private readonly MangoDbFixture _mangoDbFixture = new();
+        private readonly Assert<CreateCommunityResponse> _assert = new();
 
         [Fact]
         public async Task CreateChannelTest_Success()
         {
             Seed();
-            const string expectedMessage = ResponseMessageCodes.Success;
             var handler = CreateHandler();
 
-            var result = await handler.Handle(_createChannelCommand, CancellationToken.None);
+            var result = await handler.Handle(_command, CancellationToken.None);
 
-            result.StatusCode.Should().Be(HttpStatusCode.OK);
-            result.Response.Message.Should().Be(expectedMessage);
-            result.Response.Success.Should().BeTrue();
-            result.Response.ChatId.Should().NotBe(Guid.Empty);
-
-            result.Error.Should().BeNull();
+            _assert.Pass(result);
         }
 
         public bool Seed()
@@ -67,7 +62,7 @@ namespace MangoAPI.Tests.ApiCommandsTests.CreateChannelCommandHandlerTests
             Image = "razumovsky_picture.jpg"
         };
 
-        private readonly CreateChannelCommand _createChannelCommand = new()
+        private readonly CreateChannelCommand _command = new()
         {
             ChannelDescription = "My test channel",
             ChannelTitle = "Test channel",

@@ -16,6 +16,7 @@ namespace MangoAPI.Tests.ApiCommandsTests.CreateChatCommandHandlerTests
     public class CreateChatShouldThrowCannotCreateSelfChat : ITestable<CreateChatCommand, CreateCommunityResponse>
     {
         private readonly MangoDbFixture _mangoDbFixture = new MangoDbFixture();
+        private readonly Assert<CreateCommunityResponse> _assert = new();
 
         [Fact]
         public async Task CreateChatShouldThrow_CannotCreateSelfChat()
@@ -25,13 +26,9 @@ namespace MangoAPI.Tests.ApiCommandsTests.CreateChatCommandHandlerTests
             string expectedDetails = ResponseMessageCodes.ErrorDictionary[expectedMessage];
             var handler = CreateHandler();
 
-            var result = await handler.Handle(_createChatCommand, CancellationToken.None);
+            var result = await handler.Handle(_command, CancellationToken.None);
 
-            result.StatusCode.Should().Be(HttpStatusCode.Conflict);
-            result.Error.Success.Should().BeFalse();
-            result.Error.ErrorMessage.Should().Be(expectedMessage);
-            result.Error.ErrorDetails.Should().Be(expectedDetails);
-            result.Response.Should().BeNull();
+            _assert.Fail(result, expectedMessage, expectedDetails);
         }
         
         public bool Seed()
@@ -80,7 +77,7 @@ namespace MangoAPI.Tests.ApiCommandsTests.CreateChatCommandHandlerTests
             Image = "amelit_picture.jpg"
         };
 
-        private readonly CreateChatCommand _createChatCommand = new()
+        private readonly CreateChatCommand _command = new()
         {
             UserId = SeedDataConstants.RazumovskyId,
             PartnerId = SeedDataConstants.RazumovskyId,

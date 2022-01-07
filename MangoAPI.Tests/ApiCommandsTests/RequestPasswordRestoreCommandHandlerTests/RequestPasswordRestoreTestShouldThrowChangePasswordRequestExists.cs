@@ -17,13 +17,14 @@ namespace MangoAPI.Tests.ApiCommandsTests.RequestPasswordRestoreCommandHandlerTe
         : ITestable<RequestPasswordRestoreCommand, ResponseBase>
     {
         private readonly MangoDbFixture _mangoDbFixture = new();
+        private readonly Assert<ResponseBase> _assert = new();
 
         [Fact]
         public async Task RequestPasswordRestoreTestShouldThrow_ChangePasswordRequestExists()
         {
             Seed();
             const string expectedMessage = ResponseMessageCodes.ChangePasswordRequestExists;
-            string expectedDescription = ResponseMessageCodes.ErrorDictionary[expectedMessage];
+            string expectedDetails = ResponseMessageCodes.ErrorDictionary[expectedMessage];
             var handler = CreateHandler();
             var command = new RequestPasswordRestoreCommand
             {
@@ -32,10 +33,7 @@ namespace MangoAPI.Tests.ApiCommandsTests.RequestPasswordRestoreCommandHandlerTe
 
             var result = await handler.Handle(command, CancellationToken.None);
 
-            result.StatusCode.Should().Be(HttpStatusCode.Conflict);
-            result.Error.ErrorMessage.Should().Be(expectedMessage);
-            result.Error.ErrorDetails.Should().Be(expectedDescription);
-            result.Response.Should().BeNull();
+            _assert.Fail(result, expectedMessage, expectedDetails);
         }
         
         public bool Seed()

@@ -16,20 +16,17 @@ namespace MangoAPI.Tests.ApiCommandsTests.DeleteContactCommandHandlerTests
     public class DeleteContactTestSuccess : ITestable<DeleteContactCommand, ResponseBase>
     {
         private readonly MangoDbFixture _mangoDbFixture = new MangoDbFixture();
+        private readonly Assert<ResponseBase> _assert = new();
 
         [Fact]
         public async Task DeleteContactTest_Success()
         {
             Seed();
-            const string expectedMessage = ResponseMessageCodes.Success;
             var handler = CreateHandler();
 
-            var result = await handler.Handle(_deleteContactCommand, CancellationToken.None);
+            var result = await handler.Handle(_command, CancellationToken.None);
 
-            result.StatusCode.Should().Be(HttpStatusCode.OK);
-            result.Response.Success.Should().BeTrue();
-            result.Response.Message.Should().Be(expectedMessage);
-            result.Error.Should().BeNull();
+            _assert.Pass(result);
         } 
         
         public bool Seed()
@@ -88,7 +85,7 @@ namespace MangoAPI.Tests.ApiCommandsTests.DeleteContactCommandHandlerTests
             CreatedAt = DateTime.UtcNow,
         };
 
-        private readonly DeleteContactCommand _deleteContactCommand = new()
+        private readonly DeleteContactCommand _command = new()
         {
             UserId = SeedDataConstants.RazumovskyId,
             ContactId = SeedDataConstants.AmelitId

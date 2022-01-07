@@ -16,12 +16,12 @@ namespace MangoAPI.Tests.ApiCommandsTests.CreateKeyExchangeRequestCommandHandler
         CreateKeyExchangeResponse>
     {
         private readonly MangoDbFixture _mangoDbFixture = new();
+        private readonly Assert<CreateKeyExchangeResponse> _assert = new();
 
         [Fact]
         public async Task CreateKeyExchangeRequestCommandHandlerTest_Success()
         {
             Seed();
-            const string expectedMessage = ResponseMessageCodes.Success;
             var handler = CreateHandler();
             var command = new CreateKeyExchangeRequestCommand
             {
@@ -32,11 +32,7 @@ namespace MangoAPI.Tests.ApiCommandsTests.CreateKeyExchangeRequestCommandHandler
 
             var result = await handler.Handle(command, CancellationToken.None);
 
-            result.StatusCode.Should().Be(HttpStatusCode.OK);
-            result.Error.Should().BeNull();
-            result.Response.Message.Should().Be(expectedMessage);
-            result.Response.RequestId.Should().NotBeEmpty();
-            result.Response.Success.Should().BeTrue();
+            _assert.Pass(result);
         }
 
         public bool Seed()

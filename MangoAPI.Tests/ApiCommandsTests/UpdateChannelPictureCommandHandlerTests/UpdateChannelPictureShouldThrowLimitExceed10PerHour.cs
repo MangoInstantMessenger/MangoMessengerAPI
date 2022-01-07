@@ -20,6 +20,7 @@ namespace MangoAPI.Tests.ApiCommandsTests.UpdateChannelPictureCommandHandlerTest
         UpdateChannelPictureResponse>
     {
         private readonly MangoDbFixture _mangoDbFixture = new();
+        private readonly Assert<UpdateChannelPictureResponse> _assert = new();
 
         [Fact]
         public async Task UpdateChannelPicture_ShouldThrow_LimitReached10()
@@ -34,7 +35,7 @@ namespace MangoAPI.Tests.ApiCommandsTests.UpdateChannelPictureCommandHandlerTest
                 NewGroupPicture = new FormFile(null, 0, 120, null, null),
                 UserId = SeedDataConstants.RazumovskyId
             };
-
+            
             async void Action(int _)
             {
                 await handler.Handle(command, CancellationToken.None);
@@ -44,12 +45,7 @@ namespace MangoAPI.Tests.ApiCommandsTests.UpdateChannelPictureCommandHandlerTest
 
             var result = await handler.Handle(command, CancellationToken.None);
 
-            result.StatusCode.Should().Be(HttpStatusCode.Conflict);
-            result.Response.Should().BeNull();
-            result.Error.Success.Should().BeFalse();
-            result.Error.ErrorMessage.Should().Be(expectedMessage);
-            result.Error.ErrorDetails.Should().Be(expectedDetails);
-            result.Error.StatusCode.Should().Be(HttpStatusCode.Conflict);
+            _assert.Fail(result, expectedMessage, expectedDetails);
         }
 
         public bool Seed()

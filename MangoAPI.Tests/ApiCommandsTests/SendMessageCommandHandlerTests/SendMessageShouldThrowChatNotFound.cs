@@ -16,6 +16,7 @@ namespace MangoAPI.Tests.ApiCommandsTests.SendMessageCommandHandlerTests
     public class SendMessageShouldThrowChatNotFound : ITestable<SendMessageCommand, SendMessageResponse>
     {
         private readonly MangoDbFixture _mangoDbFixture = new();
+        private readonly Assert<SendMessageResponse> _assert = new();
 
         [Fact]
         public async Task SendMessage_ShouldThrow_ChatNotFound()
@@ -23,6 +24,7 @@ namespace MangoAPI.Tests.ApiCommandsTests.SendMessageCommandHandlerTests
             Seed();
             var handler = CreateHandler();
             const string expectedMessage = ResponseMessageCodes.ChatNotFound;
+            string expectedDetails = ResponseMessageCodes.ErrorDictionary[expectedMessage];
             var command = new SendMessageCommand
             {
                 ChatId = Guid.NewGuid(),
@@ -32,9 +34,7 @@ namespace MangoAPI.Tests.ApiCommandsTests.SendMessageCommandHandlerTests
 
             var result = await handler.Handle(command, CancellationToken.None);
 
-            result.StatusCode.Should().Be(HttpStatusCode.Conflict);
-            result.Error.ErrorMessage.Should().Be(expectedMessage);
-            result.Error.ErrorDetails.Should().Be(ResponseMessageCodes.ErrorDictionary[expectedMessage]);
+            _assert.Fail(result, expectedMessage, expectedDetails);
         }
 
         public bool Seed()

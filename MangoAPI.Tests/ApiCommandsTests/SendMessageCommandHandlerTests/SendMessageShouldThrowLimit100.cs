@@ -17,6 +17,7 @@ namespace MangoAPI.Tests.ApiCommandsTests.SendMessageCommandHandlerTests
     public class SendMessageShouldThrowLimit100 : ITestable<SendMessageCommand, SendMessageResponse>
     {
         private readonly MangoDbFixture _mangoDbFixture = new();
+        private readonly Assert<SendMessageResponse> _assert = new();
 
         [Fact]
         public async Task SendMessage_ShouldThrow_ExceedLimit100Per5Minutes()
@@ -25,18 +26,16 @@ namespace MangoAPI.Tests.ApiCommandsTests.SendMessageCommandHandlerTests
             const string expectedMessage = ResponseMessageCodes.MaximumMessageCountInLast5MinutesExceeded100;
             var expectedDetails = ResponseMessageCodes.ErrorDictionary[expectedMessage];
             var handler = CreateHandler();
-            var sendMessageCommand = new SendMessageCommand
+            var command = new SendMessageCommand
             {
                 ChatId = SeedDataConstants.ExtremeCodeMainId,
                 UserId = SeedDataConstants.RazumovskyId,
                 MessageText = "This is test message"
             };
 
-            var result = await handler.Handle(sendMessageCommand, CancellationToken.None);
+            var result = await handler.Handle(command, CancellationToken.None);
 
-            result.StatusCode.Should().Be(HttpStatusCode.Conflict);
-            result.Error.ErrorMessage.Should().Be(expectedMessage);
-            result.Error.ErrorDetails.Should().Be(expectedDetails);
+            _assert.Fail(result, expectedMessage, expectedDetails);
         }
 
         public bool Seed()

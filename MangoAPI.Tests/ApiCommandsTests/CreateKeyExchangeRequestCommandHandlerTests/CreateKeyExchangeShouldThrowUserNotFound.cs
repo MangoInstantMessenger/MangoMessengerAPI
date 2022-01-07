@@ -17,6 +17,7 @@ namespace MangoAPI.Tests.ApiCommandsTests.CreateKeyExchangeRequestCommandHandler
         CreateKeyExchangeResponse>
     {
         private readonly MangoDbFixture _mangoDbFixture = new();
+        private readonly Assert<CreateKeyExchangeResponse> _assert = new();
 
         [Fact]
         public async Task CreateKeyExchangeRequestCommandHandlerTest_ShouldThrow_UserNotFound()
@@ -31,15 +32,10 @@ namespace MangoAPI.Tests.ApiCommandsTests.CreateKeyExchangeRequestCommandHandler
                 RequestedUserId = Guid.NewGuid(),
                 UserId = SeedDataConstants.AmelitId
             };
-            
+
             var result = await handler.Handle(command, CancellationToken.None);
 
-            result.StatusCode.Should().Be(HttpStatusCode.Conflict);
-            result.Response.Should().BeNull();
-            result.Error.ErrorMessage.Should().Be(expectedMessage);
-            result.Error.ErrorDetails.Should().Be(expectedDetails);
-            result.Error.Success.Should().BeFalse();
-            result.Error.StatusCode.Should().Be(HttpStatusCode.Conflict);
+            _assert.Fail(result, expectedMessage, expectedDetails);
         }
         
         public bool Seed()

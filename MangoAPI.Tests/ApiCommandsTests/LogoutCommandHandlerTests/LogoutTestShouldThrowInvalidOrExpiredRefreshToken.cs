@@ -14,22 +14,19 @@ namespace MangoAPI.Tests.ApiCommandsTests.LogoutCommandHandlerTests
     public class LogoutTestShouldThrowInvalidOrExpiredRefreshToken : ITestable<LogoutCommand, ResponseBase>
     {
         private readonly MangoDbFixture _mangoDbFixture = new();
+        private readonly Assert<ResponseBase> _assert = new();
 
         [Fact]
         public async Task LogoutTestShouldThrow_InvalidOrExpiredRefreshToken()
         {
             Seed();
             const string expectedMessage = ResponseMessageCodes.InvalidOrExpiredRefreshToken;
-            string expectedDescription = ResponseMessageCodes.ErrorDictionary[expectedMessage];
+            string expectedDetails = ResponseMessageCodes.ErrorDictionary[expectedMessage];
             var handler = CreateHandler();
 
             var result = await handler.Handle(_command, CancellationToken.None);
 
-            result.StatusCode.Should().Be(HttpStatusCode.Conflict);
-            result.Error.Success.Should().BeFalse();
-            result.Error.ErrorMessage.Should().Be(expectedMessage);
-            result.Error.ErrorDetails.Should().Be(expectedDescription);
-            result.Response.Should().BeNull();
+            _assert.Fail(result, expectedMessage, expectedDetails);
         }
         
         public bool Seed()
