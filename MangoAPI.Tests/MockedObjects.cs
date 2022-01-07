@@ -80,5 +80,14 @@ namespace MangoAPI.Tests
 
             return emailSenderMock.Object;
         }
+
+        public static IJwtGenerator GetJwtGeneratorMock()
+        {
+            var jwtGeneratorMock = new Mock<IJwtGenerator>();
+            jwtGeneratorMock.Setup(x =>
+                x.GenerateJwtToken(It.IsAny<Guid>())
+            ).Returns(It.IsAny<string>());
+            return jwtGeneratorMock.Object;
+        }
     }
 }
