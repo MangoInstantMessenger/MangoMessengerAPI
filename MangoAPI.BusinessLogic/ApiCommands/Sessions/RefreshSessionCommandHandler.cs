@@ -57,8 +57,8 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Sessions
                     _postgresDbContext.Sessions.Remove(session);
                     break;
             }
-
-            var refreshLifetime = EnvironmentConstants.MangoRefreshTokenLifetime;
+            
+            var refreshLifetime = EnvironmentConstants.MangoRefreshTokenLifetime ?? "7";
 
             if (refreshLifetime == null || !int.TryParse(refreshLifetime, out var refreshLifetimeParsed))
             {
