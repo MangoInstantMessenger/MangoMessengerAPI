@@ -31,9 +31,7 @@ jobs:
         run: dotnet test MangoAPI.Tests/MangoAPI.Tests.csproj --no-build --verbosity normal /p:CollectCoverage=true /p:Exclude="[*DataAccess]*" /p:CoverletOutputFormat=opencover
         env:
           MANGO_SEED_PASSWORD: ${{ secrets.MANGO_SEED_PASSWORD }}
-          MANGO_REFRESH_TOKEN_LIFETIME: ${{ secrets.MANGO_REFRESH_TOKEN_LIFETIME }}
           MANGO_JWT_SIGN_KEY: ${{ secrets.MANGO_JWT_SIGN_KEY }}
-          MANGO_JWT_LIFETIME: ${{ secrets.MANGO_JWT_LIFETIME }}
 
       - name: Codecov
         uses: codecov/codecov-action@v2

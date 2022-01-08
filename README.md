@@ -33,8 +33,6 @@ environment variables:
 - `MANGO_JWT_ISSUER`: JWT issuer claim (default https://localhost:4200)
 - `MANGO_JWT_AUDIENCE`: JWT audience claim (default https://localhost:5001)
 - `MANGO_JWT_SIGN_KEY`: Secret used to sign jwt token in form of GUID
-- `MANGO_JWT_LIFETIME`: Lifetime of the JWT access token in minutes
-- `MANGO_REFRESH_TOKEN_LIFETIME`: Lifetime of refresh token in days
 - `MANGO_EMAIL_NOTIFICATIONS_ADDRESS`: Email address used in notifications and verifications
 - `MANGO_FRONTEND_ADDRESS`: URL of the frontend application
 - `MANGO_DATABASE_URL`: Database connection string in PostgreSQL format
