@@ -49,7 +49,6 @@ namespace MangoAPI.Tests.ApiCommandsTests.UpdateChannelPictureCommandHandlerTest
             result.Error.Success.Should().BeFalse();
             result.Error.ErrorMessage.Should().Be(expectedMessage);
             result.Error.ErrorDetails.Should().Be(expectedDetails);
-            result.Error.StatusCode.Should().Be(HttpStatusCode.Conflict);
         }
 
         public bool Seed()
