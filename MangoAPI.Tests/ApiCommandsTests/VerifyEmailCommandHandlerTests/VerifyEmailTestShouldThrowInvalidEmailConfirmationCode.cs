@@ -16,6 +16,7 @@ namespace MangoAPI.Tests.ApiCommandsTests.VerifyEmailCommandHandlerTests
     public class VerifyEmailTestShouldThrowInvalidEmailConfirmationCode : ITestable<VerifyEmailCommand, ResponseBase>
     {
         private readonly MangoDbFixture _mangoDbFixture = new();
+        private readonly Assert<ResponseBase> _assert = new();
 
         [Fact]
         public async Task VerifyEmailTest_Success()
@@ -32,12 +33,7 @@ namespace MangoAPI.Tests.ApiCommandsTests.VerifyEmailCommandHandlerTests
 
             var result = await handler.Handle(command, CancellationToken.None);
             
-            result.StatusCode.Should().Be(HttpStatusCode.Conflict);
-            result.Error.Success.Should().BeFalse();
-            result.Error.ErrorMessage.Should().Be(expectedMessage);
-            result.Error.ErrorDetails.Should().Be(expectedDetails);
-            result.Error.StatusCode.Should().Be(HttpStatusCode.Conflict);
-            result.Response.Should().BeNull();
+            _assert.Fail(result, expectedMessage, expectedDetails);
         }
 
         public bool Seed()

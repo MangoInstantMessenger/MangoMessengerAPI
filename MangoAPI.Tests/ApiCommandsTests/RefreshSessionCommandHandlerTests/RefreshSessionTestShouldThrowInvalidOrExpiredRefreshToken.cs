@@ -17,6 +17,7 @@ namespace MangoAPI.Tests.ApiCommandsTests.RefreshSessionCommandHandlerTests
         : ITestable<RefreshSessionCommand, TokensResponse>
     {
         private readonly MangoDbFixture _mangoDbFixture = new MangoDbFixture();
+        private readonly Assert<TokensResponse> _assert = new();
 
         [Fact]
         public async Task RefreshSessionTestShouldThrow_InvalidOrExpiredRefreshToken()
@@ -31,12 +32,8 @@ namespace MangoAPI.Tests.ApiCommandsTests.RefreshSessionCommandHandlerTests
             };
 
             var result = await handler.Handle(command, CancellationToken.None);
-
-            result.StatusCode.Should().Be(HttpStatusCode.Conflict);
-            result.Error.Success.Should().BeFalse();
-            result.Error.ErrorMessage.Should().Be(expectedMessage);
-            result.Error.ErrorDetails.Should().Be(expectedDetails);
-            result.Response.Should().BeNull();
+            
+            _assert.Fail(result, expectedMessage, expectedDetails);
         }
         
         public bool Seed()

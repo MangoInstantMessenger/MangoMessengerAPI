@@ -6,9 +6,7 @@ using FluentAssertions;
 using MangoAPI.BusinessLogic.ApiCommands.Users;
 using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.Domain.Constants;
-using MangoAPI.Domain.Entities;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 using Xunit;
 
 namespace MangoAPI.Tests.ApiCommandsTests.VerifyEmailCommandHandlerTests
@@ -16,6 +14,7 @@ namespace MangoAPI.Tests.ApiCommandsTests.VerifyEmailCommandHandlerTests
     public class VerifyEmailTestShouldThrowUserNotFound : ITestable<VerifyEmailCommand, ResponseBase>
     {
         private readonly MangoDbFixture _mangoDbFixture = new();
+        private readonly Assert<ResponseBase> _assert = new();
 
         [Fact]
         public async Task VerifyEmailTestShouldThrow_UserNotFound()
@@ -32,12 +31,7 @@ namespace MangoAPI.Tests.ApiCommandsTests.VerifyEmailCommandHandlerTests
 
             var result = await handler.Handle(command, CancellationToken.None);
             
-            result.StatusCode.Should().Be(HttpStatusCode.Conflict);
-            result.Error.Success.Should().BeFalse();
-            result.Error.ErrorMessage.Should().Be(expectedMessage);
-            result.Error.ErrorDetails.Should().Be(expectedDetails);
-            result.Error.StatusCode.Should().Be(HttpStatusCode.Conflict);
-            result.Response.Should().BeNull();
+            _assert.Fail(result, expectedMessage, expectedDetails);
         }
 
         public bool Seed()

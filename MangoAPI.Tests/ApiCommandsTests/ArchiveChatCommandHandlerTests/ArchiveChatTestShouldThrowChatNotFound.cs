@@ -17,6 +17,7 @@ namespace MangoAPI.Tests.ApiCommandsTests.ArchiveChatCommandHandlerTests
     public class ArchiveChatTestShouldThrowChatNotFound
     {
         private readonly MangoDbFixture _mangoDbFixture = new();
+        private readonly Assert<ResponseBase> _assert = new();
 
         [Fact]
         public async Task ArchiveChatTestShouldThrow_ChatNotFound()
@@ -28,10 +29,7 @@ namespace MangoAPI.Tests.ApiCommandsTests.ArchiveChatCommandHandlerTests
 
             var result = await handler.Handle(_command, CancellationToken.None);
             
-            result.StatusCode.Should().Be(HttpStatusCode.Conflict);
-            result.Error.ErrorMessage.Should().Be(expectedMessage);
-            result.Error.ErrorDetails.Should().Be(expectedDetails);
-            result.Response.Should().BeNull();
+            _assert.Fail(result, expectedMessage, expectedDetails);
         }
         
         public bool Seed()

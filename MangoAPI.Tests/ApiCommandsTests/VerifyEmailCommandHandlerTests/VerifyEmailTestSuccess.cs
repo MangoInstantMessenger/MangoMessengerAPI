@@ -16,25 +16,22 @@ namespace MangoAPI.Tests.ApiCommandsTests.VerifyEmailCommandHandlerTests
     public class VerifyEmailTestSuccess : ITestable<VerifyEmailCommand, ResponseBase>
     {
         private readonly MangoDbFixture _mangoDbFixture = new();
+        private readonly Assert<ResponseBase> _assert = new();
 
         [Fact]
         public async Task VerifyEmailTest_Success()
         {
             Seed();
-            const string expectedMessage = ResponseMessageCodes.Success;
             var handler = CreateHandler();
             var command = new VerifyEmailCommand
             {
                 Email = _user.Email,
                 EmailCode = _user.EmailCode
             };
-
-            var result = await handler.Handle(command, CancellationToken.None);
             
-            result.StatusCode.Should().Be(HttpStatusCode.OK);
-            result.Response.Success.Should().BeTrue();
-            result.Response.Message.Should().Be(expectedMessage);
-            result.Error.Should().BeNull();
+            var result = await handler.Handle(command, CancellationToken.None);
+
+            _assert.Pass(result);
         }
 
         public bool Seed()

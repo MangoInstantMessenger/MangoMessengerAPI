@@ -15,6 +15,7 @@ namespace MangoAPI.Tests.ApiCommandsTests.UpdateUserAccountInfoCommandHandlerTes
         : ITestable<UpdateUserAccountInfoCommand, ResponseBase>
     {
         private readonly MangoDbFixture _mangoDbFixture = new();
+        private readonly Assert<ResponseBase> _assert = new();
 
         [Fact]
         public async Task UpdateUserAccountInfoTestShouldThrow_UserNotFound()
@@ -26,11 +27,7 @@ namespace MangoAPI.Tests.ApiCommandsTests.UpdateUserAccountInfoCommandHandlerTes
 
             var result = await handler.Handle(_command, CancellationToken.None);
             
-            result.StatusCode.Should().Be(HttpStatusCode.Conflict);
-            result.Response.Should().BeNull();
-            result.Error.Success.Should().BeFalse();
-            result.Error.ErrorMessage.Should().Be(expectedMessage);
-            result.Error.ErrorDetails.Should().Be(expectedDetails);
+            _assert.Fail(result, expectedMessage, expectedDetails);
         }
         
         public bool Seed()

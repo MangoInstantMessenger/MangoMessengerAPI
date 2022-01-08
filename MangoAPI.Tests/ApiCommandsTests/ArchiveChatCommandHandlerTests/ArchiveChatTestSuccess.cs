@@ -17,20 +17,17 @@ namespace MangoAPI.Tests.ApiCommandsTests.ArchiveChatCommandHandlerTests
     public class ArchiveChatTestSuccess : ITestable<ArchiveChatCommand, ResponseBase>
     {
         private readonly MangoDbFixture _mangoDbFixture = new();
+        private readonly Assert<ResponseBase> _assert = new();
 
         [Fact]
         public async Task ArchiveChatTest_Success()
         {
             Seed();
-            const string expectedMessage = ResponseMessageCodes.Success;
             var handler = CreateHandler();
-
-            var result = await handler.Handle(_command, CancellationToken.None);
             
-            result.StatusCode.Should().Be(HttpStatusCode.OK);
-            result.Response.Message.Should().Be(expectedMessage);
-            result.Response.Success.Should().BeTrue();
-            result.Error.Should().BeNull();
+            var result = await handler.Handle(_command, CancellationToken.None);
+
+            _assert.Pass(result);
         }
         
         public bool Seed()

@@ -17,22 +17,19 @@ namespace MangoAPI.Tests.ApiCommandsTests.LeaveGroupCommandHandlerTests
     public class LeaveGroupTestSuccess : ITestable<LeaveGroupCommand, LeaveGroupResponse>
     {
         private readonly MangoDbFixture _mangoDbFixture = new();
+        private readonly Assert<LeaveGroupResponse> _assert = new();
 
         [Fact]
         public async Task LeaveGroupTest_Success()
         {
             Seed();
             using var mangoDbFixture = _mangoDbFixture;
-            const string expectedMessage = ResponseMessageCodes.Success;
             var handler = CreateHandler();
 
             var result = await handler.Handle(_command, CancellationToken.None);
             var chat = await _mangoDbFixture.Context.Chats.FirstAsync(x => x.Id == result.Response.ChatId);
-            
-            result.StatusCode.Should().Be(HttpStatusCode.OK);
-            result.Response.Success.Should().BeTrue();
-            result.Response.Message.Should().Be(expectedMessage);
-            result.Error.Should().BeNull();
+
+            _assert.Pass(result);
             chat.MembersCount.Should().Be(1);
         }
         
