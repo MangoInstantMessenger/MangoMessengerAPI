@@ -16,12 +16,12 @@ namespace MangoAPI.Tests.ApiCommandsTests.UploadDocumentCommandHandlerTests
     public class UploadDocumentSuccess : ITestable<UploadDocumentCommand, UploadDocumentResponse>
     {
         private readonly MangoDbFixture _mangoDbFixture = new();
+        private readonly Assert<UploadDocumentResponse> _assert = new();
 
         [Fact]
         public async Task UploadDocument_Success()
         {
             Seed();
-            const string expectedMessage = ResponseMessageCodes.Success;
             var command = new UploadDocumentCommand
             {
                 FormFile = new FormFile(null, 0, 120, null, null),
@@ -31,10 +31,7 @@ namespace MangoAPI.Tests.ApiCommandsTests.UploadDocumentCommandHandlerTests
 
             var result = await handler.Handle(command, CancellationToken.None);
             
-            result.StatusCode.Should().Be(HttpStatusCode.OK);
-            result.Error.Should().BeNull();
-            result.Response.Success.Should().BeTrue();
-            result.Response.Message.Should().Be(expectedMessage);
+            _assert.Pass(result);
         }
 
         public bool Seed()
