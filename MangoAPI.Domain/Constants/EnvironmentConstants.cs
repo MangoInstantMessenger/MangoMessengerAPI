@@ -10,10 +10,9 @@ namespace MangoAPI.Domain.Constants
 
         public static string MangoJwtSignKey => Environment.GetEnvironmentVariable("MANGO_JWT_SIGN_KEY");
 
-        public static string MangoJwtLifetime => Environment.GetEnvironmentVariable("MANGO_JWT_LIFETIME");
+        public const int MangoJwtLifetime = 60;
 
-        public static string MangoRefreshTokenLifetime =>
-            Environment.GetEnvironmentVariable("MANGO_REFRESH_TOKEN_LIFETIME");
+        public const int MangoRefreshTokenLifetime = 7;
 
         public static string MangoEmailNotificationsAddress =>
             Environment.GetEnvironmentVariable("MANGO_EMAIL_NOTIFICATIONS_ADDRESS");
@@ -31,9 +30,9 @@ namespace MangoAPI.Domain.Constants
         public static string MangoBlobAccess => Environment.GetEnvironmentVariable("MANGO_BLOB_ACCESS");
 
         public static string MangoMailgunApiKey => Environment.GetEnvironmentVariable("MANGO_MAILGUN_API_KEY");
-        
+
         public static string MangoMailgunApiBaseUrl => Environment.GetEnvironmentVariable("MANGO_MAILGUN_API_BASE_URL");
-        
+
         public static string MangoMailgunApiDomain => Environment.GetEnvironmentVariable("MANGO_MAILGUN_API_DOMAIN");
     }
 }

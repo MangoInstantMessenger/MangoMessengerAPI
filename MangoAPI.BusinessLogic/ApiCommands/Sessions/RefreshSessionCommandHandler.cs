@@ -58,21 +58,13 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Sessions
                     break;
             }
 
-            var refreshLifetime = EnvironmentConstants.MangoRefreshTokenLifetime;
-
-            if (refreshLifetime == null || !int.TryParse(refreshLifetime, out var refreshLifetimeParsed))
-            {
-                const string errorMessage = ResponseMessageCodes.RefreshTokenLifeTimeError;
-                var details = ResponseMessageCodes.ErrorDictionary[errorMessage];
-
-                return _responseFactory.ConflictResponse(errorMessage, details);
-            }
+            const int refreshLifetime = EnvironmentConstants.MangoRefreshTokenLifetime;
 
             var newSession = new SessionEntity
             {
                 RefreshToken = Guid.NewGuid(),
                 UserId = session.UserId,
-                ExpiresAt = DateTime.UtcNow.AddDays(refreshLifetimeParsed),
+                ExpiresAt = DateTime.UtcNow.AddDays(refreshLifetime),
                 CreatedAt = DateTime.UtcNow,
             };
 
