@@ -1,27 +1,25 @@
-﻿using System;
-using System.Net;
+﻿using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using FluentAssertions;
 using MangoAPI.BusinessLogic.ApiCommands.PasswordRestoreRequests;
 using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.Domain.Constants;
-using MangoAPI.Domain.Entities;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 using Xunit;
 
 namespace MangoAPI.Tests.ApiCommandsTests.RequestPasswordRestoreCommandHandlerTests {
     public class RequestPasswordRestoreTestShouldThrowUserNotFound
     {
         private readonly MangoDbFixture _mangoDbFixture = new();
+        private readonly Assert<ResponseBase> _assert = new();
 
         [Fact]
         public async Task RequestPasswordRestoreTestShouldThrow_UserNotFound()
         {
             Seed();
             const string expectedMessage = ResponseMessageCodes.UserNotFound;
-            string expectedDescription = ResponseMessageCodes.ErrorDictionary[expectedMessage];
+            string expectedDetails = ResponseMessageCodes.ErrorDictionary[expectedMessage];
             var handler = CreateHandler();
             var command = new RequestPasswordRestoreCommand
             {
@@ -30,10 +28,7 @@ namespace MangoAPI.Tests.ApiCommandsTests.RequestPasswordRestoreCommandHandlerTe
 
             var result = await handler.Handle(command, CancellationToken.None);
 
-            result.StatusCode.Should().Be(HttpStatusCode.Conflict);
-            result.Error.ErrorMessage.Should().Be(expectedMessage);
-            result.Error.ErrorDetails.Should().Be(expectedDescription);
-            result.Response.Should().BeNull();
+            _assert.Fail(result, expectedMessage, expectedDetails);
         }
         
         public bool Seed()

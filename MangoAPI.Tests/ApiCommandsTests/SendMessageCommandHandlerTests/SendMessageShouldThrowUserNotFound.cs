@@ -13,6 +13,7 @@ namespace MangoAPI.Tests.ApiCommandsTests.SendMessageCommandHandlerTests
     public class SendMessageShouldThrowUserNotFound : ITestable<SendMessageCommand, SendMessageResponse>
     {
         private readonly MangoDbFixture _mangoDbFixture = new();
+        private readonly Assert<SendMessageResponse> _assert = new();
 
         [Fact]
         public async Task SendMessage_ShouldThrow_UserNotFound()
@@ -20,18 +21,16 @@ namespace MangoAPI.Tests.ApiCommandsTests.SendMessageCommandHandlerTests
             var handler = CreateHandler();
             const string expectedMessage = ResponseMessageCodes.UserNotFound;
             var expectedDetails = ResponseMessageCodes.ErrorDictionary[expectedMessage];
-            var sendMessageCommand = new SendMessageCommand
+            var command = new SendMessageCommand
             {
                 ChatId = SeedDataConstants.ExtremeCodeMainId,
                 UserId = SeedDataConstants.RazumovskyId,
                 MessageText = "This is test message"
             };
+            
+            var result = await handler.Handle(command, CancellationToken.None);
 
-            var result = await handler.Handle(sendMessageCommand, CancellationToken.None);
-
-            result.StatusCode.Should().Be(HttpStatusCode.Conflict);
-            result.Error.ErrorMessage.Should().Be(expectedMessage);
-            result.Error.ErrorDetails.Should().Be(expectedDetails);
+            _assert.Fail(result, expectedMessage, expectedDetails);
         }
 
         public bool Seed()

@@ -15,6 +15,7 @@ namespace MangoAPI.Tests.ApiCommandsTests.ConfirmOrDeclineKeyExchangeCommandHand
         : ITestable<ConfirmOrDeclineKeyExchangeCommand, ResponseBase>
     {
         private readonly MangoDbFixture _mangoDbFixture = new MangoDbFixture();
+        private readonly Assert<ResponseBase> _assert = new();
 
         [Fact]
         public async Task ConfirmOrDeclineKeyExchangeTest_Success()
@@ -33,10 +34,7 @@ namespace MangoAPI.Tests.ApiCommandsTests.ConfirmOrDeclineKeyExchangeCommandHand
 
             var result = await handler.Handle(command, CancellationToken.None);
             
-            result.StatusCode.Should().Be(HttpStatusCode.Conflict);
-            result.Error.ErrorMessage.Should().Be(expectedMessage);
-            result.Error.ErrorDetails.Should().Be(expectedDetails);
-            result.Response.Should().BeNull();
+            _assert.Fail(result, expectedMessage, expectedDetails);
         }
         
         public bool Seed()

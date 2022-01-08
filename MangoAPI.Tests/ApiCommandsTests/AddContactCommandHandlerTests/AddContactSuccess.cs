@@ -1,7 +1,5 @@
-﻿using System.Net;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
-using FluentAssertions;
 using MangoAPI.BusinessLogic.ApiCommands.Contacts;
 using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.Domain.Constants;
@@ -15,12 +13,12 @@ namespace MangoAPI.Tests.ApiCommandsTests.AddContactCommandHandlerTests
     public class AddContactSuccess : ITestable<AddContactCommand, ResponseBase>
     {
         private readonly MangoDbFixture _mangoDbFixture = new();
+        private readonly Assert<ResponseBase> _assert = new();
 
         [Fact]
         public async Task AddContactsCommandHandlerTest_Success()
         {
             Seed();
-            const string expectedMessage = ResponseMessageCodes.Success;
             var handler = CreateHandler();
             var command = new AddContactCommand
             {
@@ -30,10 +28,7 @@ namespace MangoAPI.Tests.ApiCommandsTests.AddContactCommandHandlerTests
 
             var result = await handler.Handle(command, CancellationToken.None);
 
-            result.StatusCode.Should().Be(HttpStatusCode.OK);
-            result.Error.Should().BeNull();
-            result.Response.Message.Should().Be(expectedMessage);
-            result.Response.Success.Should().BeTrue();
+            _assert.Pass(result);
         }
 
         public bool Seed()

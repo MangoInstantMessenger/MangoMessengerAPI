@@ -17,6 +17,7 @@ namespace MangoAPI.Tests.ApiCommandsTests.SendMessageCommandHandlerTests
     public class SendMessageSuccessTest : ITestable<SendMessageCommand, SendMessageResponse>
     {
         private readonly MangoDbFixture _mangoDbFixture = new();
+        private readonly Assert<SendMessageResponse> _assert = new();
 
         [Fact]
         public async Task SendMessage_Test_Success()
@@ -25,11 +26,11 @@ namespace MangoAPI.Tests.ApiCommandsTests.SendMessageCommandHandlerTests
             Seed();
             var handler = CreateHandler();
 
-            var result = await handler.Handle(_sendMessageCommand, CancellationToken.None);
+            var result = await handler.Handle(_command, CancellationToken.None);
 
-            result.Response.Success.Should().BeTrue();
+            _assert.Pass(result);
             var chat = context.Chats.AsNoTracking().First(x => x.Id == _chat.Id);
-            chat.LastMessageText.Should().Be(_sendMessageCommand.MessageText);
+            chat.LastMessageText.Should().Be(_command.MessageText);
             chat.LastMessageId.Should().Be(result.Response.MessageId);
             chat.LastMessageAuthor.Should().Be(_user.DisplayName);
         }
@@ -92,7 +93,7 @@ namespace MangoAPI.Tests.ApiCommandsTests.SendMessageCommandHandlerTests
             RoleId = (int) UserRole.Admin,
         };
 
-        private readonly SendMessageCommand _sendMessageCommand = new()
+        private readonly SendMessageCommand _command = new()
         {
             ChatId = SeedDataConstants.ExtremeCodeMainId,
             UserId = SeedDataConstants.RazumovskyId,

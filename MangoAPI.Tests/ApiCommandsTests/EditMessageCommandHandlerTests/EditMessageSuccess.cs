@@ -18,12 +18,12 @@ namespace MangoAPI.Tests.ApiCommandsTests.EditMessageCommandHandlerTests
     public class EditMessageSuccess : ITestable<EditMessageCommand, ResponseBase>
     {
         private readonly MangoDbFixture _mangoDbFixture = new();
+        private readonly Assert<ResponseBase> _assert = new();
 
         [Fact]
         public async Task EditMessageHandlerTest_Success()
         {
             Seed();
-            const string expectedMessage = ResponseMessageCodes.Success;
             var messageId = _message.Id;
             var handler = CreateHandler();
             var command = new EditMessageCommand
@@ -37,10 +37,7 @@ namespace MangoAPI.Tests.ApiCommandsTests.EditMessageCommandHandlerTests
             var result = await handler.Handle(command, CancellationToken.None);
             var message = _mangoDbFixture.Context.Messages.AsNoTracking().First(x => x.Id == messageId);
 
-            result.StatusCode.Should().Be(HttpStatusCode.OK);
-            result.Error.Should().BeNull();
-            result.Response.Message.Should().Be(expectedMessage);
-            result.Response.Success.Should().BeTrue();
+            _assert.Pass(result);
             message.Content.Should().Be(command.ModifiedText);
         }
 

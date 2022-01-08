@@ -14,6 +14,7 @@ namespace MangoAPI.Tests.ApiCommandsTests.LeaveGroupCommandHandlerTests
     public class LeaveGroupTestShouldThrowUserNotFound : ITestable<LeaveGroupCommand, LeaveGroupResponse>
     {
         private readonly MangoDbFixture _mangoDbFixture = new();
+        private readonly Assert<LeaveGroupResponse> _assert = new();
 
         [Fact]
         public async Task LeaveGroupTestShouldThrow_UserNotFound()
@@ -26,11 +27,7 @@ namespace MangoAPI.Tests.ApiCommandsTests.LeaveGroupCommandHandlerTests
 
             var result = await handler.Handle(_command, CancellationToken.None);
             
-            result.StatusCode.Should().Be(HttpStatusCode.Conflict);
-            result.Error.Success.Should().BeFalse();
-            result.Error.ErrorMessage.Should().Be(expectedMessage);
-            result.Error.ErrorDetails.Should().Be(expectedDetails);
-            result.Response.Should().BeNull();
+            _assert.Fail(result, expectedMessage, expectedDetails);
         }
         
         public bool Seed()

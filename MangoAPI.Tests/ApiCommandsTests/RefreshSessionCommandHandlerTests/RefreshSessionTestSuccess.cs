@@ -18,12 +18,12 @@ namespace MangoAPI.Tests.ApiCommandsTests.RefreshSessionCommandHandlerTests
     {
         private readonly ITestOutputHelper _testOutputHelper;
         private readonly MangoDbFixture _mangoDbFixture = new();
+        private readonly Assert<TokensResponse> _assert = new();
 
         [Fact]
         public async Task RefreshSessionTest_Success()
         {
             Seed();
-            const string expectedMessage = ResponseMessageCodes.Success;
             var handler = CreateHandler();
             var command = new RefreshSessionCommand
             {
@@ -37,11 +37,8 @@ namespace MangoAPI.Tests.ApiCommandsTests.RefreshSessionCommandHandlerTests
                 _testOutputHelper.WriteLine(result.Error.ErrorMessage);
                 _testOutputHelper.WriteLine(result.Error.ErrorDetails);
             }
-
-            result.StatusCode.Should().Be(HttpStatusCode.OK);
-            result.Response.Success.Should().BeTrue();
-            result.Response.Message.Should().Be(expectedMessage);
-            result.Response.Tokens.UserId.Should().Be(_user.Id);
+            
+            _assert.Pass(result);
         }
 
         public bool Seed()

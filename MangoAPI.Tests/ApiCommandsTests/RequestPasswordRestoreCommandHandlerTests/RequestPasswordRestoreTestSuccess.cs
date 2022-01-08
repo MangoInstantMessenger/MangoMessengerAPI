@@ -16,12 +16,12 @@ namespace MangoAPI.Tests.ApiCommandsTests.RequestPasswordRestoreCommandHandlerTe
     public class RequestPasswordRestoreTestSuccess : ITestable<RequestPasswordRestoreCommand, ResponseBase>
     {
         private readonly MangoDbFixture _mangoDbFixture = new();
+        private readonly Assert<ResponseBase> _assert = new();
 
         [Fact]
         public async Task RequestPasswordRestoreTest_Success()
         {
             Seed();
-            const string expectedMessage = ResponseMessageCodes.Success;
             var handler = CreateHandler();
             var command = new RequestPasswordRestoreCommand
             {
@@ -29,11 +29,8 @@ namespace MangoAPI.Tests.ApiCommandsTests.RequestPasswordRestoreCommandHandlerTe
             };
 
             var result = await handler.Handle(command, CancellationToken.None);
-            
-            result.StatusCode.Should().Be(HttpStatusCode.OK);
-            result.Response.Message.Should().Be(expectedMessage);
-            result.Response.Success.Should().BeTrue();
-            result.Error.Should().BeNull();
+
+            _assert.Pass(result);
         }
         
         public bool Seed()

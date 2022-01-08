@@ -15,6 +15,7 @@ namespace MangoAPI.Tests.ApiCommandsTests.AddContactCommandHandlerTests
     public class AddContactShouldThrowCannotAddSelf : ITestable<AddContactCommand, ResponseBase>
     {
         private readonly MangoDbFixture _mangoDbFixture = new();
+        private readonly Assert<ResponseBase> _assert = new();
 
         [Fact]
         public async Task AddContactCommandHandlerTest_ShouldThrow_CannotAddSelf()
@@ -31,12 +32,7 @@ namespace MangoAPI.Tests.ApiCommandsTests.AddContactCommandHandlerTests
 
             var result = await handler.Handle(command, CancellationToken.None);
 
-            result.StatusCode.Should().Be(HttpStatusCode.Conflict);
-            result.Response.Should().BeNull();
-            result.Error.Success.Should().BeFalse();
-            result.Error.ErrorMessage.Should().Be(expectedMessage);
-            result.Error.ErrorDetails.Should().Be(expectedDetails);
-            result.Error.StatusCode.Should().Be(HttpStatusCode.Conflict);
+            _assert.Fail(result, expectedMessage, expectedDetails);
         }
 
         public bool Seed()

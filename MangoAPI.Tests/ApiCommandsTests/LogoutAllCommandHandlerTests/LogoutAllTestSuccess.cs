@@ -16,12 +16,12 @@ namespace MangoAPI.Tests.ApiCommandsTests.LogoutAllCommandHandlerTests
     public class LogoutAllTestSuccess : ITestable<LogoutAllCommand, ResponseBase>
     {
         private readonly MangoDbFixture _mangoDbFixture = new();
+        private readonly Assert<ResponseBase> _assert = new();
 
         [Fact]
         public async Task LogoutAllCommandHandlerTest_Success()
         {
             Seed();
-            const string expectedMessage = ResponseMessageCodes.Success;
             var handler = CreateHandler();
             var command = new LogoutAllCommand
             {
@@ -30,10 +30,7 @@ namespace MangoAPI.Tests.ApiCommandsTests.LogoutAllCommandHandlerTests
 
             var result = await handler.Handle(command, CancellationToken.None);
 
-            result.StatusCode.Should().Be(HttpStatusCode.OK);
-            result.Error.Should().BeNull();
-            result.Response.Message.Should().Be(expectedMessage);
-            result.Response.Success.Should().BeTrue();
+            _assert.Pass(result);
         }
 
         public bool Seed()

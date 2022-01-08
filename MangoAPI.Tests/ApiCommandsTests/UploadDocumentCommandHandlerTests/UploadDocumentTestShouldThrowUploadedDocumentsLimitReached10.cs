@@ -19,6 +19,7 @@ namespace MangoAPI.Tests.ApiCommandsTests.UploadDocumentCommandHandlerTests
         : ITestable<UploadDocumentCommand, UploadDocumentResponse>
     {
         private readonly MangoDbFixture _mangoDbFixture = new();
+        private readonly Assert<UploadDocumentResponse> _assert = new();
 
         [Fact]
         public async Task UploadDocumentTestShouldThrow_UploadedDocumentsLimitReached10()
@@ -36,15 +37,10 @@ namespace MangoAPI.Tests.ApiCommandsTests.UploadDocumentCommandHandlerTests
             {
                 await handler.Handle(command, CancellationToken.None);
             }
-            
 
             var result = await handler.Handle(command, CancellationToken.None);
             
-            result.StatusCode.Should().Be(HttpStatusCode.Conflict);
-            result.Response.Should().BeNull();
-            result.Error.Success.Should().BeFalse();
-            result.Error.ErrorMessage.Should().Be(expectedMessage);
-            result.Error.ErrorDetails.Should().Be(expectedDetails);
+            _assert.Fail(result, expectedMessage, expectedDetails);
         }
 
         public bool Seed()

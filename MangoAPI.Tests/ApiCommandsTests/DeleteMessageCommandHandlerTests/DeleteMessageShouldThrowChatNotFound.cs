@@ -17,6 +17,7 @@ namespace MangoAPI.Tests.ApiCommandsTests.DeleteMessageCommandHandlerTests
     public class DeleteMessageShouldThrowChatNotFound : ITestable<DeleteMessageCommand, DeleteMessageResponse>
     {
         private readonly MangoDbFixture _mangoDbFixture = new MangoDbFixture();
+        private readonly Assert<DeleteMessageResponse> _assert = new();
 
         [Fact]
         public async Task DeleteMessageShouldThrow_ChatNotFound()
@@ -26,13 +27,9 @@ namespace MangoAPI.Tests.ApiCommandsTests.DeleteMessageCommandHandlerTests
             string expectedDetails = ResponseMessageCodes.ErrorDictionary[expectedMessage];
             var handler = CreateHandler();
 
-            var result = await handler.Handle(_deleteMessageCommand, CancellationToken.None);
-            
-            result.StatusCode.Should().Be(HttpStatusCode.Conflict);
-            result.Error.Success.Should().BeFalse();
-            result.Error.ErrorMessage.Should().Be(expectedMessage);
-            result.Error.ErrorDetails.Should().Be(expectedDetails);
-            result.Response.Should().BeNull();
+            var result = await handler.Handle(_command, CancellationToken.None);
+
+            _assert.Fail(result, expectedMessage, expectedDetails);
         }
         
         public bool Seed()
@@ -105,7 +102,7 @@ namespace MangoAPI.Tests.ApiCommandsTests.DeleteMessageCommandHandlerTests
             RoleId = (int) UserRole.Owner,
         };
 
-        private readonly DeleteMessageCommand _deleteMessageCommand = new()
+        private readonly DeleteMessageCommand _command = new()
         {
             UserId = SeedDataConstants.RazumovskyId,
             ChatId = Guid.NewGuid(),

@@ -17,6 +17,7 @@ namespace MangoAPI.Tests.ApiCommandsTests.EditMessageCommandHandlerTests
     public class EditMessageShouldThrowChatNotFound : ITestable<EditMessageCommand, ResponseBase>
     {
         private readonly MangoDbFixture _mangoDbFixture = new();
+        private readonly Assert<ResponseBase> _assert = new();
 
         [Fact]
         public async Task EditMessageCommandHandlerTest_ShouldThrow_ChatNotFound()
@@ -35,12 +36,7 @@ namespace MangoAPI.Tests.ApiCommandsTests.EditMessageCommandHandlerTests
 
             var result = await handler.Handle(command, CancellationToken.None);
 
-            result.StatusCode.Should().Be(HttpStatusCode.Conflict);
-            result.Response.Should().BeNull();
-            result.Error.ErrorMessage.Should().Be(expectedMessage);
-            result.Error.ErrorDetails.Should().Be(expectedDetails);
-            result.Error.Success.Should().BeFalse();
-            result.Error.StatusCode.Should().Be(HttpStatusCode.Conflict);
+            _assert.Fail(result, expectedMessage, expectedDetails);
         }
 
         public bool Seed()
