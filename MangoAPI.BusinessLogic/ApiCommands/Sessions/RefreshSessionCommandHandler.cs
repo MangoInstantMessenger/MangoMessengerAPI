@@ -57,8 +57,8 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Sessions
                     _postgresDbContext.Sessions.Remove(session);
                     break;
             }
-            
-            var refreshLifetime = EnvironmentConstants.MangoRefreshTokenLifetime ?? "7";
+
+            var refreshLifetime = EnvironmentConstants.MangoRefreshTokenLifetime;
 
             if (refreshLifetime == null || !int.TryParse(refreshLifetime, out var refreshLifetimeParsed))
             {
@@ -75,7 +75,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Sessions
                 ExpiresAt = DateTime.UtcNow.AddDays(refreshLifetimeParsed),
                 CreatedAt = DateTime.UtcNow,
             };
-            
+
             var jwtToken = _jwtGenerator.GenerateJwtToken(session.UserId);
 
             _postgresDbContext.Sessions.Add(newSession);
