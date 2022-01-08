@@ -75,7 +75,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Sessions
                 ExpiresAt = DateTime.UtcNow.AddDays(refreshLifetimeParsed),
                 CreatedAt = DateTime.UtcNow,
             };
-            
+
             var jwtToken = _jwtGenerator.GenerateJwtToken(session.UserId);
 
             _postgresDbContext.Sessions.Add(newSession);
