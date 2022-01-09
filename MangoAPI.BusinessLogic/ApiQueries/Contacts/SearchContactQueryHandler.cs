@@ -27,20 +27,45 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Contacts
         public async Task<Result<SearchContactResponse>> Handle(SearchContactQuery request,
             CancellationToken cancellationToken)
         {
-            var query = _postgresDbContext.Users
-                .AsNoTracking()
-                .Include(x => x.UserInformation)
-                .Where(x => x.Id != request.UserId)
-                .Where(x => EF.Functions.ILike(x.DisplayName, $"%{request.SearchQuery}%"))
-                .Select(x => new Contact
-                {
-                    UserId = x.Id,
-                    DisplayName = x.DisplayName,
-                    Address = x.UserInformation.Address,
-                    Bio = x.Bio,
-                    PictureUrl = StringService.GetDocumentUrl(x.Image),
-                    Email = x.Email,
-                });
+            IQueryable<Contact> query;
+
+            var isRelational = _postgresDbContext.Database.IsRelational();
+
+            if (isRelational)
+            {
+                query = _postgresDbContext.Users
+                    .AsNoTracking()
+                    .Include(x => x.UserInformation)
+                    .Where(x => x.Id != request.UserId)
+                    .Where(x => EF.Functions.ILike(x.DisplayName, $"%{request.SearchQuery}%"))
+                    .Select(x => new Contact
+                    {
+                        UserId = x.Id,
+                        DisplayName = x.DisplayName,
+                        Address = x.UserInformation.Address,
+                        Bio = x.Bio,
+                        PictureUrl = StringService.GetDocumentUrl(x.Image),
+                        Email = x.Email,
+                    });
+            }
+            else
+            {
+                query = _postgresDbContext.Users
+                    .AsNoTracking()
+                    .Include(x => x.UserInformation)
+                    .Where(x => x.Id != request.UserId)
+                    .Where(x => x.DisplayName.Contains(request.SearchQuery))
+                    .Select(x => new Contact
+                    {
+                        UserId = x.Id,
+                        DisplayName = x.DisplayName,
+                        Address = x.UserInformation.Address,
+                        Bio = x.Bio,
+                        PictureUrl = StringService.GetDocumentUrl(x.Image),
+                        Email = x.Email,
+                    });
+            }
+            
 
             var searchResult = await query.Take(200).ToListAsync(cancellationToken);
 
