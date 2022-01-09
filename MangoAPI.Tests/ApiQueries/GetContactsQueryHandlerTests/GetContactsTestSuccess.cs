@@ -1,6 +1,8 @@
-﻿using System.Threading;
+﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
-using MangoAPI.BusinessLogic.ApiCommands.Contacts;
+using FluentAssertions;
+using MangoAPI.BusinessLogic.ApiQueries.Contacts;
 using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.Domain.Constants;
 using MangoAPI.Domain.Entities;
@@ -8,49 +10,52 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Xunit;
 
-namespace MangoAPI.Tests.ApiCommandsTests.AddContactCommandHandlerTests
+namespace MangoAPI.Tests.ApiQueries.GetContactsQueryHandlerTests
 {
-    public class AddContactSuccess : ITestable<AddContactCommand, ResponseBase>
+    public class GetContactsTestSuccess : ITestable<GetContactsQuery, GetContactsResponse>
     {
         private readonly MangoDbFixture _mangoDbFixture = new();
-        private readonly Assert<ResponseBase> _assert = new();
+        private readonly Assert<GetContactsResponse> _assert = new();
 
         [Fact]
-        public async Task AddContactsCommandHandlerTest_Success()
+        public async Task GetContactsTest_Success()
         {
             Seed();
             var handler = CreateHandler();
-            var command = new AddContactCommand
+            var query = new GetContactsQuery
             {
-                UserId = SeedDataConstants.RazumovskyId,
-                ContactId = SeedDataConstants.KhachaturId
+                UserId = SeedDataConstants.KhachaturId
             };
 
-            var result = await handler.Handle(command, CancellationToken.None);
-
+            var result = await handler.Handle(query, CancellationToken.None);
+            
             _assert.Pass(result);
+            result.Response.Contacts.Count.Should().Be(1);
+            result.Response.Contacts[0].UserId.Should().Be(_user2.Id);
         }
-
+        
         public bool Seed()
         {
             _mangoDbFixture.Context.Users.Add(_user1);
             _mangoDbFixture.Context.Users.Add(_user2);
+            _mangoDbFixture.Context.UserContacts.Add(_contact);
 
             _mangoDbFixture.Context.SaveChanges();
 
             _mangoDbFixture.Context.Entry(_user1).State = EntityState.Detached;
             _mangoDbFixture.Context.Entry(_user2).State = EntityState.Detached;
+            _mangoDbFixture.Context.Entry(_contact).State = EntityState.Detached;
 
             return true;
         }
 
-        public IRequestHandler<AddContactCommand, Result<ResponseBase>> CreateHandler()
+        public IRequestHandler<GetContactsQuery, Result<GetContactsResponse>> CreateHandler()
         {
-            var responseFactory = new ResponseFactory<ResponseBase>();
-            var handler = new AddContactCommandHandler(_mangoDbFixture.Context, responseFactory);
+            var responseFactory = new ResponseFactory<GetContactsResponse>();
+            var handler = new GetContactsQueryHandler(_mangoDbFixture.Context, responseFactory);
             return handler;
         }
-
+        
         private readonly UserEntity _user1 = new()
         {
             DisplayName = "Khachatur Khachatryan",
@@ -75,6 +80,14 @@ namespace MangoAPI.Tests.ApiCommandsTests.AddContactCommandHandlerTests
             EmailConfirmed = true,
             PhoneNumberConfirmed = true,
             Image = "razumovsky_picture.jpg"
+        };
+
+        private readonly UserContactEntity _contact = new UserContactEntity
+        {
+            Id = Guid.NewGuid(),
+            UserId = SeedDataConstants.KhachaturId,
+            ContactId = SeedDataConstants.RazumovskyId,
+            CreatedAt = DateTime.Now
         };
     }
 }
