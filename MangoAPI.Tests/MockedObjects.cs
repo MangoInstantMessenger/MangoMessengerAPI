@@ -114,11 +114,38 @@ namespace MangoAPI.Tests
             return userServiceMock.Object;
         }
 
+        public static ISignInManagerService GetSignInServiceMock(bool isFailCase)
+        {
+            var signInServiceMock = new Mock<ISignInManagerService>();
+
+            if (isFailCase)
+            {
+                signInServiceMock.Setup(x => x.CheckPasswordSignInAsync(
+                        It.IsAny<UserEntity>(), 
+                        It.IsAny<string>(), 
+                        It.IsAny<bool>()))
+                    .Returns(Task.FromResult(SignInResult.Failed));
+            }
+            else
+            {
+                signInServiceMock.Setup(x => x.CheckPasswordSignInAsync(
+                        It.IsAny<UserEntity>(), 
+                        It.IsAny<string>(), 
+                        It.IsAny<bool>()))
+                    .Returns(Task.FromResult(SignInResult.Success));
+            }
+            
+            
+            return signInServiceMock.Object;
+        }
+
         private static bool IsValidPassword(string password)
         {
             return password.Length >= 8 && password.Any(char.IsDigit) 
                    && password.Any(char.IsSymbol) && password.Any(char.IsUpper)
                    && password.Any(char.IsLower);
         }
+        
+        
     }
 }
