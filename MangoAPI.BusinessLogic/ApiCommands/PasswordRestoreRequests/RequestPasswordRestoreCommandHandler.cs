@@ -65,7 +65,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.PasswordRestoreRequests
 
             await _postgresDbContext.SaveChangesAsync(cancellationToken);
 
-            await _emailSenderService.SendPasswordRestoreRequest(user, passwordRestoreRequest.Id, cancellationToken);
+            await _emailSenderService.SendPasswordRestoreRequestAsync(user, passwordRestoreRequest.Id, cancellationToken);
 
             return _responseFactory.SuccessResponse(ResponseBase.SuccessResponse);
         }

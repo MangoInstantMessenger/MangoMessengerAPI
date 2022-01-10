@@ -1,92 +1,128 @@
-# Mango Messenger ASP NET Core WebAPI
+# Mango Messenger WEB API
 
-![Build](https://img.shields.io/badge/Build-succeeded-brightgreen)
-![License](https://img.shields.io/badge/License-MIT-%23bfc400)
-[![SDK](https://img.shields.io/badge/SDK-.NET%20Core%205.0-blue)](https://dotnet.microsoft.com/download/dotnet/5.0)
-[![ORM](https://img.shields.io/badge/ORM-EF%20Core%20-yellow)](https://www.nuget.org/packages/Microsoft.EntityFrameworkCore/5.0.7?_src=template)
-[![DBMS](https://img.shields.io/badge/DBMS-PostgreSQL-yellowgreen)](https://www.postgresql.org/)
-[![Trello board](https://img.shields.io/badge/Task%20Board-Trello-blue)](https://trello.com/b/Z7IlfrRb/mango-messenger-trello)
-[![Contributors](https://img.shields.io/badge/Contributors-3-brightgreen)](https://github.com/kolosovpetro/MangoAPI/graphs/contributors)
-[![Mango Database Diagramm](https://img.shields.io/badge/Data%20Base%20Diagram-DbDiagram-lightgrey)](https://dbdiagram.io/d/60d66a13dd6a597148203e6b) 
-[![Heroku](https://img.shields.io/badge/Deploy-Heroku-yellowgreen)](https://mango-messenger-app.herokuapp.com/swagger/)
+<p align="center">
+  <img src="img/mango.png"  alt="Mango Messenger Logo"/>
+</p>
 
-## Required Environment Variables
+[![Build](https://github.com/MangoInstantMessenger/MangoMessengerAPI/actions/workflows/build.yml/badge.svg)](https://github.com/MangoInstantMessenger/MangoMessengerAPI/actions/workflows/build.yml/badge.svg)
+[![Azure Dev Deploy](https://github.com/MangoInstantMessenger/MangoMessengerAPI/actions/workflows/azure-dev.yml/badge.svg)](https://github.com/MangoInstantMessenger/MangoMessengerAPI/actions/workflows/azure-dev.yml/badge.svg)
+[![Azure QA Deploy](https://github.com/MangoInstantMessenger/MangoMessengerAPI/actions/workflows/azure-qa.yml/badge.svg)](https://github.com/MangoInstantMessenger/MangoMessengerAPI/actions/workflows/azure-qa.yml/badge.svg)
+[![Heroku Deploy](https://github.com/MangoInstantMessenger/MangoMessengerAPI/actions/workflows/heroku.yml/badge.svg)](https://github.com/MangoInstantMessenger/MangoMessengerAPI/actions/workflows/heroku.yml/badge.svg)
+![contributors count](https://img.shields.io/github/contributors/MangoInstantMessenger/MangoMessengerAPI)
+[![codecov](https://codecov.io/gh/MangoInstantMessenger/MangoMessengerAPI/branch/develop/graph/badge.svg?token=J4P0TD9Q1Q)](https://codecov.io/gh/MangoInstantMessenger/MangoMessengerAPI)
 
-- `MANGO_JWT_ISSUER`   (default https://localhost:4200)
-- `MANGO_JWT_AUDIENCE` (default https://localhost:5001)
-- `MANGO_JWT_SIGN_KEY`
-- `MANGO_JWT_LIFETIME`           (default 5 minutes)
-- `MANGO_REFRESH_TOKEN_LIFETIME` (default 7 days)
-- `MANGO_EMAIL_NOTIFICATIONS_ADDRESS`
-- `MANGO_EMAIL_NOTIFICATIONS_PASSWORD`
-- `MANGO_FRONTEND_ADDRESS` (default https://localhost:4200/)
-- `MANGO_BACKEND_ADDRESS`  (default https://localhost:5001/)
-- `MANGO_DATABASE_URL`     (default `Server=localhost;User Id=your_login;Password=your_password;Database=MangoApiDatabase;`)
-- `MANGO_SEED_PASSWORD`
-- `MANGO_BLOB_URL`
-- `MANGO_BLOB_CONTAINER`
-- `MANGO_BLOB_ACCESS` (address of public azure blob)
+## What is all about
+
+Mango Messenger is an opensource instant messaging system such that implemented using ASP NET 5 framework as REST API
+backend along with Angular framework as frontend. In general, current project is considered to be a diploma project in
+order to get bachelor's degree of computer science. However, now it is considered to be a just example of ASP .NET Core
+API implementation using best practices in terms of architecture etc, where it is possible to apply different software
+development approaches and to see how it works on different environments such as Azure, Heroku etc. Moreover, a few
+cryptographical concepts are implemented such as DH key exchange that can be applied in order to implement secret chats
+in feature. Project has classical N-tier architecture as below picture shows
+
+<p align="center">
+  <img src="img/architecture.png" width="1920"  alt="Mango Messenger Logo"/>
+</p>
+
+## Build and run
+
+Install latest SDK and Runtime from Microsoft. In order to build and run current project, firstly set the following
+environment variables:
+
+- `MANGO_JWT_ISSUER`: JWT issuer claim (default https://localhost:4200)
+- `MANGO_JWT_AUDIENCE`: JWT audience claim (default https://localhost:5001)
+- `MANGO_JWT_SIGN_KEY`: Secret used to sign jwt token in form of GUID
+- `MANGO_EMAIL_NOTIFICATIONS_ADDRESS`: Email address used in notifications and verifications
+- `MANGO_FRONTEND_ADDRESS`: URL of the frontend application
+- `MANGO_DATABASE_URL`: Database connection string in PostgreSQL format
+- `MANGO_BLOB_URL`: Connection string of the blob Azure blob storage server
+- `MANGO_BLOB_CONTAINER`: Name of the Azure blob storage container
+- `MANGO_BLOB_ACCESS`: Azure blob URL where files are available
+- `MANGO_MAILGUN_API_KEY`: API key of the MailGun service used for sending email notifications
+- `MANGO_MAILGUN_API_BASE_URL`: API base URL of the MailGun service
+- `MANGO_MAILGUN_API_DOMAIN`: Verified domain used in MailGun service
+
+Then restore packages using CLI `dotnet restore` and after build the solution `dotnet build`.
 
 ## Environments
 
-- Azure Dev: https://back.mangomessenger.company/swagger (valid till 28-Oct-2022)
-- Azure QA: https://back.mangomesenger.company/swagger (valid till 28-Oct-2022)
+Currently, backend deployed on the multiple instances on Azure and Heroku such as:
+
+- Azure Dev: https://back.mangomessenger.company/swagger (domain valid till 28-Oct-2022)
+- Azure QA: https://back.mangomesenger.company/swagger (domain valid till 28-Oct-2022)
 - Heroku: https://mango-messenger-back.herokuapp.com/swagger
 
 ## Workflows
 
-- Azure Dev. Branch: `azure-dev` based on `develop`, workflow started after merge with actual `develop`. Url: https://back.mangomessenger.company/swagger
-- Azure QA. Branch: `azure-qa` based on `develop`, workflow started after merge with actual `develop`. Url: https://back.mangomesenger.company/swagger
-- Heroku. Branch: `master` workflow started after actual `develop` merged to `master`. Url: https://mango-messenger-back.herokuapp.com/swagger
+CI/CD is setup as follows:
+
+- Azure Dev. Branch: `azure-dev` based on `develop`, workflow started after merge with actual `develop`.
+- Azure QA. Branch: `azure-qa` based on `develop`, workflow started after merge with actual `develop`.
+- Heroku. Branch: `master` workflow started after actual `develop` merged to `master`.
 
 As image below shows
 
 ![Environments](Environments-Back.jpg?raw=true)
 
-## About tasks management
-- Each task is assigned a number (MANGO-ID)
-- Tasks are at Trello board https://trello.com/b/Z7IlfrRb/mango-messenger-trello
-- There are two main branches: `master` and `develop`
-- All work is merged to `develop`
-- Develop will be merged with master when diploma project will be ready
+## User stack of technologies
+
+- **Frameworks:** `ASP .NET 5`, `Angular 11.2.7`
+- **Persistence:**
+    - Database: `PostgreSQL 13`
+    - ORM: `Entity Framework Core 5.0`
+    - Storage: `Azure Blob Storage`
+- **Authorization:** `ASP .NET Identity Core`, `JWT Bearer`
+- **Business Logic:**
+    - `MediatR`
+    - `Fluent Validation`
+    - `AutoMapper`
+- **Presentation:**
+    - API Documentation: `OpenAPI`
+    - Realtime Communication: `SignalR`
+    - Frontend Development: `Angular`
+    - Desktop Development: `ElectronJS`
+- **Unit and Integration Testing:** `XUnit`, `Moq`, `FluentAssertions`, `EntityFrameworkCore InMemory`
+- **Code Quality Tools:** `SonarQube`, `CodeCov`
+- **Containerization:** `Docker`
+- **Continuous Integration:** `GitHub Actions`
+- **Continuous Delivery:** `GitHub Actions`, `Heroku`, `Azure`
+- **Programming languages:** `C#`, `SQL`, `TypeScript`
+- **Tools:** `Visual Studio`, `Rider`, `VS Code`, `WebStorm`, `PgAdmin`, `Postman`
+
+## Tasks management
+
+The opened tasks and issues to be organized an handled as follows:
+
+- Each task has an assigned number in the format `MANGO-ID`
+- Active tasks are available on the Trello board: https://trello.com/b/Z7IlfrRb/mango-messenger-trello
+- Each task branch is based on the actual `develop` branch and pull requested there on complete
+- Branch `develop` then merged to `azure-dev`, `azure-qa`, `master` branches on particular milestone complete
 
 ## Git flow
-  - Clone this repository locally `git clone https://github.com/kolosovpetro/MangoAPI.git`
-  - Or pull last changes from `develop`
-  - Create new branch based on `develop`, name it as task ID, e.g MANGO-ID
-  - Solve the task
-  - Create pull request to develop
-  
+
+Version control to be organized as follows:
+
+- Fork this repository
+- Clone this repository using `git clone https://github.com/${{ username }}/MangoMessengerAPI.git`
+- If repository is cloned already then pull last changes from `develop` using
+  - `git checkout develop`
+  - `git pull`
+- Create new branch based on `develop` with name according to `MANGO-ID` of the task
+- Solve the task
+- Create pull request to `develop`
+
 ## Commit messages
+
 - In case of bug fix, example of commit message `bugfix: some bug fixed`
 - In case of feature, example of commit message `feature: some new functionality added`
 - In case of refactor, example of commit message `refactor: some code part refactored`
 
-## Links
+## Useful Links
+
 - Trello: https://trello.com/b/Z7IlfrRb/mango-messenger-trello
 - Database diagram: https://dbdiagram.io/d/60d66a13dd6a597148203e6b
-- Deploy: https://mango-messenger-app.herokuapp.com/swagger/
 
-## Requirments
+## Logo Attribution
 
-- SDK: **[.NET Core 5.0](https://dotnet.microsoft.com/download/dotnet/5.0)**
-
-- ORM: **[Entity Framework Core 5.0.7](https://www.nuget.org/packages/Microsoft.EntityFrameworkCore/5.0.7?_src=template)**
-
-- SQL Database: **[PostgreSQL 13](https://www.postgresql.org/)**
-
-- EF Core for PostgreSQL Provider: **[Npgsql.EntityFrameworkCore.PostgreSQL 5.0.7](https://www.nuget.org/packages/Npgsql.EntityFrameworkCore.PostgreSQL/5.0.7?_src=template)**
-
-- CI: **[GitHub Actions](https://docs.github.com/en/actions)**
-
-- Mediator pattern library: **[MediatR 9.0.0](https://www.nuget.org/packages/MediatR/9.0.0?_src=template)**
-
-- Validation library: **[Fluent Validation](https://www.nuget.org/packages/FluentValidation/10.2.3?_src=template)**
-
-- JWT library: **[System JWT 6.8.0](https://www.nuget.org/packages/System.IdentityModel.Tokens.Jwt)**
-
-- JWT auxiliary library: **[System Tokens 6.11.1](https://www.nuget.org/packages/System.IdentityModel.Tokens)**
-
-- JWT Bearer: **[Microsoft Jwt Bearer](https://www.nuget.org/packages/Microsoft.AspNetCore.Authentication.JwtBearer/5.0.7?_src=template)**
-
-- Swagger library: **[Swashbuckle 6.1.4](https://www.nuget.org/packages/Swashbuckle.AspNetCore/5.6.3?_src=template)**
+<div>Icons made by <a href="https://www.freepik.com" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></div>

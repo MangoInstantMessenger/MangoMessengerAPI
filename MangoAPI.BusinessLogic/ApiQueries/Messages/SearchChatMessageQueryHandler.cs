@@ -16,7 +16,8 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Messages
         private readonly MangoPostgresDbContext _postgresDbContext;
         private readonly ResponseFactory<SearchChatMessagesResponse> _responseFactory;
 
-        public SearchChatMessageQueryHandler(MangoPostgresDbContext postgresDbContext,
+        public SearchChatMessageQueryHandler(
+            MangoPostgresDbContext postgresDbContext,
             ResponseFactory<SearchChatMessagesResponse> responseFactory)
         {
             _postgresDbContext = postgresDbContext;
@@ -39,35 +40,68 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Messages
                 return _responseFactory.ConflictResponse(errorMessage, details);
             }
 
-            var query = _postgresDbContext.Messages.AsNoTracking()
-                .Where(x => x.ChatId == request.ChatId)
-                .OrderBy(x => x.CreatedAt)
-                .Select(x => new Message
-                {
-                    MessageId = x.Id,
-                    ChatId = x.ChatId,
-                    UserId = x.UserId,
-                    UserDisplayName = x.User.DisplayName,
-                    MessageText = x.Content,
-                    CreatedAt = x.CreatedAt.ToShortTimeString(),
-                    UpdatedAt = x.UpdatedAt.HasValue ? x.UpdatedAt.Value.ToShortTimeString() : null,
-                    Self = x.User.Id == request.UserId,
-                    InReplayToAuthor = x.InReplayToAuthor,
-                    InReplayToText = x.InReplayToText,
+            IQueryable<Message> query;
 
-                    MessageAuthorPictureUrl = x.User.Image != null
-                        ? $"{EnvironmentConstants.MangoBlobAccess}/{x.User.Image}"
-                        : null,
+            var isRelational = _postgresDbContext.Database.IsRelational();
 
-                    MessageAttachmentUrl = x.Attachment != null
-                        ? $"{EnvironmentConstants.MangoBlobAccess}/{x.Attachment}"
-                        : null,
-                }).Take(200);
-
-            if (!string.IsNullOrEmpty(request.MessageText) || !string.IsNullOrWhiteSpace(request.MessageText))
+            if (isRelational)
             {
-                query = query.Where(x => x.MessageText.Contains(request.MessageText));
+                query = _postgresDbContext.Messages.AsNoTracking()
+                    .Where(x => x.ChatId == request.ChatId)
+                    .Where(x => EF.Functions.ILike(x.Content, $"%{request.MessageText}%"))
+                    .OrderBy(x => x.CreatedAt)
+                    .Select(x => new Message
+                    {
+                        MessageId = x.Id,
+                        ChatId = x.ChatId,
+                        UserId = x.UserId,
+                        UserDisplayName = x.User.DisplayName,
+                        MessageText = x.Content,
+                        CreatedAt = x.CreatedAt.ToShortTimeString(),
+                        UpdatedAt = x.UpdatedAt.HasValue ? x.UpdatedAt.Value.ToShortTimeString() : null,
+                        Self = x.User.Id == request.UserId,
+                        InReplayToAuthor = x.InReplayToAuthor,
+                        InReplayToText = x.InReplayToText,
+
+                        MessageAuthorPictureUrl = x.User.Image != null
+                            ? $"{EnvironmentConstants.MangoBlobAccess}/{x.User.Image}"
+                            : null,
+
+                        MessageAttachmentUrl = x.Attachment != null
+                            ? $"{EnvironmentConstants.MangoBlobAccess}/{x.Attachment}"
+                            : null,
+                    }).Take(200);
             }
+            else
+            {
+                query = _postgresDbContext.Messages.AsNoTracking()
+                    .Where(x => x.ChatId == request.ChatId)
+                    .Where(x => x.Content.Contains(request.MessageText))
+                    .OrderBy(x => x.CreatedAt)
+                    .Select(x => new Message
+                    {
+                        MessageId = x.Id,
+                        ChatId = x.ChatId,
+                        UserId = x.UserId,
+                        UserDisplayName = x.User.DisplayName,
+                        MessageText = x.Content,
+                        CreatedAt = x.CreatedAt.ToShortTimeString(),
+                        UpdatedAt = x.UpdatedAt.HasValue ? x.UpdatedAt.Value.ToShortTimeString() : null,
+                        Self = x.User.Id == request.UserId,
+                        InReplayToAuthor = x.InReplayToAuthor,
+                        InReplayToText = x.InReplayToText,
+
+                        MessageAuthorPictureUrl = x.User.Image != null
+                            ? $"{EnvironmentConstants.MangoBlobAccess}/{x.User.Image}"
+                            : null,
+
+                        MessageAttachmentUrl = x.Attachment != null
+                            ? $"{EnvironmentConstants.MangoBlobAccess}/{x.Attachment}"
+                            : null,
+                    }).Take(200);
+            }
+            
+            
 
             var result = await query.ToListAsync(cancellationToken);
 

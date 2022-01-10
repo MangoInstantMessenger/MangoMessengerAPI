@@ -9,6 +9,6 @@ namespace MangoAPI.Application.Interfaces
     {
         Task SendVerificationEmailAsync(UserEntity user, CancellationToken cancellationToken);
 
-        Task SendPasswordRestoreRequest(UserEntity user, Guid requestId, CancellationToken cancellationToken);
+        Task SendPasswordRestoreRequestAsync(UserEntity user, Guid requestId, CancellationToken cancellationToken);
     }
 }

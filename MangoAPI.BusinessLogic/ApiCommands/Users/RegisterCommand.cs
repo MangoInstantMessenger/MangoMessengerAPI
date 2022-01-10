@@ -3,7 +3,7 @@ using MediatR;
 
 namespace MangoAPI.BusinessLogic.ApiCommands.Users
 {
-    public record RegisterCommand : IRequest<Result<TokensResponse>>
+    public record RegisterCommand : IRequest<Result<ResponseBase>>
     {
         public string Email { get; init; }
         public string DisplayName { get; init; }

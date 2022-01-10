@@ -35,10 +35,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Sessions
                 return _responseFactory.ConflictResponse(errorMessage, details);
             }
 
-            var user = await _postgresDbContext.Users
-                .FirstOrDefaultAsync(userEntity => userEntity.Id == session.UserId, cancellationToken);
-
-            if (user is null || session.UserId != user.Id)
+            if (session.UserId != request.UserId)
             {
                 const string errorMessage = ResponseMessageCodes.UserNotFound;
                 var details = ResponseMessageCodes.ErrorDictionary[errorMessage];

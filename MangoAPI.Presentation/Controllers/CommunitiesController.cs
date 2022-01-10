@@ -6,7 +6,6 @@ using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.Presentation.Extensions;
 using MangoAPI.Presentation.Interfaces;
 using MediatR;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -22,7 +21,7 @@ namespace MangoAPI.Presentation.Controllers
     [ApiController]
     [Route("api/communities")]
     [Produces("application/json")]
-    [Authorize(Roles = "User", AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    [Authorize]
     public class CommunitiesController : ApiControllerBase, ICommunitiesController
     {
         public CommunitiesController(IMediator mediator, IMapper mapper)
@@ -31,12 +30,13 @@ namespace MangoAPI.Presentation.Controllers
         }
 
         /// <summary>
-        /// Gets all current user's chats. Requires role: User.
+        /// Gets all current user's chats.
         /// </summary>
         /// <param name="cancellationToken">Cancellation token instance.</param>
         /// <returns>Possible codes: 200, 400, 409.</returns>
         [HttpGet]
-        [SwaggerOperation(Description = "Gets all current user's chats. Requires role: User.",
+        [SwaggerOperation(
+            Description = "Gets all current user's chats.",
             Summary = "Gets all user's chats.")]
         [ProducesResponseType(typeof(GetCurrentUserChatsResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
@@ -54,15 +54,14 @@ namespace MangoAPI.Presentation.Controllers
 
         /// <summary>
         /// Creates new group of specified type: Private Channel (3), Public Channel (4), Readonly Channel (5).
-        /// Requires role: User.
         /// </summary>
         /// <param name="request">CreateChannelRequest instance.</param>
         /// <param name="cancellationToken">Cancellation token instance.</param>
         /// <returns>Possible codes: 200, 400, 409.</returns>
         [HttpPost("channel")]
-        [SwaggerOperation(Description =
-                "Creates new group of specified type: Private Channel (3), Public Channel (4), Readonly Channel (5). " +
-                "Requires role: User.",
+        [SwaggerOperation(
+            Description =
+                "Creates new group of specified type: Private Channel (3), Public Channel (4), Readonly Channel (5).",
             Summary = "Creates new group of specified type.")]
         [ProducesResponseType(typeof(CreateCommunityResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
@@ -78,15 +77,13 @@ namespace MangoAPI.Presentation.Controllers
 
         /// <summary>
         /// Creates new direct chat with specified user. User is fetched by parameter user ID.
-        /// Requires role: User.
         /// </summary>
         /// <param name="request">CreateChatRequest instance.</param>
         /// <param name="cancellationToken">Cancellation token instance.</param>
         /// <returns>Possible codes: 200, 400, 409.</returns>
         [HttpPost("chat")]
-        [SwaggerOperation(Description =
-                "Creates new chat with specified user. Chat types: Direct Chat (1), Secret Chat (2). " +
-                "Requires role: User.",
+        [SwaggerOperation(
+            Description = "Creates new chat with specified user. Chat types: Direct Chat (1), Secret Chat (2).",
             Summary = "Creates new chat with specified user.")]
         [ProducesResponseType(typeof(CreateCommunityResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
@@ -103,13 +100,14 @@ namespace MangoAPI.Presentation.Controllers
         }
 
         /// <summary>
-        /// Searches chats by display name. Requires role: User.
+        /// Searches chats by display name.
         /// </summary>
         /// <param name="displayName">Display name of the chat, string.</param>
         /// <param name="cancellationToken">Cancellation token instance.</param>
         /// <returns>Possible codes: 200, 400, 409.</returns>
         [HttpGet("searches")]
-        [SwaggerOperation(Description = "Searches chats by display name. Requires role: User.",
+        [SwaggerOperation(
+            Description = "Searches chats by display name.",
             Summary = "Searches chats by display name.")]
         [ProducesResponseType(typeof(SearchCommunityResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
@@ -128,16 +126,17 @@ namespace MangoAPI.Presentation.Controllers
         }
 
         /// <summary>
-        /// Updates picture of particular channel. Required role: User
+        /// Updates picture of particular channel.
         /// </summary>
         /// <param name="chatId">Identifier of chat to be updated.</param>
         /// <param name="newGroupPicture">Picture file.</param>
         /// <param name="cancellationToken">Instance of cancellation token.</param>
         /// <returns></returns>
         [HttpPost("picture/{chatId:guid}")]
-        [SwaggerOperation(Description = "Updates picture of particular channel. Required role: User",
+        [SwaggerOperation(
+            Description = "Updates picture of particular channel.",
             Summary = "Updates picture of particular channel.")]
-        [ProducesResponseType(typeof(UpdateChannelLogoResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(UpdateChannelPictureResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
         public async Task<IActionResult> UpdateChannelPictureAsync([FromRoute] Guid chatId, IFormFile newGroupPicture,

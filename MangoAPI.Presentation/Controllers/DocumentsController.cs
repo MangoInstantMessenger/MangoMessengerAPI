@@ -3,7 +3,6 @@ using MangoAPI.BusinessLogic.ApiCommands.Documents;
 using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.Presentation.Interfaces;
 using MediatR;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -19,7 +18,7 @@ namespace MangoAPI.Presentation.Controllers
     /// </summary>
     [ApiController]
     [Route("api/documents")]
-    [Authorize(Roles = "User", AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    [Authorize]
     public class DocumentsController : ApiControllerBase, IDocumentsController
     {
         public DocumentsController(IMediator mediator, IMapper mapper)
@@ -28,15 +27,14 @@ namespace MangoAPI.Presentation.Controllers
         }
 
         /// <summary>
-        /// Uploads document to the server. Requires role: User.
+        /// Uploads document to the server.
         /// </summary>
         /// <param name="formFile">File to be uploaded.</param>
         /// <param name="cancellationToken">Cancellation token instance.</param>
         [HttpPost]
         [SwaggerOperation(Description = "Uploads document to the server. " +
-                                        "Accepts formats: .jpg, .JPG, .txt, .TXT, .pdf, .PDF, .gif, .GIF. " +
-                                        "Maximum file size: 10 MB. " +
-                                        "Requires role: User.",
+                                        "Accepts formats: .jpg, .JPG, .txt, .TXT, .pdf, .PDF, " +
+                                        "Maximum file size: 5 MB. ",
             Summary = "Uploads document to the server.")]
         [ProducesResponseType(typeof(UploadDocumentResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]

@@ -6,8 +6,8 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Messages
 {
     public record SearchChatMessagesQuery : IRequest<Result<SearchChatMessagesResponse>>
     {
-        public Guid UserId { get; set; }
-        public Guid ChatId { get; set; }
-        public string MessageText { get; set; }
+        public Guid UserId { get; init; }
+        public Guid ChatId { get; init; }
+        public string MessageText { get; init; }
     }
 }
