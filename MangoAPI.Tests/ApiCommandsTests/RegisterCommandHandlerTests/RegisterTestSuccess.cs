@@ -1,10 +1,8 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
-using FluentAssertions;
 using MangoAPI.BusinessLogic.ApiCommands.Users;
 using MangoAPI.BusinessLogic.Responses;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 using Xunit;
 
 namespace MangoAPI.Tests.ApiCommandsTests.RegisterCommandHandlerTests
