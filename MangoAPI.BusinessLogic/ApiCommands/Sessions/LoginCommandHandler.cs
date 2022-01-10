@@ -20,8 +20,11 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Sessions
         private readonly SignInManager<UserEntity> _signInManager;
         private readonly ResponseFactory<TokensResponse> _responseFactory;
 
-        public LoginCommandHandler(SignInManager<UserEntity> signInManager, IJwtGenerator jwtGenerator,
-            MangoPostgresDbContext postgresDbContext, ResponseFactory<TokensResponse> responseFactory)
+        public LoginCommandHandler(
+            SignInManager<UserEntity> signInManager,
+            IJwtGenerator jwtGenerator,
+            MangoPostgresDbContext postgresDbContext,
+            ResponseFactory<TokensResponse> responseFactory)
         {
             _signInManager = signInManager;
             _jwtGenerator = jwtGenerator;
@@ -44,6 +47,14 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Sessions
                 return _responseFactory.ConflictResponse(errorMessage, details);
             }
 
+            if (!user.EmailConfirmed)
+            {
+                const string errorMessage = ResponseMessageCodes.EmailIsNotVerified;
+                var details = ResponseMessageCodes.ErrorDictionary[errorMessage];
+
+                return _responseFactory.ConflictResponse(errorMessage, details);
+            }
+
             var result = await _signInManager.CheckPasswordSignInAsync(user, request.Password, false);
 
             if (!result.Succeeded)
@@ -54,24 +65,16 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Sessions
                 return _responseFactory.ConflictResponse(errorMessage, details);
             }
 
-            var refreshLifetime = EnvironmentConstants.MangoRefreshTokenLifetime;
-
-            if (refreshLifetime == null || !int.TryParse(refreshLifetime, out var refreshLifetimeParsed))
-            {
-                const string errorMessage = ResponseMessageCodes.RefreshTokenLifeTimeError;
-                var details = ResponseMessageCodes.ErrorDictionary[errorMessage];
-
-                return _responseFactory.ConflictResponse(errorMessage, details);
-            }
+            const int refreshLifetime = EnvironmentConstants.MangoRefreshTokenLifetime;
 
             var session = new SessionEntity
             {
                 UserId = user.Id,
                 RefreshToken = Guid.NewGuid(),
-                ExpiresAt = DateTime.UtcNow.AddDays(refreshLifetimeParsed),
+                ExpiresAt = DateTime.UtcNow.AddDays(refreshLifetime),
                 CreatedAt = DateTime.UtcNow,
             };
-            
+
             var jwtToken = _jwtGenerator.GenerateJwtToken(user.Id);
 
             var userSessions = _postgresDbContext.Sessions

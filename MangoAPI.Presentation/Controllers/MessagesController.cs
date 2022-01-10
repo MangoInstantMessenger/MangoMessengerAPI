@@ -129,26 +129,23 @@ namespace MangoAPI.Presentation.Controllers
         /// <summary>
         /// Deletes particular message by message ID.
         /// </summary>
-        /// <param name="messageId">Message ID, UUID.</param>
+        /// <param name="request">Request entity.</param>
         /// <param name="cancellationToken">Cancellation token instance.</param>
         /// <returns>Possible codes: 200, 400, 409.</returns>
-        [HttpDelete("{messageId:guid}")]
+        [HttpDelete]
         [SwaggerOperation(
             Description = "Deletes particular message by message ID.",
-            Summary = "Updates particular message.")]
+            Summary = "Deletes particular message by message ID.")]
         [ProducesResponseType(typeof(DeleteMessageResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
-        public async Task<IActionResult> DeleteMessage([FromRoute] Guid messageId,
+        public async Task<IActionResult> DeleteMessage([FromBody] DeleteMessageRequest request,
             CancellationToken cancellationToken)
         {
             var userId = HttpContext.User.GetUserId();
 
-            var command = new DeleteMessageCommand
-            {
-                MessageId = messageId,
-                UserId = userId,
-            };
+            var command = Mapper.Map<DeleteMessageCommand>(request);
+            command.UserId = userId;
 
             return await RequestAsync(command, cancellationToken);
         }

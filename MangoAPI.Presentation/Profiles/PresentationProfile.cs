@@ -14,10 +14,10 @@ namespace MangoAPI.Presentation.Profiles
         {
             CreateMap<CreateChannelRequest, CreateChannelCommand>()
                 .ForMember(x => x.CommunityType,
-                    expression => expression.MapFrom(z => (CommunityType)z.ChannelType));
+                    expression => expression.MapFrom(z => (CommunityType) z.ChannelType));
 
             CreateMap<CreateChatRequest, CreateChatCommand>().ForMember(x => x.CommunityType,
-                expression => expression.MapFrom(z => (CommunityType)z.ChatType));
+                expression => expression.MapFrom(z => (CommunityType) z.ChatType));
 
             CreateMap<SendMessageRequest, SendMessageCommand>();
             CreateMap<EditMessageRequest, EditMessageCommand>();
@@ -30,6 +30,7 @@ namespace MangoAPI.Presentation.Profiles
             CreateMap<UpdateUserSocialInformationRequest, UpdateUserSocialInformationCommand>();
             CreateMap<UpdateUserAccountInfoRequest, UpdateUserAccountInfoCommand>();
             CreateMap<LoginRequest, LoginCommand>();
+            CreateMap<DeleteMessageRequest, DeleteMessageCommand>();
         }
     }
 }

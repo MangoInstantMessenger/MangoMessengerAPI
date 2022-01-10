@@ -28,9 +28,11 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Sessions
             var userSessions = _postgresDbContext.Sessions
                 .Where(entity => entity.UserId == request.UserId);
 
-            if (!await userSessions.AnyAsync(cancellationToken))
+            var sessionExists = await userSessions.AnyAsync(cancellationToken);
+
+            if (!sessionExists)
             {
-                const string errorMessage = ResponseMessageCodes.InvalidOrExpiredRefreshToken;
+                const string errorMessage = ResponseMessageCodes.SessionNotFound;
                 var details = ResponseMessageCodes.ErrorDictionary[errorMessage];
 
                 return _responseFactory.ConflictResponse(errorMessage, details);

@@ -1,0 +1,42 @@
+﻿name: Build
+
+on:
+  push:
+    branches:
+      - develop
+      - azure-dev
+      - azure-qa
+      - master
+  pull_request:
+    branches:
+      - develop
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup .NET Core
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: 5.0.x
+
+      - name: Restore dependencies
+        run: dotnet restore
+
+      - name: Build
+        run: dotnet build --no-restore /p:ContinuousIntegrationBuild=true
+
+      - name: Run unit tests
+        run: dotnet test MangoAPI.Tests/MangoAPI.Tests.csproj --no-build --verbosity normal /p:CollectCoverage=true /p:Exclude="[*DataAccess]*" /p:CoverletOutputFormat=opencover
+        env:
+          MANGO_SEED_PASSWORD: ${{ secrets.MANGO_SEED_PASSWORD }}
+          MANGO_JWT_SIGN_KEY: ${{ secrets.MANGO_JWT_SIGN_KEY }}
+
+      - name: Codecov
+        uses: codecov/codecov-action@v2
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          flags: web, server
+          fail_ci_if_error: false
+          verbose: true

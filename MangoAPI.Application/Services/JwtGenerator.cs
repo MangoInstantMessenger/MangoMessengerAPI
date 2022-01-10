@@ -28,14 +28,8 @@ namespace MangoAPI.Application.Services
 
         public string GenerateJwtToken(Guid userId)
         {
-            var jwtLifetime = EnvironmentConstants.MangoJwtLifetime;
-
-            if (jwtLifetime == null || !int.TryParse(jwtLifetime, out var jwtLifetimeParsed))
-            {
-                throw new InvalidOperationException("Jwt lifetime environmental variable error.");
-            }
-
-            return GenerateJwtToken(userId, jwtLifetimeParsed);
+            const int jwtLifetime = EnvironmentConstants.MangoJwtLifetime;
+            return GenerateJwtToken(userId, jwtLifetime);
         }
 
         private string GenerateJwtToken(Guid userId, int lifetimeMinutes)

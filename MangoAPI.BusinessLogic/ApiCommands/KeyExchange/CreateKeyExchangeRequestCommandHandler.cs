@@ -15,7 +15,8 @@ namespace MangoAPI.BusinessLogic.ApiCommands.KeyExchange
         private readonly MangoPostgresDbContext _postgresDbContext;
         private readonly ResponseFactory<CreateKeyExchangeResponse> _responseFactory;
 
-        public CreateKeyExchangeRequestCommandHandler(MangoPostgresDbContext postgresDbContext,
+        public CreateKeyExchangeRequestCommandHandler(
+            MangoPostgresDbContext postgresDbContext,
             ResponseFactory<CreateKeyExchangeResponse> responseFactory)
         {
             _postgresDbContext = postgresDbContext;

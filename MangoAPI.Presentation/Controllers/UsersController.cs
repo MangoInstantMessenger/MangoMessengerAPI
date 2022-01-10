@@ -37,7 +37,7 @@ namespace MangoAPI.Presentation.Controllers
         [SwaggerOperation(
             Description = "Registers user in the system. Then sends verification email.",
             Summary = "Registers user in the system.")]
-        [ProducesResponseType(typeof(TokensResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ResponseBase), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
         public async Task<IActionResult> RegisterAsync([FromBody] RegisterRequest request,

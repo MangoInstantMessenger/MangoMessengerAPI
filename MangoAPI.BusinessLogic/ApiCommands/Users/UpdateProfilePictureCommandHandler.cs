@@ -1,8 +1,8 @@
 ﻿using System;
-using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 using MangoAPI.Application.Interfaces;
+using MangoAPI.Application.Services;
 using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.DataAccess.Database;
 using MangoAPI.Domain.Constants;
@@ -38,7 +38,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
 
             if (totalUploadedDocsCount > 10)
             {
-                const string message = ResponseMessageCodes.UploadedDocumentsLimitReached;
+                const string message = ResponseMessageCodes.UploadedDocumentsLimitReached10;
                 var details = ResponseMessageCodes.ErrorDictionary[message];
                 return _responseFactory.ConflictResponse(message, details);
             }
@@ -56,7 +56,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
             }
 
             var blobContainerName = EnvironmentConstants.MangoBlobContainer;
-            var uniqueFileName = GetUniqueFileName(request.PictureFile.FileName);
+            var uniqueFileName = StringService.GetUniqueFileName(request.PictureFile.FileName);
 
             await _blobService.UploadFileBlobAsync(uniqueFileName, request.PictureFile, blobContainerName);
 
@@ -79,15 +79,6 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
             var response = UpdateProfilePictureResponse.FromSuccess(newUserPictureUrl);
 
             return _responseFactory.SuccessResponse(response);
-        }
-
-        private static string GetUniqueFileName(string fileName)
-        {
-            fileName = Path.GetFileName(fileName);
-            return Path.GetFileNameWithoutExtension(fileName)
-                   + "_"
-                   + Guid.NewGuid()
-                   + Path.GetExtension(fileName);
         }
     }
 }

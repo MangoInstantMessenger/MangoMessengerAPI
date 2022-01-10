@@ -5,10 +5,10 @@ using Microsoft.AspNetCore.Http;
 
 namespace MangoAPI.BusinessLogic.ApiCommands.Communities
 {
-    public record UpdateChanelPictureCommand : IRequest<Result<UpdateChannelLogoResponse>>
+    public record UpdateChanelPictureCommand : IRequest<Result<UpdateChannelPictureResponse>>
     {
-        public Guid UserId { get; set; }
-        public Guid ChatId { get; set; }
-        public IFormFile NewGroupPicture { get; set; }
+        public Guid UserId { get; init; }
+        public Guid ChatId { get; init; }
+        public IFormFile NewGroupPicture { get; init; }
     }
 }

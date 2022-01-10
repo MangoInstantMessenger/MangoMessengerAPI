@@ -136,7 +136,7 @@ namespace MangoAPI.Presentation.Controllers
         [SwaggerOperation(
             Description = "Updates picture of particular channel.",
             Summary = "Updates picture of particular channel.")]
-        [ProducesResponseType(typeof(UpdateChannelLogoResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(UpdateChannelPictureResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
         public async Task<IActionResult> UpdateChannelPictureAsync([FromRoute] Guid chatId, IFormFile newGroupPicture,

@@ -3,13 +3,13 @@ using MangoAPI.Domain.Constants;
 
 namespace MangoAPI.BusinessLogic.ApiCommands.Communities
 {
-    public record UpdateChannelLogoResponse : ResponseBase<UpdateChannelLogoResponse>
+    public record UpdateChannelPictureResponse : ResponseBase<UpdateChannelPictureResponse>
     {
         public string UpdatedLogoUrl { get; init; }
 
-        public static UpdateChannelLogoResponse FromSuccess(string updateLogoUrl)
+        public static UpdateChannelPictureResponse FromSuccess(string updateLogoUrl)
         {
-            return new UpdateChannelLogoResponse
+            return new UpdateChannelPictureResponse
             {
                 Success = true,
                 Message = ResponseMessageCodes.Success,
