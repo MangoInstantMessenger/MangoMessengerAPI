@@ -92,6 +92,7 @@ namespace MangoAPI.Presentation.Controllers
         {
             var command = new LogoutCommand
             {
+                UserId = HttpContext.User.GetUserId(),
                 RefreshToken = refreshToken
             };
 

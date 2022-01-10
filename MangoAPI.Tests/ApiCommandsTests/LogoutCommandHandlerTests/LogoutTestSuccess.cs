@@ -25,7 +25,8 @@ namespace MangoAPI.Tests.ApiCommandsTests.LogoutCommandHandlerTests
             var handler = CreateHandler();
             var command = new LogoutCommand
             {
-                RefreshToken = _session.RefreshToken
+                RefreshToken = _session.RefreshToken,
+                UserId = _user.Id
             };
 
             var result = await handler.Handle(command, CancellationToken.None);
