@@ -19,6 +19,7 @@ namespace MangoAPI.Presentation.Extensions
             services.AddScoped<PasswordHashService>();
             services.AddAutoMapper(typeof(ApiControllerBase));
             services.AddScoped<IUserManagerService, UserManagerService>();
+            services.AddScoped<ISignInManagerService, SignInManagerService>();
 
             var blobConnection = EnvironmentConstants.MangoBlobUrl;
             services.AddSingleton(_ => new BlobServiceClient(blobConnection));

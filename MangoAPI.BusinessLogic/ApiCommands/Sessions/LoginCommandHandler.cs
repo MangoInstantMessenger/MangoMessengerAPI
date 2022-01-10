@@ -17,11 +17,11 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Sessions
     {
         private readonly IJwtGenerator _jwtGenerator;
         private readonly MangoPostgresDbContext _postgresDbContext;
-        private readonly SignInManager<UserEntity> _signInManager;
+        private readonly ISignInManagerService _signInManager;
         private readonly ResponseFactory<TokensResponse> _responseFactory;
 
         public LoginCommandHandler(
-            SignInManager<UserEntity> signInManager,
+            ISignInManagerService signInManager,
             IJwtGenerator jwtGenerator,
             MangoPostgresDbContext postgresDbContext,
             ResponseFactory<TokensResponse> responseFactory)
