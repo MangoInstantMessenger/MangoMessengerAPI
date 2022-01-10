@@ -6,6 +6,7 @@ using MangoAPI.BusinessLogic.HubConfig;
 using MangoAPI.BusinessLogic.Models;
 using MangoAPI.Domain.Entities;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.SignalR;
 using Moq;
 
@@ -88,6 +89,17 @@ namespace MangoAPI.Tests
                 x.GenerateJwtToken(It.IsAny<Guid>())
             ).Returns(It.IsAny<string>());
             return jwtGeneratorMock.Object;
+        }
+
+        public static IUserService GetUserServiceMock()
+        {
+            var userServiceMock = new Mock<IUserService>();
+            userServiceMock.Setup(x => x.CreateAsync(
+                It.IsAny<UserEntity>(),
+                It.IsAny<string>()))
+                .Returns(Task.FromResult(It.IsAny<IdentityResult>()));
+
+            return userServiceMock.Object;
         }
     }
 }
