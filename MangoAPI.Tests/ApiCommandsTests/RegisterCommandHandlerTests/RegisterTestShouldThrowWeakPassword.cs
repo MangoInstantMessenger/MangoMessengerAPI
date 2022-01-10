@@ -1,28 +1,29 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
-using FluentAssertions;
 using MangoAPI.BusinessLogic.ApiCommands.Users;
 using MangoAPI.BusinessLogic.Responses;
+using MangoAPI.Domain.Constants;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 using Xunit;
 
 namespace MangoAPI.Tests.ApiCommandsTests.RegisterCommandHandlerTests
 {
-    public class RegisterTestSuccess : ITestable<RegisterCommand, ResponseBase>
+    public class RegisterTestShouldThrowWeakPassword : ITestable<RegisterCommand, ResponseBase>
     {
         private readonly MangoDbFixture _mangoDbFixture = new();
         private readonly Assert<ResponseBase> _assert = new();
 
         [Fact]
-        public async Task RegisterTest_Success()
+        public async Task RegisterTestShouldThrow_WeakPassword()
         {
             Seed();
+            const string expectedMessage = ResponseMessageCodes.WeakPassword;
+            string expectedDetails = ResponseMessageCodes.ErrorDictionary[expectedMessage];
             var handler = CreateHandler();
 
             var result = await handler.Handle(_command, CancellationToken.None);
             
-            _assert.Pass(result);
+            _assert.Fail(result, expectedMessage, expectedDetails);
         }
         
         public bool Seed()
@@ -39,12 +40,12 @@ namespace MangoAPI.Tests.ApiCommandsTests.RegisterCommandHandlerTests
                 responseFactory);
             return handler;
         }
-
+        
         private readonly RegisterCommand _command = new()
         {
             Email = "kolosovp95@gmail.com",
             DisplayName = "Petro Kolosov",
-            Password = "Bm3-`dPRv-/w#3)cw^97",
+            Password = "123456",
             TermsAccepted = true
         };
     }

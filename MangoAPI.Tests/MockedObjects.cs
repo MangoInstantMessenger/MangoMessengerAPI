@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using MangoAPI.Application.Interfaces;
@@ -91,15 +92,33 @@ namespace MangoAPI.Tests
             return jwtGeneratorMock.Object;
         }
 
-        public static IUserService GetUserServiceMock()
+        public static IUserService GetUserServiceMock(string password)
         {
             var userServiceMock = new Mock<IUserService>();
-            userServiceMock.Setup(x => x.CreateAsync(
-                It.IsAny<UserEntity>(),
-                It.IsAny<string>()))
-                .Returns(Task.FromResult(It.IsAny<IdentityResult>()));
 
+            if (IsValidPassword(password))
+            {
+                userServiceMock.Setup(x => x.CreateAsync(
+                        It.IsAny<UserEntity>(),
+                        It.IsAny<string>()))
+                    .Returns(Task.FromResult(IdentityResult.Success));
+            }
+            else
+            {
+                userServiceMock.Setup(x => x.CreateAsync(
+                        It.IsAny<UserEntity>(),
+                        It.IsAny<string>()))
+                    .Returns(Task.FromResult(IdentityResult.Failed()));
+            }
+            
             return userServiceMock.Object;
+        }
+
+        private static bool IsValidPassword(string password)
+        {
+            return password.Length >= 8 && password.Any(char.IsDigit) 
+                   && password.Any(char.IsSymbol) && password.Any(char.IsUpper)
+                   && password.Any(char.IsLower);
         }
     }
 }
