@@ -4,7 +4,6 @@ using MangoAPI.DataAccess.Database;
 using MangoAPI.Domain.Constants;
 using MangoAPI.Domain.Entities;
 using MediatR;
-using Microsoft.AspNetCore.Identity;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
@@ -16,11 +15,11 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
     {
         private readonly IEmailSenderService _emailSenderService;
         private readonly MangoPostgresDbContext _postgresDbContext;
-        private readonly UserManager<UserEntity> _userManager;
+        private readonly IUserManagerService _userManager;
         private readonly ResponseFactory<ResponseBase> _responseFactory;
 
         public RegisterCommandHandler(
-            UserManager<UserEntity> userManager,
+            IUserManagerService userManager,
             MangoPostgresDbContext postgresDbContext,
             IEmailSenderService emailSenderService,
             ResponseFactory<ResponseBase> responseFactory)

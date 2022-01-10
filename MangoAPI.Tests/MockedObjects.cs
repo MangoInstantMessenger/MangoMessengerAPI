@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using MangoAPI.Application.Interfaces;
@@ -6,6 +7,7 @@ using MangoAPI.BusinessLogic.HubConfig;
 using MangoAPI.BusinessLogic.Models;
 using MangoAPI.Domain.Entities;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.SignalR;
 using Moq;
 
@@ -88,6 +90,35 @@ namespace MangoAPI.Tests
                 x.GenerateJwtToken(It.IsAny<Guid>())
             ).Returns(It.IsAny<string>());
             return jwtGeneratorMock.Object;
+        }
+
+        public static IUserManagerService GetUserServiceMock(string password)
+        {
+            var userServiceMock = new Mock<IUserManagerService>();
+
+            if (IsValidPassword(password))
+            {
+                userServiceMock.Setup(x => x.CreateAsync(
+                        It.IsAny<UserEntity>(),
+                        It.IsAny<string>()))
+                    .Returns(Task.FromResult(IdentityResult.Success));
+            }
+            else
+            {
+                userServiceMock.Setup(x => x.CreateAsync(
+                        It.IsAny<UserEntity>(),
+                        It.IsAny<string>()))
+                    .Returns(Task.FromResult(IdentityResult.Failed()));
+            }
+            
+            return userServiceMock.Object;
+        }
+
+        private static bool IsValidPassword(string password)
+        {
+            return password.Length >= 8 && password.Any(char.IsDigit) 
+                   && password.Any(char.IsSymbol) && password.Any(char.IsUpper)
+                   && password.Any(char.IsLower);
         }
     }
 }

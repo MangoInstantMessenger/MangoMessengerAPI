@@ -18,6 +18,7 @@ namespace MangoAPI.Presentation.Extensions
             services.AddScoped<IEmailSenderService, MailgunApiEmailSenderService>();
             services.AddScoped<PasswordHashService>();
             services.AddAutoMapper(typeof(ApiControllerBase));
+            services.AddScoped<IUserManagerService, UserManagerService>();
 
             var blobConnection = EnvironmentConstants.MangoBlobUrl;
             services.AddSingleton(_ => new BlobServiceClient(blobConnection));
