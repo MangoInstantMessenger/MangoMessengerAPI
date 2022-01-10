@@ -46,7 +46,8 @@ namespace MangoAPI.Domain.Constants
                 "You have reached maximum amount of documents upload 10. Try again in 1 hour."
             },
             {EmailIsNotVerified, "Your email is not verified. Check your inbox for confirmation link."},
-            {SessionNotFound, "Session not found."}
+            {SessionNotFound, "Session not found."},
+            {MessageNotFound, "Message doesn't found in the system"}
         };
 
         public const string Success = "SUCCESS";
@@ -78,5 +79,6 @@ namespace MangoAPI.Domain.Constants
         public const string UploadedDocumentsLimitReached10 = "UPLOADED_DOCUMENTS_LIMIT_REACHED";
         public const string EmailIsNotVerified = "EMAIL_IS_NOT_VERIFIED";
         public const string SessionNotFound = "SESSION_NOT_FOUND";
+        public const string MessageNotFound = "MESSAGE_NOT_FOUND";
     }
 }

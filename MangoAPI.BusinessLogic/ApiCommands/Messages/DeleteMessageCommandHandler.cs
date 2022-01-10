@@ -32,14 +32,24 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Messages
         public async Task<Result<DeleteMessageResponse>> Handle(DeleteMessageCommand request,
             CancellationToken cancellationToken)
         {
+            var isMessageExists = await _postgresDbContext.Messages
+                .AnyAsync(t => t.Id == request.MessageId, cancellationToken);
+            
+            if (!isMessageExists)
+            {
+                const string errorMessage = ResponseMessageCodes.MessageNotFound;
+                var errorDescription = ResponseMessageCodes.ErrorDictionary[errorMessage];
+
+                return _responseFactory.ConflictResponse(errorMessage, errorDescription);
+            }
+            
             var query = _postgresDbContext.UserChats
                 .Include(x => x.Chat)
                 .ThenInclude(x => x.Messages)
                 .ThenInclude(x => x.User)
                 .Where(x => x.ChatId == request.ChatId && x.UserId == request.UserId)
                 .Select(x => x.Chat)
-                .Where(x => x.Messages.Any(t => t.Id == request.MessageId));
-
+                .Where(x => isMessageExists);
 
             var chat = await query.FirstOrDefaultAsync(cancellationToken);
 
