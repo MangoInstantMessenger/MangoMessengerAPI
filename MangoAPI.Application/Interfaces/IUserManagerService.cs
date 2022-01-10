@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Identity;
 
 namespace MangoAPI.Application.Interfaces
 {
-    public interface IUserService
+    public interface IUserManagerService
     {
         Task<IdentityResult> CreateAsync(UserEntity user, string password);
     }

@@ -15,11 +15,11 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
     {
         private readonly IEmailSenderService _emailSenderService;
         private readonly MangoPostgresDbContext _postgresDbContext;
-        private readonly IUserService _userManager;
+        private readonly IUserManagerService _userManager;
         private readonly ResponseFactory<ResponseBase> _responseFactory;
 
         public RegisterCommandHandler(
-            IUserService userManager,
+            IUserManagerService userManager,
             MangoPostgresDbContext postgresDbContext,
             IEmailSenderService emailSenderService,
             ResponseFactory<ResponseBase> responseFactory)

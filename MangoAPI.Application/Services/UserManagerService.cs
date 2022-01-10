@@ -5,11 +5,11 @@ using Microsoft.AspNetCore.Identity;
 
 namespace MangoAPI.Application.Services
 {
-    public class UserService : IUserService
+    public class UserManagerService : IUserManagerService
     {
         private readonly UserManager<UserEntity> _userManager;
 
-        public UserService(UserManager<UserEntity> userManager)
+        public UserManagerService(UserManager<UserEntity> userManager)
         {
             _userManager = userManager;
         }

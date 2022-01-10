@@ -92,9 +92,9 @@ namespace MangoAPI.Tests
             return jwtGeneratorMock.Object;
         }
 
-        public static IUserService GetUserServiceMock(string password)
+        public static IUserManagerService GetUserServiceMock(string password)
         {
-            var userServiceMock = new Mock<IUserService>();
+            var userServiceMock = new Mock<IUserManagerService>();
 
             if (IsValidPassword(password))
             {
