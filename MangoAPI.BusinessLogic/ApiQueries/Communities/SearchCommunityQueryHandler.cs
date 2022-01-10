@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace MangoAPI.BusinessLogic.ApiQueries.Communities
 {
-    public class SearchCommunityQueryHandler 
+    public class SearchCommunityQueryHandler
         : IRequestHandler<SearchCommunityQuery, Result<SearchCommunityResponse>>
     {
         private readonly MangoPostgresDbContext _postgresDbContext;
@@ -27,32 +27,65 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Communities
         public async Task<Result<SearchCommunityResponse>> Handle(SearchCommunityQuery request,
             CancellationToken cancellationToken)
         {
-            var query = _postgresDbContext.Chats
-                .AsNoTracking()
-                .Where(x => 
-                    x.CommunityType == (int)CommunityType.PublicChannel || 
-                    x.CommunityType == (int)CommunityType.ReadOnlyChannel)
-                .Where(x => 
-                    request.DisplayName == null || 
-                    EF.Functions.ILike(x.Title, $"%{request.DisplayName}%"))
-                .Where(x => x.ChatUsers.All(u => u.UserId != request.UserId))
-                .Select(x => new Chat
-                {
-                    ChatId = x.Id,
-                    Title = x.Title,
-                    CommunityType = (CommunityType)x.CommunityType,
-                    ChatLogoImageUrl = x.Image != null
-                        ? $"{EnvironmentConstants.MangoBlobAccess}/{x.Image}"
-                        : null,
-                    Description = x.Description,
-                    MembersCount = x.MembersCount,
-                    IsArchived = false,
-                    IsMember = false,
-                    UpdatedAt = x.UpdatedAt,
-                    LastMessageAuthor = x.LastMessageAuthor,
-                    LastMessageText = x.LastMessageText,
-                    LastMessageTime = x.LastMessageTime,
-                }).Distinct();
+            IQueryable<Chat> query;
+
+            var isRelational = _postgresDbContext.Database.IsRelational();
+
+            // This IF-ELSE is workaround in order to complete test with in-memory database
+            if (isRelational)
+            {
+                query = _postgresDbContext.Chats
+                    .AsNoTracking()
+                    .Where(x =>
+                        x.CommunityType == (int) CommunityType.PublicChannel ||
+                        x.CommunityType == (int) CommunityType.ReadOnlyChannel)
+                    .Where(x => EF.Functions.ILike(x.Title, $"%{request.DisplayName}%"))
+                    .Select(x => new Chat
+                    {
+                        ChatId = x.Id,
+                        Title = x.Title,
+                        CommunityType = (CommunityType) x.CommunityType,
+                        ChatLogoImageUrl = x.Image != null
+                            ? $"{EnvironmentConstants.MangoBlobAccess}/{x.Image}"
+                            : null,
+                        Description = x.Description,
+                        MembersCount = x.MembersCount,
+                        IsArchived = false,
+                        IsMember = false,
+                        UpdatedAt = x.UpdatedAt,
+                        LastMessageAuthor = x.LastMessageAuthor,
+                        LastMessageText = x.LastMessageText,
+                        LastMessageTime = x.LastMessageTime,
+                        LastMessageId = x.LastMessageId
+                    }).Distinct();
+            }
+            else
+            {
+                query = _postgresDbContext.Chats
+                    .AsNoTracking()
+                    .Where(x =>
+                        x.CommunityType == (int) CommunityType.PublicChannel ||
+                        x.CommunityType == (int) CommunityType.ReadOnlyChannel)
+                    .Where(x => x.Title.Contains(request.DisplayName))
+                    .Select(x => new Chat
+                    {
+                        ChatId = x.Id,
+                        Title = x.Title,
+                        CommunityType = (CommunityType) x.CommunityType,
+                        ChatLogoImageUrl = x.Image != null
+                            ? $"{EnvironmentConstants.MangoBlobAccess}/{x.Image}"
+                            : null,
+                        Description = x.Description,
+                        MembersCount = x.MembersCount,
+                        IsArchived = false,
+                        IsMember = false,
+                        UpdatedAt = x.UpdatedAt,
+                        LastMessageAuthor = x.LastMessageAuthor,
+                        LastMessageText = x.LastMessageText,
+                        LastMessageTime = x.LastMessageTime,
+                        LastMessageId = x.LastMessageId
+                    }).Distinct();
+            }
 
             var chats = await query.Take(200).ToListAsync(cancellationToken);
 

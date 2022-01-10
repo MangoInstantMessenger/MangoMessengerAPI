@@ -1,8 +1,8 @@
 ﻿using System;
-using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 using MangoAPI.Application.Interfaces;
+using MangoAPI.Application.Services;
 using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.DataAccess.Database;
 using MangoAPI.Domain.Constants;
@@ -35,16 +35,16 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Documents
             var totalUploadedDocsCount = await _postgresDbContext.Documents.CountAsync(x =>
                 x.UserId == request.UserId &&
                 x.UploadedAt > DateTime.Now.AddHours(-1), cancellationToken);
-            
+
             if (totalUploadedDocsCount > 10)
             {
-                const string message = ResponseMessageCodes.UploadedDocumentsLimitReached;
+                const string message = ResponseMessageCodes.UploadedDocumentsLimitReached10;
                 var details = ResponseMessageCodes.ErrorDictionary[message];
                 return _responseFactory.ConflictResponse(message, details);
             }
-            
+
             var blobContainerName = EnvironmentConstants.MangoBlobContainer;
-            var uniqueFileName = GetUniqueFileName(request.FormFile.FileName);
+            var uniqueFileName = StringService.GetUniqueFileName(request.FormFile.FileName);
 
             await _blobService.UploadFileBlobAsync(uniqueFileName, request.FormFile, blobContainerName);
 
@@ -63,15 +63,6 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Documents
 
             return _responseFactory.SuccessResponse(
                 UploadDocumentResponse.FromSuccess(documentEntity.FileName, fileUrl));
-        }
-
-        private static string GetUniqueFileName(string fileName)
-        {
-            fileName = Path.GetFileName(fileName);
-            return Path.GetFileNameWithoutExtension(fileName)
-                   + "_"
-                   + Guid.NewGuid()
-                   + Path.GetExtension(fileName);
         }
     }
 }

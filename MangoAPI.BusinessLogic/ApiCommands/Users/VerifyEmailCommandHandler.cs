@@ -1,11 +1,9 @@
-﻿using System;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.DataAccess.Database;
 using MangoAPI.Domain.Constants;
 using MediatR;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace MangoAPI.BusinessLogic.ApiCommands.Users
@@ -55,17 +53,6 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
             }
 
             user.EmailConfirmed = true;
-
-            var role = new IdentityUserRole<Guid>
-            {
-                UserId = user.Id,
-                RoleId = SeedDataConstants.UserRoleId,
-            };
-
-            if (!user.PhoneNumberConfirmed)
-            {
-                _postgresDbContext.UserRoles.Add(role);
-            }
 
             _postgresDbContext.Update(user);
 

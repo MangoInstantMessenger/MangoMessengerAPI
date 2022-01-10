@@ -2,7 +2,7 @@
 
 namespace MangoAPI.BusinessLogic.Responses
 {
-    public record Result<TResponse>
+    public record Result<TResponse> where TResponse : ResponseBase
     {
         public TResponse Response { get; init; }
 

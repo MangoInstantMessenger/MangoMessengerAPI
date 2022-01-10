@@ -16,6 +16,6 @@ namespace MangoAPI.Presentation.Interfaces
 
         Task<IActionResult> EditMessage(EditMessageRequest request, CancellationToken cancellationToken);
 
-        Task<IActionResult> DeleteMessage(Guid messageId, CancellationToken cancellationToken);
+        Task<IActionResult> DeleteMessage(DeleteMessageRequest request, CancellationToken cancellationToken);
     }
 }

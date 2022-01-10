@@ -27,6 +27,8 @@ namespace MangoAPI.Domain.Entities
 
         public string LastMessageTime { get; set; }
 
+        public Guid? LastMessageId { get; set; }
+
         public ICollection<MessageEntity> Messages { get; set; }
 
         public ICollection<UserChatEntity> ChatUsers { get; set; }

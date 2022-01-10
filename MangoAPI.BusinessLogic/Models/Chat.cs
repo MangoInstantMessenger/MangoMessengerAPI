@@ -42,9 +42,12 @@ namespace MangoAPI.BusinessLogic.Models
 
         [DefaultValue("10:21 PM")]
         public string LastMessageTime { get; init; }
+        
+        [DefaultValue("12aed827-bn8c-47de-ac81-78641210918f")]
+        public Guid? LastMessageId { get; set; }
 
         [DefaultValue("10/02/2021")]
-        public DateTime? UpdatedAt { get; set; }
+        public DateTime? UpdatedAt { get; init; }
 
         public override string ToString()
         {

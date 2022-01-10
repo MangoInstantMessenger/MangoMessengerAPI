@@ -5,7 +5,6 @@ using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.Presentation.Extensions;
 using MangoAPI.Presentation.Interfaces;
 using MediatR;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -21,7 +20,6 @@ namespace MangoAPI.Presentation.Controllers
     /// </summary>
     [ApiController]
     [Route("api/users")]
-    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class UsersController : ApiControllerBase, IUsersController
     {
         public UsersController(IMediator mediator, IMapper mapper) : base(mediator, mapper)
@@ -29,23 +27,17 @@ namespace MangoAPI.Presentation.Controllers
         }
 
         /// <summary>
-        /// Registers user in the system.
-        /// Does not require any authorization or users role.
-        /// After registration user receives pair of access/refresh tokens.
-        /// Access token claim role is Unverified.
+        /// Registers user in the system. Then sends verification email.
         /// </summary>
         /// <param name="request">Request instance.</param>
         /// <param name="cancellationToken">Cancellation token instance.</param>
         /// <returns>Possible codes: 200, 400, 409.</returns>
         [HttpPost]
         [AllowAnonymous]
-        [SwaggerOperation(Description =
-                "Registers user in the system. " +
-                "Does not require any authorization or users role. " +
-                "After registration user receives pair of access/refresh tokens. " +
-                "Access token claim role is Unverified. ",
+        [SwaggerOperation(
+            Description = "Registers user in the system. Then sends verification email.",
             Summary = "Registers user in the system.")]
-        [ProducesResponseType(typeof(TokensResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ResponseBase), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
         public async Task<IActionResult> RegisterAsync([FromBody] RegisterRequest request,
@@ -56,18 +48,15 @@ namespace MangoAPI.Presentation.Controllers
         }
 
         /// <summary>
-        /// Confirms user's email address. Adds a User role to the current user.
-        /// This endpoint may be accessed by both roles: Unverified, User.
-        /// On refresh session user receives new access token with updated roles.
+        /// Confirms user's email address.
         /// </summary>
         /// <param name="request">VerifyEmailRequest instance.</param>
         /// <param name="cancellationToken">CancellationToken instance.</param>
         /// <returns>Possible codes: 200, 400, 409.</returns>
         [HttpPut("email-confirmation")]
-        [Authorize(Roles = "Unverified, User")]
-        [SwaggerOperation(Description = "Confirms user's email address. Adds a User role to the current user. " +
-                                        "This endpoint may be accessed by both roles: Unverified, User. " +
-                                        "On refresh session user receives new access token with updated roles.",
+        [AllowAnonymous]
+        [SwaggerOperation(
+            Description = "Confirms user's email address.",
             Summary = "Confirms user's email address.")]
         [ProducesResponseType(typeof(ResponseBase), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
@@ -80,14 +69,15 @@ namespace MangoAPI.Presentation.Controllers
         }
 
         /// <summary>
-        /// Changes password by current password. Required role: User.
+        /// Changes password by current password.
         /// </summary>
         /// <param name="request">Request instance.</param>
         /// <param name="cancellationToken">Cancellation Token Instance.</param>
         /// <returns></returns>
         [HttpPut("password")]
-        [Authorize(Roles = "User")]
-        [SwaggerOperation(Description = "Changes password by current password. Required role: User",
+        [Authorize]
+        [SwaggerOperation(
+            Description = "Changes password by current password.",
             Summary = "Changes password by current password.")]
         [ProducesResponseType(typeof(ResponseBase), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
@@ -104,14 +94,15 @@ namespace MangoAPI.Presentation.Controllers
         }
 
         /// <summary>
-        /// Gets user by ID. Requires role: User.
+        /// Gets user by ID.
         /// </summary>
         /// <param name="userId">ID of the user to get, UUID.</param>
         /// <param name="cancellationToken">CancellationToken instance.</param>
         /// <returns>Possible codes: 200, 400, 409.</returns>
         [HttpGet("{userId:guid}")]
-        [Authorize(Roles = "User")]
-        [SwaggerOperation(Description = "Gets user by ID. Requires role: User.",
+        [Authorize]
+        [SwaggerOperation(
+            Description = "Gets user by ID.",
             Summary = "Gets user by ID.")]
         [ProducesResponseType(typeof(GetUserResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
@@ -127,14 +118,15 @@ namespace MangoAPI.Presentation.Controllers
         }
 
         /// <summary>
-        /// Updates user's social network user names. Requires role: User.
+        /// Updates user's social network user names.
         /// </summary>
         /// <param name="request">UpdateUserSocialInformationRequest instance.</param>
         /// <param name="cancellationToken">CancellationToken instance.</param>
         /// <returns></returns>
         [HttpPut("socials")]
-        [Authorize(Roles = "User")]
-        [SwaggerOperation(Description = "Updates user's social network user names. Requires role: User.",
+        [Authorize]
+        [SwaggerOperation(
+            Description = "Updates user's social network user names.",
             Summary = "Updates user's social network user names.")]
         [ProducesResponseType(typeof(ResponseBase), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
@@ -152,14 +144,15 @@ namespace MangoAPI.Presentation.Controllers
         }
 
         /// <summary>
-        /// Updates user's personal account information. Requires role: User.
+        /// Updates user's personal account information.
         /// </summary>
         /// <param name="request">UpdateUserInformationRequest instance.</param>
         /// <param name="cancellationToken">CancellationToken instance.</param>
         /// <returns>Possible codes: 200, 400, 409.</returns>
         [HttpPut("account")]
-        [Authorize(Roles = "User")]
-        [SwaggerOperation(Description = "Updates user's personal account information. Requires role: User.",
+        [Authorize]
+        [SwaggerOperation(
+            Description = "Updates user's personal account information.",
             Summary = "Updates user's personal account information.")]
         [ProducesResponseType(typeof(ResponseBase), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
@@ -176,8 +169,9 @@ namespace MangoAPI.Presentation.Controllers
         }
 
         [HttpPost("picture")]
-        [Authorize(Roles = "User")]
-        [SwaggerOperation(Description = "Updates user's profile picture. Requires role: User.",
+        [Authorize]
+        [SwaggerOperation(
+            Description = "Updates user's profile picture. Accepted formats .JPG, .PNG with size up to 2MB.",
             Summary = "Updates user's profile picture.")]
         [ProducesResponseType(typeof(UpdateProfilePictureResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]

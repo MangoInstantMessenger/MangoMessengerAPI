@@ -18,7 +18,9 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Sessions
         private readonly MangoPostgresDbContext _postgresDbContext;
         private readonly ResponseFactory<TokensResponse> _responseFactory;
 
-        public RefreshSessionCommandHandler(MangoPostgresDbContext postgresDbContext, IJwtGenerator jwtGenerator,
+        public RefreshSessionCommandHandler(
+            MangoPostgresDbContext postgresDbContext,
+            IJwtGenerator jwtGenerator,
             ResponseFactory<TokensResponse> responseFactory)
         {
             _postgresDbContext = postgresDbContext;
@@ -56,32 +58,17 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Sessions
                     break;
             }
 
-            var refreshLifetime = EnvironmentConstants.MangoRefreshTokenLifetime;
-
-            if (refreshLifetime == null || !int.TryParse(refreshLifetime, out var refreshLifetimeParsed))
-            {
-                const string errorMessage = ResponseMessageCodes.RefreshTokenLifeTimeError;
-                var details = ResponseMessageCodes.ErrorDictionary[errorMessage];
-
-                return _responseFactory.ConflictResponse(errorMessage, details);
-            }
+            const int refreshLifetime = EnvironmentConstants.MangoRefreshTokenLifetime;
 
             var newSession = new SessionEntity
             {
                 RefreshToken = Guid.NewGuid(),
                 UserId = session.UserId,
-                ExpiresAt = DateTime.UtcNow.AddDays(refreshLifetimeParsed),
+                ExpiresAt = DateTime.UtcNow.AddDays(refreshLifetime),
                 CreatedAt = DateTime.UtcNow,
             };
 
-            var rolesQuery = from userRole in _postgresDbContext.UserRoles.AsNoTracking()
-                join role in _postgresDbContext.Roles on userRole.RoleId equals role.Id
-                where userRole.UserId == session.UserId
-                select role.Name;
-
-            var roles = await rolesQuery.ToListAsync(cancellationToken);
-
-            var jwtToken = _jwtGenerator.GenerateJwtToken(session.UserId, roles);
+            var jwtToken = _jwtGenerator.GenerateJwtToken(session.UserId);
 
             _postgresDbContext.Sessions.Add(newSession);
             await _postgresDbContext.SaveChangesAsync(cancellationToken);

@@ -13,7 +13,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Communities
 
         public static CreateCommunityResponse FromSuccess(ChatEntity chatEntity)
         {
-            return new ()
+            return new CreateCommunityResponse
             {
                 ChatId = chatEntity.Id,
                 Message = ResponseMessageCodes.Success,
