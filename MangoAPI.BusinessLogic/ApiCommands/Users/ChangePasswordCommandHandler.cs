@@ -1,5 +1,6 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
+using MangoAPI.Application.Interfaces;
 using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.DataAccess.Database;
 using MangoAPI.Domain.Constants;
@@ -14,11 +15,11 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users
         : IRequestHandler<ChangePasswordCommand, Result<ResponseBase>>
     {
         private readonly MangoPostgresDbContext _postgresDbContext;
-        private readonly UserManager<UserEntity> _userManager;
+        private readonly IUserManagerService _userManager;
         private readonly ResponseFactory<ResponseBase> _responseFactory;
 
         public ChangePasswordCommandHandler(MangoPostgresDbContext postgresDbContext,
-            UserManager<UserEntity> userManager, ResponseFactory<ResponseBase> responseFactory)
+            IUserManagerService userManager, ResponseFactory<ResponseBase> responseFactory)
         {
             _postgresDbContext = postgresDbContext;
             _userManager = userManager;
