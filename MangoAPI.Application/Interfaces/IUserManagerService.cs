@@ -11,5 +11,7 @@ namespace MangoAPI.Application.Interfaces
         Task<IdentityResult> RemovePasswordAsync(UserEntity user);
 
         Task<IdentityResult> AddPasswordAsync(UserEntity user, string password);
+
+        Task<bool> CheckPasswordAsync(UserEntity user, string password);
     }
 }

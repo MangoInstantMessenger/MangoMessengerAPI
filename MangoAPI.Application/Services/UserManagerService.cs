@@ -34,5 +34,12 @@ namespace MangoAPI.Application.Services
 
             return result;
         }
+
+        public async Task<bool> CheckPasswordAsync(UserEntity user, string password)
+        {
+            var result = await _userManager.CheckPasswordAsync(user, password);
+
+            return result;
+        }
     }
 }

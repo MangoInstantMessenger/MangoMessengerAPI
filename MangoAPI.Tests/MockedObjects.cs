@@ -111,6 +111,11 @@ namespace MangoAPI.Tests
                         It.IsAny<UserEntity>(),
                         It.IsAny<string>()))
                     .Returns(Task.FromResult(IdentityResult.Success));
+
+                userServiceMock.Setup(x => x.CheckPasswordAsync(
+                    It.IsAny<UserEntity>(),
+                    It.IsAny<string>()))
+                    .Returns(Task.FromResult(true));
             }
             else
             {
@@ -127,8 +132,33 @@ namespace MangoAPI.Tests
                         It.IsAny<UserEntity>(),
                         It.IsAny<string>()))
                     .Returns(Task.FromResult(IdentityResult.Failed()));
+                
+                userServiceMock.Setup(x => x.CheckPasswordAsync(
+                        It.IsAny<UserEntity>(),
+                        It.IsAny<string>()))
+                    .Returns(Task.FromResult(false));
             }
             
+            return userServiceMock.Object;
+        }
+        
+        public static IUserManagerService GetUserServiceMock()
+        {
+            var userServiceMock = new Mock<IUserManagerService>();
+            userServiceMock.Setup(x => x.RemovePasswordAsync(
+                    It.IsAny<UserEntity>()))
+                .Returns(Task.FromResult(IdentityResult.Success));
+                
+            userServiceMock.Setup(x => x.AddPasswordAsync(
+                    It.IsAny<UserEntity>(),
+                    It.IsAny<string>()))
+                .Returns(Task.FromResult(IdentityResult.Failed()));
+
+            userServiceMock.Setup(x => x.CheckPasswordAsync(
+                    It.IsAny<UserEntity>(),
+                    It.IsAny<string>()))
+                .Returns(Task.FromResult(true));
+
             return userServiceMock.Object;
         }
 
