@@ -20,5 +20,19 @@ namespace MangoAPI.Application.Services
 
             return result;
         }
+
+        public async Task<IdentityResult> RemovePasswordAsync(UserEntity user)
+        {
+            var result = await _userManager.RemovePasswordAsync(user);
+
+            return result;
+        }
+
+        public async Task<IdentityResult> AddPasswordAsync(UserEntity user, string password)
+        {
+            var result = await _userManager.AddPasswordAsync(user, password);
+
+            return result;
+        }
     }
 }

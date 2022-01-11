@@ -1,11 +1,10 @@
 ﻿using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.DataAccess.Database;
 using MangoAPI.Domain.Constants;
-using MangoAPI.Domain.Entities;
 using MediatR;
-using Microsoft.AspNetCore.Identity;
 using System.Threading;
 using System.Threading.Tasks;
+using MangoAPI.Application.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 namespace MangoAPI.BusinessLogic.ApiCommands.PasswordRestoreRequests
@@ -14,11 +13,13 @@ namespace MangoAPI.BusinessLogic.ApiCommands.PasswordRestoreRequests
         : IRequestHandler<PasswordRestoreCommand, Result<ResponseBase>>
     {
         private readonly MangoPostgresDbContext _postgresDbContext;
-        private readonly UserManager<UserEntity> _userManager;
+        private readonly IUserManagerService _userManager;
         private readonly ResponseFactory<ResponseBase> _responseFactory;
 
-        public PasswordRestoreCommandHandler(MangoPostgresDbContext postgresDbContext,
-            UserManager<UserEntity> userManager, ResponseFactory<ResponseBase> responseFactory)
+        public PasswordRestoreCommandHandler(
+            MangoPostgresDbContext postgresDbContext,
+            IUserManagerService userManager,
+            ResponseFactory<ResponseBase> responseFactory)
         {
             _postgresDbContext = postgresDbContext;
             _userManager = userManager;
@@ -43,7 +44,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.PasswordRestoreRequests
             var user = await _postgresDbContext.Users
                 .FirstOrDefaultAsync(entity => entity.Id == restorePasswordRequest.UserId, cancellationToken);
 
-            if (user is null)
+            if (user == null)
             {
                 const string errorMessage = ResponseMessageCodes.UserNotFound;
                 var errorDescription = ResponseMessageCodes.ErrorDictionary[errorMessage];
@@ -62,7 +63,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.PasswordRestoreRequests
 
                 return _responseFactory.ConflictResponse(errorMessage, errorDescription);
             }
-            
+
             _postgresDbContext.PasswordRestoreRequests.Remove(restorePasswordRequest);
 
             await _postgresDbContext.SaveChangesAsync(cancellationToken);

@@ -102,10 +102,28 @@ namespace MangoAPI.Tests
                         It.IsAny<UserEntity>(),
                         It.IsAny<string>()))
                     .Returns(Task.FromResult(IdentityResult.Success));
+                
+                userServiceMock.Setup(x => x.RemovePasswordAsync(
+                    It.IsAny<UserEntity>()))
+                    .Returns(Task.FromResult(IdentityResult.Success));
+                
+                userServiceMock.Setup(x => x.AddPasswordAsync(
+                        It.IsAny<UserEntity>(),
+                        It.IsAny<string>()))
+                    .Returns(Task.FromResult(IdentityResult.Success));
             }
             else
             {
                 userServiceMock.Setup(x => x.CreateAsync(
+                        It.IsAny<UserEntity>(),
+                        It.IsAny<string>()))
+                    .Returns(Task.FromResult(IdentityResult.Failed()));
+                
+                userServiceMock.Setup(x => x.RemovePasswordAsync(
+                        It.IsAny<UserEntity>()))
+                    .Returns(Task.FromResult(IdentityResult.Failed()));
+                
+                userServiceMock.Setup(x => x.AddPasswordAsync(
                         It.IsAny<UserEntity>(),
                         It.IsAny<string>()))
                     .Returns(Task.FromResult(IdentityResult.Failed()));
@@ -145,7 +163,5 @@ namespace MangoAPI.Tests
                    && password.Any(char.IsSymbol) && password.Any(char.IsUpper)
                    && password.Any(char.IsLower);
         }
-        
-        
     }
 }
