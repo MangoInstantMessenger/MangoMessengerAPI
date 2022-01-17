@@ -3,7 +3,6 @@ using MangoAPI.BusinessLogic.Models;
 using MangoAPI.DataAccess.Database;
 using MangoAPI.Domain.Constants;
 using MangoAPI.Domain.Entities;
-using MangoAPI.Domain.Enums;
 using MediatR;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
@@ -78,14 +77,6 @@ public class SendMessageCommandHandler
         if (messageCount >= 100)
         {
             const string errorMessage = ResponseMessageCodes.MaximumMessageCountInLast5MinutesExceeded100;
-            var errorDescription = ResponseMessageCodes.ErrorDictionary[errorMessage];
-
-            return _responseFactory.ConflictResponse(errorMessage, errorDescription);
-        }
-
-        if (userChat.Chat.CommunityType == (int) CommunityType.ReadOnlyChannel)
-        {
-            const string errorMessage = ResponseMessageCodes.PermissionDenied;
             var errorDescription = ResponseMessageCodes.ErrorDictionary[errorMessage];
 
             return _responseFactory.ConflictResponse(errorMessage, errorDescription);

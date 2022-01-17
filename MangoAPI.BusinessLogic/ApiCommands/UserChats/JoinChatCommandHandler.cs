@@ -40,9 +40,7 @@ public class JoinChatCommandHandler : IRequestHandler<JoinChatCommand, Result<Re
         }
 
         var chat = await _postgresDbContext.Chats
-            .Where(chatEntity =>
-                chatEntity.CommunityType != (int) CommunityType.DirectChat &&
-                chatEntity.CommunityType != (int) CommunityType.PrivateChannel)
+            .Where(chatEntity => chatEntity.CommunityType != (int) CommunityType.DirectChat)
             .FirstOrDefaultAsync(chatEntity => chatEntity.Id == request.ChatId, cancellationToken);
 
         if (chat == null)

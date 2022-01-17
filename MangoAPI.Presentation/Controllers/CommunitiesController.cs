@@ -61,8 +61,8 @@ public class CommunitiesController : ApiControllerBase, ICommunitiesController
     [HttpPost("channel")]
     [SwaggerOperation(
         Description =
-            "Creates new group of specified type: Private Channel (3), Public Channel (4), Readonly Channel (5).",
-        Summary = "Creates new group of specified type.")]
+            "Creates new group of specified type: Public Channel (2).",
+        Summary = "Creates new group of specified type: Public Channel (2).")]
     [ProducesResponseType(typeof(CreateCommunityResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
@@ -83,8 +83,8 @@ public class CommunitiesController : ApiControllerBase, ICommunitiesController
     /// <returns>Possible codes: 200, 400, 409.</returns>
     [HttpPost("chat")]
     [SwaggerOperation(
-        Description = "Creates new chat with specified user. Chat types: Direct Chat (1), Secret Chat (2).",
-        Summary = "Creates new chat with specified user.")]
+        Description = "Creates new chat with specified user with type of: Direct Chat (1)",
+        Summary = "Creates new chat with specified user by user ID.")]
     [ProducesResponseType(typeof(CreateCommunityResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]

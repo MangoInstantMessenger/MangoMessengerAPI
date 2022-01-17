@@ -36,9 +36,7 @@ public class SearchCommunityQueryHandler
         {
             query = _postgresDbContext.Chats
                 .AsNoTracking()
-                .Where(x =>
-                    x.CommunityType == (int) CommunityType.PublicChannel ||
-                    x.CommunityType == (int) CommunityType.ReadOnlyChannel)
+                .Where(x => x.CommunityType == (int) CommunityType.PublicChannel)
                 .Where(x => EF.Functions.ILike(x.Title, $"%{request.DisplayName}%"))
                 .Select(x => new Chat
                 {
@@ -63,9 +61,7 @@ public class SearchCommunityQueryHandler
         {
             query = _postgresDbContext.Chats
                 .AsNoTracking()
-                .Where(x =>
-                    x.CommunityType == (int) CommunityType.PublicChannel ||
-                    x.CommunityType == (int) CommunityType.ReadOnlyChannel)
+                .Where(x => x.CommunityType == (int) CommunityType.PublicChannel)
                 .Where(x => x.Title.Contains(request.DisplayName))
                 .Select(x => new Chat
                 {
