@@ -14,7 +14,7 @@ namespace MangoAPI.Tests.ApiCommandsTests.EditMessageCommandHandlerTests
 {
     public class EditMessageShouldThrowMessageNotFound : ITestable<EditMessageCommand, ResponseBase>
     {
-        private readonly MangoDbFixture _mangoDbFixture = new MangoDbFixture();
+        private readonly MangoDbFixture _mangoDbFixture = new();
         private readonly Assert<ResponseBase> _assert = new();
 
         [Fact]

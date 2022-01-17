@@ -50,7 +50,7 @@ namespace MangoAPI.Tests.ApiCommandsTests.SendMessageCommandHandlerTests
                     UserId = SeedDataConstants.RazumovskyId,
                     ChatId = SeedDataConstants.ExtremeCodeMainId,
                     Content = $"Message # {i + 1}",
-                    CreatedAt = DateTime.Now
+                    CreatedAt = DateTime.UtcNow
                 });
             }
 

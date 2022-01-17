@@ -13,7 +13,7 @@ namespace MangoAPI.Tests.ApiCommandsTests.CreateChatCommandHandlerTests
 {
     public class CreateChatShouldThrowCannotCreateSelfChat : ITestable<CreateChatCommand, CreateCommunityResponse>
     {
-        private readonly MangoDbFixture _mangoDbFixture = new MangoDbFixture();
+        private readonly MangoDbFixture _mangoDbFixture = new();
         private readonly Assert<CreateCommunityResponse> _assert = new();
 
         [Fact]

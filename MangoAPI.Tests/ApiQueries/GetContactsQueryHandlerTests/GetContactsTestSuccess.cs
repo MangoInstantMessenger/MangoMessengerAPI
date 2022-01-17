@@ -82,12 +82,12 @@ namespace MangoAPI.Tests.ApiQueries.GetContactsQueryHandlerTests
             Image = "razumovsky_picture.jpg"
         };
 
-        private readonly UserContactEntity _contact = new UserContactEntity
+        private readonly UserContactEntity _contact = new()
         {
             Id = Guid.NewGuid(),
             UserId = SeedDataConstants.KhachaturId,
             ContactId = SeedDataConstants.RazumovskyId,
-            CreatedAt = DateTime.Now
+            CreatedAt = DateTime.UtcNow
         };
     }
 }

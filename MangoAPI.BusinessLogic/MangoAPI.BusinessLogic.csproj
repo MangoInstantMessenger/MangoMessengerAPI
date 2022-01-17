@@ -6,78 +6,81 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\MangoAPI.Application\MangoAPI.Application.csproj" />
-        <ProjectReference Include="..\MangoAPI.DataAccess\MangoAPI.DataAccess.csproj" />
-        <ProjectReference Include="..\MangoAPI.Domain\MangoAPI.Domain.csproj" />
+        <ProjectReference Include="..\MangoAPI.Application\MangoAPI.Application.csproj"/>
+        <ProjectReference Include="..\MangoAPI.DataAccess\MangoAPI.DataAccess.csproj"/>
+        <ProjectReference Include="..\MangoAPI.Domain\MangoAPI.Domain.csproj"/>
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="Azure.Core" Version="1.22.0" />
-        <PackageReference Include="Azure.Storage.Blobs" Version="12.10.0" />
-        <PackageReference Include="Azure.Storage.Common" Version="12.9.0" />
-        <PackageReference Include="FluentValidation" Version="10.3.6" />
-        <PackageReference Include="MediatR" Version="10.0.1" />
-        <PackageReference Include="Microsoft.AspNetCore.Authentication" Version="2.2.0" />
-        <PackageReference Include="Microsoft.AspNetCore.Authentication.Abstractions" Version="2.2.0" />
-        <PackageReference Include="Microsoft.AspNetCore.Authentication.Cookies" Version="2.2.0" />
-        <PackageReference Include="Microsoft.AspNetCore.Authentication.Core" Version="2.2.0" />
-        <PackageReference Include="Microsoft.AspNetCore.Authorization" Version="6.0.1" />
-        <PackageReference Include="Microsoft.AspNetCore.Connections.Abstractions" Version="6.0.1" />
-        <PackageReference Include="Microsoft.AspNetCore.Cryptography.Internal" Version="6.0.1" />
-        <PackageReference Include="Microsoft.AspNetCore.Cryptography.KeyDerivation" Version="6.0.1" />
-        <PackageReference Include="Microsoft.AspNetCore.DataProtection" Version="6.0.1" />
-        <PackageReference Include="Microsoft.AspNetCore.DataProtection.Abstractions" Version="6.0.1" />
-        <PackageReference Include="Microsoft.AspNetCore.Hosting.Abstractions" Version="2.2.0" />
-        <PackageReference Include="Microsoft.AspNetCore.Hosting.Server.Abstractions" Version="2.2.0" />
-        <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.2.2" />
-        <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.2.0" />
-        <PackageReference Include="Microsoft.AspNetCore.Http.Extensions" Version="2.2.0" />
-        <PackageReference Include="Microsoft.AspNetCore.Http.Features" Version="5.0.13" />
-        <PackageReference Include="Microsoft.AspNetCore.Metadata" Version="6.0.1" />
-        <PackageReference Include="Microsoft.AspNetCore.SignalR.Common" Version="6.0.1" />
-        <PackageReference Include="Microsoft.AspNetCore.SignalR.Core" Version="1.1.0" />
-        <PackageReference Include="Microsoft.AspNetCore.SignalR.Protocols.Json" Version="6.0.1" />
-        <PackageReference Include="Microsoft.AspNetCore.WebUtilities" Version="2.2.0" />
-        <PackageReference Include="Microsoft.Bcl.AsyncInterfaces" Version="6.0.0" />
-        <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="6.0.0" />
-        <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="6.0.0" />
-        <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="6.0.0" />
-        <PackageReference Include="Microsoft.Extensions.Features" Version="6.0.1" />
-        <PackageReference Include="Microsoft.Extensions.FileProviders.Abstractions" Version="6.0.0" />
-        <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="6.0.0" />
-        <PackageReference Include="Microsoft.Extensions.Identity.Core" Version="6.0.1" />
-        <PackageReference Include="Microsoft.Extensions.Logging" Version="6.0.0" />
-        <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="6.0.0" />
-        <PackageReference Include="Microsoft.Extensions.ObjectPool" Version="6.0.1" />
-        <PackageReference Include="Microsoft.Extensions.Options" Version="6.0.0" />
-        <PackageReference Include="Microsoft.Extensions.Primitives" Version="6.0.0" />
-        <PackageReference Include="Microsoft.Extensions.WebEncoders" Version="6.0.1" />
-        <PackageReference Include="Microsoft.Net.Http.Headers" Version="2.2.8" />
-        <PackageReference Include="Microsoft.NETCore.Platforms" Version="6.0.1" />
-        <PackageReference Include="Microsoft.NETCore.Targets" Version="5.0.0" />
-        <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
-        <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.2.0" />
-        <PackageReference Include="System.Buffers" Version="4.5.1" />
-        <PackageReference Include="System.Diagnostics.DiagnosticSource" Version="6.0.0" />
-        <PackageReference Include="System.Formats.Asn1" Version="6.0.0" />
-        <PackageReference Include="System.IO" Version="4.3.0" />
-        <PackageReference Include="System.IO.Pipelines" Version="6.0.1" />
-        <PackageReference Include="System.Memory.Data" Version="6.0.0" />
-        <PackageReference Include="System.Numerics.Vectors" Version="4.5.0" />
-        <PackageReference Include="System.Reflection" Version="4.3.0" />
-        <PackageReference Include="System.Reflection.Emit" Version="4.7.0" />
-        <PackageReference Include="System.Reflection.Primitives" Version="4.3.0" />
-        <PackageReference Include="System.Runtime" Version="4.3.1" />
-        <PackageReference Include="System.Runtime.CompilerServices.Unsafe" Version="6.0.0" />
-        <PackageReference Include="System.Security.AccessControl" Version="6.0.0" />
-        <PackageReference Include="System.Security.Cryptography.Pkcs" Version="6.0.0" />
-        <PackageReference Include="System.Security.Cryptography.Xml" Version="6.0.0" />
-        <PackageReference Include="System.Text.Encoding" Version="4.3.0" />
-        <PackageReference Include="System.Text.Encodings.Web" Version="6.0.0" />
-        <PackageReference Include="System.Text.Json" Version="6.0.1" />
-        <PackageReference Include="System.Threading.Channels" Version="6.0.0" />
-        <PackageReference Include="System.Threading.Tasks" Version="4.3.0" />
-        <PackageReference Include="System.Threading.Tasks.Extensions" Version="4.5.4" />
+        <!-- Explicit packages -->
+        <PackageReference Include="Azure.Storage.Blobs" Version="12.10.0"/>
+        <PackageReference Include="FluentValidation" Version="10.3.6"/>
+        <PackageReference Include="MediatR" Version="10.0.1"/>
+        <PackageReference Include="Microsoft.AspNetCore.SignalR.Core" Version="1.1.0"/>
+        <PackageReference Include="Newtonsoft.Json" Version="13.0.1"/>
+        <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.2.0"/>
+
+        <!-- Previously Implicit packages -->
+        <PackageReference Include="Azure.Core" Version="1.22.0"/>
+        <PackageReference Include="Azure.Storage.Common" Version="12.9.0"/>
+        <PackageReference Include="Microsoft.AspNetCore.Authentication" Version="2.2.0"/>
+        <PackageReference Include="Microsoft.AspNetCore.Authentication.Abstractions" Version="2.2.0"/>
+        <PackageReference Include="Microsoft.AspNetCore.Authentication.Cookies" Version="2.2.0"/>
+        <PackageReference Include="Microsoft.AspNetCore.Authentication.Core" Version="2.2.0"/>
+        <PackageReference Include="Microsoft.AspNetCore.Authorization" Version="6.0.1"/>
+        <PackageReference Include="Microsoft.AspNetCore.Connections.Abstractions" Version="6.0.1"/>
+        <PackageReference Include="Microsoft.AspNetCore.Cryptography.Internal" Version="6.0.1"/>
+        <PackageReference Include="Microsoft.AspNetCore.Cryptography.KeyDerivation" Version="6.0.1"/>
+        <PackageReference Include="Microsoft.AspNetCore.DataProtection" Version="6.0.1"/>
+        <PackageReference Include="Microsoft.AspNetCore.DataProtection.Abstractions" Version="6.0.1"/>
+        <PackageReference Include="Microsoft.AspNetCore.Hosting.Abstractions" Version="2.2.0"/>
+        <PackageReference Include="Microsoft.AspNetCore.Hosting.Server.Abstractions" Version="2.2.0"/>
+        <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.2.2"/>
+        <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.2.0"/>
+        <PackageReference Include="Microsoft.AspNetCore.Http.Extensions" Version="2.2.0"/>
+        <PackageReference Include="Microsoft.AspNetCore.Http.Features" Version="5.0.13"/>
+        <PackageReference Include="Microsoft.AspNetCore.Metadata" Version="6.0.1"/>
+        <PackageReference Include="Microsoft.AspNetCore.SignalR.Common" Version="6.0.1"/>
+        <PackageReference Include="Microsoft.AspNetCore.SignalR.Protocols.Json" Version="6.0.1"/>
+        <PackageReference Include="Microsoft.AspNetCore.WebUtilities" Version="2.2.0"/>
+        <PackageReference Include="Microsoft.Bcl.AsyncInterfaces" Version="6.0.0"/>
+        <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="6.0.0"/>
+        <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="6.0.0"/>
+        <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="6.0.0"/>
+        <PackageReference Include="Microsoft.Extensions.Features" Version="6.0.1"/>
+        <PackageReference Include="Microsoft.Extensions.FileProviders.Abstractions" Version="6.0.0"/>
+        <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="6.0.0"/>
+        <PackageReference Include="Microsoft.Extensions.Identity.Core" Version="6.0.1"/>
+        <PackageReference Include="Microsoft.Extensions.Logging" Version="6.0.0"/>
+        <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="6.0.0"/>
+        <PackageReference Include="Microsoft.Extensions.ObjectPool" Version="6.0.1"/>
+        <PackageReference Include="Microsoft.Extensions.Options" Version="6.0.0"/>
+        <PackageReference Include="Microsoft.Extensions.Primitives" Version="6.0.0"/>
+        <PackageReference Include="Microsoft.Extensions.WebEncoders" Version="6.0.1"/>
+        <PackageReference Include="Microsoft.Net.Http.Headers" Version="2.2.8"/>
+        <PackageReference Include="Microsoft.NETCore.Platforms" Version="6.0.1"/>
+        <PackageReference Include="Microsoft.NETCore.Targets" Version="5.0.0"/>
+        <PackageReference Include="System.Buffers" Version="4.5.1"/>
+        <PackageReference Include="System.Diagnostics.DiagnosticSource" Version="6.0.0"/>
+        <PackageReference Include="System.Formats.Asn1" Version="6.0.0"/>
+        <PackageReference Include="System.IO" Version="4.3.0"/>
+        <PackageReference Include="System.IO.Pipelines" Version="6.0.1"/>
+        <PackageReference Include="System.Memory.Data" Version="6.0.0"/>
+        <PackageReference Include="System.Numerics.Vectors" Version="4.5.0"/>
+        <PackageReference Include="System.Reflection" Version="4.3.0"/>
+        <PackageReference Include="System.Reflection.Emit" Version="4.7.0"/>
+        <PackageReference Include="System.Reflection.Primitives" Version="4.3.0"/>
+        <PackageReference Include="System.Runtime" Version="4.3.1"/>
+        <PackageReference Include="System.Runtime.CompilerServices.Unsafe" Version="6.0.0"/>
+        <PackageReference Include="System.Security.AccessControl" Version="6.0.0"/>
+        <PackageReference Include="System.Security.Cryptography.Pkcs" Version="6.0.0"/>
+        <PackageReference Include="System.Security.Cryptography.Xml" Version="6.0.0"/>
+        <PackageReference Include="System.Text.Encoding" Version="4.3.0"/>
+        <PackageReference Include="System.Text.Encodings.Web" Version="6.0.0"/>
+        <PackageReference Include="System.Text.Json" Version="6.0.1"/>
+        <PackageReference Include="System.Threading.Channels" Version="6.0.0"/>
+        <PackageReference Include="System.Threading.Tasks" Version="4.3.0"/>
+        <PackageReference Include="System.Threading.Tasks.Extensions" Version="4.5.4"/>
     </ItemGroup>
 
 </Project>

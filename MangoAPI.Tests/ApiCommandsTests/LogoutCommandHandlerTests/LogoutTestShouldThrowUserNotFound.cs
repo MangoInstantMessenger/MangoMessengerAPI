@@ -13,7 +13,7 @@ namespace MangoAPI.Tests.ApiCommandsTests.LogoutCommandHandlerTests
 {
     public class LogoutTestShouldThrowUserNotFound : ITestable<LogoutCommand,ResponseBase>
     {
-        private readonly MangoDbFixture _mangoDbFixture = new MangoDbFixture();
+        private readonly MangoDbFixture _mangoDbFixture = new();
         private readonly Assert<ResponseBase> _assert = new();
 
         [Fact]
@@ -56,8 +56,8 @@ namespace MangoAPI.Tests.ApiCommandsTests.LogoutCommandHandlerTests
 
         private readonly SessionEntity _session = new()
         {
-            CreatedAt = DateTime.Now,
-            ExpiresAt = DateTime.Now.AddDays(7),
+            CreatedAt = DateTime.UtcNow,
+            ExpiresAt = DateTime.UtcNow.AddDays(7),
             Id = Guid.NewGuid(),
             RefreshToken = Guid.NewGuid(),
             UserId = Guid.NewGuid()

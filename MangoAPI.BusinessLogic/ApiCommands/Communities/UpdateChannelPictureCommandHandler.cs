@@ -36,7 +36,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Communities
         {
             var totalUploadedDocsCount = await _postgresDbContext.Documents.CountAsync(x =>
                 x.UserId == request.UserId &&
-                x.UploadedAt > DateTime.Now.AddHours(-1), cancellationToken);
+                x.UploadedAt > DateTime.UtcNow.AddHours(-1), cancellationToken);
 
             if (totalUploadedDocsCount >= 10)
             {
@@ -71,7 +71,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Communities
             {
                 FileName = uniqueFileName,
                 UserId = request.UserId,
-                UploadedAt = DateTime.Now
+                UploadedAt = DateTime.UtcNow
             };
 
             _postgresDbContext.Documents.Add(newUserPicture);

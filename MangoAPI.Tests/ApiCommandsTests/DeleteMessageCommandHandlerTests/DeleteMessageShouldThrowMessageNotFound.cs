@@ -14,7 +14,7 @@ namespace MangoAPI.Tests.ApiCommandsTests.DeleteMessageCommandHandlerTests
 {
     public class DeleteMessageShouldThrowMessageNotFound : ITestable<DeleteMessageCommand, DeleteMessageResponse>
     {
-        private readonly MangoDbFixture _mangoDbFixture = new MangoDbFixture();
+        private readonly MangoDbFixture _mangoDbFixture = new();
         private readonly Assert<DeleteMessageResponse> _assert = new();
 
         [Fact]

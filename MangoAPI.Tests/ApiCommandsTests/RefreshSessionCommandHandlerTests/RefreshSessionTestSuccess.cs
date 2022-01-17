@@ -44,8 +44,8 @@ namespace MangoAPI.Tests.ApiCommandsTests.RefreshSessionCommandHandlerTests
             _mangoDbFixture.Context.Users.Add(_user);
             _mangoDbFixture.Context.Sessions.Add(new SessionEntity
             {
-                CreatedAt = DateTime.Now,
-                ExpiresAt = DateTime.Now.AddDays(7),
+                CreatedAt = DateTime.UtcNow,
+                ExpiresAt = DateTime.UtcNow.AddDays(7),
                 Id = Guid.NewGuid(),
                 RefreshToken = _refreshToken,
                 UserId = SeedDataConstants.RazumovskyId

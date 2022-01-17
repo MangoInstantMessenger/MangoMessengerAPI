@@ -42,8 +42,8 @@ namespace MangoAPI.Tests.ApiCommandsTests.PasswordRestoreCommandHandlerTests
                 Id = "9c4ddced-5de5-4388-84fd-39f92a77a977".AsGuid(),
                 UserId = SeedDataConstants.RazumovskyId,
                 Email = _user.Email,
-                CreatedAt = DateTime.Now,
-                ExpiresAt = DateTime.Now.AddHours(3)
+                CreatedAt = DateTime.UtcNow,
+                ExpiresAt = DateTime.UtcNow.AddHours(3)
             });
 
             _mangoDbFixture.Context.SaveChanges();

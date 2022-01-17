@@ -72,7 +72,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Messages
             var messageCount = await _postgresDbContext.Messages
                 .AsNoTracking()
                 .Where(x => x.UserId == request.UserId)
-                .Where(x => x.CreatedAt >= DateTime.Now.Date.AddMinutes(-5))
+                .Where(x => x.CreatedAt >= DateTime.UtcNow.Date.AddMinutes(-5))
                 .CountAsync(cancellationToken);
 
             if (messageCount >= 100)

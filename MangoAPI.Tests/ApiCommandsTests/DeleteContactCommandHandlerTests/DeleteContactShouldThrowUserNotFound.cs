@@ -13,7 +13,7 @@ namespace MangoAPI.Tests.ApiCommandsTests.DeleteContactCommandHandlerTests
 {
     public class DeleteContactShouldThrowUserNotFound : ITestable<DeleteContactCommand, ResponseBase>
     {
-        private readonly MangoDbFixture _mangoDbFixture = new MangoDbFixture();
+        private readonly MangoDbFixture _mangoDbFixture = new();
         private readonly Assert<ResponseBase> _assert = new();
 
         [Fact]

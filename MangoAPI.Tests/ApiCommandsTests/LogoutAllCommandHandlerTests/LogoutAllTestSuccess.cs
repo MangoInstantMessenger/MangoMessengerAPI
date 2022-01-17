@@ -36,8 +36,8 @@ namespace MangoAPI.Tests.ApiCommandsTests.LogoutAllCommandHandlerTests
             _mangoDbFixture.Context.Users.Add(_user);
             _mangoDbFixture.Context.Sessions.Add(new SessionEntity
             {
-                CreatedAt = DateTime.Now,
-                ExpiresAt = DateTime.Now.AddDays(7),
+                CreatedAt = DateTime.UtcNow,
+                ExpiresAt = DateTime.UtcNow.AddDays(7),
                 Id = _sessionId,
                 RefreshToken = Guid.NewGuid(),
                 UserId = SeedDataConstants.RazumovskyId

@@ -69,8 +69,8 @@ namespace MangoAPI.Tests.ApiCommandsTests.LogoutCommandHandlerTests
 
         private readonly SessionEntity _session = new()
         {
-            CreatedAt = DateTime.Now,
-            ExpiresAt = DateTime.Now.AddDays(7),
+            CreatedAt = DateTime.UtcNow,
+            ExpiresAt = DateTime.UtcNow.AddDays(7),
             Id = Guid.NewGuid(),
             RefreshToken = Guid.NewGuid(),
             UserId = SeedDataConstants.RazumovskyId

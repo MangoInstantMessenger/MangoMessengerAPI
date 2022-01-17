@@ -6,43 +6,46 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Humanizer.Core" Version="2.13.14" />
-        <PackageReference Include="Microsoft.AspNetCore.Cryptography.Internal" Version="6.0.1" />
-        <PackageReference Include="Microsoft.AspNetCore.Cryptography.KeyDerivation" Version="6.0.1" />
-        <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="6.0.1" />
-        <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.1" />
-        <PackageReference Include="Microsoft.EntityFrameworkCore.Abstractions" Version="6.0.1" />
-        <PackageReference Include="Microsoft.EntityFrameworkCore.Analyzers" Version="6.0.1" />
+        <!-- Explicit packages -->
+        <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="6.0.1"/>
         <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.1">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
-        <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="6.0.1" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.1">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
-        <PackageReference Include="Microsoft.Extensions.Caching.Abstractions" Version="6.0.0" />
-        <PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="6.0.0" />
-        <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="6.0.0" />
-        <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="6.0.0" />
-        <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="6.0.0" />
-        <PackageReference Include="Microsoft.Extensions.Identity.Core" Version="6.0.1" />
-        <PackageReference Include="Microsoft.Extensions.Identity.Stores" Version="6.0.1" />
-        <PackageReference Include="Microsoft.Extensions.Logging" Version="6.0.0" />
-        <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="6.0.0" />
-        <PackageReference Include="Microsoft.Extensions.Options" Version="6.0.0" />
-        <PackageReference Include="Microsoft.Extensions.Primitives" Version="6.0.0" />
-        <PackageReference Include="Npgsql" Version="6.0.2" />
-        <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="6.0.2" />
-        <PackageReference Include="System.Collections.Immutable" Version="6.0.0" />
-        <PackageReference Include="System.Diagnostics.DiagnosticSource" Version="6.0.0" />
-        <PackageReference Include="System.Runtime.CompilerServices.Unsafe" Version="6.0.0" />
+        <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="6.0.2"/>
+
+        <!-- Previously Implicit packages -->
+        <PackageReference Include="Humanizer.Core" Version="2.13.14"/>
+        <PackageReference Include="Microsoft.AspNetCore.Cryptography.Internal" Version="6.0.1"/>
+        <PackageReference Include="Microsoft.AspNetCore.Cryptography.KeyDerivation" Version="6.0.1"/>
+        <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.1"/>
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Abstractions" Version="6.0.1"/>
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Analyzers" Version="6.0.1"/>
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="6.0.1"/>
+        <PackageReference Include="Microsoft.Extensions.Caching.Abstractions" Version="6.0.0"/>
+        <PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="6.0.0"/>
+        <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="6.0.0"/>
+        <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="6.0.0"/>
+        <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="6.0.0"/>
+        <PackageReference Include="Microsoft.Extensions.Identity.Core" Version="6.0.1"/>
+        <PackageReference Include="Microsoft.Extensions.Identity.Stores" Version="6.0.1"/>
+        <PackageReference Include="Microsoft.Extensions.Logging" Version="6.0.0"/>
+        <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="6.0.0"/>
+        <PackageReference Include="Microsoft.Extensions.Options" Version="6.0.0"/>
+        <PackageReference Include="Microsoft.Extensions.Primitives" Version="6.0.0"/>
+        <PackageReference Include="Npgsql" Version="6.0.2"/>
+        <PackageReference Include="System.Collections.Immutable" Version="6.0.0"/>
+        <PackageReference Include="System.Diagnostics.DiagnosticSource" Version="6.0.0"/>
+        <PackageReference Include="System.Runtime.CompilerServices.Unsafe" Version="6.0.0"/>
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\MangoAPI.Application\MangoAPI.Application.csproj" />
-        <ProjectReference Include="..\MangoAPI.Domain\MangoAPI.Domain.csproj" />
+        <ProjectReference Include="..\MangoAPI.Application\MangoAPI.Application.csproj"/>
+        <ProjectReference Include="..\MangoAPI.Domain\MangoAPI.Domain.csproj"/>
     </ItemGroup>
 
 </Project>

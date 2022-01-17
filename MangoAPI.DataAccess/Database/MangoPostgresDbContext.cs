@@ -36,6 +36,11 @@ namespace MangoAPI.DataAccess.Database
 
         public DbSet<PublicKeyEntity> PublicKeys { get; set; }
 
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.LogTo(Console.WriteLine);
+        }
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);

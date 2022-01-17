@@ -13,7 +13,7 @@ namespace MangoAPI.Tests.ApiCommandsTests.ConfirmOrDeclineKeyExchangeCommandHand
 {
     public class ConfirmOrDeclineKeyExchangeTestSuccess : ITestable<ConfirmOrDeclineKeyExchangeCommand, ResponseBase>
     {
-        private readonly MangoDbFixture _mangoDbFixture = new MangoDbFixture();
+        private readonly MangoDbFixture _mangoDbFixture = new();
         private readonly Assert<ResponseBase> _assert = new();
 
         [Fact]

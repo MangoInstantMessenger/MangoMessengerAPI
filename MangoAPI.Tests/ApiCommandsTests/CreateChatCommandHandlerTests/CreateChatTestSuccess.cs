@@ -13,7 +13,7 @@ namespace MangoAPI.Tests.ApiCommandsTests.CreateChatCommandHandlerTests
 {
     public class CreateChatTestSuccess : ITestable<CreateChatCommand, CreateCommunityResponse>
     {
-        private readonly MangoDbFixture _mangoDbFixture = new MangoDbFixture();
+        private readonly MangoDbFixture _mangoDbFixture = new();
 
         [Fact]
         public async Task CreateChatTest_Success()

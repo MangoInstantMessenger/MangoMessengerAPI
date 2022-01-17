@@ -14,7 +14,7 @@ namespace MangoAPI.Tests.ApiCommandsTests.RefreshSessionCommandHandlerTests
     public class RefreshSessionTestShouldThrowInvalidOrExpiredRefreshToken 
         : ITestable<RefreshSessionCommand, TokensResponse>
     {
-        private readonly MangoDbFixture _mangoDbFixture = new MangoDbFixture();
+        private readonly MangoDbFixture _mangoDbFixture = new();
         private readonly Assert<TokensResponse> _assert = new();
 
         [Fact]

@@ -13,7 +13,7 @@ namespace MangoAPI.Tests.ApiQueries.GetPublicKeysQueryHandlerTests
 {
     public class GetPublicKeysTestSuccess : ITestable<GetPublicKeysQuery, GetPublicKeysResponse>
     {
-        private readonly MangoDbFixture _mangoDbFixture = new MangoDbFixture();
+        private readonly MangoDbFixture _mangoDbFixture = new();
         private readonly Assert<GetPublicKeysResponse> _assert = new();
 
         [Fact]

@@ -57,8 +57,8 @@ namespace MangoAPI.BusinessLogic.ApiCommands.PasswordRestoreRequests
                 Id = Guid.NewGuid(),
                 UserId = user.Id,
                 Email = user.Email,
-                CreatedAt = DateTime.Now,
-                ExpiresAt = DateTime.Now.AddHours(3),
+                CreatedAt = DateTime.UtcNow,
+                ExpiresAt = DateTime.UtcNow.AddHours(3),
             };
 
             _postgresDbContext.PasswordRestoreRequests.Add(passwordRestoreRequest);

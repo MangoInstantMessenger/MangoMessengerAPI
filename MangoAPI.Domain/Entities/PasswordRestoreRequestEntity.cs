@@ -10,7 +10,7 @@ namespace MangoAPI.Domain.Entities
         public DateTime CreatedAt { get; set; }
         public DateTime ExpiresAt { get; set; }
 
-        public bool IsValid => ExpiresAt >= DateTime.Now;
+        public bool IsValid => ExpiresAt >= DateTime.UtcNow;
 
         public UserEntity UserEntity { get; set; }
     }
