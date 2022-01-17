@@ -10,16 +10,16 @@ namespace MangoAPI.DataAccess.Database
     {
         public MangoPostgresDbContext CreateDbContext(string[] args)
         {
-            var optionsBuilder = new DbContextOptionsBuilder<MangoPostgresDbContext>();
+            var options = new DbContextOptionsBuilder<MangoPostgresDbContext>();
             var connectionString = EnvironmentConstants.MangoDatabaseUrl;
 
             connectionString = StringService.ConvertHerokuDbConnection(connectionString);
 
-            optionsBuilder.UseNpgsql(connectionString ??
-                                     throw new InvalidOperationException(
-                                         "Wrong Connection String in DesignTimeUserDbContextFactory class."));
+            options.UseNpgsql(connectionString ?? throw new ArgumentNullException(nameof(connectionString)));
 
-            return new MangoPostgresDbContext(optionsBuilder.Options);
+            options.EnableSensitiveDataLogging();
+
+            return new MangoPostgresDbContext(options.Options);
         }
     }
 }

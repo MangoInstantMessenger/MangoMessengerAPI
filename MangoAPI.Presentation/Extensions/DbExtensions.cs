@@ -17,10 +17,10 @@ namespace MangoAPI.Presentation.Extensions
 
             services.AddDbContext<MangoPostgresDbContext>(options =>
             {
-                options.UseNpgsql(connectionString ??
-                              throw new InvalidOperationException("Wrong Connection String in Startup class."));
+                options.UseNpgsql(connectionString ?? throw new ArgumentException(nameof(connectionString)));
                 options.EnableSensitiveDataLogging();
             });
+
             return services;
         }
     }
