@@ -10,59 +10,58 @@ using MangoAPI.Domain.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace MangoAPI.BusinessLogic.ApiCommands.Documents
+namespace MangoAPI.BusinessLogic.ApiCommands.Documents;
+
+public class UploadDocumentCommandHandler
+    : IRequestHandler<UploadDocumentCommand, Result<UploadDocumentResponse>>
 {
-    public class UploadDocumentCommandHandler
-        : IRequestHandler<UploadDocumentCommand, Result<UploadDocumentResponse>>
+    private readonly MangoPostgresDbContext _postgresDbContext;
+    private readonly ResponseFactory<UploadDocumentResponse> _responseFactory;
+    private readonly IBlobService _blobService;
+
+    public UploadDocumentCommandHandler(
+        MangoPostgresDbContext postgresDbContext,
+        ResponseFactory<UploadDocumentResponse> responseFactory,
+        IBlobService blobService)
     {
-        private readonly MangoPostgresDbContext _postgresDbContext;
-        private readonly ResponseFactory<UploadDocumentResponse> _responseFactory;
-        private readonly IBlobService _blobService;
+        _postgresDbContext = postgresDbContext;
+        _responseFactory = responseFactory;
+        _blobService = blobService;
+    }
 
-        public UploadDocumentCommandHandler(
-            MangoPostgresDbContext postgresDbContext,
-            ResponseFactory<UploadDocumentResponse> responseFactory,
-            IBlobService blobService)
+    public async Task<Result<UploadDocumentResponse>> Handle(UploadDocumentCommand request,
+        CancellationToken cancellationToken)
+    {
+        var totalUploadedDocsCount = await _postgresDbContext.Documents.CountAsync(x =>
+            x.UserId == request.UserId &&
+            x.UploadedAt > DateTime.UtcNow.AddHours(-1), cancellationToken);
+
+        if (totalUploadedDocsCount > 10)
         {
-            _postgresDbContext = postgresDbContext;
-            _responseFactory = responseFactory;
-            _blobService = blobService;
+            const string message = ResponseMessageCodes.UploadedDocumentsLimitReached10;
+            var details = ResponseMessageCodes.ErrorDictionary[message];
+            return _responseFactory.ConflictResponse(message, details);
         }
 
-        public async Task<Result<UploadDocumentResponse>> Handle(UploadDocumentCommand request,
-            CancellationToken cancellationToken)
+        var blobContainerName = EnvironmentConstants.MangoBlobContainer;
+        var uniqueFileName = StringService.GetUniqueFileName(request.FormFile.FileName);
+
+        await _blobService.UploadFileBlobAsync(uniqueFileName, request.FormFile, blobContainerName);
+
+        var documentEntity = new DocumentEntity
         {
-            var totalUploadedDocsCount = await _postgresDbContext.Documents.CountAsync(x =>
-                x.UserId == request.UserId &&
-                x.UploadedAt > DateTime.UtcNow.AddHours(-1), cancellationToken);
+            FileName = uniqueFileName,
+            UserId = request.UserId,
+            UploadedAt = DateTime.UtcNow
+        };
 
-            if (totalUploadedDocsCount > 10)
-            {
-                const string message = ResponseMessageCodes.UploadedDocumentsLimitReached10;
-                var details = ResponseMessageCodes.ErrorDictionary[message];
-                return _responseFactory.ConflictResponse(message, details);
-            }
+        _postgresDbContext.Documents.Add(documentEntity);
 
-            var blobContainerName = EnvironmentConstants.MangoBlobContainer;
-            var uniqueFileName = StringService.GetUniqueFileName(request.FormFile.FileName);
+        await _postgresDbContext.SaveChangesAsync(cancellationToken);
 
-            await _blobService.UploadFileBlobAsync(uniqueFileName, request.FormFile, blobContainerName);
+        var fileUrl = await _blobService.GetBlobAsync(uniqueFileName, blobContainerName);
 
-            var documentEntity = new DocumentEntity
-            {
-                FileName = uniqueFileName,
-                UserId = request.UserId,
-                UploadedAt = DateTime.UtcNow
-            };
-
-            _postgresDbContext.Documents.Add(documentEntity);
-
-            await _postgresDbContext.SaveChangesAsync(cancellationToken);
-
-            var fileUrl = await _blobService.GetBlobAsync(uniqueFileName, blobContainerName);
-
-            return _responseFactory.SuccessResponse(
-                UploadDocumentResponse.FromSuccess(documentEntity.FileName, fileUrl));
-        }
+        return _responseFactory.SuccessResponse(
+            UploadDocumentResponse.FromSuccess(documentEntity.FileName, fileUrl));
     }
 }

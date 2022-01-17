@@ -2,26 +2,25 @@
 using MangoAPI.DataAccess.Database;
 using Microsoft.EntityFrameworkCore;
 
-namespace MangoAPI.Tests
+namespace MangoAPI.Tests;
+
+public class MangoDbFixture : IDisposable
 {
-    public class MangoDbFixture : IDisposable
+    public MangoPostgresDbContext Context { get; }
+
+    public MangoDbFixture()
     {
-        public MangoPostgresDbContext Context { get; }
+        var options = new DbContextOptionsBuilder<MangoPostgresDbContext>()
+            .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())
+            .EnableSensitiveDataLogging()
+            .Options;
 
-        public MangoDbFixture()
-        {
-            var options = new DbContextOptionsBuilder<MangoPostgresDbContext>()
-                .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())
-                .EnableSensitiveDataLogging()
-                .Options;
+        Context = new MangoPostgresDbContext(options);
+    }
 
-            Context = new MangoPostgresDbContext(options);
-        }
-
-        public void Dispose()
-        {
-            Context.Database.EnsureDeleted();
-            Context?.Dispose();
-        }
+    public void Dispose()
+    {
+        Context.Database.EnsureDeleted();
+        Context?.Dispose();
     }
 }

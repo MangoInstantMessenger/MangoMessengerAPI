@@ -3,10 +3,9 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
-namespace MangoAPI.Presentation.Interfaces
+namespace MangoAPI.Presentation.Interfaces;
+
+public interface IDocumentsController
 {
-    public interface IDocumentsController
-    {
-        Task<IActionResult> UploadDocumentAsync(IFormFile formFile, CancellationToken cancellationToken);
-    }
+    Task<IActionResult> UploadDocumentAsync(IFormFile formFile, CancellationToken cancellationToken);
 }

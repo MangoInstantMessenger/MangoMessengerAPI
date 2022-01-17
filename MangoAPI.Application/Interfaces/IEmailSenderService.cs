@@ -3,12 +3,11 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace MangoAPI.Application.Interfaces
-{
-    public interface IEmailSenderService
-    {
-        Task SendVerificationEmailAsync(UserEntity user, CancellationToken cancellationToken);
+namespace MangoAPI.Application.Interfaces;
 
-        Task SendPasswordRestoreRequestAsync(UserEntity user, Guid requestId, CancellationToken cancellationToken);
-    }
+public interface IEmailSenderService
+{
+    Task SendVerificationEmailAsync(UserEntity user, CancellationToken cancellationToken);
+
+    Task SendPasswordRestoreRequestAsync(UserEntity user, Guid requestId, CancellationToken cancellationToken);
 }

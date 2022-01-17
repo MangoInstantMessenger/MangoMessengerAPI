@@ -8,233 +8,232 @@ using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.DiffieHellmanConsole.Extensions;
 using MangoAPI.DiffieHellmanConsole.Services;
 
-namespace MangoAPI.DiffieHellmanConsole
+namespace MangoAPI.DiffieHellmanConsole;
+
+public static class Program
 {
-    public static class Program
+    private static readonly SessionsService SessionsService = new();
+    private static readonly KeyExchangeService KeyExchangeService;
+    private static readonly PublicKeysService PublicKeysService;
+    private static readonly ChatService ChatService;
+    private static readonly TokensResponse TokenResponse;
+
+    static Program()
     {
-        private static readonly SessionsService SessionsService = new();
-        private static readonly KeyExchangeService KeyExchangeService;
-        private static readonly PublicKeysService PublicKeysService;
-        private static readonly ChatService ChatService;
-        private static readonly TokensResponse TokenResponse;
-
-        static Program()
+        try
         {
-            try
-            {
-                TokenResponse = TokensService.GetTokensAsync().GetAwaiter().GetResult();
-                KeyExchangeService = new KeyExchangeService(TokenResponse.Tokens.AccessToken);
-                PublicKeysService = new PublicKeysService(TokenResponse.Tokens.AccessToken);
-                ChatService = new ChatService(TokenResponse.Tokens.AccessToken);
-            }
-            catch (FileNotFoundException)
-            {
-                Console.WriteLine("Tokens file does not exist for current user.");
-            }
+            TokenResponse = TokensService.GetTokensAsync().GetAwaiter().GetResult();
+            KeyExchangeService = new KeyExchangeService(TokenResponse.Tokens.AccessToken);
+            PublicKeysService = new PublicKeysService(TokenResponse.Tokens.AccessToken);
+            ChatService = new ChatService(TokenResponse.Tokens.AccessToken);
+        }
+        catch (FileNotFoundException)
+        {
+            Console.WriteLine("Tokens file does not exist for current user.");
+        }
+    }
+
+    public static async Task Main(string[] args)
+    {
+        if (args.Length == 0)
+        {
+            Console.WriteLine("Unrecognized command.");
+            return;
         }
 
-        public static async Task Main(string[] args)
+        var method = args[0];
+
+        switch (method)
         {
-            if (args.Length == 0)
-            {
+            case "login":
+                await Login(args);
+                break;
+            case "refresh-token":
+                await RefreshTokenAsync();
+                break;
+            case "key-exchange":
+                await RequestKeyExchange(args);
+                break;
+            case "key-exchange-requests":
+                await PrintKeyExchangesList();
+                break;
+            case "confirm-key-exchange":
+                await ConfirmKeyExchangeRequest(args);
+                break;
+            case "print-public-keys":
+                await PrintPublicKeys();
+                break;
+            case "create-common-secret":
+                await CreateCommonSecret(args);
+                break;
+            case "chat-list":
+                await GetCurrentUserChats();
+                break;
+            default:
                 Console.WriteLine("Unrecognized command.");
-                return;
-            }
+                break;
+        }
+    }
 
-            var method = args[0];
+    private static async Task Login(IReadOnlyList<string> args)
+    {
+        Console.WriteLine("Attempting to login ...");
+        var loginResponse = await SessionsService.LoginAsync(args);
 
-            switch (method)
-            {
-                case "login":
-                    await Login(args);
-                    break;
-                case "refresh-token":
-                    await RefreshTokenAsync();
-                    break;
-                case "key-exchange":
-                    await RequestKeyExchange(args);
-                    break;
-                case "key-exchange-requests":
-                    await PrintKeyExchangesList();
-                    break;
-                case "confirm-key-exchange":
-                    await ConfirmKeyExchangeRequest(args);
-                    break;
-                case "print-public-keys":
-                    await PrintPublicKeys();
-                    break;
-                case "create-common-secret":
-                    await CreateCommonSecret(args);
-                    break;
-                case "chat-list":
-                    await GetCurrentUserChats();
-                    break;
-                default:
-                    Console.WriteLine("Unrecognized command.");
-                    break;
-            }
+        Console.WriteLine("Writing tokens to file ...");
+        await TokensService.WriteTokensAsync(loginResponse);
+
+        Console.WriteLine("Login operation success.\n");
+    }
+
+    private static async Task RefreshTokenAsync()
+    {
+        if (TokenResponse is null)
+        {
+            //Console.WriteLine("User is not authorized. Please login.");
+            return;
         }
 
-        private static async Task Login(IReadOnlyList<string> args)
+        var refreshToken = TokenResponse.Tokens.RefreshToken;
+
+        Console.WriteLine("Refreshing tokens ...");
+        var refreshTokenResponse = await SessionsService.RefreshTokenAsync(refreshToken);
+
+        Console.WriteLine("Writing tokens to file ...");
+        await TokensService.WriteTokensAsync(refreshTokenResponse);
+
+        Console.WriteLine("Refresh token operation was succeeded. \n");
+    }
+
+    private static async Task RequestKeyExchange(IReadOnlyList<string> args)
+    {
+        var requestedUserId = Guid.Parse(args[1]);
+
+        EcdhService.GenerateEcdhKeysPair(out var privateKeyBase64, out var publicKeyBase64);
+
+        var response = await KeyExchangeService.CreateKeyExchangeRequestAsync(requestedUserId, publicKeyBase64);
+
+        Console.WriteLine($"Key exchange request with an ID {response.RequestId} created successfully.");
+
+        var keysFolderPath = Path.Combine(AppContext.BaseDirectory, $"Keys_{TokenResponse.Tokens.UserId}");
+        var privateKeyPath =
+            Path.Combine(keysFolderPath, $"PrivateKey_{TokenResponse.Tokens.UserId}_{requestedUserId}.txt");
+        var publicKeyPath = Path.Combine(keysFolderPath,
+            $"PublicKey_{TokenResponse.Tokens.UserId}_{requestedUserId}.txt");
+
+        if (!Directory.Exists(keysFolderPath))
         {
-            Console.WriteLine("Attempting to login ...");
-            var loginResponse = await SessionsService.LoginAsync(args);
-
-            Console.WriteLine("Writing tokens to file ...");
-            await TokensService.WriteTokensAsync(loginResponse);
-
-            Console.WriteLine("Login operation success.\n");
+            Directory.CreateDirectory(keysFolderPath);
         }
 
-        private static async Task RefreshTokenAsync()
+        Console.WriteLine("Writing private key to file...");
+        await File.WriteAllTextAsync(privateKeyPath, privateKeyBase64);
+
+        Console.WriteLine("Writing public key to file ...");
+        await File.WriteAllTextAsync(publicKeyPath, publicKeyBase64);
+
+        Console.WriteLine("Key exchange request sent successfully.\n");
+    }
+
+    private static async Task PrintKeyExchangesList()
+    {
+        var response = await KeyExchangeService.GetKeyExchangesAsync();
+        response.KeyExchangeRequests.ForEach(Console.WriteLine);
+    }
+
+    private static async Task ConfirmKeyExchangeRequest(IReadOnlyList<string> args)
+    {
+        var requestId = Guid.Parse(args[1]);
+
+        var exchangeRequest = (await KeyExchangeService.GetKeyExchangesAsync())
+            .KeyExchangeRequests
+            .FirstOrDefault(x => x.RequestId == requestId);
+
+        if (exchangeRequest == null)
         {
-            if (TokenResponse is null)
-            {
-                //Console.WriteLine("User is not authorized. Please login.");
-                return;
-            }
-
-            var refreshToken = TokenResponse.Tokens.RefreshToken;
-
-            Console.WriteLine("Refreshing tokens ...");
-            var refreshTokenResponse = await SessionsService.RefreshTokenAsync(refreshToken);
-
-            Console.WriteLine("Writing tokens to file ...");
-            await TokensService.WriteTokensAsync(refreshTokenResponse);
-
-            Console.WriteLine("Refresh token operation was succeeded. \n");
+            Console.WriteLine("Key exchange request not found.");
+            return;
         }
 
-        private static async Task RequestKeyExchange(IReadOnlyList<string> args)
-        {
-            var requestedUserId = Guid.Parse(args[1]);
-
+        var ecDiffieHellmanCng =
             EcdhService.GenerateEcdhKeysPair(out var privateKeyBase64, out var publicKeyBase64);
 
-            var response = await KeyExchangeService.CreateKeyExchangeRequestAsync(requestedUserId, publicKeyBase64);
+        var requestPublicKeyBytes = exchangeRequest.SenderPublicKey.Base64StringAsBytes();
+        var requestPublicKey = CngKey.Import(requestPublicKeyBytes, CngKeyBlobFormat.EccPublicBlob);
 
-            Console.WriteLine($"Key exchange request with an ID {response.RequestId} created successfully.");
+        var commonSecret = ecDiffieHellmanCng.DeriveKeyMaterial(requestPublicKey).AsBase64String();
 
-            var keysFolderPath = Path.Combine(AppContext.BaseDirectory, $"Keys_{TokenResponse.Tokens.UserId}");
-            var privateKeyPath =
-                Path.Combine(keysFolderPath, $"PrivateKey_{TokenResponse.Tokens.UserId}_{requestedUserId}.txt");
-            var publicKeyPath = Path.Combine(keysFolderPath,
-                $"PublicKey_{TokenResponse.Tokens.UserId}_{requestedUserId}.txt");
+        await KeyExchangeService.ConfirmOrDeclineKeyExchange(requestId, publicKeyBase64);
 
-            if (!Directory.Exists(keysFolderPath))
-            {
-                Directory.CreateDirectory(keysFolderPath);
-            }
+        var keysFolderPath = Path.Combine(AppContext.BaseDirectory, $"Keys_{TokenResponse.Tokens.UserId}");
 
-            Console.WriteLine("Writing private key to file...");
-            await File.WriteAllTextAsync(privateKeyPath, privateKeyBase64);
+        var privateKeyPath =
+            Path.Combine(keysFolderPath,
+                $"PrivateKey_{TokenResponse.Tokens.UserId}_{exchangeRequest.SenderId}.txt");
 
-            Console.WriteLine("Writing public key to file ...");
-            await File.WriteAllTextAsync(publicKeyPath, publicKeyBase64);
+        var publicKeyPath =
+            Path.Combine(keysFolderPath, $"PublicKey_{TokenResponse.Tokens.UserId}_{exchangeRequest.SenderId}.txt");
 
-            Console.WriteLine("Key exchange request sent successfully.\n");
-        }
+        var commonSecretPath =
+            Path.Combine(keysFolderPath,
+                $"CommonSecret_{TokenResponse.Tokens.UserId}_{exchangeRequest.SenderId}.txt");
 
-        private static async Task PrintKeyExchangesList()
+        if (!Directory.Exists(keysFolderPath))
         {
-            var response = await KeyExchangeService.GetKeyExchangesAsync();
-            response.KeyExchangeRequests.ForEach(Console.WriteLine);
+            Directory.CreateDirectory(keysFolderPath);
         }
 
-        private static async Task ConfirmKeyExchangeRequest(IReadOnlyList<string> args)
-        {
-            var requestId = Guid.Parse(args[1]);
+        Console.WriteLine("Writing private key to file...");
+        await File.WriteAllTextAsync(privateKeyPath, privateKeyBase64);
 
-            var exchangeRequest = (await KeyExchangeService.GetKeyExchangesAsync())
-                .KeyExchangeRequests
-                .FirstOrDefault(x => x.RequestId == requestId);
+        Console.WriteLine("Writing public key to file ...");
+        await File.WriteAllTextAsync(publicKeyPath, publicKeyBase64);
 
-            if (exchangeRequest == null)
-            {
-                Console.WriteLine("Key exchange request not found.");
-                return;
-            }
+        Console.WriteLine("Writing common secret to file...");
+        await File.WriteAllTextAsync(commonSecretPath, commonSecret);
 
-            var ecDiffieHellmanCng =
-                EcdhService.GenerateEcdhKeysPair(out var privateKeyBase64, out var publicKeyBase64);
+        Console.WriteLine("Key exchange request confirmed successfully.\n");
+    }
 
-            var requestPublicKeyBytes = exchangeRequest.SenderPublicKey.Base64StringAsBytes();
-            var requestPublicKey = CngKey.Import(requestPublicKeyBytes, CngKeyBlobFormat.EccPublicBlob);
+    private static async Task PrintPublicKeys()
+    {
+        var response = await PublicKeysService.GetPublicKeys();
+        response.PublicKeys.ForEach(Console.WriteLine);
+    }
 
-            var commonSecret = ecDiffieHellmanCng.DeriveKeyMaterial(requestPublicKey).AsBase64String();
+    private static async Task CreateCommonSecret(IReadOnlyList<string> args)
+    {
+        var partnerId = Guid.Parse(args[1]);
 
-            await KeyExchangeService.ConfirmOrDeclineKeyExchange(requestId, publicKeyBase64);
+        var response = await PublicKeysService.GetPublicKeys();
 
-            var keysFolderPath = Path.Combine(AppContext.BaseDirectory, $"Keys_{TokenResponse.Tokens.UserId}");
+        var partnerPublicKeyBytes = response.PublicKeys
+            .FirstOrDefault(x => x.PartnerId == partnerId)?
+            .PartnerPublicKey.Base64StringAsBytes();
 
-            var privateKeyPath =
-                Path.Combine(keysFolderPath,
-                    $"PrivateKey_{TokenResponse.Tokens.UserId}_{exchangeRequest.SenderId}.txt");
+        var privateKeyPath = Path.Combine(AppContext.BaseDirectory, $"Keys_{TokenResponse.Tokens.UserId}",
+            $"PrivateKey_{TokenResponse.Tokens.UserId}_{partnerId}.txt");
 
-            var publicKeyPath =
-                Path.Combine(keysFolderPath, $"PublicKey_{TokenResponse.Tokens.UserId}_{exchangeRequest.SenderId}.txt");
+        var commonSecretPath = Path.Combine(AppContext.BaseDirectory, $"Keys_{TokenResponse.Tokens.UserId}",
+            $"CommonSecret_{TokenResponse.Tokens.UserId}_{partnerId}.txt");
 
-            var commonSecretPath =
-                Path.Combine(keysFolderPath,
-                    $"CommonSecret_{TokenResponse.Tokens.UserId}_{exchangeRequest.SenderId}.txt");
+        var privateKeyBytes = (await File.ReadAllTextAsync(privateKeyPath)).Base64StringAsBytes();
 
-            if (!Directory.Exists(keysFolderPath))
-            {
-                Directory.CreateDirectory(keysFolderPath);
-            }
+        var privateKey = CngKey.Import(privateKeyBytes, CngKeyBlobFormat.EccPrivateBlob);
+        var ecDiffieHellmanCng = new ECDiffieHellmanCng(privateKey);
 
-            Console.WriteLine("Writing private key to file...");
-            await File.WriteAllTextAsync(privateKeyPath, privateKeyBase64);
+        var partnerPublicKey = CngKey.Import(partnerPublicKeyBytes!, CngKeyBlobFormat.EccPublicBlob);
+        var commonSecretBase64 = ecDiffieHellmanCng.DeriveKeyMaterial(partnerPublicKey).AsBase64String();
 
-            Console.WriteLine("Writing public key to file ...");
-            await File.WriteAllTextAsync(publicKeyPath, publicKeyBase64);
+        Console.WriteLine("Writing common secret to file...");
+        await File.WriteAllTextAsync(commonSecretPath, commonSecretBase64);
 
-            Console.WriteLine("Writing common secret to file...");
-            await File.WriteAllTextAsync(commonSecretPath, commonSecret);
+        Console.WriteLine("Common secret generated successfully.\n");
+    }
 
-            Console.WriteLine("Key exchange request confirmed successfully.\n");
-        }
-
-        private static async Task PrintPublicKeys()
-        {
-            var response = await PublicKeysService.GetPublicKeys();
-            response.PublicKeys.ForEach(Console.WriteLine);
-        }
-
-        private static async Task CreateCommonSecret(IReadOnlyList<string> args)
-        {
-            var partnerId = Guid.Parse(args[1]);
-
-            var response = await PublicKeysService.GetPublicKeys();
-
-            var partnerPublicKeyBytes = response.PublicKeys
-                .FirstOrDefault(x => x.PartnerId == partnerId)?
-                .PartnerPublicKey.Base64StringAsBytes();
-
-            var privateKeyPath = Path.Combine(AppContext.BaseDirectory, $"Keys_{TokenResponse.Tokens.UserId}",
-                $"PrivateKey_{TokenResponse.Tokens.UserId}_{partnerId}.txt");
-
-            var commonSecretPath = Path.Combine(AppContext.BaseDirectory, $"Keys_{TokenResponse.Tokens.UserId}",
-                $"CommonSecret_{TokenResponse.Tokens.UserId}_{partnerId}.txt");
-
-            var privateKeyBytes = (await File.ReadAllTextAsync(privateKeyPath)).Base64StringAsBytes();
-
-            var privateKey = CngKey.Import(privateKeyBytes, CngKeyBlobFormat.EccPrivateBlob);
-            var ecDiffieHellmanCng = new ECDiffieHellmanCng(privateKey);
-
-            var partnerPublicKey = CngKey.Import(partnerPublicKeyBytes!, CngKeyBlobFormat.EccPublicBlob);
-            var commonSecretBase64 = ecDiffieHellmanCng.DeriveKeyMaterial(partnerPublicKey).AsBase64String();
-
-            Console.WriteLine("Writing common secret to file...");
-            await File.WriteAllTextAsync(commonSecretPath, commonSecretBase64);
-
-            Console.WriteLine("Common secret generated successfully.\n");
-        }
-
-        private static async Task GetCurrentUserChats()
-        {
-            var response = await ChatService.GetCurrentUserChatsAsync();
-            response.Chats.ForEach(Console.WriteLine);
-        }
+    private static async Task GetCurrentUserChats()
+    {
+        var response = await ChatService.GetCurrentUserChatsAsync();
+        response.Chats.ForEach(Console.WriteLine);
     }
 }

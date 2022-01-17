@@ -10,95 +10,94 @@ using MediatR;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 
-namespace MangoAPI.BusinessLogic.ApiCommands.Messages
+namespace MangoAPI.BusinessLogic.ApiCommands.Messages;
+
+public class DeleteMessageCommandHandler
+    : IRequestHandler<DeleteMessageCommand, Result<DeleteMessageResponse>>
 {
-    public class DeleteMessageCommandHandler
-        : IRequestHandler<DeleteMessageCommand, Result<DeleteMessageResponse>>
+    private readonly MangoPostgresDbContext _postgresDbContext;
+    private readonly IHubContext<ChatHub, IHubClient> _hubContext;
+    private readonly ResponseFactory<DeleteMessageResponse> _responseFactory;
+
+    public DeleteMessageCommandHandler(
+        MangoPostgresDbContext postgresDbContext,
+        IHubContext<ChatHub, IHubClient> hubContext,
+        ResponseFactory<DeleteMessageResponse> responseFactory)
     {
-        private readonly MangoPostgresDbContext _postgresDbContext;
-        private readonly IHubContext<ChatHub, IHubClient> _hubContext;
-        private readonly ResponseFactory<DeleteMessageResponse> _responseFactory;
+        _postgresDbContext = postgresDbContext;
+        _hubContext = hubContext;
+        _responseFactory = responseFactory;
+    }
 
-        public DeleteMessageCommandHandler(
-            MangoPostgresDbContext postgresDbContext,
-            IHubContext<ChatHub, IHubClient> hubContext,
-            ResponseFactory<DeleteMessageResponse> responseFactory)
+    public async Task<Result<DeleteMessageResponse>> Handle(DeleteMessageCommand request,
+        CancellationToken cancellationToken)
+    {
+        var isMessageExists = await _postgresDbContext.Messages
+            .AnyAsync(t => t.Id == request.MessageId, cancellationToken);
+            
+        if (!isMessageExists)
         {
-            _postgresDbContext = postgresDbContext;
-            _hubContext = hubContext;
-            _responseFactory = responseFactory;
+            const string errorMessage = ResponseMessageCodes.MessageNotFound;
+            var errorDescription = ResponseMessageCodes.ErrorDictionary[errorMessage];
+
+            return _responseFactory.ConflictResponse(errorMessage, errorDescription);
+        }
+            
+        var query = _postgresDbContext.UserChats
+            .Include(x => x.Chat)
+            .ThenInclude(x => x.Messages)
+            .ThenInclude(x => x.User)
+            .Where(x => x.ChatId == request.ChatId && x.UserId == request.UserId)
+            .Select(x => x.Chat)
+            .Where(x => isMessageExists);
+
+        var chat = await query.FirstOrDefaultAsync(cancellationToken);
+
+        // TODO: separate concerns, it is not immediately clear which is null, chat or message?
+        // TODO: update tests as well
+        if (chat == null)
+        {
+            const string errorMessage = ResponseMessageCodes.ChatNotFound;
+            var errorDescription = ResponseMessageCodes.ErrorDictionary[errorMessage];
+
+            return _responseFactory.ConflictResponse(errorMessage, errorDescription);
         }
 
-        public async Task<Result<DeleteMessageResponse>> Handle(DeleteMessageCommand request,
-            CancellationToken cancellationToken)
+        var message = chat.Messages.First(x => x.Id == request.MessageId);
+        _postgresDbContext.Entry(message.User).State = EntityState.Detached;
+
+        var messageDeleteNotification = new MessageDeleteNotification
         {
-            var isMessageExists = await _postgresDbContext.Messages
-                .AnyAsync(t => t.Id == request.MessageId, cancellationToken);
+            MessageId = request.MessageId
+        };
+
+        var messageIsLast = chat.LastMessageId.HasValue && chat.LastMessageId == request.MessageId;
             
-            if (!isMessageExists)
-            {
-                const string errorMessage = ResponseMessageCodes.MessageNotFound;
-                var errorDescription = ResponseMessageCodes.ErrorDictionary[errorMessage];
+        if (messageIsLast)
+        {
+            var newLastMessage = chat.Messages
+                .Where(x => x != message)
+                .OrderBy(x => x.CreatedAt)
+                .LastOrDefault();
 
-                return _responseFactory.ConflictResponse(errorMessage, errorDescription);
-            }
-            
-            var query = _postgresDbContext.UserChats
-                .Include(x => x.Chat)
-                .ThenInclude(x => x.Messages)
-                .ThenInclude(x => x.User)
-                .Where(x => x.ChatId == request.ChatId && x.UserId == request.UserId)
-                .Select(x => x.Chat)
-                .Where(x => isMessageExists);
+            messageDeleteNotification.NewLastMessageAuthor = newLastMessage?.User?.DisplayName;
+            messageDeleteNotification.NewLastMessageId = newLastMessage?.Id;
+            messageDeleteNotification.NewLastMessageText = newLastMessage?.Content;
+            messageDeleteNotification.NewLastMessageTime = newLastMessage?.CreatedAt.ToShortTimeString();
 
-            var chat = await query.FirstOrDefaultAsync(cancellationToken);
-
-            // TODO: separate concerns, it is not immediately clear which is null, chat or message?
-            // TODO: update tests as well
-            if (chat == null)
-            {
-                const string errorMessage = ResponseMessageCodes.ChatNotFound;
-                var errorDescription = ResponseMessageCodes.ErrorDictionary[errorMessage];
-
-                return _responseFactory.ConflictResponse(errorMessage, errorDescription);
-            }
-
-            var message = chat.Messages.First(x => x.Id == request.MessageId);
-            _postgresDbContext.Entry(message.User).State = EntityState.Detached;
-
-            var messageDeleteNotification = new MessageDeleteNotification
-            {
-                MessageId = request.MessageId
-            };
-
-            var messageIsLast = chat.LastMessageId.HasValue && chat.LastMessageId == request.MessageId;
-            
-            if (messageIsLast)
-            {
-                var newLastMessage = chat.Messages
-                    .Where(x => x != message)
-                    .OrderBy(x => x.CreatedAt)
-                    .LastOrDefault();
-
-                messageDeleteNotification.NewLastMessageAuthor = newLastMessage?.User?.DisplayName;
-                messageDeleteNotification.NewLastMessageId = newLastMessage?.Id;
-                messageDeleteNotification.NewLastMessageText = newLastMessage?.Content;
-                messageDeleteNotification.NewLastMessageTime = newLastMessage?.CreatedAt.ToShortTimeString();
-
-                chat.LastMessageAuthor = newLastMessage?.User?.DisplayName;
-                chat.LastMessageId = newLastMessage?.Id;
-                chat.LastMessageText = newLastMessage?.Content;
-                chat.LastMessageTime = newLastMessage?.CreatedAt.ToShortTimeString();
-            }
-
-            _postgresDbContext.Messages.Remove(message);
-            _postgresDbContext.Chats.Update(chat);
-
-            await _postgresDbContext.SaveChangesAsync(cancellationToken);
-
-            await _hubContext.Clients.Group(message.ChatId.ToString()).NotifyOnMessageDeleteAsync(messageDeleteNotification);
-
-            return _responseFactory.SuccessResponse(DeleteMessageResponse.FromSuccess(message));
+            chat.LastMessageAuthor = newLastMessage?.User?.DisplayName;
+            chat.LastMessageId = newLastMessage?.Id;
+            chat.LastMessageText = newLastMessage?.Content;
+            chat.LastMessageTime = newLastMessage?.CreatedAt.ToShortTimeString();
         }
+
+        _postgresDbContext.Messages.Remove(message);
+        _postgresDbContext.Chats.Update(chat);
+
+        await _postgresDbContext.SaveChangesAsync(cancellationToken);
+
+        await _hubContext.Clients.Group(message.ChatId.ToString()).NotifyOnMessageDeleteAsync(messageDeleteNotification);
+
+        return _responseFactory.SuccessResponse(DeleteMessageResponse.FromSuccess(message));
     }
 }

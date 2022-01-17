@@ -3,20 +3,19 @@ using MangoAPI.BusinessLogic.Models;
 using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.Domain.Constants;
 
-namespace MangoAPI.BusinessLogic.ApiQueries.Communities
-{
-    public record SearchCommunityResponse : ResponseBase<SearchCommunityResponse>
-    {
-        public List<Chat> Chats { get; init; }
+namespace MangoAPI.BusinessLogic.ApiQueries.Communities;
 
-        public static SearchCommunityResponse FromSuccess(List<Chat> chats)
+public record SearchCommunityResponse : ResponseBase<SearchCommunityResponse>
+{
+    public List<Chat> Chats { get; init; }
+
+    public static SearchCommunityResponse FromSuccess(List<Chat> chats)
+    {
+        return new()
         {
-            return new()
-            {
-                Message = ResponseMessageCodes.Success,
-                Success = true,
-                Chats = chats,
-            };
-        }
+            Message = ResponseMessageCodes.Success,
+            Success = true,
+            Chats = chats,
+        };
     }
 }

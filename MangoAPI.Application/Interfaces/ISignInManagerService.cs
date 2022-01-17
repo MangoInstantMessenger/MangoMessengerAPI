@@ -2,10 +2,9 @@
 using MangoAPI.Domain.Entities;
 using Microsoft.AspNetCore.Identity;
 
-namespace MangoAPI.Application.Interfaces
+namespace MangoAPI.Application.Interfaces;
+
+public interface ISignInManagerService
 {
-    public interface ISignInManagerService
-    {
-        Task<SignInResult> CheckPasswordSignInAsync(UserEntity user, string password, bool lockoutOnFailure);
-    }
+    Task<SignInResult> CheckPasswordSignInAsync(UserEntity user, string password, bool lockoutOnFailure);
 }

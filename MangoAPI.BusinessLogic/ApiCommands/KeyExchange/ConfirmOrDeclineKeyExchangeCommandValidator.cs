@@ -1,14 +1,13 @@
 ﻿using FluentValidation;
 
-namespace MangoAPI.BusinessLogic.ApiCommands.KeyExchange
+namespace MangoAPI.BusinessLogic.ApiCommands.KeyExchange;
+
+public class ConfirmOrDeclineKeyExchangeCommandValidator : AbstractValidator<ConfirmOrDeclineKeyExchangeCommand>
 {
-    public class ConfirmOrDeclineKeyExchangeCommandValidator : AbstractValidator<ConfirmOrDeclineKeyExchangeCommand>
+    public ConfirmOrDeclineKeyExchangeCommandValidator()
     {
-        public ConfirmOrDeclineKeyExchangeCommandValidator()
-        {
-            RuleFor(x => x.PublicKey).NotEmpty();
-            RuleFor(x => x.RequestId).NotEmpty();
-            RuleFor(x => x.UserId).NotEmpty();
-        }
+        RuleFor(x => x.PublicKey).NotEmpty();
+        RuleFor(x => x.RequestId).NotEmpty();
+        RuleFor(x => x.UserId).NotEmpty();
     }
 }
