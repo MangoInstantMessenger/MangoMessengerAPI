@@ -13,7 +13,7 @@ public interface ICommunitiesController
 
     Task<IActionResult> CreateChannelAsync(CreateChannelRequest request, CancellationToken cancellationToken);
 
-    Task<IActionResult> CreateChatAsync(CreateChatRequest request, CancellationToken cancellationToken);
+    Task<IActionResult> CreateChatAsync(Guid userId, CancellationToken cancellationToken);
 
     Task<IActionResult> SearchAsync(string displayName, CancellationToken cancellationToken);
 

@@ -10,5 +10,5 @@ public record CreateChannelCommand : IRequest<Result<CreateCommunityResponse>>
     public CommunityType CommunityType { get; init; }
     public string ChannelTitle { get; init; }
     public string ChannelDescription { get; init; }
-    public Guid UserId { get; set; }
+    public Guid UserId { get; init; }
 }

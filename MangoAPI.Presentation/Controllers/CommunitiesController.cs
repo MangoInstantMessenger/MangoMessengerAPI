@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 using System.Threading;
 using System.Threading.Tasks;
+using MangoAPI.Domain.Enums;
 
 namespace MangoAPI.Presentation.Controllers;
 
@@ -70,31 +71,46 @@ public class CommunitiesController : ApiControllerBase, ICommunitiesController
         CancellationToken cancellationToken)
     {
         var userId = HttpContext.User.GetUserId();
-        var command = Mapper.Map<CreateChannelCommand>(request);
-        command.UserId = userId;
+
+        var command = new CreateChannelCommand
+        {
+            UserId = userId,
+            ChannelTitle = request.ChannelTitle,
+            ChannelDescription = request.ChannelDescription,
+            CommunityType = CommunityType.PublicChannel
+        };
+
         return await RequestAsync(command, cancellationToken);
     }
 
     /// <summary>
     /// Creates new direct chat with specified user. User is fetched by parameter user ID.
     /// </summary>
-    /// <param name="request">CreateChatRequest instance.</param>
+    /// <param name="userId">ID of the user chat to be created with.</param>
     /// <param name="cancellationToken">Cancellation token instance.</param>
     /// <returns>Possible codes: 200, 400, 409.</returns>
-    [HttpPost("chat")]
+    [HttpPost("chat/{userId:guid}")]
     [SwaggerOperation(
-        Description = "Creates new chat with specified user with type of: Direct Chat (1)",
-        Summary = "Creates new chat with specified user by user ID.")]
+        Description = "Creates new chat with specified user with type of: Direct Chat (1). " +
+                      "If chat already exists: returns its ID.",
+        Summary = "Creates new chat with specified user by user ID. " +
+                  "If chat already exists: returns its ID.")]
     [ProducesResponseType(typeof(CreateCommunityResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
-    public async Task<IActionResult> CreateChatAsync([FromBody] CreateChatRequest request,
+    public async Task<IActionResult> CreateChatAsync([FromRoute] Guid userId,
         CancellationToken cancellationToken)
     {
-        var userId = HttpContext.User.GetUserId();
+        var currentUserId = HttpContext.User.GetUserId();
 
-        var command = Mapper.Map<CreateChatCommand>(request);
-        command.UserId = userId;
+        var command = new CreateChatCommand
+        {
+            UserId = currentUserId,
+            PartnerId = userId,
+            CommunityType = CommunityType.DirectChat
+        };
+
+        command.UserId = currentUserId;
 
         return await RequestAsync(command, cancellationToken);
     }
