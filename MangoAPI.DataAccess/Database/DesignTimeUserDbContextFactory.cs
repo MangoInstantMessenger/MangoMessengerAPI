@@ -4,22 +4,21 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using System;
 
-namespace MangoAPI.DataAccess.Database
+namespace MangoAPI.DataAccess.Database;
+
+public class DesignTimeUserDbContextFactory : IDesignTimeDbContextFactory<MangoPostgresDbContext>
 {
-    public class DesignTimeUserDbContextFactory : IDesignTimeDbContextFactory<MangoPostgresDbContext>
+    public MangoPostgresDbContext CreateDbContext(string[] args)
     {
-        public MangoPostgresDbContext CreateDbContext(string[] args)
-        {
-            var optionsBuilder = new DbContextOptionsBuilder<MangoPostgresDbContext>();
-            var connectionString = EnvironmentConstants.MangoDatabaseUrl;
+        var options = new DbContextOptionsBuilder<MangoPostgresDbContext>();
+        var connectionString = EnvironmentConstants.MangoDatabaseUrl;
 
-            connectionString = StringService.ConvertHerokuDbConnection(connectionString);
+        connectionString = StringService.ConvertHerokuDbConnection(connectionString);
 
-            optionsBuilder.UseNpgsql(connectionString ??
-                                     throw new InvalidOperationException(
-                                         "Wrong Connection String in DesignTimeUserDbContextFactory class."));
+        options.UseNpgsql(connectionString ?? throw new ArgumentNullException(nameof(connectionString)));
 
-            return new MangoPostgresDbContext(optionsBuilder.Options);
-        }
+        options.EnableSensitiveDataLogging();
+
+        return new MangoPostgresDbContext(options.Options);
     }
 }

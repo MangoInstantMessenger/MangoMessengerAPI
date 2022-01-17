@@ -1,17 +1,16 @@
 ﻿using FluentValidation;
 using MangoAPI.BusinessLogic.Pipelines;
 
-namespace MangoAPI.BusinessLogic.ApiCommands.Documents
+namespace MangoAPI.BusinessLogic.ApiCommands.Documents;
+
+public class UploadDocumentCommandValidator : AbstractValidator<UploadDocumentCommand>
 {
-    public class UploadDocumentCommandValidator : AbstractValidator<UploadDocumentCommand>
+    public UploadDocumentCommandValidator()
     {
-        public UploadDocumentCommandValidator()
-        {
-            RuleFor(x => x.UserId).NotEmpty();
+        RuleFor(x => x.UserId).NotEmpty();
             
-            RuleFor(x => x.FormFile)
-                .NotNull()
-                .SetValidator(new CommonFileValidator());
-        }
+        RuleFor(x => x.FormFile)
+            .NotNull()
+            .SetValidator(new CommonFileValidator());
     }
 }

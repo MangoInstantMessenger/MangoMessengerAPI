@@ -13,120 +13,119 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace MangoAPI.Presentation.Controllers
+namespace MangoAPI.Presentation.Controllers;
+
+/// <summary>
+/// Controller responsible for Contacts Entity.
+/// </summary>
+[ApiController]
+[Route("api/contacts")]
+[Authorize]
+public class ContactsController : ApiControllerBase, IContactsController
 {
-    /// <summary>
-    /// Controller responsible for Contacts Entity.
-    /// </summary>
-    [ApiController]
-    [Route("api/contacts")]
-    [Authorize]
-    public class ContactsController : ApiControllerBase, IContactsController
+    public ContactsController(IMediator mediator, IMapper mapper)
+        : base(mediator, mapper)
     {
-        public ContactsController(IMediator mediator, IMapper mapper)
-            : base(mediator, mapper)
+    }
+
+    /// <summary>
+    /// Adds particular user to the contacts by User ID.
+    /// </summary>
+    /// <param name="contactId">User ID to add, UUID.</param>
+    /// <param name="cancellationToken">Cancellation token instance.</param>
+    /// <returns>Possible codes: 200, 400, 409.</returns>
+    [HttpPost("{contactId:guid}")]
+    [SwaggerOperation(
+        Description = "Adds particular user to the contacts by User ID.",
+        Summary = "Adds particular user to the contacts")]
+    [ProducesResponseType(typeof(ResponseBase), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
+    public async Task<IActionResult> AddContact([FromRoute] Guid contactId, CancellationToken cancellationToken)
+    {
+        var currentUserId = HttpContext.User.GetUserId();
+
+        var command = new AddContactCommand
         {
-        }
+            UserId = currentUserId,
+            ContactId = contactId,
+        };
 
-        /// <summary>
-        /// Adds particular user to the contacts by User ID.
-        /// </summary>
-        /// <param name="contactId">User ID to add, UUID.</param>
-        /// <param name="cancellationToken">Cancellation token instance.</param>
-        /// <returns>Possible codes: 200, 400, 409.</returns>
-        [HttpPost("{contactId:guid}")]
-        [SwaggerOperation(
-            Description = "Adds particular user to the contacts by User ID.",
-            Summary = "Adds particular user to the contacts")]
-        [ProducesResponseType(typeof(ResponseBase), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
-        public async Task<IActionResult> AddContact([FromRoute] Guid contactId, CancellationToken cancellationToken)
+        return await RequestAsync(command, cancellationToken);
+    }
+
+    /// <summary>
+    /// Deletes particular contact from the contacts by User ID.
+    /// </summary>
+    /// <param name="contactId">User ID to add, UUID.</param>
+    /// <param name="cancellationToken">Cancellation token instance.</param>
+    /// <returns>Possible codes: 200, 400, 409.</returns>
+    [HttpDelete("{contactId:guid}")]
+    [SwaggerOperation(
+        Description = "Deletes particular contact from the contacts by User ID. ",
+        Summary = "Deletes particular contact from the contacts.")]
+    [ProducesResponseType(typeof(ResponseBase), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
+    public async Task<IActionResult> DeleteContact([FromRoute] Guid contactId,
+        CancellationToken cancellationToken)
+    {
+        var currentUserId = HttpContext.User.GetUserId();
+        var command = new DeleteContactCommand
         {
-            var currentUserId = HttpContext.User.GetUserId();
+            UserId = currentUserId,
+            ContactId = contactId,
+        };
 
-            var command = new AddContactCommand
-            {
-                UserId = currentUserId,
-                ContactId = contactId,
-            };
+        return await RequestAsync(command, cancellationToken);
+    }
 
-            return await RequestAsync(command, cancellationToken);
-        }
+    /// <summary>
+    /// Returns list of current user's contacts.
+    /// </summary>
+    /// <param name="cancellationToken">Cancellation token instance.</param>
+    /// <returns>Possible codes: 200, 400, 409.</returns>
+    [HttpGet]
+    [SwaggerOperation(
+        Description = "Returns list of current user's contacts.",
+        Summary = "Returns list of user's contacts.")]
+    [ProducesResponseType(typeof(GetContactsResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> GetContacts(CancellationToken cancellationToken)
+    {
+        var userId = HttpContext.User.GetUserId();
 
-        /// <summary>
-        /// Deletes particular contact from the contacts by User ID.
-        /// </summary>
-        /// <param name="contactId">User ID to add, UUID.</param>
-        /// <param name="cancellationToken">Cancellation token instance.</param>
-        /// <returns>Possible codes: 200, 400, 409.</returns>
-        [HttpDelete("{contactId:guid}")]
-        [SwaggerOperation(
-            Description = "Deletes particular contact from the contacts by User ID. ",
-            Summary = "Deletes particular contact from the contacts.")]
-        [ProducesResponseType(typeof(ResponseBase), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
-        public async Task<IActionResult> DeleteContact([FromRoute] Guid contactId,
-            CancellationToken cancellationToken)
+        var query = new GetContactsQuery
         {
-            var currentUserId = HttpContext.User.GetUserId();
-            var command = new DeleteContactCommand
-            {
-                UserId = currentUserId,
-                ContactId = contactId,
-            };
+            UserId = userId
+        };
 
-            return await RequestAsync(command, cancellationToken);
-        }
+        return await RequestAsync(query, cancellationToken);
+    }
 
-        /// <summary>
-        /// Returns list of current user's contacts.
-        /// </summary>
-        /// <param name="cancellationToken">Cancellation token instance.</param>
-        /// <returns>Possible codes: 200, 400, 409.</returns>
-        [HttpGet]
-        [SwaggerOperation(
-            Description = "Returns list of current user's contacts.",
-            Summary = "Returns list of user's contacts.")]
-        [ProducesResponseType(typeof(GetContactsResponse), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> GetContacts(CancellationToken cancellationToken)
+    /// <summary>
+    /// Searches user by display name.
+    /// </summary>
+    /// <param name="searchQuery">Search query string.</param>
+    /// <param name="cancellationToken">CancellationToken instance.</param>
+    /// <returns>Possible codes: 200, 400, 409.</returns>
+    [HttpGet("searches")]
+    [SwaggerOperation(
+        Description = "Searches user by display name.",
+        Summary = "Searches user by display name.")]
+    [ProducesResponseType(typeof(SearchContactResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> SearchesAsync([FromQuery] string searchQuery,
+        CancellationToken cancellationToken)
+    {
+        var currentUserId = HttpContext.User.GetUserId();
+
+        var query = new SearchContactQuery
         {
-            var userId = HttpContext.User.GetUserId();
+            SearchQuery = searchQuery,
+            UserId = currentUserId
+        };
 
-            var query = new GetContactsQuery
-            {
-                UserId = userId
-            };
-
-            return await RequestAsync(query, cancellationToken);
-        }
-
-        /// <summary>
-        /// Searches user by display name.
-        /// </summary>
-        /// <param name="searchQuery">Search query string.</param>
-        /// <param name="cancellationToken">CancellationToken instance.</param>
-        /// <returns>Possible codes: 200, 400, 409.</returns>
-        [HttpGet("searches")]
-        [SwaggerOperation(
-            Description = "Searches user by display name.",
-            Summary = "Searches user by display name.")]
-        [ProducesResponseType(typeof(SearchContactResponse), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> SearchesAsync([FromQuery] string searchQuery,
-            CancellationToken cancellationToken)
-        {
-            var currentUserId = HttpContext.User.GetUserId();
-
-            var query = new SearchContactQuery
-            {
-                SearchQuery = searchQuery,
-                UserId = currentUserId
-            };
-
-            return await RequestAsync(query, cancellationToken);
-        }
+        return await RequestAsync(query, cancellationToken);
     }
 }

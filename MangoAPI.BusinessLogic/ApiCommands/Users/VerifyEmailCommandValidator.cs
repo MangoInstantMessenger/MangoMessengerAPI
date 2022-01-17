@@ -1,15 +1,14 @@
 ﻿using FluentValidation;
 
-namespace MangoAPI.BusinessLogic.ApiCommands.Users
+namespace MangoAPI.BusinessLogic.ApiCommands.Users;
+
+public class VerifyEmailCommandValidator : AbstractValidator<VerifyEmailCommand>
 {
-    public class VerifyEmailCommandValidator : AbstractValidator<VerifyEmailCommand>
+    public VerifyEmailCommandValidator()
     {
-        public VerifyEmailCommandValidator()
-        {
-            RuleFor(x => x.Email)
-                .Cascade(CascadeMode.Stop)
-                .NotEmpty()
-                .Length(1, 300);
-        }
+        RuleFor(x => x.Email)
+            .Cascade(CascadeMode.Stop)
+            .NotEmpty()
+            .Length(1, 300);
     }
 }

@@ -2,10 +2,9 @@
 using MangoAPI.BusinessLogic.Models;
 using MangoAPI.BusinessLogic.Responses;
 
-namespace MangoAPI.BusinessLogic.ApiQueries.KeyExchange
+namespace MangoAPI.BusinessLogic.ApiQueries.KeyExchange;
+
+public record GetKeyExchangeResponse : ResponseBase
 {
-    public record GetKeyExchangeResponse : ResponseBase
-    {
-        public List<KeyExchangeRequest> KeyExchangeRequests { get; init; }
-    }
+    public List<KeyExchangeRequest> KeyExchangeRequests { get; init; }
 }

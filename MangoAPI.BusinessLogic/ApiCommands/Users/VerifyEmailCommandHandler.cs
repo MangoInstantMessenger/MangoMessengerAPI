@@ -6,59 +6,58 @@ using MangoAPI.Domain.Constants;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace MangoAPI.BusinessLogic.ApiCommands.Users
+namespace MangoAPI.BusinessLogic.ApiCommands.Users;
+
+public class VerifyEmailCommandHandler
+    : IRequestHandler<VerifyEmailCommand, Result<ResponseBase>>
 {
-    public class VerifyEmailCommandHandler
-        : IRequestHandler<VerifyEmailCommand, Result<ResponseBase>>
+    private readonly MangoPostgresDbContext _postgresDbContext;
+    private readonly ResponseFactory<ResponseBase> _responseFactory;
+
+    public VerifyEmailCommandHandler(MangoPostgresDbContext postgresDbContext,
+        ResponseFactory<ResponseBase> responseFactory)
     {
-        private readonly MangoPostgresDbContext _postgresDbContext;
-        private readonly ResponseFactory<ResponseBase> _responseFactory;
+        _postgresDbContext = postgresDbContext;
+        _responseFactory = responseFactory;
+    }
 
-        public VerifyEmailCommandHandler(MangoPostgresDbContext postgresDbContext,
-            ResponseFactory<ResponseBase> responseFactory)
+    public async Task<Result<ResponseBase>> Handle(VerifyEmailCommand request,
+        CancellationToken cancellationToken)
+    {
+        var user = await _postgresDbContext.Users
+            .FirstOrDefaultAsync(userEntity => userEntity.Email == request.Email,
+                cancellationToken);
+
+        if (user is null)
         {
-            _postgresDbContext = postgresDbContext;
-            _responseFactory = responseFactory;
+            const string errorMessage = ResponseMessageCodes.UserNotFound;
+            var details = ResponseMessageCodes.ErrorDictionary[errorMessage];
+
+            return _responseFactory.ConflictResponse(errorMessage, details);
         }
 
-        public async Task<Result<ResponseBase>> Handle(VerifyEmailCommand request,
-            CancellationToken cancellationToken)
+        if (user.EmailCode != request.EmailCode)
         {
-            var user = await _postgresDbContext.Users
-                .FirstOrDefaultAsync(userEntity => userEntity.Email == request.Email,
-                    cancellationToken);
+            const string errorMessage = ResponseMessageCodes.InvalidEmailConfirmationCode;
+            var details = ResponseMessageCodes.ErrorDictionary[errorMessage];
 
-            if (user is null)
-            {
-                const string errorMessage = ResponseMessageCodes.UserNotFound;
-                var details = ResponseMessageCodes.ErrorDictionary[errorMessage];
-
-                return _responseFactory.ConflictResponse(errorMessage, details);
-            }
-
-            if (user.EmailCode != request.EmailCode)
-            {
-                const string errorMessage = ResponseMessageCodes.InvalidEmailConfirmationCode;
-                var details = ResponseMessageCodes.ErrorDictionary[errorMessage];
-
-                return _responseFactory.ConflictResponse(errorMessage, details);
-            }
-
-            if (user.EmailConfirmed)
-            {
-                const string errorMessage = ResponseMessageCodes.EmailAlreadyVerified;
-                var details = ResponseMessageCodes.ErrorDictionary[errorMessage];
-
-                return _responseFactory.ConflictResponse(errorMessage, details);
-            }
-
-            user.EmailConfirmed = true;
-
-            _postgresDbContext.Update(user);
-
-            await _postgresDbContext.SaveChangesAsync(cancellationToken);
-
-            return _responseFactory.SuccessResponse(ResponseBase.SuccessResponse);
+            return _responseFactory.ConflictResponse(errorMessage, details);
         }
+
+        if (user.EmailConfirmed)
+        {
+            const string errorMessage = ResponseMessageCodes.EmailAlreadyVerified;
+            var details = ResponseMessageCodes.ErrorDictionary[errorMessage];
+
+            return _responseFactory.ConflictResponse(errorMessage, details);
+        }
+
+        user.EmailConfirmed = true;
+
+        _postgresDbContext.Update(user);
+
+        await _postgresDbContext.SaveChangesAsync(cancellationToken);
+
+        return _responseFactory.SuccessResponse(ResponseBase.SuccessResponse);
     }
 }

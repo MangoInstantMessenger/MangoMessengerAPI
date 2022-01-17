@@ -1,13 +1,12 @@
 ﻿using MangoAPI.BusinessLogic.Responses;
 using MediatR;
 
-namespace MangoAPI.BusinessLogic.ApiCommands.Users
+namespace MangoAPI.BusinessLogic.ApiCommands.Users;
+
+public record RegisterCommand : IRequest<Result<ResponseBase>>
 {
-    public record RegisterCommand : IRequest<Result<ResponseBase>>
-    {
-        public string Email { get; init; }
-        public string DisplayName { get; init; }
-        public string Password { get; init; }
-        public bool TermsAccepted { get; init; }
-    }
+    public string Email { get; init; }
+    public string DisplayName { get; init; }
+    public string Password { get; init; }
+    public bool TermsAccepted { get; init; }
 }

@@ -2,12 +2,11 @@
 using MediatR;
 using System;
 
-namespace MangoAPI.BusinessLogic.ApiCommands.PasswordRestoreRequests
+namespace MangoAPI.BusinessLogic.ApiCommands.PasswordRestoreRequests;
+
+public record PasswordRestoreCommand : IRequest<Result<ResponseBase>>
 {
-    public record PasswordRestoreCommand : IRequest<Result<ResponseBase>>
-    {
-        public Guid RequestId { get; init; }
-        public string NewPassword { get; init; }
-        public string RepeatPassword { get; init; }
-    }
+    public Guid RequestId { get; init; }
+    public string NewPassword { get; init; }
+    public string RepeatPassword { get; init; }
 }

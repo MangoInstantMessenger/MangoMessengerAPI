@@ -1,15 +1,14 @@
 ﻿using FluentValidation;
 
-namespace MangoAPI.BusinessLogic.ApiCommands.PasswordRestoreRequests
+namespace MangoAPI.BusinessLogic.ApiCommands.PasswordRestoreRequests;
+
+public class RequestPasswordRestoreCommandValidator : AbstractValidator<RequestPasswordRestoreCommand>
 {
-    public class RequestPasswordRestoreCommandValidator : AbstractValidator<RequestPasswordRestoreCommand>
+    public RequestPasswordRestoreCommandValidator()
     {
-        public RequestPasswordRestoreCommandValidator()
-        {
-            RuleFor(x => x.Email)
-                .Cascade(CascadeMode.Stop)
-                .NotEmpty()
-                .Length(1, 300);
-        }
+        RuleFor(x => x.Email)
+            .Cascade(CascadeMode.Stop)
+            .NotEmpty()
+            .Length(1, 300);
     }
 }

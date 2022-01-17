@@ -1,13 +1,12 @@
 ﻿using FluentValidation;
 
-namespace MangoAPI.BusinessLogic.ApiQueries.Communities
+namespace MangoAPI.BusinessLogic.ApiQueries.Communities;
+
+public class SearchCommunityQueryValidator : AbstractValidator<SearchCommunityQuery>
 {
-    public class SearchCommunityQueryValidator : AbstractValidator<SearchCommunityQuery>
+    public SearchCommunityQueryValidator()
     {
-        public SearchCommunityQueryValidator()
-        {
-            RuleFor(x => x.DisplayName).NotEmpty().Length(1, 30);
-            RuleFor(x => x.UserId).NotEmpty();
-        }
+        RuleFor(x => x.DisplayName).NotEmpty().Length(1, 30);
+        RuleFor(x => x.UserId).NotEmpty();
     }
 }

@@ -7,68 +7,67 @@ using MangoAPI.Domain.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace MangoAPI.BusinessLogic.ApiCommands.KeyExchange
+namespace MangoAPI.BusinessLogic.ApiCommands.KeyExchange;
+
+public class CreateKeyExchangeRequestCommandHandler : IRequestHandler<CreateKeyExchangeRequestCommand,
+    Result<CreateKeyExchangeResponse>>
 {
-    public class CreateKeyExchangeRequestCommandHandler : IRequestHandler<CreateKeyExchangeRequestCommand,
-        Result<CreateKeyExchangeResponse>>
+    private readonly MangoPostgresDbContext _postgresDbContext;
+    private readonly ResponseFactory<CreateKeyExchangeResponse> _responseFactory;
+
+    public CreateKeyExchangeRequestCommandHandler(
+        MangoPostgresDbContext postgresDbContext,
+        ResponseFactory<CreateKeyExchangeResponse> responseFactory)
     {
-        private readonly MangoPostgresDbContext _postgresDbContext;
-        private readonly ResponseFactory<CreateKeyExchangeResponse> _responseFactory;
+        _postgresDbContext = postgresDbContext;
+        _responseFactory = responseFactory;
+    }
 
-        public CreateKeyExchangeRequestCommandHandler(
-            MangoPostgresDbContext postgresDbContext,
-            ResponseFactory<CreateKeyExchangeResponse> responseFactory)
+    public async Task<Result<CreateKeyExchangeResponse>> Handle(CreateKeyExchangeRequestCommand request,
+        CancellationToken cancellationToken)
+    {
+        var requestedUserExists = await _postgresDbContext.Users.AnyAsync(
+            x => x.Id == request.RequestedUserId, cancellationToken);
+
+        if (!requestedUserExists)
         {
-            _postgresDbContext = postgresDbContext;
-            _responseFactory = responseFactory;
+            const string message = ResponseMessageCodes.UserNotFound;
+            var details = ResponseMessageCodes.ErrorDictionary[message];
+
+            return _responseFactory.ConflictResponse(message, details);
         }
 
-        public async Task<Result<CreateKeyExchangeResponse>> Handle(CreateKeyExchangeRequestCommand request,
-            CancellationToken cancellationToken)
+        var alreadyRequested = await _postgresDbContext.KeyExchangeRequests
+            .AnyAsync(
+                x => x.SenderId == request.UserId && x.UserId == request.RequestedUserId, 
+                cancellationToken);
+
+        if (alreadyRequested)
         {
-            var requestedUserExists = await _postgresDbContext.Users.AnyAsync(
-                x => x.Id == request.RequestedUserId, cancellationToken);
+            const string message = ResponseMessageCodes.KeyExchangeRequestAlreadyExists;
+            var details = ResponseMessageCodes.ErrorDictionary[message];
 
-            if (!requestedUserExists)
-            {
-                const string message = ResponseMessageCodes.UserNotFound;
-                var details = ResponseMessageCodes.ErrorDictionary[message];
-
-                return _responseFactory.ConflictResponse(message, details);
-            }
-
-            var alreadyRequested = await _postgresDbContext.KeyExchangeRequests
-                .AnyAsync(
-                    x => x.SenderId == request.UserId && x.UserId == request.RequestedUserId, 
-                    cancellationToken);
-
-            if (alreadyRequested)
-            {
-                const string message = ResponseMessageCodes.KeyExchangeRequestAlreadyExists;
-                var details = ResponseMessageCodes.ErrorDictionary[message];
-
-                return _responseFactory.ConflictResponse(message, details);
-            }
-
-            var keyExchangeRequest = new KeyExchangeRequestEntity
-            {
-                UserId = request.RequestedUserId,
-                SenderId = request.UserId,
-                SenderPublicKey = request.PublicKey
-            };
-
-            _postgresDbContext.KeyExchangeRequests.Add(keyExchangeRequest);
-
-            await _postgresDbContext.SaveChangesAsync(cancellationToken);
-
-            var response = new CreateKeyExchangeResponse
-            {
-                Message = ResponseMessageCodes.Success,
-                RequestId = keyExchangeRequest.Id,
-                Success = true
-            };
-
-            return _responseFactory.SuccessResponse(response);
+            return _responseFactory.ConflictResponse(message, details);
         }
+
+        var keyExchangeRequest = new KeyExchangeRequestEntity
+        {
+            UserId = request.RequestedUserId,
+            SenderId = request.UserId,
+            SenderPublicKey = request.PublicKey
+        };
+
+        _postgresDbContext.KeyExchangeRequests.Add(keyExchangeRequest);
+
+        await _postgresDbContext.SaveChangesAsync(cancellationToken);
+
+        var response = new CreateKeyExchangeResponse
+        {
+            Message = ResponseMessageCodes.Success,
+            RequestId = keyExchangeRequest.Id,
+            Success = true
+        };
+
+        return _responseFactory.SuccessResponse(response);
     }
 }

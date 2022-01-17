@@ -1,13 +1,12 @@
 ﻿using FluentValidation;
 
-namespace MangoAPI.BusinessLogic.ApiQueries.Contacts
+namespace MangoAPI.BusinessLogic.ApiQueries.Contacts;
+
+public class SearchContactQueryValidator : AbstractValidator<SearchContactQuery>
 {
-    public class SearchContactQueryValidator : AbstractValidator<SearchContactQuery>
+    public SearchContactQueryValidator()
     {
-        public SearchContactQueryValidator()
-        {
-            RuleFor(x => x.SearchQuery).NotEmpty().Length(1, 30);
-            RuleFor(x => x.UserId).NotEmpty();
-        }
+        RuleFor(x => x.SearchQuery).NotEmpty().Length(1, 30);
+        RuleFor(x => x.UserId).NotEmpty();
     }
 }

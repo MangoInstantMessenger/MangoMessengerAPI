@@ -2,10 +2,9 @@
 using MangoAPI.BusinessLogic.Responses;
 using MediatR;
 
-namespace MangoAPI.BusinessLogic.ApiQueries.PublicKeys
+namespace MangoAPI.BusinessLogic.ApiQueries.PublicKeys;
+
+public record GetPublicKeysQuery : IRequest<Result<GetPublicKeysResponse>>
 {
-    public record GetPublicKeysQuery : IRequest<Result<GetPublicKeysResponse>>
-    {
-        public Guid UserId { get; init; }
-    }
+    public Guid UserId { get; init; }
 }

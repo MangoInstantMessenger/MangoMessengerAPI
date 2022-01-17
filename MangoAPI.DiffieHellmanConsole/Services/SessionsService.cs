@@ -7,34 +7,33 @@ using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.DiffieHellmanConsole.Consts;
 using Newtonsoft.Json;
 
-namespace MangoAPI.DiffieHellmanConsole.Services
+namespace MangoAPI.DiffieHellmanConsole.Services;
+
+public class SessionsService
 {
-    public class SessionsService
+    private const string Route = "sessions/";
+    private readonly HttpClient _httpClient = new();
+
+    public async Task<TokensResponse> LoginAsync(IReadOnlyList<string> args)
     {
-        private const string Route = "sessions/";
-        private readonly HttpClient _httpClient = new();
+        var email= args[1];
+        var pass = args[2];
 
-        public async Task<TokensResponse> LoginAsync(IReadOnlyList<string> args)
+        var command = new LoginCommand
         {
-            var email= args[1];
-            var pass = args[2];
+            Email = email,
+            Password = pass
+        };
 
-            var command = new LoginCommand
-            {
-                Email = email,
-                Password = pass
-            };
+        var response = await HttpRequest.PostWithBodyAsync(_httpClient, Urls.ApiUrl + Route, command);
+        return JsonConvert.DeserializeObject<TokensResponse>(response);
+    }
 
-            var response = await HttpRequest.PostWithBodyAsync(_httpClient, Urls.ApiUrl + Route, command);
-            return JsonConvert.DeserializeObject<TokensResponse>(response);
-        }
-
-        public async Task<TokensResponse> RefreshTokenAsync(Guid refreshToken)
-        {
-            var route = Urls.ApiUrl + Route + refreshToken;
-            var result = await HttpRequest.PostWithoutBodyAsync(_httpClient, route);
-            var response = JsonConvert.DeserializeObject<TokensResponse>(result);
-            return response;
-        }
+    public async Task<TokensResponse> RefreshTokenAsync(Guid refreshToken)
+    {
+        var route = Urls.ApiUrl + Route + refreshToken;
+        var result = await HttpRequest.PostWithoutBodyAsync(_httpClient, route);
+        var response = JsonConvert.DeserializeObject<TokensResponse>(result);
+        return response;
     }
 }
