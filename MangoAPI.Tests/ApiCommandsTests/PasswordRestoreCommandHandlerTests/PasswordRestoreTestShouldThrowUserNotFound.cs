@@ -6,7 +6,6 @@ using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.Domain.Constants;
 using MangoAPI.Domain.Entities;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 using Xunit;
 
 namespace MangoAPI.Tests.ApiCommandsTests.PasswordRestoreCommandHandlerTests;

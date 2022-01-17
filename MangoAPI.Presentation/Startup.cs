@@ -32,8 +32,6 @@ public class Startup
         }
 
         app.ConfigureExceptionHandler();
-        app.UseRequestResponseLogging();
-
 
         app.UseHttpsRedirection();
 
