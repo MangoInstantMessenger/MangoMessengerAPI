@@ -77,7 +77,6 @@ public class CommunitiesController : ApiControllerBase, ICommunitiesController
             UserId = userId,
             ChannelTitle = request.ChannelTitle,
             ChannelDescription = request.ChannelDescription,
-            CommunityType = CommunityType.PublicChannel
         };
 
         return await RequestAsync(command, cancellationToken);
@@ -107,7 +106,6 @@ public class CommunitiesController : ApiControllerBase, ICommunitiesController
         {
             UserId = currentUserId,
             PartnerId = userId,
-            CommunityType = CommunityType.DirectChat
         };
 
         command.UserId = currentUserId;

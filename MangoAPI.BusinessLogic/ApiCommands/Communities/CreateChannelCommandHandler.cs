@@ -48,7 +48,7 @@ public class CreateChannelCommandHandler
 
         var channel = new ChatEntity
         {
-            CommunityType = 2,
+            CommunityType = (int)CommunityType.PublicChannel,
             Title = request.ChannelTitle,
             CreatedAt = DateTime.UtcNow,
             Description = request.ChannelDescription,

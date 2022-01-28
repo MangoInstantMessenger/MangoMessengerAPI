@@ -79,6 +79,5 @@ public class CreateChatShouldThrowCannotCreateSelfChat : ITestable<CreateChatCom
     {
         UserId = SeedDataConstants.RazumovskyId,
         PartnerId = SeedDataConstants.RazumovskyId,
-        CommunityType = CommunityType.DirectChat
     };
 }
