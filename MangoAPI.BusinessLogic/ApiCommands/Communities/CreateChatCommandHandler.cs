@@ -74,7 +74,7 @@ public class CreateChatCommandHandler
         var chatEntity = new ChatEntity
         {
             Id = Guid.NewGuid(),
-            CommunityType = (int)request.CommunityType,
+            CommunityType = 1,
             Title = $"{currentUserDisplayName} / {partner.DisplayName}",
             CreatedAt = DateTime.UtcNow,
             Description = $"Direct chat between {currentUserDisplayName} and {partner.DisplayName}",
