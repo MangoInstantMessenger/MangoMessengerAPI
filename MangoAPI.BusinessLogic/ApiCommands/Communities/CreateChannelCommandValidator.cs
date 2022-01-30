@@ -16,6 +16,5 @@ public class CreateChannelCommandValidator : AbstractValidator<CreateChannelComm
             .NotEmpty()
             .Length(1, 100);
 
-        RuleFor(x => x.CommunityType).IsInEnum();
     }
 }

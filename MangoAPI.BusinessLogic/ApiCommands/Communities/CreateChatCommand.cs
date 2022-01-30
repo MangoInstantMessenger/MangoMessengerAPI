@@ -9,5 +9,4 @@ public record CreateChatCommand : IRequest<Result<CreateCommunityResponse>>
 {
     public Guid PartnerId { get; init; }
     public Guid UserId { get; set; }
-    public CommunityType CommunityType { get; init; }
 }

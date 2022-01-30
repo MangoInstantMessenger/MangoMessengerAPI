@@ -80,6 +80,5 @@ public class CreateChatShouldThrowUserNotFound : ITestable<CreateChatCommand, Cr
     {
         UserId = SeedDataConstants.RazumovskyId,
         PartnerId = Guid.NewGuid(),
-        CommunityType = CommunityType.DirectChat
     };
 }
