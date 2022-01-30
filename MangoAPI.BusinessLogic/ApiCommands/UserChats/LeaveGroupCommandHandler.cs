@@ -26,23 +26,13 @@ public class LeaveGroupCommandHandler
     public async Task<Result<LeaveGroupResponse>> Handle(LeaveGroupCommand request,
         CancellationToken cancellationToken)
     {
-        var user = await _postgresDbContext.Users
-            .FirstOrDefaultAsync(entity => entity.Id == request.UserId, cancellationToken);
-
-        if (user is null)
-        {
-            const string errorMessage = ResponseMessageCodes.UserNotFound;
-            var details = ResponseMessageCodes.ErrorDictionary[errorMessage];
-
-            return _responseFactory.ConflictResponse(errorMessage, details);
-        }
-
         var userChat = await _postgresDbContext.UserChats
+            .Include(x=>x.Chat)
             .Where(chatEntity => chatEntity.UserId == request.UserId)
             .Where(chatEntity => chatEntity.ChatId == request.ChatId)
             .FirstOrDefaultAsync(cancellationToken);
 
-        if (userChat is null)
+        if (userChat == null || userChat.Chat == null)
         {
             const string errorMessage = ResponseMessageCodes.ChatNotFound;
             var details = ResponseMessageCodes.ErrorDictionary[errorMessage];
@@ -50,11 +40,9 @@ public class LeaveGroupCommandHandler
             return _responseFactory.ConflictResponse(errorMessage, details);
         }
 
-        var chat = await _postgresDbContext.Chats
-            .Include(x => x.ChatUsers)
-            .FirstOrDefaultAsync(x => x.Id == request.ChatId, cancellationToken);
+        var chat = userChat.Chat;
 
-        if (chat.CommunityType is (int) CommunityType.DirectChat or (int) CommunityType.SecretChat)
+        if (chat != null && chat.CommunityType == (int) CommunityType.DirectChat)
         {
             var messages = await _postgresDbContext.Messages
                 .Where(messageEntity => messageEntity.ChatId == request.ChatId)

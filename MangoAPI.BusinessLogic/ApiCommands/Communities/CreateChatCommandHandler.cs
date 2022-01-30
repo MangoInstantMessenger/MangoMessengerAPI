@@ -58,14 +58,13 @@ public class CreateChatCommandHandler
 
         var userPrivateChats = await _postgresDbContext.Chats
             .Include(chatEntity => chatEntity.ChatUsers)
-            .Where(chatEntity => (chatEntity.CommunityType == (int)CommunityType.DirectChat ||
-                                  chatEntity.CommunityType == (int)CommunityType.SecretChat) &&
+            .Where(chatEntity => chatEntity.CommunityType == (int)CommunityType.DirectChat &&
                                  chatEntity.ChatUsers.Any(userChatEntity => userChatEntity.UserId == request.UserId))
             .ToListAsync(cancellationToken);
 
         var existingChat = userPrivateChats
             .FirstOrDefault(x => x.ChatUsers.Any(t => t.UserId == partner.Id)
-                                 && x.CommunityType == (int)request.CommunityType);
+                                 && x.CommunityType == (int)CommunityType.DirectChat);
 
         if (existingChat != null)
         {
@@ -75,17 +74,12 @@ public class CreateChatCommandHandler
         var chatEntity = new ChatEntity
         {
             Id = Guid.NewGuid(),
-            CommunityType = (int)request.CommunityType,
+            CommunityType = (int)CommunityType.DirectChat,
             Title = $"{currentUserDisplayName} / {partner.DisplayName}",
             CreatedAt = DateTime.UtcNow,
             Description = $"Direct chat between {currentUserDisplayName} and {partner.DisplayName}",
             MembersCount = 2,
         };
-
-        if (request.CommunityType == CommunityType.SecretChat)
-        {
-            chatEntity.Description = $"Secret chat between {currentUserDisplayName} and {partner.DisplayName}";
-        }
 
         var userChats = new[]
         {

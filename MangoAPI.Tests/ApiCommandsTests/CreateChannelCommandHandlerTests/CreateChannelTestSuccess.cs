@@ -63,7 +63,6 @@ public class CreateChannelTestSuccess : ITestable<CreateChannelCommand, CreateCo
     {
         ChannelDescription = "My test channel",
         ChannelTitle = "Test channel",
-        CommunityType = CommunityType.PublicChannel,
         UserId = SeedDataConstants.RazumovskyId
     };
 }

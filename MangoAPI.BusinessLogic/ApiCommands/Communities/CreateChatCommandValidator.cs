@@ -8,6 +8,5 @@ public class CreateChatCommandValidator : AbstractValidator<CreateChatCommand>
     {
         RuleFor(x => x.PartnerId).NotEmpty();
         RuleFor(x => x.UserId).NotEmpty();
-        RuleFor(x => x.CommunityType).IsInEnum();
     }
 }

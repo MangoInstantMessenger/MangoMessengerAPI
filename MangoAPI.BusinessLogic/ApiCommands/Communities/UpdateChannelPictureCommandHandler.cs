@@ -51,8 +51,7 @@ public class
                 x.ChatId == request.ChatId &&
                 x.UserId == request.UserId &&
                 x.RoleId == (int) UserRole.Owner &&
-                x.Chat.CommunityType != (int) CommunityType.DirectChat &&
-                x.Chat.CommunityType != (int) CommunityType.SecretChat, cancellationToken);
+                x.Chat.CommunityType != (int) CommunityType.DirectChat, cancellationToken);
 
         if (userChat is null)
         {

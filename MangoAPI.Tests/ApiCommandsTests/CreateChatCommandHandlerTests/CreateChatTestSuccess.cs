@@ -77,6 +77,5 @@ public class CreateChatTestSuccess : ITestable<CreateChatCommand, CreateCommunit
     {
         UserId = SeedDataConstants.RazumovskyId,
         PartnerId = SeedDataConstants.AmelitId,
-        CommunityType = CommunityType.DirectChat
     };
 }
