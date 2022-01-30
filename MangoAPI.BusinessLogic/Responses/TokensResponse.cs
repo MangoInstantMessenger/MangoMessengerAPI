@@ -2,26 +2,25 @@
 using MangoAPI.BusinessLogic.Models;
 using MangoAPI.Domain.Constants;
 
-namespace MangoAPI.BusinessLogic.Responses
-{
-    public record TokensResponse : ResponseBase<TokensResponse>
-    {
-        public Tokens Tokens { get; set; }
+namespace MangoAPI.BusinessLogic.Responses;
 
-        public static TokensResponse FromSuccess(string accessToken, Guid refreshToken, Guid userId, long expires)
+public record TokensResponse : ResponseBase<TokensResponse>
+{
+    public Tokens Tokens { get; set; }
+
+    public static TokensResponse FromSuccess(string accessToken, Guid refreshToken, Guid userId, long expires)
+    {
+        return new TokensResponse
         {
-            return new TokensResponse
+            Message = ResponseMessageCodes.Success,
+            Success = true,
+            Tokens = new Tokens
             {
-                Message = ResponseMessageCodes.Success,
-                Success = true,
-                Tokens = new Tokens
-                {
-                    AccessToken = accessToken,
-                    RefreshToken = refreshToken,
-                    Expires = expires,
-                    UserId = userId
-                }
-            };
-        }
+                AccessToken = accessToken,
+                RefreshToken = refreshToken,
+                Expires = expires,
+                UserId = userId
+            }
+        };
     }
 }

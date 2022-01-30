@@ -1,14 +1,13 @@
 ﻿using FluentValidation;
 
-namespace MangoAPI.BusinessLogic.ApiQueries.Messages
+namespace MangoAPI.BusinessLogic.ApiQueries.Messages;
+
+public class SearchChatMessageQueryValidator : AbstractValidator<SearchChatMessagesQuery>
 {
-    public class SearchChatMessageQueryValidator : AbstractValidator<SearchChatMessagesQuery>
+    public SearchChatMessageQueryValidator()
     {
-        public SearchChatMessageQueryValidator()
-        {
-            RuleFor(x => x.ChatId).NotEmpty();
-            RuleFor(x => x.MessageText).NotEmpty().Length(1, 30);
-            RuleFor(x => x.UserId).NotEmpty();
-        }
+        RuleFor(x => x.ChatId).NotEmpty();
+        RuleFor(x => x.MessageText).NotEmpty().Length(1, 30);
+        RuleFor(x => x.UserId).NotEmpty();
     }
 }

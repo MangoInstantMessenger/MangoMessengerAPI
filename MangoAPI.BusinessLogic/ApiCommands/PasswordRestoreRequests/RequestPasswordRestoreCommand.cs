@@ -1,10 +1,9 @@
 ﻿using MangoAPI.BusinessLogic.Responses;
 using MediatR;
 
-namespace MangoAPI.BusinessLogic.ApiCommands.PasswordRestoreRequests
+namespace MangoAPI.BusinessLogic.ApiCommands.PasswordRestoreRequests;
+
+public record RequestPasswordRestoreCommand : IRequest<Result<ResponseBase>>
 {
-    public record RequestPasswordRestoreCommand : IRequest<Result<ResponseBase>>
-    {
-        public string Email { get; init; }
-    }
+    public string Email { get; init; }
 }

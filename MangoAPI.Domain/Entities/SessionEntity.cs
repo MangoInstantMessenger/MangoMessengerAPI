@@ -1,21 +1,20 @@
 ﻿using System;
 
-namespace MangoAPI.Domain.Entities
+namespace MangoAPI.Domain.Entities;
+
+public sealed class SessionEntity
 {
-    public sealed class SessionEntity
-    {
-        public Guid Id { get; set; }
+    public Guid Id { get; set; }
 
-        public Guid UserId { get; set; }
+    public Guid UserId { get; set; }
 
-        public Guid RefreshToken { get; set; }
+    public Guid RefreshToken { get; set; }
 
-        public DateTime CreatedAt { get; set; }
+    public DateTime CreatedAt { get; set; }
 
-        public DateTime ExpiresAt { get; set; }
+    public DateTime ExpiresAt { get; set; }
 
-        public bool IsExpired => DateTime.UtcNow >= ExpiresAt;
+    public bool IsExpired => DateTime.UtcNow >= ExpiresAt;
 
-        public UserEntity UserEntity { get; set; }
-    }
+    public UserEntity UserEntity { get; set; }
 }

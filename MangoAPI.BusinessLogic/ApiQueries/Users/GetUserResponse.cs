@@ -2,20 +2,19 @@
 using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.Domain.Constants;
 
-namespace MangoAPI.BusinessLogic.ApiQueries.Users
-{
-    public record GetUserResponse : ResponseBase<GetUserResponse>
-    {
-        public User User { get; init; }
+namespace MangoAPI.BusinessLogic.ApiQueries.Users;
 
-        public static GetUserResponse FromSuccess(User user)
+public record GetUserResponse : ResponseBase<GetUserResponse>
+{
+    public User User { get; init; }
+
+    public static GetUserResponse FromSuccess(User user)
+    {
+        return new GetUserResponse
         {
-            return new GetUserResponse
-            {
-                Message = ResponseMessageCodes.Success,
-                Success = true,
-                User = user,
-            };
-        }
+            Message = ResponseMessageCodes.Success,
+            Success = true,
+            User = user,
+        };
     }
 }

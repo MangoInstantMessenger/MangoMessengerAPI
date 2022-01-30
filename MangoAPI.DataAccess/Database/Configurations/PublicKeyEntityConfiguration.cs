@@ -2,20 +2,19 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace MangoAPI.DataAccess.Database.Configurations
-{
-    public class PublicKeyEntityConfiguration : IEntityTypeConfiguration<PublicKeyEntity>
-    {
-        public void Configure(EntityTypeBuilder<PublicKeyEntity> builder)
-        {
-            builder.HasKey(x => new { x.UserId, x.PartnerId });
-            builder.Property(x => x.UserId).IsRequired();
-            builder.Property(x => x.PartnerId).IsRequired();
-            builder.Property(x => x.PartnerPublicKey).IsRequired();
+namespace MangoAPI.DataAccess.Database.Configurations;
 
-            builder.HasOne(x => x.User)
-                .WithMany(x => x.PublicKeys)
-                .HasForeignKey(x => x.UserId);
-        }
+public class PublicKeyEntityConfiguration : IEntityTypeConfiguration<PublicKeyEntity>
+{
+    public void Configure(EntityTypeBuilder<PublicKeyEntity> builder)
+    {
+        builder.HasKey(x => new { x.UserId, x.PartnerId });
+        builder.Property(x => x.UserId).IsRequired();
+        builder.Property(x => x.PartnerId).IsRequired();
+        builder.Property(x => x.PartnerPublicKey).IsRequired();
+
+        builder.HasOne(x => x.User)
+            .WithMany(x => x.PublicKeys)
+            .HasForeignKey(x => x.UserId);
     }
 }

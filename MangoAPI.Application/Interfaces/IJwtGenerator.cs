@@ -1,9 +1,8 @@
 ﻿using System;
 
-namespace MangoAPI.Application.Interfaces
+namespace MangoAPI.Application.Interfaces;
+
+public interface IJwtGenerator
 {
-    public interface IJwtGenerator
-    {
-        string GenerateJwtToken(Guid userId);
-    }
+    string GenerateJwtToken(Guid userId);
 }

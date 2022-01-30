@@ -2,14 +2,13 @@
 using MangoAPI.BusinessLogic.Responses;
 using MediatR;
 
-namespace MangoAPI.BusinessLogic.ApiCommands.Messages
+namespace MangoAPI.BusinessLogic.ApiCommands.Messages;
+
+public record DeleteMessageCommand : IRequest<Result<DeleteMessageResponse>>
 {
-    public record DeleteMessageCommand : IRequest<Result<DeleteMessageResponse>>
-    {
-        public Guid MessageId { get; init; }
+    public Guid MessageId { get; init; }
         
-        public Guid UserId { get; set; }
+    public Guid UserId { get; set; }
         
-        public Guid ChatId { get; set; }
-    }
+    public Guid ChatId { get; set; }
 }
