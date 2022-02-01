@@ -1,12 +1,11 @@
 ﻿using FluentValidation;
 
-namespace MangoAPI.BusinessLogic.ApiQueries.PublicKeys
+namespace MangoAPI.BusinessLogic.ApiQueries.PublicKeys;
+
+public class GetPublicKeysQueryValidator : AbstractValidator<GetPublicKeysQuery>
 {
-    public class GetPublicKeysQueryValidator : AbstractValidator<GetPublicKeysQuery>
+    public GetPublicKeysQueryValidator()
     {
-        public GetPublicKeysQueryValidator()
-        {
-            RuleFor(x => x.UserId).NotEmpty();
-        }
+        RuleFor(x => x.UserId).NotEmpty();
     }
 }

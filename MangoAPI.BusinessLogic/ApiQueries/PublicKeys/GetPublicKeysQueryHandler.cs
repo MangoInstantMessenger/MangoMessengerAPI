@@ -8,39 +8,38 @@ using MangoAPI.Domain.Constants;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace MangoAPI.BusinessLogic.ApiQueries.PublicKeys
+namespace MangoAPI.BusinessLogic.ApiQueries.PublicKeys;
+
+public class GetPublicKeysQueryHandler : IRequestHandler<GetPublicKeysQuery, Result<GetPublicKeysResponse>>
 {
-    public class GetPublicKeysQueryHandler : IRequestHandler<GetPublicKeysQuery, Result<GetPublicKeysResponse>>
+    private readonly MangoPostgresDbContext _postgresDbContext;
+    private readonly ResponseFactory<GetPublicKeysResponse> _responseFactory;
+
+    public GetPublicKeysQueryHandler(MangoPostgresDbContext postgresDbContext,
+        ResponseFactory<GetPublicKeysResponse> responseFactory)
     {
-        private readonly MangoPostgresDbContext _postgresDbContext;
-        private readonly ResponseFactory<GetPublicKeysResponse> _responseFactory;
+        _postgresDbContext = postgresDbContext;
+        _responseFactory = responseFactory;
+    }
 
-        public GetPublicKeysQueryHandler(MangoPostgresDbContext postgresDbContext,
-            ResponseFactory<GetPublicKeysResponse> responseFactory)
-        {
-            _postgresDbContext = postgresDbContext;
-            _responseFactory = responseFactory;
-        }
-
-        public async Task<Result<GetPublicKeysResponse>> Handle(GetPublicKeysQuery request,
-            CancellationToken cancellationToken)
-        {
-            var keys = await _postgresDbContext.PublicKeys.Where(x =>
-                    x.UserId == request.UserId)
-                .Select(x => new PublicKey
-                {
-                    PartnerId = x.PartnerId,
-                    PartnerPublicKey = x.PartnerPublicKey
-                }).ToListAsync(cancellationToken);
-
-            var response = new GetPublicKeysResponse
+    public async Task<Result<GetPublicKeysResponse>> Handle(GetPublicKeysQuery request,
+        CancellationToken cancellationToken)
+    {
+        var keys = await _postgresDbContext.PublicKeys.Where(x =>
+                x.UserId == request.UserId)
+            .Select(x => new PublicKey
             {
-                Success = true,
-                Message = ResponseMessageCodes.Success,
-                PublicKeys = keys
-            };
+                PartnerId = x.PartnerId,
+                PartnerPublicKey = x.PartnerPublicKey
+            }).ToListAsync(cancellationToken);
 
-            return _responseFactory.SuccessResponse(response);
-        }
+        var response = new GetPublicKeysResponse
+        {
+            Success = true,
+            Message = ResponseMessageCodes.Success,
+            PublicKeys = keys
+        };
+
+        return _responseFactory.SuccessResponse(response);
     }
 }

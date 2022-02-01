@@ -2,10 +2,9 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 
-namespace MangoAPI.Presentation.Interfaces
+namespace MangoAPI.Presentation.Interfaces;
+
+public interface IPublicKeysController
 {
-    public interface IPublicKeysController
-    {
-        Task<IActionResult> GetPublicKeys(CancellationToken cancellationToken);
-    }
+    Task<IActionResult> GetPublicKeys(CancellationToken cancellationToken);
 }

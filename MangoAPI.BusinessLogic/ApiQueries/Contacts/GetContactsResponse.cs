@@ -3,20 +3,19 @@ using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.Domain.Constants;
 using System.Collections.Generic;
 
-namespace MangoAPI.BusinessLogic.ApiQueries.Contacts
-{
-    public record GetContactsResponse : ResponseBase<GetContactsResponse>
-    {
-        public List<Contact> Contacts { get; init; }
+namespace MangoAPI.BusinessLogic.ApiQueries.Contacts;
 
-        public static GetContactsResponse FromSuccess(List<Contact> contacts)
+public record GetContactsResponse : ResponseBase<GetContactsResponse>
+{
+    public List<Contact> Contacts { get; init; }
+
+    public static GetContactsResponse FromSuccess(List<Contact> contacts)
+    {
+        return new GetContactsResponse
         {
-            return new GetContactsResponse
-            {
-                Message = ResponseMessageCodes.Success,
-                Success = true,
-                Contacts = contacts,
-            };
-        }
+            Message = ResponseMessageCodes.Success,
+            Success = true,
+            Contacts = contacts,
+        };
     }
 }

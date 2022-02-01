@@ -1,20 +1,19 @@
 ﻿using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.Domain.Constants;
 
-namespace MangoAPI.BusinessLogic.ApiCommands.Users
-{
-    public record UpdateProfilePictureResponse : ResponseBase<UpdateProfilePictureResponse>
-    {
-        public string NewUserPictureUrl { get; init; }
+namespace MangoAPI.BusinessLogic.ApiCommands.Users;
 
-        public static UpdateProfilePictureResponse FromSuccess(string newUserPictureUrl)
+public record UpdateProfilePictureResponse : ResponseBase<UpdateProfilePictureResponse>
+{
+    public string NewUserPictureUrl { get; init; }
+
+    public static UpdateProfilePictureResponse FromSuccess(string newUserPictureUrl)
+    {
+        return new UpdateProfilePictureResponse
         {
-            return new UpdateProfilePictureResponse
-            {
-                Message = ResponseMessageCodes.Success,
-                Success = true,
-                NewUserPictureUrl = newUserPictureUrl
-            };
-        }
+            Message = ResponseMessageCodes.Success,
+            Success = true,
+            NewUserPictureUrl = newUserPictureUrl
+        };
     }
 }

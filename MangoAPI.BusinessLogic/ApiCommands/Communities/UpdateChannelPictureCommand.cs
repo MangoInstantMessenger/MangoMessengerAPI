@@ -3,12 +3,11 @@ using MediatR;
 using System;
 using Microsoft.AspNetCore.Http;
 
-namespace MangoAPI.BusinessLogic.ApiCommands.Communities
+namespace MangoAPI.BusinessLogic.ApiCommands.Communities;
+
+public record UpdateChanelPictureCommand : IRequest<Result<UpdateChannelPictureResponse>>
 {
-    public record UpdateChanelPictureCommand : IRequest<Result<UpdateChannelPictureResponse>>
-    {
-        public Guid UserId { get; init; }
-        public Guid ChatId { get; init; }
-        public IFormFile NewGroupPicture { get; init; }
-    }
+    public Guid UserId { get; init; }
+    public Guid ChatId { get; init; }
+    public IFormFile NewGroupPicture { get; init; }
 }

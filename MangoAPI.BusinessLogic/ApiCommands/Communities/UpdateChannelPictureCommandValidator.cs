@@ -1,18 +1,17 @@
 ﻿using FluentValidation;
 using MangoAPI.BusinessLogic.Pipelines;
 
-namespace MangoAPI.BusinessLogic.ApiCommands.Communities
+namespace MangoAPI.BusinessLogic.ApiCommands.Communities;
+
+public class UpdateChanelPictureCommandValidator : AbstractValidator<UpdateChanelPictureCommand>
 {
-    public class UpdateChanelPictureCommandValidator : AbstractValidator<UpdateChanelPictureCommand>
+    public UpdateChanelPictureCommandValidator()
     {
-        public UpdateChanelPictureCommandValidator()
-        {
-            RuleFor(x => x.ChatId).NotEmpty();
-            RuleFor(x => x.UserId).NotEmpty();
+        RuleFor(x => x.ChatId).NotEmpty();
+        RuleFor(x => x.UserId).NotEmpty();
             
-            RuleFor(x => x.NewGroupPicture)
-                .NotNull()
-                .SetValidator(new CommonImageValidator());
-        }
+        RuleFor(x => x.NewGroupPicture)
+            .NotNull()
+            .SetValidator(new CommonImageValidator());
     }
 }

@@ -8,6 +8,7 @@
 [![Azure Dev Deploy](https://github.com/MangoInstantMessenger/MangoMessengerAPI/actions/workflows/azure-dev.yml/badge.svg)](https://github.com/MangoInstantMessenger/MangoMessengerAPI/actions/workflows/azure-dev.yml/badge.svg)
 [![Azure QA Deploy](https://github.com/MangoInstantMessenger/MangoMessengerAPI/actions/workflows/azure-qa.yml/badge.svg)](https://github.com/MangoInstantMessenger/MangoMessengerAPI/actions/workflows/azure-qa.yml/badge.svg)
 [![Heroku Deploy](https://github.com/MangoInstantMessenger/MangoMessengerAPI/actions/workflows/heroku.yml/badge.svg)](https://github.com/MangoInstantMessenger/MangoMessengerAPI/actions/workflows/heroku.yml/badge.svg)
+[![Mango Database Diagramm](https://img.shields.io/badge/Data%20Base%20Diagram-DbDiagram-lightgrey)](https://dbdiagram.io/d/60d66a13dd6a597148203e6b)
 ![contributors count](https://img.shields.io/github/contributors/MangoInstantMessenger/MangoMessengerAPI)
 [![codecov](https://codecov.io/gh/MangoInstantMessenger/MangoMessengerAPI/branch/develop/graph/badge.svg?token=J4P0TD9Q1Q)](https://codecov.io/gh/MangoInstantMessenger/MangoMessengerAPI)
 
@@ -67,10 +68,11 @@ As image below shows
 
 ## User stack of technologies
 
-- **Frameworks:** `ASP .NET 5`, `Angular 11.2.7`
+- **SDK:** `.NET 6`
+- **Frameworks:** `ASP .NET`, `Angular 11.2.7`
 - **Persistence:**
     - Database: `PostgreSQL 13`
-    - ORM: `Entity Framework Core 5.0`
+    - ORM: `Entity Framework Core 6.0`
     - Storage: `Azure Blob Storage`
 - **Authorization:** `ASP .NET Identity Core`, `JWT Bearer`
 - **Business Logic:**

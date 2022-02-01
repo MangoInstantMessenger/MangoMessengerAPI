@@ -9,65 +9,64 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 
-namespace MangoAPI.BusinessLogic.ApiCommands.PasswordRestoreRequests
+namespace MangoAPI.BusinessLogic.ApiCommands.PasswordRestoreRequests;
+
+public class RequestPasswordRestoreCommandHandler
+    : IRequestHandler<RequestPasswordRestoreCommand, Result<ResponseBase>>
 {
-    public class RequestPasswordRestoreCommandHandler
-        : IRequestHandler<RequestPasswordRestoreCommand, Result<ResponseBase>>
+    private readonly MangoPostgresDbContext _postgresDbContext;
+    private readonly IEmailSenderService _emailSenderService;
+    private readonly ResponseFactory<ResponseBase> _responseFactory;
+
+    public RequestPasswordRestoreCommandHandler(MangoPostgresDbContext postgresDbContext,
+        IEmailSenderService emailSenderService, ResponseFactory<ResponseBase> responseFactory)
     {
-        private readonly MangoPostgresDbContext _postgresDbContext;
-        private readonly IEmailSenderService _emailSenderService;
-        private readonly ResponseFactory<ResponseBase> _responseFactory;
+        _postgresDbContext = postgresDbContext;
+        _emailSenderService = emailSenderService;
+        _responseFactory = responseFactory;
+    }
 
-        public RequestPasswordRestoreCommandHandler(MangoPostgresDbContext postgresDbContext,
-            IEmailSenderService emailSenderService, ResponseFactory<ResponseBase> responseFactory)
+    public async Task<Result<ResponseBase>> Handle(RequestPasswordRestoreCommand request,
+        CancellationToken cancellationToken)
+    {
+        var user = await _postgresDbContext.Users
+            .FirstOrDefaultAsync(userEntity => userEntity.Email == request.Email,
+                cancellationToken);
+
+        if (user is null)
         {
-            _postgresDbContext = postgresDbContext;
-            _emailSenderService = emailSenderService;
-            _responseFactory = responseFactory;
+            const string errorMessage = ResponseMessageCodes.UserNotFound;
+            var errorDescription = ResponseMessageCodes.ErrorDictionary[errorMessage];
+
+            return _responseFactory.ConflictResponse(errorMessage, errorDescription);
         }
 
-        public async Task<Result<ResponseBase>> Handle(RequestPasswordRestoreCommand request,
-            CancellationToken cancellationToken)
+        var existingRequest = await _postgresDbContext.PasswordRestoreRequests
+            .FirstOrDefaultAsync(entity => entity.UserId == user.Id, cancellationToken);
+
+        if (existingRequest != null && existingRequest.IsValid)
         {
-            var user = await _postgresDbContext.Users
-                .FirstOrDefaultAsync(userEntity => userEntity.Email == request.Email,
-                    cancellationToken);
+            const string errorMessage = ResponseMessageCodes.ChangePasswordRequestExists;
+            var errorDescription = ResponseMessageCodes.ErrorDictionary[errorMessage];
 
-            if (user is null)
-            {
-                const string errorMessage = ResponseMessageCodes.UserNotFound;
-                var errorDescription = ResponseMessageCodes.ErrorDictionary[errorMessage];
-
-                return _responseFactory.ConflictResponse(errorMessage, errorDescription);
-            }
-
-            var existingRequest = await _postgresDbContext.PasswordRestoreRequests
-                .FirstOrDefaultAsync(entity => entity.UserId == user.Id, cancellationToken);
-
-            if (existingRequest != null && existingRequest.IsValid)
-            {
-                const string errorMessage = ResponseMessageCodes.ChangePasswordRequestExists;
-                var errorDescription = ResponseMessageCodes.ErrorDictionary[errorMessage];
-
-                return _responseFactory.ConflictResponse(errorMessage, errorDescription);
-            }
-
-            var passwordRestoreRequest = new PasswordRestoreRequestEntity
-            {
-                Id = Guid.NewGuid(),
-                UserId = user.Id,
-                Email = user.Email,
-                CreatedAt = DateTime.Now,
-                ExpiresAt = DateTime.Now.AddHours(3),
-            };
-
-            _postgresDbContext.PasswordRestoreRequests.Add(passwordRestoreRequest);
-
-            await _postgresDbContext.SaveChangesAsync(cancellationToken);
-
-            await _emailSenderService.SendPasswordRestoreRequestAsync(user, passwordRestoreRequest.Id, cancellationToken);
-
-            return _responseFactory.SuccessResponse(ResponseBase.SuccessResponse);
+            return _responseFactory.ConflictResponse(errorMessage, errorDescription);
         }
+
+        var passwordRestoreRequest = new PasswordRestoreRequestEntity
+        {
+            Id = Guid.NewGuid(),
+            UserId = user.Id,
+            Email = user.Email,
+            CreatedAt = DateTime.UtcNow,
+            ExpiresAt = DateTime.UtcNow.AddHours(3),
+        };
+
+        _postgresDbContext.PasswordRestoreRequests.Add(passwordRestoreRequest);
+
+        await _postgresDbContext.SaveChangesAsync(cancellationToken);
+
+        await _emailSenderService.SendPasswordRestoreRequestAsync(user, passwordRestoreRequest.Id, cancellationToken);
+
+        return _responseFactory.SuccessResponse(ResponseBase.SuccessResponse);
     }
 }
