@@ -2,10 +2,9 @@
 using MangoAPI.BusinessLogic.Responses;
 using MediatR;
 
-namespace MangoAPI.BusinessLogic.ApiQueries.Contacts
+namespace MangoAPI.BusinessLogic.ApiQueries.Contacts;
+
+public record GetContactsQuery : IRequest<Result<GetContactsResponse>>
 {
-    public record GetContactsQuery : IRequest<Result<GetContactsResponse>>
-    {
-        public Guid UserId { get; init; }
-    }
+    public Guid UserId { get; init; }
 }

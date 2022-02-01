@@ -2,10 +2,9 @@
 using MangoAPI.BusinessLogic.Models;
 using MangoAPI.BusinessLogic.Responses;
 
-namespace MangoAPI.BusinessLogic.ApiQueries.PublicKeys
+namespace MangoAPI.BusinessLogic.ApiQueries.PublicKeys;
+
+public record GetPublicKeysResponse : ResponseBase
 {
-    public record GetPublicKeysResponse : ResponseBase
-    {
-        public List<PublicKey> PublicKeys { get; init; }
-    }
+    public List<PublicKey> PublicKeys { get; init; }
 }

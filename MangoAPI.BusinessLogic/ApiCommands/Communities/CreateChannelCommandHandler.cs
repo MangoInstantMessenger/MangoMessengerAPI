@@ -13,63 +13,62 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace MangoAPI.BusinessLogic.ApiCommands.Communities
+namespace MangoAPI.BusinessLogic.ApiCommands.Communities;
+
+public class CreateChannelCommandHandler 
+    : IRequestHandler<CreateChannelCommand, Result<CreateCommunityResponse>>
 {
-    public class CreateChannelCommandHandler 
-        : IRequestHandler<CreateChannelCommand, Result<CreateCommunityResponse>>
+    private readonly MangoPostgresDbContext _postgresDbContext;
+    private readonly IHubContext<ChatHub, IHubClient> _hubContext;
+    private readonly ResponseFactory<CreateCommunityResponse> _responseFactory;
+
+    public CreateChannelCommandHandler(MangoPostgresDbContext postgresDbContext, 
+        IHubContext<ChatHub, IHubClient> hubContext, ResponseFactory<CreateCommunityResponse> responseFactory)
     {
-        private readonly MangoPostgresDbContext _postgresDbContext;
-        private readonly IHubContext<ChatHub, IHubClient> _hubContext;
-        private readonly ResponseFactory<CreateCommunityResponse> _responseFactory;
+        _postgresDbContext = postgresDbContext;
+        _hubContext = hubContext;
+        _responseFactory = responseFactory;
+    }
 
-        public CreateChannelCommandHandler(MangoPostgresDbContext postgresDbContext, 
-            IHubContext<ChatHub, IHubClient> hubContext, ResponseFactory<CreateCommunityResponse> responseFactory)
+    public async Task<Result<CreateCommunityResponse>> Handle(CreateChannelCommand request,
+        CancellationToken cancellationToken)
+    {
+        var ownerChatsCount =
+            await _postgresDbContext.UserChats
+                .Where(x => x.RoleId == (int)UserRole.Owner && x.UserId == request.UserId)
+                .CountAsync(cancellationToken);
+
+        if (ownerChatsCount >= 100)
         {
-            _postgresDbContext = postgresDbContext;
-            _hubContext = hubContext;
-            _responseFactory = responseFactory;
+            const string errorMessage = ResponseMessageCodes.MaximumOwnerChatsExceeded100;
+            var description = ResponseMessageCodes.ErrorDictionary[errorMessage];
+
+            return _responseFactory.ConflictResponse(errorMessage, description);
         }
 
-        public async Task<Result<CreateCommunityResponse>> Handle(CreateChannelCommand request,
-            CancellationToken cancellationToken)
+        var channel = new ChatEntity
         {
-            var ownerChatsCount =
-                await _postgresDbContext.UserChats
-                    .Where(x => x.RoleId == (int)UserRole.Owner && x.UserId == request.UserId)
-                    .CountAsync(cancellationToken);
+            CommunityType = (int)CommunityType.PublicChannel,
+            Title = request.ChannelTitle,
+            CreatedAt = DateTime.UtcNow,
+            Description = request.ChannelDescription,
+            MembersCount = 1,
+        };
 
-            if (ownerChatsCount >= 100)
-            {
-                const string errorMessage = ResponseMessageCodes.MaximumOwnerChatsExceeded100;
-                var description = ResponseMessageCodes.ErrorDictionary[errorMessage];
+        _postgresDbContext.Chats.Add(channel);
 
-                return _responseFactory.ConflictResponse(errorMessage, description);
-            }
+        _postgresDbContext.UserChats.Add(new UserChatEntity
+        {
+            ChatId = channel.Id,
+            RoleId = (int)UserRole.Owner,
+            UserId = request.UserId,
+        });
 
-            var channel = new ChatEntity
-            {
-                CommunityType = (int)request.CommunityType,
-                Title = request.ChannelTitle,
-                CreatedAt = DateTime.UtcNow,
-                Description = request.ChannelDescription,
-                MembersCount = 1,
-            };
+        await _postgresDbContext.SaveChangesAsync(cancellationToken);
 
-            _postgresDbContext.Chats.Add(channel);
+        var chatDto = channel.ToChatDto();
+        await _hubContext.Clients.Group(request.UserId.ToString()).UpdateUserChatsAsync(chatDto);
 
-            _postgresDbContext.UserChats.Add(new UserChatEntity
-            {
-                ChatId = channel.Id,
-                RoleId = (int)UserRole.Owner,
-                UserId = request.UserId,
-            });
-
-            await _postgresDbContext.SaveChangesAsync(cancellationToken);
-
-            var chatDto = channel.ToChatDto();
-            await _hubContext.Clients.Group(request.UserId.ToString()).UpdateUserChatsAsync(chatDto);
-
-            return _responseFactory.SuccessResponse(CreateCommunityResponse.FromSuccess(channel));
-        }
+        return _responseFactory.SuccessResponse(CreateCommunityResponse.FromSuccess(channel));
     }
 }

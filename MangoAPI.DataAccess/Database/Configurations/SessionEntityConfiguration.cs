@@ -2,15 +2,14 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace MangoAPI.DataAccess.Database.Configurations
+namespace MangoAPI.DataAccess.Database.Configurations;
+
+public class SessionEntityConfiguration : IEntityTypeConfiguration<SessionEntity>
 {
-    public class SessionEntityConfiguration : IEntityTypeConfiguration<SessionEntity>
+    public void Configure(EntityTypeBuilder<SessionEntity> builder)
     {
-        public void Configure(EntityTypeBuilder<SessionEntity> builder)
-        {
-            builder.HasKey(x => x.Id);
-            builder.Property(x => x.ExpiresAt).IsRequired();
-            builder.Property(x => x.CreatedAt).IsRequired();
-        }
+        builder.HasKey(x => x.Id);
+        builder.Property(x => x.ExpiresAt).IsRequired();
+        builder.Property(x => x.CreatedAt).IsRequired();
     }
 }

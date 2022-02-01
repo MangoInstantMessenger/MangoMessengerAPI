@@ -1,25 +1,24 @@
 ﻿using System.Security.Cryptography;
 using MangoAPI.DiffieHellmanConsole.Extensions;
 
-namespace MangoAPI.DiffieHellmanConsole.Services
+namespace MangoAPI.DiffieHellmanConsole.Services;
+
+public static class EcdhService
 {
-    public static class EcdhService
+    public static ECDiffieHellmanCng GenerateEcdhKeysPair(out string privateKeyBase64, out string publicKeyBase64)
     {
-        public static ECDiffieHellmanCng GenerateEcdhKeysPair(out string privateKeyBase64, out string publicKeyBase64)
+        var parameters = new CngKeyCreationParameters
         {
-            var parameters = new CngKeyCreationParameters
-            {
-                ExportPolicy = CngExportPolicies.AllowPlaintextExport
-            };
+            ExportPolicy = CngExportPolicies.AllowPlaintextExport
+        };
 
-            var keys = CngKey.Create(CngAlgorithm.ECDiffieHellmanP256, null, parameters);
+        var keys = CngKey.Create(CngAlgorithm.ECDiffieHellmanP256, null, parameters);
 
-            var ecDiffieHellmanCng = new ECDiffieHellmanCng(keys);
+        var ecDiffieHellmanCng = new ECDiffieHellmanCng(keys);
 
-            privateKeyBase64 = ecDiffieHellmanCng.Key.Export(CngKeyBlobFormat.EccPrivateBlob).AsBase64String();
-            publicKeyBase64 = ecDiffieHellmanCng.PublicKey.ToByteArray().AsBase64String();
+        privateKeyBase64 = ecDiffieHellmanCng.Key.Export(CngKeyBlobFormat.EccPrivateBlob).AsBase64String();
+        publicKeyBase64 = ecDiffieHellmanCng.PublicKey.ToByteArray().AsBase64String();
             
-            return ecDiffieHellmanCng;
-        }
+        return ecDiffieHellmanCng;
     }
 }

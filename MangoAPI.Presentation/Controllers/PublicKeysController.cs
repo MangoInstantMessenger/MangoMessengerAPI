@@ -11,40 +11,39 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 
-namespace MangoAPI.Presentation.Controllers
+namespace MangoAPI.Presentation.Controllers;
+
+/// <summary>
+/// Controller responsible for Public Key Entity
+/// </summary>
+[ApiController]
+[Route("api/public-keys")]
+[Produces("application/json")]
+[Authorize]
+public class PublicKeysController : ApiControllerBase, IPublicKeysController
 {
-    /// <summary>
-    /// Controller responsible for Public Key Entity
-    /// </summary>
-    [ApiController]
-    [Route("api/public-keys")]
-    [Produces("application/json")]
-    [Authorize]
-    public class PublicKeysController : ApiControllerBase, IPublicKeysController
+    public PublicKeysController(IMediator mediator, IMapper mapper)
+        : base(mediator, mapper)
     {
-        public PublicKeysController(IMediator mediator, IMapper mapper)
-            : base(mediator, mapper)
-        {
-        }
+    }
 
-        /// <summary>
-        /// Returns all user's Diffie-Hellman public keys.
-        /// </summary>
-        /// <param name="cancellationToken"></param>
-        /// <returns></returns>
-        [HttpGet]
-        [SwaggerOperation(
-            Summary = "Returns all user's public keys.",
-            Description = "Returns all user's Diffie-Hellman public keys.")]
-        [ProducesResponseType(typeof(GetPublicKeysResponse), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> GetPublicKeys(CancellationToken cancellationToken)
-        {
-            var userId = HttpContext.User.GetUserId();
+    /// <summary>
+    /// Returns all user's Diffie-Hellman public keys.
+    /// </summary>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
+    [HttpGet]
+    [SwaggerOperation(
+        Summary = "Returns all user's public keys.",
+        Description = "Returns all user's Diffie-Hellman public keys.")]
+    [ProducesResponseType(typeof(GetPublicKeysResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> GetPublicKeys(CancellationToken cancellationToken)
+    {
+        var userId = HttpContext.User.GetUserId();
 
-            var query = new GetPublicKeysQuery { UserId = userId };
+        var query = new GetPublicKeysQuery { UserId = userId };
 
-            return await RequestAsync(query, cancellationToken);
-        }
+        return await RequestAsync(query, cancellationToken);
     }
 }

@@ -12,146 +12,159 @@ using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 using System.Threading;
 using System.Threading.Tasks;
+using MangoAPI.Domain.Enums;
 
-namespace MangoAPI.Presentation.Controllers
+namespace MangoAPI.Presentation.Controllers;
+
+/// <summary>
+/// Controller responsible for CommunityType Entity.
+/// </summary>
+[ApiController]
+[Route("api/communities")]
+[Produces("application/json")]
+[Authorize]
+public class CommunitiesController : ApiControllerBase, ICommunitiesController
 {
-    /// <summary>
-    /// Controller responsible for CommunityType Entity.
-    /// </summary>
-    [ApiController]
-    [Route("api/communities")]
-    [Produces("application/json")]
-    [Authorize]
-    public class CommunitiesController : ApiControllerBase, ICommunitiesController
+    public CommunitiesController(IMediator mediator, IMapper mapper)
+        : base(mediator, mapper)
     {
-        public CommunitiesController(IMediator mediator, IMapper mapper)
-            : base(mediator, mapper)
+    }
+
+    /// <summary>
+    /// Gets all current user's chats.
+    /// </summary>
+    /// <param name="cancellationToken">Cancellation token instance.</param>
+    /// <returns>Possible codes: 200, 400, 409.</returns>
+    [HttpGet]
+    [SwaggerOperation(
+        Description = "Gets all current user's chats.",
+        Summary = "Gets all user's chats.")]
+    [ProducesResponseType(typeof(GetCurrentUserChatsResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> GetChatsAsync(CancellationToken cancellationToken)
+    {
+        var userId = HttpContext.User.GetUserId();
+
+        var request = new GetCurrentUserChatsQuery
         {
-        }
+            UserId = userId
+        };
 
-        /// <summary>
-        /// Gets all current user's chats.
-        /// </summary>
-        /// <param name="cancellationToken">Cancellation token instance.</param>
-        /// <returns>Possible codes: 200, 400, 409.</returns>
-        [HttpGet]
-        [SwaggerOperation(
-            Description = "Gets all current user's chats.",
-            Summary = "Gets all user's chats.")]
-        [ProducesResponseType(typeof(GetCurrentUserChatsResponse), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> GetChatsAsync(CancellationToken cancellationToken)
+        return await RequestAsync(request, cancellationToken);
+    }
+
+    /// <summary>
+    /// Creates new group of specified type: Private Channel (3), Public Channel (4), Readonly Channel (5).
+    /// </summary>
+    /// <param name="request">CreateChannelRequest instance.</param>
+    /// <param name="cancellationToken">Cancellation token instance.</param>
+    /// <returns>Possible codes: 200, 400, 409.</returns>
+    [HttpPost("channel")]
+    [SwaggerOperation(
+        Description =
+            "Creates new group of specified type: Public Channel (2).",
+        Summary = "Creates new group of specified type: Public Channel (2).")]
+    [ProducesResponseType(typeof(CreateCommunityResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
+    public async Task<IActionResult> CreateChannelAsync([FromBody] CreateChannelRequest request,
+        CancellationToken cancellationToken)
+    {
+        var userId = HttpContext.User.GetUserId();
+
+        var command = new CreateChannelCommand
         {
-            var userId = HttpContext.User.GetUserId();
+            UserId = userId,
+            ChannelTitle = request.ChannelTitle,
+            ChannelDescription = request.ChannelDescription,
+        };
 
-            var request = new GetCurrentUserChatsQuery
-            {
-                UserId = userId
-            };
+        return await RequestAsync(command, cancellationToken);
+    }
 
-            return await RequestAsync(request, cancellationToken);
-        }
+    /// <summary>
+    /// Creates new direct chat with specified user. User is fetched by parameter user ID.
+    /// </summary>
+    /// <param name="userId">ID of the user chat to be created with.</param>
+    /// <param name="cancellationToken">Cancellation token instance.</param>
+    /// <returns>Possible codes: 200, 400, 409.</returns>
+    [HttpPost("chat/{userId:guid}")]
+    [SwaggerOperation(
+        Description = "Creates new chat with specified user with type of: Direct Chat (1). " +
+                      "If chat already exists: returns its ID.",
+        Summary = "Creates new chat with specified user by user ID. " +
+                  "If chat already exists: returns its ID.")]
+    [ProducesResponseType(typeof(CreateCommunityResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
+    public async Task<IActionResult> CreateChatAsync([FromRoute] Guid userId,
+        CancellationToken cancellationToken)
+    {
+        var currentUserId = HttpContext.User.GetUserId();
 
-        /// <summary>
-        /// Creates new group of specified type: Private Channel (3), Public Channel (4), Readonly Channel (5).
-        /// </summary>
-        /// <param name="request">CreateChannelRequest instance.</param>
-        /// <param name="cancellationToken">Cancellation token instance.</param>
-        /// <returns>Possible codes: 200, 400, 409.</returns>
-        [HttpPost("channel")]
-        [SwaggerOperation(
-            Description =
-                "Creates new group of specified type: Private Channel (3), Public Channel (4), Readonly Channel (5).",
-            Summary = "Creates new group of specified type.")]
-        [ProducesResponseType(typeof(CreateCommunityResponse), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
-        public async Task<IActionResult> CreateChannelAsync([FromBody] CreateChannelRequest request,
-            CancellationToken cancellationToken)
+        var command = new CreateChatCommand
         {
-            var userId = HttpContext.User.GetUserId();
-            var command = Mapper.Map<CreateChannelCommand>(request);
-            command.UserId = userId;
-            return await RequestAsync(command, cancellationToken);
-        }
+            UserId = currentUserId,
+            PartnerId = userId,
+        };
 
-        /// <summary>
-        /// Creates new direct chat with specified user. User is fetched by parameter user ID.
-        /// </summary>
-        /// <param name="request">CreateChatRequest instance.</param>
-        /// <param name="cancellationToken">Cancellation token instance.</param>
-        /// <returns>Possible codes: 200, 400, 409.</returns>
-        [HttpPost("chat")]
-        [SwaggerOperation(
-            Description = "Creates new chat with specified user. Chat types: Direct Chat (1), Secret Chat (2).",
-            Summary = "Creates new chat with specified user.")]
-        [ProducesResponseType(typeof(CreateCommunityResponse), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
-        public async Task<IActionResult> CreateChatAsync([FromBody] CreateChatRequest request,
-            CancellationToken cancellationToken)
+        command.UserId = currentUserId;
+
+        return await RequestAsync(command, cancellationToken);
+    }
+
+    /// <summary>
+    /// Searches chats by display name.
+    /// </summary>
+    /// <param name="displayName">Display name of the chat, string.</param>
+    /// <param name="cancellationToken">Cancellation token instance.</param>
+    /// <returns>Possible codes: 200, 400, 409.</returns>
+    [HttpGet("searches")]
+    [SwaggerOperation(
+        Description = "Searches chats by display name.",
+        Summary = "Searches chats by display name.")]
+    [ProducesResponseType(typeof(SearchCommunityResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> SearchAsync([FromQuery] string displayName,
+        CancellationToken cancellationToken)
+    {
+        var userId = HttpContext.User.GetUserId();
+
+        var command = new SearchCommunityQuery
         {
-            var userId = HttpContext.User.GetUserId();
+            DisplayName = displayName,
+            UserId = userId,
+        };
 
-            var command = Mapper.Map<CreateChatCommand>(request);
-            command.UserId = userId;
+        return await RequestAsync(command, cancellationToken);
+    }
 
-            return await RequestAsync(command, cancellationToken);
-        }
+    /// <summary>
+    /// Updates picture of particular channel.
+    /// </summary>
+    /// <param name="chatId">Identifier of chat to be updated.</param>
+    /// <param name="newGroupPicture">Picture file.</param>
+    /// <param name="cancellationToken">Instance of cancellation token.</param>
+    /// <returns></returns>
+    [HttpPost("picture/{chatId:guid}")]
+    [SwaggerOperation(
+        Description = "Updates picture of particular channel.",
+        Summary = "Updates picture of particular channel.")]
+    [ProducesResponseType(typeof(UpdateChannelPictureResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
+    public async Task<IActionResult> UpdateChannelPictureAsync([FromRoute] Guid chatId, IFormFile newGroupPicture,
+        CancellationToken cancellationToken)
+    {
+        var userId = HttpContext.User.GetUserId();
 
-        /// <summary>
-        /// Searches chats by display name.
-        /// </summary>
-        /// <param name="displayName">Display name of the chat, string.</param>
-        /// <param name="cancellationToken">Cancellation token instance.</param>
-        /// <returns>Possible codes: 200, 400, 409.</returns>
-        [HttpGet("searches")]
-        [SwaggerOperation(
-            Description = "Searches chats by display name.",
-            Summary = "Searches chats by display name.")]
-        [ProducesResponseType(typeof(SearchCommunityResponse), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> SearchAsync([FromQuery] string displayName,
-            CancellationToken cancellationToken)
+        var command = new UpdateChanelPictureCommand
         {
-            var userId = HttpContext.User.GetUserId();
+            ChatId = chatId,
+            UserId = userId,
+            NewGroupPicture = newGroupPicture
+        };
 
-            var command = new SearchCommunityQuery
-            {
-                DisplayName = displayName,
-                UserId = userId,
-            };
-
-            return await RequestAsync(command, cancellationToken);
-        }
-
-        /// <summary>
-        /// Updates picture of particular channel.
-        /// </summary>
-        /// <param name="chatId">Identifier of chat to be updated.</param>
-        /// <param name="newGroupPicture">Picture file.</param>
-        /// <param name="cancellationToken">Instance of cancellation token.</param>
-        /// <returns></returns>
-        [HttpPost("picture/{chatId:guid}")]
-        [SwaggerOperation(
-            Description = "Updates picture of particular channel.",
-            Summary = "Updates picture of particular channel.")]
-        [ProducesResponseType(typeof(UpdateChannelPictureResponse), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
-        public async Task<IActionResult> UpdateChannelPictureAsync([FromRoute] Guid chatId, IFormFile newGroupPicture,
-            CancellationToken cancellationToken)
-        {
-            var userId = HttpContext.User.GetUserId();
-
-            var command = new UpdateChanelPictureCommand
-            {
-                ChatId = chatId,
-                UserId = userId,
-                NewGroupPicture = newGroupPicture
-            };
-
-            return await RequestAsync(command, cancellationToken);
-        }
+        return await RequestAsync(command, cancellationToken);
     }
 }

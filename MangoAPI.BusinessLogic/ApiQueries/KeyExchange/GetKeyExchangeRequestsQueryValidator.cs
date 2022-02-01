@@ -1,12 +1,11 @@
 ﻿using FluentValidation;
 
-namespace MangoAPI.BusinessLogic.ApiQueries.KeyExchange
+namespace MangoAPI.BusinessLogic.ApiQueries.KeyExchange;
+
+public class GetKeyExchangeRequestsQueryValidator : AbstractValidator<GetKeyExchangeRequestsQuery>
 {
-    public class GetKeyExchangeRequestsQueryValidator : AbstractValidator<GetKeyExchangeRequestsQuery>
+    public GetKeyExchangeRequestsQueryValidator()
     {
-        public GetKeyExchangeRequestsQueryValidator()
-        {
-            RuleFor(x => x.UserId).NotEmpty();
-        }
+        RuleFor(x => x.UserId).NotEmpty();
     }
 }
