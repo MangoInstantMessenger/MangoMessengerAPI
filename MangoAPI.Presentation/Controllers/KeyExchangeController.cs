@@ -28,6 +28,29 @@ public class KeyExchangeController : ApiControllerBase, IKeyExchangeController
     {
     }
 
+    [HttpPost("parameters")]
+    public async Task<IActionResult> CreateDiffieHellmanParameter(IFormFile file, CancellationToken cancellationToken)
+    {
+        var userId = HttpContext.User.GetUserId();
+
+        var command = new CreateDiffieHellmanParameterCommand
+        {
+            UserId = userId,
+            DiffieHellmanParameter = file
+        };
+
+        return await RequestAsync(command, cancellationToken);
+    }
+
+    [HttpGet("parameters")]
+    public async Task<IActionResult> GetDiffieHellmanParameter(CancellationToken cancellationToken)
+    {
+        var result = await Mediator.Send(new GetDhParametersQuery(), cancellationToken);
+        var file = File(result.Response.FileContent, "text/plain", "dh_parameters.pem");
+
+        return file;
+    }
+
     /// <summary>
     /// Returns all user's Diffie-Hellman key exchange requests.
     /// </summary>

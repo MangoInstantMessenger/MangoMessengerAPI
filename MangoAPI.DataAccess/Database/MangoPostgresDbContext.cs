@@ -35,6 +35,8 @@ public class MangoPostgresDbContext : IdentityDbContext<UserEntity, RoleEntity, 
     public DbSet<KeyExchangeRequestEntity> KeyExchangeRequests { get; set; }
 
     public DbSet<PublicKeyEntity> PublicKeys { get; set; }
+    
+    public DbSet<DhParameterEntity> DhParameterEntities { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {

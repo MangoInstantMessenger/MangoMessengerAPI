@@ -18,4 +18,4 @@ public record ResponseBase
     };
 }
 
-public abstract record ResponseBase<T> : ResponseBase where T : ResponseBase, new();
+public abstract record ResponseBase<T> : ResponseBase where T : ResponseBase;
