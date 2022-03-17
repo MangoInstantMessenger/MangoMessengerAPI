@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Threading.Tasks;
 using MangoAPI.DiffieHellmanConsole.CngHandlers;
+using MangoAPI.DiffieHellmanConsole.Extensions;
 using MangoAPI.DiffieHellmanConsole.Handlers;
-using MangoAPI.DiffieHellmanConsole.Services;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace MangoAPI.DiffieHellmanConsole;
 
@@ -16,86 +17,54 @@ public static class Program
             return;
         }
 
+        var serviceProvider = new ServiceCollection()
+            .AddCngServicesAndHandlers()
+            .BuildServiceProvider();
+
         var method = args[0];
 
         switch (method)
         {
             case "login":
             {
-                var sessionService = new SessionsService();
-                var tokensService = new TokensService();
-
-                var handler = new LoginHandler(sessionService, tokensService);
-
+                var handler = serviceProvider.GetService<LoginHandler>();
                 await handler.LoginAsync(args);
                 break;
             }
             case "refresh-token":
             {
-                var sessionService = new SessionsService();
-                var tokensService = new TokensService();
-
-                var refreshHandler = new RefreshTokenHandler(sessionService, tokensService);
-
+                var refreshHandler = serviceProvider.GetService<RefreshTokenHandler>();
                 await refreshHandler.RefreshTokensAsync();
                 break;
             }
             case "key-exchange":
             {
-                var tokensService = new TokensService();
-                var tokensResponse = await tokensService.GetTokensAsync();
-
-                if (tokensResponse == null)
-                {
-                    Console.WriteLine("Tokens are null.");
-                    return;
-                }
-
-                var tokens = tokensResponse.Tokens;
-
-                var keyExchangeService = new KeyExchangeService(tokens.AccessToken);
-                var ecdhService = new EcdhService();
-
-                var handler = new CngRequestKeyExchangeHandler(keyExchangeService, tokensService, ecdhService);
-
+                var handler = serviceProvider.GetService<CngRequestKeyExchangeHandler>();
                 await handler.RequestKeyExchange(args);
                 break;
             }
             case "key-exchange-requests":
             {
-                var tokensService = new TokensService();
-                var tokensResponse = await tokensService.GetTokensAsync();
-
-                if (tokensResponse == null)
-                {
-                    Console.WriteLine("Tokens are null.");
-                    return;
-                }
-
-                var tokens = tokensResponse.Tokens;
-
-                var keyExchangeService = new KeyExchangeService(tokens.AccessToken);
-
-                var handler = new PrintKeyExchangeListHandler(keyExchangeService);
+                var handler = serviceProvider.GetService<PrintKeyExchangeListHandler>();
 
                 await handler.PrintKeyExchangesListAsync();
                 break;
             }
             case "confirm-key-exchange":
             {
-                var handler = new CngConfirmKeyExchangeRequestHandler();
+                var handler = serviceProvider.GetService<CngConfirmKeyExchangeRequestHandler>();
                 await handler.ConfirmKeyExchangeRequest(args);
                 break;
             }
             case "print-public-keys":
             {
-                var handler = new PrintPublicKeysHandler();
+                var handler = serviceProvider.GetService<PrintPublicKeysHandler>();
                 await handler.PrintPublicKeysAsync();
                 break;
             }
             case "create-common-secret":
             {
-                var handler = new CngCreateCommonSecretHandler();
+                var handler = serviceProvider.GetService<CngCreateCommonSecretHandler>();
                 await handler.CreateCommonSecret(args);
                 break;
             }
