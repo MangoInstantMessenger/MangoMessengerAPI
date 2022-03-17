@@ -46,7 +46,8 @@ public static class ResponseMessageCodes
         },
         {EmailIsNotVerified, "Your email is not verified. Check your inbox for confirmation link."},
         {SessionNotFound, "Session not found."},
-        {MessageNotFound, "Message doesn't found in the system"}
+        {MessageNotFound, "Message doesn't found in the system"},
+        {DhParameterNotFound, "Diffie-Hellman parameter is not initialized. Please initialize first."}
     };
 
     public const string Success = "SUCCESS";
@@ -78,4 +79,5 @@ public static class ResponseMessageCodes
     public const string EmailIsNotVerified = "EMAIL_IS_NOT_VERIFIED";
     public const string SessionNotFound = "SESSION_NOT_FOUND";
     public const string MessageNotFound = "MESSAGE_NOT_FOUND";
+    public const string DhParameterNotFound = "DH_PARAMETER_NOT_FOUND";
 }
