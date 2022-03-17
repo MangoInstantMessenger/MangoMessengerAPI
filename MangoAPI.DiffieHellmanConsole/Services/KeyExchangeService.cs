@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using MangoAPI.BusinessLogic.ApiCommands.KeyExchange;
 using MangoAPI.BusinessLogic.ApiQueries.KeyExchange;
 using MangoAPI.DiffieHellmanConsole.Consts;
+using MangoAPI.Domain.Constants;
 using Newtonsoft.Json;
 
 namespace MangoAPI.DiffieHellmanConsole.Services;
@@ -14,9 +15,22 @@ public class KeyExchangeService
     private const string Route = "key-exchange";
     private readonly HttpClient _httpClient;
 
-    public KeyExchangeService(string accessToken)
+    public KeyExchangeService(HttpClient httpClient)
     {
-        _httpClient = new HttpClient();
+        _httpClient = httpClient;
+        
+        var tokensResponse = new TokensService().GetTokensAsync().GetAwaiter().GetResult();
+
+        if (tokensResponse == null)
+        {
+            const string error = ResponseMessageCodes.TokensNotFound;
+            var details = ResponseMessageCodes.ErrorDictionary[error];
+
+            throw new InvalidOperationException($"{error}. {details}, {nameof(tokensResponse)}");
+        }
+
+        var accessToken = tokensResponse.Tokens.AccessToken;
+
         _httpClient.DefaultRequestHeaders.Authorization
             = new AuthenticationHeaderValue("Bearer", accessToken);
     }
