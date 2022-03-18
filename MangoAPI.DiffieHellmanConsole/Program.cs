@@ -43,7 +43,7 @@ public static class Program
                 await refreshHandler.RefreshTokensAsync();
                 break;
             }
-            case "key-exchange":
+            case "cng-key-exchange":
             {
                 var handler = serviceProvider.GetService<CngRequestKeyExchangeHandler>() ??
                               throw new ArgumentException(
@@ -52,7 +52,7 @@ public static class Program
                 await handler.RequestKeyExchange(args);
                 break;
             }
-            case "key-exchange-requests":
+            case "cng-key-exchange-requests":
             {
                 var handler = serviceProvider.GetService<PrintKeyExchangeListHandler>() ??
                               throw new ArgumentException(
@@ -61,7 +61,7 @@ public static class Program
                 await handler.PrintKeyExchangesListAsync();
                 break;
             }
-            case "confirm-key-exchange":
+            case "cng-confirm-key-exchange":
             {
                 var handler = serviceProvider.GetService<CngConfirmKeyExchangeRequestHandler>() ??
                               throw new ArgumentException(
@@ -70,7 +70,7 @@ public static class Program
                 await handler.ConfirmKeyExchangeRequest(args);
                 break;
             }
-            case "print-public-keys":
+            case "cng-print-public-keys":
             {
                 var handler = serviceProvider.GetService<PrintPublicKeysHandler>() ??
                               throw new ArgumentException(
@@ -79,12 +79,12 @@ public static class Program
                 await handler.PrintPublicKeysAsync();
                 break;
             }
-            case "create-common-secret":
+            case "cng-create-common-secret":
             {
                 var handler = serviceProvider.GetService<CngCreateCommonSecretHandler>() ??
                               throw new ArgumentException(
                                   $"Handler is null. Register it in dependency injection. {nameof(CngCreateCommonSecretHandler)}");
-                
+
                 await handler.CreateCommonSecret(args);
                 break;
             }
