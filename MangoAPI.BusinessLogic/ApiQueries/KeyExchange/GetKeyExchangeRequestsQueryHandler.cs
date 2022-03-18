@@ -27,7 +27,7 @@ public class
     public async Task<Result<GetKeyExchangeResponse>> Handle(GetKeyExchangeRequestsQuery request,
         CancellationToken cancellationToken)
     {
-        var requests = await _postgresDbContext.KeyExchangeRequests
+        var requests = await _postgresDbContext.CngKeyExchangeRequests
             .Where(x => x.UserId == request.UserId)
             .Select(x => new KeyExchangeRequest
             {

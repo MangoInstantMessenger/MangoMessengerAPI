@@ -36,7 +36,7 @@ public class GetPublicKeysTestSuccess : ITestable<GetPublicKeysQuery, GetPublicK
     public bool Seed()
     {
         _mangoDbFixture.Context.AddRange(_user, _partner);
-        _mangoDbFixture.Context.PublicKeys.Add(_cngPublicKey);
+        _mangoDbFixture.Context.CngPublicKeys.Add(_cngPublicKey);
 
         _mangoDbFixture.Context.SaveChanges();
             

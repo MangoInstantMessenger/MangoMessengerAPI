@@ -26,7 +26,7 @@ public class
     public async Task<Result<ResponseBase>> Handle(ConfirmOrDeclineKeyExchangeCommand request,
         CancellationToken cancellationToken)
     {
-        var keyExchangeRequest = await _postgresDbContext.KeyExchangeRequests
+        var keyExchangeRequest = await _postgresDbContext.CngKeyExchangeRequests
             .FirstOrDefaultAsync(x => x.Id == request.RequestId,
                 cancellationToken);
 
@@ -38,7 +38,7 @@ public class
             return _responseFactory.ConflictResponse(message, details);
         }
 
-        _postgresDbContext.KeyExchangeRequests.Remove(keyExchangeRequest);
+        _postgresDbContext.CngKeyExchangeRequests.Remove(keyExchangeRequest);
 
         if (!request.Confirmed)
         {
@@ -47,7 +47,7 @@ public class
             return _responseFactory.SuccessResponse(ResponseBase.SuccessResponse);
         }
 
-        var senderPublicKey = await _postgresDbContext.PublicKeys.FirstOrDefaultAsync(x =>
+        var senderPublicKey = await _postgresDbContext.CngPublicKeys.FirstOrDefaultAsync(x =>
             x.UserId == keyExchangeRequest.SenderId && x.PartnerId == request.UserId, cancellationToken);
 
         if (senderPublicKey != null)
@@ -64,7 +64,7 @@ public class
             });
         }
 
-        var userPublicKey = await _postgresDbContext.PublicKeys
+        var userPublicKey = await _postgresDbContext.CngPublicKeys
             .FirstOrDefaultAsync(x => x.UserId == request.UserId &&
                                       x.PartnerId == keyExchangeRequest.SenderId,
                 cancellationToken);
@@ -75,7 +75,7 @@ public class
         }
         else
         {
-            _postgresDbContext.PublicKeys.Add(new CngPublicKeyEntity
+            _postgresDbContext.CngPublicKeys.Add(new CngPublicKeyEntity
             {
                 UserId = request.UserId,
                 PartnerId = keyExchangeRequest.SenderId,

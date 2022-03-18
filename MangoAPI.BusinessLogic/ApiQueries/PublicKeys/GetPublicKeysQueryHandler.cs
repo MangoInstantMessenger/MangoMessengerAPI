@@ -25,7 +25,7 @@ public class GetPublicKeysQueryHandler : IRequestHandler<GetPublicKeysQuery, Res
     public async Task<Result<GetPublicKeysResponse>> Handle(GetPublicKeysQuery request,
         CancellationToken cancellationToken)
     {
-        var keys = await _postgresDbContext.PublicKeys.Where(x =>
+        var keys = await _postgresDbContext.CngPublicKeys.Where(x =>
                 x.UserId == request.UserId)
             .Select(x => new PublicKey
             {

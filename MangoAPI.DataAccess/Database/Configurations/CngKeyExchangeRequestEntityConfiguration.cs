@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace MangoAPI.DataAccess.Database.Configurations;
 
-public class KeyExchangeRequestEntityConfiguration : IEntityTypeConfiguration<CngKeyExchangeRequestEntity>
+public class CngKeyExchangeRequestEntityConfiguration : IEntityTypeConfiguration<CngKeyExchangeRequestEntity>
 {
     public void Configure(EntityTypeBuilder<CngKeyExchangeRequestEntity> builder)
     {

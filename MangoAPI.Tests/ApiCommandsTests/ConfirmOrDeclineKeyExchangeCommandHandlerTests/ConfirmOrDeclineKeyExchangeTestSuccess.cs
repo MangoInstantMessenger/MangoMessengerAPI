@@ -37,7 +37,7 @@ public class ConfirmOrDeclineKeyExchangeTestSuccess : ITestable<ConfirmOrDecline
     public bool Seed()
     {
         _mangoDbFixture.Context.AddRange(_sender, _receiver);
-        _mangoDbFixture.Context.KeyExchangeRequests.Add(_cngKeyExchangeRequest);
+        _mangoDbFixture.Context.CngKeyExchangeRequests.Add(_cngKeyExchangeRequest);
 
         _mangoDbFixture.Context.SaveChanges();
             

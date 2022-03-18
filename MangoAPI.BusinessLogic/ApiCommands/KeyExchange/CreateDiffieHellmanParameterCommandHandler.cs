@@ -37,7 +37,7 @@ public class CreateDiffieHellmanParameterCommandHandler : IRequestHandler<Create
             CreatedAt = DateTime.UtcNow,
         };
 
-        _postgresDbContext.DhParameterEntities.Add(entity);
+        _postgresDbContext.OpenSslDhParameters.Add(entity);
 
         await _postgresDbContext.SaveChangesAsync(cancellationToken);
 
