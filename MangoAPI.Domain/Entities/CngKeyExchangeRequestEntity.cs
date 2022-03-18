@@ -2,7 +2,7 @@
 
 namespace MangoAPI.Domain.Entities;
 
-public class KeyExchangeRequestEntity
+public class CngKeyExchangeRequestEntity
 {
     public Guid Id { get; set; }
     public Guid SenderId { get; set; }

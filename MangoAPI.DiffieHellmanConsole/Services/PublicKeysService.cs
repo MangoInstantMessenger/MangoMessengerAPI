@@ -11,7 +11,6 @@ namespace MangoAPI.DiffieHellmanConsole.Services;
 
 public class PublicKeysService
 {
-    private const string Route = "public-keys";
     private readonly HttpClient _httpClient;
 
     public PublicKeysService(HttpClient httpClient)
@@ -36,9 +35,12 @@ public class PublicKeysService
 
     public async Task<GetPublicKeysResponse> GetPublicKeys()
     {
-        const string route = Urls.ApiUrl + Route;
-        var result = await HttpRequest.GetAsync(_httpClient, route);
+        var result = await HttpRequest.GetAsync(
+            client: _httpClient,
+            route: Routes.ApiPublicKeysCngPublicKeys);
+
         var response = JsonConvert.DeserializeObject<GetPublicKeysResponse>(result);
+
         return response;
     }
 }

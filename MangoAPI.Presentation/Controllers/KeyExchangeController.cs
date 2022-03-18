@@ -28,7 +28,7 @@ public class KeyExchangeController : ApiControllerBase, IKeyExchangeController
     {
     }
 
-    [HttpPost("parameters")]
+    [HttpPost("openssl-parameters")]
     public async Task<IActionResult> CreateDiffieHellmanParameter(IFormFile file, CancellationToken cancellationToken)
     {
         var userId = HttpContext.User.GetUserId();
@@ -42,7 +42,7 @@ public class KeyExchangeController : ApiControllerBase, IKeyExchangeController
         return await RequestAsync(command, cancellationToken);
     }
 
-    [HttpGet("parameters")]
+    [HttpGet("openssl-parameters")]
     public async Task<IActionResult> GetDiffieHellmanParameter(CancellationToken cancellationToken)
     {
         var result = await Mediator.Send(new GetDhParametersQuery(), cancellationToken);
@@ -56,7 +56,7 @@ public class KeyExchangeController : ApiControllerBase, IKeyExchangeController
     /// </summary>
     /// <param name="cancellationToken">Cancellation token instance.</param>
     /// <returns></returns>
-    [HttpGet]
+    [HttpGet("cng-key-exchange-requests")]
     [SwaggerOperation(
         Summary = "Returns all user's key exchange requests.",
         Description = "Returns all user's Diffie-Hellman key exchange requests.")]
@@ -80,7 +80,7 @@ public class KeyExchangeController : ApiControllerBase, IKeyExchangeController
     /// <param name="request"></param>
     /// <param name="cancellationToken">Cancellation token instance.</param>
     /// <returns></returns>
-    [HttpPost]
+    [HttpPost("cng-key-exchange-requests")]
     [SwaggerOperation(
         Summary = "Creates new key exchange request with particular user.",
         Description = "Creates new Diffie-Hellman key exchange request with particular user.")]
@@ -108,7 +108,7 @@ public class KeyExchangeController : ApiControllerBase, IKeyExchangeController
     /// <param name="request"></param>
     /// <param name="cancellationToken">Cancellation token instance.</param>
     /// <returns></returns>
-    [HttpDelete]
+    [HttpDelete("cng-key-exchange-requests")]
     [SwaggerOperation(
         Summary = "Confirms or declines key exchange request.",
         Description = "Confirms or declines Diffie-Hellman key exchange request.")]

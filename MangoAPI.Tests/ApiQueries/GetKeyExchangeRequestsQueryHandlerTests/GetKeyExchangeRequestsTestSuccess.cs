@@ -31,19 +31,19 @@ public class GetKeyExchangeRequestsTestSuccess : ITestable<GetKeyExchangeRequest
             
         _assert.Pass(result);
         result.Response.KeyExchangeRequests.Count.Should().Be(1);
-        result.Response.KeyExchangeRequests[0].RequestId.Should().Be(_keyExchangeRequest.Id);
+        result.Response.KeyExchangeRequests[0].RequestId.Should().Be(_cngKeyExchangeRequest.Id);
     }
         
     public bool Seed()
     {
         _mangoDbFixture.Context.AddRange(_sender, _receiver);
-        _mangoDbFixture.Context.KeyExchangeRequests.Add(_keyExchangeRequest);
+        _mangoDbFixture.Context.KeyExchangeRequests.Add(_cngKeyExchangeRequest);
 
         _mangoDbFixture.Context.SaveChanges();
             
         _mangoDbFixture.Context.Entry(_sender).State = EntityState.Detached;
         _mangoDbFixture.Context.Entry(_receiver).State = EntityState.Detached;
-        _mangoDbFixture.Context.Entry(_keyExchangeRequest).State = EntityState.Detached;
+        _mangoDbFixture.Context.Entry(_cngKeyExchangeRequest).State = EntityState.Detached;
             
         return true;
     }
@@ -81,7 +81,7 @@ public class GetKeyExchangeRequestsTestSuccess : ITestable<GetKeyExchangeRequest
         Image = "amelit_picture.jpg"
     };
         
-    private readonly KeyExchangeRequestEntity _keyExchangeRequest = new()
+    private readonly CngKeyExchangeRequestEntity _cngKeyExchangeRequest = new()
     {
         Id = Guid.NewGuid(),
         SenderId = SeedDataConstants.RazumovskyId,

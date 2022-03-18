@@ -56,7 +56,7 @@ public class
         }
         else
         {
-            _postgresDbContext.Add(new PublicKeyEntity
+            _postgresDbContext.Add(new CngPublicKeyEntity
             {
                 UserId = keyExchangeRequest.SenderId,
                 PartnerId = request.UserId,
@@ -75,7 +75,7 @@ public class
         }
         else
         {
-            _postgresDbContext.PublicKeys.Add(new PublicKeyEntity
+            _postgresDbContext.PublicKeys.Add(new CngPublicKeyEntity
             {
                 UserId = request.UserId,
                 PartnerId = keyExchangeRequest.SenderId,

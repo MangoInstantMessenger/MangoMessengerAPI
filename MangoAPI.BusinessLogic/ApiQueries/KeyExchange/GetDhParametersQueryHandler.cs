@@ -36,7 +36,7 @@ public class GetDhParametersQueryHandler : IRequestHandler<GetDhParametersQuery,
             return _responseFactory.ConflictResponse(errorMessage, errorDetails);
         }
 
-        var bytes = dhParameter.DhParameter;
+        var bytes = dhParameter.OpenSslDhParameter;
 
         var response = new GetDhParametersResponse
         {

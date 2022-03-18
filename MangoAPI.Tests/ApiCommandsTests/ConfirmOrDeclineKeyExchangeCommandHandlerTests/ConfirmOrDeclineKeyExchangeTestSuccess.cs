@@ -24,7 +24,7 @@ public class ConfirmOrDeclineKeyExchangeTestSuccess : ITestable<ConfirmOrDecline
         var command = new ConfirmOrDeclineKeyExchangeCommand
         {
             UserId = _receiver.Id,
-            RequestId = _keyExchangeRequest.Id,
+            RequestId = _cngKeyExchangeRequest.Id,
             Confirmed = true,
             PublicKey = "Public Key"
         };
@@ -37,13 +37,13 @@ public class ConfirmOrDeclineKeyExchangeTestSuccess : ITestable<ConfirmOrDecline
     public bool Seed()
     {
         _mangoDbFixture.Context.AddRange(_sender, _receiver);
-        _mangoDbFixture.Context.KeyExchangeRequests.Add(_keyExchangeRequest);
+        _mangoDbFixture.Context.KeyExchangeRequests.Add(_cngKeyExchangeRequest);
 
         _mangoDbFixture.Context.SaveChanges();
             
         _mangoDbFixture.Context.Entry(_sender).State = EntityState.Detached;
         _mangoDbFixture.Context.Entry(_receiver).State = EntityState.Detached;
-        _mangoDbFixture.Context.Entry(_keyExchangeRequest).State = EntityState.Detached;
+        _mangoDbFixture.Context.Entry(_cngKeyExchangeRequest).State = EntityState.Detached;
             
         return true;
     }
@@ -82,7 +82,7 @@ public class ConfirmOrDeclineKeyExchangeTestSuccess : ITestable<ConfirmOrDecline
         Image = "amelit_picture.jpg"
     };
         
-    private readonly KeyExchangeRequestEntity _keyExchangeRequest = new()
+    private readonly CngKeyExchangeRequestEntity _cngKeyExchangeRequest = new()
     {
         Id = Guid.NewGuid(),
         SenderId = SeedDataConstants.RazumovskyId,

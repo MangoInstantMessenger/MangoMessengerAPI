@@ -50,7 +50,7 @@ public class CreateKeyExchangeRequestCommandHandler : IRequestHandler<CreateKeyE
             return _responseFactory.ConflictResponse(message, details);
         }
 
-        var keyExchangeRequest = new KeyExchangeRequestEntity
+        var keyExchangeRequest = new CngKeyExchangeRequestEntity
         {
             UserId = request.RequestedUserId,
             SenderId = request.UserId,

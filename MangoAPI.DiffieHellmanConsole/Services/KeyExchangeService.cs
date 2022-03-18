@@ -12,13 +12,12 @@ namespace MangoAPI.DiffieHellmanConsole.Services;
 
 public class KeyExchangeService
 {
-    private const string Route = "key-exchange";
     private readonly HttpClient _httpClient;
 
     public KeyExchangeService(HttpClient httpClient)
     {
         _httpClient = httpClient;
-        
+
         var tokensResponse = new TokensService().GetTokensAsync().GetAwaiter().GetResult();
 
         if (tokensResponse == null)
@@ -37,13 +36,17 @@ public class KeyExchangeService
 
     public async Task<GetKeyExchangeResponse> GetKeyExchangesAsync()
     {
-        const string route = Urls.ApiUrl + Route;
-        var result = await HttpRequest.GetAsync(_httpClient, route);
+        var result = await HttpRequest.GetAsync(
+            client: _httpClient,
+            route: Routes.ApiKeyExchangeCngKeyExchangeRequests);
+
         var response = JsonConvert.DeserializeObject<GetKeyExchangeResponse>(result);
+        
         return response;
     }
 
-    public async Task<CreateKeyExchangeResponse> CreateKeyExchangeRequestAsync(Guid requestUserId,
+    public async Task<CreateKeyExchangeResponse> CreateKeyExchangeRequestAsync(
+        Guid requestUserId,
         string publicKey)
     {
         var command = new CreateKeyExchangeRequest
@@ -52,9 +55,13 @@ public class KeyExchangeService
             RequestedUserId = requestUserId
         };
 
-        const string route = Urls.ApiUrl + Route;
-        var result = await HttpRequest.PostWithBodyAsync(_httpClient, route, command);
+        var result = await HttpRequest.PostWithBodyAsync(
+            client: _httpClient,
+            route: Routes.ApiKeyExchangeCngKeyExchangeRequests,
+            body: command);
+
         var response = JsonConvert.DeserializeObject<CreateKeyExchangeResponse>(result);
+
         return response;
     }
 
@@ -67,7 +74,9 @@ public class KeyExchangeService
             RequestId = requestId
         };
 
-        const string route = Urls.ApiUrl + Route;
-        await HttpRequest.DeleteWithBodyAsync(_httpClient, route, request);
+        await HttpRequest.DeleteWithBodyAsync(
+            client: _httpClient,
+            route: Routes.ApiKeyExchangeCngKeyExchangeRequests,
+            body: request);
     }
 }
