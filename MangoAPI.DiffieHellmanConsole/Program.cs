@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using MangoAPI.DiffieHellmanConsole.CngHandlers;
 using MangoAPI.DiffieHellmanConsole.Extensions;
 using MangoAPI.DiffieHellmanConsole.Handlers;
+using MangoAPI.DiffieHellmanConsole.OpenSslHandlers;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace MangoAPI.DiffieHellmanConsole;
@@ -18,7 +19,10 @@ public static class Program
         }
 
         var serviceProvider = new ServiceCollection()
-            .AddCngServicesAndHandlers()
+            .AddAuthHandlers()
+            .AddServices()
+            .AddCngHandlers()
+            .AddOpenSslHandlers()
             .BuildServiceProvider();
 
         var method = args[0];
@@ -54,9 +58,9 @@ public static class Program
             }
             case "cng-key-exchange-requests":
             {
-                var handler = serviceProvider.GetService<PrintKeyExchangeListHandler>() ??
+                var handler = serviceProvider.GetService<CngPrintKeyExchangeListHandler>() ??
                               throw new ArgumentException(
-                                  $"Handler is null. Register it in dependency injection. {nameof(PrintKeyExchangeListHandler)}");
+                                  $"Handler is null. Register it in dependency injection. {nameof(CngPrintKeyExchangeListHandler)}");
 
                 await handler.PrintKeyExchangesListAsync();
                 break;
@@ -72,9 +76,9 @@ public static class Program
             }
             case "cng-print-public-keys":
             {
-                var handler = serviceProvider.GetService<PrintPublicKeysHandler>() ??
+                var handler = serviceProvider.GetService<CngPrintPublicKeysHandler>() ??
                               throw new ArgumentException(
-                                  $"Handler is null. Register it in dependency injection. {nameof(PrintPublicKeysHandler)}");
+                                  $"Handler is null. Register it in dependency injection. {nameof(CngPrintPublicKeysHandler)}");
 
                 await handler.PrintPublicKeysAsync();
                 break;
@@ -86,6 +90,15 @@ public static class Program
                                   $"Handler is null. Register it in dependency injection. {nameof(CngCreateCommonSecretHandler)}");
 
                 await handler.CreateCommonSecret(args);
+                break;
+            }
+            case "openssl-generate-dh-parameters":
+            {
+                var handler = serviceProvider.GetService<OpenSslCreateDhParametersHandler>() ??
+                              throw new ArgumentException(
+                                  $"Handler is null. Register it in dependency injection. {nameof(OpenSslCreateDhParametersHandler)}");
+
+                await handler.CreateDhParametersAsync();
                 break;
             }
             default:

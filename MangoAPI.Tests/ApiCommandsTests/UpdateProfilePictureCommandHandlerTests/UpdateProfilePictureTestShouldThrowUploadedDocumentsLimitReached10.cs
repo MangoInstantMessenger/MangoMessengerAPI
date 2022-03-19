@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Http.Internal;
 using Microsoft.EntityFrameworkCore;
 using Xunit;
 
-namespace MangoAPI.Tests.ApiCommandsTests.UpdatePictureCommandHandlerTests;
+namespace MangoAPI.Tests.ApiCommandsTests.UpdateProfilePictureCommandHandlerTests;
 
 public class UpdateProfilePictureTestShouldThrowUploadedDocumentsLimitReached10
     : ITestable<UpdateProfilePictureCommand, UpdateProfilePictureResponse>
