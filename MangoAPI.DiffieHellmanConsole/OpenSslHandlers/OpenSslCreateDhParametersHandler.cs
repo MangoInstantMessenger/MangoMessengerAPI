@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Threading.Tasks;
 using CliWrap;
 
@@ -12,8 +13,10 @@ public class OpenSslCreateDhParametersHandler
         {
             Console.WriteLine("Generating DH parameters... Please wait.");
 
+            var path = Path.Combine(AppContext.BaseDirectory, "dhp.pem");
+
             var cmd = Cli.Wrap("openssl").WithArguments(
-                new[] {"genpkey", "-genparam", "-algorithm", "DH", "-out", "dhp.pem"});
+                new[] {"genpkey", "-genparam", "-algorithm", "DH", "-out", path});
 
             await cmd.ExecuteAsync();
 
