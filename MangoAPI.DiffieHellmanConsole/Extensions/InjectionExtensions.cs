@@ -23,7 +23,7 @@ public static class InjectionExtensions
 
         return collection;
     }
-    
+
     public static IServiceCollection AddAuthHandlers(this IServiceCollection collection)
     {
         collection.AddSingleton<LoginHandler>();
@@ -31,7 +31,7 @@ public static class InjectionExtensions
 
         return collection;
     }
-    
+
     public static IServiceCollection AddCngHandlers(this IServiceCollection collection)
     {
         collection.AddSingleton<CngPrintKeyExchangeListHandler>();
@@ -42,10 +42,11 @@ public static class InjectionExtensions
 
         return collection;
     }
-    
+
     public static IServiceCollection AddOpenSslHandlers(this IServiceCollection collection)
     {
         collection.AddSingleton<OpenSslCreateDhParametersHandler>();
+        collection.AddSingleton<OpenSslUploadDhParametersHandler>();
 
         return collection;
     }
