@@ -4,11 +4,11 @@ using MangoAPI.DiffieHellmanConsole.Services;
 
 namespace MangoAPI.DiffieHellmanConsole.Handlers;
 
-public class PrintPublicKeysHandler
+public class CngPrintPublicKeysHandler
 {
     private readonly PublicKeysService _publicKeysService;
 
-    public PrintPublicKeysHandler(PublicKeysService publicKeysService)
+    public CngPrintPublicKeysHandler(PublicKeysService publicKeysService)
     {
         _publicKeysService = publicKeysService;
     }
