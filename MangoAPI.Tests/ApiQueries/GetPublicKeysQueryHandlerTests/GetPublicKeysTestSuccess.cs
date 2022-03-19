@@ -36,13 +36,13 @@ public class GetPublicKeysTestSuccess : ITestable<GetPublicKeysQuery, GetPublicK
     public bool Seed()
     {
         _mangoDbFixture.Context.AddRange(_user, _partner);
-        _mangoDbFixture.Context.PublicKeys.Add(_publicKey);
+        _mangoDbFixture.Context.CngPublicKeys.Add(_cngPublicKey);
 
         _mangoDbFixture.Context.SaveChanges();
             
         _mangoDbFixture.Context.Entry(_user).State = EntityState.Detached;
         _mangoDbFixture.Context.Entry(_partner).State = EntityState.Detached;
-        _mangoDbFixture.Context.Entry(_publicKey).State = EntityState.Detached;
+        _mangoDbFixture.Context.Entry(_cngPublicKey).State = EntityState.Detached;
             
         return true;
     }
@@ -81,7 +81,7 @@ public class GetPublicKeysTestSuccess : ITestable<GetPublicKeysQuery, GetPublicK
         Image = "amelit_picture.jpg"
     };
         
-    private readonly PublicKeyEntity _publicKey = new()
+    private readonly CngPublicKeyEntity _cngPublicKey = new()
     {
         UserId = SeedDataConstants.RazumovskyId,
         PartnerId = SeedDataConstants.AmelitId,

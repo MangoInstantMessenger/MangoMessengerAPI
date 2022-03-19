@@ -4,9 +4,9 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace MangoAPI.DataAccess.Database.Configurations;
 
-public class KeyExchangeRequestEntityConfiguration : IEntityTypeConfiguration<KeyExchangeRequestEntity>
+public class CngKeyExchangeRequestEntityConfiguration : IEntityTypeConfiguration<CngKeyExchangeRequestEntity>
 {
-    public void Configure(EntityTypeBuilder<KeyExchangeRequestEntity> builder)
+    public void Configure(EntityTypeBuilder<CngKeyExchangeRequestEntity> builder)
     {
         builder.HasKey(x => x.Id);
 

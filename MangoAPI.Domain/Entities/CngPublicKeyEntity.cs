@@ -2,7 +2,7 @@
 
 namespace MangoAPI.Domain.Entities;
 
-public class PublicKeyEntity
+public class CngPublicKeyEntity
 {
     public Guid UserId { get; set; }
     public Guid PartnerId { get; set; }

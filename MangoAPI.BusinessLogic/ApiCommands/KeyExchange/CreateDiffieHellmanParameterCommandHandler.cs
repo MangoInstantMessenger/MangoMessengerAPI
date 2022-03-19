@@ -30,14 +30,14 @@ public class CreateDiffieHellmanParameterCommandHandler : IRequestHandler<Create
         await request.DiffieHellmanParameter.CopyToAsync(target, cancellationToken);
         var bytes = target.ToArray();
         
-        var entity = new DhParameterEntity
+        var entity = new OpenSslDhParameterEntity
         {
-            DhParameter = bytes,
+            OpenSslDhParameter = bytes,
             CreatedBy = request.UserId,
             CreatedAt = DateTime.UtcNow,
         };
 
-        _postgresDbContext.DhParameterEntities.Add(entity);
+        _postgresDbContext.OpenSslDhParameters.Add(entity);
 
         await _postgresDbContext.SaveChangesAsync(cancellationToken);
 

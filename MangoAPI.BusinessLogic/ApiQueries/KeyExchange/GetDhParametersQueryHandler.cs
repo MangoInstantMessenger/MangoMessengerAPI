@@ -24,7 +24,7 @@ public class GetDhParametersQueryHandler : IRequestHandler<GetDhParametersQuery,
     public async Task<Result<GetDhParametersResponse>> Handle(GetDhParametersQuery request,
         CancellationToken cancellationToken)
     {
-        var dhParameter = await _mangoPostgresDbContext.DhParameterEntities
+        var dhParameter = await _mangoPostgresDbContext.OpenSslDhParameters
             .OrderByDescending(x => x.CreatedAt)
             .FirstOrDefaultAsync(cancellationToken);
 
@@ -36,7 +36,7 @@ public class GetDhParametersQueryHandler : IRequestHandler<GetDhParametersQuery,
             return _responseFactory.ConflictResponse(errorMessage, errorDetails);
         }
 
-        var bytes = dhParameter.DhParameter;
+        var bytes = dhParameter.OpenSslDhParameter;
 
         var response = new GetDhParametersResponse
         {

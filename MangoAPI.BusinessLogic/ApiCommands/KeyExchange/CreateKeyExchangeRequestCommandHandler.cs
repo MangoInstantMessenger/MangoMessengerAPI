@@ -37,7 +37,7 @@ public class CreateKeyExchangeRequestCommandHandler : IRequestHandler<CreateKeyE
             return _responseFactory.ConflictResponse(message, details);
         }
 
-        var alreadyRequested = await _postgresDbContext.KeyExchangeRequests
+        var alreadyRequested = await _postgresDbContext.CngKeyExchangeRequests
             .AnyAsync(
                 x => x.SenderId == request.UserId && x.UserId == request.RequestedUserId, 
                 cancellationToken);
@@ -50,14 +50,14 @@ public class CreateKeyExchangeRequestCommandHandler : IRequestHandler<CreateKeyE
             return _responseFactory.ConflictResponse(message, details);
         }
 
-        var keyExchangeRequest = new KeyExchangeRequestEntity
+        var keyExchangeRequest = new CngKeyExchangeRequestEntity
         {
             UserId = request.RequestedUserId,
             SenderId = request.UserId,
             SenderPublicKey = request.PublicKey
         };
 
-        _postgresDbContext.KeyExchangeRequests.Add(keyExchangeRequest);
+        _postgresDbContext.CngKeyExchangeRequests.Add(keyExchangeRequest);
 
         await _postgresDbContext.SaveChangesAsync(cancellationToken);
 
