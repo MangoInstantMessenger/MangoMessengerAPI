@@ -65,7 +65,7 @@ public class CngConfirmKeyExchangeRequestHandler
 
         var commonSecret = ecDiffieHellmanCng.DeriveKeyMaterial(requestPublicKey).AsBase64String();
 
-        await _keyExchangeService.ConfirmOrDeclineKeyExchange(requestId, publicKeyBase64String);
+        await _keyExchangeService.ConfirmOrDeclineKeyExchangeAsync(requestId, publicKeyBase64String);
 
         var keysFolderPath = Path.Combine(AppContext.BaseDirectory, $"Keys_{tokens.UserId}");
 

@@ -110,6 +110,16 @@ public static class Program
                 await handler.UploadDhParametersAsync();
                 break;
             }
+            case "openssl-get-dh-parameters":
+            {
+                var handler = serviceProvider.GetService<OpenSslGetDhParametersHandler>() ??
+                              throw new ArgumentException(
+                                  $"Handler is null. Register it in dependency injection. {nameof(OpenSslGetDhParametersHandler)}");
+
+                await handler.GetDhParametersAsync();
+
+                break;
+            }
             default:
             {
                 Console.WriteLine("Unrecognized command.");

@@ -47,6 +47,7 @@ public static class InjectionExtensions
     {
         collection.AddSingleton<OpenSslCreateDhParametersHandler>();
         collection.AddSingleton<OpenSslUploadDhParametersHandler>();
+        collection.AddSingleton<OpenSslGetDhParametersHandler>();
 
         return collection;
     }
