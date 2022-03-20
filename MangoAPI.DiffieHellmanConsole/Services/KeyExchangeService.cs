@@ -3,6 +3,7 @@ using System.IO;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
+using CliWrap;
 using MangoAPI.BusinessLogic.ApiCommands.KeyExchange;
 using MangoAPI.BusinessLogic.ApiQueries.KeyExchange;
 using MangoAPI.DiffieHellmanConsole.Consts;
@@ -14,12 +15,14 @@ namespace MangoAPI.DiffieHellmanConsole.Services;
 public class KeyExchangeService
 {
     private readonly HttpClient _httpClient;
+    private readonly TokensService _tokensService;
 
-    public KeyExchangeService(HttpClient httpClient)
+    public KeyExchangeService(HttpClient httpClient, TokensService tokensService)
     {
         _httpClient = httpClient;
+        _tokensService = tokensService;
 
-        var tokensResponse = new TokensService().GetTokensAsync().GetAwaiter().GetResult();
+        var tokensResponse = _tokensService.GetTokensAsync().GetAwaiter().GetResult();
 
         if (tokensResponse == null)
         {
@@ -130,5 +133,28 @@ public class KeyExchangeService
         await stream.CopyToAsync(fileStream);
 
         return true;
+    }
+
+    public async Task OpenSslGeneratePrivateKeyAsync(Guid receiverId)
+    {
+        var tokensResponse = await _tokensService.GetTokensAsync();
+        var senderId = tokensResponse.Tokens.UserId;
+        var fileName = $"PRIVATE_KEY_{senderId}_{receiverId}";
+
+        var workingDirectory = DirectoryHelper.OpenSslPrivateKeysDirectory;
+
+        var keyPairPath = Path.Combine(workingDirectory, fileName);
+
+        if (!Directory.Exists(workingDirectory))
+        {
+            Directory.CreateDirectory(workingDirectory);
+        }
+
+        var dhParametersPath = Path.Combine(DirectoryHelper.OpenSslDhParametersDirectory, "downloaded_dhp.pem");
+
+        var command = Cli.Wrap("openssl").WithArguments(
+            new[] {"genpkey", "-paramfile", dhParametersPath, "-out", keyPairPath});
+
+        await command.ExecuteAsync();
     }
 }
