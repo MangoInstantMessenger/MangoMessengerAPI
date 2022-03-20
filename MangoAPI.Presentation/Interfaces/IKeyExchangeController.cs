@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 using MangoAPI.BusinessLogic.ApiCommands.KeyExchange;
 using Microsoft.AspNetCore.Http;
@@ -8,15 +9,18 @@ namespace MangoAPI.Presentation.Interfaces;
 
 public interface IKeyExchangeController
 {
-    public Task<IActionResult> CreateDiffieHellmanParameter(IFormFile file, CancellationToken cancellationToken);
+    public Task<IActionResult> OpenSslCreateDiffieHellmanParameter(IFormFile file, CancellationToken cancellationToken);
 
-    public Task<IActionResult> GetDiffieHellmanParameter(CancellationToken cancellationToken);
+    public Task<IActionResult> OpenSslGetDiffieHellmanParameter(CancellationToken cancellationToken);
 
-    public Task<IActionResult> GetKeyExchangeRequests(CancellationToken cancellationToken);
-
-    public Task<IActionResult> CreteKeyExchangeRequest(CreateKeyExchangeRequest request,
+    public Task<IActionResult> OpenSslCreateKeyExchangeRequest(Guid userId, IFormFile senderPublicKey,
         CancellationToken cancellationToken);
 
-    public Task<IActionResult> ConfirmOrDeclineKeyExchangeRequest(ConfirmOrDeclineKeyExchangeRequest request,
+    public Task<IActionResult> CngGetKeyExchangeRequests(CancellationToken cancellationToken);
+
+    public Task<IActionResult> CngCreteKeyExchangeRequest(CreateKeyExchangeRequest request,
+        CancellationToken cancellationToken);
+
+    public Task<IActionResult> CngConfirmOrDeclineKeyExchangeRequest(ConfirmOrDeclineKeyExchangeRequest request,
         CancellationToken cancellationToken);
 }

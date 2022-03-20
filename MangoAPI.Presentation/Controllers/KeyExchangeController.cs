@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
 using MangoAPI.BusinessLogic.ApiCommands.KeyExchange;
@@ -29,7 +30,7 @@ public class KeyExchangeController : ApiControllerBase, IKeyExchangeController
     }
 
     [HttpPost("openssl-parameters")]
-    public async Task<IActionResult> CreateDiffieHellmanParameter([FromForm] IFormFile file,
+    public async Task<IActionResult> OpenSslCreateDiffieHellmanParameter([FromForm] IFormFile file,
         CancellationToken cancellationToken)
     {
         var userId = HttpContext.User.GetUserId();
@@ -44,12 +45,30 @@ public class KeyExchangeController : ApiControllerBase, IKeyExchangeController
     }
 
     [HttpGet("openssl-parameters")]
-    public async Task<IActionResult> GetDiffieHellmanParameter(CancellationToken cancellationToken)
+    public async Task<IActionResult> OpenSslGetDiffieHellmanParameter(CancellationToken cancellationToken)
     {
         var result = await Mediator.Send(new GetDhParametersQuery(), cancellationToken);
         var file = File(result.Response.FileContent, "text/plain", "dh_parameters.pem");
 
         return file;
+    }
+
+    [HttpPost("openssl-key-exchange-requests/{userId:guid}")]
+    public async Task<IActionResult> OpenSslCreateKeyExchangeRequest(
+        [FromRoute] Guid userId,
+        [FromForm] IFormFile senderPublicKey,
+        CancellationToken cancellationToken)
+    {
+        var senderId = HttpContext.User.GetUserId();
+
+        var command = new OpenSslCreateKeyExchangeCommand
+        {
+            ReceiverId = userId,
+            SenderId = senderId,
+            SenderPublicKey = senderPublicKey
+        };
+
+        return await RequestAsync(command, cancellationToken);
     }
 
     /// <summary>
@@ -63,7 +82,7 @@ public class KeyExchangeController : ApiControllerBase, IKeyExchangeController
         Description = "Returns all user's Diffie-Hellman key exchange requests.")]
     [ProducesResponseType(typeof(GetKeyExchangeResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> GetKeyExchangeRequests(CancellationToken cancellationToken)
+    public async Task<IActionResult> CngGetKeyExchangeRequests(CancellationToken cancellationToken)
     {
         var userId = HttpContext.User.GetUserId();
 
@@ -88,7 +107,7 @@ public class KeyExchangeController : ApiControllerBase, IKeyExchangeController
     [ProducesResponseType(typeof(CreateKeyExchangeResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
-    public async Task<IActionResult> CreteKeyExchangeRequest([FromBody] CreateKeyExchangeRequest request,
+    public async Task<IActionResult> CngCreteKeyExchangeRequest([FromBody] CreateKeyExchangeRequest request,
         CancellationToken cancellationToken)
     {
         var userId = HttpContext.User.GetUserId();
@@ -116,7 +135,7 @@ public class KeyExchangeController : ApiControllerBase, IKeyExchangeController
     [ProducesResponseType(typeof(ResponseBase), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
-    public async Task<IActionResult> ConfirmOrDeclineKeyExchangeRequest(
+    public async Task<IActionResult> CngConfirmOrDeclineKeyExchangeRequest(
         [FromBody] ConfirmOrDeclineKeyExchangeRequest request,
         CancellationToken cancellationToken)
     {
