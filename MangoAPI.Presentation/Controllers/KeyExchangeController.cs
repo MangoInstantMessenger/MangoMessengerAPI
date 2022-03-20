@@ -29,7 +29,8 @@ public class KeyExchangeController : ApiControllerBase, IKeyExchangeController
     }
 
     [HttpPost("openssl-parameters")]
-    public async Task<IActionResult> CreateDiffieHellmanParameter(IFormFile file, CancellationToken cancellationToken)
+    public async Task<IActionResult> CreateDiffieHellmanParameter([FromForm] IFormFile file,
+        CancellationToken cancellationToken)
     {
         var userId = HttpContext.User.GetUserId();
 

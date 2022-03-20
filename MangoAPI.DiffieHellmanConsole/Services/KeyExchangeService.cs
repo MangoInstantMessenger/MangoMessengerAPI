@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
@@ -41,7 +42,7 @@ public class KeyExchangeService
             route: Routes.ApiKeyExchangeCngKeyExchangeRequests);
 
         var response = JsonConvert.DeserializeObject<GetKeyExchangeResponse>(result);
-        
+
         return response;
     }
 
@@ -78,5 +79,28 @@ public class KeyExchangeService
             client: _httpClient,
             route: Routes.ApiKeyExchangeCngKeyExchangeRequests,
             body: request);
+    }
+
+    public async Task<bool> OpenSslUploadDhParameters()
+    {
+        var dhParametersPath = Path.Combine(DirectoryHelper.OpenSslDhParametersDirectory, "dhp.pem");
+
+        await using var stream = File.OpenRead(dhParametersPath);
+
+        var uri = new Uri(Routes.ApiKeyExchangeOpenSslParameters, UriKind.Absolute);
+
+        using var request = new HttpRequestMessage(HttpMethod.Post, uri);
+
+        using var content = new MultipartFormDataContent
+        {
+            {new StreamContent(stream), "file", "dhp.pem"}
+        };
+
+        request.Content = content;
+
+        var httpResponseMessage = await _httpClient.SendAsync(request);
+        httpResponseMessage.EnsureSuccessStatusCode();
+
+        return true;
     }
 }
