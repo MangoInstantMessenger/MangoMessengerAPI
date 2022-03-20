@@ -143,7 +143,7 @@ public class KeyExchangeService
 
         var workingDirectory = DirectoryHelper.OpenSslPrivateKeysDirectory;
 
-        var keyPairPath = Path.Combine(workingDirectory, fileName);
+        var privateKeyPath = Path.Combine(workingDirectory, fileName);
 
         if (!Directory.Exists(workingDirectory))
         {
@@ -153,8 +153,34 @@ public class KeyExchangeService
         var dhParametersPath = Path.Combine(DirectoryHelper.OpenSslDhParametersDirectory, "downloaded_dhp.pem");
 
         var command = Cli.Wrap("openssl").WithArguments(
-            new[] {"genpkey", "-paramfile", dhParametersPath, "-out", keyPairPath});
+            new[] {"genpkey", "-paramfile", dhParametersPath, "-out", privateKeyPath});
 
         await command.ExecuteAsync();
+    }
+
+    public async Task<bool> OpenSslGeneratePublicKeyAsync(Guid receiverId)
+    {
+        var tokensResponse = await _tokensService.GetTokensAsync();
+        var senderId = tokensResponse.Tokens.UserId;
+
+        var publicKeyFileName = $"PUBLIC_KEY_{senderId}_{receiverId}";
+        var privateKeyFileName = $"PRIVATE_KEY_{senderId}_{receiverId}";
+
+        var workingDirectory = DirectoryHelper.OpenSslPublicKeysDirectory;
+
+        var publicKeyPath = Path.Combine(workingDirectory, publicKeyFileName);
+        var privateKeyPath = Path.Combine(DirectoryHelper.OpenSslPrivateKeysDirectory, privateKeyFileName);
+
+        if (!Directory.Exists(workingDirectory))
+        {
+            Directory.CreateDirectory(workingDirectory);
+        }
+
+        var command = Cli.Wrap("openssl").WithArguments(
+            new[] {"pkey", "-in", privateKeyPath, "-pubout", "-out", publicKeyPath});
+
+        command.ExecuteAsync();
+
+        return true;
     }
 }

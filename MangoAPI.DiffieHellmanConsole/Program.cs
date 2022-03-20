@@ -140,6 +140,26 @@ public static class Program
                 
                 break;
             }
+            case "openssl-generate-public-key":
+            {
+                var handler = serviceProvider.GetService<OpenSslGeneratePublicKeyHandler>() ??
+                              throw new ArgumentException(
+                                  $"Handler is null. Register it in dependency injection. {nameof(OpenSslGeneratePublicKeyHandler)}");
+
+                var receiverIdString = args[1];
+
+                var isParsed = Guid.TryParse(receiverIdString, out var receiverId);
+
+                if (!isParsed)
+                {
+                    Console.WriteLine("Invalid or empty receiver ID.");
+                    return;
+                }
+
+                await handler.GeneratePublicKeyAsync(receiverId);
+                
+                break;
+            }
             default:
             {
                 Console.WriteLine("Unrecognized command.");
