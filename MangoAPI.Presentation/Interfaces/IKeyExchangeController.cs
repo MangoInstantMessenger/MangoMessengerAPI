@@ -15,6 +15,8 @@ public interface IKeyExchangeController
 
     public Task<IActionResult> OpenSslCreateKeyExchangeRequest(Guid userId, IFormFile senderPublicKey,
         CancellationToken cancellationToken);
+    
+    public Task<IActionResult> OpenSslGetKeyExchangeRequests(CancellationToken cancellationToken);
 
     public Task<IActionResult> CngGetKeyExchangeRequests(CancellationToken cancellationToken);
 
