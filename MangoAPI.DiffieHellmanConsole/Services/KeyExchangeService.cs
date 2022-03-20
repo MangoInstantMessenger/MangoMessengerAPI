@@ -83,7 +83,7 @@ public class KeyExchangeService
 
     public async Task<bool> OpenSslUploadDhParameters()
     {
-        var dhParametersPath = Path.Combine(AppContext.BaseDirectory, "dhp.pem");
+        var dhParametersPath = Path.Combine(DirectoryHelper.OpenSslDhParametersDirectory, "dhp.pem");
 
         await using var stream = File.OpenRead(dhParametersPath);
 
