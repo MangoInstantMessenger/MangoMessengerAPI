@@ -38,6 +38,8 @@ public class MangoPostgresDbContext : IdentityDbContext<UserEntity, RoleEntity, 
     
     public DbSet<OpenSslDhParameterEntity> OpenSslDhParameters { get; set; }
 
+    public DbSet<OpenSslKeyExchangeRequestEntity> OpenSslKeyExchangeRequests { get; set; }
+
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         optionsBuilder.LogTo(Console.WriteLine);
