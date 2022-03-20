@@ -80,6 +80,26 @@ public class KeyExchangeController : ApiControllerBase, IKeyExchangeController
         return await RequestAsync(request, cancellationToken);
     }
 
+    [HttpPut("openssl-key-exchange-requests/{requestId:guid}")]
+    public async Task<IActionResult> OpenSslConfirmKeyExchangeRequest(
+        [FromRoute] Guid requestId,
+        [FromQuery] bool confirmed,
+        [FromForm] IFormFile receiverPublicKey,
+        CancellationToken cancellationToken)
+    {
+        var userId = HttpContext.User.GetUserId();
+
+        var command = new OpenSslConfirmKeyExchangeCommand
+        {
+            RequestId = requestId,
+            UserId = userId,
+            Confirmed = confirmed,
+            ReceiverPublicKey = receiverPublicKey
+        };
+
+        return await RequestAsync(command, cancellationToken);
+    }
+
     /// <summary>
     /// Returns all user's Diffie-Hellman key exchange requests.
     /// </summary>
