@@ -20,6 +20,7 @@
     <ItemGroup>
       <Folder Include="OpenSsl" />
       <Folder Include="OpenSsl\OpenSslDhParameters" />
+      <Folder Include="OpenSsl\OpenSslPrivateKeys" />
     </ItemGroup>
 
 </Project>
