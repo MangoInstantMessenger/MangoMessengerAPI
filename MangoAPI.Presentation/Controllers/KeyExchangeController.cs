@@ -71,6 +71,15 @@ public class KeyExchangeController : ApiControllerBase, IKeyExchangeController
         return await RequestAsync(command, cancellationToken);
     }
 
+    [HttpGet("openssl-key-exchange-requests")]
+    public async Task<IActionResult> OpenSslGetKeyExchangeRequests(CancellationToken cancellationToken)
+    {
+        var userId = HttpContext.User.GetUserId();
+        var request = new GetOpenSslKeyExchangeRequestsQuery {UserId = userId};
+
+        return await RequestAsync(request, cancellationToken);
+    }
+
     /// <summary>
     /// Returns all user's Diffie-Hellman key exchange requests.
     /// </summary>
