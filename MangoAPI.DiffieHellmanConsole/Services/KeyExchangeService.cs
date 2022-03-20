@@ -66,7 +66,7 @@ public class KeyExchangeService
         return response;
     }
 
-    public async Task ConfirmOrDeclineKeyExchange(Guid requestId, string publicKeyBase64)
+    public async Task ConfirmOrDeclineKeyExchangeAsync(Guid requestId, string publicKeyBase64)
     {
         var request = new ConfirmOrDeclineKeyExchangeRequest
         {
@@ -81,7 +81,7 @@ public class KeyExchangeService
             body: request);
     }
 
-    public async Task<bool> OpenSslUploadDhParameters()
+    public async Task<bool> OpenSslUploadDhParametersAsync()
     {
         var dhParametersPath = Path.Combine(DirectoryHelper.OpenSslDhParametersDirectory, "dhp.pem");
 
@@ -100,6 +100,34 @@ public class KeyExchangeService
 
         var httpResponseMessage = await _httpClient.SendAsync(request);
         httpResponseMessage.EnsureSuccessStatusCode();
+
+        return true;
+    }
+
+    public async Task<bool> OpenSslDownloadDhParametersAsync()
+    {
+        var uri = new Uri(uriString: Routes.ApiKeyExchangeOpenSslParameters, UriKind.Absolute);
+
+        var workingDirectory = DirectoryHelper.OpenSslDhParametersDirectory;
+
+        var response = await _httpClient.GetAsync(uri);
+
+        response.EnsureSuccessStatusCode();
+
+        await using var stream = await response.Content.ReadAsStreamAsync();
+
+        var filePath = Path.Combine(workingDirectory, "downloaded_dhp.pem");
+
+        if (!Directory.Exists(workingDirectory))
+        {
+            Directory.CreateDirectory(workingDirectory);
+        }
+
+        var fileInfo = new FileInfo(filePath);
+
+        await using var fileStream = fileInfo.OpenWrite();
+
+        await stream.CopyToAsync(fileStream);
 
         return true;
     }

@@ -17,4 +17,9 @@
       <ProjectReference Include="..\MangoAPI.BusinessLogic\MangoAPI.BusinessLogic.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="OpenSsl" />
+      <Folder Include="OpenSsl\OpenSslDhParameters" />
+    </ItemGroup>
+
 </Project>

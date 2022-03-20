@@ -16,7 +16,7 @@ public class OpenSslUploadDhParametersHandler
     public async Task<bool> UploadDhParametersAsync()
     {
         Console.WriteLine("Attempting to upload DH parameters file...");
-        await _keyExchangeService.OpenSslUploadDhParameters();
+        await _keyExchangeService.OpenSslUploadDhParametersAsync();
         Console.WriteLine("DH parameters have been updated successfully.");
         return true;
     }
