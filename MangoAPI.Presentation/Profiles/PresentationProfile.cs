@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using MangoAPI.BusinessLogic.ApiCommands.KeyExchange;
 using MangoAPI.BusinessLogic.ApiCommands.Messages;
 using MangoAPI.BusinessLogic.ApiCommands.PasswordRestoreRequests;
 using MangoAPI.BusinessLogic.ApiCommands.Sessions;
@@ -21,6 +20,5 @@ public class PresentationProfile : Profile
         CreateMap<UpdateUserAccountInfoRequest, UpdateUserAccountInfoCommand>();
         CreateMap<LoginRequest, LoginCommand>();
         CreateMap<DeleteMessageRequest, DeleteMessageCommand>();
-        CreateMap<CreateDiffieHellmanParameterRequest, CreateDiffieHellmanParameterCommand>();
     }
 }
