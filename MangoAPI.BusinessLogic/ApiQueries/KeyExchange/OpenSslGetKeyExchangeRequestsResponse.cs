@@ -4,7 +4,7 @@ using MangoAPI.BusinessLogic.Responses;
 
 namespace MangoAPI.BusinessLogic.ApiQueries.KeyExchange;
 
-public record GetOpenSslKeyExchangeRequestsResponse : ResponseBase
+public record OpenSslGetKeyExchangeRequestsResponse : ResponseBase
 {
     public List<OpenSslKeyExchangeRequest> OpenSslKeyExchangeRequests { get; init; }
 }

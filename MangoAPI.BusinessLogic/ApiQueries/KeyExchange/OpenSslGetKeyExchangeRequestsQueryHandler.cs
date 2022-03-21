@@ -10,21 +10,21 @@ using Microsoft.EntityFrameworkCore;
 
 namespace MangoAPI.BusinessLogic.ApiQueries.KeyExchange;
 
-public class GetOpenSslKeyExchangeRequestsQueryHandler : IRequestHandler<GetOpenSslKeyExchangeRequestsQuery,
-    Result<GetOpenSslKeyExchangeRequestsResponse>>
+public class OpenSslGetKeyExchangeRequestsQueryHandler : IRequestHandler<OpenSslGetKeyExchangeRequestsQuery,
+    Result<OpenSslGetKeyExchangeRequestsResponse>>
 {
     private readonly MangoPostgresDbContext _mangoPostgresDbContext;
-    private readonly ResponseFactory<GetOpenSslKeyExchangeRequestsResponse> _responseFactory;
+    private readonly ResponseFactory<OpenSslGetKeyExchangeRequestsResponse> _responseFactory;
 
-    public GetOpenSslKeyExchangeRequestsQueryHandler(
+    public OpenSslGetKeyExchangeRequestsQueryHandler(
         MangoPostgresDbContext mangoPostgresDbContext,
-        ResponseFactory<GetOpenSslKeyExchangeRequestsResponse> responseFactory)
+        ResponseFactory<OpenSslGetKeyExchangeRequestsResponse> responseFactory)
     {
         _mangoPostgresDbContext = mangoPostgresDbContext;
         _responseFactory = responseFactory;
     }
 
-    public async Task<Result<GetOpenSslKeyExchangeRequestsResponse>> Handle(GetOpenSslKeyExchangeRequestsQuery request,
+    public async Task<Result<OpenSslGetKeyExchangeRequestsResponse>> Handle(OpenSslGetKeyExchangeRequestsQuery request,
         CancellationToken cancellationToken)
     {
         var requests = await _mangoPostgresDbContext.OpenSslKeyExchangeRequests
@@ -38,7 +38,7 @@ public class GetOpenSslKeyExchangeRequestsQueryHandler : IRequestHandler<GetOpen
                 SenderId = x.SenderId
             }).ToListAsync(cancellationToken);
 
-        var response = new GetOpenSslKeyExchangeRequestsResponse
+        var response = new OpenSslGetKeyExchangeRequestsResponse
         {
             Message = ResponseMessageCodes.Success,
             OpenSslKeyExchangeRequests = requests,

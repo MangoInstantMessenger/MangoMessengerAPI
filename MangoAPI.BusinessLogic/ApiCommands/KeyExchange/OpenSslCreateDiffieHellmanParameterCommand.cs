@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Http;
 
 namespace MangoAPI.BusinessLogic.ApiCommands.KeyExchange;
 
-public class CreateDiffieHellmanParameterCommand : IRequest<Result<CreateDiffieHellmanParameterResponse>>
+public class OpenSslCreateDiffieHellmanParameterCommand : IRequest<Result<OpenSslCreateDiffieHellmanParameterResponse>>
 {
     public IFormFile DiffieHellmanParameter { get; init; }
     public Guid UserId { get; init; }

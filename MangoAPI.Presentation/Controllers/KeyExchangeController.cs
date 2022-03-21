@@ -35,7 +35,7 @@ public class KeyExchangeController : ApiControllerBase, IKeyExchangeController
     {
         var userId = HttpContext.User.GetUserId();
 
-        var command = new CreateDiffieHellmanParameterCommand
+        var command = new OpenSslCreateDiffieHellmanParameterCommand
         {
             UserId = userId,
             DiffieHellmanParameter = file
@@ -75,7 +75,7 @@ public class KeyExchangeController : ApiControllerBase, IKeyExchangeController
     public async Task<IActionResult> OpenSslGetKeyExchangeRequests(CancellationToken cancellationToken)
     {
         var userId = HttpContext.User.GetUserId();
-        var request = new GetOpenSslKeyExchangeRequestsQuery {UserId = userId};
+        var request = new OpenSslGetKeyExchangeRequestsQuery {UserId = userId};
 
         return await RequestAsync(request, cancellationToken);
     }
