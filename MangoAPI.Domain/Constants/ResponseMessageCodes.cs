@@ -49,6 +49,8 @@ public static class ResponseMessageCodes
         {MessageNotFound, "Message doesn't found in the system"},
         {DhParameterNotFound, "Diffie-Hellman parameter is not initialized. Please initialize first."},
         {TokensNotFound, "Tokens not found. Please login to the system first."},
+        {KeyExchangeIsNotConfirmed, "Key exchange is not confirmed yet, please wait for response."},
+        {KeyExchangeDoesNotBelongToUser, "Key exchange does not belong to you."}
     };
 
     public const string Success = "SUCCESS";
@@ -82,4 +84,6 @@ public static class ResponseMessageCodes
     public const string MessageNotFound = "MESSAGE_NOT_FOUND";
     public const string DhParameterNotFound = "DH_PARAMETER_NOT_FOUND";
     public const string TokensNotFound = "TOKENS_NOT_FOUND";
+    public const string KeyExchangeIsNotConfirmed = "KEY_EXCHANGE_IS_NOT_CONFIRMED";
+    public const string KeyExchangeDoesNotBelongToUser = "KEY_EXCHANGE_DOES_NOT_BELONG_TO_USER";
 }

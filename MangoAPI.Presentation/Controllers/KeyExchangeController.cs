@@ -100,6 +100,27 @@ public class KeyExchangeController : ApiControllerBase, IKeyExchangeController
         return await RequestAsync(command, cancellationToken);
     }
 
+    [HttpGet("openssl-key-exchange-requests/public-keys/{requestId:guid}")]
+    public async Task<IActionResult> OpenSslDownloadPartnerPublicKey(Guid requestId,
+        CancellationToken cancellationToken)
+    {
+        var userId = HttpContext.User.GetUserId();
+
+        var query = new OpenSslDownloadPartnerPublicKeyQuery
+        {
+            UserId = userId,
+            RequestId = requestId,
+        };
+
+        var result = await Mediator.Send(query, cancellationToken);
+
+        var fileName = $"PUBLIC_KEY_{result.Response.PartnerId}";
+
+        var file = File(result.Response.PublicKey, contentType: "text/plain", fileName);
+
+        return file;
+    }
+
     /// <summary>
     /// Returns all user's Diffie-Hellman key exchange requests.
     /// </summary>

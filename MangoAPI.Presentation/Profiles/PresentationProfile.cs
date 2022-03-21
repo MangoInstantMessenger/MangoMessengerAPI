@@ -21,6 +21,5 @@ public class PresentationProfile : Profile
         CreateMap<UpdateUserAccountInfoRequest, UpdateUserAccountInfoCommand>();
         CreateMap<LoginRequest, LoginCommand>();
         CreateMap<DeleteMessageRequest, DeleteMessageCommand>();
-        CreateMap<CreateDiffieHellmanParameterRequest, CreateDiffieHellmanParameterCommand>();
     }
 }
