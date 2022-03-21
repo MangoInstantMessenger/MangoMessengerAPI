@@ -10,20 +10,20 @@ using MediatR;
 
 namespace MangoAPI.BusinessLogic.ApiCommands.KeyExchange;
 
-public class CreateDiffieHellmanParameterCommandHandler : IRequestHandler<CreateDiffieHellmanParameterCommand,
-    Result<CreateDiffieHellmanParameterResponse>>
+public class OpenSslCreateDiffieHellmanParameterCommandHandler : IRequestHandler<OpenSslCreateDiffieHellmanParameterCommand,
+    Result<OpenSslCreateDiffieHellmanParameterResponse>>
 {
     private readonly MangoPostgresDbContext _postgresDbContext;
-    private readonly ResponseFactory<CreateDiffieHellmanParameterResponse> _responseFactory;
+    private readonly ResponseFactory<OpenSslCreateDiffieHellmanParameterResponse> _responseFactory;
 
-    public CreateDiffieHellmanParameterCommandHandler(MangoPostgresDbContext postgresDbContext,
-        ResponseFactory<CreateDiffieHellmanParameterResponse> responseFactory)
+    public OpenSslCreateDiffieHellmanParameterCommandHandler(MangoPostgresDbContext postgresDbContext,
+        ResponseFactory<OpenSslCreateDiffieHellmanParameterResponse> responseFactory)
     {
         _postgresDbContext = postgresDbContext;
         _responseFactory = responseFactory;
     }
 
-    public async Task<Result<CreateDiffieHellmanParameterResponse>> Handle(CreateDiffieHellmanParameterCommand request,
+    public async Task<Result<OpenSslCreateDiffieHellmanParameterResponse>> Handle(OpenSslCreateDiffieHellmanParameterCommand request,
         CancellationToken cancellationToken)
     {
         await using var target = new MemoryStream();
@@ -41,7 +41,7 @@ public class CreateDiffieHellmanParameterCommandHandler : IRequestHandler<Create
 
         await _postgresDbContext.SaveChangesAsync(cancellationToken);
 
-        var response = new CreateDiffieHellmanParameterResponse
+        var response = new OpenSslCreateDiffieHellmanParameterResponse
         {
             Message = ResponseMessageCodes.Success,
             Success = true,

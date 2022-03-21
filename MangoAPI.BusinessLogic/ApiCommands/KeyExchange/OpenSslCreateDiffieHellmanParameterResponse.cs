@@ -3,7 +3,7 @@ using MangoAPI.BusinessLogic.Responses;
 
 namespace MangoAPI.BusinessLogic.ApiCommands.KeyExchange;
 
-public record CreateDiffieHellmanParameterResponse : ResponseBase
+public record OpenSslCreateDiffieHellmanParameterResponse : ResponseBase
 {
     public Guid ParameterId { get; init; }
 }
