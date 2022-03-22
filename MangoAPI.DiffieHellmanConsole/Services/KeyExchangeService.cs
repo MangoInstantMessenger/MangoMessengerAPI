@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -6,6 +7,8 @@ using System.Threading.Tasks;
 using CliWrap;
 using MangoAPI.BusinessLogic.ApiCommands.KeyExchange;
 using MangoAPI.BusinessLogic.ApiQueries.KeyExchange;
+using MangoAPI.BusinessLogic.Models;
+using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.DiffieHellmanConsole.Consts;
 using MangoAPI.Domain.Constants;
 using Newtonsoft.Json;
@@ -195,11 +198,11 @@ public class KeyExchangeService
         var publicKeyPath = Path.Combine(workingDirectory, publicKeyFileName);
 
         var route = $"{Routes.OpenSslKeyExchangeRequests}/{receiverId}";
-        
+
         var uri = new Uri(route, UriKind.Absolute);
-        
+
         using var request = new HttpRequestMessage(HttpMethod.Post, uri);
-        
+
         await using var stream = File.OpenRead(publicKeyPath);
 
         using var content = new MultipartFormDataContent
@@ -210,9 +213,24 @@ public class KeyExchangeService
         request.Content = content;
 
         var httpResponseMessage = await _httpClient.SendAsync(request);
-        
+
         httpResponseMessage.EnsureSuccessStatusCode();
 
         return true;
+    }
+
+    public async Task<List<OpenSslKeyExchangeRequest>> OpensslPrintKeyExchangesAsync()
+    {
+        var uri = new Uri(Routes.OpenSslKeyExchangeRequests, UriKind.Absolute);
+        var response = await _httpClient.GetAsync(uri);
+        response.EnsureSuccessStatusCode();
+        var responseBody = await response.Content.ReadAsStringAsync();
+        var deserialized = 
+            JsonConvert.DeserializeObject<OpenSslGetKeyExchangeRequestsResponse>(responseBody) ??
+                           throw new InvalidOperationException("Cannot deserialize list of key exchange requests.");
+        
+        var requests = deserialized.OpenSslKeyExchangeRequests;
+
+        return requests;
     }
 }
