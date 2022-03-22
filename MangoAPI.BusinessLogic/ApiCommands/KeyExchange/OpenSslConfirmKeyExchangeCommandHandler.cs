@@ -38,14 +38,6 @@ public class
             return _responseFactory.ConflictResponse(message, description);
         }
 
-        if (!request.Confirmed)
-        {
-            keyExchangeRequest.IsConfirmed = false;
-
-            await _mangoPostgresDbContext.SaveChangesAsync(cancellationToken);
-            return _responseFactory.SuccessResponse(ResponseBase.SuccessResponse);
-        }
-
         await using var target = new MemoryStream();
         await request.ReceiverPublicKey.CopyToAsync(target, cancellationToken);
 

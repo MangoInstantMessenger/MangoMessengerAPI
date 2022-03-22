@@ -8,7 +8,6 @@ public class OpenSslConfirmKeyExchangeCommandValidator : AbstractValidator<OpenS
     {
         RuleFor(x => x.UserId).NotEmpty();
         RuleFor(x => x.RequestId).NotEmpty();
-        RuleFor(x => x.Confirmed).Equal(true);
         RuleFor(x => x.ReceiverPublicKey).NotEmpty();
     }
 }

@@ -20,9 +20,10 @@ public interface IKeyExchangeController
 
     public Task<IActionResult> OpenSslConfirmKeyExchangeRequest(
         Guid requestId,
-        bool confirmed,
         IFormFile receiverPublicKey,
         CancellationToken cancellationToken);
+
+    public Task<IActionResult> OpenSslDeclineKeyExchangeRequest(Guid requestId, CancellationToken cancellationToken);
 
     public Task<IActionResult> OpenSslDownloadPartnerPublicKey(Guid requestId,
         CancellationToken cancellationToken);
