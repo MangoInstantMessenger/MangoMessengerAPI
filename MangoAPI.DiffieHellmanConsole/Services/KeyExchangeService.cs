@@ -42,7 +42,7 @@ public class KeyExchangeService
     {
         var result = await HttpRequest.GetAsync(
             client: _httpClient,
-            route: Routes.ApiKeyExchangeCngKeyExchangeRequests);
+            route: Routes.CngKeyExchangeRequests);
 
         var response = JsonConvert.DeserializeObject<GetKeyExchangeResponse>(result);
 
@@ -61,7 +61,7 @@ public class KeyExchangeService
 
         var result = await HttpRequest.PostWithBodyAsync(
             client: _httpClient,
-            route: Routes.ApiKeyExchangeCngKeyExchangeRequests,
+            route: Routes.CngKeyExchangeRequests,
             body: command);
 
         var response = JsonConvert.DeserializeObject<CreateKeyExchangeResponse>(result);
@@ -80,7 +80,7 @@ public class KeyExchangeService
 
         await HttpRequest.DeleteWithBodyAsync(
             client: _httpClient,
-            route: Routes.ApiKeyExchangeCngKeyExchangeRequests,
+            route: Routes.CngKeyExchangeRequests,
             body: request);
     }
 
@@ -90,7 +90,7 @@ public class KeyExchangeService
 
         await using var stream = File.OpenRead(dhParametersPath);
 
-        var uri = new Uri(Routes.ApiKeyExchangeOpenSslParameters, UriKind.Absolute);
+        var uri = new Uri(Routes.OpenSslParameters, UriKind.Absolute);
 
         using var request = new HttpRequestMessage(HttpMethod.Post, uri);
 
@@ -109,7 +109,7 @@ public class KeyExchangeService
 
     public async Task<bool> OpenSslDownloadDhParametersAsync()
     {
-        var uri = new Uri(uriString: Routes.ApiKeyExchangeOpenSslParameters, UriKind.Absolute);
+        var uri = new Uri(uriString: Routes.OpenSslParameters, UriKind.Absolute);
 
         var workingDirectory = DirectoryHelper.OpenSslDhParametersDirectory;
 
@@ -180,6 +180,38 @@ public class KeyExchangeService
             new[] {"pkey", "-in", privateKeyPath, "-pubout", "-out", publicKeyPath});
 
         command.ExecuteAsync();
+
+        return true;
+    }
+
+    public async Task<bool> OpenSslCreateKeyExchangeAsync(Guid receiverId)
+    {
+        var tokensResponse = await _tokensService.GetTokensAsync();
+        var senderId = tokensResponse.Tokens.UserId;
+        var workingDirectory = DirectoryHelper.OpenSslPublicKeysDirectory;
+
+        var publicKeyFileName = $"PUBLIC_KEY_{senderId}_{receiverId}";
+
+        var publicKeyPath = Path.Combine(workingDirectory, publicKeyFileName);
+
+        var route = $"{Routes.OpenSslKeyExchangeRequests}/{receiverId}";
+        
+        var uri = new Uri(route, UriKind.Absolute);
+        
+        using var request = new HttpRequestMessage(HttpMethod.Post, uri);
+        
+        await using var stream = File.OpenRead(publicKeyPath);
+
+        using var content = new MultipartFormDataContent
+        {
+            {new StreamContent(stream), "senderPublicKey", publicKeyFileName}
+        };
+
+        request.Content = content;
+
+        var httpResponseMessage = await _httpClient.SendAsync(request);
+        
+        httpResponseMessage.EnsureSuccessStatusCode();
 
         return true;
     }

@@ -37,7 +37,7 @@ public class PublicKeysService
     {
         var result = await HttpRequest.GetAsync(
             client: _httpClient,
-            route: Routes.ApiPublicKeysCngPublicKeys);
+            route: Routes.CngPublicKeys);
 
         var response = JsonConvert.DeserializeObject<GetPublicKeysResponse>(result);
 
