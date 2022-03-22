@@ -12,7 +12,6 @@ using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 using System.Threading;
 using System.Threading.Tasks;
-using MangoAPI.Domain.Enums;
 
 namespace MangoAPI.Presentation.Controllers;
 

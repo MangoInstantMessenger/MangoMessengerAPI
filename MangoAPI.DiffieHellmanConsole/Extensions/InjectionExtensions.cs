@@ -52,6 +52,7 @@ public static class InjectionExtensions
         collection.AddSingleton<OpenSslGeneratePublicKeyHandler>();
         collection.AddSingleton<OpenSslCreateKeyExchangeHandler>();
         collection.AddSingleton<OpenSslPrintKeyExchangesHandler>();
+        collection.AddSingleton<OpenSslConfirmKeyExchangeHandler>();
 
         return collection;
     }

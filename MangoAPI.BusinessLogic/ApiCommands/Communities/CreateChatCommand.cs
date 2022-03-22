@@ -1,6 +1,5 @@
 ﻿using System;
 using MangoAPI.BusinessLogic.Responses;
-using MangoAPI.Domain.Enums;
 using MediatR;
 
 namespace MangoAPI.BusinessLogic.ApiCommands.Communities;

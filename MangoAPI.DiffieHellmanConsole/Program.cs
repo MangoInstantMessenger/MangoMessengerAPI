@@ -190,6 +190,25 @@ public static class Program
                 
                 break;
             }
+            case "openssl-confirm-key-exchange":
+            {
+                var handler = serviceProvider.GetService<OpenSslConfirmKeyExchangeHandler>() ??
+                              throw new ArgumentException(
+                                  $"Handler is null. Register it in dependency injection. {nameof(OpenSslConfirmKeyExchangeHandler)}");
+                
+                var requestIdString = args[1];
+
+                var isParsed = Guid.TryParse(requestIdString, out var requestId);
+
+                if (!isParsed)
+                {
+                    Console.WriteLine("Invalid or empty request ID.");
+                    return;
+                }
+
+                await handler.ConfirmKeyExchangeAsync(requestId);
+                break;
+            }
             default:
             {
                 Console.WriteLine("Unrecognized command.");
