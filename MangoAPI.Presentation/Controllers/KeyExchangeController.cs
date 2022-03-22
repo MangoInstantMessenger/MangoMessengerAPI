@@ -83,7 +83,6 @@ public class KeyExchangeController : ApiControllerBase, IKeyExchangeController
     [HttpPut("openssl-key-exchange-requests/{requestId:guid}")]
     public async Task<IActionResult> OpenSslConfirmKeyExchangeRequest(
         [FromRoute] Guid requestId,
-        [FromQuery] bool confirmed,
         [FromForm] IFormFile receiverPublicKey,
         CancellationToken cancellationToken)
     {
@@ -93,11 +92,26 @@ public class KeyExchangeController : ApiControllerBase, IKeyExchangeController
         {
             RequestId = requestId,
             UserId = userId,
-            Confirmed = confirmed,
             ReceiverPublicKey = receiverPublicKey
         };
 
         return await RequestAsync(command, cancellationToken);
+    }
+
+    [HttpDelete("openssl-key-exchange-requests/{requestId:guid}")]
+    public async Task<IActionResult> OpenSslDeclineKeyExchangeRequest(
+        [FromRoute] Guid requestId,
+        CancellationToken cancellationToken)
+    {
+        var userId = HttpContext.User.GetUserId();
+
+        var request = new OpenSslDeclineKeyExchangeCommand
+        {
+            RequestId = requestId,
+            UserId = userId,
+        };
+
+        return await RequestAsync(request, cancellationToken);
     }
 
     [HttpGet("openssl-key-exchange-requests/public-keys/{requestId:guid}")]
