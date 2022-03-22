@@ -16,7 +16,7 @@ public class OpenSslPrintKeyExchangesHandler
     public async Task PrintKeyExchangesAsync()
     {
         Console.WriteLine("Printing key-exchange requests ...");
-        var list = await _keyExchangeService.OpensslPrintKeyExchangesAsync();
+        var list = await _keyExchangeService.OpensslGetKeyExchangesAsync();
         list.ForEach(Console.WriteLine);
         Console.WriteLine("Key exchanges has been printed successfully.");
     }
