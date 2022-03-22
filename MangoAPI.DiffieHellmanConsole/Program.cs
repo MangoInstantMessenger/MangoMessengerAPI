@@ -180,6 +180,16 @@ public static class Program
                 
                 break;
             }
+            case "openssl-print-key-exchanges":
+            {
+                var handler = serviceProvider.GetService<OpenSslPrintKeyExchangesHandler>() ??
+                              throw new ArgumentException(
+                                  $"Handler is null. Register it in dependency injection. {nameof(OpenSslPrintKeyExchangesHandler)}");
+
+                await handler.PrintKeyExchangesAsync();
+                
+                break;
+            }
             default:
             {
                 Console.WriteLine("Unrecognized command.");

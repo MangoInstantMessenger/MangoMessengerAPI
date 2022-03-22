@@ -9,6 +9,16 @@ public record OpenSslKeyExchangeRequest
     public Guid ReceiverId { get; init; }
     public bool IsConfirmed { get; init; }
     public Actor Actor { get; init; }
+
+    public override string ToString()
+    {
+        return
+            $"Request Id: {RequestId}, \n" +
+            $"Sender Id: {SenderId}, \n" +
+            $"Receiver Id: {ReceiverId}, \n" +
+            $"Confirmed: {IsConfirmed}, \n" +
+            $"Actor: {Actor.ToString()} \n";
+    }
 }
 
 public enum Actor
