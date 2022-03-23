@@ -9,11 +9,11 @@ using Newtonsoft.Json;
 
 namespace MangoAPI.DiffieHellmanConsole.Services;
 
-public class PublicKeysService
+public class CngPublicKeysService
 {
     private readonly HttpClient _httpClient;
 
-    public PublicKeysService(HttpClient httpClient)
+    public CngPublicKeysService(HttpClient httpClient)
     {
         _httpClient = httpClient;
 
@@ -33,9 +33,9 @@ public class PublicKeysService
             = new AuthenticationHeaderValue("Bearer", accessToken);
     }
 
-    public async Task<GetPublicKeysResponse> GetPublicKeys()
+    public async Task<GetPublicKeysResponse> CngGetPublicKeys()
     {
-        var result = await HttpRequest.GetAsync(
+        var result = await HttpRequestHelper.GetAsync(
             client: _httpClient,
             route: Routes.CngPublicKeys);
 

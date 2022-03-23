@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using MangoAPI.DiffieHellmanConsole.Services;
 using MangoAPI.Domain.Constants;
 
-namespace MangoAPI.DiffieHellmanConsole.Handlers;
+namespace MangoAPI.DiffieHellmanConsole.AuthHandlers;
 
 public class RefreshTokenHandler
 {

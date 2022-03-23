@@ -6,16 +6,16 @@ namespace MangoAPI.DiffieHellmanConsole.CngHandlers;
 
 public class CngPrintPublicKeysHandler
 {
-    private readonly PublicKeysService _publicKeysService;
+    private readonly CngPublicKeysService _cngPublicKeysService;
 
-    public CngPrintPublicKeysHandler(PublicKeysService publicKeysService)
+    public CngPrintPublicKeysHandler(CngPublicKeysService cngPublicKeysService)
     {
-        _publicKeysService = publicKeysService;
+        _cngPublicKeysService = cngPublicKeysService;
     }
 
-    public async Task PrintPublicKeysAsync()
+    public async Task CngPrintPublicKeysAsync()
     {
-        var response = await _publicKeysService.GetPublicKeys();
+        var response = await _cngPublicKeysService.CngGetPublicKeys();
         response.PublicKeys.ForEach(Console.WriteLine);
     }
 }

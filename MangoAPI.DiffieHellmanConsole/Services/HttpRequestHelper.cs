@@ -5,9 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 
-namespace MangoAPI.DiffieHellmanConsole;
+namespace MangoAPI.DiffieHellmanConsole.Services;
 
-public static class HttpRequest
+public static class HttpRequestHelper
 {
     public static async Task<string> PostWithBodyAsync(HttpClient client, string route, object body)
     {

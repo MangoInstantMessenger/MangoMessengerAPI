@@ -1,15 +1,16 @@
 ﻿using System;
 using System.Threading.Tasks;
+using MangoAPI.DiffieHellmanConsole.AuthHandlers;
 using MangoAPI.DiffieHellmanConsole.CngHandlers;
-using MangoAPI.DiffieHellmanConsole.Extensions;
-using MangoAPI.DiffieHellmanConsole.Handlers;
 using MangoAPI.DiffieHellmanConsole.OpenSslHandlers;
-using Microsoft.Extensions.DependencyInjection;
+using MangoAPI.DiffieHellmanConsole.Services;
 
 namespace MangoAPI.DiffieHellmanConsole;
 
 public static class Program
 {
+    private static readonly DependencyResolver DependencyResolver = new();
+
     public static async Task Main(string[] args)
     {
         if (args.Length == 0)
@@ -18,113 +19,73 @@ public static class Program
             return;
         }
 
-        var serviceProvider = new ServiceCollection()
-            .AddAuthHandlers()
-            .AddServices()
-            .AddCngHandlers()
-            .AddOpenSslHandlers()
-            .BuildServiceProvider();
-
         var method = args[0];
 
         switch (method)
         {
             case "login":
             {
-                var handler = serviceProvider.GetService<LoginHandler>() ??
-                              throw new ArgumentException(
-                                  $"Handler is null. Register it in dependency injection. {nameof(LoginHandler)}");
-
+                var handler = DependencyResolver.ResolveService<LoginHandler>();
                 await handler.LoginAsync(args);
                 break;
             }
             case "refresh-token":
             {
-                var refreshHandler = serviceProvider.GetService<RefreshTokenHandler>() ??
-                                     throw new ArgumentException(
-                                         $"Handler is null. Register it in dependency injection. {nameof(RefreshTokenHandler)}");
-
-                await refreshHandler.RefreshTokensAsync();
+                var handler = DependencyResolver.ResolveService<RefreshTokenHandler>();
+                await handler.RefreshTokensAsync();
                 break;
             }
             case "cng-key-exchange":
             {
-                var handler = serviceProvider.GetService<CngRequestKeyExchangeHandler>() ??
-                              throw new ArgumentException(
-                                  $"Handler is null. Register it in dependency injection. {nameof(CngRequestKeyExchangeHandler)}");
-
-                await handler.RequestKeyExchange(args);
+                var handler = DependencyResolver.ResolveService<CngRequestKeyExchangeHandler>();
+                await handler.CngRequestKeyExchange(args);
                 break;
             }
             case "cng-key-exchange-requests":
             {
-                var handler = serviceProvider.GetService<CngPrintKeyExchangeListHandler>() ??
-                              throw new ArgumentException(
-                                  $"Handler is null. Register it in dependency injection. {nameof(CngPrintKeyExchangeListHandler)}");
-
-                await handler.PrintKeyExchangesListAsync();
+                var handler = DependencyResolver.ResolveService<CngPrintKeyExchangeListHandler>();
+                await handler.CngPrintKeyExchangesListAsync();
                 break;
             }
             case "cng-confirm-key-exchange":
             {
-                var handler = serviceProvider.GetService<CngConfirmKeyExchangeRequestHandler>() ??
-                              throw new ArgumentException(
-                                  $"Handler is null. Register it in dependency injection. {nameof(CngConfirmKeyExchangeRequestHandler)}");
-
-                await handler.ConfirmKeyExchangeRequest(args);
+                var handler = DependencyResolver.ResolveService<CngConfirmKeyExchangeRequestHandler>();
+                await handler.CngConfirmKeyExchangeRequest(args);
                 break;
             }
             case "cng-print-public-keys":
             {
-                var handler = serviceProvider.GetService<CngPrintPublicKeysHandler>() ??
-                              throw new ArgumentException(
-                                  $"Handler is null. Register it in dependency injection. {nameof(CngPrintPublicKeysHandler)}");
-
-                await handler.PrintPublicKeysAsync();
+                var handler = DependencyResolver.ResolveService<CngPrintPublicKeysHandler>();
+                await handler.CngPrintPublicKeysAsync();
                 break;
             }
             case "cng-create-common-secret":
             {
-                var handler = serviceProvider.GetService<CngCreateCommonSecretHandler>() ??
-                              throw new ArgumentException(
-                                  $"Handler is null. Register it in dependency injection. {nameof(CngCreateCommonSecretHandler)}");
-
-                await handler.CreateCommonSecret(args);
+                var handler = DependencyResolver.ResolveService<CngCreateCommonSecretHandler>();
+                await handler.CngCreateCommonSecret(args);
                 break;
             }
             case "openssl-generate-dh-parameters":
             {
-                var handler = serviceProvider.GetService<OpenSslCreateDhParametersHandler>() ??
-                              throw new ArgumentException(
-                                  $"Handler is null. Register it in dependency injection. {nameof(OpenSslCreateDhParametersHandler)}");
-
+                var handler = DependencyResolver.ResolveService<OpenSslCreateDhParametersHandler>();
                 await handler.CreateDhParametersAsync();
                 break;
             }
             case "openssl-upload-dh-parameters":
             {
-                var handler = serviceProvider.GetService<OpenSslUploadDhParametersHandler>() ??
-                              throw new ArgumentException(
-                                  $"Handler is null. Register it in dependency injection. {nameof(OpenSslUploadDhParametersHandler)}");
-
+                var handler = DependencyResolver.ResolveService<OpenSslUploadDhParametersHandler>();
                 await handler.UploadDhParametersAsync();
                 break;
             }
             case "openssl-get-dh-parameters":
             {
-                var handler = serviceProvider.GetService<OpenSslGetDhParametersHandler>() ??
-                              throw new ArgumentException(
-                                  $"Handler is null. Register it in dependency injection. {nameof(OpenSslGetDhParametersHandler)}");
-
+                var handler = DependencyResolver.ResolveService<OpenSslGetDhParametersHandler>();
                 await handler.GetDhParametersAsync();
-
                 break;
             }
             case "openssl-generate-private-key":
             {
-                var handler = serviceProvider.GetService<OpenSslGeneratePrivateKeyHandler>() ??
-                              throw new ArgumentException(
-                                  $"Handler is null. Register it in dependency injection. {nameof(OpenSslGeneratePrivateKeyHandler)}");
+                var handler = DependencyResolver.ResolveService<OpenSslGeneratePrivateKeyHandler>();
 
                 var receiverIdString = args[1];
 
@@ -137,14 +98,12 @@ public static class Program
                 }
 
                 await handler.GeneratePrivateKeyAsync(receiverId);
-                
+
                 break;
             }
             case "openssl-generate-public-key":
             {
-                var handler = serviceProvider.GetService<OpenSslGeneratePublicKeyHandler>() ??
-                              throw new ArgumentException(
-                                  $"Handler is null. Register it in dependency injection. {nameof(OpenSslGeneratePublicKeyHandler)}");
+                var handler = DependencyResolver.ResolveService<OpenSslGeneratePublicKeyHandler>();
 
                 var receiverIdString = args[1];
 
@@ -157,15 +116,13 @@ public static class Program
                 }
 
                 await handler.GeneratePublicKeyAsync(receiverId);
-                
+
                 break;
             }
             case "openssl-create-key-exchange":
             {
-                var handler = serviceProvider.GetService<OpenSslCreateKeyExchangeHandler>() ??
-                              throw new ArgumentException(
-                                  $"Handler is null. Register it in dependency injection. {nameof(OpenSslCreateKeyExchangeHandler)}");
-                
+                var handler = DependencyResolver.ResolveService<OpenSslCreateKeyExchangeHandler>();
+
                 var receiverIdString = args[1];
 
                 var isParsed = Guid.TryParse(receiverIdString, out var receiverId);
@@ -177,25 +134,19 @@ public static class Program
                 }
 
                 await handler.CreateKeyExchangeAsync(receiverId);
-                
+
                 break;
             }
             case "openssl-print-key-exchanges":
             {
-                var handler = serviceProvider.GetService<OpenSslPrintKeyExchangesHandler>() ??
-                              throw new ArgumentException(
-                                  $"Handler is null. Register it in dependency injection. {nameof(OpenSslPrintKeyExchangesHandler)}");
-
+                var handler = DependencyResolver.ResolveService<OpenSslPrintKeyExchangesHandler>();
                 await handler.PrintKeyExchangesAsync();
-                
                 break;
             }
             case "openssl-confirm-key-exchange":
             {
-                var handler = serviceProvider.GetService<OpenSslConfirmKeyExchangeHandler>() ??
-                              throw new ArgumentException(
-                                  $"Handler is null. Register it in dependency injection. {nameof(OpenSslConfirmKeyExchangeHandler)}");
-                
+                var handler = DependencyResolver.ResolveService<OpenSslConfirmKeyExchangeHandler>();
+
                 var requestIdString = args[1];
 
                 var isParsed = Guid.TryParse(requestIdString, out var requestId);
@@ -211,10 +162,8 @@ public static class Program
             }
             case "openssl-create-common-secret":
             {
-                var handler = serviceProvider.GetService<OpenSslCreateCommonSecretHandler>() ??
-                              throw new ArgumentException(
-                                  $"Handler is null. Register it in dependency injection. {nameof(OpenSslCreateCommonSecretHandler)}");
-                
+                var handler = DependencyResolver.ResolveService<OpenSslCreateCommonSecretHandler>();
+
                 var requestIdString = args[1];
 
                 var isParsed = Guid.TryParse(requestIdString, out var requestId);

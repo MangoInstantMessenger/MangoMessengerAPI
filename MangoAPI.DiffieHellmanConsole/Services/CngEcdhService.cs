@@ -3,9 +3,9 @@ using MangoAPI.DiffieHellmanConsole.Extensions;
 
 namespace MangoAPI.DiffieHellmanConsole.Services;
 
-public class EcdhService
+public class CngEcdhService
 {
-    public ECDiffieHellmanCng GenerateEcdhKeysPair(out string privateKeyBase64, out string publicKeyBase64)
+    public ECDiffieHellmanCng CngGenerateEcdhKeysPair(out string privateKeyBase64, out string publicKeyBase64)
     {
         var parameters = new CngKeyCreationParameters
         {

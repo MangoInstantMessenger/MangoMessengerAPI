@@ -12,16 +12,16 @@ namespace MangoAPI.DiffieHellmanConsole.CngHandlers;
 
 public class CngCreateCommonSecretHandler
 {
-    private readonly PublicKeysService _publicKeysService;
+    private readonly CngPublicKeysService _cngPublicKeysService;
     private readonly TokensService _tokensService;
 
-    public CngCreateCommonSecretHandler(PublicKeysService publicKeysService, TokensService tokensService)
+    public CngCreateCommonSecretHandler(CngPublicKeysService cngPublicKeysService, TokensService tokensService)
     {
-        _publicKeysService = publicKeysService;
+        _cngPublicKeysService = cngPublicKeysService;
         _tokensService = tokensService;
     }
 
-    public async Task CreateCommonSecret(IReadOnlyList<string> args)
+    public async Task CngCreateCommonSecret(IReadOnlyList<string> args)
     {
         var tokensResponse = await _tokensService.GetTokensAsync();
         
@@ -37,7 +37,7 @@ public class CngCreateCommonSecretHandler
 
         var partnerId = Guid.Parse(args[1]);
 
-        var response = await _publicKeysService.GetPublicKeys();
+        var response = await _cngPublicKeysService.CngGetPublicKeys();
 
         var partnerPublicKeyBytes = response.PublicKeys
             .FirstOrDefault(x => x.PartnerId == partnerId)?

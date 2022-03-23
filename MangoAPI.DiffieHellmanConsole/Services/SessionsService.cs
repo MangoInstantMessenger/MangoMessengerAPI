@@ -29,7 +29,7 @@ public class SessionsService
             Password = password
         };
 
-        var response = await HttpRequest.PostWithBodyAsync(
+        var response = await HttpRequestHelper.PostWithBodyAsync(
             client: _httpClient,
             route: Routes.SessionsRoute,
             body: command);
@@ -41,7 +41,7 @@ public class SessionsService
     {
         var route = Routes.SessionsRoute + refreshToken;
         
-        var result = await HttpRequest.PostWithoutBodyAsync(_httpClient, route);
+        var result = await HttpRequestHelper.PostWithoutBodyAsync(_httpClient, route);
         
         var response = JsonConvert.DeserializeObject<TokensResponse>(result);
         

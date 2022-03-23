@@ -11,19 +11,19 @@ public class CngRequestKeyExchangeHandler
 {
     private readonly KeyExchangeService _keyExchangeService;
     private readonly TokensService _tokensService;
-    private readonly EcdhService _ecdhService;
+    private readonly CngEcdhService _cngEcdhService;
 
     public CngRequestKeyExchangeHandler(
         KeyExchangeService keyExchangeService,
         TokensService tokensService,
-        EcdhService ecdhService)
+        CngEcdhService cngEcdhService)
     {
         _keyExchangeService = keyExchangeService;
         _tokensService = tokensService;
-        _ecdhService = ecdhService;
+        _cngEcdhService = cngEcdhService;
     }
 
-    public async Task RequestKeyExchange(IReadOnlyList<string> args)
+    public async Task CngRequestKeyExchange(IReadOnlyList<string> args)
     {
         var tokensResponse = await _tokensService.GetTokensAsync();
 
@@ -39,9 +39,9 @@ public class CngRequestKeyExchangeHandler
 
         var requestedUserId = Guid.Parse(args[1]);
 
-        _ecdhService.GenerateEcdhKeysPair(out var privateKeyBase64, out var publicKeyBase64);
+        _cngEcdhService.CngGenerateEcdhKeysPair(out var privateKeyBase64, out var publicKeyBase64);
 
-        var response = await _keyExchangeService.CreateKeyExchangeRequestAsync(requestedUserId, publicKeyBase64);
+        var response = await _keyExchangeService.CngCreateKeyExchangeRequestAsync(requestedUserId, publicKeyBase64);
 
         Console.WriteLine($"Key exchange request with an ID {response.RequestId} created successfully.");
 

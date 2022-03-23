@@ -41,9 +41,9 @@ public class KeyExchangeService
             = new AuthenticationHeaderValue("Bearer", accessToken);
     }
 
-    public async Task<GetKeyExchangeResponse> GetKeyExchangesAsync()
+    public async Task<GetKeyExchangeResponse> CngGetKeyExchangesAsync()
     {
-        var result = await HttpRequest.GetAsync(
+        var result = await HttpRequestHelper.GetAsync(
             client: _httpClient,
             route: Routes.CngKeyExchangeRequests);
 
@@ -52,7 +52,7 @@ public class KeyExchangeService
         return response;
     }
 
-    public async Task<CreateKeyExchangeResponse> CreateKeyExchangeRequestAsync(
+    public async Task<CreateKeyExchangeResponse> CngCreateKeyExchangeRequestAsync(
         Guid requestUserId,
         string publicKey)
     {
@@ -62,7 +62,7 @@ public class KeyExchangeService
             RequestedUserId = requestUserId
         };
 
-        var result = await HttpRequest.PostWithBodyAsync(
+        var result = await HttpRequestHelper.PostWithBodyAsync(
             client: _httpClient,
             route: Routes.CngKeyExchangeRequests,
             body: command);
@@ -72,7 +72,7 @@ public class KeyExchangeService
         return response;
     }
 
-    public async Task ConfirmOrDeclineKeyExchangeAsync(Guid requestId, string publicKeyBase64)
+    public async Task CngConfirmOrDeclineKeyExchangeAsync(Guid requestId, string publicKeyBase64)
     {
         var request = new ConfirmOrDeclineKeyExchangeRequest
         {
@@ -81,7 +81,7 @@ public class KeyExchangeService
             RequestId = requestId
         };
 
-        await HttpRequest.DeleteWithBodyAsync(
+        await HttpRequestHelper.DeleteWithBodyAsync(
             client: _httpClient,
             route: Routes.CngKeyExchangeRequests,
             body: request);

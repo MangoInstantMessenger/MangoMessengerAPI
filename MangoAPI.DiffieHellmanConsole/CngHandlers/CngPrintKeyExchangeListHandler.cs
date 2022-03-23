@@ -13,9 +13,9 @@ public class CngPrintKeyExchangeListHandler
         _keyExchangeService = keyExchangeService;
     }
 
-    public async Task PrintKeyExchangesListAsync()
+    public async Task CngPrintKeyExchangesListAsync()
     {
-        var response = await _keyExchangeService.GetKeyExchangesAsync();
+        var response = await _keyExchangeService.CngGetKeyExchangesAsync();
         response.KeyExchangeRequests.ForEach(Console.WriteLine);
     }
 }

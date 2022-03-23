@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using MangoAPI.DiffieHellmanConsole.Services;
 
-namespace MangoAPI.DiffieHellmanConsole.Handlers;
+namespace MangoAPI.DiffieHellmanConsole.AuthHandlers;
 
 public class LoginHandler
 {

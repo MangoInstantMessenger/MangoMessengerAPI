@@ -13,20 +13,20 @@ namespace MangoAPI.DiffieHellmanConsole.CngHandlers;
 public class CngConfirmKeyExchangeRequestHandler
 {
     private readonly KeyExchangeService _keyExchangeService;
-    private readonly EcdhService _ecdhService;
+    private readonly CngEcdhService _cngEcdhService;
     private readonly TokensService _tokensService;
 
     public CngConfirmKeyExchangeRequestHandler(
         KeyExchangeService keyExchangeService,
-        EcdhService ecdhService,
+        CngEcdhService cngEcdhService,
         TokensService tokensService)
     {
         _keyExchangeService = keyExchangeService;
-        _ecdhService = ecdhService;
+        _cngEcdhService = cngEcdhService;
         _tokensService = tokensService;
     }
 
-    public async Task ConfirmKeyExchangeRequest(IReadOnlyList<string> args)
+    public async Task CngConfirmKeyExchangeRequest(IReadOnlyList<string> args)
     {
         var tokensResponse = await _tokensService.GetTokensAsync();
 
@@ -42,7 +42,7 @@ public class CngConfirmKeyExchangeRequestHandler
 
         var requestId = Guid.Parse(args[1]);
 
-        var getKeyExchangeResponse = await _keyExchangeService.GetKeyExchangesAsync();
+        var getKeyExchangeResponse = await _keyExchangeService.CngGetKeyExchangesAsync();
 
         var exchangeRequest = getKeyExchangeResponse.KeyExchangeRequests
             .FirstOrDefault(x => x.RequestId == requestId);
@@ -55,7 +55,7 @@ public class CngConfirmKeyExchangeRequestHandler
             return;
         }
 
-        var ecDiffieHellmanCng = _ecdhService.GenerateEcdhKeysPair(
+        var ecDiffieHellmanCng = _cngEcdhService.CngGenerateEcdhKeysPair(
             out var privateKeyBase64String,
             out var publicKeyBase64String);
 
@@ -65,7 +65,7 @@ public class CngConfirmKeyExchangeRequestHandler
 
         var commonSecret = ecDiffieHellmanCng.DeriveKeyMaterial(requestPublicKey).AsBase64String();
 
-        await _keyExchangeService.ConfirmOrDeclineKeyExchangeAsync(requestId, publicKeyBase64String);
+        await _keyExchangeService.CngConfirmOrDeclineKeyExchangeAsync(requestId, publicKeyBase64String);
 
         var keysFolderPath = Path.Combine(AppContext.BaseDirectory, $"Keys_{tokens.UserId}");
 
