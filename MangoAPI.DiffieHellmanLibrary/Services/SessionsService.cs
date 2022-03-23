@@ -28,7 +28,7 @@ public class SessionsService
 
         var response = await HttpRequestHelper.PostWithBodyAsync(
             client: _httpClient,
-            route: Routes.SessionsRoute,
+            route: AuthRoutes.SessionsRoute,
             body: command);
 
         var result = JsonConvert.DeserializeObject<TokensResponse>(response);
@@ -38,7 +38,7 @@ public class SessionsService
 
     public async Task<TokensResponse> RefreshTokenAsync(Guid refreshToken)
     {
-        var route = Routes.SessionsRoute + refreshToken;
+        var route = AuthRoutes.SessionsRoute + refreshToken;
         
         var result = await HttpRequestHelper.PostWithoutBodyAsync(_httpClient, route);
         

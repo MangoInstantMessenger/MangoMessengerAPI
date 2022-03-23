@@ -36,7 +36,7 @@ public class CngKeyExchangeService
     {
         var result = await HttpRequestHelper.GetAsync(
             client: _httpClient,
-            route: Routes.CngKeyExchangeRequests);
+            route: CngRoutes.CngKeyExchangeRequests);
 
         var response = JsonConvert.DeserializeObject<CngGetKeyExchangeResponse>(result);
 
@@ -55,7 +55,7 @@ public class CngKeyExchangeService
 
         var result = await HttpRequestHelper.PostWithBodyAsync(
             client: _httpClient,
-            route: Routes.CngKeyExchangeRequests,
+            route: CngRoutes.CngKeyExchangeRequests,
             body: command);
 
         var response = JsonConvert.DeserializeObject<CngCreateKeyExchangeResponse>(result);
@@ -74,7 +74,7 @@ public class CngKeyExchangeService
 
         await HttpRequestHelper.DeleteWithBodyAsync(
             client: _httpClient,
-            route: Routes.CngKeyExchangeRequests,
+            route: CngRoutes.CngKeyExchangeRequests,
             body: request);
     }
 }

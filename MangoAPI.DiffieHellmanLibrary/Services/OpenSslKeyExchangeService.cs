@@ -41,7 +41,7 @@ public class OpenSslKeyExchangeService
 
         await using var stream = File.OpenRead(dhParametersPath);
 
-        var uri = new Uri(Routes.OpenSslParameters, UriKind.Absolute);
+        var uri = new Uri(OpenSslRoutes.OpenSslParameters, UriKind.Absolute);
 
         using var request = new HttpRequestMessage(HttpMethod.Post, uri);
 
@@ -61,7 +61,7 @@ public class OpenSslKeyExchangeService
 
     public async Task<bool> OpenSslDownloadDhParametersAsync()
     {
-        var uri = new Uri(uriString: Routes.OpenSslParameters, UriKind.Absolute);
+        var uri = new Uri(uriString: OpenSslRoutes.OpenSslParameters, UriKind.Absolute);
 
         var workingDirectory = DirectoryHelper.OpenSslDhParametersDirectory;
 
@@ -151,7 +151,7 @@ public class OpenSslKeyExchangeService
 
         var publicKeyPath = Path.Combine(workingDirectory, publicKeyFileName);
 
-        var route = $"{Routes.OpenSslKeyExchangeRequests}/{receiverId}";
+        var route = $"{OpenSslRoutes.OpenSslKeyExchangeRequests}/{receiverId}";
 
         var uri = new Uri(route, UriKind.Absolute);
 
@@ -175,7 +175,7 @@ public class OpenSslKeyExchangeService
 
     public async Task<List<OpenSslKeyExchangeRequest>> OpensslGetKeyExchangesAsync()
     {
-        var uri = new Uri(Routes.OpenSslKeyExchangeRequests, UriKind.Absolute);
+        var uri = new Uri(OpenSslRoutes.OpenSslKeyExchangeRequests, UriKind.Absolute);
         
         var response = await _httpClient.GetAsync(uri);
         
@@ -207,7 +207,7 @@ public class OpenSslKeyExchangeService
             return false;
         }
 
-        var route = $"{Routes.OpenSslKeyExchangeRequests}/{requestId}";
+        var route = $"{OpenSslRoutes.OpenSslKeyExchangeRequests}/{requestId}";
 
         var uri = new Uri(route, UriKind.Absolute);
 

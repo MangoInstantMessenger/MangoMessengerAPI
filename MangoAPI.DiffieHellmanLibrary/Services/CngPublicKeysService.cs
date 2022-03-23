@@ -35,7 +35,7 @@ public class CngPublicKeysService
     {
         var result = await HttpRequestHelper.GetAsync(
             client: _httpClient,
-            route: Routes.CngPublicKeys);
+            route: CngRoutes.CngPublicKeys);
 
         var response = JsonConvert.DeserializeObject<CngGetPublicKeysResponse>(result) ??
                        throw new InvalidOperationException($"Argument is null {nameof(result)}");
