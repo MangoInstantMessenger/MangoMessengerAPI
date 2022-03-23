@@ -14,7 +14,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace MangoAPI.Presentation.Controllers;
 
 [ApiController]
-[Route("api/openssl-key-exchange")]
+[Route("api/openssl-key-exchange-requests")]
 [Produces("application/json")]
 [Authorize]
 public class OpenSslKeyExchangeController : ApiControllerBase, IOpenSslKeyExchangeController
@@ -47,7 +47,7 @@ public class OpenSslKeyExchangeController : ApiControllerBase, IOpenSslKeyExchan
         return file;
     }
 
-    [HttpPost("openssl-key-exchange-requests/{userId:guid}")]
+    [HttpPost("{userId:guid}")]
     public async Task<IActionResult> OpenSslCreateKeyExchangeRequest(
         [FromRoute] Guid userId,
         [FromForm] IFormFile senderPublicKey,
@@ -65,7 +65,7 @@ public class OpenSslKeyExchangeController : ApiControllerBase, IOpenSslKeyExchan
         return await RequestAsync(command, cancellationToken);
     }
 
-    [HttpGet("openssl-key-exchange-requests")]
+    [HttpGet]
     public async Task<IActionResult> OpenSslGetKeyExchangeRequests(CancellationToken cancellationToken)
     {
         var userId = HttpContext.User.GetUserId();
@@ -74,7 +74,7 @@ public class OpenSslKeyExchangeController : ApiControllerBase, IOpenSslKeyExchan
         return await RequestAsync(request, cancellationToken);
     }
 
-    [HttpPut("openssl-key-exchange-requests/{requestId:guid}")]
+    [HttpPut("{requestId:guid}")]
     public async Task<IActionResult> OpenSslConfirmKeyExchangeRequest(
         [FromRoute] Guid requestId,
         [FromForm] IFormFile receiverPublicKey,
@@ -92,7 +92,7 @@ public class OpenSslKeyExchangeController : ApiControllerBase, IOpenSslKeyExchan
         return await RequestAsync(command, cancellationToken);
     }
 
-    [HttpDelete("openssl-key-exchange-requests/{requestId:guid}")]
+    [HttpDelete("{requestId:guid}")]
     public async Task<IActionResult> OpenSslDeclineKeyExchangeRequest(
         [FromRoute] Guid requestId,
         CancellationToken cancellationToken)
@@ -108,7 +108,7 @@ public class OpenSslKeyExchangeController : ApiControllerBase, IOpenSslKeyExchan
         return await RequestAsync(request, cancellationToken);
     }
 
-    [HttpGet("openssl-key-exchange-requests/public-keys/{requestId:guid}")]
+    [HttpGet("public-keys/{requestId:guid}")]
     public async Task<IActionResult> OpenSslDownloadPartnerPublicKey(Guid requestId,
         CancellationToken cancellationToken)
     {

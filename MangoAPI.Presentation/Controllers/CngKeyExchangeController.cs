@@ -18,7 +18,7 @@ namespace MangoAPI.Presentation.Controllers;
 /// Controller responsible for CNG Key Exchange Requests.
 /// </summary>
 [ApiController]
-[Route("api/cng-key-exchange")]
+[Route("api/cng-key-exchange-requests")]
 [Produces("application/json")]
 [Authorize]
 public class CngKeyExchangeController : ApiControllerBase, ICngKeyExchangeController
@@ -33,7 +33,7 @@ public class CngKeyExchangeController : ApiControllerBase, ICngKeyExchangeContro
     /// </summary>
     /// <param name="cancellationToken">Cancellation token instance.</param>
     /// <returns></returns>
-    [HttpGet("cng-key-exchange-requests")]
+    [HttpGet]
     [SwaggerOperation(
         Summary = "Returns all user's key exchange requests.",
         Description = "Returns all user's Diffie-Hellman key exchange requests.")]
@@ -57,7 +57,7 @@ public class CngKeyExchangeController : ApiControllerBase, ICngKeyExchangeContro
     /// <param name="request"></param>
     /// <param name="cancellationToken">Cancellation token instance.</param>
     /// <returns></returns>
-    [HttpPost("cng-key-exchange-requests")]
+    [HttpPost]
     [SwaggerOperation(
         Summary = "Creates new key exchange request with particular user.",
         Description = "Creates new Diffie-Hellman key exchange request with particular user.")]
@@ -85,7 +85,7 @@ public class CngKeyExchangeController : ApiControllerBase, ICngKeyExchangeContro
     /// <param name="request"></param>
     /// <param name="cancellationToken">Cancellation token instance.</param>
     /// <returns></returns>
-    [HttpDelete("cng-key-exchange-requests")]
+    [HttpDelete]
     [SwaggerOperation(
         Summary = "Confirms or declines key exchange request.",
         Description = "Confirms or declines Diffie-Hellman key exchange request.")]

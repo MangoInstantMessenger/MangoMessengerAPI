@@ -32,7 +32,7 @@ public class CngPublicKeysController : ApiControllerBase, ICngPublicKeysControll
     /// </summary>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    [HttpGet("cng-public-keys")]
+    [HttpGet]
     [SwaggerOperation(
         Summary = "Returns all user's public keys.",
         Description = "Returns all user's Diffie-Hellman public keys.")]
