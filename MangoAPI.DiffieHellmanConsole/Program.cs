@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Threading.Tasks;
-using MangoAPI.DiffieHellmanConsole.AuthHandlers;
-using MangoAPI.DiffieHellmanConsole.CngHandlers;
-using MangoAPI.DiffieHellmanConsole.OpenSslHandlers;
-using MangoAPI.DiffieHellmanConsole.Services;
+using MangoAPI.DiffieHellmanLibrary.AuthHandlers;
+using MangoAPI.DiffieHellmanLibrary.CngHandlers;
+using MangoAPI.DiffieHellmanLibrary.OpenSslHandlers;
+using MangoAPI.DiffieHellmanLibrary.Services;
 
 namespace MangoAPI.DiffieHellmanConsole;
 
