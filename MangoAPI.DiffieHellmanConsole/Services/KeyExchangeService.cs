@@ -239,7 +239,7 @@ public class KeyExchangeService
         var requests = await OpensslGetKeyExchangesAsync();
 
         var keyExchangeRequest = requests.FirstOrDefault(request => request.RequestId == requestId);
-        
+
         if (keyExchangeRequest == null)
         {
             const string message = ResponseMessageCodes.KeyExchangeRequestNotFound;
@@ -281,5 +281,10 @@ public class KeyExchangeService
         httpResponseMessage.EnsureSuccessStatusCode();
 
         return true;
+    }
+
+    public async Task OpensslCreateCommonSecretAsync(Guid requestId)
+    {
+        throw new NotImplementedException();
     }
 }

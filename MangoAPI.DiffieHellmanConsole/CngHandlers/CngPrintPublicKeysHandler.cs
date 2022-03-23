@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using MangoAPI.DiffieHellmanConsole.Services;
 
-namespace MangoAPI.DiffieHellmanConsole.Handlers;
+namespace MangoAPI.DiffieHellmanConsole.CngHandlers;
 
 public class CngPrintPublicKeysHandler
 {
