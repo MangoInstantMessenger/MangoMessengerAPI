@@ -6,8 +6,9 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using CliWrap;
-using MangoAPI.BusinessLogic.ApiCommands.KeyExchange;
-using MangoAPI.BusinessLogic.ApiQueries.KeyExchange;
+using MangoAPI.BusinessLogic.ApiCommands.CngKeyExchange;
+using MangoAPI.BusinessLogic.ApiQueries.CngKeyExchange;
+using MangoAPI.BusinessLogic.ApiQueries.OpenSslKeyExchange;
 using MangoAPI.BusinessLogic.Models;
 using MangoAPI.DiffieHellmanConsole.Consts;
 using MangoAPI.Domain.Constants;
@@ -41,22 +42,22 @@ public class KeyExchangeService
             = new AuthenticationHeaderValue("Bearer", accessToken);
     }
 
-    public async Task<GetKeyExchangeResponse> CngGetKeyExchangesAsync()
+    public async Task<CngGetKeyExchangeResponse> CngGetKeyExchangesAsync()
     {
         var result = await HttpRequestHelper.GetAsync(
             client: _httpClient,
             route: Routes.CngKeyExchangeRequests);
 
-        var response = JsonConvert.DeserializeObject<GetKeyExchangeResponse>(result);
+        var response = JsonConvert.DeserializeObject<CngGetKeyExchangeResponse>(result);
 
         return response;
     }
 
-    public async Task<CreateKeyExchangeResponse> CngCreateKeyExchangeRequestAsync(
+    public async Task<CngCreateKeyExchangeResponse> CngCreateKeyExchangeRequestAsync(
         Guid requestUserId,
         string publicKey)
     {
-        var command = new CreateKeyExchangeRequest
+        var command = new CngCreateKeyExchangeRequest
         {
             PublicKey = publicKey,
             RequestedUserId = requestUserId
@@ -67,14 +68,14 @@ public class KeyExchangeService
             route: Routes.CngKeyExchangeRequests,
             body: command);
 
-        var response = JsonConvert.DeserializeObject<CreateKeyExchangeResponse>(result);
+        var response = JsonConvert.DeserializeObject<CngCreateKeyExchangeResponse>(result);
 
         return response;
     }
 
     public async Task CngConfirmOrDeclineKeyExchangeAsync(Guid requestId, string publicKeyBase64)
     {
-        var request = new ConfirmOrDeclineKeyExchangeRequest
+        var request = new CngConfirmOrDeclineKeyExchangeRequest
         {
             Confirmed = true,
             PublicKey = publicKeyBase64,

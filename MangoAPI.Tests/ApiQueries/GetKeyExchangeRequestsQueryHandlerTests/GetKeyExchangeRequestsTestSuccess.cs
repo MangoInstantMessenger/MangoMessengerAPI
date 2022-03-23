@@ -2,7 +2,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using FluentAssertions;
-using MangoAPI.BusinessLogic.ApiQueries.KeyExchange;
+using MangoAPI.BusinessLogic.ApiQueries.CngKeyExchange;
 using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.Domain.Constants;
 using MangoAPI.Domain.Entities;
@@ -12,16 +12,16 @@ using Xunit;
 
 namespace MangoAPI.Tests.ApiQueries.GetKeyExchangeRequestsQueryHandlerTests;
 
-public class GetKeyExchangeRequestsTestSuccess : ITestable<GetKeyExchangeRequestsQuery, GetKeyExchangeResponse>
+public class GetKeyExchangeRequestsTestSuccess : ITestable<CngGetKeyExchangeRequestsQuery, CngGetKeyExchangeResponse>
 {
     private readonly MangoDbFixture _mangoDbFixture = new();
-    private readonly Assert<GetKeyExchangeResponse> _assert = new ();
+    private readonly Assert<CngGetKeyExchangeResponse> _assert = new ();
 
     [Fact]
     public async Task GetKeyExchangeRequestsTest_Success()
     {
         Seed();
-        var query = new GetKeyExchangeRequestsQuery
+        var query = new CngGetKeyExchangeRequestsQuery
         {
             UserId = SeedDataConstants.AmelitId
         };
@@ -48,10 +48,10 @@ public class GetKeyExchangeRequestsTestSuccess : ITestable<GetKeyExchangeRequest
         return true;
     }
 
-    public IRequestHandler<GetKeyExchangeRequestsQuery, Result<GetKeyExchangeResponse>> CreateHandler()
+    public IRequestHandler<CngGetKeyExchangeRequestsQuery, Result<CngGetKeyExchangeResponse>> CreateHandler()
     {
-        var responseFactory = new ResponseFactory<GetKeyExchangeResponse>();
-        var handler = new GetKeyExchangeRequestsQueryHandler(_mangoDbFixture.Context, responseFactory);
+        var responseFactory = new ResponseFactory<CngGetKeyExchangeResponse>();
+        var handler = new CngGetKeyExchangeRequestsQueryHandler(_mangoDbFixture.Context, responseFactory);
         return handler;
     }
         

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
-using MangoAPI.BusinessLogic.ApiCommands.KeyExchange;
+using MangoAPI.BusinessLogic.ApiCommands.CngKeyExchange;
 using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.Domain.Constants;
 using MangoAPI.Domain.Entities;
@@ -11,7 +11,7 @@ using Xunit;
 
 namespace MangoAPI.Tests.ApiCommandsTests.ConfirmOrDeclineKeyExchangeCommandHandlerTests;
 
-public class ConfirmOrDeclineKeyExchangeTestSuccess : ITestable<ConfirmOrDeclineKeyExchangeCommand, ResponseBase>
+public class ConfirmOrDeclineKeyExchangeTestSuccess : ITestable<CngConfirmOrDeclineKeyExchangeCommand, ResponseBase>
 {
     private readonly MangoDbFixture _mangoDbFixture = new();
     private readonly Assert<ResponseBase> _assert = new();
@@ -21,7 +21,7 @@ public class ConfirmOrDeclineKeyExchangeTestSuccess : ITestable<ConfirmOrDecline
     {
         Seed();
         var handler = CreateHandler();
-        var command = new ConfirmOrDeclineKeyExchangeCommand
+        var command = new CngConfirmOrDeclineKeyExchangeCommand
         {
             UserId = _receiver.Id,
             RequestId = _cngKeyExchangeRequest.Id,
@@ -48,11 +48,11 @@ public class ConfirmOrDeclineKeyExchangeTestSuccess : ITestable<ConfirmOrDecline
         return true;
     }
 
-    public IRequestHandler<ConfirmOrDeclineKeyExchangeCommand, Result<ResponseBase>> CreateHandler()
+    public IRequestHandler<CngConfirmOrDeclineKeyExchangeCommand, Result<ResponseBase>> CreateHandler()
     {
         var responseFactory = new ResponseFactory<ResponseBase>();
         var context = _mangoDbFixture.Context;
-        var handler = new ConfirmOrDeclineKeyExchangeCommandHandler(context, responseFactory);
+        var handler = new CngConfirmOrDeclineKeyExchangeCommandHandler(context, responseFactory);
         return handler;
     }
         

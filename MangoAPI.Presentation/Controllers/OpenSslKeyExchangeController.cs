@@ -2,8 +2,8 @@
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
-using MangoAPI.BusinessLogic.ApiCommands.KeyExchange;
-using MangoAPI.BusinessLogic.ApiQueries.KeyExchange;
+using MangoAPI.BusinessLogic.ApiCommands.OpenSslKeyExchange;
+using MangoAPI.BusinessLogic.ApiQueries.OpenSslKeyExchange;
 using MangoAPI.Presentation.Extensions;
 using MangoAPI.Presentation.Interfaces;
 using MediatR;
@@ -41,7 +41,7 @@ public class OpenSslKeyExchangeController : ApiControllerBase, IOpenSslKeyExchan
     [HttpGet("openssl-parameters")]
     public async Task<IActionResult> OpenSslGetDiffieHellmanParameter(CancellationToken cancellationToken)
     {
-        var result = await Mediator.Send(new GetDhParametersQuery(), cancellationToken);
+        var result = await Mediator.Send(new OpenSslGetDhParametersQuery(), cancellationToken);
         var file = File(result.Response.FileContent, "text/plain", "dh_parameters.pem");
 
         return file;

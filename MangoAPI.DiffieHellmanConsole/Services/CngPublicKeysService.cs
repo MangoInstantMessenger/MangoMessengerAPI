@@ -33,13 +33,13 @@ public class CngPublicKeysService
             = new AuthenticationHeaderValue("Bearer", accessToken);
     }
 
-    public async Task<GetPublicKeysResponse> CngGetPublicKeys()
+    public async Task<CngGetPublicKeysResponse> CngGetPublicKeys()
     {
         var result = await HttpRequestHelper.GetAsync(
             client: _httpClient,
             route: Routes.CngPublicKeys);
 
-        var response = JsonConvert.DeserializeObject<GetPublicKeysResponse>(result);
+        var response = JsonConvert.DeserializeObject<CngGetPublicKeysResponse>(result);
 
         return response;
     }

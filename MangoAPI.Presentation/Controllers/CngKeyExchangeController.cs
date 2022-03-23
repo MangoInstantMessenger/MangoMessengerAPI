@@ -1,8 +1,8 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
-using MangoAPI.BusinessLogic.ApiCommands.KeyExchange;
-using MangoAPI.BusinessLogic.ApiQueries.KeyExchange;
+using MangoAPI.BusinessLogic.ApiCommands.CngKeyExchange;
+using MangoAPI.BusinessLogic.ApiQueries.CngKeyExchange;
 using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.Presentation.Extensions;
 using MangoAPI.Presentation.Interfaces;
@@ -37,13 +37,13 @@ public class CngKeyExchangeController : ApiControllerBase, ICngKeyExchangeContro
     [SwaggerOperation(
         Summary = "Returns all user's key exchange requests.",
         Description = "Returns all user's Diffie-Hellman key exchange requests.")]
-    [ProducesResponseType(typeof(GetKeyExchangeResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(CngGetKeyExchangeResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> CngGetKeyExchangeRequests(CancellationToken cancellationToken)
     {
         var userId = HttpContext.User.GetUserId();
 
-        var request = new GetKeyExchangeRequestsQuery
+        var request = new CngGetKeyExchangeRequestsQuery
         {
             UserId = userId
         };
@@ -61,15 +61,15 @@ public class CngKeyExchangeController : ApiControllerBase, ICngKeyExchangeContro
     [SwaggerOperation(
         Summary = "Creates new key exchange request with particular user.",
         Description = "Creates new Diffie-Hellman key exchange request with particular user.")]
-    [ProducesResponseType(typeof(CreateKeyExchangeResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(CngCreateKeyExchangeResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
-    public async Task<IActionResult> CngCreteKeyExchangeRequest([FromBody] CreateKeyExchangeRequest request,
+    public async Task<IActionResult> CngCreteKeyExchangeRequest([FromBody] CngCreateKeyExchangeRequest request,
         CancellationToken cancellationToken)
     {
         var userId = HttpContext.User.GetUserId();
 
-        var command = new CreateKeyExchangeRequestCommand
+        var command = new CngCreateKeyExchangeRequestCommand
         {
             RequestedUserId = request.RequestedUserId,
             PublicKey = request.PublicKey,
@@ -93,12 +93,12 @@ public class CngKeyExchangeController : ApiControllerBase, ICngKeyExchangeContro
     [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
     public async Task<IActionResult> CngConfirmOrDeclineKeyExchangeRequest(
-        [FromBody] ConfirmOrDeclineKeyExchangeRequest request,
+        [FromBody] CngConfirmOrDeclineKeyExchangeRequest request,
         CancellationToken cancellationToken)
     {
         var userId = HttpContext.User.GetUserId();
 
-        var command = new ConfirmOrDeclineKeyExchangeCommand
+        var command = new CngConfirmOrDeclineKeyExchangeCommand
         {
             UserId = userId,
             Confirmed = request.Confirmed,
