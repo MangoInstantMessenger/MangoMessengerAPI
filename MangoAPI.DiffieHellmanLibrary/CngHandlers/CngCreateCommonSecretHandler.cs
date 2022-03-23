@@ -1,5 +1,6 @@
 ﻿using System.Security.Cryptography;
 using MangoAPI.DiffieHellmanLibrary.Extensions;
+using MangoAPI.DiffieHellmanLibrary.Helpers;
 using MangoAPI.DiffieHellmanLibrary.Services;
 
 namespace MangoAPI.DiffieHellmanLibrary.CngHandlers;
@@ -30,14 +31,12 @@ public class CngCreateCommonSecretHandler
             .PartnerPublicKey.Base64StringAsBytes();
 
         var privateKeyPath = Path.Combine(
-            AppContext.BaseDirectory,
-            $"Keys_{tokens.UserId}",
-            $"PrivateKey_{tokens.UserId}_{partnerId}.txt");
+            CngDirectoryHelper.CngPrivateKeysDirectory,
+            $"PRIVATE_KEY_{tokens.UserId}_{partnerId}.txt");
 
         var commonSecretPath = Path.Combine(
-            AppContext.BaseDirectory,
-            $"Keys_{tokens.UserId}",
-            $"CommonSecret_{tokens.UserId}_{partnerId}.txt");
+            CngDirectoryHelper.CngCommonSecretsDirectory,
+            $"COMMON_SECRET_{tokens.UserId}_{partnerId}.txt");
 
         var privateKeyBytes = (await File.ReadAllTextAsync(privateKeyPath)).Base64StringAsBytes();
 

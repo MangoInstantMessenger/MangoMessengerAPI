@@ -37,7 +37,7 @@ public class OpenSslKeyExchangeService
 
     public async Task<bool> OpenSslUploadDhParametersAsync()
     {
-        var dhParametersPath = Path.Combine(DirectoryHelper.OpenSslDhParametersDirectory, "dhp.pem");
+        var dhParametersPath = Path.Combine(OpenSslDirectoryHelper.OpenSslDhParametersDirectory, "dhp.pem");
 
         await using var stream = File.OpenRead(dhParametersPath);
 
@@ -63,7 +63,7 @@ public class OpenSslKeyExchangeService
     {
         var uri = new Uri(uriString: OpenSslRoutes.OpenSslParameters, UriKind.Absolute);
 
-        var workingDirectory = DirectoryHelper.OpenSslDhParametersDirectory;
+        var workingDirectory = OpenSslDirectoryHelper.OpenSslDhParametersDirectory;
 
         var response = await _httpClient.GetAsync(uri);
 
@@ -95,7 +95,7 @@ public class OpenSslKeyExchangeService
 
         var fileName = $"PRIVATE_KEY_{senderId}_{receiverId}";
 
-        var workingDirectory = DirectoryHelper.OpenSslPrivateKeysDirectory;
+        var workingDirectory = OpenSslDirectoryHelper.OpenSslPrivateKeysDirectory;
 
         var privateKeyPath = Path.Combine(workingDirectory, fileName);
 
@@ -104,7 +104,7 @@ public class OpenSslKeyExchangeService
             Directory.CreateDirectory(workingDirectory);
         }
 
-        var dhParametersPath = Path.Combine(DirectoryHelper.OpenSslDhParametersDirectory, "downloaded_dhp.pem");
+        var dhParametersPath = Path.Combine(OpenSslDirectoryHelper.OpenSslDhParametersDirectory, "downloaded_dhp.pem");
 
         var command = Cli.Wrap("openssl").WithArguments(
             new[] {"genpkey", "-paramfile", dhParametersPath, "-out", privateKeyPath});
@@ -122,11 +122,11 @@ public class OpenSslKeyExchangeService
 
         var privateKeyFileName = $"PRIVATE_KEY_{senderId}_{receiverId}";
 
-        var workingDirectory = DirectoryHelper.OpenSslPublicKeysDirectory;
+        var workingDirectory = OpenSslDirectoryHelper.OpenSslPublicKeysDirectory;
 
         var publicKeyPath = Path.Combine(workingDirectory, publicKeyFileName);
 
-        var privateKeyPath = Path.Combine(DirectoryHelper.OpenSslPrivateKeysDirectory, privateKeyFileName);
+        var privateKeyPath = Path.Combine(OpenSslDirectoryHelper.OpenSslPrivateKeysDirectory, privateKeyFileName);
 
         if (!Directory.Exists(workingDirectory))
         {
@@ -145,7 +145,7 @@ public class OpenSslKeyExchangeService
     {
         var tokensResponse = await _tokensService.GetTokensAsync();
         var senderId = tokensResponse.Tokens.UserId;
-        var workingDirectory = DirectoryHelper.OpenSslPublicKeysDirectory;
+        var workingDirectory = OpenSslDirectoryHelper.OpenSslPublicKeysDirectory;
 
         var publicKeyFileName = $"PUBLIC_KEY_{senderId}_{receiverId}";
 
@@ -215,7 +215,7 @@ public class OpenSslKeyExchangeService
         
         var userId = tokensResponse.Tokens.UserId;
         
-        var workingDirectory = DirectoryHelper.OpenSslPublicKeysDirectory;
+        var workingDirectory = OpenSslDirectoryHelper.OpenSslPublicKeysDirectory;
 
         var partnerId = keyExchangeRequest.Actor == Actor.Sender
             ? keyExchangeRequest.ReceiverId

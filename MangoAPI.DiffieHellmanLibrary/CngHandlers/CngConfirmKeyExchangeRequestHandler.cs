@@ -1,5 +1,6 @@
 ﻿using System.Security.Cryptography;
 using MangoAPI.DiffieHellmanLibrary.Extensions;
+using MangoAPI.DiffieHellmanLibrary.Helpers;
 using MangoAPI.DiffieHellmanLibrary.Services;
 using MangoAPI.Domain.Constants;
 
@@ -31,6 +32,7 @@ public class CngConfirmKeyExchangeRequestHandler
 
         var getKeyExchangeResponse = await _cngKeyExchangeService.CngGetKeyExchangesAsync();
 
+        // TODO: create separate REST handler get request by ID
         var exchangeRequest = getKeyExchangeResponse.KeyExchangeRequests
             .FirstOrDefault(x => x.RequestId == requestId);
 
@@ -58,24 +60,25 @@ public class CngConfirmKeyExchangeRequestHandler
 
         await _cngKeyExchangeService.CngConfirmOrDeclineKeyExchangeAsync(requestId, publicKeyBase64String);
 
-        var keysFolderPath = Path.Combine(AppContext.BaseDirectory, $"Keys_{tokens.UserId}");
+        var privateKeysDirectory = CngDirectoryHelper.CngPrivateKeysDirectory;
+        var publicKeysDirectory = CngDirectoryHelper.CngPublicKeysDirectory;
+        var commonSecretsDirectory = CngDirectoryHelper.CngCommonSecretsDirectory;
 
         var privateKeyPath = Path.Combine(
-            keysFolderPath,
-            $"PrivateKey_{tokens.UserId}_{exchangeRequest.SenderId}.txt");
+            privateKeysDirectory,
+            $"PRIVATE_KEY_{tokens.UserId}_{exchangeRequest.SenderId}.txt");
 
         var publicKeyPath = Path.Combine(
-            keysFolderPath,
-            $"PublicKey_{tokens.UserId}_{exchangeRequest.SenderId}.txt");
+            publicKeysDirectory,
+            $"PUBLIC_KEY_{tokens.UserId}_{exchangeRequest.SenderId}.txt");
 
         var commonSecretPath = Path.Combine(
-            keysFolderPath,
-            $"CommonSecret_{tokens.UserId}_{exchangeRequest.SenderId}.txt");
-
-        if (!Directory.Exists(keysFolderPath))
-        {
-            Directory.CreateDirectory(keysFolderPath);
-        }
+            commonSecretsDirectory,
+            $"COMMON_SECRET_{tokens.UserId}_{exchangeRequest.SenderId}.txt");
+        
+        privateKeysDirectory.CreateDirectoryIfNotExist();
+        publicKeysDirectory.CreateDirectoryIfNotExist();
+        commonSecretsDirectory.CreateDirectoryIfNotExist();
 
         Console.WriteLine("Writing private key to file...");
         await File.WriteAllTextAsync(privateKeyPath, privateKeyBase64String);

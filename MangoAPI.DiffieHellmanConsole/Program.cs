@@ -35,9 +35,9 @@ public static class Program
                 await handler.RefreshTokensAsync();
                 break;
             }
-            case "cng-key-exchange":
+            case "cng-create-key-exchange":
             {
-                var handler = DependencyResolver.ResolveService<CngRequestKeyExchangeHandler>();
+                var handler = DependencyResolver.ResolveService<CngCreateKeyExchangeHandler>();
                 await handler.CngRequestKeyExchange(args);
                 break;
             }

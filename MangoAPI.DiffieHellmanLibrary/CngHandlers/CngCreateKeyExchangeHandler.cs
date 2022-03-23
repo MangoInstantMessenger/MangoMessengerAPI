@@ -1,14 +1,16 @@
-﻿using MangoAPI.DiffieHellmanLibrary.Services;
+﻿using MangoAPI.DiffieHellmanLibrary.Extensions;
+using MangoAPI.DiffieHellmanLibrary.Helpers;
+using MangoAPI.DiffieHellmanLibrary.Services;
 
 namespace MangoAPI.DiffieHellmanLibrary.CngHandlers;
 
-public class CngRequestKeyExchangeHandler
+public class CngCreateKeyExchangeHandler
 {
     private readonly CngKeyExchangeService _cngKeyExchangeService;
     private readonly TokensService _tokensService;
     private readonly CngEcdhService _cngEcdhService;
 
-    public CngRequestKeyExchangeHandler(
+    public CngCreateKeyExchangeHandler(
         CngKeyExchangeService cngKeyExchangeService,
         TokensService tokensService,
         CngEcdhService cngEcdhService)
@@ -32,18 +34,19 @@ public class CngRequestKeyExchangeHandler
 
         Console.WriteLine($"Key exchange request with an ID {response.RequestId} created successfully.");
 
-        var keysFolderPath = Path.Combine(AppContext.BaseDirectory, $"Keys_{tokens.UserId}");
+        var privateKeysDirectory = CngDirectoryHelper.CngPrivateKeysDirectory;
+        var publicKeysDirectory = CngDirectoryHelper.CngPublicKeysDirectory;
 
-        var privateKeyPath =
-            Path.Combine(keysFolderPath, $"PrivateKey_{tokens.UserId}_{requestedUserId}.txt");
+        var privateKeyPath = Path.Combine(
+            privateKeysDirectory, 
+            $"PRIVATE_KEY_{tokens.UserId}_{requestedUserId}.txt");
 
-        var publicKeyPath = Path.Combine(keysFolderPath,
-            $"PublicKey_{tokens.UserId}_{requestedUserId}.txt");
-
-        if (!Directory.Exists(keysFolderPath))
-        {
-            Directory.CreateDirectory(keysFolderPath);
-        }
+        var publicKeyPath = Path.Combine(
+            publicKeysDirectory,
+            $"PUBLIC_KEY_{tokens.UserId}_{requestedUserId}.txt");
+        
+        privateKeysDirectory.CreateDirectoryIfNotExist();
+        publicKeysDirectory.CreateDirectoryIfNotExist();
 
         Console.WriteLine("Writing private key to file...");
         await File.WriteAllTextAsync(privateKeyPath, privateKeyBase64);

@@ -10,7 +10,7 @@ public class OpenSslCreateDhParametersHandler
         try
         {
             Console.WriteLine("Generating DH parameters... Please wait.");
-            var dhParametersWorkingDirectory = DirectoryHelper.OpenSslDhParametersDirectory;
+            var dhParametersWorkingDirectory = OpenSslDirectoryHelper.OpenSslDhParametersDirectory;
 
             var dhParametersPath = Path.Combine(dhParametersWorkingDirectory, "dhp.pem");
 
