@@ -4,19 +4,19 @@ namespace MangoAPI.DiffieHellmanLibrary.OpenSslHandlers;
 
 public class OpenSslGeneratePrivateKeyHandler
 {
-    private readonly KeyExchangeService _keyExchangeService;
+    private readonly OpenSslKeyExchangeService _openSslKeyExchangeService;
 
-    public OpenSslGeneratePrivateKeyHandler(KeyExchangeService keyExchangeService)
+    public OpenSslGeneratePrivateKeyHandler(OpenSslKeyExchangeService openSslKeyExchangeService)
     {
-        _keyExchangeService = keyExchangeService;
+        _openSslKeyExchangeService = openSslKeyExchangeService;
     }
 
     public async Task GeneratePrivateKeyAsync(Guid receiverId)
     {
         Console.WriteLine("Generating private key ...");
-        
-        await _keyExchangeService.OpenSslGeneratePrivateKeyAsync(receiverId);
-        
+
+        await _openSslKeyExchangeService.OpenSslGeneratePrivateKeyAsync(receiverId);
+
         Console.WriteLine("Private key has been generated successfully.");
     }
 }

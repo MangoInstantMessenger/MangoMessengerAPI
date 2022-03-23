@@ -4,17 +4,17 @@ namespace MangoAPI.DiffieHellmanLibrary.OpenSslHandlers;
 
 public class OpenSslConfirmKeyExchangeHandler
 {
-    private readonly KeyExchangeService _keyExchangeService;
+    private readonly OpenSslKeyExchangeService _openSslKeyExchangeService;
 
-    public OpenSslConfirmKeyExchangeHandler(KeyExchangeService keyExchangeService)
+    public OpenSslConfirmKeyExchangeHandler(OpenSslKeyExchangeService openSslKeyExchangeService)
     {
-        _keyExchangeService = keyExchangeService;
+        _openSslKeyExchangeService = openSslKeyExchangeService;
     }
 
     public async Task ConfirmKeyExchangeAsync(Guid requestId)
     {
         Console.WriteLine($"Confirming key exchange request {requestId} ... ");
-        await _keyExchangeService.OpensslConfirmKeyExchange(requestId);
+        await _openSslKeyExchangeService.OpensslConfirmKeyExchange(requestId);
         Console.WriteLine($"Key exchange request {requestId} has been confirmed successfully.");
     }
 }

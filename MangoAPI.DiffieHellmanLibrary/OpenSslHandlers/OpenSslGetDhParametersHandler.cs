@@ -4,18 +4,18 @@ namespace MangoAPI.DiffieHellmanLibrary.OpenSslHandlers;
 
 public class OpenSslGetDhParametersHandler
 {
-    private readonly KeyExchangeService _keyExchangeService;
+    private readonly OpenSslKeyExchangeService _openSslKeyExchangeService;
 
-    public OpenSslGetDhParametersHandler(KeyExchangeService keyExchangeService)
+    public OpenSslGetDhParametersHandler(OpenSslKeyExchangeService openSslKeyExchangeService)
     {
-        _keyExchangeService = keyExchangeService;
+        _openSslKeyExchangeService = openSslKeyExchangeService;
     }
 
     public async Task GetDhParametersAsync()
     {
         Console.WriteLine("Downloading DH parameters file ...");
 
-        await _keyExchangeService.OpenSslDownloadDhParametersAsync();
+        await _openSslKeyExchangeService.OpenSslDownloadDhParametersAsync();
 
         Console.WriteLine("DH parameters file has been downloaded successfully.");
     }

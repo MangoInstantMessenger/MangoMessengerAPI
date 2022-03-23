@@ -2,7 +2,7 @@
 using MangoAPI.BusinessLogic.Models;
 using MangoAPI.BusinessLogic.Responses;
 
-namespace MangoAPI.BusinessLogic.ApiQueries.PublicKeys;
+namespace MangoAPI.BusinessLogic.ApiQueries.CngPublicKeys;
 
 public record CngGetPublicKeysResponse : ResponseBase
 {

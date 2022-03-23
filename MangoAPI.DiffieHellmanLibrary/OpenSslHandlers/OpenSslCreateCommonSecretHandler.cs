@@ -4,17 +4,17 @@ namespace MangoAPI.DiffieHellmanLibrary.OpenSslHandlers;
 
 public class OpenSslCreateCommonSecretHandler
 {
-    private readonly KeyExchangeService _keyExchangeService;
+    private readonly OpenSslKeyExchangeService _openSslKeyExchangeService;
 
-    public OpenSslCreateCommonSecretHandler(KeyExchangeService keyExchangeService)
+    public OpenSslCreateCommonSecretHandler(OpenSslKeyExchangeService openSslKeyExchangeService)
     {
-        _keyExchangeService = keyExchangeService;
+        _openSslKeyExchangeService = openSslKeyExchangeService;
     }
 
     public async Task CreateCommonSecretAsync(Guid requestId)
     {
         Console.WriteLine($"Creating common secret {requestId} ...");
-        await _keyExchangeService.OpensslCreateCommonSecretAsync(requestId);
+        await _openSslKeyExchangeService.OpensslCreateCommonSecretAsync(requestId);
         Console.WriteLine($"");
     }
 }

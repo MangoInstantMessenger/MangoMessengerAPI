@@ -8,9 +8,6 @@ public static class ServicesInjectionExtensions
     public static IServiceCollection AddServices(this IServiceCollection collection)
     {
         collection.AddSingleton<HttpClient>();
-        collection.AddSingleton<CngEcdhService>();
-        collection.AddSingleton<KeyExchangeService>();
-        collection.AddSingleton<CngPublicKeysService>();
         collection.AddSingleton<SessionsService>();
         collection.AddSingleton<TokensService>();
 

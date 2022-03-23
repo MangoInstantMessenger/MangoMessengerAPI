@@ -4,16 +4,16 @@ namespace MangoAPI.DiffieHellmanLibrary.CngHandlers;
 
 public class CngPrintKeyExchangeListHandler
 {
-    private readonly KeyExchangeService _keyExchangeService;
+    private readonly CngKeyExchangeService _cngKeyExchangeService;
 
-    public CngPrintKeyExchangeListHandler(KeyExchangeService keyExchangeService)
+    public CngPrintKeyExchangeListHandler(CngKeyExchangeService cngKeyExchangeService)
     {
-        _keyExchangeService = keyExchangeService;
+        _cngKeyExchangeService = cngKeyExchangeService;
     }
 
     public async Task CngPrintKeyExchangesListAsync()
     {
-        var response = await _keyExchangeService.CngGetKeyExchangesAsync();
+        var response = await _cngKeyExchangeService.CngGetKeyExchangesAsync();
         response.KeyExchangeRequests.ForEach(Console.WriteLine);
     }
 }

@@ -1,7 +1,7 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
-using MangoAPI.BusinessLogic.ApiQueries.PublicKeys;
+using MangoAPI.BusinessLogic.ApiQueries.CngPublicKeys;
 using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.Presentation.Extensions;
 using MangoAPI.Presentation.Interfaces;

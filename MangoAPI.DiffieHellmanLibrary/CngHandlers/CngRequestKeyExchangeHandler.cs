@@ -4,16 +4,16 @@ namespace MangoAPI.DiffieHellmanLibrary.CngHandlers;
 
 public class CngRequestKeyExchangeHandler
 {
-    private readonly KeyExchangeService _keyExchangeService;
+    private readonly CngKeyExchangeService _cngKeyExchangeService;
     private readonly TokensService _tokensService;
     private readonly CngEcdhService _cngEcdhService;
 
     public CngRequestKeyExchangeHandler(
-        KeyExchangeService keyExchangeService,
+        CngKeyExchangeService cngKeyExchangeService,
         TokensService tokensService,
         CngEcdhService cngEcdhService)
     {
-        _keyExchangeService = keyExchangeService;
+        _cngKeyExchangeService = cngKeyExchangeService;
         _tokensService = tokensService;
         _cngEcdhService = cngEcdhService;
     }
@@ -28,7 +28,7 @@ public class CngRequestKeyExchangeHandler
 
         _cngEcdhService.CngGenerateEcdhKeysPair(out var privateKeyBase64, out var publicKeyBase64);
 
-        var response = await _keyExchangeService.CngCreateKeyExchangeRequestAsync(requestedUserId, publicKeyBase64);
+        var response = await _cngKeyExchangeService.CngCreateKeyExchangeRequestAsync(requestedUserId, publicKeyBase64);
 
         Console.WriteLine($"Key exchange request with an ID {response.RequestId} created successfully.");
 

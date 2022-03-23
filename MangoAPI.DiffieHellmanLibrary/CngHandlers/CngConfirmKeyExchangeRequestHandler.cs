@@ -7,16 +7,16 @@ namespace MangoAPI.DiffieHellmanLibrary.CngHandlers;
 
 public class CngConfirmKeyExchangeRequestHandler
 {
-    private readonly KeyExchangeService _keyExchangeService;
+    private readonly CngKeyExchangeService _cngKeyExchangeService;
     private readonly CngEcdhService _cngEcdhService;
     private readonly TokensService _tokensService;
 
     public CngConfirmKeyExchangeRequestHandler(
-        KeyExchangeService keyExchangeService,
+        CngKeyExchangeService cngKeyExchangeService,
         CngEcdhService cngEcdhService,
         TokensService tokensService)
     {
-        _keyExchangeService = keyExchangeService;
+        _cngKeyExchangeService = cngKeyExchangeService;
         _cngEcdhService = cngEcdhService;
         _tokensService = tokensService;
     }
@@ -29,7 +29,7 @@ public class CngConfirmKeyExchangeRequestHandler
 
         var requestId = Guid.Parse(args[1]);
 
-        var getKeyExchangeResponse = await _keyExchangeService.CngGetKeyExchangesAsync();
+        var getKeyExchangeResponse = await _cngKeyExchangeService.CngGetKeyExchangesAsync();
 
         var exchangeRequest = getKeyExchangeResponse.KeyExchangeRequests
             .FirstOrDefault(x => x.RequestId == requestId);
@@ -48,11 +48,15 @@ public class CngConfirmKeyExchangeRequestHandler
 
         var requestPublicKeyBytes = exchangeRequest.SenderPublicKey.Base64StringAsBytes();
 
+#pragma warning disable CA1416
         var requestPublicKey = CngKey.Import(requestPublicKeyBytes, CngKeyBlobFormat.EccPublicBlob);
+#pragma warning restore CA1416
 
+#pragma warning disable CA1416
         var commonSecret = ecDiffieHellmanCng.DeriveKeyMaterial(requestPublicKey).AsBase64String();
+#pragma warning restore CA1416
 
-        await _keyExchangeService.CngConfirmOrDeclineKeyExchangeAsync(requestId, publicKeyBase64String);
+        await _cngKeyExchangeService.CngConfirmOrDeclineKeyExchangeAsync(requestId, publicKeyBase64String);
 
         var keysFolderPath = Path.Combine(AppContext.BaseDirectory, $"Keys_{tokens.UserId}");
 

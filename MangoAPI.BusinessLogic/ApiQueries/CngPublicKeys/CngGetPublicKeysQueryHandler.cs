@@ -8,7 +8,7 @@ using MangoAPI.Domain.Constants;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace MangoAPI.BusinessLogic.ApiQueries.PublicKeys;
+namespace MangoAPI.BusinessLogic.ApiQueries.CngPublicKeys;
 
 public class CngGetPublicKeysQueryHandler : IRequestHandler<CngGetPublicKeysQuery, Result<CngGetPublicKeysResponse>>
 {

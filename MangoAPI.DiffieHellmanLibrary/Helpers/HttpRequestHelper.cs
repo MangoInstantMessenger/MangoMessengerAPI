@@ -2,7 +2,7 @@
 using System.Text;
 using Newtonsoft.Json;
 
-namespace MangoAPI.DiffieHellmanLibrary.Services;
+namespace MangoAPI.DiffieHellmanLibrary.Helpers;
 
 public static class HttpRequestHelper
 {
@@ -50,7 +50,7 @@ public static class HttpRequestHelper
     {
         var json = JsonContent.Create(body);
 
-        HttpRequestMessage request = new HttpRequestMessage
+        var request = new HttpRequestMessage
         {
             Content = json,
             Method = HttpMethod.Delete,

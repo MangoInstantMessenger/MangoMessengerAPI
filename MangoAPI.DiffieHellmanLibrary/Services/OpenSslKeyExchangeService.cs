@@ -1,21 +1,20 @@
 ﻿using System.Net.Http.Headers;
 using CliWrap;
-using MangoAPI.BusinessLogic.ApiCommands.CngKeyExchange;
-using MangoAPI.BusinessLogic.ApiQueries.CngKeyExchange;
 using MangoAPI.BusinessLogic.ApiQueries.OpenSslKeyExchange;
 using MangoAPI.BusinessLogic.Models;
 using MangoAPI.DiffieHellmanLibrary.Consts;
+using MangoAPI.DiffieHellmanLibrary.Helpers;
 using MangoAPI.Domain.Constants;
 using Newtonsoft.Json;
 
 namespace MangoAPI.DiffieHellmanLibrary.Services;
 
-public class KeyExchangeService
+public class OpenSslKeyExchangeService
 {
     private readonly HttpClient _httpClient;
     private readonly TokensService _tokensService;
 
-    public KeyExchangeService(HttpClient httpClient, TokensService tokensService)
+    public OpenSslKeyExchangeService(HttpClient httpClient, TokensService tokensService)
     {
         _httpClient = httpClient;
         _tokensService = tokensService;
@@ -36,52 +35,6 @@ public class KeyExchangeService
             = new AuthenticationHeaderValue("Bearer", accessToken);
     }
 
-    public async Task<CngGetKeyExchangeResponse> CngGetKeyExchangesAsync()
-    {
-        var result = await HttpRequestHelper.GetAsync(
-            client: _httpClient,
-            route: Routes.CngKeyExchangeRequests);
-
-        var response = JsonConvert.DeserializeObject<CngGetKeyExchangeResponse>(result);
-
-        return response ?? throw new InvalidOperationException();
-    }
-
-    public async Task<CngCreateKeyExchangeResponse> CngCreateKeyExchangeRequestAsync(
-        Guid requestUserId,
-        string publicKey)
-    {
-        var command = new CngCreateKeyExchangeRequest
-        {
-            PublicKey = publicKey,
-            RequestedUserId = requestUserId
-        };
-
-        var result = await HttpRequestHelper.PostWithBodyAsync(
-            client: _httpClient,
-            route: Routes.CngKeyExchangeRequests,
-            body: command);
-
-        var response = JsonConvert.DeserializeObject<CngCreateKeyExchangeResponse>(result);
-
-        return response ?? throw new InvalidOperationException();
-    }
-
-    public async Task CngConfirmOrDeclineKeyExchangeAsync(Guid requestId, string publicKeyBase64)
-    {
-        var request = new CngConfirmOrDeclineKeyExchangeRequest
-        {
-            Confirmed = true,
-            PublicKey = publicKeyBase64,
-            RequestId = requestId
-        };
-
-        await HttpRequestHelper.DeleteWithBodyAsync(
-            client: _httpClient,
-            route: Routes.CngKeyExchangeRequests,
-            body: request);
-    }
-
     public async Task<bool> OpenSslUploadDhParametersAsync()
     {
         var dhParametersPath = Path.Combine(DirectoryHelper.OpenSslDhParametersDirectory, "dhp.pem");
@@ -100,7 +53,7 @@ public class KeyExchangeService
         request.Content = content;
 
         var httpResponseMessage = await _httpClient.SendAsync(request);
-        
+
         httpResponseMessage.EnsureSuccessStatusCode();
 
         return true;
@@ -137,9 +90,9 @@ public class KeyExchangeService
     public async Task OpenSslGeneratePrivateKeyAsync(Guid receiverId)
     {
         var tokensResponse = await _tokensService.GetTokensAsync();
-        
+
         var senderId = tokensResponse.Tokens.UserId;
-        
+
         var fileName = $"PRIVATE_KEY_{senderId}_{receiverId}";
 
         var workingDirectory = DirectoryHelper.OpenSslPrivateKeysDirectory;
@@ -162,17 +115,17 @@ public class KeyExchangeService
     public async Task<bool> OpenSslGeneratePublicKeyAsync(Guid receiverId)
     {
         var tokensResponse = await _tokensService.GetTokensAsync();
-        
+
         var senderId = tokensResponse.Tokens.UserId;
 
         var publicKeyFileName = $"PUBLIC_KEY_{senderId}_{receiverId}";
-        
+
         var privateKeyFileName = $"PRIVATE_KEY_{senderId}_{receiverId}";
 
         var workingDirectory = DirectoryHelper.OpenSslPublicKeysDirectory;
 
         var publicKeyPath = Path.Combine(workingDirectory, publicKeyFileName);
-        
+
         var privateKeyPath = Path.Combine(DirectoryHelper.OpenSslPrivateKeysDirectory, privateKeyFileName);
 
         if (!Directory.Exists(workingDirectory))

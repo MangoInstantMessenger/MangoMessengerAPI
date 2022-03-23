@@ -1,5 +1,5 @@
 ﻿using CliWrap;
-using MangoAPI.DiffieHellmanLibrary.Services;
+using MangoAPI.DiffieHellmanLibrary.Helpers;
 
 namespace MangoAPI.DiffieHellmanLibrary.OpenSslHandlers;
 

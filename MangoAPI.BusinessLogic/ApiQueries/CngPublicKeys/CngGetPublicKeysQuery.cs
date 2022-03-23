@@ -2,7 +2,7 @@
 using MangoAPI.BusinessLogic.Responses;
 using MediatR;
 
-namespace MangoAPI.BusinessLogic.ApiQueries.PublicKeys;
+namespace MangoAPI.BusinessLogic.ApiQueries.CngPublicKeys;
 
 public record CngGetPublicKeysQuery : IRequest<Result<CngGetPublicKeysResponse>>
 {

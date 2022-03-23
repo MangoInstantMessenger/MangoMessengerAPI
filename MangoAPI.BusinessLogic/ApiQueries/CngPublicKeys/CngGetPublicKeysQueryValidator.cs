@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 
-namespace MangoAPI.BusinessLogic.ApiQueries.PublicKeys;
+namespace MangoAPI.BusinessLogic.ApiQueries.CngPublicKeys;
 
 public class CngGetPublicKeysQueryValidator : AbstractValidator<CngGetPublicKeysQuery>
 {

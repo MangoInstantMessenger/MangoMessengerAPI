@@ -12,8 +12,8 @@ public class DependencyResolver
         _serviceProvider = new ServiceCollection()
             .AddAuthHandlers()
             .AddServices()
-            .AddCngHandlers()
-            .AddOpenSslHandlers()
+            .AddCngServicesAndHandlers()
+            .AddOpenSslServicesAndHandlers()
             .BuildServiceProvider();
     }
 
