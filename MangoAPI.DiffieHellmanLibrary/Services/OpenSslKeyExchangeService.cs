@@ -136,7 +136,7 @@ public class OpenSslKeyExchangeService
         var command = Cli.Wrap("openssl").WithArguments(
             new[] {"pkey", "-in", privateKeyPath, "-pubout", "-out", publicKeyPath});
 
-        command.ExecuteAsync();
+        var result = await command.ExecuteAsync();
 
         return true;
     }
@@ -176,9 +176,13 @@ public class OpenSslKeyExchangeService
     public async Task<List<OpenSslKeyExchangeRequest>> OpensslGetKeyExchangesAsync()
     {
         var uri = new Uri(Routes.OpenSslKeyExchangeRequests, UriKind.Absolute);
+        
         var response = await _httpClient.GetAsync(uri);
+        
         response.EnsureSuccessStatusCode();
+        
         var responseBody = await response.Content.ReadAsStringAsync();
+        
         var deserialized =
             JsonConvert.DeserializeObject<OpenSslGetKeyExchangeRequestsResponse>(responseBody) ??
             throw new InvalidOperationException("Cannot deserialize list of key exchange requests.");
@@ -208,7 +212,9 @@ public class OpenSslKeyExchangeService
         var uri = new Uri(route, UriKind.Absolute);
 
         var tokensResponse = await _tokensService.GetTokensAsync();
+        
         var userId = tokensResponse.Tokens.UserId;
+        
         var workingDirectory = DirectoryHelper.OpenSslPublicKeysDirectory;
 
         var partnerId = keyExchangeRequest.Actor == Actor.Sender
