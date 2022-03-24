@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net6.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\MangoAPI.BusinessLogic\MangoAPI.BusinessLogic.csproj" />
+      <ProjectReference Include="..\MangoAPI.Domain\MangoAPI.Domain.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="CliWrap" Version="3.4.2" />
+    </ItemGroup>
+
+</Project>

@@ -48,6 +48,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SQL", "SQL", "{2A176CBC-BD4
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MangoAPI.Tests", "MangoAPI.Tests\MangoAPI.Tests.csproj", "{7BE7D37C-B0FF-4231-A155-B8AA7CF8092B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MangoAPI.DiffieHellmanLibrary", "MangoAPI.DiffieHellmanLibrary\MangoAPI.DiffieHellmanLibrary.csproj", "{D60AA7DE-4121-4C89-91D3-8DBBF735E13F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -82,6 +84,10 @@ Global
 		{7BE7D37C-B0FF-4231-A155-B8AA7CF8092B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7BE7D37C-B0FF-4231-A155-B8AA7CF8092B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7BE7D37C-B0FF-4231-A155-B8AA7CF8092B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D60AA7DE-4121-4C89-91D3-8DBBF735E13F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D60AA7DE-4121-4C89-91D3-8DBBF735E13F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D60AA7DE-4121-4C89-91D3-8DBBF735E13F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D60AA7DE-4121-4C89-91D3-8DBBF735E13F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,7 +1,7 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 using FluentAssertions;
-using MangoAPI.BusinessLogic.ApiQueries.PublicKeys;
+using MangoAPI.BusinessLogic.ApiQueries.CngPublicKeys;
 using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.Domain.Constants;
 using MangoAPI.Domain.Entities;
@@ -11,16 +11,16 @@ using Xunit;
 
 namespace MangoAPI.Tests.ApiQueries.GetPublicKeysQueryHandlerTests;
 
-public class GetPublicKeysTestSuccess : ITestable<GetPublicKeysQuery, GetPublicKeysResponse>
+public class GetPublicKeysTestSuccess : ITestable<CngGetPublicKeysQuery, CngGetPublicKeysResponse>
 {
     private readonly MangoDbFixture _mangoDbFixture = new();
-    private readonly Assert<GetPublicKeysResponse> _assert = new();
+    private readonly Assert<CngGetPublicKeysResponse> _assert = new();
 
     [Fact]
     public async Task GetPublicKeysTest_Success()
     {
         Seed();
-        var query = new GetPublicKeysQuery
+        var query = new CngGetPublicKeysQuery
         {
             UserId = _user.Id
         };
@@ -47,11 +47,11 @@ public class GetPublicKeysTestSuccess : ITestable<GetPublicKeysQuery, GetPublicK
         return true;
     }
 
-    public IRequestHandler<GetPublicKeysQuery, Result<GetPublicKeysResponse>> CreateHandler()
+    public IRequestHandler<CngGetPublicKeysQuery, Result<CngGetPublicKeysResponse>> CreateHandler()
     {
-        var responseFactory = new ResponseFactory<GetPublicKeysResponse>();
+        var responseFactory = new ResponseFactory<CngGetPublicKeysResponse>();
         var context = _mangoDbFixture.Context;
-        var handler = new GetPublicKeysQueryHandler(context, responseFactory);
+        var handler = new CngGetPublicKeysQueryHandler(context, responseFactory);
         return handler;
     }
 

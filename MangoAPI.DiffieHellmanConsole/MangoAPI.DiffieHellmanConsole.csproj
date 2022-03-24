@@ -9,18 +9,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="CliWrap" Version="3.4.2" />
-      <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <ProjectReference Include="..\MangoAPI.BusinessLogic\MangoAPI.BusinessLogic.csproj" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <Folder Include="OpenSsl" />
-      <Folder Include="OpenSsl\OpenSslDhParameters" />
-      <Folder Include="OpenSsl\OpenSslPrivateKeys" />
+      <ProjectReference Include="..\MangoAPI.DiffieHellmanLibrary\MangoAPI.DiffieHellmanLibrary.csproj" />
     </ItemGroup>
 
 </Project>
