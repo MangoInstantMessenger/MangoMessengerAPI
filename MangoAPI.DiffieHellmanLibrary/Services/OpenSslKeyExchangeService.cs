@@ -232,9 +232,43 @@ public class OpenSslKeyExchangeService
         return true;
     }
 
-    public async Task OpensslCreateCommonSecretAsync(Guid requestId)
+    public async Task<bool> OpensslCreateCommonSecretAsync(Guid requestId)
     {
-        throw new NotImplementedException();
+        var requests = await OpensslGetKeyExchangesAsync();
+
+        var currentRequest = requests.First(x => x.RequestId == requestId);
+
+        var tokensResponse = await _tokensService.GetTokensAsync();
+        var tokens = tokensResponse.Tokens;
+        var userId = tokens.UserId;
+
+        var receiverId = currentRequest.Actor == Actor.Receiver
+            ? currentRequest.SenderId
+            : currentRequest.ReceiverId;
+
+        var publicKeyDirectory = OpenSslDirectoryHelper.OpenSslPublicKeysDirectory;
+        var privateKeyDirectory = OpenSslDirectoryHelper.OpenSslPrivateKeysDirectory;
+        var commonSecretDirectory = OpenSslDirectoryHelper.OpenSslCommonSecretsDirectory;
+
+        var publicKeyFileName = FileNameHelper.GeneratePublicKeyFileName(userId, requestId);
+        var privateKeyFileName = FileNameHelper.GeneratePrivateKeyFileName(userId, receiverId);
+        var commonSecretFileName = FileNameHelper.GenerateCommonSecretFileName(userId, requestId);
+
+        commonSecretDirectory.CreateDirectoryIfNotExist();
+
+        var publicKeyPath = Path.Combine(publicKeyDirectory, publicKeyFileName);
+        var privateKeyPath = Path.Combine(privateKeyDirectory, privateKeyFileName);
+        var commonSecretPath = Path.Combine(commonSecretDirectory, commonSecretFileName);
+
+        var command = Cli.Wrap("openssl").WithArguments(
+            new[]
+            {
+                "pkeyutl", "-derive", "-inkey", privateKeyPath, "-peerkey", publicKeyPath, "-out", commonSecretPath
+            });
+
+        await command.ExecuteAsync();
+
+        return true;
     }
 
     public async Task<bool> OpensslDownloadPublicKeyAsync(Guid requestId)
