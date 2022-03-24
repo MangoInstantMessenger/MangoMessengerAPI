@@ -1,4 +1,5 @@
 ﻿using CliWrap;
+using MangoAPI.DiffieHellmanLibrary.Extensions;
 using MangoAPI.DiffieHellmanLibrary.Helpers;
 
 namespace MangoAPI.DiffieHellmanLibrary.OpenSslHandlers;
@@ -7,31 +8,21 @@ public class OpenSslCreateDhParametersHandler
 {
     public async Task<bool> CreateDhParametersAsync()
     {
-        try
-        {
-            Console.WriteLine("Generating DH parameters... Please wait.");
-            var dhParametersWorkingDirectory = OpenSslDirectoryHelper.OpenSslDhParametersDirectory;
+        Console.WriteLine("Generating DH parameters... Please wait.");
 
-            var dhParametersPath = Path.Combine(dhParametersWorkingDirectory, "dhp.pem");
+        var workingDirectory = OpenSslDirectoryHelper.OpenSslDhParametersDirectory;
 
-            if (!Directory.Exists(dhParametersWorkingDirectory))
-            {
-                Directory.CreateDirectory(dhParametersWorkingDirectory);
-            }
+        var parametersPath = Path.Combine(workingDirectory, "dhp.pem");
 
-            var command = Cli.Wrap("openssl").WithArguments(
-                new[] {"genpkey", "-genparam", "-algorithm", "DH", "-out", dhParametersPath});
+        workingDirectory.CreateDirectoryIfNotExist();
 
-            await command.ExecuteAsync();
+        var command = Cli.Wrap("openssl").WithArguments(
+            new[] {"genpkey", "-genparam", "-algorithm", "DH", "-out", parametersPath});
 
-            Console.WriteLine("DH parameters has been generated successfully.");
+        await command.ExecuteAsync();
 
-            return true;
-        }
-        catch (Exception e)
-        {
-            Console.WriteLine(e);
-            return false;
-        }
+        Console.WriteLine("DH parameters has been generated successfully.");
+
+        return true;
     }
 }
