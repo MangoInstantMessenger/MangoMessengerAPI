@@ -77,10 +77,10 @@ public static class Program
                 await handler.UploadDhParametersAsync();
                 break;
             }
-            case "openssl-get-dh-parameters":
+            case "openssl-download-dh-parameters":
             {
-                var handler = DependencyResolver.ResolveService<OpenSslGetDhParametersHandler>();
-                await handler.GetDhParametersAsync();
+                var handler = DependencyResolver.ResolveService<OpenSslDownloadDhParametersHandler>();
+                await handler.DownloadDhParametersAsync();
                 break;
             }
             case "openssl-generate-private-key":

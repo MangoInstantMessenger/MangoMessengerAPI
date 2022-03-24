@@ -12,7 +12,7 @@ public class OpenSslCreateDhParametersHandler
 
         var workingDirectory = OpenSslDirectoryHelper.OpenSslDhParametersDirectory;
 
-        var parametersPath = Path.Combine(workingDirectory, "dhp.pem");
+        var parametersPath = Path.Combine(workingDirectory, FileNameHelper.ParametersFileName);
 
         workingDirectory.CreateDirectoryIfNotExist();
 

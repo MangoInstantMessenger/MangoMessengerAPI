@@ -38,9 +38,11 @@ public class OpenSslKeyExchangeService
 
     public async Task<bool> OpenSslUploadDhParametersAsync()
     {
-        var dhParametersPath = Path.Combine(OpenSslDirectoryHelper.OpenSslDhParametersDirectory, "dhp.pem");
+        var parametersPath = Path.Combine(
+            OpenSslDirectoryHelper.OpenSslDhParametersDirectory,
+            FileNameHelper.ParametersFileName);
 
-        await using var stream = File.OpenRead(dhParametersPath);
+        await using var stream = File.OpenRead(parametersPath);
 
         var uri = new Uri(OpenSslRoutes.OpenSslParameters, UriKind.Absolute);
 
@@ -72,7 +74,7 @@ public class OpenSslKeyExchangeService
 
         await using var stream = await response.Content.ReadAsStreamAsync();
 
-        var filePath = Path.Combine(workingDirectory, "downloaded_dhp.pem");
+        var filePath = Path.Combine(workingDirectory, FileNameHelper.DownloadedParametersFileName);
 
         workingDirectory.CreateDirectoryIfNotExist();
 
@@ -91,15 +93,17 @@ public class OpenSslKeyExchangeService
 
         var senderId = tokensResponse.Tokens.UserId;
 
-        var fileName = $"PRIVATE_KEY_{senderId}_{receiverId}";
+        var privateKeyFileName = FileNameHelper.GeneratePrivateKeyFileName(senderId, receiverId);
 
         var workingDirectory = OpenSslDirectoryHelper.OpenSslPrivateKeysDirectory;
 
-        var privateKeyPath = Path.Combine(workingDirectory, fileName);
+        var privateKeyPath = Path.Combine(workingDirectory, privateKeyFileName);
 
         workingDirectory.CreateDirectoryIfNotExist();
 
-        var dhParametersPath = Path.Combine(OpenSslDirectoryHelper.OpenSslDhParametersDirectory, "downloaded_dhp.pem");
+        var dhParametersPath = Path.Combine(
+            OpenSslDirectoryHelper.OpenSslDhParametersDirectory,
+            FileNameHelper.DownloadedParametersFileName);
 
         var command = Cli.Wrap("openssl").WithArguments(
             new[] {"genpkey", "-paramfile", dhParametersPath, "-out", privateKeyPath});
@@ -113,9 +117,9 @@ public class OpenSslKeyExchangeService
 
         var senderId = tokensResponse.Tokens.UserId;
 
-        var publicKeyFileName = $"PUBLIC_KEY_{senderId}_{receiverId}";
+        var publicKeyFileName = FileNameHelper.GeneratePublicKeyFileName(senderId, receiverId);
 
-        var privateKeyFileName = $"PRIVATE_KEY_{senderId}_{receiverId}";
+        var privateKeyFileName = FileNameHelper.GeneratePrivateKeyFileName(senderId, receiverId);
 
         var workingDirectory = OpenSslDirectoryHelper.OpenSslPublicKeysDirectory;
 
@@ -128,7 +132,7 @@ public class OpenSslKeyExchangeService
         var command = Cli.Wrap("openssl").WithArguments(
             new[] {"pkey", "-in", privateKeyPath, "-pubout", "-out", publicKeyPath});
 
-        var result = await command.ExecuteAsync();
+        await command.ExecuteAsync();
 
         return true;
     }
@@ -136,10 +140,12 @@ public class OpenSslKeyExchangeService
     public async Task<bool> OpenSslCreateKeyExchangeAsync(Guid receiverId)
     {
         var tokensResponse = await _tokensService.GetTokensAsync();
+        
         var senderId = tokensResponse.Tokens.UserId;
+        
         var workingDirectory = OpenSslDirectoryHelper.OpenSslPublicKeysDirectory;
-
-        var publicKeyFileName = $"PUBLIC_KEY_{senderId}_{receiverId}";
+        
+        var publicKeyFileName = FileNameHelper.GeneratePublicKeyFileName(senderId, receiverId);
 
         var publicKeyPath = Path.Combine(workingDirectory, publicKeyFileName);
 
@@ -168,13 +174,13 @@ public class OpenSslKeyExchangeService
     public async Task<List<OpenSslKeyExchangeRequest>> OpensslGetKeyExchangesAsync()
     {
         var uri = new Uri(OpenSslRoutes.OpenSslKeyExchangeRequests, UriKind.Absolute);
-        
+
         var response = await _httpClient.GetAsync(uri);
-        
+
         response.EnsureSuccessStatusCode();
-        
+
         var responseBody = await response.Content.ReadAsStringAsync();
-        
+
         var deserialized =
             JsonConvert.DeserializeObject<OpenSslGetKeyExchangeRequestsResponse>(responseBody) ??
             throw new InvalidOperationException("Cannot deserialize list of key exchange requests.");
@@ -186,34 +192,25 @@ public class OpenSslKeyExchangeService
 
     public async Task<bool> OpensslConfirmKeyExchange(Guid requestId)
     {
-        var requests = await OpensslGetKeyExchangesAsync();
+        var exchangeRequests = await OpensslGetKeyExchangesAsync();
 
-        var keyExchangeRequest = requests.FirstOrDefault(request => request.RequestId == requestId);
-
-        if (keyExchangeRequest == null)
-        {
-            const string message = ResponseMessageCodes.KeyExchangeRequestNotFound;
-            var details = ResponseMessageCodes.ErrorDictionary[message];
-
-            Console.WriteLine($"{message}. {details}");
-            return false;
-        }
+        var keyExchangeRequest = exchangeRequests.First(request => request.RequestId == requestId);
 
         var route = $"{OpenSslRoutes.OpenSslKeyExchangeRequests}/{requestId}";
 
         var uri = new Uri(route, UriKind.Absolute);
 
         var tokensResponse = await _tokensService.GetTokensAsync();
-        
+
         var userId = tokensResponse.Tokens.UserId;
-        
+
         var workingDirectory = OpenSslDirectoryHelper.OpenSslPublicKeysDirectory;
 
         var partnerId = keyExchangeRequest.Actor == Actor.Sender
             ? keyExchangeRequest.ReceiverId
             : keyExchangeRequest.SenderId;
-
-        var publicKeyFileName = $"PUBLIC_KEY_{userId}_{partnerId}";
+        
+        var publicKeyFileName = FileNameHelper.GeneratePublicKeyFileName(userId, partnerId);
 
         var publicKeyPath = Path.Combine(workingDirectory, publicKeyFileName);
 

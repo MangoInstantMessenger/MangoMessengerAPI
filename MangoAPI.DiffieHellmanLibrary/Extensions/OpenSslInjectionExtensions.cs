@@ -12,7 +12,7 @@ public static class OpenSslInjectionExtensions
         
         collection.AddSingleton<OpenSslCreateDhParametersHandler>();
         collection.AddSingleton<OpenSslUploadDhParametersHandler>();
-        collection.AddSingleton<OpenSslGetDhParametersHandler>();
+        collection.AddSingleton<OpenSslDownloadDhParametersHandler>();
         collection.AddSingleton<OpenSslGeneratePrivateKeyHandler>();
         collection.AddSingleton<OpenSslGeneratePublicKeyHandler>();
         collection.AddSingleton<OpenSslCreateKeyExchangeHandler>();
