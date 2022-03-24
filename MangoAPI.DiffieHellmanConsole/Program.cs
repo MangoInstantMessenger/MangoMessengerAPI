@@ -177,6 +177,23 @@ public static class Program
                 await handler.CreateCommonSecretAsync(requestId);
                 break;
             }
+            case "openssl-download-public-key":
+            {
+                var handler = DependencyResolver.ResolveService<OpenSslDownloadPublicKeyHandler>();
+
+                var requestIdString = args[1];
+
+                var isParsed = Guid.TryParse(requestIdString, out var requestId);
+
+                if (!isParsed)
+                {
+                    Console.WriteLine("Invalid or empty request ID.");
+                    return;
+                }
+
+                await handler.DownloadPublicKeyAsync(requestId);
+                break;
+            }
             default:
             {
                 Console.WriteLine("Unrecognized command.");

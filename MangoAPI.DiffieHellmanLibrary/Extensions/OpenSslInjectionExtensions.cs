@@ -9,7 +9,7 @@ public static class OpenSslInjectionExtensions
     public static IServiceCollection AddOpenSslServicesAndHandlers(this IServiceCollection collection)
     {
         collection.AddSingleton<OpenSslKeyExchangeService>();
-        
+
         collection.AddSingleton<OpenSslCreateDhParametersHandler>();
         collection.AddSingleton<OpenSslUploadDhParametersHandler>();
         collection.AddSingleton<OpenSslDownloadDhParametersHandler>();
@@ -19,6 +19,7 @@ public static class OpenSslInjectionExtensions
         collection.AddSingleton<OpenSslPrintKeyExchangesHandler>();
         collection.AddSingleton<OpenSslConfirmKeyExchangeHandler>();
         collection.AddSingleton<OpenSslCreateCommonSecretHandler>();
+        collection.AddSingleton<OpenSslDownloadPublicKeyHandler>();
 
         return collection;
     }
