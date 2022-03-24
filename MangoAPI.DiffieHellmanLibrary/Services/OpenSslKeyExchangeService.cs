@@ -3,6 +3,7 @@ using CliWrap;
 using MangoAPI.BusinessLogic.ApiQueries.OpenSslKeyExchange;
 using MangoAPI.BusinessLogic.Models;
 using MangoAPI.DiffieHellmanLibrary.Consts;
+using MangoAPI.DiffieHellmanLibrary.Extensions;
 using MangoAPI.DiffieHellmanLibrary.Helpers;
 using MangoAPI.Domain.Constants;
 using Newtonsoft.Json;
@@ -73,10 +74,7 @@ public class OpenSslKeyExchangeService
 
         var filePath = Path.Combine(workingDirectory, "downloaded_dhp.pem");
 
-        if (!Directory.Exists(workingDirectory))
-        {
-            Directory.CreateDirectory(workingDirectory);
-        }
+        workingDirectory.CreateDirectoryIfNotExist();
 
         var fileInfo = new FileInfo(filePath);
 
@@ -99,10 +97,7 @@ public class OpenSslKeyExchangeService
 
         var privateKeyPath = Path.Combine(workingDirectory, fileName);
 
-        if (!Directory.Exists(workingDirectory))
-        {
-            Directory.CreateDirectory(workingDirectory);
-        }
+        workingDirectory.CreateDirectoryIfNotExist();
 
         var dhParametersPath = Path.Combine(OpenSslDirectoryHelper.OpenSslDhParametersDirectory, "downloaded_dhp.pem");
 
@@ -128,10 +123,7 @@ public class OpenSslKeyExchangeService
 
         var privateKeyPath = Path.Combine(OpenSslDirectoryHelper.OpenSslPrivateKeysDirectory, privateKeyFileName);
 
-        if (!Directory.Exists(workingDirectory))
-        {
-            Directory.CreateDirectory(workingDirectory);
-        }
+        workingDirectory.CreateDirectoryIfNotExist();
 
         var command = Cli.Wrap("openssl").WithArguments(
             new[] {"pkey", "-in", privateKeyPath, "-pubout", "-out", publicKeyPath});
