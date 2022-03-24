@@ -140,11 +140,11 @@ public class OpenSslKeyExchangeService
     public async Task<bool> OpenSslCreateKeyExchangeAsync(Guid receiverId)
     {
         var tokensResponse = await _tokensService.GetTokensAsync();
-        
+
         var senderId = tokensResponse.Tokens.UserId;
-        
+
         var workingDirectory = OpenSslDirectoryHelper.OpenSslPublicKeysDirectory;
-        
+
         var publicKeyFileName = FileNameHelper.GeneratePublicKeyFileName(senderId, receiverId);
 
         var publicKeyPath = Path.Combine(workingDirectory, publicKeyFileName);
@@ -209,7 +209,7 @@ public class OpenSslKeyExchangeService
         var partnerId = keyExchangeRequest.Actor == Actor.Sender
             ? keyExchangeRequest.ReceiverId
             : keyExchangeRequest.SenderId;
-        
+
         var publicKeyFileName = FileNameHelper.GeneratePublicKeyFileName(userId, partnerId);
 
         var publicKeyPath = Path.Combine(workingDirectory, publicKeyFileName);
@@ -235,5 +235,33 @@ public class OpenSslKeyExchangeService
     public async Task OpensslCreateCommonSecretAsync(Guid requestId)
     {
         throw new NotImplementedException();
+    }
+
+    public async Task<bool> OpensslDownloadPublicKeyAsync(Guid requestId)
+    {
+        var tokensResponse = await _tokensService.GetTokensAsync();
+        var userId = tokensResponse.Tokens.UserId;
+
+        var address = $"{OpenSslRoutes.OpenSslPublicKeys}/{requestId}";
+        var uri = new Uri(address, UriKind.Absolute);
+
+        var response = await _httpClient.GetAsync(uri);
+        response.EnsureSuccessStatusCode();
+
+        await using var stream = await response.Content.ReadAsStreamAsync();
+
+        var workingDirectory = OpenSslDirectoryHelper.OpenSslPublicKeysDirectory;
+        var publicKeyFileName = FileNameHelper.GeneratePublicKeyFileName(userId, requestId);
+        var filePath = Path.Combine(workingDirectory, publicKeyFileName);
+
+        workingDirectory.CreateDirectoryIfNotExist();
+
+        var fileInfo = new FileInfo(filePath);
+
+        await using var fileStream = fileInfo.OpenWrite();
+
+        await stream.CopyToAsync(fileStream);
+
+        return true;
     }
 }
