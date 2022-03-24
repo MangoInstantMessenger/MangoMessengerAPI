@@ -298,4 +298,15 @@ public class OpenSslKeyExchangeService
 
         return true;
     }
+
+    public async Task<bool> OpenSslDeclineKeyExchangeAsync(Guid requestId)
+    {
+        var address = $"{OpenSslRoutes.OpenSslKeyExchangeRequests}/{requestId}";
+        var uri = new Uri(address, UriKind.Absolute);
+
+        var httpResponseMessage = await _httpClient.DeleteAsync(uri);
+        httpResponseMessage.EnsureSuccessStatusCode();
+
+        return true;
+    }
 }

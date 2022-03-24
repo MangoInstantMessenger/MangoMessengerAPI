@@ -194,6 +194,23 @@ public static class Program
                 await handler.DownloadPublicKeyAsync(requestId);
                 break;
             }
+            case "openssl-decline-key-exchange":
+            {
+                var handler = DependencyResolver.ResolveService<OpenSslDeclineKeyExchangeHandler>();
+
+                var requestIdString = args[1];
+
+                var isParsed = Guid.TryParse(requestIdString, out var requestId);
+
+                if (!isParsed)
+                {
+                    Console.WriteLine("Invalid or empty request ID.");
+                    return;
+                }
+
+                await handler.DeclineKeyExchangeAsync(requestId);
+                break;
+            }
             default:
             {
                 Console.WriteLine("Unrecognized command.");
