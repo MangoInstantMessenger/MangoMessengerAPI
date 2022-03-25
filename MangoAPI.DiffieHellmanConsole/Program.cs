@@ -211,6 +211,23 @@ public static class Program
                 await handler.DeclineKeyExchangeAsync(requestId);
                 break;
             }
+            case "openssl-print-key-exchange":
+            {
+                var handler = DependencyResolver.ResolveService<OpenSslGetKeyExchangeByIdHandler>();
+
+                var requestIdString = args[1];
+
+                var isParsed = Guid.TryParse(requestIdString, out var requestId);
+
+                if (!isParsed)
+                {
+                    Console.WriteLine("Invalid or empty request ID.");
+                    return;
+                }
+
+                await handler.GetKeyExchangeByIdAsync(requestId);
+                break;
+            }
             default:
             {
                 Console.WriteLine("Unrecognized command.");
