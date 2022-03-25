@@ -309,4 +309,23 @@ public class OpenSslKeyExchangeService
 
         return true;
     }
+
+    public async Task<OpenSslKeyExchangeRequest> OpenSslGetKeyExchangeByIdAsync(Guid requestId)
+    {
+        var address = $"{OpenSslRoutes.OpenSslKeyExchangeRequests}/{requestId}";
+        var uri = new Uri(address, UriKind.Absolute);
+
+        var response = await _httpClient.GetAsync(uri);
+        response.EnsureSuccessStatusCode();
+
+        var jsonAsString = await response.Content.ReadAsStringAsync();
+
+        var deserializeObject =
+            JsonConvert.DeserializeObject<OpenSslGetKeyExchangeRequestByIdResponse>(jsonAsString)
+            ?? throw new InvalidOperationException();
+
+        var result = deserializeObject.KeyExchangeRequest;
+
+        return result;
+    }
 }
