@@ -128,4 +128,17 @@ public class OpenSslKeyExchangeController : ApiControllerBase, IOpenSslKeyExchan
 
         return file;
     }
+    
+    [HttpGet("{requestId:guid}")]
+    public async Task<IActionResult> OpenSslGetKeyExchangeRequestById([FromRoute] Guid requestId, 
+            CancellationToken cancellationToken)
+    {
+        var query = new OpenSslGetKeyExchangeRequestByIdQuery
+        {
+            UserId = HttpContext.User.GetUserId(),
+            KeyExchangeRequestId = requestId
+        };
+
+        return await RequestAsync(query, cancellationToken);
+    }
 }

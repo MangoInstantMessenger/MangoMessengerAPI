@@ -25,4 +25,6 @@ public interface IOpenSslKeyExchangeController
 
     public Task<IActionResult> OpenSslDownloadPartnerPublicKey(Guid requestId,
         CancellationToken cancellationToken);
+
+    public Task<IActionResult> OpenSslGetKeyExchangeRequestById(Guid requestId, CancellationToken cancellationToken);
 }
