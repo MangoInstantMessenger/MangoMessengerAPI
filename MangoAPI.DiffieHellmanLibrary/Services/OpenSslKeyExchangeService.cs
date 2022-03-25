@@ -192,9 +192,12 @@ public class OpenSslKeyExchangeService
 
     public async Task<bool> OpensslConfirmKeyExchange(Guid requestId)
     {
-        var exchangeRequests = await OpensslGetKeyExchangesAsync();
+        var keyExchangeRequest = await OpenSslGetKeyExchangeByIdAsync(requestId);
 
-        var keyExchangeRequest = exchangeRequests.First(request => request.RequestId == requestId);
+        if (keyExchangeRequest == null)
+        {
+            throw new InvalidOperationException();
+        }
 
         var route = $"{OpenSslRoutes.OpenSslKeyExchangeRequests}/{requestId}";
 
@@ -234,17 +237,20 @@ public class OpenSslKeyExchangeService
 
     public async Task<bool> OpensslCreateCommonSecretAsync(Guid requestId)
     {
-        var requests = await OpensslGetKeyExchangesAsync();
+        var keyExchangeRequest = await OpenSslGetKeyExchangeByIdAsync(requestId);
 
-        var currentRequest = requests.First(x => x.RequestId == requestId);
+        if (keyExchangeRequest == null)
+        {
+            throw new InvalidOperationException();
+        }
 
         var tokensResponse = await _tokensService.GetTokensAsync();
         var tokens = tokensResponse.Tokens;
         var userId = tokens.UserId;
 
-        var receiverId = currentRequest.Actor == Actor.Receiver
-            ? currentRequest.SenderId
-            : currentRequest.ReceiverId;
+        var receiverId = keyExchangeRequest.Actor == Actor.Receiver
+            ? keyExchangeRequest.SenderId
+            : keyExchangeRequest.ReceiverId;
 
         var publicKeyDirectory = OpenSslDirectoryHelper.OpenSslPublicKeysDirectory;
         var privateKeyDirectory = OpenSslDirectoryHelper.OpenSslPrivateKeysDirectory;
@@ -324,8 +330,8 @@ public class OpenSslKeyExchangeService
             JsonConvert.DeserializeObject<OpenSslGetKeyExchangeRequestByIdResponse>(jsonAsString)
             ?? throw new InvalidOperationException();
 
-        var result = deserializeObject.KeyExchangeRequest;
+        var exchangeRequest = deserializeObject.KeyExchangeRequest;
 
-        return result;
+        return exchangeRequest;
     }
 }
