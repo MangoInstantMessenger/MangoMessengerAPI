@@ -6,6 +6,6 @@ namespace MangoAPI.BusinessLogic.ApiQueries.OpenSslKeyExchange;
 
 public record OpenSslGetKeyExchangeRequestByIdQuery : IRequest<Result<OpenSslGetKeyExchangeRequestByIdResponse>>
 {
-    public Guid UserId { get; set; }
-    public Guid KeyExchangeRequestId { get; set; }
+    public Guid UserId { get; init; }
+    public Guid KeyExchangeRequestId { get; init; }
 }

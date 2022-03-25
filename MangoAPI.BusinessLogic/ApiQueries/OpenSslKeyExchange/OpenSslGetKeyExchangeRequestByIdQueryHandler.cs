@@ -10,31 +10,23 @@ using Microsoft.EntityFrameworkCore;
 
 namespace MangoAPI.BusinessLogic.ApiQueries.OpenSslKeyExchange;
 
-public class OpenSslGetKeyExchangeRequestByIdQueryHandler : IRequestHandler<OpenSslGetKeyExchangeRequestByIdQuery, Result<OpenSslGetKeyExchangeRequestByIdResponse>>
+public class OpenSslGetKeyExchangeRequestByIdQueryHandler : IRequestHandler<OpenSslGetKeyExchangeRequestByIdQuery,
+    Result<OpenSslGetKeyExchangeRequestByIdResponse>>
 {
     private readonly MangoPostgresDbContext _postgresDbContext;
     private readonly ResponseFactory<OpenSslGetKeyExchangeRequestByIdResponse> _responseFactory;
 
-    public OpenSslGetKeyExchangeRequestByIdQueryHandler(MangoPostgresDbContext postgresDbContext, 
+    public OpenSslGetKeyExchangeRequestByIdQueryHandler(MangoPostgresDbContext postgresDbContext,
         ResponseFactory<OpenSslGetKeyExchangeRequestByIdResponse> responseFactory)
     {
         _postgresDbContext = postgresDbContext;
         _responseFactory = responseFactory;
     }
-    
-    public async Task<Result<OpenSslGetKeyExchangeRequestByIdResponse>> Handle(OpenSslGetKeyExchangeRequestByIdQuery request,
-     CancellationToken cancellationToken)
+
+    public async Task<Result<OpenSslGetKeyExchangeRequestByIdResponse>> Handle(
+        OpenSslGetKeyExchangeRequestByIdQuery request,
+        CancellationToken cancellationToken)
     {
-        var user = await _postgresDbContext.Users.FirstOrDefaultAsync(x => x.Id == request.UserId, cancellationToken);
-
-        if (user is null)
-        {
-            const string errorMessage = ResponseMessageCodes.UserNotFound;
-            string errorDescription = ResponseMessageCodes.ErrorDictionary[errorMessage];
-
-            _responseFactory.ConflictResponse(errorMessage, errorDescription);
-        }
-        
         var keyExchangeRequest = await _postgresDbContext.OpenSslKeyExchangeRequests
             .AsNoTracking()
             .Select(x => new OpenSslKeyExchangeRequest
@@ -44,19 +36,28 @@ public class OpenSslGetKeyExchangeRequestByIdQueryHandler : IRequestHandler<Open
                 ReceiverId = x.ReceiverId,
                 IsConfirmed = x.IsConfirmed,
                 Actor = x.SenderId == request.UserId ? Actor.Sender : Actor.Receiver
-            })
-            .FirstOrDefaultAsync(x => x.RequestId == request.KeyExchangeRequestId, cancellationToken);
+            }).FirstOrDefaultAsync(
+                predicate: x => x.RequestId == request.KeyExchangeRequestId,
+                cancellationToken: cancellationToken);
 
         if (keyExchangeRequest == null)
         {
-            const string errorMessage = ResponseMessageCodes.KeyExchangeRequestNotFound;
-            string errorDescription = ResponseMessageCodes.ErrorDictionary[errorMessage];
+            const string message = ResponseMessageCodes.KeyExchangeRequestNotFound;
+            var description = ResponseMessageCodes.ErrorDictionary[message];
 
-            return _responseFactory.ConflictResponse(errorMessage, errorDescription);
+            return _responseFactory.ConflictResponse(message, description);
+        }
+
+        if (keyExchangeRequest.ReceiverId != request.UserId && keyExchangeRequest.SenderId != request.UserId)
+        {
+            const string message = ResponseMessageCodes.KeyExchangeDoesNotBelongToUser;
+            var description = ResponseMessageCodes.ErrorDictionary[message];
+
+            return _responseFactory.ConflictResponse(message, description);
         }
 
         var response = OpenSslGetKeyExchangeRequestByIdResponse.FromSuccess(keyExchangeRequest);
-        
+
         return _responseFactory.SuccessResponse(response);
     }
 }
