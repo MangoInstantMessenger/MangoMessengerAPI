@@ -1,27 +1,28 @@
-# ASP.NET Core (.NET Framework)
-# Build and test ASP.NET Core projects targeting the full .NET Framework.
-# Add steps that publish symbols, save build artifacts, and more:
-# https://docs.microsoft.com/azure/devops/pipelines/languages/dotnet-core
-
 trigger:
-  - develop
+  branches:
+    include:
+      - develop
+      - MANGO-387
 
 pool:
   vmImage: 'windows-latest'
 
 variables:
-  solution: '**/*.sln'
+  solution: 'MangoAPI.sln'
   buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'
 
 steps:
   - task: NuGetToolInstaller@1
+    displayName: 'Install Nuget'
 
   - task: NuGetCommand@2
+    displayName: 'Restore Nuget Packages'
     inputs:
       restoreSolution: '$(solution)'
 
   - task: VSBuild@1
+    displayName: 'Visual Studio build solution'
     inputs:
       solution: '$(solution)'
       msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:DesktopBuildPackageLocation="$(build.artifactStagingDirectory)\WebApp.zip" /p:DeployIisAppPath="Default Web Site"'
@@ -29,6 +30,7 @@ steps:
       configuration: '$(buildConfiguration)'
 
   - task: VSTest@2
+    displayName: 'Run tests'
     inputs:
       platform: '$(buildPlatform)'
       configuration: '$(buildConfiguration)'
