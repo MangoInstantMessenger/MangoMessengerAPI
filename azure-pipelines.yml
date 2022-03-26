@@ -5,7 +5,7 @@ trigger:
       - MANGO-387
 
 pool:
-  vmImage: 'windows-latest'
+  vmImage: 'ubuntu-20.04'
 
 variables:
   - group: MANGO_INTEGRATION_TESTS
@@ -22,13 +22,11 @@ steps:
     inputs:
       restoreSolution: '$(solution)'
 
-  - task: VSBuild@1
-    displayName: 'Visual Studio build solution'
+  - task: DotNetCoreCLI@2
+    displayName: 'dotnet build $(buildConfiguration)'
     inputs:
-      solution: '$(solution)'
-      msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:DesktopBuildPackageLocation="$(build.artifactStagingDirectory)\WebApp.zip" /p:DeployIisAppPath="Default Web Site"'
-      platform: '$(buildPlatform)'
-      configuration: '$(buildConfiguration)'
+      command: 'build'
+      arguments: '--configuration $(buildConfiguration)'
 
   - task: VSTest@2
     displayName: 'Run tests'
