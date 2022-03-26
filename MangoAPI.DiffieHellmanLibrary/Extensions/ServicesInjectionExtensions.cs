@@ -1,5 +1,4 @@
-﻿using MangoAPI.DiffieHellmanLibrary.Consts;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 
 namespace MangoAPI.DiffieHellmanLibrary.Extensions;
 
@@ -7,9 +6,16 @@ public static class ServicesInjectionExtensions
 {
     public static IServiceCollection AddServices(this IServiceCollection collection)
     {
-        collection.AddHttpClient(Routes.Domain).ConfigurePrimaryHttpMessageHandler(_ => new HttpClientHandler
+        collection.AddSingleton(_ =>
         {
-            ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => true
+            var clientHandler = new HttpClientHandler();
+
+            clientHandler.ServerCertificateCustomValidationCallback
+                = (_, _, _, _) => true;
+
+            var client = new HttpClient(clientHandler);
+
+            return client;
         });
 
         return collection;
