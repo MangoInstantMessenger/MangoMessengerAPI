@@ -1,0 +1,33 @@
+steps:
+  - task: NuGetToolInstaller@1
+    displayName: 'Install Nuget'
+
+  - task: UseDotNet@2
+    displayName: 'Use .NET Core 6.0 SDK'
+    inputs:
+      packageType: sdk
+      version: 6.0.102
+      installationPath: $(Agent.ToolsDirectory)/dotnet
+
+  - task: NuGetCommand@2
+    displayName: 'Restore Nuget Packages'
+    inputs:
+      restoreSolution: '$(solution)'
+
+  - task: DotNetCoreCLI@2
+      displayName: 'Dotnet build $(buildConfiguration)'
+      inputs:
+        command: 'build'
+        arguments: '--configuration $(buildConfiguration)'
+
+  - task: DotNetCoreCLI@2
+      displayName: 'Run dotnet integration tests'
+      inputs:
+        command: 'test'
+        projects: '$(integrationTestProjectPath)'
+
+#  - task: VSTest@2
+#    displayName: 'Run Tests'
+#    inputs:
+#      platform: '$(buildPlatform)'
+#      configuration: '$(buildConfiguration)'

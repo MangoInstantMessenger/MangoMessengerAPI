@@ -1,0 +1,53 @@
+trigger:
+  branches:
+    include:
+      - develop
+      - MANGO-387
+
+variables:
+  buildConfiguration: 'Release'
+
+stages:
+  - stage: 'Build_Test'
+    displayName: 'Build/Test'
+    jobs:
+      - job: 'Build'
+        displayName: 'Build/Test'
+        pool:
+          vmImage: 'ubuntu 20.04'
+
+        variables:
+          - group: MANGO_INTEGRATION_TESTS
+          - name: solutionProjectPath
+            value: 'MangoAPI.sln'
+#          - name: webAppsProjectPath
+#            value: 'src/Web'
+
+#          # External System
+#          - name: externalSystemProjectPath
+#            value: '$(webAppsProjectPath)/DCC.WTMP.WebApp/'
+#
+#          - name: externalSystemBuildProjectPath
+#            value: '$(externalSystemProjectPath)/DCC.WTMP.WebApp.csproj'
+#
+#          - name: externalSystemJsAppProjectPath
+#            value: '$(webAppsProjectPath)/DCC.WTMP.WebApp.Client/'
+
+          # Tests
+#          - name: unitTestProjectPath
+#            value: 'MangoAPI.Tests/MangoAPI.Tests.csproj'
+          - name: integrationTestProjectPath
+            value: 'MangoAPI.Tests/MangoAPI.Tests.csproj'
+
+#          - name: packageLockFilePath
+#            value: $(Build.SourcesDirectory)/$(projectPath)/packages.lock.json
+#
+#          - name: codeCoverageResultsDirPath
+#            value: '$(Build.SourcesDirectory)\TestResults\Coverage\\'
+#          - name: codeCoverageReportDirPath
+#            value: '$(Build.SourcesDirectory)\TestResults\CodeCoverageReport\\'
+          - name: buildPlatform
+            value: 'Any CPU'
+
+steps:
+  - template: azure-pipelines-build-and-test-common.yml
