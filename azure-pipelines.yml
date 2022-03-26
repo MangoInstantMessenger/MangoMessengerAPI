@@ -8,6 +8,7 @@ pool:
   vmImage: 'windows-latest'
 
 variables:
+  - group: MANGO_INTEGRATION_TESTS
   solution: 'MangoAPI.sln'
   buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'
