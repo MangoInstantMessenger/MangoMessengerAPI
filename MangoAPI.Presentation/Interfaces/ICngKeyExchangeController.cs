@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 using MangoAPI.BusinessLogic.ApiCommands.CngKeyExchange;
 using Microsoft.AspNetCore.Mvc;
@@ -14,4 +15,6 @@ public interface ICngKeyExchangeController
 
     public Task<IActionResult> CngConfirmOrDeclineKeyExchangeRequest(CngConfirmOrDeclineKeyExchangeRequest request,
         CancellationToken cancellationToken);
+
+    public Task<IActionResult> CngGetKeyExchangeRequestById(Guid requestId, CancellationToken cancellationToken);
 }
