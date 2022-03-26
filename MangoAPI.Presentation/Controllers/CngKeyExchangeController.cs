@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
 using MangoAPI.BusinessLogic.ApiCommands.CngKeyExchange;
@@ -107,5 +108,30 @@ public class CngKeyExchangeController : ApiControllerBase, ICngKeyExchangeContro
         };
 
         return await RequestAsync(command, cancellationToken);
+    }
+
+    /// <summary>
+    /// Return Diffie-Hellman key exchange request by ID. Returns error if key exchange request not belongs to current user
+    /// </summary>
+    /// <param name="requestId">Diffie-Hellman key exchange request ID</param>
+    /// <param name="cancellationToken">Cancellation token instance.</param>
+    /// <returns></returns>
+    [HttpGet("{requestId:guid}")]
+    [SwaggerOperation(
+        Summary = "Returns key exchange request by ID",
+        Description = "Return Diffie-Hellman key exchange request by ID. Returns error if key exchange request not belongs " +
+                      "to current user")]
+    [ProducesResponseType(typeof(CngGetKeyExchangeRequestByIdResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
+    public async Task<IActionResult> CngGetKeyExchangeRequestById(Guid requestId, CancellationToken cancellationToken)
+    {
+        var query = new CngGetKeyExchangeRequestByIdQuery
+        {
+            UserId = HttpContext.User.GetUserId(),
+            RequestId = requestId
+        };
+
+        return await RequestAsync(query, cancellationToken);
     }
 }
