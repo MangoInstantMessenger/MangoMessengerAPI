@@ -1,7 +1,7 @@
 # Mango Messenger WEB API
 
 <p align="center">
-  <img src="img/mango.png"  alt="Mango Messenger Logo"/>
+  <img src="https://github.com/MangoInstantMessenger/MangoInstantMessenger.github.io/blob/MANGO-414/src/img/logo.png" width="100" height="100"  alt="Mango Messenger Logo"/>
 </p>
 
 [![Build](https://github.com/MangoInstantMessenger/MangoMessengerAPI/actions/workflows/build.yml/badge.svg)](https://github.com/MangoInstantMessenger/MangoMessengerAPI/actions/workflows/build.yml/badge.svg)
