@@ -9,8 +9,6 @@ pool:
 
 variables:
   - group: MANGO_INTEGRATION_TESTS
-  - name: integrationTestsPath
-    value: 'MangoAPI.Tests\MangoAPI.Tests.csproj'
   - name: solution
     value: 'MangoAPI.sln'
   - name: buildPlatform
