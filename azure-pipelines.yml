@@ -8,10 +8,15 @@ pool:
   vmImage: 'ubuntu-20.04'
 
 variables:
-  group: MANGO_INTEGRATION_TESTS
-  solution: 'MangoAPI.sln'
-  buildPlatform: 'Any CPU'
-  buildConfiguration: 'Release'
+  - group: MANGO_INTEGRATION_TESTS
+  - name: integrationTestsPath
+    value: 'MangoAPI.Tests\MangoAPI.Tests.csproj'
+  - name: solution
+    value: 'MangoAPI.sln'
+  - name: buildPlatform
+    value: 'Any CPU'
+  - name: buildConfiguration
+    value: 'Release'
 
 steps:
   - task: NuGetToolInstaller@1
@@ -32,5 +37,5 @@ steps:
     displayName: 'Run dotnet unit tests'
     inputs:
       command: 'test'
-      projects: '$(INTEGRATION_TESTS_PROJECT_PATH)'
+      projects: $(INTEGRATION_TESTS_PROJECT_PATH)
       arguments: '--no-restore'
