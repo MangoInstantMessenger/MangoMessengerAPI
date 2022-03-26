@@ -4,6 +4,9 @@ trigger:
       - develop
       - MANGO-387
 
+pool:
+  vmImage: 'ubuntu 20.04'
+
 variables:
   buildConfiguration: 'Release'
 
@@ -13,9 +16,6 @@ stages:
     jobs:
       - job: 'Build'
         displayName: 'Build/Test'
-        
-        pool:
-          vmImage: 'ubuntu 20.04'
 
         variables:
           - group: MANGO_INTEGRATION_TESTS
