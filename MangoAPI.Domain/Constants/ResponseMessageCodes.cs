@@ -50,9 +50,11 @@ public static class ResponseMessageCodes
         {DhParameterNotFound, "Diffie-Hellman parameter is not initialized. Please initialize first."},
         {TokensNotFound, "Tokens not found. Please login to the system first."},
         {KeyExchangeIsNotConfirmed, "Key exchange is not confirmed yet, please wait for response."},
-        {KeyExchangeDoesNotBelongToUser, "Key exchange does not belong to you."}
+        {KeyExchangeDoesNotBelongToUser, "Key exchange does not belong to you."},
+        {Unauthorized, "User not authorized, please, sign in"}
     };
 
+    public const string Unauthorized = "UNAUTHORIZED";
     public const string Success = "SUCCESS";
     public const string InvalidOrExpiredRefreshToken = "INVALID_OR_EXPIRED_REFRESH_TOKEN";
     public const string UserAlreadyExists = "USER_ALREADY_EXISTS";
