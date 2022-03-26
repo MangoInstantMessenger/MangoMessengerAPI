@@ -29,4 +29,4 @@ stages:
             value: 'Any CPU'
 
         steps:
-          - template: azure-pipelines-build-and-test-common.yml
+          - template: azure-pipelines-common.yml
