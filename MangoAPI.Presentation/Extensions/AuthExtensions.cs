@@ -1,7 +1,10 @@
-﻿using System.Text;
+﻿using System.Net;
+using System.Text;
+using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.Domain.Constants;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 
@@ -30,7 +33,6 @@ public static class AuthExtensions
             {
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                 options.DefaultSignInScheme = JwtBearerDefaults.AuthenticationScheme;
-                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
             })
             .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, configure =>
             {
@@ -44,6 +46,26 @@ public static class AuthExtensions
                     ValidateLifetime = true,
                     IssuerSigningKey = signingKey,
                     ValidateIssuerSigningKey = true,
+                };
+                configure.Events = new JwtBearerEvents
+                {
+                    OnChallenge = async context =>
+                    {
+                        context.HandleResponse();
+                        
+                        context.Response.StatusCode = 401;
+                        context.Response.ContentType = "application/json";
+                        
+                        const string unauthorized = ResponseMessageCodes.Unauthorized;
+                        
+                        await context.Response.WriteAsync(new ErrorResponse
+                        {
+                            StatusCode = HttpStatusCode.Unauthorized,
+                            Success = false,
+                            ErrorMessage = unauthorized,
+                            ErrorDetails = ResponseMessageCodes.ErrorDictionary[unauthorized]
+                        }.ToString());
+                    }
                 };
             });
 
