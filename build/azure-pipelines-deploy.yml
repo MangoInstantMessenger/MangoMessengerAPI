@@ -47,9 +47,19 @@ steps:
       command: 'publish'
       publishWebProjects: true
 
-  - task: AzureWebApp@1
+#  - task: AzureWebApp@1
+#    inputs:
+#      azureSubscription: $(AZURE_SUBSCRIPTION_ID)
+#      appType: 'webAppLinux'
+#      appName: $(AZURE_WEBAPP_NAME)
+#      package: '$(System.DefaultWorkingDirectory)/**/*.zip'
+      
+  - task: AzureRmWebAppDeployment@4
     inputs:
+      ConnectionType: 'AzureRM'
       azureSubscription: $(AZURE_SUBSCRIPTION_ID)
       appType: 'webAppLinux'
-      appName: $(AZURE_WEBAPP_NAME)
-      package: '$(System.DefaultWorkingDirectory)/**/*.zip'
+      WebAppName: 'MangoMessengerBackend'
+      packageForLinux: '$(System.DefaultWorkingDirectory)/**/*.zip'
+      RuntimeStack: 'DOTNETCORE|6.0'
+      StartupCommand: 'dotnet run MangoAPI.Presentation'
