@@ -13,6 +13,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace MangoAPI.Presentation.Controllers;
 
+/// <summary>
+/// Controller responsible for OpenSSL Key Exchange Requests.
+/// </summary>
 [ApiController]
 [Route("api/openssl-key-exchange-requests")]
 [Produces("application/json")]
@@ -23,7 +26,19 @@ public class OpenSslKeyExchangeController : ApiControllerBase, IOpenSslKeyExchan
     {
     }
 
+    /// <summary>
+    /// Creates OpenSSL key.
+    /// </summary>
+    /// <param name="file">IFormFile instance</param>
+    /// <param name="cancellationToken">Cancellation token instance</param>
+    /// <returns></returns>
     [HttpPost("openssl-parameters")]
+    [SwaggerOperation(
+        Summary="Creates key.",
+        Description="Creates OpenSSL key.")]
+    [ProducesResponseType(typeof(BadRequest), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(Conflict), StatusCodes.Status409Conflict)]
+    [ProducesResponseType(typeof(Ok), StatusCodes.Status200OK)]
     public async Task<IActionResult> OpenSslCreateDiffieHellmanParameter([FromForm] IFormFile file,
         CancellationToken cancellationToken)
     {
@@ -38,7 +53,16 @@ public class OpenSslKeyExchangeController : ApiControllerBase, IOpenSslKeyExchan
         return await RequestAsync(command, cancellationToken);
     }
 
+    /// <summary>
+    /// Get OpenSSL key.
+    /// </summary>
+    /// <param name="cancellationToken">Cancellation token instance.</param>
+    /// <returns></returns>
     [HttpGet("openssl-parameters")]
+    [SwaggerOperation(
+        Summary="Get key.",
+        Description="Get OpenSSL key.")]
+    [ProducesResponseType(typeof(IFormFile), StatusCodes.Status200OK)]
     public async Task<IActionResult> OpenSslGetDiffieHellmanParameter(CancellationToken cancellationToken)
     {
         var result = await Mediator.Send(new OpenSslGetDhParametersQuery(), cancellationToken);
@@ -47,7 +71,20 @@ public class OpenSslKeyExchangeController : ApiControllerBase, IOpenSslKeyExchan
         return file;
     }
 
+    /// <summary>
+    /// Creates OpenSSL key exchange.
+    /// </summary>
+    /// <param name="userId">User GUID</param>
+    /// <param name="senderPublicKey">IFormFile instance</param>
+    /// <param name="cancellationToken">Cancellation token instance</param>
+    /// <returns></returns>
     [HttpPost("{userId:guid}")]
+    [SwaggerOperation(
+        Summary="Creates key exchange.",
+        Description="Creates OpenSSL key exchange.")]
+    [ProducesResponseType(typeof(BadRequest), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(Conflict), StatusCodes.Status409Conflict)]
+    [ProducesResponseType(typeof(Ok), StatusCodes.Status200OK)]
     public async Task<IActionResult> OpenSslCreateKeyExchangeRequest(
         [FromRoute] Guid userId,
         [FromForm] IFormFile senderPublicKey,
@@ -65,7 +102,18 @@ public class OpenSslKeyExchangeController : ApiControllerBase, IOpenSslKeyExchan
         return await RequestAsync(command, cancellationToken);
     }
 
+    /// <summary>
+    /// Get OpenSSL key exchange requests.
+    /// </summary>
+    /// <param name="cancellationToken">Cancellation token instance.</param>
+    /// <returns></returns>
     [HttpGet]
+    [SwaggerOperation(
+        Summary="Get key exchange requests.",
+        Description="Get OpenSSL exchange requests.")]
+    [ProducesResponseType(typeof(BadRequest), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(Conflict), StatusCodes.Status409Conflict)]
+    [ProducesResponseType(typeof(Ok), StatusCodes.Status200OK)]
     public async Task<IActionResult> OpenSslGetKeyExchangeRequests(CancellationToken cancellationToken)
     {
         var userId = HttpContext.User.GetUserId();
@@ -74,7 +122,20 @@ public class OpenSslKeyExchangeController : ApiControllerBase, IOpenSslKeyExchan
         return await RequestAsync(request, cancellationToken);
     }
 
+    /// <summary>
+    /// Confirm OpenSSL key exchange.
+    /// </summary>
+    /// <param name="requestId">Request ID.</param>
+    /// <param name="receiverPublicKey"IFormFile instance.></param>
+    /// <param name="cancellationToken">Cancellation token instance.</param>
+    /// <returns></returns>
     [HttpPut("{requestId:guid}")]
+    [SwaggerOperation(
+        Summary="Confirm key exchange.",
+        Description="Confirm OpenSSL key exchange.")]
+    [ProducesResponseType(typeof(BadRequest), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(Conflict), StatusCodes.Status409Conflict)]
+    [ProducesResponseType(typeof(Ok), StatusCodes.Status200OK)]
     public async Task<IActionResult> OpenSslConfirmKeyExchangeRequest(
         [FromRoute] Guid requestId,
         [FromForm] IFormFile receiverPublicKey,
@@ -92,7 +153,19 @@ public class OpenSslKeyExchangeController : ApiControllerBase, IOpenSslKeyExchan
         return await RequestAsync(command, cancellationToken);
     }
 
+    /// <summary>
+    /// Decline OpenSSL key exchange.
+    /// </summary>
+    /// <param name="requestId">Request ID.</param>
+    /// <param name="cancellationToken">Cancellation token instance.</param>
+    /// <returns></returns>
     [HttpDelete("{requestId:guid}")]
+    [SwaggerOperation(
+        Summary="Decline key exchange.",
+        Description="Decline OpenSSL key exchange.")]
+    [ProducesResponseType(typeof(BadRequest), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(Conflict), StatusCodes.Status409Conflict)]
+    [ProducesResponseType(typeof(Ok), StatusCodes.Status200OK)]
     public async Task<IActionResult> OpenSslDeclineKeyExchangeRequest(
         [FromRoute] Guid requestId,
         CancellationToken cancellationToken)
@@ -108,7 +181,19 @@ public class OpenSslKeyExchangeController : ApiControllerBase, IOpenSslKeyExchan
         return await RequestAsync(request, cancellationToken);
     }
 
+    /// <summary>
+    /// Download partner public OpenSSL key.
+    /// </summary>
+    /// <param name="requestId">Request ID.</param>
+    /// <param name="cancellationToken">Cancellation token instance.</param>
+    /// <returns></returns>
     [HttpGet("public-keys/{requestId:guid}")]
+    [SwaggerOperation(
+        Summary="Download partner public key.",
+        Description="Download partner OpenSSL public key.")]
+    [ProducesResponseType(typeof(BadRequest), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(Conflict), StatusCodes.Status409Conflict)]
+    [ProducesResponseType(typeof(Ok), StatusCodes.Status200OK)]
     public async Task<IActionResult> OpenSslDownloadPartnerPublicKey(Guid requestId,
         CancellationToken cancellationToken)
     {
@@ -128,8 +213,20 @@ public class OpenSslKeyExchangeController : ApiControllerBase, IOpenSslKeyExchan
 
         return file;
     }
-    
+
+    /// <summary>
+    /// Get OpenSSL key exchange by ID.
+    /// </summary>
+    /// <param name="requestId">Request ID.</param>
+    /// <param name="cancellationToken">Cancellation token instance.</param>
+    /// <returns></returns>
     [HttpGet("{requestId:guid}")]
+    [SwaggerOperation(
+        Summary="Get key exchange by ID.",
+        Description="Get OpenSSL key exchange by ID.")]
+    [ProducesResponseType(typeof(BadRequest), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(Conflict), StatusCodes.Status409Conflict)]
+    [ProducesResponseType(typeof(Ok), StatusCodes.Status200OK)]
     public async Task<IActionResult> OpenSslGetKeyExchangeRequestById([FromRoute] Guid requestId, 
             CancellationToken cancellationToken)
     {
