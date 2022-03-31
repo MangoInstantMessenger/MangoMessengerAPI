@@ -17,56 +17,35 @@ public class MailgunApiEmailSenderService : IEmailSenderService
 
     public MailgunApiEmailSenderService(HttpClient httpClient)
     {
-        _httpClient = httpClient;
-
-        var mailgunApiBaseurl = EnvironmentConstants.MangoMailgunApiBaseUrl;
-        var mailgunApiKey = EnvironmentConstants.MangoMailgunApiKey;
-
-        var httpBasicAuthHeader = HttpBasicAuthHeader("api", mailgunApiKey);
-
-        _httpClient.BaseAddress = new Uri(mailgunApiBaseurl);
-
-        _httpClient.DefaultRequestHeaders.Authorization
-            = new AuthenticationHeaderValue("Basic", httpBasicAuthHeader);
+        _httpClient = httpClient ?? throw new ArgumentNullException(nameof(httpClient));
+        _httpClient.BaseAddress = new Uri(EnvironmentConstants.MangoMailgunApiBaseUrl);
+        
+        var httpBasicAuthHeader = GenerateHttpAuthHeader(HttpAuthHeaderNames.Api, EnvironmentConstants.MangoMailgunApiKey);
+        _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(HttpAuthSchemes.Basic, httpBasicAuthHeader);
     }
 
     public async Task SendVerificationEmailAsync(UserEntity user, CancellationToken cancellationToken)
     {
-        var domain = EnvironmentConstants.MangoMailgunApiDomain;
-
-        if (domain == null)
-        {
-            throw new ArgumentNullException(nameof(domain));
-        }
-
-        var message = GenerateEmailConfirmBody(user);
         const string subject = "Mango Messenger email verification.";
-
-        var emailContent = HttpContent(user.Email, subject, message);
-        var requestUri = $"https://api.mailgun.net/v3/{domain}/messages";
-
+        
+        var message = GenerateEmailConfirmBody(user);
+        var emailContent = GenerateHttpContent(user.Email, subject, message);
+        var requestUri = EnvironmentConstants.MangoMailgunApiUrlWithDomain;
+        
         var response = await _httpClient.PostAsync(requestUri, emailContent, cancellationToken)
             .ConfigureAwait(false);
 
         response.EnsureSuccessStatusCode();
     }
 
-    public async Task SendPasswordRestoreRequestAsync(UserEntity user, Guid requestId,
-        CancellationToken cancellationToken)
+    public async Task SendPasswordRestoreRequestAsync(UserEntity user, Guid requestId, CancellationToken cancellationToken)
     {
-        var domain = EnvironmentConstants.MangoMailgunApiDomain;
-
-        if (domain == null)
-        {
-            throw new ArgumentNullException(nameof(domain));
-        }
-
-        var message = GeneratePasswordRestoreRequestBody(user, requestId);
         const string subject = "Mango Messenger password restore request.";
 
-        var emailContent = HttpContent(user.Email, subject, message);
-        var requestUri = $"https://api.mailgun.net/v3/{domain}/messages";
-
+        var message = GeneratePasswordRestoreRequestBody(user, requestId);
+        var emailContent = GenerateHttpContent(user.Email, subject, message);
+        var requestUri = EnvironmentConstants.MangoMailgunApiUrlWithDomain;
+        
         var response = await _httpClient.PostAsync(requestUri, emailContent, cancellationToken)
             .ConfigureAwait(false);
 
@@ -75,46 +54,24 @@ public class MailgunApiEmailSenderService : IEmailSenderService
 
     private static string GenerateEmailConfirmBody(UserEntity user)
     {
-        var body =
-            "\n" +
-            $"Hi, {user.DisplayName}, in order to confirm registration, please follow the link below:" +
-            "\n" +
-            "\n" +
-            $"{EnvironmentConstants.MangoFrontendAddress}verify-email?email={user.Email}&emailCode={user.EmailCode}" +
-            "\n" +
-            "\n" +
-            $"Confirmation Code: {user.EmailCode}";
-
-        return body;
+        return string.Format(Resources.EmailConfirmation, user.DisplayName, EnvironmentConstants.MangoFrontendAddress, user.Email, user.EmailCode, user.EmailCode);
     }
 
     private static string GeneratePasswordRestoreRequestBody(UserEntity user, Guid requestId)
     {
-        var body =
-            "\n" +
-            $"Hi, {user.DisplayName}, in order to restore your password, please follow the link below:" +
-            "\n" +
-            "\n" +
-            $"{EnvironmentConstants.MangoFrontendAddress}restore-password-form?requestId={requestId}" +
-            "\n" +
-            "\n" +
-            $"Request ID: {requestId}";
-
-        return body;
+        return string.Format(Resources.PasswordRestoration, user.DisplayName, EnvironmentConstants.MangoFrontendAddress, requestId, requestId);
     }
 
-    private static string HttpBasicAuthHeader(string tokenName, string tokenValue)
+    private static string GenerateHttpAuthHeader(string tokenName, string tokenValue)
     {
         var tokenString = $"{tokenName}:{tokenValue}";
-
         var bytes = Encoding.UTF8.GetBytes(tokenString);
-
         var authHeader = Convert.ToBase64String(bytes);
 
         return authHeader;
     }
 
-    private static FormUrlEncodedContent HttpContent(string recipient, string subject, string message)
+    private static FormUrlEncodedContent GenerateHttpContent(string recipient, string subject, string message)
     {
         var sender = EnvironmentConstants.MangoEmailNotificationsAddress;
 
@@ -123,11 +80,9 @@ public class MailgunApiEmailSenderService : IEmailSenderService
             {"from", sender},
             {"to", recipient},
             {"subject", subject},
-            {"text", message}
+            {"text", message},
         };
-
-        var urlEncodedContent = new FormUrlEncodedContent(content);
-
-        return urlEncodedContent;
+        
+        return new FormUrlEncodedContent(content);;
     }
 }
