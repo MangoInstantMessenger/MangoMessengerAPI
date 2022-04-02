@@ -10,6 +10,7 @@ on:
   pull_request:
     branches:
       - develop
+      - MANGO-422
 
 jobs:
   build:
@@ -38,5 +39,5 @@ jobs:
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           flags: web, server
-          fail_ci_if_error: false
+          fail_ci_if_error: true
           verbose: true
