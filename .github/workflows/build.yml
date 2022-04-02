@@ -54,4 +54,4 @@ jobs:
           github-token: ${{ secrets.COVERALLS_GITHUB_TOKEN }}
           path-to-lcov: MangoAPI.Tests/TestResults/coverage.info
         env:
-          COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_GITHUB_TOKEN }}
+          COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
