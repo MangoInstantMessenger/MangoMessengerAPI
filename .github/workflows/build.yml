@@ -44,12 +44,12 @@ jobs:
 
       - name: Run automated unit and integration tests
         run: dotnet test MangoAPI.Tests/MangoAPI.Tests.csproj  /p:CollectCoverage=true /p:CoverletOutput=TestResults/ /p:CoverletOutputFormat=lcov
+        env:
+          MANGO_SEED_PASSWORD: ${{ secrets.MANGO_SEED_PASSWORD }}
+          MANGO_JWT_SIGN_KEY: ${{ secrets.MANGO_JWT_SIGN_KEY }}
 
       - name: Publish coverage report to coveralls.io
         uses: coverallsapp/github-action@master
         with:
           github-token: ${{ secrets.COVERALLS_GITHUB_TOKEN }}
           path-to-lcov: MangoMessengerAPI/ MangoAPI.Tests/TestResults/coverage.info
-        env:
-          MANGO_SEED_PASSWORD: ${{ secrets.MANGO_SEED_PASSWORD }}
-          MANGO_JWT_SIGN_KEY: ${{ secrets.MANGO_JWT_SIGN_KEY }}
