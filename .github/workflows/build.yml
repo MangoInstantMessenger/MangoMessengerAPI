@@ -10,7 +10,6 @@ on:
   pull_request:
     branches:
       - develop
-      - MANGO-422
 
 jobs:
   build:
