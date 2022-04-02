@@ -50,3 +50,6 @@ jobs:
         with:
           github-token: ${{ secrets.COVERALLS_GITHUB_TOKEN }}
           path-to-lcov: MangoMessengerAPI/ MangoAPI.Tests/TestResults/coverage.info
+        env:
+          MANGO_SEED_PASSWORD: ${{ secrets.MANGO_SEED_PASSWORD }}
+          MANGO_JWT_SIGN_KEY: ${{ secrets.MANGO_JWT_SIGN_KEY }}
