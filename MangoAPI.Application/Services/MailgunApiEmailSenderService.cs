@@ -83,6 +83,6 @@ public class MailgunApiEmailSenderService : IEmailSenderService
             {"text", message},
         };
         
-        return new FormUrlEncodedContent(content);;
+        return new FormUrlEncodedContent(content);
     }
 }
