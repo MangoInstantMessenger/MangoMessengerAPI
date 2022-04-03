@@ -1,37 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Security.Cryptography;
 using System.Threading.Tasks;
-using MangoAPI.BusinessLogic.Responses;
-using MangoAPI.DiffieHellmanConsole.Extensions;
-using MangoAPI.DiffieHellmanConsole.Services;
+using MangoAPI.DiffieHellmanLibrary.AuthHandlers;
+using MangoAPI.DiffieHellmanLibrary.CngHandlers;
+using MangoAPI.DiffieHellmanLibrary.OpenSslHandlers;
+using MangoAPI.DiffieHellmanLibrary.Services;
 
 namespace MangoAPI.DiffieHellmanConsole;
 
 public static class Program
 {
-    private static readonly SessionsService SessionsService = new();
-    private static readonly KeyExchangeService KeyExchangeService;
-    private static readonly PublicKeysService PublicKeysService;
-    private static readonly ChatService ChatService;
-    private static readonly TokensResponse TokenResponse;
-
-    static Program()
-    {
-        try
-        {
-            TokenResponse = TokensService.GetTokensAsync().GetAwaiter().GetResult();
-            KeyExchangeService = new KeyExchangeService(TokenResponse.Tokens.AccessToken);
-            PublicKeysService = new PublicKeysService(TokenResponse.Tokens.AccessToken);
-            ChatService = new ChatService(TokenResponse.Tokens.AccessToken);
-        }
-        catch (FileNotFoundException)
-        {
-            Console.WriteLine("Tokens file does not exist for current user.");
-        }
-    }
+    private static readonly DependencyResolver DependencyResolver = new();
 
     public static async Task Main(string[] args)
     {
@@ -46,194 +24,215 @@ public static class Program
         switch (method)
         {
             case "login":
-                await Login(args);
+            {
+                var handler = DependencyResolver.ResolveService<LoginHandler>();
+                await handler.LoginAsync(args);
                 break;
+            }
             case "refresh-token":
-                await RefreshTokenAsync();
+            {
+                var handler = DependencyResolver.ResolveService<RefreshTokenHandler>();
+                await handler.RefreshTokensAsync();
                 break;
-            case "key-exchange":
-                await RequestKeyExchange(args);
+            }
+            case "cng-create-key-exchange":
+            {
+                var handler = DependencyResolver.ResolveService<CngCreateKeyExchangeHandler>();
+                await handler.CngRequestKeyExchange(args);
                 break;
-            case "key-exchange-requests":
-                await PrintKeyExchangesList();
+            }
+            case "cng-key-exchange-requests":
+            {
+                var handler = DependencyResolver.ResolveService<CngPrintKeyExchangeListHandler>();
+                await handler.CngPrintKeyExchangesListAsync();
                 break;
-            case "confirm-key-exchange":
-                await ConfirmKeyExchangeRequest(args);
+            }
+            case "cng-confirm-key-exchange":
+            {
+                var handler = DependencyResolver.ResolveService<CngConfirmKeyExchangeRequestHandler>();
+                await handler.CngConfirmKeyExchangeRequest(args);
                 break;
-            case "print-public-keys":
-                await PrintPublicKeys();
+            }
+            case "cng-print-public-keys":
+            {
+                var handler = DependencyResolver.ResolveService<CngPrintPublicKeysHandler>();
+                await handler.CngPrintPublicKeysAsync();
                 break;
-            case "create-common-secret":
-                await CreateCommonSecret(args);
+            }
+            case "cng-create-common-secret":
+            {
+                var handler = DependencyResolver.ResolveService<CngCreateCommonSecretHandler>();
+                await handler.CngCreateCommonSecret(args);
                 break;
-            case "chat-list":
-                await GetCurrentUserChats();
+            }
+            case "openssl-generate-dh-parameters":
+            {
+                var handler = DependencyResolver.ResolveService<OpenSslCreateDhParametersHandler>();
+                await handler.CreateDhParametersAsync();
                 break;
+            }
+            case "openssl-upload-dh-parameters":
+            {
+                var handler = DependencyResolver.ResolveService<OpenSslUploadDhParametersHandler>();
+                await handler.UploadDhParametersAsync();
+                break;
+            }
+            case "openssl-download-dh-parameters":
+            {
+                var handler = DependencyResolver.ResolveService<OpenSslDownloadDhParametersHandler>();
+                await handler.DownloadDhParametersAsync();
+                break;
+            }
+            case "openssl-generate-private-key":
+            {
+                var handler = DependencyResolver.ResolveService<OpenSslGeneratePrivateKeyHandler>();
+
+                var receiverIdString = args[1];
+
+                var isParsed = Guid.TryParse(receiverIdString, out var receiverId);
+
+                if (!isParsed)
+                {
+                    Console.WriteLine("Invalid or empty receiver ID.");
+                    return;
+                }
+
+                await handler.GeneratePrivateKeyAsync(receiverId);
+
+                break;
+            }
+            case "openssl-generate-public-key":
+            {
+                var handler = DependencyResolver.ResolveService<OpenSslGeneratePublicKeyHandler>();
+
+                var receiverIdString = args[1];
+
+                var isParsed = Guid.TryParse(receiverIdString, out var receiverId);
+
+                if (!isParsed)
+                {
+                    Console.WriteLine("Invalid or empty receiver ID.");
+                    return;
+                }
+
+                await handler.GeneratePublicKeyAsync(receiverId);
+
+                break;
+            }
+            case "openssl-create-key-exchange":
+            {
+                var handler = DependencyResolver.ResolveService<OpenSslCreateKeyExchangeHandler>();
+
+                var receiverIdString = args[1];
+
+                var isParsed = Guid.TryParse(receiverIdString, out var receiverId);
+
+                if (!isParsed)
+                {
+                    Console.WriteLine("Invalid or empty receiver ID.");
+                    return;
+                }
+
+                await handler.CreateKeyExchangeAsync(receiverId);
+
+                break;
+            }
+            case "openssl-print-key-exchanges":
+            {
+                var handler = DependencyResolver.ResolveService<OpenSslPrintKeyExchangesHandler>();
+                await handler.PrintKeyExchangesAsync();
+                break;
+            }
+            case "openssl-confirm-key-exchange":
+            {
+                var handler = DependencyResolver.ResolveService<OpenSslConfirmKeyExchangeHandler>();
+
+                var requestIdString = args[1];
+
+                var isParsed = Guid.TryParse(requestIdString, out var requestId);
+
+                if (!isParsed)
+                {
+                    Console.WriteLine("Invalid or empty request ID.");
+                    return;
+                }
+
+                await handler.ConfirmKeyExchangeAsync(requestId);
+                break;
+            }
+            case "openssl-create-common-secret":
+            {
+                var handler = DependencyResolver.ResolveService<OpenSslCreateCommonSecretHandler>();
+
+                var requestIdString = args[1];
+
+                var isParsed = Guid.TryParse(requestIdString, out var requestId);
+
+                if (!isParsed)
+                {
+                    Console.WriteLine("Invalid or empty request ID.");
+                    return;
+                }
+
+                await handler.CreateCommonSecretAsync(requestId);
+                break;
+            }
+            case "openssl-download-public-key":
+            {
+                var handler = DependencyResolver.ResolveService<OpenSslDownloadPublicKeyHandler>();
+
+                var requestIdString = args[1];
+
+                var isParsed = Guid.TryParse(requestIdString, out var requestId);
+
+                if (!isParsed)
+                {
+                    Console.WriteLine("Invalid or empty request ID.");
+                    return;
+                }
+
+                await handler.DownloadPublicKeyAsync(requestId);
+                break;
+            }
+            case "openssl-decline-key-exchange":
+            {
+                var handler = DependencyResolver.ResolveService<OpenSslDeclineKeyExchangeHandler>();
+
+                var requestIdString = args[1];
+
+                var isParsed = Guid.TryParse(requestIdString, out var requestId);
+
+                if (!isParsed)
+                {
+                    Console.WriteLine("Invalid or empty request ID.");
+                    return;
+                }
+
+                await handler.DeclineKeyExchangeAsync(requestId);
+                break;
+            }
+            case "openssl-print-key-exchange":
+            {
+                var handler = DependencyResolver.ResolveService<OpenSslGetKeyExchangeByIdHandler>();
+
+                var requestIdString = args[1];
+
+                var isParsed = Guid.TryParse(requestIdString, out var requestId);
+
+                if (!isParsed)
+                {
+                    Console.WriteLine("Invalid or empty request ID.");
+                    return;
+                }
+
+                await handler.GetKeyExchangeByIdAsync(requestId);
+                break;
+            }
             default:
+            {
                 Console.WriteLine("Unrecognized command.");
                 break;
+            }
         }
-    }
-
-    private static async Task Login(IReadOnlyList<string> args)
-    {
-        Console.WriteLine("Attempting to login ...");
-        var loginResponse = await SessionsService.LoginAsync(args);
-
-        Console.WriteLine("Writing tokens to file ...");
-        await TokensService.WriteTokensAsync(loginResponse);
-
-        Console.WriteLine("Login operation success.\n");
-    }
-
-    private static async Task RefreshTokenAsync()
-    {
-        if (TokenResponse is null)
-        {
-            //Console.WriteLine("User is not authorized. Please login.");
-            return;
-        }
-
-        var refreshToken = TokenResponse.Tokens.RefreshToken;
-
-        Console.WriteLine("Refreshing tokens ...");
-        var refreshTokenResponse = await SessionsService.RefreshTokenAsync(refreshToken);
-
-        Console.WriteLine("Writing tokens to file ...");
-        await TokensService.WriteTokensAsync(refreshTokenResponse);
-
-        Console.WriteLine("Refresh token operation was succeeded. \n");
-    }
-
-    private static async Task RequestKeyExchange(IReadOnlyList<string> args)
-    {
-        var requestedUserId = Guid.Parse(args[1]);
-
-        EcdhService.GenerateEcdhKeysPair(out var privateKeyBase64, out var publicKeyBase64);
-
-        var response = await KeyExchangeService.CreateKeyExchangeRequestAsync(requestedUserId, publicKeyBase64);
-
-        Console.WriteLine($"Key exchange request with an ID {response.RequestId} created successfully.");
-
-        var keysFolderPath = Path.Combine(AppContext.BaseDirectory, $"Keys_{TokenResponse.Tokens.UserId}");
-        var privateKeyPath =
-            Path.Combine(keysFolderPath, $"PrivateKey_{TokenResponse.Tokens.UserId}_{requestedUserId}.txt");
-        var publicKeyPath = Path.Combine(keysFolderPath,
-            $"PublicKey_{TokenResponse.Tokens.UserId}_{requestedUserId}.txt");
-
-        if (!Directory.Exists(keysFolderPath))
-        {
-            Directory.CreateDirectory(keysFolderPath);
-        }
-
-        Console.WriteLine("Writing private key to file...");
-        await File.WriteAllTextAsync(privateKeyPath, privateKeyBase64);
-
-        Console.WriteLine("Writing public key to file ...");
-        await File.WriteAllTextAsync(publicKeyPath, publicKeyBase64);
-
-        Console.WriteLine("Key exchange request sent successfully.\n");
-    }
-
-    private static async Task PrintKeyExchangesList()
-    {
-        var response = await KeyExchangeService.GetKeyExchangesAsync();
-        response.KeyExchangeRequests.ForEach(Console.WriteLine);
-    }
-
-    private static async Task ConfirmKeyExchangeRequest(IReadOnlyList<string> args)
-    {
-        var requestId = Guid.Parse(args[1]);
-
-        var exchangeRequest = (await KeyExchangeService.GetKeyExchangesAsync())
-            .KeyExchangeRequests
-            .FirstOrDefault(x => x.RequestId == requestId);
-
-        if (exchangeRequest == null)
-        {
-            Console.WriteLine("Key exchange request not found.");
-            return;
-        }
-
-        var ecDiffieHellmanCng =
-            EcdhService.GenerateEcdhKeysPair(out var privateKeyBase64, out var publicKeyBase64);
-
-        var requestPublicKeyBytes = exchangeRequest.SenderPublicKey.Base64StringAsBytes();
-        var requestPublicKey = CngKey.Import(requestPublicKeyBytes, CngKeyBlobFormat.EccPublicBlob);
-
-        var commonSecret = ecDiffieHellmanCng.DeriveKeyMaterial(requestPublicKey).AsBase64String();
-
-        await KeyExchangeService.ConfirmOrDeclineKeyExchange(requestId, publicKeyBase64);
-
-        var keysFolderPath = Path.Combine(AppContext.BaseDirectory, $"Keys_{TokenResponse.Tokens.UserId}");
-
-        var privateKeyPath =
-            Path.Combine(keysFolderPath,
-                $"PrivateKey_{TokenResponse.Tokens.UserId}_{exchangeRequest.SenderId}.txt");
-
-        var publicKeyPath =
-            Path.Combine(keysFolderPath, $"PublicKey_{TokenResponse.Tokens.UserId}_{exchangeRequest.SenderId}.txt");
-
-        var commonSecretPath =
-            Path.Combine(keysFolderPath,
-                $"CommonSecret_{TokenResponse.Tokens.UserId}_{exchangeRequest.SenderId}.txt");
-
-        if (!Directory.Exists(keysFolderPath))
-        {
-            Directory.CreateDirectory(keysFolderPath);
-        }
-
-        Console.WriteLine("Writing private key to file...");
-        await File.WriteAllTextAsync(privateKeyPath, privateKeyBase64);
-
-        Console.WriteLine("Writing public key to file ...");
-        await File.WriteAllTextAsync(publicKeyPath, publicKeyBase64);
-
-        Console.WriteLine("Writing common secret to file...");
-        await File.WriteAllTextAsync(commonSecretPath, commonSecret);
-
-        Console.WriteLine("Key exchange request confirmed successfully.\n");
-    }
-
-    private static async Task PrintPublicKeys()
-    {
-        var response = await PublicKeysService.GetPublicKeys();
-        response.PublicKeys.ForEach(Console.WriteLine);
-    }
-
-    private static async Task CreateCommonSecret(IReadOnlyList<string> args)
-    {
-        var partnerId = Guid.Parse(args[1]);
-
-        var response = await PublicKeysService.GetPublicKeys();
-
-        var partnerPublicKeyBytes = response.PublicKeys
-            .FirstOrDefault(x => x.PartnerId == partnerId)?
-            .PartnerPublicKey.Base64StringAsBytes();
-
-        var privateKeyPath = Path.Combine(AppContext.BaseDirectory, $"Keys_{TokenResponse.Tokens.UserId}",
-            $"PrivateKey_{TokenResponse.Tokens.UserId}_{partnerId}.txt");
-
-        var commonSecretPath = Path.Combine(AppContext.BaseDirectory, $"Keys_{TokenResponse.Tokens.UserId}",
-            $"CommonSecret_{TokenResponse.Tokens.UserId}_{partnerId}.txt");
-
-        var privateKeyBytes = (await File.ReadAllTextAsync(privateKeyPath)).Base64StringAsBytes();
-
-        var privateKey = CngKey.Import(privateKeyBytes, CngKeyBlobFormat.EccPrivateBlob);
-        var ecDiffieHellmanCng = new ECDiffieHellmanCng(privateKey);
-
-        var partnerPublicKey = CngKey.Import(partnerPublicKeyBytes!, CngKeyBlobFormat.EccPublicBlob);
-        var commonSecretBase64 = ecDiffieHellmanCng.DeriveKeyMaterial(partnerPublicKey).AsBase64String();
-
-        Console.WriteLine("Writing common secret to file...");
-        await File.WriteAllTextAsync(commonSecretPath, commonSecretBase64);
-
-        Console.WriteLine("Common secret generated successfully.\n");
-    }
-
-    private static async Task GetCurrentUserChats()
-    {
-        var response = await ChatService.GetCurrentUserChatsAsync();
-        response.Chats.ForEach(Console.WriteLine);
     }
 }

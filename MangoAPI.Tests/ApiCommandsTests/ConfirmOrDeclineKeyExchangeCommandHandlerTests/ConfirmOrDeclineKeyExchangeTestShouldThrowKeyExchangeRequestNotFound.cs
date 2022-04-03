@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
-using MangoAPI.BusinessLogic.ApiCommands.KeyExchange;
+using MangoAPI.BusinessLogic.ApiCommands.CngKeyExchange;
 using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.Domain.Constants;
 using MediatR;
@@ -10,7 +10,7 @@ using Xunit;
 namespace MangoAPI.Tests.ApiCommandsTests.ConfirmOrDeclineKeyExchangeCommandHandlerTests;
 
 public class ConfirmOrDeclineKeyExchangeTestShouldThrowKeyExchangeRequestNotFound 
-    : ITestable<ConfirmOrDeclineKeyExchangeCommand, ResponseBase>
+    : ITestable<CngConfirmOrDeclineKeyExchangeCommand, ResponseBase>
 {
     private readonly MangoDbFixture _mangoDbFixture = new();
     private readonly Assert<ResponseBase> _assert = new();
@@ -22,7 +22,7 @@ public class ConfirmOrDeclineKeyExchangeTestShouldThrowKeyExchangeRequestNotFoun
         const string expectedMessage = ResponseMessageCodes.KeyExchangeRequestNotFound;
         string expectedDetails = ResponseMessageCodes.ErrorDictionary[expectedMessage];
         var handler = CreateHandler();
-        var command = new ConfirmOrDeclineKeyExchangeCommand
+        var command = new CngConfirmOrDeclineKeyExchangeCommand
         {
             UserId = Guid.NewGuid(),
             RequestId = Guid.NewGuid(),
@@ -40,11 +40,11 @@ public class ConfirmOrDeclineKeyExchangeTestShouldThrowKeyExchangeRequestNotFoun
         return true;
     }
 
-    public IRequestHandler<ConfirmOrDeclineKeyExchangeCommand, Result<ResponseBase>> CreateHandler()
+    public IRequestHandler<CngConfirmOrDeclineKeyExchangeCommand, Result<ResponseBase>> CreateHandler()
     {
         var responseFactory = new ResponseFactory<ResponseBase>();
         var context = _mangoDbFixture.Context;
-        var handler = new ConfirmOrDeclineKeyExchangeCommandHandler(context, responseFactory);
+        var handler = new CngConfirmOrDeclineKeyExchangeCommandHandler(context, responseFactory);
         return handler;
     }
 }

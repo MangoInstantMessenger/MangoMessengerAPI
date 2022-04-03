@@ -2,7 +2,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using FluentAssertions;
-using MangoAPI.BusinessLogic.ApiQueries.KeyExchange;
+using MangoAPI.BusinessLogic.ApiQueries.CngKeyExchange;
 using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.Domain.Constants;
 using MangoAPI.Domain.Entities;
@@ -12,16 +12,16 @@ using Xunit;
 
 namespace MangoAPI.Tests.ApiQueries.GetKeyExchangeRequestsQueryHandlerTests;
 
-public class GetKeyExchangeRequestsTestSuccess : ITestable<GetKeyExchangeRequestsQuery, GetKeyExchangeResponse>
+public class GetKeyExchangeRequestsTestSuccess : ITestable<CngGetKeyExchangeRequestsQuery, CngGetKeyExchangeResponse>
 {
     private readonly MangoDbFixture _mangoDbFixture = new();
-    private readonly Assert<GetKeyExchangeResponse> _assert = new ();
+    private readonly Assert<CngGetKeyExchangeResponse> _assert = new ();
 
     [Fact]
     public async Task GetKeyExchangeRequestsTest_Success()
     {
         Seed();
-        var query = new GetKeyExchangeRequestsQuery
+        var query = new CngGetKeyExchangeRequestsQuery
         {
             UserId = SeedDataConstants.AmelitId
         };
@@ -31,27 +31,27 @@ public class GetKeyExchangeRequestsTestSuccess : ITestable<GetKeyExchangeRequest
             
         _assert.Pass(result);
         result.Response.KeyExchangeRequests.Count.Should().Be(1);
-        result.Response.KeyExchangeRequests[0].RequestId.Should().Be(_keyExchangeRequest.Id);
+        result.Response.KeyExchangeRequests[0].RequestId.Should().Be(_cngKeyExchangeRequest.Id);
     }
         
     public bool Seed()
     {
         _mangoDbFixture.Context.AddRange(_sender, _receiver);
-        _mangoDbFixture.Context.KeyExchangeRequests.Add(_keyExchangeRequest);
+        _mangoDbFixture.Context.CngKeyExchangeRequests.Add(_cngKeyExchangeRequest);
 
         _mangoDbFixture.Context.SaveChanges();
             
         _mangoDbFixture.Context.Entry(_sender).State = EntityState.Detached;
         _mangoDbFixture.Context.Entry(_receiver).State = EntityState.Detached;
-        _mangoDbFixture.Context.Entry(_keyExchangeRequest).State = EntityState.Detached;
+        _mangoDbFixture.Context.Entry(_cngKeyExchangeRequest).State = EntityState.Detached;
             
         return true;
     }
 
-    public IRequestHandler<GetKeyExchangeRequestsQuery, Result<GetKeyExchangeResponse>> CreateHandler()
+    public IRequestHandler<CngGetKeyExchangeRequestsQuery, Result<CngGetKeyExchangeResponse>> CreateHandler()
     {
-        var responseFactory = new ResponseFactory<GetKeyExchangeResponse>();
-        var handler = new GetKeyExchangeRequestsQueryHandler(_mangoDbFixture.Context, responseFactory);
+        var responseFactory = new ResponseFactory<CngGetKeyExchangeResponse>();
+        var handler = new CngGetKeyExchangeRequestsQueryHandler(_mangoDbFixture.Context, responseFactory);
         return handler;
     }
         
@@ -81,7 +81,7 @@ public class GetKeyExchangeRequestsTestSuccess : ITestable<GetKeyExchangeRequest
         Image = "amelit_picture.jpg"
     };
         
-    private readonly KeyExchangeRequestEntity _keyExchangeRequest = new()
+    private readonly CngKeyExchangeRequestEntity _cngKeyExchangeRequest = new()
     {
         Id = Guid.NewGuid(),
         SenderId = SeedDataConstants.RazumovskyId,

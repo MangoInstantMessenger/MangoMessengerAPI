@@ -32,9 +32,13 @@ public class MangoPostgresDbContext : IdentityDbContext<UserEntity, RoleEntity, 
 
     public DbSet<DocumentEntity> Documents { get; set; }
 
-    public DbSet<KeyExchangeRequestEntity> KeyExchangeRequests { get; set; }
+    public DbSet<CngKeyExchangeRequestEntity> CngKeyExchangeRequests { get; set; }
 
-    public DbSet<PublicKeyEntity> PublicKeys { get; set; }
+    public DbSet<CngPublicKeyEntity> CngPublicKeys { get; set; }
+    
+    public DbSet<OpenSslDhParameterEntity> OpenSslDhParameters { get; set; }
+
+    public DbSet<OpenSslKeyExchangeRequestEntity> OpenSslKeyExchangeRequests { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {

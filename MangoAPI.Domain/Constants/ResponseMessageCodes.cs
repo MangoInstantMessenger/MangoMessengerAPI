@@ -21,7 +21,6 @@ public static class ResponseMessageCodes
         {UserAlreadyJoinedGroup, "You are already a member of the community."},
         {ContactAlreadyExist, "User is your contact already."},
         {ContactNotFound, "User is not found in your contact list."},
-        {RefreshTokenLifeTimeError, "Refresh token lifetime can not be parsed."},
         {CannotAddSelfToContacts, "You cannot add yourself to the contacts."},
         {CannotCreateSelfChat, "You cannot create a direct chat with yourself."},
         {InvalidOrExpiredRestorePasswordRequest, "Invalid or expired restore password request. Try again."},
@@ -47,9 +46,15 @@ public static class ResponseMessageCodes
         },
         {EmailIsNotVerified, "Your email is not verified. Check your inbox for confirmation link."},
         {SessionNotFound, "Session not found."},
-        {MessageNotFound, "Message doesn't found in the system"}
+        {MessageNotFound, "Message doesn't found in the system"},
+        {DhParameterNotFound, "Diffie-Hellman parameter is not initialized. Please initialize first."},
+        {TokensNotFound, "Tokens not found. Please login to the system first."},
+        {KeyExchangeIsNotConfirmed, "Key exchange is not confirmed yet, please wait for response."},
+        {KeyExchangeDoesNotBelongToUser, "Key exchange does not belong to you."},
+        {Unauthorized, "User not authorized, please, sign in"}
     };
 
+    public const string Unauthorized = "UNAUTHORIZED";
     public const string Success = "SUCCESS";
     public const string InvalidOrExpiredRefreshToken = "INVALID_OR_EXPIRED_REFRESH_TOKEN";
     public const string UserAlreadyExists = "USER_ALREADY_EXISTS";
@@ -62,7 +67,6 @@ public static class ResponseMessageCodes
     public const string UserAlreadyJoinedGroup = "USER_ALREADY_JOINED_GROUP";
     public const string ContactAlreadyExist = "CONTACT_ALREADY_EXISTS";
     public const string ContactNotFound = "CONTACT_NOT_FOUND";
-    public const string RefreshTokenLifeTimeError = "REFRESH_TOKEN_LIFETIME_ERROR";
     public const string CannotAddSelfToContacts = "CANNOT_ADD_SELF_TO_CONTACTS";
     public const string CannotCreateSelfChat = "CANNOT_CREATE_SELF_CHAT";
     public const string InvalidOrExpiredRestorePasswordRequest = "INVALID_OR_EXPIRED_RESTORE_PASSWORD_REQUEST";
@@ -80,4 +84,8 @@ public static class ResponseMessageCodes
     public const string EmailIsNotVerified = "EMAIL_IS_NOT_VERIFIED";
     public const string SessionNotFound = "SESSION_NOT_FOUND";
     public const string MessageNotFound = "MESSAGE_NOT_FOUND";
+    public const string DhParameterNotFound = "DH_PARAMETER_NOT_FOUND";
+    public const string TokensNotFound = "TOKENS_NOT_FOUND";
+    public const string KeyExchangeIsNotConfirmed = "KEY_EXCHANGE_IS_NOT_CONFIRMED";
+    public const string KeyExchangeDoesNotBelongToUser = "KEY_EXCHANGE_DOES_NOT_BELONG_TO_USER";
 }

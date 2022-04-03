@@ -13,7 +13,7 @@ namespace MangoAPI.Presentation.Controllers;
 /// </summary>
 public class ApiControllerBase : ControllerBase
 {
-    private readonly IMediator _mediator;
+    protected readonly IMediator Mediator;
     protected readonly IMapper Mapper;
 
     /// <summary>
@@ -23,7 +23,7 @@ public class ApiControllerBase : ControllerBase
     /// <param name="mapper">Automapper instance.</param>
     public ApiControllerBase(IMediator mediator, IMapper mapper)
     {
-        _mediator = mediator;
+        Mediator = mediator;
         Mapper = mapper;
     }
 
@@ -38,7 +38,7 @@ public class ApiControllerBase : ControllerBase
     protected async Task<IActionResult> RequestAsync<TResponse>(IRequest<Result<TResponse>> request,
         CancellationToken cancellationToken) where TResponse : ResponseBase
     {
-        var response = await _mediator.Send(request, cancellationToken);
+        var response = await Mediator.Send(request, cancellationToken);
 
         return response.StatusCode switch
         {

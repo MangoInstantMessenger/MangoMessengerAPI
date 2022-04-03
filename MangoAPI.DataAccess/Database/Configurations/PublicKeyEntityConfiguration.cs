@@ -4,9 +4,9 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace MangoAPI.DataAccess.Database.Configurations;
 
-public class PublicKeyEntityConfiguration : IEntityTypeConfiguration<PublicKeyEntity>
+public class PublicKeyEntityConfiguration : IEntityTypeConfiguration<CngPublicKeyEntity>
 {
-    public void Configure(EntityTypeBuilder<PublicKeyEntity> builder)
+    public void Configure(EntityTypeBuilder<CngPublicKeyEntity> builder)
     {
         builder.HasKey(x => new { x.UserId, x.PartnerId });
         builder.Property(x => x.UserId).IsRequired();

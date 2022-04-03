@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
-using MangoAPI.BusinessLogic.ApiCommands.KeyExchange;
+using MangoAPI.BusinessLogic.ApiCommands.CngKeyExchange;
 using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.Domain.Constants;
 using MangoAPI.Domain.Entities;
@@ -11,7 +11,7 @@ using Xunit;
 
 namespace MangoAPI.Tests.ApiCommandsTests.ConfirmOrDeclineKeyExchangeCommandHandlerTests;
 
-public class ConfirmOrDeclineKeyExchangeTestSuccess : ITestable<ConfirmOrDeclineKeyExchangeCommand, ResponseBase>
+public class ConfirmOrDeclineKeyExchangeTestSuccess : ITestable<CngConfirmOrDeclineKeyExchangeCommand, ResponseBase>
 {
     private readonly MangoDbFixture _mangoDbFixture = new();
     private readonly Assert<ResponseBase> _assert = new();
@@ -21,10 +21,10 @@ public class ConfirmOrDeclineKeyExchangeTestSuccess : ITestable<ConfirmOrDecline
     {
         Seed();
         var handler = CreateHandler();
-        var command = new ConfirmOrDeclineKeyExchangeCommand
+        var command = new CngConfirmOrDeclineKeyExchangeCommand
         {
             UserId = _receiver.Id,
-            RequestId = _keyExchangeRequest.Id,
+            RequestId = _cngKeyExchangeRequest.Id,
             Confirmed = true,
             PublicKey = "Public Key"
         };
@@ -37,22 +37,22 @@ public class ConfirmOrDeclineKeyExchangeTestSuccess : ITestable<ConfirmOrDecline
     public bool Seed()
     {
         _mangoDbFixture.Context.AddRange(_sender, _receiver);
-        _mangoDbFixture.Context.KeyExchangeRequests.Add(_keyExchangeRequest);
+        _mangoDbFixture.Context.CngKeyExchangeRequests.Add(_cngKeyExchangeRequest);
 
         _mangoDbFixture.Context.SaveChanges();
             
         _mangoDbFixture.Context.Entry(_sender).State = EntityState.Detached;
         _mangoDbFixture.Context.Entry(_receiver).State = EntityState.Detached;
-        _mangoDbFixture.Context.Entry(_keyExchangeRequest).State = EntityState.Detached;
+        _mangoDbFixture.Context.Entry(_cngKeyExchangeRequest).State = EntityState.Detached;
             
         return true;
     }
 
-    public IRequestHandler<ConfirmOrDeclineKeyExchangeCommand, Result<ResponseBase>> CreateHandler()
+    public IRequestHandler<CngConfirmOrDeclineKeyExchangeCommand, Result<ResponseBase>> CreateHandler()
     {
         var responseFactory = new ResponseFactory<ResponseBase>();
         var context = _mangoDbFixture.Context;
-        var handler = new ConfirmOrDeclineKeyExchangeCommandHandler(context, responseFactory);
+        var handler = new CngConfirmOrDeclineKeyExchangeCommandHandler(context, responseFactory);
         return handler;
     }
         
@@ -82,7 +82,7 @@ public class ConfirmOrDeclineKeyExchangeTestSuccess : ITestable<ConfirmOrDecline
         Image = "amelit_picture.jpg"
     };
         
-    private readonly KeyExchangeRequestEntity _keyExchangeRequest = new()
+    private readonly CngKeyExchangeRequestEntity _cngKeyExchangeRequest = new()
     {
         Id = Guid.NewGuid(),
         SenderId = SeedDataConstants.RazumovskyId,

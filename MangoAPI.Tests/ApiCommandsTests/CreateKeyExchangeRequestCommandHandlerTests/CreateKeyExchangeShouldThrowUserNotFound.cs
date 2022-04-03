@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
-using MangoAPI.BusinessLogic.ApiCommands.KeyExchange;
+using MangoAPI.BusinessLogic.ApiCommands.CngKeyExchange;
 using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.Domain.Constants;
 using MangoAPI.Domain.Entities;
@@ -11,11 +11,11 @@ using Xunit;
 
 namespace MangoAPI.Tests.ApiCommandsTests.CreateKeyExchangeRequestCommandHandlerTests;
 
-public class CreateKeyExchangeShouldThrowUserNotFound : ITestable<CreateKeyExchangeRequestCommand,
-    CreateKeyExchangeResponse>
+public class CreateKeyExchangeShouldThrowUserNotFound : ITestable<CngCreateKeyExchangeRequestCommand,
+    CngCreateKeyExchangeResponse>
 {
     private readonly MangoDbFixture _mangoDbFixture = new();
-    private readonly Assert<CreateKeyExchangeResponse> _assert = new();
+    private readonly Assert<CngCreateKeyExchangeResponse> _assert = new();
 
     [Fact]
     public async Task CreateKeyExchangeRequestCommandHandlerTest_ShouldThrow_UserNotFound()
@@ -24,7 +24,7 @@ public class CreateKeyExchangeShouldThrowUserNotFound : ITestable<CreateKeyExcha
         const string expectedMessage = ResponseMessageCodes.UserNotFound;
         var expectedDetails = ResponseMessageCodes.ErrorDictionary[expectedMessage];
         var handler = CreateHandler();
-        var command = new CreateKeyExchangeRequestCommand
+        var command = new CngCreateKeyExchangeRequestCommand
         {
             PublicKey = "Public key",
             RequestedUserId = Guid.NewGuid(),
@@ -47,11 +47,11 @@ public class CreateKeyExchangeShouldThrowUserNotFound : ITestable<CreateKeyExcha
         return true;
     }
 
-    public IRequestHandler<CreateKeyExchangeRequestCommand, Result<CreateKeyExchangeResponse>> CreateHandler()
+    public IRequestHandler<CngCreateKeyExchangeRequestCommand, Result<CngCreateKeyExchangeResponse>> CreateHandler()
     {
         var context = _mangoDbFixture.Context;
-        var responseFactory = new ResponseFactory<CreateKeyExchangeResponse>();
-        var handler = new CreateKeyExchangeRequestCommandHandler(context, responseFactory);
+        var responseFactory = new ResponseFactory<CngCreateKeyExchangeResponse>();
+        var handler = new CngCreateKeyExchangeRequestCommandHandler(context, responseFactory);
 
         return handler;
     }
