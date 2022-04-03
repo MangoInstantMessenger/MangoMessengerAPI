@@ -62,4 +62,4 @@ steps:
       WebAppName: 'MangoMessengerBackend'
       packageForLinux: '$(System.DefaultWorkingDirectory)/**/*.zip'
       RuntimeStack: 'DOTNETCORE|6.0'
-      StartupCommand: 'dotnet run MangoAPI.Presentation.dll'
+      StartupCommand: 'dotnet run home/site/wwwroot/MangoAPI.Presentation.dll'
