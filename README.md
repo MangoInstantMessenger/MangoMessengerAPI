@@ -11,6 +11,7 @@
 [![Mango Database Diagramm](https://img.shields.io/badge/Data%20Base%20Diagram-DbDiagram-lightgrey)](https://dbdiagram.io/d/60d66a13dd6a597148203e6b)
 ![contributors count](https://img.shields.io/github/contributors/MangoInstantMessenger/MangoMessengerAPI)
 [![codecov](https://codecov.io/gh/MangoInstantMessenger/MangoMessengerAPI/branch/develop/graph/badge.svg?token=J4P0TD9Q1Q)](https://codecov.io/gh/MangoInstantMessenger/MangoMessengerAPI)
+[![Coverage Status](https://coveralls.io/repos/github/MangoInstantMessenger/MangoMessengerAPI/badge.svg?branch=develop)](https://coveralls.io/github/MangoInstantMessenger/MangoMessengerAPI?branch=develop)
 
 ## What is all about
 
