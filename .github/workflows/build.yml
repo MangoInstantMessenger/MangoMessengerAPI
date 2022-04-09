@@ -49,6 +49,8 @@ jobs:
         env:
           MANGO_SEED_PASSWORD: ${{ secrets.MANGO_SEED_PASSWORD }}
           MANGO_JWT_SIGN_KEY: ${{ secrets.MANGO_JWT_SIGN_KEY }}
+          MANGO_BLOB_CONTAINER: ${{ secrets.MANGO_BLOB_CONTAINER }}
+          MANGO_BLOB_ACCESS: ${{ secrets.MANGO_BLOB_ACCESS }}
 
       - name: Publish coverage report to coveralls.io
         uses: coverallsapp/github-action@master
