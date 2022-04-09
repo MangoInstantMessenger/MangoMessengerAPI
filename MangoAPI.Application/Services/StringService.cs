@@ -37,12 +37,7 @@ public static class StringService
 
     public static string GetDocumentUrl(string fileName)
     {
-        if (string.IsNullOrEmpty(fileName) || string.IsNullOrWhiteSpace(fileName))
-        {
-            return null;
-        }
-
-        return $"{EnvironmentConstants.MangoBlobAccess}/{fileName}";
+        return string.IsNullOrWhiteSpace(fileName) ? null : $"{EnvironmentConstants.MangoBlobAccess}/{fileName}";
     }
 
     public static string GetUniqueFileName(string fileName)

@@ -7,9 +7,9 @@ public class PasswordHashService : PasswordHasher<UserEntity>
 {
     public override string HashPassword(UserEntity user, string password)
     {
-        var hash = base.HashPassword(user, password);
-        user.PasswordHash = hash;
-
-        return hash;
+        //This looks strange a bit. I wanna delete it or make it like an extension method.
+        user.PasswordHash = base.HashPassword(user, password);
+        
+        return user.PasswordHash;
     }
 }
