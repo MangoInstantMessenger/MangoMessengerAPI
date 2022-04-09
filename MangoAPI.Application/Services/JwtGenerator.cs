@@ -17,19 +17,13 @@ public class JwtGenerator : IJwtGenerator
     public JwtGenerator()
     {
         var tokenKey = EnvironmentConstants.MangoJwtSignKey;
-
-        if (tokenKey == null)
-        {
-            throw new InvalidOperationException("Mango token key is null.");
-        }
-
-        _key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(tokenKey));
+        var encodedKey = Encoding.UTF8.GetBytes(tokenKey);
+        _key = new SymmetricSecurityKey(encodedKey);
     }
 
     public string GenerateJwtToken(Guid userId)
     {
-        const int jwtLifetime = EnvironmentConstants.MangoJwtLifetime;
-        return GenerateJwtToken(userId, jwtLifetime);
+        return GenerateJwtToken(userId, EnvironmentConstants.MangoJwtLifetime);
     }
 
     private string GenerateJwtToken(Guid userId, int lifetimeMinutes)
