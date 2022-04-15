@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using MangoAPI.Domain.Constants;
 
@@ -6,6 +7,7 @@ namespace MangoAPI.Application.Services;
 
 public static class StringService
 {
+    [SuppressMessage("ReSharper", "StringLiteralTypo")]
     public static string ConvertHerokuDbConnection(string databaseUrl)
     {
         if (string.IsNullOrEmpty(databaseUrl) || !databaseUrl.Contains("postgres"))
@@ -35,12 +37,7 @@ public static class StringService
 
     public static string GetDocumentUrl(string fileName)
     {
-        if (string.IsNullOrEmpty(fileName) || string.IsNullOrWhiteSpace(fileName))
-        {
-            return null;
-        }
-
-        return $"{EnvironmentConstants.MangoBlobAccess}/{fileName}";
+        return string.IsNullOrWhiteSpace(fileName) ? null : $"{EnvironmentConstants.MangoBlobAccess}/{fileName}";
     }
 
     public static string GetUniqueFileName(string fileName)

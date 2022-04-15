@@ -20,10 +20,8 @@ public class BlobService : IBlobService
     {
         var containerClient = _blobClient.GetBlobContainerClient(containerName);
         var blobClient = containerClient.GetBlobClient(name);
-
-        var str = blobClient.Uri.AbsoluteUri;
-
-        return Task.FromResult(str);
+        
+        return Task.FromResult(blobClient.Uri.AbsoluteUri);
     }
 
     public async Task<bool> UploadFileBlobAsync(string name, IFormFile file, string containerName)
