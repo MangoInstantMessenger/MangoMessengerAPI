@@ -2,10 +2,6 @@ trigger:
   branches:
     include:
       - develop
-      - MANGO-387
-
-pool:
-  vmImage: 'ubuntu-20.04'
 
 variables:
   - group: MANGO_INTEGRATION_TESTS
@@ -15,25 +11,15 @@ variables:
     value: 'Any CPU'
   - name: buildConfiguration
     value: 'Release'
+  - name: backendProjectPath
+    value: 'MangoAPI.Presentation/MangoAPI.Presentation.csproj'
 
-steps:
-  - task: NuGetToolInstaller@1
-    displayName: 'Install Nuget'
-
-  - task: NuGetCommand@2
-    displayName: 'Restore Nuget Packages'
-    inputs:
-      restoreSolution: '$(solution)'
-
-  - task: DotNetCoreCLI@2
-    displayName: 'dotnet build $(buildConfiguration)'
-    inputs:
-      command: 'build'
-      arguments: '--configuration $(buildConfiguration)'
-
-  - task: DotNetCoreCLI@2
-    displayName: 'Run dotnet unit tests'
-    inputs:
-      command: 'test'
-      projects: $(INTEGRATION_TESTS_PROJECT_PATH)
-      arguments: '--no-restore'
+  - stages:
+      - stage: 'Build/Test'
+        jobs:
+          - job: "Build"
+            displayName: 'Build and Test'
+            pool:
+              vmImage: 'ubuntu-20.04'
+            
+            steps: azure-pipelines-common.yml
