@@ -31,7 +31,7 @@ stages:
     condition: succeeded('Build_Test')
     jobs:
       - deployment: Deploy_Mango_Web_API_to_Dev
-        displayName: "Deploy WTMP System to Dev Environment"
+        displayName: "Deploy Mango Web API to Dev Environment"
         pool:
           vmImage: "ubuntu 20.04"
         environment: dev
