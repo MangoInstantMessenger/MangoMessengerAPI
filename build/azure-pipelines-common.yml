@@ -21,15 +21,15 @@ steps:
       arguments: '--no-restore'
 
   - task: DotNetCoreCLI@2
-    displayName: 'Run dotnet publish for Internal System'
+    displayName: 'Run dotnet publish for Backend project'
     inputs:
       command: 'publish'
       publishWebProjects: false
-      projects: '$(externalSystemBuildProjectPath)'
+      projects: '$(backendProjectPath)'
       arguments: '--configuration $(BuildConfiguration) --output $(build.artifactstagingdirectory)/$(BuildConfiguration) --no-build'
 
   - task: PublishBuildArtifacts@1
-    displayName: 'Publish Artifacts'
+    displayName: 'Publish Artifacts for Backend project'
     inputs:
       PathtoPublish: '$(Build.ArtifactStagingDirectory)'
       ArtifactName: 'drop'
