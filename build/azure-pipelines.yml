@@ -14,12 +14,12 @@ variables:
   - name: backendProjectPath
     value: 'MangoAPI.Presentation/MangoAPI.Presentation.csproj'
 
-  - stages:
-      - stage: 'Build/Test'
-        jobs:
-          - job: "Build"
-            displayName: 'Build and Test'
-            pool:
-              vmImage: 'ubuntu-20.04'
-            
-            steps: azure-pipelines-common.yml
+stages:
+  - stage: 'Build/Test'
+    jobs:
+      - job: "Build"
+        displayName: 'Build and Test'
+        pool:
+          vmImage: 'ubuntu-20.04'
+        
+        steps: azure-pipelines-common.yml
