@@ -22,4 +22,5 @@ stages:
         pool:
           vmImage: 'ubuntu-20.04'
         
-        steps: azure-pipelines-common.yml
+        steps:
+          - template: azure-pipelines-common.yml
