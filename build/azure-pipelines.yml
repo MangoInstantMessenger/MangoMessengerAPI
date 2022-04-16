@@ -15,7 +15,7 @@ variables:
     value: 'MangoAPI.Presentation/MangoAPI.Presentation.csproj'
 
 stages:
-  - stage: 'Build/Test'
+  - stage: 'Build_Test'
     jobs:
       - job: "Build"
         displayName: 'Build and Test'
