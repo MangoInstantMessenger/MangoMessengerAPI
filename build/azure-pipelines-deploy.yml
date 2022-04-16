@@ -24,3 +24,30 @@ stages:
         
         steps:
           - template: azure-pipelines-common.yml
+
+  - stage: "dev"
+    displayName: "Deploy Mango Web API to Dev Environment"
+    dependsOn: Build_Test
+    condition: succeeded('Build_Test')
+    jobs:
+      - deployment: Deploy_Mango_Web_API_to_Dev
+        displayName: "Deploy WTMP System to Dev Environment"
+        pool:
+          vmImage: "ubuntu 20.04"
+        environment: dev
+        variables:
+          - group: MANGO_DEV_ENV_VARS
+        strategy:
+          runOnce:
+            deploy:
+              steps:
+                - download: current
+                  artifact: drop
+                - task: AzureRmWebAppDeployment@4
+                  inputs:
+                    ConnectionType: "AzureRM"
+                    azureSubscription: "Azure for Students"
+                    appType: "webApp"
+                    WebAppName: "$(WebAppName)"
+                    packageForLinux: "$(Pipeline.Workspace)/drop/$(BuildConfiguration)/MangoAPI.Presentation.zip"
+                    JSONFiles: "**/appsettings.json"
