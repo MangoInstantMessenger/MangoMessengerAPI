@@ -14,9 +14,7 @@ public class DesignTimeUserDbContextFactory : IDesignTimeDbContextFactory<MangoP
 
     public DesignTimeUserDbContextFactory()
     {
-        var configuration = new ConfigurationBuilder().Build();
-
-        _mangoDatabaseUrl = configuration.AsEnumerable().First(t => t.Key == "MANGO_DATABASE_URL").Value;
+        _mangoDatabaseUrl = Environment.GetEnvironmentVariable("MANGO_DATABASE_URL");
     }
     
     public MangoPostgresDbContext CreateDbContext(string[] args)

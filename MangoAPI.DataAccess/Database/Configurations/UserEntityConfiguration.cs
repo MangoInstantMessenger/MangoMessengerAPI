@@ -9,16 +9,6 @@ namespace MangoAPI.DataAccess.Database.Configurations;
 
 public class UserEntityConfiguration : IEntityTypeConfiguration<UserEntity>
 {
-    private readonly string _mangoSeedPassword;
-
-    public UserEntityConfiguration(string mangoSeedPassword)
-    {
-        if (string.IsNullOrWhiteSpace(mangoSeedPassword))
-            throw new ArgumentException("Value cannot be null or whitespace.", nameof(mangoSeedPassword));
-        
-        _mangoSeedPassword = mangoSeedPassword;
-    }
-    
     public void Configure(EntityTypeBuilder<UserEntity> builder)
     {
         builder.HasMany(x => x.PasswordRestoreRequests)
@@ -169,22 +159,22 @@ public class UserEntityConfiguration : IEntityTypeConfiguration<UserEntity>
 
         var passwordHasher = new PasswordHashService();
 
-        var seedPassword = _mangoSeedPassword;
+        var seedPassword = Environment.GetEnvironmentVariable("MANGO_SEED_PASSWORD");
 
         if (seedPassword == null)
         {
             throw new ArgumentNullException(nameof(seedPassword));
         }
 
-        passwordHasher.HashPassword(user1, _mangoSeedPassword);
-        passwordHasher.HashPassword(user2, _mangoSeedPassword);
-        passwordHasher.HashPassword(user3, _mangoSeedPassword);
-        passwordHasher.HashPassword(user4, _mangoSeedPassword);
-        passwordHasher.HashPassword(user5, _mangoSeedPassword);
-        passwordHasher.HashPassword(user6, _mangoSeedPassword);
-        passwordHasher.HashPassword(user7, _mangoSeedPassword);
-        passwordHasher.HashPassword(user8, _mangoSeedPassword);
-        passwordHasher.HashPassword(user9, _mangoSeedPassword);
+        passwordHasher.HashPassword(user1, seedPassword);
+        passwordHasher.HashPassword(user2, seedPassword);
+        passwordHasher.HashPassword(user3, seedPassword);
+        passwordHasher.HashPassword(user4, seedPassword);
+        passwordHasher.HashPassword(user5, seedPassword);
+        passwordHasher.HashPassword(user6, seedPassword);
+        passwordHasher.HashPassword(user7, seedPassword);
+        passwordHasher.HashPassword(user8, seedPassword);
+        passwordHasher.HashPassword(user9, seedPassword);
 
         builder.HasData(user1, user2, user3, user4, user5, user6, user7, user8, user9);
     }
