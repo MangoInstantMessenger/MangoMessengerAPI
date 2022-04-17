@@ -14,13 +14,26 @@ namespace MangoAPI.Application.Services;
 public class MailgunApiEmailSenderService : IEmailSenderService
 {
     private readonly HttpClient _httpClient;
+    private readonly string _mangoMailgunApiUrlWithDomain;
+    private readonly string _mangoFrontendAddress;
+    private readonly string _mangoEmailNotificationsAddress;
 
-    public MailgunApiEmailSenderService(HttpClient httpClient)
+    public MailgunApiEmailSenderService(
+        HttpClient httpClient, 
+        string mangoMailgunApiBaseUrl, 
+        string mangoMailgunApiKey, 
+        string mangoMailgunApiUrlWithDomain, 
+        string mangoFrontendAddress, 
+        string mangoEmailNotificationsAddress)
     {
         _httpClient = httpClient ?? throw new ArgumentNullException(nameof(httpClient));
-        _httpClient.BaseAddress = new Uri(EnvironmentConstants.MangoMailgunApiBaseUrl);
+        _mangoMailgunApiUrlWithDomain = mangoMailgunApiUrlWithDomain;
+        _mangoFrontendAddress = mangoFrontendAddress;
+        _mangoEmailNotificationsAddress = mangoEmailNotificationsAddress;
         
-        var httpBasicAuthHeader = GenerateHttpAuthHeader(HttpAuthHeaderNames.Api, EnvironmentConstants.MangoMailgunApiKey);
+        _httpClient.BaseAddress = new Uri(mangoMailgunApiBaseUrl);
+        
+        var httpBasicAuthHeader = GenerateHttpAuthHeader(HttpAuthHeaderNames.Api, mangoMailgunApiKey);
         _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(HttpAuthSchemes.Basic, httpBasicAuthHeader);
     }
 
@@ -30,7 +43,7 @@ public class MailgunApiEmailSenderService : IEmailSenderService
         
         var message = GenerateEmailConfirmBody(user);
         var emailContent = GenerateHttpContent(user.Email, subject, message);
-        var requestUri = EnvironmentConstants.MangoMailgunApiUrlWithDomain;
+        var requestUri = _mangoMailgunApiUrlWithDomain;
         
         var response = await _httpClient.PostAsync(requestUri, emailContent, cancellationToken)
             .ConfigureAwait(false);
@@ -44,7 +57,7 @@ public class MailgunApiEmailSenderService : IEmailSenderService
 
         var message = GeneratePasswordRestoreRequestBody(user, requestId);
         var emailContent = GenerateHttpContent(user.Email, subject, message);
-        var requestUri = EnvironmentConstants.MangoMailgunApiUrlWithDomain;
+        var requestUri = _mangoMailgunApiUrlWithDomain;
         
         var response = await _httpClient.PostAsync(requestUri, emailContent, cancellationToken)
             .ConfigureAwait(false);
@@ -52,14 +65,14 @@ public class MailgunApiEmailSenderService : IEmailSenderService
         response.EnsureSuccessStatusCode();
     }
 
-    private static string GenerateEmailConfirmBody(UserEntity user)
+    private string GenerateEmailConfirmBody(UserEntity user)
     {
-        return string.Format(Resources.EmailConfirmation, user.DisplayName, EnvironmentConstants.MangoFrontendAddress, user.Email, user.EmailCode, user.EmailCode);
+        return string.Format(Resources.EmailConfirmation, user.DisplayName, _mangoFrontendAddress, user.Email, user.EmailCode, user.EmailCode);
     }
 
-    private static string GeneratePasswordRestoreRequestBody(UserEntity user, Guid requestId)
+    private string GeneratePasswordRestoreRequestBody(UserEntity user, Guid requestId)
     {
-        return string.Format(Resources.PasswordRestoration, user.DisplayName, EnvironmentConstants.MangoFrontendAddress, requestId, requestId);
+        return string.Format(Resources.PasswordRestoration, user.DisplayName, _mangoFrontendAddress, requestId, requestId);
     }
 
     private static string GenerateHttpAuthHeader(string tokenName, string tokenValue)
@@ -71,9 +84,9 @@ public class MailgunApiEmailSenderService : IEmailSenderService
         return authHeader;
     }
 
-    private static FormUrlEncodedContent GenerateHttpContent(string recipient, string subject, string message)
+    private FormUrlEncodedContent GenerateHttpContent(string recipient, string subject, string message)
     {
-        var sender = EnvironmentConstants.MangoEmailNotificationsAddress;
+        var sender = _mangoEmailNotificationsAddress;
 
         var content = new Dictionary<string, string>
         {

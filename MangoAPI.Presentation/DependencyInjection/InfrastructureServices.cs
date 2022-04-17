@@ -1,19 +1,59 @@
-﻿using System.Net;
+﻿using System;
+using System.Linq;
+using System.Net;
 using System.Text;
+using FluentValidation;
+using MangoAPI.BusinessLogic.ApiCommands.Sessions;
+using MangoAPI.BusinessLogic.ApiCommands.Users;
+using MangoAPI.BusinessLogic.Pipelines;
 using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.Domain.Constants;
+using MangoAPI.Presentation.Constants;
+using MangoAPI.Presentation.Controllers;
+using MangoAPI.Presentation.Extensions;
+using MangoAPI.Presentation.Middlewares;
+using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 
-namespace MangoAPI.Presentation.Extensions;
+namespace MangoAPI.Presentation.DependencyInjection;
 
-public static class AuthExtensions
+public static class InfrastructureServices
 {
-    public static IServiceCollection AddAppAuthorization(this IServiceCollection services)
+    public static IServiceCollection AddAppInfrastructure(this IServiceCollection services, IConfiguration configuration)
     {
+        if (services == null) throw new ArgumentNullException(nameof(services));
+
+        services.AddIdentityUsers();
+        
+        services.AddAppAuthorization();
+        services.AddAppAuthentication(configuration);
+        
+        services.AddValidatorsFromAssembly(typeof(LoginCommandValidator).Assembly);
+        
+        services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehaviour<,>));
+        services.AddTransient(typeof(ResponseFactory<>));
+        
+        services.AddLogging();
+        
+        services.AddAutoMapper(typeof(ApiControllerBase));
+        
+        services.AddMediatR(typeof(RegisterCommandHandler).Assembly);
+
+        services.AddHttpClient();
+
+        return services;
+    }
+
+    private static IServiceCollection AddAppAuthorization(this IServiceCollection services)
+    {
+        if (services == null) throw new ArgumentNullException(nameof(services));
+        
         services.AddAuthorization(options =>
         {
             options.DefaultPolicy = new AuthorizationPolicyBuilder()
@@ -24,10 +64,14 @@ public static class AuthExtensions
         return services;
     }
 
-    public static IServiceCollection AddAppAuthentication(this IServiceCollection services)
+    private static IServiceCollection AddAppAuthentication(this IServiceCollection services, IConfiguration configuration)
     {
-        var tokenKey = EnvironmentConstants.MangoJwtSignKey;
-        var signingKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(tokenKey));
+        if (services == null) throw new ArgumentNullException(nameof(services));
+        var mangoJwtSignKey = configuration.GetValueFromAppSettingsOrEnvironment(EnvironmentConstants.MangoJwtSignKey);
+        var mangoJwtIssuer = configuration.GetValueFromAppSettingsOrEnvironment(EnvironmentConstants.MangoJwtIssuer);
+        var mangoJwtAudience = configuration.GetValueFromAppSettingsOrEnvironment(EnvironmentConstants.MangoJwtAudience);
+        
+        var signingKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(mangoJwtSignKey));
 
         services.AddAuthentication(options =>
             {
@@ -39,9 +83,9 @@ public static class AuthExtensions
                 configure.RequireHttpsMetadata = false;
                 configure.TokenValidationParameters = new TokenValidationParameters
                 {
-                    ValidIssuer = EnvironmentConstants.MangoJwtIssuer,
+                    ValidIssuer = mangoJwtIssuer,
                     ValidateIssuer = true,
-                    ValidAudience = EnvironmentConstants.MangoJwtAudience,
+                    ValidAudience = mangoJwtAudience,
                     ValidateAudience = true,
                     ValidateLifetime = true,
                     IssuerSigningKey = signingKey,

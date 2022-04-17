@@ -10,19 +10,20 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using System;
+using MangoAPI.Presentation.DependencyInjection;
+using MangoAPI.Presentation.Middlewares;
 
 namespace MangoAPI.Presentation;
 
 public class Startup
 {
+    private readonly IConfiguration _configuration;
     private const string CorsPolicy = "MyDefaultCorsPolicy";
 
     public Startup(IConfiguration configuration)
     {
-        Configuration = configuration;
+        _configuration = configuration;
     }
-
-    private IConfiguration Configuration { get; }
 
     public static void Configure(IApplicationBuilder app, IWebHostEnvironment env)
     {
@@ -64,7 +65,9 @@ public class Startup
     {
         services.AddSignalR();
         services.AddControllers();
-        services.AddAppInfrastructure();
+        services.AddAppInfrastructure(_configuration);
+        services.AddDatabaseService(_configuration);
+        services.AddMessengerServices(_configuration);
         services.AddSwaggerGen(c =>
         {
             c.EnableAnnotations();
@@ -98,7 +101,7 @@ public class Startup
         {
             options.AddPolicy(CorsPolicy, builder =>
             {
-                var allowedOrigins = Configuration.GetSection("AllowedOrigins").Get<string[]>();
+                var allowedOrigins = _configuration.GetSection("AllowedOrigins").Get<string[]>();
 
                 builder.WithOrigins(allowedOrigins)
                     .AllowAnyMethod()

@@ -17,15 +17,18 @@ public class RefreshSessionCommandHandler : IRequestHandler<RefreshSessionComman
     private readonly IJwtGenerator _jwtGenerator;
     private readonly MangoPostgresDbContext _postgresDbContext;
     private readonly ResponseFactory<TokensResponse> _responseFactory;
+    private readonly IJwtGeneratorSettings _jwtGeneratorSettings;
 
     public RefreshSessionCommandHandler(
         MangoPostgresDbContext postgresDbContext,
         IJwtGenerator jwtGenerator,
-        ResponseFactory<TokensResponse> responseFactory)
+        ResponseFactory<TokensResponse> responseFactory,
+        IJwtGeneratorSettings jwtGeneratorSettings)
     {
         _postgresDbContext = postgresDbContext;
         _jwtGenerator = jwtGenerator;
         _responseFactory = responseFactory;
+        _jwtGeneratorSettings = jwtGeneratorSettings;
     }
 
     public async Task<Result<TokensResponse>> Handle(RefreshSessionCommand request,
@@ -58,13 +61,11 @@ public class RefreshSessionCommandHandler : IRequestHandler<RefreshSessionComman
                 break;
         }
 
-        const int refreshLifetime = EnvironmentConstants.MangoRefreshTokenLifetime;
-
         var newSession = new SessionEntity
         {
             RefreshToken = Guid.NewGuid(),
             UserId = session.UserId,
-            ExpiresAt = DateTime.UtcNow.AddDays(refreshLifetime),
+            ExpiresAt = DateTime.UtcNow.AddDays(_jwtGeneratorSettings.MangoRefreshTokenLifetime),
             CreatedAt = DateTime.UtcNow,
         };
 

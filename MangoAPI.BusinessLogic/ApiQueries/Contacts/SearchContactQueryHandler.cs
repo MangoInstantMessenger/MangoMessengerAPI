@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using MangoAPI.Application.Interfaces;
 using MangoAPI.Application.Services;
 using MangoAPI.BusinessLogic.Models;
 using MangoAPI.BusinessLogic.Responses;
@@ -15,13 +16,16 @@ public class SearchContactByDisplayNameQueryHandler
 {
     private readonly MangoPostgresDbContext _postgresDbContext;
     private readonly ResponseFactory<SearchContactResponse> _responseFactory;
+    private readonly IBlobServiceSettings _blobServiceSettings;
 
     public SearchContactByDisplayNameQueryHandler(
         MangoPostgresDbContext postgresDbContext,
-        ResponseFactory<SearchContactResponse> responseFactory)
+        ResponseFactory<SearchContactResponse> responseFactory,
+        IBlobServiceSettings blobServiceSettings)
     {
         _postgresDbContext = postgresDbContext;
         _responseFactory = responseFactory;
+        _blobServiceSettings = blobServiceSettings;
     }
 
     public async Task<Result<SearchContactResponse>> Handle(SearchContactQuery request,
@@ -44,7 +48,7 @@ public class SearchContactByDisplayNameQueryHandler
                     DisplayName = x.DisplayName,
                     Address = x.UserInformation.Address,
                     Bio = x.Bio,
-                    PictureUrl = StringService.GetDocumentUrl(x.Image),
+                    PictureUrl = StringService.GetDocumentUrl(x.Image, _blobServiceSettings.MangoBlobAccess),
                     Email = x.Email,
                 });
         }
@@ -61,7 +65,7 @@ public class SearchContactByDisplayNameQueryHandler
                     DisplayName = x.DisplayName,
                     Address = x.UserInformation.Address,
                     Bio = x.Bio,
-                    PictureUrl = StringService.GetDocumentUrl(x.Image),
+                    PictureUrl = StringService.GetDocumentUrl(x.Image, _blobServiceSettings.MangoBlobAccess),
                     Email = x.Email,
                 });
         }

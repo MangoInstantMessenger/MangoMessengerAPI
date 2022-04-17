@@ -12,18 +12,19 @@ namespace MangoAPI.Application.Services;
 
 public class JwtGenerator : IJwtGenerator
 {
+    private readonly IJwtGeneratorSettings _jwtGeneratorSettings;
     private readonly SymmetricSecurityKey _key;
 
-    public JwtGenerator()
+    public JwtGenerator(IJwtGeneratorSettings jwtGeneratorSettings)
     {
-        var tokenKey = EnvironmentConstants.MangoJwtSignKey;
-        var encodedKey = Encoding.UTF8.GetBytes(tokenKey);
+        _jwtGeneratorSettings = jwtGeneratorSettings;
+        var encodedKey = Encoding.UTF8.GetBytes(_jwtGeneratorSettings.MangoJwtSignKey);
         _key = new SymmetricSecurityKey(encodedKey);
     }
 
     public string GenerateJwtToken(Guid userId)
     {
-        return GenerateJwtToken(userId, EnvironmentConstants.MangoJwtLifetime);
+        return GenerateJwtToken(userId, _jwtGeneratorSettings.MangoJwtLifetime);
     }
 
     private string GenerateJwtToken(Guid userId, int lifetimeMinutes)
@@ -40,8 +41,8 @@ public class JwtGenerator : IJwtGenerator
             Subject = new ClaimsIdentity(claims),
             Expires = DateTime.UtcNow.AddMinutes(lifetimeMinutes),
             SigningCredentials = credentials,
-            Issuer = EnvironmentConstants.MangoJwtIssuer,
-            Audience = EnvironmentConstants.MangoJwtAudience,
+            Issuer = _jwtGeneratorSettings.MangoJwtIssuer,
+            Audience = _jwtGeneratorSettings.MangoJwtAudience,
         };
 
         var tokenHandler = new JwtSecurityTokenHandler();

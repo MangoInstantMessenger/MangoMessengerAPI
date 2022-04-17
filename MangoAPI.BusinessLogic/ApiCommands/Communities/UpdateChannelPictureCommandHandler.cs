@@ -13,9 +13,7 @@ using MangoAPI.Domain.Entities;
 
 namespace MangoAPI.BusinessLogic.ApiCommands.Communities;
 
-public class
-    UpdateChannelPictureCommandHandler : IRequestHandler<UpdateChanelPictureCommand,
-        Result<UpdateChannelPictureResponse>>
+public class UpdateChannelPictureCommandHandler : IRequestHandler<UpdateChanelPictureCommand, Result<UpdateChannelPictureResponse>>
 {
     private readonly MangoPostgresDbContext _postgresDbContext;
     private readonly ResponseFactory<UpdateChannelPictureResponse> _responseFactory;
@@ -28,11 +26,10 @@ public class
     {
         _postgresDbContext = postgresDbContext;
         _responseFactory = responseFactory;
-        _blobService = blobService;
+        _blobService = blobService; ;
     }
 
-    public async Task<Result<UpdateChannelPictureResponse>> Handle(UpdateChanelPictureCommand request,
-        CancellationToken cancellationToken)
+    public async Task<Result<UpdateChannelPictureResponse>> Handle(UpdateChanelPictureCommand request, CancellationToken cancellationToken)
     {
         var totalUploadedDocsCount = await _postgresDbContext.Documents.CountAsync(x =>
             x.UserId == request.UserId &&
@@ -60,11 +57,10 @@ public class
 
             return _responseFactory.ConflictResponse(errorMessage, errorDescription);
         }
-
-        var blobContainerName = EnvironmentConstants.MangoBlobContainer;
+        
         var uniqueFileName = StringService.GetUniqueFileName(request.NewGroupPicture.FileName);
 
-        await _blobService.UploadFileBlobAsync(uniqueFileName, request.NewGroupPicture, blobContainerName);
+        await _blobService.UploadFileBlobAsync(uniqueFileName, request.NewGroupPicture);
 
         var newUserPicture = new DocumentEntity
         {
@@ -81,7 +77,7 @@ public class
 
         await _postgresDbContext.SaveChangesAsync(cancellationToken);
 
-        var blobUrl = await _blobService.GetBlobAsync(uniqueFileName, blobContainerName);
+        var blobUrl = await _blobService.GetBlobAsync(uniqueFileName);
         var response = UpdateChannelPictureResponse.FromSuccess(blobUrl);
 
         return _responseFactory.SuccessResponse(response);

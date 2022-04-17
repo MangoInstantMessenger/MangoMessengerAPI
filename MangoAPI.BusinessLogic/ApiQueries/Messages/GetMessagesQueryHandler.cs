@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using MangoAPI.Application.Interfaces;
 using MangoAPI.BusinessLogic.Responses;
 
 namespace MangoAPI.BusinessLogic.ApiQueries.Messages;
@@ -14,12 +15,15 @@ public class GetMessagesQueryHandler : IRequestHandler<GetMessagesQuery, Result<
 {
     private readonly MangoPostgresDbContext _postgresDbContext;
     private readonly ResponseFactory<GetMessagesResponse> _responseFactory;
+    private readonly IBlobServiceSettings _blobServiceSettings;
 
     public GetMessagesQueryHandler(MangoPostgresDbContext postgresDbContext,
-        ResponseFactory<GetMessagesResponse> responseFactory)
+        ResponseFactory<GetMessagesResponse> responseFactory,
+        IBlobServiceSettings blobServiceSettings)
     {
         _postgresDbContext = postgresDbContext;
         _responseFactory = responseFactory;
+        _blobServiceSettings = blobServiceSettings;
     }
 
     public async Task<Result<GetMessagesResponse>> Handle(GetMessagesQuery request, CancellationToken cancellationToken)
@@ -43,11 +47,11 @@ public class GetMessagesQueryHandler : IRequestHandler<GetMessagesQuery, Result<
                 InReplayToText = messageEntity.InReplayToText,
 
                 MessageAuthorPictureUrl = messageEntity.User.Image != null
-                    ? $"{EnvironmentConstants.MangoBlobAccess}/{messageEntity.User.Image}"
+                    ? $"{_blobServiceSettings.MangoBlobAccess}/{messageEntity.User.Image}"
                     : null,
 
                 MessageAttachmentUrl = messageEntity.Attachment != null
-                    ? $"{EnvironmentConstants.MangoBlobAccess}/{messageEntity.Attachment}"
+                    ? $"{_blobServiceSettings.MangoBlobAccess}/{messageEntity.Attachment}"
                     : null,
             }).Take(200).ToListAsync(cancellationToken);
 

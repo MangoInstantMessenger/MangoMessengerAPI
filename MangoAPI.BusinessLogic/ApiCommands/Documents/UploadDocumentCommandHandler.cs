@@ -18,6 +18,7 @@ public class UploadDocumentCommandHandler
     private readonly MangoPostgresDbContext _postgresDbContext;
     private readonly ResponseFactory<UploadDocumentResponse> _responseFactory;
     private readonly IBlobService _blobService;
+    private readonly string _mangoBlobContainer;
 
     public UploadDocumentCommandHandler(
         MangoPostgresDbContext postgresDbContext,
@@ -43,10 +44,10 @@ public class UploadDocumentCommandHandler
             return _responseFactory.ConflictResponse(message, details);
         }
 
-        var blobContainerName = EnvironmentConstants.MangoBlobContainer;
+        var blobContainerName = _mangoBlobContainer;
         var uniqueFileName = StringService.GetUniqueFileName(request.FormFile.FileName);
 
-        await _blobService.UploadFileBlobAsync(uniqueFileName, request.FormFile, blobContainerName);
+        await _blobService.UploadFileBlobAsync(uniqueFileName, request.FormFile);
 
         var documentEntity = new DocumentEntity
         {
@@ -59,7 +60,7 @@ public class UploadDocumentCommandHandler
 
         await _postgresDbContext.SaveChangesAsync(cancellationToken);
 
-        var fileUrl = await _blobService.GetBlobAsync(uniqueFileName, blobContainerName);
+        var fileUrl = await _blobService.GetBlobAsync(uniqueFileName);
 
         return _responseFactory.SuccessResponse(
             UploadDocumentResponse.FromSuccess(documentEntity.FileName, fileUrl));

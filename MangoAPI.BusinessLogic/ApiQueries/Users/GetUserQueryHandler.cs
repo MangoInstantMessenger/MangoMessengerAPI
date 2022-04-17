@@ -5,9 +5,11 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System.Threading;
 using System.Threading.Tasks;
+using MangoAPI.Application.Interfaces;
 using MangoAPI.Application.Services;
 using MangoAPI.BusinessLogic.Models;
 using MangoAPI.BusinessLogic.Responses;
+using Microsoft.Extensions.Configuration;
 
 namespace MangoAPI.BusinessLogic.ApiQueries.Users;
 
@@ -15,13 +17,16 @@ public class GetUserQueryHandler : IRequestHandler<GetUserQuery, Result<GetUserR
 {
     private readonly MangoPostgresDbContext _postgresDbContext;
     private readonly ResponseFactory<GetUserResponse> _responseFactory;
+    private readonly IBlobServiceSettings _blobServiceSettings;
 
     public GetUserQueryHandler(
         MangoPostgresDbContext postgresDbContext,
-        ResponseFactory<GetUserResponse> responseFactory)
+        ResponseFactory<GetUserResponse> responseFactory,
+        IBlobServiceSettings blobServiceSettings)
     {
         _postgresDbContext = postgresDbContext;
         _responseFactory = responseFactory;
+        _blobServiceSettings = blobServiceSettings;
     }
 
     public async Task<Result<GetUserResponse>> Handle(GetUserQuery request,
@@ -45,7 +50,7 @@ public class GetUserQueryHandler : IRequestHandler<GetUserQuery, Result<GetUserR
                 LinkedIn = user.UserInformation.LinkedIn,
                 Username = user.UserName,
                 Bio = user.Bio,
-                PictureUrl = StringService.GetDocumentUrl(user.Image),
+                PictureUrl = StringService.GetDocumentUrl(user.Image, _blobServiceSettings.MangoBlobAccess),
             }).FirstOrDefaultAsync(x => x.UserId == request.UserId, cancellationToken);
 
         if (user is null)

@@ -49,7 +49,7 @@ public record Message
 
 public static class MessageMapper
 {
-    public static Message ToMessage(this MessageEntity message, string displayName, Guid userId, string image)
+    public static Message ToMessage(this MessageEntity message, string displayName, Guid userId, string image, string mangoBlobAccess)
     {
         var messageDto = new Message
         {
@@ -65,11 +65,11 @@ public static class MessageMapper
             InReplayToText = message.InReplayToText,
 
             MessageAuthorPictureUrl = image != null
-                ? $"{EnvironmentConstants.MangoBlobAccess}/{image}"
+                ? $"{mangoBlobAccess}/{image}"
                 : null,
 
             MessageAttachmentUrl = message.Attachment != null
-                ? $"{EnvironmentConstants.MangoBlobAccess}/{message.Attachment}"
+                ? $"{mangoBlobAccess}/{message.Attachment}"
                 : null,
         };
 
