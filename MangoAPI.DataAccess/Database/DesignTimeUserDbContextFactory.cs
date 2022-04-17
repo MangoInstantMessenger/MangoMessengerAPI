@@ -14,6 +14,7 @@ public class DesignTimeUserDbContextFactory : IDesignTimeDbContextFactory<MangoP
 
     public DesignTimeUserDbContextFactory()
     {
+        //This needs to be deleted and changed
         _mangoDatabaseUrl = Environment.GetEnvironmentVariable("MANGO_DATABASE_URL");
     }
     
