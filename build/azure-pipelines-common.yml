@@ -1,0 +1,36 @@
+steps:
+  - task: NuGetToolInstaller@1
+    displayName: 'Install Nuget'
+
+  - task: NuGetCommand@2
+    displayName: 'Restore Nuget Packages'
+    inputs:
+      restoreSolution: '$(solution)'
+
+  - task: DotNetCoreCLI@2
+    displayName: 'dotnet build $(buildConfiguration)'
+    inputs:
+      command: 'build'
+      arguments: '--configuration $(buildConfiguration)'
+
+  - task: DotNetCoreCLI@2
+    displayName: 'Run dotnet unit tests'
+    inputs:
+      command: 'test'
+      projects: $(INTEGRATION_TESTS_PROJECT_PATH)
+      arguments: '--no-restore'
+
+  - task: DotNetCoreCLI@2
+    displayName: 'Run dotnet publish for Backend project'
+    inputs:
+      command: 'publish'
+      publishWebProjects: false
+      projects: '$(backendProjectPath)'
+      arguments: '--configuration $(BuildConfiguration) --output $(build.artifactstagingdirectory)/$(BuildConfiguration) --no-build'
+
+  - task: PublishBuildArtifacts@1
+    displayName: 'Publish Artifacts for Backend project'
+    inputs:
+      PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+      ArtifactName: 'drop'
+      publishLocation: 'Container'

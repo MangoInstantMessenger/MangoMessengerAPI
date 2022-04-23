@@ -2,10 +2,8 @@ trigger:
   branches:
     include:
       - develop
-      - MANGO-419
-
-pool:
-  vmImage: 'ubuntu-20.04'
+        
+pr: none
 
 variables:
   - group: MANGO_INTEGRATION_TESTS
@@ -15,51 +13,43 @@ variables:
     value: 'Any CPU'
   - name: buildConfiguration
     value: 'Release'
+  - name: backendProjectPath
+    value: 'MangoAPI.Presentation/MangoAPI.Presentation.csproj'
 
-steps:
-  - task: NuGetToolInstaller@1
-    displayName: 'Install Nuget'
+stages:
+  - stage: 'Build_Test'
+    jobs:
+      - job: "Build"
+        displayName: 'Build and Test'
+        pool:
+          vmImage: 'ubuntu-20.04'
+        
+        steps:
+          - template: azure-pipelines-common.yml
 
-  - task: NuGetCommand@2
-    displayName: 'Restore Nuget Packages'
-    inputs:
-      restoreSolution: '$(solution)'
-
-  - task: DotNetCoreCLI@2
-    displayName: 'dotnet build $(buildConfiguration)'
-    inputs:
-      command: 'build'
-      arguments: '--configuration $(buildConfiguration)'
-
-  - task: DotNetCoreCLI@2
-    displayName: 'Run dotnet unit tests'
-    inputs:
-      command: 'test'
-      projects: $(INTEGRATION_TESTS_PROJECT_PATH)
-      arguments: '--no-restore'
-      
-  - script: dotnet build --configuration $(buildConfiguration)
-    displayName: 'dotnet build $(buildConfiguration)'
-
-  - task: DotNetCoreCLI@2
-    displayName: 'Dotnet Publish'
-    inputs:
-      command: 'publish'
-      publishWebProjects: true
-
-#  - task: AzureWebApp@1
-#    inputs:
-#      azureSubscription: $(AZURE_SUBSCRIPTION_ID)
-#      appType: 'webAppLinux'
-#      appName: $(AZURE_WEBAPP_NAME)
-#      package: '$(System.DefaultWorkingDirectory)/**/*.zip'
-      
-  - task: AzureRmWebAppDeployment@4
-    inputs:
-      ConnectionType: 'AzureRM'
-      azureSubscription: $(AZURE_SUBSCRIPTION_ID)
-      appType: 'webAppLinux'
-      WebAppName: 'MangoMessengerBackend'
-      packageForLinux: '$(System.DefaultWorkingDirectory)/**/*.zip'
-      RuntimeStack: 'DOTNETCORE|6.0'
-      StartupCommand: 'dotnet run home/site/wwwroot/MangoAPI.Presentation.dll'
+  - stage: "dev"
+    displayName: "Deploy Mango Web API to Dev Environment"
+    dependsOn: Build_Test
+    condition: succeeded('Build_Test')
+    jobs:
+      - deployment: Deploy_Mango_Web_API_to_Dev
+        displayName: "Deploy Mango Web API to Dev Environment"
+        pool:
+          vmImage: "ubuntu 20.04"
+        environment: dev
+        variables:
+          - group: MANGO_DEV_ENV_VARS
+        strategy:
+          runOnce:
+            deploy:
+              steps:
+                - download: current
+                  artifact: drop
+                - task: AzureRmWebAppDeployment@4
+                  inputs:
+                    ConnectionType: "AzureRM"
+                    azureSubscription: "Azure for Students"
+                    appType: "webApp"
+                    WebAppName: "$(WebAppName)"
+                    packageForLinux: "$(Pipeline.Workspace)/drop/$(BuildConfiguration)/MangoAPI.Presentation.zip"
+                    JSONFiles: "**/appsettings.json"
