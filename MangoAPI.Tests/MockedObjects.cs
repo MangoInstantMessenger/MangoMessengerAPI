@@ -16,33 +16,6 @@ namespace MangoAPI.Tests;
 
 public static class MockedObjects
 {
-    public static IJwtGeneratorSettings GetJwtGeneratorSettingsMock()
-    {
-        const string mangoJwtIssuer = "mango_jwt_issuer";
-        const string mangoJwtAudience = "mango_jwt_audience";
-        const string mangoJwtSignInKey = "mango_jwt_signin_key";
-        const int mangoJwtLifetime = 5;
-        const int mangoRefreshTokenLifetime = 7;
-        var settings = new JwtGeneratorSettings(
-            mangoJwtIssuer, 
-            mangoJwtAudience, 
-            mangoJwtSignInKey, 
-            mangoJwtLifetime,
-            mangoRefreshTokenLifetime);
-
-        return settings;
-    }
-
-    public static IBlobServiceSettings GetBlobServiceSettingsMock()
-    {
-        const string mangoBlobContainerName = "mango_blob_container_name";
-        const string mangoBlobAccess = "mango_blob_access";
-        
-        var settings = new BlobServiceSettings(mangoBlobContainerName, mangoBlobAccess);
-
-        return settings;
-    }
-    
     public static IHubContext<ChatHub, IHubClient> GetHubContextMock()
     {
         var hubMock = new Mock<IHubContext<ChatHub, IHubClient>>();
@@ -128,11 +101,11 @@ public static class MockedObjects
                     It.IsAny<UserEntity>(),
                     It.IsAny<string>()))
                 .Returns(Task.FromResult(IdentityResult.Success));
-                
+
             userServiceMock.Setup(x => x.RemovePasswordAsync(
                     It.IsAny<UserEntity>()))
                 .Returns(Task.FromResult(IdentityResult.Success));
-                
+
             userServiceMock.Setup(x => x.AddPasswordAsync(
                     It.IsAny<UserEntity>(),
                     It.IsAny<string>()))
@@ -149,32 +122,32 @@ public static class MockedObjects
                     It.IsAny<UserEntity>(),
                     It.IsAny<string>()))
                 .Returns(Task.FromResult(IdentityResult.Failed()));
-                
+
             userServiceMock.Setup(x => x.RemovePasswordAsync(
                     It.IsAny<UserEntity>()))
                 .Returns(Task.FromResult(IdentityResult.Failed()));
-                
+
             userServiceMock.Setup(x => x.AddPasswordAsync(
                     It.IsAny<UserEntity>(),
                     It.IsAny<string>()))
                 .Returns(Task.FromResult(IdentityResult.Failed()));
-                
+
             userServiceMock.Setup(x => x.CheckPasswordAsync(
                     It.IsAny<UserEntity>(),
                     It.IsAny<string>()))
                 .Returns(Task.FromResult(false));
         }
-            
+
         return userServiceMock.Object;
     }
-        
+
     public static IUserManagerService GetUserServiceMock()
     {
         var userServiceMock = new Mock<IUserManagerService>();
         userServiceMock.Setup(x => x.RemovePasswordAsync(
                 It.IsAny<UserEntity>()))
             .Returns(Task.FromResult(IdentityResult.Success));
-                
+
         userServiceMock.Setup(x => x.AddPasswordAsync(
                 It.IsAny<UserEntity>(),
                 It.IsAny<string>()))
@@ -195,28 +168,57 @@ public static class MockedObjects
         if (isFailCase)
         {
             signInServiceMock.Setup(x => x.CheckPasswordSignInAsync(
-                    It.IsAny<UserEntity>(), 
-                    It.IsAny<string>(), 
+                    It.IsAny<UserEntity>(),
+                    It.IsAny<string>(),
                     It.IsAny<bool>()))
                 .Returns(Task.FromResult(SignInResult.Failed));
         }
         else
         {
             signInServiceMock.Setup(x => x.CheckPasswordSignInAsync(
-                    It.IsAny<UserEntity>(), 
-                    It.IsAny<string>(), 
+                    It.IsAny<UserEntity>(),
+                    It.IsAny<string>(),
                     It.IsAny<bool>()))
                 .Returns(Task.FromResult(SignInResult.Success));
         }
-            
-            
+
+
         return signInServiceMock.Object;
     }
 
     private static bool IsValidPassword(string password)
     {
-        return password.Length >= 8 && password.Any(char.IsDigit) 
-                                    && password.Any(char.IsSymbol) && password.Any(char.IsUpper)
+        return password.Length >= 8 && password.Any(char.IsDigit)
+                                    && password.Any(char.IsSymbol)
+                                    && password.Any(char.IsUpper)
                                     && password.Any(char.IsLower);
+    }
+
+    public static IJwtGeneratorSettings GetJwtGeneratorSettingsMock()
+    {
+        const string mangoJwtIssuer = "mango_jwt_issuer";
+        const string mangoJwtAudience = "mango_jwt_audience";
+        const string mangoJwtSignInKey = "mango_jwt_signin_key";
+        const int mangoJwtLifetime = 5;
+        const int mangoRefreshTokenLifetime = 7;
+
+        var settings = new JwtGeneratorSettings(
+            mangoJwtIssuer,
+            mangoJwtAudience,
+            mangoJwtSignInKey,
+            mangoJwtLifetime,
+            mangoRefreshTokenLifetime);
+
+        return settings;
+    }
+
+    public static IBlobServiceSettings GetBlobServiceSettingsMock()
+    {
+        const string mangoBlobContainerName = "mango_blob_container_name";
+        const string mangoBlobAccess = "mango_blob_access";
+
+        var settings = new BlobServiceSettings(mangoBlobContainerName, mangoBlobAccess);
+
+        return settings;
     }
 }

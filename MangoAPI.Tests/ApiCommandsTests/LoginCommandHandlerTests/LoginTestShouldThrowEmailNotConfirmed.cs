@@ -12,7 +12,7 @@ using Xunit;
 
 namespace MangoAPI.Tests.ApiCommandsTests.LoginCommandHandlerTests;
 
-public class LoginTestShouldThrowEmailNotConfirmed
+public class LoginTestShouldThrowEmailNotConfirmed : ITestable<LoginCommand, TokensResponse>
 {
     private readonly MangoDbFixture _mangoDbFixture = new();
     private readonly Assert<TokensResponse> _assert = new();
@@ -35,7 +35,7 @@ public class LoginTestShouldThrowEmailNotConfirmed
 
         _assert.Fail(result, expectedMessage, expectedDetails);
     }
-        
+
     public bool Seed()
     {
         _passwordHasher.HashPassword(_user, "Bm3-`dPRv-/w#3)cw^97");
@@ -44,7 +44,7 @@ public class LoginTestShouldThrowEmailNotConfirmed
         _mangoDbFixture.Context.SaveChanges();
 
         _mangoDbFixture.Context.Entry(_user).State = EntityState.Detached;
-            
+
         return true;
     }
 
@@ -58,7 +58,7 @@ public class LoginTestShouldThrowEmailNotConfirmed
             new LoginCommandHandler(signInManager, jwtGenerator, _mangoDbFixture.Context, responseFactory, jwtSettings);
         return handler;
     }
-        
+
     private readonly UserEntity _user = new()
     {
         DisplayName = "razumovsky r",
