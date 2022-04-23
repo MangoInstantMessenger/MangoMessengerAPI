@@ -14,19 +14,24 @@ public static class ConfigurationExtensions
         {
             throw new ArgumentNullException(nameof(configurationRoot));
         }
-        
-        var jsonConfigProvider = configurationRoot.Providers.FirstOrDefault(t => 
-            t.GetType() == EnvironmentConstants.MangoJsonConfigType && t.ToString()!.Contains(EnvironmentConstants.MangoJsonConfig));
 
-        if (jsonConfigProvider != null && jsonConfigProvider.TryGet(key, out var jsonData))
+        var jsonConfigProvider = configurationRoot.Providers.FirstOrDefault(t =>
+            t.GetType() == EnvironmentConstants.MangoJsonConfigType &&
+            t.ToString()!.Contains(EnvironmentConstants.MangoJsonConfig));
+
+        if (jsonConfigProvider != null
+            && jsonConfigProvider.TryGet(key, out var jsonData)
+            && !string.IsNullOrEmpty(jsonData))
         {
             return jsonData;
         }
-        
-        var environmentProvider = configurationRoot.Providers.FirstOrDefault(t => 
+
+        var environmentProvider = configurationRoot.Providers.FirstOrDefault(t =>
             t.GetType() == EnvironmentConstants.MangoEnvConfigType);
-        
-        if (environmentProvider != null && environmentProvider.TryGet(key, out var envData))
+
+        if (environmentProvider != null
+            && environmentProvider.TryGet(key, out var envData)
+            && !string.IsNullOrEmpty(envData))
         {
             return envData;
         }

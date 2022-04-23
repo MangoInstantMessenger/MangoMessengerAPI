@@ -19,47 +19,57 @@ public class MailgunApiEmailSenderService : IEmailSenderService
     private readonly string _mangoEmailNotificationsAddress;
 
     public MailgunApiEmailSenderService(
-        HttpClient httpClient, 
-        string mangoMailgunApiBaseUrl, 
-        string mangoMailgunApiKey, 
-        string mangoMailgunApiUrlWithDomain, 
-        string mangoFrontendAddress, 
+        HttpClient httpClient,
+        string mangoMailgunApiBaseUrl,
+        string mangoMailgunApiKey,
+        string mangoMailgunApiUrlWithDomain,
+        string mangoFrontendAddress,
         string mangoEmailNotificationsAddress)
     {
         _httpClient = httpClient ?? throw new ArgumentNullException(nameof(httpClient));
-        _mangoMailgunApiUrlWithDomain = mangoMailgunApiUrlWithDomain;
-        _mangoFrontendAddress = mangoFrontendAddress;
-        _mangoEmailNotificationsAddress = mangoEmailNotificationsAddress;
-        
+
+        _mangoMailgunApiUrlWithDomain = mangoMailgunApiUrlWithDomain ??
+                                        throw new ArgumentNullException(nameof(mangoMailgunApiUrlWithDomain));
+
+        _mangoFrontendAddress = mangoFrontendAddress ??
+                                throw new ArgumentNullException(nameof(mangoFrontendAddress));
+
+        _mangoEmailNotificationsAddress = mangoEmailNotificationsAddress ??
+                                          throw new ArgumentNullException(nameof(mangoEmailNotificationsAddress));
+
         _httpClient.BaseAddress = new Uri(mangoMailgunApiBaseUrl);
-        
-        var httpBasicAuthHeader = GenerateHttpAuthHeader(HttpAuthHeaderNames.Api, mangoMailgunApiKey);
-        _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(HttpAuthSchemes.Basic, httpBasicAuthHeader);
+
+        var httpBasicAuthHeader = GenerateHttpAuthHeader(
+            tokenName: HttpAuthHeaderNames.Api,
+            tokenValue: mangoMailgunApiKey);
+
+        _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(
+            scheme: HttpAuthSchemes.Basic,
+            parameter: httpBasicAuthHeader);
     }
 
     public async Task SendVerificationEmailAsync(UserEntity user, CancellationToken cancellationToken)
     {
         const string subject = "Mango Messenger email verification.";
-        
+
         var message = GenerateEmailConfirmBody(user);
         var emailContent = GenerateHttpContent(user.Email, subject, message);
-        var requestUri = _mangoMailgunApiUrlWithDomain;
-        
-        var response = await _httpClient.PostAsync(requestUri, emailContent, cancellationToken)
+
+        var response = await _httpClient.PostAsync(_mangoMailgunApiUrlWithDomain, emailContent, cancellationToken)
             .ConfigureAwait(false);
 
         response.EnsureSuccessStatusCode();
     }
 
-    public async Task SendPasswordRestoreRequestAsync(UserEntity user, Guid requestId, CancellationToken cancellationToken)
+    public async Task SendPasswordRestoreRequestAsync(UserEntity user, Guid requestId,
+        CancellationToken cancellationToken)
     {
         const string subject = "Mango Messenger password restore request.";
 
         var message = GeneratePasswordRestoreRequestBody(user, requestId);
         var emailContent = GenerateHttpContent(user.Email, subject, message);
-        var requestUri = _mangoMailgunApiUrlWithDomain;
-        
-        var response = await _httpClient.PostAsync(requestUri, emailContent, cancellationToken)
+
+        var response = await _httpClient.PostAsync(_mangoMailgunApiUrlWithDomain, emailContent, cancellationToken)
             .ConfigureAwait(false);
 
         response.EnsureSuccessStatusCode();
@@ -67,12 +77,14 @@ public class MailgunApiEmailSenderService : IEmailSenderService
 
     private string GenerateEmailConfirmBody(UserEntity user)
     {
-        return string.Format(Resources.EmailConfirmation, user.DisplayName, _mangoFrontendAddress, user.Email, user.EmailCode, user.EmailCode);
+        return string.Format(Resources.EmailConfirmation, user.DisplayName, _mangoFrontendAddress, user.Email,
+            user.EmailCode, user.EmailCode);
     }
 
     private string GeneratePasswordRestoreRequestBody(UserEntity user, Guid requestId)
     {
-        return string.Format(Resources.PasswordRestoration, user.DisplayName, _mangoFrontendAddress, requestId, requestId);
+        return string.Format(Resources.PasswordRestoration, user.DisplayName, _mangoFrontendAddress, requestId,
+            requestId);
     }
 
     private static string GenerateHttpAuthHeader(string tokenName, string tokenValue)
@@ -86,16 +98,14 @@ public class MailgunApiEmailSenderService : IEmailSenderService
 
     private FormUrlEncodedContent GenerateHttpContent(string recipient, string subject, string message)
     {
-        var sender = _mangoEmailNotificationsAddress;
-
         var content = new Dictionary<string, string>
         {
-            {"from", sender},
+            {"from", _mangoEmailNotificationsAddress},
             {"to", recipient},
             {"subject", subject},
             {"text", message},
         };
-        
+
         return new FormUrlEncodedContent(content);
     }
 }
