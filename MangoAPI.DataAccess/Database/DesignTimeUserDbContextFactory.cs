@@ -1,10 +1,7 @@
 ﻿using MangoAPI.Application.Services;
-using MangoAPI.Domain.Constants;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using System;
-using System.Linq;
-using Microsoft.Extensions.Configuration;
 
 namespace MangoAPI.DataAccess.Database;
 

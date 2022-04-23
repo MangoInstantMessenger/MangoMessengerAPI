@@ -1,6 +1,5 @@
 using MangoAPI.BusinessLogic.HubConfig;
 using MangoAPI.DataAccess.Database;
-using MangoAPI.Presentation.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpOverrides;

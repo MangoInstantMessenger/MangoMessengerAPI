@@ -22,7 +22,8 @@ public static class DatabaseServices
 
     private static IServiceCollection AddPostgresDb(this IServiceCollection services, IConfiguration configuration)
     {
-        var connectionString = configuration.GetValueFromAppSettingsOrEnvironment(EnvironmentConstants.MangoDatabaseUrl);
+        var connectionString =
+            configuration.GetValueFromAppSettingsOrEnvironment(EnvironmentConstants.MangoDatabaseUrl);
 
         connectionString = StringService.ConvertHerokuDbConnection(connectionString);
 
@@ -34,7 +35,7 @@ public static class DatabaseServices
 
         return services;
     }
-    
+
     public static IServiceCollection AddIdentityUsers(this IServiceCollection services)
     {
         var builder = services.AddIdentityCore<UserEntity>(options =>

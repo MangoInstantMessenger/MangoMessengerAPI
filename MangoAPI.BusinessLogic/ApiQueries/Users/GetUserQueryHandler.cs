@@ -9,7 +9,6 @@ using MangoAPI.Application.Interfaces;
 using MangoAPI.Application.Services;
 using MangoAPI.BusinessLogic.Models;
 using MangoAPI.BusinessLogic.Responses;
-using Microsoft.Extensions.Configuration;
 
 namespace MangoAPI.BusinessLogic.ApiQueries.Users;
 

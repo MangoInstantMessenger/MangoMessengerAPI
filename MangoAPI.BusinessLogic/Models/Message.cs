@@ -1,5 +1,4 @@
-﻿using MangoAPI.Domain.Constants;
-using MangoAPI.Domain.Entities;
+﻿using MangoAPI.Domain.Entities;
 using System;
 using System.ComponentModel;
 

@@ -3,8 +3,6 @@ using System.Configuration;
 using System.Linq;
 using MangoAPI.Presentation.Constants;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Configuration.Json;
-using ConfigurationSection = System.Configuration.ConfigurationSection;
 
 namespace MangoAPI.Presentation.Extensions;
 
