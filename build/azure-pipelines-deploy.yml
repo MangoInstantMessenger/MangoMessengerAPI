@@ -2,6 +2,8 @@ trigger:
   branches:
     include:
       - develop
+        
+pr: none
 
 variables:
   - group: MANGO_INTEGRATION_TESTS
