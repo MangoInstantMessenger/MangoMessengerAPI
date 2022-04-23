@@ -18,7 +18,6 @@ public class UploadDocumentCommandHandler
     private readonly MangoPostgresDbContext _postgresDbContext;
     private readonly ResponseFactory<UploadDocumentResponse> _responseFactory;
     private readonly IBlobService _blobService;
-    private readonly string _mangoBlobContainer;
 
     public UploadDocumentCommandHandler(
         MangoPostgresDbContext postgresDbContext,
@@ -43,8 +42,7 @@ public class UploadDocumentCommandHandler
             var details = ResponseMessageCodes.ErrorDictionary[message];
             return _responseFactory.ConflictResponse(message, details);
         }
-
-        var blobContainerName = _mangoBlobContainer;
+        
         var uniqueFileName = StringService.GetUniqueFileName(request.FormFile.FileName);
 
         await _blobService.UploadFileBlobAsync(uniqueFileName, request.FormFile);
