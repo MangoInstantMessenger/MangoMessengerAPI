@@ -14,34 +14,19 @@ namespace MangoAPI.Application.Services;
 public class MailgunApiEmailSenderService : IEmailSenderService
 {
     private readonly HttpClient _httpClient;
-    private readonly string _mangoMailgunApiUrlWithDomain;
-    private readonly string _mangoFrontendAddress;
-    private readonly string _mangoEmailNotificationsAddress;
+    private readonly IMailgunSettings _mailgunSettings;
 
-    public MailgunApiEmailSenderService(
-        HttpClient httpClient,
-        string mangoMailgunApiBaseUrl,
-        string mangoMailgunApiKey,
-        string mangoMailgunApiUrlWithDomain,
-        string mangoFrontendAddress,
-        string mangoEmailNotificationsAddress)
+    public MailgunApiEmailSenderService(HttpClient httpClient, IMailgunSettings mailgunSettings)
     {
         _httpClient = httpClient ?? throw new ArgumentNullException(nameof(httpClient));
 
-        _mangoMailgunApiUrlWithDomain = mangoMailgunApiUrlWithDomain ??
-                                        throw new ArgumentNullException(nameof(mangoMailgunApiUrlWithDomain));
+        _mailgunSettings = mailgunSettings ?? throw new ArgumentNullException(nameof(mailgunSettings));
 
-        _mangoFrontendAddress = mangoFrontendAddress ??
-                                throw new ArgumentNullException(nameof(mangoFrontendAddress));
-
-        _mangoEmailNotificationsAddress = mangoEmailNotificationsAddress ??
-                                          throw new ArgumentNullException(nameof(mangoEmailNotificationsAddress));
-
-        _httpClient.BaseAddress = new Uri(mangoMailgunApiBaseUrl);
+        _httpClient.BaseAddress = new Uri(_mailgunSettings.MailgunApiBaseUrl);
 
         var httpBasicAuthHeader = GenerateHttpAuthHeader(
             tokenName: HttpAuthHeaderNames.Api,
-            tokenValue: mangoMailgunApiKey);
+            tokenValue: _mailgunSettings.MailgunApiKey);
 
         _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(
             scheme: HttpAuthSchemes.Basic,
@@ -55,7 +40,8 @@ public class MailgunApiEmailSenderService : IEmailSenderService
         var message = GenerateEmailConfirmBody(user);
         var emailContent = GenerateHttpContent(user.Email, subject, message);
 
-        var response = await _httpClient.PostAsync(_mangoMailgunApiUrlWithDomain, emailContent, cancellationToken)
+        var response = await _httpClient
+            .PostAsync(_mailgunSettings.MailgunApiBaseUrlWithDomain, emailContent, cancellationToken)
             .ConfigureAwait(false);
 
         response.EnsureSuccessStatusCode();
@@ -69,7 +55,8 @@ public class MailgunApiEmailSenderService : IEmailSenderService
         var message = GeneratePasswordRestoreRequestBody(user, requestId);
         var emailContent = GenerateHttpContent(user.Email, subject, message);
 
-        var response = await _httpClient.PostAsync(_mangoMailgunApiUrlWithDomain, emailContent, cancellationToken)
+        var response = await _httpClient
+            .PostAsync(_mailgunSettings.MailgunApiBaseUrlWithDomain, emailContent, cancellationToken)
             .ConfigureAwait(false);
 
         response.EnsureSuccessStatusCode();
@@ -77,13 +64,15 @@ public class MailgunApiEmailSenderService : IEmailSenderService
 
     private string GenerateEmailConfirmBody(UserEntity user)
     {
-        return string.Format(Resources.EmailConfirmation, user.DisplayName, _mangoFrontendAddress, user.Email,
+        return string.Format(Resources.EmailConfirmation, user.DisplayName, _mailgunSettings.FrontendAddress,
+            user.Email,
             user.EmailCode, user.EmailCode);
     }
 
     private string GeneratePasswordRestoreRequestBody(UserEntity user, Guid requestId)
     {
-        return string.Format(Resources.PasswordRestoration, user.DisplayName, _mangoFrontendAddress, requestId,
+        return string.Format(Resources.PasswordRestoration, user.DisplayName, _mailgunSettings.FrontendAddress,
+            requestId,
             requestId);
     }
 
@@ -100,7 +89,7 @@ public class MailgunApiEmailSenderService : IEmailSenderService
     {
         var content = new Dictionary<string, string>
         {
-            {"from", _mangoEmailNotificationsAddress},
+            {"from", _mailgunSettings.NotificationEmail},
             {"to", recipient},
             {"subject", subject},
             {"text", message},

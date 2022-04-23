@@ -37,27 +37,24 @@ public static class MessengerServices
 
         services.AddScoped<IJwtGenerator, JwtGenerator>(_ => new JwtGenerator(jwtGeneratorSettings));
 
-        var mangoMailgunApiBaseUrl =
+        var mailgunApiBaseUrl =
             configuration.GetValueFromAppSettingsOrEnvironment(EnvironmentConstants.MangoMailgunApiBaseUrl);
-        var mangoMailgunApiKey =
+        var mailgunApiKey =
             configuration.GetValueFromAppSettingsOrEnvironment(EnvironmentConstants.MangoMailgunApiKey);
-        var mangoFrontendAddress =
+        var frontendAddress =
             configuration.GetValueFromAppSettingsOrEnvironment(EnvironmentConstants.MangoFrontendAddress);
-        var mangoEmailNotificationsAddress =
+        var notificationEmail =
             configuration.GetValueFromAppSettingsOrEnvironment(EnvironmentConstants.MangoEmailNotificationsAddress);
         var mangoMailgunApiDomain =
             configuration.GetValueFromAppSettingsOrEnvironment(EnvironmentConstants.MangoMailgunApiDomain);
 
-        var mangoMailgunApiUrlWithDomain = $"{mangoMailgunApiBaseUrl}/v3/{mangoMailgunApiDomain}/messages";
+        var mailgunApiUrlWithDomain = $"{mailgunApiBaseUrl}/v3/{mangoMailgunApiDomain}/messages";
 
-        services.AddScoped<IEmailSenderService, MailgunApiEmailSenderService>(_ =>
-            new MailgunApiEmailSenderService(
-                new HttpClient(),
-                mangoMailgunApiBaseUrl,
-                mangoMailgunApiKey,
-                mangoMailgunApiUrlWithDomain,
-                mangoFrontendAddress,
-                mangoEmailNotificationsAddress));
+        var mailgunSettings = new MailgunSettings(mailgunApiBaseUrl, mailgunApiUrlWithDomain,
+            mailgunApiKey, notificationEmail, frontendAddress);
+
+        services.AddScoped<IEmailSenderService, MailgunApiEmailSenderService>(_ => new MailgunApiEmailSenderService(
+            new HttpClient(), mailgunSettings));
 
         services.AddScoped<IUserManagerService, UserManagerService>();
         services.AddScoped<ISignInManagerService, SignInManagerService>();
