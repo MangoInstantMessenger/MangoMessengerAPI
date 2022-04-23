@@ -49,7 +49,8 @@ public class SearchContactByDisplayNameTestSuccess : ITestable<SearchContactQuer
     public IRequestHandler<SearchContactQuery, Result<SearchContactResponse>> CreateHandler()
     {
         var responseFactory = new ResponseFactory<SearchContactResponse>();
-        var handler = new SearchContactByDisplayNameQueryHandler(_mangoDbFixture.Context, responseFactory);
+        var blobSettings = MockedObjects.GetBlobServiceSettingsMock();
+        var handler = new SearchContactByDisplayNameQueryHandler(_mangoDbFixture.Context, responseFactory, blobSettings);
         return handler;
     }
         

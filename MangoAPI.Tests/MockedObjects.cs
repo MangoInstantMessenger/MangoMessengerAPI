@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using MangoAPI.Application.Interfaces;
+using MangoAPI.Application.Services;
 using MangoAPI.BusinessLogic.HubConfig;
 using MangoAPI.BusinessLogic.Models;
 using MangoAPI.Domain.Entities;
@@ -15,6 +16,33 @@ namespace MangoAPI.Tests;
 
 public static class MockedObjects
 {
+    public static IJwtGeneratorSettings GetJwtGeneratorSettingsMock()
+    {
+        const string mangoJwtIssuer = "mango_jwt_issuer";
+        const string mangoJwtAudience = "mango_jwt_audience";
+        const string mangoJwtSignInKey = "mango_jwt_signin_key";
+        const int mangoJwtLifetime = 5;
+        const int mangoRefreshTokenLifetime = 7;
+        var settings = new JwtGeneratorSettings(
+            mangoJwtIssuer, 
+            mangoJwtAudience, 
+            mangoJwtSignInKey, 
+            mangoJwtLifetime,
+            mangoRefreshTokenLifetime);
+
+        return settings;
+    }
+
+    public static IBlobServiceSettings GetBlobServiceSettingsMock()
+    {
+        const string mangoBlobContainerName = "mango_blob_container_name";
+        const string mangoBlobAccess = "mango_blob_access";
+        
+        var settings = new BlobServiceSettings(mangoBlobContainerName, mangoBlobAccess);
+
+        return settings;
+    }
+    
     public static IHubContext<ChatHub, IHubClient> GetHubContextMock()
     {
         var hubMock = new Mock<IHubContext<ChatHub, IHubClient>>();
@@ -49,13 +77,11 @@ public static class MockedObjects
         blobServiceMock.Setup(x =>
                 x.UploadFileBlobAsync(
                     It.IsAny<string>(),
-                    It.IsAny<IFormFile>(),
-                    It.IsAny<string>()))
+                    It.IsAny<IFormFile>()))
             .Returns(Task.FromResult(true));
 
         blobServiceMock.Setup(x =>
                 x.GetBlobAsync(
-                    It.IsAny<string>(),
                     It.IsAny<string>()))
             .Returns(Task.FromResult(blobName));
 

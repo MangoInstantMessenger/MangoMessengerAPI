@@ -54,8 +54,9 @@ public class LoginTestShouldThrowInvalidCredentials : ITestable<LoginCommand, To
         var signInManager = MockedObjects.GetSignInServiceMock(true);
         var jwtGenerator = MockedObjects.GetJwtGeneratorMock();
         var responseFactory = new ResponseFactory<TokensResponse>();
+        var jwtSettings = MockedObjects.GetJwtGeneratorSettingsMock();
         var handler =
-            new LoginCommandHandler(signInManager, jwtGenerator, _mangoDbFixture.Context, responseFactory);
+            new LoginCommandHandler(signInManager, jwtGenerator, _mangoDbFixture.Context, responseFactory, jwtSettings);
         return handler;
     }
         

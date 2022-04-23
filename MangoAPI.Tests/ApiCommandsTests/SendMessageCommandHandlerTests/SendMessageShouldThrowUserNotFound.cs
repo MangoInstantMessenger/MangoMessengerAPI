@@ -40,7 +40,8 @@ public class SendMessageShouldThrowUserNotFound : ITestable<SendMessageCommand, 
     {
         var hubContext = MockedObjects.GetHubContextMock();
         var responseFactory = new ResponseFactory<SendMessageResponse>();
-        var handler = new SendMessageCommandHandler(_mangoDbFixture.Context, hubContext, responseFactory);
+        var blobSettings = MockedObjects.GetBlobServiceSettingsMock();
+        var handler = new SendMessageCommandHandler(_mangoDbFixture.Context, hubContext, responseFactory, blobSettings);
         return handler;
     }
 }

@@ -51,8 +51,9 @@ public class LoginTestSuccess : ITestable<LoginCommand, TokensResponse>
         var signInManager = MockedObjects.GetSignInServiceMock(false);
         var jwtGenerator = MockedObjects.GetJwtGeneratorMock();
         var responseFactory = new ResponseFactory<TokensResponse>();
+        var jwtSettings = MockedObjects.GetJwtGeneratorSettingsMock();
         var handler =
-            new LoginCommandHandler(signInManager, jwtGenerator, _mangoDbFixture.Context, responseFactory);
+            new LoginCommandHandler(signInManager, jwtGenerator, _mangoDbFixture.Context, responseFactory, jwtSettings);
         return handler;
     }
         

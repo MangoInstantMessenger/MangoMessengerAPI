@@ -52,7 +52,8 @@ public class SearchCommunityTestSuccess : ITestable<SearchCommunityQuery, Search
     public IRequestHandler<SearchCommunityQuery, Result<SearchCommunityResponse>> CreateHandler()
     {
         var responseFactory = new ResponseFactory<SearchCommunityResponse>();
-        var handler = new SearchCommunityQueryHandler(_mangoDbFixture.Context, responseFactory);
+        var blobSettings = MockedObjects.GetBlobServiceSettingsMock();
+        var handler = new SearchCommunityQueryHandler(_mangoDbFixture.Context, responseFactory, blobSettings);
         return handler;
     }
         
