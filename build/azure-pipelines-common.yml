@@ -6,23 +6,19 @@ steps:
 
   - task: Npm@1
     displayName: 'Install Angular CLI'
-    workingDirectory: '$(frontEndProjectPath)'
     inputs:
       command: 'custom'
       customCommand: 'install -g @angular/cli'
 
-  - task: Npm@1
+  - script: |
+      npm ci
     displayName: 'Install npm packages'
     workingDirectory: '$(frontEndProjectPath)'
-    inputs:
-      command: 'ci'
-      verbose: true
 
-  - task: CmdLine@2
-    displayName: 'Build Angular app'
+  - script: |
+      ng build --prod
+    displayName: 'Build angular application for production'
     workingDirectory: '$(frontEndProjectPath)'
-    inputs:
-      script: 'ng build --prod'
 
   - task: NuGetToolInstaller@1
     displayName: 'Install Nuget'
