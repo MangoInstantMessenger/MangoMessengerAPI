@@ -13,6 +13,8 @@ variables:
     value: 'Release'
   - name: backendProjectPath
     value: 'MangoAPI.Presentation/MangoAPI.Presentation.csproj'
+  - name: frontEndProjectPath
+    value: 'MangoAPI.Client'
 
 stages:
   - stage: 'Build_Test'

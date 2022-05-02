@@ -348,3 +348,5 @@ healthchecksdb
 
 # code coverage temp
 coverage.opencover.xml
+
+MangoAPI.Client/.angular/*
