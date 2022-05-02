@@ -1,4 +1,29 @@
 steps:
+  - task: NodeTool@0
+    displayName: 'Install Node.js 16.x'
+    inputs:
+      versionSpec: 16.x
+
+  - task: Npm@1
+    displayName: 'Install Angular CLI'
+    workingDirectory: '$(frontEndProjectPath)'
+    inputs:
+      command: 'custom'
+      customCommand: 'install -g @angular/cli'
+
+  - task: Npm@1
+    displayName: 'Install npm packages'
+    workingDirectory: '$(frontEndProjectPath)'
+    inputs:
+      command: 'ci'
+      verbose: true
+
+  - task: CmdLine@2
+    displayName: 'Build Angular app'
+    workingDirectory: '$(frontEndProjectPath)'
+    inputs:
+      script: 'ng build --prod'
+
   - task: NuGetToolInstaller@1
     displayName: 'Install Nuget'
 
