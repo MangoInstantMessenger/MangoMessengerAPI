@@ -45,7 +45,6 @@
         <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.14.0" />
         <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
         <PackageReference Include="Swashbuckle.AspNetCore.Annotations" Version="6.2.3" />
-        <PackageReference Include="Swashbuckle.AspNetCore.Newtonsoft" Version="6.2.3" />
         <PackageReference Include="Swashbuckle.AspNetCore.Swagger" Version="6.2.3" />
         <PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" Version="6.2.3" />
         <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="6.2.3" />
@@ -66,7 +65,6 @@
         <PackageReference Include="Microsoft.AspNetCore.Http.Features" Version="5.0.13" />
         <PackageReference Include="Microsoft.AspNetCore.JsonPatch" Version="6.0.1" />
         <PackageReference Include="Microsoft.AspNetCore.Metadata" Version="6.0.1" />
-        <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="6.0.1" />
         <PackageReference Include="Microsoft.AspNetCore.Routing" Version="2.2.2" />
         <PackageReference Include="Microsoft.AspNetCore.Routing.Abstractions" Version="2.2.0" />
         <PackageReference Include="Microsoft.AspNetCore.SignalR.Common" Version="6.0.1" />
@@ -95,8 +93,6 @@
         <PackageReference Include="Microsoft.Net.Http.Headers" Version="2.2.8" />
         <PackageReference Include="Microsoft.NETCore.Platforms" Version="6.0.1" />
         <PackageReference Include="Microsoft.OpenApi" Version="1.2.3" />
-        <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
-        <PackageReference Include="Newtonsoft.Json.Bson" Version="1.0.2" />
         <PackageReference Include="System.Buffers" Version="4.5.1" />
         <PackageReference Include="System.Formats.Asn1" Version="6.0.0" />
         <PackageReference Include="System.IO.Pipelines" Version="6.0.1" />

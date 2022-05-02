@@ -10,6 +10,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using System;
+using System.Text.Json;
 
 namespace MangoAPI.Presentation;
 
@@ -63,7 +64,12 @@ public class Startup
     public void ConfigureServices(IServiceCollection services)
     {
         services.AddSignalR();
-        services.AddControllers();
+        services.AddControllers().AddJsonOptions(options =>
+        {
+            options.JsonSerializerOptions.WriteIndented = true;
+            options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
+        });
+        
         services.AddAppInfrastructure();
         services.AddSwaggerGen(c =>
         {
@@ -91,8 +97,6 @@ public class Startup
                 },
             });
         });
-
-        services.AddSwaggerGenNewtonsoftSupport();
 
         services.AddCors(options =>
         {
