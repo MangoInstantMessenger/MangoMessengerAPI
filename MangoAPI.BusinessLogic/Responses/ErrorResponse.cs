@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel;
 using System.Net;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace MangoAPI.BusinessLogic.Responses;
 
@@ -18,5 +19,5 @@ public record ErrorResponse
     [DefaultValue(false)]
     public bool Success { get; init; }
 
-    public override string ToString() => JsonSerializer.Serialize(this);
-}
+public override string ToString() => JsonSerializer.Serialize(this, 
+    new JsonSerializerOptions(JsonSerializerDefaults.Web));}
