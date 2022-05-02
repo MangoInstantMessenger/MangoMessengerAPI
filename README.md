@@ -70,7 +70,7 @@ As image below shows
 ## User stack of technologies
 
 - **SDK:** `.NET 6`
-- **Frameworks:** `ASP .NET`, `Angular 11.2.7`
+- **Frameworks:** `ASP .NET`, `Angular`
 - **Persistence:**
     - Database: `PostgreSQL 13`
     - ORM: `Entity Framework Core 6.0`
@@ -93,6 +93,14 @@ As image below shows
 - **Programming languages:** `C#`, `SQL`, `TypeScript`
 - **Tools:** `Visual Studio`, `Rider`, `VS Code`, `WebStorm`, `PgAdmin`, `Postman`
 
+## Versions
+
+- **SDK:** `.NET 6.0.202`
+- **Angular:** `13.3.5`
+- **Angular CLI:** `13.3.4`
+- **NodeJS:** `16.13.1`
+- **NPM:** `8.1.2`
+
 ## Tasks management
 
 The opened tasks and issues to be organized an handled as follows:
@@ -109,8 +117,8 @@ Version control to be organized as follows:
 - Fork this repository
 - Clone this repository using `git clone https://github.com/${{ username }}/MangoMessengerAPI.git`
 - If repository is cloned already then pull last changes from `develop` using
-  - `git checkout develop`
-  - `git pull`
+    - `git checkout develop`
+    - `git pull`
 - Create new branch based on `develop` with name according to `MANGO-ID` of the task
 - Solve the task
 - Create pull request to `develop`
