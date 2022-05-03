@@ -25,7 +25,7 @@ public class Startup
         _configuration = configuration;
     }
 
-    public static void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+    public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
     {
         if (env.IsDevelopment())
         {
@@ -58,7 +58,12 @@ public class Startup
             endpoints.MapHub<ChatHub>("/notify").RequireCors(CorsPolicy);
         });
 
-        UpdateDatabase(app);
+        var shouldMigrate = _configuration.GetValue<bool>("ShouldMigrateDatabase");
+
+        if (shouldMigrate)
+        {
+            MigrateDatabase(app);
+        }
     }
 
     public void ConfigureServices(IServiceCollection services)
@@ -116,7 +121,7 @@ public class Startup
         services.AddMvc();
     }
 
-    private static void UpdateDatabase(IApplicationBuilder app)
+    private static void MigrateDatabase(IApplicationBuilder app)
     {
         using var serviceScope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>()
             .CreateScope();
