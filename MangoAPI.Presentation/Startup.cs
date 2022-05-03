@@ -1,14 +1,10 @@
 using MangoAPI.BusinessLogic.HubConfig;
-using MangoAPI.DataAccess.Database;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpOverrides;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.OpenApi.Models;
-using System;
 using MangoAPI.Presentation.DependencyInjection;
 using MangoAPI.Presentation.Middlewares;
 using System.Text.Json;
@@ -62,13 +58,14 @@ public class Startup
 
         if (shouldMigrate)
         {
-            MigrateDatabase(app);
+            app.MigrateDatabase();
         }
     }
 
     public void ConfigureServices(IServiceCollection services)
     {
         services.AddSignalR();
+
         services.AddControllers().AddJsonOptions(options =>
         {
             options.JsonSerializerOptions.WriteIndented = true;
@@ -76,58 +73,15 @@ public class Startup
         });
 
         services.AddAppInfrastructure(_configuration);
+
         services.AddPostgresDatabaseService(_configuration);
+
         services.AddMessengerServices(_configuration);
-        services.AddSwaggerGen(c =>
-        {
-            c.EnableAnnotations();
-            c.SwaggerDoc("v1", new OpenApiInfo {Title = "MangoAPI", Version = "v1"});
-            c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
-            {
-                In = ParameterLocation.Header,
-                Description = "Please insert JWT with Bearer into field",
-                Name = "Authorization",
-                Type = SecuritySchemeType.ApiKey,
-            });
-            c.AddSecurityRequirement(new OpenApiSecurityRequirement
-            {
-                {
-                    new OpenApiSecurityScheme
-                    {
-                        Reference = new OpenApiReference
-                        {
-                            Type = ReferenceType.SecurityScheme,
-                            Id = "Bearer",
-                        },
-                    },
-                    Array.Empty<string>()
-                },
-            });
-        });
 
-        services.AddCors(options =>
-        {
-            options.AddPolicy(CorsPolicy, builder =>
-            {
-                var allowedOrigins = _configuration.GetSection("AllowedOrigins").Get<string[]>();
+        services.AddSwagger();
 
-                builder.WithOrigins(allowedOrigins)
-                    .AllowAnyMethod()
-                    .AllowCredentials()
-                    .AllowAnyHeader();
-            });
-        });
+        services.ConfigureCors(_configuration, CorsPolicy);
 
         services.AddMvc();
-    }
-
-    private static void MigrateDatabase(IApplicationBuilder app)
-    {
-        using var serviceScope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>()
-            .CreateScope();
-
-        using var context = serviceScope.ServiceProvider.GetService<MangoPostgresDbContext>();
-
-        context?.Database.Migrate();
     }
 }
