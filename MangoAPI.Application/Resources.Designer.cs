@@ -61,7 +61,7 @@ namespace MangoAPI.Application {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to \nHi, {0}, in order to confirm registration, please follow the link below:\n\n{1}verify-email?email={2}&amp;emailCode={3}\n\nConfirmation Code: {4}.
+        ///   Looks up a localized string similar to Hi, {0}, in order to confirm registration, please follow the link: {1}verify-email?email={2}&amp;emailCode={3}.
         /// </summary>
         internal static string EmailConfirmation {
             get {
@@ -70,7 +70,7 @@ namespace MangoAPI.Application {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to \nHi, {0}, in order to restore your password, please follow the link below:\n\n{1}restore-password-form?requestId={2}\n\nRequest ID: {3}.
+        ///   Looks up a localized string similar to Hi, {0}, in order to restore your password, please follow the link: {1}restore-password-form?requestId={2}.
         /// </summary>
         internal static string PasswordRestoration {
             get {
