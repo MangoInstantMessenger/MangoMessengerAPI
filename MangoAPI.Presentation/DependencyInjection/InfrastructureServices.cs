@@ -25,7 +25,10 @@ public static class InfrastructureServices
     public static IServiceCollection AddAppInfrastructure(this IServiceCollection services,
         IConfiguration configuration)
     {
-        if (services == null) throw new ArgumentNullException(nameof(services));
+        if (services == null)
+        {
+            throw new ArgumentNullException(nameof(services));
+        }
 
         services.AddIdentityUsers();
 
@@ -50,7 +53,10 @@ public static class InfrastructureServices
 
     private static IServiceCollection AddAppAuthorization(this IServiceCollection services)
     {
-        if (services == null) throw new ArgumentNullException(nameof(services));
+        if (services == null)
+        {
+            throw new ArgumentNullException(nameof(services));
+        }
 
         services.AddAuthorization(options =>
         {
@@ -59,6 +65,7 @@ public static class InfrastructureServices
                 .AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme)
                 .Build();
         });
+
         return services;
     }
 

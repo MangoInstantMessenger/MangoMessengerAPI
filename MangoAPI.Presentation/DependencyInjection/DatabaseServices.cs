@@ -13,14 +13,8 @@ namespace MangoAPI.Presentation.DependencyInjection;
 
 public static class DatabaseServices
 {
-    public static IServiceCollection AddDatabaseService(this IServiceCollection services, IConfiguration configuration)
-    {
-        services.AddPostgresDb(configuration);
-
-        return services;
-    }
-
-    private static IServiceCollection AddPostgresDb(this IServiceCollection services, IConfiguration configuration)
+    public static IServiceCollection AddPostgresDatabaseService(this IServiceCollection services,
+        IConfiguration configuration)
     {
         var connectionString =
             configuration.GetValueFromAppSettingsOrEnvironment(EnvironmentConstants.MangoDatabaseUrl);
@@ -48,8 +42,10 @@ public static class DatabaseServices
         });
 
         var identityBuilder = new IdentityBuilder(builder.UserType, builder.Services);
+        
         identityBuilder.AddEntityFrameworkStores<MangoPostgresDbContext>();
         identityBuilder.AddSignInManager<SignInManager<UserEntity>>();
+        
         return services;
     }
 }

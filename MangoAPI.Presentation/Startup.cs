@@ -71,7 +71,7 @@ public class Startup
         });
 
         services.AddAppInfrastructure(_configuration);
-        services.AddDatabaseService(_configuration);
+        services.AddPostgresDatabaseService(_configuration);
         services.AddMessengerServices(_configuration);
         services.AddSwaggerGen(c =>
         {
