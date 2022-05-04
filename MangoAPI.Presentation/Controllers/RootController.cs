@@ -12,6 +12,6 @@ public class RootController : Controller
     [Route("")]
     public IActionResult RedirectToTheAngularSpa()
     {
-        return Redirect(@"~/index.html");
+        return Redirect(@"~/app");
     }
 }

@@ -54,6 +54,15 @@ public class Startup
             endpoints.MapHub<ChatHub>("/notify").RequireCors(CorsPolicy);
         });
 
+        // https://stackoverflow.com/a/62374509
+        app.Map("/app", spaApp =>
+        {
+            spaApp.UseSpa(spa =>
+            {
+                spa.Options.SourcePath = "/wwwroot";
+            });
+        });
+
         var shouldMigrate = _configuration.GetValue<bool>("ShouldMigrateDatabase");
 
         if (shouldMigrate)
@@ -81,6 +90,8 @@ public class Startup
         services.AddSwagger();
 
         services.ConfigureCors(_configuration, CorsPolicy);
+
+        services.AddSpaStaticFiles(configuration => { configuration.RootPath = "wwwroot"; });
 
         services.AddMvc();
     }

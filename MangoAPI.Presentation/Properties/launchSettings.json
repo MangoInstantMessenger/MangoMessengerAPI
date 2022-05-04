@@ -20,7 +20,7 @@
     "MangoAPI": {
       "commandName": "Project",
       "launchBrowser": true,
-      "launchUrl": "index.html",
+      "launchUrl": "app",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
