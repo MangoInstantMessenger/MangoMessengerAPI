@@ -5,8 +5,8 @@ using MediatR;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using MangoAPI.Application.Interfaces;
 using MangoAPI.BusinessLogic.Responses;
-using MangoAPI.Domain.Constants;
 using Microsoft.EntityFrameworkCore;
 
 namespace MangoAPI.BusinessLogic.ApiQueries.Communities;
@@ -16,12 +16,15 @@ public class SearchCommunityQueryHandler
 {
     private readonly MangoPostgresDbContext _postgresDbContext;
     private readonly ResponseFactory<SearchCommunityResponse> _responseFactory;
+    private readonly IBlobServiceSettings _blobServiceSettings;
 
     public SearchCommunityQueryHandler(MangoPostgresDbContext postgresDbContext,
-        ResponseFactory<SearchCommunityResponse> responseFactory)
+        ResponseFactory<SearchCommunityResponse> responseFactory,
+        IBlobServiceSettings blobServiceSettings)
     {
         _postgresDbContext = postgresDbContext;
         _responseFactory = responseFactory;
+        _blobServiceSettings = blobServiceSettings;
     }
 
     public async Task<Result<SearchCommunityResponse>> Handle(SearchCommunityQuery request,
@@ -44,7 +47,7 @@ public class SearchCommunityQueryHandler
                     Title = x.Title,
                     CommunityType = (CommunityType) x.CommunityType,
                     ChatLogoImageUrl = x.Image != null
-                        ? $"{EnvironmentConstants.MangoBlobAccess}/{x.Image}"
+                        ? $"{_blobServiceSettings.MangoBlobAccess}/{x.Image}"
                         : null,
                     Description = x.Description,
                     MembersCount = x.MembersCount,
@@ -69,7 +72,7 @@ public class SearchCommunityQueryHandler
                     Title = x.Title,
                     CommunityType = (CommunityType) x.CommunityType,
                     ChatLogoImageUrl = x.Image != null
-                        ? $"{EnvironmentConstants.MangoBlobAccess}/{x.Image}"
+                        ? $"{_blobServiceSettings.MangoBlobAccess}/{x.Image}"
                         : null,
                     Description = x.Description,
                     MembersCount = x.MembersCount,

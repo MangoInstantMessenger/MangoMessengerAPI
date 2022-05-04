@@ -54,11 +54,10 @@ public class UpdateProfilePictureCommandHandler
 
             return _responseFactory.ConflictResponse(errorMessage, details);
         }
-
-        var blobContainerName = EnvironmentConstants.MangoBlobContainer;
+        
         var uniqueFileName = StringService.GetUniqueFileName(request.PictureFile.FileName);
 
-        await _blobService.UploadFileBlobAsync(uniqueFileName, request.PictureFile, blobContainerName);
+        await _blobService.UploadFileBlobAsync(uniqueFileName, request.PictureFile);
 
         var newUserPicture = new DocumentEntity
         {
@@ -75,7 +74,7 @@ public class UpdateProfilePictureCommandHandler
 
         await _postgresDbContext.SaveChangesAsync(cancellationToken);
 
-        var newUserPictureUrl = await _blobService.GetBlobAsync(uniqueFileName, blobContainerName);
+        var newUserPictureUrl = await _blobService.GetBlobAsync(uniqueFileName);
         var response = UpdateProfilePictureResponse.FromSuccess(newUserPictureUrl);
 
         return _responseFactory.SuccessResponse(response);

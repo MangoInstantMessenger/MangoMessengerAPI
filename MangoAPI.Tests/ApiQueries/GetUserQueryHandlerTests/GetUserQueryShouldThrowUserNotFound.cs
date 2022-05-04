@@ -40,7 +40,8 @@ public class GetUserQueryShouldThrowUserNotFound
     public IRequestHandler<GetUserQuery, Result<GetUserResponse>> CreateHandler()
     {
         var responseFactory = new ResponseFactory<GetUserResponse>();
-        var handler = new GetUserQueryHandler(_mangoDbFixture.Context, responseFactory);
+        var blobSettings = MockedObjects.GetBlobServiceSettingsMock();
+        var handler = new GetUserQueryHandler(_mangoDbFixture.Context, responseFactory, blobSettings);
         return handler;
     }
 }

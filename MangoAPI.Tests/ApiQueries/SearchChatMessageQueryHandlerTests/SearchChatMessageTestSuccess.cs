@@ -58,7 +58,8 @@ public class SearchChatMessageTestSuccess : ITestable<SearchChatMessagesQuery, S
     public IRequestHandler<SearchChatMessagesQuery, Result<SearchChatMessagesResponse>> CreateHandler()
     {
         var responseFactory = new ResponseFactory<SearchChatMessagesResponse>();
-        var handler = new SearchChatMessageQueryHandler(_mangoDbFixture.Context, responseFactory);
+        var blobSettings = MockedObjects.GetBlobServiceSettingsMock();
+        var handler = new SearchChatMessageQueryHandler(_mangoDbFixture.Context, responseFactory, blobSettings);
         return handler;
     }
         

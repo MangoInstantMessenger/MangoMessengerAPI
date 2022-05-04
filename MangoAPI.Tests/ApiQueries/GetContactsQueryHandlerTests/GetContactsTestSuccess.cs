@@ -52,7 +52,8 @@ public class GetContactsTestSuccess : ITestable<GetContactsQuery, GetContactsRes
     public IRequestHandler<GetContactsQuery, Result<GetContactsResponse>> CreateHandler()
     {
         var responseFactory = new ResponseFactory<GetContactsResponse>();
-        var handler = new GetContactsQueryHandler(_mangoDbFixture.Context, responseFactory);
+        var blobSettings = MockedObjects.GetBlobServiceSettingsMock();
+        var handler = new GetContactsQueryHandler(_mangoDbFixture.Context, responseFactory, blobSettings);
         return handler;
     }
         

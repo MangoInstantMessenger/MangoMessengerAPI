@@ -1,13 +1,13 @@
 ﻿using MangoAPI.BusinessLogic.Models;
 using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.DataAccess.Database;
-using MangoAPI.Domain.Constants;
 using MangoAPI.Domain.Enums;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using MangoAPI.Application.Interfaces;
 
 namespace MangoAPI.BusinessLogic.ApiQueries.Communities;
 
@@ -16,12 +16,15 @@ public class GetCurrentUserChatsQueryHandler
 {
     private readonly MangoPostgresDbContext _postgresDbContext;
     private readonly ResponseFactory<GetCurrentUserChatsResponse> _responseFactory;
+    private readonly IBlobServiceSettings _blobServiceSettings;
 
     public GetCurrentUserChatsQueryHandler(MangoPostgresDbContext postgresDbContext,
-        ResponseFactory<GetCurrentUserChatsResponse> responseFactory)
+        ResponseFactory<GetCurrentUserChatsResponse> responseFactory,
+        IBlobServiceSettings blobServiceSettings)
     {
         _postgresDbContext = postgresDbContext;
         _responseFactory = responseFactory;
+        _blobServiceSettings = blobServiceSettings;
     }
 
     public async Task<Result<GetCurrentUserChatsResponse>> Handle(GetCurrentUserChatsQuery request,
@@ -39,7 +42,7 @@ public class GetCurrentUserChatsQueryHandler
                 Title = x.Chat.Title,
                 CommunityType = (CommunityType)x.Chat.CommunityType,
                 ChatLogoImageUrl = x.Chat.Image != null
-                    ? $"{EnvironmentConstants.MangoBlobAccess}/{x.Chat.Image}"
+                    ? $"{_blobServiceSettings.MangoBlobAccess}/{x.Chat.Image}"
                     : null,
                 Description = x.Chat.Description,
                 MembersCount = x.Chat.MembersCount,
@@ -81,7 +84,7 @@ public class GetCurrentUserChatsQueryHandler
 
             currentChat.Title = colleague?.DisplayName;
             currentChat.ChatLogoImageUrl = colleague?.Image != null
-                ? $"{EnvironmentConstants.MangoBlobAccess}/{colleague.Image}"
+                ? $"{_blobServiceSettings.MangoBlobAccess}/{colleague.Image}"
                 : null;
         }
 

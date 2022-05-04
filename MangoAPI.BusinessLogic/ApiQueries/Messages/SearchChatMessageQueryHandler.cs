@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using MangoAPI.Application.Interfaces;
 using MangoAPI.BusinessLogic.Responses;
 
 namespace MangoAPI.BusinessLogic.ApiQueries.Messages;
@@ -15,13 +16,16 @@ public class SearchChatMessageQueryHandler
 {
     private readonly MangoPostgresDbContext _postgresDbContext;
     private readonly ResponseFactory<SearchChatMessagesResponse> _responseFactory;
+    private readonly IBlobServiceSettings _blobServiceSettings;
 
     public SearchChatMessageQueryHandler(
         MangoPostgresDbContext postgresDbContext,
-        ResponseFactory<SearchChatMessagesResponse> responseFactory)
+        ResponseFactory<SearchChatMessagesResponse> responseFactory,
+        IBlobServiceSettings blobServiceSettings)
     {
         _postgresDbContext = postgresDbContext;
         _responseFactory = responseFactory;
+        _blobServiceSettings = blobServiceSettings;
     }
 
     public async Task<Result<SearchChatMessagesResponse>> Handle(SearchChatMessagesQuery request,
@@ -64,11 +68,11 @@ public class SearchChatMessageQueryHandler
                     InReplayToText = x.InReplayToText,
 
                     MessageAuthorPictureUrl = x.User.Image != null
-                        ? $"{EnvironmentConstants.MangoBlobAccess}/{x.User.Image}"
+                        ? $"{_blobServiceSettings.MangoBlobAccess}/{x.User.Image}"
                         : null,
 
                     MessageAttachmentUrl = x.Attachment != null
-                        ? $"{EnvironmentConstants.MangoBlobAccess}/{x.Attachment}"
+                        ? $"{_blobServiceSettings.MangoBlobAccess}/{x.Attachment}"
                         : null,
                 }).Take(200);
         }
@@ -92,11 +96,11 @@ public class SearchChatMessageQueryHandler
                     InReplayToText = x.InReplayToText,
 
                     MessageAuthorPictureUrl = x.User.Image != null
-                        ? $"{EnvironmentConstants.MangoBlobAccess}/{x.User.Image}"
+                        ? $"{_blobServiceSettings.MangoBlobAccess}/{x.User.Image}"
                         : null,
 
                     MessageAttachmentUrl = x.Attachment != null
-                        ? $"{EnvironmentConstants.MangoBlobAccess}/{x.Attachment}"
+                        ? $"{_blobServiceSettings.MangoBlobAccess}/{x.Attachment}"
                         : null,
                 }).Take(200);
         }

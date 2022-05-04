@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
-using MangoAPI.Domain.Constants;
 
 namespace MangoAPI.Application.Services;
 
@@ -35,9 +34,9 @@ public static class StringService
         return connectionString;
     }
 
-    public static string GetDocumentUrl(string fileName)
+    public static string GetDocumentUrl(string fileName, string mangoBlobAccess)
     {
-        return string.IsNullOrWhiteSpace(fileName) ? null : $"{EnvironmentConstants.MangoBlobAccess}/{fileName}";
+        return string.IsNullOrWhiteSpace(fileName) ? null : $"{mangoBlobAccess}/{fileName}";
     }
 
     public static string GetUniqueFileName(string fileName)

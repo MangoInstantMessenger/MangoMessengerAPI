@@ -42,11 +42,10 @@ public class UploadDocumentCommandHandler
             var details = ResponseMessageCodes.ErrorDictionary[message];
             return _responseFactory.ConflictResponse(message, details);
         }
-
-        var blobContainerName = EnvironmentConstants.MangoBlobContainer;
+        
         var uniqueFileName = StringService.GetUniqueFileName(request.FormFile.FileName);
 
-        await _blobService.UploadFileBlobAsync(uniqueFileName, request.FormFile, blobContainerName);
+        await _blobService.UploadFileBlobAsync(uniqueFileName, request.FormFile);
 
         var documentEntity = new DocumentEntity
         {
@@ -59,7 +58,7 @@ public class UploadDocumentCommandHandler
 
         await _postgresDbContext.SaveChangesAsync(cancellationToken);
 
-        var fileUrl = await _blobService.GetBlobAsync(uniqueFileName, blobContainerName);
+        var fileUrl = await _blobService.GetBlobAsync(uniqueFileName);
 
         return _responseFactory.SuccessResponse(
             UploadDocumentResponse.FromSuccess(documentEntity.FileName, fileUrl));

@@ -18,17 +18,20 @@ public class LoginCommandHandler : IRequestHandler<LoginCommand, Result<TokensRe
     private readonly MangoPostgresDbContext _postgresDbContext;
     private readonly ISignInManagerService _signInManager;
     private readonly ResponseFactory<TokensResponse> _responseFactory;
+    private readonly IJwtGeneratorSettings _jwtGeneratorSettings;
 
     public LoginCommandHandler(
         ISignInManagerService signInManager,
         IJwtGenerator jwtGenerator,
         MangoPostgresDbContext postgresDbContext,
-        ResponseFactory<TokensResponse> responseFactory)
+        ResponseFactory<TokensResponse> responseFactory,
+        IJwtGeneratorSettings jwtGeneratorSettings)
     {
         _signInManager = signInManager;
         _jwtGenerator = jwtGenerator;
         _postgresDbContext = postgresDbContext;
         _responseFactory = responseFactory;
+        _jwtGeneratorSettings = jwtGeneratorSettings;
     }
 
     public async Task<Result<TokensResponse>> Handle(LoginCommand request,
@@ -63,14 +66,12 @@ public class LoginCommandHandler : IRequestHandler<LoginCommand, Result<TokensRe
 
             return _responseFactory.ConflictResponse(errorMessage, details);
         }
-
-        const int refreshLifetime = EnvironmentConstants.MangoRefreshTokenLifetime;
-
+        
         var session = new SessionEntity
         {
             UserId = user.Id,
             RefreshToken = Guid.NewGuid(),
-            ExpiresAt = DateTime.UtcNow.AddDays(refreshLifetime),
+            ExpiresAt = DateTime.UtcNow.AddDays(_jwtGeneratorSettings.MangoRefreshTokenLifetime),
             CreatedAt = DateTime.UtcNow,
         };
 

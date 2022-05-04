@@ -10,6 +10,7 @@ using System;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using MangoAPI.Application.Interfaces;
 using MangoAPI.BusinessLogic.Responses;
 
 namespace MangoAPI.BusinessLogic.ApiCommands.Messages;
@@ -20,15 +21,18 @@ public class SendMessageCommandHandler
     private readonly MangoPostgresDbContext _postgresDbContext;
     private readonly IHubContext<ChatHub, IHubClient> _hubContext;
     private readonly ResponseFactory<SendMessageResponse> _responseFactory;
+    private readonly IBlobServiceSettings _blobServiceSettings;
 
     public SendMessageCommandHandler(
         MangoPostgresDbContext postgresDbContext,
         IHubContext<ChatHub, IHubClient> hubContext,
-        ResponseFactory<SendMessageResponse> responseFactory)
+        ResponseFactory<SendMessageResponse> responseFactory,
+        IBlobServiceSettings blobServiceSettings)
     {
         _postgresDbContext = postgresDbContext;
         _hubContext = hubContext;
         _responseFactory = responseFactory;
+        _blobServiceSettings = blobServiceSettings;
     }
 
     public async Task<Result<SendMessageResponse>> Handle(SendMessageCommand request,
@@ -105,7 +109,7 @@ public class SendMessageCommandHandler
 
         await _postgresDbContext.SaveChangesAsync(cancellationToken);
 
-        var messageDto = messageEntity.ToMessage(user.DisplayName, user.Id, user.Image);
+        var messageDto = messageEntity.ToMessage(user.DisplayName, user.Id, user.Image, _blobServiceSettings.MangoBlobAccess);
 
         await _hubContext.Clients.Group(request.ChatId.ToString()).BroadcastMessageAsync(messageDto);
 

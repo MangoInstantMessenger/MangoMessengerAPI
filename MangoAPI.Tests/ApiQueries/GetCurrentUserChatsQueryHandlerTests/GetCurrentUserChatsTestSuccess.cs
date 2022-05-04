@@ -52,7 +52,8 @@ public class GetCurrentUserChatsTestSuccess : ITestable<GetCurrentUserChatsQuery
     public IRequestHandler<GetCurrentUserChatsQuery, Result<GetCurrentUserChatsResponse>> CreateHandler()
     {
         var responseFactory = new ResponseFactory<GetCurrentUserChatsResponse>();
-        var handler = new GetCurrentUserChatsQueryHandler(_mangoDbFixture.Context, responseFactory);
+        var blobSettings = MockedObjects.GetBlobServiceSettingsMock();
+        var handler = new GetCurrentUserChatsQueryHandler(_mangoDbFixture.Context, responseFactory, blobSettings);
         return handler;
     }
         

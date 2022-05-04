@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using FluentValidation;
 using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.Domain.Constants;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 
 namespace MangoAPI.Presentation.Middlewares;
@@ -54,6 +55,14 @@ public class ExceptionHandlingMiddleware
             ErrorDetails = ResponseMessageCodes.ErrorDictionary[ResponseMessageCodes.InvalidRequestModel],
             StatusCode = errorContext.StatusCode,
         }.ToString());
+    }
+}
+
+public static class HandlingMiddlewareExtenstion
+{
+    public static void ConfigureExceptionHandler(this IApplicationBuilder app)
+    {
+        app.UseMiddleware<ExceptionHandlingMiddleware>();
     }
 }
 

@@ -14,7 +14,6 @@ public class ChangePasswordTestShouldThrowUserNotFound: ITestable<ChangePassword
 {
     private readonly MangoDbFixture _mangoDbFixture = new();
     private readonly Assert<ResponseBase> _assert = new();
-    private readonly PasswordHashService _passwordHasher = new();
 
     [Fact]
     public async Task ChangePasswordTestShouldThrow_UserNotFound()

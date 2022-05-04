@@ -10,25 +10,27 @@ namespace MangoAPI.Application.Services;
 public class BlobService : IBlobService
 {
     private readonly BlobServiceClient _blobClient;
+    private readonly IBlobServiceSettings _blobServiceSettings;
 
-    public BlobService(BlobServiceClient blobClient)
+    public BlobService(BlobServiceClient blobClient, IBlobServiceSettings blobServiceSettings)
     {
         _blobClient = blobClient;
+        _blobServiceSettings = blobServiceSettings;
     }
 
-    public Task<string> GetBlobAsync(string name, string containerName)
+    public Task<string> GetBlobAsync(string name)
     {
-        var containerClient = _blobClient.GetBlobContainerClient(containerName);
+        var containerClient = _blobClient.GetBlobContainerClient(_blobServiceSettings.MangoBlobContainerName);
         var blobClient = containerClient.GetBlobClient(name);
         
         return Task.FromResult(blobClient.Uri.AbsoluteUri);
     }
 
-    public async Task<bool> UploadFileBlobAsync(string name, IFormFile file, string containerName)
+    public async Task<bool> UploadFileBlobAsync(string name, IFormFile file)
     {
         try
         {
-            var containerClient = _blobClient.GetBlobContainerClient(containerName);
+            var containerClient = _blobClient.GetBlobContainerClient(_blobServiceSettings.MangoBlobContainerName);
 
             var blobClient = containerClient.GetBlobClient(name);
 

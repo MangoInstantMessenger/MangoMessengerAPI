@@ -57,7 +57,8 @@ public class GetMessagesTestSuccess : ITestable<GetMessagesQuery, GetMessagesRes
     public IRequestHandler<GetMessagesQuery, Result<GetMessagesResponse>> CreateHandler()
     {
         var responseFactory = new ResponseFactory<GetMessagesResponse>();
-        var handler = new GetMessagesQueryHandler(_mangoDbFixture.Context, responseFactory);
+        var blobSettings = MockedObjects.GetBlobServiceSettingsMock();
+        var handler = new GetMessagesQueryHandler(_mangoDbFixture.Context, responseFactory, blobSettings);
         return handler;
     }
         

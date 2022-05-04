@@ -50,7 +50,8 @@ public class RefreshSessionTestShouldThrowInvalidOrExpiredRefreshToken
         var context = _mangoDbFixture.Context;
         var responseFactory = new ResponseFactory<TokensResponse>();
         var jwtGenerator = MockedObjects.GetJwtGeneratorMock();
-        var handler = new RefreshSessionCommandHandler(context, jwtGenerator, responseFactory);
+        var jwtSettings = MockedObjects.GetJwtGeneratorSettingsMock();
+        var handler = new RefreshSessionCommandHandler(context, jwtGenerator, responseFactory, jwtSettings);
 
         return handler;
     }

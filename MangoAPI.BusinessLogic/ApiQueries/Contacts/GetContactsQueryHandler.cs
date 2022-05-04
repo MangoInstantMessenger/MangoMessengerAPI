@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using MangoAPI.Application.Interfaces;
 using MangoAPI.BusinessLogic.Responses;
 
 namespace MangoAPI.BusinessLogic.ApiQueries.Contacts;
@@ -14,13 +15,16 @@ public class GetContactsQueryHandler : IRequestHandler<GetContactsQuery, Result<
 {
     private readonly MangoPostgresDbContext _postgresDbContext;
     private readonly ResponseFactory<GetContactsResponse> _responseFactory;
+    private readonly IBlobServiceSettings _blobServiceSettings;
 
     public GetContactsQueryHandler(
         MangoPostgresDbContext postgresDbContext,
-        ResponseFactory<GetContactsResponse> responseFactory)
+        ResponseFactory<GetContactsResponse> responseFactory,
+        IBlobServiceSettings blobServiceSettings)
     {
         _postgresDbContext = postgresDbContext;
         _responseFactory = responseFactory;
+        _blobServiceSettings = blobServiceSettings;
     }
 
     public async Task<Result<GetContactsResponse>> Handle(GetContactsQuery request, CancellationToken cancellationToken)
@@ -36,7 +40,7 @@ public class GetContactsQueryHandler : IRequestHandler<GetContactsQuery, Result<
                 DisplayName = userEntity.DisplayName,
                 Address = userEntity.UserInformation.Address,
                 Bio = userEntity.Bio,
-                PictureUrl = StringService.GetDocumentUrl(userEntity.Image),
+                PictureUrl = StringService.GetDocumentUrl(userEntity.Image, _blobServiceSettings.MangoBlobAccess),
                 Email = userEntity.Email,
                 IsContact = true,
             };

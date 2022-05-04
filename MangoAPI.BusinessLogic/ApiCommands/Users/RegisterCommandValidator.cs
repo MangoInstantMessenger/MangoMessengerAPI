@@ -1,10 +1,16 @@
 ﻿using FluentValidation;
-using MangoAPI.Domain.Constants;
 
 namespace MangoAPI.BusinessLogic.ApiCommands.Users;
 
 public class RegisterCommandValidator : AbstractValidator<RegisterCommand>
 {
+    private readonly string _mangoEmailNotificationsAddress;
+
+    public RegisterCommandValidator(string mangoEmailNotificationsAddress)
+    {
+        _mangoEmailNotificationsAddress = mangoEmailNotificationsAddress;
+    }
+    
     public RegisterCommandValidator()
     {
         RuleFor(x => x.Email)
@@ -12,7 +18,7 @@ public class RegisterCommandValidator : AbstractValidator<RegisterCommand>
             .WithMessage("Email address required.")
             .EmailAddress()
             .WithMessage("Email address should be in proper format.")
-            .NotEqual(EnvironmentConstants.MangoEmailNotificationsAddress)
+            .NotEqual(_mangoEmailNotificationsAddress)
             .WithMessage("Prohibited email address")
             .Length(1, 50);
 

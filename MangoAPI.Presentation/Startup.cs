@@ -1,31 +1,27 @@
 using MangoAPI.BusinessLogic.HubConfig;
-using MangoAPI.DataAccess.Database;
-using MangoAPI.Presentation.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpOverrides;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.OpenApi.Models;
-using System;
+using MangoAPI.Presentation.DependencyInjection;
+using MangoAPI.Presentation.Middlewares;
 using System.Text.Json;
 
 namespace MangoAPI.Presentation;
 
 public class Startup
 {
+    private readonly IConfiguration _configuration;
     private const string CorsPolicy = "MyDefaultCorsPolicy";
 
     public Startup(IConfiguration configuration)
     {
-        Configuration = configuration;
+        _configuration = configuration;
     }
 
-    private IConfiguration Configuration { get; }
-
-    public static void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+    public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
     {
         if (env.IsDevelopment())
         {
@@ -58,69 +54,45 @@ public class Startup
             endpoints.MapHub<ChatHub>("/notify").RequireCors(CorsPolicy);
         });
 
-        UpdateDatabase(app);
+        // https://stackoverflow.com/a/62374509
+        app.Map("/app", spaApp =>
+        {
+            spaApp.UseSpa(spa =>
+            {
+                spa.Options.SourcePath = "/wwwroot";
+            });
+        });
+
+        var shouldMigrate = _configuration.GetValue<bool>("ShouldMigrateDatabase");
+
+        if (shouldMigrate)
+        {
+            app.MigrateDatabase();
+        }
     }
 
     public void ConfigureServices(IServiceCollection services)
     {
         services.AddSignalR();
+
         services.AddControllers().AddJsonOptions(options =>
         {
             options.JsonSerializerOptions.WriteIndented = true;
             options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
         });
-        
-        services.AddAppInfrastructure();
-        services.AddSwaggerGen(c =>
-        {
-            c.EnableAnnotations();
-            c.SwaggerDoc("v1", new OpenApiInfo {Title = "MangoAPI", Version = "v1"});
-            c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
-            {
-                In = ParameterLocation.Header,
-                Description = "Please insert JWT with Bearer into field",
-                Name = "Authorization",
-                Type = SecuritySchemeType.ApiKey,
-            });
-            c.AddSecurityRequirement(new OpenApiSecurityRequirement
-            {
-                {
-                    new OpenApiSecurityScheme
-                    {
-                        Reference = new OpenApiReference
-                        {
-                            Type = ReferenceType.SecurityScheme,
-                            Id = "Bearer",
-                        },
-                    },
-                    Array.Empty<string>()
-                },
-            });
-        });
 
-        services.AddCors(options =>
-        {
-            options.AddPolicy(CorsPolicy, builder =>
-            {
-                var allowedOrigins = Configuration.GetSection("AllowedOrigins").Get<string[]>();
+        services.AddAppInfrastructure(_configuration);
 
-                builder.WithOrigins(allowedOrigins)
-                    .AllowAnyMethod()
-                    .AllowCredentials()
-                    .AllowAnyHeader();
-            });
-        });
+        services.AddPostgresDatabaseService(_configuration);
+
+        services.AddMessengerServices(_configuration);
+
+        services.AddSwagger();
+
+        services.ConfigureCors(_configuration, CorsPolicy);
+
+        services.AddSpaStaticFiles(configuration => { configuration.RootPath = "wwwroot"; });
 
         services.AddMvc();
-    }
-
-    private static void UpdateDatabase(IApplicationBuilder app)
-    {
-        using var serviceScope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>()
-            .CreateScope();
-
-        using var context = serviceScope.ServiceProvider.GetService<MangoPostgresDbContext>();
-
-        context?.Database.Migrate();
     }
 }
