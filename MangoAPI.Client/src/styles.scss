@@ -315,12 +315,12 @@ i {
   .sidebar-header {
     background: $dark-gray;
     height: 110px;
-
     .form-control {
       padding-top: 8px;
       background: $dark;
       color: $light-gray;
       font-size: 18px;
+      border-radius: 0.25rem 0 0 0.25rem !important;
 
       &::placeholder {
         color: $light-gray;
@@ -332,10 +332,10 @@ i {
         border: none;
       }
     }
-
     .input-group-text {
       background: $dark;
       border: none;
+      padding: 8px;
     }
   }
 
