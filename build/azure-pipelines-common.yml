@@ -20,6 +20,11 @@ steps:
     displayName: 'Build angular application for production'
     workingDirectory: '$(frontEndProjectPath)'
 
+  - script: |
+      ng lint
+    displayName: 'Lint angular application'
+    workingDirectory: '$(frontEndProjectPath)'
+
   - task: NuGetToolInstaller@1
     displayName: 'Install Nuget'
 
