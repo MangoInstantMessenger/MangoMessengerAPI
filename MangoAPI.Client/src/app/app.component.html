@@ -1,6 +1,6 @@
 <h1>Angular Router App</h1>
 <!-- This nav gives you links to click, which tells the router which route to use (defined in the routes constant in  AppRoutingModule) -->
-<button (click)="navigateFirst()">Navigate first</button>
-<button (click)="navigateSecond()">Navigate Second</button>
+<button type='button' class='btn btn-primary' (click)='navigateFirst()'>Navigate first</button>
+<button type='button' class='btn btn-primary' (click)='navigateSecond()'>Navigate Second</button>
 <!-- The routed views render in the <router-outlet>-->
 <router-outlet></router-outlet>
