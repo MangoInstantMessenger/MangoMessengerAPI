@@ -5,8 +5,8 @@ import { NotFoundComponent } from './components/not-found/not-found.component';
 import { RegisterComponent } from './components/register/register.component';
 import { ConfirmRegistrationComponent } from './components/confirm-registration/confirm-registration.component';
 import { LoginComponent } from './components/login/login.component';
-import { ChangePasswordRequestComponent } from './components/change-password-request/change-password-request.component';
-import { ChangePasswordComponent } from './components/change-password/change-password.component';
+import { RestorePasswordRequestComponent } from './components/restore-password-request/restore-password-request.component';
+import { RestorePasswordComponent } from './components/restore-password/restore-password.component';
 import { ChatsComponent } from './components/chats/chats.component';
 import { ContactsComponent } from './components/contacts/contacts.component';
 import { SettingsComponent } from './components/settings/settings.component';
@@ -16,10 +16,10 @@ const routes: Routes = [
   { path: 'confirm-registration', component: ConfirmRegistrationComponent },
   { path: 'login', component: LoginComponent },
   {
-    path: 'change-password-request',
-    component: ChangePasswordRequestComponent
+    path: 'restore-password-request',
+    component: RestorePasswordRequestComponent
   },
-  { path: 'change-password', component: ChangePasswordComponent },
+  { path: 'restore-password', component: RestorePasswordComponent },
   { path: 'chats', component: ChatsComponent },
   { path: 'contacts', component: ContactsComponent },
   { path: 'settings', component: SettingsComponent },

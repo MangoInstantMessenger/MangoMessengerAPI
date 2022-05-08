@@ -4,8 +4,8 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './components/login/login.component';
 import { RegisterComponent } from './components/register/register.component';
-import { ChangePasswordComponent } from './components/change-password/change-password.component';
-import { ChangePasswordRequestComponent } from './components/change-password-request/change-password-request.component';
+import { RestorePasswordComponent } from './components/restore-password/restore-password.component';
+import { RestorePasswordRequestComponent } from './components/restore-password-request/restore-password-request.component';
 import { ChatsComponent } from './components/chats/chats.component';
 import { ContactsComponent } from './components/contacts/contacts.component';
 import { SettingsComponent } from './components/settings/settings.component';
@@ -22,8 +22,8 @@ import { DatePipe } from '@angular/common';
     AppComponent,
     LoginComponent,
     RegisterComponent,
-    ChangePasswordComponent,
-    ChangePasswordRequestComponent,
+    RestorePasswordComponent,
+    RestorePasswordRequestComponent,
     ChatsComponent,
     ContactsComponent,
     SettingsComponent,

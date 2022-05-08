@@ -1,20 +1,20 @@
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import {GatewayComponent} from './gateway.component';
+import {RestorePasswordComponent} from './restore-password.component';
 
-describe('GatewayComponent', () => {
-  let component: GatewayComponent;
-  let fixture: ComponentFixture<GatewayComponent>;
+describe('RestorePasswordComponent', () => {
+  let component: RestorePasswordComponent;
+  let fixture: ComponentFixture<RestorePasswordComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [GatewayComponent]
+      declarations: [RestorePasswordComponent]
     })
       .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(GatewayComponent);
+    fixture = TestBed.createComponent(RestorePasswordComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

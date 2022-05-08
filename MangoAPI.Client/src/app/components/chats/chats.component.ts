@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 
 @Component({
   selector: 'app-chats',
@@ -7,9 +7,12 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ChatsComponent implements OnInit {
 
-  constructor() { }
+  constructor() {
+  }
 
   ngOnInit(): void {
+    let chatMessages = document.getElementById('chatMessages');
+    chatMessages!.scrollTop = chatMessages!.scrollHeight;
   }
 
 }
