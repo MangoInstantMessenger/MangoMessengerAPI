@@ -7,14 +7,9 @@ on:
       - azure-dev
       - azure-qa
       - master
-      - MANGO-435
   pull_request:
     branches:
       - develop
-      - develop
-      - azure-dev
-      - azure-qa
-      - master
 
 jobs:
   build:
