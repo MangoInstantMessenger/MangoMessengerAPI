@@ -11,6 +11,10 @@ on:
   pull_request:
     branches:
       - develop
+      - develop
+      - azure-dev
+      - azure-qa
+      - master
 
 jobs:
   build:
