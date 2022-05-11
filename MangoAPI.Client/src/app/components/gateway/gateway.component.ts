@@ -1,4 +1,5 @@
-import {Component, OnInit} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-gateway',
@@ -6,11 +7,11 @@ import {Component, OnInit} from '@angular/core';
   styleUrls: ['./gateway.component.scss']
 })
 export class GatewayComponent implements OnInit {
-
-  constructor() {
-  }
+  constructor(private route: ActivatedRoute, private router: Router) {}
 
   ngOnInit(): void {
+    this.router
+      .navigate(['chats'], { skipLocationChange: true })
+      .then((r) => r);
   }
-
 }

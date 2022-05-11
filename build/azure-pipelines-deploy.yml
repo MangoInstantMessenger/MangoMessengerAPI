@@ -2,6 +2,7 @@ trigger:
   branches:
     include:
       - develop
+      - MANGO-435
 
 pr: none
 
@@ -50,7 +51,7 @@ stages:
                 - task: AzureRmWebAppDeployment@4
                   inputs:
                     ConnectionType: "AzureRM"
-                    azureSubscription: "AzureForStudents"
+                    azureSubscription: "VisualStudioEnterprise"
                     appType: "webApp"
                     WebAppName: "$(WebAppName)"
                     packageForLinux: "$(Pipeline.Workspace)/drop/$(BuildConfiguration)/MangoAPI.Presentation.zip"
