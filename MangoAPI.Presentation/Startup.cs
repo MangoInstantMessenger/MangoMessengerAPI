@@ -92,6 +92,8 @@ public class Startup
         services.ConfigureCors(_configuration, CorsPolicy);
 
         services.AddSpaStaticFiles(configuration => { configuration.RootPath = "wwwroot"; });
+        
+        services.AddApplicationInsightsTelemetry();
 
         services.AddMvc();
     }
