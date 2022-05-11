@@ -7,7 +7,6 @@ on:
       - azure-dev
       - azure-qa
       - master
-      - MANGO-425
   pull_request:
     branches:
       - develop
@@ -15,20 +14,46 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    
+    strategy:
+      matrix:
+        node-version: [ 16.x ]
+    
     steps:
       - uses: actions/checkout@v2
+
       - name: Setup .NET Core
         uses: actions/setup-dotnet@v1
         with:
           dotnet-version: 6.0.x
 
-      - name: Restore dependencies
+      - name: Setup Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Install Node Modules
+        run: |
+          cd ./MangoAPI.Client
+          npm ci
+
+      - name: Build Angular Project (Production)
+        run: |
+          cd ./MangoAPI.Client
+          npm run build --production
+
+      - name: Lint Angular Project
+        run: |
+          cd ./MangoAPI.Client
+          npm run lint
+
+      - name: Restore Nuget Packages
         run: dotnet restore
 
       - name: Build
         run: dotnet build --no-restore /p:ContinuousIntegrationBuild=true
 
-      - name: Run unit tests
+      - name: Run Unit Tests
         run: dotnet test MangoAPI.Tests/MangoAPI.Tests.csproj --no-build --verbosity normal /p:CollectCoverage=true /p:Exclude="[*DataAccess]*" /p:CoverletOutputFormat=opencover
         env:
           MANGO_SEED_PASSWORD: ${{ secrets.MANGO_SEED_PASSWORD }}

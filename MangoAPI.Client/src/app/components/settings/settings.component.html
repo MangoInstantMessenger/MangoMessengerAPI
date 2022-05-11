@@ -1,0 +1,261 @@
+<div class='d-flex'>
+  <div class='menu' id='menu'>
+    <nav class='navigation-bar p-2'>
+      <div class='logo p-1'>
+        <img alt='Mango Logo' src='./../../../assets/img/logo.png'>
+      </div>
+      <ul class='text-center menu-buttons'>
+        <li>
+          <a href='#'>
+            <svg fill='none' stroke='currentColor' viewBox='0 0 24 24'>
+              <path class='path'
+                    d='M17 8h2a2 2 0 012 2v6a2 2 0 01-2 2h-2v4l-4-4H9a1.994 1.994 0 01-1.414-.586m0 0L11 				14h4a2 2 0 002-2V6a2 2 0 	00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2v4l.586-.586z'
+                    stroke-linecap='round' stroke-linejoin='round'
+                    stroke-width='2'/>
+            </svg>
+          </a>
+        </li>
+
+        <li>
+          <a href='#'>
+            <svg fill='none' stroke='currentColor' viewBox='0 0 24 24'>
+              <path class='path'
+                    d='M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 				4 0 11-8 0 4 4 0 018 0z'
+                    stroke-linecap='round' stroke-linejoin='round'
+                    stroke-width='2'/>
+            </svg>
+          </a>
+        </li>
+
+        <li>
+          <a href='#'>
+            <svg fill='none' stroke='currentColor' viewBox='0 0 24 24'>
+              <path class='path active'
+                    d='M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 				3 3 0 016 0zm6 2a9 9 0 	11-18 0 9 9 0 0118 0z'
+                    stroke-linecap='round' stroke-linejoin='round'
+                    stroke-width='2'/>
+            </svg>
+          </a>
+        </li>
+      </ul>
+    </nav>
+    <aside class='sidebar '>
+      <header class='sidebar-header p-3'>
+        <div>
+          <h5>Profile</h5>
+          <p class='mt-5 text-light-gray'>Personal Information & Settings</p>
+        </div>
+      </header>
+      <div class='p-3 overflow height-fix'>
+        <div class='main-info background-pattern'>
+          <img src='./../../../assets/img/razumovsky_picture.jpg' alt='User Avatar' class='avatar'>
+          <div class='d-flex flex-column'>
+            <p>razumovsky r</p>
+          </div>
+          <div class='d-flex gapfix'>
+            <button class='button-dark py-2 contact-button px-4'>Logout</button>
+            <button class='button-dark py-2 contact-button px-4 ml-3 text-red'>Logout All Devices</button>
+          </div>
+        </div>
+        <ul class='user-info'>
+          <li>
+            <div class='info'>
+              <p class='title'>Birthdate</p>
+              <p>2008-07-03</p>
+            </div>
+            <img src='./../../../assets/svg/calendar.svg' alt='Calendar Icon'>
+          </li>
+          <li>
+            <div class='info'>
+              <p class='title'>Email</p>
+              <a href='mailto:#'>kolosovp95@gmail.com</a>
+            </div>
+            <img src='./../../../assets/svg/mail.svg' alt='Mail Icon'>
+          </li>
+          <li>
+            <div class='info'>
+              <p class='title'>Username</p>
+              <p>razumovsky-r</p>
+            </div>
+            <img src='./../../../assets/svg/mail.svg' alt='Mail Icon'>
+          </li>
+          <li>
+            <div class='info'>
+              <p class='title'>Website</p>
+              <p>razumovsky.com</p>
+            </div>
+            <img src='./../../../assets/svg/world.svg' alt='World Icon'>
+          </li>
+          <li>
+            <div class='info'>
+              <p class='title'>Address</p>
+              <p>Odessa, Ukraine</p>
+            </div>
+            <img src='./../../../assets/svg/home.svg' alt='Home Icon'>
+          </li>
+        </ul>
+        <ul class='user-info'>
+          <li>
+            <div class='info'>
+              <p class='title'>Facebook</p>
+              <a href='#'>razumovsky_r</a>
+            </div>
+            <img src='./../../../assets/svg/facebook.svg' alt='Facebook Icon'>
+          </li>
+          <li>
+            <div class='info'>
+              <p class='title'>Twitter</p>
+              <a href='#'>razumovsky_r</a>
+            </div>
+            <img src='./../../../assets/svg/twitter.svg' alt='Twitter Icon'>
+          </li>
+          <li>
+            <div class='info'>
+              <p class='title'>Instagram</p>
+              <a href='#'>razumovsky_r</a>
+            </div>
+            <img src='./../../../assets/svg/instagram.svg' alt='Instagram Icon'>
+          </li>
+          <li>
+            <div class='info'>
+              <p class='title'>LinkedIn</p>
+              <a href='#'>razumovsky_r</a>
+            </div>
+            <img src='./../../../assets/svg/linkedin.svg' alt='LinkedIn Icon'>
+          </li>
+        </ul>
+
+      </div>
+    </aside>
+  </div>
+  <main class='profile'>
+    <div class='profile-header'>
+      <h5>Settings</h5>
+      <p class='mt-5 text-light-gray mb-0'>Update Personal Information & Settings</p>
+    </div>
+    <div class='profile-settings overflow'>
+      <div class='profile-form'>
+        <div class='profile-form-header'>
+          <h5 class='mb-2'>Account</h5>
+          <span class='text-light-gray'>Update personal & contact information</span>
+        </div>
+        <div class='profile-form-content'>
+          <ul class='d-flex justify-content-between '>
+            <li class='d-flex flex-column w-50 profile-form-group'>
+              <label for='BirthdayDate'>Birthday Date</label>
+              <input class='profile-form-input' type='date' id='BirthdayDate' placeholder='Type your birthday date'>
+            </li>
+
+            <li class='d-flex flex-column w-50 profile-form-group'>
+              <label for='Website'>Website</label>
+              <input class='profile-form-input' type='text' id='Website' placeholder='Type your website'>
+            </li>
+
+          </ul>
+          <ul class='d-flex justify-content-between flex-row'>
+            <li class='d-flex flex-column w-50 profile-form-group'>
+              <label for='UserName'>User Name</label>
+              <input class='profile-form-input' type='text' id='UserName' placeholder='Type your user name'>
+            </li>
+
+            <li class='d-flex flex-column w-50 profile-form-group'>
+              <label for='DisplayName'>Display Name</label>
+              <input class='profile-form-input' type='text' id='DisplayName' placeholder='Type your display name'>
+            </li>
+          </ul>
+          <div class='d-flex flex-column profile-form-group'>
+            <label for='Bio'>Bio</label>
+            <input class='profile-form-input' type='text' id='Bio' placeholder='Type your bio'>
+          </div>
+          <div class='d-flex flex-column profile-form-group'>
+            <label for='Address'>Address</label>
+            <input class='profile-form-input' type='text' id='Address' placeholder='Type your address'>
+          </div>
+        </div>
+        <div class='profile-form-footer'>
+          <button class='button-dark'>Reset</button>
+          <button class='button-orange ml-3'>Save Changes</button>
+        </div>
+      </div>
+      <div class='profile-form'>
+        <div class='profile-form-header'>
+          <h5 class='mb-2'>Social network profiles</h5>
+          <span class='text-light-gray'>Update social network information</span>
+        </div>
+        <div class='profile-form-content'>
+          <ul class='d-flex justify-content-between '>
+            <li class='d-flex flex-column w-50 profile-form-group'>
+              <label for='Facebook'>Facebook</label>
+              <input class='profile-form-input' type='text' id='Facebook' placeholder='Username'>
+            </li>
+
+            <li class='d-flex flex-column w-50 profile-form-group'>
+              <label for='Twitter'>Twitter</label>
+              <input class='profile-form-input' type='text' id='Twitter' placeholder='Username'>
+            </li>
+
+          </ul>
+          <ul class='d-flex justify-content-between flex-row'>
+            <li class='d-flex flex-column w-50 profile-form-group'>
+              <label for='Instagram'>Instagram</label>
+              <input class='profile-form-input' type='text' id='Instagram' placeholder='Username'>
+            </li>
+
+            <li class='d-flex flex-column w-50 profile-form-group'>
+              <label for='LinkedIn'>LinkedIn</label>
+              <input class='profile-form-input' type='text' id='LinkedIn' placeholder='Username'>
+            </li>
+          </ul>
+        </div>
+        <div class='profile-form-footer'>
+          <button class='button-dark'>Reset</button>
+          <button class='button-orange ml-3'>Save Changes</button>
+        </div>
+      </div>
+      <div class='profile-form'>
+        <div class='profile-form-header'>
+          <h5 class='mb-2'>Password</h5>
+          <span class='text-light-gray'>Reset password</span>
+        </div>
+        <div class='profile-form-content'>
+          <ul class='d-flex justify-content-between '>
+            <li class='d-flex flex-column w-50 profile-form-group'>
+              <label for='CurrentPassword'>Current Password</label>
+              <input class='profile-form-input' type='text' id='CurrentPassword' placeholder='Current Password'>
+            </li>
+
+          </ul>
+          <ul class='d-flex justify-content-between flex-row'>
+            <li class='d-flex flex-column w-50 profile-form-group'>
+              <label for='NewPassword'>New Password</label>
+              <input class='profile-form-input' type='text' id='NewPassword' placeholder='New Password'>
+            </li>
+
+            <li class='d-flex flex-column w-50 profile-form-group'>
+              <label for='RepeatPassword'>Repeat Password</label>
+              <input class='profile-form-input' type='text' id='RepeatPassword' placeholder='Repeat Password'>
+            </li>
+          </ul>
+        </div>
+        <div class='profile-form-footer'>
+          <button class='button-dark'>Reset</button>
+          <button class='button-orange ml-3'>Save Changes</button>
+        </div>
+      </div>
+      <div class='profile-form'>
+        <div class='profile-form-header'>
+          <h5 class='mb-2'>Avatar</h5>
+          <span class='text-light-gray'>Update profile picture</span>
+        </div>
+        <div class='profile-form-content'>
+          <input type='file' id='File'>
+        </div>
+        <div class='profile-form-footer'>
+          <button class='button-dark'>Reset</button>
+          <button class='button-orange ml-3'>Save Changes</button>
+        </div>
+      </div>
+    </div>
+  </main>
+
+</div>

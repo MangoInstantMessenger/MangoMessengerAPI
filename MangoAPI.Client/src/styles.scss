@@ -1,1 +1,729 @@
-/* You can add global styles to this file, and also import other style files */
+$dark: #383838;
+$gray: #6c757d;
+$light-gray: #adb5bd;
+$dark-gray: #505558;
+$orange: #cf7d1f;
+$orange-dark: #c18d1a;
+$red: #ff3333;
+
+* {
+  box-sizing: border-box;
+  color: white;
+  font-size: 14px;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+    'Helvetica Neue', Arial, 'Noto Sans', sans-serif, 'Apple Color Emoji',
+    'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+}
+html {
+  overflow: hidden;
+}
+body {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.5;
+  text-align: left;
+}
+
+input,
+textarea,
+button {
+  border: none;
+  font-size: 16px;
+  border: none !important;
+  outline: none !important;
+}
+input::placeholder,
+textarea::placeholder {
+  color: $gray;
+  font-size: 16px;
+  user-select: none;
+}
+p, span, a, i, b, strong,
+h1, h2, h3, h4, h5, h6 {
+  user-select: none;
+}
+a {
+  color: $orange !important;
+}
+ul {
+  list-style-type: none;
+  margin: 0 !important;
+  padding: 0;
+  li {
+    margin: 0;
+  }
+}
+i {
+  font-size: 22px;
+}
+
+.background-pattern {
+  background-image: url(./assets/svg/background-pattern.svg);
+  background-repeat: repeat;
+  background-color: #232526;
+}
+
+.icon {
+  width: 20px;
+  height: 20px;
+}
+.gapfix {
+  gap: 20px;
+}
+
+.text-red {
+  color: $red !important;
+}
+.text-light-gray {
+  color: $light-gray;
+}
+.cursor-pointer {
+  cursor: pointer !important;
+}
+
+.form-input {
+  width: 50%;
+  background-color: $dark;
+  border-radius: 15px;
+}
+.form-button {
+  width: 30%;
+  background-color: #cf7d1f;
+  border-radius: 15px;
+  font-size: 20px;
+}
+.form-label {
+  font-size: 18px;
+}
+
+.terms-of-service {
+  margin-top: 7px;
+}
+
+.overflow {
+  overflow-y: scroll;
+  overflow-x: hidden !important;
+  -ms-overflow-style: none;
+  min-height: 0;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+.avatar {
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+}
+
+.contacts {
+  .list {
+    li {
+      .avatar {
+        align-self: center;
+      }
+      .content {
+        p {
+          max-width: 35ch;
+        }
+        .message {
+          p {
+            color: $light-gray;
+            margin-top: 1px;
+          }
+        }
+      }
+    }
+    .active {
+      .message {
+        p {
+          color: white !important;
+        }
+      }
+    }
+  }
+}
+
+.dropdown {
+  color: $gray;
+  user-select: none;
+  .dropdown-toggle {
+    font-size: 18px;
+  }
+  .dropdown-menu {
+    background: $dark;
+    .dropdown-item {
+      color: $light-gray !important;
+      user-select: none;
+      &:hover,
+      &:active {
+        background-color: #383f44 !important;
+      }
+    }
+  }
+}
+
+.button-dark,
+.button-orange {
+  border-radius: 5px;
+  font-size: 16px;
+  transition: all 0.3s ease;
+}
+
+.button-orange {
+  background-color: $orange;
+  color: white;
+  &:hover {
+    background-color: #b56f1e;
+  }
+}
+
+.button-dark {
+  background: $dark;
+  color: $light-gray;
+  &:hover {
+    background-color: #313136;
+  }
+}
+
+.main-info {
+  .avatar {
+    width: 80px;
+    height: 80px;
+    margin-bottom: 25px;
+  }
+  p {
+    font-size: 16px;
+  }
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  padding: 20px;
+  background-color: $dark-gray;
+  width: 100%;
+  text-align: center;
+  margin-bottom: 25px;
+}
+
+.height-fix {
+  height: calc(100vh - 105px);
+}
+
+.user-info {
+  margin-bottom: 25px !important;
+  li {
+    border: $dark 1px solid;
+    display: flex;
+    flex-wrap: nowrap;
+    background-color: $dark-gray;
+    padding: 12px 20px;
+    justify-content: space-between;
+    .info {
+      .title {
+        color: $light-gray;
+        font-size: 12px;
+      }
+      p {
+        margin: 0;
+      }
+    }
+  }
+}
+
+.navigation-bar {
+  height: 100vh;
+  position: absolute;
+  background-color: $orange;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  .menu-buttons {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    flex-grow: 1;
+    .active {
+      color: #fff9dc !important;
+    }
+    li {
+      width: 35px;
+
+      svg {
+        .path {
+          transition: all 0.3s ease;
+          color: #d9d1b6;
+        }
+
+        &:hover {
+          .path {
+            color: #fff9dc;
+          }
+        }
+      }
+    }
+  }
+
+  .logo {
+    width: 50px;
+    height: 50px;
+    background-color: white;
+    border-radius: 15px;
+    margin-bottom: auto;
+    img {
+      width: 40px;
+      height: 40px;
+    }
+  }
+}
+
+.sidebar {
+  background: $dark;
+  width: 380px !important;
+  height: 100vh;
+  margin-left: 64px !important;
+  border-right: 1px $gray solid;
+  .sidebar-header {
+    background: $dark-gray;
+    height: 110px;
+
+    .form-control {
+      padding-top: 8px;
+      background: $dark;
+      color: $light-gray;
+      font-size: 18px;
+      &::placeholder {
+        color: $light-gray;
+        font-size: 18px;
+      }
+      &:focus {
+        box-shadow: none;
+        border: none;
+      }
+    }
+    .input-group-text {
+      background: $dark;
+      border: none;
+      padding: 8px;
+    }
+  }
+  .list {
+    height: calc(100vh - 110px);
+    .active {
+      background: $orange;
+      .message {
+        color: white !important;
+      }
+      border: 1px $orange solid;
+    }
+
+    li {
+      transition: all 0.3s ease;
+      display: inline-flex;
+      border: 1px $gray solid;
+      width: 100%;
+      padding: 16px;
+      border-radius: 10px;
+
+      .content {
+        margin-left: 14px;
+        .title {
+          display: flex;
+          align-items: center;
+          width: 100%;
+          img {
+            margin-right: 10px;
+          }
+
+          .info {
+            display: flex;
+            justify-content: space-between !important;
+            align-items: center;
+            width: 100%;
+            gap: 10px;
+          }
+        }
+        p {
+          font-size: 14px;
+          margin: 0;
+          max-width: 25ch;
+          text-overflow: ellipsis;
+          overflow: hidden;
+          white-space: nowrap;
+        }
+        .message {
+          user-select: none;
+          color: $light-gray;
+          max-width: 35ch;
+          text-overflow: ellipsis;
+          overflow: hidden;
+          white-space: nowrap;
+        }
+      }
+
+      &:not(:last-child) {
+        margin-bottom: 10px;
+      }
+      &:hover {
+        border-color: $orange-dark;
+        cursor: pointer;
+      }
+    }
+  }
+}
+
+.chat {
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100vh;
+  .chat-header {
+    padding: 22px;
+    background-color: $dark;
+    display: flex;
+    align-items: center;
+    .avatar {
+      margin-right: 20px;
+    }
+    .chat-info {
+      display: flex;
+      justify-content: space-between !important;
+      align-items: center;
+      width: 100%;
+      .chat-description {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        .chat-name {
+          font-size: 16px;
+          color: white;
+          white-space: nowrap;
+          max-width: 80ch;
+          text-overflow: ellipsis;
+          overflow: hidden;
+        }
+        span {
+          color: $light-gray;
+          white-space: nowrap;
+          max-width: 80ch;
+          text-overflow: ellipsis;
+          overflow: hidden;
+        }
+      }
+      .chat-actions {
+        display: flex;
+      }
+    }
+  }
+  .chat-messages {
+    height: 79vh;
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    .message {
+      max-height: 155px;
+      max-width: 500px;
+      display: inline;
+      .message-layout {
+        display: flex;
+        flex-direction: row;
+        margin-bottom: 10px;
+        .message-content {
+          background-color: $gray;
+          padding: 12px;
+          margin-left: 10px;
+          border-radius: 15px 15px 15px 0;
+          display: flex;
+          flex-direction: column;
+          .display-name {
+            font-weight: bold;
+            white-space: nowrap;
+            max-width: 500px;
+            text-overflow: ellipsis;
+            overflow: hidden;
+          }
+          p {
+            max-width: 500px;
+            overflow-wrap: break-word;
+          }
+        }
+        .message-options {
+          display: flex;
+          margin-left: 10px;
+          .message-button {
+            background: none;
+            padding: 0;
+            cursor: pointer;
+          }
+          .message-time {
+            margin: 0;
+          }
+        }
+        .user-avatar {
+          width: 40px;
+          height: 40px;
+          border-radius: 50%;
+          align-self: flex-end;
+        }
+      }
+    }
+    .self {
+      align-self: flex-end;
+      .message-layout {
+        .message-content {
+          background-color: $orange;
+        }
+      }
+    }
+  }
+  .chat-footer {
+    padding: 22px;
+    background-color: $dark;
+    position: static;
+    display: flex;
+    align-items: center;
+    .button-dark {
+      padding-bottom: 9px;
+    }
+    .message-input {
+      &::placeholder {
+        font-size: 18px;
+      }
+
+      font-size: 18px;
+      resize: none;
+      width: 100%;
+
+      color: white;
+      background-color: $dark;
+      height: 35px;
+    }
+    .send-message {
+      background-color: $orange;
+      width: 50px;
+      height: 45px;
+      border-radius: 50%;
+      margin-left: 10px;
+      transition: all 0.3s ease;
+      &:hover {
+        background-color: #b16b1b;
+      }
+    }
+  }
+}
+
+.contact {
+  width: 100%;
+  height: 100vh;
+  background-color: #232526;
+  padding: 24px;
+}
+.profile {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  .profile-header {
+    width: 100%;
+    padding: 13px;
+    background-color: $dark-gray;
+    border-bottom: 1px $gray solid;
+  }
+  .profile-settings {
+    max-height: 100%;
+    background-color: $dark;
+    padding: 24px;
+
+    .profile-form {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+      margin-bottom: 20px;
+      .profile-form-header,
+      .profile-form-footer {
+        background-color: $dark-gray;
+        padding: 12px;
+      }
+      .profile-form-header {
+        border-radius: 15px 15px 0 0;
+      }
+      .profile-form-content {
+        background-color: $gray;
+        padding: 12px;
+        .profile-form-group {
+          padding: 0 12px;
+          margin-bottom: 15px;
+        }
+        .profile-form-input {
+          background-color: $dark;
+          padding: 6px 12px;
+          border-radius: 5px;
+          &::-webkit-calendar-picker-indicator {
+            filter: invert(1);
+            cursor: pointer;
+          }
+        }
+      }
+      .profile-form-footer {
+        display: flex;
+        justify-content: flex-end;
+        border-radius: 0 0 15px 15px;
+      }
+    }
+  }
+}
+
+//// Galaxy Fold
+//@media screen and (max-width: 280px) {
+//  input::placeholder {
+//    font-size: 13px;
+//  }
+//  .form-button {
+//    width: 40% !important;
+//  }
+//  .form-label {
+//    font-size: 16px;
+//  }
+//  .restore-password-button {
+//    width: 50% !important;
+//  }
+//  .restore-password-h1 {
+//    font-size: 30px;
+//  }
+//  .restore-password-h4 {
+//    font-size: 16px;
+//  }
+//
+//  .navigation-bar {
+//    position: relative;
+//    height: auto;
+//    flex-direction: row;
+//
+//    .menu-buttons {
+//      flex-direction: row;
+//    }
+//  }
+//
+//  .sidebar {
+//    margin-left: 0 !important;
+//    width: 100% !important;
+//    p, .last-message {
+//      max-width: 20ch !important;
+//    }
+//    .form-control {
+//      font-size: 16px !important;
+//      &::placeholder {
+//        font-size: 16px !important;
+//      }
+//    }
+//  }
+//}
+//
+///* Extra small devices (phones, 281px and up) */
+//@media screen and (min-width: 281px) {
+//  .form-input {
+//    width: 75%;
+//  }
+//  .terms-of-service {
+//    margin-top: 5px;
+//  }
+//  .form-button {
+//    width: 75%;
+//    background-color: #cf7d1f;
+//    border-radius: 15px;
+//    font-size: 15px;
+//  }
+//
+//  .navigation-bar {
+//    position: relative;
+//    height: auto;
+//    flex-direction: row;
+//
+//    .menu-buttons {
+//      flex-direction: row;
+//    }
+//  }
+//
+//  .sidebar {
+//    margin-left: 0 !important;
+//    width: 100% !important;
+//    p, .last-message {
+//      max-width: 30ch !important;
+//    }
+//  }
+//}
+//
+///* Medium devices (landscape tablets, 601px and up) */
+//@media screen and (min-width: 601px) {
+//  .auth-header {
+//    font-size: 40px !important;
+//  }
+//  .form-input {
+//    font-size: 20px;
+//  }
+//  input::placeholder {
+//    font-size: 20px;
+//  }
+//  p{
+//    font-size: 18px;
+//  }
+//  .restore-password-button {
+//    width: 50% !important;
+//  }
+//
+//  .navigation-bar {
+//    position: relative;
+//    height: auto;
+//    flex-direction: row;
+//
+//    .menu-buttons {
+//      flex-direction: row;
+//    }
+//  }
+//  .sidebar {
+//    margin-left: 0;
+//    width: 100%;
+//    p, .last-message {
+//      max-width: 90ch;
+//    }
+//  }
+//}
+//
+///* Large devices (laptops/desktops, 992px and up) */
+//@media screen and (min-width: 993px) {
+//  .navigation-bar {
+//    height: 100vh;
+//    position: absolute;
+//    background-color: $orange;
+//    display: flex;
+//    flex-direction: column;
+//    justify-content: center;
+//    align-items: center;
+//     .menu-buttons {
+//     display: flex;
+//     flex-direction: column;
+//     justify-content: space-evenly;
+//     flex-grow: 1;
+//     li{
+//       width: 35px;
+//     }
+//    }
+//  }
+//
+//  .sidebar {
+//    width: 420px !important;
+//    margin-left: 64px !important;
+//    p, .last-message {
+//      max-width: 35ch !important;
+//    }
+//  }
+//}
+//
+///* Extra large devices (large laptops and desktops, 1200px and up) */
+//@media screen and (min-width: 1200px) {
+//}
