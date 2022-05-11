@@ -2,7 +2,6 @@ trigger:
   branches:
     include:
       - develop
-      - MANGO-435
 
 pr: none
 
