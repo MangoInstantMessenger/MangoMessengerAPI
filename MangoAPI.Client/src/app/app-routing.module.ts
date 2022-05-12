@@ -10,6 +10,7 @@ import { RestorePasswordComponent } from './components/restore-password/restore-
 import { ChatsComponent } from './components/chats/chats.component';
 import { ContactsComponent } from './components/contacts/contacts.component';
 import { SettingsComponent } from './components/settings/settings.component';
+import { CreateGroupComponent } from "./components/create-group/create-group.component";
 
 const routes: Routes = [
   { path: 'register', component: RegisterComponent },
@@ -23,8 +24,9 @@ const routes: Routes = [
   { path: 'chats', component: ChatsComponent },
   { path: 'contacts', component: ContactsComponent },
   { path: 'settings', component: SettingsComponent },
+  { path: 'create-group', component: CreateGroupComponent},
   { path: 'app', component: GatewayComponent },
-  { path: '**', component: NotFoundComponent }
+  { path: '**', component: NotFoundComponent },
 ];
 
 @NgModule({

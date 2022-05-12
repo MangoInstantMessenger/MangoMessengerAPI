@@ -16,6 +16,7 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { RequestHeaderInterceptor } from './interceptors/request-header.interceptor';
 import { AuthInterceptor } from './interceptors/auth-interceptor.service';
 import { DatePipe } from '@angular/common';
+import { CreateGroupComponent } from './components/create-group/create-group.component';
 
 @NgModule({
   declarations: [
@@ -29,7 +30,8 @@ import { DatePipe } from '@angular/common';
     SettingsComponent,
     ConfirmRegistrationComponent,
     GatewayComponent,
-    NotFoundComponent
+    NotFoundComponent,
+    CreateGroupComponent
   ],
   imports: [BrowserModule, AppRoutingModule],
   providers: [
