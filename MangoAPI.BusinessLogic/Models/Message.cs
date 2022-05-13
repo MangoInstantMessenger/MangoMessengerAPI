@@ -25,10 +25,10 @@ public record Message
     public string MessageText { get; init; }
 
     [DefaultValue("12:56")]
-    public string CreatedAt { get; init; }
+    public DateTime CreatedAt { get; init; }
 
     [DefaultValue("12:57")]
-    public string UpdatedAt { get; init; }
+    public DateTime? UpdatedAt { get; init; }
 
     [DefaultValue(false)]
     public bool Self { get; init; }
@@ -57,8 +57,8 @@ public static class MessageMapper
             ChatId = message.ChatId,
             UserDisplayName = displayName,
             MessageText = message.Content,
-            CreatedAt = message.CreatedAt.ToShortTimeString(),
-            UpdatedAt = message.UpdatedAt?.ToShortTimeString(),
+            CreatedAt = message.CreatedAt,
+            UpdatedAt = message.UpdatedAt,
             Self = message.UserId == userId,
             InReplayToAuthor = message.InReplayToAuthor,
             InReplayToText = message.InReplayToText,
