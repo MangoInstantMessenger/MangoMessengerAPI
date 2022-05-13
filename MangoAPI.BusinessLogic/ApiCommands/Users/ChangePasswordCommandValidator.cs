@@ -29,6 +29,7 @@ public class ChangePasswordCommandValidator : AbstractValidator<ChangePasswordCo
                && pass.Any(char.IsUpper)
                && pass.Any(char.IsLower)
                && pass.Any(char.IsDigit)
-               && pass.Any(char.IsSymbol);
+               && pass.Any(char.IsSymbol)
+               && pass.Any(char.IsPunctuation);
     }
 }
