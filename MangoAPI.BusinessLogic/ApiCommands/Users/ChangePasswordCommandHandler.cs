@@ -16,8 +16,10 @@ public class ChangePasswordCommandHandler
     private readonly IUserManagerService _userManager;
     private readonly ResponseFactory<ResponseBase> _responseFactory;
 
-    public ChangePasswordCommandHandler(MangoPostgresDbContext postgresDbContext,
-        IUserManagerService userManager, ResponseFactory<ResponseBase> responseFactory)
+    public ChangePasswordCommandHandler(
+        MangoPostgresDbContext postgresDbContext,
+        IUserManagerService userManager, 
+        ResponseFactory<ResponseBase> responseFactory)
     {
         _postgresDbContext = postgresDbContext;
         _userManager = userManager;
