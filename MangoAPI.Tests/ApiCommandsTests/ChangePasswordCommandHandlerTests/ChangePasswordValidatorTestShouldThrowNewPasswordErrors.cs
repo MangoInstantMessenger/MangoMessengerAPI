@@ -1,7 +1,6 @@
 ﻿using System;
 using FluentAssertions;
 using FluentValidation.TestHelper;
-using MangoAPI.Application.Services;
 using MangoAPI.BusinessLogic.ApiCommands.Users;
 using Xunit;
 
@@ -13,8 +12,7 @@ public class ChangePasswordValidatorTestShouldThrowNewPasswordErrors
     [Fact]
     public void ChangePasswordValidatorTest_ShouldThrowNewAndRepeatPasswordAreNotSame()
     {
-        var passwordValidator = new PasswordValidatorService();
-        var validator = new ChangePasswordCommandValidator(passwordValidator);
+        var validator = new ChangePasswordCommandValidator();
         var command = new ChangePasswordCommand
         {
             UserId = Guid.NewGuid(),
@@ -33,8 +31,7 @@ public class ChangePasswordValidatorTestShouldThrowNewPasswordErrors
     [Fact]
     public void ChangePasswordValidatorTest_ShouldThrowWeakPassword()
     {
-        var passwordValidator = new PasswordValidatorService();
-        var validator = new ChangePasswordCommandValidator(passwordValidator);
+        var validator = new ChangePasswordCommandValidator();
         var command = new ChangePasswordCommand
         {
             UserId = Guid.NewGuid(),

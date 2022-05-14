@@ -221,4 +221,15 @@ public static class MockedObjects
 
         return settings;
     }
+
+    public static IMailgunSettings GetMailgunSettings()
+    {
+        var mailSettings = new MailgunSettings(
+            "test",
+            "test",
+            "test",
+            "test");
+
+        return mailSettings;
+    }
 }

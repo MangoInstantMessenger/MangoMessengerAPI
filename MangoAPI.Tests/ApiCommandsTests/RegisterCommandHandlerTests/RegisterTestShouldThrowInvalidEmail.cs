@@ -2,25 +2,44 @@
 using System.Threading.Tasks;
 using MangoAPI.BusinessLogic.ApiCommands.Users;
 using MangoAPI.BusinessLogic.Responses;
+using MangoAPI.Domain.Constants;
 using MediatR;
 using Xunit;
 
 namespace MangoAPI.Tests.ApiCommandsTests.RegisterCommandHandlerTests;
 
-public class RegisterTestSuccess : ITestable<RegisterCommand, ResponseBase>
+public class RegisterTestShouldThrowInvalidEmail : ITestable<RegisterCommand, ResponseBase>
 {
-    private readonly MangoDbFixture _mangoDbFixture = new();
-    private readonly Assert<ResponseBase> _assert = new();
+    private readonly MangoDbFixture _mangoDbFixture;
+    private readonly Assert<ResponseBase> _assert;
+    private readonly RegisterCommand _command;
+
+    public RegisterTestShouldThrowInvalidEmail()
+    {
+        var email = MockedObjects.GetMailgunSettings().NotificationEmail;
+
+        _mangoDbFixture = new MangoDbFixture();
+        _assert = new Assert<ResponseBase>();
+        _command = new RegisterCommand
+        {
+            Email = email,
+            DisplayName = "Petro Kolosov",
+            Password = "Bm3-`dPRv-/w#3)cw^97",
+            TermsAccepted = true
+        };
+    }
 
     [Fact]
-    public async Task RegisterTest_Success()
+    public async Task RegisterTestShouldThrow_WeakPassword()
     {
         Seed();
+        const string expectedMessage = ResponseMessageCodes.InvalidEmailAddress;
+        var expectedDetails = ResponseMessageCodes.ErrorDictionary[expectedMessage];
         var handler = CreateHandler();
 
         var result = await handler.Handle(_command, CancellationToken.None);
 
-        _assert.Pass(result);
+        _assert.Fail(result, expectedMessage, expectedDetails);
     }
 
     public bool Seed()
@@ -44,12 +63,4 @@ public class RegisterTestSuccess : ITestable<RegisterCommand, ResponseBase>
 
         return handler;
     }
-
-    private readonly RegisterCommand _command = new()
-    {
-        Email = "kolosovp95@gmail.com",
-        DisplayName = "Petro Kolosov",
-        Password = "Bm3-`dPRv-/w#3)cw^97",
-        TermsAccepted = true
-    };
 }

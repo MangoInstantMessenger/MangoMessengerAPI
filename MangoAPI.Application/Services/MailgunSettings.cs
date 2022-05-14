@@ -10,12 +10,11 @@ public class MailgunSettings : IMailgunSettings
     public string NotificationEmail { get; }
     public string FrontendAddress { get; }
 
-    public MailgunSettings(
-        string mailgunApiBaseUrl,
+    public MailgunSettings(string mailgunApiBaseUrl,
         string mailgunApiBaseUrlWithDomain,
         string mailgunApiKey,
-        string notificationEmail, 
-        string frontendAddress)
+        string frontendAddress,
+        string notificationEmail = "mango.messenger.notify@gmail.com")
     {
         MailgunApiBaseUrl = mailgunApiBaseUrl;
         MailgunApiBaseUrlWithDomain = mailgunApiBaseUrlWithDomain;

@@ -1,7 +1,6 @@
 ﻿using System;
 using FluentAssertions;
 using FluentValidation.TestHelper;
-using MangoAPI.Application.Services;
 using MangoAPI.BusinessLogic.ApiCommands.Users;
 using Xunit;
 
@@ -12,8 +11,7 @@ public class ChangePasswordValidatorTestShouldThrowCurrentPasswordError
     [Fact]
     public void ChangePasswordValidatorTest_ShouldThrowCurrentPasswordError()
     {
-        var passwordValidator = new PasswordValidatorService();
-        var validator = new ChangePasswordCommandValidator(passwordValidator);
+        var validator = new ChangePasswordCommandValidator();
         var command = new ChangePasswordCommand
         {
             UserId = Guid.NewGuid(),

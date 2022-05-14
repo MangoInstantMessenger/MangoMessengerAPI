@@ -1,6 +1,5 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
-using MangoAPI.Application.Services;
 using MangoAPI.BusinessLogic.ApiCommands.Users;
 using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.Domain.Constants;
@@ -25,10 +24,10 @@ public class RegisterTestShouldThrowUserAlreadyExists : ITestable<RegisterComman
         var handler = CreateHandler();
 
         var result = await handler.Handle(_command, CancellationToken.None);
-            
+
         _assert.Fail(result, expectedMessage, expectedDetails);
     }
-        
+
     public bool Seed()
     {
         _mangoDbFixture.Context.Add(_user);
@@ -36,7 +35,7 @@ public class RegisterTestShouldThrowUserAlreadyExists : ITestable<RegisterComman
         _mangoDbFixture.Context.SaveChanges();
 
         _mangoDbFixture.Context.Entry(_user).State = EntityState.Detached;
-            
+
         return true;
     }
 
@@ -45,12 +44,14 @@ public class RegisterTestShouldThrowUserAlreadyExists : ITestable<RegisterComman
         var emailSenderServiceMock = MockedObjects.GetEmailSenderServiceMock();
         var userServiceMock = MockedObjects.GetUserServiceMock(_command.Password);
         var responseFactory = new ResponseFactory<ResponseBase>();
-        var passwordValidator = new PasswordValidatorService();
+        var mailSettings = MockedObjects.GetMailgunSettings();
+
         var handler = new RegisterCommandHandler(userServiceMock, _mangoDbFixture.Context, emailSenderServiceMock,
-            responseFactory, passwordValidator);
+            responseFactory, mailSettings);
+
         return handler;
     }
-        
+
     private readonly UserEntity _user = new()
     {
         DisplayName = "razumovsky r",
@@ -63,7 +64,7 @@ public class RegisterTestShouldThrowUserAlreadyExists : ITestable<RegisterComman
         PhoneNumberConfirmed = true,
         Image = "razumovsky_picture.jpg"
     };
-        
+
     private readonly RegisterCommand _command = new()
     {
         Email = "kolosovp95@gmail.com",
