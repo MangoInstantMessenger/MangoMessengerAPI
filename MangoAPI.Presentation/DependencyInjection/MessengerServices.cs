@@ -59,6 +59,7 @@ public static class MessengerServices
         services.AddScoped<IUserManagerService, UserManagerService>();
         services.AddScoped<ISignInManagerService, SignInManagerService>();
         services.AddScoped<PasswordHashService>();
+        services.AddScoped<IPasswordValidatorService, PasswordValidatorService>();
 
         return services;
     }

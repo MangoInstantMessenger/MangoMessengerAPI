@@ -1,5 +1,6 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
+using MangoAPI.Application.Services;
 using MangoAPI.BusinessLogic.ApiCommands.Users;
 using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.Domain.Constants;
@@ -44,8 +45,9 @@ public class RegisterTestShouldThrowUserAlreadyExists : ITestable<RegisterComman
         var emailSenderServiceMock = MockedObjects.GetEmailSenderServiceMock();
         var userServiceMock = MockedObjects.GetUserServiceMock(_command.Password);
         var responseFactory = new ResponseFactory<ResponseBase>();
+        var passwordValidator = new PasswordValidatorService();
         var handler = new RegisterCommandHandler(userServiceMock, _mangoDbFixture.Context, emailSenderServiceMock,
-            responseFactory);
+            responseFactory, passwordValidator);
         return handler;
     }
         

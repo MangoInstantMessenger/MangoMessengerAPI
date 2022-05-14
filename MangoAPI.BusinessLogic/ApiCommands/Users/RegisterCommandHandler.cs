@@ -17,17 +17,20 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, Result<Re
     private readonly MangoPostgresDbContext _postgresDbContext;
     private readonly IUserManagerService _userManager;
     private readonly ResponseFactory<ResponseBase> _responseFactory;
+    private readonly IPasswordValidatorService _passwordValidator;
 
     public RegisterCommandHandler(
         IUserManagerService userManager,
         MangoPostgresDbContext postgresDbContext,
         IEmailSenderService emailSenderService,
-        ResponseFactory<ResponseBase> responseFactory)
+        ResponseFactory<ResponseBase> responseFactory, 
+        IPasswordValidatorService passwordValidator)
     {
         _userManager = userManager;
         _postgresDbContext = postgresDbContext;
         _emailSenderService = emailSenderService;
         _responseFactory = responseFactory;
+        _passwordValidator = passwordValidator;
     }
 
     public async Task<Result<ResponseBase>> Handle(RegisterCommand request, CancellationToken cancellationToken)
@@ -52,15 +55,15 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, Result<Re
             Image = "default_avatar.png"
         };
 
-        var result = await _userManager.CreateAsync(newUser, request.Password);
-
-        if (!result.Succeeded)
+        if (!_passwordValidator.ValidatePassword(request.Password))
         {
             const string errorMessage = ResponseMessageCodes.WeakPassword;
             var details = ResponseMessageCodes.ErrorDictionary[errorMessage];
 
             return _responseFactory.ConflictResponse(errorMessage, details);
         }
+
+        await _userManager.CreateAsync(newUser, request.Password);
 
         var userInfo = new UserInformationEntity
         {

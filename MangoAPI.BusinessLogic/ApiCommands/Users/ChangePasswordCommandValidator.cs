@@ -1,11 +1,12 @@
 ﻿using System.Linq;
 using FluentValidation;
+using MangoAPI.Application.Interfaces;
 
 namespace MangoAPI.BusinessLogic.ApiCommands.Users;
 
 public class ChangePasswordCommandValidator : AbstractValidator<ChangePasswordCommand>
 {
-    public ChangePasswordCommandValidator()
+    public ChangePasswordCommandValidator(IPasswordValidatorService passwordValidator)
     {
         RuleFor(x => x.CurrentPassword)
             .NotEqual(x => x.NewPassword)
@@ -16,7 +17,7 @@ public class ChangePasswordCommandValidator : AbstractValidator<ChangePasswordCo
         RuleFor(x => x.NewPassword)
             .Equal(x => x.RepeatNewPassword)
             .WithMessage("New password and repeat password should be same.")
-            .Must(PasswordIsStrong)
+            .Must(passwordValidator.ValidatePassword)
             .WithMessage("Password must be at least 8 characters with: " +
                          "1 uppercase, 1 lowercase, 1 digit, 1 symbol.")
             .NotEmpty()
