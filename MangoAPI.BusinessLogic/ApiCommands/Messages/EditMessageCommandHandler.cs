@@ -66,7 +66,7 @@ public class EditMessageCommandHandler
         _postgresDbContext.Entry(message.User).State = EntityState.Detached;
 
         var messageIsLast = chat.LastMessageId.HasValue && chat.LastMessageId == request.MessageId;
-        var updatedAtShortString = DateTime.UtcNow.ToShortTimeString();
+        var updatedAt = DateTime.UtcNow;
 
         message.Content = request.ModifiedText;
         message.UpdatedAt = DateTime.UtcNow;
@@ -74,7 +74,7 @@ public class EditMessageCommandHandler
         if (messageIsLast)
         {
             chat.LastMessageText = request.ModifiedText;
-            chat.LastMessageTime = updatedAtShortString;
+            chat.LastMessageTime = updatedAt;
         }
 
         _postgresDbContext.Messages.Update(message);
@@ -86,7 +86,7 @@ public class EditMessageCommandHandler
         {
             MessageId = request.MessageId,
             ModifiedText = request.ModifiedText,
-            UpdatedAt = updatedAtShortString,
+            UpdatedAt = updatedAt,
             IsLastMessage = messageIsLast,
         };
 

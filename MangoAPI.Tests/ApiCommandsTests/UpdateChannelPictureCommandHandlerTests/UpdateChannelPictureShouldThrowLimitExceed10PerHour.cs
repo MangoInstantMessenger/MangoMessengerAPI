@@ -103,6 +103,6 @@ public class UpdateChannelPictureShouldThrowLimitExceed10 : ITestable<UpdateChan
         UpdatedAt = DateTime.UtcNow,
         LastMessageAuthor = "Amelit",
         LastMessageText = "TypeScript The Best",
-        LastMessageTime = "2:32 PM"
+        LastMessageTime = DateTime.Parse("2:32 PM")
     };
 }

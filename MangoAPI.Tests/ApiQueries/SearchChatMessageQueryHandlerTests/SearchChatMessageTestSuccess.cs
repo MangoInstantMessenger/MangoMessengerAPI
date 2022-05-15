@@ -106,7 +106,7 @@ public class SearchChatMessageTestSuccess : ITestable<SearchChatMessagesQuery, S
         UpdatedAt = DateTime.UtcNow,
         LastMessageAuthor = "Amelit",
         LastMessageText = "Hello world!",
-        LastMessageTime = "6:45 PM"
+        LastMessageTime = DateTime.Parse("6:45 PM")
     };
 
     private readonly UserChatEntity _userChat = new()

@@ -69,7 +69,7 @@ public class SearchCommunityTestSuccess : ITestable<SearchCommunityQuery, Search
         UpdatedAt = DateTime.UtcNow,
         LastMessageAuthor = "Amelit",
         LastMessageText = "TypeScript The Best",
-        LastMessageTime = "2:32 PM"
+        LastMessageTime = DateTime.Parse("2:32 PM")
     };
 
     private readonly UserEntity _user = new()

@@ -25,7 +25,7 @@ public sealed class ChatEntity
 
     public string LastMessageText { get; set; }
 
-    public string LastMessageTime { get; set; }
+    public DateTime? LastMessageTime { get; set; }
 
     public Guid? LastMessageId { get; set; }
 

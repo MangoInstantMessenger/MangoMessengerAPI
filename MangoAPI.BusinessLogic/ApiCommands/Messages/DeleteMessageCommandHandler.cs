@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using MangoAPI.BusinessLogic.HubConfig;
@@ -83,12 +84,12 @@ public class DeleteMessageCommandHandler
             messageDeleteNotification.NewLastMessageAuthor = newLastMessage?.User?.DisplayName;
             messageDeleteNotification.NewLastMessageId = newLastMessage?.Id;
             messageDeleteNotification.NewLastMessageText = newLastMessage?.Content;
-            messageDeleteNotification.NewLastMessageTime = newLastMessage?.CreatedAt.ToShortTimeString();
+            messageDeleteNotification.NewLastMessageTime = newLastMessage?.CreatedAt;
 
             chat.LastMessageAuthor = newLastMessage?.User?.DisplayName;
             chat.LastMessageId = newLastMessage?.Id;
             chat.LastMessageText = newLastMessage?.Content;
-            chat.LastMessageTime = newLastMessage?.CreatedAt.ToShortTimeString();
+            chat.LastMessageTime = newLastMessage?.CreatedAt;
         }
 
         _postgresDbContext.Messages.Remove(message);

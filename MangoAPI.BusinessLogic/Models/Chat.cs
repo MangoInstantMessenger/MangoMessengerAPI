@@ -41,7 +41,7 @@ public record Chat
     public string LastMessageText { get; init; }
 
     [DefaultValue("10:21 PM")]
-    public string LastMessageTime { get; init; }
+    public DateTime? LastMessageTime { get; init; }
         
     [DefaultValue("12aed827-bn8c-47de-ac81-78641210918f")]
     public Guid? LastMessageId { get; set; }
