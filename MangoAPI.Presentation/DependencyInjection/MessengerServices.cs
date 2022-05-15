@@ -51,8 +51,9 @@ public static class MessengerServices
         var mailgunApiUrlWithDomain = $"{mailgunApiBaseUrl}/v3/{mangoMailgunApiDomain}/messages";
 
         var mailgunSettings = new MailgunSettings(mailgunApiBaseUrl, mailgunApiUrlWithDomain,
-            mailgunApiKey, notificationEmail, frontendAddress);
+            mailgunApiKey, frontendAddress, notificationEmail);
 
+        services.AddScoped<IMailgunSettings, MailgunSettings>(_ => mailgunSettings);
         services.AddScoped<IEmailSenderService, MailgunApiEmailSenderService>(_ => new MailgunApiEmailSenderService(
             new HttpClient(), mailgunSettings));
 

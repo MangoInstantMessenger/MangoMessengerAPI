@@ -41,9 +41,6 @@ public record User
     [DefaultValue("ivan.ivanov")]
     public string LinkedIn { get; init; }
 
-    [DefaultValue(365842)]
-    public int PublicKey { get; init; }
-
     [DefaultValue("Uploads/ivan-ivanov.jpg")]
     public string PictureUrl { get; init; }
 }

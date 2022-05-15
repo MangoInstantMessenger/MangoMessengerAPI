@@ -17,17 +17,20 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, Result<Re
     private readonly MangoPostgresDbContext _postgresDbContext;
     private readonly IUserManagerService _userManager;
     private readonly ResponseFactory<ResponseBase> _responseFactory;
+    private readonly IMailgunSettings _mailgunSettings;
 
     public RegisterCommandHandler(
         IUserManagerService userManager,
         MangoPostgresDbContext postgresDbContext,
         IEmailSenderService emailSenderService,
-        ResponseFactory<ResponseBase> responseFactory)
+        ResponseFactory<ResponseBase> responseFactory,
+        IMailgunSettings mailgunSettings)
     {
         _userManager = userManager;
         _postgresDbContext = postgresDbContext;
         _emailSenderService = emailSenderService;
         _responseFactory = responseFactory;
+        _mailgunSettings = mailgunSettings;
     }
 
     public async Task<Result<ResponseBase>> Handle(RegisterCommand request, CancellationToken cancellationToken)
@@ -43,6 +46,16 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, Result<Re
             return _responseFactory.ConflictResponse(errorMessage, details);
         }
 
+        var notificationEmail = _mailgunSettings.NotificationEmail;
+
+        if (request.Email == notificationEmail)
+        {
+            const string errorMessage = ResponseMessageCodes.InvalidEmailAddress;
+            var details = ResponseMessageCodes.ErrorDictionary[errorMessage];
+
+            return _responseFactory.ConflictResponse(errorMessage, details);
+        }
+
         var newUser = new UserEntity
         {
             DisplayName = request.DisplayName,
@@ -52,15 +65,7 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, Result<Re
             Image = "default_avatar.png"
         };
 
-        var result = await _userManager.CreateAsync(newUser, request.Password);
-
-        if (!result.Succeeded)
-        {
-            const string errorMessage = ResponseMessageCodes.WeakPassword;
-            var details = ResponseMessageCodes.ErrorDictionary[errorMessage];
-
-            return _responseFactory.ConflictResponse(errorMessage, details);
-        }
+        await _userManager.CreateAsync(newUser, request.Password);
 
         var userInfo = new UserInformationEntity
         {
