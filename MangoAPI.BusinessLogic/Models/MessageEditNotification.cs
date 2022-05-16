@@ -8,7 +8,7 @@ public class MessageEditNotification
 
     public string ModifiedText { get; init; }
 
-    public string UpdatedAt { get; init; }
+    public DateTime UpdatedAt { get; init; }
 
     public bool IsLastMessage { get; init; }
 }

@@ -101,7 +101,7 @@ public class SendMessageCommandHandler
         userChat.Chat.UpdatedAt = messageEntity.CreatedAt;
         userChat.Chat.LastMessageAuthor = user.DisplayName;
         userChat.Chat.LastMessageText = messageEntity.Content;
-        userChat.Chat.LastMessageTime = messageEntity.CreatedAt.ToShortTimeString();
+        userChat.Chat.LastMessageTime = messageEntity.CreatedAt;
         userChat.Chat.LastMessageId = messageEntity.Id;
 
         _postgresDbContext.Chats.Update(userChat.Chat);
