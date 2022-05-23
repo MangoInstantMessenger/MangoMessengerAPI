@@ -1,3 +1,31 @@
-.gapfix {
-  gap:10px !important;
+.gap-fix {
+  gap: 10px !important;
+}
+
+.no-hover {
+  pointer-events: none;
+}
+
+.button-dark-no-hover {
+  &:hover {
+    background-color: #383838 !important;
+    color: #adb5bd !important;
+  }
+}
+
+.emoji-dropdown-menu{
+  .dropdown-item {
+    &:hover {
+      background: #383838 !important;
+    }
+  }
+}
+
+.emoji {
+  border-radius: 0;
+  transition: none;
+  padding: 5px !important;
+  &:hover {
+    background-color: #6c757d;
+  }
 }
