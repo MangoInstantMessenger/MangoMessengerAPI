@@ -1,4 +1,4 @@
-name: Build
+name: Run SonarQube analysis
 on:
   push:
     branches:
