@@ -2,7 +2,9 @@ name: Build
 on:
   push:
     branches:
-      - MANGO-449
+      - develop
+  pull_request:
+    types: [ opened, synchronize, reopened ]
 jobs:
   build:
     name: Build
