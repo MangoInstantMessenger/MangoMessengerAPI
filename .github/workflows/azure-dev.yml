@@ -1,52 +1,69 @@
-﻿name: Azure Dev Deploy
+﻿name: Azure Dev VM SSH Deploy
 
 on:
   push:
     branches:
       - azure-dev
+  
+  workflow_dispatch:
+    branches:
+      - azure-dev
 
 jobs:
   build:
+    name: Azure_Dev_VM_SSH_Deploy
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: Setup .NET Core
+      - name: Setup .NET Core 6.0 SDK
         uses: actions/setup-dotnet@v1
         with:
           dotnet-version: 6.0.x
 
-      - name: Build with dotnet
+      - name: Build .NET Project Configuration Release
         run: dotnet build --configuration Release
-      - name: dotnet publish
+
+      - name: Publish .NET Project
         run: |
           dotnet restore
-          dotnet publish "MangoAPI.Presentation/MangoAPI.Presentation.csproj" -r linux-x64 -o ~/mango-linux-build/src
+          dotnet publish "MangoAPI.Presentation/MangoAPI.Presentation.csproj" -r linux-x64 -o mango-linux-build/src
 
-      - name: Configure SSH
+      - name: Create Artifact
         run: |
-          mkdir -p ~/.ssh/
-          echo "$SSH_KEY" > ~/.ssh/id_rsa
-          chmod 600 ~/.ssh/id_rsa
-          cat >>~/.ssh/config <<END
-          Host staging
-            HostName $SSH_HOST
-            User $SSH_USER
-            IdentityFile ~/.ssh/id_rsa
-            StrictHostKeyChecking no
-          END
-        env:
-          SSH_USER: ${{ secrets.AZURE_DEV_SSH_USER }}
-          SSH_KEY: ${{ secrets.AZURE_DEV_SSH_KEY }}
-          SSH_HOST: ${{ secrets.AZURE_DEV_SSH_HOST }}
+          cd mango-linux-build/src
+          zip -r mango-artifact.zip .
 
-      - name: Stop service
-        run: ssh staging "sudo systemctl stop mangoback"
+      - name: Stop Ubuntu VM service via SSH
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.AZURE_DEV_SSH_HOST }}
+          username: ${{ secrets.AZURE_DEV_SSH_USER }}
+          key: ${{ secrets.AZURE_DEV_SSH_KEY }}
+          script: |
+            sudo systemctl stop mangoback
 
-      - name: Copy Release to Remote
-        run: scp -r -i ~/.ssh/id_rsa ~/mango-linux-build/src/* $SSH_USER@$SSH_HOST:/home/$SSH_USER/mango-backend
-        env:
-          SSH_USER: ${{ secrets.AZURE_DEV_SSH_USER }}
-          SSH_HOST: ${{ secrets.AZURE_DEV_SSH_HOST }}
+      - name: Copy Release files to  the Ubuntu VM via SSH
+        uses: nogsantos/scp-deploy@master
+        with:
+          src: mango-linux-build/src/mango-artifact.zip
+          host: ${{ secrets.AZURE_DEV_SSH_HOST }}
+          remote: "mango-backend"
+          port: 22
+          user: ${{ secrets.AZURE_DEV_SSH_USER }}
+          key: ${{ secrets.AZURE_DEV_SSH_KEY }}
 
-      - name: Start service
-        run: ssh staging "sudo systemctl start mangoback"
+      - name: Unzip Artifact on VM
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.AZURE_DEV_SSH_HOST }}
+          username: ${{ secrets.AZURE_DEV_SSH_USER }}
+          key: ${{ secrets.AZURE_DEV_SSH_KEY }}
+          script: unzip -o ~/mango-backend/mango-artifact.zip -d ~/mango-backend
+
+      - name: Start Ubuntu VM service via SSH
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.AZURE_DEV_SSH_HOST }}
+          username: ${{ secrets.AZURE_DEV_SSH_USER }}
+          key: ${{ secrets.AZURE_DEV_SSH_KEY }}
+          script: sudo systemctl start mangoback
