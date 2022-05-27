@@ -1,6 +1,9 @@
 import {Component} from '@angular/core';
 import {Router} from "@angular/router";
-import {ConfirmEmailObject} from "../../types/query-objects/ConfirmEmailObject";
+import {RegisterCommand} from 'src/app/types/requests/RegisterCommand';
+import {UsersService} from "../../services/users.service";
+import {ValidationService} from "../../services/validation.service";
+import {ErrorNotificationService} from "../../services/error-notification.service";
 
 @Component({
   selector: 'app-register',
@@ -8,16 +11,34 @@ import {ConfirmEmailObject} from "../../types/query-objects/ConfirmEmailObject";
   styleUrls: ['./register.component.scss']
 })
 export class RegisterComponent {
-  constructor(private _router: Router) {
+  constructor(private _router: Router,
+              private _usersService: UsersService,
+              private _validationService: ValidationService,
+              private _errorNotificationService: ErrorNotificationService) {
   }
 
-  onRegisterClick(): void {
-    let confirmEmailObject: ConfirmEmailObject = {
-      email: 'test@gmail.com',
-      emailCode: 'd1ab1de1-1aa8-4650-937c-4ed882038ad7'
-    };
-    localStorage.setItem('queryParams', JSON.stringify(confirmEmailObject));
+  public registerCommand: RegisterCommand = {
+    displayName: "",
+    email: "",
+    password: "",
+    termsAccepted: false,
+  };
 
-    this._router.navigateByUrl(`app?methodName=confirmRegistration`).then(r => r);
+  onRegisterClick(): void {
+    this._validationService.validateField(this.registerCommand.displayName, 'Display name');
+    this._validationService.validateField(this.registerCommand.email, 'Email');
+    this._validationService.validateField(this.registerCommand.password, 'Password');
+
+    if (!this.registerCommand.termsAccepted) {
+      alert('Terms not accepted');
+      return;
+    }
+
+    this._usersService.createUser(this.registerCommand).subscribe(_ => {
+        this._router.navigateByUrl('app?methodName=confirmRegistrationNote').then(r => r);
+      }, error => {
+        this._errorNotificationService.notifyOnError(error);
+      }
+    );
   }
 }

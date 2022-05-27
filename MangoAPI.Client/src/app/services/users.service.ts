@@ -40,8 +40,8 @@ export class UsersService {
   }
 
   // POST /api/users
-  createUser(command: RegisterCommand): Observable<ITokensResponse> {
-    return this.httpClient.post<ITokensResponse>(
+  createUser(command: RegisterCommand): Observable<IBaseResponse> {
+    return this.httpClient.post<IBaseResponse>(
       environment.baseUrl + this.usersRoute,
       command
     );

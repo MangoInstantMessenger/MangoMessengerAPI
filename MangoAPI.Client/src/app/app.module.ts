@@ -12,11 +12,14 @@ import { SettingsComponent } from './components/settings/settings.component';
 import { ConfirmRegistrationComponent } from './components/confirm-registration/confirm-registration.component';
 import { GatewayComponent } from './components/gateway/gateway.component';
 import { NotFoundComponent } from './components/not-found/not-found.component';
-import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import { RequestHeaderInterceptor } from './interceptors/request-header.interceptor';
 import { AuthInterceptor } from './interceptors/auth-interceptor.service';
 import { DatePipe } from '@angular/common';
 import { CreateGroupComponent } from './components/create-group/create-group.component';
+import { FormsModule } from '@angular/forms';
+import { ConfirmRegistrationNoteComponent } from './components/confirm-registration-note/confirm-registration-note.component';
+import { RedirectToConfirmRegistrationComponent } from './components/redirect-to-confirm-registration/redirect-to-confirm-registration.component';
 
 @NgModule({
   declarations: [
@@ -31,9 +34,11 @@ import { CreateGroupComponent } from './components/create-group/create-group.com
     ConfirmRegistrationComponent,
     GatewayComponent,
     NotFoundComponent,
-    CreateGroupComponent
+    CreateGroupComponent,
+    ConfirmRegistrationNoteComponent,
+    RedirectToConfirmRegistrationComponent
   ],
-  imports: [BrowserModule, AppRoutingModule],
+  imports: [BrowserModule, AppRoutingModule, FormsModule, HttpClientModule],
   providers: [
     {
       provide: HTTP_INTERCEPTORS,

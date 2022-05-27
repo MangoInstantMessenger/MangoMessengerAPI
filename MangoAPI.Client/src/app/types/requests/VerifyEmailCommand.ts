@@ -2,8 +2,8 @@
   email: string | null;
   emailCode: string | null;
 
-  constructor(email: string | null, userId: string | null) {
+  constructor(email: string | null, emailCode: string | null) {
     this.email = email;
-    this.emailCode = userId;
+    this.emailCode = emailCode;
   }
 }

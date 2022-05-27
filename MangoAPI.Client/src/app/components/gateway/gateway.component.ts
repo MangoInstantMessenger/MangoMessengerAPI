@@ -18,7 +18,6 @@ export class GatewayComponent implements OnInit {
       .then((r) => r);
 
     this.route.queryParams.subscribe(params => {
-      console.log(params);
       const methodName = params['methodName'];
       this.routingService.matchMethodName(methodName);
     })

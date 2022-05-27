@@ -8,21 +8,24 @@
            id='displayName'
            name='displayName'
            placeholder='Enter your display name'
-           type='text'>
+           type='text'
+           [(ngModel)]='registerCommand.displayName'>
 
     <label for='emailAddress'></label>
     <input class='mb-3 form-input p-3'
            id='emailAddress'
            name='emailAddress'
            placeholder='Enter your email address'
-           type='text'>
+           type='text'
+           [(ngModel)]='registerCommand.email'>
 
     <label for='password'></label>
     <input class='mb-3 form-input p-3'
            id='password'
            name='password'
            placeholder='Enter password'
-           type='text'>
+           type='password'
+           [(ngModel)]='registerCommand.password'>
 
     <p class='justify-content-end'>*8 chars, numbers, lower, upper, symbol</p>
 
@@ -31,7 +34,8 @@
       <input class='terms-of-service'
              id='termsAccepted'
              name='termsAccepted'
-             type='checkbox'>
+             type='checkbox'
+             [(ngModel)]='registerCommand.termsAccepted'>
       <p class='text-nowrap'>I accept terms of service</p>
     </div>
 
