@@ -37,7 +37,7 @@ jobs:
       - name: 🚀 Run OpenSSL DH Handshake Login 🚀
         run: |
           cd MangoAPI.DiffieHellmanConsole/bin/Debug/net6.0
-          MangoAPI.DiffieHellmanConsole login $SENDER_EMAIL $SENDER_PASSWORD
+          dotnet MangoAPI.DiffieHellmanConsole login $SENDER_EMAIL $SENDER_PASSWORD
         env:
           SENDER_EMAIL: ${{ secrets.SENDER_EMAIL }}
           SENDER_PASSWORD: ${{ secrets.SENDER_PASSWORD }}
