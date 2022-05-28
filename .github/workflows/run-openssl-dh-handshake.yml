@@ -1,0 +1,43 @@
+﻿name: Run OpenSSL DH Handshake
+
+on:
+  push:
+    branches: [ MANGO-454 ]
+  pull_request:
+    branches: [ develop ]
+  workflow_dispatch:
+
+jobs:
+  run-openssl-dh-handshake:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: 📝 Fetch Sources 📝
+        uses: actions/checkout@v2
+
+      - name: ⚙ Setup .NET 6.0 SDK ⚙
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: 6.0.x
+
+      - name: 🔄 Restore Nuget Packages 🔄
+        run: dotnet restore
+
+      - name: 🛠 Build .NET Solution 🛠
+        run: dotnet build --no-restore /p:ContinuousIntegrationBuild=true
+
+      - name: ✅ Run Unit Tests ✅
+        run: dotnet test MangoAPI.Tests/MangoAPI.Tests.csproj --no-build --verbosity normal /p:CollectCoverage=true /p:Exclude="[*DataAccess]*" /p:CoverletOutputFormat=opencover
+        env:
+          MANGO_SEED_PASSWORD: ${{ secrets.MANGO_SEED_PASSWORD }}
+          MANGO_JWT_SIGN_KEY: ${{ secrets.MANGO_JWT_SIGN_KEY }}
+          MANGO_BLOB_CONTAINER: ${{ secrets.MANGO_BLOB_CONTAINER }}
+          MANGO_BLOB_ACCESS: ${{ secrets.MANGO_BLOB_ACCESS }}
+
+      - name: 🚀 Run OpenSSL DH Handshake Login 🚀
+        run: |
+          cd MangoAPI.DiffieHellmanConsole/bin/Debug/net6.0
+          MangoAPI.DiffieHellmanConsole login $SENDER_EMAIL $SENDER_PASSWORD
+        env:
+          SENDER_EMAIL: ${{ secrets.SENDER_EMAIL }}
+          SENDER_PASSWORD: ${{ secrets.SENDER_PASSWORD }}

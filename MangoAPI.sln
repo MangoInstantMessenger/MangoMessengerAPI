@@ -58,6 +58,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "workflows", "workflows", "{
 		.github\workflows\heroku-container-deploy.yml = .github\workflows\heroku-container-deploy.yml
 		.github\workflows\run-build-and-test-dotnet-angular.yml = .github\workflows\run-build-and-test-dotnet-angular.yml
 		.github\workflows\run-sonarqube-analysis.yml = .github\workflows\run-sonarqube-analysis.yml
+		.github\workflows\run-openssl-dh-handshake.yml = .github\workflows\run-openssl-dh-handshake.yml
+		.github\workflows\run-cng-dh-handshake = .github\workflows\run-cng-dh-handshake
 	EndProjectSection
 EndProject
 Global
