@@ -56,9 +56,10 @@ public class CngCreateCommonSecretHandler
         var commonSecretBase64 = ecDiffieHellmanCng.DeriveKeyMaterial(partnerPublicKey).AsBase64String();
 #pragma warning restore CA1416
 
-        Console.WriteLine("Writing common secret to file...");
+        Console.WriteLine(@"Writing common secret to file...");
         await File.WriteAllTextAsync(commonSecretPath, commonSecretBase64);
 
-        Console.WriteLine("Common secret generated successfully.\n");
+        Console.WriteLine(@"Common secret generated successfully.
+");
     }
 }

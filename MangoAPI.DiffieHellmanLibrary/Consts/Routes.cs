@@ -2,8 +2,20 @@
 
 public static class Routes
 {
-    //private const string ApiDomain = "https://back.mangomessenger.company/api/";
-    //public const string Domain = "mangomessenger.company";
-    public const string ApiAddress = "https://localhost:5001/api/";
-    public const string Domain = "localhost";
+    public static string ApiAddress => GetApiBaseUrl();
+
+    private static string GetApiBaseUrl()
+    {
+        var baseUrl = Environment.GetEnvironmentVariable("MANGO_API_ADDRESS");
+
+        if (!string.IsNullOrEmpty(baseUrl))
+        {
+            return baseUrl;
+        }
+
+        Console.WriteLine(
+            @"MANGO_API_ADDRESS environment variable is not set. Using default value: https://localhost:5001/api/");
+
+        return "https://localhost:5001/api/";
+    }
 }

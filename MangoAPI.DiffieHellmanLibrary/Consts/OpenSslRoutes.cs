@@ -2,7 +2,9 @@
 
 public static class OpenSslRoutes
 {
-    public const string OpenSslParameters = Routes.ApiAddress + "openssl-key-exchange-requests/openssl-parameters";
-    public const string OpenSslKeyExchangeRequests = Routes.ApiAddress + "openssl-key-exchange-requests";
-    public const string OpenSslPublicKeys = Routes.ApiAddress + "openssl-key-exchange-requests/public-keys";
+    public static string OpenSslParameters => Routes.ApiAddress + "openssl-key-exchange-requests/openssl-parameters";
+
+    public static string OpenSslKeyExchangeRequests => Routes.ApiAddress + "openssl-key-exchange-requests";
+
+    public static string OpenSslPublicKeys => Routes.ApiAddress + "openssl-key-exchange-requests/public-keys";
 }

@@ -13,8 +13,8 @@ public class OpenSslConfirmKeyExchangeHandler
 
     public async Task ConfirmKeyExchangeAsync(Guid requestId)
     {
-        Console.WriteLine($"Confirming key exchange request {requestId} ... ");
+        Console.WriteLine($@"Confirming key exchange request {requestId} ... ");
         await _openSslKeyExchangeService.OpensslConfirmKeyExchange(requestId);
-        Console.WriteLine($"Key exchange request {requestId} has been confirmed successfully.");
+        Console.WriteLine($@"Key exchange request {requestId} has been confirmed successfully.");
     }
 }

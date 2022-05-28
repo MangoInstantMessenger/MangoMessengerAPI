@@ -13,8 +13,8 @@ public class OpenSslCreateKeyExchangeHandler
 
     public async Task CreateKeyExchangeAsync(Guid receiverId)
     {
-        Console.WriteLine("Creating key exchange request ...");
+        Console.WriteLine(@"Creating key exchange request ...");
         await _openSslKeyExchangeService.OpenSslCreateKeyExchangeAsync(receiverId);
-        Console.WriteLine($"Key exchange with {receiverId} has been created successfully.");
+        Console.WriteLine($@"Key exchange with {receiverId} has been created successfully.");
     }
 }

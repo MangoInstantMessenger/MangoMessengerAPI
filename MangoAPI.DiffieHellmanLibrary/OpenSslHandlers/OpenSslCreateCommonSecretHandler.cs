@@ -13,10 +13,10 @@ public class OpenSslCreateCommonSecretHandler
 
     public async Task CreateCommonSecretAsync(Guid requestId)
     {
-        Console.WriteLine($"Creating common secret {requestId} ...");
+        Console.WriteLine($@"Creating common secret {requestId} ...");
         
         await _openSslKeyExchangeService.OpensslCreateCommonSecretAsync(requestId);
         
-        Console.WriteLine($"Common secret has been successfully created.");
+        Console.WriteLine($@"Common secret has been successfully created.");
     }
 }

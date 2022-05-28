@@ -13,10 +13,10 @@ public class OpenSslDownloadPublicKeyHandler
 
     public async Task DownloadPublicKeyAsync(Guid requestId)
     {
-        Console.WriteLine($"Downloading public key, request {requestId} ...");
+        Console.WriteLine($@"Downloading public key, request {requestId} ...");
 
         await _openSslKeyExchangeService.OpensslDownloadPublicKeyAsync(requestId);
 
-        Console.WriteLine($"Public key, request {requestId} has been downloaded successfully.");
+        Console.WriteLine($@"Public key, request {requestId} has been downloaded successfully.");
     }
 }

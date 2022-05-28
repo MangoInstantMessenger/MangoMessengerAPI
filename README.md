@@ -44,6 +44,7 @@ environment variables:
 - `MANGO_MAILGUN_API_KEY`: API key of the MailGun service used for sending email notifications
 - `MANGO_MAILGUN_API_BASE_URL`: API base URL of the MailGun service
 - `MANGO_MAILGUN_API_DOMAIN`: Verified domain used in MailGun service
+- `MANGO_API_ADDRESS`: Used for Diffie-Hellman handshake test
 
 Then restore packages using CLI `dotnet restore` and after build the solution `dotnet build`.
 

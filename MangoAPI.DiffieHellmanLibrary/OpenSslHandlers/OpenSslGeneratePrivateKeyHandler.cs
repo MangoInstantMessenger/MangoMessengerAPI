@@ -13,10 +13,10 @@ public class OpenSslGeneratePrivateKeyHandler
 
     public async Task GeneratePrivateKeyAsync(Guid receiverId)
     {
-        Console.WriteLine("Generating private key ...");
+        Console.WriteLine(@"Generating private key ...");
 
         await _openSslKeyExchangeService.OpenSslGeneratePrivateKeyAsync(receiverId);
 
-        Console.WriteLine("Private key has been generated successfully.");
+        Console.WriteLine(@"Private key has been generated successfully.");
     }
 }
