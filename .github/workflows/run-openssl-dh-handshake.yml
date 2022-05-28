@@ -51,9 +51,9 @@ jobs:
         run: |
           cd MangoAPI.DiffieHellmanConsole/bin/Debug/net6.0
           dotnet MangoAPI.DiffieHellmanConsole.dll login $SENDER_EMAIL $SENDER_PASSWORD
-          dotnet MangoAPI.DiffieHellmanConsole openssl-generate-dh-parameters
-          dotnet MangoAPI.DiffieHellmanConsole openssl-generate-dh-parameters
-          dotnet MangoAPI.DiffieHellmanConsole openssl-upload-dh-parameters
+          dotnet MangoAPI.DiffieHellmanConsole.dll openssl-generate-dh-parameters
+          dotnet MangoAPI.DiffieHellmanConsole.dll openssl-generate-dh-parameters
+          dotnet MangoAPI.DiffieHellmanConsole.dll openssl-upload-dh-parameters
         env:
           SENDER_EMAIL: ${{ secrets.SENDER_EMAIL }}
           SENDER_PASSWORD: ${{ secrets.SENDER_PASSWORD }}
