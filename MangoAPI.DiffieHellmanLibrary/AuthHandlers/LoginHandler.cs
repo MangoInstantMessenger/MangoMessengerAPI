@@ -21,7 +21,7 @@ public class LoginHandler
         Console.WriteLine(@"Writing tokens to file ...");
         await _tokensService.WriteTokensAsync(loginResponse);
 
-        Console.WriteLine(@"Login operation success.
-");
+        Console.WriteLine(@"Login operation success.");
+        Console.WriteLine();
     }
 }

@@ -239,6 +239,31 @@ public static class Program
                 await handler.GetKeyExchangeByIdAsync(requestId);
                 break;
             }
+            case "openssl-validate-common-secret":
+            {
+                var handler = DependencyResolver.ResolveService<OpensslValidateCommonSecretHandler>();
+
+                var senderIdString = args[1];
+                var receiverIdString = args[2];
+
+                var senderIdParsed = Guid.TryParse(senderIdString, out var senderId);
+                var receiverParsed = Guid.TryParse(receiverIdString, out var receiverId);
+
+                if (!senderIdParsed)
+                {
+                    Console.WriteLine(@"Invalid or empty sender ID.");
+                    return;
+                }
+
+                if (!receiverParsed)
+                {
+                    Console.WriteLine(@"Invalid or empty receiver ID.");
+                    return;
+                }
+
+                await handler.ValidateCommonSecretAsync(senderId, receiverId);
+                break;
+            }
             default:
             {
                 Console.WriteLine(@"Unrecognized command.");

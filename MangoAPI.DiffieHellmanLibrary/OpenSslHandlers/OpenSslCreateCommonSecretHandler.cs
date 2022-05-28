@@ -19,5 +19,6 @@ public class OpenSslCreateCommonSecretHandler
         await _openSslKeyExchangeService.OpensslCreateCommonSecretAsync(actor, userId);
 
         Console.WriteLine($@"Common secret with the user {userId} has been successfully created.");
+        Console.WriteLine();
     }
 }

@@ -19,5 +19,7 @@ public class OpenSslDownloadPublicKeyHandler
         await _openSslKeyExchangeService.OpensslDownloadPublicKeyAsync(actor, userId);
 
         Console.WriteLine($@"Public key of the user {userId} has been downloaded successfully.");
+        
+        Console.WriteLine();
     }
 }

@@ -18,5 +18,6 @@ public class OpenSslDeclineKeyExchangeHandler
         await _openSslKeyExchangeService.OpenSslDeclineKeyExchangeAsync(requestId);
         
         Console.WriteLine($@"key exchange request {requestId} has been declined.");
+        Console.WriteLine();
     }
 }

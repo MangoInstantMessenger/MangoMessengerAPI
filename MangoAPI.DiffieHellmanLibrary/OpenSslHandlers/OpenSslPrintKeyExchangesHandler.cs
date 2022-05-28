@@ -19,6 +19,8 @@ public class OpenSslPrintKeyExchangesHandler
         
         list.ForEach(Console.WriteLine);
         
-        Console.WriteLine(@"Key exchanges has been printed successfully.");
+        Console.WriteLine(@"Key exchanges are printed successfully.");
+        
+        Console.WriteLine();
     }
 }

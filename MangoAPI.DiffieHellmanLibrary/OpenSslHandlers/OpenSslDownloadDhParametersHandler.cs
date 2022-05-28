@@ -18,5 +18,6 @@ public class OpenSslDownloadDhParametersHandler
         await _openSslKeyExchangeService.OpenSslDownloadDhParametersAsync();
 
         Console.WriteLine(@"DH parameters file has been downloaded successfully.");
+        Console.WriteLine();
     }
 }

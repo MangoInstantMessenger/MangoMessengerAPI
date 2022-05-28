@@ -22,6 +22,7 @@ public class OpenSslCreateDhParametersHandler
         await command.ExecuteAsync();
 
         Console.WriteLine(@"DH parameters has been generated successfully.");
+        Console.WriteLine();
 
         return true;
     }

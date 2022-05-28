@@ -20,5 +20,7 @@ public class OpenSslGetKeyExchangeByIdHandler
         Console.WriteLine(exchangeRequest);
 
         Console.WriteLine(@"Reading completed.");
+        
+        Console.WriteLine();
     }
 }

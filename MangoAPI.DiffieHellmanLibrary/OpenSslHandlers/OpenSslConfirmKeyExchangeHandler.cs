@@ -17,6 +17,7 @@ public class OpenSslConfirmKeyExchangeHandler
         
         await _openSslKeyExchangeService.OpensslConfirmKeyExchange(senderId);
         
-        Console.WriteLine($@"Key exchange request with user {senderId} has been confirmed successfully.");
+        Console.WriteLine($@"Key exchange request with the user {senderId} has been confirmed successfully.");
+        Console.WriteLine();
     }
 }

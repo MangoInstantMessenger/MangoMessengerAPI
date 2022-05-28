@@ -34,7 +34,7 @@ public class RefreshTokenHandler
         Console.WriteLine(@"Writing tokens to file ...");
         await _tokensService.WriteTokensAsync(refreshTokenResponse);
 
-        Console.WriteLine(@"Refresh token operation was succeeded. 
-");
+        Console.WriteLine(@"Refresh token operation was succeeded.");
+        Console.WriteLine();
     }
 }
