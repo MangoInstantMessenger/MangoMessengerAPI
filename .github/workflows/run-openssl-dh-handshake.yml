@@ -39,8 +39,8 @@ jobs:
           username: ${{ secrets.AZURE_DEV_SSH_USER }}
           key: ${{ secrets.AZURE_DEV_SSH_KEY }}
           script: |
-            export PGPASSWORD=$AZURE_DEV_DB_PASSWORD
-            psql -h $AZURE_DEV_DB_HOST -d $AZURE_DEV_DB_DATABASE -U $AZURE_DEV_DB_USER -p 5432 -a -q -f ~/PostgresTruncateOpenSslKeyExchangeRequests.sql
+            export PGPASSWORD="${{ secrets.AZURE_DEV_DB_PASSWORD }}"
+            psql -h ${{ secrets.AZURE_DEV_DB_HOST }} -d ${{ secrets.AZURE_DEV_DB_NAME }} -U ${{ secrets.AZURE_DEV_DB_USER }} -p 5432 -a -q -f ~/PostgresTruncateOpenSslKeyExchangeRequests.sql
         env:
           AZURE_DEV_DB_HOST: ${{ secrets.AZURE_DEV_DB_HOST }}
           AZURE_DEV_DB_NAME: ${{ secrets.AZURE_DEV_DB_NAME }}
