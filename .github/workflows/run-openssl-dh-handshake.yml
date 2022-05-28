@@ -57,3 +57,63 @@ jobs:
           SENDER_EMAIL: ${{ secrets.SENDER_EMAIL }}
           SENDER_PASSWORD: ${{ secrets.SENDER_PASSWORD }}
           MANGO_API_ADDRESS: ${{ secrets.MANGO_API_ADDRESS }}
+
+      - name: 🔓 Alice (Sender) Creates Key Exchange Request to Bob 🔓
+        run: |
+          cd MangoAPI.DiffieHellmanConsole/bin/Debug/net6.0
+          dotnet MangoAPI.DiffieHellmanConsole.dll login $SENDER_EMAIL $SENDER_PASSWORD
+          dotnet MangoAPI.DiffieHellmanConsole.dll openssl-download-dh-parameters
+          dotnet MangoAPI.DiffieHellmanConsole.dll openssl-generate-private-key $RECEIVER_ID
+          dotnet MangoAPI.DiffieHellmanConsole.dll openssl-generate-public-key $RECEIVER_ID
+          dotnet MangoAPI.DiffieHellmanConsole.dll openssl-create-key-exchange $RECEIVER_ID
+        env:
+          SENDER_EMAIL: ${{ secrets.SENDER_EMAIL }}
+          SENDER_PASSWORD: ${{ secrets.SENDER_PASSWORD }}
+          MANGO_API_ADDRESS: ${{ secrets.MANGO_API_ADDRESS }}
+          RECEIVER_ID: ${{ secrets.RECEIVER_ID }}
+
+      - name: 🤝 Bob (Receiver) confirms Key Exchange Request with Alice 🤝
+        run: |
+          cd MangoAPI.DiffieHellmanConsole/bin/Debug/net6.0
+          dotnet MangoAPI.DiffieHellmanConsole.dll login $RECEIVER_EMAIL $RECEIVER_EMAIL
+          dotnet MangoAPI.DiffieHellmanConsole.dll openssl-download-dh-parameters
+          dotnet MangoAPI.DiffieHellmanConsole.dll openssl-generate-private-key $SENDER_ID
+          dotnet MangoAPI.DiffieHellmanConsole.dll openssl-generate-public-key $SENDER_ID
+          dotnet MangoAPI.DiffieHellmanConsole.dll openssl-print-key-exchanges
+          dotnet MangoAPI.DiffieHellmanConsole.dll openssl-confirm-key-exchange $SENDER_ID
+        env:
+          RECEIVER_EMAIL: ${{ secrets.RECEIVER_EMAIL }}
+          RECEIVER_PASSWORD: ${{ secrets.RECEIVER_PASSWORD }}
+          MANGO_API_ADDRESS: ${{ secrets.MANGO_API_ADDRESS }}
+          SENDER_ID: ${{ secrets.SENDER_ID }}
+
+      - name: 🔑 Bob (Receiver) derives the Common Secret 🔑
+        run: |
+          cd MangoAPI.DiffieHellmanConsole/bin/Debug/net6.0
+          dotnet MangoAPI.DiffieHellmanConsole.dll openssl-download-public-key --receiver $SENDER_ID
+          dotnet MangoAPI.DiffieHellmanConsole.dll openssl-create-common-secret --receiver $SENDER_ID
+        env:
+          MANGO_API_ADDRESS: ${{ secrets.MANGO_API_ADDRESS }}
+          SENDER_ID: ${{ secrets.SENDER_ID }}
+
+      - name: 🔑 Alice (Sender) derives the Common Secret 🔑
+        run: |
+          cd MangoAPI.DiffieHellmanConsole/bin/Debug/net6.0
+          dotnet MangoAPI.DiffieHellmanConsole.dll login $SENDER_EMAIL $SENDER_PASSWORD
+          dotnet MangoAPI.DiffieHellmanConsole.dll openssl-print-key-exchanges
+          dotnet MangoAPI.DiffieHellmanConsole.dll openssl-download-public-key --sender $RECEIVER_ID
+          dotnet MangoAPI.DiffieHellmanConsole.dll openssl-create-common-secret --sender $RECEIVER_ID
+        env:
+          SENDER_EMAIL: ${{ secrets.SENDER_EMAIL }}
+          SENDER_PASSWORD: ${{ secrets.SENDER_PASSWORD }}
+          MANGO_API_ADDRESS: ${{ secrets.MANGO_API_ADDRESS }}
+          RECEIVER_ID: ${{ secrets.RECEIVER_ID }}
+          
+      - name: ✅ Validate the Common Secret ✅
+        run: |
+          cd MangoAPI.DiffieHellmanConsole/bin/Debug/net6.0
+          dotnet MangoAPI.DiffieHellmanConsole.dll openssl-validate-common-secret $SENDER_ID $RECEIVER_ID
+        env:
+          MANGO_API_ADDRESS: ${{ secrets.MANGO_API_ADDRESS }}
+          RECEIVER_ID: ${{ secrets.RECEIVER_ID }}
+          SENDER_ID: ${{ secrets.SENDER_ID }}
