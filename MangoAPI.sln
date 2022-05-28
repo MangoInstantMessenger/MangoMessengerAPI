@@ -29,13 +29,14 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MangoAPI.DiffieHellmanConso
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SQL", "SQL", "{2A176CBC-BD4E-4ED5-AA92-B99D34C084BC}"
 	ProjectSection(SolutionItems) = preProject
-		SqlScripts\PostgresDeleteTestUser.sql = SqlScripts\PostgresDeleteTestUser.sql
-		SqlScripts\PostgresDropAllTablesCascade.sql = SqlScripts\PostgresDropAllTablesCascade.sql
-		SqlScripts\PostgresTruncateAllTablesCascade.sql = SqlScripts\PostgresTruncateAllTablesCascade.sql
-		SqlScripts\PostgresTruncateKeyExchangeRequests.sql = SqlScripts\PostgresTruncateKeyExchangeRequests.sql
-		SqlScripts\PostgresTruncatePublicKeys.sql = SqlScripts\PostgresTruncatePublicKeys.sql
-		SqlScripts\PostrgresValidateDatabaseSize.sql = SqlScripts\PostrgresValidateDatabaseSize.sql
-		SqlScripts\PostgresTruncatePasswordRestoreRequests.sql = SqlScripts\PostgresTruncatePasswordRestoreRequests.sql
+		SQL\PostgresDeleteTestUser.sql = SQL\PostgresDeleteTestUser.sql
+		SQL\PostgresDropAllTablesCascade.sql = SQL\PostgresDropAllTablesCascade.sql
+		SQL\PostgresTruncateAllTablesCascade.sql = SQL\PostgresTruncateAllTablesCascade.sql
+		SQL\PostgresTruncateCngKeyExchangeRequests.sql = SQL\PostgresTruncateCngKeyExchangeRequests.sql
+		SQL\PostgresTruncateOpenSslKeyExchangeRequests.sql = SQL\PostgresTruncateOpenSslKeyExchangeRequests.sql
+		SQL\PostgresTruncatePasswordRestoreRequests.sql = SQL\PostgresTruncatePasswordRestoreRequests.sql
+		SQL\PostgresTruncatePublicKeys.sql = SQL\PostgresTruncatePublicKeys.sql
+		SQL\PostrgresValidateDatabaseSize.sql = SQL\PostrgresValidateDatabaseSize.sql
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MangoAPI.Tests", "MangoAPI.Tests\MangoAPI.Tests.csproj", "{7BE7D37C-B0FF-4231-A155-B8AA7CF8092B}"

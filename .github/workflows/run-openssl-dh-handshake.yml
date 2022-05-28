@@ -1,8 +1,6 @@
 ﻿name: Run OpenSSL DH Handshake
 
 on:
-  push:
-    branches: [ MANGO-454 ]
   pull_request:
     branches: [ develop ]
   workflow_dispatch:
@@ -34,10 +32,28 @@ jobs:
           MANGO_BLOB_CONTAINER: ${{ secrets.MANGO_BLOB_CONTAINER }}
           MANGO_BLOB_ACCESS: ${{ secrets.MANGO_BLOB_ACCESS }}
 
-      - name: 🚀 Run OpenSSL DH Handshake Login 🚀
+      - name: ⚠ Postgres Truncate OpenSsl Tables via SSH ⚠
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.AZURE_DEV_SSH_HOST }}
+          username: ${{ secrets.AZURE_DEV_SSH_USER }}
+          key: ${{ secrets.AZURE_DEV_SSH_KEY }}
+          script: |
+            SET PGPASSWORD=$AZURE_DEV_DB_PASSWORD
+            psql -h $AZURE_DEV_DB_HOST -d $AZURE_DEV_DB_DATABASE -U $AZURE_DEV_DB_USER -p 5432 -a -q -f ~/PostgresTruncateOpenSslKeyExchangeRequests.sql
+        env:
+          AZURE_DEV_DB_HOST: ${{ secrets.AZURE_DEV_DB_HOST }}
+          AZURE_DEV_DB_NAME: ${{ secrets.AZURE_DEV_DB_NAME }}
+          AZURE_DEV_DB_USER: ${{ secrets.AZURE_DEV_DB_USER }}
+          AZURE_DEV_DB_PASSWORD: ${{ secrets.AZURE_DEV_DB_PASSWORD }}
+
+      - name: 🚀 Run OpenSSL DH Handshake Create & Upload Parameters 🚀
         run: |
           cd MangoAPI.DiffieHellmanConsole/bin/Debug/net6.0
           dotnet MangoAPI.DiffieHellmanConsole.dll login $SENDER_EMAIL $SENDER_PASSWORD
+          dotnet MangoAPI.DiffieHellmanConsole openssl-generate-dh-parameters
+          dotnet MangoAPI.DiffieHellmanConsole openssl-generate-dh-parameters
+          dotnet MangoAPI.DiffieHellmanConsole openssl-upload-dh-parameters
         env:
           SENDER_EMAIL: ${{ secrets.SENDER_EMAIL }}
           SENDER_PASSWORD: ${{ secrets.SENDER_PASSWORD }}
