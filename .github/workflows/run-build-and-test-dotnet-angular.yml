@@ -1,4 +1,4 @@
-﻿name: Build
+﻿name: Run Build and Test (.NET, Angular)
 
 on:
   push:
@@ -7,14 +7,13 @@ on:
       - azure-dev
       - azure-qa
       - master
-      - MANGO-454
   pull_request:
     branches:
       - develop
   workflow_dispatch:
 
 jobs:
-  build:
+  build-and-test:
     runs-on: ubuntu-latest
     
     steps:

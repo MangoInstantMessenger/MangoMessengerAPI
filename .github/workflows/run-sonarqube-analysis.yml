@@ -1,13 +1,13 @@
 name: Run SonarQube analysis
 on:
   push:
-    branches:
-      - develop
+    branches: [ develop ]
   pull_request:
     types: [ opened, synchronize, reopened ]
+  workflow_dispatch:
 jobs:
-  build:
-    name: Run_SonarQube_Analysis
+  run-sonarqube-analysis:
+    name: Run SonarQube Analysis
     runs-on: ubuntu-latest
     steps:
       - name: Set up JDK 11

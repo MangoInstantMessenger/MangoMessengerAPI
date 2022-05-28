@@ -1,12 +1,13 @@
-﻿name: Azure QA Deploy
+﻿name: Azure QA VM SSH Deploy
 
 on:
   push:
-    branches:
-      - azure-qa
+    branches: [ azure-qa ]
+  workflow_dispatch:
 
 jobs:
-  build:
+  azure-qa-vm-ssh-deploy:
+    name: Azure QA VM SSH Deploy
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
