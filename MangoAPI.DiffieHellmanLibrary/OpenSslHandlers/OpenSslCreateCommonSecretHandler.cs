@@ -1,4 +1,5 @@
-﻿using MangoAPI.DiffieHellmanLibrary.Services;
+﻿using MangoAPI.BusinessLogic.Models;
+using MangoAPI.DiffieHellmanLibrary.Services;
 
 namespace MangoAPI.DiffieHellmanLibrary.OpenSslHandlers;
 
@@ -11,12 +12,12 @@ public class OpenSslCreateCommonSecretHandler
         _openSslKeyExchangeService = openSslKeyExchangeService;
     }
 
-    public async Task CreateCommonSecretAsync(Guid requestId)
+    public async Task CreateCommonSecretAsync(Actor actor, Guid userId)
     {
-        Console.WriteLine($@"Creating common secret {requestId} ...");
-        
-        await _openSslKeyExchangeService.OpensslCreateCommonSecretAsync(requestId);
-        
-        Console.WriteLine($@"Common secret has been successfully created.");
+        Console.WriteLine($@"Creating common secret with the user {userId} ...");
+
+        await _openSslKeyExchangeService.OpensslCreateCommonSecretAsync(actor, userId);
+
+        Console.WriteLine($@"Common secret with the user {userId} has been successfully created.");
     }
 }

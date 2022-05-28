@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using MangoAPI.BusinessLogic.Models;
 using MangoAPI.DiffieHellmanLibrary.AuthHandlers;
 using MangoAPI.DiffieHellmanLibrary.CngHandlers;
 using MangoAPI.DiffieHellmanLibrary.OpenSslHandlers;
@@ -147,9 +148,9 @@ public static class Program
             {
                 var handler = DependencyResolver.ResolveService<OpenSslConfirmKeyExchangeHandler>();
 
-                var requestIdString = args[1];
+                var userIdString = args[1];
 
-                var isParsed = Guid.TryParse(requestIdString, out var requestId);
+                var isParsed = Guid.TryParse(userIdString, out var userId);
 
                 if (!isParsed)
                 {
@@ -157,14 +158,15 @@ public static class Program
                     return;
                 }
 
-                await handler.ConfirmKeyExchangeAsync(requestId);
+                await handler.ConfirmKeyExchangeAsync(userId);
                 break;
             }
             case "openssl-create-common-secret":
             {
                 var handler = DependencyResolver.ResolveService<OpenSslCreateCommonSecretHandler>();
 
-                var requestIdString = args[1];
+                var actorString = args[1];
+                var requestIdString = args[2];
 
                 var isParsed = Guid.TryParse(requestIdString, out var requestId);
 
@@ -174,14 +176,19 @@ public static class Program
                     return;
                 }
 
-                await handler.CreateCommonSecretAsync(requestId);
+                var actor = actorString == "--sender"
+                    ? Actor.Sender
+                    : Actor.Receiver;
+
+                await handler.CreateCommonSecretAsync(actor, requestId);
                 break;
             }
             case "openssl-download-public-key":
             {
                 var handler = DependencyResolver.ResolveService<OpenSslDownloadPublicKeyHandler>();
 
-                var requestIdString = args[1];
+                var actorString = args[1];
+                var requestIdString = args[2];
 
                 var isParsed = Guid.TryParse(requestIdString, out var requestId);
 
@@ -191,7 +198,11 @@ public static class Program
                     return;
                 }
 
-                await handler.DownloadPublicKeyAsync(requestId);
+                var actor = actorString == "--sender"
+                    ? Actor.Sender
+                    : Actor.Receiver;
+
+                await handler.DownloadPublicKeyAsync(actor, requestId);
                 break;
             }
             case "openssl-decline-key-exchange":

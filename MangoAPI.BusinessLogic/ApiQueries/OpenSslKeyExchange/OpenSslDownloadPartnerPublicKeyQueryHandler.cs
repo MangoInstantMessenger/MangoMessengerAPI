@@ -26,7 +26,7 @@ public class OpenSslDownloadPartnerPublicKeyQueryHandler : IRequestHandler<OpenS
     {
         var keyExchangeRequest = await _mangoPostgresDbContext.OpenSslKeyExchangeRequests
             .FirstOrDefaultAsync(
-                predicate: x => x.Id == request.RequestId,
+                predicate: entity => entity.Id == request.RequestId,
                 cancellationToken: cancellationToken);
 
         if (keyExchangeRequest == null)
@@ -62,27 +62,18 @@ public class OpenSslDownloadPartnerPublicKeyQueryHandler : IRequestHandler<OpenS
             ? keyExchangeRequest.ReceiverId
             : keyExchangeRequest.SenderId;
 
-        if (isSender)
-        {
-            var receiverResponse = new OpenSslDownloadPartnerPublicKeyResponse
-            {
-                Message = ResponseMessageCodes.Success,
-                PartnerId = partnerId,
-                PublicKey = keyExchangeRequest.ReceiverPublicKey,
-                Success = true,
-            };
+        var publicKey = isSender 
+            ? keyExchangeRequest.ReceiverPublicKey 
+            : keyExchangeRequest.SenderPublicKey;
 
-            return _responseFactory.SuccessResponse(receiverResponse);
-        }
-
-        var senderResponse = new OpenSslDownloadPartnerPublicKeyResponse
+        var response = new OpenSslDownloadPartnerPublicKeyResponse
         {
             Message = ResponseMessageCodes.Success,
             PartnerId = partnerId,
-            PublicKey = keyExchangeRequest.SenderPublicKey,
+            PublicKey = publicKey,
             Success = true,
         };
 
-        return _responseFactory.SuccessResponse(senderResponse);
+        return _responseFactory.SuccessResponse(response);
     }
 }
