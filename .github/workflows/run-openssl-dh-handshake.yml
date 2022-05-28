@@ -41,3 +41,4 @@ jobs:
         env:
           SENDER_EMAIL: ${{ secrets.SENDER_EMAIL }}
           SENDER_PASSWORD: ${{ secrets.SENDER_PASSWORD }}
+          MANGO_API_ADDRESS: ${{ secrets.MANGO_API_ADDRESS }}
