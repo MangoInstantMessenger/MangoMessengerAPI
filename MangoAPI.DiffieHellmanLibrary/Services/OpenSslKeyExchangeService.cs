@@ -1,6 +1,5 @@
 ﻿using System.Net.Http.Headers;
 using System.Security.Cryptography;
-using System.Text;
 using CliWrap;
 using MangoAPI.BusinessLogic.ApiQueries.OpenSslKeyExchange;
 using MangoAPI.BusinessLogic.Models;
@@ -385,15 +384,17 @@ public class OpenSslKeyExchangeService
         var senderPath = Path.Combine(commonSecretDirectory, senderCommonSecretFileName);
         var receiverPath = Path.Combine(commonSecretDirectory, receiverCommonSecretFileName);
 
-        var senderHash = await ComputeHashAsync(senderPath);
-        var receiverHash = await ComputeHashAsync(receiverPath);
+        var key = RandomNumberGenerator.GetBytes(128);
+
+        var senderHash = await ComputeHashAsync(key, senderPath);
+        var receiverHash = await ComputeHashAsync(key, receiverPath);
 
         return (senderHash, receiverHash);
     }
 
-    private static async Task<string> ComputeHashAsync(string path)
+    private static async Task<string> ComputeHashAsync(byte[] key, string path)
     {
-        using var md5 = MD5.Create();
+        using var md5 = new HMACSHA512(key);
         await using var senderStream = File.OpenRead(path);
         var hashBytes = await md5.ComputeHashAsync(senderStream);
         var hashAsString = Convert.ToBase64String(hashBytes);

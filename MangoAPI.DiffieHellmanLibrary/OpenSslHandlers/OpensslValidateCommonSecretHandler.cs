@@ -18,8 +18,10 @@ public class OpensslValidateCommonSecretHandler
         var result = await _keyExchangeService.ValidateCommonSecretAsync(senderId, receiverId);
 
         Console.WriteLine(@$"Sender Hash: {result.senderHash}");
-        Console.WriteLine(@$"Receiver Hash: {result.receiverHash}");
+        Console.WriteLine(@$"Receiver Hash: {result.receiverHash}")
+            ;
         var hashesEqual = result.senderHash == result.receiverHash;
+        
         Console.WriteLine($@"Are hashes equal? {hashesEqual}");
         Console.WriteLine();
     }
