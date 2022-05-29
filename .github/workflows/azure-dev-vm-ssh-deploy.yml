@@ -2,16 +2,12 @@
 
 on:
   push:
-    branches:
-      - azure-dev
-  
+    branches: [ azure-dev ]
   workflow_dispatch:
-    branches:
-      - azure-dev
 
 jobs:
-  build:
-    name: Azure_Dev_VM_SSH_Deploy
+  azure-dev-vm-ssh-deploy:
+    name: Azure Dev VM SSH Deploy
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2

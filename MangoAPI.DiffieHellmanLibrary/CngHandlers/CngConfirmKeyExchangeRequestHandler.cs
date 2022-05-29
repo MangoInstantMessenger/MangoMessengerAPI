@@ -40,7 +40,7 @@ public class CngConfirmKeyExchangeRequestHandler
         {
             const string error = ResponseMessageCodes.KeyExchangeRequestNotFound;
             var details = ResponseMessageCodes.ErrorDictionary[error];
-            Console.WriteLine($"{error}. {details}");
+            Console.WriteLine($@"{error}. {details}");
             return;
         }
 
@@ -80,15 +80,16 @@ public class CngConfirmKeyExchangeRequestHandler
         publicKeysDirectory.CreateDirectoryIfNotExist();
         commonSecretsDirectory.CreateDirectoryIfNotExist();
 
-        Console.WriteLine("Writing private key to file...");
+        Console.WriteLine(@"Writing private key to file...");
         await File.WriteAllTextAsync(privateKeyPath, privateKeyBase64String);
 
-        Console.WriteLine("Writing public key to file ...");
+        Console.WriteLine(@"Writing public key to file ...");
         await File.WriteAllTextAsync(publicKeyPath, publicKeyBase64String);
 
-        Console.WriteLine("Writing common secret to file...");
+        Console.WriteLine(@"Writing common secret to file...");
         await File.WriteAllTextAsync(commonSecretPath, commonSecret);
 
-        Console.WriteLine("Key exchange request confirmed successfully.\n");
+        Console.WriteLine(@"Key exchange request confirmed successfully.
+");
     }
 }

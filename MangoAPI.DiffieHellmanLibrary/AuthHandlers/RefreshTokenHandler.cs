@@ -22,18 +22,19 @@ public class RefreshTokenHandler
         {
             const string error = ResponseMessageCodes.TokensNotFound;
             var details = ResponseMessageCodes.ErrorDictionary[error];
-            Console.WriteLine($"{error}. {details}");
+            Console.WriteLine($@"{error}. {details}");
             return;
         }
 
         var refreshToken = tokensResponse.Tokens.RefreshToken;
 
-        Console.WriteLine("Refreshing tokens ...");
+        Console.WriteLine(@"Refreshing tokens ...");
         var refreshTokenResponse = await _sessionsService.RefreshTokenAsync(refreshToken);
 
-        Console.WriteLine("Writing tokens to file ...");
+        Console.WriteLine(@"Writing tokens to file ...");
         await _tokensService.WriteTokensAsync(refreshTokenResponse);
 
-        Console.WriteLine("Refresh token operation was succeeded. \n");
+        Console.WriteLine(@"Refresh token operation was succeeded.");
+        Console.WriteLine();
     }
 }

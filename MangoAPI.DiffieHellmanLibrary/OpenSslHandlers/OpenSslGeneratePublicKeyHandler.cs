@@ -13,10 +13,12 @@ public class OpenSslGeneratePublicKeyHandler
 
     public async Task GeneratePublicKeyAsync(Guid receiverId)
     {
-        Console.WriteLine("Generating public key ...");
-        
+        Console.WriteLine($@"Generating public key of the user {receiverId} ...");
+
         await _openSslKeyExchangeService.OpenSslGeneratePublicKeyAsync(receiverId);
+
+        Console.WriteLine($@"Public key of the user {receiverId} has been generated successfully.");
         
-        Console.WriteLine("Public key has been generated successfully.");
+        Console.WriteLine();
     }
 }

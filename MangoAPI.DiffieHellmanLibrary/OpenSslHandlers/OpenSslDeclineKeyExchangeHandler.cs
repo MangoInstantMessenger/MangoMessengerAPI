@@ -13,10 +13,11 @@ public class OpenSslDeclineKeyExchangeHandler
 
     public async Task DeclineKeyExchangeAsync(Guid requestId)
     {
-        Console.WriteLine($"Declining key exchange request {requestId} ...");
+        Console.WriteLine($@"Declining key exchange request {requestId} ...");
         
         await _openSslKeyExchangeService.OpenSslDeclineKeyExchangeAsync(requestId);
         
-        Console.WriteLine($"key exchange request {requestId} has been declined.");
+        Console.WriteLine($@"key exchange request {requestId} has been declined.");
+        Console.WriteLine();
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using MangoAPI.BusinessLogic.Models;
 using MangoAPI.DiffieHellmanLibrary.AuthHandlers;
 using MangoAPI.DiffieHellmanLibrary.CngHandlers;
 using MangoAPI.DiffieHellmanLibrary.OpenSslHandlers;
@@ -15,7 +16,7 @@ public static class Program
     {
         if (args.Length == 0)
         {
-            Console.WriteLine("Unrecognized command.");
+            Console.WriteLine(@"Unrecognized command.");
             return;
         }
 
@@ -93,7 +94,7 @@ public static class Program
 
                 if (!isParsed)
                 {
-                    Console.WriteLine("Invalid or empty receiver ID.");
+                    Console.WriteLine(@"Invalid or empty receiver ID.");
                     return;
                 }
 
@@ -111,7 +112,7 @@ public static class Program
 
                 if (!isParsed)
                 {
-                    Console.WriteLine("Invalid or empty receiver ID.");
+                    Console.WriteLine(@"Invalid or empty receiver ID.");
                     return;
                 }
 
@@ -129,7 +130,7 @@ public static class Program
 
                 if (!isParsed)
                 {
-                    Console.WriteLine("Invalid or empty receiver ID.");
+                    Console.WriteLine(@"Invalid or empty receiver ID.");
                     return;
                 }
 
@@ -147,51 +148,61 @@ public static class Program
             {
                 var handler = DependencyResolver.ResolveService<OpenSslConfirmKeyExchangeHandler>();
 
-                var requestIdString = args[1];
+                var userIdString = args[1];
 
-                var isParsed = Guid.TryParse(requestIdString, out var requestId);
+                var isParsed = Guid.TryParse(userIdString, out var userId);
 
                 if (!isParsed)
                 {
-                    Console.WriteLine("Invalid or empty request ID.");
+                    Console.WriteLine(@"Invalid or empty request ID.");
                     return;
                 }
 
-                await handler.ConfirmKeyExchangeAsync(requestId);
+                await handler.ConfirmKeyExchangeAsync(userId);
                 break;
             }
             case "openssl-create-common-secret":
             {
                 var handler = DependencyResolver.ResolveService<OpenSslCreateCommonSecretHandler>();
 
-                var requestIdString = args[1];
+                var actorString = args[1];
+                var requestIdString = args[2];
 
                 var isParsed = Guid.TryParse(requestIdString, out var requestId);
 
                 if (!isParsed)
                 {
-                    Console.WriteLine("Invalid or empty request ID.");
+                    Console.WriteLine(@"Invalid or empty request ID.");
                     return;
                 }
 
-                await handler.CreateCommonSecretAsync(requestId);
+                var actor = actorString == "--sender"
+                    ? Actor.Sender
+                    : Actor.Receiver;
+
+                await handler.CreateCommonSecretAsync(actor, requestId);
                 break;
             }
             case "openssl-download-public-key":
             {
                 var handler = DependencyResolver.ResolveService<OpenSslDownloadPublicKeyHandler>();
 
-                var requestIdString = args[1];
+                var actorString = args[1];
+                var requestIdString = args[2];
 
                 var isParsed = Guid.TryParse(requestIdString, out var requestId);
 
                 if (!isParsed)
                 {
-                    Console.WriteLine("Invalid or empty request ID.");
+                    Console.WriteLine(@"Invalid or empty request ID.");
                     return;
                 }
 
-                await handler.DownloadPublicKeyAsync(requestId);
+                var actor = actorString == "--sender"
+                    ? Actor.Sender
+                    : Actor.Receiver;
+
+                await handler.DownloadPublicKeyAsync(actor, requestId);
                 break;
             }
             case "openssl-decline-key-exchange":
@@ -204,7 +215,7 @@ public static class Program
 
                 if (!isParsed)
                 {
-                    Console.WriteLine("Invalid or empty request ID.");
+                    Console.WriteLine(@"Invalid or empty request ID.");
                     return;
                 }
 
@@ -221,16 +232,41 @@ public static class Program
 
                 if (!isParsed)
                 {
-                    Console.WriteLine("Invalid or empty request ID.");
+                    Console.WriteLine(@"Invalid or empty request ID.");
                     return;
                 }
 
                 await handler.GetKeyExchangeByIdAsync(requestId);
                 break;
             }
+            case "openssl-validate-common-secret":
+            {
+                var handler = DependencyResolver.ResolveService<OpensslValidateCommonSecretHandler>();
+
+                var senderIdString = args[1];
+                var receiverIdString = args[2];
+
+                var senderIdParsed = Guid.TryParse(senderIdString, out var senderId);
+                var receiverParsed = Guid.TryParse(receiverIdString, out var receiverId);
+
+                if (!senderIdParsed)
+                {
+                    Console.WriteLine(@"Invalid or empty sender ID.");
+                    return;
+                }
+
+                if (!receiverParsed)
+                {
+                    Console.WriteLine(@"Invalid or empty receiver ID.");
+                    return;
+                }
+
+                await handler.ValidateCommonSecretAsync(senderId, receiverId);
+                break;
+            }
             default:
             {
-                Console.WriteLine("Unrecognized command.");
+                Console.WriteLine(@"Unrecognized command.");
                 break;
             }
         }

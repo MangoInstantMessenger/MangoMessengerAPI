@@ -2,5 +2,5 @@
 
 public static class AuthRoutes
 {
-    public const string SessionsRoute = Routes.ApiAddress + "sessions/";
+    public static string SessionsRoute => Routes.ApiAddress + "sessions/";
 }

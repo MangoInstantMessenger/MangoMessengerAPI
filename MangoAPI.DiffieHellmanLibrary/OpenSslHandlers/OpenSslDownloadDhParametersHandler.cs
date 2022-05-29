@@ -13,10 +13,11 @@ public class OpenSslDownloadDhParametersHandler
 
     public async Task DownloadDhParametersAsync()
     {
-        Console.WriteLine("Downloading DH parameters file ...");
+        Console.WriteLine(@"Downloading DH parameters file ...");
 
         await _openSslKeyExchangeService.OpenSslDownloadDhParametersAsync();
 
-        Console.WriteLine("DH parameters file has been downloaded successfully.");
+        Console.WriteLine(@"DH parameters file has been downloaded successfully.");
+        Console.WriteLine();
     }
 }

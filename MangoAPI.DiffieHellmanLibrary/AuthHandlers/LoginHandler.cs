@@ -15,12 +15,13 @@ public class LoginHandler
 
     public async Task LoginAsync(IReadOnlyList<string> args)
     {
-        Console.WriteLine("Attempting to login ...");
+        Console.WriteLine(@"Attempting to login ...");
         var loginResponse = await _sessionsService.LoginAsync(args);
 
-        Console.WriteLine("Writing tokens to file ...");
+        Console.WriteLine(@"Writing tokens to file ...");
         await _tokensService.WriteTokensAsync(loginResponse);
 
-        Console.WriteLine("Login operation success.\n");
+        Console.WriteLine(@"Login operation success.");
+        Console.WriteLine();
     }
 }

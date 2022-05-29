@@ -32,7 +32,7 @@ public class CngCreateKeyExchangeHandler
 
         var response = await _cngKeyExchangeService.CngCreateKeyExchangeRequestAsync(requestedUserId, publicKeyBase64);
 
-        Console.WriteLine($"Key exchange request with an ID {response.RequestId} created successfully.");
+        Console.WriteLine($@"Key exchange request with an ID {response.RequestId} created successfully.");
 
         var privateKeysDirectory = CngDirectoryHelper.CngPrivateKeysDirectory;
         var publicKeysDirectory = CngDirectoryHelper.CngPublicKeysDirectory;
@@ -48,12 +48,13 @@ public class CngCreateKeyExchangeHandler
         privateKeysDirectory.CreateDirectoryIfNotExist();
         publicKeysDirectory.CreateDirectoryIfNotExist();
 
-        Console.WriteLine("Writing private key to file...");
+        Console.WriteLine(@"Writing private key to file...");
         await File.WriteAllTextAsync(privateKeyPath, privateKeyBase64);
 
-        Console.WriteLine("Writing public key to file ...");
+        Console.WriteLine(@"Writing public key to file ...");
         await File.WriteAllTextAsync(publicKeyPath, publicKeyBase64);
 
-        Console.WriteLine("Key exchange request sent successfully.\n");
+        Console.WriteLine(@"Key exchange request sent successfully.
+");
     }
 }

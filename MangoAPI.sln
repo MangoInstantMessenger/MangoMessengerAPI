@@ -27,24 +27,16 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MangoAPI.DiffieHellmanConsole", "MangoAPI.DiffieHellmanConsole\MangoAPI.DiffieHellmanConsole.csproj", "{85D35610-B0C7-4439-871C-0578E1FC7BB5}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Workflows", "Workflows", "{CF4A9B6F-E77E-4DCD-8D08-32EDC9ACB978}"
-	ProjectSection(SolutionItems) = preProject
-		.github\workflows\azure-dev.yml = .github\workflows\azure-dev.yml
-		.github\workflows\azure-qa.yml = .github\workflows\azure-qa.yml
-		.github\workflows\heroku.yml = .github\workflows\heroku.yml
-		.github\workflows\build.yml = .github\workflows\build.yml
-		.github\workflows\run-sonarqube-analysis.yml = .github\workflows\run-sonarqube-analysis.yml
-	EndProjectSection
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SQL", "SQL", "{2A176CBC-BD4E-4ED5-AA92-B99D34C084BC}"
 	ProjectSection(SolutionItems) = preProject
-		SqlScripts\PostgresDeleteTestUser.sql = SqlScripts\PostgresDeleteTestUser.sql
-		SqlScripts\PostgresDropAllTablesCascade.sql = SqlScripts\PostgresDropAllTablesCascade.sql
-		SqlScripts\PostgresTruncateAllTablesCascade.sql = SqlScripts\PostgresTruncateAllTablesCascade.sql
-		SqlScripts\PostgresTruncateKeyExchangeRequests.sql = SqlScripts\PostgresTruncateKeyExchangeRequests.sql
-		SqlScripts\PostgresTruncatePublicKeys.sql = SqlScripts\PostgresTruncatePublicKeys.sql
-		SqlScripts\PostrgresValidateDatabaseSize.sql = SqlScripts\PostrgresValidateDatabaseSize.sql
-		SqlScripts\PostgresTruncatePasswordRestoreRequests.sql = SqlScripts\PostgresTruncatePasswordRestoreRequests.sql
+		SQL\PostgresDeleteTestUser.sql = SQL\PostgresDeleteTestUser.sql
+		SQL\PostgresDropAllTablesCascade.sql = SQL\PostgresDropAllTablesCascade.sql
+		SQL\PostgresTruncateAllTablesCascade.sql = SQL\PostgresTruncateAllTablesCascade.sql
+		SQL\PostgresTruncateCngKeyExchangeRequests.sql = SQL\PostgresTruncateCngKeyExchangeRequests.sql
+		SQL\PostgresTruncateOpenSslKeyExchangeRequests.sql = SQL\PostgresTruncateOpenSslKeyExchangeRequests.sql
+		SQL\PostgresTruncatePasswordRestoreRequests.sql = SQL\PostgresTruncatePasswordRestoreRequests.sql
+		SQL\PostgresTruncatePublicKeys.sql = SQL\PostgresTruncatePublicKeys.sql
+		SQL\PostrgresValidateDatabaseSize.sql = SQL\PostrgresValidateDatabaseSize.sql
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MangoAPI.Tests", "MangoAPI.Tests\MangoAPI.Tests.csproj", "{7BE7D37C-B0FF-4231-A155-B8AA7CF8092B}"
@@ -56,6 +48,19 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "build", "build", "{66E218B1
 		build\azure-pipelines.yml = build\azure-pipelines.yml
 		build\azure-pipelines-deploy.yml = build\azure-pipelines-deploy.yml
 		build\azure-pipelines-common.yml = build\azure-pipelines-common.yml
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".github", ".github", "{B8CB0A21-BB6E-478B-A755-49CEA1435CD1}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "workflows", "workflows", "{245C5E82-3AED-46CE-8562-B78682197D9B}"
+	ProjectSection(SolutionItems) = preProject
+		.github\workflows\azure-dev-vm-ssh-deploy.yml = .github\workflows\azure-dev-vm-ssh-deploy.yml
+		.github\workflows\azure-qa-vm-ssh-deploy.yml = .github\workflows\azure-qa-vm-ssh-deploy.yml
+		.github\workflows\heroku-container-deploy.yml = .github\workflows\heroku-container-deploy.yml
+		.github\workflows\run-build-and-test-dotnet-angular.yml = .github\workflows\run-build-and-test-dotnet-angular.yml
+		.github\workflows\run-sonarqube-analysis.yml = .github\workflows\run-sonarqube-analysis.yml
+		.github\workflows\run-openssl-dh-handshake.yml = .github\workflows\run-openssl-dh-handshake.yml
+		.github\workflows\run-cng-dh-handshake = .github\workflows\run-cng-dh-handshake
 	EndProjectSection
 EndProject
 Global
@@ -102,5 +107,8 @@ Global
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {64B16C18-46ED-4D73-927F-B2E229345447}
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{245C5E82-3AED-46CE-8562-B78682197D9B} = {B8CB0A21-BB6E-478B-A755-49CEA1435CD1}
 	EndGlobalSection
 EndGlobal

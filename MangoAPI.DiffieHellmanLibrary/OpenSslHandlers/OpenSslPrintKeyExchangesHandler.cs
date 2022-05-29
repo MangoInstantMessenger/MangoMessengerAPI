@@ -13,12 +13,14 @@ public class OpenSslPrintKeyExchangesHandler
 
     public async Task PrintKeyExchangesAsync()
     {
-        Console.WriteLine("Printing key-exchange requests ...");
+        Console.WriteLine(@"Printing key-exchange requests ...");
         
         var list = await _openSslKeyExchangeService.OpensslGetKeyExchangesAsync();
         
         list.ForEach(Console.WriteLine);
         
-        Console.WriteLine("Key exchanges has been printed successfully.");
+        Console.WriteLine(@"Key exchanges are printed successfully.");
+        
+        Console.WriteLine();
     }
 }

@@ -11,10 +11,13 @@ public class OpenSslConfirmKeyExchangeHandler
         _openSslKeyExchangeService = openSslKeyExchangeService;
     }
 
-    public async Task ConfirmKeyExchangeAsync(Guid requestId)
+    public async Task ConfirmKeyExchangeAsync(Guid senderId)
     {
-        Console.WriteLine($"Confirming key exchange request {requestId} ... ");
-        await _openSslKeyExchangeService.OpensslConfirmKeyExchange(requestId);
-        Console.WriteLine($"Key exchange request {requestId} has been confirmed successfully.");
+        Console.WriteLine($@"Confirming key exchange with the user {senderId} ... ");
+        
+        await _openSslKeyExchangeService.OpensslConfirmKeyExchange(senderId);
+        
+        Console.WriteLine($@"Key exchange request with the user {senderId} has been confirmed successfully.");
+        Console.WriteLine();
     }
 }

@@ -1,12 +1,13 @@
-name: Heroku Deploy
+name: Heroku Container Deploy
 
 on:
   push:
-    branches:
-      - master
+    branches: [ master ]
+  workflow_dispatch:
 
 jobs:
-  build:
+  heroku-container-deploy:
+    name: Heroku Container Deploy
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1

@@ -13,12 +13,14 @@ public class OpenSslGetKeyExchangeByIdHandler
 
     public async Task GetKeyExchangeByIdAsync(Guid requestId)
     {
-        Console.WriteLine($"Reading the key exchange {requestId} ...");
+        Console.WriteLine($@"Reading the key exchange {requestId} ...");
 
         var exchangeRequest = await _openSslKeyExchangeService.OpenSslGetKeyExchangeByIdAsync(requestId);
 
         Console.WriteLine(exchangeRequest);
 
-        Console.WriteLine("Reading completed.");
+        Console.WriteLine(@"Reading completed.");
+        
+        Console.WriteLine();
     }
 }
