@@ -4,10 +4,13 @@
   <img src="https://github.com/MangoInstantMessenger/MangoInstantMessenger.github.io/blob/MANGO-414/src/img/logo.png" width="100" height="100"  alt="Mango Messenger Logo"/>
 </p>
 
-[![Build](https://github.com/MangoInstantMessenger/MangoMessengerAPI/actions/workflows/build.yml/badge.svg)](https://github.com/MangoInstantMessenger/MangoMessengerAPI/actions/workflows/build.yml/badge.svg)
-[![Azure Dev Deploy](https://github.com/MangoInstantMessenger/MangoMessengerAPI/actions/workflows/azure-dev.yml/badge.svg)](https://github.com/MangoInstantMessenger/MangoMessengerAPI/actions/workflows/azure-dev.yml/badge.svg)
-[![Azure QA Deploy](https://github.com/MangoInstantMessenger/MangoMessengerAPI/actions/workflows/azure-qa.yml/badge.svg)](https://github.com/MangoInstantMessenger/MangoMessengerAPI/actions/workflows/azure-qa.yml/badge.svg)
-[![Heroku Deploy](https://github.com/MangoInstantMessenger/MangoMessengerAPI/actions/workflows/heroku.yml/badge.svg)](https://github.com/MangoInstantMessenger/MangoMessengerAPI/actions/workflows/heroku.yml/badge.svg)
+[![Run Build and Test (.NET, Angular)](https://github.com/MangoInstantMessenger/MangoMessengerAPI/actions/workflows/run-build-and-test-dotnet-angular.yml/badge.svg)](https://github.com/MangoInstantMessenger/MangoMessengerAPI/actions/workflows/run-build-and-test-dotnet-angular.yml)
+[![Azure Dev Deploy](https://github.com/MangoInstantMessenger/MangoMessengerAPI/actions/workflows/azure-dev-vm-ssh-deploy.yml/badge.svg)](https://github.com/MangoInstantMessenger/MangoMessengerAPI/actions/workflows/azure-dev-vm-ssh-deploy.yml)
+[![Azure QA Deploy](https://github.com/MangoInstantMessenger/MangoMessengerAPI/actions/workflows/azure-qa-vm-ssh-deploy.yml/badge.svg)](https://github.com/MangoInstantMessenger/MangoMessengerAPI/actions/workflows/azure-qa-vm-ssh-deploy.yml)
+[![Heroku Deploy](https://github.com/MangoInstantMessenger/MangoMessengerAPI/actions/workflows/heroku-container-deploy.yml/badge.svg)](https://github.com/MangoInstantMessenger/MangoMessengerAPI/actions/workflows/heroku-container-deploy.yml)
+[![Run OpenSSL DH Handshake](https://github.com/MangoInstantMessenger/MangoMessengerAPI/actions/workflows/run-openssl-dh-handshake.yml/badge.svg)](https://github.com/MangoInstantMessenger/MangoMessengerAPI/actions/workflows/run-openssl-dh-handshake.yml)
+[![Run SonarQube analysis](https://github.com/MangoInstantMessenger/MangoMessengerAPI/actions/workflows/run-sonarqube-analysis.yml/badge.svg)](https://github.com/MangoInstantMessenger/MangoMessengerAPI/actions/workflows/run-sonarqube-analysis.yml)
+[![.github/workflows/azure-pipelines.yml](https://github.com/MangoInstantMessenger/MangoMessengerAPI/actions/workflows/azure-pipelines.yml/badge.svg)](https://github.com/MangoInstantMessenger/MangoMessengerAPI/actions/workflows/azure-pipelines.yml)
 [![Mango Database Diagramm](https://img.shields.io/badge/Data%20Base%20Diagram-DbDiagram-lightgrey)](https://dbdiagram.io/d/60d66a13dd6a597148203e6b)
 ![contributors count](https://img.shields.io/github/contributors/MangoInstantMessenger/MangoMessengerAPI)
 [![codecov](https://codecov.io/gh/MangoInstantMessenger/MangoMessengerAPI/branch/develop/graph/badge.svg?token=J4P0TD9Q1Q)](https://codecov.io/gh/MangoInstantMessenger/MangoMessengerAPI)
