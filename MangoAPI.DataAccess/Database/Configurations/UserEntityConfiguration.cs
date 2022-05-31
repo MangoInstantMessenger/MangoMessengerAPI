@@ -2,6 +2,7 @@
 using MangoAPI.Application.Services;
 using MangoAPI.Domain.Constants;
 using MangoAPI.Domain.Entities;
+using MangoAPI.DataAccess.Exceptions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -44,7 +45,7 @@ public class UserEntityConfiguration : IEntityTypeConfiguration<UserEntity>
             PhoneNumberConfirmed = true,
             Image = "khachatur_picture.jpg",
         };
-
+  
         var user2 = new UserEntity
         {
             PhoneNumber = "48743615532",
@@ -163,7 +164,7 @@ public class UserEntityConfiguration : IEntityTypeConfiguration<UserEntity>
 
         if (seedPassword == null)
         {
-            throw new ArgumentNullException(nameof(seedPassword));
+            throw new EnvironmentVariableException("MANGO_SEED_PASSWORD");
         }
 
         passwordHasher.HashPassword(user1, seedPassword);

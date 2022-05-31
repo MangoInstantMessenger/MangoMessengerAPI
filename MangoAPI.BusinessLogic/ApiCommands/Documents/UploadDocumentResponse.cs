@@ -4,7 +4,7 @@ using MangoAPI.Domain.Constants;
 
 namespace MangoAPI.BusinessLogic.ApiCommands.Documents;
 
-public record UploadDocumentResponse : ResponseBase<UploadDocumentResponse>
+public record UploadDocumentResponse : ResponseBase
 {
     [DefaultValue("testfile_980ef1cd-f879-453e-a435-60a0d60d79b9.txt")]
     public string FileName { get; init; }

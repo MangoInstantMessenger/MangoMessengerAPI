@@ -5,7 +5,7 @@ using MangoAPI.Domain.Constants;
 
 namespace MangoAPI.BusinessLogic.ApiQueries.Contacts;
 
-public record SearchContactResponse : ResponseBase<SearchContactResponse>
+public record SearchContactResponse : ResponseBase
 {
     public List<Contact> Contacts { get; init; }
 

@@ -4,7 +4,7 @@ using MangoAPI.Domain.Constants;
 
 namespace MangoAPI.BusinessLogic.ApiQueries.Users;
 
-public record GetUserResponse : ResponseBase<GetUserResponse>
+public record GetUserResponse : ResponseBase
 {
     public User User { get; init; }
 

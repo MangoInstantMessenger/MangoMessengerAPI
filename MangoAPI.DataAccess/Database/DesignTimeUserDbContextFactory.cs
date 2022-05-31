@@ -1,6 +1,7 @@
 ﻿using MangoAPI.Application.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
+using MangoAPI.DataAccess.Exceptions;
 using System;
 
 namespace MangoAPI.DataAccess.Database;
@@ -22,7 +23,7 @@ public class DesignTimeUserDbContextFactory : IDesignTimeDbContextFactory<MangoP
 
         connectionString = StringService.ConvertHerokuDbConnection(connectionString);
 
-        options.UseNpgsql(connectionString ?? throw new ArgumentNullException(nameof(connectionString)));
+        options.UseNpgsql(connectionString ?? throw new EnvironmentVariableException("MANGO_DATABASE_URL"));
 
         options.EnableSensitiveDataLogging();
 

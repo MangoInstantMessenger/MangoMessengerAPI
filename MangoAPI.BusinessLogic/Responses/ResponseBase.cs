@@ -17,5 +17,3 @@ public record ResponseBase
         Success = true,
     };
 }
-
-public abstract record ResponseBase<T> : ResponseBase where T : ResponseBase;

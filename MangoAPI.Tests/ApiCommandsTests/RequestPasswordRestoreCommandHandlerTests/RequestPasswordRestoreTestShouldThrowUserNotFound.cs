@@ -8,7 +8,7 @@ using Xunit;
 
 namespace MangoAPI.Tests.ApiCommandsTests.RequestPasswordRestoreCommandHandlerTests;
 
-public class RequestPasswordRestoreTestShouldThrowUserNotFound
+public class RequestPasswordRestoreTestShouldThrowUserNotFound : ITestable<RequestPasswordRestoreCommand, ResponseBase>
 {
     private readonly MangoDbFixture _mangoDbFixture = new();
     private readonly Assert<ResponseBase> _assert = new();

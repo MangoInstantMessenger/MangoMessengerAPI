@@ -6,7 +6,7 @@ using MangoAPI.Domain.Entities;
 
 namespace MangoAPI.BusinessLogic.ApiCommands.Communities;
 
-public record CreateCommunityResponse : ResponseBase<CreateCommunityResponse>
+public record CreateCommunityResponse : ResponseBase
 {
     [DefaultValue("bd06f62e-87de-4ca4-a683-fad97cd8ac9f")]
     public Guid ChatId { get; init; }

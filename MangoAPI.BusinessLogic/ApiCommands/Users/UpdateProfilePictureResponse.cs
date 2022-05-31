@@ -3,7 +3,7 @@ using MangoAPI.Domain.Constants;
 
 namespace MangoAPI.BusinessLogic.ApiCommands.Users;
 
-public record UpdateProfilePictureResponse : ResponseBase<UpdateProfilePictureResponse>
+public record UpdateProfilePictureResponse : ResponseBase
 {
     public string NewUserPictureUrl { get; init; }
 

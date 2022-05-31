@@ -12,7 +12,7 @@ public static class ConfigurationExtensions
     {
         if (configuration is not IConfigurationRoot configurationRoot)
         {
-            throw new ArgumentNullException(nameof(configurationRoot));
+            throw new ArgumentNullException(nameof(configuration));
         }
 
         var jsonConfigProvider = configurationRoot.Providers.FirstOrDefault(t =>

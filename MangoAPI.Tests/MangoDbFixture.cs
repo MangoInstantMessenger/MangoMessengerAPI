@@ -22,5 +22,6 @@ public class MangoDbFixture : IDisposable
     {
         Context.Database.EnsureDeleted();
         Context?.Dispose();
+        GC.SuppressFinalize(this);
     }
 }
