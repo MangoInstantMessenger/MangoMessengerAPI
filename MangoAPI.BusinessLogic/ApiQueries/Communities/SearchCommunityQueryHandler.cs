@@ -34,7 +34,7 @@ public class SearchCommunityQueryHandler
 
         var isRelational = _postgresDbContext.Database.IsRelational();
 
-        // This IF-ELSE is workaround in order to complete test with in-memory database
+        // TODO: Fix this IF-ELSE is workaround in order to complete test with in-memory database
         if (isRelational)
         {
             query = _postgresDbContext.Chats
