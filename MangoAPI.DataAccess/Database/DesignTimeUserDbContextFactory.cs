@@ -23,7 +23,7 @@ public class DesignTimeUserDbContextFactory : IDesignTimeDbContextFactory<MangoP
 
         connectionString = StringService.ConvertHerokuDbConnection(connectionString);
 
-        options.UseNpgsql(connectionString ?? throw new EnvironmentVariableException("MANGO_DATABASE_URL"));
+        options.UseNpgsql(connectionString ?? throw new EnvironmentVariableException(nameof(connectionString)));
 
         options.EnableSensitiveDataLogging();
 

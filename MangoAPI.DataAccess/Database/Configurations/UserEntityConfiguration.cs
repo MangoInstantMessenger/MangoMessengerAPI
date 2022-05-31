@@ -164,7 +164,7 @@ public class UserEntityConfiguration : IEntityTypeConfiguration<UserEntity>
 
         if (seedPassword == null)
         {
-            throw new EnvironmentVariableException("MANGO_SEED_PASSWORD");
+            throw new EnvironmentVariableException(nameof(seedPassword));
         }
 
         passwordHasher.HashPassword(user1, seedPassword);

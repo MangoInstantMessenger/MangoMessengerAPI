@@ -56,9 +56,7 @@ public static class ResponseMessageCodes
         {InvalidEmailAddress, "Invalid email address. Please try another one."},
     };
     
-    public static readonly ImmutableDictionary<string, string> ErrorDictionary = _dictionary.ToImmutableDictionary();
-    
-    
+    public static ImmutableDictionary<string, string> ErrorDictionary => _dictionary.ToImmutableDictionary();
 
     public const string Unauthorized = "UNAUTHORIZED";
     public const string Success = "SUCCESS";
