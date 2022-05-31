@@ -1,8 +1,8 @@
 ﻿using System;
 using MangoAPI.Application.Services;
 using MangoAPI.DataAccess.Database;
+using MangoAPI.Domain.Constants;
 using MangoAPI.Domain.Entities;
-using MangoAPI.Presentation.Constants;
 using MangoAPI.Presentation.Extensions;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;

@@ -2,7 +2,7 @@
 using Azure.Storage.Blobs;
 using MangoAPI.Application.Interfaces;
 using MangoAPI.Application.Services;
-using MangoAPI.Presentation.Constants;
+using MangoAPI.Domain.Constants;
 using MangoAPI.Presentation.Extensions;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;

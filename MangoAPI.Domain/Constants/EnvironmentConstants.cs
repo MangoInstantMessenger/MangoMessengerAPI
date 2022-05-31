@@ -1,8 +1,4 @@
-﻿using System;
-using Microsoft.Extensions.Configuration.EnvironmentVariables;
-using Microsoft.Extensions.Configuration.Json;
-
-namespace MangoAPI.Presentation.Constants;
+﻿namespace MangoAPI.Domain.Constants;
 
 public static class EnvironmentConstants
 {
@@ -16,11 +12,15 @@ public static class EnvironmentConstants
 
     public const string MangoJwtSignKey = "MANGO_JWT_SIGN_KEY";
 
+    public const string MangoSeedPassword = "MANGO_SEED_PASSWORD";
+
     public const string MangoEmailNotificationsAddress = "MANGO_EMAIL_NOTIFICATIONS_ADDRESS";
 
     public const string MangoFrontendAddress = "MANGO_FRONTEND_ADDRESS";
 
     public const string MangoDatabaseUrl = "MANGO_DATABASE_URL";
+    
+    public const string MangoIntegrationTestsDatabaseUrl = "MANGO_INTEGRATION_TESTS_DATABASE_URL";
 
     public const string MangoBlobUrl = "MANGO_BLOB_URL";
 
@@ -35,8 +35,4 @@ public static class EnvironmentConstants
     public const string MangoMailgunApiDomain = "MANGO_MAILGUN_API_DOMAIN";
 
     public const string MangoJsonConfig = "appsettings.json";
-
-    public static readonly Type MangoEnvConfigType = typeof(EnvironmentVariablesConfigurationProvider);
-
-    public static readonly Type MangoJsonConfigType = typeof(JsonConfigurationProvider);
 }

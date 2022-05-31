@@ -45,7 +45,7 @@ public class UserEntityConfiguration : IEntityTypeConfiguration<UserEntity>
             PhoneNumberConfirmed = true,
             Image = "khachatur_picture.jpg",
         };
-  
+
         var user2 = new UserEntity
         {
             PhoneNumber = "48743615532",
@@ -160,7 +160,7 @@ public class UserEntityConfiguration : IEntityTypeConfiguration<UserEntity>
 
         var passwordHasher = new PasswordHashService();
 
-        var seedPassword = Environment.GetEnvironmentVariable("MANGO_SEED_PASSWORD");
+        var seedPassword = Environment.GetEnvironmentVariable(EnvironmentConstants.MangoSeedPassword);
 
         if (seedPassword == null)
         {
