@@ -5,8 +5,6 @@ namespace MangoAPI.Domain.Constants;
 
 public static class ResponseMessageCodes
 {
-    public static readonly ImmutableDictionary<string, string> ErrorDictionary = _dictionary.ToImmutableDictionary();
-    
     private static readonly Dictionary<string, string> _dictionary = new()
     {
         {InvalidOrExpiredRefreshToken, "Your refresh token is invalid or expired."},
@@ -57,6 +55,10 @@ public static class ResponseMessageCodes
         {Unauthorized, "User not authorized, please, sign in."},
         {InvalidEmailAddress, "Invalid email address. Please try another one."},
     };
+    
+    public static readonly ImmutableDictionary<string, string> ErrorDictionary = _dictionary.ToImmutableDictionary();
+    
+    
 
     public const string Unauthorized = "UNAUTHORIZED";
     public const string Success = "SUCCESS";
