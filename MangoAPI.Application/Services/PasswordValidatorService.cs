@@ -5,13 +5,13 @@ namespace MangoAPI.Application.Services;
 
 public class PasswordValidatorService : IPasswordValidatorService
 {
-    public bool ValidatePassword(string pass)
+    public bool ValidatePassword(string password)
     {
-        return pass.Length >= 8
-               && pass.Any(char.IsUpper)
-               && pass.Any(char.IsLower)
-               && pass.Any(char.IsDigit)
-               && pass.Any(char.IsSymbol)
-               && pass.Any(char.IsPunctuation);
+        return password.Length >= 8
+               && password.Any(char.IsUpper)
+               && password.Any(char.IsLower)
+               && password.Any(char.IsDigit)
+               && password.Any(char.IsSymbol)
+               && password.Any(char.IsPunctuation);
     }
 }

@@ -6,7 +6,7 @@ using MangoAPI.Domain.Entities;
 
 namespace MangoAPI.BusinessLogic.ApiCommands.Messages;
 
-public record DeleteMessageResponse : ResponseBase<DeleteMessageResponse>
+public record DeleteMessageResponse : ResponseBase
 {
     [DefaultValue("ef885dda-e0d2-4fa8-86a8-27ef92acc942")]
     public Guid MessageId { get; init; }

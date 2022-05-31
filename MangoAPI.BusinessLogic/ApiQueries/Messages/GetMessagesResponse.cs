@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace MangoAPI.BusinessLogic.ApiQueries.Messages;
 
-public record GetMessagesResponse : ResponseBase<GetMessagesResponse>
+public record GetMessagesResponse : ResponseBase
 {
     public List<Message> Messages { get; init; }
 

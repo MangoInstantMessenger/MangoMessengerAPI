@@ -3,7 +3,7 @@ using MangoAPI.Domain.Constants;
 
 namespace MangoAPI.BusinessLogic.ApiCommands.Communities;
 
-public record UpdateChannelPictureResponse : ResponseBase<UpdateChannelPictureResponse>
+public record UpdateChannelPictureResponse : ResponseBase
 {
     public string UpdatedLogoUrl { get; init; }
 

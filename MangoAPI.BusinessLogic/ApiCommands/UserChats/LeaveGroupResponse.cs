@@ -4,7 +4,7 @@ using MangoAPI.Domain.Constants;
 
 namespace MangoAPI.BusinessLogic.ApiCommands.UserChats;
 
-public record LeaveGroupResponse : ResponseBase<LeaveGroupResponse>
+public record LeaveGroupResponse : ResponseBase
 {
     public Guid ChatId { get; init; }
 

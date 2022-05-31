@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace MangoAPI.BusinessLogic.ApiQueries.Communities;
 
-public record GetCurrentUserChatsResponse : ResponseBase<GetCurrentUserChatsResponse>
+public record GetCurrentUserChatsResponse : ResponseBase
 {
     public List<Chat> Chats { get; init; }
 

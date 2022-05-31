@@ -26,7 +26,7 @@ public class UpdateChannelPictureCommandHandler : IRequestHandler<UpdateChanelPi
     {
         _postgresDbContext = postgresDbContext;
         _responseFactory = responseFactory;
-        _blobService = blobService; ;
+        _blobService = blobService;
     }
 
     public async Task<Result<UpdateChannelPictureResponse>> Handle(UpdateChanelPictureCommand request, CancellationToken cancellationToken)

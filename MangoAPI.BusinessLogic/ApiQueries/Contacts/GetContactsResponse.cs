@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace MangoAPI.BusinessLogic.ApiQueries.Contacts;
 
-public record GetContactsResponse : ResponseBase<GetContactsResponse>
+public record GetContactsResponse : ResponseBase
 {
     public List<Contact> Contacts { get; init; }
 

@@ -4,7 +4,7 @@ using MangoAPI.Domain.Constants;
 
 namespace MangoAPI.BusinessLogic.Responses;
 
-public record TokensResponse : ResponseBase<TokensResponse>
+public record TokensResponse : ResponseBase
 {
     public Tokens Tokens { get; set; }
 

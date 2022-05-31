@@ -32,7 +32,7 @@ public class LeaveGroupCommandHandler
             .Where(chatEntity => chatEntity.ChatId == request.ChatId)
             .FirstOrDefaultAsync(cancellationToken);
 
-        if (userChat == null || userChat.Chat == null)
+        if (userChat == null)
         {
             const string errorMessage = ResponseMessageCodes.ChatNotFound;
             var details = ResponseMessageCodes.ErrorDictionary[errorMessage];
@@ -41,8 +41,16 @@ public class LeaveGroupCommandHandler
         }
 
         var chat = userChat.Chat;
+        
+        if (chat == null)
+        {
+            const string errorMessage = ResponseMessageCodes.ChatNotFound;
+            var details = ResponseMessageCodes.ErrorDictionary[errorMessage];
 
-        if (chat != null && chat.CommunityType == (int) CommunityType.DirectChat)
+            return _responseFactory.ConflictResponse(errorMessage, details);
+        }
+
+        if (chat.CommunityType == (int) CommunityType.DirectChat)
         {
             var messages = await _postgresDbContext.Messages
                 .Where(messageEntity => messageEntity.ChatId == request.ChatId)
