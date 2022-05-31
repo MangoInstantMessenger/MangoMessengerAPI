@@ -40,7 +40,7 @@ public class SearchCommunityQueryHandler
             query = _dbContext.Chats
                 .AsNoTracking()
                 .Where(x => x.CommunityType == (int) CommunityType.PublicChannel)
-                .Where(x => EF.Functions.ILike(x.Title, $"%{request.DisplayName}%"))
+                .Where(x => EF.Functions.Like(x.Title, $"%{request.DisplayName}%"))
                 .Select(x => new Chat
                 {
                     ChatId = x.Id,

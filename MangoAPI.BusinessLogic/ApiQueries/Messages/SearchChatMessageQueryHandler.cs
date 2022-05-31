@@ -48,11 +48,12 @@ public class SearchChatMessageQueryHandler
 
         var isRelational = _dbContext.Database.IsRelational();
 
+        // TODO: Fix this IF-ELSE is workaround in order to complete test with in-memory database
         if (isRelational)
         {
             query = _dbContext.Messages.AsNoTracking()
                 .Where(x => x.ChatId == request.ChatId)
-                .Where(x => EF.Functions.ILike(x.Content, $"%{request.MessageText}%"))
+                .Where(x => EF.Functions.Like(x.Content, $"%{request.MessageText}%"))
                 .OrderBy(x => x.CreatedAt)
                 .Select(x => new Message
                 {

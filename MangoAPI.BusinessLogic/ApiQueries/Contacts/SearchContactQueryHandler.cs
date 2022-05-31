@@ -35,13 +35,14 @@ public class SearchContactByDisplayNameQueryHandler
 
         var isRelational = _dbContext.Database.IsRelational();
 
+        // TODO: Fix this IF-ELSE is workaround in order to complete test with in-memory database
         if (isRelational)
         {
             query = _dbContext.Users
                 .AsNoTracking()
                 .Include(x => x.UserInformation)
                 .Where(x => x.Id != request.UserId)
-                .Where(x => EF.Functions.ILike(x.DisplayName, $"%{request.SearchQuery}%"))
+                .Where(x => EF.Functions.Like(x.DisplayName, $"%{request.SearchQuery}%"))
                 .Select(x => new Contact
                 {
                     UserId = x.Id,

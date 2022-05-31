@@ -83,7 +83,7 @@ public class Startup
 
         services.AddAppInfrastructure(_configuration);
 
-        services.AddPostgresDatabaseService(_configuration);
+        services.AddDatabaseContextServices(_configuration);
 
         services.AddMessengerServices(_configuration);
 
