@@ -8,7 +8,10 @@ public class PublicKeyEntityConfiguration : IEntityTypeConfiguration<CngPublicKe
 {
     public void Configure(EntityTypeBuilder<CngPublicKeyEntity> builder)
     {
-        builder.HasKey(x => new { x.UserId, x.PartnerId });
+        builder.ToTable(nameof(CngPublicKeyEntity), MangoDbContext.DefaultSchema);
+
+        builder.HasKey(x => new {x.UserId, x.PartnerId});
+
         builder.Property(x => x.UserId).IsRequired();
         builder.Property(x => x.PartnerId).IsRequired();
         builder.Property(x => x.PartnerPublicKey).IsRequired();

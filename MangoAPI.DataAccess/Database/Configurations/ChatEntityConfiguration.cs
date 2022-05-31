@@ -11,7 +11,10 @@ public class ChatEntityConfiguration : IEntityTypeConfiguration<ChatEntity>
 {
     public void Configure(EntityTypeBuilder<ChatEntity> builder)
     {
+        builder.ToTable(nameof(ChatEntity), MangoDbContext.DefaultSchema);
+        
         builder.HasKey(x => x.Id);
+        
         builder.Property(x => x.CommunityType).IsRequired();
         builder.Property(x => x.CreatedAt).IsRequired();
         builder.Property(x => x.Title).IsRequired();

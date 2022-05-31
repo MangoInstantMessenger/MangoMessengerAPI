@@ -10,10 +10,11 @@ public class UserContactEntityConfiguration : IEntityTypeConfiguration<UserConta
 {
     public void Configure(EntityTypeBuilder<UserContactEntity> builder)
     {
+        builder.ToTable(nameof(UserContactEntity), MangoDbContext.DefaultSchema);
+
         builder.HasKey(x => x.Id);
 
         builder.HasData(
-
             // Petro Contacts
             new UserContactEntity
             {

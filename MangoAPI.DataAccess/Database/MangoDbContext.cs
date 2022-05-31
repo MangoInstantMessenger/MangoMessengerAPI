@@ -35,10 +35,12 @@ public class MangoDbContext : IdentityDbContext<UserEntity, RoleEntity, Guid>
     public DbSet<CngKeyExchangeRequestEntity> CngKeyExchangeRequests { get; set; }
 
     public DbSet<CngPublicKeyEntity> CngPublicKeys { get; set; }
-    
+
     public DbSet<OpenSslDhParameterEntity> OpenSslDhParameters { get; set; }
 
     public DbSet<OpenSslKeyExchangeRequestEntity> OpenSslKeyExchangeRequests { get; set; }
+
+    public const string DefaultSchema = "mango";
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {

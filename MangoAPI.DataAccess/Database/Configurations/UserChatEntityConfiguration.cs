@@ -10,7 +10,10 @@ public class UserChatEntityConfiguration : IEntityTypeConfiguration<UserChatEnti
 {
     public void Configure(EntityTypeBuilder<UserChatEntity> builder)
     {
+        builder.ToTable(nameof(UserChatEntity), MangoDbContext.DefaultSchema);
+
         builder.HasKey(x => new {x.ChatId, x.UserId});
+
         builder.Property(x => x.RoleId).IsRequired();
 
         builder.HasOne(x => x.Chat)

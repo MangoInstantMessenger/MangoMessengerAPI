@@ -10,7 +10,10 @@ public class UserInformationEntityConfiguration : IEntityTypeConfiguration<UserI
 {
     public void Configure(EntityTypeBuilder<UserInformationEntity> builder)
     {
+        builder.ToTable(nameof(UserInformationEntity), MangoDbContext.DefaultSchema);
+
         builder.HasKey(x => x.Id);
+
         builder.HasData(
             new UserInformationEntity
             {

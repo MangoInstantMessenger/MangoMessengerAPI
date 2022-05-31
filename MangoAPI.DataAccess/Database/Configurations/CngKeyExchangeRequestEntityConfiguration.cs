@@ -8,6 +8,8 @@ public class CngKeyExchangeRequestEntityConfiguration : IEntityTypeConfiguration
 {
     public void Configure(EntityTypeBuilder<CngKeyExchangeRequestEntity> builder)
     {
+        builder.ToTable(nameof(CngKeyExchangeRequestEntity), MangoDbContext.DefaultSchema);
+        
         builder.HasKey(x => x.Id);
 
         builder.Property(x => x.SenderId).IsRequired();

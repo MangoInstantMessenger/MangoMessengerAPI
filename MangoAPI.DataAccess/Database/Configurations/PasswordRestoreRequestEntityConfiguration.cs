@@ -8,7 +8,10 @@ public class PasswordRestoreRequestEntityConfiguration : IEntityTypeConfiguratio
 {
     public void Configure(EntityTypeBuilder<PasswordRestoreRequestEntity> builder)
     {
+        builder.ToTable(nameof(PasswordRestoreRequestEntity), MangoDbContext.DefaultSchema);
+
         builder.HasKey(x => x.Id);
+
         builder.Property(x => x.ExpiresAt).IsRequired();
         builder.Property(x => x.CreatedAt).IsRequired();
     }

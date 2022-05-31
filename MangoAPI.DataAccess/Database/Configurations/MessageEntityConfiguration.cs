@@ -10,7 +10,10 @@ public class MessageEntityConfiguration : IEntityTypeConfiguration<MessageEntity
 {
     public void Configure(EntityTypeBuilder<MessageEntity> builder)
     {
+        builder.ToTable(nameof(MessageEntity), MangoDbContext.DefaultSchema);
+        
         builder.HasKey(x => x.Id);
+        
         builder.Property(x => x.Content).IsRequired();
         builder.Property(x => x.CreatedAt).IsRequired();
 
