@@ -11,25 +11,25 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: Setup .NET Core 6.0 SDK
+      - name: ⚙ Setup .NET 6.0 SDK ⚙
         uses: actions/setup-dotnet@v1
         with:
           dotnet-version: 6.0.x
 
-      - name: Build .NET Project Configuration Release
+      - name: 🛠 Build .NET Project Configuration Release 🛠
         run: dotnet build --configuration Release
 
-      - name: Publish .NET Project
+      - name: ✴ Publish .NET Project ✴
         run: |
           dotnet restore
           dotnet publish "MangoAPI.Presentation/MangoAPI.Presentation.csproj" -r linux-x64 -o mango-linux-build/src
 
-      - name: Create Artifact
+      - name: 🔆 Create Artifact 🔆
         run: |
           cd mango-linux-build/src
           zip -r mango-artifact.zip .
 
-      - name: Stop Ubuntu VM service via SSH
+      - name: ⛔ Stop Ubuntu VM service via SSH ⛔
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.AZURE_DEV_SSH_HOST }}
@@ -38,7 +38,7 @@ jobs:
           script: |
             sudo systemctl stop mangoback
 
-      - name: Copy Release files to  the Ubuntu VM via SSH
+      - name: 📝 Copy Release files to  the Ubuntu VM via SSH 📝
         uses: nogsantos/scp-deploy@master
         with:
           src: mango-linux-build/src/mango-artifact.zip
@@ -48,7 +48,7 @@ jobs:
           user: ${{ secrets.AZURE_DEV_SSH_USER }}
           key: ${{ secrets.AZURE_DEV_SSH_KEY }}
 
-      - name: Unzip Artifact on VM
+      - name: 🥡 Unzip Artifact on VM 🥡
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.AZURE_DEV_SSH_HOST }}
@@ -56,7 +56,7 @@ jobs:
           key: ${{ secrets.AZURE_DEV_SSH_KEY }}
           script: unzip -o ~/mango-backend/mango-artifact.zip -d ~/mango-backend
 
-      - name: Start Ubuntu VM service via SSH
+      - name: 🚀 Start Ubuntu VM service via SSH 🚀
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.AZURE_DEV_SSH_HOST }}
