@@ -10,9 +10,8 @@ using Xunit;
 
 namespace MangoAPI.IntegrationTests.ApiCommandsTests.AddContactCommandHandlerTests;
 
-public class AddContactSuccess : ITestable<AddContactCommand, ResponseBase>
+public class AddContactSuccess : IntegrationTestBase, ITestable<AddContactCommand, ResponseBase>
 {
-    private readonly MangoDbFixture _mangoDbFixture = new();
     private readonly Assert<ResponseBase> _assert = new();
 
     [Fact]
@@ -33,13 +32,13 @@ public class AddContactSuccess : ITestable<AddContactCommand, ResponseBase>
 
     public bool Seed()
     {
-        _mangoDbFixture.Context.Users.Add(_user1);
-        _mangoDbFixture.Context.Users.Add(_user2);
+        DbContextFixture.Users.Add(_user1);
+        DbContextFixture.Users.Add(_user2);
 
-        _mangoDbFixture.Context.SaveChanges();
+        DbContextFixture.SaveChanges();
 
-        _mangoDbFixture.Context.Entry(_user1).State = EntityState.Detached;
-        _mangoDbFixture.Context.Entry(_user2).State = EntityState.Detached;
+        DbContextFixture.Entry(_user1).State = EntityState.Detached;
+        DbContextFixture.Entry(_user2).State = EntityState.Detached;
 
         return true;
     }
@@ -47,7 +46,7 @@ public class AddContactSuccess : ITestable<AddContactCommand, ResponseBase>
     public IRequestHandler<AddContactCommand, Result<ResponseBase>> CreateHandler()
     {
         var responseFactory = new ResponseFactory<ResponseBase>();
-        var handler = new AddContactCommandHandler(_mangoDbFixture.Context, responseFactory);
+        var handler = new AddContactCommandHandler(DbContextFixture, responseFactory);
         return handler;
     }
 
