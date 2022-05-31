@@ -13,19 +13,19 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Contacts;
 public class AddContactCommandHandler
     : IRequestHandler<AddContactCommand, Result<ResponseBase>>
 {
-    private readonly MangoPostgresDbContext _postgresDbContext;
+    private readonly MangoDbContext _dbContext;
     private readonly ResponseFactory<ResponseBase> _responseFactory;
 
-    public AddContactCommandHandler(MangoPostgresDbContext postgresDbContext, 
+    public AddContactCommandHandler(MangoDbContext dbContext, 
         ResponseFactory<ResponseBase> responseFactory)
     {
-        _postgresDbContext = postgresDbContext;
+        _dbContext = dbContext;
         _responseFactory = responseFactory;
     }
 
     public async Task<Result<ResponseBase>> Handle(AddContactCommand request, CancellationToken cancellationToken)
     {
-        var contactToAdd = await _postgresDbContext.Users
+        var contactToAdd = await _dbContext.Users
             .FirstOrDefaultAsync(x => x.Id == request.ContactId, 
                 cancellationToken);
 
@@ -45,7 +45,7 @@ public class AddContactCommandHandler
             return _responseFactory.ConflictResponse(errorMessage, errorDescription);
         }
 
-        var contactExist = await _postgresDbContext.UserContacts
+        var contactExist = await _dbContext.UserContacts
             .AnyAsync(userContactEntity => 
                 userContactEntity.ContactId == request.ContactId && 
                 userContactEntity.UserId == request.UserId, cancellationToken);
@@ -65,8 +65,8 @@ public class AddContactCommandHandler
             CreatedAt = DateTime.UtcNow,
         };
 
-        _postgresDbContext.UserContacts.Add(contactEntity);
-        await _postgresDbContext.SaveChangesAsync(cancellationToken);
+        _dbContext.UserContacts.Add(contactEntity);
+        await _dbContext.SaveChangesAsync(cancellationToken);
 
         return _responseFactory.SuccessResponse(ResponseBase.SuccessResponse);
     }

@@ -12,22 +12,22 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Messages;
 
 public class GetMessagesQueryHandler : IRequestHandler<GetMessagesQuery, Result<GetMessagesResponse>>
 {
-    private readonly MangoPostgresDbContext _postgresDbContext;
+    private readonly MangoDbContext _dbContext;
     private readonly ResponseFactory<GetMessagesResponse> _responseFactory;
     private readonly IBlobServiceSettings _blobServiceSettings;
 
-    public GetMessagesQueryHandler(MangoPostgresDbContext postgresDbContext,
+    public GetMessagesQueryHandler(MangoDbContext dbContext,
         ResponseFactory<GetMessagesResponse> responseFactory,
         IBlobServiceSettings blobServiceSettings)
     {
-        _postgresDbContext = postgresDbContext;
+        _dbContext = dbContext;
         _responseFactory = responseFactory;
         _blobServiceSettings = blobServiceSettings;
     }
 
     public async Task<Result<GetMessagesResponse>> Handle(GetMessagesQuery request, CancellationToken cancellationToken)
     {
-        var messages = await _postgresDbContext
+        var messages = await _dbContext
             .Messages
             .AsNoTracking()
             .Where(x => x.ChatId == request.ChatId)

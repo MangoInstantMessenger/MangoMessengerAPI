@@ -13,24 +13,24 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Contacts;
 
 public class GetContactsQueryHandler : IRequestHandler<GetContactsQuery, Result<GetContactsResponse>>
 {
-    private readonly MangoPostgresDbContext _postgresDbContext;
+    private readonly MangoDbContext _dbContext;
     private readonly ResponseFactory<GetContactsResponse> _responseFactory;
     private readonly IBlobServiceSettings _blobServiceSettings;
 
     public GetContactsQueryHandler(
-        MangoPostgresDbContext postgresDbContext,
+        MangoDbContext dbContext,
         ResponseFactory<GetContactsResponse> responseFactory,
         IBlobServiceSettings blobServiceSettings)
     {
-        _postgresDbContext = postgresDbContext;
+        _dbContext = dbContext;
         _responseFactory = responseFactory;
         _blobServiceSettings = blobServiceSettings;
     }
 
     public async Task<Result<GetContactsResponse>> Handle(GetContactsQuery request, CancellationToken cancellationToken)
     {
-        var query = from userContact in _postgresDbContext.UserContacts.AsNoTracking()
-            join userEntity in _postgresDbContext.Users.Include(x => x.UserInformation)
+        var query = from userContact in _dbContext.UserContacts.AsNoTracking()
+            join userEntity in _dbContext.Users.Include(x => x.UserInformation)
                 on userContact.ContactId equals userEntity.Id
             where userContact.UserId == request.UserId
             orderby userContact.CreatedAt

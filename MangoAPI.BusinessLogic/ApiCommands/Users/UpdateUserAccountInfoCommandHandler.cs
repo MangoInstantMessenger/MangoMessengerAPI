@@ -14,20 +14,20 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users;
 public class
     UpdateUserAccountInfoCommandHandler : IRequestHandler<UpdateUserAccountInfoCommand, Result<ResponseBase>>
 {
-    private readonly MangoPostgresDbContext _postgresDbContext;
+    private readonly MangoDbContext _dbContext;
     private readonly ResponseFactory<ResponseBase> _responseFactory;
 
-    public UpdateUserAccountInfoCommandHandler(MangoPostgresDbContext postgresDbContext,
+    public UpdateUserAccountInfoCommandHandler(MangoDbContext dbContext,
         ResponseFactory<ResponseBase> responseFactory)
     {
-        _postgresDbContext = postgresDbContext;
+        _dbContext = dbContext;
         _responseFactory = responseFactory;
     }
 
     public async Task<Result<ResponseBase>> Handle(UpdateUserAccountInfoCommand request,
         CancellationToken cancellationToken)
     {
-        var user = await _postgresDbContext.Users
+        var user = await _dbContext.Users
             .Include(x => x.UserInformation)
             .FirstOrDefaultAsync(x => x.Id == request.UserId, cancellationToken);
 
@@ -41,7 +41,7 @@ public class
 
         if (user.DisplayName != request.DisplayName)
         {
-            var userChats = await _postgresDbContext.UserChats
+            var userChats = await _dbContext.UserChats
                 .Include(x => x.Chat)
                 .Where(x => 
                     x.UserId == user.Id && 
@@ -57,7 +57,7 @@ public class
 
             user.DisplayName = request.DisplayName;
 
-            _postgresDbContext.Chats.UpdateRange(userChats);
+            _dbContext.Chats.UpdateRange(userChats);
         }
 
         user.UserInformation.BirthDay = request.BirthdayDate;
@@ -72,9 +72,9 @@ public class
 
         user.UserInformation.UpdatedAt = DateTime.UtcNow;
 
-        _postgresDbContext.UserInformation.Update(user.UserInformation);
+        _dbContext.UserInformation.Update(user.UserInformation);
 
-        await _postgresDbContext.SaveChangesAsync(cancellationToken);
+        await _dbContext.SaveChangesAsync(cancellationToken);
 
         return _responseFactory.SuccessResponse(ResponseBase.SuccessResponse);
     }

@@ -12,21 +12,21 @@ namespace MangoAPI.BusinessLogic.ApiCommands.CngKeyExchange;
 public class CngCreateKeyExchangeRequestCommandHandler : IRequestHandler<CngCreateKeyExchangeRequestCommand,
     Result<CngCreateKeyExchangeResponse>>
 {
-    private readonly MangoPostgresDbContext _postgresDbContext;
+    private readonly MangoDbContext _dbContext;
     private readonly ResponseFactory<CngCreateKeyExchangeResponse> _responseFactory;
 
     public CngCreateKeyExchangeRequestCommandHandler(
-        MangoPostgresDbContext postgresDbContext,
+        MangoDbContext dbContext,
         ResponseFactory<CngCreateKeyExchangeResponse> responseFactory)
     {
-        _postgresDbContext = postgresDbContext;
+        _dbContext = dbContext;
         _responseFactory = responseFactory;
     }
 
     public async Task<Result<CngCreateKeyExchangeResponse>> Handle(CngCreateKeyExchangeRequestCommand request,
         CancellationToken cancellationToken)
     {
-        var requestedUserExists = await _postgresDbContext.Users.AnyAsync(
+        var requestedUserExists = await _dbContext.Users.AnyAsync(
             x => x.Id == request.RequestedUserId, cancellationToken);
 
         if (!requestedUserExists)
@@ -37,7 +37,7 @@ public class CngCreateKeyExchangeRequestCommandHandler : IRequestHandler<CngCrea
             return _responseFactory.ConflictResponse(message, details);
         }
 
-        var alreadyRequested = await _postgresDbContext.CngKeyExchangeRequests
+        var alreadyRequested = await _dbContext.CngKeyExchangeRequests
             .AnyAsync(
                 x => x.SenderId == request.UserId && x.UserId == request.RequestedUserId, 
                 cancellationToken);
@@ -57,9 +57,9 @@ public class CngCreateKeyExchangeRequestCommandHandler : IRequestHandler<CngCrea
             SenderPublicKey = request.PublicKey
         };
 
-        _postgresDbContext.CngKeyExchangeRequests.Add(keyExchangeRequest);
+        _dbContext.CngKeyExchangeRequests.Add(keyExchangeRequest);
 
-        await _postgresDbContext.SaveChangesAsync(cancellationToken);
+        await _dbContext.SaveChangesAsync(cancellationToken);
 
         var response = new CngCreateKeyExchangeResponse
         {

@@ -13,20 +13,20 @@ namespace MangoAPI.BusinessLogic.ApiCommands.UserChats;
 public class LeaveGroupCommandHandler
     : IRequestHandler<LeaveGroupCommand, Result<LeaveGroupResponse>>
 {
-    private readonly MangoPostgresDbContext _postgresDbContext;
+    private readonly MangoDbContext _dbContext;
     private readonly ResponseFactory<LeaveGroupResponse> _responseFactory;
 
-    public LeaveGroupCommandHandler(MangoPostgresDbContext postgresDbContext,
+    public LeaveGroupCommandHandler(MangoDbContext dbContext,
         ResponseFactory<LeaveGroupResponse> responseFactory)
     {
-        _postgresDbContext = postgresDbContext;
+        _dbContext = dbContext;
         _responseFactory = responseFactory;
     }
 
     public async Task<Result<LeaveGroupResponse>> Handle(LeaveGroupCommand request,
         CancellationToken cancellationToken)
     {
-        var userChat = await _postgresDbContext.UserChats
+        var userChat = await _dbContext.UserChats
             .Include(x=>x.Chat)
             .Where(chatEntity => chatEntity.UserId == request.UserId)
             .Where(chatEntity => chatEntity.ChatId == request.ChatId)
@@ -52,24 +52,24 @@ public class LeaveGroupCommandHandler
 
         if (chat.CommunityType == (int) CommunityType.DirectChat)
         {
-            var messages = await _postgresDbContext.Messages
+            var messages = await _dbContext.Messages
                 .Where(messageEntity => messageEntity.ChatId == request.ChatId)
                 .ToListAsync(cancellationToken);
 
-            _postgresDbContext.Messages.RemoveRange(messages);
-            _postgresDbContext.UserChats.RemoveRange(chat.ChatUsers);
-            _postgresDbContext.Chats.Remove(chat);
+            _dbContext.Messages.RemoveRange(messages);
+            _dbContext.UserChats.RemoveRange(chat.ChatUsers);
+            _dbContext.Chats.Remove(chat);
 
-            await _postgresDbContext.SaveChangesAsync(cancellationToken);
+            await _dbContext.SaveChangesAsync(cancellationToken);
 
             return _responseFactory.SuccessResponse(LeaveGroupResponse.FromSuccess(chat.Id));
         }
 
-        _postgresDbContext.UserChats.Remove(userChat);
+        _dbContext.UserChats.Remove(userChat);
         chat.MembersCount--;
 
-        _postgresDbContext.Update(chat);
-        await _postgresDbContext.SaveChangesAsync(cancellationToken);
+        _dbContext.Update(chat);
+        await _dbContext.SaveChangesAsync(cancellationToken);
 
         return _responseFactory.SuccessResponse(LeaveGroupResponse.FromSuccess(chat.Id));
     }

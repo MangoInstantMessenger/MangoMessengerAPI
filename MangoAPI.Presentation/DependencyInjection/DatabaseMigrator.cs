@@ -12,7 +12,7 @@ public static class DatabaseMigrator
         using var serviceScope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>()
             .CreateScope();
 
-        using var context = serviceScope.ServiceProvider.GetService<MangoPostgresDbContext>();
+        using var context = serviceScope.ServiceProvider.GetService<MangoDbContext>();
 
         context?.Database.Migrate();
     }

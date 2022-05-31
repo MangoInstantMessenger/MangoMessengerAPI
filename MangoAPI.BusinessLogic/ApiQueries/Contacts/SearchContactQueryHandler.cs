@@ -14,16 +14,16 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Contacts;
 public class SearchContactByDisplayNameQueryHandler
     : IRequestHandler<SearchContactQuery, Result<SearchContactResponse>>
 {
-    private readonly MangoPostgresDbContext _postgresDbContext;
+    private readonly MangoDbContext _dbContext;
     private readonly ResponseFactory<SearchContactResponse> _responseFactory;
     private readonly IBlobServiceSettings _blobServiceSettings;
 
     public SearchContactByDisplayNameQueryHandler(
-        MangoPostgresDbContext postgresDbContext,
+        MangoDbContext dbContext,
         ResponseFactory<SearchContactResponse> responseFactory,
         IBlobServiceSettings blobServiceSettings)
     {
-        _postgresDbContext = postgresDbContext;
+        _dbContext = dbContext;
         _responseFactory = responseFactory;
         _blobServiceSettings = blobServiceSettings;
     }
@@ -33,11 +33,11 @@ public class SearchContactByDisplayNameQueryHandler
     {
         IQueryable<Contact> query;
 
-        var isRelational = _postgresDbContext.Database.IsRelational();
+        var isRelational = _dbContext.Database.IsRelational();
 
         if (isRelational)
         {
-            query = _postgresDbContext.Users
+            query = _dbContext.Users
                 .AsNoTracking()
                 .Include(x => x.UserInformation)
                 .Where(x => x.Id != request.UserId)
@@ -54,7 +54,7 @@ public class SearchContactByDisplayNameQueryHandler
         }
         else
         {
-            query = _postgresDbContext.Users
+            query = _dbContext.Users
                 .AsNoTracking()
                 .Include(x => x.UserInformation)
                 .Where(x => x.Id != request.UserId)
@@ -73,7 +73,7 @@ public class SearchContactByDisplayNameQueryHandler
 
         var searchResult = await query.Take(200).ToListAsync(cancellationToken);
 
-        var commonContacts = await _postgresDbContext.UserContacts.AsNoTracking()
+        var commonContacts = await _dbContext.UserContacts.AsNoTracking()
             .Where(x => x.UserId == request.UserId)
             .Select(x => x.ContactId)
             .ToListAsync(cancellationToken);

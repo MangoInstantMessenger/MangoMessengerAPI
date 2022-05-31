@@ -14,14 +14,14 @@ namespace MangoAPI.BusinessLogic.ApiCommands.PasswordRestoreRequests;
 public class RequestPasswordRestoreCommandHandler
     : IRequestHandler<RequestPasswordRestoreCommand, Result<ResponseBase>>
 {
-    private readonly MangoPostgresDbContext _postgresDbContext;
+    private readonly MangoDbContext _dbContext;
     private readonly IEmailSenderService _emailSenderService;
     private readonly ResponseFactory<ResponseBase> _responseFactory;
 
-    public RequestPasswordRestoreCommandHandler(MangoPostgresDbContext postgresDbContext,
+    public RequestPasswordRestoreCommandHandler(MangoDbContext dbContext,
         IEmailSenderService emailSenderService, ResponseFactory<ResponseBase> responseFactory)
     {
-        _postgresDbContext = postgresDbContext;
+        _dbContext = dbContext;
         _emailSenderService = emailSenderService;
         _responseFactory = responseFactory;
     }
@@ -29,7 +29,7 @@ public class RequestPasswordRestoreCommandHandler
     public async Task<Result<ResponseBase>> Handle(RequestPasswordRestoreCommand request,
         CancellationToken cancellationToken)
     {
-        var user = await _postgresDbContext.Users
+        var user = await _dbContext.Users
             .FirstOrDefaultAsync(userEntity => userEntity.Email == request.Email,
                 cancellationToken);
 
@@ -41,7 +41,7 @@ public class RequestPasswordRestoreCommandHandler
             return _responseFactory.ConflictResponse(errorMessage, errorDescription);
         }
 
-        var existingRequest = await _postgresDbContext.PasswordRestoreRequests
+        var existingRequest = await _dbContext.PasswordRestoreRequests
             .FirstOrDefaultAsync(entity => entity.UserId == user.Id, cancellationToken);
 
         if (existingRequest != null && existingRequest.IsValid)
@@ -61,9 +61,9 @@ public class RequestPasswordRestoreCommandHandler
             ExpiresAt = DateTime.UtcNow.AddHours(3),
         };
 
-        _postgresDbContext.PasswordRestoreRequests.Add(passwordRestoreRequest);
+        _dbContext.PasswordRestoreRequests.Add(passwordRestoreRequest);
 
-        await _postgresDbContext.SaveChangesAsync(cancellationToken);
+        await _dbContext.SaveChangesAsync(cancellationToken);
 
         await _emailSenderService.SendPasswordRestoreRequestAsync(user, passwordRestoreRequest.Id, cancellationToken);
 

@@ -13,20 +13,20 @@ namespace MangoAPI.BusinessLogic.ApiCommands.OpenSslKeyExchange;
 public class OpenSslCreateKeyExchangeCommandHandler : IRequestHandler<OpenSslCreateKeyExchangeCommand,
     Result<OpenSslCreateKeyExchangeResponse>>
 {
-    private readonly MangoPostgresDbContext _mangoPostgresDbContext;
+    private readonly MangoDbContext _mangoDbContext;
     private readonly ResponseFactory<OpenSslCreateKeyExchangeResponse> _responseFactory;
 
-    public OpenSslCreateKeyExchangeCommandHandler(MangoPostgresDbContext mangoPostgresDbContext,
+    public OpenSslCreateKeyExchangeCommandHandler(MangoDbContext mangoDbContext,
         ResponseFactory<OpenSslCreateKeyExchangeResponse> responseFactory)
     {
-        _mangoPostgresDbContext = mangoPostgresDbContext;
+        _mangoDbContext = mangoDbContext;
         _responseFactory = responseFactory;
     }
 
     public async Task<Result<OpenSslCreateKeyExchangeResponse>> Handle(OpenSslCreateKeyExchangeCommand request,
         CancellationToken cancellationToken)
     {
-        var requestAlreadyExists = await _mangoPostgresDbContext.OpenSslKeyExchangeRequests
+        var requestAlreadyExists = await _mangoDbContext.OpenSslKeyExchangeRequests
             .AnyAsync(
                 predicate: entity => entity.SenderId == request.SenderId && entity.ReceiverId == request.ReceiverId,
                 cancellationToken: cancellationToken);
@@ -51,9 +51,9 @@ public class OpenSslCreateKeyExchangeCommandHandler : IRequestHandler<OpenSslCre
             SenderPublicKey = bytes
         };
 
-        _mangoPostgresDbContext.OpenSslKeyExchangeRequests.Add(keyExchangeRequest);
+        _mangoDbContext.OpenSslKeyExchangeRequests.Add(keyExchangeRequest);
 
-        await _mangoPostgresDbContext.SaveChangesAsync(cancellationToken);
+        await _mangoDbContext.SaveChangesAsync(cancellationToken);
 
         var response = new OpenSslCreateKeyExchangeResponse
         {

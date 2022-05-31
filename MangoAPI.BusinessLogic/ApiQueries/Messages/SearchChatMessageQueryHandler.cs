@@ -14,16 +14,16 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Messages;
 public class SearchChatMessageQueryHandler
     : IRequestHandler<SearchChatMessagesQuery, Result<SearchChatMessagesResponse>>
 {
-    private readonly MangoPostgresDbContext _postgresDbContext;
+    private readonly MangoDbContext _dbContext;
     private readonly ResponseFactory<SearchChatMessagesResponse> _responseFactory;
     private readonly IBlobServiceSettings _blobServiceSettings;
 
     public SearchChatMessageQueryHandler(
-        MangoPostgresDbContext postgresDbContext,
+        MangoDbContext dbContext,
         ResponseFactory<SearchChatMessagesResponse> responseFactory,
         IBlobServiceSettings blobServiceSettings)
     {
-        _postgresDbContext = postgresDbContext;
+        _dbContext = dbContext;
         _responseFactory = responseFactory;
         _blobServiceSettings = blobServiceSettings;
     }
@@ -31,7 +31,7 @@ public class SearchChatMessageQueryHandler
     public async Task<Result<SearchChatMessagesResponse>> Handle(SearchChatMessagesQuery request,
         CancellationToken cancellationToken)
     {
-        var userChat = await _postgresDbContext.UserChats
+        var userChat = await _dbContext.UserChats
             .Where(chatEntity => chatEntity.UserId == request.UserId)
             .Where(chatEntity => chatEntity.ChatId == request.ChatId)
             .FirstOrDefaultAsync(cancellationToken);
@@ -46,11 +46,11 @@ public class SearchChatMessageQueryHandler
 
         IQueryable<Message> query;
 
-        var isRelational = _postgresDbContext.Database.IsRelational();
+        var isRelational = _dbContext.Database.IsRelational();
 
         if (isRelational)
         {
-            query = _postgresDbContext.Messages.AsNoTracking()
+            query = _dbContext.Messages.AsNoTracking()
                 .Where(x => x.ChatId == request.ChatId)
                 .Where(x => EF.Functions.ILike(x.Content, $"%{request.MessageText}%"))
                 .OrderBy(x => x.CreatedAt)
@@ -78,7 +78,7 @@ public class SearchChatMessageQueryHandler
         }
         else
         {
-            query = _postgresDbContext.Messages.AsNoTracking()
+            query = _dbContext.Messages.AsNoTracking()
                 .Where(x => x.ChatId == request.ChatId)
                 .Where(x => x.Content.Contains(request.MessageText))
                 .OrderBy(x => x.CreatedAt)

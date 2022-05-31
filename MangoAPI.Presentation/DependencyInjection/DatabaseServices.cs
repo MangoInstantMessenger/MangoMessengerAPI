@@ -21,7 +21,7 @@ public static class DatabaseServices
 
         connectionString = StringService.ConvertHerokuDbConnection(connectionString);
 
-        services.AddDbContext<MangoPostgresDbContext>(options =>
+        services.AddDbContext<MangoDbContext>(options =>
         {
             options.UseNpgsql(connectionString ?? throw new ArgumentException(nameof(connectionString)));
             options.EnableSensitiveDataLogging();
@@ -43,7 +43,7 @@ public static class DatabaseServices
 
         var identityBuilder = new IdentityBuilder(builder.UserType, builder.Services);
         
-        identityBuilder.AddEntityFrameworkStores<MangoPostgresDbContext>();
+        identityBuilder.AddEntityFrameworkStores<MangoDbContext>();
         identityBuilder.AddSignInManager<SignInManager<UserEntity>>();
         
         return services;

@@ -18,14 +18,14 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Communities;
 public class CreateChannelCommandHandler 
     : IRequestHandler<CreateChannelCommand, Result<CreateCommunityResponse>>
 {
-    private readonly MangoPostgresDbContext _postgresDbContext;
+    private readonly MangoDbContext _dbContext;
     private readonly IHubContext<ChatHub, IHubClient> _hubContext;
     private readonly ResponseFactory<CreateCommunityResponse> _responseFactory;
 
-    public CreateChannelCommandHandler(MangoPostgresDbContext postgresDbContext, 
+    public CreateChannelCommandHandler(MangoDbContext dbContext, 
         IHubContext<ChatHub, IHubClient> hubContext, ResponseFactory<CreateCommunityResponse> responseFactory)
     {
-        _postgresDbContext = postgresDbContext;
+        _dbContext = dbContext;
         _hubContext = hubContext;
         _responseFactory = responseFactory;
     }
@@ -34,7 +34,7 @@ public class CreateChannelCommandHandler
         CancellationToken cancellationToken)
     {
         var ownerChatsCount =
-            await _postgresDbContext.UserChats
+            await _dbContext.UserChats
                 .Where(x => x.RoleId == (int)UserRole.Owner && x.UserId == request.UserId)
                 .CountAsync(cancellationToken);
 
@@ -55,16 +55,16 @@ public class CreateChannelCommandHandler
             MembersCount = 1,
         };
 
-        _postgresDbContext.Chats.Add(channel);
+        _dbContext.Chats.Add(channel);
 
-        _postgresDbContext.UserChats.Add(new UserChatEntity
+        _dbContext.UserChats.Add(new UserChatEntity
         {
             ChatId = channel.Id,
             RoleId = (int)UserRole.Owner,
             UserId = request.UserId,
         });
 
-        await _postgresDbContext.SaveChangesAsync(cancellationToken);
+        await _dbContext.SaveChangesAsync(cancellationToken);
 
         var chatDto = channel.ToChatDto();
         await _hubContext.Clients.Group(request.UserId.ToString()).UpdateUserChatsAsync(chatDto);

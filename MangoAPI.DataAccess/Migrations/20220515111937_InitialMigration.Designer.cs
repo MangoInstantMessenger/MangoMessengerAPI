@@ -11,7 +11,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace MangoAPI.DataAccess.Migrations
 {
-    [DbContext(typeof(MangoPostgresDbContext))]
+    [DbContext(typeof(MangoDbContext))]
     [Migration("20220515111937_InitialMigration")]
     partial class InitialMigration
     {

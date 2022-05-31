@@ -6,16 +6,16 @@ namespace MangoAPI.IntegrationTests;
 
 public class MangoDbFixture : IDisposable
 {
-    public MangoPostgresDbContext Context { get; }
+    public MangoDbContext Context { get; }
 
     public MangoDbFixture()
     {
-        var options = new DbContextOptionsBuilder<MangoPostgresDbContext>()
+        var options = new DbContextOptionsBuilder<MangoDbContext>()
             .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())
             .EnableSensitiveDataLogging()
             .Options;
 
-        Context = new MangoPostgresDbContext(options);
+        Context = new MangoDbContext(options);
     }
 
     public void Dispose()

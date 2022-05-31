@@ -12,20 +12,20 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Contacts;
 public class DeleteContactCommandHandler
     : IRequestHandler<DeleteContactCommand, Result<ResponseBase>>
 {
-    private readonly MangoPostgresDbContext _postgresDbContext;
+    private readonly MangoDbContext _dbContext;
     private readonly ResponseFactory<ResponseBase> _responseFactory;
 
-    public DeleteContactCommandHandler(MangoPostgresDbContext postgresDbContext,
+    public DeleteContactCommandHandler(MangoDbContext dbContext,
         ResponseFactory<ResponseBase> responseFactory)
     {
-        _postgresDbContext = postgresDbContext;
+        _dbContext = dbContext;
         _responseFactory = responseFactory;
     }
 
     public async Task<Result<ResponseBase>> Handle(DeleteContactCommand request,
         CancellationToken cancellationToken)
     {
-        var user = await _postgresDbContext.Users
+        var user = await _dbContext.Users
             .FirstOrDefaultAsync(userEntity => userEntity.Id == request.UserId,
                 cancellationToken);
 
@@ -37,7 +37,7 @@ public class DeleteContactCommandHandler
             return _responseFactory.ConflictResponse(errorMessage, errorDescription);
         }
 
-        var userContacts = await _postgresDbContext.UserContacts
+        var userContacts = await _dbContext.UserContacts
             .Where(x => x.UserId == user.Id)
             .ToListAsync(cancellationToken);
 
@@ -51,8 +51,8 @@ public class DeleteContactCommandHandler
             return _responseFactory.ConflictResponse(errorMessage, errorDescription);
         }
 
-        _postgresDbContext.UserContacts.Remove(contact);
-        await _postgresDbContext.SaveChangesAsync(cancellationToken);
+        _dbContext.UserContacts.Remove(contact);
+        await _dbContext.SaveChangesAsync(cancellationToken);
 
         return _responseFactory.SuccessResponse(ResponseBase.SuccessResponse);
     }

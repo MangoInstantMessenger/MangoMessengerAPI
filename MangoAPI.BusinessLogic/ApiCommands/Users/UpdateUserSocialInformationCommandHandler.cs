@@ -12,20 +12,20 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users;
 public class UpdateUserSocialInformationCommandHandler
     : IRequestHandler<UpdateUserSocialInformationCommand, Result<ResponseBase>>
 {
-    private readonly MangoPostgresDbContext _postgresDbContext;
+    private readonly MangoDbContext _dbContext;
     private readonly ResponseFactory<ResponseBase> _responseFactory;
 
-    public UpdateUserSocialInformationCommandHandler(MangoPostgresDbContext postgresDbContext,
+    public UpdateUserSocialInformationCommandHandler(MangoDbContext dbContext,
         ResponseFactory<ResponseBase> responseFactory)
     {
-        _postgresDbContext = postgresDbContext;
+        _dbContext = dbContext;
         _responseFactory = responseFactory;
     }
 
     public async Task<Result<ResponseBase>> Handle(UpdateUserSocialInformationCommand request,
         CancellationToken cancellationToken)
     {
-        var user = await _postgresDbContext.Users
+        var user = await _dbContext.Users
             .Include(userEntity => userEntity.UserInformation)
             .FirstOrDefaultAsync(entity => entity.Id == request.UserId,
                 cancellationToken);
@@ -45,9 +45,9 @@ public class UpdateUserSocialInformationCommandHandler
 
         user.UserInformation.UpdatedAt = DateTime.UtcNow;
 
-        _postgresDbContext.UserInformation.Update(user.UserInformation);
+        _dbContext.UserInformation.Update(user.UserInformation);
             
-        await _postgresDbContext.SaveChangesAsync(cancellationToken);
+        await _dbContext.SaveChangesAsync(cancellationToken);
 
         return _responseFactory.SuccessResponse(ResponseBase.SuccessResponse);
     }

@@ -6,7 +6,7 @@ using System;
 
 namespace MangoAPI.DataAccess.Database;
 
-public class DesignTimeUserDbContextFactory : IDesignTimeDbContextFactory<MangoPostgresDbContext>
+public class DesignTimeUserDbContextFactory : IDesignTimeDbContextFactory<MangoDbContext>
 {
     private readonly string _mangoDatabaseUrl;
 
@@ -16,9 +16,9 @@ public class DesignTimeUserDbContextFactory : IDesignTimeDbContextFactory<MangoP
         _mangoDatabaseUrl = Environment.GetEnvironmentVariable("MANGO_DATABASE_URL");
     }
     
-    public MangoPostgresDbContext CreateDbContext(string[] args)
+    public MangoDbContext CreateDbContext(string[] args)
     {
-        var options = new DbContextOptionsBuilder<MangoPostgresDbContext>();
+        var options = new DbContextOptionsBuilder<MangoDbContext>();
         var connectionString = _mangoDatabaseUrl;
 
         connectionString = StringService.ConvertHerokuDbConnection(connectionString);
@@ -27,6 +27,6 @@ public class DesignTimeUserDbContextFactory : IDesignTimeDbContextFactory<MangoP
 
         options.EnableSensitiveDataLogging();
 
-        return new MangoPostgresDbContext(options.Options);
+        return new MangoDbContext(options.Options);
     }
 }

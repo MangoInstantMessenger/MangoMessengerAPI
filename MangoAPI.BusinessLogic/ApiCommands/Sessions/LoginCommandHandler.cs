@@ -15,7 +15,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Sessions;
 public class LoginCommandHandler : IRequestHandler<LoginCommand, Result<TokensResponse>>
 {
     private readonly IJwtGenerator _jwtGenerator;
-    private readonly MangoPostgresDbContext _postgresDbContext;
+    private readonly MangoDbContext _dbContext;
     private readonly ISignInManagerService _signInManager;
     private readonly ResponseFactory<TokensResponse> _responseFactory;
     private readonly IJwtGeneratorSettings _jwtGeneratorSettings;
@@ -23,13 +23,13 @@ public class LoginCommandHandler : IRequestHandler<LoginCommand, Result<TokensRe
     public LoginCommandHandler(
         ISignInManagerService signInManager,
         IJwtGenerator jwtGenerator,
-        MangoPostgresDbContext postgresDbContext,
+        MangoDbContext dbContext,
         ResponseFactory<TokensResponse> responseFactory,
         IJwtGeneratorSettings jwtGeneratorSettings)
     {
         _signInManager = signInManager;
         _jwtGenerator = jwtGenerator;
-        _postgresDbContext = postgresDbContext;
+        _dbContext = dbContext;
         _responseFactory = responseFactory;
         _jwtGeneratorSettings = jwtGeneratorSettings;
     }
@@ -37,7 +37,7 @@ public class LoginCommandHandler : IRequestHandler<LoginCommand, Result<TokensRe
     public async Task<Result<TokensResponse>> Handle(LoginCommand request,
         CancellationToken cancellationToken)
     {
-        var user = await _postgresDbContext.Users
+        var user = await _dbContext.Users
             .FirstOrDefaultAsync(userEntity => userEntity.Email == request.Email,
                 cancellationToken);
 
@@ -77,18 +77,18 @@ public class LoginCommandHandler : IRequestHandler<LoginCommand, Result<TokensRe
 
         var jwtToken = _jwtGenerator.GenerateJwtToken(user.Id);
 
-        var userSessions = _postgresDbContext.Sessions
+        var userSessions = _dbContext.Sessions
             .Where(entity => entity.UserId == user.Id);
 
         var userSessionsCount = await userSessions.CountAsync(cancellationToken);
 
         if (userSessionsCount >= 5)
         {
-            _postgresDbContext.Sessions.RemoveRange(userSessions);
+            _dbContext.Sessions.RemoveRange(userSessions);
         }
 
-        _postgresDbContext.Sessions.Add(session);
-        await _postgresDbContext.SaveChangesAsync(cancellationToken);
+        _dbContext.Sessions.Add(session);
+        await _dbContext.SaveChangesAsync(cancellationToken);
 
         var expires = ((DateTimeOffset) session.ExpiresAt).ToUnixTimeSeconds();
         var tokens = TokensResponse.FromSuccess(jwtToken, session.RefreshToken, user.Id, expires);

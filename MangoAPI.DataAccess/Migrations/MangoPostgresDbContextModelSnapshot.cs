@@ -10,7 +10,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace MangoAPI.DataAccess.Migrations
 {
-    [DbContext(typeof(MangoPostgresDbContext))]
+    [DbContext(typeof(MangoDbContext))]
     partial class MangoPostgresDbContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)

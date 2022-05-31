@@ -18,14 +18,14 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Communities;
 public class CreateChatCommandHandler 
     : IRequestHandler<CreateChatCommand, Result<CreateCommunityResponse>>
 {
-    private readonly MangoPostgresDbContext _postgresDbContext;
+    private readonly MangoDbContext _dbContext;
     private readonly IHubContext<ChatHub, IHubClient> _hubContext;
     private readonly ResponseFactory<CreateCommunityResponse> _responseFactory;
 
-    public CreateChatCommandHandler(MangoPostgresDbContext postgresDbContext, 
+    public CreateChatCommandHandler(MangoDbContext dbContext, 
         IHubContext<ChatHub, IHubClient> hubContext, ResponseFactory<CreateCommunityResponse> responseFactory)
     {
-        _postgresDbContext = postgresDbContext;
+        _dbContext = dbContext;
         _hubContext = hubContext;
         _responseFactory = responseFactory;
     }
@@ -33,7 +33,7 @@ public class CreateChatCommandHandler
     public async Task<Result<CreateCommunityResponse>> Handle(CreateChatCommand request,
         CancellationToken cancellationToken)
     {
-        var partner = await _postgresDbContext.Users.AsNoTracking()
+        var partner = await _dbContext.Users.AsNoTracking()
             .FirstOrDefaultAsync(x => x.Id == request.PartnerId, cancellationToken);
 
         if (partner is null)
@@ -52,11 +52,11 @@ public class CreateChatCommandHandler
             return _responseFactory.ConflictResponse(errorMessage, errorDescription);
         }
 
-        var currentUserDisplayName = await _postgresDbContext.Users.Where(x => x.Id == request.UserId)
+        var currentUserDisplayName = await _dbContext.Users.Where(x => x.Id == request.UserId)
             .Select(x => x.DisplayName)
             .FirstOrDefaultAsync(cancellationToken);
 
-        var userPrivateChats = await _postgresDbContext.Chats
+        var userPrivateChats = await _dbContext.Chats
             .Include(chatEntity => chatEntity.ChatUsers)
             .Where(chatEntity => chatEntity.CommunityType == (int)CommunityType.DirectChat &&
                                  chatEntity.ChatUsers.Any(userChatEntity => userChatEntity.UserId == request.UserId))
@@ -87,10 +87,10 @@ public class CreateChatCommandHandler
             new UserChatEntity {ChatId = chatEntity.Id, RoleId = (int) UserRole.User, UserId = request.PartnerId},
         };
 
-        _postgresDbContext.Chats.Add(chatEntity);
-        _postgresDbContext.UserChats.AddRange(userChats);
+        _dbContext.Chats.Add(chatEntity);
+        _dbContext.UserChats.AddRange(userChats);
 
-        await _postgresDbContext.SaveChangesAsync(cancellationToken);
+        await _dbContext.SaveChangesAsync(cancellationToken);
 
         var chatDto = chatEntity.ToChatDto();
         await _hubContext.Clients.Group(request.UserId.ToString()).UpdateUserChatsAsync(chatDto);

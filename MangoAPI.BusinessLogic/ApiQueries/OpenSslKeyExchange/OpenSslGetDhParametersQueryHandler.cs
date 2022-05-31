@@ -11,20 +11,20 @@ namespace MangoAPI.BusinessLogic.ApiQueries.OpenSslKeyExchange;
 
 public class OpenSslGetDhParametersQueryHandler : IRequestHandler<OpenSslGetDhParametersQuery, Result<OpenSslGetDhParametersResponse>>
 {
-    private readonly MangoPostgresDbContext _mangoPostgresDbContext;
+    private readonly MangoDbContext _mangoDbContext;
     private readonly ResponseFactory<OpenSslGetDhParametersResponse> _responseFactory;
 
-    public OpenSslGetDhParametersQueryHandler(MangoPostgresDbContext mangoPostgresDbContext,
+    public OpenSslGetDhParametersQueryHandler(MangoDbContext mangoDbContext,
         ResponseFactory<OpenSslGetDhParametersResponse> responseFactory)
     {
-        _mangoPostgresDbContext = mangoPostgresDbContext;
+        _mangoDbContext = mangoDbContext;
         _responseFactory = responseFactory;
     }
 
     public async Task<Result<OpenSslGetDhParametersResponse>> Handle(OpenSslGetDhParametersQuery request,
         CancellationToken cancellationToken)
     {
-        var dhParameter = await _mangoPostgresDbContext.OpenSslDhParameters
+        var dhParameter = await _mangoDbContext.OpenSslDhParameters
             .OrderByDescending(x => x.CreatedAt)
             .FirstOrDefaultAsync(cancellationToken);
 

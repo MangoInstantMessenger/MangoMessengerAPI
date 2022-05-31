@@ -6,13 +6,13 @@ using System.Reflection;
 
 namespace MangoAPI.DataAccess.Database;
 
-public class MangoPostgresDbContext : IdentityDbContext<UserEntity, RoleEntity, Guid>
+public class MangoDbContext : IdentityDbContext<UserEntity, RoleEntity, Guid>
 {
-    public MangoPostgresDbContext()
+    public MangoDbContext()
     {
     }
 
-    public MangoPostgresDbContext(DbContextOptions options) : base(options)
+    public MangoDbContext(DbContextOptions options) : base(options)
     {
     }
 

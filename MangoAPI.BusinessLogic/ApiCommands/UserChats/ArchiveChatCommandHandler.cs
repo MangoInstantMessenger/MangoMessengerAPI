@@ -12,20 +12,20 @@ namespace MangoAPI.BusinessLogic.ApiCommands.UserChats;
 public class ArchiveChatCommandHandler
     : IRequestHandler<ArchiveChatCommand, Result<ResponseBase>>
 {
-    private readonly MangoPostgresDbContext _postgresDbContext;
+    private readonly MangoDbContext _dbContext;
     private readonly ResponseFactory<ResponseBase> _responseFactory;
 
-    public ArchiveChatCommandHandler(MangoPostgresDbContext postgresDbContext,
+    public ArchiveChatCommandHandler(MangoDbContext dbContext,
         ResponseFactory<ResponseBase> responseFactory)
     {
-        _postgresDbContext = postgresDbContext;
+        _dbContext = dbContext;
         _responseFactory = responseFactory;
     }
 
     public async Task<Result<ResponseBase>> Handle(ArchiveChatCommand request,
         CancellationToken cancellationToken)
     {
-        var chat = await _postgresDbContext.UserChats
+        var chat = await _dbContext.UserChats
             .Where(chatEntity => chatEntity.UserId == request.UserId)
             .Where(chatEntity => chatEntity.ChatId == request.ChatId)
             .FirstOrDefaultAsync(cancellationToken);
@@ -40,9 +40,9 @@ public class ArchiveChatCommandHandler
 
         chat.IsArchived = !chat.IsArchived;
 
-        _postgresDbContext.UserChats.Update(chat);
+        _dbContext.UserChats.Update(chat);
 
-        await _postgresDbContext.SaveChangesAsync(cancellationToken);
+        await _dbContext.SaveChangesAsync(cancellationToken);
 
         return _responseFactory.SuccessResponse(ResponseBase.SuccessResponse);
     }

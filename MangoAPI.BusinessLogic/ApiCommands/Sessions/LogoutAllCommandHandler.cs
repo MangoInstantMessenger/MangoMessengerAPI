@@ -12,20 +12,20 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Sessions;
 public class LogoutAllCommandHandler 
     : IRequestHandler<LogoutAllCommand, Result<ResponseBase>>
 {
-    private readonly MangoPostgresDbContext _postgresDbContext;
+    private readonly MangoDbContext _dbContext;
     private readonly ResponseFactory<ResponseBase> _responseFactory;
 
-    public LogoutAllCommandHandler(MangoPostgresDbContext postgresDbContext, 
+    public LogoutAllCommandHandler(MangoDbContext dbContext, 
         ResponseFactory<ResponseBase> responseFactory)
     {
-        _postgresDbContext = postgresDbContext;
+        _dbContext = dbContext;
         _responseFactory = responseFactory;
     }
 
     public async Task<Result<ResponseBase>> Handle(LogoutAllCommand request, 
         CancellationToken cancellationToken)
     {
-        var userSessions = _postgresDbContext.Sessions
+        var userSessions = _dbContext.Sessions
             .Where(entity => entity.UserId == request.UserId);
 
         var sessionExists = await userSessions.AnyAsync(cancellationToken);
@@ -38,9 +38,9 @@ public class LogoutAllCommandHandler
             return _responseFactory.ConflictResponse(errorMessage, details);
         }
 
-        _postgresDbContext.Sessions.RemoveRange(userSessions);
+        _dbContext.Sessions.RemoveRange(userSessions);
 
-        await _postgresDbContext.SaveChangesAsync(cancellationToken);
+        await _dbContext.SaveChangesAsync(cancellationToken);
 
         return _responseFactory.SuccessResponse(ResponseBase.SuccessResponse);
     }
