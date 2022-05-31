@@ -11,19 +11,19 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: Setup .NET Core
+      - name: ⚙ Setup .NET Core ⚙
         uses: actions/setup-dotnet@v1
         with:
           dotnet-version: 6.0.x
 
-      - name: Build with dotnet
+      - name: 🛠 Build with dotnet 🛠
         run: dotnet build --configuration Release
-      - name: dotnet publish
+      - name: ✴ dotnet publish ✴
         run: |
           dotnet restore
           dotnet publish "MangoAPI.Presentation/MangoAPI.Presentation.csproj" -r linux-x64 -o ~/mango-linux-build/src
 
-      - name: Configure SSH
+      - name: 📝 Configure SSH 📝
         run: |
           mkdir -p ~/.ssh/
           echo "$SSH_KEY" > ~/.ssh/id_rsa
@@ -40,14 +40,14 @@ jobs:
           SSH_KEY: ${{ secrets.AZURE_QA_SSH_KEY }}
           SSH_HOST: ${{ secrets.AZURE_QA_SSH_HOST }}
 
-      - name: Stop service
+      - name: ⛔ Stop service ⛔
         run: ssh staging "sudo systemctl stop mangoback"
 
-      - name: Copy Release to Remote
+      - name: ✍ Copy Release to Remote ✍
         run: scp -r -i ~/.ssh/id_rsa ~/mango-linux-build/src/* $SSH_USER@$SSH_HOST:/home/$SSH_USER/mango-backend
         env:
           SSH_USER: ${{ secrets.AZURE_QA_SSH_USER }}
           SSH_HOST: ${{ secrets.AZURE_QA_SSH_HOST }}
 
-      - name: Start service
+      - name: 🚀 Start service 🚀
         run: ssh staging "sudo systemctl start mangoback"

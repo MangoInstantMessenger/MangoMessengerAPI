@@ -10,7 +10,7 @@ jobs:
     name: Run SonarQube Analysis
     runs-on: ubuntu-latest
     steps:
-      - name: Set up JDK 11
+      - name: ⚙ Set up JDK 11 ⚙
         uses: actions/setup-java@v1
         with:
           java-version: 1.11
@@ -18,14 +18,14 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Cache SonarCloud packages
+      - name: 📝 Cache SonarCloud packages 📝
         uses: actions/cache@v1
         with:
           path: ~/sonar/cache
           key: ${{ runner.os }}-sonar
           restore-keys: ${{ runner.os }}-sonar
 
-      - name: Cache SonarCloud scanner
+      - name: 📝 Cache SonarCloud scanner 📝
         id: cache-sonar-scanner
         uses: actions/cache@v1
         with:
@@ -33,19 +33,19 @@ jobs:
           key: ${{ runner.os }}-sonar-scanner
           restore-keys: ${{ runner.os }}-sonar-scanner
 
-      - name: Setup .NET 6 SDK
+      - name: ⚙ Setup .NET 6 SDK ⚙
         uses: actions/setup-dotnet@v1
         with:
           dotnet-version: 6.0.x
 
-      - name: Install SonarCloud scanner
+      - name: ⚙ Install SonarCloud scanner ⚙
         if: steps.cache-sonar-scanner.outputs.cache-hit != 'true'
         run: |
           mkdir -p ./.sonar/scanner
           chmod a+rwx ./.sonar/scanner
           dotnet tool update dotnet-sonarscanner --tool-path ./.sonar/scanner
 
-      - name: Analyze project
+      - name: 🔍 Analyze project 🔍
         run: |
           ./.sonar/scanner/dotnet-sonarscanner begin /k:"MangoInstantMessenger_MangoMessengerAPI" /o:"mangoinstantmessenger" /d:sonar.login="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io"
           dotnet build -c Release
