@@ -1,4 +1,5 @@
 ﻿using System;
+using MangoAPI.BusinessLogic.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace MangoAPI.Presentation.DependencyInjection;

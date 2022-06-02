@@ -6,7 +6,7 @@ using MangoAPI.BusinessLogic.Responses;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace MangoAPI.Presentation.DependencyInjection;
+namespace MangoAPI.BusinessLogic.DependencyInjection;
 
 public static class MediatorValidatorsAndResponseFactoryDependencyInjection
 {

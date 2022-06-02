@@ -3,7 +3,7 @@ using MangoAPI.Application.Interfaces;
 using MangoAPI.Application.Services;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace MangoAPI.Presentation.DependencyInjection;
+namespace MangoAPI.BusinessLogic.DependencyInjection;
 
 public static class AzureBlobDependencyInjection
 {

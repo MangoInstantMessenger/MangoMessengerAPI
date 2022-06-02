@@ -8,6 +8,7 @@ using Microsoft.Extensions.Hosting;
 using MangoAPI.Presentation.DependencyInjection;
 using MangoAPI.Presentation.Middlewares;
 using System.Text.Json;
+using MangoAPI.BusinessLogic.DependencyInjection;
 using MangoAPI.Domain.Constants;
 using MangoAPI.Presentation.Controllers;
 using MangoAPI.Presentation.Extensions;
