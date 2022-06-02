@@ -9,6 +9,7 @@ using MangoAPI.Presentation.DependencyInjection;
 using MangoAPI.Presentation.Middlewares;
 using System.Text.Json;
 using MangoAPI.Domain.Constants;
+using MangoAPI.Presentation.Controllers;
 using MangoAPI.Presentation.Extensions;
 
 namespace MangoAPI.Presentation;
@@ -77,9 +78,9 @@ public class Startup
             options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
         });
 
-        services.AddAppInfrastructure(_configuration);
-
-        services.AddDatabaseContextServices(_configuration);
+        var databaseConnectionString = _configuration
+            .GetValueFromAppSettingsOrEnvironment(EnvironmentConstants.MangoDatabaseUrl);
+        services.AddDatabaseContextServices(databaseConnectionString);
 
         var mangoBlobUrl = _configuration
             .GetValueFromAppSettingsOrEnvironment(EnvironmentConstants.MangoBlobUrl);
@@ -107,6 +108,8 @@ public class Startup
             .GetValueFromAppSettingsOrEnvironment(EnvironmentConstants.MangoEmailNotificationsAddress);
         var mailgunApiDomain = _configuration
             .GetValueFromAppSettingsOrEnvironment(EnvironmentConstants.MangoMailgunApiDomain);
+        
+        services.AddAppInfrastructure(mangoJwtSignKey, mangoJwtIssuer, mangoJwtAudience);
 
         services.AddMessengerServices(
             _configuration,
@@ -131,6 +134,8 @@ public class Startup
         services.AddSpaStaticFiles(configuration => { configuration.RootPath = "wwwroot"; });
 
         services.AddApplicationInsightsTelemetry();
+
+        services.AddAutoMapper(typeof(ApiControllerBase));
 
         services.AddMvc();
     }

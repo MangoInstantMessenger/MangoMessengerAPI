@@ -1,35 +1,12 @@
-﻿using System;
-using MangoAPI.Application.Services;
-using MangoAPI.Domain.Constants;
 using MangoAPI.Domain.Entities;
 using MangoAPI.Infrastructure.Database;
-using MangoAPI.Presentation.Extensions;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace MangoAPI.Presentation.DependencyInjection;
 
-public static class DatabaseServices
+public static class IdentityDependencyInjection
 {
-    public static IServiceCollection AddDatabaseContextServices(this IServiceCollection services,
-        IConfiguration configuration)
-    {
-        var connectionString =
-            configuration.GetValueFromAppSettingsOrEnvironment(EnvironmentConstants.MangoDatabaseUrl);
-
-        connectionString = StringService.ConvertHerokuDbConnection(connectionString);
-
-        services.AddDbContext<MangoDbContext>(options =>
-        {
-            options.UseSqlServer(connectionString ?? throw new ArgumentException(nameof(connectionString)));
-            options.EnableSensitiveDataLogging();
-        });
-
-        return services;
-    }
-
     public static IServiceCollection AddIdentityUsers(this IServiceCollection services)
     {
         var builder = services.AddIdentityCore<UserEntity>(options =>

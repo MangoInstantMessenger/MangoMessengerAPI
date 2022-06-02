@@ -22,26 +22,10 @@ public static class MessengerServices
         string notificationEmail,
         string mailgunApiDomain)
     {
-        // string mangoBlobUrl = configuration
-        //     .GetValueFromAppSettingsOrEnvironment(EnvironmentConstants.MangoBlobUrl);
-        // string mangoBlobContainerName = configuration
-        //     .GetValueFromAppSettingsOrEnvironment(EnvironmentConstants.MangoBlobContainer);
-        // string mangoBlobAccess = configuration
-        //     .GetValueFromAppSettingsOrEnvironment(EnvironmentConstants.MangoBlobAccess);
-
         services.AddAzureBlobServices(
             mangoBlobUrl,
             mangoBlobContainerName,
             mangoBlobAccess);
-
-        // string mangoJwtSignKey = configuration
-        //     .GetValueFromAppSettingsOrEnvironment(EnvironmentConstants.MangoJwtSignKey);
-        // string mangoJwtIssuer = configuration
-        //     .GetValueFromAppSettingsOrEnvironment(EnvironmentConstants.MangoJwtIssuer);
-        // string mangoJwtAudience = configuration
-        //     .GetValueFromAppSettingsOrEnvironment(EnvironmentConstants.MangoJwtAudience);
-        // const int mangoJwtLifetimeMinutes = EnvironmentConstants.MangoJwtLifetimeMinutes;
-        // const int mangoRefreshTokenLifetimeDays = EnvironmentConstants.MangoRefreshTokenLifetimeDays;
 
         services.AddJwtGeneratorServices(
             mangoJwtIssuer,
@@ -49,17 +33,6 @@ public static class MessengerServices
             mangoJwtSignKey,
             mangoJwtLifetimeMinutes,
             mangoRefreshTokenLifetimeDays);
-
-        // string mailgunApiBaseUrl = configuration
-        //     .GetValueFromAppSettingsOrEnvironment(EnvironmentConstants.MangoMailgunApiBaseUrl);
-        // string mailgunApiKey = configuration
-        //     .GetValueFromAppSettingsOrEnvironment(EnvironmentConstants.MangoMailgunApiKey);
-        // string frontendAddress = configuration
-        //     .GetValueFromAppSettingsOrEnvironment(EnvironmentConstants.MangoFrontendAddress);
-        // string notificationEmail = configuration
-        //     .GetValueFromAppSettingsOrEnvironment(EnvironmentConstants.MangoEmailNotificationsAddress);
-        // string mailgunApiDomain = configuration
-        //     .GetValueFromAppSettingsOrEnvironment(EnvironmentConstants.MangoMailgunApiDomain);
 
         services.AddMailgunServices(
             mailgunApiBaseUrl,
