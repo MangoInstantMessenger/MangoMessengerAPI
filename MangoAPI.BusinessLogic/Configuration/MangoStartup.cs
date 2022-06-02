@@ -1,14 +1,12 @@
 ﻿using MangoAPI.BusinessLogic.DependencyInjection;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace MangoAPI.Presentation.DependencyInjection;
+namespace MangoAPI.BusinessLogic.Configuration;
 
-public static class MessengerServices
+public class MangoStartup
 {
-    public static IServiceCollection AddMessengerServices(
-        this IServiceCollection services,
-        IConfiguration configuration,
+    public static void Initialize(
+        string databaseConnectionString,
         string mangoBlobUrl,
         string mangoBlobContainerName,
         string mangoBlobAccess,
@@ -23,28 +21,28 @@ public static class MessengerServices
         string notificationEmail,
         string mailgunApiDomain)
     {
-        services.AddAzureBlobServices(
+        var services = new ServiceCollection();
+
+        services.AddDatabaseContextServices(databaseConnectionString);
+
+        services.AddAppInfrastructure(mangoJwtSignKey, mangoJwtIssuer, mangoJwtAudience);
+
+        services.AddMessengerServices(
             mangoBlobUrl,
             mangoBlobContainerName,
-            mangoBlobAccess);
-
-        services.AddJwtGeneratorServices(
+            mangoBlobAccess,
+            mangoJwtSignKey,
             mangoJwtIssuer,
             mangoJwtAudience,
-            mangoJwtSignKey,
             mangoJwtLifetimeMinutes,
-            mangoRefreshTokenLifetimeDays);
-
-        services.AddMailgunServices(
+            mangoRefreshTokenLifetimeDays,
             mailgunApiBaseUrl,
             mailgunApiKey,
             frontendAddress,
             notificationEmail,
             mailgunApiDomain);
 
-        services.AddSingInManagerServices();
-        services.AddPasswordHashServices();
-
-        return services;
+        var provider = services.BuildServiceProvider();
+        MangoCompositionRoot.SetProvider(provider);
     }
 }

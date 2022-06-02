@@ -5,13 +5,13 @@ using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.Domain.Constants;
 using MangoAPI.Domain.Entities;
 using MediatR;
-using Microsoft.AspNetCore.Http.Internal;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Xunit;
 
 namespace MangoAPI.IntegrationTests.ApiCommandsTests.UploadDocumentCommandHandlerTests;
 
-public class UploadDocumentTestShouldThrowUploadedDocumentsLimitReached10  
+public class UploadDocumentTestShouldThrowUploadedDocumentsLimitReached10
     : ITestable<UploadDocumentCommand, UploadDocumentResponse>
 {
     private readonly MangoDbFixture _mangoDbFixture = new();
@@ -35,7 +35,7 @@ public class UploadDocumentTestShouldThrowUploadedDocumentsLimitReached10
         }
 
         var result = await handler.Handle(command, CancellationToken.None);
-            
+
         _assert.Fail(result, expectedMessage, expectedDetails);
     }
 

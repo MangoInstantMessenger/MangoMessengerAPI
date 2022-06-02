@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 
-namespace MangoAPI.Presentation.DependencyInjection;
+namespace MangoAPI.BusinessLogic.DependencyInjection;
 
 public static class AppAuthenticationDependencyInjection
 {

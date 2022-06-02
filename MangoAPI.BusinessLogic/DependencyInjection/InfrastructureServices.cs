@@ -1,8 +1,7 @@
 ﻿using System;
-using MangoAPI.BusinessLogic.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace MangoAPI.Presentation.DependencyInjection;
+namespace MangoAPI.BusinessLogic.DependencyInjection;
 
 public static class InfrastructureServices
 {

@@ -6,7 +6,7 @@ using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.Domain.Constants;
 using MangoAPI.Domain.Entities;
 using MediatR;
-using Microsoft.AspNetCore.Http.Internal;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Xunit;
 

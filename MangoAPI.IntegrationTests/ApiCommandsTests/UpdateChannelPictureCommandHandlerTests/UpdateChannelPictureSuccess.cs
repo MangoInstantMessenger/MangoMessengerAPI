@@ -7,7 +7,7 @@ using MangoAPI.Domain.Constants;
 using MangoAPI.Domain.Entities;
 using MangoAPI.Domain.Enums;
 using MediatR;
-using Microsoft.AspNetCore.Http.Internal;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Xunit;
 

@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace MangoAPI.Presentation.DependencyInjection;
+namespace MangoAPI.BusinessLogic.DependencyInjection;
 
 public static class CorsServices
 {

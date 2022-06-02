@@ -2,7 +2,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
 
-namespace MangoAPI.Presentation.DependencyInjection;
+namespace MangoAPI.BusinessLogic.DependencyInjection;
 
 public static class SwaggerServices
 {
@@ -11,7 +11,7 @@ public static class SwaggerServices
         services.AddSwaggerGen(c =>
         {
             c.EnableAnnotations();
-            c.SwaggerDoc("v1", new OpenApiInfo {Title = "MangoAPI", Version = "v1"});
+            c.SwaggerDoc("v1", new OpenApiInfo { Title = "MangoAPI", Version = "v1" });
 
             c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
             {
