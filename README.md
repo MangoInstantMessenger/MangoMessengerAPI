@@ -50,7 +50,7 @@ environment variables:
 - `MANGO_MAILGUN_API_DOMAIN`: Verified domain used in MailGun service
 - `MANGO_API_ADDRESS`: Used for Diffie-Hellman handshake test (default: `https://localhost:5001`)
 - `MANGO_INTEGRATION_TESTS_DATABASE_URL`: SQL server database used for integration tests (
-  default: `Data Source=DESKTOP-1V4TC6J;Initial Catalog=MoviesCodeFirst;Integrated Security=true;`),
+  default: `Data Source=DESKTOP-1V4TC6J;Initial Catalog=MoviesCodeFirst;Integrated Security=true;Encrypt=True;TrustServerCertificate=True;Connection Timeout=30;`),
   connection string for the database in docker has
   format: `Server=tcp:localhost,1444;Initial Catalog=WTMP_DEV;Persist Security Info=False;User ID=sa;Password=x2yiJt!Fs;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=True;Connection Timeout=30;`
 

@@ -1,5 +1,4 @@
 ﻿using System.Linq;
-using MangoAPI.DataAccess.Database;
 using MangoAPI.Domain.Constants;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -9,6 +8,7 @@ using MangoAPI.Application.Interfaces;
 using MangoAPI.Application.Services;
 using MangoAPI.BusinessLogic.Models;
 using MangoAPI.BusinessLogic.Responses;
+using MangoAPI.Infrastructure.Database;
 
 namespace MangoAPI.BusinessLogic.ApiQueries.Users;
 

@@ -1,5 +1,5 @@
 ﻿using System;
-using MangoAPI.DataAccess.Database;
+using MangoAPI.Infrastructure.Database;
 using Microsoft.EntityFrameworkCore;
 
 namespace MangoAPI.IntegrationTests;

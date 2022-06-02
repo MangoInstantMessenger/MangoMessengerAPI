@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.Serialization;
 
-namespace MangoAPI.DataAccess.Exceptions;
+namespace MangoAPI.Infrastructure.Exceptions;
 
 [Serializable]
 public class EnvironmentVariableException : Exception

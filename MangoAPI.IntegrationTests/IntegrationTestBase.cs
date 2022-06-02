@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Threading.Tasks;
-using MangoAPI.DataAccess.Database;
-using MangoAPI.DataAccess.Exceptions;
 using MangoAPI.Domain.Constants;
+using MangoAPI.Infrastructure.Database;
+using MangoAPI.Infrastructure.Exceptions;
 using Microsoft.EntityFrameworkCore;
 using Xunit;
 

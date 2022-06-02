@@ -1,10 +1,10 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Design;
-using MangoAPI.DataAccess.Exceptions;
-using System;
+﻿using System;
 using MangoAPI.Domain.Constants;
+using MangoAPI.Infrastructure.Exceptions;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Design;
 
-namespace MangoAPI.DataAccess.Database;
+namespace MangoAPI.Infrastructure.Database;
 
 public class DesignTimeDbContextFactory : IDesignTimeDbContextFactory<MangoDbContext>
 {

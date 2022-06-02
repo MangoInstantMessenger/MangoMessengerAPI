@@ -1,10 +1,10 @@
-﻿using MangoAPI.Domain.Constants;
+﻿using System;
+using MangoAPI.Domain.Constants;
 using MangoAPI.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using System;
 
-namespace MangoAPI.DataAccess.Database.Configurations;
+namespace MangoAPI.Infrastructure.Database.Configurations;
 
 public class UserContactEntityConfiguration : IEntityTypeConfiguration<UserContactEntity>
 {

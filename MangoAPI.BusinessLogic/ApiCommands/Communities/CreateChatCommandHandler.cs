@@ -1,6 +1,5 @@
 ﻿using MangoAPI.BusinessLogic.HubConfig;
 using MangoAPI.BusinessLogic.Models;
-using MangoAPI.DataAccess.Database;
 using MangoAPI.Domain.Constants;
 using MangoAPI.Domain.Entities;
 using MangoAPI.Domain.Enums;
@@ -12,6 +11,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using MangoAPI.BusinessLogic.Responses;
+using MangoAPI.Infrastructure.Database;
 
 namespace MangoAPI.BusinessLogic.ApiCommands.Communities;
 

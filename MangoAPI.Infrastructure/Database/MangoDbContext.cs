@@ -1,10 +1,10 @@
-﻿using MangoAPI.Domain.Entities;
+﻿using System;
+using System.Reflection;
+using MangoAPI.Domain.Entities;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Reflection;
 
-namespace MangoAPI.DataAccess.Database;
+namespace MangoAPI.Infrastructure.Database;
 
 public class MangoDbContext : IdentityDbContext<UserEntity, RoleEntity, Guid>
 {

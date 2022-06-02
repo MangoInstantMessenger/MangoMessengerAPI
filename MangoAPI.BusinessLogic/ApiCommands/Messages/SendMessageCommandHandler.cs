@@ -1,6 +1,5 @@
 ﻿using MangoAPI.BusinessLogic.HubConfig;
 using MangoAPI.BusinessLogic.Models;
-using MangoAPI.DataAccess.Database;
 using MangoAPI.Domain.Constants;
 using MangoAPI.Domain.Entities;
 using MediatR;
@@ -12,6 +11,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using MangoAPI.Application.Interfaces;
 using MangoAPI.BusinessLogic.Responses;
+using MangoAPI.Infrastructure.Database;
 
 namespace MangoAPI.BusinessLogic.ApiCommands.Messages;
 

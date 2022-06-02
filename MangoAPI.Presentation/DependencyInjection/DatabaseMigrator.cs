@@ -1,4 +1,4 @@
-﻿using MangoAPI.DataAccess.Database;
+﻿using MangoAPI.Infrastructure.Database;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;

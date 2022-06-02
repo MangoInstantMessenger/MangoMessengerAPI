@@ -5,7 +5,7 @@ VisualStudioVersion = 17.0.32014.148
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MangoAPI.Presentation", "MangoAPI.Presentation\MangoAPI.Presentation.csproj", "{139143FA-4968-4269-883B-80DF7EECE7EA}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MangoAPI.DataAccess", "MangoAPI.DataAccess\MangoAPI.DataAccess.csproj", "{892FEF6D-BCF5-4A93-BB2A-C49D5EE57491}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MangoAPI.Infrastructure", "MangoAPI.Infrastructure\MangoAPI.Infrastructure.csproj", "{892FEF6D-BCF5-4A93-BB2A-C49D5EE57491}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MangoAPI.Domain", "MangoAPI.Domain\MangoAPI.Domain.csproj", "{CC4422A4-CDDC-4B8D-A6E4-6466732B2F47}"
 EndProject

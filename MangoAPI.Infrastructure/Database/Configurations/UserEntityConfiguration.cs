@@ -2,11 +2,11 @@
 using MangoAPI.Application.Services;
 using MangoAPI.Domain.Constants;
 using MangoAPI.Domain.Entities;
-using MangoAPI.DataAccess.Exceptions;
+using MangoAPI.Infrastructure.Exceptions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace MangoAPI.DataAccess.Database.Configurations;
+namespace MangoAPI.Infrastructure.Database.Configurations;
 
 public class UserEntityConfiguration : IEntityTypeConfiguration<UserEntity>
 {

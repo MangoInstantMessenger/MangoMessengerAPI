@@ -1,6 +1,5 @@
 ﻿using System;
 using MangoAPI.BusinessLogic.Responses;
-using MangoAPI.DataAccess.Database;
 using MangoAPI.Domain.Constants;
 using MangoAPI.Domain.Enums;
 using MediatR;
@@ -10,6 +9,7 @@ using System.Threading.Tasks;
 using MangoAPI.Application.Interfaces;
 using MangoAPI.Application.Services;
 using MangoAPI.Domain.Entities;
+using MangoAPI.Infrastructure.Database;
 
 namespace MangoAPI.BusinessLogic.ApiCommands.Communities;
 

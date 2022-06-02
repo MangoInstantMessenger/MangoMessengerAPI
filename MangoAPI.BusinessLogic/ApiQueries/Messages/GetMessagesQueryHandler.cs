@@ -1,5 +1,4 @@
 ﻿using MangoAPI.BusinessLogic.Models;
-using MangoAPI.DataAccess.Database;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
@@ -7,6 +6,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using MangoAPI.Application.Interfaces;
 using MangoAPI.BusinessLogic.Responses;
+using MangoAPI.Infrastructure.Database;
 
 namespace MangoAPI.BusinessLogic.ApiQueries.Messages;
 

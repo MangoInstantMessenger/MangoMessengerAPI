@@ -5,7 +5,7 @@ using MangoAPI.Domain.Enums;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace MangoAPI.DataAccess.Database.Configurations;
+namespace MangoAPI.Infrastructure.Database.Configurations;
 
 public class ChatEntityConfiguration : IEntityTypeConfiguration<ChatEntity>
 {

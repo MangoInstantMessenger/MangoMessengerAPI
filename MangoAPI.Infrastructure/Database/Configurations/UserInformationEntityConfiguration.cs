@@ -4,7 +4,7 @@ using MangoAPI.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace MangoAPI.DataAccess.Database.Configurations;
+namespace MangoAPI.Infrastructure.Database.Configurations;
 
 public class UserInformationEntityConfiguration : IEntityTypeConfiguration<UserInformationEntity>
 {
