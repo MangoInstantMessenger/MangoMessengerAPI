@@ -65,7 +65,7 @@ public class RefreshSessionCommandHandler : IRequestHandler<RefreshSessionComman
         {
             RefreshToken = Guid.NewGuid(),
             UserId = session.UserId,
-            ExpiresAt = DateTime.UtcNow.AddDays(_jwtGeneratorSettings.MangoRefreshTokenLifetime),
+            ExpiresAt = DateTime.UtcNow.AddDays(_jwtGeneratorSettings.MangoRefreshTokenLifetimeDays),
             CreatedAt = DateTime.UtcNow,
         };
 

@@ -71,7 +71,7 @@ public class LoginCommandHandler : IRequestHandler<LoginCommand, Result<TokensRe
         {
             UserId = user.Id,
             RefreshToken = Guid.NewGuid(),
-            ExpiresAt = DateTime.UtcNow.AddDays(_jwtGeneratorSettings.MangoRefreshTokenLifetime),
+            ExpiresAt = DateTime.UtcNow.AddDays(_jwtGeneratorSettings.MangoRefreshTokenLifetimeDays),
             CreatedAt = DateTime.UtcNow,
         };
 

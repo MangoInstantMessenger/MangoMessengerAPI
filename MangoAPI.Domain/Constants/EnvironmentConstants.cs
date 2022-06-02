@@ -2,9 +2,9 @@
 
 public static class EnvironmentConstants
 {
-    public const int MangoJwtLifetime = 60;
+    public const int MangoJwtLifetimeMinutes = 60;
 
-    public const int MangoRefreshTokenLifetime = 7;
+    public const int MangoRefreshTokenLifetimeDays = 7;
 
     public const string MangoJwtIssuer = "MANGO_JWT_ISSUER";
 
