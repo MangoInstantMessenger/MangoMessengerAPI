@@ -18,6 +18,8 @@ public static class InfrastructureServices
 
         services.AddIdentityUsers();
 
+        services.AddSignalR();
+
         services.AddAppAuthorization();
 
         services.AddAppAuthentication(

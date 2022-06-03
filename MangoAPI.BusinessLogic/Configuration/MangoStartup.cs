@@ -51,6 +51,7 @@ public class MangoStartup
 
         services.AddSingInManagerServices();
         services.AddPasswordHashServices();
+        services.AddSignalR();
 
         var provider = services.BuildServiceProvider();
         MangoCompositionRoot.SetProvider(provider);
