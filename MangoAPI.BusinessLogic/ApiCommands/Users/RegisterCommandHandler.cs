@@ -11,19 +11,19 @@ using Microsoft.EntityFrameworkCore;
 
 namespace MangoAPI.BusinessLogic.ApiCommands.Users;
 
-public class RegisterCommandHandler : IRequestHandler<RegisterCommand, Result<ResponseBase>>
+public class RegisterCommandHandler : IRequestHandler<RegisterCommand, Result<RegisterResponse>>
 {
     private readonly IEmailSenderService _emailSenderService;
     private readonly MangoDbContext _dbContext;
     private readonly IUserManagerService _userManager;
-    private readonly ResponseFactory<ResponseBase> _responseFactory;
+    private readonly ResponseFactory<RegisterResponse> _responseFactory;
     private readonly IMailgunSettings _mailgunSettings;
 
     public RegisterCommandHandler(
         IUserManagerService userManager,
         MangoDbContext dbContext,
         IEmailSenderService emailSenderService,
-        ResponseFactory<ResponseBase> responseFactory,
+        ResponseFactory<RegisterResponse> responseFactory,
         IMailgunSettings mailgunSettings)
     {
         _userManager = userManager;
@@ -33,7 +33,7 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, Result<Re
         _mailgunSettings = mailgunSettings;
     }
 
-    public async Task<Result<ResponseBase>> Handle(RegisterCommand request, CancellationToken cancellationToken)
+    public async Task<Result<RegisterResponse>> Handle(RegisterCommand request, CancellationToken cancellationToken)
     {
         var userExists = await _dbContext.Users
             .AnyAsync(entity => entity.Email == request.Email, cancellationToken);
@@ -79,6 +79,9 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, Result<Re
 
         await _dbContext.SaveChangesAsync(cancellationToken);
 
-        return _responseFactory.SuccessResponse(ResponseBase.SuccessResponse);
+        var response = RegisterResponse.FromSuccess(newUser.Id);
+        var result = _responseFactory.SuccessResponse(response);
+
+        return result;
     }
 }

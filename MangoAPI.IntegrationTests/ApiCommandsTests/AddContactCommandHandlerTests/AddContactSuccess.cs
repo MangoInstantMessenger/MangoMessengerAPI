@@ -2,77 +2,28 @@
 using System.Threading.Tasks;
 using MangoAPI.BusinessLogic.ApiCommands.Contacts;
 using MangoAPI.BusinessLogic.Responses;
-using MangoAPI.Domain.Constants;
-using MangoAPI.Domain.Entities;
-using MediatR;
-using Microsoft.EntityFrameworkCore;
+using MangoAPI.IntegrationTests.Helpers;
 using Xunit;
 
 namespace MangoAPI.IntegrationTests.ApiCommandsTests.AddContactCommandHandlerTests;
 
-public class AddContactSuccess : IntegrationTestBase, ITestable<AddContactCommand, ResponseBase>
+public class AddContactSuccess : IntegrationTestBase
 {
     private readonly Assert<ResponseBase> _assert = new();
 
     [Fact]
     public async Task AddContactsCommandHandlerTest_Success()
     {
-        Seed();
-        var handler = CreateHandler();
+        var sender = await MangoModule.RequestAsync(CommandHelper.RegisterKhachaturCommand(), CancellationToken.None);
+        var receiver = await MangoModule.RequestAsync(CommandHelper.RegisterPetroCommand(), CancellationToken.None);
         var command = new AddContactCommand
         {
-            UserId = SeedDataConstants.RazumovskyId,
-            ContactId = SeedDataConstants.KhachaturId
+            UserId = sender.Response.UserId,
+            ContactId = receiver.Response.UserId
         };
 
-        var result = await handler.Handle(command, CancellationToken.None);
+        var result = await MangoModule.RequestAsync(command, CancellationToken.None);
 
         _assert.Pass(result);
     }
-
-    public bool Seed()
-    {
-        DbContextFixture.Users.Add(_user1);
-        DbContextFixture.Users.Add(_user2);
-
-        DbContextFixture.SaveChanges();
-
-        DbContextFixture.Entry(_user1).State = EntityState.Detached;
-        DbContextFixture.Entry(_user2).State = EntityState.Detached;
-
-        return true;
-    }
-
-    public IRequestHandler<AddContactCommand, Result<ResponseBase>> CreateHandler()
-    {
-        var responseFactory = new ResponseFactory<ResponseBase>();
-        var handler = new AddContactCommandHandler(DbContextFixture, responseFactory);
-        return handler;
-    }
-
-    private readonly UserEntity _user1 = new()
-    {
-        DisplayName = "Khachatur Khachatryan",
-        Bio = "13 y. o. | C# pozer, Hearts Of Iron IV noob",
-        Id = SeedDataConstants.KhachaturId,
-        UserName = "KHACHATUR228",
-        Email = "xachulxx@gmail.com",
-        NormalizedEmail = "XACHULXX@GMAIL.COM",
-        EmailConfirmed = true,
-        PhoneNumberConfirmed = true,
-        Image = "khachatur_picture.jpg",
-    };
-
-    private readonly UserEntity _user2 = new()
-    {
-        DisplayName = "razumovsky r",
-        Bio = "11011 y.o Dotnet Developer from $\"{cityName}\"",
-        Id = SeedDataConstants.RazumovskyId,
-        UserName = "razumovsky_r",
-        Email = "kolosovp95@gmail.com",
-        NormalizedEmail = "KOLOSOVP94@GMAIL.COM",
-        EmailConfirmed = true,
-        PhoneNumberConfirmed = true,
-        Image = "razumovsky_picture.jpg"
-    };
 }

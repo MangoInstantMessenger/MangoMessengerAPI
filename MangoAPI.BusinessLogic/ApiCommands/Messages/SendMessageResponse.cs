@@ -12,7 +12,7 @@ public record SendMessageResponse : ResponseBase
 
     public static SendMessageResponse FromSuccess(Guid messageId)
     {
-        return new()
+        return new SendMessageResponse
         {
             Success = true,
             Message = ResponseMessageCodes.Success,

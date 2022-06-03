@@ -11,7 +11,7 @@ public record GetMessagesResponse : ResponseBase
 
     public static GetMessagesResponse FromSuccess(List<Message> messages)
     {
-        return new()
+        return new GetMessagesResponse
         {
             Message = ResponseMessageCodes.Success,
             Messages = messages,

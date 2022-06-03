@@ -7,10 +7,10 @@ using Xunit;
 
 namespace MangoAPI.IntegrationTests.ApiCommandsTests.RegisterCommandHandlerTests;
 
-public class RegisterTestSuccess : ITestable<RegisterCommand, ResponseBase>
+public class RegisterTestSuccess : ITestable<RegisterCommand, RegisterResponse>
 {
     private readonly MangoDbFixture _mangoDbFixture = new();
-    private readonly Assert<ResponseBase> _assert = new();
+    private readonly Assert<RegisterResponse> _assert = new();
 
     [Fact]
     public async Task RegisterTest_Success()
@@ -28,11 +28,11 @@ public class RegisterTestSuccess : ITestable<RegisterCommand, ResponseBase>
         return true;
     }
 
-    public IRequestHandler<RegisterCommand, Result<ResponseBase>> CreateHandler()
+    public IRequestHandler<RegisterCommand, Result<RegisterResponse>> CreateHandler()
     {
         var emailSenderServiceMock = MockedObjects.GetEmailSenderServiceMock();
         var userServiceMock = MockedObjects.GetUserServiceMock(_command.Password);
-        var responseFactory = new ResponseFactory<ResponseBase>();
+        var responseFactory = new ResponseFactory<RegisterResponse>();
         var mailSettings = MockedObjects.GetMailgunSettings();
 
         var handler = new RegisterCommandHandler(

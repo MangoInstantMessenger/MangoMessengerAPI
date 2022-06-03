@@ -8,10 +8,10 @@ using Xunit;
 
 namespace MangoAPI.IntegrationTests.ApiCommandsTests.RegisterCommandHandlerTests;
 
-public class RegisterTestShouldThrowInvalidEmail : ITestable<RegisterCommand, ResponseBase>
+public class RegisterTestShouldThrowInvalidEmail : ITestable<RegisterCommand, RegisterResponse>
 {
     private readonly MangoDbFixture _mangoDbFixture;
-    private readonly Assert<ResponseBase> _assert;
+    private readonly Assert<RegisterResponse> _assert;
     private readonly RegisterCommand _command;
 
     public RegisterTestShouldThrowInvalidEmail()
@@ -19,7 +19,7 @@ public class RegisterTestShouldThrowInvalidEmail : ITestable<RegisterCommand, Re
         var email = MockedObjects.GetMailgunSettings().NotificationEmail;
 
         _mangoDbFixture = new MangoDbFixture();
-        _assert = new Assert<ResponseBase>();
+        _assert = new Assert<RegisterResponse>();
         _command = new RegisterCommand
         {
             Email = email,
@@ -47,11 +47,11 @@ public class RegisterTestShouldThrowInvalidEmail : ITestable<RegisterCommand, Re
         return true;
     }
 
-    public IRequestHandler<RegisterCommand, Result<ResponseBase>> CreateHandler()
+    public IRequestHandler<RegisterCommand, Result<RegisterResponse>> CreateHandler()
     {
         var emailSenderServiceMock = MockedObjects.GetEmailSenderServiceMock();
         var userServiceMock = MockedObjects.GetUserServiceMock(_command.Password);
-        var responseFactory = new ResponseFactory<ResponseBase>();
+        var responseFactory = new ResponseFactory<RegisterResponse>();
         var mailSettings = MockedObjects.GetMailgunSettings();
 
         var handler = new RegisterCommandHandler(

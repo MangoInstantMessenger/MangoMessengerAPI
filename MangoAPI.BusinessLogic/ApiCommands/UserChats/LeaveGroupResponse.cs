@@ -10,7 +10,7 @@ public record LeaveGroupResponse : ResponseBase
 
     public static LeaveGroupResponse FromSuccess(Guid chatId)
     {
-        return new()
+        return new LeaveGroupResponse
         {
             Success = true,
             Message = ResponseMessageCodes.Success,

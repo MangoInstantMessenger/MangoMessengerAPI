@@ -13,16 +13,24 @@ public static class MailgunDependencyInjection
         string mailgunApiKey,
         string frontendAddress,
         string notificationEmail,
-        string mangoMailgunApiDomain)
+        string mangoMailgunApiDomain,
+        IEmailSenderService senderService = null)
     {
         var mailgunApiUrlWithDomain = $"{mailgunApiBaseUrl}/v3/{mangoMailgunApiDomain}/messages";
 
-        var mailgunSettings = new MailgunSettings(mailgunApiBaseUrl, mailgunApiUrlWithDomain,
-            mailgunApiKey, frontendAddress, notificationEmail);
+        var mailgunSettings = new MailgunSettings(
+            mailgunApiBaseUrl,
+            mailgunApiUrlWithDomain,
+            mailgunApiKey,
+            frontendAddress,
+            notificationEmail);
 
         services.AddScoped<IMailgunSettings, MailgunSettings>(_ => mailgunSettings);
-        services.AddScoped<IEmailSenderService, MailgunApiEmailSenderService>(_ => new MailgunApiEmailSenderService(
-            new HttpClient(), mailgunSettings));
+
+        var serviceToRegister = senderService ??
+                                new MailgunApiEmailSenderService(new HttpClient(), mailgunSettings);
+
+        services.AddScoped(_ => serviceToRegister);
 
         return services;
     }

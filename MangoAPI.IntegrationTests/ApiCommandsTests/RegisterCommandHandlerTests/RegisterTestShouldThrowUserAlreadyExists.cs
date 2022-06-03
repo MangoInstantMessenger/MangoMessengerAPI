@@ -10,10 +10,10 @@ using Xunit;
 
 namespace MangoAPI.IntegrationTests.ApiCommandsTests.RegisterCommandHandlerTests;
 
-public class RegisterTestShouldThrowUserAlreadyExists : ITestable<RegisterCommand, ResponseBase>
+public class RegisterTestShouldThrowUserAlreadyExists : ITestable<RegisterCommand, RegisterResponse>
 {
     private readonly MangoDbFixture _mangoDbFixture = new();
-    private readonly Assert<ResponseBase> _assert = new();
+    private readonly Assert<RegisterResponse> _assert = new();
 
     [Fact]
     public async Task RegisterTestShouldThrow_UserAlreadyExists()
@@ -39,11 +39,11 @@ public class RegisterTestShouldThrowUserAlreadyExists : ITestable<RegisterComman
         return true;
     }
 
-    public IRequestHandler<RegisterCommand, Result<ResponseBase>> CreateHandler()
+    public IRequestHandler<RegisterCommand, Result<RegisterResponse>> CreateHandler()
     {
         var emailSenderServiceMock = MockedObjects.GetEmailSenderServiceMock();
         var userServiceMock = MockedObjects.GetUserServiceMock(_command.Password);
-        var responseFactory = new ResponseFactory<ResponseBase>();
+        var responseFactory = new ResponseFactory<RegisterResponse>();
         var mailSettings = MockedObjects.GetMailgunSettings();
 
         var handler = new RegisterCommandHandler(userServiceMock, _mangoDbFixture.Context, emailSenderServiceMock,

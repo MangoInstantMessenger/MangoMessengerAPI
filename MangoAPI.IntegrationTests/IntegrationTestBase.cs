@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Threading.Tasks;
+using MangoAPI.BusinessLogic;
+using MangoAPI.BusinessLogic.Configuration;
 using MangoAPI.Domain.Constants;
 using MangoAPI.Infrastructure.Database;
 using MangoAPI.Infrastructure.Exceptions;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using Xunit;
 
 namespace MangoAPI.IntegrationTests;
@@ -12,20 +15,54 @@ namespace MangoAPI.IntegrationTests;
 public class IntegrationTestBase : IAsyncLifetime
 {
     protected MangoDbContext DbContextFixture { get; }
-    private string ConnectionString { get; }
+    protected string ConnectionString { get; }
+
+    protected MangoModule MangoModule { get; }
+
+    protected IServiceProvider ServiceProvider { get; }
 
     protected IntegrationTestBase()
     {
-        ConnectionString = Environment.GetEnvironmentVariable(EnvironmentConstants.MangoIntegrationTestsDatabaseUrl)
-                           ?? throw new EnvironmentVariableException(EnvironmentConstants
-                               .MangoIntegrationTestsDatabaseUrl);
+        ConnectionString = GetFromEnvironmentOrThrow(EnvironmentConstants.MangoIntegrationTestsDatabaseUrl);
+        var mangoBlobUrl = GetFromEnvironmentOrThrow(EnvironmentConstants.MangoBlobUrl);
+        var mangoBlobContainerName = GetFromEnvironmentOrThrow(EnvironmentConstants.MangoBlobContainer);
+        var mangoBlobAccess = GetFromEnvironmentOrThrow(EnvironmentConstants.MangoBlobAccess);
+        var mangoJwtSignKey = GetFromEnvironmentOrThrow(EnvironmentConstants.MangoJwtSignKey);
+        var mangoJwtIssuer = GetFromEnvironmentOrThrow(EnvironmentConstants.MangoJwtIssuer);
+        var mangoJwtAudience = GetFromEnvironmentOrThrow(EnvironmentConstants.MangoJwtAudience);
+        const int mangoJwtLifetimeMinutes = EnvironmentConstants.MangoJwtLifetimeMinutes;
+        const int mangoRefreshTokenLifetimeDays = EnvironmentConstants.MangoRefreshTokenLifetimeDays;
+        var mailgunApiBaseUrl = GetFromEnvironmentOrThrow(EnvironmentConstants.MangoMailgunApiBaseUrl);
+        var mailgunApiKey = GetFromEnvironmentOrThrow(EnvironmentConstants.MangoMailgunApiKey);
+        var frontendAddress = GetFromEnvironmentOrThrow(EnvironmentConstants.MangoFrontendAddress);
+        var notificationEmail = GetFromEnvironmentOrThrow(EnvironmentConstants.MangoEmailNotificationsAddress);
+        var mailgunApiDomain = GetFromEnvironmentOrThrow(EnvironmentConstants.MangoMailgunApiDomain);
 
-        var options = new DbContextOptionsBuilder<MangoDbContext>();
+        var mailgunServiceMock = MockedObjects.GetEmailSenderServiceMock();
 
-        options.UseSqlServer(ConnectionString);
-        options.EnableSensitiveDataLogging();
+        MangoStartup.Initialize(
+            ConnectionString,
+            mangoBlobUrl,
+            mangoBlobContainerName,
+            mangoBlobAccess,
+            mangoJwtSignKey,
+            mangoJwtIssuer,
+            mangoJwtAudience,
+            mangoJwtLifetimeMinutes,
+            mangoRefreshTokenLifetimeDays,
+            mailgunApiBaseUrl,
+            mailgunApiKey,
+            frontendAddress,
+            notificationEmail,
+            mailgunApiDomain,
+            mailgunServiceMock);
 
-        DbContextFixture = new MangoDbContext(options.Options);
+        ServiceProvider = MangoCompositionRoot.Provider;
+
+        MangoModule = new MangoModule();
+
+        DbContextFixture = ServiceProvider.GetRequiredService<MangoDbContext>() ??
+                           throw new InvalidOperationException("MangoDbContext service is not registered in the DI.");
     }
 
     public async Task InitializeAsync()
@@ -37,5 +74,13 @@ public class IntegrationTestBase : IAsyncLifetime
     public Task DisposeAsync()
     {
         return Task.CompletedTask;
+    }
+
+    protected static string GetFromEnvironmentOrThrow(string key)
+    {
+        var result = Environment.GetEnvironmentVariable(key)
+                     ?? throw new EnvironmentVariableException(key);
+
+        return result;
     }
 }
