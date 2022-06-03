@@ -55,14 +55,6 @@ public class ChangePasswordCommandHandler
 
         var result = await _userManager.AddPasswordAsync(user, request.NewPassword);
 
-        if (!result.Succeeded)
-        {
-            const string errorMessage = ResponseMessageCodes.WeakPassword;
-            var details = ResponseMessageCodes.ErrorDictionary[errorMessage];
-
-            return _responseFactory.ConflictResponse(errorMessage, details);
-        }
-
         return _responseFactory.SuccessResponse(ResponseBase.SuccessResponse);
     }
 }
