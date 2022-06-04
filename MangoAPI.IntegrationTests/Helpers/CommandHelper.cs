@@ -2,6 +2,7 @@
 using MangoAPI.BusinessLogic.ApiCommands.CngKeyExchange;
 using MangoAPI.BusinessLogic.ApiCommands.Communities;
 using MangoAPI.BusinessLogic.ApiCommands.Contacts;
+using MangoAPI.BusinessLogic.ApiCommands.Messages;
 using MangoAPI.BusinessLogic.ApiCommands.Users;
 
 namespace MangoAPI.IntegrationTests.Helpers;
@@ -56,6 +57,15 @@ public class CommandHelper
             userId: userId,
             contactId: contactId);
         
+        return command;
+    }
+
+    public static SendMessageCommand SendMessageToChannelCommand(Guid userId, Guid chatId)
+    {
+        var command = new SendMessageCommand(
+            userId: userId,
+            chatId: chatId);
+
         return command;
     }
 }

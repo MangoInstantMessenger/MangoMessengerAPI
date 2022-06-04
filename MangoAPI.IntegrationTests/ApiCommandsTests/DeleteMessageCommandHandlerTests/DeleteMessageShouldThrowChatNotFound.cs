@@ -6,13 +6,14 @@ using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.Domain.Constants;
 using MangoAPI.Domain.Entities;
 using MangoAPI.Domain.Enums;
+using MangoAPI.IntegrationTests.Helpers;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Xunit;
 
 namespace MangoAPI.IntegrationTests.ApiCommandsTests.DeleteMessageCommandHandlerTests;
 
-public class DeleteMessageShouldThrowChatNotFound : ITestable<DeleteMessageCommand, DeleteMessageResponse>
+public class DeleteMessageShouldThrowChatNotFound : IntegrationTestBase
 {
     private readonly MangoDbFixture _mangoDbFixture = new();
     private readonly Assert<DeleteMessageResponse> _assert = new();
@@ -20,12 +21,30 @@ public class DeleteMessageShouldThrowChatNotFound : ITestable<DeleteMessageComma
     [Fact]
     public async Task DeleteMessageShouldThrow_ChatNotFound()
     {
-        Seed();
         const string expectedMessage = ResponseMessageCodes.ChatNotFound;
         string expectedDetails = ResponseMessageCodes.ErrorDictionary[expectedMessage];
-        var handler = CreateHandler();
+        var user =
+            await MangoModule.RequestAsync(CommandHelper.RegisterPetroCommand(), CancellationToken.None);
+        var chat =
+            await MangoModule.RequestAsync(
+                request: CommandHelper.CreateExtremeCodeMainChatCommand(user.Response.UserId), 
+                cancellationToken: CancellationToken.None);
+        var chat1 =
+            await MangoModule.RequestAsync(
+                request: CommandHelper.CreateExtremeCodeMainChatCommand(user.Response.UserId), 
+                cancellationToken: CancellationToken.None);
+        var message =
+            await MangoModule.RequestAsync(
+                request: CommandHelper.SendMessageToChannelCommand(user.Response.UserId, chat1.Response.ChatId), 
+                cancellationToken: CancellationToken.None);
+        var command = new DeleteMessageCommand
+        {
+            UserId = user.Response.UserId,
+            ChatId = Guid.NewGuid(),
+            MessageId = message.Response.MessageId
+        };
 
-        var result = await handler.Handle(_command, CancellationToken.None);
+        var result = await MangoModule.RequestAsync(command, CancellationToken.None);
 
         _assert.Fail(result, expectedMessage, expectedDetails);
     }
