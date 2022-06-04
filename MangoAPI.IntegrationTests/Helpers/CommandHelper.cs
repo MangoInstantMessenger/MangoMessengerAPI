@@ -1,6 +1,7 @@
 ﻿using System;
 using MangoAPI.BusinessLogic.ApiCommands.CngKeyExchange;
 using MangoAPI.BusinessLogic.ApiCommands.Communities;
+using MangoAPI.BusinessLogic.ApiCommands.Contacts;
 using MangoAPI.BusinessLogic.ApiCommands.Users;
 
 namespace MangoAPI.IntegrationTests.Helpers;
@@ -46,6 +47,15 @@ public class CommandHelper
             requestedUserId: requestedUserId,
             publicKey: "Public Key");
 
+        return command;
+    }
+
+    public static AddContactCommand CreateContactCommand(Guid userId, Guid contactId)
+    {
+        var command = new AddContactCommand(
+            userId: userId,
+            contactId: contactId);
+        
         return command;
     }
 }

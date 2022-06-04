@@ -5,13 +5,14 @@ using MangoAPI.BusinessLogic.ApiCommands.Contacts;
 using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.Domain.Constants;
 using MangoAPI.Domain.Entities;
+using MangoAPI.IntegrationTests.Helpers;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Xunit;
 
 namespace MangoAPI.IntegrationTests.ApiCommandsTests.DeleteContactCommandHandlerTests;
 
-public class DeleteContactShouldThrowContactNotFound : ITestable<DeleteContactCommand, ResponseBase>
+public class DeleteContactShouldThrowContactNotFound : IntegrationTestBase
 {
     private readonly MangoDbFixture _mangoDbFixture = new();
     private readonly Assert<ResponseBase> _assert = new();
@@ -19,12 +20,17 @@ public class DeleteContactShouldThrowContactNotFound : ITestable<DeleteContactCo
     [Fact]
     public async Task DeleteContactTestShouldThrow_ContactNotFound()
     {
-        Seed();
         const string expectedMessage = ResponseMessageCodes.ContactNotFound;
         string expectedDetails = ResponseMessageCodes.ErrorDictionary[expectedMessage];
-        var handler = CreateHandler();
+        var user =
+            await MangoModule.RequestAsync(CommandHelper.RegisterPetroCommand(), CancellationToken.None);
+        var command = new DeleteContactCommand
+        {
+            UserId = user.Response.UserId,
+            ContactId = Guid.NewGuid()
+        };
 
-        var result = await handler.Handle(_command, CancellationToken.None);
+        var result = await MangoModule.RequestAsync(command, CancellationToken.None);
 
         _assert.Fail(result, expectedMessage, expectedDetails);
     } 
