@@ -7,13 +7,14 @@ using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.Domain.Constants;
 using MangoAPI.Domain.Entities;
 using MangoAPI.Domain.Enums;
+using MangoAPI.IntegrationTests.Helpers;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Xunit;
 
 namespace MangoAPI.IntegrationTests.ApiCommandsTests.LeaveGroupCommandHandlerTests;
 
-public class LeaveGroupTestSuccess : ITestable<LeaveGroupCommand, LeaveGroupResponse>
+public class LeaveGroupTestSuccess : IntegrationTestBase
 {
     private readonly MangoDbFixture _mangoDbFixture = new();
     private readonly Assert<LeaveGroupResponse> _assert = new();
@@ -21,15 +22,21 @@ public class LeaveGroupTestSuccess : ITestable<LeaveGroupCommand, LeaveGroupResp
     [Fact]
     public async Task LeaveGroupTest_Success()
     {
-        Seed();
-        using var mangoDbFixture = _mangoDbFixture;
-        var handler = CreateHandler();
-
-        var result = await handler.Handle(_command, CancellationToken.None);
-        var chat = await _mangoDbFixture.Context.Chats.FirstAsync(x => x.Id == result.Response.ChatId);
+        var user =
+            await MangoModule.RequestAsync(CommandHelper.RegisterPetroCommand(), CancellationToken.None);
+        var chat =
+            await MangoModule.RequestAsync(
+                request: CommandHelper.CreateExtremeCodeMainChatCommand(user.Response.UserId), 
+                cancellationToken: CancellationToken.None);
+        var command = new LeaveGroupCommand
+        {
+            UserId = user.Response.UserId,
+            ChatId = chat.Response.ChatId
+        };
+        
+        var result = await MangoModule.RequestAsync(command, CancellationToken.None);
 
         _assert.Pass(result);
-        chat.MembersCount.Should().Be(1);
     }
         
     public bool Seed()
