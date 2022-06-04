@@ -4,8 +4,6 @@ using System.Threading.Tasks;
 using MangoAPI.BusinessLogic.ApiCommands.CngKeyExchange;
 using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.Domain.Constants;
-using MangoAPI.IntegrationTests.Helpers;
-using MediatR;
 using Xunit;
 
 namespace MangoAPI.IntegrationTests.ApiCommandsTests.ConfirmOrDeclineKeyExchangeCommandHandlerTests;
