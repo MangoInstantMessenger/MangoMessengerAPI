@@ -10,4 +10,6 @@ public record UpdateChanelPictureCommand : IRequest<Result<UpdateChannelPictureR
     public Guid UserId { get; init; }
     public Guid ChatId { get; init; }
     public IFormFile NewGroupPicture { get; init; }
+
+    public string ContentType { get; init; }
 }

@@ -1,9 +1,8 @@
-﻿using System;
+﻿using System.IO;
 using System.Threading.Tasks;
 using Azure.Storage.Blobs;
 using Azure.Storage.Blobs.Models;
 using MangoAPI.Application.Interfaces;
-using Microsoft.AspNetCore.Http;
 
 namespace MangoAPI.Application.Services;
 
@@ -18,39 +17,39 @@ public class BlobService : IBlobService
         _blobServiceSettings = blobServiceSettings;
     }
 
-    public Task<string> GetBlobAsync(string name)
+    public Task<string> GetBlobAsync(string fileName)
     {
         var containerClient = _blobClient.GetBlobContainerClient(_blobServiceSettings.MangoBlobContainerName);
-        var blobClient = containerClient.GetBlobClient(name);
-        
+        var blobClient = containerClient.GetBlobClient(fileName);
+
         return Task.FromResult(blobClient.Uri.AbsoluteUri);
     }
 
-    public async Task<bool> UploadFileBlobAsync(string name, IFormFile file)
+    public async Task<bool> UploadFileBlobAsync(Stream stream, string contentType, string uniqueName)
     {
-        try
-        {
-            var containerClient = _blobClient.GetBlobContainerClient(_blobServiceSettings.MangoBlobContainerName);
+        var blobContainerName = _blobServiceSettings.MangoBlobContainerName;
+        var containerClient = GetContainerClient(blobContainerName);
+        var blobClient = containerClient.GetBlobClient(uniqueName);
+        var headers = new BlobHttpHeaders { ContentType = contentType };
+        var result = await blobClient.UploadAsync(stream, headers);
 
-            var blobClient = containerClient.GetBlobClient(name);
+        return result.Value != null;
+    }
 
-            var httpHeaders = new BlobHttpHeaders
-            {
-                ContentType = file.ContentType
-            };
+    public async Task<bool> DeleteBlobAsync(string fileName)
+    {
+        var containerClient = _blobClient.GetBlobContainerClient(_blobServiceSettings.MangoBlobContainerName);
+        var blobClient = containerClient.GetBlobClient(fileName);
 
-            var blobInfo = await blobClient.UploadAsync(file.OpenReadStream(), httpHeaders);
+        var result = await blobClient.DeleteIfExistsAsync();
 
-            if (blobInfo != null)
-            {
-                return true;
-            }
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine(ex.Message);
-        }
+        return result.Value;
+    }
 
-        return false;
+    private BlobContainerClient GetContainerClient(string blobContainerName)
+    {
+        var containerClient = _blobClient.GetBlobContainerClient(blobContainerName);
+        containerClient.CreateIfNotExists();
+        return containerClient;
     }
 }

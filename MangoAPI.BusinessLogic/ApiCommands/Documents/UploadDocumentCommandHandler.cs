@@ -42,10 +42,11 @@ public class UploadDocumentCommandHandler
             var details = ResponseMessageCodes.ErrorDictionary[message];
             return _responseFactory.ConflictResponse(message, details);
         }
-        
-        var uniqueFileName = StringService.GetUniqueFileName(request.FormFile.FileName);
 
-        await _blobService.UploadFileBlobAsync(uniqueFileName, request.FormFile);
+        var file = request.FormFile;
+        var uniqueFileName = StringService.GetUniqueFileName(file.FileName);
+
+        await _blobService.UploadFileBlobAsync(file.OpenReadStream(), request.ContentType, uniqueFileName);
 
         var documentEntity = new DocumentEntity
         {

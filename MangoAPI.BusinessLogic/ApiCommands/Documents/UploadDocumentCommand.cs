@@ -10,4 +10,6 @@ public record UploadDocumentCommand : IRequest<Result<UploadDocumentResponse>>
     public IFormFile FormFile { get; init; }
 
     public Guid UserId { get; init; }
+
+    public string ContentType { get; init; }
 }

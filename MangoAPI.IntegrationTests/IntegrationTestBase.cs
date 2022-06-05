@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using MangoAPI.Application.Interfaces;
 using MangoAPI.BusinessLogic;
 using MangoAPI.BusinessLogic.Configuration;
 using MangoAPI.Domain.Constants;
@@ -20,6 +21,8 @@ public class IntegrationTestBase : IAsyncLifetime
     protected MangoModule MangoModule { get; }
 
     protected IServiceProvider ServiceProvider { get; }
+    
+    protected IBlobService BlobService { get; }
 
     protected IntegrationTestBase()
     {
@@ -63,6 +66,9 @@ public class IntegrationTestBase : IAsyncLifetime
 
         DbContextFixture = ServiceProvider.GetRequiredService<MangoDbContext>() ??
                            throw new InvalidOperationException("MangoDbContext service is not registered in the DI.");
+        
+        BlobService = ServiceProvider.GetRequiredService<IBlobService>() ??
+                      throw new InvalidOperationException("MangoBlobService service is not registered in the DI.");
     }
 
     public async Task InitializeAsync()
@@ -76,7 +82,7 @@ public class IntegrationTestBase : IAsyncLifetime
         return Task.CompletedTask;
     }
 
-    protected static string GetFromEnvironmentOrThrow(string key)
+    private static string GetFromEnvironmentOrThrow(string key)
     {
         var result = Environment.GetEnvironmentVariable(key)
                      ?? throw new EnvironmentVariableException(key);
