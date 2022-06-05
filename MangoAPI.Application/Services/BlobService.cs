@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Threading.Tasks;
 using Azure.Storage.Blobs;
 using Azure.Storage.Blobs.Models;
@@ -38,6 +39,11 @@ public class BlobService : IBlobService
 
     public async Task<bool> DeleteBlobAsync(string fileName)
     {
+        if (string.IsNullOrEmpty(fileName))
+        {
+            throw new ArgumentNullException(nameof(fileName));
+        }
+
         var containerClient = _blobClient.GetBlobContainerClient(_blobServiceSettings.MangoBlobContainerName);
         var blobClient = containerClient.GetBlobClient(fileName);
 
