@@ -1,65 +1,50 @@
-﻿using System;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 using MangoAPI.BusinessLogic.ApiCommands.Sessions;
 using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.Domain.Constants;
-using MangoAPI.Domain.Entities;
-using MediatR;
+using MangoAPI.IntegrationTests.Helpers;
 using Microsoft.EntityFrameworkCore;
 using Xunit;
 
 namespace MangoAPI.IntegrationTests.ApiCommandsTests.LogoutCommandHandlerTests;
 
-public class LogoutTestShouldThrowUserNotFound : ITestable<LogoutCommand,ResponseBase>
+public class LogoutTestShouldThrowUserNotFound : IntegrationTestBase
 {
-    private readonly MangoDbFixture _mangoDbFixture = new();
     private readonly Assert<ResponseBase> _assert = new();
 
     [Fact]
     public async Task LogoutTestShouldThrow_UserNotFound()
     {
-        Seed();
         const string expectedMessage = ResponseMessageCodes.UserNotFound;
         string expectedDetails = ResponseMessageCodes.ErrorDictionary[expectedMessage];
-        var handler = CreateHandler();
+        var user = await MangoModule.RequestAsync(
+            request: CommandHelper.RegisterPetroCommand(),
+            cancellationToken: CancellationToken.None);
+        var userId = user.Response.UserId;
+        var userEntity = await DbContextFixture.Users.FirstOrDefaultAsync(x => x.Id == userId);
+        await MangoModule.RequestAsync(
+            request: CommandHelper.CreateVerifyEmailCommand(userEntity.Email, userEntity.EmailCode),
+            cancellationToken: CancellationToken.None);
+        var user1 = await MangoModule.RequestAsync(
+            request: CommandHelper.RegisterKhachaturCommand(),
+            cancellationToken: CancellationToken.None);
+        var userId1 = user1.Response.UserId;
+        var userEntity1 = await DbContextFixture.Users.FirstOrDefaultAsync(x => x.Id == userId1);
+        await MangoModule.RequestAsync(
+            request: CommandHelper.CreateVerifyEmailCommand(userEntity1.Email, userEntity1.EmailCode),
+            cancellationToken: CancellationToken.None);
+        var session = await MangoModule.RequestAsync(
+            request: CommandHelper.CreateLoginCommand("kolosovp95@gmail.com", "Bm3-`dPRv-/w#3)cw^97"),
+            cancellationToken: CancellationToken.None);
         var command = new LogoutCommand
         {
-            RefreshToken = _session.RefreshToken,
-            UserId = Guid.NewGuid()
+            RefreshToken = session.Response.Tokens.RefreshToken,
+            UserId = userId1
         };
 
-        var result = await handler.Handle(command, CancellationToken.None);
+        var result = await MangoModule.RequestAsync(command, CancellationToken.None);
 
         _assert.Fail(result, expectedMessage, expectedDetails);
     }
-        
-    public bool Seed()
-    {
-        _mangoDbFixture.Context.Sessions.Add(_session);
-
-        _mangoDbFixture.Context.SaveChanges();
-
-        _mangoDbFixture.Context.Entry(_session).State = EntityState.Detached;
-
-        return true;
-    }
-
-    public IRequestHandler<LogoutCommand, Result<ResponseBase>> CreateHandler()
-    {
-        var context = _mangoDbFixture.Context;
-        var responseFactory = new ResponseFactory<ResponseBase>();
-        var handler = new LogoutCommandHandler(context, responseFactory);
-
-        return handler;
-    }
-
-    private readonly SessionEntity _session = new()
-    {
-        CreatedAt = DateTime.UtcNow,
-        ExpiresAt = DateTime.UtcNow.AddDays(7),
-        Id = Guid.NewGuid(),
-        RefreshToken = Guid.NewGuid(),
-        UserId = Guid.NewGuid()
-    };
 }

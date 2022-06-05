@@ -1,12 +1,8 @@
-﻿using System;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 using MangoAPI.BusinessLogic.ApiCommands.Sessions;
 using MangoAPI.BusinessLogic.Responses;
-using MangoAPI.Domain.Constants;
-using MangoAPI.Domain.Entities;
 using MangoAPI.IntegrationTests.Helpers;
-using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Xunit;
 
