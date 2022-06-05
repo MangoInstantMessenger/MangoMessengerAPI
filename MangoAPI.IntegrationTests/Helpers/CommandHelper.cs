@@ -3,6 +3,7 @@ using MangoAPI.BusinessLogic.ApiCommands.CngKeyExchange;
 using MangoAPI.BusinessLogic.ApiCommands.Communities;
 using MangoAPI.BusinessLogic.ApiCommands.Contacts;
 using MangoAPI.BusinessLogic.ApiCommands.Messages;
+using MangoAPI.BusinessLogic.ApiCommands.Sessions;
 using MangoAPI.BusinessLogic.ApiCommands.Users;
 
 namespace MangoAPI.IntegrationTests.Helpers;
@@ -74,6 +75,15 @@ public class CommandHelper
         var command = new VerifyEmailCommand(
             email: email,
             emailCode: emailCode);
+
+        return command;
+    }
+
+    public static LoginCommand CreateLoginCommand(string email, string password)
+    {
+        var command = new LoginCommand(
+            email: email,
+            password: password);
 
         return command;
     }

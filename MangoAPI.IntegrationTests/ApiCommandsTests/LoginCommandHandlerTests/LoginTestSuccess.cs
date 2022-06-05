@@ -17,7 +17,11 @@ public class LoginTestSuccess : IntegrationTestBase
     public async Task LoginTest_Success()
     {
         var user = await MangoModule.RequestAsync(CommandHelper.RegisterPetroCommand(), CancellationToken.None);
-        await VerifyEmail(user.Response.UserId);
+        var userId = user.Response.UserId;
+        var userEntity = await DbContextFixture.Users.FirstOrDefaultAsync(x => x.Id == userId);
+        await MangoModule.RequestAsync(
+            request: CommandHelper.CreateVerifyEmailCommand(userEntity.Email, userEntity.EmailCode),
+            cancellationToken: CancellationToken.None);
         var command = new LoginCommand
         {
             Email = "kolosovp95@gmail.com",
@@ -27,13 +31,5 @@ public class LoginTestSuccess : IntegrationTestBase
         var result = await MangoModule.RequestAsync(command, CancellationToken.None);
             
         _assert.Pass(result);
-    }
-
-    private async Task VerifyEmail(Guid userId)
-    {
-        var user = await DbContextFixture.Users.FirstOrDefaultAsync(x => x.Id == userId);
-        await MangoModule.RequestAsync(
-            request: CommandHelper.CreateVerifyEmailCommand(user.Email, user.EmailCode),
-            cancellationToken: CancellationToken.None);
     }
 }
