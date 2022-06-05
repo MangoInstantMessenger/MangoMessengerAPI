@@ -68,4 +68,13 @@ public class CommandHelper
 
         return command;
     }
+
+    public static VerifyEmailCommand CreateVerifyEmailCommand(string email, Guid emailCode)
+    {
+        var command = new VerifyEmailCommand(
+            email: email,
+            emailCode: emailCode);
+
+        return command;
+    }
 }
