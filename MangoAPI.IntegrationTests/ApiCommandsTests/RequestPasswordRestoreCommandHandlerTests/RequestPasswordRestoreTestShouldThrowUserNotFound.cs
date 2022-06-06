@@ -8,10 +8,10 @@ using Xunit;
 
 namespace MangoAPI.IntegrationTests.ApiCommandsTests.RequestPasswordRestoreCommandHandlerTests;
 
-public class RequestPasswordRestoreTestShouldThrowUserNotFound : ITestable<RequestPasswordRestoreCommand, ResponseBase>
+public class RequestPasswordRestoreTestShouldThrowUserNotFound : ITestable<RequestPasswordRestoreCommand, RequestPasswordRestoreResponse>
 {
     private readonly MangoDbFixture _mangoDbFixture = new();
-    private readonly Assert<ResponseBase> _assert = new();
+    private readonly Assert<RequestPasswordRestoreResponse> _assert = new();
 
     [Fact]
     public async Task RequestPasswordRestoreTestShouldThrow_UserNotFound()
@@ -35,10 +35,10 @@ public class RequestPasswordRestoreTestShouldThrowUserNotFound : ITestable<Reque
         return true;
     }
 
-    public IRequestHandler<RequestPasswordRestoreCommand, Result<ResponseBase>> CreateHandler()
+    public IRequestHandler<RequestPasswordRestoreCommand, Result<RequestPasswordRestoreResponse>> CreateHandler()
     {
         var emailSenderService = MockedObjects.GetEmailSenderServiceMock();
-        var responseFactory = new ResponseFactory<ResponseBase>();
+        var responseFactory = new ResponseFactory<RequestPasswordRestoreResponse>();
 
         var handler =
             new RequestPasswordRestoreCommandHandler(_mangoDbFixture.Context, emailSenderService, responseFactory);

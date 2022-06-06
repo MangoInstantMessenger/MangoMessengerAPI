@@ -3,6 +3,7 @@ using MangoAPI.BusinessLogic.ApiCommands.CngKeyExchange;
 using MangoAPI.BusinessLogic.ApiCommands.Communities;
 using MangoAPI.BusinessLogic.ApiCommands.Contacts;
 using MangoAPI.BusinessLogic.ApiCommands.Messages;
+using MangoAPI.BusinessLogic.ApiCommands.PasswordRestoreRequests;
 using MangoAPI.BusinessLogic.ApiCommands.Sessions;
 using MangoAPI.BusinessLogic.ApiCommands.Users;
 
@@ -84,6 +85,13 @@ public class CommandHelper
         var command = new LoginCommand(
             email: email,
             password: password);
+
+        return command;
+    }
+
+    public static RequestPasswordRestoreCommand CreateRequestPasswordRestoreCommand(string email)
+    {
+        var command = new RequestPasswordRestoreCommand(email);
 
         return command;
     }

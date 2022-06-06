@@ -30,6 +30,7 @@ public class PasswordRestoreCommandHandler
         CancellationToken cancellationToken)
     {
         var restorePasswordRequest = await _dbContext.PasswordRestoreRequests
+            .Include(x => x.UserEntity)
             .FirstOrDefaultAsync(entity =>
                 entity.Id == request.RequestId, cancellationToken);
 
@@ -41,28 +42,11 @@ public class PasswordRestoreCommandHandler
             return _responseFactory.ConflictResponse(errorMessage, errorDescription);
         }
 
-        var user = await _dbContext.Users
-            .FirstOrDefaultAsync(entity => entity.Id == restorePasswordRequest.UserId, cancellationToken);
-
-        if (user == null)
-        {
-            const string errorMessage = ResponseMessageCodes.UserNotFound;
-            var errorDescription = ResponseMessageCodes.ErrorDictionary[errorMessage];
-
-            return _responseFactory.ConflictResponse(errorMessage, errorDescription);
-        }
+        var user = restorePasswordRequest.UserEntity;
 
         await _userManager.RemovePasswordAsync(user);
 
-        var result = await _userManager.AddPasswordAsync(user, request.NewPassword);
-
-        if (!result.Succeeded)
-        {
-            const string errorMessage = ResponseMessageCodes.WeakPassword;
-            var errorDescription = ResponseMessageCodes.ErrorDictionary[errorMessage];
-
-            return _responseFactory.ConflictResponse(errorMessage, errorDescription);
-        }
+        await _userManager.AddPasswordAsync(user, request.NewPassword);
 
         _dbContext.PasswordRestoreRequests.Remove(restorePasswordRequest);
 
