@@ -4,14 +4,12 @@ using System.Threading.Tasks;
 using MangoAPI.BusinessLogic.ApiCommands.PasswordRestoreRequests;
 using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.Domain.Constants;
-using MediatR;
 using Xunit;
 
 namespace MangoAPI.IntegrationTests.ApiCommandsTests.PasswordRestoreCommandHandlerTests;
 
 public class PasswordRestoreTestShouldThrowInvalidOrExpired: IntegrationTestBase
 {
-    private readonly MangoDbFixture _mangoDbFixture = new();
     private readonly Assert<ResponseBase> _assert = new();
 
     [Fact]
