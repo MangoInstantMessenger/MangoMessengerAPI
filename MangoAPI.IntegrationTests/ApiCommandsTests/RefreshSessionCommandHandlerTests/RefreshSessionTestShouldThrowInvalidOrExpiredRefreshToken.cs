@@ -11,8 +11,7 @@ using Xunit;
 
 namespace MangoAPI.IntegrationTests.ApiCommandsTests.RefreshSessionCommandHandlerTests;
 
-public class RefreshSessionTestShouldThrowInvalidOrExpiredRefreshToken 
-    : ITestable<RefreshSessionCommand, TokensResponse>
+public class RefreshSessionTestShouldThrowInvalidOrExpiredRefreshToken : IntegrationTestBase
 {
     private readonly MangoDbFixture _mangoDbFixture = new();
     private readonly Assert<TokensResponse> _assert = new();
@@ -23,13 +22,12 @@ public class RefreshSessionTestShouldThrowInvalidOrExpiredRefreshToken
         Seed();
         const string expectedMessage = ResponseMessageCodes.InvalidOrExpiredRefreshToken;
         string expectedDetails = ResponseMessageCodes.ErrorDictionary[expectedMessage];
-        var handler = CreateHandler();
         var command = new RefreshSessionCommand
         {
             RefreshToken = Guid.NewGuid()
         };
 
-        var result = await handler.Handle(command, CancellationToken.None);
+        var result = await MangoModule.RequestAsync(command, CancellationToken.None);
             
         _assert.Fail(result, expectedMessage, expectedDetails);
     }
