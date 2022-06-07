@@ -5,13 +5,14 @@ using MangoAPI.BusinessLogic.ApiQueries.Contacts;
 using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.Domain.Constants;
 using MangoAPI.Domain.Entities;
+using MangoAPI.IntegrationTests.Helpers;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Xunit;
 
 namespace MangoAPI.IntegrationTests.ApiQueries.SearchContactByDisplayNameQueryHandlerTests;
 
-public class SearchContactByDisplayNameTestSuccess : ITestable<SearchContactQuery, SearchContactResponse>
+public class SearchContactByDisplayNameTestSuccess : IntegrationTestBase
 {
     private readonly MangoDbFixture _mangoDbFixture = new();
     private readonly Assert<SearchContactResponse> _assert = new();
@@ -19,19 +20,20 @@ public class SearchContactByDisplayNameTestSuccess : ITestable<SearchContactQuer
     [Fact]
     public async Task SearchContactByDisplayNameTest_Success()
     {
-        Seed();
-        var handler = CreateHandler();
+        var user = 
+            await MangoModule.RequestAsync(CommandHelper.RegisterKhachaturCommand(), CancellationToken.None);
+        await MangoModule.RequestAsync(CommandHelper.RegisterPetroCommand(), CancellationToken.None);
         var query = new SearchContactQuery
         {
-            UserId = SeedDataConstants.RazumovskyId,
-            SearchQuery = "Amelit"
+            UserId = user.Response.UserId,
+            SearchQuery = "Kolosov"
         };
 
-        var result = await handler.Handle(query, CancellationToken.None);
+        var result = await MangoModule.RequestAsync(query, CancellationToken.None);
 
         _assert.Pass(result);
         result.Response.Contacts.Count.Should().Be(1);
-        result.Response.Contacts[0].DisplayName.Should().Be(_user2.DisplayName);
+        result.Response.Contacts[0].DisplayName.Should().Be("Petro Kolosov");
     }
         
     public bool Seed()
