@@ -4,6 +4,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using MangoAPI.Application.Interfaces;
+using MangoAPI.Domain.Entities;
 using Microsoft.IdentityModel.Tokens;
 using JwtRegisteredClaimNames = Microsoft.IdentityModel.JsonWebTokens.JwtRegisteredClaimNames;
 
@@ -21,16 +22,17 @@ public class JwtGenerator : IJwtGenerator
         _key = new SymmetricSecurityKey(encodedKey);
     }
 
-    public string GenerateJwtToken(Guid userId)
+    public string GenerateJwtToken(UserEntity userEntity)
     {
-        return GenerateJwtToken(userId, _jwtGeneratorSettings.MangoJwtLifetimeMinutes);
+        return GenerateJwtToken(userEntity, _jwtGeneratorSettings.MangoJwtLifetimeMinutes);
     }
 
-    private string GenerateJwtToken(Guid userId, int lifetimeMinutes)
+    private string GenerateJwtToken(UserEntity userEntity, int lifetimeMinutes)
     {
         var claims = new List<Claim>
         {
-            new (JwtRegisteredClaimNames.Jti, userId.ToString()),
+            new Claim(JwtRegisteredClaimNames.Jti, userEntity.Id.ToString()),
+            new Claim(JwtRegisteredClaimNames.UniqueName, userEntity.UserName),
         };
 
         var credentials = new SigningCredentials(_key, SecurityAlgorithms.HmacSha256);

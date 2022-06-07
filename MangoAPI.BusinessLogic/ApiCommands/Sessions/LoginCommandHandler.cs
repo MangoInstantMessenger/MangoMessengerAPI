@@ -75,7 +75,7 @@ public class LoginCommandHandler : IRequestHandler<LoginCommand, Result<TokensRe
             CreatedAt = DateTime.UtcNow,
         };
 
-        var jwtToken = _jwtGenerator.GenerateJwtToken(user.Id);
+        var jwtToken = _jwtGenerator.GenerateJwtToken(user);
 
         var userSessions = _dbContext.Sessions
             .Where(entity => entity.UserId == user.Id);
