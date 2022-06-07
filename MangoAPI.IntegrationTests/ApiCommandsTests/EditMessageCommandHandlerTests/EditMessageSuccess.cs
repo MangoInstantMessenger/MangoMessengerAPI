@@ -11,7 +11,6 @@ namespace MangoAPI.IntegrationTests.ApiCommandsTests.EditMessageCommandHandlerTe
 
 public class EditMessageSuccess : IntegrationTestBase
 {
-    private readonly MangoDbFixture _mangoDbFixture = new();
     private readonly Assert<ResponseBase> _assert = new();
 
     [Fact]
@@ -21,11 +20,11 @@ public class EditMessageSuccess : IntegrationTestBase
             await MangoModule.RequestAsync(CommandHelper.RegisterPetroCommand(), CancellationToken.None);
         var chat =
             await MangoModule.RequestAsync(
-                request: CommandHelper.CreateExtremeCodeMainChatCommand(user.Response.UserId), 
+                request: CommandHelper.CreateExtremeCodeMainChatCommand(user.Response.UserId),
                 cancellationToken: CancellationToken.None);
         var message =
             await MangoModule.RequestAsync(
-                request: CommandHelper.SendMessageToChannelCommand(user.Response.UserId, chat.Response.ChatId), 
+                request: CommandHelper.SendMessageToChannelCommand(user.Response.UserId, chat.Response.ChatId),
                 cancellationToken: CancellationToken.None);
         var command = new EditMessageCommand
         {
@@ -37,8 +36,8 @@ public class EditMessageSuccess : IntegrationTestBase
 
         var result = await MangoModule.RequestAsync(command, CancellationToken.None);
         var editedMessage =
-            await DbContextFixture.Messages.FirstOrDefaultAsync(x => x.Id == message.Response.MessageId);
-        
+            await DbContextFixture.Messages.FirstAsync(x => x.Id == message.Response.MessageId);
+
         _assert.Pass(result);
         editedMessage.Content.Should().Be(command.ModifiedText);
     }

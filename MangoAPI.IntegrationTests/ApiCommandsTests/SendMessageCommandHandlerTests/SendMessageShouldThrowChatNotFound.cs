@@ -16,7 +16,7 @@ public class SendMessageShouldThrowChatNotFound : IntegrationTestBase
     public async Task SendMessage_ShouldThrow_ChatNotFound()
     {
         const string expectedMessage = ResponseMessageCodes.ChatNotFound;
-        string expectedDetails = ResponseMessageCodes.ErrorDictionary[expectedMessage];
+        var expectedDetails = ResponseMessageCodes.ErrorDictionary[expectedMessage];
         var user = await MangoModule.RequestAsync(
             request: CommandHelper.RegisterPetroCommand(),
             cancellationToken: CancellationToken.None);

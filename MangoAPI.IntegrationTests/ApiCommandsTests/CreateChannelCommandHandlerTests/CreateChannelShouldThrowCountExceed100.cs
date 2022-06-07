@@ -9,7 +9,6 @@ namespace MangoAPI.IntegrationTests.ApiCommandsTests.CreateChannelCommandHandler
 
 public class CreateChannelShouldThrowCountExceed100 : IntegrationTestBase
 {
-    private readonly MangoDbFixture _mangoDbFixture = new();
     private readonly Assert<CreateCommunityResponse> _assert = new();
 
     [Fact]
@@ -19,7 +18,7 @@ public class CreateChannelShouldThrowCountExceed100 : IntegrationTestBase
         var expectedDetails = ResponseMessageCodes.ErrorDictionary[expectedMessage];
         var user = 
             await MangoModule.RequestAsync(CommandHelper.RegisterPetroCommand(), CancellationToken.None);
-        for (int i = 0; i <= 100; i++)
+        for (var i = 0; i <= 100; i++)
         {
             await MangoModule.RequestAsync(CommandHelper.CreateExtremeCodeMainChatCommand(user.Response.UserId),
                     CancellationToken.None);

@@ -9,7 +9,6 @@ namespace MangoAPI.IntegrationTests.ApiCommandsTests.ConfirmOrDeclineKeyExchange
 
 public class ConfirmOrDeclineKeyExchangeTestSuccess : IntegrationTestBase
 {
-    private readonly MangoDbFixture _mangoDbFixture = new();
     private readonly Assert<ResponseBase> _assert = new();
 
     [Fact]

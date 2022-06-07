@@ -24,7 +24,8 @@ public class UpdateChannelPictureShouldThrowLimitExceed10 : IntegrationTestBase
     {
         const string expectedMessage = ResponseMessageCodes.UploadedDocumentsLimitReached10;
         var expectedDetails = ResponseMessageCodes.ErrorDictionary[expectedMessage];
-        var sender = await MangoModule.RequestAsync(CommandHelper.RegisterPetroCommand(), CancellationToken.None);
+        var sender = await MangoModule.RequestAsync(
+            CommandHelper.RegisterPetroCommand(), CancellationToken.None);
         var userId = sender.Response.UserId;
         var createChannelCommand = CommandHelper.CreateExtremeCodeMainChatCommand(userId);
         var chat = await MangoModule.RequestAsync(createChannelCommand, CancellationToken.None);

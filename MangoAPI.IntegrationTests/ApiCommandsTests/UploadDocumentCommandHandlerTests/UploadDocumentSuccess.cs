@@ -1,13 +1,7 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 using MangoAPI.BusinessLogic.ApiCommands.Documents;
-using MangoAPI.BusinessLogic.Responses;
-using MangoAPI.Domain.Constants;
-using MangoAPI.Domain.Entities;
 using MangoAPI.IntegrationTests.Helpers;
-using MediatR;
-using Microsoft.AspNetCore.Http;
-using Microsoft.EntityFrameworkCore;
 using Xunit;
 
 namespace MangoAPI.IntegrationTests.ApiCommandsTests.UploadDocumentCommandHandlerTests;
@@ -31,7 +25,7 @@ public class UploadDocumentSuccess : IntegrationTestBase
         };
 
         var result = await MangoModule.RequestAsync(command, CancellationToken.None);
-            
+
         _assert.Pass(result);
         await BlobService.DeleteBlobAsync(result.Response.FileName);
     }

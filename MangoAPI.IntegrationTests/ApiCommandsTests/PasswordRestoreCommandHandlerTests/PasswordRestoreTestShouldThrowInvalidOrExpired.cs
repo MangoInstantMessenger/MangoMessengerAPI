@@ -16,7 +16,7 @@ public class PasswordRestoreTestShouldThrowInvalidOrExpired: IntegrationTestBase
     public async Task PasswordRestoreTestShouldThrow_InvalidOrExpired()
     {
         const string expectedMessage = ResponseMessageCodes.InvalidOrExpiredRestorePasswordRequest;
-        string expectedDetails = ResponseMessageCodes.ErrorDictionary[expectedMessage];
+        var expectedDetails = ResponseMessageCodes.ErrorDictionary[expectedMessage];
         var command = new PasswordRestoreCommand
         {
             RequestId = Guid.NewGuid(),

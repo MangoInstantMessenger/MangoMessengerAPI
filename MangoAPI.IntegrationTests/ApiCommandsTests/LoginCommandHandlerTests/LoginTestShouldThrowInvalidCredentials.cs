@@ -15,7 +15,7 @@ public class LoginTestShouldThrowInvalidCredentials : IntegrationTestBase
     public async Task LoginTestShouldThrow_InvalidCredentials()
     {
         const string expectedMessage = ResponseMessageCodes.InvalidCredentials;
-        string expectedDetails = ResponseMessageCodes.ErrorDictionary[expectedMessage];
+        var expectedDetails = ResponseMessageCodes.ErrorDictionary[expectedMessage];
         var command = new LoginCommand
         {
             Email = "kolosovp95@gmail.com",

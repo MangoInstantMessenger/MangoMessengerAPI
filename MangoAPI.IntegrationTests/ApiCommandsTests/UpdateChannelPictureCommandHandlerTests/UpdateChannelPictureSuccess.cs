@@ -13,10 +13,12 @@ public class UpdateChannelPictureSuccess : IntegrationTestBase
     [Fact]
     public async Task UpdateChannelPicture_Success()
     {
-        var sender = await MangoModule.RequestAsync(CommandHelper.RegisterPetroCommand(), CancellationToken.None);
+        var sender = await MangoModule.RequestAsync(
+            CommandHelper.RegisterPetroCommand(), CancellationToken.None);
         var userId = sender.Response.UserId;
         var createChannelCommand = CommandHelper.CreateExtremeCodeMainChatCommand(userId);
-        var chat = await MangoModule.RequestAsync(createChannelCommand, CancellationToken.None);
+        var chat = await MangoModule.RequestAsync(
+            createChannelCommand, CancellationToken.None);
         var chatId = chat.Response.ChatId;
         var file = MangoFilesHelper.GetTestImage();
         var command = new UpdateChanelPictureCommand

@@ -2,7 +2,6 @@
 using System.Threading.Tasks;
 using FluentAssertions;
 using MangoAPI.BusinessLogic.ApiQueries.Communities;
-using MangoAPI.Domain.Constants;
 using MangoAPI.IntegrationTests.Helpers;
 using Xunit;
 

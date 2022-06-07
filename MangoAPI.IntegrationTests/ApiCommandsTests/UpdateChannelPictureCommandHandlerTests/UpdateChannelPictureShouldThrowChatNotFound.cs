@@ -18,7 +18,9 @@ public class
     {
         const string expectedMessage = ResponseMessageCodes.ChatNotFound;
         var expectedDetails = ResponseMessageCodes.ErrorDictionary[expectedMessage];
-        var sender = await MangoModule.RequestAsync(CommandHelper.RegisterPetroCommand(), CancellationToken.None);
+        var sender = await MangoModule.RequestAsync(
+            CommandHelper.RegisterPetroCommand(),
+            CancellationToken.None);
         var file = MangoFilesHelper.GetTestImage();
         var command = new UpdateChanelPictureCommand
         {

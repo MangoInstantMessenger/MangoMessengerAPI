@@ -15,7 +15,7 @@ public class GetUserQueryShouldThrowUserNotFound : IntegrationTestBase
     public async Task GetUserQueryShouldThrow_UserNotFound()
     {
         const string expectedMessage = ResponseMessageCodes.UserNotFound;
-        string expectedDetails = ResponseMessageCodes.ErrorDictionary[expectedMessage];
+        var expectedDetails = ResponseMessageCodes.ErrorDictionary[expectedMessage];
         var query = new GetUserQuery
         {
             UserId = Guid.NewGuid()

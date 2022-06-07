@@ -16,7 +16,7 @@ public class LoginTestShouldThrowEmailNotConfirmed : IntegrationTestBase
     public async Task LoginTestShouldThrow_EmailNotConfirmed()
     {
         const string expectedMessage = ResponseMessageCodes.EmailIsNotVerified;
-        string expectedDetails = ResponseMessageCodes.ErrorDictionary[expectedMessage];
+        var expectedDetails = ResponseMessageCodes.ErrorDictionary[expectedMessage];
         await MangoModule.RequestAsync(CommandHelper.RegisterPetroCommand(), CancellationToken.None);
         var command = new LoginCommand
         {

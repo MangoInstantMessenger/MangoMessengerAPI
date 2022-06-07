@@ -16,7 +16,7 @@ public class LogoutTestShouldThrowInvalidOrExpiredRefreshToken : IntegrationTest
     public async Task LogoutTestShouldThrow_InvalidOrExpiredRefreshToken()
     {
         const string expectedMessage = ResponseMessageCodes.InvalidOrExpiredRefreshToken;
-        string expectedDetails = ResponseMessageCodes.ErrorDictionary[expectedMessage];
+        var expectedDetails = ResponseMessageCodes.ErrorDictionary[expectedMessage];
         var command = new LogoutCommand
         {
             RefreshToken = Guid.NewGuid(),

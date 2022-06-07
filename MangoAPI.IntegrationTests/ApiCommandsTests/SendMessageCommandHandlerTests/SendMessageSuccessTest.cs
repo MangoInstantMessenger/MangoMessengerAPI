@@ -24,13 +24,13 @@ public class SendMessageSuccessTest : IntegrationTestBase
 
         var result = await MangoModule.RequestAsync(
             request: CommandHelper.SendMessageToChannelCommand(user.Response.UserId, chat.Response.ChatId),
-            cancellationToken: CancellationToken.None);;
+            cancellationToken: CancellationToken.None);
 
         _assert.Pass(result);
         var messageEntity = await DbContextFixture.Messages
             .Include(x => x.User)
             .Include(x => x.Chat)
-            .FirstOrDefaultAsync(x => x.Id == result.Response.MessageId);
+            .FirstAsync(x => x.Id == result.Response.MessageId);
         var chatEntity = messageEntity.Chat;
         var userEntity = messageEntity.User;
         chatEntity.LastMessageAuthor.Should().Be(userEntity.DisplayName);

@@ -15,7 +15,7 @@ public class RequestPasswordRestoreTestShouldThrowChangePasswordRequestExists : 
     public async Task RequestPasswordRestoreTestShouldThrow_ChangePasswordRequestExists()
     {
         const string expectedMessage = ResponseMessageCodes.ChangePasswordRequestExists;
-        string expectedDetails = ResponseMessageCodes.ErrorDictionary[expectedMessage];
+        var expectedDetails = ResponseMessageCodes.ErrorDictionary[expectedMessage];
         await MangoModule.RequestAsync(
             request: CommandHelper.RegisterPetroCommand(),
             cancellationToken: CancellationToken.None);

@@ -9,7 +9,7 @@ using MangoAPI.BusinessLogic.ApiCommands.Users;
 
 namespace MangoAPI.IntegrationTests.Helpers;
 
-public class CommandHelper
+public static class CommandHelper
 {
     public static RegisterCommand RegisterKhachaturCommand()
     {

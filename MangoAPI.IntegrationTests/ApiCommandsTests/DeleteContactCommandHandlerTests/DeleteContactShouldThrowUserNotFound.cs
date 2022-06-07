@@ -16,7 +16,7 @@ public class DeleteContactShouldThrowUserNotFound : IntegrationTestBase
     public async Task DeleteContactTestShouldThrow_UserNotFound()
     {
         const string expectedMessage = ResponseMessageCodes.UserNotFound;
-        string expectedDetails = ResponseMessageCodes.ErrorDictionary[expectedMessage];
+        var expectedDetails = ResponseMessageCodes.ErrorDictionary[expectedMessage];
         var command = new DeleteContactCommand
         {
             UserId = Guid.NewGuid(),

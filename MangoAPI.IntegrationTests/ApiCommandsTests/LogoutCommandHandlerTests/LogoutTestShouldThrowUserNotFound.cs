@@ -17,7 +17,7 @@ public class LogoutTestShouldThrowUserNotFound : IntegrationTestBase
     public async Task LogoutTestShouldThrow_UserNotFound()
     {
         const string expectedMessage = ResponseMessageCodes.UserNotFound;
-        string expectedDetails = ResponseMessageCodes.ErrorDictionary[expectedMessage];
+        var expectedDetails = ResponseMessageCodes.ErrorDictionary[expectedMessage];
         var user = await MangoModule.RequestAsync(
             request: CommandHelper.RegisterPetroCommand(),
             cancellationToken: CancellationToken.None);

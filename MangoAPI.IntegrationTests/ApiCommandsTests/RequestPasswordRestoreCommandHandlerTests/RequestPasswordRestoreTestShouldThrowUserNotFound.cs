@@ -14,7 +14,7 @@ public class RequestPasswordRestoreTestShouldThrowUserNotFound : IntegrationTest
     public async Task RequestPasswordRestoreTestShouldThrow_UserNotFound()
     {
         const string expectedMessage = ResponseMessageCodes.UserNotFound;
-        string expectedDetails = ResponseMessageCodes.ErrorDictionary[expectedMessage];
+        var expectedDetails = ResponseMessageCodes.ErrorDictionary[expectedMessage];
         var command = new RequestPasswordRestoreCommand
         {
             Email = "email"

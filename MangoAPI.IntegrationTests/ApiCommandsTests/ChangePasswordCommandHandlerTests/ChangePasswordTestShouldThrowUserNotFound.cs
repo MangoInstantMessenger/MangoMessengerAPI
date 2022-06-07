@@ -4,14 +4,12 @@ using System.Threading.Tasks;
 using MangoAPI.BusinessLogic.ApiCommands.Users;
 using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.Domain.Constants;
-using MediatR;
 using Xunit;
 
 namespace MangoAPI.IntegrationTests.ApiCommandsTests.ChangePasswordCommandHandlerTests;
 
 public class ChangePasswordTestShouldThrowUserNotFound : IntegrationTestBase
 {
-    private readonly MangoDbFixture _mangoDbFixture = new();
     private readonly Assert<ResponseBase> _assert = new();
 
     [Fact]

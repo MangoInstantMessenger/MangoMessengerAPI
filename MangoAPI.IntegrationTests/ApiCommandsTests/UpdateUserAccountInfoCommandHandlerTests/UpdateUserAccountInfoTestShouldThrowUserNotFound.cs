@@ -16,7 +16,7 @@ public class UpdateUserAccountInfoTestShouldThrowUserNotFound : IntegrationTestB
     public async Task UpdateUserAccountInfoTestShouldThrow_UserNotFound()
     {
         const string expectedMessage = ResponseMessageCodes.UserNotFound;
-        string expectedDetails = ResponseMessageCodes.ErrorDictionary[expectedMessage];
+        var expectedDetails = ResponseMessageCodes.ErrorDictionary[expectedMessage];
         var command = new UpdateUserAccountInfoCommand
         {
             UserId = Guid.NewGuid(),

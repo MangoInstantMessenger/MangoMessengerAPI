@@ -16,7 +16,7 @@ public class UpdateUserSocialsInformationTestShouldThrowUserNotFound : Integrati
     public async Task UpdateUserSocialsInformationTest_Success()
     {
         const string expectedMessage = ResponseMessageCodes.UserNotFound;
-        string expectedDetails = ResponseMessageCodes.ErrorDictionary[expectedMessage];
+        var expectedDetails = ResponseMessageCodes.ErrorDictionary[expectedMessage];
         var command = new UpdateUserSocialInformationCommand
         {
             UserId = Guid.NewGuid(),

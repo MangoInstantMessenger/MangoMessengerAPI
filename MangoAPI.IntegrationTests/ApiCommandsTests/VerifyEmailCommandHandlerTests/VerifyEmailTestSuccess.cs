@@ -18,7 +18,7 @@ public class VerifyEmailTestSuccess : IntegrationTestBase
             request: CommandHelper.RegisterPetroCommand(),
             cancellationToken: CancellationToken.None);
         var userId = user.Response.UserId;
-        var userEntity = await DbContextFixture.Users.FirstOrDefaultAsync(x => x.Id == userId);
+        var userEntity = await DbContextFixture.Users.FirstAsync(x => x.Id == userId);
             
         var result = await MangoModule.RequestAsync(
             request: CommandHelper.CreateVerifyEmailCommand(userEntity.Email, userEntity.EmailCode),

@@ -10,7 +10,6 @@ namespace MangoAPI.IntegrationTests.ApiCommandsTests.LogoutAllCommandHandlerTest
 
 public class LogoutAllTestSuccess : IntegrationTestBase
 {
-    private readonly MangoDbFixture _mangoDbFixture = new();
     private readonly Assert<ResponseBase> _assert = new();
 
     [Fact]
@@ -20,7 +19,7 @@ public class LogoutAllTestSuccess : IntegrationTestBase
             request: CommandHelper.RegisterPetroCommand(),
             cancellationToken: CancellationToken.None);
         var userId = user.Response.UserId;
-        var userEntity = await DbContextFixture.Users.FirstOrDefaultAsync(x => x.Id == userId);
+        var userEntity = await DbContextFixture.Users.FirstAsync(x => x.Id == userId);
         await MangoModule.RequestAsync(
             request: CommandHelper.CreateVerifyEmailCommand(userEntity.Email, userEntity.EmailCode),
             cancellationToken: CancellationToken.None);

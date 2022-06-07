@@ -16,7 +16,7 @@ public class DeleteMessageShouldThrowMessageNotFound : IntegrationTestBase
     public async Task DeleteMessageTestShouldThrow_MessageNotFound()
     {
         const string expectedMessage = ResponseMessageCodes.MessageNotFound;
-        string expectedDetails = ResponseMessageCodes.ErrorDictionary[expectedMessage];
+        var expectedDetails = ResponseMessageCodes.ErrorDictionary[expectedMessage];
         var user =
             await MangoModule.RequestAsync(CommandHelper.RegisterPetroCommand(), CancellationToken.None);
         var chat =

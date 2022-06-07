@@ -10,14 +10,13 @@ namespace MangoAPI.IntegrationTests.ApiCommandsTests.ConfirmOrDeclineKeyExchange
 
 public class ConfirmOrDeclineKeyExchangeTestShouldThrowKeyExchangeRequestNotFound : IntegrationTestBase
 {
-    private readonly MangoDbFixture _mangoDbFixture = new();
     private readonly Assert<ResponseBase> _assert = new();
 
     [Fact]
     public async Task ConfirmOrDeclineKeyExchangeTest_Success()
     {
         const string expectedMessage = ResponseMessageCodes.KeyExchangeRequestNotFound;
-        string expectedDetails = ResponseMessageCodes.ErrorDictionary[expectedMessage];
+        var expectedDetails = ResponseMessageCodes.ErrorDictionary[expectedMessage];
         var command = new CngConfirmOrDeclineKeyExchangeCommand
         {
             UserId = Guid.NewGuid(),
