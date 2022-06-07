@@ -7,13 +7,16 @@ public record UpdateProfilePictureResponse : ResponseBase
 {
     public string NewUserPictureUrl { get; init; }
 
-    public static UpdateProfilePictureResponse FromSuccess(string newUserPictureUrl)
+    public string FileName { get; init; }
+
+    public static UpdateProfilePictureResponse FromSuccess(string newUserPictureUrl, string fileName)
     {
         return new UpdateProfilePictureResponse
         {
             Message = ResponseMessageCodes.Success,
             Success = true,
-            NewUserPictureUrl = newUserPictureUrl
+            NewUserPictureUrl = newUserPictureUrl,
+            FileName = fileName
         };
     }
 }

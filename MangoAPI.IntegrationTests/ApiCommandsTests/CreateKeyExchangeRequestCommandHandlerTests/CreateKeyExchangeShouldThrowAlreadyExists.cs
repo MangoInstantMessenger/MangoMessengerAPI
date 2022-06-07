@@ -1,88 +1,34 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 using MangoAPI.BusinessLogic.ApiCommands.CngKeyExchange;
-using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.Domain.Constants;
-using MangoAPI.Domain.Entities;
-using MediatR;
-using Microsoft.EntityFrameworkCore;
+using MangoAPI.IntegrationTests.Helpers;
 using Xunit;
 
 namespace MangoAPI.IntegrationTests.ApiCommandsTests.CreateKeyExchangeRequestCommandHandlerTests;
 
-public class
-    CreateKeyExchangeShouldThrowAlreadyExists : ITestable<CngCreateKeyExchangeRequestCommand,
-        CngCreateKeyExchangeResponse>
-
+public class CreateKeyExchangeShouldThrowAlreadyExists : IntegrationTestBase
 {
-    private readonly MangoDbFixture _mangoDbFixture = new();
     private readonly Assert<CngCreateKeyExchangeResponse> _assert = new();
 
     [Fact]
     public async Task CreateKeyExchangeRequestCommandHandlerTest_ShouldThrow_AlreadyExists()
     {
-        Seed();
         const string expectedMessage = ResponseMessageCodes.KeyExchangeRequestAlreadyExists;
         var expectedDetails = ResponseMessageCodes.ErrorDictionary[expectedMessage];
-        var handler = CreateHandler();
-        var command = new CngCreateKeyExchangeRequestCommand
-        {
-            PublicKey = "Public key",
-            RequestedUserId = SeedDataConstants.RazumovskyId,
-            UserId = SeedDataConstants.AmelitId
-        };
-
-        await handler.Handle(command, CancellationToken.None);
-        var result = await handler.Handle(command, CancellationToken.None);
+        var sender =
+            await MangoModule.RequestAsync(CommandHelper.RegisterPetroCommand(), CancellationToken.None);
+        var requestedUser =
+            await MangoModule.RequestAsync(CommandHelper.RegisterKhachaturCommand(), CancellationToken.None);
+        await MangoModule.RequestAsync(
+            CommandHelper.CreateCngKeyExchangeCommand(sender.Response.UserId, requestedUser.Response.UserId),
+            CancellationToken.None);
+        
+        var result = 
+            await MangoModule.RequestAsync(
+                CommandHelper.CreateCngKeyExchangeCommand(sender.Response.UserId, requestedUser.Response.UserId),
+                CancellationToken.None);
 
         _assert.Fail(result, expectedMessage, expectedDetails);
     }
-
-    public bool Seed()
-    {
-        _mangoDbFixture.Context.Users.Add(_sender);
-        _mangoDbFixture.Context.Users.Add(_receiver);
-
-        _mangoDbFixture.Context.SaveChanges();
-
-        _mangoDbFixture.Context.Entry(_sender).State = EntityState.Detached;
-        _mangoDbFixture.Context.Entry(_receiver).State = EntityState.Detached;
-
-        return true;
-    }
-
-    public IRequestHandler<CngCreateKeyExchangeRequestCommand, Result<CngCreateKeyExchangeResponse>> CreateHandler()
-    {
-        var context = _mangoDbFixture.Context;
-        var responseFactory = new ResponseFactory<CngCreateKeyExchangeResponse>();
-        var handler = new CngCreateKeyExchangeRequestCommandHandler(context, responseFactory);
-
-        return handler;
-    }
-
-    private readonly UserEntity _sender = new()
-    {
-        DisplayName = "Amelit",
-        Bio = "Дипломат",
-        Id = SeedDataConstants.AmelitId,
-        UserName = "TheMoonlightSonata",
-        Email = "amelit@gmail.com",
-        NormalizedEmail = "AMELIT@GMAIL.COM",
-        EmailConfirmed = true,
-        PhoneNumberConfirmed = true,
-        Image = "amelit_picture.jpg"
-    };
-
-    private readonly UserEntity _receiver = new()
-    {
-        DisplayName = "razumovsky r",
-        Bio = "11011 y.o Dotnet Developer from $\"{cityName}\"",
-        Id = SeedDataConstants.RazumovskyId,
-        UserName = "razumovsky_r",
-        Email = "kolosovp95@gmail.com",
-        NormalizedEmail = "KOLOSOVP94@GMAIL.COM",
-        EmailConfirmed = true,
-        PhoneNumberConfirmed = true,
-        Image = "razumovsky_picture.jpg"
-    };
 }

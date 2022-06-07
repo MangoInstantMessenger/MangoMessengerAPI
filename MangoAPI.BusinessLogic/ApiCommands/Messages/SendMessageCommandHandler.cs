@@ -75,16 +75,7 @@ public class SendMessageCommandHandler
         var messageCount = await _dbContext.Messages
             .AsNoTracking()
             .Where(x => x.UserId == request.UserId)
-            .Where(x => x.CreatedAt >= DateTime.UtcNow.Date.AddMinutes(-5))
             .CountAsync(cancellationToken);
-
-        if (messageCount >= 100)
-        {
-            const string errorMessage = ResponseMessageCodes.MaximumMessageCountInLast5MinutesExceeded100;
-            var errorDescription = ResponseMessageCodes.ErrorDictionary[errorMessage];
-
-            return _responseFactory.ConflictResponse(errorMessage, errorDescription);
-        }
 
         var messageEntity = new MessageEntity
         {

@@ -54,10 +54,11 @@ public class UpdateProfilePictureCommandHandler
 
             return _responseFactory.ConflictResponse(errorMessage, details);
         }
-        
-        var uniqueFileName = StringService.GetUniqueFileName(request.PictureFile.FileName);
 
-        await _blobService.UploadFileBlobAsync(uniqueFileName, request.PictureFile);
+        var file = request.PictureFile;
+        var uniqueFileName = StringService.GetUniqueFileName(file.FileName);
+
+        await _blobService.UploadFileBlobAsync(file.OpenReadStream(), request.ContentType, uniqueFileName);
 
         var newUserPicture = new DocumentEntity
         {
@@ -75,7 +76,7 @@ public class UpdateProfilePictureCommandHandler
         await _dbContext.SaveChangesAsync(cancellationToken);
 
         var newUserPictureUrl = await _blobService.GetBlobAsync(uniqueFileName);
-        var response = UpdateProfilePictureResponse.FromSuccess(newUserPictureUrl);
+        var response = UpdateProfilePictureResponse.FromSuccess(newUserPictureUrl, uniqueFileName);
 
         return _responseFactory.SuccessResponse(response);
     }

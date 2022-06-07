@@ -1,11 +1,13 @@
-﻿using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
+﻿using System.IO;
+using System.Threading.Tasks;
 
 namespace MangoAPI.Application.Interfaces;
 
 public interface IBlobService
 {
-    Task<string> GetBlobAsync(string name);
+    Task<string> GetBlobAsync(string fileName);
 
-    Task<bool> UploadFileBlobAsync(string name, IFormFile file);
+    Task<bool> UploadFileBlobAsync(Stream stream, string contentType, string uniqueName);
+
+    Task<bool> DeleteBlobAsync(string fileName);
 }

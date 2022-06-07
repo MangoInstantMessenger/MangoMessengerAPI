@@ -19,6 +19,16 @@ public static class ConfigurationExtensions
         {
             throw new ArgumentNullException(nameof(configuration));
         }
+        
+        var environmentProvider = configurationRoot.Providers.FirstOrDefault(t =>
+            t.GetType() == mangoEnvConfigType);
+
+        if (environmentProvider != null
+            && environmentProvider.TryGet(key, out var envData)
+            && !string.IsNullOrEmpty(envData))
+        {
+            return envData;
+        }
 
         var jsonConfigProvider = configurationRoot.Providers.FirstOrDefault(t =>
             t.GetType() == mangoJsonConfigType &&
@@ -29,16 +39,6 @@ public static class ConfigurationExtensions
             && !string.IsNullOrEmpty(jsonData))
         {
             return jsonData;
-        }
-
-        var environmentProvider = configurationRoot.Providers.FirstOrDefault(t =>
-            t.GetType() == mangoEnvConfigType);
-
-        if (environmentProvider != null
-            && environmentProvider.TryGet(key, out var envData)
-            && !string.IsNullOrEmpty(envData))
-        {
-            return envData;
         }
 
         throw new ConfigurationErrorsException($"Cannot find a key - {key}");

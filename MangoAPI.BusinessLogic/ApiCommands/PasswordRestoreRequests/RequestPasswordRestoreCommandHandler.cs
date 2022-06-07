@@ -12,21 +12,21 @@ using Microsoft.EntityFrameworkCore;
 namespace MangoAPI.BusinessLogic.ApiCommands.PasswordRestoreRequests;
 
 public class RequestPasswordRestoreCommandHandler
-    : IRequestHandler<RequestPasswordRestoreCommand, Result<ResponseBase>>
+    : IRequestHandler<RequestPasswordRestoreCommand, Result<RequestPasswordRestoreResponse>>
 {
     private readonly MangoDbContext _dbContext;
     private readonly IEmailSenderService _emailSenderService;
-    private readonly ResponseFactory<ResponseBase> _responseFactory;
+    private readonly ResponseFactory<RequestPasswordRestoreResponse> _responseFactory;
 
     public RequestPasswordRestoreCommandHandler(MangoDbContext dbContext,
-        IEmailSenderService emailSenderService, ResponseFactory<ResponseBase> responseFactory)
+        IEmailSenderService emailSenderService, ResponseFactory<RequestPasswordRestoreResponse> responseFactory)
     {
         _dbContext = dbContext;
         _emailSenderService = emailSenderService;
         _responseFactory = responseFactory;
     }
 
-    public async Task<Result<ResponseBase>> Handle(RequestPasswordRestoreCommand request,
+    public async Task<Result<RequestPasswordRestoreResponse>> Handle(RequestPasswordRestoreCommand request,
         CancellationToken cancellationToken)
     {
         var user = await _dbContext.Users
@@ -67,6 +67,8 @@ public class RequestPasswordRestoreCommandHandler
 
         await _emailSenderService.SendPasswordRestoreRequestAsync(user, passwordRestoreRequest.Id, cancellationToken);
 
-        return _responseFactory.SuccessResponse(ResponseBase.SuccessResponse);
+        var response = RequestPasswordRestoreResponse.FromSuccess(passwordRestoreRequest.Id);
+
+        return _responseFactory.SuccessResponse(response);
     }
 }

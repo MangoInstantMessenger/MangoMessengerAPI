@@ -4,7 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace MangoAPI.BusinessLogic.Configuration;
 
-public class MangoStartup
+public static class MangoStartup
 {
     public static void Initialize(
         string databaseConnectionString,
@@ -51,6 +51,7 @@ public class MangoStartup
 
         services.AddSingInManagerServices();
         services.AddPasswordHashServices();
+        services.AddSignalR();
 
         var provider = services.BuildServiceProvider();
         MangoCompositionRoot.SetProvider(provider);

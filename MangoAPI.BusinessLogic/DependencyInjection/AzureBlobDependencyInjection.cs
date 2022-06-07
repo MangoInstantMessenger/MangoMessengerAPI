@@ -11,15 +11,8 @@ public static class AzureBlobDependencyInjection
         this IServiceCollection services,
         string mangoBlobUrl,
         string mangoBlobContainerName,
-        string mangoBlobAccess,
-        IBlobService blobServiceMock = null)
+        string mangoBlobAccess)
     {
-        if (blobServiceMock != null)
-        {
-            services.AddScoped(_ => blobServiceMock);
-            return services;
-        }
-
         var blobClient = new BlobServiceClient(mangoBlobUrl);
 
         var mangoBlobService = new BlobServiceSettings(mangoBlobContainerName, mangoBlobAccess);

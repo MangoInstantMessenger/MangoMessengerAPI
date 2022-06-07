@@ -13,7 +13,9 @@ using MangoAPI.Infrastructure.Database;
 
 namespace MangoAPI.BusinessLogic.ApiCommands.Communities;
 
-public class UpdateChannelPictureCommandHandler : IRequestHandler<UpdateChanelPictureCommand, Result<UpdateChannelPictureResponse>>
+public class
+    UpdateChannelPictureCommandHandler : IRequestHandler<UpdateChanelPictureCommand,
+        Result<UpdateChannelPictureResponse>>
 {
     private readonly MangoDbContext _dbContext;
     private readonly ResponseFactory<UpdateChannelPictureResponse> _responseFactory;
@@ -29,7 +31,8 @@ public class UpdateChannelPictureCommandHandler : IRequestHandler<UpdateChanelPi
         _blobService = blobService;
     }
 
-    public async Task<Result<UpdateChannelPictureResponse>> Handle(UpdateChanelPictureCommand request, CancellationToken cancellationToken)
+    public async Task<Result<UpdateChannelPictureResponse>> Handle(UpdateChanelPictureCommand request,
+        CancellationToken cancellationToken)
     {
         var totalUploadedDocsCount = await _dbContext.Documents.CountAsync(x =>
             x.UserId == request.UserId &&
@@ -47,8 +50,8 @@ public class UpdateChannelPictureCommandHandler : IRequestHandler<UpdateChanelPi
             .FirstOrDefaultAsync(x =>
                 x.ChatId == request.ChatId &&
                 x.UserId == request.UserId &&
-                x.RoleId == (int) UserRole.Owner &&
-                x.Chat.CommunityType != (int) CommunityType.DirectChat, cancellationToken);
+                x.RoleId == (int)UserRole.Owner &&
+                x.Chat.CommunityType != (int)CommunityType.DirectChat, cancellationToken);
 
         if (userChat is null)
         {
@@ -57,10 +60,12 @@ public class UpdateChannelPictureCommandHandler : IRequestHandler<UpdateChanelPi
 
             return _responseFactory.ConflictResponse(errorMessage, errorDescription);
         }
-        
-        var uniqueFileName = StringService.GetUniqueFileName(request.NewGroupPicture.FileName);
 
-        await _blobService.UploadFileBlobAsync(uniqueFileName, request.NewGroupPicture);
+        var file = request.NewGroupPicture;
+        var uniqueFileName = StringService.GetUniqueFileName(file.FileName);
+        var stream = file.OpenReadStream();
+
+        await _blobService.UploadFileBlobAsync(stream, request.ContentType, uniqueFileName);
 
         var newUserPicture = new DocumentEntity
         {
@@ -78,7 +83,7 @@ public class UpdateChannelPictureCommandHandler : IRequestHandler<UpdateChanelPi
         await _dbContext.SaveChangesAsync(cancellationToken);
 
         var blobUrl = await _blobService.GetBlobAsync(uniqueFileName);
-        var response = UpdateChannelPictureResponse.FromSuccess(blobUrl);
+        var response = UpdateChannelPictureResponse.FromSuccess(blobUrl, uniqueFileName);
 
         return _responseFactory.SuccessResponse(response);
     }

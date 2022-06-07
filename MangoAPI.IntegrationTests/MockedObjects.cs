@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -7,7 +8,6 @@ using MangoAPI.Application.Services;
 using MangoAPI.BusinessLogic.HubConfig;
 using MangoAPI.BusinessLogic.Models;
 using MangoAPI.Domain.Entities;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.SignalR;
 using Moq;
@@ -49,8 +49,8 @@ public static class MockedObjects
 
         blobServiceMock.Setup(x =>
                 x.UploadFileBlobAsync(
-                    It.IsAny<string>(),
-                    It.IsAny<IFormFile>()))
+                    It.IsAny<Stream>(),
+                    It.IsAny<string>(), It.IsAny<string>()))
             .Returns(Task.FromResult(true));
 
         blobServiceMock.Setup(x =>

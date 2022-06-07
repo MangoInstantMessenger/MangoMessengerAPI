@@ -1,108 +1,59 @@
-﻿using System;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using MangoAPI.BusinessLogic.ApiCommands.Communities;
-using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.Domain.Constants;
-using MangoAPI.Domain.Entities;
-using MangoAPI.Domain.Enums;
-using MediatR;
-using Microsoft.AspNetCore.Http;
-using Microsoft.EntityFrameworkCore;
+using MangoAPI.IntegrationTests.Helpers;
 using Xunit;
+using Xunit.Abstractions;
 
 namespace MangoAPI.IntegrationTests.ApiCommandsTests.UpdateChannelPictureCommandHandlerTests;
 
-public class UpdateChannelPictureShouldThrowLimitExceed10 : ITestable<UpdateChanelPictureCommand,
-    UpdateChannelPictureResponse>
+public class UpdateChannelPictureShouldThrowLimitExceed10 : IntegrationTestBase
 {
-    private readonly MangoDbFixture _mangoDbFixture = new();
+    private readonly ITestOutputHelper _testOutputHelper;
     private readonly Assert<UpdateChannelPictureResponse> _assert = new();
+
+    public UpdateChannelPictureShouldThrowLimitExceed10(ITestOutputHelper testOutputHelper)
+    {
+        _testOutputHelper = testOutputHelper;
+    }
 
     [Fact]
     public async Task UpdateChannelPicture_ShouldThrow_LimitReached10()
     {
-        Seed();
         const string expectedMessage = ResponseMessageCodes.UploadedDocumentsLimitReached10;
         var expectedDetails = ResponseMessageCodes.ErrorDictionary[expectedMessage];
-        var handler = CreateHandler();
+        var sender = await MangoModule.RequestAsync(
+            CommandHelper.RegisterPetroCommand(), CancellationToken.None);
+        var userId = sender.Response.UserId;
+        var createChannelCommand = CommandHelper.CreateExtremeCodeMainChatCommand(userId);
+        var chat = await MangoModule.RequestAsync(createChannelCommand, CancellationToken.None);
+        var chatId = chat.Response.ChatId;
+        var file = MangoFilesHelper.GetTestImage();
         var command = new UpdateChanelPictureCommand
         {
-            ChatId = SeedDataConstants.ExtremeCodeMainId,
-            NewGroupPicture = new FormFile(null, 0, 120, null, null),
-            UserId = SeedDataConstants.RazumovskyId
+            ChatId = chatId,
+            UserId = userId,
+            NewGroupPicture = file,
+            ContentType = "image/jpeg",
         };
-            
-        async void Action(int _)
+
+        var imageNamesList = new List<string>();
+        for (var i = 0; i < 10; i++)
         {
-            await handler.Handle(command, CancellationToken.None);
+            var res = await MangoModule.RequestAsync(command, CancellationToken.None);
+            _testOutputHelper.WriteLine(
+                $"UpdateChannelPicture_ShouldThrow_LimitReached10 File upload: {res.Response.Message}");
+            imageNamesList.Add(res.Response.FileName);
         }
 
-        Enumerable.Range(1, 10).ToList().ForEach(Action);
-
-        var result = await handler.Handle(command, CancellationToken.None);
+        var result = await MangoModule.RequestAsync(command, CancellationToken.None);
 
         _assert.Fail(result, expectedMessage, expectedDetails);
+        foreach (var fileName in imageNamesList)
+        {
+            await BlobService.DeleteBlobAsync(fileName);
+        }
     }
-
-    public bool Seed()
-    {
-        _mangoDbFixture.Context.Users.Add(_user);
-        _mangoDbFixture.Context.UserChats.Add(_userChatEntity);
-        _mangoDbFixture.Context.Chats.Add(_chatEntity);
-
-        _mangoDbFixture.Context.SaveChanges();
-
-        _mangoDbFixture.Context.Entry(_user).State = EntityState.Detached;
-        _mangoDbFixture.Context.Entry(_userChatEntity).State = EntityState.Detached;
-        _mangoDbFixture.Context.Entry(_chatEntity).State = EntityState.Detached;
-
-        return true;
-    }
-
-    public IRequestHandler<UpdateChanelPictureCommand, Result<UpdateChannelPictureResponse>> CreateHandler()
-    {
-        var blobServiceMock = MockedObjects.GetBlobServiceMock();
-        var responseFactory = new ResponseFactory<UpdateChannelPictureResponse>();
-        var handler =
-            new UpdateChannelPictureCommandHandler(_mangoDbFixture.Context, responseFactory, blobServiceMock);
-
-        return handler;
-    }
-
-    private readonly UserEntity _user = new()
-    {
-        DisplayName = "razumovsky r",
-        Bio = "11011 y.o Dotnet Developer from $\"{cityName}\"",
-        Id = SeedDataConstants.RazumovskyId,
-        UserName = "razumovsky_r",
-        Email = "kolosovp95@gmail.com",
-        NormalizedEmail = "KOLOSOVP94@GMAIL.COM",
-        EmailConfirmed = true,
-        PhoneNumberConfirmed = true,
-        Image = "razumovsky_picture.jpg"
-    };
-
-    private readonly UserChatEntity _userChatEntity = new()
-    {
-        UserId = SeedDataConstants.RazumovskyId,
-        ChatId = SeedDataConstants.ExtremeCodeMainId,
-        RoleId = (int) UserRole.Owner,
-    };
-
-    private readonly ChatEntity _chatEntity = new()
-    {
-        Id = SeedDataConstants.ExtremeCodeMainId,
-        Title = "Extreme Code Main",
-        CommunityType = (int) CommunityType.PublicChannel,
-        Description = "Extreme Code Main Public Group",
-        CreatedAt = new DateTime(2020, 2, 4),
-        MembersCount = 4,
-        Image = "extreme_code_main.jpg",
-        UpdatedAt = DateTime.UtcNow,
-        LastMessageAuthor = "Amelit",
-        LastMessageText = "TypeScript The Best",
-        LastMessageTime = DateTime.Parse("2:32 PM")
-    };
 }
