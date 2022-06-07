@@ -4,6 +4,7 @@ using MangoAPI.BusinessLogic.ApiCommands.Documents;
 using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.Domain.Constants;
 using MangoAPI.Domain.Entities;
+using MangoAPI.IntegrationTests.Helpers;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
@@ -11,8 +12,7 @@ using Xunit;
 
 namespace MangoAPI.IntegrationTests.ApiCommandsTests.UploadDocumentCommandHandlerTests;
 
-public class UploadDocumentTestShouldThrowUploadedDocumentsLimitReached10
-    : ITestable<UploadDocumentCommand, UploadDocumentResponse>
+public class UploadDocumentTestShouldThrowUploadedDocumentsLimitReached10 : IntegrationTestBase
 {
     private readonly MangoDbFixture _mangoDbFixture = new();
     private readonly Assert<UploadDocumentResponse> _assert = new();
@@ -20,21 +20,24 @@ public class UploadDocumentTestShouldThrowUploadedDocumentsLimitReached10
     [Fact]
     public async Task UploadDocumentTestShouldThrow_UploadedDocumentsLimitReached10()
     {
-        Seed();
         const string expectedMessage = ResponseMessageCodes.UploadedDocumentsLimitReached10;
         var expectedDetails = ResponseMessageCodes.ErrorDictionary[expectedMessage];
+        var file = MangoFilesHelper.GetTestImage();
+        var user = await MangoModule.RequestAsync(
+            request: CommandHelper.RegisterPetroCommand(),
+            cancellationToken: CancellationToken.None);
         var command = new UploadDocumentCommand
         {
-            FormFile = new FormFile(null, 0, 120, null, null),
-            UserId = SeedDataConstants.RazumovskyId
+            FormFile = file,
+            UserId = user.Response.UserId,
+            ContentType = "image/jpeg"
         };
-        var handler = CreateHandler();
         for (int i = 0; i <= 10; i++)
         {
-            await handler.Handle(command, CancellationToken.None);
+            await MangoModule.RequestAsync(command, CancellationToken.None);
         }
 
-        var result = await handler.Handle(command, CancellationToken.None);
+        var result = await MangoModule.RequestAsync(command, CancellationToken.None);
 
         _assert.Fail(result, expectedMessage, expectedDetails);
     }

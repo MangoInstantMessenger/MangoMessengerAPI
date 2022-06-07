@@ -32,6 +32,16 @@ public class UploadDocumentCommandHandler
     public async Task<Result<UploadDocumentResponse>> Handle(UploadDocumentCommand request,
         CancellationToken cancellationToken)
     {
+        // var user = await _dbContext.Users
+        //     .FirstOrDefaultAsync(x => x.Id == request.UserId, cancellationToken);
+        //
+        // if (user == null)
+        // {
+        //     const string message = ResponseMessageCodes.UserNotFound;
+        //     var details = ResponseMessageCodes.ErrorDictionary[message];
+        //     return _responseFactory.ConflictResponse(message, details);
+        // }
+        
         var totalUploadedDocsCount = await _dbContext.Documents.CountAsync(x =>
             x.UserId == request.UserId &&
             x.UploadedAt > DateTime.UtcNow.AddHours(-1), cancellationToken);
