@@ -5,13 +5,14 @@ using MangoAPI.BusinessLogic.ApiCommands.Users;
 using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.Domain.Constants;
 using MangoAPI.Domain.Entities;
+using MangoAPI.IntegrationTests.Helpers;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Xunit;
 
 namespace MangoAPI.IntegrationTests.ApiCommandsTests.VerifyEmailCommandHandlerTests;
 
-public class VerifyEmailTestShouldThrowEmailAlreadyVerified : ITestable<VerifyEmailCommand, ResponseBase>
+public class VerifyEmailTestShouldThrowEmailAlreadyVerified : IntegrationTestBase
 {
     private readonly MangoDbFixture _mangoDbFixture = new();
     private readonly Assert<ResponseBase> _assert = new();
@@ -22,14 +23,18 @@ public class VerifyEmailTestShouldThrowEmailAlreadyVerified : ITestable<VerifyEm
         Seed();
         const string expectedMessage = ResponseMessageCodes.EmailAlreadyVerified;
         string expectedDetails = ResponseMessageCodes.ErrorDictionary[expectedMessage];
-        var handler = CreateHandler();
-        var command = new VerifyEmailCommand
-        {
-            Email = _user.Email,
-            EmailCode = _user.EmailCode
-        };
-
-        var result = await handler.Handle(command, CancellationToken.None);
+        var user = await MangoModule.RequestAsync(
+            request: CommandHelper.RegisterPetroCommand(),
+            cancellationToken: CancellationToken.None);
+        var userId = user.Response.UserId;
+        var userEntity = await DbContextFixture.Users.FirstOrDefaultAsync(x => x.Id == userId);
+        await MangoModule.RequestAsync(
+            request: CommandHelper.CreateVerifyEmailCommand(userEntity.Email, userEntity.EmailCode),
+            cancellationToken: CancellationToken.None);
+            
+        var result = await MangoModule.RequestAsync(
+            request: CommandHelper.CreateVerifyEmailCommand(userEntity.Email, userEntity.EmailCode),
+            cancellationToken: CancellationToken.None);
             
         _assert.Fail(result, expectedMessage, expectedDetails);
     }

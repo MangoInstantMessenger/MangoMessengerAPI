@@ -1,67 +1,29 @@
-﻿using System;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
-using MangoAPI.BusinessLogic.ApiCommands.Users;
 using MangoAPI.BusinessLogic.Responses;
-using MangoAPI.Domain.Constants;
-using MangoAPI.Domain.Entities;
-using MediatR;
+using MangoAPI.IntegrationTests.Helpers;
 using Microsoft.EntityFrameworkCore;
 using Xunit;
 
 namespace MangoAPI.IntegrationTests.ApiCommandsTests.VerifyEmailCommandHandlerTests;
 
-public class VerifyEmailTestSuccess : ITestable<VerifyEmailCommand, ResponseBase>
+public class VerifyEmailTestSuccess : IntegrationTestBase
 {
-    private readonly MangoDbFixture _mangoDbFixture = new();
     private readonly Assert<ResponseBase> _assert = new();
 
     [Fact]
     public async Task VerifyEmailTest_Success()
     {
-        Seed();
-        var handler = CreateHandler();
-        var command = new VerifyEmailCommand
-        {
-            Email = _user.Email,
-            EmailCode = _user.EmailCode
-        };
+        var user = await MangoModule.RequestAsync(
+            request: CommandHelper.RegisterPetroCommand(),
+            cancellationToken: CancellationToken.None);
+        var userId = user.Response.UserId;
+        var userEntity = await DbContextFixture.Users.FirstOrDefaultAsync(x => x.Id == userId);
             
-        var result = await handler.Handle(command, CancellationToken.None);
+        var result = await MangoModule.RequestAsync(
+            request: CommandHelper.CreateVerifyEmailCommand(userEntity.Email, userEntity.EmailCode),
+            cancellationToken: CancellationToken.None);
 
         _assert.Pass(result);
     }
-
-    public bool Seed()
-    {
-        _mangoDbFixture.Context.Users.Add(_user);
-
-        _mangoDbFixture.Context.SaveChanges();
-
-        _mangoDbFixture.Context.Entry(_user).State = EntityState.Detached;
-            
-        return true;
-    }
-
-    public IRequestHandler<VerifyEmailCommand, Result<ResponseBase>> CreateHandler()
-    {
-        var context = _mangoDbFixture.Context;
-        var responseFactory = new ResponseFactory<ResponseBase>();
-        var handler = new VerifyEmailCommandHandler(context, responseFactory);
-        return handler;
-    }
-
-    private readonly UserEntity _user = new()
-    {
-        DisplayName = "razumovsky r",
-        Bio = "11011 y.o Dotnet Developer from $\"{cityName}\"",
-        Id = SeedDataConstants.RazumovskyId,
-        UserName = "razumovsky_r",
-        Email = "kolosovp95@gmail.com",
-        NormalizedEmail = "KOLOSOVP94@GMAIL.COM",
-        EmailCode = Guid.NewGuid(),
-        EmailConfirmed = false,
-        PhoneNumberConfirmed = false,
-        Image = "razumovsky_picture.jpg"
-    };
 }

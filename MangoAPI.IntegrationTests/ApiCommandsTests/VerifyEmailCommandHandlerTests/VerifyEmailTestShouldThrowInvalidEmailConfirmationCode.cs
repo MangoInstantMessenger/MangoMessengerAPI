@@ -5,31 +5,30 @@ using MangoAPI.BusinessLogic.ApiCommands.Users;
 using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.Domain.Constants;
 using MangoAPI.Domain.Entities;
+using MangoAPI.IntegrationTests.Helpers;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Xunit;
 
 namespace MangoAPI.IntegrationTests.ApiCommandsTests.VerifyEmailCommandHandlerTests;
 
-public class VerifyEmailTestShouldThrowInvalidEmailConfirmationCode : ITestable<VerifyEmailCommand, ResponseBase>
+public class VerifyEmailTestShouldThrowInvalidEmailConfirmationCode : IntegrationTestBase
 {
     private readonly MangoDbFixture _mangoDbFixture = new();
     private readonly Assert<ResponseBase> _assert = new();
 
     [Fact]
-    public async Task VerifyEmailTest_Success()
+    public async Task VerifyEmailTest_ShouldThrowInvalidEmailConfirmationCode()
     {
-        Seed();
         const string expectedMessage = ResponseMessageCodes.InvalidEmailConfirmationCode;
         string expectedDetails = ResponseMessageCodes.ErrorDictionary[expectedMessage];
-        var handler = CreateHandler();
-        var command = new VerifyEmailCommand
-        {
-            Email = _user.Email,
-            EmailCode = Guid.NewGuid()
-        };
+        await MangoModule.RequestAsync(
+            request: CommandHelper.RegisterPetroCommand(),
+            cancellationToken: CancellationToken.None);
 
-        var result = await handler.Handle(command, CancellationToken.None);
+        var result = await MangoModule.RequestAsync(
+            request: CommandHelper.CreateVerifyEmailCommand("kolosovp95@gmail.com", Guid.NewGuid()), 
+            cancellationToken: CancellationToken.None);
             
         _assert.Fail(result, expectedMessage, expectedDetails);
     }
