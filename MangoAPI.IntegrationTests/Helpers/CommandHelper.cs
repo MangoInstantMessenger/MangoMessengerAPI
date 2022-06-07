@@ -95,4 +95,16 @@ public class CommandHelper
 
         return command;
     }
+
+    public static CngConfirmOrDeclineKeyExchangeCommand CreateCngConfirmOrDeclineKeyExchangeCommand(
+        Guid userId, Guid requestId, bool confirmed, string publicKey)
+    {
+        var command = new CngConfirmOrDeclineKeyExchangeCommand(
+            userId: userId,
+            requestId: requestId,
+            confirmed: confirmed,
+            publicKey: publicKey);
+
+        return command;
+    }
 }

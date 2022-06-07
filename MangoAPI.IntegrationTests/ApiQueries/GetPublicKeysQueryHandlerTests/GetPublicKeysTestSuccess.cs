@@ -5,13 +5,14 @@ using MangoAPI.BusinessLogic.ApiQueries.CngPublicKeys;
 using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.Domain.Constants;
 using MangoAPI.Domain.Entities;
+using MangoAPI.IntegrationTests.Helpers;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Xunit;
 
 namespace MangoAPI.IntegrationTests.ApiQueries.GetPublicKeysQueryHandlerTests;
 
-public class GetPublicKeysTestSuccess : ITestable<CngGetPublicKeysQuery, CngGetPublicKeysResponse>
+public class GetPublicKeysTestSuccess : IntegrationTestBase
 {
     private readonly MangoDbFixture _mangoDbFixture = new();
     private readonly Assert<CngGetPublicKeysResponse> _assert = new();
@@ -19,18 +20,30 @@ public class GetPublicKeysTestSuccess : ITestable<CngGetPublicKeysQuery, CngGetP
     [Fact]
     public async Task GetPublicKeysTest_Success()
     {
-        Seed();
+        var sender =
+            await MangoModule.RequestAsync(CommandHelper.RegisterPetroCommand(), CancellationToken.None);
+        var requestedUser =
+            await MangoModule.RequestAsync(CommandHelper.RegisterKhachaturCommand(), CancellationToken.None); 
+        var keyExchangeRequest = await MangoModule.RequestAsync(
+                request: CommandHelper.CreateCngKeyExchangeCommand(sender.Response.UserId, requestedUser.Response.UserId),
+                cancellationToken: CancellationToken.None);
+        await MangoModule.RequestAsync(
+            request: CommandHelper.CreateCngConfirmOrDeclineKeyExchangeCommand(
+                userId: requestedUser.Response.UserId,
+                requestId: keyExchangeRequest.Response.RequestId,
+                confirmed: true,
+                publicKey: "Public key"),
+            cancellationToken: CancellationToken.None);
         var query = new CngGetPublicKeysQuery
         {
-            UserId = _user.Id
+            UserId = sender.Response.UserId
         };
-        var handler = CreateHandler();
 
-        var result = await handler.Handle(query, CancellationToken.None);
+        var result = await MangoModule.RequestAsync(query, CancellationToken.None);
             
         _assert.Pass(result);
         result.Response.PublicKeys.Count.Should().Be(1);
-        result.Response.PublicKeys[0].PartnerId.Should().Be(_partner.Id);
+        result.Response.PublicKeys[0].PartnerId.Should().Be(requestedUser.Response.UserId);
     }
         
     public bool Seed()
