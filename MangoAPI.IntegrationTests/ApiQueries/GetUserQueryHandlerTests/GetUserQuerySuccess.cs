@@ -2,66 +2,28 @@
 using System.Threading.Tasks;
 using FluentAssertions;
 using MangoAPI.BusinessLogic.ApiQueries.Users;
-using MangoAPI.BusinessLogic.Responses;
-using MangoAPI.Domain.Constants;
-using MangoAPI.Domain.Entities;
-using MediatR;
-using Microsoft.EntityFrameworkCore;
+using MangoAPI.IntegrationTests.Helpers;
 using Xunit;
 
 namespace MangoAPI.IntegrationTests.ApiQueries.GetUserQueryHandlerTests;
 
-public class GetUserQuerySuccess 
-    : ITestable<GetUserQuery, GetUserResponse>
+public class GetUserQuerySuccess : IntegrationTestBase
 {
-    private readonly MangoDbFixture _mangoDbFixture = new();
     private readonly Assert<GetUserResponse> _assert = new();
 
     [Fact]
     public async Task GetUserTest_Success()
     {
-        Seed();
+        var user =
+            await MangoModule.RequestAsync(CommandHelper.RegisterPetroCommand(), CancellationToken.None);
         var query = new GetUserQuery
         {
-            UserId = _user.Id
+            UserId = user.Response.UserId
         };
-        var handler = CreateHandler();
 
-        var result = await handler.Handle(query, CancellationToken.None);
+        var result = await MangoModule.RequestAsync(query, CancellationToken.None);
             
         _assert.Pass(result);
-        result.Response.User.UserId.Should().Be(_user.Id);
+        result.Response.User.UserId.Should().Be(user.Response.UserId);
     }
-        
-    public bool Seed()
-    {
-        _mangoDbFixture.Context.Users.Add(_user);
-
-        _mangoDbFixture.Context.SaveChanges();
-
-        _mangoDbFixture.Context.Entry(_user).State = EntityState.Detached;
-            
-        return true;
-    }
-
-    public IRequestHandler<GetUserQuery, Result<GetUserResponse>> CreateHandler()
-    {
-        var responseFactory = new ResponseFactory<GetUserResponse>();
-        var blobSettings = MockedObjects.GetBlobServiceSettingsMock();
-        var handler = new GetUserQueryHandler(_mangoDbFixture.Context, responseFactory, blobSettings);
-        return handler;
-    }
-        
-    private readonly UserEntity _user = new()
-    {
-        DisplayName = "Amelit",
-        Bio = "Дипломат",
-        Id = SeedDataConstants.AmelitId,
-        UserName = "TheMoonlightSonata",
-        Email = "amelit@gmail.com",
-        NormalizedEmail = "AMELIT@GMAIL.COM",
-        EmailConfirmed = true,
-        PhoneNumberConfirmed = true,
-        Image = "amelit_picture.jpg"
-    };
 }
