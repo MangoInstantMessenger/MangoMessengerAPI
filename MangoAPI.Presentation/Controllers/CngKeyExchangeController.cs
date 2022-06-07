@@ -2,6 +2,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
+using MangoAPI.Application.Interfaces;
 using MangoAPI.BusinessLogic.ApiCommands.CngKeyExchange;
 using MangoAPI.BusinessLogic.ApiQueries.CngKeyExchange;
 using MangoAPI.BusinessLogic.Responses;
@@ -24,8 +25,8 @@ namespace MangoAPI.Presentation.Controllers;
 [Authorize]
 public class CngKeyExchangeController : ApiControllerBase, ICngKeyExchangeController
 {
-    public CngKeyExchangeController(IMediator mediator, IMapper mapper)
-        : base(mediator, mapper)
+    public CngKeyExchangeController(IMediator mediator, IMapper mapper, ICorrelationContext correlationContext) : base(
+        mediator, mapper, correlationContext)
     {
     }
 
@@ -119,8 +120,9 @@ public class CngKeyExchangeController : ApiControllerBase, ICngKeyExchangeContro
     [HttpGet("{requestId:guid}")]
     [SwaggerOperation(
         Summary = "Returns key exchange request by ID",
-        Description = "Return Diffie-Hellman key exchange request by ID. Returns error if key exchange request not belongs " +
-                      "to current user")]
+        Description =
+            "Return Diffie-Hellman key exchange request by ID. Returns error if key exchange request not belongs " +
+            "to current user")]
     [ProducesResponseType(typeof(CngGetKeyExchangeRequestByIdResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]

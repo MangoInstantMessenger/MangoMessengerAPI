@@ -4,6 +4,7 @@ using MangoAPI.BusinessLogic.Responses;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading;
 using System.Threading.Tasks;
+using MangoAPI.Application.Interfaces;
 using MediatR;
 
 namespace MangoAPI.Presentation.Controllers;
@@ -15,16 +16,19 @@ public class ApiControllerBase : ControllerBase
 {
     protected readonly IMediator Mediator;
     protected readonly IMapper Mapper;
+    protected readonly ICorrelationContext CorrelationContext;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="ApiControllerBase"/> class.
     /// </summary>
     /// <param name="mediator">Mediator instance.</param>
     /// <param name="mapper">Automapper instance.</param>
-    public ApiControllerBase(IMediator mediator, IMapper mapper)
+    /// <param name="correlationContext"></param>
+    public ApiControllerBase(IMediator mediator, IMapper mapper, ICorrelationContext correlationContext)
     {
         Mediator = mediator;
         Mapper = mapper;
+        CorrelationContext = correlationContext;
     }
 
     /// <summary>

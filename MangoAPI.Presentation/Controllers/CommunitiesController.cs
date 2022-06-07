@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 using System.Threading;
 using System.Threading.Tasks;
+using MangoAPI.Application.Interfaces;
 
 namespace MangoAPI.Presentation.Controllers;
 
@@ -24,8 +25,8 @@ namespace MangoAPI.Presentation.Controllers;
 [Authorize]
 public class CommunitiesController : ApiControllerBase, ICommunitiesController
 {
-    public CommunitiesController(IMediator mediator, IMapper mapper)
-        : base(mediator, mapper)
+    public CommunitiesController(IMediator mediator, IMapper mapper, ICorrelationContext correlationContext) : base(
+        mediator, mapper, correlationContext)
     {
     }
 

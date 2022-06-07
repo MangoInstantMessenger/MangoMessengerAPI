@@ -11,6 +11,7 @@ using Swashbuckle.AspNetCore.Annotations;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using MangoAPI.Application.Interfaces;
 
 namespace MangoAPI.Presentation.Controllers;
 
@@ -21,8 +22,8 @@ namespace MangoAPI.Presentation.Controllers;
 [Route("api/sessions")]
 public class SessionsController : ApiControllerBase, ISessionsController
 {
-    public SessionsController(IMediator mediator, IMapper mapper)
-        : base(mediator, mapper)
+    public SessionsController(IMediator mediator, IMapper mapper, ICorrelationContext correlationContext) : base(
+        mediator, mapper, correlationContext)
     {
     }
 
@@ -114,7 +115,7 @@ public class SessionsController : ApiControllerBase, ISessionsController
     [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
     public async Task<IActionResult> LogoutAllAsync(CancellationToken cancellationToken)
     {
-        var userId = HttpContext.User.GetUserId();
+        var userId = CorrelationContext.GetUserId();
 
         var command = new LogoutAllCommand
         {

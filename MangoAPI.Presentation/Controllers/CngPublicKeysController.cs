@@ -1,6 +1,7 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
+using MangoAPI.Application.Interfaces;
 using MangoAPI.BusinessLogic.ApiQueries.CngPublicKeys;
 using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.Presentation.Extensions;
@@ -22,8 +23,8 @@ namespace MangoAPI.Presentation.Controllers;
 [Authorize]
 public class CngPublicKeysController : ApiControllerBase, ICngPublicKeysController
 {
-    public CngPublicKeysController(IMediator mediator, IMapper mapper)
-        : base(mediator, mapper)
+    public CngPublicKeysController(IMediator mediator, IMapper mapper, ICorrelationContext correlationContext) : base(
+        mediator, mapper, correlationContext)
     {
     }
 

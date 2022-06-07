@@ -2,6 +2,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
+using MangoAPI.Application.Interfaces;
 using MangoAPI.BusinessLogic.ApiCommands.OpenSslKeyExchange;
 using MangoAPI.BusinessLogic.ApiQueries.OpenSslKeyExchange;
 using MangoAPI.BusinessLogic.Responses;
@@ -24,7 +25,8 @@ namespace MangoAPI.Presentation.Controllers;
 [Authorize]
 public class OpenSslKeyExchangeController : ApiControllerBase, IOpenSslKeyExchangeController
 {
-    public OpenSslKeyExchangeController(IMediator mediator, IMapper mapper) : base(mediator, mapper)
+    public OpenSslKeyExchangeController(IMediator mediator, IMapper mapper, ICorrelationContext correlationContext) :
+        base(mediator, mapper, correlationContext)
     {
     }
 
@@ -119,7 +121,7 @@ public class OpenSslKeyExchangeController : ApiControllerBase, IOpenSslKeyExchan
     public async Task<IActionResult> OpenSslGetKeyExchangeRequests(CancellationToken cancellationToken)
     {
         var userId = HttpContext.User.GetUserId();
-        var request = new OpenSslGetKeyExchangeRequestsQuery {UserId = userId};
+        var request = new OpenSslGetKeyExchangeRequestsQuery { UserId = userId };
 
         return await RequestAsync(request, cancellationToken);
     }
@@ -229,8 +231,8 @@ public class OpenSslKeyExchangeController : ApiControllerBase, IOpenSslKeyExchan
     [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
     [ProducesResponseType(typeof(OpenSslGetKeyExchangeRequestByIdResponse), StatusCodes.Status200OK)]
-    public async Task<IActionResult> OpenSslGetKeyExchangeRequestById([FromRoute] Guid requestId, 
-            CancellationToken cancellationToken)
+    public async Task<IActionResult> OpenSslGetKeyExchangeRequestById([FromRoute] Guid requestId,
+        CancellationToken cancellationToken)
     {
         var query = new OpenSslGetKeyExchangeRequestByIdQuery
         {

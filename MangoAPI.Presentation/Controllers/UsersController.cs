@@ -12,6 +12,7 @@ using Swashbuckle.AspNetCore.Annotations;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using MangoAPI.Application.Interfaces;
 
 namespace MangoAPI.Presentation.Controllers;
 
@@ -22,7 +23,8 @@ namespace MangoAPI.Presentation.Controllers;
 [Route("api/users")]
 public class UsersController : ApiControllerBase, IUsersController
 {
-    public UsersController(IMediator mediator, IMapper mapper) : base(mediator, mapper)
+    public UsersController(IMediator mediator, IMapper mapper, ICorrelationContext correlationContext) : base(mediator,
+        mapper, correlationContext)
     {
     }
 

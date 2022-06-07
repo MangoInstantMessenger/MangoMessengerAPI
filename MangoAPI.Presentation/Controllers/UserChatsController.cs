@@ -2,6 +2,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
+using MangoAPI.Application.Interfaces;
 using MangoAPI.BusinessLogic.ApiCommands.UserChats;
 using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.Presentation.Extensions;
@@ -22,7 +23,8 @@ namespace MangoAPI.Presentation.Controllers;
 [Authorize]
 public class UserChatsController : ApiControllerBase, IUserChatsController
 {
-    public UserChatsController(IMediator mediator, IMapper mapper) : base(mediator, mapper)
+    public UserChatsController(IMediator mediator, IMapper mapper, ICorrelationContext correlationContext) : base(
+        mediator, mapper, correlationContext)
     {
     }
 

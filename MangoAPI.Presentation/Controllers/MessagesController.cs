@@ -12,6 +12,7 @@ using Swashbuckle.AspNetCore.Annotations;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using MangoAPI.Application.Interfaces;
 
 namespace MangoAPI.Presentation.Controllers;
 
@@ -23,7 +24,8 @@ namespace MangoAPI.Presentation.Controllers;
 [Authorize]
 public class MessagesController : ApiControllerBase, IMessagesController
 {
-    public MessagesController(IMediator mediator, IMapper mapper) : base(mediator, mapper)
+    public MessagesController(IMediator mediator, IMapper mapper, ICorrelationContext correlationContext) : base(
+        mediator, mapper, correlationContext)
     {
     }
 

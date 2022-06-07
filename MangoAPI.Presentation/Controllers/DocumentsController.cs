@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 using System.Threading;
 using System.Threading.Tasks;
+using MangoAPI.Application.Interfaces;
 using MangoAPI.Presentation.Extensions;
 
 namespace MangoAPI.Presentation.Controllers;
@@ -21,8 +22,8 @@ namespace MangoAPI.Presentation.Controllers;
 [Authorize]
 public class DocumentsController : ApiControllerBase, IDocumentsController
 {
-    public DocumentsController(IMediator mediator, IMapper mapper)
-        : base(mediator, mapper)
+    public DocumentsController(IMediator mediator, IMapper mapper, ICorrelationContext correlationContext) : base(
+        mediator, mapper, correlationContext)
     {
     }
 
