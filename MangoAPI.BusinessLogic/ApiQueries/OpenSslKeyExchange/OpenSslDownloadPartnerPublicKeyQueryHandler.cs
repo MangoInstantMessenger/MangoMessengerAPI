@@ -1,8 +1,8 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 using MangoAPI.BusinessLogic.Responses;
-using MangoAPI.DataAccess.Database;
 using MangoAPI.Domain.Constants;
+using MangoAPI.Infrastructure.Database;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
@@ -11,20 +11,20 @@ namespace MangoAPI.BusinessLogic.ApiQueries.OpenSslKeyExchange;
 public class OpenSslDownloadPartnerPublicKeyQueryHandler : IRequestHandler<OpenSslDownloadPartnerPublicKeyQuery,
     Result<OpenSslDownloadPartnerPublicKeyResponse>>
 {
-    private readonly MangoPostgresDbContext _mangoPostgresDbContext;
+    private readonly MangoDbContext _mangoDbContext;
     private readonly ResponseFactory<OpenSslDownloadPartnerPublicKeyResponse> _responseFactory;
 
-    public OpenSslDownloadPartnerPublicKeyQueryHandler(MangoPostgresDbContext mangoPostgresDbContext,
+    public OpenSslDownloadPartnerPublicKeyQueryHandler(MangoDbContext mangoDbContext,
         ResponseFactory<OpenSslDownloadPartnerPublicKeyResponse> responseFactory)
     {
-        _mangoPostgresDbContext = mangoPostgresDbContext;
+        _mangoDbContext = mangoDbContext;
         _responseFactory = responseFactory;
     }
 
     public async Task<Result<OpenSslDownloadPartnerPublicKeyResponse>> Handle(
         OpenSslDownloadPartnerPublicKeyQuery request, CancellationToken cancellationToken)
     {
-        var keyExchangeRequest = await _mangoPostgresDbContext.OpenSslKeyExchangeRequests
+        var keyExchangeRequest = await _mangoDbContext.OpenSslKeyExchangeRequests
             .FirstOrDefaultAsync(
                 predicate: entity => entity.Id == request.RequestId,
                 cancellationToken: cancellationToken);

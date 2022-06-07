@@ -4,9 +4,9 @@ using System.Threading;
 using System.Threading.Tasks;
 using MangoAPI.Application.Interfaces;
 using MangoAPI.BusinessLogic.Responses;
-using MangoAPI.DataAccess.Database;
 using MangoAPI.Domain.Constants;
 using MangoAPI.Domain.Entities;
+using MangoAPI.Infrastructure.Database;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
@@ -15,17 +15,17 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Sessions;
 public class RefreshSessionCommandHandler : IRequestHandler<RefreshSessionCommand, Result<TokensResponse>>
 {
     private readonly IJwtGenerator _jwtGenerator;
-    private readonly MangoPostgresDbContext _postgresDbContext;
+    private readonly MangoDbContext _dbContext;
     private readonly ResponseFactory<TokensResponse> _responseFactory;
     private readonly IJwtGeneratorSettings _jwtGeneratorSettings;
 
     public RefreshSessionCommandHandler(
-        MangoPostgresDbContext postgresDbContext,
+        MangoDbContext dbContext,
         IJwtGenerator jwtGenerator,
         ResponseFactory<TokensResponse> responseFactory,
         IJwtGeneratorSettings jwtGeneratorSettings)
     {
-        _postgresDbContext = postgresDbContext;
+        _dbContext = dbContext;
         _jwtGenerator = jwtGenerator;
         _responseFactory = responseFactory;
         _jwtGeneratorSettings = jwtGeneratorSettings;
@@ -34,7 +34,7 @@ public class RefreshSessionCommandHandler : IRequestHandler<RefreshSessionComman
     public async Task<Result<TokensResponse>> Handle(RefreshSessionCommand request,
         CancellationToken cancellationToken)
     {
-        var session = await _postgresDbContext.Sessions
+        var session = await _dbContext.Sessions
             .FirstOrDefaultAsync(entity => entity.RefreshToken == request.RefreshToken,
                 cancellationToken);
 
@@ -46,7 +46,7 @@ public class RefreshSessionCommandHandler : IRequestHandler<RefreshSessionComman
             return _responseFactory.ConflictResponse(errorMessage, details);
         }
 
-        var userSessions = _postgresDbContext.Sessions
+        var userSessions = _dbContext.Sessions
             .Where(x => x.UserId == session.UserId);
 
         var userSessionCount = await userSessions.CountAsync(cancellationToken);
@@ -54,10 +54,10 @@ public class RefreshSessionCommandHandler : IRequestHandler<RefreshSessionComman
         switch (userSessionCount)
         {
             case >= 5:
-                _postgresDbContext.Sessions.RemoveRange(userSessions);
+                _dbContext.Sessions.RemoveRange(userSessions);
                 break;
             default:
-                _postgresDbContext.Sessions.Remove(session);
+                _dbContext.Sessions.Remove(session);
                 break;
         }
 
@@ -65,14 +65,14 @@ public class RefreshSessionCommandHandler : IRequestHandler<RefreshSessionComman
         {
             RefreshToken = Guid.NewGuid(),
             UserId = session.UserId,
-            ExpiresAt = DateTime.UtcNow.AddDays(_jwtGeneratorSettings.MangoRefreshTokenLifetime),
+            ExpiresAt = DateTime.UtcNow.AddDays(_jwtGeneratorSettings.MangoRefreshTokenLifetimeDays),
             CreatedAt = DateTime.UtcNow,
         };
 
         var jwtToken = _jwtGenerator.GenerateJwtToken(session.UserId);
 
-        _postgresDbContext.Sessions.Add(newSession);
-        await _postgresDbContext.SaveChangesAsync(cancellationToken);
+        _dbContext.Sessions.Add(newSession);
+        await _dbContext.SaveChangesAsync(cancellationToken);
 
         var expires = ((DateTimeOffset) session.ExpiresAt).ToUnixTimeSeconds();
 

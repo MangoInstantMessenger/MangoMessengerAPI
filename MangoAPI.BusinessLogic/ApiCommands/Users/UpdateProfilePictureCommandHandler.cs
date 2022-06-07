@@ -4,9 +4,9 @@ using System.Threading.Tasks;
 using MangoAPI.Application.Interfaces;
 using MangoAPI.Application.Services;
 using MangoAPI.BusinessLogic.Responses;
-using MangoAPI.DataAccess.Database;
 using MangoAPI.Domain.Constants;
 using MangoAPI.Domain.Entities;
+using MangoAPI.Infrastructure.Database;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
@@ -15,16 +15,16 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users;
 public class UpdateProfilePictureCommandHandler
     : IRequestHandler<UpdateProfilePictureCommand, Result<UpdateProfilePictureResponse>>
 {
-    private readonly MangoPostgresDbContext _postgresDbContext;
+    private readonly MangoDbContext _dbContext;
     private readonly ResponseFactory<UpdateProfilePictureResponse> _responseFactory;
     private readonly IBlobService _blobService;
 
     public UpdateProfilePictureCommandHandler(
-        MangoPostgresDbContext postgresDbContext,
+        MangoDbContext dbContext,
         ResponseFactory<UpdateProfilePictureResponse> responseFactory,
         IBlobService blobService)
     {
-        _postgresDbContext = postgresDbContext;
+        _dbContext = dbContext;
         _responseFactory = responseFactory;
         _blobService = blobService;
     }
@@ -32,7 +32,7 @@ public class UpdateProfilePictureCommandHandler
     public async Task<Result<UpdateProfilePictureResponse>> Handle(UpdateProfilePictureCommand request,
         CancellationToken cancellationToken)
     {
-        var totalUploadedDocsCount = await _postgresDbContext.Documents.CountAsync(x =>
+        var totalUploadedDocsCount = await _dbContext.Documents.CountAsync(x =>
             x.UserId == request.UserId &&
             x.UploadedAt > DateTime.UtcNow.AddHours(-1), cancellationToken);
 
@@ -43,7 +43,7 @@ public class UpdateProfilePictureCommandHandler
             return _responseFactory.ConflictResponse(message, details);
         }
 
-        var user = await _postgresDbContext.Users
+        var user = await _dbContext.Users
             .FirstOrDefaultAsync(userEntity => userEntity.Id == request.UserId,
                 cancellationToken);
 
@@ -54,10 +54,11 @@ public class UpdateProfilePictureCommandHandler
 
             return _responseFactory.ConflictResponse(errorMessage, details);
         }
-        
-        var uniqueFileName = StringService.GetUniqueFileName(request.PictureFile.FileName);
 
-        await _blobService.UploadFileBlobAsync(uniqueFileName, request.PictureFile);
+        var file = request.PictureFile;
+        var uniqueFileName = StringService.GetUniqueFileName(file.FileName);
+
+        await _blobService.UploadFileBlobAsync(file.OpenReadStream(), request.ContentType, uniqueFileName);
 
         var newUserPicture = new DocumentEntity
         {
@@ -66,16 +67,16 @@ public class UpdateProfilePictureCommandHandler
             UploadedAt = DateTime.UtcNow
         };
 
-        _postgresDbContext.Documents.Add(newUserPicture);
+        _dbContext.Documents.Add(newUserPicture);
 
         user.Image = uniqueFileName;
 
-        _postgresDbContext.Users.Update(user);
+        _dbContext.Users.Update(user);
 
-        await _postgresDbContext.SaveChangesAsync(cancellationToken);
+        await _dbContext.SaveChangesAsync(cancellationToken);
 
         var newUserPictureUrl = await _blobService.GetBlobAsync(uniqueFileName);
-        var response = UpdateProfilePictureResponse.FromSuccess(newUserPictureUrl);
+        var response = UpdateProfilePictureResponse.FromSuccess(newUserPictureUrl, uniqueFileName);
 
         return _responseFactory.SuccessResponse(response);
     }

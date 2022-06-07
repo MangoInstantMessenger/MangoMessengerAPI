@@ -1,41 +1,41 @@
 ﻿using MangoAPI.Application.Interfaces;
 using MangoAPI.BusinessLogic.Responses;
-using MangoAPI.DataAccess.Database;
 using MangoAPI.Domain.Constants;
 using MangoAPI.Domain.Entities;
 using MediatR;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using MangoAPI.Infrastructure.Database;
 using Microsoft.EntityFrameworkCore;
 
 namespace MangoAPI.BusinessLogic.ApiCommands.Users;
 
-public class RegisterCommandHandler : IRequestHandler<RegisterCommand, Result<ResponseBase>>
+public class RegisterCommandHandler : IRequestHandler<RegisterCommand, Result<RegisterResponse>>
 {
     private readonly IEmailSenderService _emailSenderService;
-    private readonly MangoPostgresDbContext _postgresDbContext;
+    private readonly MangoDbContext _dbContext;
     private readonly IUserManagerService _userManager;
-    private readonly ResponseFactory<ResponseBase> _responseFactory;
+    private readonly ResponseFactory<RegisterResponse> _responseFactory;
     private readonly IMailgunSettings _mailgunSettings;
 
     public RegisterCommandHandler(
         IUserManagerService userManager,
-        MangoPostgresDbContext postgresDbContext,
+        MangoDbContext dbContext,
         IEmailSenderService emailSenderService,
-        ResponseFactory<ResponseBase> responseFactory,
+        ResponseFactory<RegisterResponse> responseFactory,
         IMailgunSettings mailgunSettings)
     {
         _userManager = userManager;
-        _postgresDbContext = postgresDbContext;
+        _dbContext = dbContext;
         _emailSenderService = emailSenderService;
         _responseFactory = responseFactory;
         _mailgunSettings = mailgunSettings;
     }
 
-    public async Task<Result<ResponseBase>> Handle(RegisterCommand request, CancellationToken cancellationToken)
+    public async Task<Result<RegisterResponse>> Handle(RegisterCommand request, CancellationToken cancellationToken)
     {
-        var userExists = await _postgresDbContext.Users
+        var userExists = await _dbContext.Users
             .AnyAsync(entity => entity.Email == request.Email, cancellationToken);
 
         if (userExists)
@@ -75,10 +75,13 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, Result<Re
 
         await _emailSenderService.SendVerificationEmailAsync(newUser, cancellationToken);
 
-        _postgresDbContext.UserInformation.Add(userInfo);
+        _dbContext.UserInformation.Add(userInfo);
 
-        await _postgresDbContext.SaveChangesAsync(cancellationToken);
+        await _dbContext.SaveChangesAsync(cancellationToken);
 
-        return _responseFactory.SuccessResponse(ResponseBase.SuccessResponse);
+        var response = RegisterResponse.FromSuccess(newUser.Id);
+        var result = _responseFactory.SuccessResponse(response);
+
+        return result;
     }
 }

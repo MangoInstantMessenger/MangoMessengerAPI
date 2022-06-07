@@ -13,7 +13,7 @@ public record DeleteMessageResponse : ResponseBase
 
     public static DeleteMessageResponse FromSuccess(MessageEntity message)
     {
-        return new()
+        return new DeleteMessageResponse
         {
             Success = true,
             Message = ResponseMessageCodes.Success,

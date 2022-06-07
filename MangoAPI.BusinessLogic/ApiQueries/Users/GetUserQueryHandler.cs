@@ -1,5 +1,4 @@
 ﻿using System.Linq;
-using MangoAPI.DataAccess.Database;
 using MangoAPI.Domain.Constants;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -9,21 +8,22 @@ using MangoAPI.Application.Interfaces;
 using MangoAPI.Application.Services;
 using MangoAPI.BusinessLogic.Models;
 using MangoAPI.BusinessLogic.Responses;
+using MangoAPI.Infrastructure.Database;
 
 namespace MangoAPI.BusinessLogic.ApiQueries.Users;
 
 public class GetUserQueryHandler : IRequestHandler<GetUserQuery, Result<GetUserResponse>>
 {
-    private readonly MangoPostgresDbContext _postgresDbContext;
+    private readonly MangoDbContext _dbContext;
     private readonly ResponseFactory<GetUserResponse> _responseFactory;
     private readonly IBlobServiceSettings _blobServiceSettings;
 
     public GetUserQueryHandler(
-        MangoPostgresDbContext postgresDbContext,
+        MangoDbContext dbContext,
         ResponseFactory<GetUserResponse> responseFactory,
         IBlobServiceSettings blobServiceSettings)
     {
-        _postgresDbContext = postgresDbContext;
+        _dbContext = dbContext;
         _responseFactory = responseFactory;
         _blobServiceSettings = blobServiceSettings;
     }
@@ -31,7 +31,7 @@ public class GetUserQueryHandler : IRequestHandler<GetUserQuery, Result<GetUserR
     public async Task<Result<GetUserResponse>> Handle(GetUserQuery request,
         CancellationToken cancellationToken)
     {
-        var user = await _postgresDbContext.Users.AsNoTracking()
+        var user = await _dbContext.Users.AsNoTracking()
             .Include(x => x.UserInformation)
             .Select(user => new User
             {

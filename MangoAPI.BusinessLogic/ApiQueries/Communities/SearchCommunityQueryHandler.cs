@@ -1,5 +1,4 @@
 ﻿using MangoAPI.BusinessLogic.Models;
-using MangoAPI.DataAccess.Database;
 using MangoAPI.Domain.Enums;
 using MediatR;
 using System.Linq;
@@ -7,6 +6,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using MangoAPI.Application.Interfaces;
 using MangoAPI.BusinessLogic.Responses;
+using MangoAPI.Infrastructure.Database;
 using Microsoft.EntityFrameworkCore;
 
 namespace MangoAPI.BusinessLogic.ApiQueries.Communities;
@@ -14,15 +14,15 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Communities;
 public class SearchCommunityQueryHandler
     : IRequestHandler<SearchCommunityQuery, Result<SearchCommunityResponse>>
 {
-    private readonly MangoPostgresDbContext _postgresDbContext;
+    private readonly MangoDbContext _dbContext;
     private readonly ResponseFactory<SearchCommunityResponse> _responseFactory;
     private readonly IBlobServiceSettings _blobServiceSettings;
 
-    public SearchCommunityQueryHandler(MangoPostgresDbContext postgresDbContext,
+    public SearchCommunityQueryHandler(MangoDbContext dbContext,
         ResponseFactory<SearchCommunityResponse> responseFactory,
         IBlobServiceSettings blobServiceSettings)
     {
-        _postgresDbContext = postgresDbContext;
+        _dbContext = dbContext;
         _responseFactory = responseFactory;
         _blobServiceSettings = blobServiceSettings;
     }
@@ -32,15 +32,15 @@ public class SearchCommunityQueryHandler
     {
         IQueryable<Chat> query;
 
-        var isRelational = _postgresDbContext.Database.IsRelational();
+        var isRelational = _dbContext.Database.IsRelational();
 
-        // This IF-ELSE is workaround in order to complete test with in-memory database
+        // TODO: Fix this IF-ELSE is workaround in order to complete test with in-memory database
         if (isRelational)
         {
-            query = _postgresDbContext.Chats
+            query = _dbContext.Chats
                 .AsNoTracking()
                 .Where(x => x.CommunityType == (int) CommunityType.PublicChannel)
-                .Where(x => EF.Functions.ILike(x.Title, $"%{request.DisplayName}%"))
+                .Where(x => EF.Functions.Like(x.Title, $"%{request.DisplayName}%"))
                 .Select(x => new Chat
                 {
                     ChatId = x.Id,
@@ -62,7 +62,7 @@ public class SearchCommunityQueryHandler
         }
         else
         {
-            query = _postgresDbContext.Chats
+            query = _dbContext.Chats
                 .AsNoTracking()
                 .Where(x => x.CommunityType == (int) CommunityType.PublicChannel)
                 .Where(x => x.Title.Contains(request.DisplayName))

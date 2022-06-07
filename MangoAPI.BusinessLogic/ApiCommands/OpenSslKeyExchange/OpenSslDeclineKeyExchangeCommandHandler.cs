@@ -1,8 +1,8 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 using MangoAPI.BusinessLogic.Responses;
-using MangoAPI.DataAccess.Database;
 using MangoAPI.Domain.Constants;
+using MangoAPI.Infrastructure.Database;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
@@ -11,14 +11,14 @@ namespace MangoAPI.BusinessLogic.ApiCommands.OpenSslKeyExchange;
 public class
     OpenSslDeclineKeyExchangeCommandHandler : IRequestHandler<OpenSslDeclineKeyExchangeCommand, Result<ResponseBase>>
 {
-    private readonly MangoPostgresDbContext _mangoPostgresDbContext;
+    private readonly MangoDbContext _mangoDbContext;
     private readonly ResponseFactory<ResponseBase> _responseFactory;
 
     public OpenSslDeclineKeyExchangeCommandHandler(
-        MangoPostgresDbContext mangoPostgresDbContext,
+        MangoDbContext mangoDbContext,
         ResponseFactory<ResponseBase> responseFactory)
     {
-        _mangoPostgresDbContext = mangoPostgresDbContext;
+        _mangoDbContext = mangoDbContext;
         _responseFactory = responseFactory;
     }
 
@@ -26,7 +26,7 @@ public class
         CancellationToken cancellationToken)
     {
         var keyExchangeRequest =
-            await _mangoPostgresDbContext.OpenSslKeyExchangeRequests
+            await _mangoDbContext.OpenSslKeyExchangeRequests
                 .FirstOrDefaultAsync(
                     predicate: x => x.Id == request.RequestId,
                     cancellationToken: cancellationToken);
@@ -47,9 +47,9 @@ public class
             return _responseFactory.ConflictResponse(message, description);
         }
 
-        _mangoPostgresDbContext.OpenSslKeyExchangeRequests.Remove(keyExchangeRequest);
+        _mangoDbContext.OpenSslKeyExchangeRequests.Remove(keyExchangeRequest);
 
-        await _mangoPostgresDbContext.SaveChangesAsync(cancellationToken);
+        await _mangoDbContext.SaveChangesAsync(cancellationToken);
 
         var result = ResponseBase.SuccessResponse;
 

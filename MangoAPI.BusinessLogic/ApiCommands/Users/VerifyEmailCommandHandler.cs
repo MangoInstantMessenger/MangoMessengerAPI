@@ -1,8 +1,8 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 using MangoAPI.BusinessLogic.Responses;
-using MangoAPI.DataAccess.Database;
 using MangoAPI.Domain.Constants;
+using MangoAPI.Infrastructure.Database;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
@@ -11,20 +11,20 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users;
 public class VerifyEmailCommandHandler
     : IRequestHandler<VerifyEmailCommand, Result<ResponseBase>>
 {
-    private readonly MangoPostgresDbContext _postgresDbContext;
+    private readonly MangoDbContext _dbContext;
     private readonly ResponseFactory<ResponseBase> _responseFactory;
 
-    public VerifyEmailCommandHandler(MangoPostgresDbContext postgresDbContext,
+    public VerifyEmailCommandHandler(MangoDbContext dbContext,
         ResponseFactory<ResponseBase> responseFactory)
     {
-        _postgresDbContext = postgresDbContext;
+        _dbContext = dbContext;
         _responseFactory = responseFactory;
     }
 
     public async Task<Result<ResponseBase>> Handle(VerifyEmailCommand request,
         CancellationToken cancellationToken)
     {
-        var user = await _postgresDbContext.Users
+        var user = await _dbContext.Users
             .FirstOrDefaultAsync(userEntity => userEntity.Email == request.Email,
                 cancellationToken);
 
@@ -54,9 +54,9 @@ public class VerifyEmailCommandHandler
 
         user.EmailConfirmed = true;
 
-        _postgresDbContext.Update(user);
+        _dbContext.Update(user);
 
-        await _postgresDbContext.SaveChangesAsync(cancellationToken);
+        await _dbContext.SaveChangesAsync(cancellationToken);
 
         return _responseFactory.SuccessResponse(ResponseBase.SuccessResponse);
     }

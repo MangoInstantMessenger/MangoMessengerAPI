@@ -2,8 +2,8 @@
 using System.Threading;
 using System.Threading.Tasks;
 using MangoAPI.BusinessLogic.Responses;
-using MangoAPI.DataAccess.Database;
 using MangoAPI.Domain.Constants;
+using MangoAPI.Infrastructure.Database;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
@@ -12,20 +12,20 @@ namespace MangoAPI.BusinessLogic.ApiCommands.OpenSslKeyExchange;
 public class
     OpenSslConfirmKeyExchangeCommandHandler : IRequestHandler<OpenSslConfirmKeyExchangeCommand, Result<ResponseBase>>
 {
-    private readonly MangoPostgresDbContext _mangoPostgresDbContext;
+    private readonly MangoDbContext _mangoDbContext;
     private readonly ResponseFactory<ResponseBase> _responseFactory;
 
-    public OpenSslConfirmKeyExchangeCommandHandler(MangoPostgresDbContext mangoPostgresDbContext,
+    public OpenSslConfirmKeyExchangeCommandHandler(MangoDbContext mangoDbContext,
         ResponseFactory<ResponseBase> responseFactory)
     {
-        _mangoPostgresDbContext = mangoPostgresDbContext;
+        _mangoDbContext = mangoDbContext;
         _responseFactory = responseFactory;
     }
 
     public async Task<Result<ResponseBase>> Handle(OpenSslConfirmKeyExchangeCommand request,
         CancellationToken cancellationToken)
     {
-        var keyExchangeRequest = await _mangoPostgresDbContext.OpenSslKeyExchangeRequests
+        var keyExchangeRequest = await _mangoDbContext.OpenSslKeyExchangeRequests
             .FirstOrDefaultAsync(
                 predicate: x => x.Id == request.RequestId,
                 cancellationToken: cancellationToken);
@@ -46,7 +46,7 @@ public class
         keyExchangeRequest.ReceiverPublicKey = bytes;
         keyExchangeRequest.IsConfirmed = true;
 
-        await _mangoPostgresDbContext.SaveChangesAsync(cancellationToken);
+        await _mangoDbContext.SaveChangesAsync(cancellationToken);
         return _responseFactory.SuccessResponse(ResponseBase.SuccessResponse);
     }
 }

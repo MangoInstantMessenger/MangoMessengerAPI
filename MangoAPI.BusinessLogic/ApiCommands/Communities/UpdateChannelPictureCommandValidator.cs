@@ -9,6 +9,7 @@ public class UpdateChanelPictureCommandValidator : AbstractValidator<UpdateChane
     {
         RuleFor(x => x.ChatId).NotEmpty();
         RuleFor(x => x.UserId).NotEmpty();
+        RuleFor(x => x.ContentType).NotEmpty();
             
         RuleFor(x => x.NewGroupPicture)
             .NotNull()

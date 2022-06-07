@@ -23,7 +23,7 @@ public class JwtGenerator : IJwtGenerator
 
     public string GenerateJwtToken(Guid userId)
     {
-        return GenerateJwtToken(userId, _jwtGeneratorSettings.MangoJwtLifetime);
+        return GenerateJwtToken(userId, _jwtGeneratorSettings.MangoJwtLifetimeMinutes);
     }
 
     private string GenerateJwtToken(Guid userId, int lifetimeMinutes)

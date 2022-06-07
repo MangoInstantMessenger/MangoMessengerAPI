@@ -8,19 +8,19 @@ public class JwtGeneratorSettings : IJwtGeneratorSettings
         string mangoJwtIssuer,
         string mangoJwtAudience,
         string mangoJwtSignKey,
-        int mangoJwtLifetime,
-        int mangoRefreshTokenLifetime)
+        int mangoJwtLifetimeMinutes,
+        int mangoRefreshTokenLifetimeDays)
     {
         MangoJwtIssuer = mangoJwtIssuer;
         MangoJwtAudience = mangoJwtAudience;
         MangoJwtSignKey = mangoJwtSignKey;
-        MangoJwtLifetime = mangoJwtLifetime;
-        MangoRefreshTokenLifetime = mangoRefreshTokenLifetime;
+        MangoJwtLifetimeMinutes = mangoJwtLifetimeMinutes;
+        MangoRefreshTokenLifetimeDays = mangoRefreshTokenLifetimeDays;
     }
 
     public string MangoJwtIssuer { get; }
     public string MangoJwtAudience { get; }
     public string MangoJwtSignKey { get; }
-    public int MangoJwtLifetime { get; }
-    public int MangoRefreshTokenLifetime { get; }
+    public int MangoJwtLifetimeMinutes { get; }
+    public int MangoRefreshTokenLifetimeDays { get; }
 }

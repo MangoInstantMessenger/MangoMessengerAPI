@@ -35,19 +35,24 @@ in feature. Project has classical N-tier architecture as below picture shows
 Install latest SDK and Runtime from Microsoft. In order to build and run current project, firstly set the following
 environment variables:
 
-- `MANGO_JWT_ISSUER`: JWT issuer claim (default https://localhost:4200)
-- `MANGO_JWT_AUDIENCE`: JWT audience claim (default https://localhost:5001)
+- `MANGO_JWT_ISSUER`: JWT issuer claim (default `https://localhost:4200`)
+- `MANGO_JWT_AUDIENCE`: JWT audience claim (default `https://localhost:5001`)
 - `MANGO_JWT_SIGN_KEY`: Secret used to sign jwt token in form of GUID
 - `MANGO_EMAIL_NOTIFICATIONS_ADDRESS`: Email address used in notifications and verifications
-- `MANGO_FRONTEND_ADDRESS`: URL of the frontend application
-- `MANGO_DATABASE_URL`: Database connection string in PostgreSQL format
+- `MANGO_FRONTEND_ADDRESS`: URL of the frontend application (default `https://localhost:4200/`)
+- `MANGO_DATABASE_URL`: Database connection string in Postgres format (
+  default: `Server=localhost;User Id=postgres;Password=postgres;Database=MangoApiDatabase;`)
 - `MANGO_BLOB_URL`: Connection string of the blob Azure blob storage server
 - `MANGO_BLOB_CONTAINER`: Name of the Azure blob storage container
 - `MANGO_BLOB_ACCESS`: Azure blob URL where files are available
 - `MANGO_MAILGUN_API_KEY`: API key of the MailGun service used for sending email notifications
-- `MANGO_MAILGUN_API_BASE_URL`: API base URL of the MailGun service
+- `MANGO_MAILGUN_API_BASE_URL`: API base URL of the MailGun service (default: `https://api.mailgun.net`)
 - `MANGO_MAILGUN_API_DOMAIN`: Verified domain used in MailGun service
-- `MANGO_API_ADDRESS`: Used for Diffie-Hellman handshake test
+- `MANGO_API_ADDRESS`: Used for Diffie-Hellman handshake test (default: `https://localhost:5001`)
+- `MANGO_INTEGRATION_TESTS_DATABASE_URL`: SQL server database used for integration tests (
+  default: `Data Source=DESKTOP-1V4TC6J;Initial Catalog=MangoIntegrationTests;Integrated Security=true;Encrypt=True;TrustServerCertificate=True;Connection Timeout=30;`),
+  connection string for the database in docker has
+  format: `Server=tcp:localhost,1444;Initial Catalog=WTMP_DEV;Persist Security Info=False;User ID=sa;Password=x2yiJt!Fs;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=True;Connection Timeout=30;`
 
 Then restore packages using CLI `dotnet restore` and after build the solution `dotnet build`.
 

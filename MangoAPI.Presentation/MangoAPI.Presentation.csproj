@@ -11,100 +11,16 @@
     </ItemGroup>
 
     <ItemGroup>
-        <_ContentIncludedByDefault Remove="wwwroot\Uploads\floppa_03ac7bcb-5989-4f9e-9542-b92246d2baf0.JPG" />
-        <_ContentIncludedByDefault Remove="wwwroot\Uploads\floppa_20b7bf76-d95d-414c-8755-5182a7b5ab12.JPG" />
-        <_ContentIncludedByDefault Remove="wwwroot\Uploads\floppa_a859.JPG" />
-        <_ContentIncludedByDefault Remove="wwwroot\Uploads\amelit_picture.jpg" />
-        <_ContentIncludedByDefault Remove="wwwroot\Uploads\arslan_picture.png" />
-        <_ContentIncludedByDefault Remove="wwwroot\Uploads\extremecode_cpp_logo.jpg" />
-        <_ContentIncludedByDefault Remove="wwwroot\Uploads\extremecode_dotnet.png" />
-        <_ContentIncludedByDefault Remove="wwwroot\Uploads\extremecode_rest_logo.jpg" />
-        <_ContentIncludedByDefault Remove="wwwroot\Uploads\extreme_code_main.jpg" />
-        <_ContentIncludedByDefault Remove="wwwroot\Uploads\illia_picture.png" />
-        <_ContentIncludedByDefault Remove="wwwroot\Uploads\khachatur_picture.jpg" />
-        <_ContentIncludedByDefault Remove="wwwroot\Uploads\musyaka_picture.jpg" />
-        <_ContentIncludedByDefault Remove="wwwroot\Uploads\razumovsky_picture.jpg" />
-        <_ContentIncludedByDefault Remove="wwwroot\Uploads\serhii_picture.png" />
-        <_ContentIncludedByDefault Remove="wwwroot\Uploads\szymon_picture.png" />
-        <_ContentIncludedByDefault Remove="wwwroot\Uploads\wsb_group_logo.png" />
-    </ItemGroup>
-
-    <ItemGroup>
-        <!-- Explicit packages -->
         <PackageReference Include="AutoMapper" Version="11.0.0" />
         <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="11.0.0" />
-        <PackageReference Include="MediatR" Version="10.0.1" />
-        <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="10.0.1" />
-        <PackageReference Include="FluentValidation" Version="10.3.6" />
-        <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="10.3.6" />
         <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.20.0" />
         <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.1" />
         <PackageReference Include="Microsoft.AspNetCore.Cors" Version="2.2.0" />
-        <PackageReference Include="Microsoft.AspNetCore.SignalR" Version="1.1.0" />
         <PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="6.0.4" />
         <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="6.15.0" />
         <PackageReference Include="Microsoft.IO.RecyclableMemoryStream" Version="2.2.0" />
         <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.14.0" />
-        <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
-        <PackageReference Include="Swashbuckle.AspNetCore.Annotations" Version="6.2.3" />
-        <PackageReference Include="Swashbuckle.AspNetCore.Swagger" Version="6.2.3" />
-        <PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" Version="6.2.3" />
-        <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="6.2.3" />
         <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.15.0" />
-
-        <!-- Previously Implicit packages -->
-        <PackageReference Include="Microsoft.AspNetCore.Authentication.Abstractions" Version="2.2.0" />
-        <PackageReference Include="Microsoft.AspNetCore.Authorization" Version="6.0.1" />
-        <PackageReference Include="Microsoft.AspNetCore.Authorization.Policy" Version="2.2.0" />
-        <PackageReference Include="Microsoft.AspNetCore.Connections.Abstractions" Version="6.0.1" />
-        <PackageReference Include="Microsoft.AspNetCore.Hosting.Abstractions" Version="2.2.0" />
-        <PackageReference Include="Microsoft.AspNetCore.Hosting.Server.Abstractions" Version="2.2.0" />
-        <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.2.2" />
-        <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.2.0" />
-        <PackageReference Include="Microsoft.AspNetCore.Http.Connections" Version="1.1.0" />
-        <PackageReference Include="Microsoft.AspNetCore.Http.Connections.Common" Version="6.0.1" />
-        <PackageReference Include="Microsoft.AspNetCore.Http.Extensions" Version="2.2.0" />
-        <PackageReference Include="Microsoft.AspNetCore.Http.Features" Version="5.0.13" />
-        <PackageReference Include="Microsoft.AspNetCore.JsonPatch" Version="6.0.1" />
-        <PackageReference Include="Microsoft.AspNetCore.Metadata" Version="6.0.1" />
-        <PackageReference Include="Microsoft.AspNetCore.Routing" Version="2.2.2" />
-        <PackageReference Include="Microsoft.AspNetCore.Routing.Abstractions" Version="2.2.0" />
-        <PackageReference Include="Microsoft.AspNetCore.SignalR.Common" Version="6.0.1" />
-        <PackageReference Include="Microsoft.AspNetCore.SignalR.Core" Version="1.1.0" />
-        <PackageReference Include="Microsoft.AspNetCore.SignalR.Protocols.Json" Version="6.0.1" />
-        <PackageReference Include="Microsoft.AspNetCore.WebSockets" Version="2.2.1" />
-        <PackageReference Include="Microsoft.AspNetCore.WebUtilities" Version="2.2.0" />
-        <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
-        <PackageReference Include="Microsoft.Extensions.ApiDescription.Server" Version="6.0.1">
-            <PrivateAssets>all</PrivateAssets>
-            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-        </PackageReference>
-        <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="6.0.0" />
-        <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="6.0.0" />
-        <PackageReference Include="Microsoft.Extensions.Features" Version="6.0.1" />
-        <PackageReference Include="Microsoft.Extensions.FileProviders.Abstractions" Version="6.0.0" />
-        <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="6.0.0" />
-        <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="6.0.0" />
-        <PackageReference Include="Microsoft.Extensions.ObjectPool" Version="6.0.1" />
-        <PackageReference Include="Microsoft.Extensions.Options" Version="6.0.0" />
-        <PackageReference Include="Microsoft.Extensions.Primitives" Version="6.0.0" />
-        <PackageReference Include="Microsoft.IdentityModel.JsonWebTokens" Version="6.15.0" />
-        <PackageReference Include="Microsoft.IdentityModel.Logging" Version="6.15.0" />
-        <PackageReference Include="Microsoft.IdentityModel.Protocols" Version="6.15.0" />
-        <PackageReference Include="Microsoft.IdentityModel.Protocols.OpenIdConnect" Version="6.15.0" />
-        <PackageReference Include="Microsoft.Net.Http.Headers" Version="2.2.8" />
-        <PackageReference Include="Microsoft.NETCore.Platforms" Version="6.0.1" />
-        <PackageReference Include="Microsoft.OpenApi" Version="1.2.3" />
-        <PackageReference Include="System.Buffers" Version="4.5.1" />
-        <PackageReference Include="System.Formats.Asn1" Version="6.0.0" />
-        <PackageReference Include="System.IO.Pipelines" Version="6.0.1" />
-        <PackageReference Include="System.Net.WebSockets.WebSocketProtocol" Version="5.0.0" />
-        <PackageReference Include="System.Reflection.Emit" Version="4.7.0" />
-        <PackageReference Include="System.Runtime.CompilerServices.Unsafe" Version="6.0.0" />
-        <PackageReference Include="System.Security.Cryptography.Cng" Version="5.0.0" />
-        <PackageReference Include="System.Security.Principal.Windows" Version="5.0.0" />
-        <PackageReference Include="System.Text.Encodings.Web" Version="6.0.0" />
-        <PackageReference Include="System.Threading.Channels" Version="6.0.0" />
     </ItemGroup>
 
 </Project>

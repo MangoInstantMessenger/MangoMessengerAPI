@@ -1,6 +1,5 @@
 ﻿using MangoAPI.BusinessLogic.Models;
 using MangoAPI.BusinessLogic.Responses;
-using MangoAPI.DataAccess.Database;
 using MangoAPI.Domain.Enums;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -8,21 +7,22 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using MangoAPI.Application.Interfaces;
+using MangoAPI.Infrastructure.Database;
 
 namespace MangoAPI.BusinessLogic.ApiQueries.Communities;
 
 public class GetCurrentUserChatsQueryHandler
     : IRequestHandler<GetCurrentUserChatsQuery, Result<GetCurrentUserChatsResponse>>
 {
-    private readonly MangoPostgresDbContext _postgresDbContext;
+    private readonly MangoDbContext _dbContext;
     private readonly ResponseFactory<GetCurrentUserChatsResponse> _responseFactory;
     private readonly IBlobServiceSettings _blobServiceSettings;
 
-    public GetCurrentUserChatsQueryHandler(MangoPostgresDbContext postgresDbContext,
+    public GetCurrentUserChatsQueryHandler(MangoDbContext dbContext,
         ResponseFactory<GetCurrentUserChatsResponse> responseFactory,
         IBlobServiceSettings blobServiceSettings)
     {
-        _postgresDbContext = postgresDbContext;
+        _dbContext = dbContext;
         _responseFactory = responseFactory;
         _blobServiceSettings = blobServiceSettings;
     }
@@ -30,7 +30,7 @@ public class GetCurrentUserChatsQueryHandler
     public async Task<Result<GetCurrentUserChatsResponse>> Handle(GetCurrentUserChatsQuery request,
         CancellationToken cancellationToken)
     {
-        var query = _postgresDbContext.UserChats
+        var query = _dbContext.UserChats
             .AsNoTracking()
             .Include(x => x.Chat)
             .ThenInclude(x => x.Messages)
@@ -63,7 +63,7 @@ public class GetCurrentUserChatsQueryHandler
             .Select(x => x.ChatId)
             .ToList();
 
-        var colleagues = await _postgresDbContext.UserChats
+        var colleagues = await _dbContext.UserChats
             .AsNoTracking()
             .Include(x => x.User)
             .Where(x => directChatsIds.Contains(x.ChatId) && x.UserId != request.UserId)

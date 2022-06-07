@@ -3,8 +3,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using MangoAPI.BusinessLogic.Models;
 using MangoAPI.BusinessLogic.Responses;
-using MangoAPI.DataAccess.Database;
 using MangoAPI.Domain.Constants;
+using MangoAPI.Infrastructure.Database;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
@@ -13,13 +13,13 @@ namespace MangoAPI.BusinessLogic.ApiQueries.OpenSslKeyExchange;
 public class OpenSslGetKeyExchangeRequestByIdQueryHandler : IRequestHandler<OpenSslGetKeyExchangeRequestByIdQuery,
     Result<OpenSslGetKeyExchangeRequestByIdResponse>>
 {
-    private readonly MangoPostgresDbContext _postgresDbContext;
+    private readonly MangoDbContext _dbContext;
     private readonly ResponseFactory<OpenSslGetKeyExchangeRequestByIdResponse> _responseFactory;
 
-    public OpenSslGetKeyExchangeRequestByIdQueryHandler(MangoPostgresDbContext postgresDbContext,
+    public OpenSslGetKeyExchangeRequestByIdQueryHandler(MangoDbContext dbContext,
         ResponseFactory<OpenSslGetKeyExchangeRequestByIdResponse> responseFactory)
     {
-        _postgresDbContext = postgresDbContext;
+        _dbContext = dbContext;
         _responseFactory = responseFactory;
     }
 
@@ -27,7 +27,7 @@ public class OpenSslGetKeyExchangeRequestByIdQueryHandler : IRequestHandler<Open
         OpenSslGetKeyExchangeRequestByIdQuery request,
         CancellationToken cancellationToken)
     {
-        var keyExchangeRequest = await _postgresDbContext.OpenSslKeyExchangeRequests
+        var keyExchangeRequest = await _dbContext.OpenSslKeyExchangeRequests
             .AsNoTracking()
             .Select(x => new OpenSslKeyExchangeRequest
             {

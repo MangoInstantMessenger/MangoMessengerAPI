@@ -3,9 +3,9 @@ using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 using MangoAPI.BusinessLogic.Responses;
-using MangoAPI.DataAccess.Database;
 using MangoAPI.Domain.Constants;
 using MangoAPI.Domain.Entities;
+using MangoAPI.Infrastructure.Database;
 using MediatR;
 
 namespace MangoAPI.BusinessLogic.ApiCommands.OpenSslKeyExchange;
@@ -13,13 +13,13 @@ namespace MangoAPI.BusinessLogic.ApiCommands.OpenSslKeyExchange;
 public class OpenSslCreateDiffieHellmanParameterCommandHandler : IRequestHandler<OpenSslCreateDiffieHellmanParameterCommand,
     Result<OpenSslCreateDiffieHellmanParameterResponse>>
 {
-    private readonly MangoPostgresDbContext _postgresDbContext;
+    private readonly MangoDbContext _dbContext;
     private readonly ResponseFactory<OpenSslCreateDiffieHellmanParameterResponse> _responseFactory;
 
-    public OpenSslCreateDiffieHellmanParameterCommandHandler(MangoPostgresDbContext postgresDbContext,
+    public OpenSslCreateDiffieHellmanParameterCommandHandler(MangoDbContext dbContext,
         ResponseFactory<OpenSslCreateDiffieHellmanParameterResponse> responseFactory)
     {
-        _postgresDbContext = postgresDbContext;
+        _dbContext = dbContext;
         _responseFactory = responseFactory;
     }
 
@@ -37,9 +37,9 @@ public class OpenSslCreateDiffieHellmanParameterCommandHandler : IRequestHandler
             CreatedAt = DateTime.UtcNow,
         };
 
-        _postgresDbContext.OpenSslDhParameters.Add(entity);
+        _dbContext.OpenSslDhParameters.Add(entity);
 
-        await _postgresDbContext.SaveChangesAsync(cancellationToken);
+        await _dbContext.SaveChangesAsync(cancellationToken);
 
         var response = new OpenSslCreateDiffieHellmanParameterResponse
         {

@@ -1,7 +1,6 @@
 ﻿using System;
 using MangoAPI.BusinessLogic.HubConfig;
 using MangoAPI.BusinessLogic.Responses;
-using MangoAPI.DataAccess.Database;
 using MangoAPI.Domain.Constants;
 using MediatR;
 using Microsoft.AspNetCore.SignalR;
@@ -9,6 +8,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using MangoAPI.BusinessLogic.Models;
+using MangoAPI.Infrastructure.Database;
 using Microsoft.EntityFrameworkCore;
 
 namespace MangoAPI.BusinessLogic.ApiCommands.Messages;
@@ -16,16 +16,16 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Messages;
 public class EditMessageCommandHandler
     : IRequestHandler<EditMessageCommand, Result<ResponseBase>>
 {
-    private readonly MangoPostgresDbContext _postgresDbContext;
+    private readonly MangoDbContext _dbContext;
     private readonly IHubContext<ChatHub, IHubClient> _hubContext;
     private readonly ResponseFactory<ResponseBase> _responseFactory;
 
     public EditMessageCommandHandler(
-        MangoPostgresDbContext postgresDbContext,
+        MangoDbContext dbContext,
         IHubContext<ChatHub, IHubClient> hubContext,
         ResponseFactory<ResponseBase> responseFactory)
     {
-        _postgresDbContext = postgresDbContext;
+        _dbContext = dbContext;
         _hubContext = hubContext;
         _responseFactory = responseFactory;
     }
@@ -33,7 +33,7 @@ public class EditMessageCommandHandler
     public async Task<Result<ResponseBase>> Handle(EditMessageCommand request,
         CancellationToken cancellationToken)
     {
-        var isMessageExists = await _postgresDbContext.Messages
+        var isMessageExists = await _dbContext.Messages
             .AnyAsync(t => t.Id == request.MessageId, cancellationToken);
             
         if (!isMessageExists)
@@ -44,7 +44,7 @@ public class EditMessageCommandHandler
             return _responseFactory.ConflictResponse(errorMessage, errorDescription);
         }
 
-        var query = _postgresDbContext.UserChats
+        var query = _dbContext.UserChats
             .Include(x => x.Chat)
             .ThenInclude(x => x.Messages)
             .ThenInclude(x => x.User)
@@ -63,7 +63,7 @@ public class EditMessageCommandHandler
         }
 
         var message = chat.Messages.First(x => x.Id == request.MessageId);
-        _postgresDbContext.Entry(message.User).State = EntityState.Detached;
+        _dbContext.Entry(message.User).State = EntityState.Detached;
 
         var messageIsLast = chat.LastMessageId.HasValue && chat.LastMessageId == request.MessageId;
         var updatedAt = DateTime.UtcNow;
@@ -77,10 +77,10 @@ public class EditMessageCommandHandler
             chat.LastMessageTime = updatedAt;
         }
 
-        _postgresDbContext.Messages.Update(message);
-        _postgresDbContext.Chats.Update(chat);
+        _dbContext.Messages.Update(message);
+        _dbContext.Chats.Update(chat);
 
-        await _postgresDbContext.SaveChangesAsync(cancellationToken);
+        await _dbContext.SaveChangesAsync(cancellationToken);
 
         var messageDeleteNotification = new MessageEditNotification
         {

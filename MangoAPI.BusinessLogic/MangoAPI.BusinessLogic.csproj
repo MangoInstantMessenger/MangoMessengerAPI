@@ -7,17 +7,26 @@
 
     <ItemGroup>
         <ProjectReference Include="..\MangoAPI.Application\MangoAPI.Application.csproj" />
-        <ProjectReference Include="..\MangoAPI.DataAccess\MangoAPI.DataAccess.csproj" />
+        <ProjectReference Include="..\MangoAPI.Infrastructure\MangoAPI.Infrastructure.csproj" />
         <ProjectReference Include="..\MangoAPI.Domain\MangoAPI.Domain.csproj" />
     </ItemGroup>
 
     <ItemGroup>
         <!-- Explicit packages -->
         <PackageReference Include="Azure.Storage.Blobs" Version="12.10.0" />
-        <PackageReference Include="FluentValidation" Version="10.3.6" />
+        <PackageReference Include="FluentValidation" Version="11.0.2" />
+        <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.0.2" />
         <PackageReference Include="MediatR" Version="10.0.1" />
+        <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="10.0.1" />
+        <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.1" />
+        <PackageReference Include="Microsoft.AspNetCore.SignalR" Version="1.1.0" />
         <PackageReference Include="Microsoft.AspNetCore.SignalR.Core" Version="1.1.0" />
         <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.2.0" />
+        <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
+        <PackageReference Include="Swashbuckle.AspNetCore.Annotations" Version="6.2.3" />
+        <PackageReference Include="Swashbuckle.AspNetCore.Swagger" Version="6.2.3" />
+        <PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" Version="6.2.3" />
+        <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="6.2.3" />
 
         <!-- Previously Implicit packages -->
 <!--        <PackageReference Include="Azure.Core" Version="1.22.0"/>-->

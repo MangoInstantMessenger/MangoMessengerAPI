@@ -1,12 +1,11 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using MangoAPI.BusinessLogic.HubConfig;
 using MangoAPI.BusinessLogic.Models;
 using MangoAPI.BusinessLogic.Responses;
-using MangoAPI.DataAccess.Database;
 using MangoAPI.Domain.Constants;
+using MangoAPI.Infrastructure.Database;
 using MediatR;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
@@ -16,16 +15,16 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Messages;
 public class DeleteMessageCommandHandler
     : IRequestHandler<DeleteMessageCommand, Result<DeleteMessageResponse>>
 {
-    private readonly MangoPostgresDbContext _postgresDbContext;
+    private readonly MangoDbContext _dbContext;
     private readonly IHubContext<ChatHub, IHubClient> _hubContext;
     private readonly ResponseFactory<DeleteMessageResponse> _responseFactory;
 
     public DeleteMessageCommandHandler(
-        MangoPostgresDbContext postgresDbContext,
+        MangoDbContext dbContext,
         IHubContext<ChatHub, IHubClient> hubContext,
         ResponseFactory<DeleteMessageResponse> responseFactory)
     {
-        _postgresDbContext = postgresDbContext;
+        _dbContext = dbContext;
         _hubContext = hubContext;
         _responseFactory = responseFactory;
     }
@@ -33,7 +32,7 @@ public class DeleteMessageCommandHandler
     public async Task<Result<DeleteMessageResponse>> Handle(DeleteMessageCommand request,
         CancellationToken cancellationToken)
     {
-        var isMessageExists = await _postgresDbContext.Messages
+        var isMessageExists = await _dbContext.Messages
             .AnyAsync(t => t.Id == request.MessageId, cancellationToken);
             
         if (!isMessageExists)
@@ -44,7 +43,7 @@ public class DeleteMessageCommandHandler
             return _responseFactory.ConflictResponse(errorMessage, errorDescription);
         }
             
-        var query = _postgresDbContext.UserChats
+        var query = _dbContext.UserChats
             .Include(x => x.Chat)
             .ThenInclude(x => x.Messages)
             .ThenInclude(x => x.User)
@@ -65,7 +64,7 @@ public class DeleteMessageCommandHandler
         }
 
         var message = chat.Messages.First(x => x.Id == request.MessageId);
-        _postgresDbContext.Entry(message.User).State = EntityState.Detached;
+        _dbContext.Entry(message.User).State = EntityState.Detached;
 
         var messageDeleteNotification = new MessageDeleteNotification
         {
@@ -92,10 +91,10 @@ public class DeleteMessageCommandHandler
             chat.LastMessageTime = newLastMessage?.CreatedAt;
         }
 
-        _postgresDbContext.Messages.Remove(message);
-        _postgresDbContext.Chats.Update(chat);
+        _dbContext.Messages.Remove(message);
+        _dbContext.Chats.Update(chat);
 
-        await _postgresDbContext.SaveChangesAsync(cancellationToken);
+        await _dbContext.SaveChangesAsync(cancellationToken);
 
         await _hubContext.Clients.Group(message.ChatId.ToString()).NotifyOnMessageDeleteAsync(messageDeleteNotification);
 

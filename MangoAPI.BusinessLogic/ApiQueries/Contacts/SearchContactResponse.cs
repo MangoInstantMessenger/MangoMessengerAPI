@@ -11,7 +11,7 @@ public record SearchContactResponse : ResponseBase
 
     public static SearchContactResponse FromSuccess(List<Contact> contacts)
     {
-        return new()
+        return new SearchContactResponse
         {
             Message = ResponseMessageCodes.Success,
             Success = true,

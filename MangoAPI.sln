@@ -5,7 +5,7 @@ VisualStudioVersion = 17.0.32014.148
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MangoAPI.Presentation", "MangoAPI.Presentation\MangoAPI.Presentation.csproj", "{139143FA-4968-4269-883B-80DF7EECE7EA}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MangoAPI.DataAccess", "MangoAPI.DataAccess\MangoAPI.DataAccess.csproj", "{892FEF6D-BCF5-4A93-BB2A-C49D5EE57491}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MangoAPI.Infrastructure", "MangoAPI.Infrastructure\MangoAPI.Infrastructure.csproj", "{892FEF6D-BCF5-4A93-BB2A-C49D5EE57491}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MangoAPI.Domain", "MangoAPI.Domain\MangoAPI.Domain.csproj", "{CC4422A4-CDDC-4B8D-A6E4-6466732B2F47}"
 EndProject
@@ -39,7 +39,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SQL", "SQL", "{2A176CBC-BD4
 		SQL\PostrgresValidateDatabaseSize.sql = SQL\PostrgresValidateDatabaseSize.sql
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MangoAPI.Tests", "MangoAPI.Tests\MangoAPI.Tests.csproj", "{7BE7D37C-B0FF-4231-A155-B8AA7CF8092B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MangoAPI.IntegrationTests", "MangoAPI.IntegrationTests\MangoAPI.IntegrationTests.csproj", "{7BE7D37C-B0FF-4231-A155-B8AA7CF8092B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MangoAPI.DiffieHellmanLibrary", "MangoAPI.DiffieHellmanLibrary\MangoAPI.DiffieHellmanLibrary.csproj", "{D60AA7DE-4121-4C89-91D3-8DBBF735E13F}"
 EndProject

@@ -1,6 +1,5 @@
 ﻿using MangoAPI.BusinessLogic.HubConfig;
 using MangoAPI.BusinessLogic.Models;
-using MangoAPI.DataAccess.Database;
 using MangoAPI.Domain.Constants;
 using MangoAPI.Domain.Entities;
 using MediatR;
@@ -12,24 +11,25 @@ using System.Threading;
 using System.Threading.Tasks;
 using MangoAPI.Application.Interfaces;
 using MangoAPI.BusinessLogic.Responses;
+using MangoAPI.Infrastructure.Database;
 
 namespace MangoAPI.BusinessLogic.ApiCommands.Messages;
 
 public class SendMessageCommandHandler
     : IRequestHandler<SendMessageCommand, Result<SendMessageResponse>>
 {
-    private readonly MangoPostgresDbContext _postgresDbContext;
+    private readonly MangoDbContext _dbContext;
     private readonly IHubContext<ChatHub, IHubClient> _hubContext;
     private readonly ResponseFactory<SendMessageResponse> _responseFactory;
     private readonly IBlobServiceSettings _blobServiceSettings;
 
     public SendMessageCommandHandler(
-        MangoPostgresDbContext postgresDbContext,
+        MangoDbContext dbContext,
         IHubContext<ChatHub, IHubClient> hubContext,
         ResponseFactory<SendMessageResponse> responseFactory,
         IBlobServiceSettings blobServiceSettings)
     {
-        _postgresDbContext = postgresDbContext;
+        _dbContext = dbContext;
         _hubContext = hubContext;
         _responseFactory = responseFactory;
         _blobServiceSettings = blobServiceSettings;
@@ -38,7 +38,7 @@ public class SendMessageCommandHandler
     public async Task<Result<SendMessageResponse>> Handle(SendMessageCommand request,
         CancellationToken cancellationToken)
     {
-        var user = await _postgresDbContext.Users.AsNoTracking()
+        var user = await _dbContext.Users.AsNoTracking()
             .Select(x => new
             {
                 x.DisplayName,
@@ -55,7 +55,7 @@ public class SendMessageCommandHandler
             return _responseFactory.ConflictResponse(errorMessage, errorDescription);
         }
 
-        var userChat = await _postgresDbContext.UserChats.AsNoTracking()
+        var userChat = await _dbContext.UserChats.AsNoTracking()
             .Select(x => new
             {
                 x.ChatId,
@@ -72,19 +72,10 @@ public class SendMessageCommandHandler
             return _responseFactory.ConflictResponse(errorMessage, errorDescription);
         }
 
-        var messageCount = await _postgresDbContext.Messages
+        var messageCount = await _dbContext.Messages
             .AsNoTracking()
             .Where(x => x.UserId == request.UserId)
-            .Where(x => x.CreatedAt >= DateTime.UtcNow.Date.AddMinutes(-5))
             .CountAsync(cancellationToken);
-
-        if (messageCount >= 100)
-        {
-            const string errorMessage = ResponseMessageCodes.MaximumMessageCountInLast5MinutesExceeded100;
-            var errorDescription = ResponseMessageCodes.ErrorDictionary[errorMessage];
-
-            return _responseFactory.ConflictResponse(errorMessage, errorDescription);
-        }
 
         var messageEntity = new MessageEntity
         {
@@ -104,10 +95,10 @@ public class SendMessageCommandHandler
         userChat.Chat.LastMessageTime = messageEntity.CreatedAt;
         userChat.Chat.LastMessageId = messageEntity.Id;
 
-        _postgresDbContext.Chats.Update(userChat.Chat);
-        _postgresDbContext.Messages.Add(messageEntity);
+        _dbContext.Chats.Update(userChat.Chat);
+        _dbContext.Messages.Add(messageEntity);
 
-        await _postgresDbContext.SaveChangesAsync(cancellationToken);
+        await _dbContext.SaveChangesAsync(cancellationToken);
 
         var messageDto = messageEntity.ToMessage(user.DisplayName, user.Id, user.Image, _blobServiceSettings.MangoBlobAccess);
 

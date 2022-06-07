@@ -2,10 +2,10 @@
 using System.Threading;
 using System.Threading.Tasks;
 using MangoAPI.BusinessLogic.Responses;
-using MangoAPI.DataAccess.Database;
 using MangoAPI.Domain.Constants;
 using MangoAPI.Domain.Entities;
 using MangoAPI.Domain.Enums;
+using MangoAPI.Infrastructure.Database;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
@@ -13,13 +13,13 @@ namespace MangoAPI.BusinessLogic.ApiCommands.UserChats;
 
 public class JoinChatCommandHandler : IRequestHandler<JoinChatCommand, Result<ResponseBase>>
 {
-    private readonly MangoPostgresDbContext _postgresDbContext;
+    private readonly MangoDbContext _dbContext;
     private readonly ResponseFactory<ResponseBase> _responseFactory;
 
-    public JoinChatCommandHandler(MangoPostgresDbContext postgresDbContext,
+    public JoinChatCommandHandler(MangoDbContext dbContext,
         ResponseFactory<ResponseBase> responseFactory)
     {
-        _postgresDbContext = postgresDbContext;
+        _dbContext = dbContext;
         _responseFactory = responseFactory;
     }
 
@@ -27,7 +27,7 @@ public class JoinChatCommandHandler : IRequestHandler<JoinChatCommand, Result<Re
         CancellationToken cancellationToken)
     {
         var alreadyJoined = await
-            _postgresDbContext.UserChats.AnyAsync(userChatEntity => 
+            _dbContext.UserChats.AnyAsync(userChatEntity => 
                 userChatEntity.UserId == request.UserId && 
                 userChatEntity.ChatId == request.ChatId, cancellationToken);
 
@@ -39,7 +39,7 @@ public class JoinChatCommandHandler : IRequestHandler<JoinChatCommand, Result<Re
             return _responseFactory.ConflictResponse(errorMessage, details);
         }
 
-        var chat = await _postgresDbContext.Chats
+        var chat = await _dbContext.Chats
             .Where(chatEntity => chatEntity.CommunityType != (int) CommunityType.DirectChat)
             .FirstOrDefaultAsync(chatEntity => chatEntity.Id == request.ChatId, cancellationToken);
 
@@ -51,7 +51,7 @@ public class JoinChatCommandHandler : IRequestHandler<JoinChatCommand, Result<Re
             return _responseFactory.ConflictResponse(errorMessage, details);
         }
 
-        _postgresDbContext.UserChats.Add(
+        _dbContext.UserChats.Add(
             new UserChatEntity
             {
                 ChatId = request.ChatId,
@@ -61,9 +61,9 @@ public class JoinChatCommandHandler : IRequestHandler<JoinChatCommand, Result<Re
 
         chat.MembersCount += 1;
 
-        _postgresDbContext.Update(chat);
+        _dbContext.Update(chat);
 
-        await _postgresDbContext.SaveChangesAsync(cancellationToken);
+        await _dbContext.SaveChangesAsync(cancellationToken);
 
         return _responseFactory.SuccessResponse(ResponseBase.SuccessResponse);
     }

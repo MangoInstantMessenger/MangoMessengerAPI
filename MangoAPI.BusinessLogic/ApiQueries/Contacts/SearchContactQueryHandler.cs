@@ -5,7 +5,7 @@ using MangoAPI.Application.Interfaces;
 using MangoAPI.Application.Services;
 using MangoAPI.BusinessLogic.Models;
 using MangoAPI.BusinessLogic.Responses;
-using MangoAPI.DataAccess.Database;
+using MangoAPI.Infrastructure.Database;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
@@ -14,16 +14,16 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Contacts;
 public class SearchContactByDisplayNameQueryHandler
     : IRequestHandler<SearchContactQuery, Result<SearchContactResponse>>
 {
-    private readonly MangoPostgresDbContext _postgresDbContext;
+    private readonly MangoDbContext _dbContext;
     private readonly ResponseFactory<SearchContactResponse> _responseFactory;
     private readonly IBlobServiceSettings _blobServiceSettings;
 
     public SearchContactByDisplayNameQueryHandler(
-        MangoPostgresDbContext postgresDbContext,
+        MangoDbContext dbContext,
         ResponseFactory<SearchContactResponse> responseFactory,
         IBlobServiceSettings blobServiceSettings)
     {
-        _postgresDbContext = postgresDbContext;
+        _dbContext = dbContext;
         _responseFactory = responseFactory;
         _blobServiceSettings = blobServiceSettings;
     }
@@ -33,15 +33,16 @@ public class SearchContactByDisplayNameQueryHandler
     {
         IQueryable<Contact> query;
 
-        var isRelational = _postgresDbContext.Database.IsRelational();
+        var isRelational = _dbContext.Database.IsRelational();
 
+        // TODO: Fix this IF-ELSE is workaround in order to complete test with in-memory database
         if (isRelational)
         {
-            query = _postgresDbContext.Users
+            query = _dbContext.Users
                 .AsNoTracking()
                 .Include(x => x.UserInformation)
                 .Where(x => x.Id != request.UserId)
-                .Where(x => EF.Functions.ILike(x.DisplayName, $"%{request.SearchQuery}%"))
+                .Where(x => EF.Functions.Like(x.DisplayName, $"%{request.SearchQuery}%"))
                 .Select(x => new Contact
                 {
                     UserId = x.Id,
@@ -54,7 +55,7 @@ public class SearchContactByDisplayNameQueryHandler
         }
         else
         {
-            query = _postgresDbContext.Users
+            query = _dbContext.Users
                 .AsNoTracking()
                 .Include(x => x.UserInformation)
                 .Where(x => x.Id != request.UserId)
@@ -73,7 +74,7 @@ public class SearchContactByDisplayNameQueryHandler
 
         var searchResult = await query.Take(200).ToListAsync(cancellationToken);
 
-        var commonContacts = await _postgresDbContext.UserContacts.AsNoTracking()
+        var commonContacts = await _dbContext.UserContacts.AsNoTracking()
             .Where(x => x.UserId == request.UserId)
             .Select(x => x.ContactId)
             .ToListAsync(cancellationToken);

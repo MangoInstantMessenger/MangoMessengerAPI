@@ -3,8 +3,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using MangoAPI.BusinessLogic.Models;
 using MangoAPI.BusinessLogic.Responses;
-using MangoAPI.DataAccess.Database;
 using MangoAPI.Domain.Constants;
+using MangoAPI.Infrastructure.Database;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
@@ -14,20 +14,20 @@ public class
     CngGetKeyExchangeRequestsQueryHandler : IRequestHandler<CngGetKeyExchangeRequestsQuery,
         Result<CngGetKeyExchangeResponse>>
 {
-    private readonly MangoPostgresDbContext _postgresDbContext;
+    private readonly MangoDbContext _dbContext;
     private readonly ResponseFactory<CngGetKeyExchangeResponse> _responseFactory;
 
-    public CngGetKeyExchangeRequestsQueryHandler(MangoPostgresDbContext postgresDbContext,
+    public CngGetKeyExchangeRequestsQueryHandler(MangoDbContext dbContext,
         ResponseFactory<CngGetKeyExchangeResponse> responseFactory)
     {
-        _postgresDbContext = postgresDbContext;
+        _dbContext = dbContext;
         _responseFactory = responseFactory;
     }
 
     public async Task<Result<CngGetKeyExchangeResponse>> Handle(CngGetKeyExchangeRequestsQuery request,
         CancellationToken cancellationToken)
     {
-        var requests = await _postgresDbContext.CngKeyExchangeRequests
+        var requests = await _dbContext.CngKeyExchangeRequests
             .Where(x => x.UserId == request.UserId)
             .Select(x => new KeyExchangeRequest
             {
