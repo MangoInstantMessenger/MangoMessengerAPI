@@ -21,13 +21,11 @@ public class UpdateChannelPictureSuccess : IntegrationTestBase
             createChannelCommand, CancellationToken.None);
         var chatId = chat.Response.ChatId;
         var file = MangoFilesHelper.GetTestImage();
-        var command = new UpdateChanelPictureCommand
-        {
-            ChatId = chatId,
-            UserId = userId,
-            NewGroupPicture = file,
-            ContentType = "image/jpeg",
-        };
+        var command = new UpdateChanelPictureCommand(
+            ChatId: chatId, 
+            UserId: userId, 
+            NewGroupPicture: file,
+            ContentType: "image/jpeg");
 
         var result = await MangoModule.RequestAsync(command, CancellationToken.None);
 

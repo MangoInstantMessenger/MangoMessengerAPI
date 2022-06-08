@@ -22,13 +22,11 @@ public class
             CommandHelper.RegisterPetroCommand(),
             CancellationToken.None);
         var file = MangoFilesHelper.GetTestImage();
-        var command = new UpdateChanelPictureCommand
-        {
-            UserId = sender.Response.UserId,
-            ChatId = Guid.NewGuid(),
-            NewGroupPicture = file,
-            ContentType = "image/jpeg"
-        };
+        var command = new UpdateChanelPictureCommand(
+            UserId: sender.Response.UserId, 
+            ChatId: Guid.NewGuid(),
+            NewGroupPicture: file, 
+            ContentType: "image/jpeg");
 
         var result = await MangoModule.RequestAsync(command, CancellationToken.None);
 

@@ -36,9 +36,9 @@ public static class CommandHelper
     public static CreateChannelCommand CreateExtremeCodeMainChatCommand(Guid userId)
     {
         var command = new CreateChannelCommand(
-            channelTitle: "ExtremeCode Main",
-            channelDescription: "Extreme Code Main Public Group",
-            userId: userId);
+            ChannelTitle: "ExtremeCode Main",
+            ChannelDescription: "Extreme Code Main Public Group",
+            UserId: userId);
 
         return command;
     }
@@ -46,9 +46,9 @@ public static class CommandHelper
     public static CngCreateKeyExchangeRequestCommand CreateCngKeyExchangeCommand(Guid userId, Guid requestedUserId)
     {
         var command = new CngCreateKeyExchangeRequestCommand(
-            userId: userId,
-            requestedUserId: requestedUserId,
-            publicKey: "Public Key");
+            UserId: userId,
+            RequestedUserId: requestedUserId,
+            PublicKey: "Public Key");
 
         return command;
     }

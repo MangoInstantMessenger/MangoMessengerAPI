@@ -17,11 +17,9 @@ public class CreateChatTestSuccess : IntegrationTestBase
             await MangoModule.RequestAsync(CommandHelper.RegisterPetroCommand(), CancellationToken.None);
         var partner =
             await MangoModule.RequestAsync(CommandHelper.RegisterKhachaturCommand(), CancellationToken.None);
-        var command = new CreateChatCommand 
-        {
-            UserId = user.Response.UserId,
-            PartnerId = partner.Response.UserId
-        };
+        var command = new CreateChatCommand(
+            UserId: user.Response.UserId,
+            PartnerId: partner.Response.UserId);
         
         var result = await MangoModule.RequestAsync(command, CancellationToken.None);
 

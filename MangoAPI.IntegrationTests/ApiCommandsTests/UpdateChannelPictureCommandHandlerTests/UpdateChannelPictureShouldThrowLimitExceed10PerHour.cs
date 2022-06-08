@@ -31,13 +31,11 @@ public class UpdateChannelPictureShouldThrowLimitExceed10 : IntegrationTestBase
         var chat = await MangoModule.RequestAsync(createChannelCommand, CancellationToken.None);
         var chatId = chat.Response.ChatId;
         var file = MangoFilesHelper.GetTestImage();
-        var command = new UpdateChanelPictureCommand
-        {
-            ChatId = chatId,
-            UserId = userId,
-            NewGroupPicture = file,
-            ContentType = "image/jpeg",
-        };
+        var command = new UpdateChanelPictureCommand(
+            ChatId: chatId, 
+            UserId: userId, 
+            NewGroupPicture: file,
+            ContentType: "image/jpeg");
 
         var imageNamesList = new List<string>();
         for (var i = 0; i < 10; i++)
