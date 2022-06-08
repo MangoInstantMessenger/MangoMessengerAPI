@@ -30,61 +30,28 @@ public class SearchCommunityQueryHandler
     public async Task<Result<SearchCommunityResponse>> Handle(SearchCommunityQuery request,
         CancellationToken cancellationToken)
     {
-        IQueryable<Chat> query;
-
-        var isRelational = _dbContext.Database.IsRelational();
-
-        // TODO: Fix this IF-ELSE is workaround in order to complete test with in-memory database
-        if (isRelational)
-        {
-            query = _dbContext.Chats
-                .AsNoTracking()
-                .Where(x => x.CommunityType == (int) CommunityType.PublicChannel)
-                .Where(x => EF.Functions.Like(x.Title, $"%{request.DisplayName}%"))
-                .Select(x => new Chat
-                {
-                    ChatId = x.Id,
-                    Title = x.Title,
-                    CommunityType = (CommunityType) x.CommunityType,
-                    ChatLogoImageUrl = x.Image != null
-                        ? $"{_blobServiceSettings.MangoBlobAccess}/{x.Image}"
-                        : null,
-                    Description = x.Description,
-                    MembersCount = x.MembersCount,
-                    IsArchived = false,
-                    IsMember = false,
-                    UpdatedAt = x.UpdatedAt,
-                    LastMessageAuthor = x.LastMessageAuthor,
-                    LastMessageText = x.LastMessageText,
-                    LastMessageTime = x.LastMessageTime,
-                    LastMessageId = x.LastMessageId
-                }).Distinct();
-        }
-        else
-        {
-            query = _dbContext.Chats
-                .AsNoTracking()
-                .Where(x => x.CommunityType == (int) CommunityType.PublicChannel)
-                .Where(x => x.Title.Contains(request.DisplayName))
-                .Select(x => new Chat
-                {
-                    ChatId = x.Id,
-                    Title = x.Title,
-                    CommunityType = (CommunityType) x.CommunityType,
-                    ChatLogoImageUrl = x.Image != null
-                        ? $"{_blobServiceSettings.MangoBlobAccess}/{x.Image}"
-                        : null,
-                    Description = x.Description,
-                    MembersCount = x.MembersCount,
-                    IsArchived = false,
-                    IsMember = false,
-                    UpdatedAt = x.UpdatedAt,
-                    LastMessageAuthor = x.LastMessageAuthor,
-                    LastMessageText = x.LastMessageText,
-                    LastMessageTime = x.LastMessageTime,
-                    LastMessageId = x.LastMessageId
-                }).Distinct();
-        }
+        var query = _dbContext.Chats
+            .AsNoTracking()
+            .Where(x => x.CommunityType == (int)CommunityType.PublicChannel)
+            .Where(x => EF.Functions.Like(x.Title, $"%{request.DisplayName}%"))
+            .Select(x => new Chat
+            {
+                ChatId = x.Id,
+                Title = x.Title,
+                CommunityType = (CommunityType)x.CommunityType,
+                ChatLogoImageUrl = x.Image != null
+                    ? $"{_blobServiceSettings.MangoBlobAccess}/{x.Image}"
+                    : null,
+                Description = x.Description,
+                MembersCount = x.MembersCount,
+                IsArchived = false,
+                IsMember = false,
+                UpdatedAt = x.UpdatedAt,
+                LastMessageAuthor = x.LastMessageAuthor,
+                LastMessageText = x.LastMessageText,
+                LastMessageTime = x.LastMessageTime,
+                LastMessageId = x.LastMessageId
+            }).Distinct();
 
         var chats = await query.Take(200).ToListAsync(cancellationToken);
 

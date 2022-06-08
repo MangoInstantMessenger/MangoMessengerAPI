@@ -31,46 +31,21 @@ public class SearchContactByDisplayNameQueryHandler
     public async Task<Result<SearchContactResponse>> Handle(SearchContactQuery request,
         CancellationToken cancellationToken)
     {
-        IQueryable<Contact> query;
+        var query = _dbContext.Users
+            .AsNoTracking()
+            .Include(x => x.UserInformation)
+            .Where(x => x.Id != request.UserId)
+            .Where(x => EF.Functions.Like(x.DisplayName, $"%{request.SearchQuery}%"))
+            .Select(x => new Contact
+            {
+                UserId = x.Id,
+                DisplayName = x.DisplayName,
+                Address = x.UserInformation.Address,
+                Bio = x.Bio,
+                PictureUrl = StringService.GetDocumentUrl(x.Image, _blobServiceSettings.MangoBlobAccess),
+                Email = x.Email,
+            });
 
-        var isRelational = _dbContext.Database.IsRelational();
-
-        // TODO: Fix this IF-ELSE is workaround in order to complete test with in-memory database
-        if (isRelational)
-        {
-            query = _dbContext.Users
-                .AsNoTracking()
-                .Include(x => x.UserInformation)
-                .Where(x => x.Id != request.UserId)
-                .Where(x => EF.Functions.Like(x.DisplayName, $"%{request.SearchQuery}%"))
-                .Select(x => new Contact
-                {
-                    UserId = x.Id,
-                    DisplayName = x.DisplayName,
-                    Address = x.UserInformation.Address,
-                    Bio = x.Bio,
-                    PictureUrl = StringService.GetDocumentUrl(x.Image, _blobServiceSettings.MangoBlobAccess),
-                    Email = x.Email,
-                });
-        }
-        else
-        {
-            query = _dbContext.Users
-                .AsNoTracking()
-                .Include(x => x.UserInformation)
-                .Where(x => x.Id != request.UserId)
-                .Where(x => x.DisplayName.Contains(request.SearchQuery))
-                .Select(x => new Contact
-                {
-                    UserId = x.Id,
-                    DisplayName = x.DisplayName,
-                    Address = x.UserInformation.Address,
-                    Bio = x.Bio,
-                    PictureUrl = StringService.GetDocumentUrl(x.Image, _blobServiceSettings.MangoBlobAccess),
-                    Email = x.Email,
-                });
-        }
-            
 
         var searchResult = await query.Take(200).ToListAsync(cancellationToken);
 

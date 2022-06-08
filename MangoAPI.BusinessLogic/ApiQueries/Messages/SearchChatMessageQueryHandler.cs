@@ -44,69 +44,32 @@ public class SearchChatMessageQueryHandler
             return _responseFactory.ConflictResponse(errorMessage, details);
         }
 
-        IQueryable<Message> query;
+        var query = _dbContext.Messages.AsNoTracking()
+            .Where(x => x.ChatId == request.ChatId)
+            .Where(x => EF.Functions.Like(x.Content, $"%{request.MessageText}%"))
+            .OrderBy(x => x.CreatedAt)
+            .Select(x => new Message
+            {
+                MessageId = x.Id,
+                ChatId = x.ChatId,
+                UserId = x.UserId,
+                UserDisplayName = x.User.DisplayName,
+                MessageText = x.Content,
+                CreatedAt = x.CreatedAt,
+                UpdatedAt = x.UpdatedAt,
+                Self = x.User.Id == request.UserId,
+                InReplayToAuthor = x.InReplayToAuthor,
+                InReplayToText = x.InReplayToText,
 
-        var isRelational = _dbContext.Database.IsRelational();
+                MessageAuthorPictureUrl = x.User.Image != null
+                    ? $"{_blobServiceSettings.MangoBlobAccess}/{x.User.Image}"
+                    : null,
 
-        // TODO: Fix this IF-ELSE is workaround in order to complete test with in-memory database
-        if (isRelational)
-        {
-            query = _dbContext.Messages.AsNoTracking()
-                .Where(x => x.ChatId == request.ChatId)
-                .Where(x => EF.Functions.Like(x.Content, $"%{request.MessageText}%"))
-                .OrderBy(x => x.CreatedAt)
-                .Select(x => new Message
-                {
-                    MessageId = x.Id,
-                    ChatId = x.ChatId,
-                    UserId = x.UserId,
-                    UserDisplayName = x.User.DisplayName,
-                    MessageText = x.Content,
-                    CreatedAt = x.CreatedAt,
-                    UpdatedAt = x.UpdatedAt,
-                    Self = x.User.Id == request.UserId,
-                    InReplayToAuthor = x.InReplayToAuthor,
-                    InReplayToText = x.InReplayToText,
+                MessageAttachmentUrl = x.Attachment != null
+                    ? $"{_blobServiceSettings.MangoBlobAccess}/{x.Attachment}"
+                    : null,
+            }).Take(200);
 
-                    MessageAuthorPictureUrl = x.User.Image != null
-                        ? $"{_blobServiceSettings.MangoBlobAccess}/{x.User.Image}"
-                        : null,
-
-                    MessageAttachmentUrl = x.Attachment != null
-                        ? $"{_blobServiceSettings.MangoBlobAccess}/{x.Attachment}"
-                        : null,
-                }).Take(200);
-        }
-        else
-        {
-            query = _dbContext.Messages.AsNoTracking()
-                .Where(x => x.ChatId == request.ChatId)
-                .Where(x => x.Content.Contains(request.MessageText))
-                .OrderBy(x => x.CreatedAt)
-                .Select(x => new Message
-                {
-                    MessageId = x.Id,
-                    ChatId = x.ChatId,
-                    UserId = x.UserId,
-                    UserDisplayName = x.User.DisplayName,
-                    MessageText = x.Content,
-                    CreatedAt = x.CreatedAt,
-                    UpdatedAt = x.UpdatedAt,
-                    Self = x.User.Id == request.UserId,
-                    InReplayToAuthor = x.InReplayToAuthor,
-                    InReplayToText = x.InReplayToText,
-
-                    MessageAuthorPictureUrl = x.User.Image != null
-                        ? $"{_blobServiceSettings.MangoBlobAccess}/{x.User.Image}"
-                        : null,
-
-                    MessageAttachmentUrl = x.Attachment != null
-                        ? $"{_blobServiceSettings.MangoBlobAccess}/{x.Attachment}"
-                        : null,
-                }).Take(200);
-        }
-            
-            
 
         var result = await query.ToListAsync(cancellationToken);
 
