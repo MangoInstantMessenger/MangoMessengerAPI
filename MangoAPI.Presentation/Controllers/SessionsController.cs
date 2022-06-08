@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using MangoAPI.BusinessLogic.ApiCommands.Sessions;
 using MangoAPI.BusinessLogic.Responses;
-using MangoAPI.Presentation.Extensions;
 using MangoAPI.Presentation.Interfaces;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -91,9 +90,10 @@ public class SessionsController : ApiControllerBase, ISessionsController
     public async Task<IActionResult> LogoutAsync([FromRoute] Guid refreshToken,
         CancellationToken cancellationToken)
     {
+        var userId = CorrelationContext.GetUserId();
         var command = new LogoutCommand
         {
-            UserId = HttpContext.User.GetUserId(),
+            UserId = userId,
             RefreshToken = refreshToken
         };
 

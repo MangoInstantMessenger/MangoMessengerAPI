@@ -6,7 +6,6 @@ using MangoAPI.Application.Interfaces;
 using MangoAPI.BusinessLogic.ApiCommands.CngKeyExchange;
 using MangoAPI.BusinessLogic.ApiQueries.CngKeyExchange;
 using MangoAPI.BusinessLogic.Responses;
-using MangoAPI.Presentation.Extensions;
 using MangoAPI.Presentation.Interfaces;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -43,7 +42,7 @@ public class CngKeyExchangeController : ApiControllerBase, ICngKeyExchangeContro
     [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> CngGetKeyExchangeRequests(CancellationToken cancellationToken)
     {
-        var userId = HttpContext.User.GetUserId();
+        var userId = CorrelationContext.GetUserId();
 
         var request = new CngGetKeyExchangeRequestsQuery
         {
@@ -69,7 +68,7 @@ public class CngKeyExchangeController : ApiControllerBase, ICngKeyExchangeContro
     public async Task<IActionResult> CngCreteKeyExchangeRequest([FromBody] CngCreateKeyExchangeRequest request,
         CancellationToken cancellationToken)
     {
-        var userId = HttpContext.User.GetUserId();
+        var userId = CorrelationContext.GetUserId();
 
         var command = new CngCreateKeyExchangeRequestCommand
         {
@@ -98,7 +97,7 @@ public class CngKeyExchangeController : ApiControllerBase, ICngKeyExchangeContro
         [FromBody] CngConfirmOrDeclineKeyExchangeRequest request,
         CancellationToken cancellationToken)
     {
-        var userId = HttpContext.User.GetUserId();
+        var userId = CorrelationContext.GetUserId();
 
         var command = new CngConfirmOrDeclineKeyExchangeCommand
         {
@@ -128,9 +127,10 @@ public class CngKeyExchangeController : ApiControllerBase, ICngKeyExchangeContro
     [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
     public async Task<IActionResult> CngGetKeyExchangeRequestById(Guid requestId, CancellationToken cancellationToken)
     {
+        var userId = CorrelationContext.GetUserId();
         var query = new CngGetKeyExchangeRequestByIdQuery
         {
-            UserId = HttpContext.User.GetUserId(),
+            UserId = userId,
             RequestId = requestId
         };
 

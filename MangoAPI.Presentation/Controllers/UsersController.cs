@@ -2,7 +2,6 @@
 using MangoAPI.BusinessLogic.ApiCommands.Users;
 using MangoAPI.BusinessLogic.ApiQueries.Users;
 using MangoAPI.BusinessLogic.Responses;
-using MangoAPI.Presentation.Extensions;
 using MangoAPI.Presentation.Interfaces;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -87,7 +86,7 @@ public class UsersController : ApiControllerBase, IUsersController
     public async Task<IActionResult> ChangePassword([FromBody] ChangePasswordRequest request,
         CancellationToken cancellationToken)
     {
-        var userId = HttpContext.User.GetUserId();
+        var userId = CorrelationContext.GetUserId();
 
         var command = Mapper.Map<ChangePasswordCommand>(request);
         command.UserId = userId;
@@ -137,7 +136,7 @@ public class UsersController : ApiControllerBase, IUsersController
         [FromBody] UpdateUserSocialInformationRequest request,
         CancellationToken cancellationToken)
     {
-        var userId = HttpContext.User.GetUserId();
+        var userId = CorrelationContext.GetUserId();
 
         var command = Mapper.Map<UpdateUserSocialInformationCommand>(request);
         command.UserId = userId;
@@ -162,7 +161,7 @@ public class UsersController : ApiControllerBase, IUsersController
     public async Task<IActionResult> UpdateUserAccountInfoAsync([FromBody] UpdateUserAccountInfoRequest request,
         CancellationToken cancellationToken)
     {
-        var userId = HttpContext.User.GetUserId();
+        var userId = CorrelationContext.GetUserId();
 
         var command = Mapper.Map<UpdateUserAccountInfoCommand>(request);
         command.UserId = userId;
@@ -181,7 +180,7 @@ public class UsersController : ApiControllerBase, IUsersController
     public async Task<IActionResult> UpdateProfilePictureAsync(IFormFile pictureFile,
         CancellationToken cancellationToken)
     {
-        var userId = HttpContext.User.GetUserId();
+        var userId = CorrelationContext.GetUserId();
 
         var command = new UpdateProfilePictureCommand
         {

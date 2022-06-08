@@ -5,7 +5,6 @@ using AutoMapper;
 using MangoAPI.Application.Interfaces;
 using MangoAPI.BusinessLogic.ApiCommands.UserChats;
 using MangoAPI.BusinessLogic.Responses;
-using MangoAPI.Presentation.Extensions;
 using MangoAPI.Presentation.Interfaces;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -44,7 +43,7 @@ public class UserChatsController : ApiControllerBase, IUserChatsController
     public async Task<IActionResult> ArchiveChat([FromRoute] Guid chatId,
         CancellationToken cancellationToken)
     {
-        var userId = HttpContext.User.GetUserId();
+        var userId = CorrelationContext.GetUserId();
         var command = new ArchiveChatCommand
         {
             UserId = userId,
@@ -69,7 +68,7 @@ public class UserChatsController : ApiControllerBase, IUserChatsController
     [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
     public async Task<IActionResult> JoinChatAsync([FromRoute] Guid chatId, CancellationToken cancellationToken)
     {
-        var userId = HttpContext.User.GetUserId();
+        var userId = CorrelationContext.GetUserId();
 
         var command = new JoinChatCommand
         {
@@ -95,7 +94,7 @@ public class UserChatsController : ApiControllerBase, IUserChatsController
     [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
     public async Task<IActionResult> LeaveGroup([FromRoute] Guid chatId, CancellationToken cancellationToken)
     {
-        var userId = HttpContext.User.GetUserId();
+        var userId = CorrelationContext.GetUserId();
 
         var command = new LeaveGroupCommand
         {

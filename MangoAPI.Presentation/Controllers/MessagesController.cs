@@ -2,7 +2,6 @@
 using MangoAPI.BusinessLogic.ApiCommands.Messages;
 using MangoAPI.BusinessLogic.ApiQueries.Messages;
 using MangoAPI.BusinessLogic.Responses;
-using MangoAPI.Presentation.Extensions;
 using MangoAPI.Presentation.Interfaces;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -44,7 +43,7 @@ public class MessagesController : ApiControllerBase, IMessagesController
     public async Task<IActionResult> GetChatMessages([FromRoute] Guid chatId,
         CancellationToken cancellationToken)
     {
-        var userId = HttpContext.User.GetUserId();
+        var userId = CorrelationContext.GetUserId();
 
         var query = new GetMessagesQuery
         {
@@ -72,7 +71,7 @@ public class MessagesController : ApiControllerBase, IMessagesController
     public async Task<IActionResult> SearchChatMessages([FromRoute] Guid chatId, [FromQuery] string messageText,
         CancellationToken cancellationToken)
     {
-        var currentUserId = HttpContext.User.GetUserId();
+        var currentUserId = CorrelationContext.GetUserId();
 
         var query = new SearchChatMessagesQuery
         {
@@ -100,7 +99,7 @@ public class MessagesController : ApiControllerBase, IMessagesController
     public async Task<IActionResult> SendMessage([FromBody] SendMessageRequest request,
         CancellationToken cancellationToken)
     {
-        var userId = HttpContext.User.GetUserId();
+        var userId = CorrelationContext.GetUserId();
         var command = Mapper.Map<SendMessageCommand>(request);
         command.UserId = userId;
         return await RequestAsync(command, cancellationToken);
@@ -122,7 +121,7 @@ public class MessagesController : ApiControllerBase, IMessagesController
     public async Task<IActionResult> EditMessage([FromBody] EditMessageRequest request,
         CancellationToken cancellationToken)
     {
-        var userId = HttpContext.User.GetUserId();
+        var userId = CorrelationContext.GetUserId();
         var command = Mapper.Map<EditMessageCommand>(request);
         command.UserId = userId;
         return await RequestAsync(command, cancellationToken);
@@ -144,7 +143,7 @@ public class MessagesController : ApiControllerBase, IMessagesController
     public async Task<IActionResult> DeleteMessage([FromBody] DeleteMessageRequest request,
         CancellationToken cancellationToken)
     {
-        var userId = HttpContext.User.GetUserId();
+        var userId = CorrelationContext.GetUserId();
 
         var command = Mapper.Map<DeleteMessageCommand>(request);
         command.UserId = userId;
