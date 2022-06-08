@@ -1,9 +1,9 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
+using MangoAPI.Application.Interfaces;
 using MangoAPI.BusinessLogic.ApiQueries.CngPublicKeys;
 using MangoAPI.BusinessLogic.Responses;
-using MangoAPI.Presentation.Extensions;
 using MangoAPI.Presentation.Interfaces;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -22,8 +22,8 @@ namespace MangoAPI.Presentation.Controllers;
 [Authorize]
 public class CngPublicKeysController : ApiControllerBase, ICngPublicKeysController
 {
-    public CngPublicKeysController(IMediator mediator, IMapper mapper)
-        : base(mediator, mapper)
+    public CngPublicKeysController(IMediator mediator, IMapper mapper, ICorrelationContext correlationContext) : base(
+        mediator, mapper, correlationContext)
     {
     }
 
@@ -40,7 +40,7 @@ public class CngPublicKeysController : ApiControllerBase, ICngPublicKeysControll
     [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> GetPublicKeys(CancellationToken cancellationToken)
     {
-        var userId = HttpContext.User.GetUserId();
+        var userId = CorrelationContext.GetUserId();
 
         var query = new CngGetPublicKeysQuery { UserId = userId };
 

@@ -2,7 +2,6 @@
 using MangoAPI.BusinessLogic.ApiCommands.Contacts;
 using MangoAPI.BusinessLogic.ApiQueries.Contacts;
 using MangoAPI.BusinessLogic.Responses;
-using MangoAPI.Presentation.Extensions;
 using MangoAPI.Presentation.Interfaces;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -12,6 +11,7 @@ using Swashbuckle.AspNetCore.Annotations;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using MangoAPI.Application.Interfaces;
 
 namespace MangoAPI.Presentation.Controllers;
 
@@ -23,8 +23,8 @@ namespace MangoAPI.Presentation.Controllers;
 [Authorize]
 public class ContactsController : ApiControllerBase, IContactsController
 {
-    public ContactsController(IMediator mediator, IMapper mapper)
-        : base(mediator, mapper)
+    public ContactsController(IMediator mediator, IMapper mapper, ICorrelationContext correlationContext) : base(
+        mediator, mapper, correlationContext)
     {
     }
 
@@ -43,7 +43,7 @@ public class ContactsController : ApiControllerBase, IContactsController
     [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
     public async Task<IActionResult> AddContact([FromRoute] Guid contactId, CancellationToken cancellationToken)
     {
-        var currentUserId = HttpContext.User.GetUserId();
+        var currentUserId = CorrelationContext.GetUserId();
 
         var command = new AddContactCommand
         {
@@ -70,7 +70,7 @@ public class ContactsController : ApiControllerBase, IContactsController
     public async Task<IActionResult> DeleteContact([FromRoute] Guid contactId,
         CancellationToken cancellationToken)
     {
-        var currentUserId = HttpContext.User.GetUserId();
+        var currentUserId = CorrelationContext.GetUserId();
         var command = new DeleteContactCommand
         {
             UserId = currentUserId,
@@ -93,7 +93,7 @@ public class ContactsController : ApiControllerBase, IContactsController
     [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> GetContacts(CancellationToken cancellationToken)
     {
-        var userId = HttpContext.User.GetUserId();
+        var userId = CorrelationContext.GetUserId();
 
         var query = new GetContactsQuery
         {
@@ -118,7 +118,7 @@ public class ContactsController : ApiControllerBase, IContactsController
     public async Task<IActionResult> SearchesAsync([FromQuery] string searchQuery,
         CancellationToken cancellationToken)
     {
-        var currentUserId = HttpContext.User.GetUserId();
+        var currentUserId = CorrelationContext.GetUserId();
 
         var query = new SearchContactQuery
         {

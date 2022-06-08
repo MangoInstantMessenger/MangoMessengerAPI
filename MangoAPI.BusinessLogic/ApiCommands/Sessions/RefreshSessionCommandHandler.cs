@@ -35,6 +35,7 @@ public class RefreshSessionCommandHandler : IRequestHandler<RefreshSessionComman
         CancellationToken cancellationToken)
     {
         var session = await _dbContext.Sessions
+            .Include(x => x.UserEntity)
             .FirstOrDefaultAsync(entity => entity.RefreshToken == request.RefreshToken,
                 cancellationToken);
 
@@ -69,12 +70,12 @@ public class RefreshSessionCommandHandler : IRequestHandler<RefreshSessionComman
             CreatedAt = DateTime.UtcNow,
         };
 
-        var jwtToken = _jwtGenerator.GenerateJwtToken(session.UserId);
+        var jwtToken = _jwtGenerator.GenerateJwtToken(session.UserEntity);
 
         _dbContext.Sessions.Add(newSession);
         await _dbContext.SaveChangesAsync(cancellationToken);
 
-        var expires = ((DateTimeOffset) session.ExpiresAt).ToUnixTimeSeconds();
+        var expires = ((DateTimeOffset)session.ExpiresAt).ToUnixTimeSeconds();
 
         return _responseFactory.SuccessResponse(TokensResponse.FromSuccess(jwtToken, newSession.RefreshToken,
             session.UserId, expires));

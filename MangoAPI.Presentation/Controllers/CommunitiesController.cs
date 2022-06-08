@@ -3,7 +3,6 @@ using AutoMapper;
 using MangoAPI.BusinessLogic.ApiCommands.Communities;
 using MangoAPI.BusinessLogic.ApiQueries.Communities;
 using MangoAPI.BusinessLogic.Responses;
-using MangoAPI.Presentation.Extensions;
 using MangoAPI.Presentation.Interfaces;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -12,6 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 using System.Threading;
 using System.Threading.Tasks;
+using MangoAPI.Application.Interfaces;
 
 namespace MangoAPI.Presentation.Controllers;
 
@@ -24,8 +24,8 @@ namespace MangoAPI.Presentation.Controllers;
 [Authorize]
 public class CommunitiesController : ApiControllerBase, ICommunitiesController
 {
-    public CommunitiesController(IMediator mediator, IMapper mapper)
-        : base(mediator, mapper)
+    public CommunitiesController(IMediator mediator, IMapper mapper, ICorrelationContext correlationContext) : base(
+        mediator, mapper, correlationContext)
     {
     }
 
@@ -42,7 +42,7 @@ public class CommunitiesController : ApiControllerBase, ICommunitiesController
     [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> GetChatsAsync(CancellationToken cancellationToken)
     {
-        var userId = HttpContext.User.GetUserId();
+        var userId = CorrelationContext.GetUserId();
 
         var request = new GetCurrentUserChatsQuery
         {
@@ -69,7 +69,7 @@ public class CommunitiesController : ApiControllerBase, ICommunitiesController
     public async Task<IActionResult> CreateChannelAsync([FromBody] CreateChannelRequest request,
         CancellationToken cancellationToken)
     {
-        var userId = HttpContext.User.GetUserId();
+        var userId = CorrelationContext.GetUserId();
 
         var command = new CreateChannelCommand
         {
@@ -99,7 +99,7 @@ public class CommunitiesController : ApiControllerBase, ICommunitiesController
     public async Task<IActionResult> CreateChatAsync([FromRoute] Guid userId,
         CancellationToken cancellationToken)
     {
-        var currentUserId = HttpContext.User.GetUserId();
+        var currentUserId = CorrelationContext.GetUserId();
 
         var command = new CreateChatCommand
         {
@@ -127,7 +127,7 @@ public class CommunitiesController : ApiControllerBase, ICommunitiesController
     public async Task<IActionResult> SearchAsync([FromQuery] string displayName,
         CancellationToken cancellationToken)
     {
-        var userId = HttpContext.User.GetUserId();
+        var userId = CorrelationContext.GetUserId();
 
         var command = new SearchCommunityQuery
         {
@@ -155,7 +155,7 @@ public class CommunitiesController : ApiControllerBase, ICommunitiesController
     public async Task<IActionResult> UpdateChannelPictureAsync([FromRoute] Guid chatId, IFormFile newGroupPicture,
         CancellationToken cancellationToken)
     {
-        var userId = HttpContext.User.GetUserId();
+        var userId = CorrelationContext.GetUserId();
 
         var command = new UpdateChanelPictureCommand
         {

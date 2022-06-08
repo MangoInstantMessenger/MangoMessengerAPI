@@ -2,10 +2,10 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
+using MangoAPI.Application.Interfaces;
 using MangoAPI.BusinessLogic.ApiCommands.OpenSslKeyExchange;
 using MangoAPI.BusinessLogic.ApiQueries.OpenSslKeyExchange;
 using MangoAPI.BusinessLogic.Responses;
-using MangoAPI.Presentation.Extensions;
 using MangoAPI.Presentation.Interfaces;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -24,7 +24,8 @@ namespace MangoAPI.Presentation.Controllers;
 [Authorize]
 public class OpenSslKeyExchangeController : ApiControllerBase, IOpenSslKeyExchangeController
 {
-    public OpenSslKeyExchangeController(IMediator mediator, IMapper mapper) : base(mediator, mapper)
+    public OpenSslKeyExchangeController(IMediator mediator, IMapper mapper, ICorrelationContext correlationContext) :
+        base(mediator, mapper, correlationContext)
     {
     }
 
@@ -44,7 +45,7 @@ public class OpenSslKeyExchangeController : ApiControllerBase, IOpenSslKeyExchan
     public async Task<IActionResult> OpenSslCreateDiffieHellmanParameter([FromForm] IFormFile file,
         CancellationToken cancellationToken)
     {
-        var userId = HttpContext.User.GetUserId();
+        var userId = CorrelationContext.GetUserId();
 
         var command = new OpenSslCreateDiffieHellmanParameterCommand
         {
@@ -92,7 +93,7 @@ public class OpenSslKeyExchangeController : ApiControllerBase, IOpenSslKeyExchan
         [FromForm] IFormFile senderPublicKey,
         CancellationToken cancellationToken)
     {
-        var senderId = HttpContext.User.GetUserId();
+        var senderId = CorrelationContext.GetUserId();
 
         var command = new OpenSslCreateKeyExchangeCommand
         {
@@ -118,8 +119,8 @@ public class OpenSslKeyExchangeController : ApiControllerBase, IOpenSslKeyExchan
     [ProducesResponseType(typeof(OpenSslGetKeyExchangeRequestsResponse), StatusCodes.Status200OK)]
     public async Task<IActionResult> OpenSslGetKeyExchangeRequests(CancellationToken cancellationToken)
     {
-        var userId = HttpContext.User.GetUserId();
-        var request = new OpenSslGetKeyExchangeRequestsQuery {UserId = userId};
+        var userId = CorrelationContext.GetUserId();
+        var request = new OpenSslGetKeyExchangeRequestsQuery { UserId = userId };
 
         return await RequestAsync(request, cancellationToken);
     }
@@ -143,7 +144,7 @@ public class OpenSslKeyExchangeController : ApiControllerBase, IOpenSslKeyExchan
         [FromForm] IFormFile receiverPublicKey,
         CancellationToken cancellationToken)
     {
-        var userId = HttpContext.User.GetUserId();
+        var userId = CorrelationContext.GetUserId();
 
         var command = new OpenSslConfirmKeyExchangeCommand
         {
@@ -172,7 +173,7 @@ public class OpenSslKeyExchangeController : ApiControllerBase, IOpenSslKeyExchan
         [FromRoute] Guid requestId,
         CancellationToken cancellationToken)
     {
-        var userId = HttpContext.User.GetUserId();
+        var userId = CorrelationContext.GetUserId();
 
         var request = new OpenSslDeclineKeyExchangeCommand
         {
@@ -199,7 +200,7 @@ public class OpenSslKeyExchangeController : ApiControllerBase, IOpenSslKeyExchan
     public async Task<IActionResult> OpenSslDownloadPartnerPublicKey(Guid requestId,
         CancellationToken cancellationToken)
     {
-        var userId = HttpContext.User.GetUserId();
+        var userId = CorrelationContext.GetUserId();
 
         var query = new OpenSslDownloadPartnerPublicKeyQuery
         {
@@ -229,12 +230,13 @@ public class OpenSslKeyExchangeController : ApiControllerBase, IOpenSslKeyExchan
     [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
     [ProducesResponseType(typeof(OpenSslGetKeyExchangeRequestByIdResponse), StatusCodes.Status200OK)]
-    public async Task<IActionResult> OpenSslGetKeyExchangeRequestById([FromRoute] Guid requestId, 
-            CancellationToken cancellationToken)
+    public async Task<IActionResult> OpenSslGetKeyExchangeRequestById([FromRoute] Guid requestId,
+        CancellationToken cancellationToken)
     {
+        var userId = CorrelationContext.GetUserId();
         var query = new OpenSslGetKeyExchangeRequestByIdQuery
         {
-            UserId = HttpContext.User.GetUserId(),
+            UserId = userId,
             KeyExchangeRequestId = requestId
         };
 

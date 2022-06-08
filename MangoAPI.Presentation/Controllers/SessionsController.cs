@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using MangoAPI.BusinessLogic.ApiCommands.Sessions;
 using MangoAPI.BusinessLogic.Responses;
-using MangoAPI.Presentation.Extensions;
 using MangoAPI.Presentation.Interfaces;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -11,6 +10,7 @@ using Swashbuckle.AspNetCore.Annotations;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using MangoAPI.Application.Interfaces;
 
 namespace MangoAPI.Presentation.Controllers;
 
@@ -21,8 +21,8 @@ namespace MangoAPI.Presentation.Controllers;
 [Route("api/sessions")]
 public class SessionsController : ApiControllerBase, ISessionsController
 {
-    public SessionsController(IMediator mediator, IMapper mapper)
-        : base(mediator, mapper)
+    public SessionsController(IMediator mediator, IMapper mapper, ICorrelationContext correlationContext) : base(
+        mediator, mapper, correlationContext)
     {
     }
 
@@ -90,9 +90,10 @@ public class SessionsController : ApiControllerBase, ISessionsController
     public async Task<IActionResult> LogoutAsync([FromRoute] Guid refreshToken,
         CancellationToken cancellationToken)
     {
+        var userId = CorrelationContext.GetUserId();
         var command = new LogoutCommand
         {
-            UserId = HttpContext.User.GetUserId(),
+            UserId = userId,
             RefreshToken = refreshToken
         };
 
@@ -114,7 +115,7 @@ public class SessionsController : ApiControllerBase, ISessionsController
     [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
     public async Task<IActionResult> LogoutAllAsync(CancellationToken cancellationToken)
     {
-        var userId = HttpContext.User.GetUserId();
+        var userId = CorrelationContext.GetUserId();
 
         var command = new LogoutAllCommand
         {

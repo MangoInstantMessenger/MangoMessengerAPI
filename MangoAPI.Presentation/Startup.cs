@@ -7,6 +7,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using MangoAPI.Presentation.Middlewares;
 using System.Text.Json;
+using MangoAPI.Application.Interfaces;
+using MangoAPI.Application.Services;
 using MangoAPI.BusinessLogic.DependencyInjection;
 using MangoAPI.Domain.Constants;
 using MangoAPI.Presentation.Controllers;
@@ -83,43 +85,43 @@ public class Startup
 
         var mangoBlobUrl = _configuration
             .GetValueFromAppSettingsOrEnvironment(EnvironmentConstants.MangoBlobUrl);
-        
+
         var mangoBlobContainerName = _configuration
             .GetValueFromAppSettingsOrEnvironment(EnvironmentConstants.MangoBlobContainer);
-        
+
         var mangoBlobAccess = _configuration
             .GetValueFromAppSettingsOrEnvironment(EnvironmentConstants.MangoBlobAccess);
 
         var mangoJwtSignKey = _configuration
             .GetValueFromAppSettingsOrEnvironment(EnvironmentConstants.MangoJwtSignKey);
-        
+
         var mangoJwtIssuer = _configuration
             .GetValueFromAppSettingsOrEnvironment(EnvironmentConstants.MangoJwtIssuer);
-        
+
         var mangoJwtAudience = _configuration
             .GetValueFromAppSettingsOrEnvironment(EnvironmentConstants.MangoJwtAudience);
-        
+
         const int mangoJwtLifetimeMinutes = EnvironmentConstants.MangoJwtLifetimeMinutes;
-        
+
         const int mangoRefreshTokenLifetimeDays = EnvironmentConstants.MangoRefreshTokenLifetimeDays;
 
         var mailgunApiBaseUrl = _configuration
             .GetValueFromAppSettingsOrEnvironment(EnvironmentConstants.MangoMailgunApiBaseUrl);
-        
+
         var mailgunApiKey = _configuration
             .GetValueFromAppSettingsOrEnvironment(EnvironmentConstants.MangoMailgunApiKey);
-        
+
         var frontendAddress = _configuration
             .GetValueFromAppSettingsOrEnvironment(EnvironmentConstants.MangoFrontendAddress);
-        
+
         var notificationEmail = _configuration
             .GetValueFromAppSettingsOrEnvironment(EnvironmentConstants.MangoEmailNotificationsAddress);
-        
+
         var mailgunApiDomain = _configuration
             .GetValueFromAppSettingsOrEnvironment(EnvironmentConstants.MangoMailgunApiDomain);
 
         services.AddDatabaseContextServices(databaseConnectionString);
-        
+
         services.AddAppInfrastructure(mangoJwtSignKey, mangoJwtIssuer, mangoJwtAudience);
 
         services.AddMessengerServices(
@@ -142,6 +144,10 @@ public class Startup
         services.ConfigureCors(_configuration, CorsPolicy);
 
         services.AddSpaStaticFiles(configuration => { configuration.RootPath = "wwwroot"; });
+
+        services.AddHttpContextAccessor();
+
+        services.AddTransient<ICorrelationContext, CorrelationContext>();
 
         services.AddApplicationInsightsTelemetry();
 
