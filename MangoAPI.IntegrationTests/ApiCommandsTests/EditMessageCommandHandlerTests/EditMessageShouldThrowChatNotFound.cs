@@ -28,13 +28,8 @@ public class EditMessageShouldThrowChatNotFound : IntegrationTestBase
             await MangoModule.RequestAsync(
                 request: CommandHelper.SendMessageToChannelCommand(user.Response.UserId, chat.Response.ChatId), 
                 cancellationToken: CancellationToken.None);
-        var command = new EditMessageCommand
-        {
-            ChatId = Guid.Empty,
-            UserId = user.Response.UserId,
-            MessageId = message.Response.MessageId,
-            ModifiedText = "Message edited"
-        };
+        var command = new EditMessageCommand(ChatId: Guid.Empty, UserId: user.Response.UserId,
+            MessageId: message.Response.MessageId, ModifiedText: "Message edited");
 
         var result = await MangoModule.RequestAsync(command, CancellationToken.None);
 

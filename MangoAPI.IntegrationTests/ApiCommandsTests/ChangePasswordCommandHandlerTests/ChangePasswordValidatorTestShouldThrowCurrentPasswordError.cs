@@ -12,13 +12,8 @@ public class ChangePasswordValidatorTestShouldThrowCurrentPasswordError
     public void ChangePasswordValidatorTest_ShouldThrowCurrentPasswordError()
     {
         var validator = new ChangePasswordCommandValidator();
-        var command = new ChangePasswordCommand
-        {
-            UserId = Guid.NewGuid(),
-            CurrentPassword = "Gm3-`xPRr-/q#6)re^94",
-            NewPassword = "Gm3-`xPRr-/q#6)re^94",
-            RepeatNewPassword = "Gm3-`xPRr-/q#6)re^94"
-        };
+        var command = new ChangePasswordCommand(UserId: Guid.NewGuid(), CurrentPassword: "Gm3-`xPRr-/q#6)re^94",
+            NewPassword: "Gm3-`xPRr-/q#6)re^94", RepeatNewPassword: "Gm3-`xPRr-/q#6)re^94");
         
         var result = validator.TestValidate(command);
 

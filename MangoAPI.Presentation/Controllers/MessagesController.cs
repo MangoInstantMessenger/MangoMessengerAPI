@@ -45,11 +45,7 @@ public class MessagesController : ApiControllerBase, IMessagesController
     {
         var userId = CorrelationContext.GetUserId();
 
-        var query = new GetMessagesQuery
-        {
-            ChatId = chatId,
-            UserId = userId
-        };
+        var query = new GetMessagesQuery(chatId, userId);
 
         return await RequestAsync(query, cancellationToken);
     }
@@ -73,12 +69,10 @@ public class MessagesController : ApiControllerBase, IMessagesController
     {
         var currentUserId = CorrelationContext.GetUserId();
 
-        var query = new SearchChatMessagesQuery
-        {
-            ChatId = chatId,
-            MessageText = messageText,
-            UserId = currentUserId
-        };
+        var query = new SearchChatMessagesQuery(
+            ChatId: chatId,
+            MessageText: messageText, 
+            UserId: currentUserId);
 
         return await RequestAsync(query, cancellationToken);
     }

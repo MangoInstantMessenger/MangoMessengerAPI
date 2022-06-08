@@ -44,10 +44,7 @@ public class CngKeyExchangeController : ApiControllerBase, ICngKeyExchangeContro
     {
         var userId = CorrelationContext.GetUserId();
 
-        var request = new CngGetKeyExchangeRequestsQuery
-        {
-            UserId = userId
-        };
+        var request = new CngGetKeyExchangeRequestsQuery(userId);
 
         return await RequestAsync(request, cancellationToken);
     }
@@ -124,11 +121,7 @@ public class CngKeyExchangeController : ApiControllerBase, ICngKeyExchangeContro
     public async Task<IActionResult> CngGetKeyExchangeRequestById(Guid requestId, CancellationToken cancellationToken)
     {
         var userId = CorrelationContext.GetUserId();
-        var query = new CngGetKeyExchangeRequestByIdQuery
-        {
-            UserId = userId,
-            RequestId = requestId
-        };
+        var query = new CngGetKeyExchangeRequestByIdQuery(userId, requestId);
 
         return await RequestAsync(query, cancellationToken);
     }

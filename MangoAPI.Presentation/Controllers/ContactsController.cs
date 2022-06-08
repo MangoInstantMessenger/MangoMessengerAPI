@@ -45,11 +45,7 @@ public class ContactsController : ApiControllerBase, IContactsController
     {
         var currentUserId = CorrelationContext.GetUserId();
 
-        var command = new AddContactCommand
-        {
-            UserId = currentUserId,
-            ContactId = contactId,
-        };
+        var command = new AddContactCommand(currentUserId, contactId);
 
         return await RequestAsync(command, cancellationToken);
     }
@@ -71,11 +67,7 @@ public class ContactsController : ApiControllerBase, IContactsController
         CancellationToken cancellationToken)
     {
         var currentUserId = CorrelationContext.GetUserId();
-        var command = new DeleteContactCommand
-        {
-            UserId = currentUserId,
-            ContactId = contactId,
-        };
+        var command = new DeleteContactCommand(currentUserId, contactId);
 
         return await RequestAsync(command, cancellationToken);
     }
@@ -95,10 +87,7 @@ public class ContactsController : ApiControllerBase, IContactsController
     {
         var userId = CorrelationContext.GetUserId();
 
-        var query = new GetContactsQuery
-        {
-            UserId = userId
-        };
+        var query = new GetContactsQuery(userId);
 
         return await RequestAsync(query, cancellationToken);
     }
@@ -120,11 +109,7 @@ public class ContactsController : ApiControllerBase, IContactsController
     {
         var currentUserId = CorrelationContext.GetUserId();
 
-        var query = new SearchContactQuery
-        {
-            SearchQuery = searchQuery,
-            UserId = currentUserId
-        };
+        var query = new SearchContactQuery(searchQuery, currentUserId);
 
         return await RequestAsync(query, cancellationToken);
     }

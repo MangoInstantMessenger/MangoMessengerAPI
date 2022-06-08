@@ -44,11 +44,7 @@ public class UserChatsController : ApiControllerBase, IUserChatsController
         CancellationToken cancellationToken)
     {
         var userId = CorrelationContext.GetUserId();
-        var command = new ArchiveChatCommand
-        {
-            UserId = userId,
-            ChatId = chatId
-        };
+        var command = new ArchiveChatCommand(userId, chatId);
 
         return await RequestAsync(command, cancellationToken);
     }
@@ -70,11 +66,7 @@ public class UserChatsController : ApiControllerBase, IUserChatsController
     {
         var userId = CorrelationContext.GetUserId();
 
-        var command = new JoinChatCommand
-        {
-            UserId = userId,
-            ChatId = chatId,
-        };
+        var command = new JoinChatCommand(userId, chatId);
 
         return await RequestAsync(command, cancellationToken);
     }
@@ -96,11 +88,7 @@ public class UserChatsController : ApiControllerBase, IUserChatsController
     {
         var userId = CorrelationContext.GetUserId();
 
-        var command = new LeaveGroupCommand
-        {
-            UserId = userId,
-            ChatId = chatId,
-        };
+        var command = new LeaveGroupCommand(userId, chatId);
 
         return await RequestAsync(command, cancellationToken);
     }

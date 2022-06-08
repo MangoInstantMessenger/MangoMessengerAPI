@@ -26,11 +26,7 @@ public class GetMessagesTestSuccess : IntegrationTestBase
         await MangoModule.RequestAsync(
             request: CommandHelper.SendMessageToChannelCommand(user.Response.UserId, chat.Response.ChatId),
             cancellationToken: CancellationToken.None);
-        var query = new GetMessagesQuery
-        {
-            UserId = user.Response.UserId,
-            ChatId = chat.Response.ChatId
-        };
+        var query = new GetMessagesQuery(UserId: user.Response.UserId, ChatId: chat.Response.ChatId);
 
         var result = await MangoModule.RequestAsync(query, CancellationToken.None);
             

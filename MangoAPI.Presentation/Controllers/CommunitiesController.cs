@@ -44,10 +44,7 @@ public class CommunitiesController : ApiControllerBase, ICommunitiesController
     {
         var userId = CorrelationContext.GetUserId();
 
-        var request = new GetCurrentUserChatsQuery
-        {
-            UserId = userId
-        };
+        var request = new GetCurrentUserChatsQuery(userId);
 
         return await RequestAsync(request, cancellationToken);
     }
@@ -123,11 +120,7 @@ public class CommunitiesController : ApiControllerBase, ICommunitiesController
     {
         var userId = CorrelationContext.GetUserId();
 
-        var command = new SearchCommunityQuery
-        {
-            DisplayName = displayName,
-            UserId = userId,
-        };
+        var command = new SearchCommunityQuery(userId, displayName);
 
         return await RequestAsync(command, cancellationToken);
     }

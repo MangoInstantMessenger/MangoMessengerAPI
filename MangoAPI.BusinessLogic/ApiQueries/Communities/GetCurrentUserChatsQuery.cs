@@ -4,7 +4,4 @@ using MediatR;
 
 namespace MangoAPI.BusinessLogic.ApiQueries.Communities;
 
-public record GetCurrentUserChatsQuery : IRequest<Result<GetCurrentUserChatsResponse>>
-{
-    public Guid UserId { get; init; }
-}
+public record GetCurrentUserChatsQuery(Guid UserId) : IRequest<Result<GetCurrentUserChatsResponse>>;

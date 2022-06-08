@@ -4,10 +4,7 @@ using MediatR;
 
 namespace MangoAPI.BusinessLogic.ApiCommands.Users;
 
-public record ChangePasswordCommand : IRequest<Result<ResponseBase>>
+public record ChangePasswordCommand(Guid UserId, string CurrentPassword, string NewPassword, string RepeatNewPassword) : IRequest<Result<ResponseBase>>
 {
-    public Guid UserId { get; set; }
-    public string CurrentPassword { get; init; }
-    public string NewPassword { get; init; }
-    public string RepeatNewPassword { get; init; }
+    public Guid UserId { get; set; } = UserId;
 }

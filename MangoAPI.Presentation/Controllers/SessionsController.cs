@@ -65,10 +65,7 @@ public class SessionsController : ApiControllerBase, ISessionsController
     public async Task<IActionResult> RefreshSession([FromRoute] Guid refreshToken,
         CancellationToken cancellationToken)
     {
-        var command = new RefreshSessionCommand
-        {
-            RefreshToken = refreshToken,
-        };
+        var command = new RefreshSessionCommand(refreshToken);
 
         return await RequestAsync(command, cancellationToken);
     }
@@ -91,11 +88,7 @@ public class SessionsController : ApiControllerBase, ISessionsController
         CancellationToken cancellationToken)
     {
         var userId = CorrelationContext.GetUserId();
-        var command = new LogoutCommand
-        {
-            UserId = userId,
-            RefreshToken = refreshToken
-        };
+        var command = new LogoutCommand(userId, refreshToken);
 
         return await RequestAsync(command, cancellationToken);
     }
@@ -117,10 +110,7 @@ public class SessionsController : ApiControllerBase, ISessionsController
     {
         var userId = CorrelationContext.GetUserId();
 
-        var command = new LogoutAllCommand
-        {
-            UserId = userId
-        };
+        var command = new LogoutAllCommand(userId);
 
         return await RequestAsync(command, cancellationToken);
     }

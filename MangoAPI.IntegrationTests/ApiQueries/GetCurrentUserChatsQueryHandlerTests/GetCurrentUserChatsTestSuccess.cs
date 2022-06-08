@@ -20,10 +20,7 @@ public class GetCurrentUserChatsTestSuccess : IntegrationTestBase
         await MangoModule.RequestAsync(
             request: CommandHelper.CreateExtremeCodeMainChatCommand(user.Response.UserId),
             cancellationToken: CancellationToken.None);
-        var query = new GetCurrentUserChatsQuery
-        {
-            UserId = user.Response.UserId
-        };
+        var query = new GetCurrentUserChatsQuery(UserId: user.Response.UserId);
 
         var result = await MangoModule.RequestAsync(query, CancellationToken.None);
 

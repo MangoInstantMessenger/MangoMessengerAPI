@@ -26,10 +26,7 @@ public class LogoutAllTestShouldThrowSessionNotFound : IntegrationTestBase
         await MangoModule.RequestAsync(
             request: CommandHelper.CreateVerifyEmailCommand(userEntity.Email, userEntity.EmailCode),
             cancellationToken: CancellationToken.None);
-        var command = new LogoutAllCommand
-        {
-            UserId = userId
-        };
+        var command = new LogoutAllCommand(UserId: userId);
 
         var result = await MangoModule.RequestAsync(command, CancellationToken.None);
 

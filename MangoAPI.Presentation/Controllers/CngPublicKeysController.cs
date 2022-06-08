@@ -42,7 +42,7 @@ public class CngPublicKeysController : ApiControllerBase, ICngPublicKeysControll
     {
         var userId = CorrelationContext.GetUserId();
 
-        var query = new CngGetPublicKeysQuery { UserId = userId };
+        var query = new CngGetPublicKeysQuery(userId);
 
         return await RequestAsync(query, cancellationToken);
     }

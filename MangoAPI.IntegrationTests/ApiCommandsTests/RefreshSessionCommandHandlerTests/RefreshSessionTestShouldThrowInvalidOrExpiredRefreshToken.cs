@@ -17,10 +17,7 @@ public class RefreshSessionTestShouldThrowInvalidOrExpiredRefreshToken : Integra
     {
         const string expectedMessage = ResponseMessageCodes.InvalidOrExpiredRefreshToken;
         var expectedDetails = ResponseMessageCodes.ErrorDictionary[expectedMessage];
-        var command = new RefreshSessionCommand
-        {
-            RefreshToken = Guid.NewGuid()
-        };
+        var command = new RefreshSessionCommand(RefreshToken: Guid.NewGuid());
 
         var result = await MangoModule.RequestAsync(command, CancellationToken.None);
 

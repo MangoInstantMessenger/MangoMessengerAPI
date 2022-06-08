@@ -47,11 +47,9 @@ public class OpenSslKeyExchangeController : ApiControllerBase, IOpenSslKeyExchan
     {
         var userId = CorrelationContext.GetUserId();
 
-        var command = new OpenSslCreateDiffieHellmanParameterCommand
-        {
-            UserId = userId,
-            DiffieHellmanParameter = file
-        };
+        var command = new OpenSslCreateDiffieHellmanParameterCommand(
+            UserId: userId, 
+            DiffieHellmanParameter: file);
 
         return await RequestAsync(command, cancellationToken);
     }
@@ -95,12 +93,11 @@ public class OpenSslKeyExchangeController : ApiControllerBase, IOpenSslKeyExchan
     {
         var senderId = CorrelationContext.GetUserId();
 
-        var command = new OpenSslCreateKeyExchangeCommand
-        {
-            ReceiverId = userId,
-            SenderId = senderId,
-            SenderPublicKey = senderPublicKey
-        };
+        var command =
+            new OpenSslCreateKeyExchangeCommand(
+                ReceiverId: userId, 
+                SenderId: senderId,
+                SenderPublicKey: senderPublicKey);
 
         return await RequestAsync(command, cancellationToken);
     }
@@ -120,7 +117,7 @@ public class OpenSslKeyExchangeController : ApiControllerBase, IOpenSslKeyExchan
     public async Task<IActionResult> OpenSslGetKeyExchangeRequests(CancellationToken cancellationToken)
     {
         var userId = CorrelationContext.GetUserId();
-        var request = new OpenSslGetKeyExchangeRequestsQuery { UserId = userId };
+        var request = new OpenSslGetKeyExchangeRequestsQuery(userId);
 
         return await RequestAsync(request, cancellationToken);
     }
@@ -146,12 +143,10 @@ public class OpenSslKeyExchangeController : ApiControllerBase, IOpenSslKeyExchan
     {
         var userId = CorrelationContext.GetUserId();
 
-        var command = new OpenSslConfirmKeyExchangeCommand
-        {
-            RequestId = requestId,
-            UserId = userId,
-            ReceiverPublicKey = receiverPublicKey
-        };
+        var command = new OpenSslConfirmKeyExchangeCommand(
+            RequestId: requestId, 
+            UserId: userId,
+            ReceiverPublicKey: receiverPublicKey);
 
         return await RequestAsync(command, cancellationToken);
     }
@@ -175,11 +170,7 @@ public class OpenSslKeyExchangeController : ApiControllerBase, IOpenSslKeyExchan
     {
         var userId = CorrelationContext.GetUserId();
 
-        var request = new OpenSslDeclineKeyExchangeCommand
-        {
-            RequestId = requestId,
-            UserId = userId,
-        };
+        var request = new OpenSslDeclineKeyExchangeCommand(requestId, userId);
 
         return await RequestAsync(request, cancellationToken);
     }
@@ -202,11 +193,7 @@ public class OpenSslKeyExchangeController : ApiControllerBase, IOpenSslKeyExchan
     {
         var userId = CorrelationContext.GetUserId();
 
-        var query = new OpenSslDownloadPartnerPublicKeyQuery
-        {
-            UserId = userId,
-            RequestId = requestId,
-        };
+        var query = new OpenSslDownloadPartnerPublicKeyQuery(userId, requestId);
 
         var result = await Mediator.Send(query, cancellationToken);
 
@@ -234,11 +221,7 @@ public class OpenSslKeyExchangeController : ApiControllerBase, IOpenSslKeyExchan
         CancellationToken cancellationToken)
     {
         var userId = CorrelationContext.GetUserId();
-        var query = new OpenSslGetKeyExchangeRequestByIdQuery
-        {
-            UserId = userId,
-            KeyExchangeRequestId = requestId
-        };
+        var query = new OpenSslGetKeyExchangeRequestByIdQuery(userId, requestId);
 
         return await RequestAsync(query, cancellationToken);
     }

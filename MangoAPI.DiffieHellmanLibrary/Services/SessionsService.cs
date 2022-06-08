@@ -20,11 +20,7 @@ public class SessionsService
         var email = args[1];
         var password = args[2];
 
-        var command = new LoginCommand
-        {
-            Email = email,
-            Password = password
-        };
+        var command = new LoginCommand(email, password);
 
         var response = await HttpRequestHelper.PostWithBodyAsync(
             client: _httpClient,

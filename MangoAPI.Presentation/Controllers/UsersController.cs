@@ -110,10 +110,7 @@ public class UsersController : ApiControllerBase, IUsersController
     [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
     public async Task<IActionResult> GetUserById([FromRoute] Guid userId, CancellationToken cancellationToken)
     {
-        var query = new GetUserQuery
-        {
-            UserId = userId
-        };
+        var query = new GetUserQuery(userId);
 
         return await RequestAsync(query, cancellationToken);
     }
@@ -182,11 +179,10 @@ public class UsersController : ApiControllerBase, IUsersController
     {
         var userId = CorrelationContext.GetUserId();
 
-        var command = new UpdateProfilePictureCommand
-        {
-            UserId = userId,
-            PictureFile = pictureFile
-        };
+        var command = new UpdateProfilePictureCommand(
+            UserId: userId, 
+            PictureFile: pictureFile, 
+            ContentType: pictureFile.ContentType);
 
         return await RequestAsync(command, cancellationToken);
     }

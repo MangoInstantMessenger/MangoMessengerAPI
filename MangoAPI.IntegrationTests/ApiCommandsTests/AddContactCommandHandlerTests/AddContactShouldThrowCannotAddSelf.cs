@@ -19,11 +19,9 @@ public class AddContactShouldThrowCannotAddSelf : IntegrationTestBase
         var expectedDetails = ResponseMessageCodes.ErrorDictionary[expectedMessage];
         var user = 
             await MangoModule.RequestAsync(CommandHelper.RegisterPetroCommand(), CancellationToken.None);
-        var command = new AddContactCommand
-        {
-            UserId = user.Response.UserId,
-            ContactId = user.Response.UserId
-        };
+        var command = new AddContactCommand(
+            UserId: user.Response.UserId,
+            ContactId: user.Response.UserId);
 
         var result = await MangoModule.RequestAsync(command, CancellationToken.None);
 

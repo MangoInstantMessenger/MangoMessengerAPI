@@ -19,11 +19,7 @@ public class LeaveGroupTestSuccess : IntegrationTestBase
             await MangoModule.RequestAsync(
                 request: CommandHelper.CreateExtremeCodeMainChatCommand(user.Response.UserId),
                 cancellationToken: CancellationToken.None);
-        var command = new LeaveGroupCommand
-        {
-            UserId = user.Response.UserId,
-            ChatId = chat.Response.ChatId
-        };
+        var command = new LeaveGroupCommand(UserId: user.Response.UserId, ChatId: chat.Response.ChatId);
 
         var result = await MangoModule.RequestAsync(command, CancellationToken.None);
 

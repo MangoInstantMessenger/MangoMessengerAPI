@@ -16,12 +16,7 @@ public class UpdateProfilePictureTestSuccess : IntegrationTestBase
         var userResult = await MangoModule.RequestAsync(CommandHelper.RegisterPetroCommand(), CancellationToken.None);
         var userId = userResult.Response.UserId;
         var file = MangoFilesHelper.GetTestImage();
-        var command = new UpdateProfilePictureCommand
-        {
-            UserId = userId,
-            ContentType = "image/jpeg",
-            PictureFile = file
-        };
+        var command = new UpdateProfilePictureCommand(UserId: userId, ContentType: "image/jpeg", PictureFile: file);
 
         var result = await MangoModule.RequestAsync(command, CancellationToken.None);
 

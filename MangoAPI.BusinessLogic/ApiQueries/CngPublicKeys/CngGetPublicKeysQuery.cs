@@ -4,7 +4,4 @@ using MediatR;
 
 namespace MangoAPI.BusinessLogic.ApiQueries.CngPublicKeys;
 
-public record CngGetPublicKeysQuery : IRequest<Result<CngGetPublicKeysResponse>>
-{
-    public Guid UserId { get; init; }
-}
+public record CngGetPublicKeysQuery(Guid UserId) : IRequest<Result<CngGetPublicKeysResponse>>;

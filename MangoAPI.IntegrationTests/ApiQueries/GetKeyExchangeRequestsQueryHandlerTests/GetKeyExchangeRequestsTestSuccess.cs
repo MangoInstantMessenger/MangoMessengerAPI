@@ -22,10 +22,7 @@ public class GetKeyExchangeRequestsTestSuccess : IntegrationTestBase
             await MangoModule.RequestAsync(
                 CommandHelper.CreateCngKeyExchangeCommand(sender.Response.UserId, requestedUser.Response.UserId),
                 CancellationToken.None);
-        var query = new CngGetKeyExchangeRequestsQuery
-        {
-            UserId = requestedUser.Response.UserId
-        };
+        var query = new CngGetKeyExchangeRequestsQuery(UserId: requestedUser.Response.UserId);
 
         var result = await MangoModule.RequestAsync(query, CancellationToken.None);
             

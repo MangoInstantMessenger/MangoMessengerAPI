@@ -26,11 +26,7 @@ public class LogoutTestSuccess : IntegrationTestBase
         var session = await MangoModule.RequestAsync(
             request: CommandHelper.CreateLoginCommand("kolosovp95@gmail.com", "Bm3-`dPRv-/w#3)cw^97"),
             cancellationToken: CancellationToken.None);
-        var command = new LogoutCommand
-        {
-            RefreshToken = session.Response.Tokens.RefreshToken,
-            UserId = userId
-        };
+        var command = new LogoutCommand(RefreshToken: session.Response.Tokens.RefreshToken, UserId: userId);
 
         var result = await MangoModule.RequestAsync(command, CancellationToken.None);
 

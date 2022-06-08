@@ -5,11 +5,5 @@ using Microsoft.AspNetCore.Http;
 
 namespace MangoAPI.BusinessLogic.ApiCommands.Users;
 
-public record UpdateProfilePictureCommand : IRequest<Result<UpdateProfilePictureResponse>>
-{
-    public Guid UserId { get; init; }
-    
-    public IFormFile PictureFile { get; init; }
-
-    public string ContentType { get; init; }
-}
+public record UpdateProfilePictureCommand(Guid UserId, string ContentType, IFormFile PictureFile) 
+    : IRequest<Result<UpdateProfilePictureResponse>>;

@@ -4,8 +4,4 @@ using MediatR;
 
 namespace MangoAPI.BusinessLogic.ApiQueries.Communities;
 
-public record SearchCommunityQuery : IRequest<Result<SearchCommunityResponse>>
-{
-    public string DisplayName { get; init; }
-    public Guid UserId { get; init; }
-}
+public record SearchCommunityQuery(Guid UserId, string DisplayName) : IRequest<Result<SearchCommunityResponse>>;
