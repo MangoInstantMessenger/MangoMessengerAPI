@@ -98,14 +98,9 @@ public class CngKeyExchangeController : ApiControllerBase, ICngKeyExchangeContro
         CancellationToken cancellationToken)
     {
         var userId = CorrelationContext.GetUserId();
-
-        var command = new CngConfirmOrDeclineKeyExchangeCommand
-        {
-            UserId = userId,
-            Confirmed = request.Confirmed,
-            PublicKey = request.PublicKey,
-            RequestId = request.RequestId
-        };
+        
+        var command =
+            new CngConfirmOrDeclineKeyExchangeCommand(userId, request.RequestId, request.Confirmed, request.PublicKey);
 
         return await RequestAsync(command, cancellationToken);
     }

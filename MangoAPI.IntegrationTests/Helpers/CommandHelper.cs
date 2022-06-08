@@ -100,10 +100,10 @@ public static class CommandHelper
         Guid userId, Guid requestId, bool confirmed, string publicKey)
     {
         var command = new CngConfirmOrDeclineKeyExchangeCommand(
-            userId: userId,
-            requestId: requestId,
-            confirmed: confirmed,
-            publicKey: publicKey);
+            UserId: userId,
+            RequestId: requestId,
+            Confirmed: confirmed,
+            PublicKey: publicKey);
 
         return command;
     }
