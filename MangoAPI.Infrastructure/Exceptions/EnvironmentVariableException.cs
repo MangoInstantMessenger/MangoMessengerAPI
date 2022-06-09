@@ -11,7 +11,7 @@ public class EnvironmentVariableException : Exception
     {
     }
 
-    public EnvironmentVariableException(string message) : base($"Environment variable does not exists: {message}.")
+    public EnvironmentVariableException(string message) : base($"Environment variable does not exist: {message}.")
     {
     }
 }
