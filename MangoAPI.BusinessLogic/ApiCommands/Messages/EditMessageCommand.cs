@@ -5,7 +5,4 @@ using MediatR;
 namespace MangoAPI.BusinessLogic.ApiCommands.Messages;
 
 public record EditMessageCommand(Guid ChatId, Guid UserId, Guid MessageId, string ModifiedText) 
-    : IRequest<Result<ResponseBase>>
-{
-    public Guid UserId { get; set; } = UserId;
-}
+    : IRequest<Result<ResponseBase>>;
