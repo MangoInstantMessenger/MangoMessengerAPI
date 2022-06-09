@@ -63,6 +63,17 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "workflows", "workflows", "{
 		.github\workflows\run-cng-dh-handshake = .github\workflows\run-cng-dh-handshake
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docker", "docker", "{8F514700-EE42-4018-A95D-B3A06473CE86}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "mssql-docker", "mssql-docker", "{D5044538-3F69-4E1F-9393-7C77B7886898}"
+	ProjectSection(SolutionItems) = preProject
+		build\docker\mssql-docker\create-database.sql = build\docker\mssql-docker\create-database.sql
+		build\docker\mssql-docker\Dockerfile = build\docker\mssql-docker\Dockerfile
+		build\docker\mssql-docker\entrypoint.sh = build\docker\mssql-docker\entrypoint.sh
+		build\docker\mssql-docker\readme.md = build\docker\mssql-docker\readme.md
+		build\docker\mssql-docker\run-initialization.sh = build\docker\mssql-docker\run-initialization.sh
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -110,5 +121,7 @@ Global
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{245C5E82-3AED-46CE-8562-B78682197D9B} = {B8CB0A21-BB6E-478B-A755-49CEA1435CD1}
+		{8F514700-EE42-4018-A95D-B3A06473CE86} = {66E218B1-FCCA-42F3-81A4-E19AC6659ECA}
+		{D5044538-3F69-4E1F-9393-7C77B7886898} = {8F514700-EE42-4018-A95D-B3A06473CE86}
 	EndGlobalSection
 EndGlobal
