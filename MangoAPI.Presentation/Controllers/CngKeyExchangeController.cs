@@ -44,10 +44,7 @@ public class CngKeyExchangeController : ApiControllerBase, ICngKeyExchangeContro
     {
         var userId = CorrelationContext.GetUserId();
 
-        var request = new CngGetKeyExchangeRequestsQuery
-        {
-            UserId = userId
-        };
+        var request = new CngGetKeyExchangeRequestsQuery(userId);
 
         return await RequestAsync(request, cancellationToken);
     }
@@ -70,12 +67,10 @@ public class CngKeyExchangeController : ApiControllerBase, ICngKeyExchangeContro
     {
         var userId = CorrelationContext.GetUserId();
 
-        var command = new CngCreateKeyExchangeRequestCommand
-        {
-            RequestedUserId = request.RequestedUserId,
-            PublicKey = request.PublicKey,
-            UserId = userId
-        };
+        var command = new CngCreateKeyExchangeRequestCommand(
+            UserId: userId, 
+            RequestedUserId: request.RequestedUserId, 
+            PublicKey: request.PublicKey);
 
         return await RequestAsync(command, cancellationToken);
     }
@@ -98,14 +93,12 @@ public class CngKeyExchangeController : ApiControllerBase, ICngKeyExchangeContro
         CancellationToken cancellationToken)
     {
         var userId = CorrelationContext.GetUserId();
-
-        var command = new CngConfirmOrDeclineKeyExchangeCommand
-        {
-            UserId = userId,
-            Confirmed = request.Confirmed,
-            PublicKey = request.PublicKey,
-            RequestId = request.RequestId
-        };
+        
+        var command = new CngConfirmOrDeclineKeyExchangeCommand(
+                UserId: userId, 
+                RequestId: request.RequestId,
+                Confirmed: request.Confirmed,
+                PublicKey: request.PublicKey);
 
         return await RequestAsync(command, cancellationToken);
     }
@@ -128,11 +121,7 @@ public class CngKeyExchangeController : ApiControllerBase, ICngKeyExchangeContro
     public async Task<IActionResult> CngGetKeyExchangeRequestById(Guid requestId, CancellationToken cancellationToken)
     {
         var userId = CorrelationContext.GetUserId();
-        var query = new CngGetKeyExchangeRequestByIdQuery
-        {
-            UserId = userId,
-            RequestId = requestId
-        };
+        var query = new CngGetKeyExchangeRequestByIdQuery(userId, requestId);
 
         return await RequestAsync(query, cancellationToken);
     }

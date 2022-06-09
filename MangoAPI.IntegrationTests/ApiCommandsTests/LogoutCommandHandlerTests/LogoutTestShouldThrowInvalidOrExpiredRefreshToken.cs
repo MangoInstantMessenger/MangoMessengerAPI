@@ -17,11 +17,7 @@ public class LogoutTestShouldThrowInvalidOrExpiredRefreshToken : IntegrationTest
     {
         const string expectedMessage = ResponseMessageCodes.InvalidOrExpiredRefreshToken;
         var expectedDetails = ResponseMessageCodes.ErrorDictionary[expectedMessage];
-        var command = new LogoutCommand
-        {
-            RefreshToken = Guid.NewGuid(),
-            UserId = Guid.NewGuid()
-        };
+        var command = new LogoutCommand(RefreshToken: Guid.NewGuid(), UserId: Guid.NewGuid());
 
         var result = await MangoModule.RequestAsync(command, CancellationToken.None);
 

@@ -21,13 +21,10 @@ public class LoginTestSuccess : IntegrationTestBase
         await MangoModule.RequestAsync(
             request: CommandHelper.CreateVerifyEmailCommand(userEntity.Email, userEntity.EmailCode),
             cancellationToken: CancellationToken.None);
-        var command = new LoginCommand
-        {
-            Email = "kolosovp95@gmail.com",
-            Password = "Bm3-`dPRv-/w#3)cw^97"
-        };
 
-        var result = await MangoModule.RequestAsync(command, CancellationToken.None);
+        var result = await MangoModule.RequestAsync(
+            request: CommandHelper.CreateLoginCommand("kolosovp95@gmail.com", "Bm3-`dPRv-/w#3)cw^97"),
+            cancellationToken: CancellationToken.None);
             
         _assert.Pass(result);
     }

@@ -4,8 +4,4 @@ using MediatR;
 
 namespace MangoAPI.BusinessLogic.ApiQueries.Contacts;
 
-public record SearchContactQuery : IRequest<Result<SearchContactResponse>>
-{
-    public Guid UserId { get; init; }
-    public string SearchQuery { get; init; }
-}
+public record SearchContactQuery(string SearchQuery, Guid UserId) : IRequest<Result<SearchContactResponse>>;

@@ -16,11 +16,9 @@ public class AddContactSuccess : IntegrationTestBase
     {
         var sender = await MangoModule.RequestAsync(CommandHelper.RegisterKhachaturCommand(), CancellationToken.None);
         var receiver = await MangoModule.RequestAsync(CommandHelper.RegisterPetroCommand(), CancellationToken.None);
-        var command = new AddContactCommand
-        {
-            UserId = sender.Response.UserId,
-            ContactId = receiver.Response.UserId
-        };
+        var command = new AddContactCommand(
+            UserId: sender.Response.UserId,
+            ContactId: receiver.Response.UserId);
 
         var result = await MangoModule.RequestAsync(command, CancellationToken.None);
 

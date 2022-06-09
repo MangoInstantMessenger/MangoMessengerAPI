@@ -19,11 +19,7 @@ public class ArchiveChatTestSuccess : IntegrationTestBase
         var chat =
             await MangoModule.RequestAsync(CommandHelper.CreateExtremeCodeMainChatCommand(user.Response.UserId),
                                            CancellationToken.None);
-        var command = new ArchiveChatCommand
-        {
-            ChatId = chat.Response.ChatId,
-            UserId = user.Response.UserId
-        };
+        var command = new ArchiveChatCommand(ChatId: chat.Response.ChatId, UserId: user.Response.UserId);
         
         var result = await MangoModule.RequestAsync(command, CancellationToken.None);
 

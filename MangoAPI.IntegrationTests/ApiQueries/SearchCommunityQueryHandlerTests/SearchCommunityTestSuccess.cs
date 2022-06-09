@@ -19,11 +19,7 @@ public class SearchCommunityTestSuccess : IntegrationTestBase
         var chat = await MangoModule.RequestAsync(
                 request: CommandHelper.CreateExtremeCodeMainChatCommand(user.Response.UserId), 
                 cancellationToken: CancellationToken.None);
-        var query = new SearchCommunityQuery
-        {
-            UserId = user.Response.UserId,
-            DisplayName = "Extreme"
-        };
+        var query = new SearchCommunityQuery(UserId: user.Response.UserId, DisplayName: "Extreme");
 
         var result = await MangoModule.RequestAsync(query, CancellationToken.None);
             

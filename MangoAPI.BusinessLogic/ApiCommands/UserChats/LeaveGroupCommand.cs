@@ -4,8 +4,4 @@ using MediatR;
 
 namespace MangoAPI.BusinessLogic.ApiCommands.UserChats;
 
-public record LeaveGroupCommand : IRequest<Result<LeaveGroupResponse>>
-{
-    public Guid UserId { get; init; }
-    public Guid ChatId { get; init; }
-}
+public record LeaveGroupCommand(Guid UserId, Guid ChatId) : IRequest<Result<LeaveGroupResponse>>;

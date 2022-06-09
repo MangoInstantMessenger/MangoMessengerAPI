@@ -43,11 +43,10 @@ public class DocumentsController : ApiControllerBase, IDocumentsController
     {
         var userId = CorrelationContext.GetUserId();
 
-        var command = new UploadDocumentCommand
-        {
-            FormFile = formFile,
-            UserId = userId
-        };
+        var command = new UploadDocumentCommand(
+            FormFile: formFile, 
+            UserId: userId, 
+            ContentType: formFile.ContentType);
 
         return await RequestAsync(command, cancellationToken);
     }

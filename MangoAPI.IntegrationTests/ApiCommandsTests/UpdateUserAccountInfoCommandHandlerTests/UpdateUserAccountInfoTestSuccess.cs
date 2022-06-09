@@ -18,16 +18,9 @@ public class UpdateUserAccountInfoTestSuccess : IntegrationTestBase
         var user = await MangoModule.RequestAsync(
             request: CommandHelper.RegisterPetroCommand(),
             cancellationToken: CancellationToken.None);
-        var command = new UpdateUserAccountInfoCommand
-        {
-            UserId = user.Response.UserId,
-            Username = "Petro_Kolosov",
-            DisplayName = "Petro Kolosov",
-            Website = "pkolosov.com",
-            Bio = "Third year student of WSB at Poznan",
-            Address = "Poznan, Poland",
-            BirthdayDate = new DateTime(1994, 6, 12)
-        };
+        var command = new UpdateUserAccountInfoCommand(UserId: user.Response.UserId, Username: "Petro_Kolosov",
+            DisplayName: "Petro Kolosov", Website: "pkolosov.com", Bio: "Third year student of WSB at Poznan",
+            Address: "Poznan, Poland", BirthdayDate: new DateTime(1994, 6, 12));
 
         var result = await MangoModule.RequestAsync(command, CancellationToken.None);
 

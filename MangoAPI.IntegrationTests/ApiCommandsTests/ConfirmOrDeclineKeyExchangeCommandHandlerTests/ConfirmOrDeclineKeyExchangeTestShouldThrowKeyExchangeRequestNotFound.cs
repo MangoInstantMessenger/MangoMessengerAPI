@@ -17,13 +17,11 @@ public class ConfirmOrDeclineKeyExchangeTestShouldThrowKeyExchangeRequestNotFoun
     {
         const string expectedMessage = ResponseMessageCodes.KeyExchangeRequestNotFound;
         var expectedDetails = ResponseMessageCodes.ErrorDictionary[expectedMessage];
-        var command = new CngConfirmOrDeclineKeyExchangeCommand
-        {
-            UserId = Guid.NewGuid(),
-            RequestId = Guid.NewGuid(),
-            Confirmed = true,
-            PublicKey = "Public Key"
-        };
+        var command = new CngConfirmOrDeclineKeyExchangeCommand(
+            UserId: Guid.NewGuid(),
+            RequestId: Guid.NewGuid(),
+            Confirmed: true,
+            PublicKey: "Public Key");
 
         var result = await MangoModule.RequestAsync(command, CancellationToken.None);
             

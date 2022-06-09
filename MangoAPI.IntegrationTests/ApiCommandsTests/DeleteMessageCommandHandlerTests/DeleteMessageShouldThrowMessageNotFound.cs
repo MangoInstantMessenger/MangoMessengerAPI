@@ -23,12 +23,8 @@ public class DeleteMessageShouldThrowMessageNotFound : IntegrationTestBase
             await MangoModule.RequestAsync(
                 request: CommandHelper.CreateExtremeCodeMainChatCommand(user.Response.UserId), 
                 cancellationToken: CancellationToken.None);
-        var command = new DeleteMessageCommand
-        {
-            UserId = user.Response.UserId,
-            ChatId = chat.Response.ChatId,
-            MessageId = Guid.NewGuid()
-        };
+        var command = new DeleteMessageCommand(UserId: user.Response.UserId, ChatId: chat.Response.ChatId,
+            MessageId: Guid.NewGuid());
 
         var result = await MangoModule.RequestAsync(command, CancellationToken.None);
 

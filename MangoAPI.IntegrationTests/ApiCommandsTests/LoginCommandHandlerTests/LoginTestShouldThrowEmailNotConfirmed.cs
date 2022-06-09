@@ -18,14 +18,11 @@ public class LoginTestShouldThrowEmailNotConfirmed : IntegrationTestBase
         const string expectedMessage = ResponseMessageCodes.EmailIsNotVerified;
         var expectedDetails = ResponseMessageCodes.ErrorDictionary[expectedMessage];
         await MangoModule.RequestAsync(CommandHelper.RegisterPetroCommand(), CancellationToken.None);
-        var command = new LoginCommand
-        {
-            Email = "kolosovp95@gmail.com",
-            Password = "Bm3-`dPRv-/w#3)cw^97"
-        };
-
-        var result = await MangoModule.RequestAsync(command, CancellationToken.None);
-
+        
+        var result = await MangoModule.RequestAsync(
+            request: CommandHelper.CreateLoginCommand("kolosovp95@gmail.com", "Bm3-`dPRv-/w#3)cw^97"),
+            cancellationToken: CancellationToken.None);
+        
         _assert.Fail(result, expectedMessage, expectedDetails);
     }
 }

@@ -29,10 +29,7 @@ public class GetPublicKeysTestSuccess : IntegrationTestBase
                 confirmed: true,
                 publicKey: "Public key"),
             cancellationToken: CancellationToken.None);
-        var query = new CngGetPublicKeysQuery
-        {
-            UserId = sender.Response.UserId
-        };
+        var query = new CngGetPublicKeysQuery(UserId: sender.Response.UserId);
 
         var result = await MangoModule.RequestAsync(query, CancellationToken.None);
 

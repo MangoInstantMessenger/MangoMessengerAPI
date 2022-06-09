@@ -45,11 +45,7 @@ public class MessagesController : ApiControllerBase, IMessagesController
     {
         var userId = CorrelationContext.GetUserId();
 
-        var query = new GetMessagesQuery
-        {
-            ChatId = chatId,
-            UserId = userId
-        };
+        var query = new GetMessagesQuery(chatId, userId);
 
         return await RequestAsync(query, cancellationToken);
     }
@@ -73,12 +69,10 @@ public class MessagesController : ApiControllerBase, IMessagesController
     {
         var currentUserId = CorrelationContext.GetUserId();
 
-        var query = new SearchChatMessagesQuery
-        {
-            ChatId = chatId,
-            MessageText = messageText,
-            UserId = currentUserId
-        };
+        var query = new SearchChatMessagesQuery(
+            ChatId: chatId,
+            MessageText: messageText, 
+            UserId: currentUserId);
 
         return await RequestAsync(query, cancellationToken);
     }
@@ -100,8 +94,14 @@ public class MessagesController : ApiControllerBase, IMessagesController
         CancellationToken cancellationToken)
     {
         var userId = CorrelationContext.GetUserId();
-        var command = Mapper.Map<SendMessageCommand>(request);
-        command.UserId = userId;
+        var command = new SendMessageCommand(
+            UserId: userId,
+            ChatId: request.ChatId,
+            MessageText: request.MessageText,
+            AttachmentUrl: request.AttachmentUrl,
+            InReplayToAuthor: request.InReplayToAuthor,
+            InReplayToText: request.InReplayToText);
+        
         return await RequestAsync(command, cancellationToken);
     }
 
@@ -122,8 +122,12 @@ public class MessagesController : ApiControllerBase, IMessagesController
         CancellationToken cancellationToken)
     {
         var userId = CorrelationContext.GetUserId();
-        var command = Mapper.Map<EditMessageCommand>(request);
-        command.UserId = userId;
+        var command = new EditMessageCommand(
+            UserId: userId,
+            ChatId: request.ChatId,
+            MessageId: request.MessageId,
+            ModifiedText: request.ModifiedText);
+        
         return await RequestAsync(command, cancellationToken);
     }
 
@@ -145,8 +149,10 @@ public class MessagesController : ApiControllerBase, IMessagesController
     {
         var userId = CorrelationContext.GetUserId();
 
-        var command = Mapper.Map<DeleteMessageCommand>(request);
-        command.UserId = userId;
+        var command = new DeleteMessageCommand(
+            UserId: userId,
+            ChatId: request.ChatId,
+            MessageId: request.MessageId);
 
         return await RequestAsync(command, cancellationToken);
     }

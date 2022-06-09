@@ -15,10 +15,7 @@ public class RequestPasswordRestoreTestShouldThrowUserNotFound : IntegrationTest
     {
         const string expectedMessage = ResponseMessageCodes.UserNotFound;
         var expectedDetails = ResponseMessageCodes.ErrorDictionary[expectedMessage];
-        var command = new RequestPasswordRestoreCommand
-        {
-            Email = "email"
-        };
+        var command = new RequestPasswordRestoreCommand("email");
 
         var result = await MangoModule.RequestAsync(command, CancellationToken.None);
 

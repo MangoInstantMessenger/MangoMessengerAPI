@@ -88,8 +88,11 @@ public class UsersController : ApiControllerBase, IUsersController
     {
         var userId = CorrelationContext.GetUserId();
 
-        var command = Mapper.Map<ChangePasswordCommand>(request);
-        command.UserId = userId;
+        var command = new ChangePasswordCommand(
+            UserId: userId,
+            CurrentPassword: request.CurrentPassword,
+            NewPassword: request.NewPassword,
+            RepeatNewPassword: request.RepeatNewPassword);
 
         return await RequestAsync(command, cancellationToken);
     }
@@ -110,10 +113,7 @@ public class UsersController : ApiControllerBase, IUsersController
     [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
     public async Task<IActionResult> GetUserById([FromRoute] Guid userId, CancellationToken cancellationToken)
     {
-        var query = new GetUserQuery
-        {
-            UserId = userId
-        };
+        var query = new GetUserQuery(userId);
 
         return await RequestAsync(query, cancellationToken);
     }
@@ -138,8 +138,12 @@ public class UsersController : ApiControllerBase, IUsersController
     {
         var userId = CorrelationContext.GetUserId();
 
-        var command = Mapper.Map<UpdateUserSocialInformationCommand>(request);
-        command.UserId = userId;
+        var command = new UpdateUserSocialInformationCommand(
+            UserId: userId,
+            Instagram: request.Instagram,
+            LinkedIn: request.LinkedIn,
+            Facebook: request.Facebook,
+            Twitter: request.Twitter);
 
         return await RequestAsync(command, cancellationToken);
     }
@@ -163,8 +167,14 @@ public class UsersController : ApiControllerBase, IUsersController
     {
         var userId = CorrelationContext.GetUserId();
 
-        var command = Mapper.Map<UpdateUserAccountInfoCommand>(request);
-        command.UserId = userId;
+        var command = new UpdateUserAccountInfoCommand(
+            UserId: userId,
+            Username: request.Username,
+            DisplayName: request.DisplayName,
+            Website: request.Website,
+            Bio: request.Bio,
+            Address: request.Address,
+            BirthdayDate: request.BirthdayDate);
 
         return await RequestAsync(command, cancellationToken);
     }
@@ -182,11 +192,10 @@ public class UsersController : ApiControllerBase, IUsersController
     {
         var userId = CorrelationContext.GetUserId();
 
-        var command = new UpdateProfilePictureCommand
-        {
-            UserId = userId,
-            PictureFile = pictureFile
-        };
+        var command = new UpdateProfilePictureCommand(
+            UserId: userId, 
+            PictureFile: pictureFile, 
+            ContentType: pictureFile.ContentType);
 
         return await RequestAsync(command, cancellationToken);
     }

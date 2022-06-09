@@ -23,12 +23,8 @@ public class SearchChatMessageTestSuccess : IntegrationTestBase
         await MangoModule.RequestAsync(
                 request: CommandHelper.SendMessageToChannelCommand(user.Response.UserId, chat.Response.ChatId), 
                 cancellationToken: CancellationToken.None);
-        var query = new SearchChatMessagesQuery()
-        {
-            UserId = user.Response.UserId,
-            ChatId = chat.Response.ChatId,
-            MessageText = "test"
-        };
+        var query = new SearchChatMessagesQuery(UserId: user.Response.UserId, ChatId: chat.Response.ChatId,
+            MessageText: "test");
 
         var result = await MangoModule.RequestAsync(query, CancellationToken.None);
             

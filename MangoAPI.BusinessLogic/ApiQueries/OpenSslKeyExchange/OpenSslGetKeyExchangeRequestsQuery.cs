@@ -4,7 +4,4 @@ using MediatR;
 
 namespace MangoAPI.BusinessLogic.ApiQueries.OpenSslKeyExchange;
 
-public record OpenSslGetKeyExchangeRequestsQuery : IRequest<Result<OpenSslGetKeyExchangeRequestsResponse>>
-{
-    public Guid UserId { get; init; }
-}
+public record OpenSslGetKeyExchangeRequestsQuery(Guid UserId) : IRequest<Result<OpenSslGetKeyExchangeRequestsResponse>>;

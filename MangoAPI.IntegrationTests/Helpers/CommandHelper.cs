@@ -14,10 +14,10 @@ public static class CommandHelper
     public static RegisterCommand RegisterKhachaturCommand()
     {
         var command = new RegisterCommand(
-            email: "xachulxx@gmail.com",
-            displayName: "Khachatur Khachatryan",
-            password: "Bm3-`dPRv-/w#3)cw^97",
-            termsAccepted: true);
+            Email: "xachulxx@gmail.com",
+            DisplayName: "Khachatur Khachatryan",
+            Password: "Bm3-`dPRv-/w#3)cw^97",
+            TermsAccepted: true);
 
         return command;
     }
@@ -25,10 +25,10 @@ public static class CommandHelper
     public static RegisterCommand RegisterPetroCommand()
     {
         var command = new RegisterCommand(
-            email: "kolosovp95@gmail.com",
-            displayName: "Petro Kolosov",
-            password: "Bm3-`dPRv-/w#3)cw^97",
-            termsAccepted: true);
+            Email: "kolosovp95@gmail.com",
+            DisplayName: "Petro Kolosov",
+            Password: "Bm3-`dPRv-/w#3)cw^97",
+            TermsAccepted: true);
 
         return command;
     }
@@ -36,9 +36,9 @@ public static class CommandHelper
     public static CreateChannelCommand CreateExtremeCodeMainChatCommand(Guid userId)
     {
         var command = new CreateChannelCommand(
-            channelTitle: "ExtremeCode Main",
-            channelDescription: "Extreme Code Main Public Group",
-            userId: userId);
+            ChannelTitle: "ExtremeCode Main",
+            ChannelDescription: "Extreme Code Main Public Group",
+            UserId: userId);
 
         return command;
     }
@@ -46,9 +46,9 @@ public static class CommandHelper
     public static CngCreateKeyExchangeRequestCommand CreateCngKeyExchangeCommand(Guid userId, Guid requestedUserId)
     {
         var command = new CngCreateKeyExchangeRequestCommand(
-            userId: userId,
-            requestedUserId: requestedUserId,
-            publicKey: "Public Key");
+            UserId: userId,
+            RequestedUserId: requestedUserId,
+            PublicKey: "Public Key");
 
         return command;
     }
@@ -56,8 +56,8 @@ public static class CommandHelper
     public static AddContactCommand CreateContactCommand(Guid userId, Guid contactId)
     {
         var command = new AddContactCommand(
-            userId: userId,
-            contactId: contactId);
+            UserId: userId,
+            ContactId: contactId);
         
         return command;
     }
@@ -65,8 +65,12 @@ public static class CommandHelper
     public static SendMessageCommand SendMessageToChannelCommand(Guid userId, Guid chatId)
     {
         var command = new SendMessageCommand(
-            userId: userId,
-            chatId: chatId);
+            MessageText: "test message",
+            UserId: userId,
+            ChatId: chatId,
+            AttachmentUrl: " ",
+            InReplayToAuthor: " ",
+            InReplayToText: " ");
 
         return command;
     }
@@ -74,8 +78,8 @@ public static class CommandHelper
     public static VerifyEmailCommand CreateVerifyEmailCommand(string email, Guid emailCode)
     {
         var command = new VerifyEmailCommand(
-            email: email,
-            emailCode: emailCode);
+            Email: email,
+            EmailCode: emailCode);
 
         return command;
     }
@@ -83,8 +87,8 @@ public static class CommandHelper
     public static LoginCommand CreateLoginCommand(string email, string password)
     {
         var command = new LoginCommand(
-            email: email,
-            password: password);
+            Email: email,
+            Password: password);
 
         return command;
     }
@@ -100,10 +104,10 @@ public static class CommandHelper
         Guid userId, Guid requestId, bool confirmed, string publicKey)
     {
         var command = new CngConfirmOrDeclineKeyExchangeCommand(
-            userId: userId,
-            requestId: requestId,
-            confirmed: confirmed,
-            publicKey: publicKey);
+            UserId: userId,
+            RequestId: requestId,
+            Confirmed: confirmed,
+            PublicKey: publicKey);
 
         return command;
     }

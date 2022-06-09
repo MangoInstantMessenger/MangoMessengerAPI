@@ -21,12 +21,7 @@ public class UpdateProfilePictureTestShouldThrowUploadedDocumentsLimitReached10 
         var userResult = await MangoModule.RequestAsync(CommandHelper.RegisterPetroCommand(), CancellationToken.None);
         var userId = userResult.Response.UserId;
         var file = MangoFilesHelper.GetTestImage();
-        var command = new UpdateProfilePictureCommand
-        {
-            UserId = userId,
-            ContentType = "image/jpeg",
-            PictureFile = file
-        };
+        var command = new UpdateProfilePictureCommand(UserId: userId, ContentType: "image/jpeg", PictureFile: file);
         for (var i = 0; i <= 10; i++)
         {
             var fileResult = await MangoModule.RequestAsync(command, CancellationToken.None);

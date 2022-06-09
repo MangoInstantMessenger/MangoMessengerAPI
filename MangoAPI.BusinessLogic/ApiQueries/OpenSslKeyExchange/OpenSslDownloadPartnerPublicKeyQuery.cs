@@ -4,8 +4,4 @@ using MediatR;
 
 namespace MangoAPI.BusinessLogic.ApiQueries.OpenSslKeyExchange;
 
-public record OpenSslDownloadPartnerPublicKeyQuery : IRequest<Result<OpenSslDownloadPartnerPublicKeyResponse>>
-{
-    public Guid UserId { get; init; }
-    public Guid RequestId { get; init; }
-}
+public record OpenSslDownloadPartnerPublicKeyQuery(Guid UserId, Guid RequestId) : IRequest<Result<OpenSslDownloadPartnerPublicKeyResponse>>;

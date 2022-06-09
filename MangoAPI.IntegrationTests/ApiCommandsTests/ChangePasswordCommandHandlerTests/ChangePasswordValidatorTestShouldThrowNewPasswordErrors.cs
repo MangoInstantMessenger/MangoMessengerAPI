@@ -13,13 +13,8 @@ public class ChangePasswordValidatorTestShouldThrowNewPasswordErrors
     public void ChangePasswordValidatorTest_ShouldThrowNewAndRepeatPasswordAreNotSame()
     {
         var validator = new ChangePasswordCommandValidator();
-        var command = new ChangePasswordCommand
-        {
-            UserId = Guid.NewGuid(),
-            CurrentPassword = "Bm3-`dPRv-/w#3)cw^97",
-            NewPassword = "Gm3-`xPRr-/q#6)re^94",
-            RepeatNewPassword = "Gm4-`xPRr-/q#6)re^92"
-        };
+        var command = new ChangePasswordCommand(UserId: Guid.NewGuid(), CurrentPassword: "Bm3-`dPRv-/w#3)cw^97",
+            NewPassword: "Gm3-`xPRr-/q#6)re^94", RepeatNewPassword: "Gm4-`xPRr-/q#6)re^92");
             
         var result = validator.TestValidate(command);
 
@@ -32,13 +27,8 @@ public class ChangePasswordValidatorTestShouldThrowNewPasswordErrors
     public void ChangePasswordValidatorTest_ShouldThrowWeakPassword()
     {
         var validator = new ChangePasswordCommandValidator();
-        var command = new ChangePasswordCommand
-        {
-            UserId = Guid.NewGuid(),
-            CurrentPassword = "Bm3-`dPRv-/w#3)cw^97",
-            NewPassword = "12345678",
-            RepeatNewPassword = "12345678"
-        };
+        var command = new ChangePasswordCommand(UserId: Guid.NewGuid(), CurrentPassword: "Bm3-`dPRv-/w#3)cw^97",
+            NewPassword: "12345678", RepeatNewPassword: "12345678");
             
         var result = validator.TestValidate(command);
 

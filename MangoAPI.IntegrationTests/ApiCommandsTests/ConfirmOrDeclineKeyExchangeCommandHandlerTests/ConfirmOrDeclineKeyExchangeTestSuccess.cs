@@ -22,13 +22,11 @@ public class ConfirmOrDeclineKeyExchangeTestSuccess : IntegrationTestBase
             await MangoModule.RequestAsync(
                 CommandHelper.CreateCngKeyExchangeCommand(sender.Response.UserId, requestedUser.Response.UserId),
                 CancellationToken.None);
-        var command = new CngConfirmOrDeclineKeyExchangeCommand
-        {
-            UserId = requestedUser.Response.UserId,
-            RequestId = keyExchangeRequest.Response.RequestId,
-            Confirmed = true,
-            PublicKey = "Public Key"
-        };
+        var command = new CngConfirmOrDeclineKeyExchangeCommand(
+            UserId: requestedUser.Response.UserId,
+            RequestId: keyExchangeRequest.Response.RequestId,
+            Confirmed: true,
+            PublicKey: "Public Key");
 
         var result = await MangoModule.RequestAsync(command, CancellationToken.None);
             

@@ -22,12 +22,8 @@ public class UploadDocumentTestShouldThrowUploadedDocumentsLimitReached10 : Inte
         var user = await MangoModule.RequestAsync(
             request: CommandHelper.RegisterPetroCommand(),
             cancellationToken: CancellationToken.None);
-        var command = new UploadDocumentCommand
-        {
-            FormFile = file,
-            UserId = user.Response.UserId,
-            ContentType = "image/jpeg"
-        };
+        var command =
+            new UploadDocumentCommand(FormFile: file, UserId: user.Response.UserId, ContentType: "image/jpeg");
         for (var i = 0; i <= 10; i++)
         {
             var uploadResult = await MangoModule.RequestAsync(command, CancellationToken.None);

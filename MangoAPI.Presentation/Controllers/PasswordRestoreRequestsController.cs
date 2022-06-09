@@ -43,10 +43,7 @@ public class PasswordRestoreRequestsController : ApiControllerBase, IPasswordRes
     public async Task<IActionResult> RestorePasswordRequestAsync([FromQuery] string email,
         CancellationToken cancellationToken)
     {
-        var command = new RequestPasswordRestoreCommand
-        {
-            Email = email
-        };
+        var command = new RequestPasswordRestoreCommand(email);
 
         return await RequestAsync(command, cancellationToken);
     }

@@ -23,10 +23,7 @@ public class GetContactsTestSuccess : IntegrationTestBase
         await MangoModule.RequestAsync(
             request: CommandHelper.CreateContactCommand(user.Response.UserId, contact.Response.UserId),
             cancellationToken: CancellationToken.None);
-        var query = new GetContactsQuery
-        {
-            UserId = user.Response.UserId
-        };
+        var query = new GetContactsQuery(UserId: user.Response.UserId);
 
         var result = await MangoModule.RequestAsync(query, CancellationToken.None);
             

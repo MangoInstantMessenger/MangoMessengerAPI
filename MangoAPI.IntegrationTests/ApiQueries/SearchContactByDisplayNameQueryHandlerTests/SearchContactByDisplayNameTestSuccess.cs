@@ -17,11 +17,7 @@ public class SearchContactByDisplayNameTestSuccess : IntegrationTestBase
         var user = 
             await MangoModule.RequestAsync(CommandHelper.RegisterKhachaturCommand(), CancellationToken.None);
         await MangoModule.RequestAsync(CommandHelper.RegisterPetroCommand(), CancellationToken.None);
-        var query = new SearchContactQuery
-        {
-            UserId = user.Response.UserId,
-            SearchQuery = "Kolosov"
-        };
+        var query = new SearchContactQuery(UserId: user.Response.UserId, SearchQuery: "Kolosov");
 
         var result = await MangoModule.RequestAsync(query, CancellationToken.None);
 

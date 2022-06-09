@@ -44,10 +44,7 @@ public class CommunitiesController : ApiControllerBase, ICommunitiesController
     {
         var userId = CorrelationContext.GetUserId();
 
-        var request = new GetCurrentUserChatsQuery
-        {
-            UserId = userId
-        };
+        var request = new GetCurrentUserChatsQuery(userId);
 
         return await RequestAsync(request, cancellationToken);
     }
@@ -71,12 +68,10 @@ public class CommunitiesController : ApiControllerBase, ICommunitiesController
     {
         var userId = CorrelationContext.GetUserId();
 
-        var command = new CreateChannelCommand
-        {
-            UserId = userId,
-            ChannelTitle = request.ChannelTitle,
-            ChannelDescription = request.ChannelDescription,
-        };
+        var command = new CreateChannelCommand(
+            UserId: userId, 
+            ChannelTitle: request.ChannelTitle, 
+            ChannelDescription: request.ChannelDescription);
 
         return await RequestAsync(command, cancellationToken);
     }
@@ -101,13 +96,9 @@ public class CommunitiesController : ApiControllerBase, ICommunitiesController
     {
         var currentUserId = CorrelationContext.GetUserId();
 
-        var command = new CreateChatCommand
-        {
-            UserId = currentUserId,
-            PartnerId = userId,
-        };
-
-        command.UserId = currentUserId;
+        var command = new CreateChatCommand(
+            UserId: currentUserId,
+            PartnerId: userId);
 
         return await RequestAsync(command, cancellationToken);
     }
@@ -129,11 +120,7 @@ public class CommunitiesController : ApiControllerBase, ICommunitiesController
     {
         var userId = CorrelationContext.GetUserId();
 
-        var command = new SearchCommunityQuery
-        {
-            DisplayName = displayName,
-            UserId = userId,
-        };
+        var command = new SearchCommunityQuery(userId, displayName);
 
         return await RequestAsync(command, cancellationToken);
     }
@@ -157,12 +144,11 @@ public class CommunitiesController : ApiControllerBase, ICommunitiesController
     {
         var userId = CorrelationContext.GetUserId();
 
-        var command = new UpdateChanelPictureCommand
-        {
-            ChatId = chatId,
-            UserId = userId,
-            NewGroupPicture = newGroupPicture
-        };
+        var command = new UpdateChanelPictureCommand(
+            ChatId: chatId, 
+            UserId: userId, 
+            NewGroupPicture: newGroupPicture,
+            ContentType: newGroupPicture.ContentType);
 
         return await RequestAsync(command, cancellationToken);
     }

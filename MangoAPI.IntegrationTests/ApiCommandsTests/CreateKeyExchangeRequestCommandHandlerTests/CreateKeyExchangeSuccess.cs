@@ -20,8 +20,10 @@ public class CreateKeyExchangeSuccess : IntegrationTestBase
 
         var result = 
                 await MangoModule.RequestAsync(
-                    CommandHelper.CreateCngKeyExchangeCommand(sender.Response.UserId, requestedUser.Response.UserId),
-                    CancellationToken.None);
+                    CommandHelper.CreateCngKeyExchangeCommand(
+                        userId: sender.Response.UserId, 
+                        requestedUserId: requestedUser.Response.UserId),
+                        CancellationToken.None);
 
         _assert.Pass(result);
     }
