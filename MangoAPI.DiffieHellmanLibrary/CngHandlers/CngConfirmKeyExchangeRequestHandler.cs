@@ -29,20 +29,9 @@ public class CngConfirmKeyExchangeRequestHandler
         var tokens = tokensResponse.Tokens;
 
         var requestId = Guid.Parse(args[1]);
-
-        var getKeyExchangeResponse = await _cngKeyExchangeService.CngGetKeyExchangesAsync();
-
-        // TODO: create separate REST handler get request by ID
-        var exchangeRequest = getKeyExchangeResponse.KeyExchangeRequests
-            .FirstOrDefault(x => x.RequestId == requestId);
-
-        if (exchangeRequest == null)
-        {
-            const string error = ResponseMessageCodes.KeyExchangeRequestNotFound;
-            var details = ResponseMessageCodes.ErrorDictionary[error];
-            Console.WriteLine($@"{error}. {details}");
-            return;
-        }
+        
+        var getKeyExchangeResponse = await _cngKeyExchangeService.CngGetKeyExchangeById(requestId);
+        var exchangeRequest = getKeyExchangeResponse.KeyExchangeRequest;
 
         var ecDiffieHellmanCng = _cngEcdhService.CngGenerateEcdhKeysPair(
             out var privateKeyBase64String,
