@@ -32,7 +32,6 @@ public class CngConfirmKeyExchangeRequestHandler
 
         var getKeyExchangeResponse = await _cngKeyExchangeService.CngGetKeyExchangesAsync();
 
-        // TODO: create separate REST handler get request by ID
         var exchangeRequest = getKeyExchangeResponse.KeyExchangeRequests
             .FirstOrDefault(x => x.RequestId == requestId);
 
