@@ -30,7 +30,6 @@ public class CngConfirmKeyExchangeRequestHandler
 
         var requestId = Guid.Parse(args[1]);
         
-        // TODO: create separate REST handler get request by ID
         var getKeyExchangeResponse = await _cngKeyExchangeService.CngGetKeyExchangeById(requestId);
         var exchangeRequest = getKeyExchangeResponse.KeyExchangeRequest;
 
