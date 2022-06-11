@@ -82,13 +82,13 @@ public static class Program
             }
             case Commands.OpenSslUploadDhParameters:
             {
-                var handler = DependencyResolver.ResolveService<OpenSslUploadDhParametersHandler>();
+                var handler = DependencyResolver.ResolveService<UploadDhParametersHandler>();
                 await handler.UploadDhParametersAsync();
                 break;
             }
             case Commands.OpenSslDownloadDhParameters:
             {
-                var handler = DependencyResolver.ResolveService<OpenSslDownloadDhParametersHandler>();
+                var handler = DependencyResolver.ResolveService<DownloadDhParametersHandler>();
                 await handler.DownloadDhParametersAsync();
                 break;
             }
@@ -96,7 +96,7 @@ public static class Program
             {
                 var receiverIdString = args[1];
                 var receiverId = GetGuidValue(receiverIdString);
-                var handler = DependencyResolver.ResolveService<OpenSslGeneratePrivateKeyHandler>();
+                var handler = DependencyResolver.ResolveService<GeneratePrivateKeyHandler>();
                 await handler.GeneratePrivateKeyAsync(receiverId);
                 break;
             }
@@ -104,7 +104,7 @@ public static class Program
             {
                 var receiverIdString = args[1];
                 var receiverId = GetGuidValue(receiverIdString);
-                var handler = DependencyResolver.ResolveService<OpenSslGeneratePublicKeyHandler>();
+                var handler = DependencyResolver.ResolveService<GeneratePublicKeyHandler>();
                 await handler.GeneratePublicKeyAsync(receiverId);
 
                 break;
@@ -113,13 +113,13 @@ public static class Program
             {
                 var receiverIdString = args[1];
                 var receiverId = GetGuidValue(receiverIdString);
-                var handler = DependencyResolver.ResolveService<OpenSslCreateKeyExchangeHandler>();
+                var handler = DependencyResolver.ResolveService<CreateKeyExchangeHandler>();
                 await handler.CreateKeyExchangeAsync(receiverId);
                 break;
             }
             case Commands.OpenSslPrintKeyExchanges:
             {
-                var handler = DependencyResolver.ResolveService<OpenSslPrintKeyExchangesHandler>();
+                var handler = DependencyResolver.ResolveService<PrintKeyExchangesHandler>();
                 await handler.PrintKeyExchangesAsync();
                 break;
             }
@@ -127,7 +127,7 @@ public static class Program
             {
                 var userIdString = args[1];
                 var userId = GetGuidValue(userIdString);
-                var handler = DependencyResolver.ResolveService<OpenSslConfirmKeyExchangeHandler>();
+                var handler = DependencyResolver.ResolveService<ConfirmKeyExchangeHandler>();
                 await handler.ConfirmKeyExchangeAsync(userId);
                 break;
             }
@@ -137,7 +137,7 @@ public static class Program
                 var requestIdString = args[2];
                 var partnerId = GetGuidValue(requestIdString);
                 var actor = actorString == "--sender" ? Actor.Sender : Actor.Receiver;
-                var handler = DependencyResolver.ResolveService<OpenSslCreateCommonSecretHandler>();
+                var handler = DependencyResolver.ResolveService<CreateCommonSecretHandler>();
                 await handler.CreateCommonSecretAsync(actor, partnerId);
                 break;
             }
@@ -147,7 +147,7 @@ public static class Program
                 var userIdString = args[2];
                 var userId = GetGuidValue(userIdString);
                 var actor = actorString == "--sender" ? Actor.Sender : Actor.Receiver;
-                var handler = DependencyResolver.ResolveService<OpenSslDownloadPublicKeyHandler>();
+                var handler = DependencyResolver.ResolveService<DownloadPublicKeyHandler>();
                 await handler.DownloadPublicKeyAsync(actor, userId);
                 break;
             }
@@ -155,7 +155,7 @@ public static class Program
             {
                 var requestIdString = args[1];
                 var requestId = GetGuidValue(requestIdString);
-                var handler = DependencyResolver.ResolveService<OpenSslDeclineKeyExchangeHandler>();
+                var handler = DependencyResolver.ResolveService<DeclineKeyExchangeHandler>();
                 await handler.DeclineKeyExchangeAsync(requestId);
                 break;
             }
@@ -163,7 +163,7 @@ public static class Program
             {
                 var requestIdString = args[1];
                 var requestId = GetGuidValue(requestIdString);
-                var handler = DependencyResolver.ResolveService<OpenSslPrintKeyExchangeByIdHandler>();
+                var handler = DependencyResolver.ResolveService<PrintKeyExchangeByIdHandler>();
                 await handler.GetKeyExchangeByIdAsync(requestId);
                 break;
             }

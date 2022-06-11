@@ -7,9 +7,9 @@ using MangoAPI.DiffieHellmanLibrary.Services;
 
 namespace MangoAPI.DiffieHellmanLibrary.OpenSslHandlers;
 
-public class OpenSslCreateCommonSecretHandler : OpenSslBaseHandler, ICreateCommonSecretHandler
+public class CreateCommonSecretHandler : BaseHandler, ICreateCommonSecretHandler
 {
-    public OpenSslCreateCommonSecretHandler(HttpClient httpClient) : base(httpClient)
+    public CreateCommonSecretHandler(HttpClient httpClient) : base(httpClient)
     {
     }
 

@@ -6,9 +6,9 @@ using Newtonsoft.Json;
 
 namespace MangoAPI.DiffieHellmanLibrary.OpenSslHandlers;
 
-public class OpenSslPrintKeyExchangeByIdHandler : OpenSslBaseHandler, IPrintKeyExchangeByIdHandler
+public class PrintKeyExchangeByIdHandler : BaseHandler, IPrintKeyExchangeByIdHandler
 {
-    public OpenSslPrintKeyExchangeByIdHandler(HttpClient httpClient) : base(httpClient)
+    public PrintKeyExchangeByIdHandler(HttpClient httpClient) : base(httpClient)
     {
     }
 

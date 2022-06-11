@@ -5,9 +5,9 @@ using MangoAPI.DiffieHellmanLibrary.Services;
 
 namespace MangoAPI.DiffieHellmanLibrary.OpenSslHandlers;
 
-public class OpenSslCreateKeyExchangeHandler : OpenSslBaseHandler, ICreateKeyExchangeHandler
+public class CreateKeyExchangeHandler : BaseHandler, ICreateKeyExchangeHandler
 {
-    public OpenSslCreateKeyExchangeHandler(HttpClient httpClient) : base(httpClient)
+    public CreateKeyExchangeHandler(HttpClient httpClient) : base(httpClient)
     {
     }
 

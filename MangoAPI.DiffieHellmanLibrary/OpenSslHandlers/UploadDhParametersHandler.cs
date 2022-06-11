@@ -4,9 +4,9 @@ using MangoAPI.DiffieHellmanLibrary.Helpers;
 
 namespace MangoAPI.DiffieHellmanLibrary.OpenSslHandlers;
 
-public class OpenSslUploadDhParametersHandler : OpenSslBaseHandler, IUploadDhParametersHandler
+public class UploadDhParametersHandler : BaseHandler, IUploadDhParametersHandler
 {
-    public OpenSslUploadDhParametersHandler(HttpClient httpClient) : base(httpClient)
+    public UploadDhParametersHandler(HttpClient httpClient) : base(httpClient)
     {
     }
 

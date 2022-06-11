@@ -5,9 +5,9 @@ using MangoAPI.DiffieHellmanLibrary.Helpers;
 
 namespace MangoAPI.DiffieHellmanLibrary.OpenSslHandlers;
 
-public class OpenSslDownloadDhParametersHandler : OpenSslBaseHandler, IDownloadDhParametersHandler
+public class DownloadDhParametersHandler : BaseHandler, IDownloadDhParametersHandler
 {
-    public OpenSslDownloadDhParametersHandler(HttpClient httpClient) : base(httpClient)
+    public DownloadDhParametersHandler(HttpClient httpClient) : base(httpClient)
     {
     }
 

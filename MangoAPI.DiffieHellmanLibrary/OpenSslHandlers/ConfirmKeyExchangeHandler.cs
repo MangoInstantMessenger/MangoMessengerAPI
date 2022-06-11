@@ -5,9 +5,9 @@ using MangoAPI.DiffieHellmanLibrary.Services;
 
 namespace MangoAPI.DiffieHellmanLibrary.OpenSslHandlers;
 
-public class OpenSslConfirmKeyExchangeHandler : OpenSslBaseHandler, IConfirmKeyExchangeHandler
+public class ConfirmKeyExchangeHandler : BaseHandler, IConfirmKeyExchangeHandler
 {
-    public OpenSslConfirmKeyExchangeHandler(HttpClient httpClient) : base(httpClient)
+    public ConfirmKeyExchangeHandler(HttpClient httpClient) : base(httpClient)
     {
     }
 

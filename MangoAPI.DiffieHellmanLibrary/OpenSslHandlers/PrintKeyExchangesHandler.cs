@@ -2,9 +2,9 @@
 
 namespace MangoAPI.DiffieHellmanLibrary.OpenSslHandlers;
 
-public class OpenSslPrintKeyExchangesHandler : OpenSslBaseHandler, IPrintKeyExchangesHandler
+public class PrintKeyExchangesHandler : BaseHandler, IPrintKeyExchangesHandler
 {
-    public OpenSslPrintKeyExchangesHandler(HttpClient httpClient) : base(httpClient)
+    public PrintKeyExchangesHandler(HttpClient httpClient) : base(httpClient)
     {
     }
 

@@ -3,9 +3,9 @@ using MangoAPI.DiffieHellmanLibrary.Constants;
 
 namespace MangoAPI.DiffieHellmanLibrary.OpenSslHandlers;
 
-public class OpenSslDeclineKeyExchangeHandler : OpenSslBaseHandler, IDeclineKeyExchangeHandler
+public class DeclineKeyExchangeHandler : BaseHandler, IDeclineKeyExchangeHandler
 {
-    public OpenSslDeclineKeyExchangeHandler(HttpClient httpClient) : base(httpClient)
+    public DeclineKeyExchangeHandler(HttpClient httpClient) : base(httpClient)
     {
     }
 
