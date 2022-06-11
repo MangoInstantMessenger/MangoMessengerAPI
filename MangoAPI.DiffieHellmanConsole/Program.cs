@@ -91,13 +91,7 @@ public static class Program
 
                 var receiverIdString = args[1];
 
-                var isParsed = Guid.TryParse(receiverIdString, out var receiverId);
-
-                if (!isParsed)
-                {
-                    Console.WriteLine(@"Invalid or empty receiver ID.");
-                    return;
-                }
+                var receiverId = GetGuidValue(receiverIdString);
 
                 await handler.GeneratePrivateKeyAsync(receiverId);
 
@@ -109,13 +103,7 @@ public static class Program
 
                 var receiverIdString = args[1];
 
-                var isParsed = Guid.TryParse(receiverIdString, out var receiverId);
-
-                if (!isParsed)
-                {
-                    Console.WriteLine(@"Invalid or empty receiver ID.");
-                    return;
-                }
+                var receiverId = GetGuidValue(receiverIdString);
 
                 await handler.GeneratePublicKeyAsync(receiverId);
 
@@ -127,13 +115,7 @@ public static class Program
 
                 var receiverIdString = args[1];
 
-                var isParsed = Guid.TryParse(receiverIdString, out var receiverId);
-
-                if (!isParsed)
-                {
-                    Console.WriteLine(@"Invalid or empty receiver ID.");
-                    return;
-                }
+                var receiverId = GetGuidValue(receiverIdString);
 
                 await handler.CreateKeyExchangeAsync(receiverId);
 
@@ -151,13 +133,7 @@ public static class Program
 
                 var userIdString = args[1];
 
-                var isParsed = Guid.TryParse(userIdString, out var userId);
-
-                if (!isParsed)
-                {
-                    Console.WriteLine(@"Invalid or empty request ID.");
-                    return;
-                }
+                var userId = GetGuidValue(userIdString);
 
                 await handler.ConfirmKeyExchangeAsync(userId);
                 break;
@@ -169,19 +145,13 @@ public static class Program
                 var actorString = args[1];
                 var requestIdString = args[2];
 
-                var isParsed = Guid.TryParse(requestIdString, out var requestId);
-
-                if (!isParsed)
-                {
-                    Console.WriteLine(@"Invalid or empty request ID.");
-                    return;
-                }
+                var partnerId = GetGuidValue(requestIdString);
 
                 var actor = actorString == "--sender"
                     ? Actor.Sender
                     : Actor.Receiver;
 
-                await handler.CreateCommonSecretAsync(actor, requestId);
+                await handler.CreateCommonSecretAsync(actor, partnerId);
                 break;
             }
             case Commands.OpenSslDownloadPublicKey:
@@ -191,13 +161,7 @@ public static class Program
                 var actorString = args[1];
                 var userIdString = args[2];
 
-                var isParsed = Guid.TryParse(userIdString, out var userId);
-
-                if (!isParsed)
-                {
-                    Console.WriteLine(@"Invalid or empty request ID.");
-                    return;
-                }
+                var userId = GetGuidValue(userIdString);
 
                 var actor = actorString == "--sender"
                     ? Actor.Sender
@@ -212,13 +176,7 @@ public static class Program
 
                 var requestIdString = args[1];
 
-                var isParsed = Guid.TryParse(requestIdString, out var requestId);
-
-                if (!isParsed)
-                {
-                    Console.WriteLine(@"Invalid or empty request ID.");
-                    return;
-                }
+                var requestId = GetGuidValue(requestIdString);
 
                 await handler.DeclineKeyExchangeAsync(requestId);
                 break;
@@ -229,13 +187,7 @@ public static class Program
 
                 var requestIdString = args[1];
 
-                var isParsed = Guid.TryParse(requestIdString, out var requestId);
-
-                if (!isParsed)
-                {
-                    Console.WriteLine(@"Invalid or empty request ID.");
-                    return;
-                }
+                var requestId = GetGuidValue(requestIdString);
 
                 await handler.GetKeyExchangeByIdAsync(requestId);
                 break;
@@ -247,20 +199,8 @@ public static class Program
                 var senderIdString = args[1];
                 var receiverIdString = args[2];
 
-                var senderIdParsed = Guid.TryParse(senderIdString, out var senderId);
-                var receiverParsed = Guid.TryParse(receiverIdString, out var receiverId);
-
-                if (!senderIdParsed)
-                {
-                    Console.WriteLine(@"Invalid or empty sender ID.");
-                    return;
-                }
-
-                if (!receiverParsed)
-                {
-                    Console.WriteLine(@"Invalid or empty receiver ID.");
-                    return;
-                }
+                var senderId = GetGuidValue(senderIdString);
+                var receiverId = GetGuidValue(receiverIdString);
 
                 await handler.ValidateCommonSecretAsync(senderId, receiverId);
                 break;
@@ -271,5 +211,17 @@ public static class Program
                 break;
             }
         }
+    }
+
+    private static Guid GetGuidValue(string receiverIdString)
+    {
+        var isParsed = Guid.TryParse(receiverIdString, out var receiverId);
+
+        if (!isParsed)
+        {
+            throw new InvalidCastException("ReceiverId is not a valid Guid.");
+        }
+
+        return receiverId;
     }
 }
