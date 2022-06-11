@@ -1,11 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
-using MangoAPI.BusinessLogic.Models;
-using MangoAPI.DiffieHellmanLibrary.AuthHandlers;
-using MangoAPI.DiffieHellmanLibrary.CngHandlers;
-using MangoAPI.DiffieHellmanLibrary.Constants;
-using MangoAPI.DiffieHellmanLibrary.Helpers;
-using MangoAPI.DiffieHellmanLibrary.OpenSslHandlers;
+using MangoAPI.DiffieHellmanConsole.Controllers;
 
 namespace MangoAPI.DiffieHellmanConsole;
 
@@ -21,179 +16,32 @@ public static class Program
 
         var method = args[0];
 
-        switch (method)
+        switch (FetchMethodName(args[0]))
         {
-            case Commands.Login:
-            {
-                var login = args[1];
-                var password = args[2];
-                var handler = DependencyResolver.ResolveService<LoginHandler>();
-                await handler.LoginAsync(login, password);
+            case "openssl":
+                await OpenSslController.FetchOpenSslHandler(args, method);
                 break;
-            }
-            case Commands.RefreshToken:
-            {
-                var handler = DependencyResolver.ResolveService<RefreshTokenHandler>();
-                await handler.RefreshTokensAsync();
+            case "cng":
+                await CngController.FetchCngHandler(args, method);
                 break;
-            }
-            case Commands.CngCreateKeyExchange:
-            {
-                var receiverIdString = args[1];
-                var receiverId = GetGuidValue(receiverIdString);
-                var handler = DependencyResolver.ResolveService<CngCreateKeyExchangeHandler>();
-                await handler.CreateKeyExchangeAsync(receiverId);
+            case "auth":
+                await AuthController.FetchAuthHandler(args, method);
                 break;
-            }
-            case Commands.CngPrintKeyExchanges:
-            {
-                var handler = DependencyResolver.ResolveService<CngPrintKeyExchangesHandler>();
-                await handler.PrintKeyExchangesAsync();
-                break;
-            }
-            case Commands.CngConfirmKeyExchange:
-            {
-                var requestIdString = args[1];
-                var requestId = GetGuidValue(requestIdString);
-                var handler = DependencyResolver.ResolveService<CngConfirmKeyExchangeHandler>();
-                await handler.ConfirmKeyExchangeAsync(requestId);
-                break;
-            }
-            case Commands.CngPrintPublicKeys:
-            {
-                var handler = DependencyResolver.ResolveService<CngPrintPublicKeysHandler>();
-                await handler.CngPrintPublicKeysAsync();
-                break;
-            }
-            case Commands.CngCreateCommonSecret:
-            {
-                var actorString = args[1];
-                var requestIdString = args[2];
-                var partnerId = GetGuidValue(requestIdString);
-                var actor = actorString == "--sender" ? Actor.Sender : Actor.Receiver;
-                var handler = DependencyResolver.ResolveService<CngCreateCommonSecretHandler>();
-                await handler.CreateCommonSecretAsync(actor, partnerId);
-                break;
-            }
-            case Commands.OpenSslGenerateDhParameters:
-            {
-                await OpenSslGenerateDhParametersHandler.CreateDhParametersAsync();
-                break;
-            }
-            case Commands.OpenSslUploadDhParameters:
-            {
-                var handler = DependencyResolver.ResolveService<OpensslUploadDhParametersHandler>();
-                await handler.UploadDhParametersAsync();
-                break;
-            }
-            case Commands.OpenSslDownloadDhParameters:
-            {
-                var handler = DependencyResolver.ResolveService<OpensslDownloadDhParametersHandler>();
-                await handler.DownloadDhParametersAsync();
-                break;
-            }
-            case Commands.OpenSslGeneratePrivateKey:
-            {
-                var receiverIdString = args[1];
-                var receiverId = GetGuidValue(receiverIdString);
-                var handler = DependencyResolver.ResolveService<OpensslGeneratePrivateKeyHandler>();
-                await handler.GeneratePrivateKeyAsync(receiverId);
-                break;
-            }
-            case Commands.OpenSslGeneratePublicKey:
-            {
-                var receiverIdString = args[1];
-                var receiverId = GetGuidValue(receiverIdString);
-                var handler = DependencyResolver.ResolveService<OpensslGeneratePublicKeyHandler>();
-                await handler.GeneratePublicKeyAsync(receiverId);
-
-                break;
-            }
-            case Commands.OpenSslCreateKeyExchange:
-            {
-                var receiverIdString = args[1];
-                var receiverId = GetGuidValue(receiverIdString);
-                var handler = DependencyResolver.ResolveService<OpensslCreateKeyExchangeHandler>();
-                await handler.CreateKeyExchangeAsync(receiverId);
-                break;
-            }
-            case Commands.OpenSslPrintKeyExchanges:
-            {
-                var handler = DependencyResolver.ResolveService<OpensslPrintKeyExchangesHandler>();
-                await handler.PrintKeyExchangesAsync();
-                break;
-            }
-            case Commands.OpenSslConfirmKeyExchange:
-            {
-                var userIdString = args[1];
-                var userId = GetGuidValue(userIdString);
-                var handler = DependencyResolver.ResolveService<OpensslConfirmKeyExchangeHandler>();
-                await handler.ConfirmKeyExchangeAsync(userId);
-                break;
-            }
-            case Commands.OpenSslCreateCommonSecret:
-            {
-                var actorString = args[1];
-                var requestIdString = args[2];
-                var partnerId = GetGuidValue(requestIdString);
-                var actor = actorString == "--sender" ? Actor.Sender : Actor.Receiver;
-                var handler = DependencyResolver.ResolveService<OpensslCreateCommonSecretHandler>();
-                await handler.CreateCommonSecretAsync(actor, partnerId);
-                break;
-            }
-            case Commands.OpenSslDownloadPublicKey:
-            {
-                var actorString = args[1];
-                var userIdString = args[2];
-                var userId = GetGuidValue(userIdString);
-                var actor = actorString == "--sender" ? Actor.Sender : Actor.Receiver;
-                var handler = DependencyResolver.ResolveService<OpensslDownloadPublicKeyHandler>();
-                await handler.DownloadPublicKeyAsync(actor, userId);
-                break;
-            }
-            case Commands.OpenSslDeclineKeyExchange:
-            {
-                var requestIdString = args[1];
-                var requestId = GetGuidValue(requestIdString);
-                var handler = DependencyResolver.ResolveService<OpensslDeclineKeyExchangeHandler>();
-                await handler.DeclineKeyExchangeAsync(requestId);
-                break;
-            }
-            case Commands.OpenSslPrintKeyExchangeById:
-            {
-                var requestIdString = args[1];
-                var requestId = GetGuidValue(requestIdString);
-                var handler = DependencyResolver.ResolveService<OpensslPrintKeyExchangeByIdHandler>();
-                await handler.GetKeyExchangeByIdAsync(requestId);
-                break;
-            }
-            case Commands.OpensslValidateCommonSecret:
-            {
-                var senderIdString = args[1];
-                var receiverIdString = args[2];
-                var senderId = GetGuidValue(senderIdString);
-                var receiverId = GetGuidValue(receiverIdString);
-                var handler = DependencyResolver.ResolveService<OpensslValidateCommonSecretHandler>();
-                await handler.ValidateCommonSecretAsync(senderId, receiverId);
-                break;
-            }
-            default:
-            {
-                Console.WriteLine(@"Unrecognized command.");
-                break;
-            }
         }
     }
 
-    private static Guid GetGuidValue(string receiverIdString)
+    private static string FetchMethodName(string method)
     {
-        var isParsed = Guid.TryParse(receiverIdString, out var receiverId);
-
-        if (!isParsed)
+        if (method.StartsWith("openssl"))
         {
-            throw new InvalidCastException("ReceiverId is not a valid Guid.");
+            return "openssl";
         }
 
-        return receiverId;
+        if (method.StartsWith("cng"))
+        {
+            return "cng";
+        }
+
+        return "auth";
     }
 }
