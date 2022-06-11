@@ -2,10 +2,11 @@
 using MangoAPI.BusinessLogic.ApiQueries.OpenSslKeyExchange;
 using MangoAPI.BusinessLogic.Models;
 using MangoAPI.DiffieHellmanLibrary.Constants;
+using MangoAPI.DiffieHellmanLibrary.Services;
 using MangoAPI.Domain.Constants;
 using Newtonsoft.Json;
 
-namespace MangoAPI.DiffieHellmanLibrary.Services;
+namespace MangoAPI.DiffieHellmanLibrary.Abstractions;
 
 public abstract class BaseHandler
 {

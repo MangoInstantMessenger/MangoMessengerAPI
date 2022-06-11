@@ -1,10 +1,11 @@
+using MangoAPI.DiffieHellmanLibrary.Abstractions;
 using MangoAPI.DiffieHellmanLibrary.Constants;
 using MangoAPI.DiffieHellmanLibrary.Helpers;
 using MangoAPI.DiffieHellmanLibrary.Services;
 
 namespace MangoAPI.DiffieHellmanLibrary.OpenSslHandlers;
 
-public class OpenSslUploadDhParametersHandler : BaseHandler
+public class OpenSslUploadDhParametersHandler : BaseHandler, IUploadDhParametersHandler
 {
     public OpenSslUploadDhParametersHandler(HttpClient httpClient, TokensService tokensService) : base(httpClient,
         tokensService)

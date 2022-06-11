@@ -169,7 +169,8 @@ public static class Program
                 var receiverIdString = args[2];
                 var senderId = GetGuidValue(senderIdString);
                 var receiverId = GetGuidValue(receiverIdString);
-                await OpensslValidateCommonSecretHandler.ValidateCommonSecretAsync(senderId, receiverId);
+                var handler = DependencyResolver.ResolveService<OpensslValidateCommonSecretHandler>();
+                await handler.ValidateCommonSecretAsync(senderId, receiverId);
                 break;
             }
             default:

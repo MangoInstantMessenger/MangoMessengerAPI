@@ -1,11 +1,12 @@
 ﻿using System.Security.Cryptography;
+using MangoAPI.DiffieHellmanLibrary.Abstractions;
 using MangoAPI.DiffieHellmanLibrary.Helpers;
 
 namespace MangoAPI.DiffieHellmanLibrary.OpenSslHandlers;
 
-public static class OpensslValidateCommonSecretHandler
+public class OpensslValidateCommonSecretHandler : IValidateCommonSecretHandler
 {
-    public static async Task ValidateCommonSecretAsync(Guid senderId, Guid receiverId)
+    public async Task ValidateCommonSecretAsync(Guid senderId, Guid receiverId)
     {
         Console.WriteLine($@"Validating common secrets for {senderId} and {receiverId} ...");
 

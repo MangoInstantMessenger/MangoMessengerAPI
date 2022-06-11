@@ -1,12 +1,13 @@
 ﻿using CliWrap;
 using MangoAPI.BusinessLogic.Models;
+using MangoAPI.DiffieHellmanLibrary.Abstractions;
 using MangoAPI.DiffieHellmanLibrary.Extensions;
 using MangoAPI.DiffieHellmanLibrary.Helpers;
 using MangoAPI.DiffieHellmanLibrary.Services;
 
 namespace MangoAPI.DiffieHellmanLibrary.OpenSslHandlers;
 
-public class OpenSslCreateCommonSecretHandler : BaseHandler
+public class OpenSslCreateCommonSecretHandler : BaseHandler, ICreateCommonSecretHandler
 {
     public OpenSslCreateCommonSecretHandler(HttpClient httpClient, TokensService tokensService) : base(httpClient,
         tokensService)

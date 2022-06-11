@@ -1,11 +1,12 @@
 using CliWrap;
+using MangoAPI.DiffieHellmanLibrary.Abstractions;
 using MangoAPI.DiffieHellmanLibrary.Extensions;
 using MangoAPI.DiffieHellmanLibrary.Helpers;
 using MangoAPI.DiffieHellmanLibrary.Services;
 
 namespace MangoAPI.DiffieHellmanLibrary.OpenSslHandlers;
 
-public class OpenSslGeneratePublicKeyHandler : BaseHandler
+public class OpenSslGeneratePublicKeyHandler : BaseHandler, IGeneratePublicKeyHandler
 {
     public OpenSslGeneratePublicKeyHandler(HttpClient httpClient, TokensService tokensService) : base(httpClient,
         tokensService)

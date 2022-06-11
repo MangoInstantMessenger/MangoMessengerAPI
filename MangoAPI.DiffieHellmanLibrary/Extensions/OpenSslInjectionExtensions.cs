@@ -18,6 +18,7 @@ public static class OpenSslInjectionExtensions
         collection.AddSingleton<OpenSslDownloadPublicKeyHandler>();
         collection.AddSingleton<OpenSslDeclineKeyExchangeHandler>();
         collection.AddSingleton<OpenSslPrintKeyExchangeByIdHandler>();
+        collection.AddSingleton<OpensslValidateCommonSecretHandler>();
 
         return collection;
     }

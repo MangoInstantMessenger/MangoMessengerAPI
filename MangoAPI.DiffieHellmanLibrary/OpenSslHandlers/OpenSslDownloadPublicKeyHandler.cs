@@ -1,4 +1,5 @@
 using MangoAPI.BusinessLogic.Models;
+using MangoAPI.DiffieHellmanLibrary.Abstractions;
 using MangoAPI.DiffieHellmanLibrary.Constants;
 using MangoAPI.DiffieHellmanLibrary.Extensions;
 using MangoAPI.DiffieHellmanLibrary.Helpers;
@@ -6,7 +7,7 @@ using MangoAPI.DiffieHellmanLibrary.Services;
 
 namespace MangoAPI.DiffieHellmanLibrary.OpenSslHandlers;
 
-public class OpenSslDownloadPublicKeyHandler : BaseHandler
+public class OpenSslDownloadPublicKeyHandler : BaseHandler, IDownloadPublicKeyHandler
 {
     public OpenSslDownloadPublicKeyHandler(HttpClient httpClient, TokensService tokensService) : base(httpClient,
         tokensService)

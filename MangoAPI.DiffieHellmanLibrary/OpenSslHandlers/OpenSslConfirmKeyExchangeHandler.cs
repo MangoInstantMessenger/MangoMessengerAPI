@@ -1,10 +1,11 @@
-﻿using MangoAPI.DiffieHellmanLibrary.Constants;
+﻿using MangoAPI.DiffieHellmanLibrary.Abstractions;
+using MangoAPI.DiffieHellmanLibrary.Constants;
 using MangoAPI.DiffieHellmanLibrary.Helpers;
 using MangoAPI.DiffieHellmanLibrary.Services;
 
 namespace MangoAPI.DiffieHellmanLibrary.OpenSslHandlers;
 
-public class OpenSslConfirmKeyExchangeHandler : BaseHandler
+public class OpenSslConfirmKeyExchangeHandler : BaseHandler, IConfirmKeyExchangeHandler
 {
     public OpenSslConfirmKeyExchangeHandler(HttpClient httpClient, TokensService tokensService) : base(httpClient,
         tokensService)
