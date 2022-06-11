@@ -2,11 +2,11 @@
 
 namespace MangoAPI.DiffieHellmanLibrary.OpenSslHandlers;
 
-public class OpenSslGetKeyExchangeByIdHandler
+public class OpenSslPrintKeyExchangeByIdHandler
 {
     private readonly OpenSslKeyExchangeService _openSslKeyExchangeService;
 
-    public OpenSslGetKeyExchangeByIdHandler(OpenSslKeyExchangeService openSslKeyExchangeService)
+    public OpenSslPrintKeyExchangeByIdHandler(OpenSslKeyExchangeService openSslKeyExchangeService)
     {
         _openSslKeyExchangeService = openSslKeyExchangeService;
     }

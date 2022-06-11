@@ -4,7 +4,7 @@ using MangoAPI.DiffieHellmanLibrary.Helpers;
 
 namespace MangoAPI.DiffieHellmanLibrary.OpenSslHandlers;
 
-public class OpenSslCreateDhParametersHandler
+public class OpenSslGenerateDhParametersHandler
 {
     public async Task<bool> CreateDhParametersAsync()
     {

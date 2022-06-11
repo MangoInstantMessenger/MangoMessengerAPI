@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using MangoAPI.BusinessLogic.Models;
 using MangoAPI.DiffieHellmanLibrary.AuthHandlers;
 using MangoAPI.DiffieHellmanLibrary.CngHandlers;
+using MangoAPI.DiffieHellmanLibrary.Constants;
 using MangoAPI.DiffieHellmanLibrary.OpenSslHandlers;
 using MangoAPI.DiffieHellmanLibrary.Services;
 
@@ -24,67 +25,67 @@ public static class Program
 
         switch (method)
         {
-            case "login":
+            case Commands.Login:
             {
                 var handler = DependencyResolver.ResolveService<LoginHandler>();
                 await handler.LoginAsync(args);
                 break;
             }
-            case "refresh-token":
+            case Commands.RefreshToken:
             {
                 var handler = DependencyResolver.ResolveService<RefreshTokenHandler>();
                 await handler.RefreshTokensAsync();
                 break;
             }
-            case "cng-create-key-exchange":
+            case Commands.CngCreateKeyExchange:
             {
                 var handler = DependencyResolver.ResolveService<CngCreateKeyExchangeHandler>();
                 await handler.CngRequestKeyExchange(args);
                 break;
             }
-            case "cng-key-exchange-requests":
+            case Commands.CngPrintKeyExchanges:
             {
                 var handler = DependencyResolver.ResolveService<CngPrintKeyExchangeListHandler>();
                 await handler.CngPrintKeyExchangesListAsync();
                 break;
             }
-            case "cng-confirm-key-exchange":
+            case Commands.CngConfirmKeyExchange:
             {
                 var handler = DependencyResolver.ResolveService<CngConfirmKeyExchangeRequestHandler>();
                 await handler.CngConfirmKeyExchangeRequest(args);
                 break;
             }
-            case "cng-print-public-keys":
+            case Commands.CngPrintPublicKeys:
             {
                 var handler = DependencyResolver.ResolveService<CngPrintPublicKeysHandler>();
                 await handler.CngPrintPublicKeysAsync();
                 break;
             }
-            case "cng-create-common-secret":
+            case Commands.CngCreateCommonSecret:
             {
                 var handler = DependencyResolver.ResolveService<CngCreateCommonSecretHandler>();
                 await handler.CngCreateCommonSecret(args);
                 break;
             }
-            case "openssl-generate-dh-parameters":
+            case Commands.OpenSslGenerateDhParameters:
             {
-                var handler = DependencyResolver.ResolveService<OpenSslCreateDhParametersHandler>();
+                var handler = DependencyResolver.ResolveService<OpenSslGenerateDhParametersHandler>();
                 await handler.CreateDhParametersAsync();
                 break;
             }
-            case "openssl-upload-dh-parameters":
+            case Commands.OpenSslUploadDhParameters:
             {
                 var handler = DependencyResolver.ResolveService<OpenSslUploadDhParametersHandler>();
                 await handler.UploadDhParametersAsync();
                 break;
             }
-            case "openssl-download-dh-parameters":
+            case Commands.OpenSslDownloadDhParameters:
             {
                 var handler = DependencyResolver.ResolveService<OpenSslDownloadDhParametersHandler>();
                 await handler.DownloadDhParametersAsync();
                 break;
             }
-            case "openssl-generate-private-key":
+            case Commands.OpenSslGeneratePrivateKey:
             {
                 var handler = DependencyResolver.ResolveService<OpenSslGeneratePrivateKeyHandler>();
 
@@ -102,7 +103,7 @@ public static class Program
 
                 break;
             }
-            case "openssl-generate-public-key":
+            case Commands.OpenSslGeneratePublicKey:
             {
                 var handler = DependencyResolver.ResolveService<OpenSslGeneratePublicKeyHandler>();
 
@@ -120,7 +121,7 @@ public static class Program
 
                 break;
             }
-            case "openssl-create-key-exchange":
+            case Commands.OpenSslCreateKeyExchange:
             {
                 var handler = DependencyResolver.ResolveService<OpenSslCreateKeyExchangeHandler>();
 
@@ -138,13 +139,13 @@ public static class Program
 
                 break;
             }
-            case "openssl-print-key-exchanges":
+            case Commands.OpenSslPrintKeyExchanges:
             {
                 var handler = DependencyResolver.ResolveService<OpenSslPrintKeyExchangesHandler>();
                 await handler.PrintKeyExchangesAsync();
                 break;
             }
-            case "openssl-confirm-key-exchange":
+            case Commands.OpenSslConfirmKeyExchange:
             {
                 var handler = DependencyResolver.ResolveService<OpenSslConfirmKeyExchangeHandler>();
 
@@ -161,7 +162,7 @@ public static class Program
                 await handler.ConfirmKeyExchangeAsync(userId);
                 break;
             }
-            case "openssl-create-common-secret":
+            case Commands.OpenSslCreateCommonSecret:
             {
                 var handler = DependencyResolver.ResolveService<OpenSslCreateCommonSecretHandler>();
 
@@ -183,14 +184,14 @@ public static class Program
                 await handler.CreateCommonSecretAsync(actor, requestId);
                 break;
             }
-            case "openssl-download-public-key":
+            case Commands.OpenSslDownloadPublicKey:
             {
                 var handler = DependencyResolver.ResolveService<OpenSslDownloadPublicKeyHandler>();
 
                 var actorString = args[1];
-                var requestIdString = args[2];
+                var userIdString = args[2];
 
-                var isParsed = Guid.TryParse(requestIdString, out var requestId);
+                var isParsed = Guid.TryParse(userIdString, out var userId);
 
                 if (!isParsed)
                 {
@@ -202,10 +203,10 @@ public static class Program
                     ? Actor.Sender
                     : Actor.Receiver;
 
-                await handler.DownloadPublicKeyAsync(actor, requestId);
+                await handler.DownloadPublicKeyAsync(actor, userId);
                 break;
             }
-            case "openssl-decline-key-exchange":
+            case Commands.OpenSslDeclineKeyExchange:
             {
                 var handler = DependencyResolver.ResolveService<OpenSslDeclineKeyExchangeHandler>();
 
@@ -222,9 +223,9 @@ public static class Program
                 await handler.DeclineKeyExchangeAsync(requestId);
                 break;
             }
-            case "openssl-print-key-exchange":
+            case Commands.OpenSslPrintKeyExchangeById:
             {
-                var handler = DependencyResolver.ResolveService<OpenSslGetKeyExchangeByIdHandler>();
+                var handler = DependencyResolver.ResolveService<OpenSslPrintKeyExchangeByIdHandler>();
 
                 var requestIdString = args[1];
 
@@ -239,7 +240,7 @@ public static class Program
                 await handler.GetKeyExchangeByIdAsync(requestId);
                 break;
             }
-            case "openssl-validate-common-secret":
+            case Commands.OpensslValidateCommonSecret:
             {
                 var handler = DependencyResolver.ResolveService<OpensslValidateCommonSecretHandler>();
 
