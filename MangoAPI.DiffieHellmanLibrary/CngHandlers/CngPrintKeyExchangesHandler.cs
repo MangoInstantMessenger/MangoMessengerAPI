@@ -1,15 +1,15 @@
-﻿using MangoAPI.DiffieHellmanLibrary.Abstractions;
-using MangoAPI.DiffieHellmanLibrary.Services;
+﻿using MangoAPI.BusinessLogic.ApiQueries.CngKeyExchange;
+using MangoAPI.DiffieHellmanLibrary.Abstractions;
+using MangoAPI.DiffieHellmanLibrary.Constants;
+using MangoAPI.DiffieHellmanLibrary.Helpers;
+using Newtonsoft.Json;
 
 namespace MangoAPI.DiffieHellmanLibrary.CngHandlers;
 
-public class CngPrintKeyExchangesHandler : IPrintKeyExchangesHandler
+public class CngPrintKeyExchangesHandler : BaseHandler, IPrintKeyExchangesHandler
 {
-    private readonly CngKeyExchangeService _cngKeyExchangeService;
-
-    public CngPrintKeyExchangesHandler(CngKeyExchangeService cngKeyExchangeService)
+    public CngPrintKeyExchangesHandler(HttpClient httpClient) : base(httpClient)
     {
-        _cngKeyExchangeService = cngKeyExchangeService;
     }
 
     public async Task PrintKeyExchangesAsync()
@@ -19,7 +19,18 @@ public class CngPrintKeyExchangesHandler : IPrintKeyExchangesHandler
 
     private async Task CngPrintKeyExchangesListAsync()
     {
-        var response = await _cngKeyExchangeService.CngGetKeyExchangesAsync();
+        var response = await CngGetKeyExchangesAsync();
         response.KeyExchangeRequests.ForEach(Console.WriteLine);
+    }
+
+    private async Task<CngGetKeyExchangeResponse> CngGetKeyExchangesAsync()
+    {
+        var result = await HttpRequestHelper.GetAsync(
+            client: HttpClient,
+            route: CngRoutes.CngKeyExchangeRequests);
+
+        var response = JsonConvert.DeserializeObject<CngGetKeyExchangeResponse>(result);
+
+        return response ?? throw new InvalidOperationException();
     }
 }

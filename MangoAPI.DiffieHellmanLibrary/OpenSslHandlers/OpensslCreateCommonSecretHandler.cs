@@ -3,13 +3,12 @@ using MangoAPI.BusinessLogic.Models;
 using MangoAPI.DiffieHellmanLibrary.Abstractions;
 using MangoAPI.DiffieHellmanLibrary.Extensions;
 using MangoAPI.DiffieHellmanLibrary.Helpers;
-using MangoAPI.DiffieHellmanLibrary.Services;
 
 namespace MangoAPI.DiffieHellmanLibrary.OpenSslHandlers;
 
-public class CreateCommonSecretHandler : BaseHandler, ICreateCommonSecretHandler
+public class OpensslCreateCommonSecretHandler : BaseHandler, ICreateCommonSecretHandler
 {
-    public CreateCommonSecretHandler(HttpClient httpClient) : base(httpClient)
+    public OpensslCreateCommonSecretHandler(HttpClient httpClient) : base(httpClient)
     {
     }
 
@@ -27,7 +26,7 @@ public class CreateCommonSecretHandler : BaseHandler, ICreateCommonSecretHandler
     {
         var allKeyExchanges = await OpensslGetKeyExchangesAsync();
 
-        var tokensResponse = await TokensService.GetTokensAsync();
+        var tokensResponse = await TokensHelper.GetTokensAsync();
         var tokens = tokensResponse.Tokens;
         var currentUserId = tokens.UserId;
 

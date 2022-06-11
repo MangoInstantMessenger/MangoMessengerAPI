@@ -1,21 +1,20 @@
 ﻿using System.Security.Cryptography;
+using MangoAPI.BusinessLogic.ApiCommands.CngKeyExchange;
+using MangoAPI.BusinessLogic.ApiQueries.CngKeyExchange;
 using MangoAPI.DiffieHellmanLibrary.Abstractions;
+using MangoAPI.DiffieHellmanLibrary.Constants;
 using MangoAPI.DiffieHellmanLibrary.Extensions;
 using MangoAPI.DiffieHellmanLibrary.Helpers;
-using MangoAPI.DiffieHellmanLibrary.Services;
+using Newtonsoft.Json;
 
 namespace MangoAPI.DiffieHellmanLibrary.CngHandlers;
 
-public class CngConfirmKeyExchangeHandler : IConfirmKeyExchangeHandler
+public class CngConfirmKeyExchangeHandler : BaseHandler, IConfirmKeyExchangeHandler
 {
-    private readonly CngKeyExchangeService _cngKeyExchangeService;
-
-    public CngConfirmKeyExchangeHandler(
-        CngKeyExchangeService cngKeyExchangeService)
+    public CngConfirmKeyExchangeHandler(HttpClient httpClient) : base(httpClient)
     {
-        _cngKeyExchangeService = cngKeyExchangeService;
     }
-    
+
     public async Task ConfirmKeyExchangeAsync(Guid senderId)
     {
         await CngConfirmKeyExchangeRequest(senderId);
@@ -23,14 +22,14 @@ public class CngConfirmKeyExchangeHandler : IConfirmKeyExchangeHandler
 
     private async Task CngConfirmKeyExchangeRequest(Guid requestId)
     {
-        var tokensResponse = await TokensService.GetTokensAsync();
+        var tokensResponse = await TokensHelper.GetTokensAsync();
 
         var tokens = tokensResponse.Tokens;
 
-        var getKeyExchangeResponse = await _cngKeyExchangeService.CngGetKeyExchangeById(requestId);
+        var getKeyExchangeResponse = await CngGetKeyExchangeById(requestId);
         var exchangeRequest = getKeyExchangeResponse.KeyExchangeRequest;
 
-        var ecDiffieHellmanCng = CngEcdhService.CngGenerateEcdhKeysPair(
+        var ecDiffieHellmanCng = CngEcdhHelper.CngGenerateEcdhKeysPair(
             out var privateKeyBase64String,
             out var publicKeyBase64String);
 
@@ -44,7 +43,7 @@ public class CngConfirmKeyExchangeHandler : IConfirmKeyExchangeHandler
         var commonSecret = ecDiffieHellmanCng.DeriveKeyMaterial(requestPublicKey).AsBase64String();
 #pragma warning restore CA1416
 
-        await _cngKeyExchangeService.CngConfirmOrDeclineKeyExchangeAsync(requestId, publicKeyBase64String);
+        await CngConfirmKeyExchangeAsync(requestId, publicKeyBase64String);
 
         var privateKeysDirectory = CngDirectoryHelper.CngPrivateKeysDirectory;
         var publicKeysDirectory = CngDirectoryHelper.CngPublicKeysDirectory;
@@ -75,7 +74,33 @@ public class CngConfirmKeyExchangeHandler : IConfirmKeyExchangeHandler
         Console.WriteLine(@"Writing common secret to file...");
         await File.WriteAllTextAsync(commonSecretPath, commonSecret);
 
-        Console.WriteLine(@"Key exchange request confirmed successfully.
-");
+        Console.WriteLine(@"Key exchange request confirmed successfully.");
+        Console.WriteLine();
+    }
+
+    private async Task<CngGetKeyExchangeRequestByIdResponse> CngGetKeyExchangeById(Guid requestId)
+    {
+        var result = await HttpRequestHelper.GetAsync(
+            client: HttpClient,
+            route: $"{CngRoutes.CngKeyExchangeRequests}/{requestId}");
+
+        var response = JsonConvert.DeserializeObject<CngGetKeyExchangeRequestByIdResponse>(result);
+        
+        return response ?? throw new InvalidOperationException();
+    }
+
+    private async Task CngConfirmKeyExchangeAsync(Guid requestId, string publicKeyBase64)
+    {
+        var request = new CngConfirmOrDeclineKeyExchangeRequest
+        {
+            Confirmed = true,
+            PublicKey = publicKeyBase64,
+            RequestId = requestId
+        };
+
+        await HttpRequestHelper.DeleteWithBodyAsync(
+            client: HttpClient,
+            route: CngRoutes.CngKeyExchangeRequests,
+            body: request);
     }
 }

@@ -1,11 +1,10 @@
 ﻿using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.DiffieHellmanLibrary.Extensions;
-using MangoAPI.DiffieHellmanLibrary.Helpers;
 using Newtonsoft.Json;
 
-namespace MangoAPI.DiffieHellmanLibrary.Services;
+namespace MangoAPI.DiffieHellmanLibrary.Helpers;
 
-public static class TokensService
+public static class TokensHelper
 {
     public static async Task WriteTokensAsync(TokensResponse loginResponse)
     {

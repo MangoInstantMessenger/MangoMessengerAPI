@@ -1,17 +1,16 @@
-﻿using MangoAPI.DiffieHellmanLibrary.Abstractions;
+﻿using MangoAPI.BusinessLogic.ApiCommands.CngKeyExchange;
+using MangoAPI.DiffieHellmanLibrary.Abstractions;
+using MangoAPI.DiffieHellmanLibrary.Constants;
 using MangoAPI.DiffieHellmanLibrary.Extensions;
 using MangoAPI.DiffieHellmanLibrary.Helpers;
-using MangoAPI.DiffieHellmanLibrary.Services;
+using Newtonsoft.Json;
 
 namespace MangoAPI.DiffieHellmanLibrary.CngHandlers;
 
-public class CngCreateKeyExchangeHandler : ICreateKeyExchangeHandler
+public class CngCreateKeyExchangeHandler : BaseHandler, ICreateKeyExchangeHandler
 {
-    private readonly CngKeyExchangeService _cngKeyExchangeService;
-
-    public CngCreateKeyExchangeHandler(CngKeyExchangeService cngKeyExchangeService)
+    public CngCreateKeyExchangeHandler(HttpClient httpClient) : base(httpClient)
     {
-        _cngKeyExchangeService = cngKeyExchangeService;
     }
 
     public async Task CreateKeyExchangeAsync(Guid receiverId)
@@ -21,13 +20,13 @@ public class CngCreateKeyExchangeHandler : ICreateKeyExchangeHandler
 
     private async Task CngRequestKeyExchange(Guid receiverId)
     {
-        var tokensResponse = await TokensService.GetTokensAsync();
+        var tokensResponse = await TokensHelper.GetTokensAsync();
 
         var tokens = tokensResponse.Tokens;
 
-        CngEcdhService.CngGenerateEcdhKeysPair(out var privateKeyBase64, out var publicKeyBase64);
+        CngEcdhHelper.CngGenerateEcdhKeysPair(out var privateKeyBase64, out var publicKeyBase64);
 
-        var response = await _cngKeyExchangeService.CngCreateKeyExchangeRequestAsync(receiverId, publicKeyBase64);
+        var response = await CngCreateKeyExchangeRequestAsync(receiverId, publicKeyBase64);
 
         Console.WriteLine($@"Key exchange request with an ID {response.RequestId} created successfully.");
 
@@ -53,5 +52,25 @@ public class CngCreateKeyExchangeHandler : ICreateKeyExchangeHandler
 
         Console.WriteLine(@"Key exchange request sent successfully.");
         Console.WriteLine();
+    }
+
+    private async Task<CngCreateKeyExchangeResponse> CngCreateKeyExchangeRequestAsync(
+        Guid requestUserId,
+        string publicKey)
+    {
+        var command = new CngCreateKeyExchangeRequest
+        {
+            PublicKey = publicKey,
+            RequestedUserId = requestUserId
+        };
+
+        var result = await HttpRequestHelper.PostWithBodyAsync(
+            client: HttpClient,
+            route: CngRoutes.CngKeyExchangeRequests,
+            body: command);
+
+        var response = JsonConvert.DeserializeObject<CngCreateKeyExchangeResponse>(result);
+
+        return response ?? throw new InvalidOperationException();
     }
 }

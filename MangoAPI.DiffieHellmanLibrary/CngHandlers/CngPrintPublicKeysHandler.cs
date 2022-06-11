@@ -1,19 +1,16 @@
-﻿using MangoAPI.DiffieHellmanLibrary.Services;
+﻿using MangoAPI.DiffieHellmanLibrary.Abstractions;
 
 namespace MangoAPI.DiffieHellmanLibrary.CngHandlers;
 
-public class CngPrintPublicKeysHandler
+public class CngPrintPublicKeysHandler : BaseHandler
 {
-    private readonly CngPublicKeysService _cngPublicKeysService;
-
-    public CngPrintPublicKeysHandler(CngPublicKeysService cngPublicKeysService)
+    public CngPrintPublicKeysHandler(HttpClient httpClient) : base(httpClient)
     {
-        _cngPublicKeysService = cngPublicKeysService;
     }
 
     public async Task CngPrintPublicKeysAsync()
     {
-        var response = await _cngPublicKeysService.CngGetPublicKeys();
+        var response = await CngGetPublicKeys();
         response.PublicKeys.ForEach(Console.WriteLine);
     }
 }

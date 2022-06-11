@@ -1,9 +1,9 @@
 ﻿using System.Security.Cryptography;
 using MangoAPI.DiffieHellmanLibrary.Extensions;
 
-namespace MangoAPI.DiffieHellmanLibrary.Services;
+namespace MangoAPI.DiffieHellmanLibrary.Helpers;
 
-public static class CngEcdhService
+public static class CngEcdhHelper
 {
     public static ECDiffieHellmanCng CngGenerateEcdhKeysPair(out string privateKeyBase64, out string publicKeyBase64)
     {

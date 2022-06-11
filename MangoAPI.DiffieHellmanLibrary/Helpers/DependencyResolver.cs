@@ -1,7 +1,7 @@
 ﻿using MangoAPI.DiffieHellmanLibrary.Extensions;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace MangoAPI.DiffieHellmanLibrary.Services;
+namespace MangoAPI.DiffieHellmanLibrary.Helpers;
 
 public static class DependencyResolver
 {

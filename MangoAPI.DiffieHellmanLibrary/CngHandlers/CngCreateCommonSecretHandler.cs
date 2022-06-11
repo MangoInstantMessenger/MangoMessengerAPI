@@ -3,19 +3,15 @@ using MangoAPI.BusinessLogic.Models;
 using MangoAPI.DiffieHellmanLibrary.Abstractions;
 using MangoAPI.DiffieHellmanLibrary.Extensions;
 using MangoAPI.DiffieHellmanLibrary.Helpers;
-using MangoAPI.DiffieHellmanLibrary.Services;
 
 namespace MangoAPI.DiffieHellmanLibrary.CngHandlers;
 
-public class CngCreateCommonSecretHandler : ICreateCommonSecretHandler
+public class CngCreateCommonSecretHandler : BaseHandler, ICreateCommonSecretHandler
 {
-    private readonly CngPublicKeysService _cngPublicKeysService;
-
-    public CngCreateCommonSecretHandler(CngPublicKeysService cngPublicKeysService)
+    public CngCreateCommonSecretHandler(HttpClient httpClient) : base(httpClient)
     {
-        _cngPublicKeysService = cngPublicKeysService;
     }
-    
+
     public async Task CreateCommonSecretAsync(Actor actor, Guid userId)
     {
         throw new NotImplementedException();
@@ -23,13 +19,13 @@ public class CngCreateCommonSecretHandler : ICreateCommonSecretHandler
 
     private async Task CngCreateCommonSecret(IReadOnlyList<string> args)
     {
-        var tokensResponse = await TokensService.GetTokensAsync();
+        var tokensResponse = await TokensHelper.GetTokensAsync();
 
         var tokens = tokensResponse.Tokens;
 
         var partnerId = Guid.Parse(args[1]);
 
-        var response = await _cngPublicKeysService.CngGetPublicKeys();
+        var response = await CngGetPublicKeys();
 
         var partnerPublicKeyBytes = response.PublicKeys
             .FirstOrDefault(x => x.PartnerId == partnerId)?

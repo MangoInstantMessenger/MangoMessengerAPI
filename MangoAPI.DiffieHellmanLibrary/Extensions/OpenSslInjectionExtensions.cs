@@ -7,17 +7,17 @@ public static class OpenSslInjectionExtensions
 {
     public static IServiceCollection AddOpenSslServicesAndHandlers(this IServiceCollection collection)
     {
-        collection.AddSingleton<UploadDhParametersHandler>();
-        collection.AddSingleton<DownloadDhParametersHandler>();
-        collection.AddSingleton<GeneratePrivateKeyHandler>();
-        collection.AddSingleton<GeneratePublicKeyHandler>();
-        collection.AddSingleton<CreateKeyExchangeHandler>();
-        collection.AddSingleton<PrintKeyExchangesHandler>();
-        collection.AddSingleton<ConfirmKeyExchangeHandler>();
-        collection.AddSingleton<CreateCommonSecretHandler>();
-        collection.AddSingleton<DownloadPublicKeyHandler>();
-        collection.AddSingleton<DeclineKeyExchangeHandler>();
-        collection.AddSingleton<PrintKeyExchangeByIdHandler>();
+        collection.AddSingleton<OpensslUploadDhParametersHandler>();
+        collection.AddSingleton<OpensslDownloadDhParametersHandler>();
+        collection.AddSingleton<OpensslGeneratePrivateKeyHandler>();
+        collection.AddSingleton<OpensslGeneratePublicKeyHandler>();
+        collection.AddSingleton<OpensslCreateKeyExchangeHandler>();
+        collection.AddSingleton<OpensslPrintKeyExchangesHandler>();
+        collection.AddSingleton<OpensslConfirmKeyExchangeHandler>();
+        collection.AddSingleton<OpensslCreateCommonSecretHandler>();
+        collection.AddSingleton<OpensslDownloadPublicKeyHandler>();
+        collection.AddSingleton<OpensslDeclineKeyExchangeHandler>();
+        collection.AddSingleton<OpensslPrintKeyExchangeByIdHandler>();
         collection.AddSingleton<OpensslValidateCommonSecretHandler>();
 
         return collection;

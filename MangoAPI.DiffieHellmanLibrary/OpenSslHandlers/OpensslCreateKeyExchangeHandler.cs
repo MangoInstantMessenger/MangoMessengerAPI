@@ -1,13 +1,12 @@
 ﻿using MangoAPI.DiffieHellmanLibrary.Abstractions;
 using MangoAPI.DiffieHellmanLibrary.Constants;
 using MangoAPI.DiffieHellmanLibrary.Helpers;
-using MangoAPI.DiffieHellmanLibrary.Services;
 
 namespace MangoAPI.DiffieHellmanLibrary.OpenSslHandlers;
 
-public class CreateKeyExchangeHandler : BaseHandler, ICreateKeyExchangeHandler
+public class OpensslCreateKeyExchangeHandler : BaseHandler, ICreateKeyExchangeHandler
 {
-    public CreateKeyExchangeHandler(HttpClient httpClient) : base(httpClient)
+    public OpensslCreateKeyExchangeHandler(HttpClient httpClient) : base(httpClient)
     {
     }
 
@@ -23,7 +22,7 @@ public class CreateKeyExchangeHandler : BaseHandler, ICreateKeyExchangeHandler
 
     private async Task OpenSslCreateKeyExchangeAsync(Guid receiverId)
     {
-        var tokensResponse = await TokensService.GetTokensAsync();
+        var tokensResponse = await TokensHelper.GetTokensAsync();
 
         var senderId = tokensResponse.Tokens.UserId;
 

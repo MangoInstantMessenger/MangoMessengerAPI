@@ -3,7 +3,6 @@ using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.DiffieHellmanLibrary.Abstractions;
 using MangoAPI.DiffieHellmanLibrary.Constants;
 using MangoAPI.DiffieHellmanLibrary.Helpers;
-using MangoAPI.DiffieHellmanLibrary.Services;
 using Newtonsoft.Json;
 
 namespace MangoAPI.DiffieHellmanLibrary.AuthHandlers;
@@ -20,7 +19,7 @@ public class LoginHandler : BaseHandler
         var loginResponse = await PerformLoginAsync(login, password);
 
         Console.WriteLine(@"Writing tokens to file ...");
-        await TokensService.WriteTokensAsync(loginResponse);
+        await TokensHelper.WriteTokensAsync(loginResponse);
 
         Console.WriteLine(@"Login operation success.");
         Console.WriteLine();

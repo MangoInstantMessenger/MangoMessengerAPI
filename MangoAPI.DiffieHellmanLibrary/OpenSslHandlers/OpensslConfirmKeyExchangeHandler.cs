@@ -1,13 +1,12 @@
 ﻿using MangoAPI.DiffieHellmanLibrary.Abstractions;
 using MangoAPI.DiffieHellmanLibrary.Constants;
 using MangoAPI.DiffieHellmanLibrary.Helpers;
-using MangoAPI.DiffieHellmanLibrary.Services;
 
 namespace MangoAPI.DiffieHellmanLibrary.OpenSslHandlers;
 
-public class ConfirmKeyExchangeHandler : BaseHandler, IConfirmKeyExchangeHandler
+public class OpensslConfirmKeyExchangeHandler : BaseHandler, IConfirmKeyExchangeHandler
 {
-    public ConfirmKeyExchangeHandler(HttpClient httpClient) : base(httpClient)
+    public OpensslConfirmKeyExchangeHandler(HttpClient httpClient) : base(httpClient)
     {
     }
 
@@ -25,7 +24,7 @@ public class ConfirmKeyExchangeHandler : BaseHandler, IConfirmKeyExchangeHandler
     {
         var allRequests = await OpensslGetKeyExchangesAsync();
 
-        var tokensResponse = await TokensService.GetTokensAsync();
+        var tokensResponse = await TokensHelper.GetTokensAsync();
         var currentUserId = tokensResponse.Tokens.UserId;
 
         var keyExchangeRequest = allRequests.FirstOrDefault(x =>

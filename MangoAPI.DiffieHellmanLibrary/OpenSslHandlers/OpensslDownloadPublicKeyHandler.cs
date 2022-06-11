@@ -3,13 +3,12 @@ using MangoAPI.DiffieHellmanLibrary.Abstractions;
 using MangoAPI.DiffieHellmanLibrary.Constants;
 using MangoAPI.DiffieHellmanLibrary.Extensions;
 using MangoAPI.DiffieHellmanLibrary.Helpers;
-using MangoAPI.DiffieHellmanLibrary.Services;
 
 namespace MangoAPI.DiffieHellmanLibrary.OpenSslHandlers;
 
-public class DownloadPublicKeyHandler : BaseHandler, IDownloadPublicKeyHandler
+public class OpensslDownloadPublicKeyHandler : BaseHandler, IDownloadPublicKeyHandler
 {
-    public DownloadPublicKeyHandler(HttpClient httpClient) : base(httpClient)
+    public OpensslDownloadPublicKeyHandler(HttpClient httpClient) : base(httpClient)
     {
     }
 
@@ -26,7 +25,7 @@ public class DownloadPublicKeyHandler : BaseHandler, IDownloadPublicKeyHandler
 
     private async Task OpensslDownloadPublicKeyAsync(Actor actor, Guid userId)
     {
-        var tokensResponse = await TokensService.GetTokensAsync();
+        var tokensResponse = await TokensHelper.GetTokensAsync();
         var currentUserId = tokensResponse.Tokens.UserId;
 
         var allRequests = await OpensslGetKeyExchangesAsync();

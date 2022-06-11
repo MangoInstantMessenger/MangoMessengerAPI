@@ -2,13 +2,12 @@ using CliWrap;
 using MangoAPI.DiffieHellmanLibrary.Abstractions;
 using MangoAPI.DiffieHellmanLibrary.Extensions;
 using MangoAPI.DiffieHellmanLibrary.Helpers;
-using MangoAPI.DiffieHellmanLibrary.Services;
 
 namespace MangoAPI.DiffieHellmanLibrary.OpenSslHandlers;
 
-public class GeneratePrivateKeyHandler : BaseHandler, IGeneratePrivateKeyHandler
+public class OpensslGeneratePrivateKeyHandler : BaseHandler, IGeneratePrivateKeyHandler
 {
-    public GeneratePrivateKeyHandler(HttpClient httpClient) : base(httpClient)
+    public OpensslGeneratePrivateKeyHandler(HttpClient httpClient) : base(httpClient)
     {
     }
 
@@ -25,7 +24,7 @@ public class GeneratePrivateKeyHandler : BaseHandler, IGeneratePrivateKeyHandler
 
     private async Task OpenSslGeneratePrivateKeyAsync(Guid receiverId)
     {
-        var tokensResponse = await TokensService.GetTokensAsync();
+        var tokensResponse = await TokensHelper.GetTokensAsync();
 
         var senderId = tokensResponse.Tokens.UserId;
 

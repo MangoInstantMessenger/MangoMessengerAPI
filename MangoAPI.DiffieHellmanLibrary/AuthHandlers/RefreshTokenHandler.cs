@@ -2,7 +2,6 @@
 using MangoAPI.DiffieHellmanLibrary.Abstractions;
 using MangoAPI.DiffieHellmanLibrary.Constants;
 using MangoAPI.DiffieHellmanLibrary.Helpers;
-using MangoAPI.DiffieHellmanLibrary.Services;
 using MangoAPI.Domain.Constants;
 using Newtonsoft.Json;
 
@@ -16,7 +15,7 @@ public class RefreshTokenHandler : BaseHandler
 
     public async Task RefreshTokensAsync()
     {
-        var tokensResponse = await TokensService.GetTokensAsync();
+        var tokensResponse = await TokensHelper.GetTokensAsync();
 
         if (tokensResponse == null)
         {
@@ -32,7 +31,7 @@ public class RefreshTokenHandler : BaseHandler
         var refreshTokenResponse = await PerformRefreshTokensAsync(refreshToken);
 
         Console.WriteLine(@"Writing tokens to file ...");
-        await TokensService.WriteTokensAsync(refreshTokenResponse);
+        await TokensHelper.WriteTokensAsync(refreshTokenResponse);
 
         Console.WriteLine(@"Refresh token operation was succeeded.");
         Console.WriteLine();
