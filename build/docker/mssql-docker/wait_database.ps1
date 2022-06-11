@@ -1,5 +1,5 @@
 $ContainerName = 'mango-mssql-db'
-$ContainerLogPatternForDatabaseReady = "SQL Server is now ready for client connections."
+$ContainerLogPatternForDatabaseReady = "SQL Server is now ready for client connections. This is an informational message; no user action is required."
         
 for(;;) {
     $isDatabaseReady = 
