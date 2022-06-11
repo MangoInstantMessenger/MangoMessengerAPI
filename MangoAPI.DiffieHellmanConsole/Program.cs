@@ -42,21 +42,21 @@ public static class Program
                 var receiverIdString = args[1];
                 var receiverId = GetGuidValue(receiverIdString);
                 var handler = DependencyResolver.ResolveService<CngCreateKeyExchangeHandler>();
-                await handler.CngRequestKeyExchange(receiverId);
+                await handler.CreateKeyExchangeAsync(receiverId);
                 break;
             }
             case Commands.CngPrintKeyExchanges:
             {
-                var handler = DependencyResolver.ResolveService<CngPrintKeyExchangeListHandler>();
-                await handler.CngPrintKeyExchangesListAsync();
+                var handler = DependencyResolver.ResolveService<CngPrintKeyExchangesHandler>();
+                await handler.PrintKeyExchangesAsync();
                 break;
             }
             case Commands.CngConfirmKeyExchange:
             {
                 var requestIdString = args[1];
                 var requestId = GetGuidValue(requestIdString);
-                var handler = DependencyResolver.ResolveService<CngConfirmKeyExchangeRequestHandler>();
-                await handler.CngConfirmKeyExchangeRequest(requestId);
+                var handler = DependencyResolver.ResolveService<CngConfirmKeyExchangeHandler>();
+                await handler.ConfirmKeyExchangeAsync(requestId);
                 break;
             }
             case Commands.CngPrintPublicKeys:
@@ -67,8 +67,12 @@ public static class Program
             }
             case Commands.CngCreateCommonSecret:
             {
+                var actorString = args[1];
+                var requestIdString = args[2];
+                var partnerId = GetGuidValue(requestIdString);
+                var actor = actorString == "--sender" ? Actor.Sender : Actor.Receiver;
                 var handler = DependencyResolver.ResolveService<CngCreateCommonSecretHandler>();
-                await handler.CngCreateCommonSecret(args);
+                await handler.CreateCommonSecretAsync(actor, partnerId);
                 break;
             }
             case Commands.OpenSslGenerateDhParameters:

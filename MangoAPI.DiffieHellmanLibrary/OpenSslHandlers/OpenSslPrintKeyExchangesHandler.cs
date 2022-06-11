@@ -1,12 +1,10 @@
 ﻿using MangoAPI.DiffieHellmanLibrary.Abstractions;
-using MangoAPI.DiffieHellmanLibrary.Services;
 
 namespace MangoAPI.DiffieHellmanLibrary.OpenSslHandlers;
 
-public class OpenSslPrintKeyExchangesHandler : BaseHandler, IPrintKeyExchangesHandler
+public class OpenSslPrintKeyExchangesHandler : OpenSslBaseHandler, IPrintKeyExchangesHandler
 {
-    public OpenSslPrintKeyExchangesHandler(HttpClient httpClient, TokensService tokensService) : base(httpClient,
-        tokensService)
+    public OpenSslPrintKeyExchangesHandler(HttpClient httpClient) : base(httpClient)
     {
     }
 

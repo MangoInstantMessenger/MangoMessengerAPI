@@ -1,24 +1,29 @@
 ﻿using System.Security.Cryptography;
+using MangoAPI.BusinessLogic.Models;
+using MangoAPI.DiffieHellmanLibrary.Abstractions;
 using MangoAPI.DiffieHellmanLibrary.Extensions;
 using MangoAPI.DiffieHellmanLibrary.Helpers;
 using MangoAPI.DiffieHellmanLibrary.Services;
 
 namespace MangoAPI.DiffieHellmanLibrary.CngHandlers;
 
-public class CngCreateCommonSecretHandler
+public class CngCreateCommonSecretHandler : ICreateCommonSecretHandler
 {
     private readonly CngPublicKeysService _cngPublicKeysService;
-    private readonly TokensService _tokensService;
 
-    public CngCreateCommonSecretHandler(CngPublicKeysService cngPublicKeysService, TokensService tokensService)
+    public CngCreateCommonSecretHandler(CngPublicKeysService cngPublicKeysService)
     {
         _cngPublicKeysService = cngPublicKeysService;
-        _tokensService = tokensService;
+    }
+    
+    public async Task CreateCommonSecretAsync(Actor actor, Guid userId)
+    {
+        throw new NotImplementedException();
     }
 
-    public async Task CngCreateCommonSecret(IReadOnlyList<string> args)
+    private async Task CngCreateCommonSecret(IReadOnlyList<string> args)
     {
-        var tokensResponse = await _tokensService.GetTokensAsync();
+        var tokensResponse = await TokensService.GetTokensAsync();
 
         var tokens = tokensResponse.Tokens;
 

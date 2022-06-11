@@ -9,7 +9,6 @@ public static class AuthInjectionExtensions
     public static IServiceCollection AddAuthServicesAndHandlers(this IServiceCollection collection)
     {
         collection.AddSingleton<SessionsService>();
-        collection.AddSingleton<TokensService>();
 
         collection.AddSingleton<LoginHandler>();
         collection.AddSingleton<RefreshTokenHandler>();

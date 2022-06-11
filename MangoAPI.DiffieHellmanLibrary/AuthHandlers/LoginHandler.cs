@@ -5,12 +5,10 @@ namespace MangoAPI.DiffieHellmanLibrary.AuthHandlers;
 public class LoginHandler
 {
     private readonly SessionsService _sessionsService;
-    private readonly TokensService _tokensService;
 
-    public LoginHandler(SessionsService sessionsService, TokensService tokensService)
+    public LoginHandler(SessionsService sessionsService)
     {
         _sessionsService = sessionsService;
-        _tokensService = tokensService;
     }
 
     public async Task LoginAsync(string login, string password)
@@ -19,7 +17,7 @@ public class LoginHandler
         var loginResponse = await _sessionsService.LoginAsync(login, password);
 
         Console.WriteLine(@"Writing tokens to file ...");
-        await _tokensService.WriteTokensAsync(loginResponse);
+        await TokensService.WriteTokensAsync(loginResponse);
 
         Console.WriteLine(@"Login operation success.");
         Console.WriteLine();

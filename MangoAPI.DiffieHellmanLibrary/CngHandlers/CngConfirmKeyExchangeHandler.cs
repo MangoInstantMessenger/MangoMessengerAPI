@@ -1,36 +1,36 @@
 ﻿using System.Security.Cryptography;
+using MangoAPI.DiffieHellmanLibrary.Abstractions;
 using MangoAPI.DiffieHellmanLibrary.Extensions;
 using MangoAPI.DiffieHellmanLibrary.Helpers;
 using MangoAPI.DiffieHellmanLibrary.Services;
 
 namespace MangoAPI.DiffieHellmanLibrary.CngHandlers;
 
-public class CngConfirmKeyExchangeRequestHandler
+public class CngConfirmKeyExchangeHandler : IConfirmKeyExchangeHandler
 {
     private readonly CngKeyExchangeService _cngKeyExchangeService;
-    private readonly CngEcdhService _cngEcdhService;
-    private readonly TokensService _tokensService;
 
-    public CngConfirmKeyExchangeRequestHandler(
-        CngKeyExchangeService cngKeyExchangeService,
-        CngEcdhService cngEcdhService,
-        TokensService tokensService)
+    public CngConfirmKeyExchangeHandler(
+        CngKeyExchangeService cngKeyExchangeService)
     {
         _cngKeyExchangeService = cngKeyExchangeService;
-        _cngEcdhService = cngEcdhService;
-        _tokensService = tokensService;
+    }
+    
+    public async Task ConfirmKeyExchangeAsync(Guid senderId)
+    {
+        await CngConfirmKeyExchangeRequest(senderId);
     }
 
-    public async Task CngConfirmKeyExchangeRequest(Guid requestId)
+    private async Task CngConfirmKeyExchangeRequest(Guid requestId)
     {
-        var tokensResponse = await _tokensService.GetTokensAsync();
+        var tokensResponse = await TokensService.GetTokensAsync();
 
         var tokens = tokensResponse.Tokens;
 
         var getKeyExchangeResponse = await _cngKeyExchangeService.CngGetKeyExchangeById(requestId);
         var exchangeRequest = getKeyExchangeResponse.KeyExchangeRequest;
 
-        var ecDiffieHellmanCng = _cngEcdhService.CngGenerateEcdhKeysPair(
+        var ecDiffieHellmanCng = CngEcdhService.CngGenerateEcdhKeysPair(
             out var privateKeyBase64String,
             out var publicKeyBase64String);
 
@@ -61,7 +61,7 @@ public class CngConfirmKeyExchangeRequestHandler
         var commonSecretPath = Path.Combine(
             commonSecretsDirectory,
             $"COMMON_SECRET_{tokens.UserId}_{exchangeRequest.SenderId}.txt");
-        
+
         privateKeysDirectory.CreateDirectoryIfNotExist();
         publicKeysDirectory.CreateDirectoryIfNotExist();
         commonSecretsDirectory.CreateDirectoryIfNotExist();

@@ -3,9 +3,9 @@ using MangoAPI.DiffieHellmanLibrary.Extensions;
 
 namespace MangoAPI.DiffieHellmanLibrary.Services;
 
-public class CngEcdhService
+public static class CngEcdhService
 {
-    public ECDiffieHellmanCng CngGenerateEcdhKeysPair(out string privateKeyBase64, out string publicKeyBase64)
+    public static ECDiffieHellmanCng CngGenerateEcdhKeysPair(out string privateKeyBase64, out string publicKeyBase64)
     {
 #pragma warning disable CA1416
         var parameters = new CngKeyCreationParameters

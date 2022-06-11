@@ -7,10 +7,9 @@ using MangoAPI.DiffieHellmanLibrary.Services;
 
 namespace MangoAPI.DiffieHellmanLibrary.OpenSslHandlers;
 
-public class OpenSslDownloadPublicKeyHandler : BaseHandler, IDownloadPublicKeyHandler
+public class OpenSslDownloadPublicKeyHandler : OpenSslBaseHandler, IDownloadPublicKeyHandler
 {
-    public OpenSslDownloadPublicKeyHandler(HttpClient httpClient, TokensService tokensService) : base(httpClient,
-        tokensService)
+    public OpenSslDownloadPublicKeyHandler(HttpClient httpClient) : base(httpClient)
     {
     }
 

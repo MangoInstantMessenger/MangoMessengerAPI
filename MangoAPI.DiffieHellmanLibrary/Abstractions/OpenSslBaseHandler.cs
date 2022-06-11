@@ -8,16 +8,13 @@ using Newtonsoft.Json;
 
 namespace MangoAPI.DiffieHellmanLibrary.Abstractions;
 
-public abstract class BaseHandler
+public abstract class OpenSslBaseHandler
 {
     protected readonly HttpClient HttpClient;
-    protected readonly TokensService TokensService;
 
-    protected BaseHandler(HttpClient httpClient, TokensService tokensService)
+    protected OpenSslBaseHandler(HttpClient httpClient)
     {
         HttpClient = httpClient;
-        TokensService = tokensService;
-
         var tokensResponse = TokensService.GetTokensAsync().GetAwaiter().GetResult();
 
         if (tokensResponse == null)

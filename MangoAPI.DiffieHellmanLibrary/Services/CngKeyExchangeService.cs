@@ -16,7 +16,7 @@ public class CngKeyExchangeService
     {
         _httpClient = httpClient;
 
-        var tokensResponse = new TokensService().GetTokensAsync().GetAwaiter().GetResult();
+        var tokensResponse = TokensService.GetTokensAsync().GetAwaiter().GetResult();
 
         if (tokensResponse == null)
         {

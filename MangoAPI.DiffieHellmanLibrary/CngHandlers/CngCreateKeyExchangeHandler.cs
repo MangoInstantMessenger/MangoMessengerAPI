@@ -1,32 +1,31 @@
-﻿using MangoAPI.DiffieHellmanLibrary.Extensions;
+﻿using MangoAPI.DiffieHellmanLibrary.Abstractions;
+using MangoAPI.DiffieHellmanLibrary.Extensions;
 using MangoAPI.DiffieHellmanLibrary.Helpers;
 using MangoAPI.DiffieHellmanLibrary.Services;
 
 namespace MangoAPI.DiffieHellmanLibrary.CngHandlers;
 
-public class CngCreateKeyExchangeHandler
+public class CngCreateKeyExchangeHandler : ICreateKeyExchangeHandler
 {
     private readonly CngKeyExchangeService _cngKeyExchangeService;
-    private readonly TokensService _tokensService;
-    private readonly CngEcdhService _cngEcdhService;
 
-    public CngCreateKeyExchangeHandler(
-        CngKeyExchangeService cngKeyExchangeService,
-        TokensService tokensService,
-        CngEcdhService cngEcdhService)
+    public CngCreateKeyExchangeHandler(CngKeyExchangeService cngKeyExchangeService)
     {
         _cngKeyExchangeService = cngKeyExchangeService;
-        _tokensService = tokensService;
-        _cngEcdhService = cngEcdhService;
     }
 
-    public async Task CngRequestKeyExchange(Guid receiverId)
+    public async Task CreateKeyExchangeAsync(Guid receiverId)
     {
-        var tokensResponse = await _tokensService.GetTokensAsync();
+        await CngRequestKeyExchange(receiverId);
+    }
+
+    private async Task CngRequestKeyExchange(Guid receiverId)
+    {
+        var tokensResponse = await TokensService.GetTokensAsync();
 
         var tokens = tokensResponse.Tokens;
 
-        _cngEcdhService.CngGenerateEcdhKeysPair(out var privateKeyBase64, out var publicKeyBase64);
+        CngEcdhService.CngGenerateEcdhKeysPair(out var privateKeyBase64, out var publicKeyBase64);
 
         var response = await _cngKeyExchangeService.CngCreateKeyExchangeRequestAsync(receiverId, publicKeyBase64);
 
@@ -36,13 +35,13 @@ public class CngCreateKeyExchangeHandler
         var publicKeysDirectory = CngDirectoryHelper.CngPublicKeysDirectory;
 
         var privateKeyPath = Path.Combine(
-            privateKeysDirectory, 
+            privateKeysDirectory,
             $"PRIVATE_KEY_{tokens.UserId}_{receiverId}.txt");
 
         var publicKeyPath = Path.Combine(
             publicKeysDirectory,
             $"PUBLIC_KEY_{tokens.UserId}_{receiverId}.txt");
-        
+
         privateKeysDirectory.CreateDirectoryIfNotExist();
         publicKeysDirectory.CreateDirectoryIfNotExist();
 

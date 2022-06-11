@@ -6,17 +6,15 @@ namespace MangoAPI.DiffieHellmanLibrary.AuthHandlers;
 public class RefreshTokenHandler
 {
     private readonly SessionsService _sessionsService;
-    private readonly TokensService _tokensService;
 
-    public RefreshTokenHandler(SessionsService sessionsService, TokensService tokensService)
+    public RefreshTokenHandler(SessionsService sessionsService)
     {
         _sessionsService = sessionsService;
-        _tokensService = tokensService;
     }
 
     public async Task RefreshTokensAsync()
     {
-        var tokensResponse = await _tokensService.GetTokensAsync();
+        var tokensResponse = await TokensService.GetTokensAsync();
 
         if (tokensResponse == null)
         {
@@ -32,7 +30,7 @@ public class RefreshTokenHandler
         var refreshTokenResponse = await _sessionsService.RefreshTokenAsync(refreshToken);
 
         Console.WriteLine(@"Writing tokens to file ...");
-        await _tokensService.WriteTokensAsync(refreshTokenResponse);
+        await TokensService.WriteTokensAsync(refreshTokenResponse);
 
         Console.WriteLine(@"Refresh token operation was succeeded.");
         Console.WriteLine();

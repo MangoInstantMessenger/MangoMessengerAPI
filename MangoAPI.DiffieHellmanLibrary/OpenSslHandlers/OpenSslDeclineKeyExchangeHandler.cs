@@ -1,13 +1,11 @@
 ﻿using MangoAPI.DiffieHellmanLibrary.Abstractions;
 using MangoAPI.DiffieHellmanLibrary.Constants;
-using MangoAPI.DiffieHellmanLibrary.Services;
 
 namespace MangoAPI.DiffieHellmanLibrary.OpenSslHandlers;
 
-public class OpenSslDeclineKeyExchangeHandler : BaseHandler, IDeclineKeyExchangeHandler
+public class OpenSslDeclineKeyExchangeHandler : OpenSslBaseHandler, IDeclineKeyExchangeHandler
 {
-    public OpenSslDeclineKeyExchangeHandler(HttpClient httpClient, TokensService tokensService) : base(httpClient,
-        tokensService)
+    public OpenSslDeclineKeyExchangeHandler(HttpClient httpClient) : base(httpClient)
     {
     }
 

@@ -2,14 +2,12 @@ using MangoAPI.DiffieHellmanLibrary.Abstractions;
 using MangoAPI.DiffieHellmanLibrary.Constants;
 using MangoAPI.DiffieHellmanLibrary.Extensions;
 using MangoAPI.DiffieHellmanLibrary.Helpers;
-using MangoAPI.DiffieHellmanLibrary.Services;
 
 namespace MangoAPI.DiffieHellmanLibrary.OpenSslHandlers;
 
-public class OpenSslDownloadDhParametersHandler : BaseHandler, IDownloadDhParametersHandler
+public class OpenSslDownloadDhParametersHandler : OpenSslBaseHandler, IDownloadDhParametersHandler
 {
-    public OpenSslDownloadDhParametersHandler(HttpClient httpClient, TokensService tokensService) : base(httpClient,
-        tokensService)
+    public OpenSslDownloadDhParametersHandler(HttpClient httpClient) : base(httpClient)
     {
     }
 

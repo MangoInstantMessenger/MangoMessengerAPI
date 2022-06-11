@@ -5,9 +5,9 @@ using Newtonsoft.Json;
 
 namespace MangoAPI.DiffieHellmanLibrary.Services;
 
-public class TokensService
+public static class TokensService
 {
-    public async Task WriteTokensAsync(TokensResponse loginResponse)
+    public static async Task WriteTokensAsync(TokensResponse loginResponse)
     {
         var serializedTokens = JsonConvert.SerializeObject(loginResponse);
 
@@ -20,7 +20,7 @@ public class TokensService
         await File.WriteAllTextAsync(tokensPath, serializedTokens);
     }
 
-    public async Task<TokensResponse> GetTokensAsync()
+    public static async Task<TokensResponse> GetTokensAsync()
     {
         var workingDirectory = AuthDirectoryHelper.AuthWorkingDirectory;
         

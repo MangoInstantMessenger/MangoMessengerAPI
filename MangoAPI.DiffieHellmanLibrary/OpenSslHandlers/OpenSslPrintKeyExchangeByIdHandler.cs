@@ -2,15 +2,13 @@
 using MangoAPI.BusinessLogic.Models;
 using MangoAPI.DiffieHellmanLibrary.Abstractions;
 using MangoAPI.DiffieHellmanLibrary.Constants;
-using MangoAPI.DiffieHellmanLibrary.Services;
 using Newtonsoft.Json;
 
 namespace MangoAPI.DiffieHellmanLibrary.OpenSslHandlers;
 
-public class OpenSslPrintKeyExchangeByIdHandler : BaseHandler, IPrintKeyExchangeByIdHandler
+public class OpenSslPrintKeyExchangeByIdHandler : OpenSslBaseHandler, IPrintKeyExchangeByIdHandler
 {
-    public OpenSslPrintKeyExchangeByIdHandler(HttpClient httpClient, TokensService tokensService) : base(httpClient,
-        tokensService)
+    public OpenSslPrintKeyExchangeByIdHandler(HttpClient httpClient) : base(httpClient)
     {
     }
 
