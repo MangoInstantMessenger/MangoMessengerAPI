@@ -8,6 +8,7 @@ public static class CngInjectionExtensions
     public static IServiceCollection AddCngServicesAndHandlers(this IServiceCollection collection)
     {
         collection.AddSingleton<CngGeneratePrivateKeyHandler>();
+        collection.AddSingleton<CngGeneratePublicKeyHandler>();
         collection.AddSingleton<CngPrintKeyExchangesHandler>();
         collection.AddSingleton<CngPrintPublicKeysHandler>();
         collection.AddSingleton<CngConfirmKeyExchangeHandler>();

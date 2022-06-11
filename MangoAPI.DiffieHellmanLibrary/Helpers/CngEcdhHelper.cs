@@ -34,7 +34,7 @@ public static class CngEcdhHelper
 
         var ecDiffieHellmanCng = new ECDiffieHellmanCng(keys);
 
-        var privateKeyBase64String = ecDiffieHellmanCng.Key.Export(CngKeyBlobFormat.EccPrivateBlob).AsBase64String();
+        var privateKeyBase64String = ecDiffieHellmanCng.Key.Export(CngKeyBlobFormat.EccPublicBlob).AsBase64String();
 
         return privateKeyBase64String;
     }

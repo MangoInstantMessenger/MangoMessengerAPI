@@ -6,6 +6,7 @@ public static class Commands
     public const string RefreshToken = "refresh-token";
     
     public const string CngGeneratePrivateKey = "cng-generate-private-key";
+    public const string CngGeneratePublicKey = "cng-generate-public-key";
     public const string CngCreateKeyExchange = "cng-create-key-exchange";
     public const string CngPrintKeyExchanges = "cng-print-key-exchanges";
     public const string CngConfirmKeyExchange = "cng-confirm-key-exchange";

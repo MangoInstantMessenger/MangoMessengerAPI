@@ -22,6 +22,14 @@ public static class CngController
                 await handler.GeneratePrivateKeyAsync(receiverId);
                 break;
             }
+            case Commands.CngGeneratePublicKey:
+            {
+                var receiverIdString = args[1];
+                var receiverId = GuidHelper.GetGuidValue(receiverIdString);
+                var handler = DependencyResolver.ResolveService<CngGeneratePublicKeyHandler>();
+                await handler.GeneratePublicKeyAsync(receiverId);
+                break;
+            }
             case Commands.CngCreateKeyExchange:
             {
                 var receiverIdString = args[1];
