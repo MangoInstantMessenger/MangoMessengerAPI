@@ -5,5 +5,7 @@ using Microsoft.AspNetCore.Http;
 
 namespace MangoAPI.BusinessLogic.ApiCommands.OpenSslKeyExchange;
 
-public record OpenSslCreateKeyExchangeCommand(Guid ReceiverId, Guid SenderId, IFormFile SenderPublicKey) 
-    : IRequest<Result<OpenSslCreateKeyExchangeResponse>>;
+public record OpenSslCreateKeyExchangeCommand(
+    Guid ReceiverId,
+    Guid SenderId,
+    IFormFile SenderPublicKey) : IRequest<Result<OpenSslCreateKeyExchangeResponse>>;

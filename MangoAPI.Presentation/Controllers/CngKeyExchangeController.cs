@@ -24,8 +24,10 @@ namespace MangoAPI.Presentation.Controllers;
 [Authorize]
 public class CngKeyExchangeController : ApiControllerBase, ICngKeyExchangeController
 {
-    public CngKeyExchangeController(IMediator mediator, IMapper mapper, ICorrelationContext correlationContext) : base(
-        mediator, mapper, correlationContext)
+    public CngKeyExchangeController(
+        IMediator mediator,
+        IMapper mapper,
+        ICorrelationContext correlationContext) : base(mediator, mapper, correlationContext)
     {
     }
 
@@ -52,25 +54,25 @@ public class CngKeyExchangeController : ApiControllerBase, ICngKeyExchangeContro
     /// <summary>
     /// Creates new Diffie-Hellman key exchange request with particular user.
     /// </summary>
-    /// <param name="request"></param>
+    /// <param name="senderPublicKey"></param>
     /// <param name="cancellationToken">Cancellation token instance.</param>
+    /// <param name="receiverId"></param>
     /// <returns></returns>
-    [HttpPost]
+    [HttpPost("{receiverId:guid}")]
     [SwaggerOperation(
         Summary = "Creates new key exchange request with particular user.",
         Description = "Creates new Diffie-Hellman key exchange request with particular user.")]
     [ProducesResponseType(typeof(CngCreateKeyExchangeResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
-    public async Task<IActionResult> CngCreteKeyExchangeRequest([FromBody] CngCreateKeyExchangeRequest request,
+    public async Task<IActionResult> CngCreteKeyExchangeRequest(
+        [FromRoute] Guid receiverId,
+        [FromForm] IFormFile senderPublicKey,
         CancellationToken cancellationToken)
     {
-        var userId = CorrelationContext.GetUserId();
+        var senderId = CorrelationContext.GetUserId();
 
-        var command = new CngCreateKeyExchangeRequestCommand(
-            UserId: userId, 
-            RequestedUserId: request.RequestedUserId, 
-            PublicKey: request.PublicKey);
+        var command = new CngCreateKeyExchangeRequestCommand(senderId, receiverId, senderPublicKey);
 
         return await RequestAsync(command, cancellationToken);
     }
@@ -93,12 +95,12 @@ public class CngKeyExchangeController : ApiControllerBase, ICngKeyExchangeContro
         CancellationToken cancellationToken)
     {
         var userId = CorrelationContext.GetUserId();
-        
+
         var command = new CngConfirmOrDeclineKeyExchangeCommand(
-                UserId: userId, 
-                RequestId: request.RequestId,
-                Confirmed: request.Confirmed,
-                PublicKey: request.PublicKey);
+            UserId: userId,
+            RequestId: request.RequestId,
+            Confirmed: request.Confirmed,
+            PublicKey: request.PublicKey);
 
         return await RequestAsync(command, cancellationToken);
     }

@@ -6,8 +6,8 @@ public class CngCreateKeyExchangeRequestCommandValidator : AbstractValidator<Cng
 {
     public CngCreateKeyExchangeRequestCommandValidator()
     {
-        RuleFor(x => x.UserId).NotEmpty();
-        RuleFor(x => x.RequestedUserId).NotEmpty();
-        RuleFor(x => x.PublicKey).NotEmpty();
+        RuleFor(x => x.SenderId).NotEmpty();
+        RuleFor(x => x.ReceiverId).NotEmpty();
+        RuleFor(x => x.SenderPublicKey).NotEmpty();
     }
 }

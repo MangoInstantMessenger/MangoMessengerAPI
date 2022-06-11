@@ -20,7 +20,7 @@ public class GetPublicKeysTestSuccess : IntegrationTestBase
             await MangoModule.RequestAsync(CommandHelper.RegisterKhachaturCommand(), CancellationToken.None);
         var keyExchangeRequest = await MangoModule.RequestAsync(
             request: CommandHelper.CreateCngKeyExchangeCommand(sender.Response.UserId,
-                requestedUserId: requestedUser.Response.UserId),
+                receiverId: requestedUser.Response.UserId),
             cancellationToken: CancellationToken.None);
         await MangoModule.RequestAsync(
             request: CommandHelper.CreateCngConfirmOrDeclineKeyExchangeCommand(

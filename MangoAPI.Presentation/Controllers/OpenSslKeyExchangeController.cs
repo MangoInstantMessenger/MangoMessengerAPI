@@ -30,15 +30,15 @@ public class OpenSslKeyExchangeController : ApiControllerBase, IOpenSslKeyExchan
     }
 
     /// <summary>
-    /// Creates OpenSSL key.
+    /// Creates Diffie-Hellman parameter that is used by exchanging sides.
     /// </summary>
     /// <param name="file">IFormFile instance</param>
     /// <param name="cancellationToken">Cancellation token instance</param>
     /// <returns></returns>
     [HttpPost("openssl-parameters")]
     [SwaggerOperation(
-        Summary = "Creates key.",
-        Description = "Creates OpenSSL key.")]
+        Summary = "Downloads Diffie-Hellman parameter that is used by exchanging sides.",
+        Description = "Creates Diffie-Hellman parameter that is used by exchanging sides.")]
     [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
     [ProducesResponseType(typeof(OpenSslCreateDiffieHellmanParameterResponse), StatusCodes.Status200OK)]
@@ -48,21 +48,21 @@ public class OpenSslKeyExchangeController : ApiControllerBase, IOpenSslKeyExchan
         var userId = CorrelationContext.GetUserId();
 
         var command = new OpenSslCreateDiffieHellmanParameterCommand(
-            UserId: userId, 
+            UserId: userId,
             DiffieHellmanParameter: file);
 
         return await RequestAsync(command, cancellationToken);
     }
 
     /// <summary>
-    /// Get OpenSSL key.
+    /// Downloads Diffie-Hellman parameter that is used by exchanging sides.
     /// </summary>
     /// <param name="cancellationToken">Cancellation token instance.</param>
     /// <returns></returns>
     [HttpGet("openssl-parameters")]
     [SwaggerOperation(
-        Summary = "Get key.",
-        Description = "Get OpenSSL key.")]
+        Summary = "Downloads Diffie-Hellman parameter that is used by exchanging sides.",
+        Description = "Downloads Diffie-Hellman parameter that is used by exchanging sides.")]
     [ProducesResponseType(typeof(OpenSslGetDhParametersResponse), StatusCodes.Status200OK)]
     public async Task<IActionResult> OpenSslGetDiffieHellmanParameter(CancellationToken cancellationToken)
     {
@@ -73,7 +73,7 @@ public class OpenSslKeyExchangeController : ApiControllerBase, IOpenSslKeyExchan
     }
 
     /// <summary>
-    /// Creates OpenSSL key exchange.
+    /// Creates Diffie-Hellman key exchange between two parties.
     /// </summary>
     /// <param name="userId">User GUID</param>
     /// <param name="senderPublicKey">IFormFile instance</param>
@@ -81,8 +81,8 @@ public class OpenSslKeyExchangeController : ApiControllerBase, IOpenSslKeyExchan
     /// <returns></returns>
     [HttpPost("{userId:guid}")]
     [SwaggerOperation(
-        Summary = "Creates key exchange.",
-        Description = "Creates OpenSSL key exchange.")]
+        Summary = "Creates Diffie-Hellman key exchange between two parties.",
+        Description = "Creates Diffie-Hellman key exchange between two parties.")]
     [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
     [ProducesResponseType(typeof(OpenSslCreateKeyExchangeResponse), StatusCodes.Status200OK)]
@@ -95,7 +95,7 @@ public class OpenSslKeyExchangeController : ApiControllerBase, IOpenSslKeyExchan
 
         var command =
             new OpenSslCreateKeyExchangeCommand(
-                ReceiverId: userId, 
+                ReceiverId: userId,
                 SenderId: senderId,
                 SenderPublicKey: senderPublicKey);
 
@@ -144,7 +144,7 @@ public class OpenSslKeyExchangeController : ApiControllerBase, IOpenSslKeyExchan
         var userId = CorrelationContext.GetUserId();
 
         var command = new OpenSslConfirmKeyExchangeCommand(
-            RequestId: requestId, 
+            RequestId: requestId,
             UserId: userId,
             ReceiverPublicKey: receiverPublicKey);
 

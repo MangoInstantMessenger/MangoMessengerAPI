@@ -43,12 +43,12 @@ public static class CommandHelper
         return command;
     }
 
-    public static CngCreateKeyExchangeRequestCommand CreateCngKeyExchangeCommand(Guid userId, Guid requestedUserId)
+    public static CngCreateKeyExchangeRequestCommand CreateCngKeyExchangeCommand(Guid senderId, Guid receiverId)
     {
         var command = new CngCreateKeyExchangeRequestCommand(
-            UserId: userId,
-            RequestedUserId: requestedUserId,
-            PublicKey: "Public Key");
+            senderId,
+            receiverId,
+            SenderPublicKey: MangoFilesHelper.GetTestImage());
 
         return command;
     }
@@ -58,7 +58,7 @@ public static class CommandHelper
         var command = new AddContactCommand(
             UserId: userId,
             ContactId: contactId);
-        
+
         return command;
     }
 

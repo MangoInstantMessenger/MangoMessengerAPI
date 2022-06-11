@@ -1,7 +1,6 @@
 ﻿using MangoAPI.BusinessLogic.ApiCommands.CngKeyExchange;
 using MangoAPI.DiffieHellmanLibrary.Abstractions;
 using MangoAPI.DiffieHellmanLibrary.Constants;
-using MangoAPI.DiffieHellmanLibrary.Extensions;
 using MangoAPI.DiffieHellmanLibrary.Helpers;
 using Newtonsoft.Json;
 
@@ -20,36 +19,32 @@ public class CngCreateKeyExchangeHandler : BaseHandler, ICreateKeyExchangeHandle
 
     private async Task CngRequestKeyExchange(Guid receiverId)
     {
-        var tokens = TokensResponse.Tokens;
+        var senderId = TokensResponse.Tokens.UserId;
 
-        CngEcdhHelper.CngGenerateEcdhKeysPair(out var privateKeyBase64, out var publicKeyBase64);
+        var workingDirectory = CngDirectoryHelper.CngPublicKeysDirectory;
 
-        var response = await CngCreateKeyExchangeRequestAsync(receiverId, publicKeyBase64);
+        var publicKeyFileName = FileNameHelper.GenerateCngPublicKeyFileName(senderId, receiverId);
 
-        Console.WriteLine($@"Key exchange request with an ID {response.RequestId} created successfully.");
+        var publicKeyPath = Path.Combine(workingDirectory, publicKeyFileName);
 
-        var privateKeysDirectory = CngDirectoryHelper.CngPrivateKeysDirectory;
-        var publicKeysDirectory = CngDirectoryHelper.CngPublicKeysDirectory;
+        var route = $"{CngRoutes.CngKeyExchangeRequests}/{receiverId}";
 
-        var privateKeyPath = Path.Combine(
-            privateKeysDirectory,
-            $"PRIVATE_KEY_{tokens.UserId}_{receiverId}.txt");
+        var uri = new Uri(route, UriKind.Absolute);
 
-        var publicKeyPath = Path.Combine(
-            publicKeysDirectory,
-            $"PUBLIC_KEY_{tokens.UserId}_{receiverId}.txt");
+        using var request = new HttpRequestMessage(HttpMethod.Post, uri);
 
-        privateKeysDirectory.CreateDirectoryIfNotExist();
-        publicKeysDirectory.CreateDirectoryIfNotExist();
+        await using var stream = File.OpenRead(publicKeyPath);
 
-        Console.WriteLine(@"Writing private key to file...");
-        await File.WriteAllTextAsync(privateKeyPath, privateKeyBase64);
+        using var content = new MultipartFormDataContent
+        {
+            { new StreamContent(stream), "senderPublicKey", publicKeyFileName }
+        };
 
-        Console.WriteLine(@"Writing public key to file ...");
-        await File.WriteAllTextAsync(publicKeyPath, publicKeyBase64);
+        request.Content = content;
 
-        Console.WriteLine(@"Key exchange request sent successfully.");
-        Console.WriteLine();
+        var httpResponseMessage = await HttpClient.SendAsync(request);
+
+        httpResponseMessage.EnsureSuccessStatusCode();
     }
 
     private async Task<CngCreateKeyExchangeResponse> CngCreateKeyExchangeRequestAsync(

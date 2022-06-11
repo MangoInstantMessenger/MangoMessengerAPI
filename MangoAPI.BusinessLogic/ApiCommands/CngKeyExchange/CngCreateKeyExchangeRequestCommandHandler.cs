@@ -1,8 +1,11 @@
-﻿using System.Threading;
+﻿using System;
+using System.IO;
+using System.Threading;
 using System.Threading.Tasks;
 using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.Domain.Constants;
 using MangoAPI.Domain.Entities;
+using MangoAPI.Domain.Enums;
 using MangoAPI.Infrastructure.Database;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -27,7 +30,7 @@ public class CngCreateKeyExchangeRequestCommandHandler : IRequestHandler<CngCrea
         CancellationToken cancellationToken)
     {
         var requestedUserExists = await _dbContext.Users.AnyAsync(
-            x => x.Id == request.RequestedUserId, cancellationToken);
+            x => x.Id == request.ReceiverId, cancellationToken);
 
         if (!requestedUserExists)
         {
@@ -37,10 +40,12 @@ public class CngCreateKeyExchangeRequestCommandHandler : IRequestHandler<CngCrea
             return _responseFactory.ConflictResponse(message, details);
         }
 
-        var alreadyRequested = await _dbContext.CngKeyExchangeRequests
-            .AnyAsync(
-                x => x.SenderId == request.UserId && x.UserId == request.RequestedUserId, 
-                cancellationToken);
+        var alreadyRequested = await _dbContext.OpenSslKeyExchangeRequests
+            .AnyAsync(x =>
+                x.SenderId == request.SenderId &&
+                x.ReceiverId == request.ReceiverId &&
+                !x.IsConfirmed &&
+                x.KeyExchangeType == KeyExchangeType.Cng, cancellationToken);
 
         if (alreadyRequested)
         {
@@ -50,14 +55,22 @@ public class CngCreateKeyExchangeRequestCommandHandler : IRequestHandler<CngCrea
             return _responseFactory.ConflictResponse(message, details);
         }
 
-        var keyExchangeRequest = new CngKeyExchangeRequestEntity
+        await using var target = new MemoryStream();
+        await request.SenderPublicKey.CopyToAsync(target, cancellationToken);
+
+        var bytes = target.ToArray();
+
+        var keyExchangeRequest = new OpenSslKeyExchangeRequestEntity()
         {
-            UserId = request.RequestedUserId,
-            SenderId = request.UserId,
-            SenderPublicKey = request.PublicKey
+            SenderId = request.SenderId,
+            ReceiverId = request.ReceiverId,
+            SenderPublicKey = bytes,
+            CreatedAt = DateTime.UtcNow,
+            KeyExchangeType = KeyExchangeType.Cng,
+            IsConfirmed = false
         };
 
-        _dbContext.CngKeyExchangeRequests.Add(keyExchangeRequest);
+        _dbContext.OpenSslKeyExchangeRequests.Add(keyExchangeRequest);
 
         await _dbContext.SaveChangesAsync(cancellationToken);
 
