@@ -2,7 +2,6 @@
 using MangoAPI.DiffieHellmanLibrary.Abstractions;
 using MangoAPI.DiffieHellmanLibrary.Constants;
 using MangoAPI.DiffieHellmanLibrary.Helpers;
-using MangoAPI.Domain.Constants;
 using Newtonsoft.Json;
 
 namespace MangoAPI.DiffieHellmanLibrary.AuthHandlers;
@@ -15,17 +14,7 @@ public class RefreshTokenHandler : BaseHandler
 
     public async Task RefreshTokensAsync()
     {
-        var tokensResponse = await TokensHelper.GetTokensAsync();
-
-        if (tokensResponse == null)
-        {
-            const string error = ResponseMessageCodes.TokensNotFound;
-            var details = ResponseMessageCodes.ErrorDictionary[error];
-            Console.WriteLine($@"{error}. {details}");
-            return;
-        }
-
-        var refreshToken = tokensResponse.Tokens.RefreshToken;
+        var refreshToken = TokensResponse.Tokens.RefreshToken;
 
         Console.WriteLine(@"Refreshing tokens ...");
         var refreshTokenResponse = await PerformRefreshTokensAsync(refreshToken);

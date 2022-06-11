@@ -2,6 +2,7 @@
 using MangoAPI.BusinessLogic.ApiQueries.CngPublicKeys;
 using MangoAPI.BusinessLogic.ApiQueries.OpenSslKeyExchange;
 using MangoAPI.BusinessLogic.Models;
+using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.DiffieHellmanLibrary.Constants;
 using MangoAPI.DiffieHellmanLibrary.Helpers;
 using MangoAPI.Domain.Constants;
@@ -12,21 +13,22 @@ namespace MangoAPI.DiffieHellmanLibrary.Abstractions;
 public abstract class BaseHandler
 {
     protected readonly HttpClient HttpClient;
+    protected readonly TokensResponse TokensResponse;
 
     protected BaseHandler(HttpClient httpClient)
     {
         HttpClient = httpClient;
-        var tokensResponse = TokensHelper.GetTokensAsync().GetAwaiter().GetResult();
+        TokensResponse = TokensHelper.GetTokensAsync().GetAwaiter().GetResult();
 
-        if (tokensResponse == null)
+        if (TokensResponse == null)
         {
             const string error = ResponseMessageCodes.TokensNotFound;
             var details = ResponseMessageCodes.ErrorDictionary[error];
 
-            throw new InvalidOperationException($"{error}. {details}, {nameof(tokensResponse)}");
+            throw new InvalidOperationException($"{error}. {details}, {nameof(TokensResponse)}");
         }
 
-        var accessToken = tokensResponse.Tokens.AccessToken;
+        var accessToken = TokensResponse.Tokens.AccessToken;
 
         HttpClient.DefaultRequestHeaders.Authorization
             = new AuthenticationHeaderValue("Bearer", accessToken);

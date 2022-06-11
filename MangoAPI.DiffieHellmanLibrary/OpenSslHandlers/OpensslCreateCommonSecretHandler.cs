@@ -25,9 +25,8 @@ public class OpensslCreateCommonSecretHandler : BaseHandler, ICreateCommonSecret
     private async Task OpensslCreateCommonSecretAsync(Actor actor, Guid partnerId)
     {
         var allKeyExchanges = await OpensslGetKeyExchangesAsync();
-
-        var tokensResponse = await TokensHelper.GetTokensAsync();
-        var tokens = tokensResponse.Tokens;
+        
+        var tokens = TokensResponse.Tokens;
         var currentUserId = tokens.UserId;
 
         OpenSslKeyExchangeRequest keyExchangeRequest;

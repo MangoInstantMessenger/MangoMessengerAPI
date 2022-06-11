@@ -25,8 +25,7 @@ public class OpensslDownloadPublicKeyHandler : BaseHandler, IDownloadPublicKeyHa
 
     private async Task OpensslDownloadPublicKeyAsync(Actor actor, Guid userId)
     {
-        var tokensResponse = await TokensHelper.GetTokensAsync();
-        var currentUserId = tokensResponse.Tokens.UserId;
+        var currentUserId = TokensResponse.Tokens.UserId;
 
         var allRequests = await OpensslGetKeyExchangesAsync();
 

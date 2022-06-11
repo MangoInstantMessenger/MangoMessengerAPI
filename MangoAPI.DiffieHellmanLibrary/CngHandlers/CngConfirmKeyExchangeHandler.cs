@@ -22,9 +22,7 @@ public class CngConfirmKeyExchangeHandler : BaseHandler, IConfirmKeyExchangeHand
 
     private async Task CngConfirmKeyExchangeRequest(Guid requestId)
     {
-        var tokensResponse = await TokensHelper.GetTokensAsync();
-
-        var tokens = tokensResponse.Tokens;
+        var tokens = TokensResponse.Tokens;
 
         var getKeyExchangeResponse = await CngGetKeyExchangeById(requestId);
         var exchangeRequest = getKeyExchangeResponse.KeyExchangeRequest;
@@ -34,14 +32,10 @@ public class CngConfirmKeyExchangeHandler : BaseHandler, IConfirmKeyExchangeHand
             out var publicKeyBase64String);
 
         var requestPublicKeyBytes = exchangeRequest.SenderPublicKey.Base64StringAsBytes();
-
-#pragma warning disable CA1416
+        
         var requestPublicKey = CngKey.Import(requestPublicKeyBytes, CngKeyBlobFormat.EccPublicBlob);
-#pragma warning restore CA1416
-
-#pragma warning disable CA1416
+        
         var commonSecret = ecDiffieHellmanCng.DeriveKeyMaterial(requestPublicKey).AsBase64String();
-#pragma warning restore CA1416
 
         await CngConfirmKeyExchangeAsync(requestId, publicKeyBase64String);
 

@@ -23,9 +23,8 @@ public class OpensslConfirmKeyExchangeHandler : BaseHandler, IConfirmKeyExchange
     private async Task OpensslConfirmKeyExchange(Guid senderId)
     {
         var allRequests = await OpensslGetKeyExchangesAsync();
-
-        var tokensResponse = await TokensHelper.GetTokensAsync();
-        var currentUserId = tokensResponse.Tokens.UserId;
+        
+        var currentUserId = TokensResponse.Tokens.UserId;
 
         var keyExchangeRequest = allRequests.FirstOrDefault(x =>
             x.SenderId == senderId && x.ReceiverId == currentUserId);

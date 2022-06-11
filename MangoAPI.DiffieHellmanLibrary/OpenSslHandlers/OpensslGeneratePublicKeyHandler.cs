@@ -24,9 +24,7 @@ public class OpensslGeneratePublicKeyHandler : BaseHandler, IGeneratePublicKeyHa
 
     private async Task OpenSslGeneratePublicKeyAsync(Guid receiverId)
     {
-        var tokensResponse = await TokensHelper.GetTokensAsync();
-
-        var senderId = tokensResponse.Tokens.UserId;
+        var senderId = TokensResponse.Tokens.UserId;
 
         var publicKeyFileName = FileNameHelper.GeneratePublicKeyFileName(senderId, receiverId);
 

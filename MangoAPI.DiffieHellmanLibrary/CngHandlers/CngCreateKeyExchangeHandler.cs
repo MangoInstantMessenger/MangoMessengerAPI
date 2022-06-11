@@ -20,9 +20,7 @@ public class CngCreateKeyExchangeHandler : BaseHandler, ICreateKeyExchangeHandle
 
     private async Task CngRequestKeyExchange(Guid receiverId)
     {
-        var tokensResponse = await TokensHelper.GetTokensAsync();
-
-        var tokens = tokensResponse.Tokens;
+        var tokens = TokensResponse.Tokens;
 
         CngEcdhHelper.CngGenerateEcdhKeysPair(out var privateKeyBase64, out var publicKeyBase64);
 

@@ -19,9 +19,7 @@ public class CngCreateCommonSecretHandler : BaseHandler, ICreateCommonSecretHand
 
     private async Task CngCreateCommonSecret(IReadOnlyList<string> args)
     {
-        var tokensResponse = await TokensHelper.GetTokensAsync();
-
-        var tokens = tokensResponse.Tokens;
+        var tokens = TokensResponse.Tokens;
 
         var partnerId = Guid.Parse(args[1]);
 
@@ -41,21 +39,13 @@ public class CngCreateCommonSecretHandler : BaseHandler, ICreateCommonSecretHand
 
         var privateKeyBytes = (await File.ReadAllTextAsync(privateKeyPath)).Base64StringAsBytes();
 
-#pragma warning disable CA1416
         var privateKey = CngKey.Import(privateKeyBytes, CngKeyBlobFormat.EccPrivateBlob);
-#pragma warning restore CA1416
 
-#pragma warning disable CA1416
         var ecDiffieHellmanCng = new ECDiffieHellmanCng(privateKey);
-#pragma warning restore CA1416
 
-#pragma warning disable CA1416
         var partnerPublicKey = CngKey.Import(partnerPublicKeyBytes!, CngKeyBlobFormat.EccPublicBlob);
-#pragma warning restore CA1416
 
-#pragma warning disable CA1416
         var commonSecretBase64 = ecDiffieHellmanCng.DeriveKeyMaterial(partnerPublicKey).AsBase64String();
-#pragma warning restore CA1416
 
         Console.WriteLine(@"Writing common secret to file...");
         await File.WriteAllTextAsync(commonSecretPath, commonSecretBase64);

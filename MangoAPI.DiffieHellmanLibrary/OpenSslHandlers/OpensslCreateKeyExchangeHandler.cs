@@ -22,9 +22,7 @@ public class OpensslCreateKeyExchangeHandler : BaseHandler, ICreateKeyExchangeHa
 
     private async Task OpenSslCreateKeyExchangeAsync(Guid receiverId)
     {
-        var tokensResponse = await TokensHelper.GetTokensAsync();
-
-        var senderId = tokensResponse.Tokens.UserId;
+        var senderId = TokensResponse.Tokens.UserId;
 
         var workingDirectory = OpenSslDirectoryHelper.OpenSslPublicKeysDirectory;
 
