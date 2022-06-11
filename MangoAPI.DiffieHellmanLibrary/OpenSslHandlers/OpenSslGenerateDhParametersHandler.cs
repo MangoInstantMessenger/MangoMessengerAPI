@@ -4,9 +4,9 @@ using MangoAPI.DiffieHellmanLibrary.Helpers;
 
 namespace MangoAPI.DiffieHellmanLibrary.OpenSslHandlers;
 
-public class OpenSslGenerateDhParametersHandler
+public static class OpenSslGenerateDhParametersHandler
 {
-    public async Task<bool> CreateDhParametersAsync()
+    public static async Task CreateDhParametersAsync()
     {
         Console.WriteLine(@"Generating DH parameters... Please wait.");
 
@@ -23,7 +23,5 @@ public class OpenSslGenerateDhParametersHandler
 
         Console.WriteLine(@"DH parameters has been generated successfully.");
         Console.WriteLine();
-
-        return true;
     }
 }

@@ -1,5 +1,4 @@
 ﻿using MangoAPI.DiffieHellmanLibrary.OpenSslHandlers;
-using MangoAPI.DiffieHellmanLibrary.Services;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace MangoAPI.DiffieHellmanLibrary.Extensions;
@@ -8,9 +7,6 @@ public static class OpenSslInjectionExtensions
 {
     public static IServiceCollection AddOpenSslServicesAndHandlers(this IServiceCollection collection)
     {
-        collection.AddSingleton<OpenSslKeyExchangeService>();
-
-        collection.AddSingleton<OpenSslGenerateDhParametersHandler>();
         collection.AddSingleton<OpenSslUploadDhParametersHandler>();
         collection.AddSingleton<OpenSslDownloadDhParametersHandler>();
         collection.AddSingleton<OpenSslGeneratePrivateKeyHandler>();
@@ -22,7 +18,6 @@ public static class OpenSslInjectionExtensions
         collection.AddSingleton<OpenSslDownloadPublicKeyHandler>();
         collection.AddSingleton<OpenSslDeclineKeyExchangeHandler>();
         collection.AddSingleton<OpenSslPrintKeyExchangeByIdHandler>();
-        collection.AddSingleton<OpensslValidateCommonSecretHandler>();
 
         return collection;
     }

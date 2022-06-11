@@ -1,23 +1,31 @@
-﻿using MangoAPI.DiffieHellmanLibrary.Services;
+﻿using MangoAPI.DiffieHellmanLibrary.Constants;
+using MangoAPI.DiffieHellmanLibrary.Services;
 
 namespace MangoAPI.DiffieHellmanLibrary.OpenSslHandlers;
 
-public class OpenSslDeclineKeyExchangeHandler
+public class OpenSslDeclineKeyExchangeHandler : BaseHandler
 {
-    private readonly OpenSslKeyExchangeService _openSslKeyExchangeService;
-
-    public OpenSslDeclineKeyExchangeHandler(OpenSslKeyExchangeService openSslKeyExchangeService)
+    public OpenSslDeclineKeyExchangeHandler(HttpClient httpClient, TokensService tokensService) : base(httpClient,
+        tokensService)
     {
-        _openSslKeyExchangeService = openSslKeyExchangeService;
     }
 
     public async Task DeclineKeyExchangeAsync(Guid requestId)
     {
         Console.WriteLine($@"Declining key exchange request {requestId} ...");
-        
-        await _openSslKeyExchangeService.OpenSslDeclineKeyExchangeAsync(requestId);
-        
+
+        await OpenSslDeclineKeyExchangeAsync(requestId);
+
         Console.WriteLine($@"key exchange request {requestId} has been declined.");
         Console.WriteLine();
+    }
+
+    private async Task OpenSslDeclineKeyExchangeAsync(Guid requestId)
+    {
+        var address = $"{OpenSslRoutes.OpenSslKeyExchangeRequests}/{requestId}";
+        var uri = new Uri(address, UriKind.Absolute);
+
+        var httpResponseMessage = await HttpClient.DeleteAsync(uri);
+        httpResponseMessage.EnsureSuccessStatusCode();
     }
 }

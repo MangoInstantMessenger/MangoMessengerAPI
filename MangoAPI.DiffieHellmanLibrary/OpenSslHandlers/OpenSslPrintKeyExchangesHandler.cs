@@ -2,25 +2,23 @@
 
 namespace MangoAPI.DiffieHellmanLibrary.OpenSslHandlers;
 
-public class OpenSslPrintKeyExchangesHandler
+public class OpenSslPrintKeyExchangesHandler : BaseHandler
 {
-    private readonly OpenSslKeyExchangeService _openSslKeyExchangeService;
-
-    public OpenSslPrintKeyExchangesHandler(OpenSslKeyExchangeService openSslKeyExchangeService)
+    public OpenSslPrintKeyExchangesHandler(HttpClient httpClient, TokensService tokensService) : base(httpClient,
+        tokensService)
     {
-        _openSslKeyExchangeService = openSslKeyExchangeService;
     }
 
     public async Task PrintKeyExchangesAsync()
     {
         Console.WriteLine(@"Printing key-exchange requests ...");
-        
-        var list = await _openSslKeyExchangeService.OpensslGetKeyExchangesAsync();
-        
+
+        var list = await OpensslGetKeyExchangesAsync();
+
         list.ForEach(Console.WriteLine);
-        
+
         Console.WriteLine(@"Key exchanges are printed successfully.");
-        
+
         Console.WriteLine();
     }
 }

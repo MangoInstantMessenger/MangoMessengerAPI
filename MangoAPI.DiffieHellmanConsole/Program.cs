@@ -11,8 +11,6 @@ namespace MangoAPI.DiffieHellmanConsole;
 
 public static class Program
 {
-    private static readonly DependencyResolver DependencyResolver = new();
-
     public static async Task Main(string[] args)
     {
         if (args.Length == 0)
@@ -75,8 +73,7 @@ public static class Program
             }
             case Commands.OpenSslGenerateDhParameters:
             {
-                var handler = DependencyResolver.ResolveService<OpenSslGenerateDhParametersHandler>();
-                await handler.CreateDhParametersAsync();
+                await OpenSslGenerateDhParametersHandler.CreateDhParametersAsync();
                 break;
             }
             case Commands.OpenSslUploadDhParameters:
@@ -172,8 +169,7 @@ public static class Program
                 var receiverIdString = args[2];
                 var senderId = GetGuidValue(senderIdString);
                 var receiverId = GetGuidValue(receiverIdString);
-                var handler = DependencyResolver.ResolveService<OpensslValidateCommonSecretHandler>();
-                await handler.ValidateCommonSecretAsync(senderId, receiverId);
+                await OpensslValidateCommonSecretHandler.ValidateCommonSecretAsync(senderId, receiverId);
                 break;
             }
             default:

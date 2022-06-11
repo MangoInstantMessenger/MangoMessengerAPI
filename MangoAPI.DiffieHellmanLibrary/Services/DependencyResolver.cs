@@ -3,13 +3,13 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace MangoAPI.DiffieHellmanLibrary.Services;
 
-public class DependencyResolver
+public static class DependencyResolver
 {
-    private static ServiceProvider _serviceProvider;
+    private static readonly ServiceProvider ServiceProvider;
 
-    public DependencyResolver()
+    static DependencyResolver()
     {
-        _serviceProvider = new ServiceCollection()
+        ServiceProvider = new ServiceCollection()
             .AddServices()
             .AddAuthServicesAndHandlers()
             .AddCngServicesAndHandlers()
@@ -17,9 +17,9 @@ public class DependencyResolver
             .BuildServiceProvider();
     }
 
-    public T ResolveService<T>()
+    public static T ResolveService<T>()
     {
-        var service = _serviceProvider.GetService<T>() ??
+        var service = ServiceProvider.GetService<T>() ??
                       throw new ArgumentException(
                           $"Handler is null. Register it in dependency injection. {nameof(T)}");
 

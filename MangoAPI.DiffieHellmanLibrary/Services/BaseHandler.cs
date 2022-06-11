@@ -1,5 +1,9 @@
 ﻿using System.Net.Http.Headers;
+using MangoAPI.BusinessLogic.ApiQueries.OpenSslKeyExchange;
+using MangoAPI.BusinessLogic.Models;
+using MangoAPI.DiffieHellmanLibrary.Constants;
 using MangoAPI.Domain.Constants;
+using Newtonsoft.Json;
 
 namespace MangoAPI.DiffieHellmanLibrary.Services;
 
@@ -27,5 +31,24 @@ public abstract class BaseHandler
 
         HttpClient.DefaultRequestHeaders.Authorization
             = new AuthenticationHeaderValue("Bearer", accessToken);
+    }
+
+    protected async Task<List<OpenSslKeyExchangeRequest>> OpensslGetKeyExchangesAsync()
+    {
+        var uri = new Uri(OpenSslRoutes.OpenSslKeyExchangeRequests, UriKind.Absolute);
+
+        var response = await HttpClient.GetAsync(uri);
+
+        response.EnsureSuccessStatusCode();
+
+        var responseBody = await response.Content.ReadAsStringAsync();
+
+        var deserialized =
+            JsonConvert.DeserializeObject<OpenSslGetKeyExchangeRequestsResponse>(responseBody) ??
+            throw new InvalidOperationException("Cannot deserialize list of key exchange requests.");
+
+        var requests = deserialized.OpenSslKeyExchangeRequests;
+
+        return requests;
     }
 }
