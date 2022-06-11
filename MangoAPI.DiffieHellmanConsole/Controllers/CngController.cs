@@ -14,6 +14,14 @@ public static class CngController
     {
         switch (method)
         {
+            case Commands.CngGeneratePrivateKey:
+            {
+                var receiverIdString = args[1];
+                var receiverId = GuidHelper.GetGuidValue(receiverIdString);
+                var handler = DependencyResolver.ResolveService<CngGeneratePrivateKeyHandler>();
+                await handler.GeneratePrivateKeyAsync(receiverId);
+                break;
+            }
             case Commands.CngCreateKeyExchange:
             {
                 var receiverIdString = args[1];

@@ -22,4 +22,20 @@ public static class CngEcdhHelper
 
         return ecDiffieHellmanCng;
     }
+
+    public static string GenerateEcdhBase64StringPrivateKey()
+    {
+        var parameters = new CngKeyCreationParameters
+        {
+            ExportPolicy = CngExportPolicies.AllowPlaintextExport
+        };
+
+        var keys = CngKey.Create(CngAlgorithm.ECDiffieHellmanP256, null, parameters);
+
+        var ecDiffieHellmanCng = new ECDiffieHellmanCng(keys);
+
+        var privateKeyBase64String = ecDiffieHellmanCng.Key.Export(CngKeyBlobFormat.EccPrivateBlob).AsBase64String();
+
+        return privateKeyBase64String;
+    }
 }
