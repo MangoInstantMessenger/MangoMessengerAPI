@@ -9,11 +9,13 @@ public class OpenSslKeyExchangeRequestEntityConfiguration : IEntityTypeConfigura
     public void Configure(EntityTypeBuilder<OpenSslKeyExchangeRequestEntity> builder)
     {
         builder.ToTable(nameof(OpenSslKeyExchangeRequestEntity), MangoDbContext.DefaultSchema);
-        
+
         builder.HasKey(x => x.Id);
-        
+
         builder.Property(x => x.SenderId).IsRequired();
         builder.Property(x => x.ReceiverId).IsRequired();
         builder.Property(x => x.SenderPublicKey).IsRequired();
+        builder.Property(x => x.CreatedAt).IsRequired();
+        builder.Property(x => x.KeyExchangeType).IsRequired();
     }
 }

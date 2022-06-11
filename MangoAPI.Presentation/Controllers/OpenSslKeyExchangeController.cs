@@ -126,7 +126,7 @@ public class OpenSslKeyExchangeController : ApiControllerBase, IOpenSslKeyExchan
     /// Confirm OpenSSL key exchange.
     /// </summary>
     /// <param name="requestId">Request ID.</param>
-    /// <param name="receiverPublicKey"IFormFile instance.></param>
+    /// <param name="receiverPublicKey"></param>
     /// <param name="cancellationToken">Cancellation token instance.</param>
     /// <returns></returns>
     [HttpPut("{requestId:guid}")]

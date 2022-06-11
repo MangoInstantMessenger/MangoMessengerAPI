@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 using MangoAPI.BusinessLogic.Responses;
@@ -45,6 +46,7 @@ public class
 
         keyExchangeRequest.ReceiverPublicKey = bytes;
         keyExchangeRequest.IsConfirmed = true;
+        keyExchangeRequest.UpdatedAt = DateTime.UtcNow;
 
         await _mangoDbContext.SaveChangesAsync(cancellationToken);
         return _responseFactory.SuccessResponse(ResponseBase.SuccessResponse);

@@ -1,9 +1,11 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.Domain.Constants;
 using MangoAPI.Domain.Entities;
+using MangoAPI.Domain.Enums;
 using MangoAPI.Infrastructure.Database;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -41,14 +43,16 @@ public class OpenSslCreateKeyExchangeCommandHandler : IRequestHandler<OpenSslCre
 
         await using var target = new MemoryStream();
         await request.SenderPublicKey.CopyToAsync(target, cancellationToken);
-        
+
         var bytes = target.ToArray();
 
         var keyExchangeRequest = new OpenSslKeyExchangeRequestEntity
         {
             SenderId = request.SenderId,
             ReceiverId = request.ReceiverId,
-            SenderPublicKey = bytes
+            SenderPublicKey = bytes,
+            CreatedAt = DateTime.UtcNow,
+            KeyExchangeType = KeyExchangeType.OpenSsl
         };
 
         _mangoDbContext.OpenSslKeyExchangeRequests.Add(keyExchangeRequest);
