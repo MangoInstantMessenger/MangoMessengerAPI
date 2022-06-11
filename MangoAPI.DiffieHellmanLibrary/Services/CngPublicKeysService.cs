@@ -1,6 +1,6 @@
 ﻿using System.Net.Http.Headers;
 using MangoAPI.BusinessLogic.ApiQueries.CngPublicKeys;
-using MangoAPI.DiffieHellmanLibrary.Consts;
+using MangoAPI.DiffieHellmanLibrary.Constants;
 using MangoAPI.DiffieHellmanLibrary.Helpers;
 using MangoAPI.Domain.Constants;
 using Newtonsoft.Json;

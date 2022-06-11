@@ -1,6 +1,6 @@
 ﻿using MangoAPI.BusinessLogic.ApiCommands.Sessions;
 using MangoAPI.BusinessLogic.Responses;
-using MangoAPI.DiffieHellmanLibrary.Consts;
+using MangoAPI.DiffieHellmanLibrary.Constants;
 using MangoAPI.DiffieHellmanLibrary.Helpers;
 using Newtonsoft.Json;
 

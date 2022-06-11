@@ -2,7 +2,6 @@
 using MangoAPI.DiffieHellmanLibrary.Extensions;
 using MangoAPI.DiffieHellmanLibrary.Helpers;
 using MangoAPI.DiffieHellmanLibrary.Services;
-using MangoAPI.Domain.Constants;
 
 namespace MangoAPI.DiffieHellmanLibrary.CngHandlers;
 

@@ -1,7 +1,7 @@
 ﻿using System.Net.Http.Headers;
 using MangoAPI.BusinessLogic.ApiCommands.CngKeyExchange;
 using MangoAPI.BusinessLogic.ApiQueries.CngKeyExchange;
-using MangoAPI.DiffieHellmanLibrary.Consts;
+using MangoAPI.DiffieHellmanLibrary.Constants;
 using MangoAPI.DiffieHellmanLibrary.Helpers;
 using MangoAPI.Domain.Constants;
 using Newtonsoft.Json;

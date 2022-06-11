@@ -3,7 +3,7 @@ using System.Security.Cryptography;
 using CliWrap;
 using MangoAPI.BusinessLogic.ApiQueries.OpenSslKeyExchange;
 using MangoAPI.BusinessLogic.Models;
-using MangoAPI.DiffieHellmanLibrary.Consts;
+using MangoAPI.DiffieHellmanLibrary.Constants;
 using MangoAPI.DiffieHellmanLibrary.Extensions;
 using MangoAPI.DiffieHellmanLibrary.Helpers;
 using MangoAPI.Domain.Constants;

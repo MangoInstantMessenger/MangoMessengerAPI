@@ -1,4 +1,4 @@
-﻿namespace MangoAPI.DiffieHellmanLibrary.Consts;
+﻿namespace MangoAPI.DiffieHellmanLibrary.Constants;
 
 public static class Routes
 {
