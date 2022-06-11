@@ -15,12 +15,9 @@ public class SessionsService
         _httpClient = httpClient;
     }
 
-    public async Task<TokensResponse> LoginAsync(IReadOnlyList<string> args)
+    public async Task<TokensResponse> LoginAsync(string login, string password)
     {
-        var email = args[1];
-        var password = args[2];
-
-        var command = new LoginCommand(email, password);
+        var command = new LoginCommand(login, password);
 
         var response = await HttpRequestHelper.PostWithBodyAsync(
             client: _httpClient,
@@ -35,11 +32,11 @@ public class SessionsService
     public async Task<TokensResponse> RefreshTokenAsync(Guid refreshToken)
     {
         var route = AuthRoutes.SessionsRoute + refreshToken;
-        
+
         var result = await HttpRequestHelper.PostWithoutBodyAsync(_httpClient, route);
-        
+
         var response = JsonConvert.DeserializeObject<TokensResponse>(result);
-        
+
         return response ?? throw new InvalidOperationException();
     }
 }

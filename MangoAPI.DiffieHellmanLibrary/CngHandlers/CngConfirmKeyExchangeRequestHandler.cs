@@ -21,14 +21,12 @@ public class CngConfirmKeyExchangeRequestHandler
         _tokensService = tokensService;
     }
 
-    public async Task CngConfirmKeyExchangeRequest(IReadOnlyList<string> args)
+    public async Task CngConfirmKeyExchangeRequest(Guid requestId)
     {
         var tokensResponse = await _tokensService.GetTokensAsync();
 
         var tokens = tokensResponse.Tokens;
 
-        var requestId = Guid.Parse(args[1]);
-        
         var getKeyExchangeResponse = await _cngKeyExchangeService.CngGetKeyExchangeById(requestId);
         var exchangeRequest = getKeyExchangeResponse.KeyExchangeRequest;
 

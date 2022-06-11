@@ -20,17 +20,15 @@ public class CngCreateKeyExchangeHandler
         _cngEcdhService = cngEcdhService;
     }
 
-    public async Task CngRequestKeyExchange(IReadOnlyList<string> args)
+    public async Task CngRequestKeyExchange(Guid receiverId)
     {
         var tokensResponse = await _tokensService.GetTokensAsync();
 
         var tokens = tokensResponse.Tokens;
 
-        var requestedUserId = Guid.Parse(args[1]);
-
         _cngEcdhService.CngGenerateEcdhKeysPair(out var privateKeyBase64, out var publicKeyBase64);
 
-        var response = await _cngKeyExchangeService.CngCreateKeyExchangeRequestAsync(requestedUserId, publicKeyBase64);
+        var response = await _cngKeyExchangeService.CngCreateKeyExchangeRequestAsync(receiverId, publicKeyBase64);
 
         Console.WriteLine($@"Key exchange request with an ID {response.RequestId} created successfully.");
 
@@ -39,11 +37,11 @@ public class CngCreateKeyExchangeHandler
 
         var privateKeyPath = Path.Combine(
             privateKeysDirectory, 
-            $"PRIVATE_KEY_{tokens.UserId}_{requestedUserId}.txt");
+            $"PRIVATE_KEY_{tokens.UserId}_{receiverId}.txt");
 
         var publicKeyPath = Path.Combine(
             publicKeysDirectory,
-            $"PUBLIC_KEY_{tokens.UserId}_{requestedUserId}.txt");
+            $"PUBLIC_KEY_{tokens.UserId}_{receiverId}.txt");
         
         privateKeysDirectory.CreateDirectoryIfNotExist();
         publicKeysDirectory.CreateDirectoryIfNotExist();
@@ -54,7 +52,7 @@ public class CngCreateKeyExchangeHandler
         Console.WriteLine(@"Writing public key to file ...");
         await File.WriteAllTextAsync(publicKeyPath, publicKeyBase64);
 
-        Console.WriteLine(@"Key exchange request sent successfully.
-");
+        Console.WriteLine(@"Key exchange request sent successfully.");
+        Console.WriteLine();
     }
 }
