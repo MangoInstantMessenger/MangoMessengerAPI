@@ -57,9 +57,9 @@ public class OpensslCreateCommonSecretHandler : BaseHandler, ICreateCommonSecret
         var privateKeyDirectory = OpenSslDirectoryHelper.OpenSslPrivateKeysDirectory;
         var commonSecretDirectory = OpenSslDirectoryHelper.OpenSslCommonSecretsDirectory;
 
-        var publicKeyFileName = FileNameHelper.GeneratePublicKeyFileName(currentUserId, requestId);
-        var privateKeyFileName = FileNameHelper.GeneratePrivateKeyFileName(currentUserId, receiverId);
-        var commonSecretFileName = FileNameHelper.GenerateCommonSecretFileName(currentUserId, receiverId);
+        var publicKeyFileName = FileNameHelper.GenerateOpenSslPublicKeyFileName(currentUserId, requestId);
+        var privateKeyFileName = FileNameHelper.GenerateOpenSslPrivateKeyFileName(currentUserId, receiverId);
+        var commonSecretFileName = FileNameHelper.GenerateOpensslCommonSecretFileName(currentUserId, receiverId);
 
         commonSecretDirectory.CreateDirectoryIfNotExist();
 

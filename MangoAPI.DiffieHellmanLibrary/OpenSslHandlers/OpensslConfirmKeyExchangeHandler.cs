@@ -40,7 +40,7 @@ public class OpensslConfirmKeyExchangeHandler : BaseHandler, IConfirmKeyExchange
 
         var workingDirectory = OpenSslDirectoryHelper.OpenSslPublicKeysDirectory;
 
-        var publicKeyFileName = FileNameHelper.GeneratePublicKeyFileName(currentUserId, senderId);
+        var publicKeyFileName = FileNameHelper.GenerateOpenSslPublicKeyFileName(currentUserId, senderId);
 
         var publicKeyPath = Path.Combine(workingDirectory, publicKeyFileName);
 

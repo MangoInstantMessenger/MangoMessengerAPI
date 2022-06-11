@@ -26,7 +26,7 @@ public class OpensslGeneratePrivateKeyHandler : BaseHandler, IGeneratePrivateKey
     {
         var senderId = TokensResponse.Tokens.UserId;
 
-        var privateKeyFileName = FileNameHelper.GeneratePrivateKeyFileName(senderId, receiverId);
+        var privateKeyFileName = FileNameHelper.GenerateOpenSslPrivateKeyFileName(senderId, receiverId);
 
         var workingDirectory = OpenSslDirectoryHelper.OpenSslPrivateKeysDirectory;
 

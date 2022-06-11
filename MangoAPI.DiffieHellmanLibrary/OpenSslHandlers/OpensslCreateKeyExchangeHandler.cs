@@ -26,7 +26,7 @@ public class OpensslCreateKeyExchangeHandler : BaseHandler, ICreateKeyExchangeHa
 
         var workingDirectory = OpenSslDirectoryHelper.OpenSslPublicKeysDirectory;
 
-        var publicKeyFileName = FileNameHelper.GeneratePublicKeyFileName(senderId, receiverId);
+        var publicKeyFileName = FileNameHelper.GenerateOpenSslPublicKeyFileName(senderId, receiverId);
 
         var publicKeyPath = Path.Combine(workingDirectory, publicKeyFileName);
 

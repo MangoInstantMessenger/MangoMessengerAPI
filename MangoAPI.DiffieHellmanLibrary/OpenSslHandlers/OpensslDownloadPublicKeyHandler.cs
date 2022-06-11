@@ -57,7 +57,7 @@ public class OpensslDownloadPublicKeyHandler : BaseHandler, IDownloadPublicKeyHa
 
         var workingDirectory = OpenSslDirectoryHelper.OpenSslPublicKeysDirectory;
 
-        var publicKeyFileName = FileNameHelper.GeneratePublicKeyFileName(
+        var publicKeyFileName = FileNameHelper.GenerateOpenSslPublicKeyFileName(
             currentUserId,
             keyExchangeRequest.RequestId);
 

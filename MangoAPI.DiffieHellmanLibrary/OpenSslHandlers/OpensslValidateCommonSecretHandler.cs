@@ -26,8 +26,8 @@ public class OpensslValidateCommonSecretHandler : IValidateCommonSecretHandler
         Guid receiverId)
     {
         var commonSecretDirectory = OpenSslDirectoryHelper.OpenSslCommonSecretsDirectory;
-        var senderCommonSecretFileName = FileNameHelper.GenerateCommonSecretFileName(senderId, receiverId);
-        var receiverCommonSecretFileName = FileNameHelper.GenerateCommonSecretFileName(receiverId, senderId);
+        var senderCommonSecretFileName = FileNameHelper.GenerateOpensslCommonSecretFileName(senderId, receiverId);
+        var receiverCommonSecretFileName = FileNameHelper.GenerateOpensslCommonSecretFileName(receiverId, senderId);
 
 
         var senderPath = Path.Combine(commonSecretDirectory, senderCommonSecretFileName);
