@@ -1,40 +1,19 @@
-﻿using System.Net.Http.Headers;
-using System.Security.Cryptography;
+﻿using System.Security.Cryptography;
 using CliWrap;
 using MangoAPI.BusinessLogic.ApiQueries.OpenSslKeyExchange;
 using MangoAPI.BusinessLogic.Models;
 using MangoAPI.DiffieHellmanLibrary.Constants;
 using MangoAPI.DiffieHellmanLibrary.Extensions;
 using MangoAPI.DiffieHellmanLibrary.Helpers;
-using MangoAPI.Domain.Constants;
 using Newtonsoft.Json;
 
 namespace MangoAPI.DiffieHellmanLibrary.Services;
 
-public class OpenSslKeyExchangeService
+public class OpenSslKeyExchangeService : BaseHandler
 {
-    private readonly HttpClient _httpClient;
-    private readonly TokensService _tokensService;
-
-    public OpenSslKeyExchangeService(HttpClient httpClient, TokensService tokensService)
+    public OpenSslKeyExchangeService(HttpClient httpClient, TokensService tokensService) : base(httpClient,
+        tokensService)
     {
-        _httpClient = httpClient;
-        _tokensService = tokensService;
-
-        var tokensResponse = _tokensService.GetTokensAsync().GetAwaiter().GetResult();
-
-        if (tokensResponse == null)
-        {
-            const string error = ResponseMessageCodes.TokensNotFound;
-            var details = ResponseMessageCodes.ErrorDictionary[error];
-
-            throw new InvalidOperationException($"{error}. {details}, {nameof(tokensResponse)}");
-        }
-
-        var accessToken = tokensResponse.Tokens.AccessToken;
-
-        _httpClient.DefaultRequestHeaders.Authorization
-            = new AuthenticationHeaderValue("Bearer", accessToken);
     }
 
     public async Task<bool> OpenSslUploadDhParametersAsync()
@@ -51,12 +30,12 @@ public class OpenSslKeyExchangeService
 
         using var content = new MultipartFormDataContent
         {
-            {new StreamContent(stream), "file", "dhp.pem"}
+            { new StreamContent(stream), "file", "dhp.pem" }
         };
 
         request.Content = content;
 
-        var httpResponseMessage = await _httpClient.SendAsync(request);
+        var httpResponseMessage = await HttpClient.SendAsync(request);
 
         httpResponseMessage.EnsureSuccessStatusCode();
 
@@ -69,7 +48,7 @@ public class OpenSslKeyExchangeService
 
         var workingDirectory = OpenSslDirectoryHelper.OpenSslDhParametersDirectory;
 
-        var response = await _httpClient.GetAsync(uri);
+        var response = await HttpClient.GetAsync(uri);
 
         response.EnsureSuccessStatusCode();
 
@@ -90,7 +69,7 @@ public class OpenSslKeyExchangeService
 
     public async Task OpenSslGeneratePrivateKeyAsync(Guid receiverId)
     {
-        var tokensResponse = await _tokensService.GetTokensAsync();
+        var tokensResponse = await TokensService.GetTokensAsync();
 
         var senderId = tokensResponse.Tokens.UserId;
 
@@ -107,14 +86,14 @@ public class OpenSslKeyExchangeService
             FileNameHelper.DownloadedParametersFileName);
 
         var command = Cli.Wrap("openssl").WithArguments(
-            new[] {"genpkey", "-paramfile", dhParametersPath, "-out", privateKeyPath});
+            new[] { "genpkey", "-paramfile", dhParametersPath, "-out", privateKeyPath });
 
         await command.ExecuteAsync();
     }
 
     public async Task<bool> OpenSslGeneratePublicKeyAsync(Guid receiverId)
     {
-        var tokensResponse = await _tokensService.GetTokensAsync();
+        var tokensResponse = await TokensService.GetTokensAsync();
 
         var senderId = tokensResponse.Tokens.UserId;
 
@@ -131,7 +110,7 @@ public class OpenSslKeyExchangeService
         workingDirectory.CreateDirectoryIfNotExist();
 
         var command = Cli.Wrap("openssl").WithArguments(
-            new[] {"pkey", "-in", privateKeyPath, "-pubout", "-out", publicKeyPath});
+            new[] { "pkey", "-in", privateKeyPath, "-pubout", "-out", publicKeyPath });
 
         await command.ExecuteAsync();
 
@@ -140,7 +119,7 @@ public class OpenSslKeyExchangeService
 
     public async Task<bool> OpenSslCreateKeyExchangeAsync(Guid receiverId)
     {
-        var tokensResponse = await _tokensService.GetTokensAsync();
+        var tokensResponse = await TokensService.GetTokensAsync();
 
         var senderId = tokensResponse.Tokens.UserId;
 
@@ -160,12 +139,12 @@ public class OpenSslKeyExchangeService
 
         using var content = new MultipartFormDataContent
         {
-            {new StreamContent(stream), "senderPublicKey", publicKeyFileName}
+            { new StreamContent(stream), "senderPublicKey", publicKeyFileName }
         };
 
         request.Content = content;
 
-        var httpResponseMessage = await _httpClient.SendAsync(request);
+        var httpResponseMessage = await HttpClient.SendAsync(request);
 
         httpResponseMessage.EnsureSuccessStatusCode();
 
@@ -176,7 +155,7 @@ public class OpenSslKeyExchangeService
     {
         var uri = new Uri(OpenSslRoutes.OpenSslKeyExchangeRequests, UriKind.Absolute);
 
-        var response = await _httpClient.GetAsync(uri);
+        var response = await HttpClient.GetAsync(uri);
 
         response.EnsureSuccessStatusCode();
 
@@ -195,7 +174,7 @@ public class OpenSslKeyExchangeService
     {
         var allRequests = await OpensslGetKeyExchangesAsync();
 
-        var tokensResponse = await _tokensService.GetTokensAsync();
+        var tokensResponse = await TokensService.GetTokensAsync();
         var currentUserId = tokensResponse.Tokens.UserId;
 
         var keyExchangeRequest = allRequests.FirstOrDefault(x =>
@@ -222,12 +201,12 @@ public class OpenSslKeyExchangeService
 
         using var content = new MultipartFormDataContent
         {
-            {new StreamContent(stream), "receiverPublicKey", publicKeyFileName}
+            { new StreamContent(stream), "receiverPublicKey", publicKeyFileName }
         };
 
         request.Content = content;
 
-        var httpResponseMessage = await _httpClient.SendAsync(request);
+        var httpResponseMessage = await HttpClient.SendAsync(request);
 
         httpResponseMessage.EnsureSuccessStatusCode();
 
@@ -238,7 +217,7 @@ public class OpenSslKeyExchangeService
     {
         var allKeyExchanges = await OpensslGetKeyExchangesAsync();
 
-        var tokensResponse = await _tokensService.GetTokensAsync();
+        var tokensResponse = await TokensService.GetTokensAsync();
         var tokens = tokensResponse.Tokens;
         var currentUserId = tokens.UserId;
 
@@ -293,7 +272,7 @@ public class OpenSslKeyExchangeService
 
     public async Task<bool> OpensslDownloadPublicKeyAsync(Actor actor, Guid userId)
     {
-        var tokensResponse = await _tokensService.GetTokensAsync();
+        var tokensResponse = await TokensService.GetTokensAsync();
         var currentUserId = tokensResponse.Tokens.UserId;
 
         var allRequests = await OpensslGetKeyExchangesAsync();
@@ -319,7 +298,7 @@ public class OpenSslKeyExchangeService
         var address = $"{OpenSslRoutes.OpenSslPublicKeys}/{keyExchangeRequest.RequestId}";
         var uri = new Uri(address, UriKind.Absolute);
 
-        var response = await _httpClient.GetAsync(uri);
+        var response = await HttpClient.GetAsync(uri);
         response.EnsureSuccessStatusCode();
 
         await using var stream = await response.Content.ReadAsStreamAsync();
@@ -348,7 +327,7 @@ public class OpenSslKeyExchangeService
         var address = $"{OpenSslRoutes.OpenSslKeyExchangeRequests}/{requestId}";
         var uri = new Uri(address, UriKind.Absolute);
 
-        var httpResponseMessage = await _httpClient.DeleteAsync(uri);
+        var httpResponseMessage = await HttpClient.DeleteAsync(uri);
         httpResponseMessage.EnsureSuccessStatusCode();
 
         return true;
@@ -359,7 +338,7 @@ public class OpenSslKeyExchangeService
         var address = $"{OpenSslRoutes.OpenSslKeyExchangeRequests}/{requestId}";
         var uri = new Uri(address, UriKind.Absolute);
 
-        var response = await _httpClient.GetAsync(uri);
+        var response = await HttpClient.GetAsync(uri);
         response.EnsureSuccessStatusCode();
 
         var jsonAsString = await response.Content.ReadAsStringAsync();
