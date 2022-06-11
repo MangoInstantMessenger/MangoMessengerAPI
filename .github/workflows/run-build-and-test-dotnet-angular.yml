@@ -66,6 +66,7 @@ jobs:
       - name: Buillding `efbundle` & Applying EF Core migrations (EXPEREMENTAL method)
         run: |
           cd ./MangoAPI.Infrastructure
+          dotnet tool install --global dotnet-ef
           dotnet ef migrations bundle --self-contained -r linux-x64
           ./efbundle
           rm efbundle
