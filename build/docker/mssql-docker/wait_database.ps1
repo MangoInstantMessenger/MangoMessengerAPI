@@ -1,5 +1,5 @@
 $ContainerName = 'mango-mssql-db'
-$ContainerLogPatternForDatabaseReady = "Changed database context to 'MANGO_DEV'."
+$ContainerLogPatternForDatabaseReady = "SQL Server is now ready for client connections."
         
 for(;;) {
     $isDatabaseReady = 
