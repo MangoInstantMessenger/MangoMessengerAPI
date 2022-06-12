@@ -25,7 +25,7 @@ public class CngConfirmKeyExchangeHandler : BaseHandler, IConfirmKeyExchangeHand
     {
         var userId = TokensResponse.Tokens.UserId;
 
-        var allRequestsList = (await CngGetKeyExchangesAsync()).OpenSslKeyExchangeRequests;
+        var allRequestsList = await GetKeyExchangesAsync();
 
         var keyExchangeRequest = allRequestsList.First(x =>
             x.SenderId == senderId &&
@@ -37,7 +37,7 @@ public class CngConfirmKeyExchangeHandler : BaseHandler, IConfirmKeyExchangeHand
         var publicKeyFileName = FileNameHelper.GenerateCngPublicKeyFileName(userId, senderId);
         var publicKeyPath = Path.Combine(publicKeyDirectory, publicKeyFileName);
 
-        var route = $"{CngRoutes.CngKeyExchangeRequests}/{keyExchangeRequest.RequestId}";
+        var route = $"{KeyExchangeRoutes.KeyExchangeRequests}/{keyExchangeRequest.RequestId}";
 
         var uri = new Uri(route, UriKind.Absolute);
 

@@ -22,7 +22,7 @@ public class OpensslConfirmKeyExchangeHandler : BaseHandler, IConfirmKeyExchange
 
     private async Task OpensslConfirmKeyExchange(Guid senderId)
     {
-        var allRequests = await OpensslGetKeyExchangesAsync();
+        var allRequests = await GetKeyExchangesAsync();
         
         var currentUserId = TokensResponse.Tokens.UserId;
 
@@ -34,7 +34,7 @@ public class OpensslConfirmKeyExchangeHandler : BaseHandler, IConfirmKeyExchange
             throw new InvalidOperationException();
         }
 
-        var route = $"{OpenSslRoutes.OpenSslKeyExchangeRequests}/{keyExchangeRequest.RequestId}";
+        var route = $"{KeyExchangeRoutes.KeyExchangeRequests}/{keyExchangeRequest.RequestId}";
 
         var uri = new Uri(route, UriKind.Absolute);
 

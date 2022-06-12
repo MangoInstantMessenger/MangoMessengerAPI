@@ -21,7 +21,7 @@ public class CngPrintKeyExchangesHandler : BaseHandler, IPrintKeyExchangesHandle
 
     private async Task CngPrintKeyExchangesListAsync()
     {
-        var response = await CngGetKeyExchangesAsync();
-        response.OpenSslKeyExchangeRequests.ForEach(Console.WriteLine);
+        var response = await GetKeyExchangesAsync();
+        response.ForEach(Console.WriteLine);
     }
 }

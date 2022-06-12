@@ -21,7 +21,7 @@ public class OpensslDeclineKeyExchangeHandler : BaseHandler, IDeclineKeyExchange
 
     private async Task OpenSslDeclineKeyExchangeAsync(Guid requestId)
     {
-        var address = $"{OpenSslRoutes.OpenSslKeyExchangeRequests}/{requestId}";
+        var address = $"{KeyExchangeRoutes.KeyExchangeRequests}/{requestId}";
         var uri = new Uri(address, UriKind.Absolute);
 
         var httpResponseMessage = await HttpClient.DeleteAsync(uri);

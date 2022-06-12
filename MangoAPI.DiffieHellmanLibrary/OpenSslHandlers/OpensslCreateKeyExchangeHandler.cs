@@ -30,7 +30,7 @@ public class OpensslCreateKeyExchangeHandler : BaseHandler, ICreateKeyExchangeHa
 
         var publicKeyPath = Path.Combine(workingDirectory, publicKeyFileName);
 
-        var route = $"{OpenSslRoutes.OpenSslKeyExchangeRequests}/{receiverId}";
+        var route = $"{KeyExchangeRoutes.KeyExchangeRequests}/{receiverId}";
 
         var uri = new Uri(route, UriKind.Absolute);
 

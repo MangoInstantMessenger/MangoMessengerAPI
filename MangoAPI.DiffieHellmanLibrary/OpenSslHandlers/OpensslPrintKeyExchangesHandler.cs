@@ -12,7 +12,7 @@ public class OpensslPrintKeyExchangesHandler : BaseHandler, IPrintKeyExchangesHa
     {
         Console.WriteLine(@"Printing key-exchange requests ...");
 
-        var list = await OpensslGetKeyExchangesAsync();
+        var list = await GetKeyExchangesAsync();
 
         list.ForEach(Console.WriteLine);
 

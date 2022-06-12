@@ -23,7 +23,7 @@ public class OpensslDownloadDhParametersHandler : BaseHandler, IDownloadDhParame
 
     private async Task OpenSslDownloadDhParametersAsync()
     {
-        var uri = new Uri(uriString: OpenSslRoutes.OpenSslParameters, UriKind.Absolute);
+        var uri = new Uri(uriString: KeyExchangeRoutes.Parameters, UriKind.Absolute);
 
         var workingDirectory = OpenSslDirectoryHelper.OpenSslDhParametersDirectory;
 

@@ -11,7 +11,6 @@ public static class Commands
     public const string CngPrintKeyExchanges = "cng-print-key-exchanges";
     public const string CngDownloadPublicKey = "cng-download-public-key";
     public const string CngConfirmKeyExchange = "cng-confirm-key-exchange";
-    public const string CngPrintPublicKeys = "cng-print-public-keys";
     public const string CngCreateCommonSecret = "cng-create-common-secret";
     
     public const string OpenSslGenerateDhParameters = "openssl-generate-dh-parameters";

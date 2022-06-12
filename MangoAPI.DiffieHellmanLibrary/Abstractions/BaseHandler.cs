@@ -33,9 +33,9 @@ public abstract class BaseHandler
             = new AuthenticationHeaderValue("Bearer", accessToken);
     }
 
-    protected async Task<List<OpenSslKeyExchangeRequest>> OpensslGetKeyExchangesAsync()
+    protected async Task<List<OpenSslKeyExchangeRequest>> GetKeyExchangesAsync()
     {
-        var uri = new Uri(OpenSslRoutes.OpenSslKeyExchangeRequests, UriKind.Absolute);
+        var uri = new Uri(KeyExchangeRoutes.KeyExchangeRequests, UriKind.Absolute);
 
         var response = await HttpClient.GetAsync(uri);
 
@@ -50,16 +50,5 @@ public abstract class BaseHandler
         var requests = deserialized.OpenSslKeyExchangeRequests;
 
         return requests;
-    }
-
-    protected async Task<GetKeyExchangeRequestsResponse> CngGetKeyExchangesAsync()
-    {
-        var result = await HttpRequestHelper.GetAsync(
-            client: HttpClient,
-            route: CngRoutes.CngKeyExchangeRequests);
-
-        var response = JsonConvert.DeserializeObject<GetKeyExchangeRequestsResponse>(result);
-
-        return response ?? throw new InvalidOperationException();
     }
 }

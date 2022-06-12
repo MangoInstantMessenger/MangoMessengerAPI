@@ -28,13 +28,13 @@ public class CngDownloadPublicKeyHandler : BaseHandler, IDownloadPublicKeyHandle
     {
         var currentUserId = TokensResponse.Tokens.UserId;
 
-        var allRequests = (await CngGetKeyExchangesAsync()).OpenSslKeyExchangeRequests;
+        var keyExchangeRequestList = await GetKeyExchangesAsync();
 
         OpenSslKeyExchangeRequest keyExchangeRequest;
 
         if (actor == Actor.Receiver)
         {
-            keyExchangeRequest = allRequests.First(request =>
+            keyExchangeRequest = keyExchangeRequestList.First(request =>
                 request.SenderId == userId &&
                 request.ReceiverId == currentUserId &&
                 request.IsConfirmed &&
@@ -42,14 +42,14 @@ public class CngDownloadPublicKeyHandler : BaseHandler, IDownloadPublicKeyHandle
         }
         else
         {
-            keyExchangeRequest = allRequests.First(request =>
+            keyExchangeRequest = keyExchangeRequestList.First(request =>
                 request.ReceiverId == userId &&
                 request.SenderId == currentUserId &&
                 request.IsConfirmed &&
                 request.KeyExchangeType == KeyExchangeType.Cng);
         }
 
-        var address = $"{OpenSslRoutes.OpenSslPublicKeys}/{keyExchangeRequest.RequestId}";
+        var address = $"{KeyExchangeRoutes.PublicKeys}/{keyExchangeRequest.RequestId}";
         var uri = new Uri(address, UriKind.Absolute);
 
         var response = await HttpClient.GetAsync(uri);

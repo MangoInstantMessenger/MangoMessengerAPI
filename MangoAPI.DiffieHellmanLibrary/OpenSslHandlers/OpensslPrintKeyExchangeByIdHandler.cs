@@ -27,7 +27,7 @@ public class OpensslPrintKeyExchangeByIdHandler : BaseHandler, IPrintKeyExchange
 
     private async Task<OpenSslKeyExchangeRequest> OpenSslGetKeyExchangeByIdAsync(Guid requestId)
     {
-        var address = $"{OpenSslRoutes.OpenSslKeyExchangeRequests}/{requestId}";
+        var address = $"{KeyExchangeRoutes.KeyExchangeRequests}/{requestId}";
         var uri = new Uri(address, UriKind.Absolute);
 
         var response = await HttpClient.GetAsync(uri);

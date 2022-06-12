@@ -27,7 +27,7 @@ public class OpensslDownloadPublicKeyHandler : BaseHandler, IDownloadPublicKeyHa
     {
         var currentUserId = TokensResponse.Tokens.UserId;
 
-        var allRequests = await OpensslGetKeyExchangesAsync();
+        var allRequests = await GetKeyExchangesAsync();
 
         OpenSslKeyExchangeRequest keyExchangeRequest;
 
@@ -47,7 +47,7 @@ public class OpensslDownloadPublicKeyHandler : BaseHandler, IDownloadPublicKeyHa
             throw new InvalidOperationException();
         }
 
-        var address = $"{OpenSslRoutes.OpenSslPublicKeys}/{keyExchangeRequest.RequestId}";
+        var address = $"{KeyExchangeRoutes.PublicKeys}/{keyExchangeRequest.RequestId}";
         var uri = new Uri(address, UriKind.Absolute);
 
         var response = await HttpClient.GetAsync(uri);

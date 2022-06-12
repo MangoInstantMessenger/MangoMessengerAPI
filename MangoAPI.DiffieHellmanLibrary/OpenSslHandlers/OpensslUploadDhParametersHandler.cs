@@ -29,7 +29,7 @@ public class OpensslUploadDhParametersHandler : BaseHandler, IUploadDhParameters
 
         await using var stream = File.OpenRead(parametersPath);
 
-        var uri = new Uri(OpenSslRoutes.OpenSslParameters, UriKind.Absolute);
+        var uri = new Uri(KeyExchangeRoutes.Parameters, UriKind.Absolute);
 
         using var request = new HttpRequestMessage(HttpMethod.Post, uri);
 

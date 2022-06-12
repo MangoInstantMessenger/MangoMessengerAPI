@@ -25,7 +25,7 @@ public class CngCreateKeyExchangeHandler : BaseHandler, ICreateKeyExchangeHandle
 
         var publicKeyPath = Path.Combine(workingDirectory, publicKeyFileName);
 
-        var route = $"{CngRoutes.CngKeyExchangeRequests}/{receiverId}";
+        var route = $"{KeyExchangeRoutes.KeyExchangeRequests}/{receiverId}";
 
         var uri = new Uri(route, UriKind.Absolute);
 
