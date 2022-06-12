@@ -134,4 +134,14 @@ public static class CommandHelper
 
         return command;
     }
+
+    public static OpenSslCreateDiffieHellmanParameterCommand CreateOpenSslCreateDiffieHellmanParameterCommand(
+        IFormFile diffieHellmanParameter, Guid userId)
+    {
+        var command = new OpenSslCreateDiffieHellmanParameterCommand(
+            DiffieHellmanParameter: diffieHellmanParameter,
+            UserId: userId);
+
+        return command;
+    }
 }
