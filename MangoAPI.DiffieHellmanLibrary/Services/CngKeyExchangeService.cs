@@ -43,6 +43,17 @@ public class CngKeyExchangeService
         return response ?? throw new InvalidOperationException();
     }
 
+    public async Task<CngGetKeyExchangeRequestByIdResponse> CngGetKeyExchangeById(Guid requestId)
+    {
+        var result = await HttpRequestHelper.GetAsync(
+            client: _httpClient,
+            route: $"{CngRoutes.CngKeyExchangeRequests}/{requestId}");
+
+        var response = JsonConvert.DeserializeObject<CngGetKeyExchangeRequestByIdResponse>(result);
+        
+        return response ?? throw new InvalidOperationException();
+    }
+
     public async Task<CngCreateKeyExchangeResponse> CngCreateKeyExchangeRequestAsync(
         Guid requestUserId,
         string publicKey)
