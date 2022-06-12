@@ -1,7 +1,6 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 using MangoAPI.BusinessLogic.ApiCommands.OpenSslKeyExchange;
-using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.IntegrationTests.Helpers;
 using Xunit;
 

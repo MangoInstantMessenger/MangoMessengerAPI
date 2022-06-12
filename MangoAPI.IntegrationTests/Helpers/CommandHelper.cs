@@ -123,4 +123,15 @@ public static class CommandHelper
 
         return command;
     }
+
+    public static OpenSslConfirmKeyExchangeCommand CreateOpenSslConfirmKeyExchangeCommand(
+        Guid requestId, Guid userId, IFormFile receiverPublicKey)
+    {
+        var command = new OpenSslConfirmKeyExchangeCommand(
+            RequestId: requestId,
+            UserId: userId,
+            ReceiverPublicKey: receiverPublicKey);
+
+        return command;
+    }
 }
