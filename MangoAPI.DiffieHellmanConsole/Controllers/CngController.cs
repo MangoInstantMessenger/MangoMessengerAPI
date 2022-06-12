@@ -58,6 +58,16 @@ public static class CngController
                 await handler.CngPrintPublicKeysAsync();
                 break;
             }
+            case Commands.CngDownloadPublicKey:
+            {
+                var actorString = args[1];
+                var requestIdString = args[2];
+                var partnerId = GuidHelper.GetGuidValue(requestIdString);
+                var actor = actorString == "--sender" ? Actor.Sender : Actor.Receiver;
+                var handler = DependencyResolver.ResolveService<CngDownloadPublicKeyHandler>();
+                await handler.DownloadPublicKeyAsync(actor, partnerId);
+                break;
+            }
             case Commands.CngCreateCommonSecret:
             {
                 var actorString = args[1];

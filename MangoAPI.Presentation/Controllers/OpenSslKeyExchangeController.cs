@@ -179,6 +179,7 @@ public class OpenSslKeyExchangeController : ApiControllerBase, IOpenSslKeyExchan
     /// Download partner public OpenSSL key.
     /// </summary>
     /// <param name="requestId">Request ID.</param>
+    /// <param name="keyExchangeType"></param>
     /// <param name="cancellationToken">Cancellation token instance.</param>
     /// <returns></returns>
     [HttpGet("public-keys/{requestId:guid}")]
@@ -188,7 +189,8 @@ public class OpenSslKeyExchangeController : ApiControllerBase, IOpenSslKeyExchan
     [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
     [ProducesResponseType(typeof(OpenSslDownloadPartnerPublicKeyResponse), StatusCodes.Status200OK)]
-    public async Task<IActionResult> OpenSslDownloadPartnerPublicKey(Guid requestId,
+    public async Task<IActionResult> OpenSslDownloadPartnerPublicKey(
+        [FromRoute] Guid requestId,
         CancellationToken cancellationToken)
     {
         var userId = CorrelationContext.GetUserId();
