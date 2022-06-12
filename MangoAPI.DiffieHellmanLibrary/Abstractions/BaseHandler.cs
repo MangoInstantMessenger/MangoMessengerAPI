@@ -64,4 +64,15 @@ public abstract class BaseHandler
 
         return response;
     }
+    
+    protected async Task<OpenSslGetKeyExchangeRequestsResponse> CngGetKeyExchangesAsync()
+    {
+        var result = await HttpRequestHelper.GetAsync(
+            client: HttpClient,
+            route: CngRoutes.CngKeyExchangeRequests);
+
+        var response = JsonConvert.DeserializeObject<OpenSslGetKeyExchangeRequestsResponse>(result);
+
+        return response ?? throw new InvalidOperationException();
+    }
 }

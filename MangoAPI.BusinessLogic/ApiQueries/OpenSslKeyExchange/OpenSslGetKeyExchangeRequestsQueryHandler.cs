@@ -35,7 +35,8 @@ public class OpenSslGetKeyExchangeRequestsQueryHandler : IRequestHandler<OpenSsl
                 IsConfirmed = x.IsConfirmed,
                 ReceiverId = x.ReceiverId,
                 RequestId = x.Id,
-                SenderId = x.SenderId
+                SenderId = x.SenderId,
+                KeyExchangeType = x.KeyExchangeType
             }).ToListAsync(cancellationToken);
 
         var response = new OpenSslGetKeyExchangeRequestsResponse

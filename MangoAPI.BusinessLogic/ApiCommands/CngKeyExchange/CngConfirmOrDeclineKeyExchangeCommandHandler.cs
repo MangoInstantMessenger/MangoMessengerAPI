@@ -1,8 +1,9 @@
-﻿using System.Threading;
+﻿using System;
+using System.IO;
+using System.Threading;
 using System.Threading.Tasks;
 using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.Domain.Constants;
-using MangoAPI.Domain.Entities;
 using MangoAPI.Infrastructure.Database;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -10,7 +11,7 @@ using Microsoft.EntityFrameworkCore;
 namespace MangoAPI.BusinessLogic.ApiCommands.CngKeyExchange;
 
 public class
-    CngConfirmOrDeclineKeyExchangeCommandHandler : IRequestHandler<CngConfirmOrDeclineKeyExchangeCommand,
+    CngConfirmOrDeclineKeyExchangeCommandHandler : IRequestHandler<CngConfirmKeyExchangeCommand,
         Result<ResponseBase>>
 {
     private readonly MangoDbContext _dbContext;
@@ -23,10 +24,10 @@ public class
         _responseFactory = responseFactory;
     }
 
-    public async Task<Result<ResponseBase>> Handle(CngConfirmOrDeclineKeyExchangeCommand request,
+    public async Task<Result<ResponseBase>> Handle(CngConfirmKeyExchangeCommand request,
         CancellationToken cancellationToken)
     {
-        var keyExchangeRequest = await _dbContext.CngKeyExchangeRequests
+        var keyExchangeRequest = await _dbContext.OpenSslKeyExchangeRequests
             .FirstOrDefaultAsync(x => x.Id == request.RequestId,
                 cancellationToken);
 
@@ -38,50 +39,14 @@ public class
             return _responseFactory.ConflictResponse(message, details);
         }
 
-        _dbContext.CngKeyExchangeRequests.Remove(keyExchangeRequest);
+        await using var target = new MemoryStream();
+        await request.ReceiverPublicKey.CopyToAsync(target, cancellationToken);
 
-        if (!request.Confirmed)
-        {
-            await _dbContext.SaveChangesAsync(cancellationToken);
+        var bytes = target.ToArray();
 
-            return _responseFactory.SuccessResponse(ResponseBase.SuccessResponse);
-        }
-
-        var senderPublicKey = await _dbContext.CngPublicKeys.FirstOrDefaultAsync(x =>
-            x.UserId == keyExchangeRequest.SenderId && x.PartnerId == request.UserId, cancellationToken);
-
-        if (senderPublicKey != null)
-        {
-            senderPublicKey.PartnerPublicKey = request.PublicKey;
-        }
-        else
-        {
-            _dbContext.Add(new CngPublicKeyEntity
-            {
-                UserId = keyExchangeRequest.SenderId,
-                PartnerId = request.UserId,
-                PartnerPublicKey = request.PublicKey
-            });
-        }
-
-        var userPublicKey = await _dbContext.CngPublicKeys
-            .FirstOrDefaultAsync(x => x.UserId == request.UserId &&
-                                      x.PartnerId == keyExchangeRequest.SenderId,
-                cancellationToken);
-
-        if (userPublicKey != null)
-        {
-            userPublicKey.PartnerPublicKey = keyExchangeRequest.SenderPublicKey;
-        }
-        else
-        {
-            _dbContext.CngPublicKeys.Add(new CngPublicKeyEntity
-            {
-                UserId = request.UserId,
-                PartnerId = keyExchangeRequest.SenderId,
-                PartnerPublicKey = keyExchangeRequest.SenderPublicKey
-            });
-        }
+        keyExchangeRequest.UpdatedAt = DateTime.UtcNow;
+        keyExchangeRequest.IsConfirmed = true;
+        keyExchangeRequest.ReceiverPublicKey = bytes;
 
         await _dbContext.SaveChangesAsync(cancellationToken);
 

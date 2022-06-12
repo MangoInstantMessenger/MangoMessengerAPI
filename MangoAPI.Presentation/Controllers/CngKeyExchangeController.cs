@@ -78,29 +78,27 @@ public class CngKeyExchangeController : ApiControllerBase, ICngKeyExchangeContro
     }
 
     /// <summary>
-    /// Confirms or declines Diffie-Hellman key exchange request.
+    /// Confirms Diffie-Hellman key exchange request by ID.
     /// </summary>
-    /// <param name="request"></param>
+    /// <param name="requestId"></param>
+    /// <param name="receiverPublicKey"></param>
     /// <param name="cancellationToken">Cancellation token instance.</param>
     /// <returns></returns>
-    [HttpDelete]
+    [HttpPut("{requestId:guid}")]
     [SwaggerOperation(
-        Summary = "Confirms or declines key exchange request.",
-        Description = "Confirms or declines Diffie-Hellman key exchange request.")]
+        Summary = "Confirms Diffie-Hellman key exchange request by ID.",
+        Description = "Confirms Diffie-Hellman key exchange request by ID.")]
     [ProducesResponseType(typeof(ResponseBase), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
-    public async Task<IActionResult> CngConfirmOrDeclineKeyExchangeRequest(
-        [FromBody] CngConfirmOrDeclineKeyExchangeRequest request,
+    public async Task<IActionResult> CngConfirmKeyExchangeRequest(
+        [FromRoute] Guid requestId,
+        [FromForm] IFormFile receiverPublicKey,
         CancellationToken cancellationToken)
     {
         var userId = CorrelationContext.GetUserId();
 
-        var command = new CngConfirmOrDeclineKeyExchangeCommand(
-            UserId: userId,
-            RequestId: request.RequestId,
-            Confirmed: request.Confirmed,
-            PublicKey: request.PublicKey);
+        var command = new CngConfirmKeyExchangeCommand(userId, requestId, receiverPublicKey);
 
         return await RequestAsync(command, cancellationToken);
     }

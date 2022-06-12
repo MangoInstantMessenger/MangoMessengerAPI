@@ -14,7 +14,7 @@ public interface ICngKeyExchangeController
     public Task<IActionResult> CngCreteKeyExchangeRequest(Guid receiverId, IFormFile senderPublicKey,
         CancellationToken cancellationToken);
 
-    public Task<IActionResult> CngConfirmOrDeclineKeyExchangeRequest(CngConfirmOrDeclineKeyExchangeRequest request,
+    public Task<IActionResult> CngConfirmKeyExchangeRequest(Guid requestId, IFormFile receiverPublicKey,
         CancellationToken cancellationToken);
 
     public Task<IActionResult> CngGetKeyExchangeRequestById(Guid requestId, CancellationToken cancellationToken);

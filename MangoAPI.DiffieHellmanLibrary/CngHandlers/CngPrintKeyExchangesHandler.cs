@@ -1,8 +1,4 @@
-﻿using MangoAPI.BusinessLogic.ApiQueries.OpenSslKeyExchange;
-using MangoAPI.DiffieHellmanLibrary.Abstractions;
-using MangoAPI.DiffieHellmanLibrary.Constants;
-using MangoAPI.DiffieHellmanLibrary.Helpers;
-using Newtonsoft.Json;
+﻿using MangoAPI.DiffieHellmanLibrary.Abstractions;
 
 namespace MangoAPI.DiffieHellmanLibrary.CngHandlers;
 
@@ -27,16 +23,5 @@ public class CngPrintKeyExchangesHandler : BaseHandler, IPrintKeyExchangesHandle
     {
         var response = await CngGetKeyExchangesAsync();
         response.OpenSslKeyExchangeRequests.ForEach(Console.WriteLine);
-    }
-
-    private async Task<OpenSslGetKeyExchangeRequestsResponse> CngGetKeyExchangesAsync()
-    {
-        var result = await HttpRequestHelper.GetAsync(
-            client: HttpClient,
-            route: CngRoutes.CngKeyExchangeRequests);
-
-        var response = JsonConvert.DeserializeObject<OpenSslGetKeyExchangeRequestsResponse>(result);
-
-        return response ?? throw new InvalidOperationException();
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using MangoAPI.Domain.Enums;
 
 namespace MangoAPI.BusinessLogic.Models;
 
@@ -10,6 +11,8 @@ public record OpenSslKeyExchangeRequest
     public bool IsConfirmed { get; init; }
     public Actor Actor { get; init; }
 
+    public KeyExchangeType KeyExchangeType { get; set; }
+
     public override string ToString()
     {
         return
@@ -17,7 +20,8 @@ public record OpenSslKeyExchangeRequest
             $"Sender Id: {SenderId}, \n" +
             $"Receiver Id: {ReceiverId}, \n" +
             $"Confirmed: {IsConfirmed}, \n" +
-            $"Actor: {Actor.ToString()} \n";
+            $"Actor: {Actor.ToString()} \n " +
+            $"KeyExchangeType: {KeyExchangeType.ToString()}";
     }
 }
 
