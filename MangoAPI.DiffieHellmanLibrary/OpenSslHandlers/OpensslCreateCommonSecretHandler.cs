@@ -3,6 +3,7 @@ using MangoAPI.BusinessLogic.Models;
 using MangoAPI.DiffieHellmanLibrary.Abstractions;
 using MangoAPI.DiffieHellmanLibrary.Extensions;
 using MangoAPI.DiffieHellmanLibrary.Helpers;
+using MangoAPI.Domain.Enums;
 
 namespace MangoAPI.DiffieHellmanLibrary.OpenSslHandlers;
 
@@ -25,7 +26,7 @@ public class OpensslCreateCommonSecretHandler : BaseHandler, ICreateCommonSecret
     private async Task OpensslCreateCommonSecretAsync(Actor actor, Guid partnerId)
     {
         var allKeyExchanges = await GetKeyExchangesAsync();
-        
+
         var tokens = TokensResponse.Tokens;
         var currentUserId = tokens.UserId;
 
@@ -34,12 +35,16 @@ public class OpensslCreateCommonSecretHandler : BaseHandler, ICreateCommonSecret
         if (actor == Actor.Receiver)
         {
             keyExchangeRequest = allKeyExchanges.FirstOrDefault(x =>
-                x.SenderId == partnerId && x.ReceiverId == currentUserId);
+                x.SenderId == partnerId &&
+                x.ReceiverId == currentUserId &&
+                x.KeyExchangeType == KeyExchangeType.OpenSsl);
         }
         else
         {
             keyExchangeRequest = allKeyExchanges.FirstOrDefault(x =>
-                x.SenderId == currentUserId && x.ReceiverId == partnerId);
+                x.SenderId == currentUserId &&
+                x.ReceiverId == partnerId &&
+                x.KeyExchangeType == KeyExchangeType.OpenSsl);
         }
 
         if (keyExchangeRequest == null)

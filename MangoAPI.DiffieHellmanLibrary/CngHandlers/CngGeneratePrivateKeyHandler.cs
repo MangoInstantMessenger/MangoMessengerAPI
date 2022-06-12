@@ -13,9 +13,9 @@ public class CngGeneratePrivateKeyHandler : BaseHandler, IGeneratePrivateKeyHand
     public async Task GeneratePrivateKeyAsync(Guid receiverId)
     {
         Console.WriteLine(@$"Generating CNG private key for user {receiverId} ... ");
-        
+
         await GenerateBase64PrivateKey(receiverId);
-        
+
         Console.WriteLine(@"Private key has been generated successfully.");
         Console.WriteLine();
     }
@@ -27,10 +27,16 @@ public class CngGeneratePrivateKeyHandler : BaseHandler, IGeneratePrivateKeyHand
         var privateKeyFileName = FileNameHelper.GenerateCngPrivateKeyFileName(senderId, receiverId);
         var privateKeyPath = Path.Combine(privateKeyFolder, privateKeyFileName);
 
-        var privateKeyBase64String = CngEcdhHelper.GenerateEcdhBase64StringPrivateKey();
+        var publicKeyFolder = CngDirectoryHelper.CngPublicKeysDirectory;
+        var publicKeyFileName = FileNameHelper.GenerateCngPublicKeyFileName(senderId, receiverId);
+        var publicKeyPath = Path.Combine(publicKeyFolder, publicKeyFileName);
+
+        var keyPair = CngEcdhHelper.GenerateEcdhBase64StringPrivateKey();
 
         privateKeyFolder.CreateDirectoryIfNotExist();
+        publicKeyFolder.CreateDirectoryIfNotExist();
 
-        await File.WriteAllTextAsync(privateKeyPath, privateKeyBase64String);
+        await File.WriteAllTextAsync(privateKeyPath, keyPair.PrivateKey);
+        await File.WriteAllTextAsync(publicKeyPath, keyPair.PublicKey);
     }
 }

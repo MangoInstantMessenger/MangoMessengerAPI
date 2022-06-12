@@ -31,11 +31,11 @@ public class CngGeneratePublicKeyHandler : BaseHandler, IGeneratePublicKeyHandle
         var privateKeyText = await File.ReadAllTextAsync(privateKeyPath);
         var privateKeyBytes = privateKeyText.Base64StringAsBytes();
 
-        var privateKey = CngKey.Import(privateKeyBytes, CngKeyBlobFormat.EccPublicBlob);
+        var privateKey = CngKey.Import(privateKeyBytes, CngKeyBlobFormat.EccPrivateBlob);
 
         var ecDiffieHellmanCng = new ECDiffieHellmanCng(privateKey);
 
-        var publicKey = ecDiffieHellmanCng.Key.Export(CngKeyBlobFormat.EccPublicBlob).AsBase64String();
+        var publicKey = ecDiffieHellmanCng.PublicKey.ToByteArray().AsBase64String();
 
         var publicKeyFolder = CngDirectoryHelper.CngPublicKeysDirectory;
         var publicKeyFileName = FileNameHelper.GenerateCngPublicKeyFileName(senderId, receiverId);

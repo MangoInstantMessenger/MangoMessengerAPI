@@ -3,6 +3,7 @@ using MangoAPI.BusinessLogic.Models;
 using MangoAPI.DiffieHellmanLibrary.Abstractions;
 using MangoAPI.DiffieHellmanLibrary.Extensions;
 using MangoAPI.DiffieHellmanLibrary.Helpers;
+using MangoAPI.Domain.Enums;
 
 namespace MangoAPI.DiffieHellmanLibrary.CngHandlers;
 
@@ -14,43 +15,73 @@ public class CngCreateCommonSecretHandler : BaseHandler, ICreateCommonSecretHand
 
     public async Task CreateCommonSecretAsync(Actor actor, Guid userId)
     {
-        throw new NotImplementedException();
+        Console.WriteLine($@"Creating common secret with the user {userId} ...");
+
+        await CngCreateCommonSecret(actor, userId);
+
+        Console.WriteLine($@"Common secret with the user {userId} has been successfully created.");
+        Console.WriteLine();
     }
 
-//     private async Task CngCreateCommonSecret(IReadOnlyList<string> args)
-//     {
-//         var tokens = TokensResponse.Tokens;
-//
-//         var partnerId = Guid.Parse(args[1]);
-//
-//         var response = await CngGetPublicKeys();
-//
-//         var partnerPublicKeyBytes = response.PublicKeys
-//             .FirstOrDefault(x => x.PartnerId == partnerId)?
-//             .PartnerPublicKey.Base64StringAsBytes();
-//
-//         var privateKeyPath = Path.Combine(
-//             CngDirectoryHelper.CngPrivateKeysDirectory,
-//             $"PRIVATE_KEY_{tokens.UserId}_{partnerId}.txt");
-//
-//         var commonSecretPath = Path.Combine(
-//             CngDirectoryHelper.CngCommonSecretsDirectory,
-//             $"COMMON_SECRET_{tokens.UserId}_{partnerId}.txt");
-//
-//         var privateKeyBytes = (await File.ReadAllTextAsync(privateKeyPath)).Base64StringAsBytes();
-//
-//         var privateKey = CngKey.Import(privateKeyBytes, CngKeyBlobFormat.EccPrivateBlob);
-//
-//         var ecDiffieHellmanCng = new ECDiffieHellmanCng(privateKey);
-//
-//         var partnerPublicKey = CngKey.Import(partnerPublicKeyBytes!, CngKeyBlobFormat.EccPublicBlob);
-//
-//         var commonSecretBase64 = ecDiffieHellmanCng.DeriveKeyMaterial(partnerPublicKey).AsBase64String();
-//
-//         Console.WriteLine(@"Writing common secret to file...");
-//         await File.WriteAllTextAsync(commonSecretPath, commonSecretBase64);
-//
-//         Console.WriteLine(@"Common secret generated successfully.
-// ");
-//     }
+    private async Task CngCreateCommonSecret(Actor actor, Guid partnerId)
+    {
+        var allKeyExchanges = await GetKeyExchangesAsync();
+
+        var tokens = TokensResponse.Tokens;
+        var currentUserId = tokens.UserId;
+
+        OpenSslKeyExchangeRequest keyExchangeRequest;
+
+        if (actor == Actor.Receiver)
+        {
+            keyExchangeRequest = allKeyExchanges.FirstOrDefault(x =>
+                x.SenderId == partnerId &&
+                x.ReceiverId == currentUserId &&
+                x.KeyExchangeType == KeyExchangeType.Cng);
+        }
+        else
+        {
+            keyExchangeRequest = allKeyExchanges.FirstOrDefault(x =>
+                x.SenderId == currentUserId &&
+                x.ReceiverId == partnerId &&
+                x.KeyExchangeType == KeyExchangeType.Cng);
+        }
+
+        if (keyExchangeRequest == null)
+        {
+            throw new InvalidOperationException();
+        }
+
+        var requestId = keyExchangeRequest.RequestId;
+
+        var receiverId = keyExchangeRequest.Actor == Actor.Receiver
+            ? keyExchangeRequest.SenderId
+            : keyExchangeRequest.ReceiverId;
+
+        var publicKeyDirectory = CngDirectoryHelper.CngPublicKeysDirectory;
+        var privateKeyDirectory = CngDirectoryHelper.CngPrivateKeysDirectory;
+        var commonSecretDirectory = CngDirectoryHelper.CngCommonSecretsDirectory;
+
+        var publicKeyFileName = FileNameHelper.GenerateCngPublicKeyFileName(currentUserId, requestId);
+        var privateKeyFileName = FileNameHelper.GenerateCngPrivateKeyFileName(currentUserId, receiverId);
+        var commonSecretFileName = FileNameHelper.GenerateCngCommonSecretFileName(currentUserId, receiverId);
+
+        commonSecretDirectory.CreateDirectoryIfNotExist();
+
+        var publicKeyPath = Path.Combine(publicKeyDirectory, publicKeyFileName);
+        var privateKeyPath = Path.Combine(privateKeyDirectory, privateKeyFileName);
+        var commonSecretPath = Path.Combine(commonSecretDirectory, commonSecretFileName);
+
+        var privateKeyBase64 = await File.ReadAllTextAsync(privateKeyPath);
+        var privateKeyBytes = privateKeyBase64.Base64StringAsBytes();
+        var privateKey = CngKey.Import(privateKeyBytes, CngKeyBlobFormat.EccPrivateBlob);
+        var ecDiffieHellmanCng = new ECDiffieHellmanCng(privateKey);
+
+        var partnerKeyBase64 = await File.ReadAllTextAsync(publicKeyPath);
+        var partnerPublicKeyBytes = partnerKeyBase64.Base64StringAsBytes();
+        var partnerPublicKey = CngKey.Import(partnerPublicKeyBytes, CngKeyBlobFormat.EccPublicBlob);
+        var commonSecretBase64 = ecDiffieHellmanCng.DeriveKeyMaterial(partnerPublicKey).AsBase64String();
+        
+        await File.WriteAllTextAsync(commonSecretPath, commonSecretBase64);
+    }
 }

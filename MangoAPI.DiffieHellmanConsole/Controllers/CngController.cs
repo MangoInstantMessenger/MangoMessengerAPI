@@ -72,6 +72,17 @@ public static class CngController
                 await handler.CreateCommonSecretAsync(actor, partnerId);
                 break;
             }
+
+            case Commands.CngValidateCommonSecret:
+            {
+                var senderIdString = args[1];
+                var receiverIdString = args[2];
+                var senderId = GuidHelper.GetGuidValue(senderIdString);
+                var receiverId = GuidHelper.GetGuidValue(receiverIdString);
+                var handler = DependencyResolver.ResolveService<CngValidateCommonSecretHandler>();
+                await handler.ValidateCommonSecretAsync(senderId, receiverId);
+                break;
+            }
             default:
             {
                 Console.WriteLine(@"Unrecognized command.");
