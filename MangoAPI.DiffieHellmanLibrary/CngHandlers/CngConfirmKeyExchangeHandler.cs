@@ -1,5 +1,4 @@
-﻿using MangoAPI.BusinessLogic.ApiCommands.CngKeyExchange;
-using MangoAPI.DiffieHellmanLibrary.Abstractions;
+﻿using MangoAPI.DiffieHellmanLibrary.Abstractions;
 using MangoAPI.DiffieHellmanLibrary.Constants;
 using MangoAPI.DiffieHellmanLibrary.Helpers;
 using MangoAPI.Domain.Enums;
@@ -37,11 +36,11 @@ public class CngConfirmKeyExchangeHandler : BaseHandler, IConfirmKeyExchangeHand
         var publicKeyDirectory = CngDirectoryHelper.CngPublicKeysDirectory;
         var publicKeyFileName = FileNameHelper.GenerateCngPublicKeyFileName(userId, senderId);
         var publicKeyPath = Path.Combine(publicKeyDirectory, publicKeyFileName);
-        
+
         var route = $"{CngRoutes.CngKeyExchangeRequests}/{keyExchangeRequest.RequestId}";
 
         var uri = new Uri(route, UriKind.Absolute);
-        
+
         using var request = new HttpRequestMessage(HttpMethod.Put, uri);
 
         await using var stream = File.OpenRead(publicKeyPath);
@@ -56,22 +55,5 @@ public class CngConfirmKeyExchangeHandler : BaseHandler, IConfirmKeyExchangeHand
         var httpResponseMessage = await HttpClient.SendAsync(request);
 
         httpResponseMessage.EnsureSuccessStatusCode();
-        
-        
-    }
-
-    private async Task CngConfirmKeyExchangeAsync(Guid requestId, string publicKeyBase64)
-    {
-        var request = new CngConfirmOrDeclineKeyExchangeRequest
-        {
-            Confirmed = true,
-            PublicKey = publicKeyBase64,
-            RequestId = requestId
-        };
-
-        await HttpRequestHelper.DeleteWithBodyAsync(
-            client: HttpClient,
-            route: CngRoutes.CngKeyExchangeRequests,
-            body: request);
     }
 }

@@ -1,8 +1,6 @@
-﻿using MangoAPI.BusinessLogic.ApiCommands.CngKeyExchange;
-using MangoAPI.DiffieHellmanLibrary.Abstractions;
+﻿using MangoAPI.DiffieHellmanLibrary.Abstractions;
 using MangoAPI.DiffieHellmanLibrary.Constants;
 using MangoAPI.DiffieHellmanLibrary.Helpers;
-using Newtonsoft.Json;
 
 namespace MangoAPI.DiffieHellmanLibrary.CngHandlers;
 
@@ -45,25 +43,5 @@ public class CngCreateKeyExchangeHandler : BaseHandler, ICreateKeyExchangeHandle
         var httpResponseMessage = await HttpClient.SendAsync(request);
 
         httpResponseMessage.EnsureSuccessStatusCode();
-    }
-
-    private async Task<CngCreateKeyExchangeResponse> CngCreateKeyExchangeRequestAsync(
-        Guid requestUserId,
-        string publicKey)
-    {
-        var command = new CngCreateKeyExchangeRequest
-        {
-            PublicKey = publicKey,
-            RequestedUserId = requestUserId
-        };
-
-        var result = await HttpRequestHelper.PostWithBodyAsync(
-            client: HttpClient,
-            route: CngRoutes.CngKeyExchangeRequests,
-            body: command);
-
-        var response = JsonConvert.DeserializeObject<CngCreateKeyExchangeResponse>(result);
-
-        return response ?? throw new InvalidOperationException();
     }
 }

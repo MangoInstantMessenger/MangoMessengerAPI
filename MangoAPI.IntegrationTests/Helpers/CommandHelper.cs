@@ -1,5 +1,4 @@
 ﻿using System;
-using MangoAPI.BusinessLogic.ApiCommands.CngKeyExchange;
 using MangoAPI.BusinessLogic.ApiCommands.Communities;
 using MangoAPI.BusinessLogic.ApiCommands.Contacts;
 using MangoAPI.BusinessLogic.ApiCommands.Messages;
@@ -41,16 +40,6 @@ public static class CommandHelper
             ChannelTitle: "ExtremeCode Main",
             ChannelDescription: "Extreme Code Main Public Group",
             UserId: userId);
-
-        return command;
-    }
-
-    public static CngCreateKeyExchangeRequestCommand CreateCngKeyExchangeCommand(Guid senderId, Guid receiverId)
-    {
-        var command = new CngCreateKeyExchangeRequestCommand(
-            senderId,
-            receiverId,
-            SenderPublicKey: MangoFilesHelper.GetTestImage());
 
         return command;
     }

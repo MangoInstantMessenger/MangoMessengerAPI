@@ -10,7 +10,6 @@ public static class CngInjectionExtensions
         collection.AddSingleton<CngGeneratePrivateKeyHandler>();
         collection.AddSingleton<CngGeneratePublicKeyHandler>();
         collection.AddSingleton<CngPrintKeyExchangesHandler>();
-        collection.AddSingleton<CngPrintPublicKeysHandler>();
         collection.AddSingleton<CngConfirmKeyExchangeHandler>();
         collection.AddSingleton<CngCreateCommonSecretHandler>();
         collection.AddSingleton<CngCreateKeyExchangeHandler>();

@@ -52,12 +52,6 @@ public static class CngController
                 await handler.ConfirmKeyExchangeAsync(requestId);
                 break;
             }
-            case Commands.CngPrintPublicKeys:
-            {
-                var handler = DependencyResolver.ResolveService<CngPrintPublicKeysHandler>();
-                await handler.CngPrintPublicKeysAsync();
-                break;
-            }
             case Commands.CngDownloadPublicKey:
             {
                 var actorString = args[1];

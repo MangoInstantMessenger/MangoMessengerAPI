@@ -1,5 +1,4 @@
 ﻿using System.Net.Http.Headers;
-using MangoAPI.BusinessLogic.ApiQueries.CngPublicKeys;
 using MangoAPI.BusinessLogic.ApiQueries.OpenSslKeyExchange;
 using MangoAPI.BusinessLogic.Models;
 using MangoAPI.BusinessLogic.Responses;
@@ -52,19 +51,7 @@ public abstract class BaseHandler
 
         return requests;
     }
-    
-    protected async Task<CngGetPublicKeysResponse> CngGetPublicKeys()
-    {
-        var result = await HttpRequestHelper.GetAsync(
-            client: HttpClient,
-            route: CngRoutes.CngPublicKeys);
 
-        var response = JsonConvert.DeserializeObject<CngGetPublicKeysResponse>(result) ??
-                       throw new InvalidOperationException($"Argument is null {nameof(result)}");
-
-        return response;
-    }
-    
     protected async Task<OpenSslGetKeyExchangeRequestsResponse> CngGetKeyExchangesAsync()
     {
         var result = await HttpRequestHelper.GetAsync(

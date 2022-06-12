@@ -32,10 +32,6 @@ public class MangoDbContext : IdentityDbContext<UserEntity, RoleEntity, Guid>
 
     public DbSet<DocumentEntity> Documents { get; set; }
 
-    public DbSet<CngKeyExchangeRequestEntity> CngKeyExchangeRequests { get; set; }
-
-    public DbSet<CngPublicKeyEntity> CngPublicKeys { get; set; }
-
     public DbSet<OpenSslDhParameterEntity> OpenSslDhParameters { get; set; }
 
     public DbSet<OpenSslKeyExchangeRequestEntity> OpenSslKeyExchangeRequests { get; set; }
