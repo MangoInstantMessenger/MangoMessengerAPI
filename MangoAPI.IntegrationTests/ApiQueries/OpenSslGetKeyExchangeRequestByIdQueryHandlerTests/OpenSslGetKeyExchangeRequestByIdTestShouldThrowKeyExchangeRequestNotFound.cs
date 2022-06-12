@@ -3,7 +3,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using MangoAPI.BusinessLogic.ApiQueries.OpenSslKeyExchange;
 using MangoAPI.Domain.Constants;
-using MangoAPI.IntegrationTests.Helpers;
 using Xunit;
 
 namespace MangoAPI.IntegrationTests.ApiQueries.OpenSslGetKeyExchangeRequestByIdQueryHandlerTests;
