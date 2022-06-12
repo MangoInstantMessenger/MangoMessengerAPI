@@ -30,7 +30,7 @@ public class OpenSslCreateDiffieHellmanParameterCommandHandler : IRequestHandler
         await request.DiffieHellmanParameter.CopyToAsync(target, cancellationToken);
         var bytes = target.ToArray();
         
-        var entity = new OpenSslDhParameterEntity
+        var entity = new DiffieHellmanParameterEntity
         {
             OpenSslDhParameter = bytes,
             CreatedBy = request.UserId,

@@ -46,7 +46,7 @@ public class OpenSslCreateKeyExchangeCommandHandler : IRequestHandler<OpenSslCre
 
         var bytes = target.ToArray();
 
-        var keyExchangeRequest = new OpenSslKeyExchangeRequestEntity
+        var keyExchangeRequest = new DiffieHellmanKeyExchangeEntity
         {
             SenderId = request.SenderId,
             ReceiverId = request.ReceiverId,

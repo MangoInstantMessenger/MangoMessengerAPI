@@ -3,7 +3,7 @@ using MangoAPI.Domain.Enums;
 
 namespace MangoAPI.Domain.Entities;
 
-public class OpenSslKeyExchangeRequestEntity
+public class DiffieHellmanKeyExchangeEntity
 {
     public Guid Id { get; set; }
 

@@ -32,9 +32,9 @@ public class MangoDbContext : IdentityDbContext<UserEntity, RoleEntity, Guid>
 
     public DbSet<DocumentEntity> Documents { get; set; }
 
-    public DbSet<OpenSslDhParameterEntity> OpenSslDhParameters { get; set; }
+    public DbSet<DiffieHellmanParameterEntity> OpenSslDhParameters { get; set; }
 
-    public DbSet<OpenSslKeyExchangeRequestEntity> OpenSslKeyExchangeRequests { get; set; }
+    public DbSet<DiffieHellmanKeyExchangeEntity> OpenSslKeyExchangeRequests { get; set; }
 
     public const string DefaultSchema = "mango";
 

@@ -4,11 +4,11 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace MangoAPI.Infrastructure.Database.Configurations;
 
-public class OpenSslKeyExchangeRequestEntityConfiguration : IEntityTypeConfiguration<OpenSslKeyExchangeRequestEntity>
+public class DiffieHellmanKeyExchangeEntityConfiguration : IEntityTypeConfiguration<DiffieHellmanKeyExchangeEntity>
 {
-    public void Configure(EntityTypeBuilder<OpenSslKeyExchangeRequestEntity> builder)
+    public void Configure(EntityTypeBuilder<DiffieHellmanKeyExchangeEntity> builder)
     {
-        builder.ToTable(nameof(OpenSslKeyExchangeRequestEntity), MangoDbContext.DefaultSchema);
+        builder.ToTable(nameof(DiffieHellmanKeyExchangeEntity), MangoDbContext.DefaultSchema);
 
         builder.HasKey(x => x.Id);
 

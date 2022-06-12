@@ -2,7 +2,7 @@
 
 namespace MangoAPI.Domain.Entities;
 
-public class OpenSslDhParameterEntity
+public class DiffieHellmanParameterEntity
 {
     public Guid Id { get; set; }
     public byte[] OpenSslDhParameter { get; set; }

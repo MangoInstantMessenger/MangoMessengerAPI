@@ -4,11 +4,11 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace MangoAPI.Infrastructure.Database.Configurations;
 
-public class DhParameterEntityConfiguration : IEntityTypeConfiguration<OpenSslDhParameterEntity>
+public class DiffieHellmanParameterEntityConfiguration : IEntityTypeConfiguration<DiffieHellmanParameterEntity>
 {
-    public void Configure(EntityTypeBuilder<OpenSslDhParameterEntity> builder)
+    public void Configure(EntityTypeBuilder<DiffieHellmanParameterEntity> builder)
     {
-        builder.ToTable(nameof(OpenSslDhParameterEntity), MangoDbContext.DefaultSchema);
+        builder.ToTable(nameof(DiffieHellmanParameterEntity), MangoDbContext.DefaultSchema);
         
         builder.HasKey(x => x.Id);
         
