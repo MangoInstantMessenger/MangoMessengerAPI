@@ -3,8 +3,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
 using MangoAPI.Application.Interfaces;
-using MangoAPI.BusinessLogic.ApiCommands.OpenSslKeyExchange;
-using MangoAPI.BusinessLogic.ApiQueries.OpenSslKeyExchange;
+using MangoAPI.BusinessLogic.ApiCommands.DiffieHellmanKeyExchanges;
+using MangoAPI.BusinessLogic.ApiQueries.DiffieHellmanKeyExchanges;
 using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.Presentation.Interfaces;
 using MediatR;
@@ -41,13 +41,13 @@ public class OpenSslKeyExchangeController : ApiControllerBase, IOpenSslKeyExchan
         Description = "Creates Diffie-Hellman parameter that is used by exchanging sides.")]
     [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
-    [ProducesResponseType(typeof(OpenSslCreateDiffieHellmanParameterResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(CreateDiffieHellmanParameterResponse), StatusCodes.Status200OK)]
     public async Task<IActionResult> OpenSslCreateDiffieHellmanParameter([FromForm] IFormFile file,
         CancellationToken cancellationToken)
     {
         var userId = CorrelationContext.GetUserId();
 
-        var command = new OpenSslCreateDiffieHellmanParameterCommand(
+        var command = new CreateDiffieHellmanParameterCommand(
             UserId: userId,
             DiffieHellmanParameter: file);
 
@@ -63,10 +63,10 @@ public class OpenSslKeyExchangeController : ApiControllerBase, IOpenSslKeyExchan
     [SwaggerOperation(
         Summary = "Downloads Diffie-Hellman parameter that is used by exchanging sides.",
         Description = "Downloads Diffie-Hellman parameter that is used by exchanging sides.")]
-    [ProducesResponseType(typeof(OpenSslGetDhParametersResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(GetDhParametersResponse), StatusCodes.Status200OK)]
     public async Task<IActionResult> OpenSslGetDiffieHellmanParameter(CancellationToken cancellationToken)
     {
-        var result = await Mediator.Send(new OpenSslGetDhParametersQuery(), cancellationToken);
+        var result = await Mediator.Send(new GetDhParametersQuery(), cancellationToken);
         var file = File(result.Response.FileContent, "text/plain", "dh_parameters.pem");
 
         return file;
@@ -85,7 +85,7 @@ public class OpenSslKeyExchangeController : ApiControllerBase, IOpenSslKeyExchan
         Description = "Creates Diffie-Hellman key exchange between two parties.")]
     [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
-    [ProducesResponseType(typeof(OpenSslCreateKeyExchangeResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(CreateKeyExchangeResponse), StatusCodes.Status200OK)]
     public async Task<IActionResult> OpenSslCreateKeyExchangeRequest(
         [FromRoute] Guid userId,
         [FromForm] IFormFile senderPublicKey,
@@ -94,7 +94,7 @@ public class OpenSslKeyExchangeController : ApiControllerBase, IOpenSslKeyExchan
         var senderId = CorrelationContext.GetUserId();
 
         var command =
-            new OpenSslCreateKeyExchangeCommand(
+            new CreateKeyExchangeCommand(
                 ReceiverId: userId,
                 SenderId: senderId,
                 SenderPublicKey: senderPublicKey);
@@ -113,11 +113,11 @@ public class OpenSslKeyExchangeController : ApiControllerBase, IOpenSslKeyExchan
         Description = "Get OpenSSL exchange requests.")]
     [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
-    [ProducesResponseType(typeof(OpenSslGetKeyExchangeRequestsResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(GetKeyExchangeRequestsResponse), StatusCodes.Status200OK)]
     public async Task<IActionResult> OpenSslGetKeyExchangeRequests(CancellationToken cancellationToken)
     {
         var userId = CorrelationContext.GetUserId();
-        var request = new OpenSslGetKeyExchangeRequestsQuery(userId);
+        var request = new GetKeyExchangeRequestsQuery(userId);
 
         return await RequestAsync(request, cancellationToken);
     }
@@ -143,7 +143,7 @@ public class OpenSslKeyExchangeController : ApiControllerBase, IOpenSslKeyExchan
     {
         var userId = CorrelationContext.GetUserId();
 
-        var command = new OpenSslConfirmKeyExchangeCommand(
+        var command = new ConfirmKeyExchangeCommand(
             RequestId: requestId,
             UserId: userId,
             ReceiverPublicKey: receiverPublicKey);
@@ -170,7 +170,7 @@ public class OpenSslKeyExchangeController : ApiControllerBase, IOpenSslKeyExchan
     {
         var userId = CorrelationContext.GetUserId();
 
-        var request = new OpenSslDeclineKeyExchangeCommand(requestId, userId);
+        var request = new DeclineKeyExchangeCommand(requestId, userId);
 
         return await RequestAsync(request, cancellationToken);
     }
@@ -188,14 +188,14 @@ public class OpenSslKeyExchangeController : ApiControllerBase, IOpenSslKeyExchan
         Description = "Download partner OpenSSL public key.")]
     [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
-    [ProducesResponseType(typeof(OpenSslDownloadPartnerPublicKeyResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(DownloadPartnerPublicKeyResponse), StatusCodes.Status200OK)]
     public async Task<IActionResult> OpenSslDownloadPartnerPublicKey(
         [FromRoute] Guid requestId,
         CancellationToken cancellationToken)
     {
         var userId = CorrelationContext.GetUserId();
 
-        var query = new OpenSslDownloadPartnerPublicKeyQuery(userId, requestId);
+        var query = new DownloadPartnerPublicKeyQuery(userId, requestId);
 
         var result = await Mediator.Send(query, cancellationToken);
 
@@ -218,12 +218,12 @@ public class OpenSslKeyExchangeController : ApiControllerBase, IOpenSslKeyExchan
         Description = "Get OpenSSL key exchange by ID.")]
     [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
-    [ProducesResponseType(typeof(OpenSslGetKeyExchangeRequestByIdResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(GetKeyExchangeRequestByIdResponse), StatusCodes.Status200OK)]
     public async Task<IActionResult> OpenSslGetKeyExchangeRequestById([FromRoute] Guid requestId,
         CancellationToken cancellationToken)
     {
         var userId = CorrelationContext.GetUserId();
-        var query = new OpenSslGetKeyExchangeRequestByIdQuery(userId, requestId);
+        var query = new GetKeyExchangeRequestByIdQuery(userId, requestId);
 
         return await RequestAsync(query, cancellationToken);
     }

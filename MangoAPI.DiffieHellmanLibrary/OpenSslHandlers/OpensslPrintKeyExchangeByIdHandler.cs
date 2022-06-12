@@ -1,4 +1,4 @@
-﻿using MangoAPI.BusinessLogic.ApiQueries.OpenSslKeyExchange;
+﻿using MangoAPI.BusinessLogic.ApiQueries.DiffieHellmanKeyExchanges;
 using MangoAPI.BusinessLogic.Models;
 using MangoAPI.DiffieHellmanLibrary.Abstractions;
 using MangoAPI.DiffieHellmanLibrary.Constants;
@@ -36,7 +36,7 @@ public class OpensslPrintKeyExchangeByIdHandler : BaseHandler, IPrintKeyExchange
         var jsonAsString = await response.Content.ReadAsStringAsync();
 
         var deserializeObject =
-            JsonConvert.DeserializeObject<OpenSslGetKeyExchangeRequestByIdResponse>(jsonAsString)
+            JsonConvert.DeserializeObject<GetKeyExchangeRequestByIdResponse>(jsonAsString)
             ?? throw new InvalidOperationException();
 
         var exchangeRequest = deserializeObject.KeyExchangeRequest;

@@ -1,6 +1,6 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
-using MangoAPI.BusinessLogic.ApiCommands.OpenSslKeyExchange;
+using MangoAPI.BusinessLogic.ApiCommands.DiffieHellmanKeyExchanges;
 using MangoAPI.IntegrationTests.Helpers;
 using Xunit;
 
@@ -8,7 +8,7 @@ namespace MangoAPI.IntegrationTests.ApiCommandsTests.OpenSslCreateKeyExchangeCom
 
 public class OpenSslCreateKeyExchangeTestSuccess : IntegrationTestBase
 {
-    private readonly Assert<OpenSslCreateKeyExchangeResponse> _assert = new();
+    private readonly Assert<CreateKeyExchangeResponse> _assert = new();
     
     [Fact]
     public async Task OpenSslCreateKeyExchangeTest_Success()

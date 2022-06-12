@@ -1,5 +1,5 @@
 ﻿using System.Net.Http.Headers;
-using MangoAPI.BusinessLogic.ApiQueries.OpenSslKeyExchange;
+using MangoAPI.BusinessLogic.ApiQueries.DiffieHellmanKeyExchanges;
 using MangoAPI.BusinessLogic.Models;
 using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.DiffieHellmanLibrary.Constants;
@@ -44,7 +44,7 @@ public abstract class BaseHandler
         var responseBody = await response.Content.ReadAsStringAsync();
 
         var deserialized =
-            JsonConvert.DeserializeObject<OpenSslGetKeyExchangeRequestsResponse>(responseBody) ??
+            JsonConvert.DeserializeObject<GetKeyExchangeRequestsResponse>(responseBody) ??
             throw new InvalidOperationException("Cannot deserialize list of key exchange requests.");
 
         var requests = deserialized.OpenSslKeyExchangeRequests;
@@ -52,13 +52,13 @@ public abstract class BaseHandler
         return requests;
     }
 
-    protected async Task<OpenSslGetKeyExchangeRequestsResponse> CngGetKeyExchangesAsync()
+    protected async Task<GetKeyExchangeRequestsResponse> CngGetKeyExchangesAsync()
     {
         var result = await HttpRequestHelper.GetAsync(
             client: HttpClient,
             route: CngRoutes.CngKeyExchangeRequests);
 
-        var response = JsonConvert.DeserializeObject<OpenSslGetKeyExchangeRequestsResponse>(result);
+        var response = JsonConvert.DeserializeObject<GetKeyExchangeRequestsResponse>(result);
 
         return response ?? throw new InvalidOperationException();
     }
