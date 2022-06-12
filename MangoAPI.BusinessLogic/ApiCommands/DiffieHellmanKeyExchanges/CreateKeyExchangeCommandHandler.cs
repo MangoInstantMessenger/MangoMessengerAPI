@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using MangoAPI.BusinessLogic.Responses;
@@ -27,24 +28,24 @@ public class CreateKeyExchangeCommandHandler : IRequestHandler<CreateKeyExchange
     public async Task<Result<CreateKeyExchangeResponse>> Handle(CreateKeyExchangeCommand request,
         CancellationToken cancellationToken)
     {
-        var currentRequest = await _mangoDbContext.DiffieHellmanKeyExchangeEntities
-            .FirstOrDefaultAsync(entity =>
-                    entity.SenderId == request.SenderId &&
-                    entity.ReceiverId == request.ReceiverId &&
-                    !entity.IsConfirmed &&
-                    entity.KeyExchangeType == request.KeyExchangeType,
-                cancellationToken);
+        var sendersRequests = await _mangoDbContext.DiffieHellmanKeyExchangeEntities
+            .Where(entity =>
+                entity.SenderId == request.SenderId &&
+                entity.ReceiverId == request.ReceiverId)
+            .ToListAsync(cancellationToken: cancellationToken);
 
-        if (currentRequest != null)
+        var receiverRequests = await _mangoDbContext.DiffieHellmanKeyExchangeEntities
+            .Where(entity =>
+                entity.SenderId == request.ReceiverId &&
+                entity.ReceiverId == request.SenderId)
+            .ToListAsync(cancellationToken: cancellationToken);
+
+        var allRequests = sendersRequests.Concat(receiverRequests).ToList();
+
+        if (allRequests.Count != 0)
         {
-            var r = new CreateKeyExchangeResponse
-            {
-                Message = ResponseMessageCodes.Success,
-                RequestId = currentRequest.Id,
-                Success = true
-            };
-
-            return _responseFactory.SuccessResponse(r);
+            _mangoDbContext.DiffieHellmanKeyExchangeEntities.RemoveRange(allRequests);
+            await _mangoDbContext.SaveChangesAsync(cancellationToken);
         }
 
         await using var target = new MemoryStream();

@@ -1,6 +1,7 @@
 ﻿using MangoAPI.DiffieHellmanLibrary.Abstractions;
 using MangoAPI.DiffieHellmanLibrary.Constants;
 using MangoAPI.DiffieHellmanLibrary.Helpers;
+using MangoAPI.Domain.Enums;
 
 namespace MangoAPI.DiffieHellmanLibrary.OpenSslHandlers;
 
@@ -23,11 +24,14 @@ public class OpensslConfirmKeyExchangeHandler : BaseHandler, IConfirmKeyExchange
     private async Task OpensslConfirmKeyExchange(Guid senderId)
     {
         var allRequests = await GetKeyExchangesAsync();
-        
+
         var currentUserId = TokensResponse.Tokens.UserId;
 
         var keyExchangeRequest = allRequests.FirstOrDefault(x =>
-            x.SenderId == senderId && x.ReceiverId == currentUserId);
+            x.SenderId == senderId &&
+            x.ReceiverId == currentUserId &&
+            !x.IsConfirmed &&
+            x.KeyExchangeType == KeyExchangeType.OpenSsl);
 
         if (keyExchangeRequest == null)
         {

@@ -3,6 +3,7 @@ using MangoAPI.DiffieHellmanLibrary.Abstractions;
 using MangoAPI.DiffieHellmanLibrary.Constants;
 using MangoAPI.DiffieHellmanLibrary.Extensions;
 using MangoAPI.DiffieHellmanLibrary.Helpers;
+using MangoAPI.Domain.Enums;
 
 namespace MangoAPI.DiffieHellmanLibrary.OpenSslHandlers;
 
@@ -34,12 +35,17 @@ public class OpensslDownloadPublicKeyHandler : BaseHandler, IDownloadPublicKeyHa
         if (actor == Actor.Receiver)
         {
             keyExchangeRequest = allRequests.FirstOrDefault(request =>
-                request.SenderId == userId && request.ReceiverId == currentUserId);
+                request.SenderId == userId && request.ReceiverId == currentUserId &&
+                request.IsConfirmed &&
+                request.KeyExchangeType == KeyExchangeType.OpenSsl);
         }
         else
         {
             keyExchangeRequest = allRequests.FirstOrDefault(request =>
-                request.ReceiverId == userId && request.SenderId == currentUserId);
+                request.ReceiverId == userId &&
+                request.SenderId == currentUserId &&
+                request.IsConfirmed &&
+                request.KeyExchangeType == KeyExchangeType.OpenSsl);
         }
 
         if (keyExchangeRequest == null)
