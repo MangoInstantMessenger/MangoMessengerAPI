@@ -9,7 +9,7 @@ using Xunit;
 
 namespace MangoAPI.IntegrationTests.ApiQueries.OpenSslGetDhParametersQueryHandlerTests;
 
-public class OpenSslDownloadPartnerPublicKeyTestShouldThrowDhParameterNotFound : IntegrationTestBase
+public class OpenSslGetDhParametersTestShouldThrowDhParameterNotFound : IntegrationTestBase
 {
     private readonly Assert<OpenSslGetDhParametersResponse> _assert = new();
 
