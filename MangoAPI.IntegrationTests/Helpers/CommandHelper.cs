@@ -102,18 +102,6 @@ public static class CommandHelper
         return command;
     }
 
-    public static CngConfirmOrDeclineKeyExchangeCommand CreateCngConfirmOrDeclineKeyExchangeCommand(
-        Guid userId, Guid requestId, bool confirmed, string publicKey)
-    {
-        var command = new CngConfirmOrDeclineKeyExchangeCommand(
-            UserId: userId,
-            RequestId: requestId,
-            Confirmed: confirmed,
-            PublicKey: publicKey);
-
-        return command;
-    }
-
     public static OpenSslCreateKeyExchangeCommand CreateOpenSslCreateKeyExchangeCommand(Guid userId, Guid receiverId, IFormFile senderPublicKey)
     {
         var command = new OpenSslCreateKeyExchangeCommand(

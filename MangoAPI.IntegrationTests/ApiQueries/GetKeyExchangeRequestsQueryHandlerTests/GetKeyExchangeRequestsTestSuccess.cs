@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using FluentAssertions;
 using MangoAPI.BusinessLogic.ApiQueries.CngKeyExchange;
+using MangoAPI.BusinessLogic.ApiQueries.OpenSslKeyExchange;
 using MangoAPI.IntegrationTests.Helpers;
 using Xunit;
 
@@ -9,7 +10,7 @@ namespace MangoAPI.IntegrationTests.ApiQueries.GetKeyExchangeRequestsQueryHandle
 
 public class GetKeyExchangeRequestsTestSuccess : IntegrationTestBase
 {
-    private readonly Assert<CngGetKeyExchangeResponse> _assert = new ();
+    private readonly Assert<OpenSslGetKeyExchangeRequestsResponse> _assert = new ();
 
     [Fact]
     public async Task GetKeyExchangeRequestsTest_Success()
@@ -27,7 +28,7 @@ public class GetKeyExchangeRequestsTestSuccess : IntegrationTestBase
         var result = await MangoModule.RequestAsync(query, CancellationToken.None);
             
         _assert.Pass(result);
-        result.Response.KeyExchangeRequests.Count.Should().Be(1);
-        result.Response.KeyExchangeRequests[0].RequestId.Should().Be(keyExchangeRequest.Response.RequestId);
+        result.Response.OpenSslKeyExchangeRequests.Count.Should().Be(1);
+        result.Response.OpenSslKeyExchangeRequests[0].RequestId.Should().Be(keyExchangeRequest.Response.RequestId);
     }
 }

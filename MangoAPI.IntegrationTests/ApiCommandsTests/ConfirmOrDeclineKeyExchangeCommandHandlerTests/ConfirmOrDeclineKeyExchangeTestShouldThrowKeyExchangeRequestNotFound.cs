@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using MangoAPI.BusinessLogic.ApiCommands.CngKeyExchange;
 using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.Domain.Constants;
+using MangoAPI.IntegrationTests.Helpers;
 using Xunit;
 
 namespace MangoAPI.IntegrationTests.ApiCommandsTests.ConfirmOrDeclineKeyExchangeCommandHandlerTests;
@@ -17,11 +18,10 @@ public class ConfirmOrDeclineKeyExchangeTestShouldThrowKeyExchangeRequestNotFoun
     {
         const string expectedMessage = ResponseMessageCodes.KeyExchangeRequestNotFound;
         var expectedDetails = ResponseMessageCodes.ErrorDictionary[expectedMessage];
-        var command = new CngConfirmOrDeclineKeyExchangeCommand(
+        var command = new CngConfirmKeyExchangeCommand(
             UserId: Guid.NewGuid(),
-            RequestId: Guid.NewGuid(),
-            Confirmed: true,
-            PublicKey: "Public Key");
+            RequestId: Guid.NewGuid(), 
+            MangoFilesHelper.GetTestImage());
 
         var result = await MangoModule.RequestAsync(command, CancellationToken.None);
             

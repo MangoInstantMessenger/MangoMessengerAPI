@@ -14,22 +14,21 @@ public class ConfirmOrDeclineKeyExchangeTestSuccess : IntegrationTestBase
     [Fact]
     public async Task ConfirmOrDeclineKeyExchangeTest_Success()
     {
-        var sender = 
+        var sender =
             await MangoModule.RequestAsync(CommandHelper.RegisterKhachaturCommand(), CancellationToken.None);
-        var requestedUser = 
+        var requestedUser =
             await MangoModule.RequestAsync(CommandHelper.RegisterPetroCommand(), CancellationToken.None);
         var keyExchangeRequest =
             await MangoModule.RequestAsync(
                 CommandHelper.CreateCngKeyExchangeCommand(sender.Response.UserId, requestedUser.Response.UserId),
                 CancellationToken.None);
-        var command = new CngConfirmOrDeclineKeyExchangeCommand(
-            UserId: requestedUser.Response.UserId,
-            RequestId: keyExchangeRequest.Response.RequestId,
-            Confirmed: true,
-            PublicKey: "Public Key");
+        var command = new CngConfirmKeyExchangeCommand(
+            requestedUser.Response.UserId,
+            keyExchangeRequest.Response.RequestId,
+            MangoFilesHelper.GetTestImage());
 
         var result = await MangoModule.RequestAsync(command, CancellationToken.None);
-            
+
         _assert.Pass(result);
     }
 }
