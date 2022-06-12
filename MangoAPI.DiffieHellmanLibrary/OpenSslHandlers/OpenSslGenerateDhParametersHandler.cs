@@ -16,10 +16,15 @@ public static class OpenSslGenerateDhParametersHandler
 
         workingDirectory.CreateDirectoryIfNotExist();
 
-        var command = Cli.Wrap("openssl").WithArguments(
-            new[] {"genpkey", "-genparam", "-algorithm", "DH", "-out", parametersPath});
+        var parametersExist = File.Exists(parametersPath);
 
-        await command.ExecuteAsync();
+        if (!parametersExist)
+        {
+            var command = Cli.Wrap("openssl").WithArguments(
+                new[] { "genpkey", "-genparam", "-algorithm", "DH", "-out", parametersPath });
+
+            await command.ExecuteAsync();
+        }
 
         Console.WriteLine(@"DH parameters has been generated successfully.");
         Console.WriteLine();
