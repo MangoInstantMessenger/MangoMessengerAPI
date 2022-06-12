@@ -37,7 +37,7 @@ public class CreateDiffieHellmanParameterCommandHandler : IRequestHandler<Create
             CreatedAt = DateTime.UtcNow,
         };
 
-        _dbContext.OpenSslDhParameters.Add(entity);
+        _dbContext.DiffieHellmanParameterEntities.Add(entity);
 
         await _dbContext.SaveChangesAsync(cancellationToken);
 

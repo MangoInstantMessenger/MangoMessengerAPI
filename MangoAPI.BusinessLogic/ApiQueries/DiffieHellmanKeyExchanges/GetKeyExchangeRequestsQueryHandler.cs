@@ -27,7 +27,7 @@ public class GetKeyExchangeRequestsQueryHandler : IRequestHandler<GetKeyExchange
     public async Task<Result<GetKeyExchangeRequestsResponse>> Handle(GetKeyExchangeRequestsQuery request,
         CancellationToken cancellationToken)
     {
-        var requests = await _mangoDbContext.OpenSslKeyExchangeRequests
+        var requests = await _mangoDbContext.DiffieHellmanKeyExchangeEntities
             .Where(x => x.SenderId == request.UserId || x.ReceiverId == request.UserId)
             .Select(x => new OpenSslKeyExchangeRequest
             {

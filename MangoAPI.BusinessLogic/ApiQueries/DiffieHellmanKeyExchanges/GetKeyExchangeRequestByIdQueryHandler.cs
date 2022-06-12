@@ -27,7 +27,7 @@ public class GetKeyExchangeRequestByIdQueryHandler : IRequestHandler<GetKeyExcha
         GetKeyExchangeRequestByIdQuery request,
         CancellationToken cancellationToken)
     {
-        var keyExchangeRequest = await _dbContext.OpenSslKeyExchangeRequests
+        var keyExchangeRequest = await _dbContext.DiffieHellmanKeyExchangeEntities
             .AsNoTracking()
             .Select(x => new OpenSslKeyExchangeRequest
             {

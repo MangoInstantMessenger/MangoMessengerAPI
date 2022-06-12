@@ -16,17 +16,17 @@ public class DeclineKeyExchangeTestSuccess : IntegrationTestBase
     {
         var sender = 
             await MangoModule.RequestAsync(CommandHelper.RegisterKhachaturCommand(), CancellationToken.None);
-        var requestedUser = 
+        var receiver = 
             await MangoModule.RequestAsync(CommandHelper.RegisterPetroCommand(), CancellationToken.None);
         var keyExchange = await MangoModule.RequestAsync(
             request: CommandHelper.CreateOpenSslCreateKeyExchangeCommand(
-                userId: sender.Response.UserId,
-                receiverId: requestedUser.Response.UserId,
+                receiverId: receiver.Response.UserId,
+                senderId: sender.Response.UserId,
                 senderPublicKey: MangoFilesHelper.GetTestImage()), 
             cancellationToken: CancellationToken.None);
         var command = new DeclineKeyExchangeCommand(
             RequestId: keyExchange.Response.RequestId,
-            UserId: requestedUser.Response.UserId);
+            UserId: receiver.Response.UserId);
 
         var response = await MangoModule.RequestAsync(command, CancellationToken.None);
         

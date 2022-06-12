@@ -6,6 +6,7 @@ using MangoAPI.Application.Interfaces;
 using MangoAPI.BusinessLogic.ApiCommands.DiffieHellmanKeyExchanges;
 using MangoAPI.BusinessLogic.ApiQueries.DiffieHellmanKeyExchanges;
 using MangoAPI.BusinessLogic.Responses;
+using MangoAPI.Domain.Enums;
 using MangoAPI.Presentation.Interfaces;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -76,6 +77,7 @@ public class KeyExchangeController : ApiControllerBase, IKeyExchangeController
     /// Creates Diffie-Hellman key exchange between two parties.
     /// </summary>
     /// <param name="userId">User GUID</param>
+    /// <param name="keyExchangeType"></param>
     /// <param name="senderPublicKey">IFormFile instance</param>
     /// <param name="cancellationToken">Cancellation token instance</param>
     /// <returns></returns>
@@ -88,6 +90,7 @@ public class KeyExchangeController : ApiControllerBase, IKeyExchangeController
     [ProducesResponseType(typeof(CreateKeyExchangeResponse), StatusCodes.Status200OK)]
     public async Task<IActionResult> CreateKeyExchangeRequest(
         [FromRoute] Guid userId,
+        [FromQuery] KeyExchangeType keyExchangeType,
         [FromForm] IFormFile senderPublicKey,
         CancellationToken cancellationToken)
     {
@@ -95,9 +98,10 @@ public class KeyExchangeController : ApiControllerBase, IKeyExchangeController
 
         var command =
             new CreateKeyExchangeCommand(
-                ReceiverId: userId,
-                SenderId: senderId,
-                SenderPublicKey: senderPublicKey);
+                userId,
+                senderId,
+                senderPublicKey, 
+                keyExchangeType);
 
         return await RequestAsync(command, cancellationToken);
     }

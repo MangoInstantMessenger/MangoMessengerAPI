@@ -26,7 +26,7 @@ public class
     public async Task<Result<ResponseBase>> Handle(ConfirmKeyExchangeCommand request,
         CancellationToken cancellationToken)
     {
-        var keyExchangeRequest = await _mangoDbContext.OpenSslKeyExchangeRequests
+        var keyExchangeRequest = await _mangoDbContext.DiffieHellmanKeyExchangeEntities
             .FirstOrDefaultAsync(
                 predicate: x => x.Id == request.RequestId,
                 cancellationToken: cancellationToken);

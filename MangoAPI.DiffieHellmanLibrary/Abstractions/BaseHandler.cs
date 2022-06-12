@@ -27,10 +27,7 @@ public abstract class BaseHandler
             throw new InvalidOperationException($"{error}. {details}, {nameof(TokensResponse)}");
         }
 
-        var accessToken = TokensResponse.Tokens.AccessToken;
-
-        HttpClient.DefaultRequestHeaders.Authorization
-            = new AuthenticationHeaderValue("Bearer", accessToken);
+        SetBearerToken(HttpClient, TokensResponse);
     }
 
     protected async Task<List<OpenSslKeyExchangeRequest>> GetKeyExchangesAsync()
@@ -50,5 +47,18 @@ public abstract class BaseHandler
         var requests = deserialized.OpenSslKeyExchangeRequests;
 
         return requests;
+    }
+
+    private static void SetBearerToken(HttpClient httpClient, TokensResponse tokensResponse)
+    {
+        if (tokensResponse?.Tokens?.AccessToken == null)
+        {
+            return;
+        }
+
+        var accessToken = tokensResponse.Tokens?.AccessToken;
+
+        httpClient.DefaultRequestHeaders.Authorization
+            = new AuthenticationHeaderValue("Bearer", accessToken);
     }
 }

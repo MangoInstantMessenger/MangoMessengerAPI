@@ -26,7 +26,7 @@ public class
         CancellationToken cancellationToken)
     {
         var keyExchangeRequest =
-            await _mangoDbContext.OpenSslKeyExchangeRequests
+            await _mangoDbContext.DiffieHellmanKeyExchangeEntities
                 .FirstOrDefaultAsync(
                     predicate: x => x.Id == request.RequestId,
                     cancellationToken: cancellationToken);
@@ -47,7 +47,7 @@ public class
             return _responseFactory.ConflictResponse(message, description);
         }
 
-        _mangoDbContext.OpenSslKeyExchangeRequests.Remove(keyExchangeRequest);
+        _mangoDbContext.DiffieHellmanKeyExchangeEntities.Remove(keyExchangeRequest);
 
         await _mangoDbContext.SaveChangesAsync(cancellationToken);
 

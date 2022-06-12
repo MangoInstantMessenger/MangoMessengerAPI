@@ -24,7 +24,7 @@ public class GetDhParametersQueryHandler : IRequestHandler<GetDhParametersQuery,
     public async Task<Result<GetDhParametersResponse>> Handle(GetDhParametersQuery request,
         CancellationToken cancellationToken)
     {
-        var dhParameter = await _mangoDbContext.OpenSslDhParameters
+        var dhParameter = await _mangoDbContext.DiffieHellmanParameterEntities
             .OrderByDescending(x => x.CreatedAt)
             .FirstOrDefaultAsync(cancellationToken);
 

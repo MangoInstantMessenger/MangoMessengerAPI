@@ -22,10 +22,17 @@ public static class TokensHelper
     public static async Task<TokensResponse> GetTokensAsync()
     {
         var workingDirectory = AuthDirectoryHelper.AuthWorkingDirectory;
-        
+
         var tokensPath = Path.Combine(workingDirectory, "Tokens.txt");
 
         workingDirectory.CreateDirectoryIfNotExist();
+
+        var fileExists = File.Exists(tokensPath);
+
+        if (!fileExists)
+        {
+            return new TokensResponse();
+        }
 
         var readTokens = await File.ReadAllTextAsync(tokensPath);
 

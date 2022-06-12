@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.Domain.Constants;
 using MangoAPI.Domain.Entities;
-using MangoAPI.Domain.Enums;
 using MangoAPI.Infrastructure.Database;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -28,17 +27,24 @@ public class CreateKeyExchangeCommandHandler : IRequestHandler<CreateKeyExchange
     public async Task<Result<CreateKeyExchangeResponse>> Handle(CreateKeyExchangeCommand request,
         CancellationToken cancellationToken)
     {
-        var requestAlreadyExists = await _mangoDbContext.OpenSslKeyExchangeRequests
-            .AnyAsync(
-                predicate: entity => entity.SenderId == request.SenderId && entity.ReceiverId == request.ReceiverId,
-                cancellationToken: cancellationToken);
+        var currentRequest = await _mangoDbContext.DiffieHellmanKeyExchangeEntities
+            .FirstOrDefaultAsync(entity =>
+                    entity.SenderId == request.SenderId &&
+                    entity.ReceiverId == request.ReceiverId &&
+                    !entity.IsConfirmed &&
+                    entity.KeyExchangeType == request.KeyExchangeType,
+                cancellationToken);
 
-        if (requestAlreadyExists)
+        if (currentRequest != null)
         {
-            const string message = ResponseMessageCodes.KeyExchangeRequestAlreadyExists;
-            var description = ResponseMessageCodes.ErrorDictionary[message];
+            var r = new CreateKeyExchangeResponse
+            {
+                Message = ResponseMessageCodes.Success,
+                RequestId = currentRequest.Id,
+                Success = true
+            };
 
-            return _responseFactory.ConflictResponse(message, description);
+            return _responseFactory.SuccessResponse(r);
         }
 
         await using var target = new MemoryStream();
@@ -52,10 +58,10 @@ public class CreateKeyExchangeCommandHandler : IRequestHandler<CreateKeyExchange
             ReceiverId = request.ReceiverId,
             SenderPublicKey = bytes,
             CreatedAt = DateTime.UtcNow,
-            KeyExchangeType = KeyExchangeType.OpenSsl
+            KeyExchangeType = request.KeyExchangeType
         };
 
-        _mangoDbContext.OpenSslKeyExchangeRequests.Add(keyExchangeRequest);
+        _mangoDbContext.DiffieHellmanKeyExchangeEntities.Add(keyExchangeRequest);
 
         await _mangoDbContext.SaveChangesAsync(cancellationToken);
 

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
+using MangoAPI.Domain.Enums;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -11,7 +12,10 @@ public interface IKeyExchangeController
     public Task<IActionResult> CreateDiffieHellmanParameter(IFormFile file, CancellationToken cancellationToken);
     public Task<IActionResult> DownloadDiffieHellmanParameter(CancellationToken cancellationToken);
 
-    public Task<IActionResult> CreateKeyExchangeRequest(Guid userId, IFormFile senderPublicKey,
+    public Task<IActionResult> CreateKeyExchangeRequest(
+        Guid userId,
+        KeyExchangeType keyExchangeType,
+        IFormFile senderPublicKey,
         CancellationToken cancellationToken);
 
     public Task<IActionResult> GetKeyExchangeRequests(CancellationToken cancellationToken);

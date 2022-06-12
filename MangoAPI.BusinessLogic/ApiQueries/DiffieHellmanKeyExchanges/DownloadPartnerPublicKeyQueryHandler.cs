@@ -24,7 +24,7 @@ public class DownloadPartnerPublicKeyQueryHandler : IRequestHandler<DownloadPart
     public async Task<Result<DownloadPartnerPublicKeyResponse>> Handle(
         DownloadPartnerPublicKeyQuery request, CancellationToken cancellationToken)
     {
-        var keyExchangeRequest = await _mangoDbContext.OpenSslKeyExchangeRequests
+        var keyExchangeRequest = await _mangoDbContext.DiffieHellmanKeyExchangeEntities
             .FirstOrDefaultAsync(
                 predicate: entity => entity.Id == request.RequestId,
                 cancellationToken: cancellationToken);

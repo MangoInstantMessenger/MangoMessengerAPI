@@ -4,26 +4,26 @@ using MangoAPI.BusinessLogic.ApiCommands.DiffieHellmanKeyExchanges;
 using MangoAPI.IntegrationTests.Helpers;
 using Xunit;
 
-namespace MangoAPI.IntegrationTests.ApiCommandsTests.OpenSslCreateKeyExchangeCommandHandlerTests;
+namespace MangoAPI.IntegrationTests.ApiCommandsTests.CreateKeyExchangeCommandHandlerTests;
 
-public class OpenSslCreateKeyExchangeTestSuccess : IntegrationTestBase
+public class CreateKeyExchangeTestSuccess : IntegrationTestBase
 {
     private readonly Assert<CreateKeyExchangeResponse> _assert = new();
-    
+
     [Fact]
     public async Task OpenSslCreateKeyExchangeTest_Success()
     {
-        var sender = 
+        var sender =
             await MangoModule.RequestAsync(CommandHelper.RegisterKhachaturCommand(), CancellationToken.None);
-        var requestedUser = 
+        var requestedUser =
             await MangoModule.RequestAsync(CommandHelper.RegisterPetroCommand(), CancellationToken.None);
         var command = CommandHelper.CreateOpenSslCreateKeyExchangeCommand(
-            userId: sender.Response.UserId,
-            receiverId: requestedUser.Response.UserId,
+            receiverId: sender.Response.UserId,
+            senderId: requestedUser.Response.UserId,
             senderPublicKey: MangoFilesHelper.GetTestImage());
 
         var response = await MangoModule.RequestAsync(command, CancellationToken.None);
-        
+
         _assert.Pass(response);
     }
 }

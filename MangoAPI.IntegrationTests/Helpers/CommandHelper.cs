@@ -6,6 +6,7 @@ using MangoAPI.BusinessLogic.ApiCommands.Messages;
 using MangoAPI.BusinessLogic.ApiCommands.PasswordRestoreRequests;
 using MangoAPI.BusinessLogic.ApiCommands.Sessions;
 using MangoAPI.BusinessLogic.ApiCommands.Users;
+using MangoAPI.Domain.Enums;
 using Microsoft.AspNetCore.Http;
 
 namespace MangoAPI.IntegrationTests.Helpers;
@@ -91,12 +92,16 @@ public static class CommandHelper
         return command;
     }
 
-    public static CreateKeyExchangeCommand CreateOpenSslCreateKeyExchangeCommand(Guid userId, Guid receiverId, IFormFile senderPublicKey)
+    public static CreateKeyExchangeCommand CreateOpenSslCreateKeyExchangeCommand(
+        Guid receiverId,
+        Guid senderId,
+        IFormFile senderPublicKey)
     {
         var command = new CreateKeyExchangeCommand(
-            SenderId: userId,
-            ReceiverId: receiverId,
-            SenderPublicKey: senderPublicKey);
+            receiverId,
+            senderId,
+            senderPublicKey,
+            KeyExchangeType.OpenSsl);
 
         return command;
     }
