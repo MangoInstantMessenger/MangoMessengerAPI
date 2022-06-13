@@ -1,23 +1,4 @@
 steps:
-  - task: PowerShell@2
-    displayName: 'Docker Login'
-    inputs:
-      targetType: 'inline'
-      script: docker login -u $(DOCKER_USERNAME) -p $(DOCKER_PASSWORD)
-
-  - task: PowerShell@2
-    displayName: 'Docker Run'
-    inputs:
-      targetType: 'inline'
-      script: 'docker run -e ''SA_PASSWORD=x2yiJt!Fs'' --name mango-mssql-db -p 1433:1433 -d petrokolosov/mango-mssql-db:latest'
-
-  - task: PowerShell@2
-    displayName: 'Wait for container'
-    timeoutInMinutes: 5
-    inputs:
-      targetType: 'inline'
-      script: .\build\docker\mssql-docker\wait_database.ps1
-      
   - task: NodeTool@0
     displayName: 'Install Node.js 16.x'
     inputs:
@@ -63,6 +44,25 @@ steps:
     inputs:
       command: 'build'
       arguments: '--configuration $(buildConfiguration)'
+
+  - task: PowerShell@2
+    displayName: 'Docker Login'
+    inputs:
+      targetType: 'inline'
+      script: docker login -u $(DOCKER_USERNAME) -p $(DOCKER_PASSWORD)
+
+  - task: PowerShell@2
+    displayName: 'Docker Run'
+    inputs:
+      targetType: 'inline'
+      script: 'docker run -e ''SA_PASSWORD=x2yiJt!Fs'' --name mango-mssql-db -p 1433:1433 -d petrokolosov/mango-mssql-db:latest'
+
+  - task: PowerShell@2
+    displayName: 'Wait for container'
+    timeoutInMinutes: 5
+    inputs:
+      targetType: 'inline'
+      script: .\build\docker\mssql-docker\wait_database.ps1
 
   - task: DotNetCoreCLI@2
     displayName: 'Run dotnet integration tests'
