@@ -24,6 +24,12 @@ steps:
       ng lint
     displayName: 'Lint angular application'
     workingDirectory: '$(frontEndProjectPath)'
+    
+  - task: UseDotNet@2
+    displayName: 'Install .NET 6.x SDK'
+    inputs:
+      packageType: sdk
+      version: 6.x
 
   - task: NuGetToolInstaller@1
     displayName: 'Install Nuget'
@@ -39,12 +45,12 @@ steps:
       command: 'build'
       arguments: '--configuration $(buildConfiguration)'
 
-  - task: DotNetCoreCLI@2
-    displayName: 'Run dotnet unit tests'
-    inputs:
-      command: 'test'
-      projects: $(INTEGRATION_TESTS_PROJECT_PATH)
-      arguments: '--no-restore'
+#  - task: DotNetCoreCLI@2
+#    displayName: 'Run dotnet integration tests'
+#    inputs:
+#      command: 'test'
+#      projects: 'MangoAPI.IntegrationTests/MangoAPI.IntegrationTests.csproj'
+#      arguments: '--no-restore'
 
   - task: DotNetCoreCLI@2
     displayName: 'Run dotnet publish for Backend project'
