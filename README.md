@@ -52,7 +52,7 @@ environment variables:
 - `MANGO_INTEGRATION_TESTS_DATABASE_URL`: SQL server database used for integration tests (
   default: `Data Source=DESKTOP-1V4TC6J;Initial Catalog=MangoIntegrationTests;Integrated Security=true;Encrypt=True;TrustServerCertificate=True;Connection Timeout=30;`),
   connection string for the database in docker has
-  format: `Server=tcp:localhost,1444;Initial Catalog=WTMP_DEV;Persist Security Info=False;User ID=sa;Password=x2yiJt!Fs;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=True;Connection Timeout=30;`
+  format: `Server=tcp:localhost,1444;Initial Catalog=MANGO_DEV;Persist Security Info=False;User ID=sa;Password=x2yiJt!Fs;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=True;Connection Timeout=30;`
 
 Then restore packages using CLI `dotnet restore` and after build the solution `dotnet build`.
 
