@@ -1,17 +1,11 @@
 ﻿using System;
 using System.Threading.Tasks;
-using MangoAPI.BusinessLogic.Models;
-using MangoAPI.DiffieHellmanLibrary.AuthHandlers;
-using MangoAPI.DiffieHellmanLibrary.CngHandlers;
-using MangoAPI.DiffieHellmanLibrary.OpenSslHandlers;
-using MangoAPI.DiffieHellmanLibrary.Services;
+using MangoAPI.DiffieHellmanConsole.Controllers;
 
 namespace MangoAPI.DiffieHellmanConsole;
 
 public static class Program
 {
-    private static readonly DependencyResolver DependencyResolver = new();
-
     public static async Task Main(string[] args)
     {
         if (args.Length == 0)
@@ -22,253 +16,32 @@ public static class Program
 
         var method = args[0];
 
-        switch (method)
+        switch (FetchMethodName(args[0]))
         {
-            case "login":
-            {
-                var handler = DependencyResolver.ResolveService<LoginHandler>();
-                await handler.LoginAsync(args);
+            case "openssl":
+                await OpenSslController.FetchOpenSslHandler(args, method);
                 break;
-            }
-            case "refresh-token":
-            {
-                var handler = DependencyResolver.ResolveService<RefreshTokenHandler>();
-                await handler.RefreshTokensAsync();
+            case "cng":
+                await CngController.FetchCngHandler(args, method);
                 break;
-            }
-            case "cng-create-key-exchange":
-            {
-                var handler = DependencyResolver.ResolveService<CngCreateKeyExchangeHandler>();
-                await handler.CngRequestKeyExchange(args);
+            case "auth":
+                await AuthController.FetchAuthHandler(args, method);
                 break;
-            }
-            case "cng-key-exchange-requests":
-            {
-                var handler = DependencyResolver.ResolveService<CngPrintKeyExchangeListHandler>();
-                await handler.CngPrintKeyExchangesListAsync();
-                break;
-            }
-            case "cng-confirm-key-exchange":
-            {
-                var handler = DependencyResolver.ResolveService<CngConfirmKeyExchangeRequestHandler>();
-                await handler.CngConfirmKeyExchangeRequest(args);
-                break;
-            }
-            case "cng-print-public-keys":
-            {
-                var handler = DependencyResolver.ResolveService<CngPrintPublicKeysHandler>();
-                await handler.CngPrintPublicKeysAsync();
-                break;
-            }
-            case "cng-create-common-secret":
-            {
-                var handler = DependencyResolver.ResolveService<CngCreateCommonSecretHandler>();
-                await handler.CngCreateCommonSecret(args);
-                break;
-            }
-            case "openssl-generate-dh-parameters":
-            {
-                var handler = DependencyResolver.ResolveService<OpenSslCreateDhParametersHandler>();
-                await handler.CreateDhParametersAsync();
-                break;
-            }
-            case "openssl-upload-dh-parameters":
-            {
-                var handler = DependencyResolver.ResolveService<OpenSslUploadDhParametersHandler>();
-                await handler.UploadDhParametersAsync();
-                break;
-            }
-            case "openssl-download-dh-parameters":
-            {
-                var handler = DependencyResolver.ResolveService<OpenSslDownloadDhParametersHandler>();
-                await handler.DownloadDhParametersAsync();
-                break;
-            }
-            case "openssl-generate-private-key":
-            {
-                var handler = DependencyResolver.ResolveService<OpenSslGeneratePrivateKeyHandler>();
-
-                var receiverIdString = args[1];
-
-                var isParsed = Guid.TryParse(receiverIdString, out var receiverId);
-
-                if (!isParsed)
-                {
-                    Console.WriteLine(@"Invalid or empty receiver ID.");
-                    return;
-                }
-
-                await handler.GeneratePrivateKeyAsync(receiverId);
-
-                break;
-            }
-            case "openssl-generate-public-key":
-            {
-                var handler = DependencyResolver.ResolveService<OpenSslGeneratePublicKeyHandler>();
-
-                var receiverIdString = args[1];
-
-                var isParsed = Guid.TryParse(receiverIdString, out var receiverId);
-
-                if (!isParsed)
-                {
-                    Console.WriteLine(@"Invalid or empty receiver ID.");
-                    return;
-                }
-
-                await handler.GeneratePublicKeyAsync(receiverId);
-
-                break;
-            }
-            case "openssl-create-key-exchange":
-            {
-                var handler = DependencyResolver.ResolveService<OpenSslCreateKeyExchangeHandler>();
-
-                var receiverIdString = args[1];
-
-                var isParsed = Guid.TryParse(receiverIdString, out var receiverId);
-
-                if (!isParsed)
-                {
-                    Console.WriteLine(@"Invalid or empty receiver ID.");
-                    return;
-                }
-
-                await handler.CreateKeyExchangeAsync(receiverId);
-
-                break;
-            }
-            case "openssl-print-key-exchanges":
-            {
-                var handler = DependencyResolver.ResolveService<OpenSslPrintKeyExchangesHandler>();
-                await handler.PrintKeyExchangesAsync();
-                break;
-            }
-            case "openssl-confirm-key-exchange":
-            {
-                var handler = DependencyResolver.ResolveService<OpenSslConfirmKeyExchangeHandler>();
-
-                var userIdString = args[1];
-
-                var isParsed = Guid.TryParse(userIdString, out var userId);
-
-                if (!isParsed)
-                {
-                    Console.WriteLine(@"Invalid or empty request ID.");
-                    return;
-                }
-
-                await handler.ConfirmKeyExchangeAsync(userId);
-                break;
-            }
-            case "openssl-create-common-secret":
-            {
-                var handler = DependencyResolver.ResolveService<OpenSslCreateCommonSecretHandler>();
-
-                var actorString = args[1];
-                var requestIdString = args[2];
-
-                var isParsed = Guid.TryParse(requestIdString, out var requestId);
-
-                if (!isParsed)
-                {
-                    Console.WriteLine(@"Invalid or empty request ID.");
-                    return;
-                }
-
-                var actor = actorString == "--sender"
-                    ? Actor.Sender
-                    : Actor.Receiver;
-
-                await handler.CreateCommonSecretAsync(actor, requestId);
-                break;
-            }
-            case "openssl-download-public-key":
-            {
-                var handler = DependencyResolver.ResolveService<OpenSslDownloadPublicKeyHandler>();
-
-                var actorString = args[1];
-                var requestIdString = args[2];
-
-                var isParsed = Guid.TryParse(requestIdString, out var requestId);
-
-                if (!isParsed)
-                {
-                    Console.WriteLine(@"Invalid or empty request ID.");
-                    return;
-                }
-
-                var actor = actorString == "--sender"
-                    ? Actor.Sender
-                    : Actor.Receiver;
-
-                await handler.DownloadPublicKeyAsync(actor, requestId);
-                break;
-            }
-            case "openssl-decline-key-exchange":
-            {
-                var handler = DependencyResolver.ResolveService<OpenSslDeclineKeyExchangeHandler>();
-
-                var requestIdString = args[1];
-
-                var isParsed = Guid.TryParse(requestIdString, out var requestId);
-
-                if (!isParsed)
-                {
-                    Console.WriteLine(@"Invalid or empty request ID.");
-                    return;
-                }
-
-                await handler.DeclineKeyExchangeAsync(requestId);
-                break;
-            }
-            case "openssl-print-key-exchange":
-            {
-                var handler = DependencyResolver.ResolveService<OpenSslGetKeyExchangeByIdHandler>();
-
-                var requestIdString = args[1];
-
-                var isParsed = Guid.TryParse(requestIdString, out var requestId);
-
-                if (!isParsed)
-                {
-                    Console.WriteLine(@"Invalid or empty request ID.");
-                    return;
-                }
-
-                await handler.GetKeyExchangeByIdAsync(requestId);
-                break;
-            }
-            case "openssl-validate-common-secret":
-            {
-                var handler = DependencyResolver.ResolveService<OpensslValidateCommonSecretHandler>();
-
-                var senderIdString = args[1];
-                var receiverIdString = args[2];
-
-                var senderIdParsed = Guid.TryParse(senderIdString, out var senderId);
-                var receiverParsed = Guid.TryParse(receiverIdString, out var receiverId);
-
-                if (!senderIdParsed)
-                {
-                    Console.WriteLine(@"Invalid or empty sender ID.");
-                    return;
-                }
-
-                if (!receiverParsed)
-                {
-                    Console.WriteLine(@"Invalid or empty receiver ID.");
-                    return;
-                }
-
-                await handler.ValidateCommonSecretAsync(senderId, receiverId);
-                break;
-            }
-            default:
-            {
-                Console.WriteLine(@"Unrecognized command.");
-                break;
-            }
         }
+    }
+
+    private static string FetchMethodName(string method)
+    {
+        if (method.StartsWith("openssl"))
+        {
+            return "openssl";
+        }
+
+        if (method.StartsWith("cng"))
+        {
+            return "cng";
+        }
+
+        return "auth";
     }
 }

@@ -54,21 +54,6 @@ jobs:
           MANGO_MAILGUN_API_DOMAIN: ${{ secrets.MANGO_MAILGUN_API_DOMAIN }}
           MANGO_INTEGRATION_TESTS_DATABASE_URL: ${{ secrets.MANGO_INTEGRATION_TESTS_DATABASE_URL }}
 
-#      - name: ⚠ Postgres Truncate OpenSsl Tables via SSH ⚠
-#        uses: appleboy/ssh-action@master
-#        with:
-#          host: ${{ secrets.AZURE_DEV_SSH_HOST }}
-#          username: ${{ secrets.AZURE_DEV_SSH_USER }}
-#          key: ${{ secrets.AZURE_DEV_SSH_KEY }}
-#          script: |
-#            export PGPASSWORD="${{ secrets.AZURE_DEV_DB_PASSWORD }}"
-#            psql -h ${{ secrets.AZURE_DEV_DB_HOST }} -d ${{ secrets.AZURE_DEV_DB_NAME }} -U ${{ secrets.AZURE_DEV_DB_USER }} -p 5432 -a -q -f ~/PostgresTruncateOpenSslKeyExchangeRequests.sql
-#        env:
-#          AZURE_DEV_DB_HOST: ${{ secrets.AZURE_DEV_DB_HOST }}
-#          AZURE_DEV_DB_NAME: ${{ secrets.AZURE_DEV_DB_NAME }}
-#          AZURE_DEV_DB_USER: ${{ secrets.AZURE_DEV_DB_USER }}
-#          AZURE_DEV_DB_PASSWORD: ${{ secrets.AZURE_DEV_DB_PASSWORD }}
-
       - name: 🚀 Run OpenSSL DH Handshake Create & Upload Parameters 🚀
         run: |
           cd MangoAPI.DiffieHellmanConsole/bin/Debug/net6.0

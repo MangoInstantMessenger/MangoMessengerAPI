@@ -26,9 +26,5 @@ public sealed class UserEntity : IdentityUser<Guid>
 
     public ICollection<UserContactEntity> Contacts { get; set; }
 
-    public ICollection<CngKeyExchangeRequestEntity> KeyExchangeRequests { get; set; }
-
-    public ICollection<CngPublicKeyEntity> PublicKeys { get; set; }
-
     public ICollection<DocumentEntity> Documents { get; set; }
 }

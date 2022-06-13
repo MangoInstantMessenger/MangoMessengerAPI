@@ -1,27 +1,41 @@
-﻿using MangoAPI.DiffieHellmanLibrary.Services;
+﻿using MangoAPI.BusinessLogic.ApiCommands.Sessions;
+using MangoAPI.BusinessLogic.Responses;
+using MangoAPI.DiffieHellmanLibrary.Abstractions;
+using MangoAPI.DiffieHellmanLibrary.Constants;
+using MangoAPI.DiffieHellmanLibrary.Helpers;
+using Newtonsoft.Json;
 
 namespace MangoAPI.DiffieHellmanLibrary.AuthHandlers;
 
-public class LoginHandler
+public class LoginHandler : BaseHandler
 {
-    private readonly SessionsService _sessionsService;
-    private readonly TokensService _tokensService;
-
-    public LoginHandler(SessionsService sessionsService, TokensService tokensService)
+    public LoginHandler(HttpClient httpClient) : base(httpClient)
     {
-        _sessionsService = sessionsService;
-        _tokensService = tokensService;
     }
 
-    public async Task LoginAsync(IReadOnlyList<string> args)
+    public async Task LoginAsync(string login, string password)
     {
         Console.WriteLine(@"Attempting to login ...");
-        var loginResponse = await _sessionsService.LoginAsync(args);
+        var loginResponse = await PerformLoginAsync(login, password);
 
         Console.WriteLine(@"Writing tokens to file ...");
-        await _tokensService.WriteTokensAsync(loginResponse);
+        await TokensHelper.WriteTokensAsync(loginResponse);
 
         Console.WriteLine(@"Login operation success.");
         Console.WriteLine();
+    }
+
+    private async Task<TokensResponse> PerformLoginAsync(string login, string password)
+    {
+        var command = new LoginCommand(login, password);
+
+        var response = await HttpRequestHelper.PostWithBodyAsync(
+            client: HttpClient,
+            route: AuthRoutes.SessionsRoute,
+            body: command);
+
+        var result = JsonConvert.DeserializeObject<TokensResponse>(response);
+
+        return result ?? throw new InvalidOperationException();
     }
 }

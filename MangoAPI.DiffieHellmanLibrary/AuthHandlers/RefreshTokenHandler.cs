@@ -1,40 +1,39 @@
-﻿using MangoAPI.DiffieHellmanLibrary.Services;
-using MangoAPI.Domain.Constants;
+﻿using MangoAPI.BusinessLogic.Responses;
+using MangoAPI.DiffieHellmanLibrary.Abstractions;
+using MangoAPI.DiffieHellmanLibrary.Constants;
+using MangoAPI.DiffieHellmanLibrary.Helpers;
+using Newtonsoft.Json;
 
 namespace MangoAPI.DiffieHellmanLibrary.AuthHandlers;
 
-public class RefreshTokenHandler
+public class RefreshTokenHandler : BaseHandler
 {
-    private readonly SessionsService _sessionsService;
-    private readonly TokensService _tokensService;
-
-    public RefreshTokenHandler(SessionsService sessionsService, TokensService tokensService)
+    public RefreshTokenHandler(HttpClient httpClient) : base(httpClient)
     {
-        _sessionsService = sessionsService;
-        _tokensService = tokensService;
     }
 
     public async Task RefreshTokensAsync()
     {
-        var tokensResponse = await _tokensService.GetTokensAsync();
-
-        if (tokensResponse == null)
-        {
-            const string error = ResponseMessageCodes.TokensNotFound;
-            var details = ResponseMessageCodes.ErrorDictionary[error];
-            Console.WriteLine($@"{error}. {details}");
-            return;
-        }
-
-        var refreshToken = tokensResponse.Tokens.RefreshToken;
+        var refreshToken = TokensResponse.Tokens.RefreshToken;
 
         Console.WriteLine(@"Refreshing tokens ...");
-        var refreshTokenResponse = await _sessionsService.RefreshTokenAsync(refreshToken);
+        var refreshTokenResponse = await PerformRefreshTokensAsync(refreshToken);
 
         Console.WriteLine(@"Writing tokens to file ...");
-        await _tokensService.WriteTokensAsync(refreshTokenResponse);
+        await TokensHelper.WriteTokensAsync(refreshTokenResponse);
 
         Console.WriteLine(@"Refresh token operation was succeeded.");
         Console.WriteLine();
+    }
+
+    private async Task<TokensResponse> PerformRefreshTokensAsync(Guid refreshToken)
+    {
+        var route = AuthRoutes.SessionsRoute + refreshToken;
+
+        var result = await HttpRequestHelper.PostWithoutBodyAsync(HttpClient, route);
+
+        var response = JsonConvert.DeserializeObject<TokensResponse>(result);
+
+        return response ?? throw new InvalidOperationException();
     }
 }

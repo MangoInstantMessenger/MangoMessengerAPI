@@ -1,6 +1,5 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
-using MangoAPI.BusinessLogic.ApiCommands.Sessions;
 using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.IntegrationTests.Helpers;
 using Microsoft.EntityFrameworkCore;

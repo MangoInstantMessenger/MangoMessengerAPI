@@ -1,12 +1,12 @@
 ﻿using System;
-using MangoAPI.BusinessLogic.ApiCommands.CngKeyExchange;
 using MangoAPI.BusinessLogic.ApiCommands.Communities;
 using MangoAPI.BusinessLogic.ApiCommands.Contacts;
+using MangoAPI.BusinessLogic.ApiCommands.DiffieHellmanKeyExchanges;
 using MangoAPI.BusinessLogic.ApiCommands.Messages;
-using MangoAPI.BusinessLogic.ApiCommands.OpenSslKeyExchange;
 using MangoAPI.BusinessLogic.ApiCommands.PasswordRestoreRequests;
 using MangoAPI.BusinessLogic.ApiCommands.Sessions;
 using MangoAPI.BusinessLogic.ApiCommands.Users;
+using MangoAPI.Domain.Enums;
 using Microsoft.AspNetCore.Http;
 
 namespace MangoAPI.IntegrationTests.Helpers;
@@ -45,22 +45,12 @@ public static class CommandHelper
         return command;
     }
 
-    public static CngCreateKeyExchangeRequestCommand CreateCngKeyExchangeCommand(Guid userId, Guid requestedUserId)
-    {
-        var command = new CngCreateKeyExchangeRequestCommand(
-            UserId: userId,
-            RequestedUserId: requestedUserId,
-            PublicKey: "Public Key");
-
-        return command;
-    }
-
     public static AddContactCommand CreateContactCommand(Guid userId, Guid contactId)
     {
         var command = new AddContactCommand(
             UserId: userId,
             ContactId: contactId);
-        
+
         return command;
     }
 
@@ -102,32 +92,24 @@ public static class CommandHelper
         return command;
     }
 
-    public static CngConfirmOrDeclineKeyExchangeCommand CreateCngConfirmOrDeclineKeyExchangeCommand(
-        Guid userId, Guid requestId, bool confirmed, string publicKey)
+    public static CreateKeyExchangeCommand CreateOpenSslCreateKeyExchangeCommand(
+        Guid receiverId,
+        Guid senderId,
+        IFormFile senderPublicKey)
     {
-        var command = new CngConfirmOrDeclineKeyExchangeCommand(
-            UserId: userId,
-            RequestId: requestId,
-            Confirmed: confirmed,
-            PublicKey: publicKey);
+        var command = new CreateKeyExchangeCommand(
+            receiverId,
+            senderId,
+            senderPublicKey,
+            KeyExchangeType.OpenSsl);
 
         return command;
     }
 
-    public static OpenSslCreateKeyExchangeCommand CreateOpenSslCreateKeyExchangeCommand(Guid userId, Guid receiverId, IFormFile senderPublicKey)
-    {
-        var command = new OpenSslCreateKeyExchangeCommand(
-            SenderId: userId,
-            ReceiverId: receiverId,
-            SenderPublicKey: senderPublicKey);
-
-        return command;
-    }
-
-    public static OpenSslConfirmKeyExchangeCommand CreateOpenSslConfirmKeyExchangeCommand(
+    public static ConfirmKeyExchangeCommand CreateOpenSslConfirmKeyExchangeCommand(
         Guid requestId, Guid userId, IFormFile receiverPublicKey)
     {
-        var command = new OpenSslConfirmKeyExchangeCommand(
+        var command = new ConfirmKeyExchangeCommand(
             RequestId: requestId,
             UserId: userId,
             ReceiverPublicKey: receiverPublicKey);
@@ -135,10 +117,10 @@ public static class CommandHelper
         return command;
     }
 
-    public static OpenSslCreateDiffieHellmanParameterCommand CreateOpenSslCreateDiffieHellmanParameterCommand(
+    public static CreateDiffieHellmanParameterCommand CreateOpenSslCreateDiffieHellmanParameterCommand(
         IFormFile diffieHellmanParameter, Guid userId)
     {
-        var command = new OpenSslCreateDiffieHellmanParameterCommand(
+        var command = new CreateDiffieHellmanParameterCommand(
             DiffieHellmanParameter: diffieHellmanParameter,
             UserId: userId);
 
