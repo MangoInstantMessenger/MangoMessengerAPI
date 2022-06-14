@@ -62,7 +62,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "workflows", "workflows", "{
 		.github\workflows\run-build-and-test-dotnet-angular.yml = .github\workflows\run-build-and-test-dotnet-angular.yml
 		.github\workflows\run-sonarqube-analysis.yml = .github\workflows\run-sonarqube-analysis.yml
 		.github\workflows\run-openssl-dh-handshake.yml = .github\workflows\run-openssl-dh-handshake.yml
-		.github\workflows\run-cng-dh-handshake = .github\workflows\run-cng-dh-handshake
+		.github\workflows\run-cng-dh-handshake.yml = .github\workflows\run-cng-dh-handshake.yml
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docker", "docker", "{8F514700-EE42-4018-A95D-B3A06473CE86}"
