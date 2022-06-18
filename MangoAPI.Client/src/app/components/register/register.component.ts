@@ -25,9 +25,13 @@ export class RegisterComponent {
   };
 
   onRegisterClick(): void {
-    this._validationService.validateField(this.registerCommand.displayName, 'Display name');
-    this._validationService.validateField(this.registerCommand.email, 'Email');
-    this._validationService.validateField(this.registerCommand.password, 'Password');
+    let displayNameFieldValidationResult = this._validationService.validateField(this.registerCommand.displayName, 'Display name');
+    let emailFieldValidationResult = this._validationService.validateField(this.registerCommand.email, 'Email');
+    let passwordFieldValidationResult = this._validationService.validateField(this.registerCommand.password, 'Password');
+
+    if(!displayNameFieldValidationResult || !emailFieldValidationResult || !passwordFieldValidationResult) {
+      return;
+    }
 
     if (!this.registerCommand.termsAccepted) {
       alert('Terms not accepted');

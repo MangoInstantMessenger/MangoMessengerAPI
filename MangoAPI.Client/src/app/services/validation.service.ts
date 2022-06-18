@@ -10,16 +10,17 @@ export class ValidationService {
   private allowedFileExtensions = ["jpg", "JPG", "txt", "TXT", "pdf", "PDF", "png", "PNG"];
 
 
-  validateField(field: string, fieldName: string): void {
-    if(field == '' || field == undefined || field == null) {
+  validateField(field: string, fieldName: string): boolean {
+    if(field == '' || field == undefined) {
       alert(`Error: field '${fieldName}' is empty.`);
-      throw new Error(`Error: field '${fieldName}' is empty.`);
+      return false;
     }
+    return true;
   }
 
   validateFileName(fileName: string): void {
     let fileExtension = fileName.split('.')[1];
-    
+
     if(!this.allowedFileExtensions.includes(fileExtension)) {
       alert('Error: file extension not allowed.');
       throw new Error('Error: file extension not allowed.');
