@@ -7,18 +7,20 @@
   <input class='mb-3 form-input p-3 user-select-none'
          id='emailAddress'
          name='emailAddress' placeholder='Enter your email address'
-         type='text'>
+         type='text'
+         [(ngModel)]="loginCommand.email">
 
   <label for='password'></label>
   <input class='mb-3 form-input p-3 user-select-none'
          id='password'
          name='password'
          placeholder='Enter your password'
-         type='text'>
+         type='password'
+         [(ngModel)]="loginCommand.password">
 
-  <button class='form-button p-3 font-weight-bold mb-3'>LOGIN</button>
+  <button class='form-button p-3 font-weight-bold mb-3' (click)="onLoginClick()">LOGIN</button>
   <span class='form-label'>
-			Do not have an account? <a class='form-label' href='app?methodName=login'>Login</a>.
+			Do not have an account? <a class='form-label' href='app?methodName=register'>Register</a>.
   </span>
   <span class='form-label'>
 			Forgot password? <a class='form-label' href='app?methodName=restorePasswordRequest'>Restore</a>.
