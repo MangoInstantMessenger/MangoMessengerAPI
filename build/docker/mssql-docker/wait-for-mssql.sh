@@ -1,4 +1,4 @@
-COUNT_DB=$(sqlcmd -l 150 -h-1 -V1 -S localhost,1433 -U sa -P ${PASSWORD_DATABASE} -Q "SET NOCOUNT ON;SELECT COUNT(name) FROM master.sys.databases")
+COUNT_DB=$(sqlcmd -l 200 -h-1 -V1 -S localhost,1433 -U sa -P ${PASSWORD_DATABASE} -Q "SET NOCOUNT ON;SELECT COUNT(name) FROM master.sys.databases")
 
 COUNT_DB="${COUNT_DB//[$'\t\r\n ']}"
 

@@ -66,9 +66,6 @@ jobs:
         env:
           CONTAINER_NAME: mango-mssql-db
           PASSWORD_DATABASE: x2yiJt!Fs
-      
-      # - name: 🕔 Wait for database to be ready (Old Variant) 🕔
-      #   run: pwsh -c ./build/docker/mssql-docker/wait_database.ps1
 
       - name: Buillding `efbundle` & Applying EF Core migrations (EXPEREMENTAL method)
         run: |
