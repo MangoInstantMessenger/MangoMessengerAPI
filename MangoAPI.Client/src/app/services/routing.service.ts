@@ -19,8 +19,17 @@ export class RoutingService {
       case 'checkEmailNote':
         this.router.navigate(['check-email-note'], {skipLocationChange: true}).then(r => r);
         break;
+      case 'restorePasswordRequest':
+        this.router.navigate(['restore-password-request'], {skipLocationChange: true}).then(r => r);
+        break;
+      case 'restorePassword':
+        this.router.navigate(['restore-password'], {skipLocationChange: true}).then(r => r);
+        break;
       case 'redirectToConfirmRegistration':
         this.router.navigate(['redirect-to-confirm-registration'], {skipLocationChange: true}).then(r => r);
+        break;
+      case 'redirectToRestorePassword':
+        this.router.navigate(['redirect-to-restore-password'], {skipLocationChange: true}).then(r => r);
         break;
       case 'login':
         this.router.navigate(['login'], {skipLocationChange: true}).then(r => r);

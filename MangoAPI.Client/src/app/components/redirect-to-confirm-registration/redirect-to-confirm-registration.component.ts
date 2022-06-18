@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import {ActivatedRoute} from "@angular/router";
 import {RoutingService} from "../../services/routing.service";
 import {ConfirmEmailObject} from "../../types/query-objects/ConfirmEmailObject";
 
@@ -10,8 +9,7 @@ import {ConfirmEmailObject} from "../../types/query-objects/ConfirmEmailObject";
 })
 export class RedirectToConfirmRegistrationComponent implements OnInit {
 
-  constructor(private _route: ActivatedRoute,
-              private _routingService: RoutingService) { }
+  constructor(private _routingService: RoutingService) { }
 
   ngOnInit(): void {
     let params = new URLSearchParams(window.location.search);

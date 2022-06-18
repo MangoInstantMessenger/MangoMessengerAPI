@@ -1,4 +1,4 @@
-﻿export class ResetPasswordRequest {
+﻿export class RestorePasswordRequest {
   requestId: string | null;
   newPassword: string;
   repeatPassword: string;

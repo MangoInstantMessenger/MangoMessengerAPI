@@ -25,7 +25,7 @@ export class ConfirmRegistrationComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    const confirmEmailObject = this._routingService.getQueryData();
+    const confirmEmailObject: ConfirmEmailObject = this._routingService.getQueryData();
 
     if(!confirmEmailObject.email || !confirmEmailObject.emailCode) {
       alert('Verification link invalid or expired');
