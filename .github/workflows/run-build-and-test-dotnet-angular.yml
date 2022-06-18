@@ -14,7 +14,7 @@ on:
 
 jobs:
   build-and-test:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     
     steps:
       - name: 📝 Fetch Sources 📝
@@ -51,17 +51,32 @@ jobs:
       - name: 🛠 Build .NET Solution 🛠
         run: dotnet build --no-restore /p:ContinuousIntegrationBuild=true
 
-      - name: 🚀 Login to the container registry 🚀
-        run: echo "$DOCKER_PASSWORD" | docker login docker.io -u "$DOCKER_USERNAME" --password-stdin
-        env:
-          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
-          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+      # - name: 🚀 Login to the container registry 🚀
+      #   run: echo "$DOCKER_PASSWORD" | docker login docker.io -u "$DOCKER_USERNAME" --password-stdin
+      #   env:
+      #     DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+      #     DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
 
       - name: 🐋 Run SQLServer docker container 🐋
-        run: docker run -e 'SA_PASSWORD=x2yiJt!Fs' --name mango-mssql-db -p 1433:1433 -d petrokolosov/mango-mssql-db:latest
+        run: |
+          docker run -e 'SA_PASSWORD=x2yiJt!Fs' -e ACCEPT_EULA=y --name mango-mssql-db --hostname mango-mssql-db -p 1433:1433 -d mcr.microsoft.com/mssql/server:2019-latest
 
       - name: 🕔 Wait for database to be ready 🕔
-        run: pwsh -c ./build/docker/mssql-docker/wait_database.ps1
+        run: bash ./build/docker/mssql-docker/wait-for-mssql.sh
+        env:
+          CONTAINER_NAME: mango-mssql-db
+          PASSWORD_DATABASE: x2yiJt!Fs
+
+      - name: Buillding `efbundle` & Applying EF Core migrations (EXPEREMENTAL method)
+        run: |
+          cd ./MangoAPI.Infrastructure
+          dotnet tool install --global dotnet-ef
+          dotnet ef migrations bundle --self-contained -r linux-x64
+          ./efbundle
+          rm efbundle
+        env:
+          MANGO_DATABASE_URL: ${{ secrets.MANGO_INTEGRATION_TESTS_DATABASE_URL }}
+          MANGO_SEED_PASSWORD: ${{ secrets.MANGO_SEED_PASSWORD }}
 
       - name: ✅ Run Integration Tests (Codecov) ✅
         run: dotnet test MangoAPI.IntegrationTests/MangoAPI.IntegrationTests.csproj --no-build --verbosity normal /p:CollectCoverage=true /p:Exclude="[*DataAccess]*" /p:CoverletOutputFormat=opencover
