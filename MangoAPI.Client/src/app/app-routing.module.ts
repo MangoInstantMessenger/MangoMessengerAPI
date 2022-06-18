@@ -11,14 +11,14 @@ import { ChatsComponent } from './components/chats/chats.component';
 import { ContactsComponent } from './components/contacts/contacts.component';
 import { SettingsComponent } from './components/settings/settings.component';
 import { CreateGroupComponent } from "./components/create-group/create-group.component";
-import { ConfirmRegistrationNoteComponent } from "./components/confirm-registration-note/confirm-registration-note.component";
+import { CheckEmailNoteComponent } from "./components/check-email-note/check-email-note.component";
 import { RedirectToConfirmRegistrationComponent }
   from "./components/redirect-to-confirm-registration/redirect-to-confirm-registration.component";
 
 const routes: Routes = [
   { path: 'register', component: RegisterComponent },
   { path: 'confirm-registration', component: ConfirmRegistrationComponent },
-  { path: 'confirm-registration-note', component: ConfirmRegistrationNoteComponent },
+  { path: 'check-email-note', component: CheckEmailNoteComponent },
   { path: 'redirect-to-confirm-registration', component: RedirectToConfirmRegistrationComponent },
   { path: 'login', component: LoginComponent },
   {

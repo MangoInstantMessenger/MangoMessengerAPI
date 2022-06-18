@@ -18,7 +18,7 @@ import { AuthInterceptor } from './interceptors/auth-interceptor.service';
 import { DatePipe } from '@angular/common';
 import { CreateGroupComponent } from './components/create-group/create-group.component';
 import { FormsModule } from '@angular/forms';
-import { ConfirmRegistrationNoteComponent } from './components/confirm-registration-note/confirm-registration-note.component';
+import { CheckEmailNoteComponent } from './components/check-email-note/check-email-note.component';
 import { RedirectToConfirmRegistrationComponent } from './components/redirect-to-confirm-registration/redirect-to-confirm-registration.component';
 
 @NgModule({
@@ -35,7 +35,7 @@ import { RedirectToConfirmRegistrationComponent } from './components/redirect-to
     GatewayComponent,
     NotFoundComponent,
     CreateGroupComponent,
-    ConfirmRegistrationNoteComponent,
+    CheckEmailNoteComponent,
     RedirectToConfirmRegistrationComponent
   ],
   imports: [BrowserModule, AppRoutingModule, FormsModule, HttpClientModule],

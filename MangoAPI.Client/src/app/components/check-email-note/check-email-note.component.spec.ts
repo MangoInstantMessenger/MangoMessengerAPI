@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ConfirmRegistrationNoteComponent } from './confirm-registration-note.component';
+import { CheckEmailNoteComponent } from './check-email-note.component';
 
 describe('ConfirmRegistrationNoteComponent', () => {
-  let component: ConfirmRegistrationNoteComponent;
-  let fixture: ComponentFixture<ConfirmRegistrationNoteComponent>;
+  let component: CheckEmailNoteComponent;
+  let fixture: ComponentFixture<CheckEmailNoteComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ConfirmRegistrationNoteComponent ]
+      declarations: [ CheckEmailNoteComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ConfirmRegistrationNoteComponent);
+    fixture = TestBed.createComponent(CheckEmailNoteComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
