@@ -59,7 +59,7 @@ jobs:
 
       - name: 🐋 Run SQLServer docker container 🐋
         run: |
-          docker run -e 'SA_PASSWORD=x2yiJt_Fs' --name mango-mssql-db --hostname mango-mssql-db -p 1433:1433 -d mcr.microsoft.com/mssql/server:2019-latest
+          docker run -e 'SA_PASSWORD=x2yiJt_Fs' -e ACCEPT_EULA=y --name mango-mssql-db --hostname mango-mssql-db -p 1433:1433 -d mcr.microsoft.com/mssql/server:2019-latest
           sleep 1m
           docker ps -a
           docker logs mango-mssql-db
