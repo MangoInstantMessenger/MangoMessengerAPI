@@ -14,12 +14,16 @@ import { CreateGroupComponent } from "./components/create-group/create-group.com
 import { CheckEmailNoteComponent } from "./components/check-email-note/check-email-note.component";
 import { RedirectToConfirmRegistrationComponent }
   from "./components/redirect-to-confirm-registration/redirect-to-confirm-registration.component";
+import {
+  RedirectToRestorePasswordComponent
+} from "./components/redirect-to-restore-password/redirect-to-restore-password.component";
 
 const routes: Routes = [
   { path: 'register', component: RegisterComponent },
   { path: 'confirm-registration', component: ConfirmRegistrationComponent },
   { path: 'check-email-note', component: CheckEmailNoteComponent },
   { path: 'redirect-to-confirm-registration', component: RedirectToConfirmRegistrationComponent },
+  { path: 'redirect-to-restore-password', component: RedirectToRestorePasswordComponent },
   { path: 'login', component: LoginComponent },
   {
     path: 'restore-password-request',

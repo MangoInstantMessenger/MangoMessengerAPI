@@ -3,26 +3,28 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { IBaseResponse } from '../types/responses/IBaseResponse';
-import { ResetPasswordRequest } from '../types/requests/ResetPasswordRequest';
+import { RestorePasswordRequest } from '../types/requests/RestorePasswordRequest';
 
 @Injectable({
   providedIn: 'root'
 })
-export class PasswordResetService {
+export class PasswordRestoreService {
   constructor(private httpClient: HttpClient) {}
 
   private currentRoute = 'api/password-restore-request/';
 
   // POST /api/password-restore-request/{emailOrPhone}
-  sendPasswordResetRequest(email: string): Observable<IBaseResponse> {
+  sendPasswordRestoreRequest(email: string): Observable<IBaseResponse> {
     return this.httpClient.post<IBaseResponse>(
-      environment.baseUrl + this.currentRoute + email,
+      environment.baseUrl + this.currentRoute + '?email=' + email,
       {}
     );
   }
 
   // PUT /api/password-restore-request
-  resetPassword(request: ResetPasswordRequest): Observable<IBaseResponse> {
+  restorePassword(request: RestorePasswordRequest): Observable<IBaseResponse> {
+    console.log(environment.baseUrl + this.currentRoute);
+    console.log(request);
     return this.httpClient.put<IBaseResponse>(
       environment.baseUrl + this.currentRoute,
       request
