@@ -1,9 +1,9 @@
 $ContainerName = 'mango-mssql-db'
-$ContainerLogPatternForDatabaseReady = "Changed database context to 'MANGO_DEV'."
+$ContainerLogPatternForDatabaseReady = "SQL Server is now ready for client connections. This is an informational message; no user action is required."
         
 for(;;) {
     $isDatabaseReady = 
-    docker logs --tail 50 $ContainerName | Select-String -Pattern $ContainerLogPatternForDatabaseReady -SimpleMatch -Quiet
+    docker logs --tail 100 $ContainerName | Select-String -Pattern $ContainerLogPatternForDatabaseReady -SimpleMatch -Quiet
         
     if ($isDatabaseReady -eq $true) {
         Write-Output "`n`nDatabase running inside container ""$ContainerName"" is ready to accept incoming connections"
