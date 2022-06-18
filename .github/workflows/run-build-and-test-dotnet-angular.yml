@@ -60,6 +60,11 @@ jobs:
       - name: 🐋 Run SQLServer docker container 🐋
         run: docker run -e 'SA_PASSWORD=x2yiJt_Fs' --name mango-mssql-db --hostname mango-mssql-db -p 1433:1433 -d mcr.microsoft.com/mssql/server:2019-latest
 
+      - name: Install a SQL Server suite of tools
+        uses: potatoqualitee/mssqlsuite@v1.5.1
+        with:
+          install: sqlclient
+
       - name: 🕔 Wait for database to be ready 🕔
         run: bash ./build/docker/mssql-docker/wait-for-mssql.sh
         env:
