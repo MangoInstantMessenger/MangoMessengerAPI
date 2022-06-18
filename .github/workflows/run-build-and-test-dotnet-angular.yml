@@ -61,7 +61,7 @@ jobs:
         run: docker run -e 'SA_PASSWORD=x2yiJt!Fs' --name mango-mssql-db --hostname mango-mssql-db -p 1433:1433 -d mcr.microsoft.com/mssql/server:2019-latest
 
       - name: 🕔 Wait for database to be ready 🕔
-        run: pwsh -c ./build/docker/mssql-docker/wait_database.ps1
+        run: ./build/docker/mssql-docker/wait-for-mssql.sh mango-mssql-db x2yiJt!Fs
 
       - name: Buillding `efbundle` & Applying EF Core migrations (EXPEREMENTAL method)
         run: |
