@@ -61,7 +61,7 @@ jobs:
         run: docker run -e 'SA_PASSWORD=x2yiJt_Fs' --name mango-mssql-db --hostname mango-mssql-db -p 1433:1433 -d mcr.microsoft.com/mssql/server:2019-latest
 
       - name: 🕔 Wait for database to be ready 🕔
-        run: ./build/docker/mssql-docker/wait-for-mssql.sh
+        run: bash ./build/docker/mssql-docker/wait-for-mssql.sh
         env:
           CONTAINER_NAME: mango-mssql-db
           PASSWORD_DATABASE: x2yiJt_Fs
