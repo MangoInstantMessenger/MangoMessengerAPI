@@ -16,9 +16,8 @@ export class RoutingService {
       case 'register':
         this.router.navigate(['register'], {skipLocationChange: true}).then(r => r);
         break;
-      case 'confirmRegistrationNote':
-        console.log(methodName);
-        this.router.navigate(['confirm-registration-note'], {skipLocationChange: true}).then(r => r);
+      case 'checkEmailNote':
+        this.router.navigate(['check-email-note'], {skipLocationChange: true}).then(r => r);
         break;
       case 'redirectToConfirmRegistration':
         this.router.navigate(['redirect-to-confirm-registration'], {skipLocationChange: true}).then(r => r);

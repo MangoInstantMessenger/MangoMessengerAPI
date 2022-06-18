@@ -35,7 +35,7 @@ export class RegisterComponent {
     }
 
     this._usersService.createUser(this.registerCommand).subscribe(_ => {
-        this._router.navigateByUrl('app?methodName=confirmRegistrationNote').then(r => r);
+        this._router.navigateByUrl('app?methodName=checkEmailNote').then(r => r);
       }, error => {
         this._errorNotificationService.notifyOnError(error);
       }

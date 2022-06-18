@@ -11,7 +11,7 @@ import {RoutingService} from "../../services/routing.service";
   templateUrl: './confirm-registration.component.html',
   styleUrls: ['./confirm-registration.component.scss']
 })
-export class ConfirmRegistrationComponent implements OnInit{
+export class ConfirmRegistrationComponent implements OnInit {
 
   public response: IBaseResponse = {
     message: "",
