@@ -5,6 +5,7 @@ import {RestorePasswordRequest} from "../../types/requests/RestorePasswordReques
 import {RestorePasswordObject} from "../../types/query-objects/RestorePasswordObject";
 import {Router} from "@angular/router";
 import {ErrorNotificationService} from "../../services/error-notification.service";
+import {ValidationService} from "../../services/validation.service";
 
 @Component({
   selector: 'app-restore-password',
@@ -15,12 +16,25 @@ export class RestorePasswordComponent{
   constructor(private _routingService: RoutingService,
               private _restorePasswordService: PasswordRestoreService,
               private _router: Router,
-              private _errorNotificationService: ErrorNotificationService) {}
+              private _errorNotificationService: ErrorNotificationService,
+              private _validationService: ValidationService) {}
 
   public newPassword: string = '';
   public repeatPassword: string = '';
 
   onRestorePasswordClick(): void {
+    let newPasswordFieldValidationResult = this._validationService.validateField(this.newPassword, "New password");
+    let repeatPasswordFieldValidationResult = this._validationService.validateField(this.repeatPassword, "Repeat password");
+
+    if(!newPasswordFieldValidationResult || !repeatPasswordFieldValidationResult) {
+      return;
+    }
+
+    if(this.newPassword !== this.repeatPassword) {
+      alert("New password must be equal repeat password");
+      return;
+    }
+
     const restorePasswordQueryObject: RestorePasswordObject = this._routingService.getQueryData();
 
     if(!restorePasswordQueryObject.requestId) {
@@ -34,7 +48,6 @@ export class RestorePasswordComponent{
       alert("Password restoration succeeded!");
       this._router.navigateByUrl("app?methodName=login").then(r => r);
     }, error => {
-      console.log('abc');
       this._errorNotificationService.notifyOnError(error);
     })
   }

@@ -23,8 +23,6 @@ export class PasswordRestoreService {
 
   // PUT /api/password-restore-request
   restorePassword(request: RestorePasswordRequest): Observable<IBaseResponse> {
-    console.log(environment.baseUrl + this.currentRoute);
-    console.log(request);
     return this.httpClient.put<IBaseResponse>(
       environment.baseUrl + this.currentRoute,
       request
