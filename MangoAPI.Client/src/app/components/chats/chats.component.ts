@@ -47,6 +47,6 @@ export class ChatsComponent implements OnInit {
   }
 
   toShortTimeString(date: string): string {
-    return formatDate(date, "hh:mm", "en-US");
+    return formatDate(date, "hh:mm a", "en-US");
   }
 }
