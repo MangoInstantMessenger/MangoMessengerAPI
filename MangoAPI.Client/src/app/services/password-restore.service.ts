@@ -11,7 +11,7 @@ import { RestorePasswordRequest } from '../types/requests/RestorePasswordRequest
 export class PasswordRestoreService {
   constructor(private httpClient: HttpClient) {}
 
-  private currentRoute = 'api/password-restore-request/';
+  private currentRoute = 'api/password-restore-request';
 
   // POST /api/password-restore-request/{emailOrPhone}
   sendPasswordRestoreRequest(email: string): Observable<IBaseResponse> {

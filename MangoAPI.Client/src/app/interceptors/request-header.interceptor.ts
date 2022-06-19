@@ -8,16 +8,17 @@ import {
 } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { SessionService } from '../services/session.service';
+import {TokensService} from "../services/tokens.service";
 
 @Injectable()
 export class RequestHeaderInterceptor implements HttpInterceptor {
-  constructor(private sessionService: SessionService) {}
+  constructor(private tokensService: TokensService) {}
 
   intercept(
     request: HttpRequest<unknown>,
     next: HttpHandler
   ): Observable<HttpEvent<unknown>> {
-    const accessToken = this.sessionService.getTokens()?.accessToken;
+    const accessToken = this.tokensService.getTokens()?.accessToken;
 
     const addHeaderRequest = request.clone({
       headers: new HttpHeaders({ Authorization: 'Bearer ' + accessToken })
