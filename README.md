@@ -50,7 +50,8 @@ environment variables:
 - `MANGO_MAILGUN_API_DOMAIN`: Verified domain used in MailGun service
 - `MANGO_API_ADDRESS`: Used for Diffie-Hellman handshake test (default: `https://localhost:5001`)
 - `MANGO_INTEGRATION_TESTS_DATABASE_URL`: SQL server database used for integration tests (
-  default: `Data Source=DESKTOP-1V4TC6J;Initial Catalog=MangoIntegrationTests;Integrated Security=true;Encrypt=True;TrustServerCertificate=True;Connection Timeout=30;`),
+  default: `Data Source=DESKTOP-1V4TC6J;Initial Catalog=MangoIntegrationTests;Integrated Security=true;Encrypt=True;TrustServerCertificate=True;Connection Timeout=30;`)
+  ,
   connection string for the database in docker has
   format: `Server=tcp:localhost,1444;Initial Catalog=MANGO_DEV;Persist Security Info=False;User ID=sa;Password=x2yiJt!Fs;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=True;Connection Timeout=30;`
 
@@ -104,11 +105,27 @@ As image below shows
 
 ## Versions
 
-- **SDK:** `.NET 6.0.202`
+- **.NET SDK:** `.NET 6.0.202`
 - **Angular:** `13.3.5`
 - **Angular CLI:** `13.3.4`
 - **NodeJS:** `16.13.1`
 - **NPM:** `8.1.2`
+
+## How to run Angular project
+
+Perform the following steps:
+
+- Install NVM: https://github.com/coreybutler/nvm-windows
+- Install NodeJS 14.17.3 using NVM via PowerShell as Administrator: `nvm install 16.13.1`
+- Use NodeJS 14.17.3 using NVM via PowerShell as Administrator: `nvm use 16.13.1`
+- Check NodeJS installed properly (should be 16.13.1): `node -v`
+- Check NPM installed properly (should be 8.1.2): `npm -v`
+- Go to the project folder: `cd MangoAPI.Client`
+- Restore node modules: `npm ci`
+- Install Angular CLI globally: `npm install -g @angular/cli@13.3.4`
+- Open PowerShell as Administrator and type: `Set-ExecutionPolicy -ExecutionPolicy RemoteSigned`
+- Check that Angular CLI installed properly: `ng version`
+- Run project: `ng serve`
 
 ## Tasks management
 
