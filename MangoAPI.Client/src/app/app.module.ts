@@ -12,7 +12,7 @@ import { SettingsComponent } from './components/settings/settings.component';
 import { ConfirmRegistrationComponent } from './components/confirm-registration/confirm-registration.component';
 import { GatewayComponent } from './components/gateway/gateway.component';
 import { NotFoundComponent } from './components/not-found/not-found.component';
-import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { RequestHeaderInterceptor } from './interceptors/request-header.interceptor';
 import { AuthInterceptor } from './interceptors/auth-interceptor.service';
 import { DatePipe } from '@angular/common';

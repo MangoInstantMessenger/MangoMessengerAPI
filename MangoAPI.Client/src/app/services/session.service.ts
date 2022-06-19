@@ -5,8 +5,6 @@ import { environment } from '../../environments/environment';
 import { LoginCommand } from '../types/requests/LoginCommand';
 import { ITokensResponse } from '../types/responses/ITokensResponse';
 import { IBaseResponse } from '../types/responses/IBaseResponse';
-import { ITokens } from '../types/models/ITokens';
-
 @Injectable({
   providedIn: 'root'
 })

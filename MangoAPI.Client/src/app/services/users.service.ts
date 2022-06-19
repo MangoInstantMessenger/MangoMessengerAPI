@@ -6,7 +6,6 @@ import { UpdateUserSocialsCommand } from '../types/requests/UpdateUserSocialsCom
 import { IBaseResponse } from '../types/responses/IBaseResponse';
 import { IGetUserResponse } from '../types/responses/IGetUserResponse';
 import { RegisterCommand } from '../types/requests/RegisterCommand';
-import { ITokensResponse } from '../types/responses/ITokensResponse';
 import { VerifyEmailCommand } from '../types/requests/VerifyEmailCommand';
 import { UpdateAccountInformationCommand } from '../types/requests/UpdateAccountInformationCommand';
 import { ISearchContactsResponse } from '../types/responses/ISearchContactsResponse';

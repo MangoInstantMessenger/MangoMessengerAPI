@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {ConfirmEmailObject} from "../../types/query-objects/ConfirmEmailObject";
-import {ActivatedRoute, Router} from "@angular/router";
+import {Router} from "@angular/router";
 import {VerifyEmailCommand} from "../../types/requests/VerifyEmailCommand";
 import {IBaseResponse} from "../../types/responses/IBaseResponse";
 import {UsersService} from "../../services/users.service";
