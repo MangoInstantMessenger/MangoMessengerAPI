@@ -10,6 +10,9 @@ export class RoutingService {
 
   matchMethodName(methodName: string): void {
     switch(methodName) {
+      case 'chats':
+        this.router.navigate(['chats'], {skipLocationChange: true}).then(r => r);
+        break;
       case 'confirmRegistration':
         this.router.navigate(['confirm-registration'], {skipLocationChange: true}).then(r => r);
         break;

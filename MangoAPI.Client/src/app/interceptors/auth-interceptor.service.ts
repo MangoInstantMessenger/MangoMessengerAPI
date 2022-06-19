@@ -10,10 +10,13 @@ import { Observable, of, throwError } from 'rxjs';
 import { SessionService } from '../services/session.service';
 import { catchError, switchMap } from 'rxjs/operators';
 import { Router } from '@angular/router';
+import {TokensService} from "../services/tokens.service";
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
-  constructor(private sessionService: SessionService, private router: Router) {}
+  constructor(private tokensService: TokensService,
+    private sessionService: SessionService,
+    private router: Router) {}
 
   private handleAuthError(
     err: HttpErrorResponse,
@@ -26,14 +29,14 @@ export class AuthInterceptor implements HttpInterceptor {
       request.headers.get('Authorization')?.startsWith('Bearer');
 
     if (shouldHandle) {
-      let refreshToken = this.sessionService.getTokens()?.refreshToken ?? '';
+      let refreshToken = this.tokensService.getTokens()?.refreshToken ?? '';
 
       const refreshTokenResponse =
         this.sessionService.refreshSession(refreshToken);
       return refreshTokenResponse
         .pipe(
           switchMap((response) => {
-            this.sessionService.setTokens(response.tokens);
+            this.tokensService.setTokens(response.tokens);
 
             return next.handle(
               request.clone({
