@@ -234,38 +234,38 @@
             <div class="dropdown-divider"></div>
             <div class="dropdown-item dropdown-item-emoji">
               <div class="gap-fix d-flex mb-2">
-                <button class="button-dark emoji">😀</button>
-                <button class="button-dark emoji">😃</button>
-                <button class="button-dark emoji">😁</button>
-                <button class="button-dark emoji">😆</button>
-                <button class="button-dark emoji">😅</button>
+                <button class="button-dark emoji" (click)="onEmojiClick($event)">😀</button>
+                <button class="button-dark emoji" (click)="onEmojiClick($event)">😃</button>
+                <button class="button-dark emoji" (click)="onEmojiClick($event)">😁</button>
+                <button class="button-dark emoji" (click)="onEmojiClick($event)">😆</button>
+                <button class="button-dark emoji" (click)="onEmojiClick($event)">😅</button>
               </div>
               <div class="gap-fix d-flex mb-2">
-                <button class="button-dark emoji">😅</button>
-                <button class="button-dark emoji">😂</button>
-                <button class="button-dark emoji">🤣️</button>
-                <button class="button-dark emoji">😊</button>
-                <button class="button-dark emoji">😇</button>
+                <button class="button-dark emoji" (click)="onEmojiClick($event)">😅</button>
+                <button class="button-dark emoji" (click)="onEmojiClick($event)">😂</button>
+                <button class="button-dark emoji" (click)="onEmojiClick($event)">🤣️</button>
+                <button class="button-dark emoji" (click)="onEmojiClick($event)">😊</button>
+                <button class="button-dark emoji" (click)="onEmojiClick($event)">😇</button>
               </div>
               <div class="gap-fix d-flex mb-2">
-                <button class="button-dark emoji">🙂</button>
-                <button class="button-dark emoji">🙃</button>
-                <button class="button-dark emoji">😉</button>
-                <button class="button-dark emoji">😌</button>
-                <button class="button-dark emoji">😍</button>
+                <button class="button-dark emoji" (click)="onEmojiClick($event)">🙂</button>
+                <button class="button-dark emoji" (click)="onEmojiClick($event)">🙃</button>
+                <button class="button-dark emoji" (click)="onEmojiClick($event)">😉</button>
+                <button class="button-dark emoji" (click)="onEmojiClick($event)">😌</button>
+                <button class="button-dark emoji" (click)="onEmojiClick($event)">😍</button>
               </div>
               <div class="gap-fix d-flex mb-2">
-                <button class="button-dark emoji">🥰</button>
-                <button class="button-dark emoji">😘</button>
-                <button class="button-dark emoji">😗</button>
-                <button class="button-dark emoji">😙</button>
-                <button class="button-dark emoji">😚</button>
+                <button class="button-dark emoji" (click)="onEmojiClick($event)">🥰</button>
+                <button class="button-dark emoji" (click)="onEmojiClick($event)">😘</button>
+                <button class="button-dark emoji" (click)="onEmojiClick($event)">😗</button>
+                <button class="button-dark emoji" (click)="onEmojiClick($event)">😙</button>
+                <button class="button-dark emoji" (click)="onEmojiClick($event)">😚</button>
               </div>
             </div>
           </div>
         </div>
 
-        <textarea id="message-input" class="message-input overflow" placeholder="Write message..."></textarea>
+        <textarea id="message-input" class="message-input overflow" placeholder="Write message..." [(ngModel)]="messageText"></textarea>
         <button class="send-message">
           <img alt="Arrow Right Icon" src="./../../../assets/svg/arrow-right.svg">
         </button>
