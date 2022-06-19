@@ -12,7 +12,6 @@ import { ITokens } from '../types/models/ITokens';
 })
 export class SessionService {
   private sessionsRoute = 'api/sessions/';
-  private readonly LocalStorageTokenKey = 'MANGO_TOKEN';
 
   constructor(private httpClient: HttpClient) {}
 
@@ -45,20 +44,5 @@ export class SessionService {
     return this.httpClient.delete<IBaseResponse>(
       environment.baseUrl + this.sessionsRoute
     );
-  }
-
-  getTokens(): ITokens | null {
-    const tokensString = localStorage.getItem(this.LocalStorageTokenKey);
-
-    return tokensString === null ? null : JSON.parse(tokensString);
-  }
-
-  setTokens(tokens: ITokens): void {
-    const tokensStringify = JSON.stringify(tokens);
-    localStorage.setItem(this.LocalStorageTokenKey, tokensStringify);
-  }
-
-  clearTokens(): void {
-    localStorage.removeItem(this.LocalStorageTokenKey);
   }
 }
