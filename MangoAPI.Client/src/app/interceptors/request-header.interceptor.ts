@@ -7,7 +7,6 @@ import {
   HttpHeaders
 } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { SessionService } from '../services/session.service';
 import {TokensService} from "../services/tokens.service";
 
 @Injectable()
