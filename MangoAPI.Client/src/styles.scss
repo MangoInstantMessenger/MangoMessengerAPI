@@ -318,10 +318,10 @@ i {
       .message {
         color: white !important;
       }
-      border: 1px $orange solid;
+      border: 1px $orange solid !important;
     }
 
-    li {
+    .list-item {
       transition: all 0.3s ease;
       display: inline-flex;
       border: 1px $gray solid;
@@ -331,6 +331,7 @@ i {
 
       .content {
         margin-left: 14px;
+        width: 100%;
         .title {
           display: flex;
           align-items: center;
@@ -343,7 +344,7 @@ i {
             display: flex;
             justify-content: space-between !important;
             align-items: center;
-            width: 100%;
+            width: 100% !important;
             gap: 10px;
           }
         }
