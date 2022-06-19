@@ -92,7 +92,6 @@
               </div>
               <ng-template class="title" #elseBlock>
                 <div class="title">
-                  <img alt="Group Icon" class="mr-1" height="16" src="../../../assets/svg/direct.svg" width="16">
                   <div class="info">
                     <p>
                       {{chat.title}}
@@ -111,7 +110,7 @@
               <img alt="Chat avatar" class="avatar" src="{{chat.chatLogoImageUrl ? chat.chatLogoImageUrl : './../../../assets/img/chat-avatar.png'}}">
               <div class="content">
                 <div class="title" *ngIf="chat.communityType === 2; else elseBlock;">
-                  <img alt="Group Icon" class="mr-1" height="16" src="../../../assets/svg/direct.svg" width="16">
+                  <img alt="Group Icon" class="mr-1" height="16" src="../../../assets/svg/group.svg" width="16">
                   <div class="info">
                     <p>
                       {{chat.title}}
@@ -121,7 +120,6 @@
                 </div>
                 <ng-template class="title" #elseBlock>
                   <div class="title">
-                    <img alt="Group Icon" class="mr-1" height="16" src="../../../assets/svg/direct.svg" width="16">
                     <div class="info">
                       <p>
                         {{chat.title}}
