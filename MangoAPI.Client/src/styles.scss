@@ -448,9 +448,10 @@ i {
             text-overflow: ellipsis;
             overflow: hidden;
           }
-          p {
+          span {
             max-width: 500px;
             overflow-wrap: break-word;
+            user-select: text;
           }
         }
         .message-options {
