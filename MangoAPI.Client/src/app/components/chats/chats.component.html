@@ -78,7 +78,7 @@
       </header>
       <ul class="list overflow py-3 px-2">
         <li *ngFor="let chat of chats" class="mb-2">
-          <div class="list-item active" *ngIf="activeChatId === chat.chatId; else chatElse">
+          <div class="list-item active" (click)="onChatTabClick(chat.chatId)" *ngIf="activeChatId === chat.chatId; else chatElse">
             <img alt="Chat avatar" class="avatar" src="{{chat.chatLogoImageUrl ? chat.chatLogoImageUrl : './../../../assets/img/chat-avatar.png'}}">
             <div class="content">
               <div class="title" *ngIf="chat.communityType === 2; else elseBlock;">
@@ -106,7 +106,7 @@
             </div>
           </div>
           <ng-template #chatElse>
-            <div class="list-item">
+            <div class="list-item" (click)="onChatTabClick(chat.chatId)">
               <img alt="Chat avatar" class="avatar" src="{{chat.chatLogoImageUrl ? chat.chatLogoImageUrl : './../../../assets/img/chat-avatar.png'}}">
               <div class="content">
                 <div class="title" *ngIf="chat.communityType === 2; else elseBlock;">
