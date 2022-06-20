@@ -45,7 +45,7 @@ public class MessagesController : ApiControllerBase, IMessagesController
     {
         var userId = CorrelationContext.GetUserId();
 
-        var query = new GetMessagesQuery(chatId, userId);
+        var query = new GetMessagesQuery(userId, chatId);
 
         return await RequestAsync(query, cancellationToken);
     }

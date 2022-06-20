@@ -179,59 +179,61 @@
 
       <div id='chatMessages' class="chat-messages overflow background-pattern ">
         <ul>
-          <li class="message">
-            <div class="message-layout">
-              <img alt="User Avatar" class="user-avatar" src="./../../../assets/img/razumovsky_picture.jpg"/>
-              <div class="message-wrapper">
-                <div class="message-content">
-                  <div class="display-name">razumovsky r</div>
-                  <p>testttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttаааааа</p>
-                </div>
-                <div class="message-options gap-fix">
-                  <p class="message-time mr-2">12:56</p>
-                  <div class="message-button">
-                    <img alt="Reply Icon" src="./../../../assets/svg/reply.svg">
+          <li *ngFor="let message of messages">
+            <div class="message self" *ngIf="message.userId === this.userId; else elseBlock;">
+              <div class="message-layout active">
+                <img alt="User Avatar" class="user-avatar" src="{{message.messageAuthorPictureUrl}}"/>
+                <div class="message-wrapper">
+                  <div class="message-content">
+                    <div class="display-name">{{message.userDisplayName}}</div>
+                    <span>{{message.messageText}}</span>
+                  </div>
+                  <div class="message-options gap-fix">
+                    <p class="message-time mr-2">{{toShortTimeString(message.createdAt)}}</p>
+                    <div class="dropdown">
+                      <button aria-expanded="false" aria-haspopup="true" class="message-button mr-2"
+                              data-toggle="dropdown" role="button" title="Details">
+                        <img alt="Horizontal Dots" src="./../../../assets/svg/dots-horizontal.svg"/>
+                      </button>
+                      <div class="dropdown-menu">
+                        <div class="dropdown-item" data-target="#startConversation" data-toggle="modal"
+                             role="button">
+                          <img alt="Edit Icon" class="mr-1" src="./../../../assets/svg/edit.svg">
+                          <span>Edit</span>
+                        </div>
+                        <div class="dropdown-item" data-target="#createGroup" data-toggle="modal"
+                             role="button">
+                          <img alt="Delete Message Icon" class="mr-1" src="./../../../assets/svg/trash.svg">
+                          <span class="text-red">Delete</span>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="message-button">
+                      <img alt="Reply Icon" src="./../../../assets/svg/reply.svg">
+                    </div>
                   </div>
                 </div>
               </div>
-
             </div>
-          </li>
-          <li class="message self">
-            <div class="message-layout">
-              <img alt="User Avatar" class="user-avatar" src="./../../../assets/img/razumovsky_picture.jpg"/>
-              <div class="message-wrapper">
-                <div class="message-content">
-                  <div class="display-name">razumovsky r</div>
-                  <p>testttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttаааааа</p>
-                </div>
-                <div class="message-options gap-fix">
-                  <p class="message-time">12:56</p>
-                  <button class="message-button mr-2">
-                    <img alt="Reply Icon" src="./../../../assets/svg/reply.svg">
-                  </button>
-                  <div class="dropdown">
-                    <button aria-expanded="false" aria-haspopup="true" class="message-button mr-2"
-                            data-bs-toggle="dropdown" title="Details">
-                      <img alt="Horizontal Dots" src="./../../../assets/svg/dots-horizontal.svg"/>
-                    </button>
-                    <div class="dropdown-menu">
-                      <div class="dropdown-item gapfix d-flex" data-target="#startConversation" data-toggle="modal"
-                           role="button">
-                        <img alt="Edit Icon" src="./../../../assets/svg/edit.svg">
-                        <span>Edit</span>
-                      </div>
-                      <div class="dropdown-item gapfix d-flex" data-target="#createGroup" data-toggle="modal"
-                           role="button">
-                        <img alt="Delete Message Icon" class="mr-1" src="./../../../assets/svg/trash.svg">
-                        <span class="text-red">Delete</span>
+            <ng-template #elseBlock>
+              <div class="message">
+                <div class="message-layout">
+                  <img alt="User Avatar" class="user-avatar" src="{{message.messageAuthorPictureUrl}}"/>
+                  <div class="message-wrapper">
+                    <div class="message-content">
+                      <div class="display-name">{{message.userDisplayName}}</div>
+                      <span>{{message.messageText}}</span>
+                    </div>
+                    <div class="message-options gap-fix">
+                      <p class="message-time mr-2">{{toShortTimeString(message.createdAt)}}</p>
+                      <div class="message-button">
+                        <img alt="Reply Icon" src="./../../../assets/svg/reply.svg">
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
-
-            </div>
+            </ng-template>
           </li>
         </ul>
       </div>

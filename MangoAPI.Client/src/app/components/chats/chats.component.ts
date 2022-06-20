@@ -5,6 +5,9 @@ import {CommunitiesService} from "../../services/communities.service";
 import {ErrorNotificationService} from "../../services/error-notification.service";
 import {Router} from "@angular/router";
 import {formatDate} from "@angular/common";
+import {MessagesService} from "../../services/messages.service";
+import {IMessage} from "../../types/models/IMessage";
+import {CommunityType} from "../../types/enums/CommunityType";
 
 @Component({
   selector: 'app-chats',
@@ -15,28 +18,48 @@ export class ChatsComponent implements OnInit {
 
   constructor(private _tokensService: TokensService,
               private _communitiesService: CommunitiesService,
+              private _messagesService: MessagesService,
               private _errorNotificationService: ErrorNotificationService,
               private _router: Router) {
   }
 
+  public userId: string | undefined = '';
   public chats: IChat[] = [];
+  public activeChat: IChat = {
+    lastMessageId: "",
+    lastMessageAuthor: "",
+    lastMessageText: "",
+    lastMessageTime: "",
+    updatedAt: "",
+    roleId: 1,
+    communityType: CommunityType.PublicChannel,
+    description: "",
+    chatId: "",
+    chatLogoImageUrl: "",
+    isArchived: false,
+    isMember: false,
+    membersCount: 0,
+    title: ""
+  };
   public activeChatId: string = '';
+  public messages: IMessage[] = [];
 
   public messageText: string = '';
 
   ngOnInit(): void {
-    let chatMessages = document.getElementById('chatMessages');
-    chatMessages!.scrollTop = chatMessages!.scrollHeight;
+    this.scrollToEnd();
+    let tokens = this._tokensService.getTokens();
+    if(!tokens) {
+      this._router.navigateByUrl('app?methodName=login').then(r => r);
+      return;
+    }
+    this.userId = tokens?.userId;
     this._communitiesService.getUserChats().subscribe(response => {
       this.chats = response.chats.filter(x => !x.isArchived);
       this.activeChatId = this.chats[0].chatId;
+      this.getChatMessages(this.activeChatId);
     }, error => {
       this._errorNotificationService.notifyOnError(error);
-
-      if (error.status === 403 || error.status === 0) {
-        this._router.navigateByUrl('app?methodName=login').then(r => r);
-        return;
-      }
     })
   }
 
@@ -48,5 +71,26 @@ export class ChatsComponent implements OnInit {
 
   toShortTimeString(date: string): string {
     return formatDate(date, "hh:mm a", "en-US");
+  }
+
+  getChatMessages(chatId: string | null): void {
+    if (chatId == null) return;
+
+    this._messagesService.getChatMessages(chatId).subscribe(response => {
+      this.messages = response.messages;
+      this.activeChatId = chatId;
+      this.activeChat = this.chats.filter(x => x.chatId === this.activeChatId)[0];
+      console.log(this.activeChat);
+      console.log(this.activeChatId)
+      console.log(response);
+      this.scrollToEnd();
+    }, error => {
+      this._errorNotificationService.notifyOnError(error);
+    });
+  }
+
+  scrollToEnd(): void {
+    let chatMessages = document.getElementById('chatMessages');
+    chatMessages!.scrollTop = chatMessages!.scrollHeight;
   }
 }
