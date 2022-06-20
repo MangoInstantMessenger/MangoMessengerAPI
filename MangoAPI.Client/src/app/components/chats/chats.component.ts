@@ -60,7 +60,7 @@ export class ChatsComponent implements OnInit {
       this.getChatMessages(this.activeChatId);
     }, error => {
       this._errorNotificationService.notifyOnError(error);
-    })
+    });
   }
 
   onEmojiClick(event: Event): void {
@@ -78,11 +78,6 @@ export class ChatsComponent implements OnInit {
 
     this._messagesService.getChatMessages(chatId).subscribe(response => {
       this.messages = response.messages;
-      this.activeChatId = chatId;
-      this.activeChat = this.chats.filter(x => x.chatId === this.activeChatId)[0];
-      console.log(this.activeChat);
-      console.log(this.activeChatId)
-      console.log(response);
       this.scrollToEnd();
     }, error => {
       this._errorNotificationService.notifyOnError(error);
@@ -92,5 +87,11 @@ export class ChatsComponent implements OnInit {
   scrollToEnd(): void {
     let chatMessages = document.getElementById('chatMessages');
     chatMessages!.scrollTop = chatMessages!.scrollHeight;
+  }
+
+  onChatTabClick(chatId: string): void {
+    this.activeChatId = chatId;
+    this.activeChat = this.chats.filter(x => x.chatId === this.activeChatId)[0];
+    this.getChatMessages(this.activeChatId);
   }
 }
