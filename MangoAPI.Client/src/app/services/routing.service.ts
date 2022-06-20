@@ -13,6 +13,9 @@ export class RoutingService {
       case 'chats':
         this.router.navigate(['chats'], {skipLocationChange: true}).then(r => r);
         break;
+      case 'createGroup':
+        this.router.navigate(['create-group'], {skipLocationChange: true}).then(r => r);
+        break;
       case 'confirmRegistration':
         this.router.navigate(['confirm-registration'], {skipLocationChange: true}).then(r => r);
         break;
