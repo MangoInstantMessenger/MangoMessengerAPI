@@ -87,7 +87,7 @@
                   <p>
                     {{chat.title}}
                   </p>
-                  <div>{{toShortTimeString(chat.lastMessageTime)}}</div>
+                  <div *ngIf="chatContainsMessages(chat)">{{toShortTimeString(chat.lastMessageTime)}}</div>
                 </div>
               </div>
               <ng-template class="title" #elseBlock>
@@ -96,13 +96,18 @@
                     <p>
                       {{chat.title}}
                     </p>
-                    <div>{{toShortTimeString(chat.lastMessageTime)}}</div>
+                    <div *ngIf="chatContainsMessages(chat)">{{toShortTimeString(chat.lastMessageTime)}}</div>
                   </div>
                 </div>
               </ng-template>
-              <div class="message">
-                <b>{{chat.lastMessageAuthor}}: </b>{{chat.lastMessageText}}
+              <div class="message" *ngIf="!chatContainsMessages(chat); else lastMessageElse">
+                Chat is currently empty
               </div>
+              <ng-template #lastMessageElse>
+                <div class="message">
+                  <b>{{chat.lastMessageAuthor}}: </b>{{chat.lastMessageText}}
+                </div>
+              </ng-template>
             </div>
           </div>
           <ng-template #chatElse>
@@ -115,7 +120,7 @@
                     <p>
                       {{chat.title}}
                     </p>
-                    <div>{{toShortTimeString(chat.lastMessageTime)}}</div>
+                    <div *ngIf="chatContainsMessages(chat)">{{toShortTimeString(chat.lastMessageTime)}}</div>
                   </div>
                 </div>
                 <ng-template class="title" #elseBlock>
@@ -124,13 +129,18 @@
                       <p>
                         {{chat.title}}
                       </p>
-                      <div>{{toShortTimeString(chat.lastMessageTime)}}</div>
+                      <div *ngIf="chatContainsMessages(chat)">{{toShortTimeString(chat.lastMessageTime)}}</div>
                     </div>
                   </div>
                 </ng-template>
-                <div class="message">
-                  <b>{{chat.lastMessageAuthor}}: </b>{{chat.lastMessageText}}
+                <div class="message" *ngIf="!chatContainsMessages(chat); else lastMessageElse">
+                  Chat is currently empty
                 </div>
+                <ng-template #lastMessageElse>
+                  <div class="message">
+                    <b>{{chat.lastMessageAuthor}}: </b>{{chat.lastMessageText}}
+                  </div>
+                </ng-template>
               </div>
             </div>
           </ng-template>
