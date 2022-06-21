@@ -1,4 +1,4 @@
-import {Component, Inject, LOCALE_ID, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {TokensService} from "../../services/tokens.service";
 import {IChat} from "../../types/models/IChat";
 import {CommunitiesService} from "../../services/communities.service";
@@ -56,6 +56,7 @@ export class ChatsComponent implements OnInit {
     this.userId = tokens?.userId;
     this._communitiesService.getUserChats().subscribe(response => {
       this.chats = response.chats.filter(x => !x.isArchived);
+      console.log(this.chats);
       this.activeChatId = this.chats[0].chatId;
       this.getChatMessages(this.activeChatId);
     }, error => {
@@ -93,5 +94,10 @@ export class ChatsComponent implements OnInit {
     this.activeChatId = chatId;
     this.activeChat = this.chats.filter(x => x.chatId === this.activeChatId)[0];
     this.getChatMessages(this.activeChatId);
+  }
+
+  chatContainsMessages(chat: IChat): boolean {
+    return chat.lastMessageAuthor != null &&
+      chat.lastMessageText != null;
   }
 }
