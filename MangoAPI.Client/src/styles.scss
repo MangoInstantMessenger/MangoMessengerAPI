@@ -181,7 +181,11 @@ i {
 
 .button-dark {
   background: $dark;
-  color: $light-gray;
+  color: $light-gray !important;
+  a {
+    text-decoration: none;
+    color: $light-gray !important;
+  }
   &:hover {
     background-color: #313136;
   }

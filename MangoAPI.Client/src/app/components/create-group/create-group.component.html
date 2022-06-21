@@ -5,15 +5,17 @@
     <input class='mb-3 form-input p-3 user-select-none'
            id='groupTitle'
            name='emailAddress' placeholder='Enter group title'
-           type='text'>
+           type='text'
+           [(ngModel)]="chatTitle">
 
     <label for='groupDescription'></label>
     <input class='mb-3 form-input p-3 user-select-none'
            id='groupDescription'
            name='groupDescription'
            placeholder='Enter group description'
-           type='text'>
+           type='text'
+           [(ngModel)]="chatDescription">
 
-    <button class='form-button p-3 font-weight-bold mb-3'>CREATE</button>
+    <button class='form-button p-3 font-weight-bold mb-3' (click)="onCreateChatClick()">CREATE</button>
   </div>
 </div>
