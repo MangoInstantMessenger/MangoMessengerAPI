@@ -52,13 +52,13 @@
         <div class="d-flex justify-content-between mt-2 gap-fix">
           <div class="dropdown">
             <button class="dropdown-toggle p-2 button-dark" data-bs-toggle="dropdown" href="#">
-              All chats
+              {{chatFilter}}
             </button>
             <div aria-labelledby="dLabel" class="dropdown-menu mt-0" role="menu">
-              <div class="dropdown-item">All chats</div>
-              <div class="dropdown-item">Groups</div>
-              <div class="dropdown-item">Direct chats</div>
-              <div class="dropdown-item">Archived</div>
+              <div class="dropdown-item" (click)="onChatFilterClick($event)">All chats</div>
+              <div class="dropdown-item" (click)="onChatFilterClick($event)">Groups</div>
+              <div class="dropdown-item" (click)="onChatFilterClick($event)">Direct chats</div>
+              <div class="dropdown-item" (click)="onChatFilterClick($event)">Archived</div>
             </div>
           </div>
           <div class="d-inline">
@@ -71,7 +71,7 @@
                      (keyup.enter)="onSearchChatClick()">
               <div class="input-group-prepend">
                 <button class="input-group-text" id="basic-addon1">
-                  <img alt=" Search Icon" (click)="onSearchChatClick()" src="./../../../assets/svg/search-icon.svg"/>
+                  <img alt="Search Icon" (click)="onSearchChatClick()" src="./../../../assets/svg/search-icon.svg"/>
                 </button>
               </div>
             </div>

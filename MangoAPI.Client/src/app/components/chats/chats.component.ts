@@ -46,19 +46,18 @@ export class ChatsComponent implements OnInit {
 
   public messageText: string = '';
   public searchChatQuery: string = '';
-
+  public chatFilter: string = 'All chats';
 
   ngOnInit(): void {
     this.scrollToEnd();
     let tokens = this._tokensService.getTokens();
-    if(!tokens) {
+    if (!tokens) {
       this._router.navigateByUrl('app?methodName=login').then(r => r);
       return;
     }
     this.userId = tokens?.userId;
     this._communitiesService.getUserChats().subscribe(response => {
       this.chats = response.chats.filter(x => !x.isArchived);
-      console.log(this.chats);
       this.activeChatId = this.chats[0].chatId;
       this.getChatMessages(this.activeChatId);
     }, error => {
@@ -109,5 +108,31 @@ export class ChatsComponent implements OnInit {
     }, error => {
       this._errorNotificationService.notifyOnError(error);
     })
+  }
+
+  onChatFilterClick(event: Event): void {
+    let div = event.currentTarget as HTMLDivElement;
+    this.chatFilter = div.innerText;
+
+    this._communitiesService.getUserChats().subscribe(response => {
+      let chats = response.chats;
+      switch (this.chatFilter) {
+        case 'All chats':
+          this.ngOnInit();
+          break;
+        case 'Groups':
+          this.chats = chats.filter(x => x.communityType === CommunityType.PublicChannel);
+          break;
+        case 'Direct chats':
+          this.chats = chats.filter(x => x.communityType === CommunityType.DirectChat);
+          break;
+        case 'Archived':
+          this.chats = chats.filter(x => x.isArchived);
+          break;
+      }
+    }, error => {
+      this._errorNotificationService.notifyOnError(error);
+    });
+
   }
 }
