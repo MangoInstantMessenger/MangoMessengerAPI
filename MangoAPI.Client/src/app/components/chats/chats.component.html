@@ -62,7 +62,7 @@
             </div>
           </div>
           <div class="d-inline">
-            <div class="input-group mb-3 ">
+            <div class="input-group mb-3">
               <label for="searchBar"></label>
               <input aria-describedby="basic-addon1" class="form-control ml-3" id="searchBar" name="searchBar"
                      placeholder="Search chats..."
@@ -162,9 +162,20 @@
             <span>2 members</span>
           </div>
           <div class="chat-actions">
-            <button class="button-dark">
-              <img alt="Search Icon" src="./../../../assets/svg/search-icon.svg"/>
-            </button>
+            <div class="input-group mb-3">
+              <label for="searchBar"></label>
+              <input aria-describedby="basic-addon2" class="form-control ml-3" id="searchMessageBar" name="searchMessageBar"
+                     placeholder="Search messages..."
+                     type="text"
+                     [(ngModel)]="searchChatQuery"
+                     (keyup.enter)="onSearchChatClick()">
+              <div class="input-group-prepend">
+                <button class="input-group-text" id="basic-addon2">
+                  <img alt="Search Icon" (click)="onSearchChatClick()" src="./../../../assets/svg/search-icon.svg"/>
+                </button>
+              </div>
+            </div>
+
             <div class="dropdown">
               <button aria-expanded="false" aria-haspopup="true" class="button-dark" data-bs-toggle="dropdown"
                       role="button" title="Details">
