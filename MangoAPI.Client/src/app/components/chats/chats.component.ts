@@ -46,6 +46,7 @@ export class ChatsComponent implements OnInit {
 
   public messageText: string = '';
   public searchChatQuery: string = '';
+  public searchMessagesQuery: string = '';
   public chatFilter: string = 'All chats';
 
   ngOnInit(): void {
@@ -133,6 +134,14 @@ export class ChatsComponent implements OnInit {
     }, error => {
       this._errorNotificationService.notifyOnError(error);
     });
+  }
 
+  onSearchMessageClick(): void {
+    this._messagesService.searchMessages(this.activeChatId, this.searchMessagesQuery).subscribe(response => {
+      this.messages = response.messages;
+      this.searchMessagesQuery = '';
+    }, error => {
+      this._errorNotificationService.notifyOnError(error);
+    })
   }
 }
