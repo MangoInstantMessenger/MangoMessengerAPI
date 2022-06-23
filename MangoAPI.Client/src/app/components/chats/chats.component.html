@@ -66,10 +66,12 @@
               <label for="searchBar"></label>
               <input aria-describedby="basic-addon1" class="form-control ml-3" id="searchBar" name="searchBar"
                      placeholder="Search chats..."
-                     type="text">
+                     type="text"
+                     [(ngModel)]="searchChatQuery"
+                     (keyup.enter)="onSearchChatClick()">
               <div class="input-group-prepend">
                 <button class="input-group-text" id="basic-addon1">
-                  <img alt=" Search Icon" src="./../../../assets/svg/search-icon.svg"/>
+                  <img alt=" Search Icon" (click)="onSearchChatClick()" src="./../../../assets/svg/search-icon.svg"/>
                 </button>
               </div>
             </div>

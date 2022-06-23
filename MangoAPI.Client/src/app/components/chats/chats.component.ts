@@ -45,6 +45,8 @@ export class ChatsComponent implements OnInit {
   public messages: IMessage[] = [];
 
   public messageText: string = '';
+  public searchChatQuery: string = '';
+
 
   ngOnInit(): void {
     this.scrollToEnd();
@@ -99,5 +101,13 @@ export class ChatsComponent implements OnInit {
   chatContainsMessages(chat: IChat): boolean {
     return chat.lastMessageAuthor != null &&
       chat.lastMessageText != null;
+  }
+
+  onSearchChatClick() {
+    this._communitiesService.searchChat(this.searchChatQuery).subscribe(response => {
+      this.chats = response.chats;
+    }, error => {
+      this._errorNotificationService.notifyOnError(error);
+    })
   }
 }
