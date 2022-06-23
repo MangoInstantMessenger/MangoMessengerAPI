@@ -22,7 +22,7 @@ export class ErrorNotificationService {
     }
 
     if (error.status === 400) {
-      alert(error.error.ErrorMessage);
+      alert(error.error.errorMessage);
       return;
     }
 
