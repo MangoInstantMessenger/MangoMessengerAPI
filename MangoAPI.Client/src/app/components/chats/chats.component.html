@@ -167,11 +167,11 @@
               <input aria-describedby="basic-addon2" class="form-control ml-3" id="searchMessageBar" name="searchMessageBar"
                      placeholder="Search messages..."
                      type="text"
-                     [(ngModel)]="searchChatQuery"
-                     (keyup.enter)="onSearchChatClick()">
+                     [(ngModel)]="searchMessagesQuery"
+                     (keyup.enter)="onSearchMessageClick()">
               <div class="input-group-prepend">
                 <button class="input-group-text" id="basic-addon2">
-                  <img alt="Search Icon" (click)="onSearchChatClick()" src="./../../../assets/svg/search-icon.svg"/>
+                  <img alt="Search Icon" (click)="onSearchMessageClick()" src="./../../../assets/svg/search-icon.svg"/>
                 </button>
               </div>
             </div>
