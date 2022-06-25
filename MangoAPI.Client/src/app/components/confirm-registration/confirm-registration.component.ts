@@ -8,8 +8,7 @@ import {RoutingService} from "../../services/routing.service";
 
 @Component({
   selector: 'app-confirm-registration',
-  templateUrl: './confirm-registration.component.html',
-  styleUrls: ['./confirm-registration.component.scss']
+  templateUrl: './confirm-registration.component.html'
 })
 export class ConfirmRegistrationComponent implements OnInit {
 

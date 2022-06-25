@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component} from '@angular/core';
 import {CommunitiesService} from "../../services/communities.service";
 import {CreateChannelCommand} from "../../types/requests/CreateChannelCommand";
 import {Router} from "@angular/router";
@@ -6,8 +6,7 @@ import {ErrorNotificationService} from "../../services/error-notification.servic
 
 @Component({
   selector: 'app-create-group',
-  templateUrl: './create-group.component.html',
-  styleUrls: ['./create-group.component.scss']
+  templateUrl: './create-group.component.html'
 })
 export class CreateGroupComponent{
 
