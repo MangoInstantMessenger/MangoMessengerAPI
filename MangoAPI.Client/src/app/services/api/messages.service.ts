@@ -1,14 +1,14 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { environment } from '../../environments/environment';
-import { IGetChatMessagesResponse } from '../types/responses/IGetChatMessagesResponse';
-import { SendMessageCommand } from '../types/requests/SendMessageCommand';
-import { ISendMessageResponse } from '../types/responses/ISendMessageResponse';
-import { IDeleteMessageResponse } from '../types/responses/IDeleteMessageResponse';
-import { EditMessageCommand } from '../types/requests/EditMessageCommand';
-import { IBaseResponse } from '../types/responses/IBaseResponse';
-import { DeleteMessageCommand } from '../types/requests/DeleteMessageCommand';
+import { environment } from '../../../environments/environment';
+import { IGetChatMessagesResponse } from '../../types/responses/IGetChatMessagesResponse';
+import { SendMessageCommand } from '../../types/requests/SendMessageCommand';
+import { ISendMessageResponse } from '../../types/responses/ISendMessageResponse';
+import { IDeleteMessageResponse } from '../../types/responses/IDeleteMessageResponse';
+import { EditMessageCommand } from '../../types/requests/EditMessageCommand';
+import { IBaseResponse } from '../../types/responses/IBaseResponse';
+import { DeleteMessageCommand } from '../../types/requests/DeleteMessageCommand';
 
 @Injectable({
   providedIn: 'root'

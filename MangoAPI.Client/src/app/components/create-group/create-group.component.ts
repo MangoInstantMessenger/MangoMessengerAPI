@@ -1,8 +1,8 @@
 import {Component} from '@angular/core';
-import {CommunitiesService} from "../../services/communities.service";
+import {CommunitiesService} from "../../services/api/communities.service";
 import {CreateChannelCommand} from "../../types/requests/CreateChannelCommand";
 import {Router} from "@angular/router";
-import {ErrorNotificationService} from "../../services/error-notification.service";
+import {ErrorNotificationService} from "../../services/messenger/error-notification.service";
 
 @Component({
   selector: 'app-create-group',

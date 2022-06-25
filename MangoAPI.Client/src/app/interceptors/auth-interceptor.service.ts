@@ -7,10 +7,10 @@ import {
   HttpErrorResponse
 } from '@angular/common/http';
 import { Observable, of, throwError } from 'rxjs';
-import { SessionService } from '../services/session.service';
+import { SessionService } from '../services/api/session.service';
 import { catchError, switchMap } from 'rxjs/operators';
 import { Router } from '@angular/router';
-import {TokensService} from "../services/tokens.service";
+import {TokensService} from "../services/messenger/tokens.service";
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {

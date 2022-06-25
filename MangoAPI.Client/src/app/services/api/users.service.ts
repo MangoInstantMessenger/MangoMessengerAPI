@@ -1,17 +1,17 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
-import { environment } from '../../environments/environment';
-import { UpdateUserSocialsCommand } from '../types/requests/UpdateUserSocialsCommand';
-import { IBaseResponse } from '../types/responses/IBaseResponse';
-import { IGetUserResponse } from '../types/responses/IGetUserResponse';
-import { RegisterCommand } from '../types/requests/RegisterCommand';
-import { VerifyEmailCommand } from '../types/requests/VerifyEmailCommand';
-import { UpdateAccountInformationCommand } from '../types/requests/UpdateAccountInformationCommand';
-import { ISearchContactsResponse } from '../types/responses/ISearchContactsResponse';
-import { ChangePasswordCommand } from '../types/requests/ChangePasswordCommand';
-import { IUser } from '../types/models/IUser';
-import { IUpdateProfilePictureResponse } from '../types/responses/IUpdateProfilePictureResponse';
+import { environment } from '../../../environments/environment';
+import { UpdateUserSocialsCommand } from '../../types/requests/UpdateUserSocialsCommand';
+import { IBaseResponse } from '../../types/responses/IBaseResponse';
+import { IGetUserResponse } from '../../types/responses/IGetUserResponse';
+import { RegisterCommand } from '../../types/requests/RegisterCommand';
+import { VerifyEmailCommand } from '../../types/requests/VerifyEmailCommand';
+import { UpdateAccountInformationCommand } from '../../types/requests/UpdateAccountInformationCommand';
+import { ISearchContactsResponse } from '../../types/responses/ISearchContactsResponse';
+import { ChangePasswordCommand } from '../../types/requests/ChangePasswordCommand';
+import { IUser } from '../../types/models/IUser';
+import { IUpdateProfilePictureResponse } from '../../types/responses/IUpdateProfilePictureResponse';
 
 @Injectable({
   providedIn: 'root'

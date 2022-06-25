@@ -3,8 +3,8 @@ import {ConfirmEmailObject} from "../../types/query-objects/ConfirmEmailObject";
 import {Router} from "@angular/router";
 import {VerifyEmailCommand} from "../../types/requests/VerifyEmailCommand";
 import {IBaseResponse} from "../../types/responses/IBaseResponse";
-import {UsersService} from "../../services/users.service";
-import {RoutingService} from "../../services/routing.service";
+import {UsersService} from "../../services/api/users.service";
+import {RoutingService} from "../../services/messenger/routing.service";
 
 @Component({
   selector: 'app-confirm-registration',

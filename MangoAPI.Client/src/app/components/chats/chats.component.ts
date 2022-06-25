@@ -1,11 +1,11 @@
 import {Component, OnInit} from '@angular/core';
-import {TokensService} from "../../services/tokens.service";
+import {TokensService} from "../../services/messenger/tokens.service";
 import {IChat} from "../../types/models/IChat";
-import {CommunitiesService} from "../../services/communities.service";
-import {ErrorNotificationService} from "../../services/error-notification.service";
+import {CommunitiesService} from "../../services/api/communities.service";
+import {ErrorNotificationService} from "../../services/messenger/error-notification.service";
 import {Router} from "@angular/router";
 import {formatDate} from "@angular/common";
-import {MessagesService} from "../../services/messages.service";
+import {MessagesService} from "../../services/api/messages.service";
 import {IMessage} from "../../types/models/IMessage";
 import {CommunityType} from "../../types/enums/CommunityType";
 

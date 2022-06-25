@@ -1,9 +1,9 @@
 import {Component} from '@angular/core';
 import {Router} from "@angular/router";
 import {RegisterCommand} from 'src/app/types/requests/RegisterCommand';
-import {UsersService} from "../../services/users.service";
-import {ValidationService} from "../../services/validation.service";
-import {ErrorNotificationService} from "../../services/error-notification.service";
+import {UsersService} from "../../services/api/users.service";
+import {ValidationService} from "../../services/messenger/validation.service";
+import {ErrorNotificationService} from "../../services/messenger/error-notification.service";
 
 @Component({
   selector: 'app-register',

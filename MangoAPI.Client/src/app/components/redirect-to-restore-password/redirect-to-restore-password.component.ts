@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {RoutingService} from "../../services/routing.service";
+import {RoutingService} from "../../services/messenger/routing.service";
 import {RestorePasswordObject} from "../../types/query-objects/RestorePasswordObject";
 import {Router} from "@angular/router";
 

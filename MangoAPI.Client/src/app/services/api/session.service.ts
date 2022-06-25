@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { environment } from '../../environments/environment';
-import { LoginCommand } from '../types/requests/LoginCommand';
-import { ITokensResponse } from '../types/responses/ITokensResponse';
-import { IBaseResponse } from '../types/responses/IBaseResponse';
+import { environment } from '../../../environments/environment';
+import { LoginCommand } from '../../types/requests/LoginCommand';
+import { ITokensResponse } from '../../types/responses/ITokensResponse';
+import { IBaseResponse } from '../../types/responses/IBaseResponse';
 @Injectable({
   providedIn: 'root'
 })

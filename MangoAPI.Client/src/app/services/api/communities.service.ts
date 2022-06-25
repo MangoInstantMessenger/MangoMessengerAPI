@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { environment } from '../../environments/environment';
-import { IGetUserChatsResponse } from '../types/responses/IGetUserChatsResponse';
-import { ICreateCommunityResponse } from '../types/responses/ICreateCommunityResponse';
-import { CreateChatCommand } from '../types/requests/CreateChatCommand';
-import { CreateChannelCommand } from '../types/requests/CreateChannelCommand';
-import { IUpdateChatLogoResponse } from '../types/responses/IUpdateChatLogoResponse';
+import { environment } from '../../../environments/environment';
+import { IGetUserChatsResponse } from '../../types/responses/IGetUserChatsResponse';
+import { ICreateCommunityResponse } from '../../types/responses/ICreateCommunityResponse';
+import { CreateChatCommand } from '../../types/requests/CreateChatCommand';
+import { CreateChannelCommand } from '../../types/requests/CreateChannelCommand';
+import { IUpdateChatLogoResponse } from '../../types/responses/IUpdateChatLogoResponse';
 
 @Injectable({
   providedIn: 'root'

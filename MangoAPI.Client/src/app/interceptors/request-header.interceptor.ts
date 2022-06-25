@@ -7,7 +7,7 @@ import {
   HttpHeaders
 } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import {TokensService} from "../services/tokens.service";
+import {TokensService} from "../services/messenger/tokens.service";
 
 @Injectable()
 export class RequestHeaderInterceptor implements HttpInterceptor {
