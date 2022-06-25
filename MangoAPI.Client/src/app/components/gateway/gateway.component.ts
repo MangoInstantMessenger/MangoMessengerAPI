@@ -5,8 +5,7 @@ import {SessionService} from "../../services/session.service";
 
 @Component({
   selector: 'app-gateway',
-  templateUrl: './gateway.component.html',
-  styleUrls: ['./gateway.component.scss']
+  templateUrl: './gateway.component.html'
 })
 export class GatewayComponent implements OnInit {
   constructor(private route: ActivatedRoute,

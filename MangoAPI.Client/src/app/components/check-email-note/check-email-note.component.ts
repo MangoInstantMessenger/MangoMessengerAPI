@@ -2,8 +2,7 @@ import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-check-email-note',
-  templateUrl: './check-email-note.component.html',
-  styleUrls: ['./check-email-note.component.scss']
+  templateUrl: './check-email-note.component.html'
 })
 export class CheckEmailNoteComponent {
 

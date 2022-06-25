@@ -9,8 +9,7 @@ import {ValidationService} from "../../services/validation.service";
 
 @Component({
   selector: 'app-restore-password',
-  templateUrl: './restore-password.component.html',
-  styleUrls: ['./restore-password.component.scss']
+  templateUrl: './restore-password.component.html'
 })
 export class RestorePasswordComponent{
   constructor(private _routingService: RoutingService,

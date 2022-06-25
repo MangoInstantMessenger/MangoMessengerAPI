@@ -4,8 +4,7 @@ import {ConfirmEmailObject} from "../../types/query-objects/ConfirmEmailObject";
 
 @Component({
   selector: 'app-redirect-to-confirm-registration',
-  templateUrl: './redirect-to-confirm-registration.component.html',
-  styleUrls: ['./redirect-to-confirm-registration.component.scss']
+  templateUrl: './redirect-to-confirm-registration.component.html'
 })
 export class RedirectToConfirmRegistrationComponent implements OnInit {
 

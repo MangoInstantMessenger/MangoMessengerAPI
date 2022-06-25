@@ -7,8 +7,7 @@ import {ErrorNotificationService} from "../../services/error-notification.servic
 
 @Component({
   selector: 'app-register',
-  templateUrl: './register.component.html',
-  styleUrls: ['./register.component.scss']
+  templateUrl: './register.component.html'
 })
 export class RegisterComponent {
   constructor(private _router: Router,

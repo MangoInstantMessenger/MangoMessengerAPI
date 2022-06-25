@@ -6,8 +6,7 @@ import {ErrorNotificationService} from "../../services/error-notification.servic
 
 @Component({
   selector: 'app-restore-password-request',
-  templateUrl: './restore-password-request.component.html',
-  styleUrls: ['./restore-password-request.component.scss']
+  templateUrl: './restore-password-request.component.html'
 })
 export class RestorePasswordRequestComponent {
   constructor(private _validationService: ValidationService,
