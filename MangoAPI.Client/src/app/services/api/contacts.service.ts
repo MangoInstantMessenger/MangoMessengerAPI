@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
-import { environment } from '../../environments/environment';
-import { IGetContactsResponse } from '../types/responses/IGetContactsResponse';
-import { IBaseResponse } from '../types/responses/IBaseResponse';
-import { ISearchContactsResponse } from '../types/responses/ISearchContactsResponse';
+import { environment } from '../../../environments/environment';
+import { IGetContactsResponse } from '../../types/responses/IGetContactsResponse';
+import { IBaseResponse } from '../../types/responses/IBaseResponse';
+import { ISearchContactsResponse } from '../../types/responses/ISearchContactsResponse';
 
 @Injectable({
   providedIn: 'root'

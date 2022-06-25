@@ -1,11 +1,11 @@
 import {Component} from '@angular/core';
-import {RoutingService} from "../../services/routing.service";
-import {PasswordRestoreService} from "../../services/password-restore.service";
+import {RoutingService} from "../../services/messenger/routing.service";
+import {PasswordRestoreService} from "../../services/api/password-restore.service";
 import {RestorePasswordRequest} from "../../types/requests/RestorePasswordRequest";
 import {RestorePasswordObject} from "../../types/query-objects/RestorePasswordObject";
 import {Router} from "@angular/router";
-import {ErrorNotificationService} from "../../services/error-notification.service";
-import {ValidationService} from "../../services/validation.service";
+import {ErrorNotificationService} from "../../services/messenger/error-notification.service";
+import {ValidationService} from "../../services/messenger/validation.service";
 
 @Component({
   selector: 'app-restore-password',

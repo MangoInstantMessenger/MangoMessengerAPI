@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
 import {LoginCommand} from "../../types/requests/LoginCommand";
-import {SessionService} from "../../services/session.service";
+import {SessionService} from "../../services/api/session.service";
 import {Router} from "@angular/router";
-import {ValidationService} from "../../services/validation.service";
-import {ErrorNotificationService} from "../../services/error-notification.service";
-import {TokensService} from "../../services/tokens.service";
+import {ValidationService} from "../../services/messenger/validation.service";
+import {ErrorNotificationService} from "../../services/messenger/error-notification.service";
+import {TokensService} from "../../services/messenger/tokens.service";
 
 @Component({
   selector: 'app-login',

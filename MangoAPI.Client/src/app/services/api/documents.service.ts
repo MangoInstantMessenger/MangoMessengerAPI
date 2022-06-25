@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { environment } from '../../environments/environment';
-import { IUploadDocumentResponse } from '../types/responses/IUploadDocumentResponse';
+import { environment } from '../../../environments/environment';
+import { IUploadDocumentResponse } from '../../types/responses/IUploadDocumentResponse';
 
 @Injectable({
   providedIn: 'root'

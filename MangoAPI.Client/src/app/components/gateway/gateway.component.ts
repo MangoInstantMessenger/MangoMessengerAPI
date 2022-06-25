@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import {RoutingService} from "../../services/routing.service";
-import {SessionService} from "../../services/session.service";
+import {RoutingService} from "../../services/messenger/routing.service";
+import {SessionService} from "../../services/api/session.service";
 
 @Component({
   selector: 'app-gateway',

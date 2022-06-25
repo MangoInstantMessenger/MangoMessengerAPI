@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
-import {ValidationService} from "../../services/validation.service";
-import {PasswordRestoreService} from "../../services/password-restore.service";
+import {ValidationService} from "../../services/messenger/validation.service";
+import {PasswordRestoreService} from "../../services/api/password-restore.service";
 import {Router} from "@angular/router";
-import {ErrorNotificationService} from "../../services/error-notification.service";
+import {ErrorNotificationService} from "../../services/messenger/error-notification.service";
 
 @Component({
   selector: 'app-restore-password-request',
