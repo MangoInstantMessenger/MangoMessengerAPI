@@ -67,10 +67,10 @@ jobs:
 #          CONTAINER_NAME: mango-mssql-db
 #          PASSWORD_DATABASE: x2yiJt!Fs
       
-      - name: Install Python 3.10.15
+      - name: Install Python 3.10.5
         uses: actions/setup-python@v4
         with:
-          python-version: '3.10.15'
+          python-version: '3.10.5'
           architecture: 'x64'
           
       - name: Install pyodbc
