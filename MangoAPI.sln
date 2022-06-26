@@ -75,6 +75,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "mssql-docker", "mssql-docke
 		build\docker\mssql-docker\readme.md = build\docker\mssql-docker\readme.md
 		build\docker\mssql-docker\run-initialization.sh = build\docker\mssql-docker\run-initialization.sh
 		build\docker\mssql-docker\wait_database.ps1 = build\docker\mssql-docker\wait_database.ps1
+		build\docker\mssql-docker\wait-for-mssql.sh = build\docker\mssql-docker\wait-for-mssql.sh
+		build\docker\mssql-docker\mssql_wait_database.py = build\docker\mssql-docker\mssql_wait_database.py
 	EndProjectSection
 EndProject
 Global

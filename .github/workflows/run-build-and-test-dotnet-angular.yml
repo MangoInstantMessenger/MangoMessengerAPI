@@ -66,9 +66,21 @@ jobs:
 #        env:
 #          CONTAINER_NAME: mango-mssql-db
 #          PASSWORD_DATABASE: x2yiJt!Fs
-          
+      
+      - name: Install Python 3.10.x and pyodbc
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10.x'
+          architecture: 'x64'
+        run: |
+          pip install pyodbc
+        
+#      - name: 🕔 Wait for database to be ready 🕔
+#        run: pwsh ./build/docker/mssql-docker/wait_database.ps1      
+      
       - name: 🕔 Wait for database to be ready 🕔
-        run: pwsh ./build/docker/mssql-docker/wait_database.ps1
+        run: |
+          python ./build/docker/mssql-docker/mssql_wait_database.py
 
       - name: 🛠 Building EFBundle & Applying EF Core Migrations 🛠
         run: |
