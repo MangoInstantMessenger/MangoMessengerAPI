@@ -8,8 +8,7 @@ on:
       - azure-qa
       - master
   pull_request:
-    branches:
-      - develop
+    branches: [ develop ]
   workflow_dispatch:
 
 jobs:
@@ -61,25 +60,25 @@ jobs:
         run: |
           docker run -e 'SA_PASSWORD=x2yiJt!Fs' -e ACCEPT_EULA=y --name mango-mssql-db --hostname mango-mssql-db -p 1433:1433 -d mcr.microsoft.com/mssql/server:2019-latest
 
-#      - name: 🕔 Wait for database to be ready 🕔
-#        run: bash ./build/docker/mssql-docker/wait-for-mssql.sh
-#        env:
-#          CONTAINER_NAME: mango-mssql-db
-#          PASSWORD_DATABASE: x2yiJt!Fs
-      
+      #      - name: 🕔 Wait for database to be ready 🕔
+      #        run: bash ./build/docker/mssql-docker/wait-for-mssql.sh
+      #        env:
+      #          CONTAINER_NAME: mango-mssql-db
+      #          PASSWORD_DATABASE: x2yiJt!Fs
+
       - name: Install Python 3.10.5
         uses: actions/setup-python@v4
         with:
           python-version: '3.10.5'
           architecture: 'x64'
-          
+
       - name: Install pyodbc
         run: |
           pip install pyodbc
-        
-#      - name: 🕔 Wait for database to be ready 🕔
-#        run: pwsh ./build/docker/mssql-docker/wait_database.ps1      
       
+      #      - name: 🕔 Wait for database to be ready 🕔
+      #        run: pwsh ./build/docker/mssql-docker/wait_database.ps1      
+
       - name: 🕔 Wait for database to be ready 🕔
         run: |
           python ./build/docker/mssql-docker/mssql_wait_database.py

@@ -18,6 +18,6 @@ while True:
         if result > 0:
             print('Database accepts connections!')
             break
-    except Exception:
-        print('Database cannot accept connections!')
+    except Exception as e:
+        print('Database cannot accept connections! ' + str(e))
         time.sleep(1)
