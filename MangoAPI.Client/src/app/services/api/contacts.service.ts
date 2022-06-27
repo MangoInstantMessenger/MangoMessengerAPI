@@ -2,9 +2,9 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
-import { IGetContactsResponse } from '../../types/responses/IGetContactsResponse';
-import { IBaseResponse } from '../../types/responses/IBaseResponse';
-import { ISearchContactsResponse } from '../../types/responses/ISearchContactsResponse';
+import { GetContactsResponse } from '../../types/responses/GetContactsResponse';
+import { BaseResponse } from '../../types/responses/BaseResponse';
+import { SearchContactsResponse } from '../../types/responses/SearchContactsResponse';
 
 @Injectable({
   providedIn: 'root'
@@ -15,30 +15,30 @@ export class ContactsService {
   constructor(private httpClient: HttpClient) {}
 
   // GET /api/contacts
-  getCurrentUserContacts(): Observable<IGetContactsResponse> {
-    return this.httpClient.get<IGetContactsResponse>(
+  getCurrentUserContacts(): Observable<GetContactsResponse> {
+    return this.httpClient.get<GetContactsResponse>(
       environment.baseUrl + this.contactsRoute
     );
   }
 
   // POST /api/contacts/{contactId}
-  addContact(userId: string): Observable<IBaseResponse> {
-    return this.httpClient.post<IGetContactsResponse>(
+  addContact(userId: string): Observable<BaseResponse> {
+    return this.httpClient.post<GetContactsResponse>(
       environment.baseUrl + this.contactsRoute + userId,
       {}
     );
   }
 
   // DELETE /api/contacts/{contactId}
-  deleteContact(userId: string): Observable<IBaseResponse> {
-    return this.httpClient.delete<IGetContactsResponse>(
+  deleteContact(userId: string): Observable<BaseResponse> {
+    return this.httpClient.delete<GetContactsResponse>(
       environment.baseUrl + this.contactsRoute + userId
     );
   }
 
   // GET /api/contacts/searches
-  searchContacts(displayName: string): Observable<ISearchContactsResponse> {
-    return this.httpClient.get<ISearchContactsResponse>(
+  searchContacts(displayName: string): Observable<SearchContactsResponse> {
+    return this.httpClient.get<SearchContactsResponse>(
       environment.baseUrl +
         this.contactsRoute +
         'searches?searchQuery=' +

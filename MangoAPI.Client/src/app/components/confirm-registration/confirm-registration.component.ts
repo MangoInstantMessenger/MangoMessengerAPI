@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {ConfirmEmailObject} from "../../types/query-objects/ConfirmEmailObject";
 import {Router} from "@angular/router";
 import {VerifyEmailCommand} from "../../types/requests/VerifyEmailCommand";
-import {IBaseResponse} from "../../types/responses/IBaseResponse";
+import {BaseResponse} from "../../types/responses/BaseResponse";
 import {UsersService} from "../../services/api/users.service";
 import {RoutingService} from "../../services/messenger/routing.service";
 
@@ -12,7 +12,7 @@ import {RoutingService} from "../../services/messenger/routing.service";
 })
 export class ConfirmRegistrationComponent implements OnInit {
 
-  public response: IBaseResponse = {
+  public response: BaseResponse = {
     message: "",
     success: false
   };

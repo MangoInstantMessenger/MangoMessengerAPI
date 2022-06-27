@@ -1,4 +1,4 @@
-﻿export interface IMessage {
+﻿export interface Message {
   messageId: string;
   userId: string;
   chatId: string;

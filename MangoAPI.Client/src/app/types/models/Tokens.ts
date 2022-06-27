@@ -1,4 +1,4 @@
-﻿export interface ITokens {
+﻿export interface Tokens {
   accessToken: string,
   refreshToken: string,
   userId: string,

@@ -1,12 +1,12 @@
 import {Component, OnInit} from '@angular/core';
 import {TokensService} from "../../services/messenger/tokens.service";
-import {IChat} from "../../types/models/IChat";
+import {Chat} from "../../types/models/Chat";
 import {CommunitiesService} from "../../services/api/communities.service";
 import {ErrorNotificationService} from "../../services/messenger/error-notification.service";
 import {Router} from "@angular/router";
 import {formatDate} from "@angular/common";
 import {MessagesService} from "../../services/api/messages.service";
-import {IMessage} from "../../types/models/IMessage";
+import {Message} from "../../types/models/Message";
 import {CommunityType} from "../../types/enums/CommunityType";
 
 @Component({
@@ -24,8 +24,8 @@ export class ChatsComponent implements OnInit {
   }
 
   public userId: string | undefined = '';
-  public chats: IChat[] = [];
-  public activeChat: IChat = {
+  public chats: Chat[] = [];
+  public activeChat: Chat = {
     lastMessageId: "",
     lastMessageAuthor: "",
     lastMessageText: "",
@@ -42,7 +42,7 @@ export class ChatsComponent implements OnInit {
     title: ""
   };
   public activeChatId: string = '';
-  public messages: IMessage[] = [];
+  public messages: Message[] = [];
 
   public messageText: string = '';
   public searchChatQuery: string = '';
@@ -98,7 +98,7 @@ export class ChatsComponent implements OnInit {
     this.getChatMessages(this.activeChatId);
   }
 
-  chatContainsMessages(chat: IChat): boolean {
+  chatContainsMessages(chat: Chat): boolean {
     return chat.lastMessageAuthor != null &&
       chat.lastMessageText != null;
   }

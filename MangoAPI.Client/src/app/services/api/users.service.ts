@@ -3,15 +3,15 @@ import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
 import { UpdateUserSocialsCommand } from '../../types/requests/UpdateUserSocialsCommand';
-import { IBaseResponse } from '../../types/responses/IBaseResponse';
-import { IGetUserResponse } from '../../types/responses/IGetUserResponse';
+import { BaseResponse } from '../../types/responses/BaseResponse';
+import { GetUserResponse } from '../../types/responses/GetUserResponse';
 import { RegisterCommand } from '../../types/requests/RegisterCommand';
 import { VerifyEmailCommand } from '../../types/requests/VerifyEmailCommand';
 import { UpdateAccountInformationCommand } from '../../types/requests/UpdateAccountInformationCommand';
-import { ISearchContactsResponse } from '../../types/responses/ISearchContactsResponse';
+import { SearchContactsResponse } from '../../types/responses/SearchContactsResponse';
 import { ChangePasswordCommand } from '../../types/requests/ChangePasswordCommand';
-import { IUser } from '../../types/models/IUser';
-import { IUpdateProfilePictureResponse } from '../../types/responses/IUpdateProfilePictureResponse';
+import { User } from '../../types/models/User';
+import { UpdateProfilePictureResponse } from '../../types/responses/UpdateProfilePictureResponse';
 
 @Injectable({
   providedIn: 'root'
@@ -24,39 +24,39 @@ export class UsersService {
   // PUT /api/users/socials
   updateUserSocials(
     request: UpdateUserSocialsCommand
-  ): Observable<IBaseResponse> {
-    return this.httpClient.put<IBaseResponse>(
+  ): Observable<BaseResponse> {
+    return this.httpClient.put<BaseResponse>(
       environment.baseUrl + this.usersRoute + 'socials/',
       request
     );
   }
 
   // GET /api/users/{userId}
-  getUserById(userId: string | null): Observable<IGetUserResponse> {
-    return this.httpClient.get<IGetUserResponse>(
+  getUserById(userId: string | null): Observable<GetUserResponse> {
+    return this.httpClient.get<GetUserResponse>(
       environment.baseUrl + this.usersRoute + userId
     );
   }
 
   // POST /api/users
-  createUser(command: RegisterCommand): Observable<IBaseResponse> {
-    return this.httpClient.post<IBaseResponse>(
+  createUser(command: RegisterCommand): Observable<BaseResponse> {
+    return this.httpClient.post<BaseResponse>(
       environment.baseUrl + this.usersRoute,
       command
     );
   }
 
   // PUT /api/users/email-confirmation
-  confirmEmail(request: VerifyEmailCommand): Observable<IBaseResponse> {
-    return this.httpClient.put<IBaseResponse>(
+  confirmEmail(request: VerifyEmailCommand): Observable<BaseResponse> {
+    return this.httpClient.put<BaseResponse>(
       environment.baseUrl + this.usersRoute + 'email-confirmation/',
       request
     );
   }
 
   // PUT /api/users/{phoneCode}
-  confirmPhone(phoneCode: number): Observable<IBaseResponse> {
-    return this.httpClient.put<IBaseResponse>(
+  confirmPhone(phoneCode: number): Observable<BaseResponse> {
+    return this.httpClient.put<BaseResponse>(
       environment.baseUrl + this.usersRoute + phoneCode,
       {}
     );
@@ -65,30 +65,30 @@ export class UsersService {
   // PUT /api/users/account
   updateUserAccountInformation(
     request: UpdateAccountInformationCommand
-  ): Observable<IBaseResponse> {
-    return this.httpClient.put<ISearchContactsResponse>(
+  ): Observable<BaseResponse> {
+    return this.httpClient.put<SearchContactsResponse>(
       environment.baseUrl + this.usersRoute + 'account/',
       request
     );
   }
 
   // PUT /api/users/password
-  changePassword(request: ChangePasswordCommand): Observable<IBaseResponse> {
-    return this.httpClient.put<IBaseResponse>(
+  changePassword(request: ChangePasswordCommand): Observable<BaseResponse> {
+    return this.httpClient.put<BaseResponse>(
       environment.baseUrl + this.usersRoute + 'password/',
       request
     );
   }
 
-  getUserProfilePicture(user: IUser): string {
+  getUserProfilePicture(user: User): string {
     return user.pictureUrl ? user.pictureUrl : 'assets/media/avatar/4.png';
   }
 
   // POST /api/users/picture/{image}
   updateProfilePicture(
     formData: FormData
-  ): Observable<IUpdateProfilePictureResponse> {
-    return this.httpClient.post<IUpdateProfilePictureResponse>(
+  ): Observable<UpdateProfilePictureResponse> {
+    return this.httpClient.post<UpdateProfilePictureResponse>(
       environment.baseUrl + this.usersRoute + 'picture',
       formData
     );

@@ -1,4 +1,4 @@
-﻿export interface IDeleteMessageNotification {
+﻿export interface DeleteMessageNotification {
   messageId: string,
   newLastMessageText: string,
   newLastMessageTime: string,
