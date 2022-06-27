@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import {RoutingService} from "../../services/messenger/routing.service";
 import {ConfirmEmailObject} from "../../types/query-objects/ConfirmEmailObject";
+import {Router} from "@angular/router";
+import {RoutingConstants} from "../../types/constants/RoutingConstants";
 
 @Component({
   selector: 'app-redirect-to-confirm-registration',
@@ -8,7 +10,8 @@ import {ConfirmEmailObject} from "../../types/query-objects/ConfirmEmailObject";
 })
 export class RedirectToConfirmRegistrationComponent implements OnInit {
 
-  constructor(private _routingService: RoutingService) { }
+  constructor(private _routingService: RoutingService,
+              private _router: Router) { }
 
   ngOnInit(): void {
     let params = new URLSearchParams(window.location.search);
@@ -16,7 +19,7 @@ export class RedirectToConfirmRegistrationComponent implements OnInit {
     const emailCode = params.get('emailCode') as string;
     const queryObject: ConfirmEmailObject = { email: email, emailCode: emailCode };
     this._routingService.setQueryData(queryObject);
-    this._routingService.matchMethodName('confirmRegistration');
+    this._router.navigateByUrl(RoutingConstants.ConfirmRegistration).then(r => r);
   }
 
 }

@@ -3,6 +3,7 @@ import {ValidationService} from "../../services/messenger/validation.service";
 import {PasswordRestoreService} from "../../services/api/password-restore.service";
 import {Router} from "@angular/router";
 import {ErrorNotificationService} from "../../services/messenger/error-notification.service";
+import {RoutingConstants} from "../../types/constants/RoutingConstants";
 
 @Component({
   selector: 'app-restore-password-request',
@@ -24,7 +25,7 @@ export class RestorePasswordRequestComponent {
     }
 
     this._passwordRestoreService.sendPasswordRestoreRequest(this.email).subscribe(_ => {
-        this._router.navigateByUrl("app?methodName=checkEmailNote");
+        this._router.navigateByUrl(RoutingConstants.CheckEmailNote).then(r => r);
       }, error => {
         this._errorNotificationService.notifyOnError(error);
       }

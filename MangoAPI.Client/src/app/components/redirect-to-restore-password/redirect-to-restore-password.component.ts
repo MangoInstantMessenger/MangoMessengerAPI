@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {RoutingService} from "../../services/messenger/routing.service";
 import {RestorePasswordObject} from "../../types/query-objects/RestorePasswordObject";
 import {Router} from "@angular/router";
+import {RoutingConstants} from "../../types/constants/RoutingConstants";
 
 @Component({
   selector: 'app-redirect-to-restore-password',
@@ -17,7 +18,7 @@ export class RedirectToRestorePasswordComponent implements OnInit {
     const requestId = params.get('requestId') as string;
     const queryObject: RestorePasswordObject = { requestId: requestId };
     this._routingService.setQueryData(queryObject);
-    this._router.navigateByUrl("app?methodName=restorePassword").then(r => r);
+    this._router.navigateByUrl(RoutingConstants.RestorePassword).then(r => r);
   }
 
 }

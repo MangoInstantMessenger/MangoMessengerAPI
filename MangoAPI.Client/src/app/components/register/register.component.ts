@@ -4,6 +4,7 @@ import {RegisterCommand} from 'src/app/types/requests/RegisterCommand';
 import {UsersService} from "../../services/api/users.service";
 import {ValidationService} from "../../services/messenger/validation.service";
 import {ErrorNotificationService} from "../../services/messenger/error-notification.service";
+import {RoutingConstants} from "../../types/constants/RoutingConstants";
 
 @Component({
   selector: 'app-register',
@@ -23,6 +24,10 @@ export class RegisterComponent {
     termsAccepted: false,
   };
 
+  public get routingConstants(): typeof RoutingConstants {
+    return RoutingConstants;
+  }
+
   onRegisterClick(): void {
     let displayNameFieldValidationResult = this._validationService.validateField(this.registerCommand.displayName, 'Display name');
     let emailFieldValidationResult = this._validationService.validateField(this.registerCommand.email, 'Email');
@@ -38,7 +43,7 @@ export class RegisterComponent {
     }
 
     this._usersService.createUser(this.registerCommand).subscribe(_ => {
-        this._router.navigateByUrl('app?methodName=checkEmailNote').then(r => r);
+        this._router.navigateByUrl(this.routingConstants.CheckEmailNote).then(r => r);
       }, error => {
         this._errorNotificationService.notifyOnError(error);
       }

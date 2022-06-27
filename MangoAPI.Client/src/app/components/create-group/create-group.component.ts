@@ -3,6 +3,7 @@ import {CommunitiesService} from "../../services/api/communities.service";
 import {CreateChannelCommand} from "../../types/requests/CreateChannelCommand";
 import {Router} from "@angular/router";
 import {ErrorNotificationService} from "../../services/messenger/error-notification.service";
+import {RoutingConstants} from "../../types/constants/RoutingConstants";
 
 @Component({
   selector: 'app-create-group',
@@ -20,7 +21,7 @@ export class CreateGroupComponent{
   onCreateChatClick(): void {
     let command = new CreateChannelCommand(this.chatTitle, this.chatDescription);
     this._communitiesService.createChannel(command).subscribe(_ => {
-      this._router.navigateByUrl("app?methodName=chats").then(r => r);
+      this._router.navigateByUrl(RoutingConstants.Chats).then(r => r);
     }, error => {
       this._errorNotificationService.notifyOnError(error);
     });
