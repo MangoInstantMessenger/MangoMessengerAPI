@@ -2,12 +2,12 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
-import { IGetChatMessagesResponse } from '../../types/responses/IGetChatMessagesResponse';
+import { GetChatMessagesResponse } from '../../types/responses/GetChatMessagesResponse';
 import { SendMessageCommand } from '../../types/requests/SendMessageCommand';
-import { ISendMessageResponse } from '../../types/responses/ISendMessageResponse';
-import { IDeleteMessageResponse } from '../../types/responses/IDeleteMessageResponse';
+import { SendMessageResponse } from '../../types/responses/SendMessageResponse';
+import { DeleteMessageResponse } from '../../types/responses/DeleteMessageResponse';
 import { EditMessageCommand } from '../../types/requests/EditMessageCommand';
-import { IBaseResponse } from '../../types/responses/IBaseResponse';
+import { BaseResponse } from '../../types/responses/BaseResponse';
 import { DeleteMessageCommand } from '../../types/requests/DeleteMessageCommand';
 
 @Injectable({
@@ -19,15 +19,15 @@ export class MessagesService {
   constructor(private httpClient: HttpClient) {}
 
   // GET /api/messages/{chatId}
-  getChatMessages(chatId: string): Observable<IGetChatMessagesResponse> {
-    return this.httpClient.get<IGetChatMessagesResponse>(
+  getChatMessages(chatId: string): Observable<GetChatMessagesResponse> {
+    return this.httpClient.get<GetChatMessagesResponse>(
       environment.baseUrl + this.messagesRoute + chatId
     );
   }
 
   // POST /api/messages
-  sendMessage(request: SendMessageCommand): Observable<ISendMessageResponse> {
-    return this.httpClient.post<ISendMessageResponse>(
+  sendMessage(request: SendMessageCommand): Observable<SendMessageResponse> {
+    return this.httpClient.post<SendMessageResponse>(
       environment.baseUrl + this.messagesRoute,
       request
     );
@@ -36,7 +36,7 @@ export class MessagesService {
   // DELETE /api/messages/{messageId}
   deleteMessage(
     request: DeleteMessageCommand
-  ): Observable<IDeleteMessageResponse> {
+  ): Observable<DeleteMessageResponse> {
     const options = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json'
@@ -44,15 +44,15 @@ export class MessagesService {
       body: request
     };
 
-    return this.httpClient.delete<IDeleteMessageResponse>(
+    return this.httpClient.delete<DeleteMessageResponse>(
       environment.baseUrl + this.messagesRoute,
       options
     );
   }
 
   // PUT /api/messages
-  editMessage(request: EditMessageCommand): Observable<IBaseResponse> {
-    return this.httpClient.put<IBaseResponse>(
+  editMessage(request: EditMessageCommand): Observable<BaseResponse> {
+    return this.httpClient.put<BaseResponse>(
       environment.baseUrl + this.messagesRoute,
       request
     );
@@ -62,8 +62,8 @@ export class MessagesService {
   searchMessages(
     chatId: string,
     text: string
-  ): Observable<IGetChatMessagesResponse> {
-    return this.httpClient.get<IGetChatMessagesResponse>(
+  ): Observable<GetChatMessagesResponse> {
+    return this.httpClient.get<GetChatMessagesResponse>(
       environment.baseUrl +
         this.messagesRoute +
         'searches/' +

@@ -3,8 +3,8 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { LoginCommand } from '../../types/requests/LoginCommand';
-import { ITokensResponse } from '../../types/responses/ITokensResponse';
-import { IBaseResponse } from '../../types/responses/IBaseResponse';
+import { TokensResponse } from '../../types/responses/TokensResponse';
+import { BaseResponse } from '../../types/responses/BaseResponse';
 @Injectable({
   providedIn: 'root'
 })
@@ -14,8 +14,8 @@ export class SessionService {
   constructor(private httpClient: HttpClient) {}
 
   // POST /api/sessions
-  createSession(command: LoginCommand): Observable<ITokensResponse> {
-    return this.httpClient.post<ITokensResponse>(
+  createSession(command: LoginCommand): Observable<TokensResponse> {
+    return this.httpClient.post<TokensResponse>(
       environment.baseUrl + this.sessionsRoute,
       command,
       { withCredentials: true }
@@ -23,23 +23,23 @@ export class SessionService {
   }
 
   // POST /api/sessions/{refreshToken}
-  refreshSession(refreshToken: string | null): Observable<ITokensResponse> {
-    return this.httpClient.post<ITokensResponse>(
+  refreshSession(refreshToken: string | null): Observable<TokensResponse> {
+    return this.httpClient.post<TokensResponse>(
       environment.baseUrl + this.sessionsRoute + refreshToken,
       {}
     );
   }
 
   // DELETE /api/sessions/{refreshToken}
-  deleteSession(refreshToken: string | null): Observable<IBaseResponse> {
-    return this.httpClient.delete<IBaseResponse>(
+  deleteSession(refreshToken: string | null): Observable<BaseResponse> {
+    return this.httpClient.delete<BaseResponse>(
       environment.baseUrl + this.sessionsRoute + refreshToken
     );
   }
 
   // DELETE /api/sessions
-  deleteAllSessions(): Observable<IBaseResponse> {
-    return this.httpClient.delete<IBaseResponse>(
+  deleteAllSessions(): Observable<BaseResponse> {
+    return this.httpClient.delete<BaseResponse>(
       environment.baseUrl + this.sessionsRoute
     );
   }

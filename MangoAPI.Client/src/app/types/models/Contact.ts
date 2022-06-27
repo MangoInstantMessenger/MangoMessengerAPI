@@ -1,4 +1,4 @@
-﻿export interface IContact {
+﻿export interface Contact {
   userId: string;
   displayName: string;
   address: string;

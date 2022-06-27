@@ -1,4 +1,4 @@
-﻿export interface IBaseResponse {
+﻿export interface BaseResponse {
   message: string,
   success: boolean
 }

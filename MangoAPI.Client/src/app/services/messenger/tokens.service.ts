@@ -1,5 +1,5 @@
 import {Injectable} from "@angular/core";
-import {ITokens} from "../../types/models/ITokens";
+import {Tokens} from "../../types/models/Tokens";
 
 @Injectable({
   providedIn: 'root'
@@ -7,13 +7,13 @@ import {ITokens} from "../../types/models/ITokens";
 export class TokensService {
   private readonly LocalStorageTokenKey = 'MangoTokens';
 
-  getTokens(): ITokens | null {
+  getTokens(): Tokens | null {
     const tokensString = localStorage.getItem(this.LocalStorageTokenKey);
 
     return tokensString === null ? null : JSON.parse(tokensString);
   }
 
-  setTokens(tokens: ITokens): void {
+  setTokens(tokens: Tokens): void {
     const tokensStringify = JSON.stringify(tokens);
     localStorage.setItem(this.LocalStorageTokenKey, tokensStringify);
   }

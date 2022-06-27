@@ -1,4 +1,4 @@
-﻿export interface IEditMessageNotification {
+﻿export interface EditMessageNotification {
   messageId: string,
   modifiedText: string,
   updatedAt: string,

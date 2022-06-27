@@ -1,6 +1,6 @@
 ﻿import {CommunityType} from "../enums/CommunityType";
 
-export interface IChat {
+export interface Chat {
   chatId: string;
   title: string;
   communityType: CommunityType;
