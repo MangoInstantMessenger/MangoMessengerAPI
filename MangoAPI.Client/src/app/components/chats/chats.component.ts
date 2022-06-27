@@ -8,6 +8,7 @@ import {formatDate} from "@angular/common";
 import {MessagesService} from "../../services/api/messages.service";
 import {Message} from "../../types/models/Message";
 import {CommunityType} from "../../types/enums/CommunityType";
+import {RoutingConstants} from "../../types/constants/RoutingConstants";
 
 @Component({
   selector: 'app-chats',
@@ -49,11 +50,15 @@ export class ChatsComponent implements OnInit {
   public searchMessagesQuery: string = '';
   public chatFilter: string = 'All chats';
 
+  public get routingConstants(): typeof RoutingConstants {
+    return RoutingConstants;
+  }
+
   ngOnInit(): void {
     this.scrollToEnd();
     let tokens = this._tokensService.getTokens();
     if (!tokens) {
-      this._router.navigateByUrl('app?methodName=login').then(r => r);
+      this._router.navigateByUrl(this.routingConstants.Login).then(r => r);
       return;
     }
     this.userId = tokens?.userId;

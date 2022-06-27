@@ -5,6 +5,7 @@ import {VerifyEmailCommand} from "../../types/requests/VerifyEmailCommand";
 import {BaseResponse} from "../../types/responses/BaseResponse";
 import {UsersService} from "../../services/api/users.service";
 import {RoutingService} from "../../services/messenger/routing.service";
+import {RoutingConstants} from "../../types/constants/RoutingConstants";
 
 @Component({
   selector: 'app-confirm-registration',
@@ -39,7 +40,7 @@ export class ConfirmRegistrationComponent implements OnInit {
   }
 
   redirectToLogin(): void {
-    this._router.navigateByUrl('app?methodName=login').then(r => r);
+    this._router.navigateByUrl(RoutingConstants.Login).then(r => r);
   }
 
 }

@@ -5,6 +5,7 @@ import {Router} from "@angular/router";
 import {ValidationService} from "../../services/messenger/validation.service";
 import {ErrorNotificationService} from "../../services/messenger/error-notification.service";
 import {TokensService} from "../../services/messenger/tokens.service";
+import {RoutingConstants} from "../../types/constants/RoutingConstants";
 
 @Component({
   selector: 'app-login',
@@ -22,6 +23,10 @@ export class LoginComponent {
     password: ''
   }
 
+  public get routingConstants(): typeof RoutingConstants {
+    return RoutingConstants;
+  }
+
   onLoginClick(): void {
     let emailFieldValidationResult = this._validationService.validateField(this.loginCommand.email, 'Email');
     let passwordFieldValidationResult = this._validationService.validateField(this.loginCommand.password, 'Password');
@@ -34,7 +39,7 @@ export class LoginComponent {
 
     this._sessionService.createSession(this.loginCommand).subscribe(response => {
       this._tokensService.setTokens(response.tokens);
-      this._router.navigateByUrl("app?methodName=chats").then(r => r);
+      this._router.navigateByUrl(this.routingConstants.Chats).then(r => r);
     }, error => {
       this._errorNotificationService.notifyOnError(error);
     });

@@ -6,6 +6,7 @@ import {RestorePasswordObject} from "../../types/query-objects/RestorePasswordOb
 import {Router} from "@angular/router";
 import {ErrorNotificationService} from "../../services/messenger/error-notification.service";
 import {ValidationService} from "../../services/messenger/validation.service";
+import {RoutingConstants} from "../../types/constants/RoutingConstants";
 
 @Component({
   selector: 'app-restore-password',
@@ -45,7 +46,7 @@ export class RestorePasswordComponent{
 
     this._restorePasswordService.restorePassword(restorePasswordRequest).subscribe(_ => {
       alert("Password restoration succeeded!");
-      this._router.navigateByUrl("app?methodName=login").then(r => r);
+      this._router.navigateByUrl(RoutingConstants.Login).then(r => r);
     }, error => {
       this._errorNotificationService.notifyOnError(error);
     })
