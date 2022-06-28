@@ -16,7 +16,7 @@ steps:
     workingDirectory: '$(frontEndProjectPath)'
 
   - script: |
-      ng build --configuration production
+      ng build --aot --configuration production
     displayName: 'Build angular application for production'
     workingDirectory: '$(frontEndProjectPath)'
 
