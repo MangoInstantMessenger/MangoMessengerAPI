@@ -41,6 +41,7 @@ jobs:
       - name: Run Sonar Analyzer
         run: |
           cd public/sonar-scanner-unzip/sonar-scanner-4.7.0.2747-linux/bin
+          ls -lha
           sonar-scanner \
             -Dsonar.organization=mangoinstantmessenger \
             -Dsonar.projectKey=MangoAPI.Client \
