@@ -15,7 +15,8 @@ jobs:
       SONAR_SCANNER_DOWNLOAD_URL: 'https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-4.7.0.2747-linux.zip'
       SONAR_BASE_FOLDER: 'public/'
       SONAR_SCANNER_ZIP_PATH: 'public/sonar-scanner-cli-4.7.0.2747-linux.zip'
-      SONAR_SCANNER_UNZIP_FOLDER: 'public/sonar-scanner-unzip'
+      SONAR_SCANNER_UNZIP_FOLDER: 'sonar-scanner-unzip'
+      SONAR_SCANNER_FILENAME: 'sonar-scanner-cli-4.7.0.2747-linux.zip'
     steps:
       - name: Download sonar scanner
         uses: suisei-cn/actions-download-file@v1
@@ -31,7 +32,7 @@ jobs:
       - name: Unzip Sonar Scanner
         uses: montudor/action-zip@v1
         with:
-          args: unzip -qq ${{ env.SONAR_SCANNER_ZIP_PATH }} -d ${{ env.SONAR_SCANNER_UNZIP_FOLDER }}
+          args: cd public && unzip -qq ${{ env.SONAR_SCANNER_FILENAME }} -d ${{ env.SONAR_SCANNER_UNZIP_FOLDER }}
 
       - name: List all files and directories
         run: |
