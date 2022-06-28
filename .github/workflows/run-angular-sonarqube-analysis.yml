@@ -20,8 +20,8 @@ jobs:
       - name: Download sonar scanner
         uses: suisei-cn/actions-download-file@v1
         with:
-          url: $SONAR_SCANNER_DOWNLOAD_URL
-          target: $SONAR_BASE_FOLDER
+          url: ${{ env.SONAR_SCANNER_DOWNLOAD_URL }}
+          target: ${{ env.SONAR_SCANNER_ZIP_PATH }}
 
       - name: List all files and directories
         run: |
@@ -31,7 +31,7 @@ jobs:
       - name: Unzip Sonar Scanner
         uses: montudor/action-zip@v1
         with:
-          args: unzip -qq $SONAR_SCANNER_ZIP_PATH -d $SONAR_SCANNER_UNZIP_FOLDER
+          args: unzip -qq ${{ env.SONAR_SCANNER_ZIP_PATH }} -d ${{ env.SONAR_SCANNER_UNZIP_FOLDER }}
 
       - name: List all files and directories
         run: |
