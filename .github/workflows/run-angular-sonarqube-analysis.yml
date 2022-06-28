@@ -11,18 +11,12 @@ jobs:
   run-angular-sonarqube-analysis:
     name: Run Angular SonarQube Analysis
     runs-on: ubuntu-latest
-    env:
-      SONAR_SCANNER_DOWNLOAD_URL: 'https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-4.7.0.2747-linux.zip'
-      SONAR_BASE_FOLDER: 'public/'
-      SONAR_SCANNER_ZIP_PATH: 'public/sonar-scanner-cli-4.7.0.2747-linux.zip'
-      SONAR_SCANNER_UNZIP_FOLDER: 'sonar-scanner-unzip'
-      SONAR_SCANNER_FILENAME: 'sonar-scanner-cli-4.7.0.2747-linux.zip'
     steps:
       - name: Download sonar scanner
         uses: suisei-cn/actions-download-file@v1
         with:
-          url: ${{ env.SONAR_SCANNER_DOWNLOAD_URL }}
-          target: ${{ env.SONAR_SCANNER_ZIP_PATH }}
+          url: 'https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-4.7.0.2747-linux.zip'
+          target: public/
 
       - name: List all files and directories
         run: |
@@ -34,9 +28,9 @@ jobs:
           ls -lha
           ls -lha public/
           cd public
-          mkdir ${{ env.SONAR_SCANNER_UNZIP_FOLDER }}
-          chmod 777 ${{ env.SONAR_SCANNER_UNZIP_FOLDER }}
-          unzip ${{ env.SONAR_SCANNER_FILENAME }} -d ${{ env.SONAR_SCANNER_UNZIP_FOLDER }}
+          mkdir sonar-scanner-unzip
+          chmod 777 sonar-scanner-unzip
+          unzip sonar-scanner-cli-4.7.0.2747-linux.zip -d sonar-scanner-unzip
 
       - name: List all files and directories
         run: |
