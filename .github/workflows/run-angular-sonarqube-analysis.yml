@@ -27,11 +27,13 @@ jobs:
       - name: List all files and directories
         run: |
           ls -lha
-          ls -lh public/
+          ls -lha public/
 
       - name: Unzip Sonar Scanner
         run: |
-          cd ${{ env.SONAR_BASE_FOLDER }}
+          ls -lha
+          ls -lha public/
+          cd public
           mkdir ${{ env.SONAR_SCANNER_UNZIP_FOLDER }}
           chmod 777 ${{ env.SONAR_SCANNER_UNZIP_FOLDER }}
           unzip ${{ env.SONAR_SCANNER_FILENAME }} -d ${{ env.SONAR_SCANNER_UNZIP_FOLDER }}
@@ -39,7 +41,7 @@ jobs:
       - name: List all files and directories
         run: |
           ls -lha
-          ls -lh public/
+          ls -lha public/
 
 #      - name: Unzip sonar scanner
 #        run: |
