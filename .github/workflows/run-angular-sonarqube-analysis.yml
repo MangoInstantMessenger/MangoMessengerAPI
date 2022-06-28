@@ -12,11 +12,16 @@ jobs:
     name: Run Angular SonarQube Analysis
     runs-on: ubuntu-latest
     steps:
-      - name: Download the file
+      - name: Download sonar scanner
         uses: suisei-cn/actions-download-file@v1
         with:
           url: "https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-4.7.0.2747-linux.zip"
           target: public/
+          
+      - name: List all files and directories
+        run: |
+          ls -lha
+          ls -lh public/
 
 #      - name: Unzip sonar scanner
 #        run: |
