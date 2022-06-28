@@ -65,6 +65,7 @@ export class ChatsComponent implements OnInit {
     this._communitiesService.getUserChats().subscribe(response => {
       this.chats = response.chats.filter(x => !x.isArchived);
       this.activeChatId = this.chats[0].chatId;
+      this.activeChat = this.chats[0];
       this.getChatMessages(this.activeChatId);
     }, error => {
       this._errorNotificationService.notifyOnError(error);

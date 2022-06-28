@@ -7,6 +7,8 @@ export class RoutingConstants {
   static Chats: string = 'app?methodName=chats';
   static CreateGroup: string = 'app?methodName=createGroup';
   static ConfirmRegistration: string = 'app?methodName=confirmRegistration';
+  static Settings = 'app?methodName=settings';
+  static Contacts = 'app?methodName=contacts';
   static RedirectToConfirmRegistration: string = 'app?methodName=redirectToConfirmRegistration';
   static RedirectToConfirmPassword: string = 'app?methodName=redirectToRestorePassword';
 }
