@@ -1,4 +1,4 @@
-name: Run SonarQube analysis
+name: Run .NET SonarQube analysis
 on:
   push:
     branches: [ develop ]
@@ -6,8 +6,8 @@ on:
     types: [ opened, synchronize, reopened ]
   workflow_dispatch:
 jobs:
-  run-sonarqube-analysis:
-    name: Run SonarQube Analysis
+  run-dotnet-sonarqube-analysis:
+    name: Run .NET SonarQube Analysis
     runs-on: ubuntu-latest
     steps:
       - name: ⚙ Set up JDK 11 ⚙

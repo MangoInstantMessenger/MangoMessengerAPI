@@ -1,0 +1,52 @@
+﻿name: Run Angular SonarQube analysis
+on:
+  push:
+    branches:
+      - develop
+      - MANGO-461
+  pull_request:
+    types: [ opened, synchronize, reopened ]
+  workflow_dispatch:
+jobs:
+  run-angular-sonarqube-analysis:
+    name: Run Angular SonarQube Analysis
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download sonar scanner
+        run: |
+          curl –O https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-4.7.0.2747-linux.zip
+          ls -lha
+
+      - name: Unzip sonar scanner
+        run: |
+          unzip sonar-scanner-cli-4.7.0.2747-linux.zip sonar-scanner-cli-4.7.0.2747-linux
+          ls -lha
+
+#      - name: 📝 Cache SonarCloud scanner 📝
+#        id: cache-sonar-scanner
+#        uses: actions/cache@v1
+#        with:
+#          path: ./.sonar/scanner
+#          key: ${{ runner.os }}-sonar-scanner
+#          restore-keys: ${{ runner.os }}-sonar-scanner
+#
+#      - name: ⚙ Setup .NET 6 SDK ⚙
+#        uses: actions/setup-dotnet@v1
+#        with:
+#          dotnet-version: 6.0.x
+#
+#      - name: ⚙ Install SonarCloud scanner ⚙
+#        if: steps.cache-sonar-scanner.outputs.cache-hit != 'true'
+#        run: |
+#          mkdir -p ./.sonar/scanner
+#          chmod a+rwx ./.sonar/scanner
+#          dotnet tool update dotnet-sonarscanner --tool-path ./.sonar/scanner
+#
+#      - name: 🔍 Analyze project 🔍
+#        run: |
+#          ./.sonar/scanner/dotnet-sonarscanner begin /k:"MangoInstantMessenger_MangoMessengerAPI" /o:"mangoinstantmessenger" /d:sonar.login="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io"
+#          dotnet build -c Release
+#          ./.sonar/scanner/dotnet-sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
+#        env:
+#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
