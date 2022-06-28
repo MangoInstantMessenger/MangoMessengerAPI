@@ -30,9 +30,11 @@ jobs:
           ls -lh public/
 
       - name: Unzip Sonar Scanner
-        uses: montudor/action-zip@v1
-        with:
-          args: cd public && unzip -qq ${{ env.SONAR_SCANNER_FILENAME }} -d ${{ env.SONAR_SCANNER_UNZIP_FOLDER }}
+        run: |
+          cd ${{ env.SONAR_BASE_FOLDER }}
+          mkdir ${{ env.SONAR_SCANNER_UNZIP_FOLDER }}
+          chmod 777 ${{ env.SONAR_SCANNER_UNZIP_FOLDER }}
+          unzip ${{ env.SONAR_SCANNER_FILENAME }} -d ${{ env.SONAR_SCANNER_UNZIP_FOLDER }}
 
       - name: List all files and directories
         run: |
