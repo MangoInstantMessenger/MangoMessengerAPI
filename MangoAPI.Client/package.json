@@ -10,7 +10,8 @@
     "build-prod": "ng build --aot --configuration production",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "lint": "ng lint"
+    "lint": "ng lint",
+    "sonar": "sonar-scanner"
   },
   "private": true,
   "dependencies": {
@@ -50,6 +51,8 @@
     "karma-jasmine": "~4.0.0",
     "karma-jasmine-html-reporter": "~1.7.0",
     "prettier": "2.6.2",
+    "sonar-scanner": "^3.1.0",
+    "sonarqube-scanner": "^0.1.0",
     "typescript": "~4.6.2"
   }
 }

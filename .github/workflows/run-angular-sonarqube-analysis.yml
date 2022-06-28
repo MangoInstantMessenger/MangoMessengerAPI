@@ -1,0 +1,38 @@
+﻿name: Run Angular SonarQube analysis
+on:
+  push:
+    branches: [ develop ]
+  pull_request:
+    types: [ opened, synchronize, reopened ]
+  workflow_dispatch:
+jobs:
+  run-angular-sonarqube-analysis:
+    name: Run Angular SonarQube Analysis
+    runs-on: ubuntu-latest
+    steps:
+      - name: Fetch Sources
+        uses: actions/checkout@v2
+
+      - name: Download sonar scanner
+        uses: suisei-cn/actions-download-file@v1
+        with:
+          url: 'https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-4.7.0.2747-linux.zip'
+          target: public/
+
+      - name: Unzip Sonar Scanner
+        run: |
+          cd public
+          mkdir sonar-scanner-unzip
+          chmod 777 sonar-scanner-unzip
+          unzip sonar-scanner-cli-4.7.0.2747-linux.zip -d sonar-scanner-unzip
+
+      - name: Run Sonar Analyzer
+        run: |
+          cd MangoAPI.Client
+          ../public/sonar-scanner-unzip/sonar-scanner-4.7.0.2747-linux/bin/sonar-scanner \
+            -Dsonar.organization=mangoinstantmessenger \
+            -Dsonar.projectKey=MangoAPI.Client \
+            -Dsonar.sources=. \
+            -Dsonar.host.url=https://sonarcloud.io
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}

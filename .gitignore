@@ -34,6 +34,10 @@ CngWorkingDirectory/
 OpenSslWorkingDirectory/
 wwwroot/
 
+# sonar scanner
+MangoAPI.Client/.scannerwork/*
+MangoAPI.Client/reports/*
+
 # Visual Studio 2015/2017 cache/options directory
 .vs/
 
