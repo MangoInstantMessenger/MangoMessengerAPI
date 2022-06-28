@@ -40,7 +40,8 @@ jobs:
           
       - name: Run Sonar Analyzer
         run: |
-          ./public/sonar-scanner-unzip/sonar-scanner-4.7.0.2747-linux/bin/sonar-scanner \
+          cd MangoAPI.Client
+          ../public/sonar-scanner-unzip/sonar-scanner-4.7.0.2747-linux/bin/sonar-scanner \
             -Dsonar.organization=mangoinstantmessenger \
             -Dsonar.projectKey=MangoAPI.Client \
             -Dsonar.sources=. \
