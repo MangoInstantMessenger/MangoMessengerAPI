@@ -40,11 +40,11 @@ jobs:
           
       - name: Run Sonar Analyzer
         run: |
-          cd public/sonar-scanner-unzip
+          cd public/sonar-scanner-unzip/sonar-scanner-4.7.0.2747-linux/bin
           sonar-scanner \
             -Dsonar.organization=mangoinstantmessenger \
             -Dsonar.projectKey=MangoAPI.Client \
-            -Dsonar.sources=. \
+            -Dsonar.sources=./MangoAPI.Client \
             -Dsonar.host.url=https://sonarcloud.io
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_ANGULAR_TOKEN }}
