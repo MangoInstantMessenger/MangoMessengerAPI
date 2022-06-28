@@ -43,7 +43,7 @@ jobs:
           ./public/sonar-scanner-unzip/sonar-scanner-4.7.0.2747-linux/bin/sonar-scanner \
             -Dsonar.organization=mangoinstantmessenger \
             -Dsonar.projectKey=MangoAPI.Client \
-            -Dsonar.sources=MangoAPI.Client/. \
+            -Dsonar.sources=. \
             -Dsonar.host.url=https://sonarcloud.io
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_ANGULAR_TOKEN }}
