@@ -21,6 +21,7 @@ import { FormsModule } from '@angular/forms';
 import { CheckEmailNoteComponent } from './components/check-email-note/check-email-note.component';
 import { RedirectToConfirmRegistrationComponent } from './components/redirect-to-confirm-registration/redirect-to-confirm-registration.component';
 import { RedirectToRestorePasswordComponent } from './components/redirect-to-restore-password/redirect-to-restore-password.component';
+import { NavbarComponent } from './components/navbar/navbar.component';
 
 @NgModule({
   declarations: [
@@ -38,7 +39,8 @@ import { RedirectToRestorePasswordComponent } from './components/redirect-to-res
     CreateGroupComponent,
     CheckEmailNoteComponent,
     RedirectToConfirmRegistrationComponent,
-    RedirectToRestorePasswordComponent
+    RedirectToRestorePasswordComponent,
+    NavbarComponent
   ],
   imports: [BrowserModule, AppRoutingModule, FormsModule, HttpClientModule],
   providers: [

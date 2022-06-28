@@ -13,6 +13,12 @@ export class RoutingService {
       case 'chats':
         this.router.navigate(['chats'], {skipLocationChange: true}).then(r => r);
         break;
+      case 'contacts':
+        this.router.navigate(['contacts'], {skipLocationChange: true}).then(r => r);
+        break;
+      case 'settings':
+        this.router.navigate(['settings'], {skipLocationChange: true}).then(r => r);
+        break;
       case 'createGroup':
         this.router.navigate(['create-group'], {skipLocationChange: true}).then(r => r);
         break;
