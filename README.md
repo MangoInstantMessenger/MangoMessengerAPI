@@ -125,7 +125,9 @@ Perform the following steps:
 - Install Angular CLI globally: `npm install -g @angular/cli@13.3.4`
 - Open PowerShell as Administrator and type: `Set-ExecutionPolicy -ExecutionPolicy RemoteSigned`
 - Check that Angular CLI installed properly: `ng version`
-- Run project: `ng serve`
+- Build project for development using Angular CLI: `ng build --aot --configuration development`
+- NOTE: for production command is: `ng build --aot --configuration production`
+- Run .NET web API: `dotnet run`
 
 ## Tasks management
 
