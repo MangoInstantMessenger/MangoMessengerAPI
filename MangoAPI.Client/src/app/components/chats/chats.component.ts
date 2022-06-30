@@ -9,6 +9,7 @@ import {MessagesService} from "../../services/api/messages.service";
 import {Message} from "../../types/models/Message";
 import {CommunityType} from "../../types/enums/CommunityType";
 import {RoutingConstants} from "../../types/constants/RoutingConstants";
+import {UserChatsService} from "../../services/api/user-chats.service";
 
 @Component({
   selector: 'app-chats',
@@ -19,6 +20,7 @@ export class ChatsComponent implements OnInit {
 
   constructor(private _tokensService: TokensService,
               private _communitiesService: CommunitiesService,
+              private _userChatsService: UserChatsService,
               private _messagesService: MessagesService,
               private _errorNotificationService: ErrorNotificationService,
               private _router: Router) {
@@ -149,5 +151,13 @@ export class ChatsComponent implements OnInit {
     }, error => {
       this._errorNotificationService.notifyOnError(error);
     })
+  }
+
+  onLeaveChatClick(): void {
+    this._userChatsService.leaveCommunity(this.activeChatId).subscribe(_ => {
+      this.ngOnInit();
+    }, error => {
+      this._errorNotificationService.notifyOnError(error);
+    });
   }
 }
