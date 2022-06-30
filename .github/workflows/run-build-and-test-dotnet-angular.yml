@@ -77,7 +77,8 @@ jobs:
 
       - name: 🛠 Build and Publish .NET Project 🛠
         run: |
-          dotnet build --no-restore /p:ContinuousIntegrationBuild=true --configuration Release -o dotnet_build_files/src
+          dotnet build --no-restore /p:ContinuousIntegrationBuild=true --configuration Release
+          dotnet publish "MangoAPI.Presentation/MangoAPI.Presentation.csproj" -r linux-x64 -o mango-linux-build/src
 
       - name: 🐋 Run SQLServer docker container 🐋
         run: |
@@ -161,4 +162,4 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: mango-dotnet-build
-          path: dotnet_build_files/src
+          path: mango-linux-build/src
