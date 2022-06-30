@@ -119,6 +119,18 @@ export class ChatsComponent implements OnInit {
     })
   }
 
+  onSearchMessageQueryChange(): void {
+    if(this.searchMessagesQuery != '') {
+      this._messagesService.searchMessages(this.activeChatId, this.searchMessagesQuery).subscribe(response => {
+        this.messages = response.messages;
+      }, error => {
+        this._errorNotificationService.notifyOnError(error);
+      })
+    } else {
+      this.getChatMessages(this.activeChatId);
+    }
+  }
+
   onChatFilterClick(event: Event): void {
     let div = event.currentTarget as HTMLDivElement;
     this.chatFilter = div.innerText;
