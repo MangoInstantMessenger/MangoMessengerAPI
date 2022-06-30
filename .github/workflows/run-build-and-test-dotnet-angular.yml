@@ -157,7 +157,39 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-          
+
+  drop-artifacts:
+    name: Run Build and Lint Angular Project
+    runs-on: ubuntu-latest
+    needs: [ build-and-lint-angular, build-and-test-dotnet ]
+    steps:
+      - name: 📝 Fetch Sources 📝
+        uses: actions/checkout@v2
+
+      - name: ⚙ Setup Node.js 16.x ⚙
+        uses: actions/setup-node@v1
+        with:
+          node-version: 16.x
+
+      - name: ⚙ Setup .NET 6.0 SDK ⚙
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: 6.0.x
+
+      - name: 🔃 Install Node Modules 🔃
+        run: |
+          cd ./MangoAPI.Client
+          npm ci
+
+      - name: 🛠 Build Angular Project (Production) 🛠
+        run: |
+          cd ./MangoAPI.Client
+          npm run build --production
+
+      - name: 🛠 Build and Publish .NET Project 🛠
+        run: |
+          dotnet publish "MangoAPI.Presentation/MangoAPI.Presentation.csproj" -r linux-x64 -o mango-linux-build/src
+
       - name: Drop Artifact
         uses: actions/upload-artifact@v3
         with:
