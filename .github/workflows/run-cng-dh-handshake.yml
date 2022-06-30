@@ -1,14 +1,12 @@
 name: Run CNG DH Handshake
 
 on:
-  push:
-    branches: [ MANGO-456 ]
   workflow_dispatch:
 
 jobs:
   run-cng-dh-handshake:
     runs-on: windows-latest
-    
+    name: Run CNG DH Handshake
     steps:
       - name: 📝 Fetch Sources 📝
         uses: actions/checkout@v2

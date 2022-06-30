@@ -38,11 +38,6 @@ public class MangoDbContext : IdentityDbContext<UserEntity, RoleEntity, Guid>
 
     public const string DefaultSchema = "mango";
 
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-    {
-        optionsBuilder.LogTo(Console.WriteLine);
-    }
-
     protected override void OnModelCreating(ModelBuilder builder)
     {
         base.OnModelCreating(builder);

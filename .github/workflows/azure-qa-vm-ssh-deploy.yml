@@ -1,8 +1,6 @@
 ﻿name: Azure QA VM SSH Deploy
 
 on:
-  push:
-    branches: [ azure-qa ]
   workflow_dispatch:
 
 jobs:

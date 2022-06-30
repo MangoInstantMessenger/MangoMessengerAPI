@@ -19,7 +19,6 @@ public static class DatabaseDependencyInjection
         services.AddDbContext<MangoDbContext>(options =>
         {
             options.UseSqlServer(connectionString);
-            options.EnableSensitiveDataLogging();
         });
 
         return services;

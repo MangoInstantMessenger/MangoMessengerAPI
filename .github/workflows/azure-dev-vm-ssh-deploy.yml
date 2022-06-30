@@ -1,8 +1,6 @@
 ﻿name: Azure Dev VM SSH Deploy
 
 on:
-  push:
-    branches: [ azure-dev ]
   workflow_dispatch:
 
 jobs:

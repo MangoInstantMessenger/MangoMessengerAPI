@@ -1,60 +1,13 @@
 ﻿name: Run OpenSSL DH Handshake
 
 on:
-  pull_request:
-    branches: [ develop ]
   workflow_dispatch:
 
 jobs:
   run-openssl-dh-handshake:
+    name: Run OpenSSL DH Handshake
     runs-on: ubuntu-latest
-    
     steps:
-      - name: 📝 Fetch Sources 📝
-        uses: actions/checkout@v2
-
-      - name: ⚙ Setup .NET 6.0 SDK ⚙
-        uses: actions/setup-dotnet@v1
-        with:
-          dotnet-version: 6.0.x
-
-      - name: 🔄 Restore Nuget Packages 🔄
-        run: dotnet restore
-
-      - name: 🛠 Build .NET Solution 🛠
-        run: dotnet build --no-restore /p:ContinuousIntegrationBuild=true
-
-      - name: 🚀 Login to the container registry 🚀
-        run: echo "$DOCKER_PASSWORD" | docker login docker.io -u "$DOCKER_USERNAME" --password-stdin
-        env:
-          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
-          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
-
-      - name: 🐋 Run SQLServer docker container 🐋
-        run: |
-          docker run -e 'SA_PASSWORD=x2yiJt!Fs' -e ACCEPT_EULA=y --name mango-mssql-db --hostname mango-mssql-db -p 1433:1433 -d mcr.microsoft.com/mssql/server:2019-latest
-
-      - name: 🕔 Wait for database to be ready 🕔
-        run: pwsh -c ./build/docker/mssql-docker/wait_database.ps1
-
-      - name: ✅ Run Integration Tests (Codecov) ✅
-        run: dotnet test MangoAPI.IntegrationTests/MangoAPI.IntegrationTests.csproj --no-build --verbosity normal /p:CollectCoverage=true /p:Exclude="[*DataAccess]*" /p:CoverletOutputFormat=opencover
-        env:
-          MANGO_JWT_ISSUER: ${{ secrets.MANGO_JWT_ISSUER }}
-          MANGO_JWT_AUDIENCE: ${{ secrets.MANGO_JWT_AUDIENCE }}
-          MANGO_JWT_SIGN_KEY: ${{ secrets.MANGO_JWT_SIGN_KEY }}
-          MANGO_EMAIL_NOTIFICATIONS_ADDRESS: ${{ secrets.MANGO_EMAIL_NOTIFICATIONS_ADDRESS }}
-          MANGO_FRONTEND_ADDRESS: ${{ secrets.MANGO_FRONTEND_ADDRESS }}
-          MANGO_DATABASE_URL: ${{ secrets.MANGO_DATABASE_URL }}
-          MANGO_SEED_PASSWORD: ${{ secrets.MANGO_SEED_PASSWORD }}
-          MANGO_BLOB_URL: ${{ secrets.MANGO_BLOB_URL }}
-          MANGO_BLOB_CONTAINER: ${{ secrets.MANGO_BLOB_CONTAINER }}
-          MANGO_BLOB_ACCESS: ${{ secrets.MANGO_BLOB_ACCESS }}
-          MANGO_MAILGUN_API_KEY: ${{ secrets.MANGO_MAILGUN_API_KEY }}
-          MANGO_MAILGUN_API_BASE_URL: ${{ secrets.MANGO_MAILGUN_API_BASE_URL }}
-          MANGO_MAILGUN_API_DOMAIN: ${{ secrets.MANGO_MAILGUN_API_DOMAIN }}
-          MANGO_INTEGRATION_TESTS_DATABASE_URL: ${{ secrets.MANGO_INTEGRATION_TESTS_DATABASE_URL }}
-
       - name: 🚀 Run OpenSSL DH Handshake Create & Upload Parameters 🚀
         run: |
           cd MangoAPI.DiffieHellmanConsole/bin/Debug/net6.0
