@@ -5,8 +5,6 @@ import { Injectable } from '@angular/core';
 })
 export class ValidationService {
 
-  constructor() { }
-
   private allowedFileExtensions = ["jpg", "JPG", "txt", "TXT", "pdf", "PDF", "png", "PNG"];
 
 
