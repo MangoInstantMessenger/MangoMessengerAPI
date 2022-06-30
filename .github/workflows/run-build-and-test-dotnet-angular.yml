@@ -8,17 +8,12 @@ on:
   workflow_dispatch:
 
 jobs:
-  build-and-test:
-    runs-on: ubuntu-20.04
-    
+  build-and-lint-angular:
+    name: Run Build and Lint Angular Project
+    runs-on: ubuntu-latest
     steps:
       - name: 📝 Fetch Sources 📝
         uses: actions/checkout@v2
-
-      - name: ⚙ Setup .NET 6.0 SDK ⚙
-        uses: actions/setup-dotnet@v1
-        with:
-          dotnet-version: 6.0.x
 
       - name: ⚙ Setup Node.js 16.x ⚙
         uses: actions/setup-node@v1
@@ -39,18 +34,46 @@ jobs:
         run: |
           cd ./MangoAPI.Client
           npm run lint
+          
+      - name: Download sonar scanner
+        uses: suisei-cn/actions-download-file@v1
+        with:
+          url: 'https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-4.7.0.2747-linux.zip'
+          target: public/
+
+      - name: Unzip Sonar Scanner
+        run: |
+          cd public
+          mkdir sonar-scanner-unzip
+          chmod 777 sonar-scanner-unzip
+          unzip sonar-scanner-cli-4.7.0.2747-linux.zip -d sonar-scanner-unzip
+
+      - name: Run Sonar Analyzer
+        run: |
+          cd MangoAPI.Client
+          ../public/sonar-scanner-unzip/sonar-scanner-4.7.0.2747-linux/bin/sonar-scanner \
+            -Dsonar.organization=mangoinstantmessenger \
+            -Dsonar.projectKey=MangoAPI.Client \
+            -Dsonar.sources=. \
+            -Dsonar.host.url=https://sonarcloud.io
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+
+  build-and-test-dotnet:
+    name: Run Build and Test .NET
+    needs: build-and-lint-angular
+    runs-on: ubuntu-latest
+    steps:
+      - name: ⚙ Setup .NET 6.0 SDK ⚙
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: 6.0.x
 
       - name: 🔄 Restore Nuget Packages 🔄
         run: dotnet restore
 
       - name: 🛠 Build .NET Solution 🛠
         run: dotnet build --no-restore /p:ContinuousIntegrationBuild=true
-
-      # - name: 🚀 Login to the container registry 🚀
-      #   run: echo "$DOCKER_PASSWORD" | docker login docker.io -u "$DOCKER_USERNAME" --password-stdin
-      #   env:
-      #     DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
-      #     DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
 
       - name: 🐋 Run SQLServer docker container 🐋
         run: |
@@ -70,33 +93,7 @@ jobs:
           MANGO_DATABASE_URL: ${{ secrets.MANGO_INTEGRATION_TESTS_DATABASE_URL }}
           MANGO_SEED_PASSWORD: ${{ secrets.MANGO_SEED_PASSWORD }}
 
-      - name: ✅ Run Integration Tests (Codecov) ✅
-        run: dotnet test MangoAPI.IntegrationTests/MangoAPI.IntegrationTests.csproj --no-build --verbosity normal /p:CollectCoverage=true /p:Exclude="[*DataAccess]*" /p:CoverletOutputFormat=opencover
-        env:
-          MANGO_JWT_ISSUER: ${{ secrets.MANGO_JWT_ISSUER }}
-          MANGO_JWT_AUDIENCE: ${{ secrets.MANGO_JWT_AUDIENCE }}
-          MANGO_JWT_SIGN_KEY: ${{ secrets.MANGO_JWT_SIGN_KEY }}
-          MANGO_EMAIL_NOTIFICATIONS_ADDRESS: ${{ secrets.MANGO_EMAIL_NOTIFICATIONS_ADDRESS }}
-          MANGO_FRONTEND_ADDRESS: ${{ secrets.MANGO_FRONTEND_ADDRESS }}
-          MANGO_DATABASE_URL: ${{ secrets.MANGO_DATABASE_URL }}
-          MANGO_SEED_PASSWORD: ${{ secrets.MANGO_SEED_PASSWORD }}
-          MANGO_BLOB_URL: ${{ secrets.MANGO_BLOB_URL }}
-          MANGO_BLOB_CONTAINER: ${{ secrets.MANGO_BLOB_CONTAINER }}
-          MANGO_BLOB_ACCESS: ${{ secrets.MANGO_BLOB_ACCESS }}
-          MANGO_MAILGUN_API_KEY: ${{ secrets.MANGO_MAILGUN_API_KEY }}
-          MANGO_MAILGUN_API_BASE_URL: ${{ secrets.MANGO_MAILGUN_API_BASE_URL }}
-          MANGO_MAILGUN_API_DOMAIN: ${{ secrets.MANGO_MAILGUN_API_DOMAIN }}
-          MANGO_INTEGRATION_TESTS_DATABASE_URL: ${{ secrets.MANGO_INTEGRATION_TESTS_DATABASE_URL }}
-
-      - name: ✴ Publish coverage report to Codecov ✴
-        uses: codecov/codecov-action@v2
-        with:
-          token: ${{ secrets.CODECOV_TOKEN }}
-          flags: web, server
-          fail_ci_if_error: false
-          verbose: true
-
-      - name: ✅ Run Integration Tests (Coveralls) ✅
+      - name: ✅ Run Integration Tests ✅
         run: dotnet test MangoAPI.IntegrationTests/MangoAPI.IntegrationTests.csproj  /p:CollectCoverage=true /p:CoverletOutput=TestResults/ /p:CoverletOutputFormat=lcov
         env:
           MANGO_JWT_ISSUER: ${{ secrets.MANGO_JWT_ISSUER }}
@@ -119,3 +116,39 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           path-to-lcov: MangoAPI.IntegrationTests/TestResults/coverage.info
+          
+      - name: ⚙ Set up JDK 11 ⚙
+        uses: actions/setup-java@v1
+        with:
+          java-version: 1.11
+
+      - name: 📝 Cache SonarCloud packages 📝
+        uses: actions/cache@v1
+        with:
+          path: ~/sonar/cache
+          key: ${{ runner.os }}-sonar
+          restore-keys: ${{ runner.os }}-sonar
+
+      - name: 📝 Cache SonarCloud scanner 📝
+        id: cache-sonar-scanner
+        uses: actions/cache@v1
+        with:
+          path: ./.sonar/scanner
+          key: ${{ runner.os }}-sonar-scanner
+          restore-keys: ${{ runner.os }}-sonar-scanner
+
+      - name: ⚙ Install SonarCloud scanner ⚙
+        if: steps.cache-sonar-scanner.outputs.cache-hit != 'true'
+        run: |
+          mkdir -p ./.sonar/scanner
+          chmod a+rwx ./.sonar/scanner
+          dotnet tool update dotnet-sonarscanner --tool-path ./.sonar/scanner
+
+      - name: 🔍 Analyze project 🔍
+        run: |
+          ./.sonar/scanner/dotnet-sonarscanner begin /k:"MangoInstantMessenger_MangoMessengerAPI" /o:"mangoinstantmessenger" /d:sonar.login="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io"
+          dotnet build -c Release
+          ./.sonar/scanner/dotnet-sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
