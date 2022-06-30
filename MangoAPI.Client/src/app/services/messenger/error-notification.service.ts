@@ -27,7 +27,6 @@ export class ErrorNotificationService {
     }
 
     if (error.status === 404) {
-      console.log(error);
       alert(error.message);
     }
   }
@@ -51,7 +50,6 @@ export class ErrorNotificationService {
 
     if (error.status === 400) {
       alert(error.error.ErrorMessage + ` ${componentName}`);
-      return;
     }
   }
 }
