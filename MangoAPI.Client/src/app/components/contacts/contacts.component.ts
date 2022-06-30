@@ -5,5 +5,5 @@ import { Component } from '@angular/core';
   templateUrl: './contacts.component.html'
 })
 export class ContactsComponent {
-  constructor() {}
+
 }

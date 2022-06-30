@@ -13,5 +13,4 @@ export class NavbarComponent {
     return RoutingConstants;
   }
 
-  constructor() { }
 }
