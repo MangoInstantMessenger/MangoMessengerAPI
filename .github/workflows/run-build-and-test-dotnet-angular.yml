@@ -64,6 +64,9 @@ jobs:
     needs: build-and-lint-angular
     runs-on: ubuntu-latest
     steps:
+      - name: 📝 Fetch Sources 📝
+        uses: actions/checkout@v2
+
       - name: ⚙ Setup .NET 6.0 SDK ⚙
         uses: actions/setup-dotnet@v1
         with:
