@@ -427,7 +427,7 @@ i {
           background: $gray;
           color: white;
           font-size: 18px;
-          border-radius: 10px 0 0 10px !important;
+          border-radius: 10px !important;
           &::placeholder {
             color: white;
             font-size: 18px;
@@ -436,12 +436,6 @@ i {
             box-shadow: none;
             border: none;
           }
-        }
-        .input-group-text {
-          background: $gray;
-          border: none;
-          padding: 2px 9px;
-          border-radius: 0 10px 10px 0;
         }
         display: flex;
       }
