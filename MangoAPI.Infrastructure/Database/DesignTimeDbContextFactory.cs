@@ -22,8 +22,6 @@ public class DesignTimeDbContextFactory : IDesignTimeDbContextFactory<MangoDbCon
 
         options.UseSqlServer(_mangoDatabaseUrl);
 
-        options.EnableSensitiveDataLogging();
-
         return new MangoDbContext(options.Options);
     }
 }

@@ -34,7 +34,7 @@ jobs:
         run: |
           cd ./MangoAPI.Client
           npm run lint
-          
+
       - name: Download sonar scanner
         uses: suisei-cn/actions-download-file@v1
         with:
@@ -120,7 +120,7 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           path-to-lcov: MangoAPI.IntegrationTests/TestResults/coverage.info
-          
+
       - name: ⚙ Set up JDK 11 ⚙
         uses: actions/setup-java@v1
         with:
@@ -156,9 +156,17 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-          
+
+  drop-build-artifact:
+    name: Drop build artifact
+    needs: [ build-and-lint-angular, build-and-test-dotnet ]
+    runs-on: ubuntu-latest
+    steps:
+      - name: 📝 Fetch Sources 📝
+        uses: actions/checkout@v2
+
       - name: Drop Artifact
         uses: actions/upload-artifact@v3
         with:
-          name: dist-without-markdown
+          name: mango-dotnet-build
           path: dotnet_build_files/src
