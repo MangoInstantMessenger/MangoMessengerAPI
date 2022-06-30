@@ -1,8 +1,6 @@
 ﻿name: Run OpenSSL DH Handshake
 
 on:
-  pull_request:
-    branches: [ develop ]
   workflow_dispatch:
 
 jobs:

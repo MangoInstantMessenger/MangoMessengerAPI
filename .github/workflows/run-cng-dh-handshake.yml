@@ -1,8 +1,6 @@
 name: Run CNG DH Handshake
 
 on:
-  push:
-    branches: [ MANGO-456 ]
   workflow_dispatch:
 
 jobs:

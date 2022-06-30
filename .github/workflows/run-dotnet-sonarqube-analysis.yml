@@ -1,9 +1,5 @@
 name: Run .NET SonarQube analysis
 on:
-  push:
-    branches: [ develop ]
-  pull_request:
-    types: [ opened, synchronize, reopened ]
   workflow_dispatch:
 jobs:
   run-dotnet-sonarqube-analysis:
