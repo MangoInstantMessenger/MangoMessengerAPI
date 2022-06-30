@@ -6,7 +6,7 @@ on:
 jobs:
   run-cng-dh-handshake:
     runs-on: windows-latest
-    
+    name: Run CNG DH Handshake
     steps:
       - name: 📝 Fetch Sources 📝
         uses: actions/checkout@v2

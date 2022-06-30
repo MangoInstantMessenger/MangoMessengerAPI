@@ -2,7 +2,6 @@ name: Heroku Container Deploy
 
 on:
   workflow_dispatch:
-
 jobs:
   heroku-container-deploy:
     name: Heroku Container Deploy
