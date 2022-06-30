@@ -130,7 +130,8 @@
                      placeholder="Search messages..."
                      type="text"
                      [(ngModel)]="searchMessagesQuery"
-                     (keyup.enter)="onSearchMessageClick()">
+                     (keyup.enter)="onSearchMessageClick()"
+                     (ngModelChange)="onSearchMessageQueryChange()">
               <div class="input-group-prepend">
                 <button class="input-group-text" id="basic-addon2">
                   <img alt="Search Icon" (click)="onSearchMessageClick()" src="./../../../assets/svg/search-icon.svg"/>
