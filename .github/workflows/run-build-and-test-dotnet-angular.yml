@@ -75,8 +75,9 @@ jobs:
       - name: 🔄 Restore Nuget Packages 🔄
         run: dotnet restore
 
-      - name: 🛠 Build .NET Solution 🛠
-        run: dotnet build --no-restore /p:ContinuousIntegrationBuild=true
+      - name: 🛠 Build and Publish .NET Project 🛠
+        run: |
+          dotnet build --no-restore /p:ContinuousIntegrationBuild=true --configuration Release -o dotnet_build_files/src
 
       - name: 🐋 Run SQLServer docker container 🐋
         run: |
@@ -155,3 +156,9 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          
+      - name: Drop Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: dist-without-markdown
+          path: dotnet_build_files/src
