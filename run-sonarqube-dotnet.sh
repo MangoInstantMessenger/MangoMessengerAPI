@@ -1,11 +1,11 @@
 #!/bin/bash
 
-if [ -z "$SONAR_TOKEN"]; then
+if [ -z "$SONAR_TOKEN" ]; then
   echo "SONAR_TOKEN is not set"
   exit 1
 fi
 
-if [ -z "$GITHUB_TOKEN"]; then
+if [ -z "$GITHUB_TOKEN" ]; then
   echo "$GITHUB_TOKEN is not set"
   exit 1
 fi
