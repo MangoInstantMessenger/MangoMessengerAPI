@@ -150,7 +150,9 @@ jobs:
 
       - name: 🔍 Analyze project 🔍
         shell: bash
-        run: ./run-sonarqube-dotnet.sh
+        run: |
+          chmod 777 run-sonarqube-dotnet.sh
+          ./run-sonarqube-dotnet.sh
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
