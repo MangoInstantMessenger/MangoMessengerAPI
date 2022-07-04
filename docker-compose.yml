@@ -1,0 +1,43 @@
+version: "3"
+
+networks:
+  mangonetwork:
+    driver: bridge
+
+services:
+  backend:
+    build: .
+    ports:
+      - "4430:443"
+      - "8000:80"
+
+    environment:
+      - MANGO_JWT_ISSUER
+      - MANGO_JWT_AUDIENCE
+      - MANGO_JWT_SIGN_KEY
+      - MANGO_EMAIL_NOTIFICATIONS_ADDRESS
+      - MANGO_FRONTEND_ADDRESS
+      - MANGO_DATABASE_URL
+      - MANGO_SEED_PASSWORD
+      - MANGO_BLOB_URL
+      - MANGO_BLOB_CONTAINER
+      - MANGO_BLOB_ACCESS
+      - MANGO_MAILGUN_API_KEY
+      - MANGO_MAILGUN_API_BASE_URL
+      - MANGO_MAILGUN_API_DOMAIN
+      - PASSWORD_DATABASE=$SA_PASSWORD
+
+    networks:
+      - mangonetwork
+  db:
+    image: mcr.microsoft.com/mssql/server:latest
+
+    ports:
+      - "1433:1433"
+
+    environment:
+      - ACCEPT_EULA="true"
+      - SA_PASSWORD
+
+    networks:
+      - mangonetwork
