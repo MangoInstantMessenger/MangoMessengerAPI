@@ -7,19 +7,16 @@
 [![Run Build and Test (.NET, Angular)](https://github.com/MangoInstantMessenger/MangoMessengerAPI/actions/workflows/run-build-and-test-dotnet-angular.yml/badge.svg)](https://github.com/MangoInstantMessenger/MangoMessengerAPI/actions/workflows/run-build-and-test-dotnet-angular.yml)
 [![Coverage Status](https://coveralls.io/repos/github/MangoInstantMessenger/MangoMessengerAPI/badge.svg?branch=develop)](https://coveralls.io/github/MangoInstantMessenger/MangoMessengerAPI?branch=develop)
 
-## What is all about
+## Description
 
-Mango Messenger is an opensource instant messaging system such that implemented using ASP NET 5 framework as REST API
-backend along with Angular framework as frontend. In general, current project is considered to be a diploma project in
-order to get bachelor's degree of computer science. However, now it is considered to be a just example of ASP .NET Core
-API implementation using best practices in terms of architecture etc, where it is possible to apply different software
-development approaches and to see how it works on different environments such as Azure, Heroku etc. Moreover, a few
-cryptographical concepts are implemented such as DH key exchange that can be applied in order to implement secret chats
-in feature. Project has classical N-tier architecture as below picture shows
+Mango Messenger is an opensource instant messaging system such that implemented using .NET 6 REST API backend 
+along with Angular project as frontend part. 
+In general, it is considered to be a bachelor's degree project.
+Bachelor's project has been successfully completed by the team of three students on 10-02-2022.
+The defence is completed, however it is worth to continue working on the project pursuing the another predefined goals.
 
-<p align="center">
-  <img src="img/architecture.png" width="1920"  alt="Mango Messenger Logo"/>
-</p>
+## Main goals of the project
+
 
 ## Build and run
 
@@ -68,7 +65,7 @@ As image below shows
 
 ![Environments](Environments-Back.jpg?raw=true)
 
-## User stack of technologies
+## Technology stack
 
 - **SDK:** `.NET 6`
 - **Frameworks:** `ASP .NET`, `Angular`
@@ -82,17 +79,17 @@ As image below shows
     - `Fluent Validation`
     - `AutoMapper`
 - **Presentation:**
-    - API Documentation: `OpenAPI`
+    - API Documentation: `OpenAPI (Swagger)`
     - Realtime Communication: `SignalR`
     - Frontend Development: `Angular`
     - Desktop Development: `ElectronJS`
-- **Unit and Integration Testing:** `XUnit`, `Moq`, `FluentAssertions`, `EntityFrameworkCore InMemory`
+- **Unit and Integration Testing:** `XUnit`, `Moq`, `FluentAssertions`
 - **Code Quality Tools:** `SonarQube`, `CodeCov`
 - **Containerization:** `Docker`
 - **Continuous Integration:** `GitHub Actions`
 - **Continuous Delivery:** `GitHub Actions`, `Heroku`, `Azure`
 - **Programming languages:** `C#`, `SQL`, `TypeScript`
-- **Tools:** `Visual Studio`, `Rider`, `VS Code`, `WebStorm`, `PgAdmin`, `Postman`
+- **Tools & IDE's:** `Visual Studio`, `Rider`, `VS Code`, `WebStorm`, `PgAdmin`, `Postman`
 
 ## Versions
 
