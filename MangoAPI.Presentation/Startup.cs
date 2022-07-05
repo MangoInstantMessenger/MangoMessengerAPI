@@ -6,7 +6,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using MangoAPI.Presentation.Middlewares;
+using System;
 using System.Text.Json;
+using System.Threading;
 using MangoAPI.Application.Interfaces;
 using MangoAPI.Application.Services;
 using MangoAPI.BusinessLogic.DependencyInjection;
@@ -62,12 +64,7 @@ public class Startup
         // https://stackoverflow.com/a/62374509
         app.Map("/app", spaApp => { spaApp.UseSpa(spa => { spa.Options.SourcePath = "/wwwroot"; }); });
 
-        var shouldMigrate = _configuration.GetValue<bool>("ShouldMigrateDatabase");
-
-        if (shouldMigrate)
-        {
-            app.MigrateDatabase();
-        }
+        app.MigrateDatabase();
     }
 
     public void ConfigureServices(IServiceCollection services)
