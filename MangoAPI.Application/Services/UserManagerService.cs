@@ -7,37 +7,37 @@ namespace MangoAPI.Application.Services;
 
 public class UserManagerService : IUserManagerService
 {
-    private readonly UserManager<UserEntity> _userManager;
+    private readonly UserManager<UserEntity> userManager;
 
     public UserManagerService(UserManager<UserEntity> userManager)
     {
-        _userManager = userManager;
+        this.userManager = userManager;
     }
 
     public async Task<IdentityResult> CreateAsync(UserEntity user, string password)
     {
-        var result = await _userManager.CreateAsync(user, password);
+        var result = await userManager.CreateAsync(user, password);
 
         return result;
     }
 
     public async Task<IdentityResult> RemovePasswordAsync(UserEntity user)
     {
-        var result = await _userManager.RemovePasswordAsync(user);
+        var result = await userManager.RemovePasswordAsync(user);
 
         return result;
     }
 
     public async Task<IdentityResult> AddPasswordAsync(UserEntity user, string password)
     {
-        var result = await _userManager.AddPasswordAsync(user, password);
+        var result = await userManager.AddPasswordAsync(user, password);
 
         return result;
     }
 
     public async Task<bool> CheckPasswordAsync(UserEntity user, string password)
     {
-        var result = await _userManager.CheckPasswordAsync(user, password);
+        var result = await userManager.CheckPasswordAsync(user, password);
 
         return result;
     }

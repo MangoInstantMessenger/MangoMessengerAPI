@@ -13,21 +13,21 @@ namespace MangoAPI.BusinessLogic.ApiQueries.DiffieHellmanKeyExchanges;
 public class GetKeyExchangeRequestsQueryHandler : IRequestHandler<GetKeyExchangeRequestsQuery,
     Result<GetKeyExchangeRequestsResponse>>
 {
-    private readonly MangoDbContext _mangoDbContext;
-    private readonly ResponseFactory<GetKeyExchangeRequestsResponse> _responseFactory;
+    private readonly MangoDbContext mangoDbContext;
+    private readonly ResponseFactory<GetKeyExchangeRequestsResponse> responseFactory;
 
     public GetKeyExchangeRequestsQueryHandler(
         MangoDbContext mangoDbContext,
         ResponseFactory<GetKeyExchangeRequestsResponse> responseFactory)
     {
-        _mangoDbContext = mangoDbContext;
-        _responseFactory = responseFactory;
+        this.mangoDbContext = mangoDbContext;
+        this.responseFactory = responseFactory;
     }
 
     public async Task<Result<GetKeyExchangeRequestsResponse>> Handle(GetKeyExchangeRequestsQuery request,
         CancellationToken cancellationToken)
     {
-        var requests = await _mangoDbContext.DiffieHellmanKeyExchangeEntities
+        var requests = await mangoDbContext.DiffieHellmanKeyExchangeEntities
             .Where(x => x.SenderId == request.UserId || x.ReceiverId == request.UserId)
             .Select(x => new OpenSslKeyExchangeRequest
             {
@@ -46,6 +46,6 @@ public class GetKeyExchangeRequestsQueryHandler : IRequestHandler<GetKeyExchange
             Success = true,
         };
 
-        return _responseFactory.SuccessResponse(response);
+        return responseFactory.SuccessResponse(response);
     }
 }

@@ -11,7 +11,7 @@ namespace MangoAPI.IntegrationTests.ApiCommandsTests.EditMessageCommandHandlerTe
 
 public class EditMessageShouldThrowChatNotFound : IntegrationTestBase
 {
-    private readonly Assert<ResponseBase> _assert = new();
+    private readonly Assert<ResponseBase> assert = new();
 
     [Fact]
     public async Task EditMessageCommandHandlerTest_ShouldThrow_ChatNotFound()
@@ -22,17 +22,17 @@ public class EditMessageShouldThrowChatNotFound : IntegrationTestBase
             await MangoModule.RequestAsync(CommandHelper.RegisterPetroCommand(), CancellationToken.None);
         var chat =
             await MangoModule.RequestAsync(
-                request: CommandHelper.CreateExtremeCodeMainChatCommand(user.Response.UserId), 
+                request: CommandHelper.CreateExtremeCodeMainChatCommand(user.Response.UserId),
                 cancellationToken: CancellationToken.None);
         var message =
             await MangoModule.RequestAsync(
-                request: CommandHelper.SendMessageToChannelCommand(user.Response.UserId, chat.Response.ChatId), 
+                request: CommandHelper.SendMessageToChannelCommand(user.Response.UserId, chat.Response.ChatId),
                 cancellationToken: CancellationToken.None);
         var command = new EditMessageCommand(ChatId: Guid.Empty, UserId: user.Response.UserId,
             MessageId: message.Response.MessageId, ModifiedText: "Message edited");
 
         var result = await MangoModule.RequestAsync(command, CancellationToken.None);
 
-        _assert.Fail(result, expectedMessage, expectedDetails);
+        assert.Fail(result, expectedMessage, expectedDetails);
     }
 }

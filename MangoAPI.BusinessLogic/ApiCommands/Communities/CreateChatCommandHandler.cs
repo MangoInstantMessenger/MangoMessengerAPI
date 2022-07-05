@@ -15,25 +15,25 @@ using MangoAPI.Infrastructure.Database;
 
 namespace MangoAPI.BusinessLogic.ApiCommands.Communities;
 
-public class CreateChatCommandHandler 
+public class CreateChatCommandHandler
     : IRequestHandler<CreateChatCommand, Result<CreateCommunityResponse>>
 {
-    private readonly MangoDbContext _dbContext;
-    private readonly IHubContext<ChatHub, IHubClient> _hubContext;
-    private readonly ResponseFactory<CreateCommunityResponse> _responseFactory;
+    private readonly MangoDbContext dbContext;
+    private readonly IHubContext<ChatHub, IHubClient> hubContext;
+    private readonly ResponseFactory<CreateCommunityResponse> responseFactory;
 
-    public CreateChatCommandHandler(MangoDbContext dbContext, 
+    public CreateChatCommandHandler(MangoDbContext dbContext,
         IHubContext<ChatHub, IHubClient> hubContext, ResponseFactory<CreateCommunityResponse> responseFactory)
     {
-        _dbContext = dbContext;
-        _hubContext = hubContext;
-        _responseFactory = responseFactory;
+        this.dbContext = dbContext;
+        this.hubContext = hubContext;
+        this.responseFactory = responseFactory;
     }
 
     public async Task<Result<CreateCommunityResponse>> Handle(CreateChatCommand request,
         CancellationToken cancellationToken)
     {
-        var partner = await _dbContext.Users.AsNoTracking()
+        var partner = await dbContext.Users.AsNoTracking()
             .FirstOrDefaultAsync(x => x.Id == request.PartnerId, cancellationToken);
 
         if (partner is null)
@@ -41,7 +41,7 @@ public class CreateChatCommandHandler
             const string errorMessage = ResponseMessageCodes.UserNotFound;
             var errorDescription = ResponseMessageCodes.ErrorDictionary[errorMessage];
 
-            return _responseFactory.ConflictResponse(errorMessage, errorDescription);
+            return responseFactory.ConflictResponse(errorMessage, errorDescription);
         }
 
         if (request.UserId == request.PartnerId)
@@ -49,14 +49,14 @@ public class CreateChatCommandHandler
             const string errorMessage = ResponseMessageCodes.CannotCreateSelfChat;
             var errorDescription = ResponseMessageCodes.ErrorDictionary[errorMessage];
 
-            return _responseFactory.ConflictResponse(errorMessage, errorDescription);
+            return responseFactory.ConflictResponse(errorMessage, errorDescription);
         }
 
-        var currentUserDisplayName = await _dbContext.Users.Where(x => x.Id == request.UserId)
+        var currentUserDisplayName = await dbContext.Users.Where(x => x.Id == request.UserId)
             .Select(x => x.DisplayName)
             .FirstOrDefaultAsync(cancellationToken);
 
-        var userPrivateChats = await _dbContext.Chats
+        var userPrivateChats = await dbContext.Chats
             .Include(chatEntity => chatEntity.ChatUsers)
             .Where(chatEntity => chatEntity.CommunityType == (int)CommunityType.DirectChat &&
                                  chatEntity.ChatUsers.Any(userChatEntity => userChatEntity.UserId == request.UserId))
@@ -68,7 +68,7 @@ public class CreateChatCommandHandler
 
         if (existingChat != null)
         {
-            return _responseFactory.SuccessResponse(CreateCommunityResponse.FromSuccess(existingChat));
+            return responseFactory.SuccessResponse(CreateCommunityResponse.FromSuccess(existingChat));
         }
 
         var chatEntity = new ChatEntity
@@ -87,14 +87,14 @@ public class CreateChatCommandHandler
             new UserChatEntity {ChatId = chatEntity.Id, RoleId = (int) UserRole.User, UserId = request.PartnerId},
         };
 
-        _dbContext.Chats.Add(chatEntity);
-        _dbContext.UserChats.AddRange(userChats);
+        dbContext.Chats.Add(chatEntity);
+        dbContext.UserChats.AddRange(userChats);
 
-        await _dbContext.SaveChangesAsync(cancellationToken);
+        await dbContext.SaveChangesAsync(cancellationToken);
 
         var chatDto = chatEntity.ToChatDto();
-        await _hubContext.Clients.Group(request.UserId.ToString()).UpdateUserChatsAsync(chatDto);
+        await hubContext.Clients.Group(request.UserId.ToString()).UpdateUserChatsAsync(chatDto);
 
-        return _responseFactory.SuccessResponse(CreateCommunityResponse.FromSuccess(chatEntity));
+        return responseFactory.SuccessResponse(CreateCommunityResponse.FromSuccess(chatEntity));
     }
 }

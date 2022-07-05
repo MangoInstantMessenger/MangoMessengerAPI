@@ -11,12 +11,12 @@ namespace MangoAPI.IntegrationTests.ApiCommandsTests.UpdateChannelPictureCommand
 
 public class UpdateChannelPictureShouldThrowLimitExceed10 : IntegrationTestBase
 {
-    private readonly ITestOutputHelper _testOutputHelper;
-    private readonly Assert<UpdateChannelPictureResponse> _assert = new();
+    private readonly ITestOutputHelper testOutputHelper;
+    private readonly Assert<UpdateChannelPictureResponse> assert = new();
 
     public UpdateChannelPictureShouldThrowLimitExceed10(ITestOutputHelper testOutputHelper)
     {
-        _testOutputHelper = testOutputHelper;
+        this.testOutputHelper = testOutputHelper;
     }
 
     [Fact]
@@ -32,8 +32,8 @@ public class UpdateChannelPictureShouldThrowLimitExceed10 : IntegrationTestBase
         var chatId = chat.Response.ChatId;
         var file = MangoFilesHelper.GetTestImage();
         var command = new UpdateChanelPictureCommand(
-            ChatId: chatId, 
-            UserId: userId, 
+            ChatId: chatId,
+            UserId: userId,
             NewGroupPicture: file,
             ContentType: "image/jpeg");
 
@@ -41,14 +41,14 @@ public class UpdateChannelPictureShouldThrowLimitExceed10 : IntegrationTestBase
         for (var i = 0; i < 10; i++)
         {
             var res = await MangoModule.RequestAsync(command, CancellationToken.None);
-            _testOutputHelper.WriteLine(
+            testOutputHelper.WriteLine(
                 $"UpdateChannelPicture_ShouldThrow_LimitReached10 File upload: {res.Response.Message}");
             imageNamesList.Add(res.Response.FileName);
         }
 
         var result = await MangoModule.RequestAsync(command, CancellationToken.None);
 
-        _assert.Fail(result, expectedMessage, expectedDetails);
+        assert.Fail(result, expectedMessage, expectedDetails);
         foreach (var fileName in imageNamesList)
         {
             await BlobService.DeleteBlobAsync(fileName);

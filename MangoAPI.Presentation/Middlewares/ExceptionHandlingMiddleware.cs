@@ -11,18 +11,18 @@ namespace MangoAPI.Presentation.Middlewares;
 
 public class ExceptionHandlingMiddleware
 {
-    private readonly RequestDelegate _next;
+    private readonly RequestDelegate next;
 
     public ExceptionHandlingMiddleware(RequestDelegate next)
     {
-        _next = next;
+        this.next = next;
     }
 
     public async Task InvokeAsync(HttpContext httpContext)
     {
         try
         {
-            await _next(httpContext);
+            await next(httpContext);
         }
         catch (Exception ex)
         {

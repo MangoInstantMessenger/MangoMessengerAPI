@@ -14,10 +14,10 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Sessions;
 
 public class RefreshSessionCommandHandler : IRequestHandler<RefreshSessionCommand, Result<TokensResponse>>
 {
-    private readonly IJwtGenerator _jwtGenerator;
-    private readonly MangoDbContext _dbContext;
-    private readonly ResponseFactory<TokensResponse> _responseFactory;
-    private readonly IJwtGeneratorSettings _jwtGeneratorSettings;
+    private readonly IJwtGenerator jwtGenerator;
+    private readonly MangoDbContext dbContext;
+    private readonly ResponseFactory<TokensResponse> responseFactory;
+    private readonly IJwtGeneratorSettings jwtGeneratorSettings;
 
     public RefreshSessionCommandHandler(
         MangoDbContext dbContext,
@@ -25,16 +25,16 @@ public class RefreshSessionCommandHandler : IRequestHandler<RefreshSessionComman
         ResponseFactory<TokensResponse> responseFactory,
         IJwtGeneratorSettings jwtGeneratorSettings)
     {
-        _dbContext = dbContext;
-        _jwtGenerator = jwtGenerator;
-        _responseFactory = responseFactory;
-        _jwtGeneratorSettings = jwtGeneratorSettings;
+        this.dbContext = dbContext;
+        this.jwtGenerator = jwtGenerator;
+        this.responseFactory = responseFactory;
+        this.jwtGeneratorSettings = jwtGeneratorSettings;
     }
 
     public async Task<Result<TokensResponse>> Handle(RefreshSessionCommand request,
         CancellationToken cancellationToken)
     {
-        var session = await _dbContext.Sessions
+        var session = await dbContext.Sessions
             .Include(x => x.UserEntity)
             .FirstOrDefaultAsync(entity => entity.RefreshToken == request.RefreshToken,
                 cancellationToken);
@@ -44,10 +44,10 @@ public class RefreshSessionCommandHandler : IRequestHandler<RefreshSessionComman
             const string errorMessage = ResponseMessageCodes.InvalidOrExpiredRefreshToken;
             var details = ResponseMessageCodes.ErrorDictionary[errorMessage];
 
-            return _responseFactory.ConflictResponse(errorMessage, details);
+            return responseFactory.ConflictResponse(errorMessage, details);
         }
 
-        var userSessions = _dbContext.Sessions
+        var userSessions = dbContext.Sessions
             .Where(x => x.UserId == session.UserId);
 
         var userSessionCount = await userSessions.CountAsync(cancellationToken);
@@ -55,10 +55,10 @@ public class RefreshSessionCommandHandler : IRequestHandler<RefreshSessionComman
         switch (userSessionCount)
         {
             case >= 5:
-                _dbContext.Sessions.RemoveRange(userSessions);
+                dbContext.Sessions.RemoveRange(userSessions);
                 break;
             default:
-                _dbContext.Sessions.Remove(session);
+                dbContext.Sessions.Remove(session);
                 break;
         }
 
@@ -66,18 +66,18 @@ public class RefreshSessionCommandHandler : IRequestHandler<RefreshSessionComman
         {
             RefreshToken = Guid.NewGuid(),
             UserId = session.UserId,
-            ExpiresAt = DateTime.UtcNow.AddDays(_jwtGeneratorSettings.MangoRefreshTokenLifetimeDays),
+            ExpiresAt = DateTime.UtcNow.AddDays(jwtGeneratorSettings.MangoRefreshTokenLifetimeDays),
             CreatedAt = DateTime.UtcNow,
         };
 
-        var jwtToken = _jwtGenerator.GenerateJwtToken(session.UserEntity);
+        var jwtToken = jwtGenerator.GenerateJwtToken(session.UserEntity);
 
-        _dbContext.Sessions.Add(newSession);
-        await _dbContext.SaveChangesAsync(cancellationToken);
+        dbContext.Sessions.Add(newSession);
+        await dbContext.SaveChangesAsync(cancellationToken);
 
         var expires = ((DateTimeOffset)session.ExpiresAt).ToUnixTimeSeconds();
 
-        return _responseFactory.SuccessResponse(TokensResponse.FromSuccess(jwtToken, newSession.RefreshToken,
+        return responseFactory.SuccessResponse(TokensResponse.FromSuccess(jwtToken, newSession.RefreshToken,
             session.UserId, expires));
     }
 }

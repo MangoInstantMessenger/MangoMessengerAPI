@@ -10,7 +10,7 @@ namespace MangoAPI.IntegrationTests.ApiCommandsTests.SendMessageCommandHandlerTe
 
 public class SendMessageSuccessTest : IntegrationTestBase
 {
-    private readonly Assert<SendMessageResponse> _assert = new();
+    private readonly Assert<SendMessageResponse> assert = new();
 
     [Fact]
     public async Task SendMessage_Test_Success()
@@ -26,7 +26,7 @@ public class SendMessageSuccessTest : IntegrationTestBase
             request: CommandHelper.SendMessageToChannelCommand(user.Response.UserId, chat.Response.ChatId),
             cancellationToken: CancellationToken.None);
 
-        _assert.Pass(result);
+        assert.Pass(result);
         var messageEntity = await DbContextFixture.Messages
             .Include(x => x.User)
             .Include(x => x.Chat)

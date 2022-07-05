@@ -15,26 +15,26 @@ namespace MangoAPI.BusinessLogic.ApiCommands.DiffieHellmanKeyExchanges;
 public class CreateKeyExchangeCommandHandler : IRequestHandler<CreateKeyExchangeCommand,
     Result<CreateKeyExchangeResponse>>
 {
-    private readonly MangoDbContext _mangoDbContext;
-    private readonly ResponseFactory<CreateKeyExchangeResponse> _responseFactory;
+    private readonly MangoDbContext mangoDbContext;
+    private readonly ResponseFactory<CreateKeyExchangeResponse> responseFactory;
 
     public CreateKeyExchangeCommandHandler(MangoDbContext mangoDbContext,
         ResponseFactory<CreateKeyExchangeResponse> responseFactory)
     {
-        _mangoDbContext = mangoDbContext;
-        _responseFactory = responseFactory;
+        this.mangoDbContext = mangoDbContext;
+        this.responseFactory = responseFactory;
     }
 
     public async Task<Result<CreateKeyExchangeResponse>> Handle(CreateKeyExchangeCommand request,
         CancellationToken cancellationToken)
     {
-        var sendersRequests = await _mangoDbContext.DiffieHellmanKeyExchangeEntities
+        var sendersRequests = await mangoDbContext.DiffieHellmanKeyExchangeEntities
             .Where(entity =>
                 entity.SenderId == request.SenderId &&
                 entity.ReceiverId == request.ReceiverId)
             .ToListAsync(cancellationToken: cancellationToken);
 
-        var receiverRequests = await _mangoDbContext.DiffieHellmanKeyExchangeEntities
+        var receiverRequests = await mangoDbContext.DiffieHellmanKeyExchangeEntities
             .Where(entity =>
                 entity.SenderId == request.ReceiverId &&
                 entity.ReceiverId == request.SenderId)
@@ -44,8 +44,8 @@ public class CreateKeyExchangeCommandHandler : IRequestHandler<CreateKeyExchange
 
         if (allRequests.Count != 0)
         {
-            _mangoDbContext.DiffieHellmanKeyExchangeEntities.RemoveRange(allRequests);
-            await _mangoDbContext.SaveChangesAsync(cancellationToken);
+            mangoDbContext.DiffieHellmanKeyExchangeEntities.RemoveRange(allRequests);
+            await mangoDbContext.SaveChangesAsync(cancellationToken);
         }
 
         await using var target = new MemoryStream();
@@ -62,9 +62,9 @@ public class CreateKeyExchangeCommandHandler : IRequestHandler<CreateKeyExchange
             KeyExchangeType = request.KeyExchangeType
         };
 
-        _mangoDbContext.DiffieHellmanKeyExchangeEntities.Add(keyExchangeRequest);
+        mangoDbContext.DiffieHellmanKeyExchangeEntities.Add(keyExchangeRequest);
 
-        await _mangoDbContext.SaveChangesAsync(cancellationToken);
+        await mangoDbContext.SaveChangesAsync(cancellationToken);
 
         var response = new CreateKeyExchangeResponse
         {
@@ -73,6 +73,6 @@ public class CreateKeyExchangeCommandHandler : IRequestHandler<CreateKeyExchange
             Success = true
         };
 
-        return _responseFactory.SuccessResponse(response);
+        return responseFactory.SuccessResponse(response);
     }
 }

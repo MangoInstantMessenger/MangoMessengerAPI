@@ -14,24 +14,24 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Messages;
 public class SearchChatMessageQueryHandler
     : IRequestHandler<SearchChatMessagesQuery, Result<SearchChatMessagesResponse>>
 {
-    private readonly MangoDbContext _dbContext;
-    private readonly ResponseFactory<SearchChatMessagesResponse> _responseFactory;
-    private readonly IBlobServiceSettings _blobServiceSettings;
+    private readonly MangoDbContext dbContext;
+    private readonly ResponseFactory<SearchChatMessagesResponse> responseFactory;
+    private readonly IBlobServiceSettings blobServiceSettings;
 
     public SearchChatMessageQueryHandler(
         MangoDbContext dbContext,
         ResponseFactory<SearchChatMessagesResponse> responseFactory,
         IBlobServiceSettings blobServiceSettings)
     {
-        _dbContext = dbContext;
-        _responseFactory = responseFactory;
-        _blobServiceSettings = blobServiceSettings;
+        this.dbContext = dbContext;
+        this.responseFactory = responseFactory;
+        this.blobServiceSettings = blobServiceSettings;
     }
 
     public async Task<Result<SearchChatMessagesResponse>> Handle(SearchChatMessagesQuery request,
         CancellationToken cancellationToken)
     {
-        var userChat = await _dbContext.UserChats
+        var userChat = await dbContext.UserChats
             .Where(chatEntity => chatEntity.UserId == request.UserId)
             .Where(chatEntity => chatEntity.ChatId == request.ChatId)
             .FirstOrDefaultAsync(cancellationToken);
@@ -41,10 +41,10 @@ public class SearchChatMessageQueryHandler
             const string errorMessage = ResponseMessageCodes.PermissionDenied;
             var details = ResponseMessageCodes.ErrorDictionary[errorMessage];
 
-            return _responseFactory.ConflictResponse(errorMessage, details);
+            return responseFactory.ConflictResponse(errorMessage, details);
         }
 
-        var query = _dbContext.Messages.AsNoTracking()
+        var query = dbContext.Messages.AsNoTracking()
             .Where(x => x.ChatId == request.ChatId)
             .Where(x => EF.Functions.Like(x.Content, $"%{request.MessageText}%"))
             .OrderBy(x => x.CreatedAt)
@@ -62,17 +62,17 @@ public class SearchChatMessageQueryHandler
                 InReplayToText = x.InReplayToText,
 
                 MessageAuthorPictureUrl = x.User.Image != null
-                    ? $"{_blobServiceSettings.MangoBlobAccess}/{x.User.Image}"
+                    ? $"{blobServiceSettings.MangoBlobAccess}/{x.User.Image}"
                     : null,
 
                 MessageAttachmentUrl = x.Attachment != null
-                    ? $"{_blobServiceSettings.MangoBlobAccess}/{x.Attachment}"
+                    ? $"{blobServiceSettings.MangoBlobAccess}/{x.Attachment}"
                     : null,
             }).Take(200);
 
 
         var result = await query.ToListAsync(cancellationToken);
 
-        return _responseFactory.SuccessResponse(SearchChatMessagesResponse.FromSuccess(result));
+        return responseFactory.SuccessResponse(SearchChatMessagesResponse.FromSuccess(result));
     }
 }

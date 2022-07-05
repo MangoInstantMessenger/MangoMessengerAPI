@@ -9,20 +9,20 @@ namespace MangoAPI.IntegrationTests.ApiCommandsTests.ArchiveChatCommandHandlerTe
 
 public class ArchiveChatTestSuccess : IntegrationTestBase
 {
-    private readonly Assert<ResponseBase> _assert = new();
+    private readonly Assert<ResponseBase> assert = new();
 
     [Fact]
     public async Task ArchiveChatTest_Success()
     {
-        var user = 
+        var user =
             await MangoModule.RequestAsync(CommandHelper.RegisterPetroCommand(), CancellationToken.None);
         var chat =
             await MangoModule.RequestAsync(CommandHelper.CreateExtremeCodeMainChatCommand(user.Response.UserId),
                                            CancellationToken.None);
         var command = new ArchiveChatCommand(ChatId: chat.Response.ChatId, UserId: user.Response.UserId);
-        
+
         var result = await MangoModule.RequestAsync(command, CancellationToken.None);
 
-        _assert.Pass(result);
+        assert.Pass(result);
     }
 }

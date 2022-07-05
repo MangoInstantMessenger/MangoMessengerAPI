@@ -9,7 +9,7 @@ namespace MangoAPI.IntegrationTests.ApiQueries.SearchCommunityQueryHandlerTests;
 
 public class SearchCommunityTestSuccess : IntegrationTestBase
 {
-    private readonly Assert<SearchCommunityResponse> _assert = new();
+    private readonly Assert<SearchCommunityResponse> assert = new();
 
     [Fact]
     public async Task SearchCommunityTest_Success()
@@ -17,13 +17,13 @@ public class SearchCommunityTestSuccess : IntegrationTestBase
         var user =
             await MangoModule.RequestAsync(CommandHelper.RegisterPetroCommand(), CancellationToken.None);
         var chat = await MangoModule.RequestAsync(
-                request: CommandHelper.CreateExtremeCodeMainChatCommand(user.Response.UserId), 
+                request: CommandHelper.CreateExtremeCodeMainChatCommand(user.Response.UserId),
                 cancellationToken: CancellationToken.None);
         var query = new SearchCommunityQuery(UserId: user.Response.UserId, DisplayName: "Extreme");
 
         var result = await MangoModule.RequestAsync(query, CancellationToken.None);
-            
-        _assert.Pass(result);
+
+        assert.Pass(result);
         result.Response.Chats.Count.Should().Be(1);
         result.Response.Chats[0].ChatId.Should().Be(chat.Response.ChatId);
     }

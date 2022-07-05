@@ -7,17 +7,17 @@ namespace MangoAPI.Application.Services;
 
 public class SignInManagerService : ISignInManagerService
 {
-    private readonly SignInManager<UserEntity> _signInManager;
+    private readonly SignInManager<UserEntity> signInManager;
 
     public SignInManagerService(SignInManager<UserEntity> signInManager)
     {
-        _signInManager = signInManager;
+        this.signInManager = signInManager;
     }
 
     public async Task<SignInResult> CheckPasswordSignInAsync(UserEntity user, string password,
         bool lockoutOnFailure)
     {
-        var result = await _signInManager.CheckPasswordSignInAsync(user, password, lockoutOnFailure);
+        var result = await signInManager.CheckPasswordSignInAsync(user, password, lockoutOnFailure);
 
         return result;
     }

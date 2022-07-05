@@ -9,7 +9,7 @@ namespace MangoAPI.IntegrationTests.ApiCommandsTests.VerifyEmailCommandHandlerTe
 
 public class VerifyEmailTestSuccess : IntegrationTestBase
 {
-    private readonly Assert<ResponseBase> _assert = new();
+    private readonly Assert<ResponseBase> assert = new();
 
     [Fact]
     public async Task VerifyEmailTest_Success()
@@ -19,11 +19,11 @@ public class VerifyEmailTestSuccess : IntegrationTestBase
             cancellationToken: CancellationToken.None);
         var userId = user.Response.UserId;
         var userEntity = await DbContextFixture.Users.FirstAsync(x => x.Id == userId);
-            
+
         var result = await MangoModule.RequestAsync(
             request: CommandHelper.CreateVerifyEmailCommand(userEntity.Email, userEntity.EmailCode),
             cancellationToken: CancellationToken.None);
 
-        _assert.Pass(result);
+        assert.Pass(result);
     }
 }

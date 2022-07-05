@@ -11,7 +11,7 @@ namespace MangoAPI.IntegrationTests.ApiCommandsTests.LogoutAllCommandHandlerTest
 
 public class LogoutAllTestShouldThrowSessionNotFound : IntegrationTestBase
 {
-    private readonly Assert<ResponseBase> _assert = new();
+    private readonly Assert<ResponseBase> assert = new();
 
     [Fact]
     public async Task LogoutAllCommandHandlerTest_ShouldThrow_SessionNotFound()
@@ -30,6 +30,6 @@ public class LogoutAllTestShouldThrowSessionNotFound : IntegrationTestBase
 
         var result = await MangoModule.RequestAsync(command, CancellationToken.None);
 
-        _assert.Fail(result, expectedMessage, expectedDetails);
+        assert.Fail(result, expectedMessage, expectedDetails);
     }
 }

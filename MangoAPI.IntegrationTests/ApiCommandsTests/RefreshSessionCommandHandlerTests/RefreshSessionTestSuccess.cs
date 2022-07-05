@@ -10,7 +10,7 @@ namespace MangoAPI.IntegrationTests.ApiCommandsTests.RefreshSessionCommandHandle
 
 public class RefreshSessionTestSuccess : IntegrationTestBase
 {
-    private readonly Assert<TokensResponse> _assert = new();
+    private readonly Assert<TokensResponse> assert = new();
 
     [Fact]
     public async Task RefreshSessionTest_Success()
@@ -30,6 +30,6 @@ public class RefreshSessionTestSuccess : IntegrationTestBase
 
         var result = await MangoModule.RequestAsync(command, CancellationToken.None);
 
-        _assert.Pass(result);
+        assert.Pass(result);
     }
 }

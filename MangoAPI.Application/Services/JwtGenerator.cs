@@ -12,19 +12,19 @@ namespace MangoAPI.Application.Services;
 
 public class JwtGenerator : IJwtGenerator
 {
-    private readonly IJwtGeneratorSettings _jwtGeneratorSettings;
-    private readonly SymmetricSecurityKey _key;
+    private readonly IJwtGeneratorSettings jwtGeneratorSettings;
+    private readonly SymmetricSecurityKey key;
 
     public JwtGenerator(IJwtGeneratorSettings jwtGeneratorSettings)
     {
-        _jwtGeneratorSettings = jwtGeneratorSettings;
-        var encodedKey = Encoding.UTF8.GetBytes(_jwtGeneratorSettings.MangoJwtSignKey);
-        _key = new SymmetricSecurityKey(encodedKey);
+        this.jwtGeneratorSettings = jwtGeneratorSettings;
+        var encodedKey = Encoding.UTF8.GetBytes(this.jwtGeneratorSettings.MangoJwtSignKey);
+        key = new SymmetricSecurityKey(encodedKey);
     }
 
     public string GenerateJwtToken(UserEntity userEntity)
     {
-        return GenerateJwtToken(userEntity, _jwtGeneratorSettings.MangoJwtLifetimeMinutes);
+        return GenerateJwtToken(userEntity, jwtGeneratorSettings.MangoJwtLifetimeMinutes);
     }
 
     private string GenerateJwtToken(UserEntity userEntity, int lifetimeMinutes)
@@ -35,15 +35,15 @@ public class JwtGenerator : IJwtGenerator
             new Claim(JwtRegisteredClaimNames.Name, userEntity.UserName),
         };
 
-        var credentials = new SigningCredentials(_key, SecurityAlgorithms.HmacSha256);
+        var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
         var tokenDescriptor = new SecurityTokenDescriptor
         {
             Subject = new ClaimsIdentity(claims),
             Expires = DateTime.UtcNow.AddMinutes(lifetimeMinutes),
             SigningCredentials = credentials,
-            Issuer = _jwtGeneratorSettings.MangoJwtIssuer,
-            Audience = _jwtGeneratorSettings.MangoJwtAudience,
+            Issuer = jwtGeneratorSettings.MangoJwtIssuer,
+            Audience = jwtGeneratorSettings.MangoJwtAudience,
         };
 
         var tokenHandler = new JwtSecurityTokenHandler();

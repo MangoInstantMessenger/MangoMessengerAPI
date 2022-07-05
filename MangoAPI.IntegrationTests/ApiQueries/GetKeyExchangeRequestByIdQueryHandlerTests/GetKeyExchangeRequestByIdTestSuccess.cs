@@ -8,7 +8,7 @@ namespace MangoAPI.IntegrationTests.ApiQueries.GetKeyExchangeRequestByIdQueryHan
 
 public class GetKeyExchangeRequestByIdTestSuccess : IntegrationTestBase
 {
-    private readonly Assert<GetKeyExchangeRequestByIdResponse> _assert = new();
+    private readonly Assert<GetKeyExchangeRequestByIdResponse> assert = new();
 
     [Fact]
     public async Task GetKeyExchangeRequestByIdTest_Success()
@@ -28,6 +28,6 @@ public class GetKeyExchangeRequestByIdTestSuccess : IntegrationTestBase
 
         var response = await MangoModule.RequestAsync(query, CancellationToken.None);
 
-        _assert.Pass(response);
+        assert.Pass(response);
     }
 }

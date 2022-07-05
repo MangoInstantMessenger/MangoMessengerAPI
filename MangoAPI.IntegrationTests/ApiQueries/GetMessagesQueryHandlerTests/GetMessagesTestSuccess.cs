@@ -9,7 +9,7 @@ namespace MangoAPI.IntegrationTests.ApiQueries.GetMessagesQueryHandlerTests;
 
 public class GetMessagesTestSuccess : IntegrationTestBase
 {
-    private readonly Assert<GetMessagesResponse> _assert = new();
+    private readonly Assert<GetMessagesResponse> assert = new();
 
     [Fact]
     public async Task GetMessagesTest_Success()
@@ -29,8 +29,8 @@ public class GetMessagesTestSuccess : IntegrationTestBase
         var query = new GetMessagesQuery(UserId: user.Response.UserId, ChatId: chat.Response.ChatId);
 
         var result = await MangoModule.RequestAsync(query, CancellationToken.None);
-            
-        _assert.Pass(result);
+
+        assert.Pass(result);
         result.Response.Messages.Count.Should().Be(2);
     }
 }

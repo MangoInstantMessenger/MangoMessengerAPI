@@ -8,7 +8,7 @@ namespace MangoAPI.IntegrationTests.ApiCommandsTests.CreateKeyExchangeCommandHan
 
 public class CreateKeyExchangeTestSuccess : IntegrationTestBase
 {
-    private readonly Assert<CreateKeyExchangeResponse> _assert = new();
+    private readonly Assert<CreateKeyExchangeResponse> assert = new();
 
     [Fact]
     public async Task OpenSslCreateKeyExchangeTest_Success()
@@ -24,6 +24,6 @@ public class CreateKeyExchangeTestSuccess : IntegrationTestBase
 
         var response = await MangoModule.RequestAsync(command, CancellationToken.None);
 
-        _assert.Pass(response);
+        assert.Pass(response);
     }
 }

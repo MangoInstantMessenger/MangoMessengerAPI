@@ -13,22 +13,22 @@ namespace MangoAPI.Application.Services;
 
 public class MailgunApiEmailSenderService : IEmailSenderService
 {
-    private readonly HttpClient _httpClient;
-    private readonly IMailgunSettings _mailgunSettings;
+    private readonly HttpClient httpClient;
+    private readonly IMailgunSettings mailgunSettings;
 
     public MailgunApiEmailSenderService(HttpClient httpClient, IMailgunSettings mailgunSettings)
     {
-        _httpClient = httpClient ?? throw new ArgumentNullException(nameof(httpClient));
+        this.httpClient = httpClient ?? throw new ArgumentNullException(nameof(httpClient));
 
-        _mailgunSettings = mailgunSettings ?? throw new ArgumentNullException(nameof(mailgunSettings));
+        this.mailgunSettings = mailgunSettings ?? throw new ArgumentNullException(nameof(mailgunSettings));
 
-        _httpClient.BaseAddress = new Uri(_mailgunSettings.MailgunApiBaseUrl);
+        this.httpClient.BaseAddress = new Uri(this.mailgunSettings.MailgunApiBaseUrl);
 
         var httpBasicAuthHeader = GenerateHttpAuthHeader(
             tokenName: HttpAuthHeaderNames.Api,
-            tokenValue: _mailgunSettings.MailgunApiKey);
+            tokenValue: this.mailgunSettings.MailgunApiKey);
 
-        _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(
+        this.httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(
             scheme: HttpAuthSchemes.Basic,
             parameter: httpBasicAuthHeader);
     }
@@ -40,8 +40,8 @@ public class MailgunApiEmailSenderService : IEmailSenderService
         var message = GenerateEmailConfirmBody(user);
         var emailContent = GenerateHttpContent(user.Email, subject, message);
 
-        var response = await _httpClient
-            .PostAsync(_mailgunSettings.MailgunApiBaseUrlWithDomain, emailContent, cancellationToken)
+        var response = await httpClient
+            .PostAsync(mailgunSettings.MailgunApiBaseUrlWithDomain, emailContent, cancellationToken)
             .ConfigureAwait(false);
 
         response.EnsureSuccessStatusCode();
@@ -55,8 +55,8 @@ public class MailgunApiEmailSenderService : IEmailSenderService
         var message = GeneratePasswordRestoreRequestBody(user, requestId);
         var emailContent = GenerateHttpContent(user.Email, subject, message);
 
-        var response = await _httpClient
-            .PostAsync(_mailgunSettings.MailgunApiBaseUrlWithDomain, emailContent, cancellationToken)
+        var response = await httpClient
+            .PostAsync(mailgunSettings.MailgunApiBaseUrlWithDomain, emailContent, cancellationToken)
             .ConfigureAwait(false);
 
         response.EnsureSuccessStatusCode();
@@ -64,14 +64,14 @@ public class MailgunApiEmailSenderService : IEmailSenderService
 
     private string GenerateEmailConfirmBody(UserEntity user)
     {
-        return string.Format(Resources.EmailConfirmation, user.DisplayName, _mailgunSettings.FrontendAddress,
+        return string.Format(Resources.EmailConfirmation, user.DisplayName, mailgunSettings.FrontendAddress,
             user.Email,
             user.EmailCode, user.EmailCode);
     }
 
     private string GeneratePasswordRestoreRequestBody(UserEntity user, Guid requestId)
     {
-        return string.Format(Resources.PasswordRestoration, user.DisplayName, _mailgunSettings.FrontendAddress,
+        return string.Format(Resources.PasswordRestoration, user.DisplayName, mailgunSettings.FrontendAddress,
             requestId,
             requestId);
     }
@@ -89,7 +89,7 @@ public class MailgunApiEmailSenderService : IEmailSenderService
     {
         var content = new Dictionary<string, string>
         {
-            {"from", _mailgunSettings.NotificationEmail},
+            {"from", mailgunSettings.NotificationEmail},
             {"to", recipient},
             {"subject", subject},
             {"text", message},

@@ -10,11 +10,11 @@ namespace MangoAPI.BusinessLogic.Pipelines;
 public class ValidationBehaviour<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
     where TRequest : IRequest<TResponse>
 {
-    private readonly IEnumerable<IValidator<TRequest>> _validators;
+    private readonly IEnumerable<IValidator<TRequest>> validators;
 
     public ValidationBehaviour(IEnumerable<IValidator<TRequest>> validators)
     {
-        _validators = validators;
+        this.validators = validators;
     }
 
     public async Task<TResponse> Handle(
@@ -22,13 +22,13 @@ public class ValidationBehaviour<TRequest, TResponse> : IPipelineBehavior<TReque
         CancellationToken cancellationToken,
         RequestHandlerDelegate<TResponse> next)
     {
-        if (!_validators.Any())
+        if (!validators.Any())
         {
             return await next();
         }
 
         var context = new ValidationContext<TRequest>(request);
-        var enumerableTasks = _validators.Select(validator => validator.ValidateAsync(context, cancellationToken));
+        var enumerableTasks = validators.Select(validator => validator.ValidateAsync(context, cancellationToken));
 
         var validationResults = await Task.WhenAll(enumerableTasks);
 

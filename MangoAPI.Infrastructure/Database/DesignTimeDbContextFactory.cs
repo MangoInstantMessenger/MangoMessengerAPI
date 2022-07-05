@@ -8,11 +8,11 @@ namespace MangoAPI.Infrastructure.Database;
 
 public class DesignTimeDbContextFactory : IDesignTimeDbContextFactory<MangoDbContext>
 {
-    private readonly string _mangoDatabaseUrl;
+    private readonly string mangoDatabaseUrl;
 
     public DesignTimeDbContextFactory()
     {
-        _mangoDatabaseUrl = Environment.GetEnvironmentVariable(EnvironmentConstants.MangoDatabaseUrl)
+        mangoDatabaseUrl = Environment.GetEnvironmentVariable(EnvironmentConstants.MangoDatabaseUrl)
                             ?? throw new EnvironmentVariableException(EnvironmentConstants.MangoDatabaseUrl);
     }
 
@@ -20,7 +20,7 @@ public class DesignTimeDbContextFactory : IDesignTimeDbContextFactory<MangoDbCon
     {
         var options = new DbContextOptionsBuilder<MangoDbContext>();
 
-        options.UseSqlServer(_mangoDatabaseUrl);
+        options.UseSqlServer(mangoDatabaseUrl);
 
         return new MangoDbContext(options.Options);
     }

@@ -13,24 +13,24 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Contacts;
 
 public class GetContactsQueryHandler : IRequestHandler<GetContactsQuery, Result<GetContactsResponse>>
 {
-    private readonly MangoDbContext _dbContext;
-    private readonly ResponseFactory<GetContactsResponse> _responseFactory;
-    private readonly IBlobServiceSettings _blobServiceSettings;
+    private readonly MangoDbContext dbContext;
+    private readonly ResponseFactory<GetContactsResponse> responseFactory;
+    private readonly IBlobServiceSettings blobServiceSettings;
 
     public GetContactsQueryHandler(
         MangoDbContext dbContext,
         ResponseFactory<GetContactsResponse> responseFactory,
         IBlobServiceSettings blobServiceSettings)
     {
-        _dbContext = dbContext;
-        _responseFactory = responseFactory;
-        _blobServiceSettings = blobServiceSettings;
+        this.dbContext = dbContext;
+        this.responseFactory = responseFactory;
+        this.blobServiceSettings = blobServiceSettings;
     }
 
     public async Task<Result<GetContactsResponse>> Handle(GetContactsQuery request, CancellationToken cancellationToken)
     {
-        var query = from userContact in _dbContext.UserContacts.AsNoTracking()
-            join userEntity in _dbContext.Users.Include(x => x.UserInformation)
+        var query = from userContact in dbContext.UserContacts.AsNoTracking()
+            join userEntity in dbContext.Users.Include(x => x.UserInformation)
                 on userContact.ContactId equals userEntity.Id
             where userContact.UserId == request.UserId
             orderby userContact.CreatedAt
@@ -40,13 +40,13 @@ public class GetContactsQueryHandler : IRequestHandler<GetContactsQuery, Result<
                 DisplayName = userEntity.DisplayName,
                 Address = userEntity.UserInformation.Address,
                 Bio = userEntity.Bio,
-                PictureUrl = StringService.GetDocumentUrl(userEntity.Image, _blobServiceSettings.MangoBlobAccess),
+                PictureUrl = StringService.GetDocumentUrl(userEntity.Image, blobServiceSettings.MangoBlobAccess),
                 Email = userEntity.Email,
                 IsContact = true,
             };
 
         var contacts = await query.Take(200).ToListAsync(cancellationToken);
 
-        return _responseFactory.SuccessResponse(GetContactsResponse.FromSuccess(contacts));
+        return responseFactory.SuccessResponse(GetContactsResponse.FromSuccess(contacts));
     }
 }

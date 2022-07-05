@@ -13,14 +13,14 @@ namespace MangoAPI.BusinessLogic.ApiCommands.DiffieHellmanKeyExchanges;
 public class CreateDiffieHellmanParameterCommandHandler : IRequestHandler<CreateDiffieHellmanParameterCommand,
     Result<CreateDiffieHellmanParameterResponse>>
 {
-    private readonly MangoDbContext _dbContext;
-    private readonly ResponseFactory<CreateDiffieHellmanParameterResponse> _responseFactory;
+    private readonly MangoDbContext dbContext;
+    private readonly ResponseFactory<CreateDiffieHellmanParameterResponse> responseFactory;
 
     public CreateDiffieHellmanParameterCommandHandler(MangoDbContext dbContext,
         ResponseFactory<CreateDiffieHellmanParameterResponse> responseFactory)
     {
-        _dbContext = dbContext;
-        _responseFactory = responseFactory;
+        this.dbContext = dbContext;
+        this.responseFactory = responseFactory;
     }
 
     public async Task<Result<CreateDiffieHellmanParameterResponse>> Handle(CreateDiffieHellmanParameterCommand request,
@@ -29,7 +29,7 @@ public class CreateDiffieHellmanParameterCommandHandler : IRequestHandler<Create
         await using var target = new MemoryStream();
         await request.DiffieHellmanParameter.CopyToAsync(target, cancellationToken);
         var bytes = target.ToArray();
-        
+
         var entity = new DiffieHellmanParameterEntity
         {
             OpenSslDhParameter = bytes,
@@ -37,9 +37,9 @@ public class CreateDiffieHellmanParameterCommandHandler : IRequestHandler<Create
             CreatedAt = DateTime.UtcNow,
         };
 
-        _dbContext.DiffieHellmanParameterEntities.Add(entity);
+        dbContext.DiffieHellmanParameterEntities.Add(entity);
 
-        await _dbContext.SaveChangesAsync(cancellationToken);
+        await dbContext.SaveChangesAsync(cancellationToken);
 
         var response = new CreateDiffieHellmanParameterResponse
         {
@@ -48,6 +48,6 @@ public class CreateDiffieHellmanParameterCommandHandler : IRequestHandler<Create
             ParameterId = entity.Id
         };
 
-        return _responseFactory.SuccessResponse(response);
+        return responseFactory.SuccessResponse(response);
     }
 }

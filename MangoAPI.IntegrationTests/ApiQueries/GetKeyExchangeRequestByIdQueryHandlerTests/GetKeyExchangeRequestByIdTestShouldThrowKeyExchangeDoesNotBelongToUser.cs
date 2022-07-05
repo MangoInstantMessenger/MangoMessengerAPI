@@ -10,28 +10,28 @@ namespace MangoAPI.IntegrationTests.ApiQueries.GetKeyExchangeRequestByIdQueryHan
 
 public class GetKeyExchangeRequestByIdTestShouldThrowKeyExchangeDoesNotBelongToUser : IntegrationTestBase
 {
-    private readonly Assert<GetKeyExchangeRequestByIdResponse> _assert = new();
+    private readonly Assert<GetKeyExchangeRequestByIdResponse> assert = new();
 
     [Fact]
     public async Task OpenSslGetKeyExchangeRequestByIdTest_ShouldThrow_KeyExchangeDoesNotBelongToUser()
     {
         const string expectedMessage = ResponseMessageCodes.KeyExchangeDoesNotBelongToUser;
         var expectedDetails = ResponseMessageCodes.ErrorDictionary[expectedMessage];
-        var sender = 
+        var sender =
             await MangoModule.RequestAsync(CommandHelper.RegisterKhachaturCommand(), CancellationToken.None);
-        var requestedUser = 
+        var requestedUser =
             await MangoModule.RequestAsync(CommandHelper.RegisterPetroCommand(), CancellationToken.None);
         var publicKey = MangoFilesHelper.GetTestImage();
         var keyExchange = await MangoModule.RequestAsync(
             request: CommandHelper.CreateOpenSslCreateKeyExchangeCommand(
                 receiverId: sender.Response.UserId,
                 senderId: requestedUser.Response.UserId,
-                senderPublicKey: publicKey), 
+                senderPublicKey: publicKey),
             cancellationToken: CancellationToken.None);
         var query = new GetKeyExchangeRequestByIdQuery(Guid.NewGuid(), keyExchange.Response.RequestId);
 
         var response = await MangoModule.RequestAsync(query, CancellationToken.None);
-        
-        _assert.Fail(response, expectedMessage, expectedDetails);
+
+        assert.Fail(response, expectedMessage, expectedDetails);
     }
 }

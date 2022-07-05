@@ -11,21 +11,21 @@ namespace MangoAPI.IntegrationTests.ApiCommandsTests.DeclineKeyExchangeCommandHa
 
 public class DeclineKeyExchangeShouldThrowKeyExchangeRequestNotFound : IntegrationTestBase
 {
-    private readonly Assert<ResponseBase> _assert = new();
+    private readonly Assert<ResponseBase> assert = new();
 
     [Fact]
     public async Task DeclineKeyExchangeShouldThrow_KeyExchangeRequestNotFound()
     {
         const string expectedMessage = ResponseMessageCodes.KeyExchangeRequestNotFound;
         var expectedDetails = ResponseMessageCodes.ErrorDictionary[expectedMessage];
-        var requestedUser = 
+        var requestedUser =
             await MangoModule.RequestAsync(CommandHelper.RegisterPetroCommand(), CancellationToken.None);
         var command = new DeclineKeyExchangeCommand(
-            RequestId: Guid.NewGuid(), 
+            RequestId: Guid.NewGuid(),
             UserId: requestedUser.Response.UserId);
 
         var response = await MangoModule.RequestAsync(command, CancellationToken.None);
-        
-        _assert.Fail(response, expectedMessage, expectedDetails);
+
+        assert.Fail(response, expectedMessage, expectedDetails);
     }
 }

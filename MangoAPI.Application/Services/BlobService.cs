@@ -9,18 +9,18 @@ namespace MangoAPI.Application.Services;
 
 public class BlobService : IBlobService
 {
-    private readonly BlobServiceClient _blobClient;
-    private readonly IBlobServiceSettings _blobServiceSettings;
+    private readonly BlobServiceClient blobClient;
+    private readonly IBlobServiceSettings blobServiceSettings;
 
     public BlobService(BlobServiceClient blobClient, IBlobServiceSettings blobServiceSettings)
     {
-        _blobClient = blobClient;
-        _blobServiceSettings = blobServiceSettings;
+        this.blobClient = blobClient;
+        this.blobServiceSettings = blobServiceSettings;
     }
 
     public Task<string> GetBlobAsync(string fileName)
     {
-        var containerClient = _blobClient.GetBlobContainerClient(_blobServiceSettings.MangoBlobContainerName);
+        var containerClient = this.blobClient.GetBlobContainerClient(blobServiceSettings.MangoBlobContainerName);
         var blobClient = containerClient.GetBlobClient(fileName);
 
         return Task.FromResult(blobClient.Uri.AbsoluteUri);
@@ -28,7 +28,7 @@ public class BlobService : IBlobService
 
     public async Task<bool> UploadFileBlobAsync(Stream stream, string contentType, string uniqueName)
     {
-        var blobContainerName = _blobServiceSettings.MangoBlobContainerName;
+        var blobContainerName = blobServiceSettings.MangoBlobContainerName;
         var containerClient = GetContainerClient(blobContainerName);
         var blobClient = containerClient.GetBlobClient(uniqueName);
         var headers = new BlobHttpHeaders { ContentType = contentType };
@@ -44,7 +44,7 @@ public class BlobService : IBlobService
             throw new ArgumentNullException(nameof(fileName));
         }
 
-        var containerClient = _blobClient.GetBlobContainerClient(_blobServiceSettings.MangoBlobContainerName);
+        var containerClient = this.blobClient.GetBlobContainerClient(blobServiceSettings.MangoBlobContainerName);
         var blobClient = containerClient.GetBlobClient(fileName);
 
         var result = await blobClient.DeleteIfExistsAsync();
@@ -54,7 +54,7 @@ public class BlobService : IBlobService
 
     private BlobContainerClient GetContainerClient(string blobContainerName)
     {
-        var containerClient = _blobClient.GetBlobContainerClient(blobContainerName);
+        var containerClient = blobClient.GetBlobContainerClient(blobContainerName);
         containerClient.CreateIfNotExists();
         return containerClient;
     }

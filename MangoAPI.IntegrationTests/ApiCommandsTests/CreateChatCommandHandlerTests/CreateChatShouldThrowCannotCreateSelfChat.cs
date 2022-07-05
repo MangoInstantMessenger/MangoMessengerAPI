@@ -9,7 +9,7 @@ namespace MangoAPI.IntegrationTests.ApiCommandsTests.CreateChatCommandHandlerTes
 
 public class CreateChatShouldThrowCannotCreateSelfChat : IntegrationTestBase
 {
-    private readonly Assert<CreateCommunityResponse> _assert = new();
+    private readonly Assert<CreateCommunityResponse> assert = new();
 
     [Fact]
     public async Task CreateChatShouldThrow_CannotCreateSelfChat()
@@ -21,9 +21,9 @@ public class CreateChatShouldThrowCannotCreateSelfChat : IntegrationTestBase
         var command = new CreateChatCommand(
             UserId: user.Response.UserId,
             PartnerId: user.Response.UserId);
-        
+
         var result = await MangoModule.RequestAsync(command, CancellationToken.None);
 
-        _assert.Fail(result, expectedMessage, expectedDetails);
+        assert.Fail(result, expectedMessage, expectedDetails);
     }
 }

@@ -8,7 +8,7 @@ namespace MangoAPI.IntegrationTests.ApiCommandsTests.CreateChatCommandHandlerTes
 
 public class CreateChatTestSuccess : IntegrationTestBase
 {
-    private readonly Assert<CreateCommunityResponse> _assert = new();
+    private readonly Assert<CreateCommunityResponse> assert = new();
 
     [Fact]
     public async Task CreateChatTest_Success()
@@ -20,9 +20,9 @@ public class CreateChatTestSuccess : IntegrationTestBase
         var command = new CreateChatCommand(
             UserId: user.Response.UserId,
             PartnerId: partner.Response.UserId);
-        
+
         var result = await MangoModule.RequestAsync(command, CancellationToken.None);
 
-        _assert.Pass(result);
+        assert.Pass(result);
     }
 }

@@ -10,21 +10,21 @@ namespace MangoAPI.IntegrationTests.ApiQueries.DownloadPartnerPublicKeyQueryHand
 
 public class DownloadPartnerPublicKeyTestSuccess : IntegrationTestBase
 {
-    private readonly Assert<DownloadPartnerPublicKeyResponse> _assert = new();
+    private readonly Assert<DownloadPartnerPublicKeyResponse> assert = new();
 
     [Fact]
     public async Task OpenSslDownloadPartnerPublicKeyTest_Success()
     {
-        var sender = 
+        var sender =
             await MangoModule.RequestAsync(CommandHelper.RegisterKhachaturCommand(), CancellationToken.None);
-        var receiver = 
+        var receiver =
             await MangoModule.RequestAsync(CommandHelper.RegisterPetroCommand(), CancellationToken.None);
         var publicKey = MangoFilesHelper.GetTestImage();
         var keyExchange = await MangoModule.RequestAsync(
             request: CommandHelper.CreateOpenSslCreateKeyExchangeCommand(
                 receiverId: receiver.Response.UserId,
                 senderId: sender.Response.UserId,
-                senderPublicKey: publicKey), 
+                senderPublicKey: publicKey),
             cancellationToken: CancellationToken.None);
         await MangoModule.RequestAsync(
             request: CommandHelper.CreateOpenSslConfirmKeyExchangeCommand(
@@ -34,10 +34,10 @@ public class DownloadPartnerPublicKeyTestSuccess : IntegrationTestBase
             cancellationToken: CancellationToken.None);
         var query = new DownloadPartnerPublicKeyQuery(receiver.Response.UserId, keyExchange.Response.RequestId);
 
-        var response = 
+        var response =
             await MangoModule.RequestAsync(query, CancellationToken.None);
-        
-        _assert.Pass(response);
+
+        assert.Pass(response);
         await using var target = new MemoryStream();
         await publicKey.CopyToAsync(target, CancellationToken.None);
         var publicKeyBytes = target.ToArray();

@@ -12,20 +12,20 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Contacts;
 public class DeleteContactCommandHandler
     : IRequestHandler<DeleteContactCommand, Result<ResponseBase>>
 {
-    private readonly MangoDbContext _dbContext;
-    private readonly ResponseFactory<ResponseBase> _responseFactory;
+    private readonly MangoDbContext dbContext;
+    private readonly ResponseFactory<ResponseBase> responseFactory;
 
     public DeleteContactCommandHandler(MangoDbContext dbContext,
         ResponseFactory<ResponseBase> responseFactory)
     {
-        _dbContext = dbContext;
-        _responseFactory = responseFactory;
+        this.dbContext = dbContext;
+        this.responseFactory = responseFactory;
     }
 
     public async Task<Result<ResponseBase>> Handle(DeleteContactCommand request,
         CancellationToken cancellationToken)
     {
-        var user = await _dbContext.Users
+        var user = await dbContext.Users
             .FirstOrDefaultAsync(userEntity => userEntity.Id == request.UserId,
                 cancellationToken);
 
@@ -34,10 +34,10 @@ public class DeleteContactCommandHandler
             const string errorMessage = ResponseMessageCodes.UserNotFound;
             var errorDescription = ResponseMessageCodes.ErrorDictionary[errorMessage];
 
-            return _responseFactory.ConflictResponse(errorMessage, errorDescription);
+            return responseFactory.ConflictResponse(errorMessage, errorDescription);
         }
 
-        var userContacts = await _dbContext.UserContacts
+        var userContacts = await dbContext.UserContacts
             .Where(x => x.UserId == user.Id)
             .ToListAsync(cancellationToken);
 
@@ -48,12 +48,12 @@ public class DeleteContactCommandHandler
             const string errorMessage = ResponseMessageCodes.ContactNotFound;
             var errorDescription = ResponseMessageCodes.ErrorDictionary[errorMessage];
 
-            return _responseFactory.ConflictResponse(errorMessage, errorDescription);
+            return responseFactory.ConflictResponse(errorMessage, errorDescription);
         }
 
-        _dbContext.UserContacts.Remove(contact);
-        await _dbContext.SaveChangesAsync(cancellationToken);
+        dbContext.UserContacts.Remove(contact);
+        await dbContext.SaveChangesAsync(cancellationToken);
 
-        return _responseFactory.SuccessResponse(ResponseBase.SuccessResponse);
+        return responseFactory.SuccessResponse(ResponseBase.SuccessResponse);
     }
 }

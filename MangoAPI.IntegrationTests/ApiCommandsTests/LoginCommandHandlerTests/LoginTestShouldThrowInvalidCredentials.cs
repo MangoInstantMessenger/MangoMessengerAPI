@@ -9,8 +9,8 @@ namespace MangoAPI.IntegrationTests.ApiCommandsTests.LoginCommandHandlerTests;
 
 public class LoginTestShouldThrowInvalidCredentials : IntegrationTestBase
 {
-    private readonly Assert<TokensResponse> _assert = new();
-        
+    private readonly Assert<TokensResponse> assert = new();
+
     [Fact]
     public async Task LoginTestShouldThrow_InvalidCredentials()
     {
@@ -20,7 +20,7 @@ public class LoginTestShouldThrowInvalidCredentials : IntegrationTestBase
         var result = await MangoModule.RequestAsync(
             request: CommandHelper.CreateLoginCommand("kolosovp95@gmail.com", "Bm3-`dPRv-/w#3)cw^97"),
             cancellationToken: CancellationToken.None);
-            
-        _assert.Fail(result, expectedMessage, expectedDetails);
+
+        assert.Fail(result, expectedMessage, expectedDetails);
     }
 }

@@ -13,21 +13,21 @@ namespace MangoAPI.BusinessLogic.ApiQueries.DiffieHellmanKeyExchanges;
 public class GetKeyExchangeRequestByIdQueryHandler : IRequestHandler<GetKeyExchangeRequestByIdQuery,
     Result<GetKeyExchangeRequestByIdResponse>>
 {
-    private readonly MangoDbContext _dbContext;
-    private readonly ResponseFactory<GetKeyExchangeRequestByIdResponse> _responseFactory;
+    private readonly MangoDbContext dbContext;
+    private readonly ResponseFactory<GetKeyExchangeRequestByIdResponse> responseFactory;
 
     public GetKeyExchangeRequestByIdQueryHandler(MangoDbContext dbContext,
         ResponseFactory<GetKeyExchangeRequestByIdResponse> responseFactory)
     {
-        _dbContext = dbContext;
-        _responseFactory = responseFactory;
+        this.dbContext = dbContext;
+        this.responseFactory = responseFactory;
     }
 
     public async Task<Result<GetKeyExchangeRequestByIdResponse>> Handle(
         GetKeyExchangeRequestByIdQuery request,
         CancellationToken cancellationToken)
     {
-        var keyExchangeRequest = await _dbContext.DiffieHellmanKeyExchangeEntities
+        var keyExchangeRequest = await dbContext.DiffieHellmanKeyExchangeEntities
             .AsNoTracking()
             .Select(x => new OpenSslKeyExchangeRequest
             {
@@ -45,7 +45,7 @@ public class GetKeyExchangeRequestByIdQueryHandler : IRequestHandler<GetKeyExcha
             const string message = ResponseMessageCodes.KeyExchangeRequestNotFound;
             var description = ResponseMessageCodes.ErrorDictionary[message];
 
-            return _responseFactory.ConflictResponse(message, description);
+            return responseFactory.ConflictResponse(message, description);
         }
 
         if (keyExchangeRequest.ReceiverId != request.UserId && keyExchangeRequest.SenderId != request.UserId)
@@ -53,11 +53,11 @@ public class GetKeyExchangeRequestByIdQueryHandler : IRequestHandler<GetKeyExcha
             const string message = ResponseMessageCodes.KeyExchangeDoesNotBelongToUser;
             var description = ResponseMessageCodes.ErrorDictionary[message];
 
-            return _responseFactory.ConflictResponse(message, description);
+            return responseFactory.ConflictResponse(message, description);
         }
 
         var response = GetKeyExchangeRequestByIdResponse.FromSuccess(keyExchangeRequest);
 
-        return _responseFactory.SuccessResponse(response);
+        return responseFactory.SuccessResponse(response);
     }
 }

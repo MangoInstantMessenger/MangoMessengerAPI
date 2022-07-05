@@ -14,24 +14,24 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Users;
 
 public class GetUserQueryHandler : IRequestHandler<GetUserQuery, Result<GetUserResponse>>
 {
-    private readonly MangoDbContext _dbContext;
-    private readonly ResponseFactory<GetUserResponse> _responseFactory;
-    private readonly IBlobServiceSettings _blobServiceSettings;
+    private readonly MangoDbContext dbContext;
+    private readonly ResponseFactory<GetUserResponse> responseFactory;
+    private readonly IBlobServiceSettings blobServiceSettings;
 
     public GetUserQueryHandler(
         MangoDbContext dbContext,
         ResponseFactory<GetUserResponse> responseFactory,
         IBlobServiceSettings blobServiceSettings)
     {
-        _dbContext = dbContext;
-        _responseFactory = responseFactory;
-        _blobServiceSettings = blobServiceSettings;
+        this.dbContext = dbContext;
+        this.responseFactory = responseFactory;
+        this.blobServiceSettings = blobServiceSettings;
     }
 
     public async Task<Result<GetUserResponse>> Handle(GetUserQuery request,
         CancellationToken cancellationToken)
     {
-        var user = await _dbContext.Users.AsNoTracking()
+        var user = await dbContext.Users.AsNoTracking()
             .Include(x => x.UserInformation)
             .Select(user => new User
             {
@@ -49,7 +49,7 @@ public class GetUserQueryHandler : IRequestHandler<GetUserQuery, Result<GetUserR
                 LinkedIn = user.UserInformation.LinkedIn,
                 Username = user.UserName,
                 Bio = user.Bio,
-                PictureUrl = StringService.GetDocumentUrl(user.Image, _blobServiceSettings.MangoBlobAccess),
+                PictureUrl = StringService.GetDocumentUrl(user.Image, blobServiceSettings.MangoBlobAccess),
             }).FirstOrDefaultAsync(x => x.UserId == request.UserId, cancellationToken);
 
         if (user is null)
@@ -57,9 +57,9 @@ public class GetUserQueryHandler : IRequestHandler<GetUserQuery, Result<GetUserR
             const string errorMessage = ResponseMessageCodes.UserNotFound;
             var details = ResponseMessageCodes.ErrorDictionary[errorMessage];
 
-            return _responseFactory.ConflictResponse(errorMessage, details);
+            return responseFactory.ConflictResponse(errorMessage, details);
         }
 
-        return _responseFactory.SuccessResponse(GetUserResponse.FromSuccess(user));
+        return responseFactory.SuccessResponse(GetUserResponse.FromSuccess(user));
     }
 }

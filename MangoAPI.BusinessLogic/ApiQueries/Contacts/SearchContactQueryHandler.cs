@@ -14,24 +14,24 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Contacts;
 public class SearchContactByDisplayNameQueryHandler
     : IRequestHandler<SearchContactQuery, Result<SearchContactResponse>>
 {
-    private readonly MangoDbContext _dbContext;
-    private readonly ResponseFactory<SearchContactResponse> _responseFactory;
-    private readonly IBlobServiceSettings _blobServiceSettings;
+    private readonly MangoDbContext dbContext;
+    private readonly ResponseFactory<SearchContactResponse> responseFactory;
+    private readonly IBlobServiceSettings blobServiceSettings;
 
     public SearchContactByDisplayNameQueryHandler(
         MangoDbContext dbContext,
         ResponseFactory<SearchContactResponse> responseFactory,
         IBlobServiceSettings blobServiceSettings)
     {
-        _dbContext = dbContext;
-        _responseFactory = responseFactory;
-        _blobServiceSettings = blobServiceSettings;
+        this.dbContext = dbContext;
+        this.responseFactory = responseFactory;
+        this.blobServiceSettings = blobServiceSettings;
     }
 
     public async Task<Result<SearchContactResponse>> Handle(SearchContactQuery request,
         CancellationToken cancellationToken)
     {
-        var query = _dbContext.Users
+        var query = dbContext.Users
             .AsNoTracking()
             .Include(x => x.UserInformation)
             .Where(x => x.Id != request.UserId)
@@ -42,14 +42,14 @@ public class SearchContactByDisplayNameQueryHandler
                 DisplayName = x.DisplayName,
                 Address = x.UserInformation.Address,
                 Bio = x.Bio,
-                PictureUrl = StringService.GetDocumentUrl(x.Image, _blobServiceSettings.MangoBlobAccess),
+                PictureUrl = StringService.GetDocumentUrl(x.Image, blobServiceSettings.MangoBlobAccess),
                 Email = x.Email,
             });
 
 
         var searchResult = await query.Take(200).ToListAsync(cancellationToken);
 
-        var commonContacts = await _dbContext.UserContacts.AsNoTracking()
+        var commonContacts = await dbContext.UserContacts.AsNoTracking()
             .Where(x => x.UserId == request.UserId)
             .Select(x => x.ContactId)
             .ToListAsync(cancellationToken);
@@ -59,6 +59,6 @@ public class SearchContactByDisplayNameQueryHandler
             contact.IsContact = commonContacts.Contains(contact.UserId);
         }
 
-        return _responseFactory.SuccessResponse(SearchContactResponse.FromSuccess(searchResult));
+        return responseFactory.SuccessResponse(SearchContactResponse.FromSuccess(searchResult));
     }
 }

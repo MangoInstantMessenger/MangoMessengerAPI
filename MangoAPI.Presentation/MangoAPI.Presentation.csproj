@@ -4,6 +4,7 @@
         <TargetFramework>net6.0</TargetFramework>
         <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
         <LangVersion>10</LangVersion>
+        <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     </PropertyGroup>
 
     <ItemGroup>
@@ -20,6 +21,7 @@
         <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="6.15.0" />
         <PackageReference Include="Microsoft.IO.RecyclableMemoryStream" Version="2.2.0" />
         <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.14.0" />
+        <PackageReference Include="System.Configuration.ConfigurationManager" Version="5.0.0" />
         <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.15.0" />
     </ItemGroup>
 

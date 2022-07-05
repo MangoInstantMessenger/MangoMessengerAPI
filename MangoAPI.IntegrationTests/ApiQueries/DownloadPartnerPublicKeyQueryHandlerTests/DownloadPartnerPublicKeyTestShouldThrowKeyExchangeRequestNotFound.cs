@@ -10,20 +10,20 @@ namespace MangoAPI.IntegrationTests.ApiQueries.DownloadPartnerPublicKeyQueryHand
 
 public class DownloadPartnerPublicKeyTestShouldThrowKeyExchangeRequestNotFound : IntegrationTestBase
 {
-    private readonly Assert<DownloadPartnerPublicKeyResponse> _assert = new();
+    private readonly Assert<DownloadPartnerPublicKeyResponse> assert = new();
 
     [Fact]
     public async Task OpenSslDownloadPartnerPublicKeyTest_ShouldThrow_KeyExchangeRequestNotFound()
     {
         const string expectedMessage = ResponseMessageCodes.KeyExchangeRequestNotFound;
         var expectedDetails = ResponseMessageCodes.ErrorDictionary[expectedMessage];
-        var requestedUser = 
+        var requestedUser =
             await MangoModule.RequestAsync(CommandHelper.RegisterPetroCommand(), CancellationToken.None);
         var query = new DownloadPartnerPublicKeyQuery(requestedUser.Response.UserId, Guid.NewGuid());
 
-        var response = 
+        var response =
             await MangoModule.RequestAsync(query, CancellationToken.None);
-        
-        _assert.Fail(response, expectedMessage, expectedDetails);
+
+        assert.Fail(response, expectedMessage, expectedDetails);
     }
 }

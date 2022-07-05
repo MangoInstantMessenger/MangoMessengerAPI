@@ -10,7 +10,7 @@ namespace MangoAPI.IntegrationTests.ApiCommandsTests.AddContactCommandHandlerTes
 
 public class AddContactShouldThrowContactExists : IntegrationTestBase
 {
-    private readonly Assert<ResponseBase> _assert = new();
+    private readonly Assert<ResponseBase> assert = new();
 
     [Fact]
     public async Task AddContactCommandHandlerTest_ShouldThrow_ContactExists()
@@ -26,7 +26,7 @@ public class AddContactShouldThrowContactExists : IntegrationTestBase
 
         var result = await MangoModule.RequestAsync(command, CancellationToken.None);
 
-        _assert.Fail(result, expectedMessage, expectedDetails);
+        assert.Fail(result, expectedMessage, expectedDetails);
     }
 
 }

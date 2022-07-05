@@ -1,4 +1,4 @@
-﻿using System.Security.Cryptography;
+using System.Security.Cryptography;
 using MangoAPI.DiffieHellmanLibrary.Extensions;
 
 namespace MangoAPI.DiffieHellmanLibrary.Helpers;
@@ -9,7 +9,7 @@ public static class CngEcdhHelper
     {
         var parameters = new CngKeyCreationParameters
         {
-            ExportPolicy = CngExportPolicies.AllowPlaintextExport
+            ExportPolicy = CngExportPolicies.AllowPlaintextExport,
         };
 
         var keys = CngKey.Create(CngAlgorithm.ECDiffieHellmanP256, null, parameters);

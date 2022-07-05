@@ -8,7 +8,7 @@ namespace MangoAPI.IntegrationTests.ApiCommandsTests.RequestPasswordRestoreComma
 
 public class RequestPasswordRestoreTestSuccess : IntegrationTestBase
 {
-    private readonly Assert<RequestPasswordRestoreResponse> _assert = new();
+    private readonly Assert<RequestPasswordRestoreResponse> assert = new();
 
     [Fact]
     public async Task RequestPasswordRestoreTest_Success()
@@ -21,6 +21,6 @@ public class RequestPasswordRestoreTestSuccess : IntegrationTestBase
             request: CommandHelper.CreateRequestPasswordRestoreCommand("kolosovp95@gmail.com"),
             cancellationToken: CancellationToken.None);
 
-        _assert.Pass(result);
+        assert.Pass(result);
     }
 }

@@ -8,7 +8,7 @@ namespace MangoAPI.IntegrationTests.ApiCommandsTests.RegisterCommandHandlerTests
 
 public class RegisterTestSuccess : IntegrationTestBase
 {
-    private readonly Assert<RegisterResponse> _assert = new();
+    private readonly Assert<RegisterResponse> assert = new();
 
     [Fact]
     public async Task RegisterTest_Success()
@@ -17,6 +17,6 @@ public class RegisterTestSuccess : IntegrationTestBase
 
         var regResult = await MangoModule.RequestAsync(command, CancellationToken.None);
 
-        _assert.Pass(regResult);
+        assert.Pass(regResult);
     }
 }

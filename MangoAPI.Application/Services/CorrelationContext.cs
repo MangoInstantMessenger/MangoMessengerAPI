@@ -8,16 +8,16 @@ namespace MangoAPI.Application.Services;
 
 public class CorrelationContext : ICorrelationContext
 {
-    private readonly IHttpContextAccessor _httpContextAccessor;
+    private readonly IHttpContextAccessor httpContextAccessor;
 
     public CorrelationContext(IHttpContextAccessor httpContextAccessor)
     {
-        _httpContextAccessor = httpContextAccessor;
+        this.httpContextAccessor = httpContextAccessor;
     }
 
     public Guid GetUserId()
     {
-        var context = _httpContextAccessor.HttpContext;
+        var context = httpContextAccessor.HttpContext;
 
         var correlationContextUserId = context.User.FindFirstValue(JwtRegisteredClaimNames.Jti);
 
@@ -34,7 +34,7 @@ public class CorrelationContext : ICorrelationContext
 
     public string GetUserName()
     {
-        var context = _httpContextAccessor.HttpContext;
+        var context = httpContextAccessor.HttpContext;
 
         var correlationUserName = context.User.FindFirstValue(JwtRegisteredClaimNames.Name);
 

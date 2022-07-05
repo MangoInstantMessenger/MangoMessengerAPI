@@ -10,7 +10,7 @@ namespace MangoAPI.IntegrationTests.ApiCommandsTests.UploadDocumentCommandHandle
 
 public class UploadDocumentTestShouldThrowUploadedDocumentsLimitReached10 : IntegrationTestBase
 {
-    private readonly Assert<UploadDocumentResponse> _assert = new();
+    private readonly Assert<UploadDocumentResponse> assert = new();
 
     [Fact]
     public async Task UploadDocumentTestShouldThrow_UploadedDocumentsLimitReached10()
@@ -32,7 +32,7 @@ public class UploadDocumentTestShouldThrowUploadedDocumentsLimitReached10 : Inte
 
         var result = await MangoModule.RequestAsync(command, CancellationToken.None);
 
-        _assert.Fail(result, expectedMessage, expectedDetails);
+        assert.Fail(result, expectedMessage, expectedDetails);
         foreach (var fileName in fileNamesList)
         {
             await BlobService.DeleteBlobAsync(fileName);

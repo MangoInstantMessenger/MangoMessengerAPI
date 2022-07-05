@@ -15,35 +15,35 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Messages;
 public class DeleteMessageCommandHandler
     : IRequestHandler<DeleteMessageCommand, Result<DeleteMessageResponse>>
 {
-    private readonly MangoDbContext _dbContext;
-    private readonly IHubContext<ChatHub, IHubClient> _hubContext;
-    private readonly ResponseFactory<DeleteMessageResponse> _responseFactory;
+    private readonly MangoDbContext dbContext;
+    private readonly IHubContext<ChatHub, IHubClient> hubContext;
+    private readonly ResponseFactory<DeleteMessageResponse> responseFactory;
 
     public DeleteMessageCommandHandler(
         MangoDbContext dbContext,
         IHubContext<ChatHub, IHubClient> hubContext,
         ResponseFactory<DeleteMessageResponse> responseFactory)
     {
-        _dbContext = dbContext;
-        _hubContext = hubContext;
-        _responseFactory = responseFactory;
+        this.dbContext = dbContext;
+        this.hubContext = hubContext;
+        this.responseFactory = responseFactory;
     }
 
     public async Task<Result<DeleteMessageResponse>> Handle(DeleteMessageCommand request,
         CancellationToken cancellationToken)
     {
-        var isMessageExists = await _dbContext.Messages
+        var isMessageExists = await dbContext.Messages
             .AnyAsync(t => t.Id == request.MessageId, cancellationToken);
-            
+
         if (!isMessageExists)
         {
             const string errorMessage = ResponseMessageCodes.MessageNotFound;
             var errorDescription = ResponseMessageCodes.ErrorDictionary[errorMessage];
 
-            return _responseFactory.ConflictResponse(errorMessage, errorDescription);
+            return responseFactory.ConflictResponse(errorMessage, errorDescription);
         }
-            
-        var query = _dbContext.UserChats
+
+        var query = dbContext.UserChats
             .Include(x => x.Chat)
             .ThenInclude(x => x.Messages)
             .ThenInclude(x => x.User)
@@ -60,11 +60,11 @@ public class DeleteMessageCommandHandler
             const string errorMessage = ResponseMessageCodes.ChatNotFound;
             var errorDescription = ResponseMessageCodes.ErrorDictionary[errorMessage];
 
-            return _responseFactory.ConflictResponse(errorMessage, errorDescription);
+            return responseFactory.ConflictResponse(errorMessage, errorDescription);
         }
 
         var message = chat.Messages.First(x => x.Id == request.MessageId);
-        _dbContext.Entry(message.User).State = EntityState.Detached;
+        dbContext.Entry(message.User).State = EntityState.Detached;
 
         var messageDeleteNotification = new MessageDeleteNotification
         {
@@ -72,7 +72,7 @@ public class DeleteMessageCommandHandler
         };
 
         var messageIsLast = chat.LastMessageId.HasValue && chat.LastMessageId == request.MessageId;
-            
+
         if (messageIsLast)
         {
             var newLastMessage = chat.Messages
@@ -91,13 +91,13 @@ public class DeleteMessageCommandHandler
             chat.LastMessageTime = newLastMessage?.CreatedAt;
         }
 
-        _dbContext.Messages.Remove(message);
-        _dbContext.Chats.Update(chat);
+        dbContext.Messages.Remove(message);
+        dbContext.Chats.Update(chat);
 
-        await _dbContext.SaveChangesAsync(cancellationToken);
+        await dbContext.SaveChangesAsync(cancellationToken);
 
-        await _hubContext.Clients.Group(message.ChatId.ToString()).NotifyOnMessageDeleteAsync(messageDeleteNotification);
+        await hubContext.Clients.Group(message.ChatId.ToString()).NotifyOnMessageDeleteAsync(messageDeleteNotification);
 
-        return _responseFactory.SuccessResponse(DeleteMessageResponse.FromSuccess(message));
+        return responseFactory.SuccessResponse(DeleteMessageResponse.FromSuccess(message));
     }
 }

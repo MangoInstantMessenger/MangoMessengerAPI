@@ -9,7 +9,7 @@ namespace MangoAPI.IntegrationTests.ApiQueries.GetUserQueryHandlerTests;
 
 public class GetUserQueryShouldThrowUserNotFound : IntegrationTestBase
 {
-    private readonly Assert<GetUserResponse> _assert = new();
+    private readonly Assert<GetUserResponse> assert = new();
 
     [Fact]
     public async Task GetUserQueryShouldThrow_UserNotFound()
@@ -17,9 +17,9 @@ public class GetUserQueryShouldThrowUserNotFound : IntegrationTestBase
         const string expectedMessage = ResponseMessageCodes.UserNotFound;
         var expectedDetails = ResponseMessageCodes.ErrorDictionary[expectedMessage];
         var query = new GetUserQuery(UserId: Guid.NewGuid());
-        
+
         var result = await MangoModule.RequestAsync(query, CancellationToken.None);
-            
-        _assert.Fail(result, expectedMessage,expectedDetails);
+
+        assert.Fail(result, expectedMessage,expectedDetails);
     }
 }

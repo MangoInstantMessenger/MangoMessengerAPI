@@ -10,7 +10,7 @@ namespace MangoAPI.IntegrationTests.ApiCommandsTests.LeaveGroupCommandHandlerTes
 
 public class LeaveGroupTestShouldThrowChatNotFound : IntegrationTestBase
 {
-    private readonly Assert<LeaveGroupResponse> _assert = new();
+    private readonly Assert<LeaveGroupResponse> assert = new();
 
     [Fact]
     public async Task LeaveGroupTestShouldThrow_UserNotFound()
@@ -20,9 +20,9 @@ public class LeaveGroupTestShouldThrowChatNotFound : IntegrationTestBase
         var user =
             await MangoModule.RequestAsync(CommandHelper.RegisterPetroCommand(), CancellationToken.None);
         var command = new LeaveGroupCommand(UserId: user.Response.UserId, ChatId: Guid.NewGuid());
-        
+
         var result = await MangoModule.RequestAsync(command, CancellationToken.None);
-            
-        _assert.Fail(result, expectedMessage, expectedDetails);
+
+        assert.Fail(result, expectedMessage, expectedDetails);
     }
 }

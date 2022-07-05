@@ -15,24 +15,24 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users;
 public class UpdateProfilePictureCommandHandler
     : IRequestHandler<UpdateProfilePictureCommand, Result<UpdateProfilePictureResponse>>
 {
-    private readonly MangoDbContext _dbContext;
-    private readonly ResponseFactory<UpdateProfilePictureResponse> _responseFactory;
-    private readonly IBlobService _blobService;
+    private readonly MangoDbContext dbContext;
+    private readonly ResponseFactory<UpdateProfilePictureResponse> responseFactory;
+    private readonly IBlobService blobService;
 
     public UpdateProfilePictureCommandHandler(
         MangoDbContext dbContext,
         ResponseFactory<UpdateProfilePictureResponse> responseFactory,
         IBlobService blobService)
     {
-        _dbContext = dbContext;
-        _responseFactory = responseFactory;
-        _blobService = blobService;
+        this.dbContext = dbContext;
+        this.responseFactory = responseFactory;
+        this.blobService = blobService;
     }
 
     public async Task<Result<UpdateProfilePictureResponse>> Handle(UpdateProfilePictureCommand request,
         CancellationToken cancellationToken)
     {
-        var totalUploadedDocsCount = await _dbContext.Documents.CountAsync(x =>
+        var totalUploadedDocsCount = await dbContext.Documents.CountAsync(x =>
             x.UserId == request.UserId &&
             x.UploadedAt > DateTime.UtcNow.AddHours(-1), cancellationToken);
 
@@ -40,10 +40,10 @@ public class UpdateProfilePictureCommandHandler
         {
             const string message = ResponseMessageCodes.UploadedDocumentsLimitReached10;
             var details = ResponseMessageCodes.ErrorDictionary[message];
-            return _responseFactory.ConflictResponse(message, details);
+            return responseFactory.ConflictResponse(message, details);
         }
 
-        var user = await _dbContext.Users
+        var user = await dbContext.Users
             .FirstOrDefaultAsync(userEntity => userEntity.Id == request.UserId,
                 cancellationToken);
 
@@ -52,13 +52,13 @@ public class UpdateProfilePictureCommandHandler
             const string errorMessage = ResponseMessageCodes.UserNotFound;
             var details = ResponseMessageCodes.ErrorDictionary[errorMessage];
 
-            return _responseFactory.ConflictResponse(errorMessage, details);
+            return responseFactory.ConflictResponse(errorMessage, details);
         }
 
         var file = request.PictureFile;
         var uniqueFileName = StringService.GetUniqueFileName(file.FileName);
 
-        await _blobService.UploadFileBlobAsync(file.OpenReadStream(), request.ContentType, uniqueFileName);
+        await blobService.UploadFileBlobAsync(file.OpenReadStream(), request.ContentType, uniqueFileName);
 
         var newUserPicture = new DocumentEntity
         {
@@ -67,17 +67,17 @@ public class UpdateProfilePictureCommandHandler
             UploadedAt = DateTime.UtcNow
         };
 
-        _dbContext.Documents.Add(newUserPicture);
+        dbContext.Documents.Add(newUserPicture);
 
         user.Image = uniqueFileName;
 
-        _dbContext.Users.Update(user);
+        dbContext.Users.Update(user);
 
-        await _dbContext.SaveChangesAsync(cancellationToken);
+        await dbContext.SaveChangesAsync(cancellationToken);
 
-        var newUserPictureUrl = await _blobService.GetBlobAsync(uniqueFileName);
+        var newUserPictureUrl = await blobService.GetBlobAsync(uniqueFileName);
         var response = UpdateProfilePictureResponse.FromSuccess(newUserPictureUrl, uniqueFileName);
 
-        return _responseFactory.SuccessResponse(response);
+        return responseFactory.SuccessResponse(response);
     }
 }

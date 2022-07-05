@@ -9,14 +9,14 @@ namespace MangoAPI.IntegrationTests.ApiCommandsTests.CreateChannelCommandHandler
 
 public class CreateChannelShouldThrowCountExceed100 : IntegrationTestBase
 {
-    private readonly Assert<CreateCommunityResponse> _assert = new();
+    private readonly Assert<CreateCommunityResponse> assert = new();
 
     [Fact]
     public async Task CreateChannel_ShouldThrow_CountExceed100()
     {
         const string expectedMessage = ResponseMessageCodes.MaximumOwnerChatsExceeded100;
         var expectedDetails = ResponseMessageCodes.ErrorDictionary[expectedMessage];
-        var user = 
+        var user =
             await MangoModule.RequestAsync(CommandHelper.RegisterPetroCommand(), CancellationToken.None);
         for (var i = 0; i <= 100; i++)
         {
@@ -27,6 +27,6 @@ public class CreateChannelShouldThrowCountExceed100 : IntegrationTestBase
         var result = await MangoModule.RequestAsync(CommandHelper.CreateExtremeCodeMainChatCommand(user.Response.UserId),
             CancellationToken.None);
 
-        _assert.Fail(result, expectedMessage, expectedDetails);
+        assert.Fail(result, expectedMessage, expectedDetails);
     }
 }

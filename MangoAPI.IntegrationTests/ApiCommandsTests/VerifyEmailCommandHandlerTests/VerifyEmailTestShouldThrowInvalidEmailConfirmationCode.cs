@@ -10,7 +10,7 @@ namespace MangoAPI.IntegrationTests.ApiCommandsTests.VerifyEmailCommandHandlerTe
 
 public class VerifyEmailTestShouldThrowInvalidEmailConfirmationCode : IntegrationTestBase
 {
-    private readonly Assert<ResponseBase> _assert = new();
+    private readonly Assert<ResponseBase> assert = new();
 
     [Fact]
     public async Task VerifyEmailTest_ShouldThrowInvalidEmailConfirmationCode()
@@ -22,9 +22,9 @@ public class VerifyEmailTestShouldThrowInvalidEmailConfirmationCode : Integratio
             cancellationToken: CancellationToken.None);
 
         var result = await MangoModule.RequestAsync(
-            request: CommandHelper.CreateVerifyEmailCommand("kolosovp95@gmail.com", Guid.NewGuid()), 
+            request: CommandHelper.CreateVerifyEmailCommand("kolosovp95@gmail.com", Guid.NewGuid()),
             cancellationToken: CancellationToken.None);
-            
-        _assert.Fail(result, expectedMessage, expectedDetails);
+
+        assert.Fail(result, expectedMessage, expectedDetails);
     }
 }

@@ -10,20 +10,20 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Sessions;
 
 public class LogoutCommandHandler : IRequestHandler<LogoutCommand, Result<ResponseBase>>
 {
-    private readonly MangoDbContext _dbContext;
-    private readonly ResponseFactory<ResponseBase> _responseFactory;
+    private readonly MangoDbContext dbContext;
+    private readonly ResponseFactory<ResponseBase> responseFactory;
 
     public LogoutCommandHandler(MangoDbContext dbContext,
         ResponseFactory<ResponseBase> responseFactory)
     {
-        _dbContext = dbContext;
-        _responseFactory = responseFactory;
+        this.dbContext = dbContext;
+        this.responseFactory = responseFactory;
     }
 
     public async Task<Result<ResponseBase>> Handle(LogoutCommand request,
         CancellationToken cancellationToken)
     {
-        var session = await _dbContext.Sessions
+        var session = await dbContext.Sessions
             .FirstOrDefaultAsync(sessionEntity => sessionEntity.RefreshToken == request.RefreshToken,
                 cancellationToken);
 
@@ -32,7 +32,7 @@ public class LogoutCommandHandler : IRequestHandler<LogoutCommand, Result<Respon
             const string errorMessage = ResponseMessageCodes.InvalidOrExpiredRefreshToken;
             var details = ResponseMessageCodes.ErrorDictionary[errorMessage];
 
-            return _responseFactory.ConflictResponse(errorMessage, details);
+            return responseFactory.ConflictResponse(errorMessage, details);
         }
 
         if (session.UserId != request.UserId)
@@ -40,12 +40,12 @@ public class LogoutCommandHandler : IRequestHandler<LogoutCommand, Result<Respon
             const string errorMessage = ResponseMessageCodes.UserNotFound;
             var details = ResponseMessageCodes.ErrorDictionary[errorMessage];
 
-            return _responseFactory.ConflictResponse(errorMessage, details);
+            return responseFactory.ConflictResponse(errorMessage, details);
         }
 
-        _dbContext.Sessions.Remove(session);
-        await _dbContext.SaveChangesAsync(cancellationToken);
+        dbContext.Sessions.Remove(session);
+        await dbContext.SaveChangesAsync(cancellationToken);
 
-        return _responseFactory.SuccessResponse(ResponseBase.SuccessResponse);
+        return responseFactory.SuccessResponse(ResponseBase.SuccessResponse);
     }
 }

@@ -8,7 +8,7 @@ namespace MangoAPI.IntegrationTests.ApiCommandsTests.RegisterCommandHandlerTests
 
 public class RegisterTestShouldThrowInvalidEmail : IntegrationTestBase
 {
-    private readonly Assert<RegisterResponse> _assert = new();
+    private readonly Assert<RegisterResponse> assert = new();
 
     [Fact]
     public async Task RegisterTestShouldThrow_InvalidEmail()
@@ -17,12 +17,12 @@ public class RegisterTestShouldThrowInvalidEmail : IntegrationTestBase
         var expectedDetails = ResponseMessageCodes.ErrorDictionary[expectedMessage];
         var command = new RegisterCommand(
             Email: MockedObjects.GetMailgunSettings().NotificationEmail,
-            DisplayName: "Test account", 
-            Password: "Bm3-`dPRv-/w#3)cw^97", 
+            DisplayName: "Test account",
+            Password: "Bm3-`dPRv-/w#3)cw^97",
             TermsAccepted: true);
 
         var result = await MangoModule.RequestAsync(command, CancellationToken.None);
 
-        _assert.Fail(result, expectedMessage, expectedDetails);
+        assert.Fail(result, expectedMessage, expectedDetails);
     }
 }

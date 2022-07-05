@@ -11,14 +11,14 @@ namespace MangoAPI.IntegrationTests.ApiCommandsTests.AddContactCommandHandlerTes
 
 public class AddContactShouldThrowUserNotFound : IntegrationTestBase
 {
-    private readonly Assert<ResponseBase> _assert = new();
+    private readonly Assert<ResponseBase> assert = new();
 
     [Fact]
     public async Task AddContactCommandHandlerTest_ShouldThrow_UserNotFound()
     {
         const string expectedMessage = ResponseMessageCodes.UserNotFound;
         var expectedDetails = ResponseMessageCodes.ErrorDictionary[expectedMessage];
-        var user = 
+        var user =
             await MangoModule.RequestAsync(CommandHelper.RegisterPetroCommand(), CancellationToken.None);
         var command = new AddContactCommand(
             UserId: user.Response.UserId,
@@ -26,6 +26,6 @@ public class AddContactShouldThrowUserNotFound : IntegrationTestBase
 
         var result = await MangoModule.RequestAsync(command, CancellationToken.None);
 
-        _assert.Fail(result, expectedMessage, expectedDetails);
+        assert.Fail(result, expectedMessage, expectedDetails);
     }
 }

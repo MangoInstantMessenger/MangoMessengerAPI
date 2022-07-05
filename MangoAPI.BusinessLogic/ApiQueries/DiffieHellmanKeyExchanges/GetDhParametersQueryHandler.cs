@@ -11,20 +11,20 @@ namespace MangoAPI.BusinessLogic.ApiQueries.DiffieHellmanKeyExchanges;
 
 public class GetDhParametersQueryHandler : IRequestHandler<GetDhParametersQuery, Result<GetDhParametersResponse>>
 {
-    private readonly MangoDbContext _mangoDbContext;
-    private readonly ResponseFactory<GetDhParametersResponse> _responseFactory;
+    private readonly MangoDbContext mangoDbContext;
+    private readonly ResponseFactory<GetDhParametersResponse> responseFactory;
 
     public GetDhParametersQueryHandler(MangoDbContext mangoDbContext,
         ResponseFactory<GetDhParametersResponse> responseFactory)
     {
-        _mangoDbContext = mangoDbContext;
-        _responseFactory = responseFactory;
+        this.mangoDbContext = mangoDbContext;
+        this.responseFactory = responseFactory;
     }
 
     public async Task<Result<GetDhParametersResponse>> Handle(GetDhParametersQuery request,
         CancellationToken cancellationToken)
     {
-        var dhParameter = await _mangoDbContext.DiffieHellmanParameterEntities
+        var dhParameter = await mangoDbContext.DiffieHellmanParameterEntities
             .OrderByDescending(x => x.CreatedAt)
             .FirstOrDefaultAsync(cancellationToken);
 
@@ -33,7 +33,7 @@ public class GetDhParametersQueryHandler : IRequestHandler<GetDhParametersQuery,
             const string errorMessage = ResponseMessageCodes.DhParameterNotFound;
             var errorDetails = ResponseMessageCodes.ErrorDictionary[errorMessage];
 
-            return _responseFactory.ConflictResponse(errorMessage, errorDetails);
+            return responseFactory.ConflictResponse(errorMessage, errorDetails);
         }
 
         var bytes = dhParameter.OpenSslDhParameter;
@@ -45,6 +45,6 @@ public class GetDhParametersQueryHandler : IRequestHandler<GetDhParametersQuery,
             Success = true
         };
 
-        return _responseFactory.SuccessResponse(response);
+        return responseFactory.SuccessResponse(response);
     }
 }

@@ -13,20 +13,20 @@ namespace MangoAPI.BusinessLogic.ApiCommands.UserChats;
 public class LeaveGroupCommandHandler
     : IRequestHandler<LeaveGroupCommand, Result<LeaveGroupResponse>>
 {
-    private readonly MangoDbContext _dbContext;
-    private readonly ResponseFactory<LeaveGroupResponse> _responseFactory;
+    private readonly MangoDbContext dbContext;
+    private readonly ResponseFactory<LeaveGroupResponse> responseFactory;
 
     public LeaveGroupCommandHandler(MangoDbContext dbContext,
         ResponseFactory<LeaveGroupResponse> responseFactory)
     {
-        _dbContext = dbContext;
-        _responseFactory = responseFactory;
+        this.dbContext = dbContext;
+        this.responseFactory = responseFactory;
     }
 
     public async Task<Result<LeaveGroupResponse>> Handle(LeaveGroupCommand request,
         CancellationToken cancellationToken)
     {
-        var userChat = await _dbContext.UserChats
+        var userChat = await dbContext.UserChats
             .Include(x=>x.Chat)
             .Where(chatEntity => chatEntity.UserId == request.UserId)
             .Where(chatEntity => chatEntity.ChatId == request.ChatId)
@@ -37,40 +37,40 @@ public class LeaveGroupCommandHandler
             const string errorMessage = ResponseMessageCodes.ChatNotFound;
             var details = ResponseMessageCodes.ErrorDictionary[errorMessage];
 
-            return _responseFactory.ConflictResponse(errorMessage, details);
+            return responseFactory.ConflictResponse(errorMessage, details);
         }
 
         var chat = userChat.Chat;
-        
+
         if (chat == null)
         {
             const string errorMessage = ResponseMessageCodes.ChatNotFound;
             var details = ResponseMessageCodes.ErrorDictionary[errorMessage];
 
-            return _responseFactory.ConflictResponse(errorMessage, details);
+            return responseFactory.ConflictResponse(errorMessage, details);
         }
 
         if (chat.CommunityType == (int) CommunityType.DirectChat)
         {
-            var messages = await _dbContext.Messages
+            var messages = await dbContext.Messages
                 .Where(messageEntity => messageEntity.ChatId == request.ChatId)
                 .ToListAsync(cancellationToken);
 
-            _dbContext.Messages.RemoveRange(messages);
-            _dbContext.UserChats.RemoveRange(chat.ChatUsers);
-            _dbContext.Chats.Remove(chat);
+            dbContext.Messages.RemoveRange(messages);
+            dbContext.UserChats.RemoveRange(chat.ChatUsers);
+            dbContext.Chats.Remove(chat);
 
-            await _dbContext.SaveChangesAsync(cancellationToken);
+            await dbContext.SaveChangesAsync(cancellationToken);
 
-            return _responseFactory.SuccessResponse(LeaveGroupResponse.FromSuccess(chat.Id));
+            return responseFactory.SuccessResponse(LeaveGroupResponse.FromSuccess(chat.Id));
         }
 
-        _dbContext.UserChats.Remove(userChat);
+        dbContext.UserChats.Remove(userChat);
         chat.MembersCount--;
 
-        _dbContext.Update(chat);
-        await _dbContext.SaveChangesAsync(cancellationToken);
+        dbContext.Update(chat);
+        await dbContext.SaveChangesAsync(cancellationToken);
 
-        return _responseFactory.SuccessResponse(LeaveGroupResponse.FromSuccess(chat.Id));
+        return responseFactory.SuccessResponse(LeaveGroupResponse.FromSuccess(chat.Id));
     }
 }

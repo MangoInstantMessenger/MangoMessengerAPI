@@ -10,7 +10,7 @@ namespace MangoAPI.IntegrationTests.ApiCommandsTests.VerifyEmailCommandHandlerTe
 
 public class VerifyEmailTestShouldThrowEmailAlreadyVerified : IntegrationTestBase
 {
-    private readonly Assert<ResponseBase> _assert = new();
+    private readonly Assert<ResponseBase> assert = new();
 
     [Fact]
     public async Task VerifyEmailTestShouldThrow_EmailAlreadyVerified()
@@ -30,6 +30,6 @@ public class VerifyEmailTestShouldThrowEmailAlreadyVerified : IntegrationTestBas
             request: CommandHelper.CreateVerifyEmailCommand(userEntity.Email, userEntity.EmailCode),
             cancellationToken: CancellationToken.None);
 
-        _assert.Fail(result, expectedMessage, expectedDetails);
+        assert.Fail(result, expectedMessage, expectedDetails);
     }
 }

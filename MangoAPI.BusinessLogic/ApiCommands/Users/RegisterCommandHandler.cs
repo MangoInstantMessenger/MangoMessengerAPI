@@ -13,11 +13,11 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users;
 
 public class RegisterCommandHandler : IRequestHandler<RegisterCommand, Result<RegisterResponse>>
 {
-    private readonly IEmailSenderService _emailSenderService;
-    private readonly MangoDbContext _dbContext;
-    private readonly IUserManagerService _userManager;
-    private readonly ResponseFactory<RegisterResponse> _responseFactory;
-    private readonly IMailgunSettings _mailgunSettings;
+    private readonly IEmailSenderService emailSenderService;
+    private readonly MangoDbContext dbContext;
+    private readonly IUserManagerService userManager;
+    private readonly ResponseFactory<RegisterResponse> responseFactory;
+    private readonly IMailgunSettings mailgunSettings;
 
     public RegisterCommandHandler(
         IUserManagerService userManager,
@@ -26,16 +26,16 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, Result<Re
         ResponseFactory<RegisterResponse> responseFactory,
         IMailgunSettings mailgunSettings)
     {
-        _userManager = userManager;
-        _dbContext = dbContext;
-        _emailSenderService = emailSenderService;
-        _responseFactory = responseFactory;
-        _mailgunSettings = mailgunSettings;
+        this.userManager = userManager;
+        this.dbContext = dbContext;
+        this.emailSenderService = emailSenderService;
+        this.responseFactory = responseFactory;
+        this.mailgunSettings = mailgunSettings;
     }
 
     public async Task<Result<RegisterResponse>> Handle(RegisterCommand request, CancellationToken cancellationToken)
     {
-        var userExists = await _dbContext.Users
+        var userExists = await dbContext.Users
             .AnyAsync(entity => entity.Email == request.Email, cancellationToken);
 
         if (userExists)
@@ -43,17 +43,17 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, Result<Re
             const string errorMessage = ResponseMessageCodes.UserAlreadyExists;
             var details = ResponseMessageCodes.ErrorDictionary[errorMessage];
 
-            return _responseFactory.ConflictResponse(errorMessage, details);
+            return responseFactory.ConflictResponse(errorMessage, details);
         }
 
-        var notificationEmail = _mailgunSettings.NotificationEmail;
+        var notificationEmail = mailgunSettings.NotificationEmail;
 
         if (request.Email == notificationEmail)
         {
             const string errorMessage = ResponseMessageCodes.InvalidEmailAddress;
             var details = ResponseMessageCodes.ErrorDictionary[errorMessage];
 
-            return _responseFactory.ConflictResponse(errorMessage, details);
+            return responseFactory.ConflictResponse(errorMessage, details);
         }
 
         var newUser = new UserEntity
@@ -65,7 +65,7 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, Result<Re
             Image = "default_avatar.png"
         };
 
-        await _userManager.CreateAsync(newUser, request.Password);
+        await userManager.CreateAsync(newUser, request.Password);
 
         var userInfo = new UserInformationEntity
         {
@@ -73,14 +73,14 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, Result<Re
             CreatedAt = DateTime.UtcNow,
         };
 
-        await _emailSenderService.SendVerificationEmailAsync(newUser, cancellationToken);
+        await emailSenderService.SendVerificationEmailAsync(newUser, cancellationToken);
 
-        _dbContext.UserInformation.Add(userInfo);
+        dbContext.UserInformation.Add(userInfo);
 
-        await _dbContext.SaveChangesAsync(cancellationToken);
+        await dbContext.SaveChangesAsync(cancellationToken);
 
         var response = RegisterResponse.FromSuccess(newUser.Id);
-        var result = _responseFactory.SuccessResponse(response);
+        var result = responseFactory.SuccessResponse(response);
 
         return result;
     }

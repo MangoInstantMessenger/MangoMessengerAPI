@@ -9,23 +9,23 @@ using Microsoft.EntityFrameworkCore;
 
 namespace MangoAPI.BusinessLogic.ApiCommands.Sessions;
 
-public class LogoutAllCommandHandler 
+public class LogoutAllCommandHandler
     : IRequestHandler<LogoutAllCommand, Result<ResponseBase>>
 {
-    private readonly MangoDbContext _dbContext;
-    private readonly ResponseFactory<ResponseBase> _responseFactory;
+    private readonly MangoDbContext dbContext;
+    private readonly ResponseFactory<ResponseBase> responseFactory;
 
-    public LogoutAllCommandHandler(MangoDbContext dbContext, 
+    public LogoutAllCommandHandler(MangoDbContext dbContext,
         ResponseFactory<ResponseBase> responseFactory)
     {
-        _dbContext = dbContext;
-        _responseFactory = responseFactory;
+        this.dbContext = dbContext;
+        this.responseFactory = responseFactory;
     }
 
-    public async Task<Result<ResponseBase>> Handle(LogoutAllCommand request, 
+    public async Task<Result<ResponseBase>> Handle(LogoutAllCommand request,
         CancellationToken cancellationToken)
     {
-        var userSessions = _dbContext.Sessions
+        var userSessions = dbContext.Sessions
             .Where(entity => entity.UserId == request.UserId);
 
         var sessionExists = await userSessions.AnyAsync(cancellationToken);
@@ -35,13 +35,13 @@ public class LogoutAllCommandHandler
             const string errorMessage = ResponseMessageCodes.SessionNotFound;
             var details = ResponseMessageCodes.ErrorDictionary[errorMessage];
 
-            return _responseFactory.ConflictResponse(errorMessage, details);
+            return responseFactory.ConflictResponse(errorMessage, details);
         }
 
-        _dbContext.Sessions.RemoveRange(userSessions);
+        dbContext.Sessions.RemoveRange(userSessions);
 
-        await _dbContext.SaveChangesAsync(cancellationToken);
+        await dbContext.SaveChangesAsync(cancellationToken);
 
-        return _responseFactory.SuccessResponse(ResponseBase.SuccessResponse);
+        return responseFactory.SuccessResponse(ResponseBase.SuccessResponse);
     }
 }

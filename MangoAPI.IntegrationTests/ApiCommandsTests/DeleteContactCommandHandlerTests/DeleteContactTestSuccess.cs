@@ -9,7 +9,7 @@ namespace MangoAPI.IntegrationTests.ApiCommandsTests.DeleteContactCommandHandler
 
 public class DeleteContactTestSuccess : IntegrationTestBase
 {
-    private readonly Assert<ResponseBase> _assert = new();
+    private readonly Assert<ResponseBase> assert = new();
 
     [Fact]
     public async Task DeleteContactTest_Success()
@@ -20,12 +20,12 @@ public class DeleteContactTestSuccess : IntegrationTestBase
             await MangoModule.RequestAsync(CommandHelper.RegisterKhachaturCommand(), CancellationToken.None);
         var contact =
             await MangoModule.RequestAsync(
-                request: CommandHelper.CreateContactCommand(user.Response.UserId, partner.Response.UserId), 
+                request: CommandHelper.CreateContactCommand(user.Response.UserId, partner.Response.UserId),
                 cancellationToken: CancellationToken.None);
         var command = new DeleteContactCommand(UserId: user.Response.UserId, ContactId: partner.Response.UserId);
-        
+
         var result = await MangoModule.RequestAsync(command, CancellationToken.None);
 
-        _assert.Pass(result);
-    } 
+        assert.Pass(result);
+    }
 }

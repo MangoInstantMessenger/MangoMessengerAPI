@@ -14,23 +14,23 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Communities;
 public class SearchCommunityQueryHandler
     : IRequestHandler<SearchCommunityQuery, Result<SearchCommunityResponse>>
 {
-    private readonly MangoDbContext _dbContext;
-    private readonly ResponseFactory<SearchCommunityResponse> _responseFactory;
-    private readonly IBlobServiceSettings _blobServiceSettings;
+    private readonly MangoDbContext dbContext;
+    private readonly ResponseFactory<SearchCommunityResponse> responseFactory;
+    private readonly IBlobServiceSettings blobServiceSettings;
 
     public SearchCommunityQueryHandler(MangoDbContext dbContext,
         ResponseFactory<SearchCommunityResponse> responseFactory,
         IBlobServiceSettings blobServiceSettings)
     {
-        _dbContext = dbContext;
-        _responseFactory = responseFactory;
-        _blobServiceSettings = blobServiceSettings;
+        this.dbContext = dbContext;
+        this.responseFactory = responseFactory;
+        this.blobServiceSettings = blobServiceSettings;
     }
 
     public async Task<Result<SearchCommunityResponse>> Handle(SearchCommunityQuery request,
         CancellationToken cancellationToken)
     {
-        var query = _dbContext.Chats
+        var query = dbContext.Chats
             .AsNoTracking()
             .Where(x => x.CommunityType == (int)CommunityType.PublicChannel)
             .Where(x => EF.Functions.Like(x.Title, $"%{request.DisplayName}%"))
@@ -40,7 +40,7 @@ public class SearchCommunityQueryHandler
                 Title = x.Title,
                 CommunityType = (CommunityType)x.CommunityType,
                 ChatLogoImageUrl = x.Image != null
-                    ? $"{_blobServiceSettings.MangoBlobAccess}/{x.Image}"
+                    ? $"{blobServiceSettings.MangoBlobAccess}/{x.Image}"
                     : null,
                 Description = x.Description,
                 MembersCount = x.MembersCount,
@@ -55,6 +55,6 @@ public class SearchCommunityQueryHandler
 
         var chats = await query.Take(200).ToListAsync(cancellationToken);
 
-        return _responseFactory.SuccessResponse(SearchCommunityResponse.FromSuccess(chats));
+        return responseFactory.SuccessResponse(SearchCommunityResponse.FromSuccess(chats));
     }
 }

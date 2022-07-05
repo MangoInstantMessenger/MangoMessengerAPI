@@ -10,7 +10,7 @@ namespace MangoAPI.IntegrationTests.ApiCommandsTests.UpdateUserAccountInfoComman
 
 public class UpdateUserAccountInfoTestSuccess : IntegrationTestBase
 {
-    private readonly Assert<ResponseBase> _assert = new();
+    private readonly Assert<ResponseBase> assert = new();
 
     [Fact]
     public async Task UpdateUserAccountInfoTest_Success()
@@ -24,6 +24,6 @@ public class UpdateUserAccountInfoTestSuccess : IntegrationTestBase
 
         var result = await MangoModule.RequestAsync(command, CancellationToken.None);
 
-        _assert.Pass(result);
+        assert.Pass(result);
     }
 }

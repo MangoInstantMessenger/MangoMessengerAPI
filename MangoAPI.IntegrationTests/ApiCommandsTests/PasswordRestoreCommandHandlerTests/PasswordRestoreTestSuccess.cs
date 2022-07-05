@@ -9,7 +9,7 @@ namespace MangoAPI.IntegrationTests.ApiCommandsTests.PasswordRestoreCommandHandl
 
 public class PasswordRestoreTestSuccess : IntegrationTestBase
 {
-    private readonly Assert<ResponseBase> _assert = new();
+    private readonly Assert<ResponseBase> assert = new();
 
     [Fact]
     public async Task PasswordRestoreTest_Success()
@@ -24,7 +24,7 @@ public class PasswordRestoreTestSuccess : IntegrationTestBase
             NewPassword: "Bm3-`dPRv-/w#3)cw^97", RepeatPassword: "Bm3-`dPRv-/w#3)cw^97");
 
         var result = await MangoModule.RequestAsync(command, CancellationToken.None);
-            
-        _assert.Pass(result);
+
+        assert.Pass(result);
     }
 }

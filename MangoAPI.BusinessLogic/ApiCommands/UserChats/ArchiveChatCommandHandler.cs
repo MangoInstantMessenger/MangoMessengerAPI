@@ -12,20 +12,20 @@ namespace MangoAPI.BusinessLogic.ApiCommands.UserChats;
 public class ArchiveChatCommandHandler
     : IRequestHandler<ArchiveChatCommand, Result<ResponseBase>>
 {
-    private readonly MangoDbContext _dbContext;
-    private readonly ResponseFactory<ResponseBase> _responseFactory;
+    private readonly MangoDbContext dbContext;
+    private readonly ResponseFactory<ResponseBase> responseFactory;
 
     public ArchiveChatCommandHandler(MangoDbContext dbContext,
         ResponseFactory<ResponseBase> responseFactory)
     {
-        _dbContext = dbContext;
-        _responseFactory = responseFactory;
+        this.dbContext = dbContext;
+        this.responseFactory = responseFactory;
     }
 
     public async Task<Result<ResponseBase>> Handle(ArchiveChatCommand request,
         CancellationToken cancellationToken)
     {
-        var chat = await _dbContext.UserChats
+        var chat = await dbContext.UserChats
             .Where(chatEntity => chatEntity.UserId == request.UserId)
             .Where(chatEntity => chatEntity.ChatId == request.ChatId)
             .FirstOrDefaultAsync(cancellationToken);
@@ -35,15 +35,15 @@ public class ArchiveChatCommandHandler
             const string errorMessage = ResponseMessageCodes.ChatNotFound;
             var details = ResponseMessageCodes.ErrorDictionary[errorMessage];
 
-            return _responseFactory.ConflictResponse(errorMessage, details);
+            return responseFactory.ConflictResponse(errorMessage, details);
         }
 
         chat.IsArchived = !chat.IsArchived;
 
-        _dbContext.UserChats.Update(chat);
+        dbContext.UserChats.Update(chat);
 
-        await _dbContext.SaveChangesAsync(cancellationToken);
+        await dbContext.SaveChangesAsync(cancellationToken);
 
-        return _responseFactory.SuccessResponse(ResponseBase.SuccessResponse);
+        return responseFactory.SuccessResponse(ResponseBase.SuccessResponse);
     }
 }

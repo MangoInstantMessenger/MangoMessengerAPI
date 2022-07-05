@@ -8,7 +8,7 @@ namespace MangoAPI.IntegrationTests.ApiCommandsTests.LeaveGroupCommandHandlerTes
 
 public class LeaveGroupTestSuccess : IntegrationTestBase
 {
-    private readonly Assert<LeaveGroupResponse> _assert = new();
+    private readonly Assert<LeaveGroupResponse> assert = new();
 
     [Fact]
     public async Task LeaveGroupTest_Success()
@@ -23,6 +23,6 @@ public class LeaveGroupTestSuccess : IntegrationTestBase
 
         var result = await MangoModule.RequestAsync(command, CancellationToken.None);
 
-        _assert.Pass(result);
+        assert.Pass(result);
     }
 }

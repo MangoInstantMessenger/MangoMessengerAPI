@@ -18,10 +18,10 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Messages;
 public class SendMessageCommandHandler
     : IRequestHandler<SendMessageCommand, Result<SendMessageResponse>>
 {
-    private readonly MangoDbContext _dbContext;
-    private readonly IHubContext<ChatHub, IHubClient> _hubContext;
-    private readonly ResponseFactory<SendMessageResponse> _responseFactory;
-    private readonly IBlobServiceSettings _blobServiceSettings;
+    private readonly MangoDbContext dbContext;
+    private readonly IHubContext<ChatHub, IHubClient> hubContext;
+    private readonly ResponseFactory<SendMessageResponse> responseFactory;
+    private readonly IBlobServiceSettings blobServiceSettings;
 
     public SendMessageCommandHandler(
         MangoDbContext dbContext,
@@ -29,16 +29,16 @@ public class SendMessageCommandHandler
         ResponseFactory<SendMessageResponse> responseFactory,
         IBlobServiceSettings blobServiceSettings)
     {
-        _dbContext = dbContext;
-        _hubContext = hubContext;
-        _responseFactory = responseFactory;
-        _blobServiceSettings = blobServiceSettings;
+        this.dbContext = dbContext;
+        this.hubContext = hubContext;
+        this.responseFactory = responseFactory;
+        this.blobServiceSettings = blobServiceSettings;
     }
 
     public async Task<Result<SendMessageResponse>> Handle(SendMessageCommand request,
         CancellationToken cancellationToken)
     {
-        var user = await _dbContext.Users.AsNoTracking()
+        var user = await dbContext.Users.AsNoTracking()
             .Select(x => new
             {
                 x.DisplayName,
@@ -52,10 +52,10 @@ public class SendMessageCommandHandler
             const string errorMessage = ResponseMessageCodes.UserNotFound;
             var errorDescription = ResponseMessageCodes.ErrorDictionary[ResponseMessageCodes.UserNotFound];
 
-            return _responseFactory.ConflictResponse(errorMessage, errorDescription);
+            return responseFactory.ConflictResponse(errorMessage, errorDescription);
         }
 
-        var userChat = await _dbContext.UserChats.AsNoTracking()
+        var userChat = await dbContext.UserChats.AsNoTracking()
             .Select(x => new
             {
                 x.ChatId,
@@ -69,10 +69,10 @@ public class SendMessageCommandHandler
             const string errorMessage = ResponseMessageCodes.ChatNotFound;
             var errorDescription = ResponseMessageCodes.ErrorDictionary[errorMessage];
 
-            return _responseFactory.ConflictResponse(errorMessage, errorDescription);
+            return responseFactory.ConflictResponse(errorMessage, errorDescription);
         }
 
-        var messageCount = await _dbContext.Messages
+        var messageCount = await dbContext.Messages
             .AsNoTracking()
             .Where(x => x.UserId == request.UserId)
             .CountAsync(cancellationToken);
@@ -95,15 +95,15 @@ public class SendMessageCommandHandler
         userChat.Chat.LastMessageTime = messageEntity.CreatedAt;
         userChat.Chat.LastMessageId = messageEntity.Id;
 
-        _dbContext.Chats.Update(userChat.Chat);
-        _dbContext.Messages.Add(messageEntity);
+        dbContext.Chats.Update(userChat.Chat);
+        dbContext.Messages.Add(messageEntity);
 
-        await _dbContext.SaveChangesAsync(cancellationToken);
+        await dbContext.SaveChangesAsync(cancellationToken);
 
-        var messageDto = messageEntity.ToMessage(user.DisplayName, user.Id, user.Image, _blobServiceSettings.MangoBlobAccess);
+        var messageDto = messageEntity.ToMessage(user.DisplayName, user.Id, user.Image, blobServiceSettings.MangoBlobAccess);
 
-        await _hubContext.Clients.Group(request.ChatId.ToString()).BroadcastMessageAsync(messageDto);
+        await hubContext.Clients.Group(request.ChatId.ToString()).BroadcastMessageAsync(messageDto);
 
-        return _responseFactory.SuccessResponse(SendMessageResponse.FromSuccess(messageEntity.Id));
+        return responseFactory.SuccessResponse(SendMessageResponse.FromSuccess(messageEntity.Id));
     }
 }
