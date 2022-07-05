@@ -64,24 +64,7 @@ public class Startup
         // https://stackoverflow.com/a/62374509
         app.Map("/app", spaApp => { spaApp.UseSpa(spa => { spa.Options.SourcePath = "/wwwroot"; }); });
 
-        var shouldMigrate = _configuration.GetValue<bool>("ShouldMigrateDatabase");
-
-        if (shouldMigrate)
-        {
-            while (true) 
-            {
-                try
-                {
-                    app.MigrateDatabase();
-                    break;
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine($"{ex}: {ex.Message}");
-                    Thread.Sleep(5000);
-                }
-            }
-        }
+        app.MigrateDatabase();
     }
 
     public void ConfigureServices(IServiceCollection services)

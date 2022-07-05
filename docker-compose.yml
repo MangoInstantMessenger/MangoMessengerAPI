@@ -9,10 +9,11 @@ services:
     container_name: mango-backend-compose
     depends_on:
       - "mango-mssql-db"
-    build: 
+    build:
       context: .
       dockerfile: Dockerfile
     ports:
+      - "4040:443"
       - "8000:80"
     environment:
       MANGO_JWT_ISSUER: "http://localhost:4200"
