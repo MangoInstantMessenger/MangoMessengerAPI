@@ -8,8 +8,6 @@ EXPOSE 443
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
 COPY ["MangoAPI.Presentation/MangoAPI.Presentation.csproj", "MangoAPI.Presentation/"]
-#COPY ["MangoAPI.IntegrationTests/MangoAPI.IntegrationTests.csproj", "MangoAPI.IntegrationTests/MangoAPI.IntegrationTests.csproj"]
-#COPY ["MangoAPI.DataAccess/MangoAPI.DataAccess.csproj", "MangoAPI.DataAccess/"]
 COPY ["MangoAPI.BusinessLogic/MangoAPI.BusinessLogic.csproj", "MangoAPI.BusinessLogic/"]
 COPY ["MangoAPI.Domain/MangoAPI.Domain.csproj", "MangoAPI.Domain/"]
 COPY ["MangoAPI.Application/MangoAPI.Application.csproj", "MangoAPI.Application/"]
@@ -34,6 +32,4 @@ RUN ACCEPT_EULA=Y apt-get install mssql-tools unixodbc-dev -y
 
 COPY --from=publish /app/publish .
 COPY startMango.sh startMango.sh
-#ENTRYPOINT ["dotnet", "MangoAPI.Presentation.dll"]
-#CMD ASPNETCORE_URLS=http://*:$PORT dotnet MangoAPI.Presentation.dll
-CMD bash startMango.sh
+CMD bash wait_mssql_database_docker_compose.sh
