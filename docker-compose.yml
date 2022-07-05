@@ -17,7 +17,7 @@ services:
       - MANGO_JWT_SIGN_KEY
       - MANGO_EMAIL_NOTIFICATIONS_ADDRESS
       - MANGO_FRONTEND_ADDRESS
-      - MANGO_DATABASE_URL
+      - MANGO_DATABASE_URL="Server=tcp:db,1433;Initial Catalog=MANGO_DEV;Persist Security Info=False;User ID=sa;Password=e2rKzHfrQVsyvFmJtBMK;MultipleActiveResultSets=False;Encrypt=False;TrustServerCertificate=False;Connection Timeout=30;"
       - MANGO_SEED_PASSWORD
       - MANGO_BLOB_URL
       - MANGO_BLOB_CONTAINER
@@ -37,7 +37,7 @@ services:
 
     environment:
       - ACCEPT_EULA="true"
-      - SA_PASSWORD
+      - SA_PASSWORD="e2rKzHfrQVsyvFmJtBMK"
 
     networks:
       - mangonetwork
