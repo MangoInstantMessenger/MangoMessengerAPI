@@ -11,6 +11,10 @@
         <DocumentationFile>./bin/MangoAPI.DiffieHellmanLibrary.xml</DocumentationFile>
     </PropertyGroup>
 
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+        <DocumentationFile>./bin/MangoAPI.DiffieHellmanLibrary.xml</DocumentationFile>
+    </PropertyGroup>
+
     <ItemGroup>
         <ProjectReference Include="..\MangoAPI.BusinessLogic\MangoAPI.BusinessLogic.csproj" />
         <ProjectReference Include="..\MangoAPI.Domain\MangoAPI.Domain.csproj" />

@@ -12,6 +12,10 @@
         <DocumentationFile>./bin/MangoAPI.DiffieHellmanConsole.xml</DocumentationFile>
     </PropertyGroup>
 
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+        <DocumentationFile>./bin/MangoAPI.DiffieHellmanConsole.xml</DocumentationFile>
+    </PropertyGroup>
+
     <ItemGroup>
         <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
             <PrivateAssets>all</PrivateAssets>
@@ -20,7 +24,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\MangoAPI.DiffieHellmanLibrary\MangoAPI.DiffieHellmanLibrary.csproj" />
+        <ProjectReference Include="..\MangoAPI.DiffieHellmanLibrary\MangoAPI.DiffieHellmanLibrary.csproj"/>
     </ItemGroup>
 
 </Project>

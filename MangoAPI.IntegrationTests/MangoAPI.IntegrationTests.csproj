@@ -12,6 +12,10 @@
         <DocumentationFile>./bin/MangoAPI.IntegrationTests.xml</DocumentationFile>
     </PropertyGroup>
 
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+        <DocumentationFile>./bin/MangoAPI.IntegrationTests.xml</DocumentationFile>
+    </PropertyGroup>
+
     <ItemGroup>
         <ProjectReference Include="..\MangoAPI.BusinessLogic\MangoAPI.BusinessLogic.csproj" />
     </ItemGroup>
