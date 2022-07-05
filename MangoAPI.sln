@@ -16,18 +16,20 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{F8A0C2AF-AB92-4D4E-8EB9-FEC56B93DD01}"
 	ProjectSection(SolutionItems) = preProject
 		.dockerignore = .dockerignore
+		.editorconfig = .editorconfig
 		.gitignore = .gitignore
+		img\architecture.png = img\architecture.png
+		CNG_DH_HANDSHAKE_TEST.ps1 = CNG_DH_HANDSHAKE_TEST.ps1
+		docker-compose.yml = docker-compose.yml
 		Dockerfile = Dockerfile
 		Environments-Back.jpg = Environments-Back.jpg
 		LICENSE.txt = LICENSE.txt
-		README.md = README.md
 		img\mango.png = img\mango.png
-		img\architecture.png = img\architecture.png
 		OPENSSL_DH_HANDSHAKE_TEST.ps1 = OPENSSL_DH_HANDSHAKE_TEST.ps1
-		CNG_DH_HANDSHAKE_TEST.ps1 = CNG_DH_HANDSHAKE_TEST.ps1
+		README.md = README.md
 		run-sonarqube-dotnet.sh = run-sonarqube-dotnet.sh
-		docker-compose.yml = docker-compose.yml
-		.editorconfig = .editorconfig
+		stylecop.json = stylecop.json
+		stylecop.ruleset = stylecop.ruleset
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MangoAPI.DiffieHellmanConsole", "MangoAPI.DiffieHellmanConsole\MangoAPI.DiffieHellmanConsole.csproj", "{85D35610-B0C7-4439-871C-0578E1FC7BB5}"
@@ -44,15 +46,15 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SQL", "SQL", "{2A176CBC-BD4
 		SQL\PostrgresValidateDatabaseSize.sql = SQL\PostrgresValidateDatabaseSize.sql
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MangoAPI.IntegrationTests", "MangoAPI.IntegrationTests\MangoAPI.IntegrationTests.csproj", "{7BE7D37C-B0FF-4231-A155-B8AA7CF8092B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MangoAPI.IntegrationTests", "MangoAPI.IntegrationTests\MangoAPI.IntegrationTests.csproj", "{7BE7D37C-B0FF-4231-A155-B8AA7CF8092B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MangoAPI.DiffieHellmanLibrary", "MangoAPI.DiffieHellmanLibrary\MangoAPI.DiffieHellmanLibrary.csproj", "{D60AA7DE-4121-4C89-91D3-8DBBF735E13F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MangoAPI.DiffieHellmanLibrary", "MangoAPI.DiffieHellmanLibrary\MangoAPI.DiffieHellmanLibrary.csproj", "{D60AA7DE-4121-4C89-91D3-8DBBF735E13F}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "build", "build", "{66E218B1-FCCA-42F3-81A4-E19AC6659ECA}"
 	ProjectSection(SolutionItems) = preProject
-		build\azure-pipelines.yml = build\azure-pipelines.yml
-		build\azure-pipelines-deploy.yml = build\azure-pipelines-deploy.yml
 		build\azure-pipelines-common.yml = build\azure-pipelines-common.yml
+		build\azure-pipelines-deploy.yml = build\azure-pipelines-deploy.yml
+		build\azure-pipelines.yml = build\azure-pipelines.yml
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".github", ".github", "{B8CB0A21-BB6E-478B-A755-49CEA1435CD1}"
@@ -62,11 +64,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "workflows", "workflows", "{
 		.github\workflows\azure-dev-vm-ssh-deploy.yml = .github\workflows\azure-dev-vm-ssh-deploy.yml
 		.github\workflows\azure-qa-vm-ssh-deploy.yml = .github\workflows\azure-qa-vm-ssh-deploy.yml
 		.github\workflows\heroku-container-deploy.yml = .github\workflows\heroku-container-deploy.yml
+		.github\workflows\run-angular-sonarqube-analysis.yml = .github\workflows\run-angular-sonarqube-analysis.yml
 		.github\workflows\run-build-and-test-dotnet-angular.yml = .github\workflows\run-build-and-test-dotnet-angular.yml
-		.github\workflows\run-openssl-dh-handshake.yml = .github\workflows\run-openssl-dh-handshake.yml
 		.github\workflows\run-cng-dh-handshake.yml = .github\workflows\run-cng-dh-handshake.yml
 		.github\workflows\run-dotnet-sonarqube-analysis.yml = .github\workflows\run-dotnet-sonarqube-analysis.yml
-		.github\workflows\run-angular-sonarqube-analysis.yml = .github\workflows\run-angular-sonarqube-analysis.yml
+		.github\workflows\run-openssl-dh-handshake.yml = .github\workflows\run-openssl-dh-handshake.yml
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docker", "docker", "{8F514700-EE42-4018-A95D-B3A06473CE86}"
@@ -78,8 +80,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "mssql-docker", "mssql-docke
 		build\docker\mssql-docker\entrypoint.sh = build\docker\mssql-docker\entrypoint.sh
 		build\docker\mssql-docker\readme.md = build\docker\mssql-docker\readme.md
 		build\docker\mssql-docker\run-initialization.sh = build\docker\mssql-docker\run-initialization.sh
-		build\docker\mssql-docker\wait_database.ps1 = build\docker\mssql-docker\wait_database.ps1
 		build\docker\mssql-docker\wait-for-mssql.sh = build\docker\mssql-docker\wait-for-mssql.sh
+		build\docker\mssql-docker\wait_database.ps1 = build\docker\mssql-docker\wait_database.ps1
 	EndProjectSection
 EndProject
 Global
@@ -124,12 +126,12 @@ Global
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
-	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {64B16C18-46ED-4D73-927F-B2E229345447}
-	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{245C5E82-3AED-46CE-8562-B78682197D9B} = {B8CB0A21-BB6E-478B-A755-49CEA1435CD1}
 		{8F514700-EE42-4018-A95D-B3A06473CE86} = {66E218B1-FCCA-42F3-81A4-E19AC6659ECA}
 		{D5044538-3F69-4E1F-9393-7C77B7886898} = {8F514700-EE42-4018-A95D-B3A06473CE86}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {64B16C18-46ED-4D73-927F-B2E229345447}
 	EndGlobalSection
 EndGlobal
