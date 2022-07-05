@@ -31,5 +31,6 @@ RUN apt-get update
 RUN ACCEPT_EULA=Y apt-get install mssql-tools unixodbc-dev -y
 
 COPY --from=publish /app/publish .
-COPY wait_mssql_database_docker_compose.sh wait_mssql_database_docker_compose.sh
-CMD bash wait_mssql_database_docker_compose.sh
+# COPY wait_mssql_database_docker_compose.sh wait_mssql_database_docker_compose.sh
+#CMD bash wait_mssql_database_docker_compose.sh
+CMD ASPNETCORE_URLS=http://*:$PORT dotnet MangoAPI.Presentation.dll

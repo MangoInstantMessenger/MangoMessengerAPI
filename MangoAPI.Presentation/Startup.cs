@@ -6,7 +6,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using MangoAPI.Presentation.Middlewares;
+using System;
 using System.Text.Json;
+using System.Threading;
 using MangoAPI.Application.Interfaces;
 using MangoAPI.Application.Services;
 using MangoAPI.BusinessLogic.DependencyInjection;
@@ -66,7 +68,19 @@ public class Startup
 
         if (shouldMigrate)
         {
-            app.MigrateDatabase();
+            while (true) 
+            {
+                try
+                {
+                    app.MigrateDatabase();
+                    break;
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"{ex}: {ex.Message}");
+                    Thread.Sleep(5000);
+                }
+            }
         }
     }
 
