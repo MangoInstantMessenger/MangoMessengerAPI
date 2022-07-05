@@ -53,6 +53,4 @@ public class OpensslValidateCommonSecretHandler : IValidateCommonSecretHandler
     }
 }
 
-#pragma warning disable SA1313
 public record HashResult(string SenderHash, string ReceiverHash);
-#pragma warning restore SA1313

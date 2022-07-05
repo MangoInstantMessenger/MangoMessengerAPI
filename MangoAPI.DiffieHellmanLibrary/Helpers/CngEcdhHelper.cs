@@ -26,6 +26,4 @@ public static class CngEcdhHelper
     }
 }
 
-#pragma warning disable SA1313
 public record EccDhKeyPair(string PrivateKey, string PublicKey);
-#pragma warning restore SA1313
