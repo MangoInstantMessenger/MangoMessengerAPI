@@ -15,18 +15,21 @@ public class DeleteContactCommandHandler
     private readonly MangoDbContext dbContext;
     private readonly ResponseFactory<ResponseBase> responseFactory;
 
-    public DeleteContactCommandHandler(MangoDbContext dbContext,
+    public DeleteContactCommandHandler(
+        MangoDbContext dbContext,
         ResponseFactory<ResponseBase> responseFactory)
     {
         this.dbContext = dbContext;
         this.responseFactory = responseFactory;
     }
 
-    public async Task<Result<ResponseBase>> Handle(DeleteContactCommand request,
+    public async Task<Result<ResponseBase>> Handle(
+        DeleteContactCommand request,
         CancellationToken cancellationToken)
     {
         var user = await dbContext.Users
-            .FirstOrDefaultAsync(userEntity => userEntity.Id == request.UserId,
+            .FirstOrDefaultAsync(
+                userEntity => userEntity.Id == request.UserId,
                 cancellationToken);
 
         if (user is null)

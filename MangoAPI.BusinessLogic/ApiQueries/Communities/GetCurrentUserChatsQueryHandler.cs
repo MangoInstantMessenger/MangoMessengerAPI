@@ -1,13 +1,13 @@
-﻿using MangoAPI.BusinessLogic.Models;
-using MangoAPI.BusinessLogic.Responses;
-using MangoAPI.Domain.Enums;
-using MediatR;
-using Microsoft.EntityFrameworkCore;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using MangoAPI.Application.Interfaces;
+using MangoAPI.BusinessLogic.Models;
+using MangoAPI.BusinessLogic.Responses;
+using MangoAPI.Domain.Enums;
 using MangoAPI.Infrastructure.Database;
+using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 namespace MangoAPI.BusinessLogic.ApiQueries.Communities;
 
@@ -18,7 +18,8 @@ public class GetCurrentUserChatsQueryHandler
     private readonly ResponseFactory<GetCurrentUserChatsResponse> responseFactory;
     private readonly IBlobServiceSettings blobServiceSettings;
 
-    public GetCurrentUserChatsQueryHandler(MangoDbContext dbContext,
+    public GetCurrentUserChatsQueryHandler(
+        MangoDbContext dbContext,
         ResponseFactory<GetCurrentUserChatsResponse> responseFactory,
         IBlobServiceSettings blobServiceSettings)
     {
@@ -27,7 +28,8 @@ public class GetCurrentUserChatsQueryHandler
         this.blobServiceSettings = blobServiceSettings;
     }
 
-    public async Task<Result<GetCurrentUserChatsResponse>> Handle(GetCurrentUserChatsQuery request,
+    public async Task<Result<GetCurrentUserChatsResponse>> Handle(
+        GetCurrentUserChatsQuery request,
         CancellationToken cancellationToken)
     {
         var query = dbContext.UserChats
@@ -53,7 +55,7 @@ public class GetCurrentUserChatsQueryHandler
                 LastMessageAuthor = x.Chat.LastMessageAuthor,
                 LastMessageText = x.Chat.LastMessageText,
                 LastMessageTime = x.Chat.LastMessageTime,
-                LastMessageId = x.Chat.LastMessageId
+                LastMessageId = x.Chat.LastMessageId,
             }).OrderByDescending(x => x.UpdatedAt).Take(200);
 
         var userChats = await query.ToListAsync(cancellationToken);

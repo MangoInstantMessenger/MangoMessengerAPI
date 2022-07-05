@@ -1,5 +1,4 @@
-﻿using System.Net.Http.Json;
-using System.Text;
+﻿using System.Text;
 using Newtonsoft.Json;
 
 namespace MangoAPI.DiffieHellmanLibrary.Helpers;
@@ -16,37 +15,11 @@ public static class HttpRequestHelper
         var responseBody = await response.Content.ReadAsStringAsync();
         return responseBody;
     }
-        
+
     public static async Task<string> PostWithoutBodyAsync(HttpClient client, string route)
     {
         var uri = new Uri(route);
         var response = await client.PostAsync(uri, null!);
-        response.EnsureSuccessStatusCode();
-        var responseBody = await response.Content.ReadAsStringAsync();
-        return responseBody;
-    }
-
-    public static async Task DeleteWithBodyAsync(HttpClient client, string route, object body)
-    {
-        var json = JsonContent.Create(body);
-
-        var request = new HttpRequestMessage
-        {
-            Content = json,
-            Method = HttpMethod.Delete,
-            RequestUri = new Uri(route)
-        };
-
-        var response = await client.SendAsync(request);
-        response.EnsureSuccessStatusCode();
-        
-        await response.Content.ReadAsStringAsync();
-    }
-
-    public static async Task<string> GetAsync(HttpClient client, string route)
-    {
-        var uri = new Uri(route);
-        var response = await client.GetAsync(uri);
         response.EnsureSuccessStatusCode();
         var responseBody = await response.Content.ReadAsStringAsync();
         return responseBody;

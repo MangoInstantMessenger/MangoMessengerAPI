@@ -1,14 +1,14 @@
 ﻿using System;
-using MangoAPI.BusinessLogic.HubConfig;
-using MangoAPI.BusinessLogic.Responses;
-using MangoAPI.Domain.Constants;
-using MediatR;
-using Microsoft.AspNetCore.SignalR;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using MangoAPI.BusinessLogic.HubConfig;
 using MangoAPI.BusinessLogic.Models;
+using MangoAPI.BusinessLogic.Responses;
+using MangoAPI.Domain.Constants;
 using MangoAPI.Infrastructure.Database;
+using MediatR;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 
 namespace MangoAPI.BusinessLogic.ApiCommands.Messages;
@@ -30,7 +30,8 @@ public class EditMessageCommandHandler
         this.responseFactory = responseFactory;
     }
 
-    public async Task<Result<ResponseBase>> Handle(EditMessageCommand request,
+    public async Task<Result<ResponseBase>> Handle(
+        EditMessageCommand request,
         CancellationToken cancellationToken)
     {
         var isMessageExists = await dbContext.Messages

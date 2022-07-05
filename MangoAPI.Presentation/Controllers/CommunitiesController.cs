@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Threading;
+using System.Threading.Tasks;
 using AutoMapper;
+using MangoAPI.Application.Interfaces;
 using MangoAPI.BusinessLogic.ApiCommands.Communities;
 using MangoAPI.BusinessLogic.ApiQueries.Communities;
 using MangoAPI.BusinessLogic.Responses;
@@ -9,9 +12,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
-using System.Threading;
-using System.Threading.Tasks;
-using MangoAPI.Application.Interfaces;
 
 namespace MangoAPI.Presentation.Controllers;
 
@@ -24,8 +24,8 @@ namespace MangoAPI.Presentation.Controllers;
 [Authorize]
 public class CommunitiesController : ApiControllerBase, ICommunitiesController
 {
-    public CommunitiesController(IMediator mediator, IMapper mapper, ICorrelationContext correlationContext) : base(
-        mediator, mapper, correlationContext)
+    public CommunitiesController(IMediator mediator, IMapper mapper, ICorrelationContext correlationContext)
+        : base(mediator, mapper, correlationContext)
     {
     }
 
@@ -63,14 +63,15 @@ public class CommunitiesController : ApiControllerBase, ICommunitiesController
     [ProducesResponseType(typeof(CreateCommunityResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
-    public async Task<IActionResult> CreateChannelAsync([FromBody] CreateChannelRequest request,
+    public async Task<IActionResult> CreateChannelAsync(
+        [FromBody] CreateChannelRequest request,
         CancellationToken cancellationToken)
     {
         var userId = CorrelationContext.GetUserId();
 
         var command = new CreateChannelCommand(
-            UserId: userId, 
-            ChannelTitle: request.ChannelTitle, 
+            UserId: userId,
+            ChannelTitle: request.ChannelTitle,
             ChannelDescription: request.ChannelDescription);
 
         return await RequestAsync(command, cancellationToken);
@@ -86,12 +87,12 @@ public class CommunitiesController : ApiControllerBase, ICommunitiesController
     [SwaggerOperation(
         Description = "Creates new chat with specified user with type of: Direct Chat (1). " +
                       "If chat already exists: returns its ID.",
-        Summary = "Creates new chat with specified user by user ID. " +
-                  "If chat already exists: returns its ID.")]
+        Summary = "Creates new chat with specified user by user ID. " + "If chat already exists: returns its ID.")]
     [ProducesResponseType(typeof(CreateCommunityResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
-    public async Task<IActionResult> CreateChatAsync([FromRoute] Guid userId,
+    public async Task<IActionResult> CreateChatAsync(
+        [FromRoute] Guid userId,
         CancellationToken cancellationToken)
     {
         var currentUserId = CorrelationContext.GetUserId();
@@ -115,7 +116,8 @@ public class CommunitiesController : ApiControllerBase, ICommunitiesController
         Summary = "Searches chats by display name.")]
     [ProducesResponseType(typeof(SearchCommunityResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> SearchAsync([FromQuery] string displayName,
+    public async Task<IActionResult> SearchAsync(
+        [FromQuery] string displayName,
         CancellationToken cancellationToken)
     {
         var userId = CorrelationContext.GetUserId();
@@ -131,7 +133,6 @@ public class CommunitiesController : ApiControllerBase, ICommunitiesController
     /// <param name="chatId">Identifier of chat to be updated.</param>
     /// <param name="newGroupPicture">Picture file.</param>
     /// <param name="cancellationToken">Instance of cancellation token.</param>
-    /// <returns></returns>
     [HttpPost("picture/{chatId:guid}")]
     [SwaggerOperation(
         Description = "Updates picture of particular channel.",
@@ -139,14 +140,16 @@ public class CommunitiesController : ApiControllerBase, ICommunitiesController
     [ProducesResponseType(typeof(UpdateChannelPictureResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
-    public async Task<IActionResult> UpdateChannelPictureAsync([FromRoute] Guid chatId, IFormFile newGroupPicture,
+    public async Task<IActionResult> UpdateChannelPictureAsync(
+        [FromRoute] Guid chatId,
+        IFormFile newGroupPicture,
         CancellationToken cancellationToken)
     {
         var userId = CorrelationContext.GetUserId();
 
         var command = new UpdateChanelPictureCommand(
-            ChatId: chatId, 
-            UserId: userId, 
+            ChatId: chatId,
+            UserId: userId,
             NewGroupPicture: newGroupPicture,
             ContentType: newGroupPicture.ContentType);
 

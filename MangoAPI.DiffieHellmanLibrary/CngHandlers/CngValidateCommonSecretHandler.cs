@@ -7,7 +7,8 @@ namespace MangoAPI.DiffieHellmanLibrary.CngHandlers;
 
 public class CngValidateCommonSecretHandler : BaseHandler, IValidateCommonSecretHandler
 {
-    public CngValidateCommonSecretHandler(HttpClient httpClient) : base(httpClient)
+    public CngValidateCommonSecretHandler(HttpClient httpClient)
+        : base(httpClient)
     {
     }
 
@@ -33,7 +34,6 @@ public class CngValidateCommonSecretHandler : BaseHandler, IValidateCommonSecret
         var commonSecretDirectory = CngDirectoryHelper.CngCommonSecretsDirectory;
         var senderCommonSecretFileName = FileNameHelper.GenerateCngCommonSecretFileName(senderId, receiverId);
         var receiverCommonSecretFileName = FileNameHelper.GenerateCngCommonSecretFileName(receiverId, senderId);
-
 
         var senderPath = Path.Combine(commonSecretDirectory, senderCommonSecretFileName);
         var receiverPath = Path.Combine(commonSecretDirectory, receiverCommonSecretFileName);

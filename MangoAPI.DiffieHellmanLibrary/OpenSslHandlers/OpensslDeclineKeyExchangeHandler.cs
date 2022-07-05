@@ -5,7 +5,8 @@ namespace MangoAPI.DiffieHellmanLibrary.OpenSslHandlers;
 
 public class OpensslDeclineKeyExchangeHandler : BaseHandler, IDeclineKeyExchangeHandler
 {
-    public OpensslDeclineKeyExchangeHandler(HttpClient httpClient) : base(httpClient)
+    public OpensslDeclineKeyExchangeHandler(HttpClient httpClient)
+        : base(httpClient)
     {
     }
 

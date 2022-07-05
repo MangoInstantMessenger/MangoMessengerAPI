@@ -1,17 +1,17 @@
-﻿using MangoAPI.BusinessLogic.HubConfig;
-using MangoAPI.BusinessLogic.Models;
-using MangoAPI.Domain.Constants;
-using MangoAPI.Domain.Entities;
-using MediatR;
-using Microsoft.AspNetCore.SignalR;
-using Microsoft.EntityFrameworkCore;
-using System;
+﻿using System;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using MangoAPI.Application.Interfaces;
+using MangoAPI.BusinessLogic.HubConfig;
+using MangoAPI.BusinessLogic.Models;
 using MangoAPI.BusinessLogic.Responses;
+using MangoAPI.Domain.Constants;
+using MangoAPI.Domain.Entities;
 using MangoAPI.Infrastructure.Database;
+using MediatR;
+using Microsoft.AspNetCore.SignalR;
+using Microsoft.EntityFrameworkCore;
 
 namespace MangoAPI.BusinessLogic.ApiCommands.Messages;
 
@@ -35,7 +35,8 @@ public class SendMessageCommandHandler
         this.blobServiceSettings = blobServiceSettings;
     }
 
-    public async Task<Result<SendMessageResponse>> Handle(SendMessageCommand request,
+    public async Task<Result<SendMessageResponse>> Handle(
+        SendMessageCommand request,
         CancellationToken cancellationToken)
     {
         var user = await dbContext.Users.AsNoTracking()
@@ -44,7 +45,8 @@ public class SendMessageCommandHandler
                 x.DisplayName,
                 x.Image,
                 x.Id,
-            }).FirstOrDefaultAsync(x => x.Id == request.UserId,
+            }).FirstOrDefaultAsync(
+                x => x.Id == request.UserId,
                 cancellationToken);
 
         if (user == null)
@@ -60,8 +62,9 @@ public class SendMessageCommandHandler
             {
                 x.ChatId,
                 x.RoleId,
-                x.Chat
-            }).FirstOrDefaultAsync(x => x.ChatId == request.ChatId,
+                x.Chat,
+            }).FirstOrDefaultAsync(
+                x => x.ChatId == request.ChatId,
                 cancellationToken);
 
         if (userChat == null)
@@ -71,11 +74,6 @@ public class SendMessageCommandHandler
 
             return responseFactory.ConflictResponse(errorMessage, errorDescription);
         }
-
-        var messageCount = await dbContext.Messages
-            .AsNoTracking()
-            .Where(x => x.UserId == request.UserId)
-            .CountAsync(cancellationToken);
 
         var messageEntity = new MessageEntity
         {

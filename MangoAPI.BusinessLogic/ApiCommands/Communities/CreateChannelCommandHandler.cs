@@ -1,17 +1,17 @@
-﻿using MangoAPI.BusinessLogic.HubConfig;
+﻿using System;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
+using MangoAPI.BusinessLogic.HubConfig;
 using MangoAPI.BusinessLogic.Models;
 using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.Domain.Constants;
 using MangoAPI.Domain.Entities;
 using MangoAPI.Domain.Enums;
+using MangoAPI.Infrastructure.Database;
 using MediatR;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
-using MangoAPI.Infrastructure.Database;
 
 namespace MangoAPI.BusinessLogic.ApiCommands.Communities;
 
@@ -22,15 +22,18 @@ public class CreateChannelCommandHandler
     private readonly IHubContext<ChatHub, IHubClient> hubContext;
     private readonly ResponseFactory<CreateCommunityResponse> responseFactory;
 
-    public CreateChannelCommandHandler(MangoDbContext dbContext,
-        IHubContext<ChatHub, IHubClient> hubContext, ResponseFactory<CreateCommunityResponse> responseFactory)
+    public CreateChannelCommandHandler(
+        MangoDbContext dbContext,
+        IHubContext<ChatHub, IHubClient> hubContext,
+        ResponseFactory<CreateCommunityResponse> responseFactory)
     {
         this.dbContext = dbContext;
         this.hubContext = hubContext;
         this.responseFactory = responseFactory;
     }
 
-    public async Task<Result<CreateCommunityResponse>> Handle(CreateChannelCommand request,
+    public async Task<Result<CreateCommunityResponse>> Handle(
+        CreateChannelCommand request,
         CancellationToken cancellationToken)
     {
         var ownerChatsCount =

@@ -1,13 +1,13 @@
-﻿using MangoAPI.BusinessLogic.Responses;
-using MangoAPI.Domain.Constants;
-using MangoAPI.Domain.Enums;
-using MediatR;
-using Microsoft.EntityFrameworkCore;
-using System;
+﻿using System;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using MangoAPI.BusinessLogic.Responses;
+using MangoAPI.Domain.Constants;
+using MangoAPI.Domain.Enums;
 using MangoAPI.Infrastructure.Database;
+using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 namespace MangoAPI.BusinessLogic.ApiCommands.Users;
 
@@ -17,14 +17,16 @@ public class
     private readonly MangoDbContext dbContext;
     private readonly ResponseFactory<ResponseBase> responseFactory;
 
-    public UpdateUserAccountInfoCommandHandler(MangoDbContext dbContext,
+    public UpdateUserAccountInfoCommandHandler(
+        MangoDbContext dbContext,
         ResponseFactory<ResponseBase> responseFactory)
     {
         this.dbContext = dbContext;
         this.responseFactory = responseFactory;
     }
 
-    public async Task<Result<ResponseBase>> Handle(UpdateUserAccountInfoCommand request,
+    public async Task<Result<ResponseBase>> Handle(
+        UpdateUserAccountInfoCommand request,
         CancellationToken cancellationToken)
     {
         var user = await dbContext.Users
@@ -45,7 +47,7 @@ public class
                 .Include(x => x.Chat)
                 .Where(x =>
                     x.UserId == user.Id &&
-                    x.Chat.CommunityType == (int) CommunityType.DirectChat)
+                    x.Chat.CommunityType == (int)CommunityType.DirectChat)
                 .Select(x => x.Chat)
                 .ToListAsync(cancellationToken);
 

@@ -15,18 +15,17 @@ public static class MockedObjects
         var emailSenderMock = new Mock<IEmailSenderService>();
 
         emailSenderMock.Setup(emailSender =>
-            emailSender.SendVerificationEmailAsync(
-                It.IsAny<UserEntity>(),
-                It.IsAny<CancellationToken>()
-            )
-        ).Returns(Task.CompletedTask);
+                emailSender.SendVerificationEmailAsync(
+                    It.IsAny<UserEntity>(),
+                    It.IsAny<CancellationToken>()))
+            .Returns(Task.CompletedTask);
 
         emailSenderMock.Setup(emailSender =>
-            emailSender.SendPasswordRestoreRequestAsync(It.IsAny<UserEntity>(),
-                It.IsAny<Guid>(),
-                It.IsAny<CancellationToken>()
-            )
-        ).Returns(Task.CompletedTask);
+                emailSender.SendPasswordRestoreRequestAsync(
+                    It.IsAny<UserEntity>(),
+                    It.IsAny<Guid>(),
+                    It.IsAny<CancellationToken>()))
+            .Returns(Task.CompletedTask);
 
         return emailSenderMock.Object;
     }

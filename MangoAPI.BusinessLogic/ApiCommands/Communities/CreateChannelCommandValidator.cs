@@ -15,6 +15,5 @@ public class CreateChannelCommandValidator : AbstractValidator<CreateChannelComm
             .Cascade(CascadeMode.Stop)
             .NotEmpty()
             .Length(1, 100);
-
     }
 }

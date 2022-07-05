@@ -4,7 +4,7 @@ public static class Commands
 {
     public const string Login = "login";
     public const string RefreshToken = "refresh-token";
-    
+
     public const string CngGeneratePrivateKey = "cng-generate-private-key";
     public const string CngGeneratePublicKey = "cng-generate-public-key";
     public const string CngCreateKeyExchange = "cng-create-key-exchange";
@@ -13,7 +13,7 @@ public static class Commands
     public const string CngConfirmKeyExchange = "cng-confirm-key-exchange";
     public const string CngCreateCommonSecret = "cng-create-common-secret";
     public const string CngValidateCommonSecret = "cng-validate-common-secret";
-    
+
     public const string OpenSslGenerateDhParameters = "openssl-generate-dh-parameters";
     public const string OpenSslUploadDhParameters = "openssl-upload-dh-parameters";
     public const string OpenSslDownloadDhParameters = "openssl-download-dh-parameters";

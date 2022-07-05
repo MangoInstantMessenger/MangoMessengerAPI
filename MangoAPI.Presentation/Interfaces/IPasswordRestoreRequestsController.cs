@@ -9,6 +9,7 @@ public interface IPasswordRestoreRequestsController
 {
     public Task<IActionResult> RestorePasswordRequestAsync(string email, CancellationToken cancellationToken);
 
-    public Task<IActionResult> RestorePasswordAsync(PasswordRestoreRequest request,
+    public Task<IActionResult> RestorePasswordAsync(
+        PasswordRestoreRequest request,
         CancellationToken cancellationToken);
 }

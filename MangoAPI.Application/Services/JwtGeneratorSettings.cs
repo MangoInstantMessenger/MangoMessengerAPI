@@ -19,8 +19,12 @@ public class JwtGeneratorSettings : IJwtGeneratorSettings
     }
 
     public string MangoJwtIssuer { get; }
+
     public string MangoJwtAudience { get; }
+
     public string MangoJwtSignKey { get; }
+
     public int MangoJwtLifetimeMinutes { get; }
+
     public int MangoRefreshTokenLifetimeDays { get; }
 }

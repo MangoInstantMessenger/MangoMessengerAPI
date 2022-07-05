@@ -21,9 +21,11 @@ public class SearchChatMessageTestSuccess : IntegrationTestBase
                 request: CommandHelper.CreateExtremeCodeMainChatCommand(user.Response.UserId),
                 cancellationToken: CancellationToken.None);
         await MangoModule.RequestAsync(
-                request: CommandHelper.SendMessageToChannelCommand(user.Response.UserId, chat.Response.ChatId),
-                cancellationToken: CancellationToken.None);
-        var query = new SearchChatMessagesQuery(UserId: user.Response.UserId, ChatId: chat.Response.ChatId,
+            request: CommandHelper.SendMessageToChannelCommand(user.Response.UserId, chat.Response.ChatId),
+            cancellationToken: CancellationToken.None);
+        var query = new SearchChatMessagesQuery(
+            UserId: user.Response.UserId,
+            ChatId: chat.Response.ChatId,
             MessageText: "test");
 
         var result = await MangoModule.RequestAsync(query, CancellationToken.None);

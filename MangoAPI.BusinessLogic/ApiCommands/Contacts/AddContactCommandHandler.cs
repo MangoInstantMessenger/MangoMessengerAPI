@@ -1,11 +1,11 @@
-﻿using MangoAPI.BusinessLogic.Responses;
-using MangoAPI.Domain.Constants;
-using MangoAPI.Domain.Entities;
-using MediatR;
-using System;
+﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
+using MangoAPI.BusinessLogic.Responses;
+using MangoAPI.Domain.Constants;
+using MangoAPI.Domain.Entities;
 using MangoAPI.Infrastructure.Database;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
 
 namespace MangoAPI.BusinessLogic.ApiCommands.Contacts;
@@ -16,7 +16,8 @@ public class AddContactCommandHandler
     private readonly MangoDbContext dbContext;
     private readonly ResponseFactory<ResponseBase> responseFactory;
 
-    public AddContactCommandHandler(MangoDbContext dbContext,
+    public AddContactCommandHandler(
+        MangoDbContext dbContext,
         ResponseFactory<ResponseBase> responseFactory)
     {
         this.dbContext = dbContext;
@@ -26,7 +27,8 @@ public class AddContactCommandHandler
     public async Task<Result<ResponseBase>> Handle(AddContactCommand request, CancellationToken cancellationToken)
     {
         var contactToAdd = await dbContext.Users
-            .FirstOrDefaultAsync(x => x.Id == request.ContactId,
+            .FirstOrDefaultAsync(
+                x => x.Id == request.ContactId,
                 cancellationToken);
 
         if (contactToAdd is null)
@@ -46,9 +48,10 @@ public class AddContactCommandHandler
         }
 
         var contactExist = await dbContext.UserContacts
-            .AnyAsync(userContactEntity =>
-                userContactEntity.ContactId == request.ContactId &&
-                userContactEntity.UserId == request.UserId, cancellationToken);
+            .AnyAsync(
+                userContactEntity =>
+                    userContactEntity.ContactId == request.ContactId &&
+                    userContactEntity.UserId == request.UserId, cancellationToken);
 
         if (contactExist)
         {

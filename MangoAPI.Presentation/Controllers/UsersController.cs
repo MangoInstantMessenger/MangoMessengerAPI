@@ -1,4 +1,8 @@
-﻿using AutoMapper;
+﻿using System;
+using System.Threading;
+using System.Threading.Tasks;
+using AutoMapper;
+using MangoAPI.Application.Interfaces;
 using MangoAPI.BusinessLogic.ApiCommands.Users;
 using MangoAPI.BusinessLogic.ApiQueries.Users;
 using MangoAPI.BusinessLogic.Responses;
@@ -8,10 +12,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
-using System;
-using System.Threading;
-using System.Threading.Tasks;
-using MangoAPI.Application.Interfaces;
 
 namespace MangoAPI.Presentation.Controllers;
 
@@ -22,8 +22,8 @@ namespace MangoAPI.Presentation.Controllers;
 [Route("api/users")]
 public class UsersController : ApiControllerBase, IUsersController
 {
-    public UsersController(IMediator mediator, IMapper mapper, ICorrelationContext correlationContext) : base(mediator,
-        mapper, correlationContext)
+    public UsersController(IMediator mediator, IMapper mapper, ICorrelationContext correlationContext)
+        : base(mediator, mapper, correlationContext)
     {
     }
 
@@ -41,7 +41,8 @@ public class UsersController : ApiControllerBase, IUsersController
     [ProducesResponseType(typeof(ResponseBase), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
-    public async Task<IActionResult> RegisterAsync([FromBody] RegisterRequest request,
+    public async Task<IActionResult> RegisterAsync(
+        [FromBody] RegisterRequest request,
         CancellationToken cancellationToken)
     {
         var command = Mapper.Map<RegisterCommand>(request);
@@ -62,7 +63,8 @@ public class UsersController : ApiControllerBase, IUsersController
     [ProducesResponseType(typeof(ResponseBase), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
-    public async Task<IActionResult> EmailConfirmationAsync([FromBody] VerifyEmailRequest request,
+    public async Task<IActionResult> EmailConfirmationAsync(
+        [FromBody] VerifyEmailRequest request,
         CancellationToken cancellationToken)
     {
         var command = Mapper.Map<VerifyEmailCommand>(request);
@@ -74,7 +76,6 @@ public class UsersController : ApiControllerBase, IUsersController
     /// </summary>
     /// <param name="request">Request instance.</param>
     /// <param name="cancellationToken">Cancellation Token Instance.</param>
-    /// <returns></returns>
     [HttpPut("password")]
     [Authorize]
     [SwaggerOperation(
@@ -83,7 +84,8 @@ public class UsersController : ApiControllerBase, IUsersController
     [ProducesResponseType(typeof(ResponseBase), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
-    public async Task<IActionResult> ChangePassword([FromBody] ChangePasswordRequest request,
+    public async Task<IActionResult> ChangePassword(
+        [FromBody] ChangePasswordRequest request,
         CancellationToken cancellationToken)
     {
         var userId = CorrelationContext.GetUserId();
@@ -123,7 +125,6 @@ public class UsersController : ApiControllerBase, IUsersController
     /// </summary>
     /// <param name="request">UpdateUserSocialInformationRequest instance.</param>
     /// <param name="cancellationToken">CancellationToken instance.</param>
-    /// <returns></returns>
     [HttpPut("socials")]
     [Authorize]
     [SwaggerOperation(
@@ -162,7 +163,8 @@ public class UsersController : ApiControllerBase, IUsersController
     [ProducesResponseType(typeof(ResponseBase), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
-    public async Task<IActionResult> UpdateUserAccountInfoAsync([FromBody] UpdateUserAccountInfoRequest request,
+    public async Task<IActionResult> UpdateUserAccountInfoAsync(
+        [FromBody] UpdateUserAccountInfoRequest request,
         CancellationToken cancellationToken)
     {
         var userId = CorrelationContext.GetUserId();
@@ -187,14 +189,15 @@ public class UsersController : ApiControllerBase, IUsersController
     [ProducesResponseType(typeof(UpdateProfilePictureResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
-    public async Task<IActionResult> UpdateProfilePictureAsync(IFormFile pictureFile,
+    public async Task<IActionResult> UpdateProfilePictureAsync(
+        IFormFile pictureFile,
         CancellationToken cancellationToken)
     {
         var userId = CorrelationContext.GetUserId();
 
         var command = new UpdateProfilePictureCommand(
-            UserId: userId, 
-            PictureFile: pictureFile, 
+            UserId: userId,
+            PictureFile: pictureFile,
             ContentType: pictureFile.ContentType);
 
         return await RequestAsync(command, cancellationToken);

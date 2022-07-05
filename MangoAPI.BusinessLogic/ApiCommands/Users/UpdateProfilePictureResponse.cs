@@ -16,7 +16,7 @@ public record UpdateProfilePictureResponse : ResponseBase
             Message = ResponseMessageCodes.Success,
             Success = true,
             NewUserPictureUrl = newUserPictureUrl,
-            FileName = fileName
+            FileName = fileName,
         };
     }
 }

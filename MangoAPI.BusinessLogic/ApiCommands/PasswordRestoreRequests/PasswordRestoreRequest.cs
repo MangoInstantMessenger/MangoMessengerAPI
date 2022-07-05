@@ -1,6 +1,6 @@
-﻿using System.Text.Json.Serialization;
-using System;
+﻿using System;
 using System.ComponentModel;
+using System.Text.Json.Serialization;
 
 namespace MangoAPI.BusinessLogic.ApiCommands.PasswordRestoreRequests;
 
@@ -8,10 +8,10 @@ public record PasswordRestoreRequest
 {
     [DefaultValue("432d97fb-7df5-4adc-abdd-22f4f4d29198")]
     public Guid RequestId { get; }
-        
+
     [DefaultValue("XJ4S}HP$yaf.jky}")]
     public string NewPassword { get; }
-        
+
     [DefaultValue("XJ4S}HP$yaf.jky}")]
     public string RepeatPassword { get; }
 

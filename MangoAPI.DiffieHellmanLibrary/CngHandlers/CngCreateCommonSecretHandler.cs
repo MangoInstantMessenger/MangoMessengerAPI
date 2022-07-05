@@ -9,7 +9,8 @@ namespace MangoAPI.DiffieHellmanLibrary.CngHandlers;
 
 public class CngCreateCommonSecretHandler : BaseHandler, ICreateCommonSecretHandler
 {
-    public CngCreateCommonSecretHandler(HttpClient httpClient) : base(httpClient)
+    public CngCreateCommonSecretHandler(HttpClient httpClient)
+        : base(httpClient)
     {
     }
 
@@ -81,7 +82,7 @@ public class CngCreateCommonSecretHandler : BaseHandler, ICreateCommonSecretHand
         var partnerPublicKeyBytes = partnerKeyBase64.Base64StringAsBytes();
         var partnerPublicKey = CngKey.Import(partnerPublicKeyBytes, CngKeyBlobFormat.EccPublicBlob);
         var commonSecretBase64 = ecDiffieHellmanCng.DeriveKeyMaterial(partnerPublicKey).AsBase64String();
-        
+
         await File.WriteAllTextAsync(commonSecretPath, commonSecretBase64);
     }
 }

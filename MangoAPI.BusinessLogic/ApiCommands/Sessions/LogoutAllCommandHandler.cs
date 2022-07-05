@@ -15,14 +15,16 @@ public class LogoutAllCommandHandler
     private readonly MangoDbContext dbContext;
     private readonly ResponseFactory<ResponseBase> responseFactory;
 
-    public LogoutAllCommandHandler(MangoDbContext dbContext,
+    public LogoutAllCommandHandler(
+        MangoDbContext dbContext,
         ResponseFactory<ResponseBase> responseFactory)
     {
         this.dbContext = dbContext;
         this.responseFactory = responseFactory;
     }
 
-    public async Task<Result<ResponseBase>> Handle(LogoutAllCommand request,
+    public async Task<Result<ResponseBase>> Handle(
+        LogoutAllCommand request,
         CancellationToken cancellationToken)
     {
         var userSessions = dbContext.Sessions

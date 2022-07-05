@@ -29,12 +29,14 @@ public class UpdateProfilePictureCommandHandler
         this.blobService = blobService;
     }
 
-    public async Task<Result<UpdateProfilePictureResponse>> Handle(UpdateProfilePictureCommand request,
+    public async Task<Result<UpdateProfilePictureResponse>> Handle(
+        UpdateProfilePictureCommand request,
         CancellationToken cancellationToken)
     {
-        var totalUploadedDocsCount = await dbContext.Documents.CountAsync(x =>
-            x.UserId == request.UserId &&
-            x.UploadedAt > DateTime.UtcNow.AddHours(-1), cancellationToken);
+        var totalUploadedDocsCount = await dbContext.Documents.CountAsync(
+            x =>
+                x.UserId == request.UserId &&
+                x.UploadedAt > DateTime.UtcNow.AddHours(-1), cancellationToken);
 
         if (totalUploadedDocsCount > 10)
         {
@@ -44,7 +46,8 @@ public class UpdateProfilePictureCommandHandler
         }
 
         var user = await dbContext.Users
-            .FirstOrDefaultAsync(userEntity => userEntity.Id == request.UserId,
+            .FirstOrDefaultAsync(
+                userEntity => userEntity.Id == request.UserId,
                 cancellationToken);
 
         if (user == null)
@@ -64,7 +67,7 @@ public class UpdateProfilePictureCommandHandler
         {
             FileName = uniqueFileName,
             UserId = request.UserId,
-            UploadedAt = DateTime.UtcNow
+            UploadedAt = DateTime.UtcNow,
         };
 
         dbContext.Documents.Add(newUserPicture);

@@ -22,6 +22,7 @@ public static class CngController
                 await handler.GeneratePrivateKeyAsync(receiverId);
                 break;
             }
+
             case Commands.CngGeneratePublicKey:
             {
                 var receiverIdString = args[1];
@@ -30,6 +31,7 @@ public static class CngController
                 await handler.GeneratePublicKeyAsync(receiverId);
                 break;
             }
+
             case Commands.CngCreateKeyExchange:
             {
                 var receiverIdString = args[1];
@@ -38,12 +40,14 @@ public static class CngController
                 await handler.CreateKeyExchangeAsync(receiverId);
                 break;
             }
+
             case Commands.CngPrintKeyExchanges:
             {
                 var handler = DependencyResolver.ResolveService<CngPrintKeyExchangesHandler>();
                 await handler.PrintKeyExchangesAsync();
                 break;
             }
+
             case Commands.CngConfirmKeyExchange:
             {
                 var requestIdString = args[1];
@@ -52,6 +56,7 @@ public static class CngController
                 await handler.ConfirmKeyExchangeAsync(requestId);
                 break;
             }
+
             case Commands.CngDownloadPublicKey:
             {
                 var actorString = args[1];
@@ -62,6 +67,7 @@ public static class CngController
                 await handler.DownloadPublicKeyAsync(actor, partnerId);
                 break;
             }
+
             case Commands.CngCreateCommonSecret:
             {
                 var actorString = args[1];
@@ -83,6 +89,7 @@ public static class CngController
                 await handler.ValidateCommonSecretAsync(senderId, receiverId);
                 break;
             }
+
             default:
             {
                 Console.WriteLine(@"Unrecognized command.");

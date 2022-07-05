@@ -16,13 +16,14 @@ namespace MangoAPI.IntegrationTests;
 public class IntegrationTestBase : IAsyncLifetime
 {
     protected MangoDbContext DbContextFixture { get; }
-    protected string ConnectionString { get; }
 
     protected MangoModule MangoModule { get; }
 
-    protected IServiceProvider ServiceProvider { get; }
-    
     protected IBlobService BlobService { get; }
+
+    private string ConnectionString { get; }
+
+    private IServiceProvider ServiceProvider { get; }
 
     protected IntegrationTestBase()
     {
@@ -66,7 +67,7 @@ public class IntegrationTestBase : IAsyncLifetime
 
         DbContextFixture = ServiceProvider.GetRequiredService<MangoDbContext>() ??
                            throw new InvalidOperationException("MangoDbContext service is not registered in the DI.");
-        
+
         BlobService = ServiceProvider.GetRequiredService<IBlobService>() ??
                       throw new InvalidOperationException("MangoBlobService service is not registered in the DI.");
     }

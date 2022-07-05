@@ -16,20 +16,23 @@ public class JoinChatCommandHandler : IRequestHandler<JoinChatCommand, Result<Re
     private readonly MangoDbContext dbContext;
     private readonly ResponseFactory<ResponseBase> responseFactory;
 
-    public JoinChatCommandHandler(MangoDbContext dbContext,
+    public JoinChatCommandHandler(
+        MangoDbContext dbContext,
         ResponseFactory<ResponseBase> responseFactory)
     {
         this.dbContext = dbContext;
         this.responseFactory = responseFactory;
     }
 
-    public async Task<Result<ResponseBase>> Handle(JoinChatCommand request,
+    public async Task<Result<ResponseBase>> Handle(
+        JoinChatCommand request,
         CancellationToken cancellationToken)
     {
         var alreadyJoined = await
-            dbContext.UserChats.AnyAsync(userChatEntity =>
-                userChatEntity.UserId == request.UserId &&
-                userChatEntity.ChatId == request.ChatId, cancellationToken);
+            dbContext.UserChats.AnyAsync(
+                userChatEntity => userChatEntity.UserId == request.UserId &&
+                                  userChatEntity.ChatId == request.ChatId,
+                cancellationToken);
 
         if (alreadyJoined)
         {
@@ -40,7 +43,7 @@ public class JoinChatCommandHandler : IRequestHandler<JoinChatCommand, Result<Re
         }
 
         var chat = await dbContext.Chats
-            .Where(chatEntity => chatEntity.CommunityType != (int) CommunityType.DirectChat)
+            .Where(chatEntity => chatEntity.CommunityType != (int)CommunityType.DirectChat)
             .FirstOrDefaultAsync(chatEntity => chatEntity.Id == request.ChatId, cancellationToken);
 
         if (chat == null)
@@ -56,7 +59,7 @@ public class JoinChatCommandHandler : IRequestHandler<JoinChatCommand, Result<Re
             {
                 ChatId = request.ChatId,
                 UserId = request.UserId,
-                RoleId = (int) UserRole.User,
+                RoleId = (int)UserRole.User,
             });
 
         chat.MembersCount += 1;

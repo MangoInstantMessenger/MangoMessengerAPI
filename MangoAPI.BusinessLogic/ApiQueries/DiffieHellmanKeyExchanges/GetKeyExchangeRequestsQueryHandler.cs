@@ -24,7 +24,8 @@ public class GetKeyExchangeRequestsQueryHandler : IRequestHandler<GetKeyExchange
         this.responseFactory = responseFactory;
     }
 
-    public async Task<Result<GetKeyExchangeRequestsResponse>> Handle(GetKeyExchangeRequestsQuery request,
+    public async Task<Result<GetKeyExchangeRequestsResponse>> Handle(
+        GetKeyExchangeRequestsQuery request,
         CancellationToken cancellationToken)
     {
         var requests = await mangoDbContext.DiffieHellmanKeyExchangeEntities
@@ -36,7 +37,7 @@ public class GetKeyExchangeRequestsQueryHandler : IRequestHandler<GetKeyExchange
                 ReceiverId = x.ReceiverId,
                 RequestId = x.Id,
                 SenderId = x.SenderId,
-                KeyExchangeType = x.KeyExchangeType
+                KeyExchangeType = x.KeyExchangeType,
             }).ToListAsync(cancellationToken);
 
         var response = new GetKeyExchangeRequestsResponse

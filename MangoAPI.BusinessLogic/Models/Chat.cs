@@ -1,7 +1,7 @@
-﻿using MangoAPI.Domain.Entities;
-using MangoAPI.Domain.Enums;
-using System;
+﻿using System;
 using System.ComponentModel;
+using MangoAPI.Domain.Entities;
+using MangoAPI.Domain.Enums;
 
 namespace MangoAPI.BusinessLogic.Models;
 
@@ -42,7 +42,7 @@ public record Chat
 
     [DefaultValue("10:21 PM")]
     public DateTime? LastMessageTime { get; init; }
-        
+
     [DefaultValue("12aed827-bn8c-47de-ac81-78641210918f")]
     public Guid? LastMessageId { get; set; }
 
@@ -69,7 +69,7 @@ public static class ChatEntityMapper
             Description = entity.Description,
             MembersCount = entity.MembersCount,
             IsArchived = false,
-            IsMember = true
+            IsMember = true,
         };
     }
 }

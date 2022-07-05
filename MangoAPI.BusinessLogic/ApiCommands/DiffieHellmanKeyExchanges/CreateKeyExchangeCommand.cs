@@ -7,7 +7,8 @@ using Microsoft.AspNetCore.Http;
 namespace MangoAPI.BusinessLogic.ApiCommands.DiffieHellmanKeyExchanges;
 
 public record CreateKeyExchangeCommand(
-    Guid ReceiverId,
-    Guid SenderId,
-    IFormFile SenderPublicKey, 
-    KeyExchangeType KeyExchangeType) : IRequest<Result<CreateKeyExchangeResponse>>;
+        Guid ReceiverId,
+        Guid SenderId,
+        IFormFile SenderPublicKey,
+        KeyExchangeType KeyExchangeType)
+    : IRequest<Result<CreateKeyExchangeResponse>>;

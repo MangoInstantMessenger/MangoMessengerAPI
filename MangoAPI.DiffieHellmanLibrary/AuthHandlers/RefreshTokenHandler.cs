@@ -8,7 +8,8 @@ namespace MangoAPI.DiffieHellmanLibrary.AuthHandlers;
 
 public class RefreshTokenHandler : BaseHandler
 {
-    public RefreshTokenHandler(HttpClient httpClient) : base(httpClient)
+    public RefreshTokenHandler(HttpClient httpClient)
+        : base(httpClient)
     {
     }
 

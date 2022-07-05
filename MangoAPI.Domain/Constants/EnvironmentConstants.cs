@@ -19,7 +19,7 @@ public static class EnvironmentConstants
     public const string MangoFrontendAddress = "MANGO_FRONTEND_ADDRESS";
 
     public const string MangoDatabaseUrl = "MANGO_DATABASE_URL";
-    
+
     public const string MangoIntegrationTestsDatabaseUrl = "MANGO_INTEGRATION_TESTS_DATABASE_URL";
 
     public const string MangoBlobUrl = "MANGO_BLOB_URL";

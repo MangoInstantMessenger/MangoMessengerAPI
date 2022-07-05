@@ -29,7 +29,6 @@ public class OpensslValidateCommonSecretHandler : IValidateCommonSecretHandler
         var senderCommonSecretFileName = FileNameHelper.GenerateOpensslCommonSecretFileName(senderId, receiverId);
         var receiverCommonSecretFileName = FileNameHelper.GenerateOpensslCommonSecretFileName(receiverId, senderId);
 
-
         var senderPath = Path.Combine(commonSecretDirectory, senderCommonSecretFileName);
         var receiverPath = Path.Combine(commonSecretDirectory, receiverCommonSecretFileName);
 
@@ -54,4 +53,6 @@ public class OpensslValidateCommonSecretHandler : IValidateCommonSecretHandler
     }
 }
 
+#pragma warning disable SA1313
 public record HashResult(string SenderHash, string ReceiverHash);
+#pragma warning restore SA1313

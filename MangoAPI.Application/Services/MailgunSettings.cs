@@ -5,12 +5,17 @@ namespace MangoAPI.Application.Services;
 public class MailgunSettings : IMailgunSettings
 {
     public string MailgunApiBaseUrl { get; }
+
     public string MailgunApiBaseUrlWithDomain { get; }
+
     public string MailgunApiKey { get; }
+
     public string NotificationEmail { get; }
+
     public string FrontendAddress { get; }
 
-    public MailgunSettings(string mailgunApiBaseUrl,
+    public MailgunSettings(
+        string mailgunApiBaseUrl,
         string mailgunApiBaseUrlWithDomain,
         string mailgunApiKey,
         string frontendAddress,

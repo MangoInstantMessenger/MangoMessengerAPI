@@ -16,7 +16,8 @@ public class GetKeyExchangeRequestByIdQueryHandler : IRequestHandler<GetKeyExcha
     private readonly MangoDbContext dbContext;
     private readonly ResponseFactory<GetKeyExchangeRequestByIdResponse> responseFactory;
 
-    public GetKeyExchangeRequestByIdQueryHandler(MangoDbContext dbContext,
+    public GetKeyExchangeRequestByIdQueryHandler(
+        MangoDbContext dbContext,
         ResponseFactory<GetKeyExchangeRequestByIdResponse> responseFactory)
     {
         this.dbContext = dbContext;
@@ -35,7 +36,7 @@ public class GetKeyExchangeRequestByIdQueryHandler : IRequestHandler<GetKeyExcha
                 SenderId = x.SenderId,
                 ReceiverId = x.ReceiverId,
                 IsConfirmed = x.IsConfirmed,
-                Actor = x.SenderId == request.UserId ? Actor.Sender : Actor.Receiver
+                Actor = x.SenderId == request.UserId ? Actor.Sender : Actor.Receiver,
             }).FirstOrDefaultAsync(
                 predicate: x => x.RequestId == request.KeyExchangeRequestId,
                 cancellationToken: cancellationToken);

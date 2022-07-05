@@ -9,7 +9,7 @@ public class CommonFileValidator : AbstractValidator<IFormFile>
 {
     private readonly List<string> allowedExtensions = new()
     {
-        "jpg", "JPG", "txt", "TXT", "pdf", "PDF", "png", "PNG"
+        "jpg", "JPG", "txt", "TXT", "pdf", "PDF", "png", "PNG",
     };
 
     public CommonFileValidator()

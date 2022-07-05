@@ -7,7 +7,7 @@ public record ResponseBase
 {
     [DefaultValue("SUCCESS")]
     public string Message { get; init; }
-        
+
     [DefaultValue(true)]
     public bool Success { get; init; }
 

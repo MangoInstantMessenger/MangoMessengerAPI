@@ -14,18 +14,21 @@ public class VerifyEmailCommandHandler
     private readonly MangoDbContext dbContext;
     private readonly ResponseFactory<ResponseBase> responseFactory;
 
-    public VerifyEmailCommandHandler(MangoDbContext dbContext,
+    public VerifyEmailCommandHandler(
+        MangoDbContext dbContext,
         ResponseFactory<ResponseBase> responseFactory)
     {
         this.dbContext = dbContext;
         this.responseFactory = responseFactory;
     }
 
-    public async Task<Result<ResponseBase>> Handle(VerifyEmailCommand request,
+    public async Task<Result<ResponseBase>> Handle(
+        VerifyEmailCommand request,
         CancellationToken cancellationToken)
     {
         var user = await dbContext.Users
-            .FirstOrDefaultAsync(userEntity => userEntity.Email == request.Email,
+            .FirstOrDefaultAsync(
+                userEntity => userEntity.Email == request.Email,
                 cancellationToken);
 
         if (user is null)

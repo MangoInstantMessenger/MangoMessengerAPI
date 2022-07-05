@@ -6,7 +6,8 @@ namespace MangoAPI.DiffieHellmanLibrary.CngHandlers;
 
 public class CngCreateKeyExchangeHandler : BaseHandler, ICreateKeyExchangeHandler
 {
-    public CngCreateKeyExchangeHandler(HttpClient httpClient) : base(httpClient)
+    public CngCreateKeyExchangeHandler(HttpClient httpClient)
+        : base(httpClient)
     {
     }
 
@@ -35,7 +36,7 @@ public class CngCreateKeyExchangeHandler : BaseHandler, ICreateKeyExchangeHandle
 
         using var content = new MultipartFormDataContent
         {
-            { new StreamContent(stream), "senderPublicKey", publicKeyFileName }
+            { new StreamContent(stream), "senderPublicKey", publicKeyFileName },
         };
 
         request.Content = content;

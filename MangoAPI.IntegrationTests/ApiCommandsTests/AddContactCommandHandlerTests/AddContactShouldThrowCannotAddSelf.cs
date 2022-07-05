@@ -27,5 +27,4 @@ public class AddContactShouldThrowCannotAddSelf : IntegrationTestBase
 
         assert.Fail(result, expectedMessage, expectedDetails);
     }
-
 }

@@ -15,14 +15,16 @@ public class ArchiveChatCommandHandler
     private readonly MangoDbContext dbContext;
     private readonly ResponseFactory<ResponseBase> responseFactory;
 
-    public ArchiveChatCommandHandler(MangoDbContext dbContext,
+    public ArchiveChatCommandHandler(
+        MangoDbContext dbContext,
         ResponseFactory<ResponseBase> responseFactory)
     {
         this.dbContext = dbContext;
         this.responseFactory = responseFactory;
     }
 
-    public async Task<Result<ResponseBase>> Handle(ArchiveChatCommand request,
+    public async Task<Result<ResponseBase>> Handle(
+        ArchiveChatCommand request,
         CancellationToken cancellationToken)
     {
         var chat = await dbContext.UserChats

@@ -1,13 +1,13 @@
-﻿using MangoAPI.Application.Services;
-using MangoAPI.BusinessLogic.Models;
-using MediatR;
-using Microsoft.EntityFrameworkCore;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using MangoAPI.Application.Interfaces;
+using MangoAPI.Application.Services;
+using MangoAPI.BusinessLogic.Models;
 using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.Infrastructure.Database;
+using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 namespace MangoAPI.BusinessLogic.ApiQueries.Contacts;
 

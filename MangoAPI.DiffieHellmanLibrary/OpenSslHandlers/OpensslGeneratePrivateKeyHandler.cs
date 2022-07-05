@@ -7,7 +7,8 @@ namespace MangoAPI.DiffieHellmanLibrary.OpenSslHandlers;
 
 public class OpensslGeneratePrivateKeyHandler : BaseHandler, IGeneratePrivateKeyHandler
 {
-    public OpensslGeneratePrivateKeyHandler(HttpClient httpClient) : base(httpClient)
+    public OpensslGeneratePrivateKeyHandler(HttpClient httpClient)
+        : base(httpClient)
     {
     }
 

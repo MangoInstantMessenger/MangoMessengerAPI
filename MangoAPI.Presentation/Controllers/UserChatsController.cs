@@ -22,8 +22,8 @@ namespace MangoAPI.Presentation.Controllers;
 [Authorize]
 public class UserChatsController : ApiControllerBase, IUserChatsController
 {
-    public UserChatsController(IMediator mediator, IMapper mapper, ICorrelationContext correlationContext) : base(
-        mediator, mapper, correlationContext)
+    public UserChatsController(IMediator mediator, IMapper mapper, ICorrelationContext correlationContext)
+        : base(mediator, mapper, correlationContext)
     {
     }
 
@@ -40,7 +40,8 @@ public class UserChatsController : ApiControllerBase, IUserChatsController
     [ProducesResponseType(typeof(ResponseBase), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
-    public async Task<IActionResult> ArchiveChat([FromRoute] Guid chatId,
+    public async Task<IActionResult> ArchiveChat(
+        [FromRoute] Guid chatId,
         CancellationToken cancellationToken)
     {
         var userId = CorrelationContext.GetUserId();

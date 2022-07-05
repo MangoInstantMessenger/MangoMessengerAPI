@@ -18,14 +18,16 @@ public class CreateKeyExchangeCommandHandler : IRequestHandler<CreateKeyExchange
     private readonly MangoDbContext mangoDbContext;
     private readonly ResponseFactory<CreateKeyExchangeResponse> responseFactory;
 
-    public CreateKeyExchangeCommandHandler(MangoDbContext mangoDbContext,
+    public CreateKeyExchangeCommandHandler(
+        MangoDbContext mangoDbContext,
         ResponseFactory<CreateKeyExchangeResponse> responseFactory)
     {
         this.mangoDbContext = mangoDbContext;
         this.responseFactory = responseFactory;
     }
 
-    public async Task<Result<CreateKeyExchangeResponse>> Handle(CreateKeyExchangeCommand request,
+    public async Task<Result<CreateKeyExchangeResponse>> Handle(
+        CreateKeyExchangeCommand request,
         CancellationToken cancellationToken)
     {
         var sendersRequests = await mangoDbContext.DiffieHellmanKeyExchangeEntities
@@ -59,7 +61,7 @@ public class CreateKeyExchangeCommandHandler : IRequestHandler<CreateKeyExchange
             ReceiverId = request.ReceiverId,
             SenderPublicKey = bytes,
             CreatedAt = DateTime.UtcNow,
-            KeyExchangeType = request.KeyExchangeType
+            KeyExchangeType = request.KeyExchangeType,
         };
 
         mangoDbContext.DiffieHellmanKeyExchangeEntities.Add(keyExchangeRequest);
@@ -70,7 +72,7 @@ public class CreateKeyExchangeCommandHandler : IRequestHandler<CreateKeyExchange
         {
             Message = ResponseMessageCodes.Success,
             RequestId = keyExchangeRequest.Id,
-            Success = true
+            Success = true,
         };
 
         return responseFactory.SuccessResponse(response);

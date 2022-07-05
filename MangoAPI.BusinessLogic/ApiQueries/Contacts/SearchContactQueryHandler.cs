@@ -28,7 +28,8 @@ public class SearchContactByDisplayNameQueryHandler
         this.blobServiceSettings = blobServiceSettings;
     }
 
-    public async Task<Result<SearchContactResponse>> Handle(SearchContactQuery request,
+    public async Task<Result<SearchContactResponse>> Handle(
+        SearchContactQuery request,
         CancellationToken cancellationToken)
     {
         var query = dbContext.Users
@@ -45,7 +46,6 @@ public class SearchContactByDisplayNameQueryHandler
                 PictureUrl = StringService.GetDocumentUrl(x.Image, blobServiceSettings.MangoBlobAccess),
                 Email = x.Email,
             });
-
 
         var searchResult = await query.Take(200).ToListAsync(cancellationToken);
 

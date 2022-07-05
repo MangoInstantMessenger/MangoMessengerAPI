@@ -10,6 +10,7 @@ namespace MangoAPI.Presentation.Interfaces;
 public interface IKeyExchangeController
 {
     public Task<IActionResult> CreateDiffieHellmanParameter(IFormFile file, CancellationToken cancellationToken);
+
     public Task<IActionResult> DownloadDiffieHellmanParameter(CancellationToken cancellationToken);
 
     public Task<IActionResult> CreateKeyExchangeRequest(

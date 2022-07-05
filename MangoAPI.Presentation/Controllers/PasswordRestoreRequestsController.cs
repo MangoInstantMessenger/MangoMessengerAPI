@@ -1,4 +1,7 @@
-﻿using AutoMapper;
+﻿using System.Threading;
+using System.Threading.Tasks;
+using AutoMapper;
+using MangoAPI.Application.Interfaces;
 using MangoAPI.BusinessLogic.ApiCommands.PasswordRestoreRequests;
 using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.Presentation.Interfaces;
@@ -7,9 +10,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
-using System.Threading;
-using System.Threading.Tasks;
-using MangoAPI.Application.Interfaces;
 
 namespace MangoAPI.Presentation.Controllers;
 
@@ -31,7 +31,6 @@ public class PasswordRestoreRequestsController : ApiControllerBase, IPasswordRes
     /// </summary>
     /// <param name="email">Email or phone of user.</param>
     /// <param name="cancellationToken">Cancellation token instance.</param>
-    /// <returns></returns>
     [AllowAnonymous]
     [HttpPost]
     [SwaggerOperation(
@@ -40,7 +39,8 @@ public class PasswordRestoreRequestsController : ApiControllerBase, IPasswordRes
     [ProducesResponseType(typeof(ResponseBase), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
-    public async Task<IActionResult> RestorePasswordRequestAsync([FromQuery] string email,
+    public async Task<IActionResult> RestorePasswordRequestAsync(
+        [FromQuery] string email,
         CancellationToken cancellationToken)
     {
         var command = new RequestPasswordRestoreCommand(email);
@@ -62,7 +62,8 @@ public class PasswordRestoreRequestsController : ApiControllerBase, IPasswordRes
     [ProducesResponseType(typeof(ResponseBase), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
-    public async Task<IActionResult> RestorePasswordAsync([FromBody] PasswordRestoreRequest request,
+    public async Task<IActionResult> RestorePasswordAsync(
+        [FromBody] PasswordRestoreRequest request,
         CancellationToken cancellationToken)
     {
         var command = Mapper.Map<PasswordRestoreCommand>(request);

@@ -5,5 +5,6 @@ using MediatR;
 namespace MangoAPI.BusinessLogic.ApiQueries.DiffieHellmanKeyExchanges;
 
 public record DownloadPartnerPublicKeyQuery(
-    Guid UserId,
-    Guid RequestId) : IRequest<Result<DownloadPartnerPublicKeyResponse>>;
+        Guid UserId,
+        Guid RequestId)
+    : IRequest<Result<DownloadPartnerPublicKeyResponse>>;

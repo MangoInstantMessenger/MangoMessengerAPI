@@ -1,7 +1,7 @@
-﻿using MangoAPI.Domain.Entities;
-using System;
+﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
+using MangoAPI.Domain.Entities;
 
 namespace MangoAPI.Application.Interfaces;
 

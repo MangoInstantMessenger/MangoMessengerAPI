@@ -9,7 +9,8 @@ namespace MangoAPI.DiffieHellmanLibrary.CngHandlers;
 
 public class CngDownloadPublicKeyHandler : BaseHandler, IDownloadPublicKeyHandler
 {
-    public CngDownloadPublicKeyHandler(HttpClient httpClient) : base(httpClient)
+    public CngDownloadPublicKeyHandler(HttpClient httpClient)
+        : base(httpClient)
     {
     }
 

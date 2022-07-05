@@ -1,13 +1,13 @@
-﻿using MangoAPI.BusinessLogic.Models;
-using MangoAPI.Domain.Constants;
-using MediatR;
-using Microsoft.EntityFrameworkCore;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using MangoAPI.Application.Interfaces;
+using MangoAPI.BusinessLogic.Models;
 using MangoAPI.BusinessLogic.Responses;
+using MangoAPI.Domain.Constants;
 using MangoAPI.Infrastructure.Database;
+using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 namespace MangoAPI.BusinessLogic.ApiQueries.Messages;
 
@@ -28,7 +28,8 @@ public class SearchChatMessageQueryHandler
         this.blobServiceSettings = blobServiceSettings;
     }
 
-    public async Task<Result<SearchChatMessagesResponse>> Handle(SearchChatMessagesQuery request,
+    public async Task<Result<SearchChatMessagesResponse>> Handle(
+        SearchChatMessagesQuery request,
         CancellationToken cancellationToken)
     {
         var userChat = await dbContext.UserChats
@@ -69,7 +70,6 @@ public class SearchChatMessageQueryHandler
                     ? $"{blobServiceSettings.MangoBlobAccess}/{x.Attachment}"
                     : null,
             }).Take(200);
-
 
         var result = await query.ToListAsync(cancellationToken);
 

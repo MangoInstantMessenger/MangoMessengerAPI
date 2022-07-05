@@ -1,10 +1,10 @@
-﻿using MangoAPI.BusinessLogic.Responses;
-using MangoAPI.Domain.Constants;
-using MediatR;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 using MangoAPI.Application.Interfaces;
+using MangoAPI.BusinessLogic.Responses;
+using MangoAPI.Domain.Constants;
 using MangoAPI.Infrastructure.Database;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
 
 namespace MangoAPI.BusinessLogic.ApiCommands.PasswordRestoreRequests;
@@ -26,13 +26,15 @@ public class PasswordRestoreCommandHandler
         this.responseFactory = responseFactory;
     }
 
-    public async Task<Result<ResponseBase>> Handle(PasswordRestoreCommand request,
+    public async Task<Result<ResponseBase>> Handle(
+        PasswordRestoreCommand request,
         CancellationToken cancellationToken)
     {
         var restorePasswordRequest = await dbContext.PasswordRestoreRequests
             .Include(x => x.UserEntity)
-            .FirstOrDefaultAsync(entity =>
-                entity.Id == request.RequestId, cancellationToken);
+            .FirstOrDefaultAsync(
+                entity => entity.Id == request.RequestId,
+                cancellationToken);
 
         if (restorePasswordRequest == null || !restorePasswordRequest.IsValid)
         {

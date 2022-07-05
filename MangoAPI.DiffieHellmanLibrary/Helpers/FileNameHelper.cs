@@ -20,7 +20,6 @@ public static class FileNameHelper
     public static string GenerateOpensslCommonSecretFileName(Guid senderId, Guid receiverId) =>
         GenerateCommonSecretFileName(senderId, receiverId, OpensslPrefix);
 
-
     // Begin CNG Methods
     public static string GenerateCngPrivateKeyFileName(Guid senderId, Guid receiverId) =>
         GeneratePrivateKeyFileName(senderId, receiverId, CngPrefix);
@@ -30,7 +29,6 @@ public static class FileNameHelper
 
     public static string GenerateCngCommonSecretFileName(Guid senderId, Guid receiverId) =>
         GenerateCommonSecretFileName(senderId, receiverId, CngPrefix);
-
 
     // Begin private methods
     private static string GeneratePrivateKeyFileName(Guid senderId, Guid receiverId, string prefix) =>

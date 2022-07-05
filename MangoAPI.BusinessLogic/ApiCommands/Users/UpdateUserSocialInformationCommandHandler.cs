@@ -15,19 +15,22 @@ public class UpdateUserSocialInformationCommandHandler
     private readonly MangoDbContext dbContext;
     private readonly ResponseFactory<ResponseBase> responseFactory;
 
-    public UpdateUserSocialInformationCommandHandler(MangoDbContext dbContext,
+    public UpdateUserSocialInformationCommandHandler(
+        MangoDbContext dbContext,
         ResponseFactory<ResponseBase> responseFactory)
     {
         this.dbContext = dbContext;
         this.responseFactory = responseFactory;
     }
 
-    public async Task<Result<ResponseBase>> Handle(UpdateUserSocialInformationCommand request,
+    public async Task<Result<ResponseBase>> Handle(
+        UpdateUserSocialInformationCommand request,
         CancellationToken cancellationToken)
     {
         var user = await dbContext.Users
             .Include(userEntity => userEntity.UserInformation)
-            .FirstOrDefaultAsync(entity => entity.Id == request.UserId,
+            .FirstOrDefaultAsync(
+                entity => entity.Id == request.UserId,
                 cancellationToken);
 
         if (user is null)

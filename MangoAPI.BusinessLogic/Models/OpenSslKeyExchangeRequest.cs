@@ -27,6 +27,13 @@ public record OpenSslKeyExchangeRequest
 
 public enum Actor
 {
+    /// <summary>
+    /// Request sender
+    /// </summary>
     Sender = 1,
+
+    /// <summary>
+    /// Request receiver
+    /// </summary>
     Receiver = 2,
 }

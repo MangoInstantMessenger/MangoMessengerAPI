@@ -47,7 +47,7 @@ public class ExceptionHandlingMiddleware
     private static async Task ThrowError(HttpContext context, ErrorContext errorContext)
     {
         context.Response.ContentType = "application/json";
-        context.Response.StatusCode = (int) errorContext.StatusCode;
+        context.Response.StatusCode = (int)errorContext.StatusCode;
         await context.Response.WriteAsync(new ErrorResponse
         {
             Success = false,

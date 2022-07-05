@@ -29,10 +29,12 @@ public class UploadDocumentCommandHandler
         this.blobService = blobService;
     }
 
-    public async Task<Result<UploadDocumentResponse>> Handle(UploadDocumentCommand request,
+    public async Task<Result<UploadDocumentResponse>> Handle(
+        UploadDocumentCommand request,
         CancellationToken cancellationToken)
     {
-        var totalUploadedDocsCount = await dbContext.Documents.CountAsync(x =>
+        var totalUploadedDocsCount = await dbContext.Documents.CountAsync(
+            x =>
             x.UserId == request.UserId &&
             x.UploadedAt > DateTime.UtcNow.AddHours(-1), cancellationToken);
 
@@ -52,7 +54,7 @@ public class UploadDocumentCommandHandler
         {
             FileName = uniqueFileName,
             UserId = request.UserId,
-            UploadedAt = DateTime.UtcNow
+            UploadedAt = DateTime.UtcNow,
         };
 
         dbContext.Documents.Add(documentEntity);

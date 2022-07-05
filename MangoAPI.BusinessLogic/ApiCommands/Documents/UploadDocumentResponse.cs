@@ -8,7 +8,7 @@ public record UploadDocumentResponse : ResponseBase
 {
     [DefaultValue("testfile_980ef1cd-f879-453e-a435-60a0d60d79b9.txt")]
     public string FileName { get; init; }
-        
+
     [DefaultValue("Uploads/testfile_980ef1cd-f879-453e-a435-60a0d60d79b9.txt")]
     public string FileUrl { get; init; }
 

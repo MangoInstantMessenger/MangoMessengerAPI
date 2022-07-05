@@ -1,4 +1,8 @@
-﻿using AutoMapper;
+﻿using System;
+using System.Threading;
+using System.Threading.Tasks;
+using AutoMapper;
+using MangoAPI.Application.Interfaces;
 using MangoAPI.BusinessLogic.ApiCommands.Contacts;
 using MangoAPI.BusinessLogic.ApiQueries.Contacts;
 using MangoAPI.BusinessLogic.Responses;
@@ -8,10 +12,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
-using System;
-using System.Threading;
-using System.Threading.Tasks;
-using MangoAPI.Application.Interfaces;
 
 namespace MangoAPI.Presentation.Controllers;
 
@@ -23,8 +23,8 @@ namespace MangoAPI.Presentation.Controllers;
 [Authorize]
 public class ContactsController : ApiControllerBase, IContactsController
 {
-    public ContactsController(IMediator mediator, IMapper mapper, ICorrelationContext correlationContext) : base(
-        mediator, mapper, correlationContext)
+    public ContactsController(IMediator mediator, IMapper mapper, ICorrelationContext correlationContext)
+        : base(mediator, mapper, correlationContext)
     {
     }
 
@@ -63,7 +63,8 @@ public class ContactsController : ApiControllerBase, IContactsController
     [ProducesResponseType(typeof(ResponseBase), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
-    public async Task<IActionResult> DeleteContact([FromRoute] Guid contactId,
+    public async Task<IActionResult> DeleteContact(
+        [FromRoute] Guid contactId,
         CancellationToken cancellationToken)
     {
         var currentUserId = CorrelationContext.GetUserId();
@@ -104,7 +105,8 @@ public class ContactsController : ApiControllerBase, IContactsController
         Summary = "Searches user by display name.")]
     [ProducesResponseType(typeof(SearchContactResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> SearchesAsync([FromQuery] string searchQuery,
+    public async Task<IActionResult> SearchesAsync(
+        [FromQuery] string searchQuery,
         CancellationToken cancellationToken)
     {
         var currentUserId = CorrelationContext.GetUserId();
