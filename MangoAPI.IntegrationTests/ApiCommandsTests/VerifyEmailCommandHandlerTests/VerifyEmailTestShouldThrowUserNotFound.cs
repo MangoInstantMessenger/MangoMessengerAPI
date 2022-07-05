@@ -10,7 +10,7 @@ namespace MangoAPI.IntegrationTests.ApiCommandsTests.VerifyEmailCommandHandlerTe
 
 public class VerifyEmailTestShouldThrowUserNotFound : IntegrationTestBase
 {
-    private readonly Assert<ResponseBase> _assert = new();
+    private readonly Assert<ResponseBase> assert = new();
 
     [Fact]
     public async Task VerifyEmailTestShouldThrow_UserNotFound()
@@ -21,7 +21,7 @@ public class VerifyEmailTestShouldThrowUserNotFound : IntegrationTestBase
         var result = await MangoModule.RequestAsync(
             request: CommandHelper.CreateVerifyEmailCommand("test@gmail.com", Guid.NewGuid()),
             cancellationToken: CancellationToken.None);
-            
-        _assert.Fail(result, expectedMessage, expectedDetails);
+
+        assert.Fail(result, expectedMessage, expectedDetails);
     }
 }

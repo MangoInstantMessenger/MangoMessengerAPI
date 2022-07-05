@@ -9,7 +9,7 @@ namespace MangoAPI.IntegrationTests.ApiCommandsTests.UpdateUserSocialsInformatio
 
 public class UpdateUserSocialsInformationTestSuccess : IntegrationTestBase
 {
-    private readonly Assert<ResponseBase> _assert = new();
+    private readonly Assert<ResponseBase> assert = new();
 
     [Fact]
     public async Task UpdateUserSocialsInformationTest_Success()
@@ -19,10 +19,10 @@ public class UpdateUserSocialsInformationTestSuccess : IntegrationTestBase
             cancellationToken: CancellationToken.None);
         var command = new UpdateUserSocialInformationCommand(UserId: user.Response.UserId, Instagram: "petro.kolosov",
             LinkedIn: "petro.kolosov", Facebook: "petro.kolosov", Twitter: "petro.kolosov");
-        
-        
+
+
         var result = await MangoModule.RequestAsync(command, CancellationToken.None);
 
-        _assert.Pass(result);
+        assert.Pass(result);
     }
 }

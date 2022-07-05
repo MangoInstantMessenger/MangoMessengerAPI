@@ -9,7 +9,7 @@ namespace MangoAPI.IntegrationTests.ApiQueries.GetUserQueryHandlerTests;
 
 public class GetUserQuerySuccess : IntegrationTestBase
 {
-    private readonly Assert<GetUserResponse> _assert = new();
+    private readonly Assert<GetUserResponse> assert = new();
 
     [Fact]
     public async Task GetUserTest_Success()
@@ -19,8 +19,8 @@ public class GetUserQuerySuccess : IntegrationTestBase
         var query = new GetUserQuery(UserId: user.Response.UserId);
 
         var result = await MangoModule.RequestAsync(query, CancellationToken.None);
-            
-        _assert.Pass(result);
+
+        assert.Pass(result);
         result.Response.User.UserId.Should().Be(user.Response.UserId);
     }
 }

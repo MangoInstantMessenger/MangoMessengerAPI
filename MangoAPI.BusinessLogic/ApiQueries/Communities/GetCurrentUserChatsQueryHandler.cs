@@ -14,23 +14,23 @@ namespace MangoAPI.BusinessLogic.ApiQueries.Communities;
 public class GetCurrentUserChatsQueryHandler
     : IRequestHandler<GetCurrentUserChatsQuery, Result<GetCurrentUserChatsResponse>>
 {
-    private readonly MangoDbContext _dbContext;
-    private readonly ResponseFactory<GetCurrentUserChatsResponse> _responseFactory;
-    private readonly IBlobServiceSettings _blobServiceSettings;
+    private readonly MangoDbContext dbContext;
+    private readonly ResponseFactory<GetCurrentUserChatsResponse> responseFactory;
+    private readonly IBlobServiceSettings blobServiceSettings;
 
     public GetCurrentUserChatsQueryHandler(MangoDbContext dbContext,
         ResponseFactory<GetCurrentUserChatsResponse> responseFactory,
         IBlobServiceSettings blobServiceSettings)
     {
-        _dbContext = dbContext;
-        _responseFactory = responseFactory;
-        _blobServiceSettings = blobServiceSettings;
+        this.dbContext = dbContext;
+        this.responseFactory = responseFactory;
+        this.blobServiceSettings = blobServiceSettings;
     }
 
     public async Task<Result<GetCurrentUserChatsResponse>> Handle(GetCurrentUserChatsQuery request,
         CancellationToken cancellationToken)
     {
-        var query = _dbContext.UserChats
+        var query = dbContext.UserChats
             .AsNoTracking()
             .Include(x => x.Chat)
             .ThenInclude(x => x.Messages)
@@ -42,7 +42,7 @@ public class GetCurrentUserChatsQueryHandler
                 Title = x.Chat.Title,
                 CommunityType = (CommunityType)x.Chat.CommunityType,
                 ChatLogoImageUrl = x.Chat.Image != null
-                    ? $"{_blobServiceSettings.MangoBlobAccess}/{x.Chat.Image}"
+                    ? $"{blobServiceSettings.MangoBlobAccess}/{x.Chat.Image}"
                     : null,
                 Description = x.Chat.Description,
                 MembersCount = x.Chat.MembersCount,
@@ -63,7 +63,7 @@ public class GetCurrentUserChatsQueryHandler
             .Select(x => x.ChatId)
             .ToList();
 
-        var colleagues = await _dbContext.UserChats
+        var colleagues = await dbContext.UserChats
             .AsNoTracking()
             .Include(x => x.User)
             .Where(x => directChatsIds.Contains(x.ChatId) && x.UserId != request.UserId)
@@ -84,10 +84,10 @@ public class GetCurrentUserChatsQueryHandler
 
             currentChat.Title = colleague?.DisplayName;
             currentChat.ChatLogoImageUrl = colleague?.Image != null
-                ? $"{_blobServiceSettings.MangoBlobAccess}/{colleague.Image}"
+                ? $"{blobServiceSettings.MangoBlobAccess}/{colleague.Image}"
                 : null;
         }
 
-        return _responseFactory.SuccessResponse(GetCurrentUserChatsResponse.FromSuccess(userChats));
+        return responseFactory.SuccessResponse(GetCurrentUserChatsResponse.FromSuccess(userChats));
     }
 }

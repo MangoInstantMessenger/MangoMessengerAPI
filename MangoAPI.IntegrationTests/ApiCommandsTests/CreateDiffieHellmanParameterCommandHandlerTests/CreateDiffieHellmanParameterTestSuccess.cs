@@ -8,7 +8,7 @@ namespace MangoAPI.IntegrationTests.ApiCommandsTests.CreateDiffieHellmanParamete
 
 public class CreateDiffieHellmanParameterTestSuccess : IntegrationTestBase
 {
-    private readonly Assert<CreateDiffieHellmanParameterResponse> _assert = new();
+    private readonly Assert<CreateDiffieHellmanParameterResponse> assert = new();
 
     [Fact]
     public async Task CreateDiffieHellmanParameterTest_Success()
@@ -22,7 +22,7 @@ public class CreateDiffieHellmanParameterTestSuccess : IntegrationTestBase
 
         var response = await MangoModule.RequestAsync(
             request: command, cancellationToken: CancellationToken.None);
-        
-        _assert.Pass(response);
+
+        assert.Pass(response);
     }
 }

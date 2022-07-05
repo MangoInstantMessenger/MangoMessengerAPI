@@ -10,7 +10,7 @@ namespace MangoAPI.IntegrationTests.ApiCommandsTests.ChangePasswordCommandHandle
 
 public class ChangePasswordTestShouldThrowUserNotFound : IntegrationTestBase
 {
-    private readonly Assert<ResponseBase> _assert = new();
+    private readonly Assert<ResponseBase> assert = new();
 
     [Fact]
     public async Task ChangePasswordTestShouldThrow_UserNotFound()
@@ -21,7 +21,7 @@ public class ChangePasswordTestShouldThrowUserNotFound : IntegrationTestBase
             NewPassword: "Gm3-`xPRr-/q#6)re^94", RepeatNewPassword: "Gm3-`xPRr-/q#6)re^94");
 
         var result = await MangoModule.RequestAsync(command, CancellationToken.None);
-            
-        _assert.Fail(result, expectedMessage, expectedDetails);
+
+        assert.Fail(result, expectedMessage, expectedDetails);
     }
 }

@@ -15,26 +15,26 @@ using MangoAPI.Infrastructure.Database;
 
 namespace MangoAPI.BusinessLogic.ApiCommands.Communities;
 
-public class CreateChannelCommandHandler 
+public class CreateChannelCommandHandler
     : IRequestHandler<CreateChannelCommand, Result<CreateCommunityResponse>>
 {
-    private readonly MangoDbContext _dbContext;
-    private readonly IHubContext<ChatHub, IHubClient> _hubContext;
-    private readonly ResponseFactory<CreateCommunityResponse> _responseFactory;
+    private readonly MangoDbContext dbContext;
+    private readonly IHubContext<ChatHub, IHubClient> hubContext;
+    private readonly ResponseFactory<CreateCommunityResponse> responseFactory;
 
-    public CreateChannelCommandHandler(MangoDbContext dbContext, 
+    public CreateChannelCommandHandler(MangoDbContext dbContext,
         IHubContext<ChatHub, IHubClient> hubContext, ResponseFactory<CreateCommunityResponse> responseFactory)
     {
-        _dbContext = dbContext;
-        _hubContext = hubContext;
-        _responseFactory = responseFactory;
+        this.dbContext = dbContext;
+        this.hubContext = hubContext;
+        this.responseFactory = responseFactory;
     }
 
     public async Task<Result<CreateCommunityResponse>> Handle(CreateChannelCommand request,
         CancellationToken cancellationToken)
     {
         var ownerChatsCount =
-            await _dbContext.UserChats
+            await dbContext.UserChats
                 .Where(x => x.RoleId == (int)UserRole.Owner && x.UserId == request.UserId)
                 .CountAsync(cancellationToken);
 
@@ -43,7 +43,7 @@ public class CreateChannelCommandHandler
             const string errorMessage = ResponseMessageCodes.MaximumOwnerChatsExceeded100;
             var description = ResponseMessageCodes.ErrorDictionary[errorMessage];
 
-            return _responseFactory.ConflictResponse(errorMessage, description);
+            return responseFactory.ConflictResponse(errorMessage, description);
         }
 
         var channel = new ChatEntity
@@ -55,20 +55,20 @@ public class CreateChannelCommandHandler
             MembersCount = 1,
         };
 
-        _dbContext.Chats.Add(channel);
+        dbContext.Chats.Add(channel);
 
-        _dbContext.UserChats.Add(new UserChatEntity
+        dbContext.UserChats.Add(new UserChatEntity
         {
             ChatId = channel.Id,
             RoleId = (int)UserRole.Owner,
             UserId = request.UserId,
         });
 
-        await _dbContext.SaveChangesAsync(cancellationToken);
+        await dbContext.SaveChangesAsync(cancellationToken);
 
         var chatDto = channel.ToChatDto();
-        await _hubContext.Clients.Group(request.UserId.ToString()).UpdateUserChatsAsync(chatDto);
+        await hubContext.Clients.Group(request.UserId.ToString()).UpdateUserChatsAsync(chatDto);
 
-        return _responseFactory.SuccessResponse(CreateCommunityResponse.FromSuccess(channel));
+        return responseFactory.SuccessResponse(CreateCommunityResponse.FromSuccess(channel));
     }
 }

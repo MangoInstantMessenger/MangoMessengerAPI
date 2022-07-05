@@ -9,7 +9,7 @@ namespace MangoAPI.IntegrationTests.ApiQueries.GetContactsQueryHandlerTests;
 
 public class GetContactsTestSuccess : IntegrationTestBase
 {
-    private readonly Assert<GetContactsResponse> _assert = new();
+    private readonly Assert<GetContactsResponse> assert = new();
 
     [Fact]
     public async Task GetContactsTest_Success()
@@ -26,8 +26,8 @@ public class GetContactsTestSuccess : IntegrationTestBase
         var query = new GetContactsQuery(UserId: user.Response.UserId);
 
         var result = await MangoModule.RequestAsync(query, CancellationToken.None);
-            
-        _assert.Pass(result);
+
+        assert.Pass(result);
         result.Response.Contacts.Count.Should().Be(1);
         result.Response.Contacts[0].UserId.Should().Be(contact.Response.UserId);
     }

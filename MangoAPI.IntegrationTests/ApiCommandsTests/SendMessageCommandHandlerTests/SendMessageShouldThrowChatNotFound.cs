@@ -10,7 +10,7 @@ namespace MangoAPI.IntegrationTests.ApiCommandsTests.SendMessageCommandHandlerTe
 
 public class SendMessageShouldThrowChatNotFound : IntegrationTestBase
 {
-    private readonly Assert<SendMessageResponse> _assert = new();
+    private readonly Assert<SendMessageResponse> assert = new();
 
     [Fact]
     public async Task SendMessage_ShouldThrow_ChatNotFound()
@@ -25,6 +25,6 @@ public class SendMessageShouldThrowChatNotFound : IntegrationTestBase
             request: CommandHelper.SendMessageToChannelCommand(user.Response.UserId, Guid.NewGuid()),
             cancellationToken: CancellationToken.None);;
 
-        _assert.Fail(result, expectedMessage, expectedDetails);
+        assert.Fail(result, expectedMessage, expectedDetails);
     }
 }

@@ -8,7 +8,7 @@ namespace MangoAPI.IntegrationTests.ApiCommandsTests.UploadDocumentCommandHandle
 
 public class UploadDocumentSuccess : IntegrationTestBase
 {
-    private readonly Assert<UploadDocumentResponse> _assert = new();
+    private readonly Assert<UploadDocumentResponse> assert = new();
 
     [Fact]
     public async Task UploadDocument_Success()
@@ -22,7 +22,7 @@ public class UploadDocumentSuccess : IntegrationTestBase
 
         var result = await MangoModule.RequestAsync(command, CancellationToken.None);
 
-        _assert.Pass(result);
+        assert.Pass(result);
         await BlobService.DeleteBlobAsync(result.Response.FileName);
     }
 }

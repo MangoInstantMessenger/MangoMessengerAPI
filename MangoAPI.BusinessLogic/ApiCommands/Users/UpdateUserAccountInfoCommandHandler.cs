@@ -14,20 +14,20 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users;
 public class
     UpdateUserAccountInfoCommandHandler : IRequestHandler<UpdateUserAccountInfoCommand, Result<ResponseBase>>
 {
-    private readonly MangoDbContext _dbContext;
-    private readonly ResponseFactory<ResponseBase> _responseFactory;
+    private readonly MangoDbContext dbContext;
+    private readonly ResponseFactory<ResponseBase> responseFactory;
 
     public UpdateUserAccountInfoCommandHandler(MangoDbContext dbContext,
         ResponseFactory<ResponseBase> responseFactory)
     {
-        _dbContext = dbContext;
-        _responseFactory = responseFactory;
+        this.dbContext = dbContext;
+        this.responseFactory = responseFactory;
     }
 
     public async Task<Result<ResponseBase>> Handle(UpdateUserAccountInfoCommand request,
         CancellationToken cancellationToken)
     {
-        var user = await _dbContext.Users
+        var user = await dbContext.Users
             .Include(x => x.UserInformation)
             .FirstOrDefaultAsync(x => x.Id == request.UserId, cancellationToken);
 
@@ -36,15 +36,15 @@ public class
             const string errorMessage = ResponseMessageCodes.UserNotFound;
             var details = ResponseMessageCodes.ErrorDictionary[errorMessage];
 
-            return _responseFactory.ConflictResponse(errorMessage, details);
+            return responseFactory.ConflictResponse(errorMessage, details);
         }
 
         if (user.DisplayName != request.DisplayName)
         {
-            var userChats = await _dbContext.UserChats
+            var userChats = await dbContext.UserChats
                 .Include(x => x.Chat)
-                .Where(x => 
-                    x.UserId == user.Id && 
+                .Where(x =>
+                    x.UserId == user.Id &&
                     x.Chat.CommunityType == (int) CommunityType.DirectChat)
                 .Select(x => x.Chat)
                 .ToListAsync(cancellationToken);
@@ -57,7 +57,7 @@ public class
 
             user.DisplayName = request.DisplayName;
 
-            _dbContext.Chats.UpdateRange(userChats);
+            dbContext.Chats.UpdateRange(userChats);
         }
 
         user.UserInformation.BirthDay = request.BirthdayDate;
@@ -72,10 +72,10 @@ public class
 
         user.UserInformation.UpdatedAt = DateTime.UtcNow;
 
-        _dbContext.UserInformation.Update(user.UserInformation);
+        dbContext.UserInformation.Update(user.UserInformation);
 
-        await _dbContext.SaveChangesAsync(cancellationToken);
+        await dbContext.SaveChangesAsync(cancellationToken);
 
-        return _responseFactory.SuccessResponse(ResponseBase.SuccessResponse);
+        return responseFactory.SuccessResponse(ResponseBase.SuccessResponse);
     }
 }

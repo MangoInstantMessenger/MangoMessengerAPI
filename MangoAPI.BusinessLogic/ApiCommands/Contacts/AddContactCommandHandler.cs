@@ -13,20 +13,20 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Contacts;
 public class AddContactCommandHandler
     : IRequestHandler<AddContactCommand, Result<ResponseBase>>
 {
-    private readonly MangoDbContext _dbContext;
-    private readonly ResponseFactory<ResponseBase> _responseFactory;
+    private readonly MangoDbContext dbContext;
+    private readonly ResponseFactory<ResponseBase> responseFactory;
 
-    public AddContactCommandHandler(MangoDbContext dbContext, 
+    public AddContactCommandHandler(MangoDbContext dbContext,
         ResponseFactory<ResponseBase> responseFactory)
     {
-        _dbContext = dbContext;
-        _responseFactory = responseFactory;
+        this.dbContext = dbContext;
+        this.responseFactory = responseFactory;
     }
 
     public async Task<Result<ResponseBase>> Handle(AddContactCommand request, CancellationToken cancellationToken)
     {
-        var contactToAdd = await _dbContext.Users
-            .FirstOrDefaultAsync(x => x.Id == request.ContactId, 
+        var contactToAdd = await dbContext.Users
+            .FirstOrDefaultAsync(x => x.Id == request.ContactId,
                 cancellationToken);
 
         if (contactToAdd is null)
@@ -34,7 +34,7 @@ public class AddContactCommandHandler
             const string errorMessage = ResponseMessageCodes.UserNotFound;
             var errorDescription = ResponseMessageCodes.ErrorDictionary[errorMessage];
 
-            return _responseFactory.ConflictResponse(errorMessage, errorDescription);
+            return responseFactory.ConflictResponse(errorMessage, errorDescription);
         }
 
         if (request.UserId == request.ContactId)
@@ -42,12 +42,12 @@ public class AddContactCommandHandler
             const string errorMessage = ResponseMessageCodes.CannotAddSelfToContacts;
             var errorDescription = ResponseMessageCodes.ErrorDictionary[errorMessage];
 
-            return _responseFactory.ConflictResponse(errorMessage, errorDescription);
+            return responseFactory.ConflictResponse(errorMessage, errorDescription);
         }
 
-        var contactExist = await _dbContext.UserContacts
-            .AnyAsync(userContactEntity => 
-                userContactEntity.ContactId == request.ContactId && 
+        var contactExist = await dbContext.UserContacts
+            .AnyAsync(userContactEntity =>
+                userContactEntity.ContactId == request.ContactId &&
                 userContactEntity.UserId == request.UserId, cancellationToken);
 
         if (contactExist)
@@ -55,7 +55,7 @@ public class AddContactCommandHandler
             const string errorMessage = ResponseMessageCodes.ContactAlreadyExist;
             var errorDescription = ResponseMessageCodes.ErrorDictionary[errorMessage];
 
-            return _responseFactory.ConflictResponse(errorMessage, errorDescription);
+            return responseFactory.ConflictResponse(errorMessage, errorDescription);
         }
 
         var contactEntity = new UserContactEntity
@@ -65,9 +65,9 @@ public class AddContactCommandHandler
             CreatedAt = DateTime.UtcNow,
         };
 
-        _dbContext.UserContacts.Add(contactEntity);
-        await _dbContext.SaveChangesAsync(cancellationToken);
+        dbContext.UserContacts.Add(contactEntity);
+        await dbContext.SaveChangesAsync(cancellationToken);
 
-        return _responseFactory.SuccessResponse(ResponseBase.SuccessResponse);
+        return responseFactory.SuccessResponse(ResponseBase.SuccessResponse);
     }
 }

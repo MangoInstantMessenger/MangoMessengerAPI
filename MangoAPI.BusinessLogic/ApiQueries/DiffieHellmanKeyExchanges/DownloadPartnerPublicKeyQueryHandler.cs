@@ -11,20 +11,20 @@ namespace MangoAPI.BusinessLogic.ApiQueries.DiffieHellmanKeyExchanges;
 public class DownloadPartnerPublicKeyQueryHandler : IRequestHandler<DownloadPartnerPublicKeyQuery,
     Result<DownloadPartnerPublicKeyResponse>>
 {
-    private readonly MangoDbContext _mangoDbContext;
-    private readonly ResponseFactory<DownloadPartnerPublicKeyResponse> _responseFactory;
+    private readonly MangoDbContext mangoDbContext;
+    private readonly ResponseFactory<DownloadPartnerPublicKeyResponse> responseFactory;
 
     public DownloadPartnerPublicKeyQueryHandler(MangoDbContext mangoDbContext,
         ResponseFactory<DownloadPartnerPublicKeyResponse> responseFactory)
     {
-        _mangoDbContext = mangoDbContext;
-        _responseFactory = responseFactory;
+        this.mangoDbContext = mangoDbContext;
+        this.responseFactory = responseFactory;
     }
 
     public async Task<Result<DownloadPartnerPublicKeyResponse>> Handle(
         DownloadPartnerPublicKeyQuery request, CancellationToken cancellationToken)
     {
-        var keyExchangeRequest = await _mangoDbContext.DiffieHellmanKeyExchangeEntities
+        var keyExchangeRequest = await mangoDbContext.DiffieHellmanKeyExchangeEntities
             .FirstOrDefaultAsync(
                 predicate: entity => entity.Id == request.RequestId,
                 cancellationToken: cancellationToken);
@@ -34,7 +34,7 @@ public class DownloadPartnerPublicKeyQueryHandler : IRequestHandler<DownloadPart
             const string message = ResponseMessageCodes.KeyExchangeRequestNotFound;
             var description = ResponseMessageCodes.ErrorDictionary[message];
 
-            return _responseFactory.ConflictResponse(message, description);
+            return responseFactory.ConflictResponse(message, description);
         }
 
         if (!keyExchangeRequest.IsConfirmed)
@@ -42,7 +42,7 @@ public class DownloadPartnerPublicKeyQueryHandler : IRequestHandler<DownloadPart
             const string message = ResponseMessageCodes.KeyExchangeIsNotConfirmed;
             var description = ResponseMessageCodes.ErrorDictionary[message];
 
-            return _responseFactory.ConflictResponse(message, description);
+            return responseFactory.ConflictResponse(message, description);
         }
 
         var belongsToUser = keyExchangeRequest.SenderId == request.UserId ||
@@ -53,7 +53,7 @@ public class DownloadPartnerPublicKeyQueryHandler : IRequestHandler<DownloadPart
             const string message = ResponseMessageCodes.KeyExchangeDoesNotBelongToUser;
             var description = ResponseMessageCodes.ErrorDictionary[message];
 
-            return _responseFactory.ConflictResponse(message, description);
+            return responseFactory.ConflictResponse(message, description);
         }
 
         var isSender = keyExchangeRequest.SenderId == request.UserId;
@@ -62,8 +62,8 @@ public class DownloadPartnerPublicKeyQueryHandler : IRequestHandler<DownloadPart
             ? keyExchangeRequest.ReceiverId
             : keyExchangeRequest.SenderId;
 
-        var publicKey = isSender 
-            ? keyExchangeRequest.ReceiverPublicKey 
+        var publicKey = isSender
+            ? keyExchangeRequest.ReceiverPublicKey
             : keyExchangeRequest.SenderPublicKey;
 
         var response = new DownloadPartnerPublicKeyResponse
@@ -74,6 +74,6 @@ public class DownloadPartnerPublicKeyQueryHandler : IRequestHandler<DownloadPart
             Success = true,
         };
 
-        return _responseFactory.SuccessResponse(response);
+        return responseFactory.SuccessResponse(response);
     }
 }

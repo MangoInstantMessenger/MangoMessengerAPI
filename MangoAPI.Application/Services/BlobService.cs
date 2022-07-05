@@ -9,30 +9,30 @@ namespace MangoAPI.Application.Services;
 
 public class BlobService : IBlobService
 {
-    private readonly BlobServiceClient _blobClient;
-    private readonly IBlobServiceSettings _blobServiceSettings;
+    private readonly BlobServiceClient blobClient;
+    private readonly IBlobServiceSettings blobServiceSettings;
 
     public BlobService(BlobServiceClient blobClient, IBlobServiceSettings blobServiceSettings)
     {
-        _blobClient = blobClient;
-        _blobServiceSettings = blobServiceSettings;
+        this.blobClient = blobClient;
+        this.blobServiceSettings = blobServiceSettings;
     }
 
     public Task<string> GetBlobAsync(string fileName)
     {
-        var containerClient = _blobClient.GetBlobContainerClient(_blobServiceSettings.MangoBlobContainerName);
-        var blobClient = containerClient.GetBlobClient(fileName);
+        var containerClient = blobClient.GetBlobContainerClient(blobServiceSettings.MangoBlobContainerName);
+        var client = containerClient.GetBlobClient(fileName);
 
-        return Task.FromResult(blobClient.Uri.AbsoluteUri);
+        return Task.FromResult(client.Uri.AbsoluteUri);
     }
 
     public async Task<bool> UploadFileBlobAsync(Stream stream, string contentType, string uniqueName)
     {
-        var blobContainerName = _blobServiceSettings.MangoBlobContainerName;
+        var blobContainerName = blobServiceSettings.MangoBlobContainerName;
         var containerClient = GetContainerClient(blobContainerName);
-        var blobClient = containerClient.GetBlobClient(uniqueName);
+        var client = containerClient.GetBlobClient(uniqueName);
         var headers = new BlobHttpHeaders { ContentType = contentType };
-        var result = await blobClient.UploadAsync(stream, headers);
+        var result = await client.UploadAsync(stream, headers);
 
         return result.Value != null;
     }
@@ -44,17 +44,17 @@ public class BlobService : IBlobService
             throw new ArgumentNullException(nameof(fileName));
         }
 
-        var containerClient = _blobClient.GetBlobContainerClient(_blobServiceSettings.MangoBlobContainerName);
-        var blobClient = containerClient.GetBlobClient(fileName);
+        var containerClient = blobClient.GetBlobContainerClient(blobServiceSettings.MangoBlobContainerName);
+        var client = containerClient.GetBlobClient(fileName);
 
-        var result = await blobClient.DeleteIfExistsAsync();
+        var result = await client.DeleteIfExistsAsync();
 
         return result.Value;
     }
 
     private BlobContainerClient GetContainerClient(string blobContainerName)
     {
-        var containerClient = _blobClient.GetBlobContainerClient(blobContainerName);
+        var containerClient = blobClient.GetBlobContainerClient(blobContainerName);
         containerClient.CreateIfNotExists();
         return containerClient;
     }

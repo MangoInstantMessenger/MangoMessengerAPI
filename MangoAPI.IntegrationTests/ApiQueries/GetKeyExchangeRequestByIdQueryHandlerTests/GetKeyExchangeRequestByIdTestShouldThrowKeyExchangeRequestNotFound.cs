@@ -9,7 +9,7 @@ namespace MangoAPI.IntegrationTests.ApiQueries.GetKeyExchangeRequestByIdQueryHan
 
 public class GetKeyExchangeRequestByIdTestShouldThrowKeyExchangeRequestNotFound : IntegrationTestBase
 {
-    private readonly Assert<GetKeyExchangeRequestByIdResponse> _assert = new();
+    private readonly Assert<GetKeyExchangeRequestByIdResponse> assert = new();
 
     [Fact]
     public async Task OpenSslGetKeyExchangeRequestByIdTest_ShouldThrow_KeyExchangeRequestNotFound()
@@ -19,7 +19,7 @@ public class GetKeyExchangeRequestByIdTestShouldThrowKeyExchangeRequestNotFound 
         var query = new GetKeyExchangeRequestByIdQuery(Guid.NewGuid(), Guid.NewGuid());
 
         var response = await MangoModule.RequestAsync(query, CancellationToken.None);
-        
-        _assert.Fail(response, expectedMessage, expectedDetails);
+
+        assert.Fail(response, expectedMessage, expectedDetails);
     }
 }

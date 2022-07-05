@@ -8,26 +8,26 @@ namespace MangoAPI.IntegrationTests.ApiQueries.GetKeyExchangeRequestsQueryHandle
 
 public class GetKeyExchangeRequestsTestSuccess : IntegrationTestBase
 {
-    private readonly Assert<GetKeyExchangeRequestsResponse> _assert = new();
+    private readonly Assert<GetKeyExchangeRequestsResponse> assert = new();
 
     [Fact]
     public async Task GetKeyExchangeRequestsTest_Success()
     {
-        var sender = 
+        var sender =
             await MangoModule.RequestAsync(CommandHelper.RegisterKhachaturCommand(), CancellationToken.None);
-        var requestedUser = 
+        var requestedUser =
             await MangoModule.RequestAsync(CommandHelper.RegisterPetroCommand(), CancellationToken.None);
         var publicKey = MangoFilesHelper.GetTestImage();
         await MangoModule.RequestAsync(
             request: CommandHelper.CreateOpenSslCreateKeyExchangeCommand(
                 receiverId: sender.Response.UserId,
                 senderId: requestedUser.Response.UserId,
-                senderPublicKey: publicKey), 
+                senderPublicKey: publicKey),
             cancellationToken: CancellationToken.None);
         var query = new GetKeyExchangeRequestsQuery(requestedUser.Response.UserId);
 
         var response = await MangoModule.RequestAsync(query, CancellationToken.None);
-        
-        _assert.Pass(response);
+
+        assert.Pass(response);
     }
 }

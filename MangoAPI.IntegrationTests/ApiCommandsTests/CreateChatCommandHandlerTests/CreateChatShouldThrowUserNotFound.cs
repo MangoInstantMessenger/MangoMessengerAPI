@@ -10,7 +10,7 @@ namespace MangoAPI.IntegrationTests.ApiCommandsTests.CreateChatCommandHandlerTes
 
 public class CreateChatShouldThrowUserNotFound : IntegrationTestBase
 {
-    private readonly Assert<CreateCommunityResponse> _assert = new();
+    private readonly Assert<CreateCommunityResponse> assert = new();
 
     [Fact]
     public async Task CreateChatShouldThrow_UserNotFound()
@@ -22,9 +22,9 @@ public class CreateChatShouldThrowUserNotFound : IntegrationTestBase
         var command = new CreateChatCommand(
             UserId: user.Response.UserId,
             PartnerId: Guid.NewGuid());
-        
+
         var result = await MangoModule.RequestAsync(command, CancellationToken.None);
 
-        _assert.Fail(result, expectedMessage, expectedDetails);
+        assert.Fail(result, expectedMessage, expectedDetails);
     }
 }

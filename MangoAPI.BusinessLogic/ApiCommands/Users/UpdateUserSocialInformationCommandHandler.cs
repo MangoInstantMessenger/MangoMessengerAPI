@@ -12,20 +12,20 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users;
 public class UpdateUserSocialInformationCommandHandler
     : IRequestHandler<UpdateUserSocialInformationCommand, Result<ResponseBase>>
 {
-    private readonly MangoDbContext _dbContext;
-    private readonly ResponseFactory<ResponseBase> _responseFactory;
+    private readonly MangoDbContext dbContext;
+    private readonly ResponseFactory<ResponseBase> responseFactory;
 
     public UpdateUserSocialInformationCommandHandler(MangoDbContext dbContext,
         ResponseFactory<ResponseBase> responseFactory)
     {
-        _dbContext = dbContext;
-        _responseFactory = responseFactory;
+        this.dbContext = dbContext;
+        this.responseFactory = responseFactory;
     }
 
     public async Task<Result<ResponseBase>> Handle(UpdateUserSocialInformationCommand request,
         CancellationToken cancellationToken)
     {
-        var user = await _dbContext.Users
+        var user = await dbContext.Users
             .Include(userEntity => userEntity.UserInformation)
             .FirstOrDefaultAsync(entity => entity.Id == request.UserId,
                 cancellationToken);
@@ -35,7 +35,7 @@ public class UpdateUserSocialInformationCommandHandler
             const string errorMessage = ResponseMessageCodes.UserNotFound;
             var details = ResponseMessageCodes.ErrorDictionary[errorMessage];
 
-            return _responseFactory.ConflictResponse(errorMessage, details);
+            return responseFactory.ConflictResponse(errorMessage, details);
         }
 
         user.UserInformation.Facebook = request.Facebook;
@@ -45,10 +45,10 @@ public class UpdateUserSocialInformationCommandHandler
 
         user.UserInformation.UpdatedAt = DateTime.UtcNow;
 
-        _dbContext.UserInformation.Update(user.UserInformation);
-            
-        await _dbContext.SaveChangesAsync(cancellationToken);
+        dbContext.UserInformation.Update(user.UserInformation);
 
-        return _responseFactory.SuccessResponse(ResponseBase.SuccessResponse);
+        await dbContext.SaveChangesAsync(cancellationToken);
+
+        return responseFactory.SuccessResponse(ResponseBase.SuccessResponse);
     }
 }

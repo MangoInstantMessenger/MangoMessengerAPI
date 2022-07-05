@@ -10,7 +10,7 @@ namespace MangoAPI.IntegrationTests.ApiCommandsTests.UpdateUserAccountInfoComman
 
 public class UpdateUserAccountInfoTestShouldThrowUserNotFound : IntegrationTestBase
 {
-    private readonly Assert<ResponseBase> _assert = new();
+    private readonly Assert<ResponseBase> assert = new();
 
     [Fact]
     public async Task UpdateUserAccountInfoTestShouldThrow_UserNotFound()
@@ -22,7 +22,7 @@ public class UpdateUserAccountInfoTestShouldThrowUserNotFound : IntegrationTestB
             Address: "Poznan, Poland", BirthdayDate: new DateTime(1994, 6, 12));
 
         var result = await MangoModule.RequestAsync(command, CancellationToken.None);
-            
-        _assert.Fail(result, expectedMessage, expectedDetails);
+
+        assert.Fail(result, expectedMessage, expectedDetails);
     }
 }

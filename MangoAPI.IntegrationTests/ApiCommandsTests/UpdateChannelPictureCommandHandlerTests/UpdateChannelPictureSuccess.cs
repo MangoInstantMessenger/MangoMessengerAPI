@@ -8,7 +8,7 @@ namespace MangoAPI.IntegrationTests.ApiCommandsTests.UpdateChannelPictureCommand
 
 public class UpdateChannelPictureSuccess : IntegrationTestBase
 {
-    private readonly Assert<UpdateChannelPictureResponse> _assert = new();
+    private readonly Assert<UpdateChannelPictureResponse> assert = new();
 
     [Fact]
     public async Task UpdateChannelPicture_Success()
@@ -22,14 +22,14 @@ public class UpdateChannelPictureSuccess : IntegrationTestBase
         var chatId = chat.Response.ChatId;
         var file = MangoFilesHelper.GetTestImage();
         var command = new UpdateChanelPictureCommand(
-            ChatId: chatId, 
-            UserId: userId, 
+            ChatId: chatId,
+            UserId: userId,
             NewGroupPicture: file,
             ContentType: "image/jpeg");
 
         var result = await MangoModule.RequestAsync(command, CancellationToken.None);
 
-        _assert.Pass(result);
+        assert.Pass(result);
         await BlobService.DeleteBlobAsync(result.Response.FileName);
     }
 }

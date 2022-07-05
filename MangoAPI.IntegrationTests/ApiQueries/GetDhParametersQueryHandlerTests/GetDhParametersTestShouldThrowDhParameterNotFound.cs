@@ -9,7 +9,7 @@ namespace MangoAPI.IntegrationTests.ApiQueries.GetDhParametersQueryHandlerTests;
 
 public class GetDhParametersTestShouldThrowDhParameterNotFound : IntegrationTestBase
 {
-    private readonly Assert<GetDhParametersResponse> _assert = new();
+    private readonly Assert<GetDhParametersResponse> assert = new();
 
     [Fact]
     public async Task DownloadPartnerPublicKeyTest_ShouldThrow_DhParameterNotFound()
@@ -20,7 +20,7 @@ public class GetDhParametersTestShouldThrowDhParameterNotFound : IntegrationTest
         var query = new GetDhParametersQuery();
 
         var response = await MangoModule.RequestAsync(query, CancellationToken.None);
-        
-        _assert.Fail(response, expectedMessage, expectedDetails);
+
+        assert.Fail(response, expectedMessage, expectedDetails);
     }
 }

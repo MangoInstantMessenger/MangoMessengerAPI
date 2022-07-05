@@ -9,7 +9,7 @@ namespace MangoAPI.IntegrationTests.ApiQueries.SearchChatMessageQueryHandlerTest
 
 public class SearchChatMessageTestSuccess : IntegrationTestBase
 {
-    private readonly Assert<SearchChatMessagesResponse> _assert = new();
+    private readonly Assert<SearchChatMessagesResponse> assert = new();
 
     [Fact]
     public async Task SearchChatMessageTest_Success()
@@ -18,17 +18,17 @@ public class SearchChatMessageTestSuccess : IntegrationTestBase
             await MangoModule.RequestAsync(CommandHelper.RegisterPetroCommand(), CancellationToken.None);
         var chat =
             await MangoModule.RequestAsync(
-                request: CommandHelper.CreateExtremeCodeMainChatCommand(user.Response.UserId), 
+                request: CommandHelper.CreateExtremeCodeMainChatCommand(user.Response.UserId),
                 cancellationToken: CancellationToken.None);
         await MangoModule.RequestAsync(
-                request: CommandHelper.SendMessageToChannelCommand(user.Response.UserId, chat.Response.ChatId), 
+                request: CommandHelper.SendMessageToChannelCommand(user.Response.UserId, chat.Response.ChatId),
                 cancellationToken: CancellationToken.None);
         var query = new SearchChatMessagesQuery(UserId: user.Response.UserId, ChatId: chat.Response.ChatId,
             MessageText: "test");
 
         var result = await MangoModule.RequestAsync(query, CancellationToken.None);
-            
-        _assert.Pass(result);
+
+        assert.Pass(result);
         result.Response.Messages.Count.Should().Be(1);
     }
 }

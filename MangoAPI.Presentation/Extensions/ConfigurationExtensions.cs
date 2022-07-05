@@ -19,7 +19,7 @@ public static class ConfigurationExtensions
         {
             throw new ArgumentNullException(nameof(configuration));
         }
-        
+
         var environmentProvider = configurationRoot.Providers.FirstOrDefault(t =>
             t.GetType() == mangoEnvConfigType);
 

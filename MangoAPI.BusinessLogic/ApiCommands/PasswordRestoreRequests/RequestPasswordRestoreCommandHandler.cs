@@ -14,22 +14,22 @@ namespace MangoAPI.BusinessLogic.ApiCommands.PasswordRestoreRequests;
 public class RequestPasswordRestoreCommandHandler
     : IRequestHandler<RequestPasswordRestoreCommand, Result<RequestPasswordRestoreResponse>>
 {
-    private readonly MangoDbContext _dbContext;
-    private readonly IEmailSenderService _emailSenderService;
-    private readonly ResponseFactory<RequestPasswordRestoreResponse> _responseFactory;
+    private readonly MangoDbContext dbContext;
+    private readonly IEmailSenderService emailSenderService;
+    private readonly ResponseFactory<RequestPasswordRestoreResponse> responseFactory;
 
     public RequestPasswordRestoreCommandHandler(MangoDbContext dbContext,
         IEmailSenderService emailSenderService, ResponseFactory<RequestPasswordRestoreResponse> responseFactory)
     {
-        _dbContext = dbContext;
-        _emailSenderService = emailSenderService;
-        _responseFactory = responseFactory;
+        this.dbContext = dbContext;
+        this.emailSenderService = emailSenderService;
+        this.responseFactory = responseFactory;
     }
 
     public async Task<Result<RequestPasswordRestoreResponse>> Handle(RequestPasswordRestoreCommand request,
         CancellationToken cancellationToken)
     {
-        var user = await _dbContext.Users
+        var user = await dbContext.Users
             .FirstOrDefaultAsync(userEntity => userEntity.Email == request.Email,
                 cancellationToken);
 
@@ -38,10 +38,10 @@ public class RequestPasswordRestoreCommandHandler
             const string errorMessage = ResponseMessageCodes.UserNotFound;
             var errorDescription = ResponseMessageCodes.ErrorDictionary[errorMessage];
 
-            return _responseFactory.ConflictResponse(errorMessage, errorDescription);
+            return responseFactory.ConflictResponse(errorMessage, errorDescription);
         }
 
-        var existingRequest = await _dbContext.PasswordRestoreRequests
+        var existingRequest = await dbContext.PasswordRestoreRequests
             .FirstOrDefaultAsync(entity => entity.UserId == user.Id, cancellationToken);
 
         if (existingRequest != null && existingRequest.IsValid)
@@ -49,7 +49,7 @@ public class RequestPasswordRestoreCommandHandler
             const string errorMessage = ResponseMessageCodes.ChangePasswordRequestExists;
             var errorDescription = ResponseMessageCodes.ErrorDictionary[errorMessage];
 
-            return _responseFactory.ConflictResponse(errorMessage, errorDescription);
+            return responseFactory.ConflictResponse(errorMessage, errorDescription);
         }
 
         var passwordRestoreRequest = new PasswordRestoreRequestEntity
@@ -61,14 +61,14 @@ public class RequestPasswordRestoreCommandHandler
             ExpiresAt = DateTime.UtcNow.AddHours(3),
         };
 
-        _dbContext.PasswordRestoreRequests.Add(passwordRestoreRequest);
+        dbContext.PasswordRestoreRequests.Add(passwordRestoreRequest);
 
-        await _dbContext.SaveChangesAsync(cancellationToken);
+        await dbContext.SaveChangesAsync(cancellationToken);
 
-        await _emailSenderService.SendPasswordRestoreRequestAsync(user, passwordRestoreRequest.Id, cancellationToken);
+        await emailSenderService.SendPasswordRestoreRequestAsync(user, passwordRestoreRequest.Id, cancellationToken);
 
         var response = RequestPasswordRestoreResponse.FromSuccess(passwordRestoreRequest.Id);
 
-        return _responseFactory.SuccessResponse(response);
+        return responseFactory.SuccessResponse(response);
     }
 }

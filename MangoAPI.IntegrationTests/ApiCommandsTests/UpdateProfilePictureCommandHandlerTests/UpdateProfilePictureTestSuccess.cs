@@ -8,7 +8,7 @@ namespace MangoAPI.IntegrationTests.ApiCommandsTests.UpdateProfilePictureCommand
 
 public class UpdateProfilePictureTestSuccess : IntegrationTestBase
 {
-    private readonly Assert<UpdateProfilePictureResponse> _assert = new();
+    private readonly Assert<UpdateProfilePictureResponse> assert = new();
 
     [Fact]
     public async Task UpdateProfilePictureTest_Success()
@@ -20,7 +20,7 @@ public class UpdateProfilePictureTestSuccess : IntegrationTestBase
 
         var result = await MangoModule.RequestAsync(command, CancellationToken.None);
 
-        _assert.Pass(result);
+        assert.Pass(result);
         await BlobService.DeleteBlobAsync(result.Response.FileName);
     }
 }

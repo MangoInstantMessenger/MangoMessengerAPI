@@ -15,24 +15,24 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Documents;
 public class UploadDocumentCommandHandler
     : IRequestHandler<UploadDocumentCommand, Result<UploadDocumentResponse>>
 {
-    private readonly MangoDbContext _dbContext;
-    private readonly ResponseFactory<UploadDocumentResponse> _responseFactory;
-    private readonly IBlobService _blobService;
+    private readonly MangoDbContext dbContext;
+    private readonly ResponseFactory<UploadDocumentResponse> responseFactory;
+    private readonly IBlobService blobService;
 
     public UploadDocumentCommandHandler(
         MangoDbContext dbContext,
         ResponseFactory<UploadDocumentResponse> responseFactory,
         IBlobService blobService)
     {
-        _dbContext = dbContext;
-        _responseFactory = responseFactory;
-        _blobService = blobService;
+        this.dbContext = dbContext;
+        this.responseFactory = responseFactory;
+        this.blobService = blobService;
     }
 
     public async Task<Result<UploadDocumentResponse>> Handle(UploadDocumentCommand request,
         CancellationToken cancellationToken)
     {
-        var totalUploadedDocsCount = await _dbContext.Documents.CountAsync(x =>
+        var totalUploadedDocsCount = await dbContext.Documents.CountAsync(x =>
             x.UserId == request.UserId &&
             x.UploadedAt > DateTime.UtcNow.AddHours(-1), cancellationToken);
 
@@ -40,13 +40,13 @@ public class UploadDocumentCommandHandler
         {
             const string message = ResponseMessageCodes.UploadedDocumentsLimitReached10;
             var details = ResponseMessageCodes.ErrorDictionary[message];
-            return _responseFactory.ConflictResponse(message, details);
+            return responseFactory.ConflictResponse(message, details);
         }
 
         var file = request.FormFile;
         var uniqueFileName = StringService.GetUniqueFileName(file.FileName);
 
-        await _blobService.UploadFileBlobAsync(file.OpenReadStream(), request.ContentType, uniqueFileName);
+        await blobService.UploadFileBlobAsync(file.OpenReadStream(), request.ContentType, uniqueFileName);
 
         var documentEntity = new DocumentEntity
         {
@@ -55,13 +55,13 @@ public class UploadDocumentCommandHandler
             UploadedAt = DateTime.UtcNow
         };
 
-        _dbContext.Documents.Add(documentEntity);
+        dbContext.Documents.Add(documentEntity);
 
-        await _dbContext.SaveChangesAsync(cancellationToken);
+        await dbContext.SaveChangesAsync(cancellationToken);
 
-        var fileUrl = await _blobService.GetBlobAsync(uniqueFileName);
+        var fileUrl = await blobService.GetBlobAsync(uniqueFileName);
 
-        return _responseFactory.SuccessResponse(
+        return responseFactory.SuccessResponse(
             UploadDocumentResponse.FromSuccess(documentEntity.FileName, fileUrl));
     }
 }

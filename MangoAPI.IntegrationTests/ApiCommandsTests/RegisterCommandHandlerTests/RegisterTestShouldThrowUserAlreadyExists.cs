@@ -9,7 +9,7 @@ namespace MangoAPI.IntegrationTests.ApiCommandsTests.RegisterCommandHandlerTests
 
 public class RegisterTestShouldThrowUserAlreadyExists : IntegrationTestBase
 {
-    private readonly Assert<RegisterResponse> _assert = new();
+    private readonly Assert<RegisterResponse> assert = new();
 
     [Fact]
     public async Task RegisterTestShouldThrow_UserAlreadyExists()
@@ -21,6 +21,6 @@ public class RegisterTestShouldThrowUserAlreadyExists : IntegrationTestBase
 
         var registrationsResult = await MangoModule.RequestAsync(command, CancellationToken.None);
 
-        _assert.Fail(registrationsResult, expectedMessage, expectedDetails);
+        assert.Fail(registrationsResult, expectedMessage, expectedDetails);
     }
 }

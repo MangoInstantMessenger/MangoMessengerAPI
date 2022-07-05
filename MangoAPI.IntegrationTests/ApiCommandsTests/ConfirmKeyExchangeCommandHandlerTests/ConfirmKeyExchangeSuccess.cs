@@ -9,7 +9,7 @@ namespace MangoAPI.IntegrationTests.ApiCommandsTests.ConfirmKeyExchangeCommandHa
 
 public class ConfirmKeyExchangeSuccess : IntegrationTestBase
 {
-    private readonly Assert<ResponseBase> _assert = new();
+    private readonly Assert<ResponseBase> assert = new();
 
     [Fact]
     public async Task ConfirmKeyExchange_Success()
@@ -31,6 +31,6 @@ public class ConfirmKeyExchangeSuccess : IntegrationTestBase
 
         var response = await MangoModule.RequestAsync(command, CancellationToken.None);
 
-        _assert.Pass(response);
+        assert.Pass(response);
     }
 }

@@ -11,7 +11,7 @@ namespace MangoAPI.IntegrationTests.ApiCommandsTests.UpdateChannelPictureCommand
 public class
     UpdateChannelPictureShouldThrowChatNotFound : IntegrationTestBase
 {
-    private readonly Assert<UpdateChannelPictureResponse> _assert = new();
+    private readonly Assert<UpdateChannelPictureResponse> assert = new();
 
     [Fact]
     public async Task UpdateChannelPicture_ShouldThrow_ChatNotFound()
@@ -23,13 +23,13 @@ public class
             CancellationToken.None);
         var file = MangoFilesHelper.GetTestImage();
         var command = new UpdateChanelPictureCommand(
-            UserId: sender.Response.UserId, 
+            UserId: sender.Response.UserId,
             ChatId: Guid.NewGuid(),
-            NewGroupPicture: file, 
+            NewGroupPicture: file,
             ContentType: "image/jpeg");
 
         var result = await MangoModule.RequestAsync(command, CancellationToken.None);
 
-        _assert.Fail(result, expectedMessage, expectedDetails);
+        assert.Fail(result, expectedMessage, expectedDetails);
     }
 }

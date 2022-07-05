@@ -11,7 +11,7 @@ namespace MangoAPI.IntegrationTests.ApiCommandsTests.EditMessageCommandHandlerTe
 
 public class EditMessageSuccess : IntegrationTestBase
 {
-    private readonly Assert<ResponseBase> _assert = new();
+    private readonly Assert<ResponseBase> assert = new();
 
     [Fact]
     public async Task EditMessageHandlerTest_Success()
@@ -33,7 +33,7 @@ public class EditMessageSuccess : IntegrationTestBase
         var editedMessage =
             await DbContextFixture.Messages.FirstAsync(x => x.Id == message.Response.MessageId);
 
-        _assert.Pass(result);
+        assert.Pass(result);
         editedMessage.Content.Should().Be(command.ModifiedText);
     }
 }

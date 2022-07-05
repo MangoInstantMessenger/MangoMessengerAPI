@@ -9,7 +9,7 @@ namespace MangoAPI.IntegrationTests.ApiQueries.GetCurrentUserChatsQueryHandlerTe
 
 public class GetCurrentUserChatsTestSuccess : IntegrationTestBase
 {
-    private readonly Assert<GetCurrentUserChatsResponse> _assert = new();
+    private readonly Assert<GetCurrentUserChatsResponse> assert = new();
 
     [Fact]
     public async Task GetCurrentUserChatsTest_Success()
@@ -24,7 +24,7 @@ public class GetCurrentUserChatsTestSuccess : IntegrationTestBase
 
         var result = await MangoModule.RequestAsync(query, CancellationToken.None);
 
-        _assert.Pass(result);
+        assert.Pass(result);
         result.Response.Chats.Count.Should().Be(1);
     }
 }

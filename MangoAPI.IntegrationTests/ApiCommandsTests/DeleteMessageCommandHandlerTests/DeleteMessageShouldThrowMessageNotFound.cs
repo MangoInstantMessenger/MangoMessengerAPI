@@ -10,7 +10,7 @@ namespace MangoAPI.IntegrationTests.ApiCommandsTests.DeleteMessageCommandHandler
 
 public class DeleteMessageShouldThrowMessageNotFound : IntegrationTestBase
 {
-    private readonly Assert<DeleteMessageResponse> _assert = new();
+    private readonly Assert<DeleteMessageResponse> assert = new();
 
     [Fact]
     public async Task DeleteMessageTestShouldThrow_MessageNotFound()
@@ -21,13 +21,13 @@ public class DeleteMessageShouldThrowMessageNotFound : IntegrationTestBase
             await MangoModule.RequestAsync(CommandHelper.RegisterPetroCommand(), CancellationToken.None);
         var chat =
             await MangoModule.RequestAsync(
-                request: CommandHelper.CreateExtremeCodeMainChatCommand(user.Response.UserId), 
+                request: CommandHelper.CreateExtremeCodeMainChatCommand(user.Response.UserId),
                 cancellationToken: CancellationToken.None);
         var command = new DeleteMessageCommand(UserId: user.Response.UserId, ChatId: chat.Response.ChatId,
             MessageId: Guid.NewGuid());
 
         var result = await MangoModule.RequestAsync(command, CancellationToken.None);
 
-        _assert.Fail(result, expectedMessage, expectedDetails);
+        assert.Fail(result, expectedMessage, expectedDetails);
     }
 }

@@ -12,25 +12,25 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users;
 public class ChangePasswordCommandHandler
     : IRequestHandler<ChangePasswordCommand, Result<ResponseBase>>
 {
-    private readonly MangoDbContext _dbContext;
-    private readonly IUserManagerService _userManager;
-    private readonly ResponseFactory<ResponseBase> _responseFactory;
+    private readonly MangoDbContext dbContext;
+    private readonly IUserManagerService userManager;
+    private readonly ResponseFactory<ResponseBase> responseFactory;
 
     public ChangePasswordCommandHandler(
         MangoDbContext dbContext,
-        IUserManagerService userManager, 
+        IUserManagerService userManager,
         ResponseFactory<ResponseBase> responseFactory)
     {
-        _dbContext = dbContext;
-        _userManager = userManager;
-        _responseFactory = responseFactory;
+        this.dbContext = dbContext;
+        this.userManager = userManager;
+        this.responseFactory = responseFactory;
     }
 
     public async Task<Result<ResponseBase>> Handle(ChangePasswordCommand request,
         CancellationToken cancellationToken)
     {
-        var user = await _dbContext.Users
-            .FirstOrDefaultAsync(userEntity => userEntity.Id == request.UserId, 
+        var user = await dbContext.Users
+            .FirstOrDefaultAsync(userEntity => userEntity.Id == request.UserId,
                 cancellationToken);
 
         if (user is null)
@@ -38,23 +38,23 @@ public class ChangePasswordCommandHandler
             const string errorMessage = ResponseMessageCodes.UserNotFound;
             var details = ResponseMessageCodes.ErrorDictionary[errorMessage];
 
-            return _responseFactory.ConflictResponse(errorMessage, details);
+            return responseFactory.ConflictResponse(errorMessage, details);
         }
 
-        var currentPasswordVerified = await _userManager.CheckPasswordAsync(user, request.CurrentPassword);
+        var currentPasswordVerified = await userManager.CheckPasswordAsync(user, request.CurrentPassword);
 
         if (!currentPasswordVerified)
         {
             const string errorMessage = ResponseMessageCodes.InvalidCredentials;
             var details = ResponseMessageCodes.ErrorDictionary[errorMessage];
 
-            return _responseFactory.ConflictResponse(errorMessage, details);
+            return responseFactory.ConflictResponse(errorMessage, details);
         }
 
-        await _userManager.RemovePasswordAsync(user);
+        await userManager.RemovePasswordAsync(user);
 
-        var result = await _userManager.AddPasswordAsync(user, request.NewPassword);
+        var result = await userManager.AddPasswordAsync(user, request.NewPassword);
 
-        return _responseFactory.SuccessResponse(ResponseBase.SuccessResponse);
+        return responseFactory.SuccessResponse(ResponseBase.SuccessResponse);
     }
 }

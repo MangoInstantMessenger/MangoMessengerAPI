@@ -12,24 +12,24 @@ namespace MangoAPI.BusinessLogic.ApiCommands.PasswordRestoreRequests;
 public class PasswordRestoreCommandHandler
     : IRequestHandler<PasswordRestoreCommand, Result<ResponseBase>>
 {
-    private readonly MangoDbContext _dbContext;
-    private readonly IUserManagerService _userManager;
-    private readonly ResponseFactory<ResponseBase> _responseFactory;
+    private readonly MangoDbContext dbContext;
+    private readonly IUserManagerService userManager;
+    private readonly ResponseFactory<ResponseBase> responseFactory;
 
     public PasswordRestoreCommandHandler(
         MangoDbContext dbContext,
         IUserManagerService userManager,
         ResponseFactory<ResponseBase> responseFactory)
     {
-        _dbContext = dbContext;
-        _userManager = userManager;
-        _responseFactory = responseFactory;
+        this.dbContext = dbContext;
+        this.userManager = userManager;
+        this.responseFactory = responseFactory;
     }
 
     public async Task<Result<ResponseBase>> Handle(PasswordRestoreCommand request,
         CancellationToken cancellationToken)
     {
-        var restorePasswordRequest = await _dbContext.PasswordRestoreRequests
+        var restorePasswordRequest = await dbContext.PasswordRestoreRequests
             .Include(x => x.UserEntity)
             .FirstOrDefaultAsync(entity =>
                 entity.Id == request.RequestId, cancellationToken);
@@ -39,19 +39,19 @@ public class PasswordRestoreCommandHandler
             const string errorMessage = ResponseMessageCodes.InvalidOrExpiredRestorePasswordRequest;
             var errorDescription = ResponseMessageCodes.ErrorDictionary[errorMessage];
 
-            return _responseFactory.ConflictResponse(errorMessage, errorDescription);
+            return responseFactory.ConflictResponse(errorMessage, errorDescription);
         }
 
         var user = restorePasswordRequest.UserEntity;
 
-        await _userManager.RemovePasswordAsync(user);
+        await userManager.RemovePasswordAsync(user);
 
-        await _userManager.AddPasswordAsync(user, request.NewPassword);
+        await userManager.AddPasswordAsync(user, request.NewPassword);
 
-        _dbContext.PasswordRestoreRequests.Remove(restorePasswordRequest);
+        dbContext.PasswordRestoreRequests.Remove(restorePasswordRequest);
 
-        await _dbContext.SaveChangesAsync(cancellationToken);
+        await dbContext.SaveChangesAsync(cancellationToken);
 
-        return _responseFactory.SuccessResponse(ResponseBase.SuccessResponse);
+        return responseFactory.SuccessResponse(ResponseBase.SuccessResponse);
     }
 }

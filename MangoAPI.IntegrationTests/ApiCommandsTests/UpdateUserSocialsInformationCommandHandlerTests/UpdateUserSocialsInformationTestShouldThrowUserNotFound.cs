@@ -10,7 +10,7 @@ namespace MangoAPI.IntegrationTests.ApiCommandsTests.UpdateUserSocialsInformatio
 
 public class UpdateUserSocialsInformationTestShouldThrowUserNotFound : IntegrationTestBase
 {
-    private readonly Assert<ResponseBase> _assert = new();
+    private readonly Assert<ResponseBase> assert = new();
 
     [Fact]
     public async Task UpdateUserSocialsInformationTest_Success()
@@ -19,10 +19,10 @@ public class UpdateUserSocialsInformationTestShouldThrowUserNotFound : Integrati
         var expectedDetails = ResponseMessageCodes.ErrorDictionary[expectedMessage];
         var command = new UpdateUserSocialInformationCommand(UserId: Guid.NewGuid(), Instagram: "petro.kolosov",
             LinkedIn: "petro.kolosov", Facebook: "petro.kolosov", Twitter: "petro.kolosov");
-        
-        
+
+
         var result = await MangoModule.RequestAsync(command, CancellationToken.None);
-            
-        _assert.Fail(result, expectedMessage, expectedDetails);
+
+        assert.Fail(result, expectedMessage, expectedDetails);
     }
 }

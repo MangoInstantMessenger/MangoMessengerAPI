@@ -17,24 +17,24 @@ public class
     UpdateChannelPictureCommandHandler : IRequestHandler<UpdateChanelPictureCommand,
         Result<UpdateChannelPictureResponse>>
 {
-    private readonly MangoDbContext _dbContext;
-    private readonly ResponseFactory<UpdateChannelPictureResponse> _responseFactory;
-    private readonly IBlobService _blobService;
+    private readonly MangoDbContext dbContext;
+    private readonly ResponseFactory<UpdateChannelPictureResponse> responseFactory;
+    private readonly IBlobService blobService;
 
     public UpdateChannelPictureCommandHandler(
         MangoDbContext dbContext,
         ResponseFactory<UpdateChannelPictureResponse> responseFactory,
         IBlobService blobService)
     {
-        _dbContext = dbContext;
-        _responseFactory = responseFactory;
-        _blobService = blobService;
+        this.dbContext = dbContext;
+        this.responseFactory = responseFactory;
+        this.blobService = blobService;
     }
 
     public async Task<Result<UpdateChannelPictureResponse>> Handle(UpdateChanelPictureCommand request,
         CancellationToken cancellationToken)
     {
-        var totalUploadedDocsCount = await _dbContext.Documents.CountAsync(x =>
+        var totalUploadedDocsCount = await dbContext.Documents.CountAsync(x =>
             x.UserId == request.UserId &&
             x.UploadedAt > DateTime.UtcNow.AddHours(-1), cancellationToken);
 
@@ -42,10 +42,10 @@ public class
         {
             const string message = ResponseMessageCodes.UploadedDocumentsLimitReached10;
             var details = ResponseMessageCodes.ErrorDictionary[message];
-            return _responseFactory.ConflictResponse(message, details);
+            return responseFactory.ConflictResponse(message, details);
         }
 
-        var userChat = await _dbContext.UserChats
+        var userChat = await dbContext.UserChats
             .Include(x => x.Chat)
             .FirstOrDefaultAsync(x =>
                 x.ChatId == request.ChatId &&
@@ -58,14 +58,14 @@ public class
             const string errorMessage = ResponseMessageCodes.ChatNotFound;
             var errorDescription = ResponseMessageCodes.ErrorDictionary[errorMessage];
 
-            return _responseFactory.ConflictResponse(errorMessage, errorDescription);
+            return responseFactory.ConflictResponse(errorMessage, errorDescription);
         }
 
         var file = request.NewGroupPicture;
         var uniqueFileName = StringService.GetUniqueFileName(file.FileName);
         var stream = file.OpenReadStream();
 
-        await _blobService.UploadFileBlobAsync(stream, request.ContentType, uniqueFileName);
+        await blobService.UploadFileBlobAsync(stream, request.ContentType, uniqueFileName);
 
         var newUserPicture = new DocumentEntity
         {
@@ -74,17 +74,17 @@ public class
             UploadedAt = DateTime.UtcNow
         };
 
-        _dbContext.Documents.Add(newUserPicture);
+        dbContext.Documents.Add(newUserPicture);
 
         userChat.Chat.Image = uniqueFileName;
 
-        _dbContext.Update(userChat.Chat);
+        dbContext.Update(userChat.Chat);
 
-        await _dbContext.SaveChangesAsync(cancellationToken);
+        await dbContext.SaveChangesAsync(cancellationToken);
 
-        var blobUrl = await _blobService.GetBlobAsync(uniqueFileName);
+        var blobUrl = await blobService.GetBlobAsync(uniqueFileName);
         var response = UpdateChannelPictureResponse.FromSuccess(blobUrl, uniqueFileName);
 
-        return _responseFactory.SuccessResponse(response);
+        return responseFactory.SuccessResponse(response);
     }
 }

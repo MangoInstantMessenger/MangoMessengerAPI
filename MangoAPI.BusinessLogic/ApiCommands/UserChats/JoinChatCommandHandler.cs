@@ -13,22 +13,22 @@ namespace MangoAPI.BusinessLogic.ApiCommands.UserChats;
 
 public class JoinChatCommandHandler : IRequestHandler<JoinChatCommand, Result<ResponseBase>>
 {
-    private readonly MangoDbContext _dbContext;
-    private readonly ResponseFactory<ResponseBase> _responseFactory;
+    private readonly MangoDbContext dbContext;
+    private readonly ResponseFactory<ResponseBase> responseFactory;
 
     public JoinChatCommandHandler(MangoDbContext dbContext,
         ResponseFactory<ResponseBase> responseFactory)
     {
-        _dbContext = dbContext;
-        _responseFactory = responseFactory;
+        this.dbContext = dbContext;
+        this.responseFactory = responseFactory;
     }
 
     public async Task<Result<ResponseBase>> Handle(JoinChatCommand request,
         CancellationToken cancellationToken)
     {
         var alreadyJoined = await
-            _dbContext.UserChats.AnyAsync(userChatEntity => 
-                userChatEntity.UserId == request.UserId && 
+            dbContext.UserChats.AnyAsync(userChatEntity =>
+                userChatEntity.UserId == request.UserId &&
                 userChatEntity.ChatId == request.ChatId, cancellationToken);
 
         if (alreadyJoined)
@@ -36,10 +36,10 @@ public class JoinChatCommandHandler : IRequestHandler<JoinChatCommand, Result<Re
             const string errorMessage = ResponseMessageCodes.UserAlreadyJoinedGroup;
             var details = ResponseMessageCodes.ErrorDictionary[errorMessage];
 
-            return _responseFactory.ConflictResponse(errorMessage, details);
+            return responseFactory.ConflictResponse(errorMessage, details);
         }
 
-        var chat = await _dbContext.Chats
+        var chat = await dbContext.Chats
             .Where(chatEntity => chatEntity.CommunityType != (int) CommunityType.DirectChat)
             .FirstOrDefaultAsync(chatEntity => chatEntity.Id == request.ChatId, cancellationToken);
 
@@ -48,10 +48,10 @@ public class JoinChatCommandHandler : IRequestHandler<JoinChatCommand, Result<Re
             const string errorMessage = ResponseMessageCodes.ChatNotFound;
             var details = ResponseMessageCodes.ErrorDictionary[errorMessage];
 
-            return _responseFactory.ConflictResponse(errorMessage, details);
+            return responseFactory.ConflictResponse(errorMessage, details);
         }
 
-        _dbContext.UserChats.Add(
+        dbContext.UserChats.Add(
             new UserChatEntity
             {
                 ChatId = request.ChatId,
@@ -61,10 +61,10 @@ public class JoinChatCommandHandler : IRequestHandler<JoinChatCommand, Result<Re
 
         chat.MembersCount += 1;
 
-        _dbContext.Update(chat);
+        dbContext.Update(chat);
 
-        await _dbContext.SaveChangesAsync(cancellationToken);
+        await dbContext.SaveChangesAsync(cancellationToken);
 
-        return _responseFactory.SuccessResponse(ResponseBase.SuccessResponse);
+        return responseFactory.SuccessResponse(ResponseBase.SuccessResponse);
     }
 }

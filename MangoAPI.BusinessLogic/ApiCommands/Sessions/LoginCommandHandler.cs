@@ -14,11 +14,11 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Sessions;
 
 public class LoginCommandHandler : IRequestHandler<LoginCommand, Result<TokensResponse>>
 {
-    private readonly IJwtGenerator _jwtGenerator;
-    private readonly MangoDbContext _dbContext;
-    private readonly ISignInManagerService _signInManager;
-    private readonly ResponseFactory<TokensResponse> _responseFactory;
-    private readonly IJwtGeneratorSettings _jwtGeneratorSettings;
+    private readonly IJwtGenerator jwtGenerator;
+    private readonly MangoDbContext dbContext;
+    private readonly ISignInManagerService signInManager;
+    private readonly ResponseFactory<TokensResponse> responseFactory;
+    private readonly IJwtGeneratorSettings jwtGeneratorSettings;
 
     public LoginCommandHandler(
         ISignInManagerService signInManager,
@@ -27,17 +27,17 @@ public class LoginCommandHandler : IRequestHandler<LoginCommand, Result<TokensRe
         ResponseFactory<TokensResponse> responseFactory,
         IJwtGeneratorSettings jwtGeneratorSettings)
     {
-        _signInManager = signInManager;
-        _jwtGenerator = jwtGenerator;
-        _dbContext = dbContext;
-        _responseFactory = responseFactory;
-        _jwtGeneratorSettings = jwtGeneratorSettings;
+        this.signInManager = signInManager;
+        this.jwtGenerator = jwtGenerator;
+        this.dbContext = dbContext;
+        this.responseFactory = responseFactory;
+        this.jwtGeneratorSettings = jwtGeneratorSettings;
     }
 
     public async Task<Result<TokensResponse>> Handle(LoginCommand request,
         CancellationToken cancellationToken)
     {
-        var user = await _dbContext.Users
+        var user = await dbContext.Users
             .FirstOrDefaultAsync(userEntity => userEntity.Email == request.Email,
                 cancellationToken);
 
@@ -46,7 +46,7 @@ public class LoginCommandHandler : IRequestHandler<LoginCommand, Result<TokensRe
             const string errorMessage = ResponseMessageCodes.InvalidCredentials;
             var details = ResponseMessageCodes.ErrorDictionary[errorMessage];
 
-            return _responseFactory.ConflictResponse(errorMessage, details);
+            return responseFactory.ConflictResponse(errorMessage, details);
         }
 
         if (!user.EmailConfirmed)
@@ -54,45 +54,45 @@ public class LoginCommandHandler : IRequestHandler<LoginCommand, Result<TokensRe
             const string errorMessage = ResponseMessageCodes.EmailIsNotVerified;
             var details = ResponseMessageCodes.ErrorDictionary[errorMessage];
 
-            return _responseFactory.ConflictResponse(errorMessage, details);
+            return responseFactory.ConflictResponse(errorMessage, details);
         }
 
-        var result = await _signInManager.CheckPasswordSignInAsync(user, request.Password, false);
+        var result = await signInManager.CheckPasswordSignInAsync(user, request.Password, false);
 
         if (!result.Succeeded)
         {
             const string errorMessage = ResponseMessageCodes.InvalidCredentials;
             var details = ResponseMessageCodes.ErrorDictionary[errorMessage];
 
-            return _responseFactory.ConflictResponse(errorMessage, details);
+            return responseFactory.ConflictResponse(errorMessage, details);
         }
-        
+
         var session = new SessionEntity
         {
             UserId = user.Id,
             RefreshToken = Guid.NewGuid(),
-            ExpiresAt = DateTime.UtcNow.AddDays(_jwtGeneratorSettings.MangoRefreshTokenLifetimeDays),
+            ExpiresAt = DateTime.UtcNow.AddDays(jwtGeneratorSettings.MangoRefreshTokenLifetimeDays),
             CreatedAt = DateTime.UtcNow,
         };
 
-        var jwtToken = _jwtGenerator.GenerateJwtToken(user);
+        var jwtToken = jwtGenerator.GenerateJwtToken(user);
 
-        var userSessions = _dbContext.Sessions
+        var userSessions = dbContext.Sessions
             .Where(entity => entity.UserId == user.Id);
 
         var userSessionsCount = await userSessions.CountAsync(cancellationToken);
 
         if (userSessionsCount >= 5)
         {
-            _dbContext.Sessions.RemoveRange(userSessions);
+            dbContext.Sessions.RemoveRange(userSessions);
         }
 
-        _dbContext.Sessions.Add(session);
-        await _dbContext.SaveChangesAsync(cancellationToken);
+        dbContext.Sessions.Add(session);
+        await dbContext.SaveChangesAsync(cancellationToken);
 
         var expires = ((DateTimeOffset) session.ExpiresAt).ToUnixTimeSeconds();
         var tokens = TokensResponse.FromSuccess(jwtToken, session.RefreshToken, user.Id, expires);
 
-        return _responseFactory.SuccessResponse(tokens);
+        return responseFactory.SuccessResponse(tokens);
     }
 }

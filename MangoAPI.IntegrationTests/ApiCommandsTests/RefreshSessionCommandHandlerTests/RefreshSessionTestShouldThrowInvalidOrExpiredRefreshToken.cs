@@ -10,7 +10,7 @@ namespace MangoAPI.IntegrationTests.ApiCommandsTests.RefreshSessionCommandHandle
 
 public class RefreshSessionTestShouldThrowInvalidOrExpiredRefreshToken : IntegrationTestBase
 {
-    private readonly Assert<TokensResponse> _assert = new();
+    private readonly Assert<TokensResponse> assert = new();
 
     [Fact]
     public async Task RefreshSessionTestShouldThrow_InvalidOrExpiredRefreshToken()
@@ -21,6 +21,6 @@ public class RefreshSessionTestShouldThrowInvalidOrExpiredRefreshToken : Integra
 
         var result = await MangoModule.RequestAsync(command, CancellationToken.None);
 
-        _assert.Fail(result, expectedMessage, expectedDetails);
+        assert.Fail(result, expectedMessage, expectedDetails);
     }
 }

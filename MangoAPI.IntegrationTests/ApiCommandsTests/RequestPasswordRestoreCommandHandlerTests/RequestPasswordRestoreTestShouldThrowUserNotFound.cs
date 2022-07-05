@@ -8,7 +8,7 @@ namespace MangoAPI.IntegrationTests.ApiCommandsTests.RequestPasswordRestoreComma
 
 public class RequestPasswordRestoreTestShouldThrowUserNotFound : IntegrationTestBase
 {
-    private readonly Assert<RequestPasswordRestoreResponse> _assert = new();
+    private readonly Assert<RequestPasswordRestoreResponse> assert = new();
 
     [Fact]
     public async Task RequestPasswordRestoreTestShouldThrow_UserNotFound()
@@ -19,6 +19,6 @@ public class RequestPasswordRestoreTestShouldThrowUserNotFound : IntegrationTest
 
         var result = await MangoModule.RequestAsync(command, CancellationToken.None);
 
-        _assert.Fail(result, expectedMessage, expectedDetails);
+        assert.Fail(result, expectedMessage, expectedDetails);
     }
 }

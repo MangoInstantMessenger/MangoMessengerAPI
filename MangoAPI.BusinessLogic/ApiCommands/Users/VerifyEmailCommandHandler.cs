@@ -11,20 +11,20 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users;
 public class VerifyEmailCommandHandler
     : IRequestHandler<VerifyEmailCommand, Result<ResponseBase>>
 {
-    private readonly MangoDbContext _dbContext;
-    private readonly ResponseFactory<ResponseBase> _responseFactory;
+    private readonly MangoDbContext dbContext;
+    private readonly ResponseFactory<ResponseBase> responseFactory;
 
     public VerifyEmailCommandHandler(MangoDbContext dbContext,
         ResponseFactory<ResponseBase> responseFactory)
     {
-        _dbContext = dbContext;
-        _responseFactory = responseFactory;
+        this.dbContext = dbContext;
+        this.responseFactory = responseFactory;
     }
 
     public async Task<Result<ResponseBase>> Handle(VerifyEmailCommand request,
         CancellationToken cancellationToken)
     {
-        var user = await _dbContext.Users
+        var user = await dbContext.Users
             .FirstOrDefaultAsync(userEntity => userEntity.Email == request.Email,
                 cancellationToken);
 
@@ -33,7 +33,7 @@ public class VerifyEmailCommandHandler
             const string errorMessage = ResponseMessageCodes.UserNotFound;
             var details = ResponseMessageCodes.ErrorDictionary[errorMessage];
 
-            return _responseFactory.ConflictResponse(errorMessage, details);
+            return responseFactory.ConflictResponse(errorMessage, details);
         }
 
         if (user.EmailCode != request.EmailCode)
@@ -41,7 +41,7 @@ public class VerifyEmailCommandHandler
             const string errorMessage = ResponseMessageCodes.InvalidEmailConfirmationCode;
             var details = ResponseMessageCodes.ErrorDictionary[errorMessage];
 
-            return _responseFactory.ConflictResponse(errorMessage, details);
+            return responseFactory.ConflictResponse(errorMessage, details);
         }
 
         if (user.EmailConfirmed)
@@ -49,15 +49,15 @@ public class VerifyEmailCommandHandler
             const string errorMessage = ResponseMessageCodes.EmailAlreadyVerified;
             var details = ResponseMessageCodes.ErrorDictionary[errorMessage];
 
-            return _responseFactory.ConflictResponse(errorMessage, details);
+            return responseFactory.ConflictResponse(errorMessage, details);
         }
 
         user.EmailConfirmed = true;
 
-        _dbContext.Update(user);
+        dbContext.Update(user);
 
-        await _dbContext.SaveChangesAsync(cancellationToken);
+        await dbContext.SaveChangesAsync(cancellationToken);
 
-        return _responseFactory.SuccessResponse(ResponseBase.SuccessResponse);
+        return responseFactory.SuccessResponse(ResponseBase.SuccessResponse);
     }
 }

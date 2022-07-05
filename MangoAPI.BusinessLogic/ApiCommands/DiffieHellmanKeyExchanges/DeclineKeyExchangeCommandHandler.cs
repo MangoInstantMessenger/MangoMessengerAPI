@@ -11,22 +11,22 @@ namespace MangoAPI.BusinessLogic.ApiCommands.DiffieHellmanKeyExchanges;
 public class
     DeclineKeyExchangeCommandHandler : IRequestHandler<DeclineKeyExchangeCommand, Result<ResponseBase>>
 {
-    private readonly MangoDbContext _mangoDbContext;
-    private readonly ResponseFactory<ResponseBase> _responseFactory;
+    private readonly MangoDbContext mangoDbContext;
+    private readonly ResponseFactory<ResponseBase> responseFactory;
 
     public DeclineKeyExchangeCommandHandler(
         MangoDbContext mangoDbContext,
         ResponseFactory<ResponseBase> responseFactory)
     {
-        _mangoDbContext = mangoDbContext;
-        _responseFactory = responseFactory;
+        this.mangoDbContext = mangoDbContext;
+        this.responseFactory = responseFactory;
     }
 
     public async Task<Result<ResponseBase>> Handle(DeclineKeyExchangeCommand request,
         CancellationToken cancellationToken)
     {
         var keyExchangeRequest =
-            await _mangoDbContext.DiffieHellmanKeyExchangeEntities
+            await mangoDbContext.DiffieHellmanKeyExchangeEntities
                 .FirstOrDefaultAsync(
                     predicate: x => x.Id == request.RequestId,
                     cancellationToken: cancellationToken);
@@ -36,7 +36,7 @@ public class
             const string message = ResponseMessageCodes.KeyExchangeRequestNotFound;
             var description = ResponseMessageCodes.ErrorDictionary[message];
 
-            return _responseFactory.ConflictResponse(message, description);
+            return responseFactory.ConflictResponse(message, description);
         }
 
         if (keyExchangeRequest.ReceiverId != request.UserId)
@@ -44,15 +44,15 @@ public class
             const string message = ResponseMessageCodes.KeyExchangeDoesNotBelongToUser;
             var description = ResponseMessageCodes.ErrorDictionary[message];
 
-            return _responseFactory.ConflictResponse(message, description);
+            return responseFactory.ConflictResponse(message, description);
         }
 
-        _mangoDbContext.DiffieHellmanKeyExchangeEntities.Remove(keyExchangeRequest);
+        mangoDbContext.DiffieHellmanKeyExchangeEntities.Remove(keyExchangeRequest);
 
-        await _mangoDbContext.SaveChangesAsync(cancellationToken);
+        await mangoDbContext.SaveChangesAsync(cancellationToken);
 
         var result = ResponseBase.SuccessResponse;
 
-        return _responseFactory.SuccessResponse(result);
+        return responseFactory.SuccessResponse(result);
     }
 }

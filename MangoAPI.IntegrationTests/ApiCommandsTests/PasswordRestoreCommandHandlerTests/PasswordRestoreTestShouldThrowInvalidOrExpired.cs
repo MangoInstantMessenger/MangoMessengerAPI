@@ -10,7 +10,7 @@ namespace MangoAPI.IntegrationTests.ApiCommandsTests.PasswordRestoreCommandHandl
 
 public class PasswordRestoreTestShouldThrowInvalidOrExpired: IntegrationTestBase
 {
-    private readonly Assert<ResponseBase> _assert = new();
+    private readonly Assert<ResponseBase> assert = new();
 
     [Fact]
     public async Task PasswordRestoreTestShouldThrow_InvalidOrExpired()
@@ -21,7 +21,7 @@ public class PasswordRestoreTestShouldThrowInvalidOrExpired: IntegrationTestBase
             RepeatPassword: "Bm3-`dPRv-/w#3)cw^97");
 
         var result = await MangoModule.RequestAsync(command, CancellationToken.None);
-            
-        _assert.Fail(result, expectedMessage, expectedDetails);
+
+        assert.Fail(result, expectedMessage, expectedDetails);
     }
 }

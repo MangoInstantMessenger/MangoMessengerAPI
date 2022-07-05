@@ -9,7 +9,7 @@ namespace MangoAPI.IntegrationTests.ApiQueries.DownloadPartnerPublicKeyQueryHand
 
 public class DownloadPartnerPublicKeyTestShouldThrowKeyExchangeDoesNotBelongToUser : IntegrationTestBase
 {
-    private readonly Assert<DownloadPartnerPublicKeyResponse> _assert = new();
+    private readonly Assert<DownloadPartnerPublicKeyResponse> assert = new();
 
     [Fact]
     public async Task DownloadPartnerPublicKeyTest_ShouldThrow_KeyExchangeDoesNotBelongToUser()
@@ -32,6 +32,6 @@ public class DownloadPartnerPublicKeyTestShouldThrowKeyExchangeDoesNotBelongToUs
         var response =
             await MangoModule.RequestAsync(query, CancellationToken.None);
 
-        _assert.Fail(response, expectedMessage, expectedDetails);
+        assert.Fail(response, expectedMessage, expectedDetails);
     }
 }

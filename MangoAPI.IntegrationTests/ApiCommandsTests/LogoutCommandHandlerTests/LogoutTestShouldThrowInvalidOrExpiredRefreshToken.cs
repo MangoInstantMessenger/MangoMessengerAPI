@@ -10,7 +10,7 @@ namespace MangoAPI.IntegrationTests.ApiCommandsTests.LogoutCommandHandlerTests;
 
 public class LogoutTestShouldThrowInvalidOrExpiredRefreshToken : IntegrationTestBase
 {
-    private readonly Assert<ResponseBase> _assert = new();
+    private readonly Assert<ResponseBase> assert = new();
 
     [Fact]
     public async Task LogoutTestShouldThrow_InvalidOrExpiredRefreshToken()
@@ -21,6 +21,6 @@ public class LogoutTestShouldThrowInvalidOrExpiredRefreshToken : IntegrationTest
 
         var result = await MangoModule.RequestAsync(command, CancellationToken.None);
 
-        _assert.Fail(result, expectedMessage, expectedDetails);
+        assert.Fail(result, expectedMessage, expectedDetails);
     }
 }

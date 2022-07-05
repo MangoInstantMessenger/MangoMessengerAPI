@@ -10,13 +10,13 @@ namespace MangoAPI.IntegrationTests.ApiQueries.GetDhParametersQueryHandlerTests;
 
 public class GetDhParametersTestSuccess : IntegrationTestBase
 {
-    private readonly Assert<GetDhParametersResponse> _assert = new();
+    private readonly Assert<GetDhParametersResponse> assert = new();
 
     [Fact]
     public async Task GetDhParametersTest_Success()
     {
         var file = MangoFilesHelper.GetTestImage();
-        var user = 
+        var user =
             await MangoModule.RequestAsync(CommandHelper.RegisterKhachaturCommand(), CancellationToken.None);
         await MangoModule.RequestAsync(
             request: CommandHelper.CreateOpenSslCreateDiffieHellmanParameterCommand(
@@ -26,8 +26,8 @@ public class GetDhParametersTestSuccess : IntegrationTestBase
         var query = new GetDhParametersQuery();
 
         var response = await MangoModule.RequestAsync(query, CancellationToken.None);
-        
-        _assert.Pass(response);
+
+        assert.Pass(response);
         await using var target = new MemoryStream();
         await file.CopyToAsync(target, CancellationToken.None);
         var targetBytes = target.ToArray();
