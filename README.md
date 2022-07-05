@@ -9,19 +9,47 @@
 
 ## Description
 
-Mango Messenger is an opensource instant messaging system such that implemented using .NET 6 REST API backend 
-along with Angular project as frontend part. 
+Mango Messenger is an opensource instant messaging system such that implemented using .NET 6 REST API backend
+along with Angular project as frontend part.
 In general, it is considered to be a bachelor's degree project.
 Bachelor's project has been successfully completed by the team of three students on 10-02-2022.
 The defence is completed, however it is worth to continue working on the project pursuing the another predefined goals.
 
 ## Main goals of the project
 
+- Implementation of simple, maintainable, safe and scalable code base following the KISS and YAGNI software development
+  principles. Make sure to use Null Reference Types.
+- To maintain the code quality using static code analyzers such as ReSharper, SonarQube where SonarQube analysis is a
+  part of the CI/CD pipeline with further publication of the QualityGate results. Also to use proper IDE configurations
+  and style rules, it is about editor config and stylecop extensions.
+- To maintain high (> 70%) code coverage using unit tests, integration tests and E2E tests with ongoing publication of
+  the coverage report to the Azure DevOps statistics.
+- Implementation of the layered architecture where each layers is a separate project responsible for single part of the
+  application. For example, the Domain layer is responsible for the business logic and validates itself, see issue #1.
+- Implementation of the productive quick and safe development process. It is mainly about organization of the CI/CD
+  process using Azure DevOps and Azure pipelines so that each pull request to be validated and tested. Moreover, the
+  CD (Continuous Deployment) must be confirmed manually be designated person.
+- Implementation of the E2E tests inside CI/CD pipelines using Docker Compose and Postman.
+- Implementation of the IaaC using Hashicorp Terraform and applying this infrastructure on behalf of CI/CD pipelines.
 
-## Build and run
+## Build and run the project
 
-Install latest SDK and Runtime from Microsoft. In order to build and run current project, firstly set the following
-environment variables:
+### Part 1. Prerequisites
+
+Obligatory required software:
+
+- **.NET SDK 6.0.202 or later:** https://dotnet.microsoft.com/en-us/download
+- **NVM For Windows:** https://github.com/coreybutler/nvm-windows
+- **Docker:** https://docs.docker.com/desktop/windows/install
+- **Angular:** `13.3.5`
+- **Angular CLI:** `13.3.4`
+- **NodeJS:** `16.13.1`
+- **NPM:** `8.1.2`
+- **Code Editor or IDE:** Visual studio, Visual studio code, Rider.
+
+### Part 2. Environmental variables
+
+Set up the following environmental variables:
 
 - `MANGO_JWT_ISSUER`: JWT issuer claim (default `https://localhost:4200`)
 - `MANGO_JWT_AUDIENCE`: JWT audience claim (default `https://localhost:5001`)
@@ -37,40 +65,50 @@ environment variables:
 - `MANGO_MAILGUN_API_BASE_URL`: API base URL of the MailGun service (default: `https://api.mailgun.net`)
 - `MANGO_MAILGUN_API_DOMAIN`: Verified domain used in MailGun service
 - `MANGO_API_ADDRESS`: Used for Diffie-Hellman handshake test (default: `https://localhost:5001`)
-- `MANGO_INTEGRATION_TESTS_DATABASE_URL`: SQL server database used for integration tests (
+- `MANGO_INTEGRATION_TESTS_DATABASE_URL`: SQL server database used for integration tests
+- (
   default: `Data Source=DESKTOP-1V4TC6J;Initial Catalog=MangoIntegrationTests;Integrated Security=true;Encrypt=True;TrustServerCertificate=True;Connection Timeout=30;`)
   ,
   connection string for the database in docker has
   format: `Server=tcp:localhost,1444;Initial Catalog=MANGO_DEV;Persist Security Info=False;User ID=sa;Password=x2yiJt!Fs;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=True;Connection Timeout=30;`
 
-Then restore packages using CLI `dotnet restore` and after build the solution `dotnet build`.
+### Part 3. Run using Docker compose
 
-## Environments
+After setup of the environmental variables, run the following commands in order to up docker container under
+the http://localhost:8000:
 
-Currently, backend deployed on the multiple instances on Azure and Heroku such as:
+- `docker-compose build`
+- `docker-compose up`
 
-- Azure Dev: https://back.mangomessenger.company/swagger (domain valid till 28-Oct-2022)
-- Azure QA: https://back.mangomesenger.company/swagger (domain valid till 28-Oct-2022)
-- Heroku: https://mango-messenger-back.herokuapp.com/swagger
+### Part 4. Run in debug mode
 
-## Workflows
+Perform the following steps:
 
-CI/CD is setup as follows:
+- Install NVM: https://github.com/coreybutler/nvm-windows
+- Install NodeJS 14.17.3 using NVM via PowerShell as Administrator: `nvm install 16.13.1`
+- Use NodeJS 14.17.3 using NVM via PowerShell as Administrator: `nvm use 16.13.1`
+- Check NodeJS installed properly (should be 16.13.1): `node -v`
+- Check NPM installed properly (should be 8.1.2): `npm -v`
+- Go to the project folder: `cd MangoAPI.Client`
+- Restore node modules: `npm ci`
+- Install Angular CLI globally: `npm install -g @angular/cli@13.3.4`
+- Open PowerShell as Administrator and type: `Set-ExecutionPolicy -ExecutionPolicy RemoteSigned`
+- Check that Angular CLI installed properly: `ng version`
+- Build project for development using Angular CLI: `ng build --aot --configuration development`
+- NOTE: for production command is: `ng build --aot --configuration production`
+- Restore .NET packages: `cd .. & dotnet restore`
+- Run the .NET web API: `dotnet run`
+- Navigate to the swagger: `https://localhost:5001/swagger/index.html`
+- Navigate to the root url: `https://localhost:5001/app`
 
-- Azure Dev. Branch: `azure-dev` based on `develop`, workflow started after merge with actual `develop`.
-- Azure QA. Branch: `azure-qa` based on `develop`, workflow started after merge with actual `develop`.
-- Heroku. Branch: `master` workflow started after actual `develop` merged to `master`.
-
-As image below shows
-
-![Environments](Environments-Back.jpg?raw=true)
+In case of HTTPS certificate issues: https://stackoverflow.com/a/67182991
 
 ## Technology stack
 
 - **SDK:** `.NET 6`
 - **Frameworks:** `ASP .NET`, `Angular`
 - **Persistence:**
-    - Database: `PostgreSQL 13`
+    - Database: `MS SQL Server`
     - ORM: `Entity Framework Core 6.0`
     - Storage: `Azure Blob Storage`
 - **Authorization:** `ASP .NET Identity Core`, `JWT Bearer`
@@ -87,9 +125,9 @@ As image below shows
 - **Code Quality Tools:** `SonarQube`, `CodeCov`
 - **Containerization:** `Docker`
 - **Continuous Integration:** `GitHub Actions`
-- **Continuous Delivery:** `GitHub Actions`, `Heroku`, `Azure`
+- **Continuous Delivery:** `GitHub Actions`, `Heroku`, `Azure Devops`, `Azure Pipelines`
 - **Programming languages:** `C#`, `SQL`, `TypeScript`
-- **Tools & IDE's:** `Visual Studio`, `Rider`, `VS Code`, `WebStorm`, `PgAdmin`, `Postman`
+- **Tools & IDE:** `Visual Studio`, `Rider`, `VS Code`, `WebStorm`, `SMSS`, `Postman`
 
 ## Versions
 
@@ -98,24 +136,6 @@ As image below shows
 - **Angular CLI:** `13.3.4`
 - **NodeJS:** `16.13.1`
 - **NPM:** `8.1.2`
-
-## How to run Angular project
-
-Perform the following steps:
-
-- Install NVM: https://github.com/coreybutler/nvm-windows
-- Install NodeJS 14.17.3 using NVM via PowerShell as Administrator: `nvm install 16.13.1`
-- Use NodeJS 14.17.3 using NVM via PowerShell as Administrator: `nvm use 16.13.1`
-- Check NodeJS installed properly (should be 16.13.1): `node -v`
-- Check NPM installed properly (should be 8.1.2): `npm -v`
-- Go to the project folder: `cd MangoAPI.Client`
-- Restore node modules: `npm ci`
-- Install Angular CLI globally: `npm install -g @angular/cli@13.3.4`
-- Open PowerShell as Administrator and type: `Set-ExecutionPolicy -ExecutionPolicy RemoteSigned`
-- Check that Angular CLI installed properly: `ng version`
-- Build project for development using Angular CLI: `ng build --aot --configuration development`
-- NOTE: for production command is: `ng build --aot --configuration production`
-- Run .NET web API: `dotnet run`
 
 ## Tasks management
 
