@@ -1,5 +1,5 @@
-﻿using MangoAPI.BusinessLogic.Models;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
+using MangoAPI.BusinessLogic.Models;
 
 namespace MangoAPI.BusinessLogic.HubConfig;
 

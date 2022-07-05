@@ -9,7 +9,8 @@ namespace MangoAPI.DiffieHellmanLibrary.OpenSslHandlers;
 
 public class OpensslCreateCommonSecretHandler : BaseHandler, ICreateCommonSecretHandler
 {
-    public OpensslCreateCommonSecretHandler(HttpClient httpClient) : base(httpClient)
+    public OpensslCreateCommonSecretHandler(HttpClient httpClient)
+        : base(httpClient)
     {
     }
 
@@ -75,7 +76,7 @@ public class OpensslCreateCommonSecretHandler : BaseHandler, ICreateCommonSecret
         var command = Cli.Wrap("openssl").WithArguments(
             new[]
             {
-                "pkeyutl", "-derive", "-inkey", privateKeyPath, "-peerkey", publicKeyPath, "-out", commonSecretPath
+                "pkeyutl", "-derive", "-inkey", privateKeyPath, "-peerkey", publicKeyPath, "-out", commonSecretPath,
             });
 
         await command.ExecuteAsync();

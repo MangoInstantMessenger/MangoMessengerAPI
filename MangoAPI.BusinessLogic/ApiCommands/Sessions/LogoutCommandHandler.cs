@@ -13,18 +13,21 @@ public class LogoutCommandHandler : IRequestHandler<LogoutCommand, Result<Respon
     private readonly MangoDbContext dbContext;
     private readonly ResponseFactory<ResponseBase> responseFactory;
 
-    public LogoutCommandHandler(MangoDbContext dbContext,
+    public LogoutCommandHandler(
+        MangoDbContext dbContext,
         ResponseFactory<ResponseBase> responseFactory)
     {
         this.dbContext = dbContext;
         this.responseFactory = responseFactory;
     }
 
-    public async Task<Result<ResponseBase>> Handle(LogoutCommand request,
+    public async Task<Result<ResponseBase>> Handle(
+        LogoutCommand request,
         CancellationToken cancellationToken)
     {
         var session = await dbContext.Sessions
-            .FirstOrDefaultAsync(sessionEntity => sessionEntity.RefreshToken == request.RefreshToken,
+            .FirstOrDefaultAsync(
+                sessionEntity => sessionEntity.RefreshToken == request.RefreshToken,
                 cancellationToken);
 
         if (session is null)

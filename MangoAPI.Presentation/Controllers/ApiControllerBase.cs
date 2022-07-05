@@ -1,11 +1,11 @@
 ﻿using System.Net;
-using AutoMapper;
-using MangoAPI.BusinessLogic.Responses;
-using Microsoft.AspNetCore.Mvc;
 using System.Threading;
 using System.Threading.Tasks;
+using AutoMapper;
 using MangoAPI.Application.Interfaces;
+using MangoAPI.BusinessLogic.Responses;
 using MediatR;
+using Microsoft.AspNetCore.Mvc;
 
 namespace MangoAPI.Presentation.Controllers;
 
@@ -14,16 +14,18 @@ namespace MangoAPI.Presentation.Controllers;
 /// </summary>
 public class ApiControllerBase : ControllerBase
 {
-    protected readonly IMediator Mediator;
-    protected readonly IMapper Mapper;
-    protected readonly ICorrelationContext CorrelationContext;
+    protected IMediator Mediator { get; }
+
+    protected IMapper Mapper { get; }
+
+    protected ICorrelationContext CorrelationContext { get; }
 
     /// <summary>
     /// Initializes a new instance of the <see cref="ApiControllerBase"/> class.
     /// </summary>
     /// <param name="mediator">Mediator instance.</param>
     /// <param name="mapper">Automapper instance.</param>
-    /// <param name="correlationContext"></param>
+    /// <param name="correlationContext">ICorrelationContext instance.</param>
     public ApiControllerBase(IMediator mediator, IMapper mapper, ICorrelationContext correlationContext)
     {
         Mediator = mediator;
@@ -39,7 +41,8 @@ public class ApiControllerBase : ControllerBase
     /// <param name="cancellationToken">Cancellation token instance.</param>
     /// <returns>A <see cref="Task{TResult}"/> representing the result of the asynchronous operation.</returns>
     [NonAction]
-    protected async Task<IActionResult> RequestAsync<TResponse>(IRequest<Result<TResponse>> request,
+    protected async Task<IActionResult> RequestAsync<TResponse>(
+        IRequest<Result<TResponse>> request,
         CancellationToken cancellationToken) where TResponse : ResponseBase
     {
         var response = await Mediator.Send(request, cancellationToken);
@@ -48,7 +51,7 @@ public class ApiControllerBase : ControllerBase
         {
             HttpStatusCode.BadRequest => BadRequest(response.Error),
             HttpStatusCode.Conflict => Conflict(response.Error),
-            _ => Ok(response.Response)
+            _ => Ok(response.Response),
         };
     }
 }

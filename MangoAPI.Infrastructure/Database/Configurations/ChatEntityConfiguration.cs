@@ -36,7 +36,7 @@ public class ChatEntityConfiguration : IEntityTypeConfiguration<ChatEntity>
                 Image = "wsb_group_logo.png",
                 LastMessageAuthor = "Szymon Murawski",
                 LastMessageText = "Great! Good luck to all of you",
-                LastMessageTime = DateTime.UtcNow
+                LastMessageTime = DateTime.UtcNow,
             },
             new ChatEntity
             {
@@ -50,7 +50,7 @@ public class ChatEntityConfiguration : IEntityTypeConfiguration<ChatEntity>
                 Image = "extreme_code_main.jpg",
                 LastMessageAuthor = "Amelit",
                 LastMessageText = "TypeScript The Best",
-                LastMessageTime = DateTime.UtcNow
+                LastMessageTime = DateTime.UtcNow,
             },
             new ChatEntity
             {
@@ -64,7 +64,7 @@ public class ChatEntityConfiguration : IEntityTypeConfiguration<ChatEntity>
                 Image = "extremecode_rest_logo.jpg",
                 LastMessageAuthor = "Amelit",
                 LastMessageText = "Слава Партии!!",
-                LastMessageTime = DateTime.UtcNow
+                LastMessageTime = DateTime.UtcNow,
             },
             new ChatEntity
             {
@@ -78,7 +78,7 @@ public class ChatEntityConfiguration : IEntityTypeConfiguration<ChatEntity>
                 Image = "extremecode_cpp_logo.jpg",
                 LastMessageAuthor = "Amelit",
                 LastMessageText = "Hello world!",
-                LastMessageTime = DateTime.UtcNow
+                LastMessageTime = DateTime.UtcNow,
             },
             new ChatEntity
             {
@@ -92,7 +92,7 @@ public class ChatEntityConfiguration : IEntityTypeConfiguration<ChatEntity>
                 Image = "extremecode_dotnet.png",
                 LastMessageAuthor = "Amelit",
                 LastMessageText = "Hello world!",
-                LastMessageTime = DateTime.UtcNow
+                LastMessageTime = DateTime.UtcNow,
             },
             new ChatEntity
             {
@@ -105,7 +105,7 @@ public class ChatEntityConfiguration : IEntityTypeConfiguration<ChatEntity>
                 MembersCount = 2,
                 LastMessageAuthor = "razumovsky r",
                 LastMessageText = "Hello world!",
-                LastMessageTime = DateTime.UtcNow
+                LastMessageTime = DateTime.UtcNow,
             },
             new ChatEntity
             {
@@ -118,7 +118,7 @@ public class ChatEntityConfiguration : IEntityTypeConfiguration<ChatEntity>
                 MembersCount = 2,
                 LastMessageAuthor = "razumovsky r",
                 LastMessageText = "Hello world!",
-                LastMessageTime = DateTime.UtcNow
+                LastMessageTime = DateTime.UtcNow,
             },
             new ChatEntity
             {
@@ -131,7 +131,7 @@ public class ChatEntityConfiguration : IEntityTypeConfiguration<ChatEntity>
                 MembersCount = 2,
                 LastMessageAuthor = "razumovsky r",
                 LastMessageText = "Hello world!",
-                LastMessageTime = DateTime.UtcNow
+                LastMessageTime = DateTime.UtcNow,
             },
             new ChatEntity
             {
@@ -144,7 +144,7 @@ public class ChatEntityConfiguration : IEntityTypeConfiguration<ChatEntity>
                 MembersCount = 2,
                 LastMessageAuthor = "Khachatur Khachatryan",
                 LastMessageText = "Hello world!",
-                LastMessageTime = DateTime.UtcNow
+                LastMessageTime = DateTime.UtcNow,
             },
             new ChatEntity
             {
@@ -157,7 +157,7 @@ public class ChatEntityConfiguration : IEntityTypeConfiguration<ChatEntity>
                 MembersCount = 2,
                 LastMessageAuthor = "Petro Kolosov",
                 LastMessageText = "Hello world!",
-                LastMessageTime = DateTime.UtcNow
+                LastMessageTime = DateTime.UtcNow,
             });
     }
 }

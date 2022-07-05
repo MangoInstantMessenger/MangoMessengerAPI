@@ -20,8 +20,10 @@ public class PasswordRestoreTestSuccess : IntegrationTestBase
         var passwordRestoreRequest = await MangoModule.RequestAsync(
             request: CommandHelper.CreateRequestPasswordRestoreCommand("kolosovp95@gmail.com"),
             cancellationToken: CancellationToken.None);
-        var command = new PasswordRestoreCommand(RequestId: passwordRestoreRequest.Response.RequestId,
-            NewPassword: "Bm3-`dPRv-/w#3)cw^97", RepeatPassword: "Bm3-`dPRv-/w#3)cw^97");
+        var command = new PasswordRestoreCommand(
+            RequestId: passwordRestoreRequest.Response.RequestId,
+            NewPassword: "Bm3-`dPRv-/w#3)cw^97",
+            RepeatPassword: "Bm3-`dPRv-/w#3)cw^97");
 
         var result = await MangoModule.RequestAsync(command, CancellationToken.None);
 

@@ -16,14 +16,16 @@ public class CreateDiffieHellmanParameterCommandHandler : IRequestHandler<Create
     private readonly MangoDbContext dbContext;
     private readonly ResponseFactory<CreateDiffieHellmanParameterResponse> responseFactory;
 
-    public CreateDiffieHellmanParameterCommandHandler(MangoDbContext dbContext,
+    public CreateDiffieHellmanParameterCommandHandler(
+        MangoDbContext dbContext,
         ResponseFactory<CreateDiffieHellmanParameterResponse> responseFactory)
     {
         this.dbContext = dbContext;
         this.responseFactory = responseFactory;
     }
 
-    public async Task<Result<CreateDiffieHellmanParameterResponse>> Handle(CreateDiffieHellmanParameterCommand request,
+    public async Task<Result<CreateDiffieHellmanParameterResponse>> Handle(
+        CreateDiffieHellmanParameterCommand request,
         CancellationToken cancellationToken)
     {
         await using var target = new MemoryStream();
@@ -45,7 +47,7 @@ public class CreateDiffieHellmanParameterCommandHandler : IRequestHandler<Create
         {
             Message = ResponseMessageCodes.Success,
             Success = true,
-            ParameterId = entity.Id
+            ParameterId = entity.Id,
         };
 
         return responseFactory.SuccessResponse(response);

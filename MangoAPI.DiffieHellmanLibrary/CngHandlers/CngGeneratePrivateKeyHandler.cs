@@ -6,7 +6,8 @@ namespace MangoAPI.DiffieHellmanLibrary.CngHandlers;
 
 public class CngGeneratePrivateKeyHandler : BaseHandler, IGeneratePrivateKeyHandler
 {
-    public CngGeneratePrivateKeyHandler(HttpClient httpClient) : base(httpClient)
+    public CngGeneratePrivateKeyHandler(HttpClient httpClient)
+        : base(httpClient)
     {
     }
 

@@ -8,12 +8,11 @@ public class RootController : Controller
     /// <summary>
     /// Workaround for the redirect to angular UI. Return to it in future to fix better.
     /// </summary>
-    /// <returns></returns>
     [HttpGet]
     [Route("")]
     [SwaggerOperation(
-            Description = "Workaround for the redirect to angular UI. Return to it in future to fix better.",
-            Summary = "Workaround for the redirect to angular UI.")]
+        Description = "Workaround for the redirect to angular UI. Return to it in future to fix better.",
+        Summary = "Workaround for the redirect to angular UI.")]
     public IActionResult RedirectToTheAngularSpa()
     {
         return Redirect(@"~/app");

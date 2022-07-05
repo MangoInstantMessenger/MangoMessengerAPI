@@ -20,11 +20,13 @@ public class CreateChannelShouldThrowCountExceed100 : IntegrationTestBase
             await MangoModule.RequestAsync(CommandHelper.RegisterPetroCommand(), CancellationToken.None);
         for (var i = 0; i <= 100; i++)
         {
-            await MangoModule.RequestAsync(CommandHelper.CreateExtremeCodeMainChatCommand(user.Response.UserId),
-                    CancellationToken.None);
+            await MangoModule.RequestAsync(
+                CommandHelper.CreateExtremeCodeMainChatCommand(user.Response.UserId),
+                CancellationToken.None);
         }
 
-        var result = await MangoModule.RequestAsync(CommandHelper.CreateExtremeCodeMainChatCommand(user.Response.UserId),
+        var result = await MangoModule.RequestAsync(
+            CommandHelper.CreateExtremeCodeMainChatCommand(user.Response.UserId),
             CancellationToken.None);
 
         assert.Fail(result, expectedMessage, expectedDetails);

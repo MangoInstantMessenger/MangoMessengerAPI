@@ -14,12 +14,13 @@ public class SignInManagerService : ISignInManagerService
         this.signInManager = signInManager;
     }
 
-    public async Task<SignInResult> CheckPasswordSignInAsync(UserEntity user, string password,
+    public async Task<SignInResult> CheckPasswordSignInAsync(
+        UserEntity user,
+        string password,
         bool lockoutOnFailure)
     {
         var result = await signInManager.CheckPasswordSignInAsync(user, password, lockoutOnFailure);
 
         return result;
     }
-
 }

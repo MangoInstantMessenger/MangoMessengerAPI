@@ -14,7 +14,7 @@ public record LoginRequest
 
     [DefaultValue("test@gmail.com")]
     public string Email { get; }
-        
+
     [DefaultValue("x[?6dME#xrp=nr7q")]
     public string Password { get; }
 }

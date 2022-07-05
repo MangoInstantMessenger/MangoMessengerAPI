@@ -5,7 +5,9 @@ namespace MangoAPI.BusinessLogic.DependencyInjection;
 
 public static class CorsServices
 {
-    public static IServiceCollection ConfigureCors(this IServiceCollection services, IConfiguration configuration,
+    public static IServiceCollection ConfigureCors(
+        this IServiceCollection services,
+        IConfiguration configuration,
         string corsPolicy)
     {
         services.AddCors(options =>

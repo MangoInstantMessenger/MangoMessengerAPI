@@ -28,5 +28,4 @@ public class AddContactShouldThrowContactExists : IntegrationTestBase
 
         assert.Fail(result, expectedMessage, expectedDetails);
     }
-
 }

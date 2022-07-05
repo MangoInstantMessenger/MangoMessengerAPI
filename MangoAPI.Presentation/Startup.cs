@@ -1,25 +1,25 @@
+using System.Text.Json;
+using MangoAPI.Application.Interfaces;
+using MangoAPI.Application.Services;
+using MangoAPI.BusinessLogic.DependencyInjection;
 using MangoAPI.BusinessLogic.HubConfig;
+using MangoAPI.Domain.Constants;
+using MangoAPI.Presentation.Controllers;
+using MangoAPI.Presentation.Extensions;
+using MangoAPI.Presentation.Middlewares;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using MangoAPI.Presentation.Middlewares;
-using System.Text.Json;
-using MangoAPI.Application.Interfaces;
-using MangoAPI.Application.Services;
-using MangoAPI.BusinessLogic.DependencyInjection;
-using MangoAPI.Domain.Constants;
-using MangoAPI.Presentation.Controllers;
-using MangoAPI.Presentation.Extensions;
 
 namespace MangoAPI.Presentation;
 
 public class Startup
 {
-    private readonly IConfiguration configuration;
     private const string CorsPolicy = "MyDefaultCorsPolicy";
+    private readonly IConfiguration configuration;
 
     public Startup(IConfiguration configuration)
     {

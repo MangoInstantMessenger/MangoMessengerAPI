@@ -32,7 +32,7 @@ public static class ConfigurationExtensions
 
         var jsonConfigProvider = configurationRoot.Providers.FirstOrDefault(t =>
             t.GetType() == mangoJsonConfigType &&
-            t.ToString()!.Contains(EnvironmentConstants.MangoJsonConfig));
+            t.ToString() !.Contains(EnvironmentConstants.MangoJsonConfig));
 
         if (jsonConfigProvider != null
             && jsonConfigProvider.TryGet(key, out var jsonData)

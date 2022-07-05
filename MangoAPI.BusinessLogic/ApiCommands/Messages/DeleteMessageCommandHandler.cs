@@ -29,7 +29,8 @@ public class DeleteMessageCommandHandler
         this.responseFactory = responseFactory;
     }
 
-    public async Task<Result<DeleteMessageResponse>> Handle(DeleteMessageCommand request,
+    public async Task<Result<DeleteMessageResponse>> Handle(
+        DeleteMessageCommand request,
         CancellationToken cancellationToken)
     {
         var isMessageExists = await dbContext.Messages
@@ -68,7 +69,7 @@ public class DeleteMessageCommandHandler
 
         var messageDeleteNotification = new MessageDeleteNotification
         {
-            MessageId = request.MessageId
+            MessageId = request.MessageId,
         };
 
         var messageIsLast = chat.LastMessageId.HasValue && chat.LastMessageId == request.MessageId;

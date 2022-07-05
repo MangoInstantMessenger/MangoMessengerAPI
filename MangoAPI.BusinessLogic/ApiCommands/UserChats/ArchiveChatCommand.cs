@@ -4,4 +4,5 @@ using MediatR;
 
 namespace MangoAPI.BusinessLogic.ApiCommands.UserChats;
 
-public record ArchiveChatCommand(Guid ChatId, Guid UserId) : IRequest<Result<ResponseBase>>;
+public record ArchiveChatCommand(Guid ChatId, Guid UserId)
+    : IRequest<Result<ResponseBase>>;

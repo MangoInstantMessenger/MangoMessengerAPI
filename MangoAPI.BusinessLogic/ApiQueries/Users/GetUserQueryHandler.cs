@@ -1,14 +1,14 @@
 ﻿using System.Linq;
-using MangoAPI.Domain.Constants;
-using MediatR;
-using Microsoft.EntityFrameworkCore;
 using System.Threading;
 using System.Threading.Tasks;
 using MangoAPI.Application.Interfaces;
 using MangoAPI.Application.Services;
 using MangoAPI.BusinessLogic.Models;
 using MangoAPI.BusinessLogic.Responses;
+using MangoAPI.Domain.Constants;
 using MangoAPI.Infrastructure.Database;
+using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 namespace MangoAPI.BusinessLogic.ApiQueries.Users;
 
@@ -28,7 +28,8 @@ public class GetUserQueryHandler : IRequestHandler<GetUserQuery, Result<GetUserR
         this.blobServiceSettings = blobServiceSettings;
     }
 
-    public async Task<Result<GetUserResponse>> Handle(GetUserQuery request,
+    public async Task<Result<GetUserResponse>> Handle(
+        GetUserQuery request,
         CancellationToken cancellationToken)
     {
         var user = await dbContext.Users.AsNoTracking()

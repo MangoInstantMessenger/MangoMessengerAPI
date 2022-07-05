@@ -17,10 +17,10 @@ public class CreateChannelTestSuccess : IntegrationTestBase
             await MangoModule.RequestAsync(CommandHelper.RegisterPetroCommand(), CancellationToken.None);
 
         var result =
-            await MangoModule.RequestAsync(CommandHelper.CreateExtremeCodeMainChatCommand(user.Response.UserId),
-                                           CancellationToken.None);
+            await MangoModule.RequestAsync(
+                CommandHelper.CreateExtremeCodeMainChatCommand(user.Response.UserId),
+                CancellationToken.None);
 
         assert.Pass(result);
     }
-
 }

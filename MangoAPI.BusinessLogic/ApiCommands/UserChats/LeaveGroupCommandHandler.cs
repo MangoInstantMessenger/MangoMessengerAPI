@@ -16,18 +16,20 @@ public class LeaveGroupCommandHandler
     private readonly MangoDbContext dbContext;
     private readonly ResponseFactory<LeaveGroupResponse> responseFactory;
 
-    public LeaveGroupCommandHandler(MangoDbContext dbContext,
+    public LeaveGroupCommandHandler(
+        MangoDbContext dbContext,
         ResponseFactory<LeaveGroupResponse> responseFactory)
     {
         this.dbContext = dbContext;
         this.responseFactory = responseFactory;
     }
 
-    public async Task<Result<LeaveGroupResponse>> Handle(LeaveGroupCommand request,
+    public async Task<Result<LeaveGroupResponse>> Handle(
+        LeaveGroupCommand request,
         CancellationToken cancellationToken)
     {
         var userChat = await dbContext.UserChats
-            .Include(x=>x.Chat)
+            .Include(x => x.Chat)
             .Where(chatEntity => chatEntity.UserId == request.UserId)
             .Where(chatEntity => chatEntity.ChatId == request.ChatId)
             .FirstOrDefaultAsync(cancellationToken);
@@ -50,7 +52,7 @@ public class LeaveGroupCommandHandler
             return responseFactory.ConflictResponse(errorMessage, details);
         }
 
-        if (chat.CommunityType == (int) CommunityType.DirectChat)
+        if (chat.CommunityType == (int)CommunityType.DirectChat)
         {
             var messages = await dbContext.Messages
                 .Where(messageEntity => messageEntity.ChatId == request.ChatId)

@@ -7,7 +7,8 @@ namespace MangoAPI.DiffieHellmanLibrary.CngHandlers;
 
 public class CngGeneratePublicKeyHandler : BaseHandler, IGeneratePublicKeyHandler
 {
-    public CngGeneratePublicKeyHandler(HttpClient httpClient) : base(httpClient)
+    public CngGeneratePublicKeyHandler(HttpClient httpClient)
+        : base(httpClient)
     {
     }
 
@@ -40,7 +41,7 @@ public class CngGeneratePublicKeyHandler : BaseHandler, IGeneratePublicKeyHandle
         var publicKeyFolder = CngDirectoryHelper.CngPublicKeysDirectory;
         var publicKeyFileName = FileNameHelper.GenerateCngPublicKeyFileName(senderId, receiverId);
         var publicKeyPath = Path.Combine(publicKeyFolder, publicKeyFileName);
-        
+
         publicKeyFolder.CreateDirectoryIfNotExist();
 
         await File.WriteAllTextAsync(publicKeyPath, publicKey);

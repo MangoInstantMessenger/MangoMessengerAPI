@@ -59,7 +59,7 @@ public class UserEntityConfiguration : IEntityTypeConfiguration<UserEntity>
             NormalizedEmail = "KOLOSOVP94@GMAIL.COM",
             EmailConfirmed = true,
             PhoneNumberConfirmed = true,
-            Image = "razumovsky_picture.jpg"
+            Image = "razumovsky_picture.jpg",
         };
 
         var user3 = new UserEntity
@@ -87,7 +87,7 @@ public class UserEntityConfiguration : IEntityTypeConfiguration<UserEntity>
             NormalizedEmail = "AMELIT@GMAIL.COM",
             EmailConfirmed = true,
             PhoneNumberConfirmed = true,
-            Image = "amelit_picture.jpg"
+            Image = "amelit_picture.jpg",
         };
 
         var user5 = new UserEntity
@@ -101,7 +101,7 @@ public class UserEntityConfiguration : IEntityTypeConfiguration<UserEntity>
             NormalizedEmail = "PETRO.KOLOSOV@WP.PL",
             EmailConfirmed = true,
             PhoneNumberConfirmed = true,
-            Image = "razumovsky_picture.jpg"
+            Image = "razumovsky_picture.jpg",
         };
 
         var user6 = new UserEntity

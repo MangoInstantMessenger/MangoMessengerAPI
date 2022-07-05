@@ -1,5 +1,4 @@
 ﻿using FluentValidation;
-using System.Linq;
 using MangoAPI.Application.Services;
 
 namespace MangoAPI.BusinessLogic.ApiCommands.PasswordRestoreRequests;
@@ -19,14 +18,5 @@ public class PasswordRestoreCommandValidator : AbstractValidator<PasswordRestore
             .Length(8, 50);
 
         RuleFor(x => x.RequestId).NotEmpty();
-    }
-
-    private static bool PasswordIsStrong(string pass)
-    {
-        return pass.Length >= 8
-               && pass.Any(char.IsUpper)
-               && pass.Any(char.IsLower)
-               && pass.Any(char.IsDigit)
-               && pass.Any(char.IsSymbol);
     }
 }

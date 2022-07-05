@@ -26,11 +26,13 @@ public class ChangePasswordCommandHandler
         this.responseFactory = responseFactory;
     }
 
-    public async Task<Result<ResponseBase>> Handle(ChangePasswordCommand request,
+    public async Task<Result<ResponseBase>> Handle(
+        ChangePasswordCommand request,
         CancellationToken cancellationToken)
     {
         var user = await dbContext.Users
-            .FirstOrDefaultAsync(userEntity => userEntity.Id == request.UserId,
+            .FirstOrDefaultAsync(
+                userEntity => userEntity.Id == request.UserId,
                 cancellationToken);
 
         if (user is null)
@@ -53,7 +55,7 @@ public class ChangePasswordCommandHandler
 
         await userManager.RemovePasswordAsync(user);
 
-        var result = await userManager.AddPasswordAsync(user, request.NewPassword);
+        await userManager.AddPasswordAsync(user, request.NewPassword);
 
         return responseFactory.SuccessResponse(ResponseBase.SuccessResponse);
     }

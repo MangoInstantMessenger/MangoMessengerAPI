@@ -16,14 +16,16 @@ public class
     private readonly MangoDbContext mangoDbContext;
     private readonly ResponseFactory<ResponseBase> responseFactory;
 
-    public ConfirmKeyExchangeCommandHandler(MangoDbContext mangoDbContext,
+    public ConfirmKeyExchangeCommandHandler(
+        MangoDbContext mangoDbContext,
         ResponseFactory<ResponseBase> responseFactory)
     {
         this.mangoDbContext = mangoDbContext;
         this.responseFactory = responseFactory;
     }
 
-    public async Task<Result<ResponseBase>> Handle(ConfirmKeyExchangeCommand request,
+    public async Task<Result<ResponseBase>> Handle(
+        ConfirmKeyExchangeCommand request,
         CancellationToken cancellationToken)
     {
         var keyExchangeRequest = await mangoDbContext.DiffieHellmanKeyExchangeEntities

@@ -1,6 +1,6 @@
-﻿using MangoAPI.Domain.Entities;
-using System;
+﻿using System;
 using System.ComponentModel;
+using MangoAPI.Domain.Entities;
 
 namespace MangoAPI.BusinessLogic.Models;
 

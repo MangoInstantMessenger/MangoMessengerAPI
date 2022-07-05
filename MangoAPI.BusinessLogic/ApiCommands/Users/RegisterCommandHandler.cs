@@ -1,12 +1,12 @@
-﻿using MangoAPI.Application.Interfaces;
+﻿using System;
+using System.Threading;
+using System.Threading.Tasks;
+using MangoAPI.Application.Interfaces;
 using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.Domain.Constants;
 using MangoAPI.Domain.Entities;
-using MediatR;
-using System;
-using System.Threading;
-using System.Threading.Tasks;
 using MangoAPI.Infrastructure.Database;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
 
 namespace MangoAPI.BusinessLogic.ApiCommands.Users;
@@ -62,7 +62,7 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, Result<Re
             UserName = Guid.NewGuid().ToString(),
             Email = request.Email,
             EmailCode = Guid.NewGuid(),
-            Image = "default_avatar.png"
+            Image = "default_avatar.png",
         };
 
         await userManager.CreateAsync(newUser, request.Password);

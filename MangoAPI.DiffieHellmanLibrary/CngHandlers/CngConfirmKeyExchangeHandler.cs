@@ -7,7 +7,8 @@ namespace MangoAPI.DiffieHellmanLibrary.CngHandlers;
 
 public class CngConfirmKeyExchangeHandler : BaseHandler, IConfirmKeyExchangeHandler
 {
-    public CngConfirmKeyExchangeHandler(HttpClient httpClient) : base(httpClient)
+    public CngConfirmKeyExchangeHandler(HttpClient httpClient)
+        : base(httpClient)
     {
     }
 
@@ -47,7 +48,7 @@ public class CngConfirmKeyExchangeHandler : BaseHandler, IConfirmKeyExchangeHand
 
         using var content = new MultipartFormDataContent
         {
-            { new StreamContent(stream), "receiverPublicKey", publicKeyFileName }
+            { new StreamContent(stream), "receiverPublicKey", publicKeyFileName },
         };
 
         request.Content = content;

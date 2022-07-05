@@ -31,12 +31,14 @@ public class RefreshSessionCommandHandler : IRequestHandler<RefreshSessionComman
         this.jwtGeneratorSettings = jwtGeneratorSettings;
     }
 
-    public async Task<Result<TokensResponse>> Handle(RefreshSessionCommand request,
+    public async Task<Result<TokensResponse>> Handle(
+        RefreshSessionCommand request,
         CancellationToken cancellationToken)
     {
         var session = await dbContext.Sessions
             .Include(x => x.UserEntity)
-            .FirstOrDefaultAsync(entity => entity.RefreshToken == request.RefreshToken,
+            .FirstOrDefaultAsync(
+                entity => entity.RefreshToken == request.RefreshToken,
                 cancellationToken);
 
         if (session is null || session.IsExpired)
@@ -77,7 +79,12 @@ public class RefreshSessionCommandHandler : IRequestHandler<RefreshSessionComman
 
         var expires = ((DateTimeOffset)session.ExpiresAt).ToUnixTimeSeconds();
 
-        return responseFactory.SuccessResponse(TokensResponse.FromSuccess(jwtToken, newSession.RefreshToken,
-            session.UserId, expires));
+        var result = TokensResponse.FromSuccess(
+            jwtToken,
+            newSession.RefreshToken,
+            session.UserId,
+            expires);
+
+        return responseFactory.SuccessResponse(result);
     }
 }

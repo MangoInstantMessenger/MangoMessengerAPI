@@ -1,9 +1,9 @@
 ﻿using System;
-using MangoAPI.BusinessLogic.ApiCommands.Users;
-using Microsoft.AspNetCore.Mvc;
 using System.Threading;
 using System.Threading.Tasks;
+using MangoAPI.BusinessLogic.ApiCommands.Users;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 
 namespace MangoAPI.Presentation.Interfaces;
 
@@ -17,10 +17,12 @@ public interface IUsersController
 
     Task<IActionResult> GetUserById(Guid userId, CancellationToken cancellationToken);
 
-    Task<IActionResult> UpdateUserAccountInfoAsync(UpdateUserAccountInfoRequest request,
+    Task<IActionResult> UpdateUserAccountInfoAsync(
+        UpdateUserAccountInfoRequest request,
         CancellationToken cancellationToken);
 
-    Task<IActionResult> UpdateUserSocialInformationAsync(UpdateUserSocialInformationRequest request,
+    Task<IActionResult> UpdateUserSocialInformationAsync(
+        UpdateUserSocialInformationRequest request,
         CancellationToken cancellationToken);
 
     Task<IActionResult> UpdateProfilePictureAsync(IFormFile pictureFile, CancellationToken cancellationToken);

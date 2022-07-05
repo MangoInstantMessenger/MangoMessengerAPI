@@ -4,4 +4,5 @@ using MediatR;
 
 namespace MangoAPI.BusinessLogic.ApiCommands.Contacts;
 
-public record DeleteContactCommand(Guid UserId, Guid ContactId) : IRequest<Result<ResponseBase>>;
+public record DeleteContactCommand(Guid UserId, Guid ContactId)
+    : IRequest<Result<ResponseBase>>;

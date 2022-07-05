@@ -12,10 +12,10 @@ namespace MangoAPI.IntegrationTests
             {
                 TablesToIgnore = new Table[]
                 {
-                    "__EFMigrationsHistory"
+                    "__EFMigrationsHistory",
                 },
-                SchemasToInclude = new[] {schema},
-                WithReseed = true
+                SchemasToInclude = new[] { schema },
+                WithReseed = true,
             };
 
             await checkpoint.Reset(connectionString);

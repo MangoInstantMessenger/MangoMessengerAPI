@@ -21,12 +21,14 @@ public static class AuthController
                 await handler.LoginAsync(login, password);
                 break;
             }
+
             case Commands.RefreshToken:
             {
                 var handler = DependencyResolver.ResolveService<RefreshTokenHandler>();
                 await handler.RefreshTokensAsync();
                 break;
             }
+
             default:
             {
                 Console.WriteLine(@"Unrecognized command.");

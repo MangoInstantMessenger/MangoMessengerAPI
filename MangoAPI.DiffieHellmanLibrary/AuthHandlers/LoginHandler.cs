@@ -9,7 +9,8 @@ namespace MangoAPI.DiffieHellmanLibrary.AuthHandlers;
 
 public class LoginHandler : BaseHandler
 {
-    public LoginHandler(HttpClient httpClient) : base(httpClient)
+    public LoginHandler(HttpClient httpClient)
+        : base(httpClient)
     {
     }
 

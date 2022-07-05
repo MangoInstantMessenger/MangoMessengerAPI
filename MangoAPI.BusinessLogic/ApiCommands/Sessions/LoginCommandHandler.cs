@@ -1,14 +1,14 @@
-﻿using MangoAPI.Application.Interfaces;
-using MangoAPI.BusinessLogic.Responses;
-using MangoAPI.Domain.Constants;
-using MangoAPI.Domain.Entities;
-using MediatR;
-using Microsoft.EntityFrameworkCore;
-using System;
+﻿using System;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using MangoAPI.Application.Interfaces;
+using MangoAPI.BusinessLogic.Responses;
+using MangoAPI.Domain.Constants;
+using MangoAPI.Domain.Entities;
 using MangoAPI.Infrastructure.Database;
+using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 namespace MangoAPI.BusinessLogic.ApiCommands.Sessions;
 
@@ -34,11 +34,13 @@ public class LoginCommandHandler : IRequestHandler<LoginCommand, Result<TokensRe
         this.jwtGeneratorSettings = jwtGeneratorSettings;
     }
 
-    public async Task<Result<TokensResponse>> Handle(LoginCommand request,
+    public async Task<Result<TokensResponse>> Handle(
+        LoginCommand request,
         CancellationToken cancellationToken)
     {
         var user = await dbContext.Users
-            .FirstOrDefaultAsync(userEntity => userEntity.Email == request.Email,
+            .FirstOrDefaultAsync(
+                userEntity => userEntity.Email == request.Email,
                 cancellationToken);
 
         if (user is null)
@@ -90,7 +92,7 @@ public class LoginCommandHandler : IRequestHandler<LoginCommand, Result<TokensRe
         dbContext.Sessions.Add(session);
         await dbContext.SaveChangesAsync(cancellationToken);
 
-        var expires = ((DateTimeOffset) session.ExpiresAt).ToUnixTimeSeconds();
+        var expires = ((DateTimeOffset)session.ExpiresAt).ToUnixTimeSeconds();
         var tokens = TokensResponse.FromSuccess(jwtToken, session.RefreshToken, user.Id, expires);
 
         return responseFactory.SuccessResponse(tokens);

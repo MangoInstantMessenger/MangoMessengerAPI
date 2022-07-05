@@ -1,15 +1,15 @@
 ﻿using System;
-using MangoAPI.BusinessLogic.Responses;
-using MangoAPI.Domain.Constants;
-using MangoAPI.Domain.Enums;
-using MediatR;
-using Microsoft.EntityFrameworkCore;
 using System.Threading;
 using System.Threading.Tasks;
 using MangoAPI.Application.Interfaces;
 using MangoAPI.Application.Services;
+using MangoAPI.BusinessLogic.Responses;
+using MangoAPI.Domain.Constants;
 using MangoAPI.Domain.Entities;
+using MangoAPI.Domain.Enums;
 using MangoAPI.Infrastructure.Database;
+using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 namespace MangoAPI.BusinessLogic.ApiCommands.Communities;
 
@@ -31,12 +31,14 @@ public class
         this.blobService = blobService;
     }
 
-    public async Task<Result<UpdateChannelPictureResponse>> Handle(UpdateChanelPictureCommand request,
+    public async Task<Result<UpdateChannelPictureResponse>> Handle(
+        UpdateChanelPictureCommand request,
         CancellationToken cancellationToken)
     {
-        var totalUploadedDocsCount = await dbContext.Documents.CountAsync(x =>
-            x.UserId == request.UserId &&
-            x.UploadedAt > DateTime.UtcNow.AddHours(-1), cancellationToken);
+        var totalUploadedDocsCount = await dbContext.Documents.CountAsync(
+            x =>
+                x.UserId == request.UserId &&
+                x.UploadedAt > DateTime.UtcNow.AddHours(-1), cancellationToken);
 
         if (totalUploadedDocsCount >= 10)
         {
@@ -47,11 +49,12 @@ public class
 
         var userChat = await dbContext.UserChats
             .Include(x => x.Chat)
-            .FirstOrDefaultAsync(x =>
-                x.ChatId == request.ChatId &&
-                x.UserId == request.UserId &&
-                x.RoleId == (int)UserRole.Owner &&
-                x.Chat.CommunityType != (int)CommunityType.DirectChat, cancellationToken);
+            .FirstOrDefaultAsync(
+                x =>
+                    x.ChatId == request.ChatId &&
+                    x.UserId == request.UserId &&
+                    x.RoleId == (int)UserRole.Owner &&
+                    x.Chat.CommunityType != (int)CommunityType.DirectChat, cancellationToken);
 
         if (userChat is null)
         {
@@ -71,7 +74,7 @@ public class
         {
             FileName = uniqueFileName,
             UserId = request.UserId,
-            UploadedAt = DateTime.UtcNow
+            UploadedAt = DateTime.UtcNow,
         };
 
         dbContext.Documents.Add(newUserPicture);

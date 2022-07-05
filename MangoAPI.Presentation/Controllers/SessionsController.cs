@@ -1,4 +1,8 @@
-﻿using AutoMapper;
+﻿using System;
+using System.Threading;
+using System.Threading.Tasks;
+using AutoMapper;
+using MangoAPI.Application.Interfaces;
 using MangoAPI.BusinessLogic.ApiCommands.Sessions;
 using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.Presentation.Interfaces;
@@ -7,10 +11,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
-using System;
-using System.Threading;
-using System.Threading.Tasks;
-using MangoAPI.Application.Interfaces;
 
 namespace MangoAPI.Presentation.Controllers;
 
@@ -21,8 +21,8 @@ namespace MangoAPI.Presentation.Controllers;
 [Route("api/sessions")]
 public class SessionsController : ApiControllerBase, ISessionsController
 {
-    public SessionsController(IMediator mediator, IMapper mapper, ICorrelationContext correlationContext) : base(
-        mediator, mapper, correlationContext)
+    public SessionsController(IMediator mediator, IMapper mapper, ICorrelationContext correlationContext)
+        : base(mediator, mapper, correlationContext)
     {
     }
 
@@ -40,7 +40,8 @@ public class SessionsController : ApiControllerBase, ISessionsController
     [ProducesResponseType(typeof(TokensResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
-    public async Task<IActionResult> LoginAsync([FromBody] LoginRequest request,
+    public async Task<IActionResult> LoginAsync(
+        [FromBody] LoginRequest request,
         CancellationToken cancellationToken)
     {
         var command = Mapper.Map<LoginCommand>(request);
@@ -55,14 +56,16 @@ public class SessionsController : ApiControllerBase, ISessionsController
     /// <returns>Possible codes: 200, 400, 409.</returns>
     [AllowAnonymous]
     [HttpPost("{refreshToken:guid}")]
-    [SwaggerOperation(Description = "Refreshes current user's session. " +
-                                    "Returns pair of the access/refresh tokens. " +
-                                    "Requires valid refresh token. Allow anonymous.",
+    [SwaggerOperation(
+        Description = "Refreshes current user's session. " +
+                      "Returns pair of the access/refresh tokens. " +
+                      "Requires valid refresh token. Allow anonymous.",
         Summary = "Refreshes current user's session.")]
     [ProducesResponseType(typeof(TokensResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
-    public async Task<IActionResult> RefreshSession([FromRoute] Guid refreshToken,
+    public async Task<IActionResult> RefreshSession(
+        [FromRoute] Guid refreshToken,
         CancellationToken cancellationToken)
     {
         var command = new RefreshSessionCommand(refreshToken);
@@ -84,7 +87,8 @@ public class SessionsController : ApiControllerBase, ISessionsController
     [ProducesResponseType(typeof(ResponseBase), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
-    public async Task<IActionResult> LogoutAsync([FromRoute] Guid refreshToken,
+    public async Task<IActionResult> LogoutAsync(
+        [FromRoute] Guid refreshToken,
         CancellationToken cancellationToken)
     {
         var userId = CorrelationContext.GetUserId();

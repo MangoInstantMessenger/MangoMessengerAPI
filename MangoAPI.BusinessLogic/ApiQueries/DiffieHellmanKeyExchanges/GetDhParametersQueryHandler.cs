@@ -14,14 +14,16 @@ public class GetDhParametersQueryHandler : IRequestHandler<GetDhParametersQuery,
     private readonly MangoDbContext mangoDbContext;
     private readonly ResponseFactory<GetDhParametersResponse> responseFactory;
 
-    public GetDhParametersQueryHandler(MangoDbContext mangoDbContext,
+    public GetDhParametersQueryHandler(
+        MangoDbContext mangoDbContext,
         ResponseFactory<GetDhParametersResponse> responseFactory)
     {
         this.mangoDbContext = mangoDbContext;
         this.responseFactory = responseFactory;
     }
 
-    public async Task<Result<GetDhParametersResponse>> Handle(GetDhParametersQuery request,
+    public async Task<Result<GetDhParametersResponse>> Handle(
+        GetDhParametersQuery request,
         CancellationToken cancellationToken)
     {
         var dhParameter = await mangoDbContext.DiffieHellmanParameterEntities
@@ -42,7 +44,7 @@ public class GetDhParametersQueryHandler : IRequestHandler<GetDhParametersQuery,
         {
             FileContent = bytes,
             Message = ResponseMessageCodes.Success,
-            Success = true
+            Success = true,
         };
 
         return responseFactory.SuccessResponse(response);

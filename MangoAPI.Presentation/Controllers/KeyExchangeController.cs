@@ -25,17 +25,16 @@ namespace MangoAPI.Presentation.Controllers;
 [Authorize]
 public class KeyExchangeController : ApiControllerBase, IKeyExchangeController
 {
-    public KeyExchangeController(IMediator mediator, IMapper mapper, ICorrelationContext correlationContext) :
-        base(mediator, mapper, correlationContext)
+    public KeyExchangeController(IMediator mediator, IMapper mapper, ICorrelationContext correlationContext)
+        : base(mediator, mapper, correlationContext)
     {
     }
 
     /// <summary>
     /// Creates Diffie-Hellman parameter that is used by exchanging sides.
     /// </summary>
-    /// <param name="file">IFormFile instance</param>
-    /// <param name="cancellationToken">Cancellation token instance</param>
-    /// <returns></returns>
+    /// <param name="file">IFormFile instance.</param>
+    /// <param name="cancellationToken">Cancellation token instance.</param>
     [HttpPost("parameters")]
     [SwaggerOperation(
         Summary = "Downloads Diffie-Hellman parameter that is used by exchanging sides.",
@@ -43,7 +42,8 @@ public class KeyExchangeController : ApiControllerBase, IKeyExchangeController
     [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
     [ProducesResponseType(typeof(CreateDiffieHellmanParameterResponse), StatusCodes.Status200OK)]
-    public async Task<IActionResult> CreateDiffieHellmanParameter([FromForm] IFormFile file,
+    public async Task<IActionResult> CreateDiffieHellmanParameter(
+        [FromForm] IFormFile file,
         CancellationToken cancellationToken)
     {
         var userId = CorrelationContext.GetUserId();
@@ -59,7 +59,6 @@ public class KeyExchangeController : ApiControllerBase, IKeyExchangeController
     /// Downloads Diffie-Hellman parameter that is used by exchanging sides.
     /// </summary>
     /// <param name="cancellationToken">Cancellation token instance.</param>
-    /// <returns></returns>
     [HttpGet("parameters")]
     [SwaggerOperation(
         Summary = "Downloads Diffie-Hellman parameter that is used by exchanging sides.",
@@ -76,11 +75,10 @@ public class KeyExchangeController : ApiControllerBase, IKeyExchangeController
     /// <summary>
     /// Creates Diffie-Hellman key exchange between two parties.
     /// </summary>
-    /// <param name="userId">User GUID</param>
-    /// <param name="keyExchangeType"></param>
-    /// <param name="senderPublicKey">IFormFile instance</param>
-    /// <param name="cancellationToken">Cancellation token instance</param>
-    /// <returns></returns>
+    /// <param name="userId">User GUID.</param>
+    /// <param name="keyExchangeType">KeyExchangeType enum.</param>
+    /// <param name="senderPublicKey">IFormFile instance.</param>
+    /// <param name="cancellationToken">Cancellation token instance.</param>
     [HttpPost("{userId:guid}")]
     [SwaggerOperation(
         Summary = "Creates Diffie-Hellman key exchange between two parties.",
@@ -100,7 +98,7 @@ public class KeyExchangeController : ApiControllerBase, IKeyExchangeController
             new CreateKeyExchangeCommand(
                 userId,
                 senderId,
-                senderPublicKey, 
+                senderPublicKey,
                 keyExchangeType);
 
         return await RequestAsync(command, cancellationToken);
@@ -110,7 +108,6 @@ public class KeyExchangeController : ApiControllerBase, IKeyExchangeController
     /// Get all the user's key exchange requests.
     /// </summary>
     /// <param name="cancellationToken">Cancellation token instance.</param>
-    /// <returns></returns>
     [HttpGet]
     [SwaggerOperation(
         Summary = "Get all the user's key exchange requests",
@@ -130,9 +127,8 @@ public class KeyExchangeController : ApiControllerBase, IKeyExchangeController
     /// Confirm the key exchange by ID.
     /// </summary>
     /// <param name="requestId">Request ID.</param>
-    /// <param name="receiverPublicKey"></param>
+    /// <param name="receiverPublicKey">IFormFile receiverPublicKey.</param>
     /// <param name="cancellationToken">Cancellation token instance.</param>
-    /// <returns></returns>
     [HttpPut("{requestId:guid}")]
     [SwaggerOperation(
         Summary = "Confirm the key exchange by ID.",
@@ -160,7 +156,6 @@ public class KeyExchangeController : ApiControllerBase, IKeyExchangeController
     /// </summary>
     /// <param name="requestId">Request ID.</param>
     /// <param name="cancellationToken">Cancellation token instance.</param>
-    /// <returns></returns>
     [HttpDelete("{requestId:guid}")]
     [SwaggerOperation(
         Summary = "Decline key exchange.",
@@ -184,7 +179,6 @@ public class KeyExchangeController : ApiControllerBase, IKeyExchangeController
     /// </summary>
     /// <param name="requestId">Request ID.</param>
     /// <param name="cancellationToken">Cancellation token instance.</param>
-    /// <returns></returns>
     [HttpGet("public-keys/{requestId:guid}")]
     [SwaggerOperation(
         Summary = "Download partner public key.",
@@ -214,7 +208,6 @@ public class KeyExchangeController : ApiControllerBase, IKeyExchangeController
     /// </summary>
     /// <param name="requestId">Request ID.</param>
     /// <param name="cancellationToken">Cancellation token instance.</param>
-    /// <returns></returns>
     [HttpGet("{requestId:guid}")]
     [SwaggerOperation(
         Summary = "Get key exchange by ID.",
@@ -222,7 +215,8 @@ public class KeyExchangeController : ApiControllerBase, IKeyExchangeController
     [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
     [ProducesResponseType(typeof(GetKeyExchangeRequestByIdResponse), StatusCodes.Status200OK)]
-    public async Task<IActionResult> GetKeyExchangeRequestById([FromRoute] Guid requestId,
+    public async Task<IActionResult> GetKeyExchangeRequestById(
+        [FromRoute] Guid requestId,
         CancellationToken cancellationToken)
     {
         var userId = CorrelationContext.GetUserId();

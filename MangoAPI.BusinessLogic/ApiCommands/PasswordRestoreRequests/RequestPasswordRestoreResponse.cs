@@ -14,7 +14,7 @@ public record RequestPasswordRestoreResponse : ResponseBase
         {
             Message = ResponseMessageCodes.Success,
             Success = true,
-            RequestId = requestId
+            RequestId = requestId,
         };
     }
 }

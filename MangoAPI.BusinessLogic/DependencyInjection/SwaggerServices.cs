@@ -30,10 +30,10 @@ public static class SwaggerServices
                         {
                             Type = ReferenceType.SecurityScheme,
                             Id = "Bearer",
-                        }
+                        },
                     },
                     Array.Empty<string>()
-                }
+                },
             });
         });
 

@@ -20,6 +20,6 @@ public class GetUserQueryShouldThrowUserNotFound : IntegrationTestBase
 
         var result = await MangoModule.RequestAsync(query, CancellationToken.None);
 
-        assert.Fail(result, expectedMessage,expectedDetails);
+        assert.Fail(result, expectedMessage, expectedDetails);
     }
 }

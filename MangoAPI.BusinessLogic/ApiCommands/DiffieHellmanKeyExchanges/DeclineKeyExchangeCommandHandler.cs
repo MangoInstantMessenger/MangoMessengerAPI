@@ -22,7 +22,8 @@ public class
         this.responseFactory = responseFactory;
     }
 
-    public async Task<Result<ResponseBase>> Handle(DeclineKeyExchangeCommand request,
+    public async Task<Result<ResponseBase>> Handle(
+        DeclineKeyExchangeCommand request,
         CancellationToken cancellationToken)
     {
         var keyExchangeRequest =

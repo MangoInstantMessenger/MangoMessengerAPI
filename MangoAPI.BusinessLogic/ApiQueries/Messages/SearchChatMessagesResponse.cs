@@ -1,7 +1,7 @@
-﻿using MangoAPI.BusinessLogic.Models;
+﻿using System.Collections.Generic;
+using MangoAPI.BusinessLogic.Models;
 using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.Domain.Constants;
-using System.Collections.Generic;
 
 namespace MangoAPI.BusinessLogic.ApiQueries.Messages;
 
@@ -14,6 +14,6 @@ public record SearchChatMessagesResponse : ResponseBase
         {
             Messages = messages,
             Message = ResponseMessageCodes.Success,
-            Success = true
+            Success = true,
         };
 }

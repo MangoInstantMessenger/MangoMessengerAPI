@@ -11,8 +11,9 @@ namespace MangoAPI.DiffieHellmanLibrary.Abstractions;
 
 public abstract class BaseHandler
 {
-    protected readonly HttpClient HttpClient;
-    protected readonly TokensResponse TokensResponse;
+    protected HttpClient HttpClient { get; }
+
+    protected TokensResponse TokensResponse { get; }
 
     protected BaseHandler(HttpClient httpClient)
     {

@@ -4,7 +4,8 @@ namespace MangoAPI.DiffieHellmanLibrary.CngHandlers;
 
 public class CngPrintKeyExchangesHandler : BaseHandler, IPrintKeyExchangesHandler
 {
-    public CngPrintKeyExchangesHandler(HttpClient httpClient) : base(httpClient)
+    public CngPrintKeyExchangesHandler(HttpClient httpClient)
+        : base(httpClient)
     {
     }
 

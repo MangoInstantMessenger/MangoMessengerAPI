@@ -19,18 +19,21 @@ public static class OpenSslController
                 await OpenSslGenerateDhParametersHandler.CreateDhParametersAsync();
                 break;
             }
+
             case Commands.OpenSslUploadDhParameters:
             {
                 var handler = DependencyResolver.ResolveService<OpensslUploadDhParametersHandler>();
                 await handler.UploadDhParametersAsync();
                 break;
             }
+
             case Commands.OpenSslDownloadDhParameters:
             {
                 var handler = DependencyResolver.ResolveService<OpensslDownloadDhParametersHandler>();
                 await handler.DownloadDhParametersAsync();
                 break;
             }
+
             case Commands.OpenSslGeneratePrivateKey:
             {
                 var receiverIdString = args[1];
@@ -39,6 +42,7 @@ public static class OpenSslController
                 await handler.GeneratePrivateKeyAsync(receiverId);
                 break;
             }
+
             case Commands.OpenSslGeneratePublicKey:
             {
                 var receiverIdString = args[1];
@@ -48,6 +52,7 @@ public static class OpenSslController
 
                 break;
             }
+
             case Commands.OpenSslCreateKeyExchange:
             {
                 var receiverIdString = args[1];
@@ -56,12 +61,14 @@ public static class OpenSslController
                 await handler.CreateKeyExchangeAsync(receiverId);
                 break;
             }
+
             case Commands.OpenSslPrintKeyExchanges:
             {
                 var handler = DependencyResolver.ResolveService<OpensslPrintKeyExchangesHandler>();
                 await handler.PrintKeyExchangesAsync();
                 break;
             }
+
             case Commands.OpenSslConfirmKeyExchange:
             {
                 var userIdString = args[1];
@@ -70,6 +77,7 @@ public static class OpenSslController
                 await handler.ConfirmKeyExchangeAsync(userId);
                 break;
             }
+
             case Commands.OpenSslCreateCommonSecret:
             {
                 var actorString = args[1];
@@ -80,6 +88,7 @@ public static class OpenSslController
                 await handler.CreateCommonSecretAsync(actor, partnerId);
                 break;
             }
+
             case Commands.OpenSslDownloadPublicKey:
             {
                 var actorString = args[1];
@@ -90,6 +99,7 @@ public static class OpenSslController
                 await handler.DownloadPublicKeyAsync(actor, userId);
                 break;
             }
+
             case Commands.OpenSslDeclineKeyExchange:
             {
                 var requestIdString = args[1];
@@ -98,6 +108,7 @@ public static class OpenSslController
                 await handler.DeclineKeyExchangeAsync(requestId);
                 break;
             }
+
             case Commands.OpenSslPrintKeyExchangeById:
             {
                 var requestIdString = args[1];
@@ -106,6 +117,7 @@ public static class OpenSslController
                 await handler.GetKeyExchangeByIdAsync(requestId);
                 break;
             }
+
             case Commands.OpensslValidateCommonSecret:
             {
                 var senderIdString = args[1];
@@ -116,6 +128,7 @@ public static class OpenSslController
                 await handler.ValidateCommonSecretAsync(senderId, receiverId);
                 break;
             }
+
             default:
             {
                 Console.WriteLine(@"Unrecognized command.");

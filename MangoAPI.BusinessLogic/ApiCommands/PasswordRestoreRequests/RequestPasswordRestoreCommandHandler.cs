@@ -1,12 +1,12 @@
-﻿using MangoAPI.Application.Interfaces;
+﻿using System;
+using System.Threading;
+using System.Threading.Tasks;
+using MangoAPI.Application.Interfaces;
 using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.Domain.Constants;
 using MangoAPI.Domain.Entities;
-using MediatR;
-using System;
-using System.Threading;
-using System.Threading.Tasks;
 using MangoAPI.Infrastructure.Database;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
 
 namespace MangoAPI.BusinessLogic.ApiCommands.PasswordRestoreRequests;
@@ -18,19 +18,23 @@ public class RequestPasswordRestoreCommandHandler
     private readonly IEmailSenderService emailSenderService;
     private readonly ResponseFactory<RequestPasswordRestoreResponse> responseFactory;
 
-    public RequestPasswordRestoreCommandHandler(MangoDbContext dbContext,
-        IEmailSenderService emailSenderService, ResponseFactory<RequestPasswordRestoreResponse> responseFactory)
+    public RequestPasswordRestoreCommandHandler(
+        MangoDbContext dbContext,
+        IEmailSenderService emailSenderService,
+        ResponseFactory<RequestPasswordRestoreResponse> responseFactory)
     {
         this.dbContext = dbContext;
         this.emailSenderService = emailSenderService;
         this.responseFactory = responseFactory;
     }
 
-    public async Task<Result<RequestPasswordRestoreResponse>> Handle(RequestPasswordRestoreCommand request,
+    public async Task<Result<RequestPasswordRestoreResponse>> Handle(
+        RequestPasswordRestoreCommand request,
         CancellationToken cancellationToken)
     {
         var user = await dbContext.Users
-            .FirstOrDefaultAsync(userEntity => userEntity.Email == request.Email,
+            .FirstOrDefaultAsync(
+                userEntity => userEntity.Email == request.Email,
                 cancellationToken);
 
         if (user is null)

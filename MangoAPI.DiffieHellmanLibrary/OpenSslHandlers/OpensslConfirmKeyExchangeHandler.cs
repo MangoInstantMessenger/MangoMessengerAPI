@@ -7,7 +7,8 @@ namespace MangoAPI.DiffieHellmanLibrary.OpenSslHandlers;
 
 public class OpensslConfirmKeyExchangeHandler : BaseHandler, IConfirmKeyExchangeHandler
 {
-    public OpensslConfirmKeyExchangeHandler(HttpClient httpClient) : base(httpClient)
+    public OpensslConfirmKeyExchangeHandler(HttpClient httpClient)
+        : base(httpClient)
     {
     }
 
@@ -54,7 +55,7 @@ public class OpensslConfirmKeyExchangeHandler : BaseHandler, IConfirmKeyExchange
 
         using var content = new MultipartFormDataContent
         {
-            { new StreamContent(stream), "receiverPublicKey", publicKeyFileName }
+            { new StreamContent(stream), "receiverPublicKey", publicKeyFileName },
         };
 
         request.Content = content;

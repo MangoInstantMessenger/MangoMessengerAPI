@@ -6,7 +6,8 @@ namespace MangoAPI.DiffieHellmanLibrary.OpenSslHandlers;
 
 public class OpensslUploadDhParametersHandler : BaseHandler, IUploadDhParametersHandler
 {
-    public OpensslUploadDhParametersHandler(HttpClient httpClient) : base(httpClient)
+    public OpensslUploadDhParametersHandler(HttpClient httpClient)
+        : base(httpClient)
     {
     }
 
@@ -35,7 +36,7 @@ public class OpensslUploadDhParametersHandler : BaseHandler, IUploadDhParameters
 
         using var content = new MultipartFormDataContent
         {
-            { new StreamContent(stream), "file", "dhp.pem" }
+            { new StreamContent(stream), "file", "dhp.pem" },
         };
 
         request.Content = content;

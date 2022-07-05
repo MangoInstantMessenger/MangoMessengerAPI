@@ -14,7 +14,8 @@ public class DownloadPartnerPublicKeyQueryHandler : IRequestHandler<DownloadPart
     private readonly MangoDbContext mangoDbContext;
     private readonly ResponseFactory<DownloadPartnerPublicKeyResponse> responseFactory;
 
-    public DownloadPartnerPublicKeyQueryHandler(MangoDbContext mangoDbContext,
+    public DownloadPartnerPublicKeyQueryHandler(
+        MangoDbContext mangoDbContext,
         ResponseFactory<DownloadPartnerPublicKeyResponse> responseFactory)
     {
         this.mangoDbContext = mangoDbContext;

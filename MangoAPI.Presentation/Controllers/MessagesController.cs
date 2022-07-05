@@ -1,4 +1,8 @@
-﻿using AutoMapper;
+﻿using System;
+using System.Threading;
+using System.Threading.Tasks;
+using AutoMapper;
+using MangoAPI.Application.Interfaces;
 using MangoAPI.BusinessLogic.ApiCommands.Messages;
 using MangoAPI.BusinessLogic.ApiQueries.Messages;
 using MangoAPI.BusinessLogic.Responses;
@@ -8,10 +12,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
-using System;
-using System.Threading;
-using System.Threading.Tasks;
-using MangoAPI.Application.Interfaces;
 
 namespace MangoAPI.Presentation.Controllers;
 
@@ -23,8 +23,8 @@ namespace MangoAPI.Presentation.Controllers;
 [Authorize]
 public class MessagesController : ApiControllerBase, IMessagesController
 {
-    public MessagesController(IMediator mediator, IMapper mapper, ICorrelationContext correlationContext) : base(
-        mediator, mapper, correlationContext)
+    public MessagesController(IMediator mediator, IMapper mapper, ICorrelationContext correlationContext)
+        : base(mediator, mapper, correlationContext)
     {
     }
 
@@ -40,7 +40,8 @@ public class MessagesController : ApiControllerBase, IMessagesController
         Summary = "Returns chat messages by ID.")]
     [ProducesResponseType(typeof(GetMessagesResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> GetChatMessages([FromRoute] Guid chatId,
+    public async Task<IActionResult> GetChatMessages(
+        [FromRoute] Guid chatId,
         CancellationToken cancellationToken)
     {
         var userId = CorrelationContext.GetUserId();
@@ -64,14 +65,16 @@ public class MessagesController : ApiControllerBase, IMessagesController
     [ProducesResponseType(typeof(SearchChatMessagesResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
-    public async Task<IActionResult> SearchChatMessages([FromRoute] Guid chatId, [FromQuery] string messageText,
+    public async Task<IActionResult> SearchChatMessages(
+        [FromRoute] Guid chatId,
+        [FromQuery] string messageText,
         CancellationToken cancellationToken)
     {
         var currentUserId = CorrelationContext.GetUserId();
 
         var query = new SearchChatMessagesQuery(
             ChatId: chatId,
-            MessageText: messageText, 
+            MessageText: messageText,
             UserId: currentUserId);
 
         return await RequestAsync(query, cancellationToken);
@@ -90,7 +93,8 @@ public class MessagesController : ApiControllerBase, IMessagesController
     [ProducesResponseType(typeof(SendMessageResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
-    public async Task<IActionResult> SendMessage([FromBody] SendMessageRequest request,
+    public async Task<IActionResult> SendMessage(
+        [FromBody] SendMessageRequest request,
         CancellationToken cancellationToken)
     {
         var userId = CorrelationContext.GetUserId();
@@ -101,7 +105,7 @@ public class MessagesController : ApiControllerBase, IMessagesController
             AttachmentUrl: request.AttachmentUrl,
             InReplayToAuthor: request.InReplayToAuthor,
             InReplayToText: request.InReplayToText);
-        
+
         return await RequestAsync(command, cancellationToken);
     }
 
@@ -118,7 +122,8 @@ public class MessagesController : ApiControllerBase, IMessagesController
     [ProducesResponseType(typeof(ResponseBase), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
-    public async Task<IActionResult> EditMessage([FromBody] EditMessageRequest request,
+    public async Task<IActionResult> EditMessage(
+        [FromBody] EditMessageRequest request,
         CancellationToken cancellationToken)
     {
         var userId = CorrelationContext.GetUserId();
@@ -127,7 +132,7 @@ public class MessagesController : ApiControllerBase, IMessagesController
             ChatId: request.ChatId,
             MessageId: request.MessageId,
             ModifiedText: request.ModifiedText);
-        
+
         return await RequestAsync(command, cancellationToken);
     }
 
@@ -144,7 +149,8 @@ public class MessagesController : ApiControllerBase, IMessagesController
     [ProducesResponseType(typeof(DeleteMessageResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
-    public async Task<IActionResult> DeleteMessage([FromBody] DeleteMessageRequest request,
+    public async Task<IActionResult> DeleteMessage(
+        [FromBody] DeleteMessageRequest request,
         CancellationToken cancellationToken)
     {
         var userId = CorrelationContext.GetUserId();

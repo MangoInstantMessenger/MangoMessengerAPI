@@ -5,5 +5,5 @@ using Microsoft.AspNetCore.Http;
 
 namespace MangoAPI.BusinessLogic.ApiCommands.DiffieHellmanKeyExchanges;
 
-public record CreateDiffieHellmanParameterCommand(IFormFile DiffieHellmanParameter, Guid UserId) 
+public record CreateDiffieHellmanParameterCommand(IFormFile DiffieHellmanParameter, Guid UserId)
     : IRequest<Result<CreateDiffieHellmanParameterResponse>>;

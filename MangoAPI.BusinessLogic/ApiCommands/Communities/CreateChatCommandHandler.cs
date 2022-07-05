@@ -1,17 +1,17 @@
-﻿using MangoAPI.BusinessLogic.HubConfig;
-using MangoAPI.BusinessLogic.Models;
-using MangoAPI.Domain.Constants;
-using MangoAPI.Domain.Entities;
-using MangoAPI.Domain.Enums;
-using MediatR;
-using Microsoft.AspNetCore.SignalR;
-using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using MangoAPI.BusinessLogic.HubConfig;
+using MangoAPI.BusinessLogic.Models;
 using MangoAPI.BusinessLogic.Responses;
+using MangoAPI.Domain.Constants;
+using MangoAPI.Domain.Entities;
+using MangoAPI.Domain.Enums;
 using MangoAPI.Infrastructure.Database;
+using MediatR;
+using Microsoft.AspNetCore.SignalR;
+using Microsoft.EntityFrameworkCore;
 
 namespace MangoAPI.BusinessLogic.ApiCommands.Communities;
 
@@ -22,15 +22,18 @@ public class CreateChatCommandHandler
     private readonly IHubContext<ChatHub, IHubClient> hubContext;
     private readonly ResponseFactory<CreateCommunityResponse> responseFactory;
 
-    public CreateChatCommandHandler(MangoDbContext dbContext,
-        IHubContext<ChatHub, IHubClient> hubContext, ResponseFactory<CreateCommunityResponse> responseFactory)
+    public CreateChatCommandHandler(
+        MangoDbContext dbContext,
+        IHubContext<ChatHub, IHubClient> hubContext,
+        ResponseFactory<CreateCommunityResponse> responseFactory)
     {
         this.dbContext = dbContext;
         this.hubContext = hubContext;
         this.responseFactory = responseFactory;
     }
 
-    public async Task<Result<CreateCommunityResponse>> Handle(CreateChatCommand request,
+    public async Task<Result<CreateCommunityResponse>> Handle(
+        CreateChatCommand request,
         CancellationToken cancellationToken)
     {
         var partner = await dbContext.Users.AsNoTracking()
@@ -83,8 +86,8 @@ public class CreateChatCommandHandler
 
         var userChats = new[]
         {
-            new UserChatEntity {ChatId = chatEntity.Id, RoleId = (int) UserRole.User, UserId = request.UserId},
-            new UserChatEntity {ChatId = chatEntity.Id, RoleId = (int) UserRole.User, UserId = request.PartnerId},
+            new UserChatEntity { ChatId = chatEntity.Id, RoleId = (int)UserRole.User, UserId = request.UserId },
+            new UserChatEntity { ChatId = chatEntity.Id, RoleId = (int)UserRole.User, UserId = request.PartnerId },
         };
 
         dbContext.Chats.Add(chatEntity);

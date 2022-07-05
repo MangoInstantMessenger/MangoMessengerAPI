@@ -6,7 +6,8 @@ namespace MangoAPI.DiffieHellmanLibrary.OpenSslHandlers;
 
 public class OpensslCreateKeyExchangeHandler : BaseHandler, ICreateKeyExchangeHandler
 {
-    public OpensslCreateKeyExchangeHandler(HttpClient httpClient) : base(httpClient)
+    public OpensslCreateKeyExchangeHandler(HttpClient httpClient)
+        : base(httpClient)
     {
     }
 
@@ -40,7 +41,7 @@ public class OpensslCreateKeyExchangeHandler : BaseHandler, ICreateKeyExchangeHa
 
         using var content = new MultipartFormDataContent
         {
-            { new StreamContent(stream), "senderPublicKey", publicKeyFileName }
+            { new StreamContent(stream), "senderPublicKey", publicKeyFileName },
         };
 
         request.Content = content;

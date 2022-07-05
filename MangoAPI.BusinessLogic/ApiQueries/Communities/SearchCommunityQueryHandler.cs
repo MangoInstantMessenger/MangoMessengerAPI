@@ -1,12 +1,12 @@
-﻿using MangoAPI.BusinessLogic.Models;
-using MangoAPI.Domain.Enums;
-using MediatR;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using MangoAPI.Application.Interfaces;
+using MangoAPI.BusinessLogic.Models;
 using MangoAPI.BusinessLogic.Responses;
+using MangoAPI.Domain.Enums;
 using MangoAPI.Infrastructure.Database;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
 
 namespace MangoAPI.BusinessLogic.ApiQueries.Communities;
@@ -18,7 +18,8 @@ public class SearchCommunityQueryHandler
     private readonly ResponseFactory<SearchCommunityResponse> responseFactory;
     private readonly IBlobServiceSettings blobServiceSettings;
 
-    public SearchCommunityQueryHandler(MangoDbContext dbContext,
+    public SearchCommunityQueryHandler(
+        MangoDbContext dbContext,
         ResponseFactory<SearchCommunityResponse> responseFactory,
         IBlobServiceSettings blobServiceSettings)
     {
@@ -27,7 +28,8 @@ public class SearchCommunityQueryHandler
         this.blobServiceSettings = blobServiceSettings;
     }
 
-    public async Task<Result<SearchCommunityResponse>> Handle(SearchCommunityQuery request,
+    public async Task<Result<SearchCommunityResponse>> Handle(
+        SearchCommunityQuery request,
         CancellationToken cancellationToken)
     {
         var query = dbContext.Chats
@@ -50,7 +52,7 @@ public class SearchCommunityQueryHandler
                 LastMessageAuthor = x.LastMessageAuthor,
                 LastMessageText = x.LastMessageText,
                 LastMessageTime = x.LastMessageTime,
-                LastMessageId = x.LastMessageId
+                LastMessageId = x.LastMessageId,
             }).Distinct();
 
         var chats = await query.Take(200).ToListAsync(cancellationToken);

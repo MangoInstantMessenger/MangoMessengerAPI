@@ -47,7 +47,9 @@ public class MailgunApiEmailSenderService : IEmailSenderService
         response.EnsureSuccessStatusCode();
     }
 
-    public async Task SendPasswordRestoreRequestAsync(UserEntity user, Guid requestId,
+    public async Task SendPasswordRestoreRequestAsync(
+        UserEntity user,
+        Guid requestId,
         CancellationToken cancellationToken)
     {
         const string subject = "Mango Messenger password restore request.";
@@ -62,20 +64,6 @@ public class MailgunApiEmailSenderService : IEmailSenderService
         response.EnsureSuccessStatusCode();
     }
 
-    private string GenerateEmailConfirmBody(UserEntity user)
-    {
-        return string.Format(Resources.EmailConfirmation, user.DisplayName, mailgunSettings.FrontendAddress,
-            user.Email,
-            user.EmailCode, user.EmailCode);
-    }
-
-    private string GeneratePasswordRestoreRequestBody(UserEntity user, Guid requestId)
-    {
-        return string.Format(Resources.PasswordRestoration, user.DisplayName, mailgunSettings.FrontendAddress,
-            requestId,
-            requestId);
-    }
-
     private static string GenerateHttpAuthHeader(string tokenName, string tokenValue)
     {
         var tokenString = $"{tokenName}:{tokenValue}";
@@ -85,14 +73,35 @@ public class MailgunApiEmailSenderService : IEmailSenderService
         return authHeader;
     }
 
+    private string GenerateEmailConfirmBody(UserEntity user)
+    {
+        return string.Format(
+            Resources.EmailConfirmation,
+            user.DisplayName,
+            mailgunSettings.FrontendAddress,
+            user.Email,
+            user.EmailCode,
+            user.EmailCode);
+    }
+
+    private string GeneratePasswordRestoreRequestBody(UserEntity user, Guid requestId)
+    {
+        return string.Format(
+            Resources.PasswordRestoration,
+            user.DisplayName,
+            mailgunSettings.FrontendAddress,
+            requestId,
+            requestId);
+    }
+
     private FormUrlEncodedContent GenerateHttpContent(string recipient, string subject, string message)
     {
         var content = new Dictionary<string, string>
         {
-            {"from", mailgunSettings.NotificationEmail},
-            {"to", recipient},
-            {"subject", subject},
-            {"text", message},
+            { "from", mailgunSettings.NotificationEmail },
+            { "to", recipient },
+            { "subject", subject },
+            { "text", message },
         };
 
         return new FormUrlEncodedContent(content);

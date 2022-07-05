@@ -23,7 +23,7 @@ public class SendMessageShouldThrowChatNotFound : IntegrationTestBase
 
         var result = await MangoModule.RequestAsync(
             request: CommandHelper.SendMessageToChannelCommand(user.Response.UserId, Guid.NewGuid()),
-            cancellationToken: CancellationToken.None);;
+            cancellationToken: CancellationToken.None);
 
         assert.Fail(result, expectedMessage, expectedDetails);
     }

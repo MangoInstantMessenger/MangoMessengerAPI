@@ -9,7 +9,8 @@ public class BlobServiceSettings : IBlobServiceSettings
         MangoBlobContainerName = mangoBlobContainerName;
         MangoBlobAccess = mangoBlobAccess;
     }
-    
+
     public string MangoBlobContainerName { get; }
+
     public string MangoBlobAccess { get; }
 }

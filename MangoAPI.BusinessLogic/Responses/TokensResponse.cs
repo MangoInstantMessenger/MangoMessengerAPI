@@ -19,8 +19,8 @@ public record TokensResponse : ResponseBase
                 AccessToken = accessToken,
                 RefreshToken = refreshToken,
                 Expires = expires,
-                UserId = userId
-            }
+                UserId = userId,
+            },
         };
     }
 }
