@@ -1,11 +1,11 @@
 ﻿using System.Net.Http.Headers;
+using System.Text.Json;
 using MangoAPI.BusinessLogic.ApiQueries.DiffieHellmanKeyExchanges;
 using MangoAPI.BusinessLogic.Models;
 using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.DiffieHellmanLibrary.Constants;
 using MangoAPI.DiffieHellmanLibrary.Helpers;
 using MangoAPI.Domain.Constants;
-using Newtonsoft.Json;
 
 namespace MangoAPI.DiffieHellmanLibrary.Abstractions;
 
@@ -41,8 +41,9 @@ public abstract class BaseHandler
 
         var responseBody = await response.Content.ReadAsStringAsync();
 
+        var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
         var deserialized =
-            JsonConvert.DeserializeObject<GetKeyExchangeRequestsResponse>(responseBody) ??
+            JsonSerializer.Deserialize<GetKeyExchangeRequestsResponse>(responseBody, options) ??
             throw new InvalidOperationException("Cannot deserialize list of key exchange requests.");
 
         var requests = deserialized.OpenSslKeyExchangeRequests;

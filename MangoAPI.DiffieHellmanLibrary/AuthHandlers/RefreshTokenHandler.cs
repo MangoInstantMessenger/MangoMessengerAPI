@@ -1,8 +1,8 @@
-﻿using MangoAPI.BusinessLogic.Responses;
+﻿using System.Text.Json;
+using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.DiffieHellmanLibrary.Abstractions;
 using MangoAPI.DiffieHellmanLibrary.Constants;
 using MangoAPI.DiffieHellmanLibrary.Helpers;
-using Newtonsoft.Json;
 
 namespace MangoAPI.DiffieHellmanLibrary.AuthHandlers;
 
@@ -33,7 +33,8 @@ public class RefreshTokenHandler : BaseHandler
 
         var result = await HttpRequestHelper.PostWithoutBodyAsync(HttpClient, route);
 
-        var response = JsonConvert.DeserializeObject<TokensResponse>(result);
+        var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
+        var response = JsonSerializer.Deserialize<TokensResponse>(result, options);
 
         return response ?? throw new InvalidOperationException();
     }

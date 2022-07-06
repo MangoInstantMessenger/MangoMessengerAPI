@@ -1,9 +1,9 @@
-﻿using MangoAPI.BusinessLogic.ApiCommands.Sessions;
+﻿using System.Text.Json;
+using MangoAPI.BusinessLogic.ApiCommands.Sessions;
 using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.DiffieHellmanLibrary.Abstractions;
 using MangoAPI.DiffieHellmanLibrary.Constants;
 using MangoAPI.DiffieHellmanLibrary.Helpers;
-using Newtonsoft.Json;
 
 namespace MangoAPI.DiffieHellmanLibrary.AuthHandlers;
 
@@ -35,7 +35,8 @@ public class LoginHandler : BaseHandler
             route: AuthRoutes.SessionsRoute,
             body: command);
 
-        var result = JsonConvert.DeserializeObject<TokensResponse>(response);
+        var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
+        var result = JsonSerializer.Deserialize<TokensResponse>(response, options);
 
         return result ?? throw new InvalidOperationException();
     }
