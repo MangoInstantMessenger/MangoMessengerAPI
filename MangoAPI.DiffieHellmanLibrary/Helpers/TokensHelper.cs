@@ -1,6 +1,6 @@
-﻿using MangoAPI.BusinessLogic.Responses;
+﻿using System.Text.Json;
+using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.DiffieHellmanLibrary.Extensions;
-using Newtonsoft.Json;
 
 namespace MangoAPI.DiffieHellmanLibrary.Helpers;
 
@@ -8,7 +8,8 @@ public static class TokensHelper
 {
     public static async Task WriteTokensAsync(TokensResponse loginResponse)
     {
-        var serializedTokens = JsonConvert.SerializeObject(loginResponse);
+        var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
+        var serializedTokens = JsonSerializer.Serialize(loginResponse, options);
 
         var workingDirectory = AuthDirectoryHelper.AuthWorkingDirectory;
 
@@ -36,7 +37,8 @@ public static class TokensHelper
 
         var readTokens = await File.ReadAllTextAsync(tokensPath);
 
-        var tokens = JsonConvert.DeserializeObject<TokensResponse>(readTokens);
+        var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
+        var tokens = JsonSerializer.Deserialize<TokensResponse>(readTokens, options);
 
         return tokens ?? throw new InvalidOperationException();
     }
