@@ -46,7 +46,7 @@ public abstract class BaseHandler
             JsonSerializer.Deserialize<GetKeyExchangeRequestsResponse>(responseBody, options) ??
             throw new InvalidOperationException("Cannot deserialize list of key exchange requests.");
 
-        List<OpenSslKeyExchangeRequest> requests = deserialized.OpenSslKeyExchangeRequests;
+        var requests = deserialized.OpenSslKeyExchangeRequests;
 
         return requests;
     }
