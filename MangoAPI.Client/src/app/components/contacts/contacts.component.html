@@ -79,7 +79,6 @@
               </div>
             </div>
           </div>
-
         </ng-template>
       </li>
     </ul>
@@ -89,10 +88,10 @@
   <div class='main-info background-pattern'>
     <img src='./assets/img/razumovsky_picture.jpg' alt='User Avatar' class='avatar'>
     <div class='d-flex flex-column'>
-      <p>razumovsky r</p>
-      <p>11011 y.o Dotnet Developer from $"cityName"</p>
+      <p>{{activeContact.displayName}}</p>
+      <p>{{activeContact.bio}}</p>
     </div>
-    <div class='d-flex gap-fix'>
+    <div class='d-flex gap-fix' *ngIf="activeContactUserId !== currentUserId">
       <button class='button-dark py-2 px-4'>Start Direct Chat</button>
       <button class='button-dark py-2 px-4 ml-3 text-red'>Remove Contact</button>
     </div>
@@ -102,7 +101,7 @@
     <li>
       <div class='info'>
         <p class='title'>Birthdate</p>
-        <p>2008-07-03</p>
+        <p>{{toDateParse()}}</p>
       </div>
       <img src='./assets/svg/calendar.svg' alt='Calendar Icon'>
     </li>
