@@ -31,53 +31,56 @@
       </div>
     </header>
     <ul class='list overflow py-3 px-2'>
-      <li class='mb-2'>
-        <div class='list-item active'>
-          <img alt='Chat avatar' class='avatar' src='./assets/img/chat-avatar.png'>
+      <li class='mb-2' *ngFor="let contact of contacts">
+        <div class='list-item active' *ngIf="contact.userId === activeContactUserId; else elseContact;">
+          <img alt='Chat avatar' class='avatar' src='{{contact.pictureUrl}}'>
           <div class='content'>
             <div class='title'>
               <div class='info pl-1'>
                 <p>
-                  chatnamehmfdgnkjdfghjdkgjjdfgjksdhgjkdhgk;ldfshgjldhsgjkldsfhjghldflkgjdfslghdfjklghfdjsklghfdjsklghjksldf
+                  {{contact.displayName}}
                 </p>
               </div>
             </div>
             <div class='message'>
               <div class='d-flex'>
                 <img src='./assets/svg/info-white.svg' alt='White Info Icon' class='p-1'>
-                <p>dhsfdsfhdsfhgrsdhhfdhsdhsdfhdfsgdfshgdshfghdsfh</p>
+                <p>{{contact.bio}}</p>
               </div>
               <div class='d-flex'>
                 <img src='./assets/svg/point-white.svg' alt='White Info Icon' class='p-1'>
-                <p>dhsfdsfhdsfhgrsdhhfdhsdhsdfhdfsgdfshgdshfghdsfh</p>
+                <p>{{contact.address}}</p>
               </div>
             </div>
           </div>
         </div>
-      </li>
-      <li>
-        <div class='list-item'>
-          <img alt='Chat avatar' class='avatar' src='./assets/img/chat-avatar.png'>
-          <div class='content'>
-            <div class='title'>
-              <div class='info pl-1'>
-                <p>
-                  chatnamehmfdgnkjdfghjdkgjjdfgjksdhgjkdhgk;ldfshgjldhsgjkldsfhjghldflkgjdfslghdfjklghfdjsklghfdjsklghjksldf
-                </p>
-              </div>
-            </div>
-            <div class='message'>
-              <div class='d-flex'>
-                <img src='./assets/svg/info-white.svg' alt='White Info Icon' class='p-1'>
-                <p>dhsfdsfhdsfhgrsdhhfdhsdhsdfhdfsgdfshgdshfghdsfh</p>
-              </div>
-              <div class='d-flex'>
-                <img src='./assets/svg/point-white.svg' alt='White Info Icon' class='p-1'>
-                <p>dhsfdsfhdsfhgrsdhhfdhsdhsdfhdfsgdfshgdshfghdsfh</p>
+        <ng-template #elseContact>
+          <div class='list-item'>
+            <img alt='Chat avatar' class='avatar' src='{{contact.pictureUrl}}'>
+            <div class='content'>
+              <div class='content'>
+                <div class='title'>
+                  <div class='info pl-1'>
+                    <p>
+                      {{contact.displayName}}
+                    </p>
+                  </div>
+                </div>
+                <div class='message'>
+                  <div class='d-flex'>
+                    <img src='./assets/svg/info-white.svg' alt='White Info Icon' class='p-1'>
+                    <p>{{contact.bio}}</p>
+                  </div>
+                  <div class='d-flex'>
+                    <img src='./assets/svg/point-white.svg' alt='White Info Icon' class='p-1'>
+                    <p>{{contact.address}}</p>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
-        </div>
+
+        </ng-template>
       </li>
     </ul>
   </aside>
