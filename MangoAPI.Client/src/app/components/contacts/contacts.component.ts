@@ -29,10 +29,13 @@ export class ContactsComponent {
   }
 
   getUsersContacts(): void {
-    this._contactsService.getCurrentUserContacts().subscribe(response => {
-      this.contacts = response.contacts;
-    }, error => {
-      this._errorNotificationService.notifyOnError(error);
+    this._contactsService.getCurrentUserContacts().subscribe({
+      next: response => {
+        this.contacts = response.contacts;
+      },
+      error: error => {
+        this._errorNotificationService.notifyOnError(error);
+      }
     });
   }
 }
