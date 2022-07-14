@@ -1,5 +1,3 @@
-<script
-  src="../../../../../../MangoMessengerFrontend/src/app/messenger/auxiliary/chat-item-active/chat-item-active.component.ts"></script>
 <div class="d-flex">
   <div class="menu" id="menu">
     <app-navbar [activeComponent]="'chats'"></app-navbar>
@@ -114,7 +112,7 @@
   </div>
 
   <main class="chat" id="chat">
-    <div class="chat-layout">
+    <div class="chat-layout" *ngIf="activeChatId !== ''; else elseNoChatOpened;">
       <div class="chat-header">
         <img alt="Chat Avatar" class="avatar" src="./../../../assets/img/chat-avatar.png"/>
         <div class="chat-info ml-2">
@@ -278,5 +276,18 @@
         </button>
       </div>
     </div>
+    <ng-template #elseNoChatOpened>
+      <div class="background-pattern">
+        <div class="container d-flex justify-content-center align-items-center flex-column vh-100">
+          <h1 *ngIf="chats.length > 0; else elseNoChatsAvailable">Choose chat</h1>
+          <ng-template #elseNoChatsAvailable>
+            <h1>No chats available</h1>
+          </ng-template>
+        </div>
+      </div>
+    </ng-template>
   </main>
 </div>
+
+<!--<script-->
+<!--  src="../../../../../../MangoMessengerFrontend/src/app/messenger/auxiliary/chat-item-active/chat-item-active.component.ts"></script>-->

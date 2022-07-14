@@ -66,9 +66,9 @@ export class ChatsComponent implements OnInit {
     this.userId = tokens?.userId;
     this._communitiesService.getUserChats().subscribe(response => {
       this.chats = response.chats.filter(x => !x.isArchived);
-      this.activeChatId = this.chats[0].chatId;
-      this.activeChat = this.chats[0];
-      this.getChatMessages(this.activeChatId);
+      // this.activeChatId = this.chats[0].chatId;
+      // this.activeChat = this.chats[0];
+      // this.getChatMessages(this.activeChatId);
     }, error => {
       this._errorNotificationService.notifyOnError(error);
     });
@@ -97,6 +97,9 @@ export class ChatsComponent implements OnInit {
 
   scrollToEnd(): void {
     let chatMessages = document.getElementById('chatMessages');
+    if(!chatMessages) {
+      return;
+    }
     chatMessages!.scrollTop = chatMessages!.scrollHeight;
   }
 
