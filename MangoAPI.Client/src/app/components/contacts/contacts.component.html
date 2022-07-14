@@ -86,7 +86,7 @@
 </div>
 <main class='contact'>
   <div class='main-info background-pattern'>
-    <img src='./assets/img/razumovsky_picture.jpg' alt='User Avatar' class='avatar'>
+    <img src='{{activeContact.pictureUrl}}' alt='User Avatar' class='avatar'>
     <div class='d-flex flex-column'>
       <p>{{activeContact.displayName}}</p>
       <p>{{activeContact.bio}}</p>
@@ -101,66 +101,66 @@
     <li>
       <div class='info'>
         <p class='title'>Birthdate</p>
-        <p>{{toDateParse()}}</p>
+        <p>{{activeContact.birthdayDate | date}}</p>
       </div>
       <img src='./assets/svg/calendar.svg' alt='Calendar Icon'>
     </li>
     <li>
       <div class='info'>
         <p class='title'>Email</p>
-        <a href='mailto:#'>kolosovp95@gmail.com</a>
+        <a href='mailto:#'>{{activeContact.email}}</a>
       </div>
       <img src='./assets/svg/mail.svg' alt='Mail Icon'>
     </li>
     <li>
       <div class='info'>
         <p class='title'>Username</p>
-        <p>razumovsky-r</p>
+        <p>{{activeContact.username}}</p>
       </div>
       <img src='./assets/svg/mail.svg' alt='Mail Icon'>
     </li>
     <li>
       <div class='info'>
         <p class='title'>Website</p>
-        <p>razumovsky.com</p>
+        <p>{{activeContact.website}}</p>
       </div>
       <img src='./assets/svg/world.svg' alt='World Icon'>
     </li>
     <li>
       <div class='info'>
         <p class='title'>Address</p>
-        <p>Odessa, Ukraine</p>
+        <p>{{activeContact.address}}</p>
       </div>
       <img src='./assets/svg/home.svg' alt='Home Icon'>
     </li>
   </ul>
 
   <ul class='user-info'>
-    <li>
+    <li *ngIf="activeContact.facebook">
       <div class='info'>
         <p class='title'>Facebook</p>
-        <a href='#'>razumovsky_r</a>
+        <a href='#'>{{activeContact.facebook}}</a>
       </div>
       <img src='./assets/svg/facebook.svg' alt='Facebook Icon'>
     </li>
-    <li>
+    <li *ngIf="activeContact.twitter">
       <div class='info'>
         <p class='title'>Twitter</p>
-        <a href='#'>razumovsky_r</a>
+        <a href='#'>{{activeContact.twitter}}</a>
       </div>
       <img src='./assets/svg/twitter.svg' alt='Twitter Icon'>
     </li>
-    <li>
+    <li *ngIf="activeContact.instagram">
       <div class='info'>
         <p class='title'>Instagram</p>
-        <a href='#'>razumovsky_r</a>
+        <a href='#'>{{activeContact.instagram}}</a>
       </div>
       <img src='./assets/svg/instagram.svg' alt='Instagram Icon'>
     </li>
-    <li>
+    <li *ngIf="activeContact.linkedIn">
       <div class='info'>
         <p class='title'>LinkedIn</p>
-        <a href='#'>razumovsky_r</a>
+        <a href='#'>{{activeContact.linkedIn}}</a>
       </div>
       <img src='./assets/svg/linkedin.svg' alt='LinkedIn Icon'>
     </li>

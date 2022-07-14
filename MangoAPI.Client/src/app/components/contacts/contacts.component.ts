@@ -22,8 +22,6 @@ export class ContactsComponent {
   public contacts: Contact[] = [];
   public activeContact: User = {
     userId:  '',
-    firstName:  '',
-    lastName:  '',
     displayName:  '',
     birthdayDate:  '',
     email:  '',
@@ -48,11 +46,20 @@ export class ContactsComponent {
         this.getUsersContacts();
         this.activeContactUserId = user.userId;
         this.activeContact = {
-          userId: user.userId,
-          displayName: user.displayName,
-          bio: user.bio,
-          address: user.address,
-          pictureUrl: user.pictureUrl
+          userId:  user.userId,
+          displayName:  user.displayName,
+          birthdayDate:  user.birthdayDate,
+          email:  user.email,
+          website:  user.website,
+          username: user.username,
+          bio:  user.bio,
+          address:  user.address,
+          facebook:  user.facebook,
+          twitter:  user.twitter,
+          instagram:  user.instagram,
+          linkedIn:  user.linkedIn,
+          publicKey:  user.publicKey,
+          pictureUrl:  user.pictureUrl,
         };
       },
       error: error => {
@@ -71,9 +78,5 @@ export class ContactsComponent {
         this._errorNotificationService.notifyOnError(error);
       }
     });
-  }
-
-  toDateParse(date: string): string {
-    return formatDate(date, "dd.MM.yyyy", "en-US");
   }
 }
