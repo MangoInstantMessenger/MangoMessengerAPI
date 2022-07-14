@@ -4,7 +4,6 @@ import {ErrorNotificationService} from "../../services/messenger/error-notificat
 import {Contact} from "../../types/models/Contact";
 import {UsersService} from "../../services/api/users.service";
 import {TokensService} from "../../services/messenger/tokens.service";
-import {formatDate} from "@angular/common";
 import {User} from "../../types/models/User";
 
 @Component({
