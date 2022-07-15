@@ -101,7 +101,7 @@ export class ChatsComponent implements OnInit {
     if(!chatMessages) {
       return;
     }
-    chatMessages!.scrollTop = chatMessages!.scrollHeight;
+    chatMessages.scrollTop = chatMessages.scrollHeight;
   }
 
   onChatTabClick(chatId: string): void {
