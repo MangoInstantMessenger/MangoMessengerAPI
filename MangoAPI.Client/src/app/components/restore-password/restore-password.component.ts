@@ -44,11 +44,14 @@ export class RestorePasswordComponent{
 
     const restorePasswordRequest = new RestorePasswordRequest(restorePasswordQueryObject.requestId, this.newPassword, this.repeatPassword);
 
-    this._restorePasswordService.restorePassword(restorePasswordRequest).subscribe(_ => {
-      alert("Password restoration succeeded!");
-      this._router.navigateByUrl(RoutingConstants.Login).then(r => r);
-    }, error => {
-      this._errorNotificationService.notifyOnError(error);
-    })
+    this._restorePasswordService.restorePassword(restorePasswordRequest).subscribe({
+      next: _ => {
+        alert("Password restoration succeeded!");
+        this._router.navigateByUrl(RoutingConstants.Login).then(r => r);
+      },
+      error: error => {
+        this._errorNotificationService.notifyOnError(error);
+      }
+    });
   }
 }

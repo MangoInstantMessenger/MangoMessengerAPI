@@ -24,11 +24,13 @@ export class RestorePasswordRequestComponent {
       return;
     }
 
-    this._passwordRestoreService.sendPasswordRestoreRequest(this.email).subscribe(_ => {
+    this._passwordRestoreService.sendPasswordRestoreRequest(this.email).subscribe({
+      next: _ => {
         this._router.navigateByUrl(RoutingConstants.CheckEmailNote).then(r => r);
-      }, error => {
+      },
+      error: error => {
         this._errorNotificationService.notifyOnError(error);
       }
-    );
+    });
   }
 }

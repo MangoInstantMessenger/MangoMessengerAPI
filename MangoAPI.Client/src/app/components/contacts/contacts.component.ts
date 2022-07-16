@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {ContactsService} from "../../services/api/contacts.service";
 import {ErrorNotificationService} from "../../services/messenger/error-notification.service";
 import {Contact} from "../../types/models/Contact";
@@ -10,7 +10,7 @@ import {User} from "../../types/models/User";
   selector: 'app-contacts',
   templateUrl: './contacts.component.html'
 })
-export class ContactsComponent {
+export class ContactsComponent implements OnInit {
 
   constructor(private _contactsService: ContactsService,
               private _errorNotificationService: ErrorNotificationService,

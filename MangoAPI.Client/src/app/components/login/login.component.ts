@@ -37,11 +37,14 @@ export class LoginComponent {
 
     this._tokensService.clearTokens();
 
-    this._sessionService.createSession(this.loginCommand).subscribe(response => {
-      this._tokensService.setTokens(response.tokens);
-      this._router.navigateByUrl(this.routingConstants.Chats).then(r => r);
-    }, error => {
-      this._errorNotificationService.notifyOnError(error);
+    this._sessionService.createSession(this.loginCommand).subscribe({
+      next: response => {
+        this._tokensService.setTokens(response.tokens);
+        this._router.navigateByUrl(this.routingConstants.Chats).then(r => r);
+      },
+      error: error => {
+        this._errorNotificationService.notifyOnError(error);
+      }
     });
   }
 }

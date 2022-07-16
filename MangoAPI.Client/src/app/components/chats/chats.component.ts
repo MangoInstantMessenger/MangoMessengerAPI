@@ -68,10 +68,13 @@ export class ChatsComponent implements OnInit {
       return;
     }
     this.userId = tokens?.userId;
-    this._communitiesService.getUserChats().subscribe(response => {
-      this.chats = response.chats.filter(x => !x.isArchived);
-    }, error => {
-      this._errorNotificationService.notifyOnError(error);
+    this._communitiesService.getUserChats().subscribe({
+      next: response => {
+        this.chats = response.chats.filter(x => !x.isArchived);
+      },
+      error: error => {
+        this._errorNotificationService.notifyOnError(error);
+      }
     });
   }
 
@@ -88,11 +91,14 @@ export class ChatsComponent implements OnInit {
   getChatMessages(chatId: string | null): void {
     if (chatId == null) return;
 
-    this._messagesService.getChatMessages(chatId).subscribe(response => {
-      this.messages = response.messages;
-      this.scrollToEnd();
-    }, error => {
-      this._errorNotificationService.notifyOnError(error);
+    this._messagesService.getChatMessages(chatId).subscribe({
+      next: response => {
+        this.messages = response.messages;
+        this.scrollToEnd();
+      },
+      error: error => {
+        this._errorNotificationService.notifyOnError(error);
+      }
     });
   }
 
@@ -116,20 +122,26 @@ export class ChatsComponent implements OnInit {
   }
 
   onSearchChatClick() {
-    this._communitiesService.searchChat(this.searchChatQuery).subscribe(response => {
-      this.chats = response.chats;
-    }, error => {
-      this._errorNotificationService.notifyOnError(error);
-    })
+    this._communitiesService.searchChat(this.searchChatQuery).subscribe({
+      next: response => {
+        this.chats = response.chats;
+      },
+      error: error => {
+        this._errorNotificationService.notifyOnError(error);
+      }
+    });
   }
 
   onSearchMessageQueryChange(): void {
     if(this.searchMessagesQuery != '') {
-      this._messagesService.searchMessages(this.activeChatId, this.searchMessagesQuery).subscribe(response => {
-        this.messages = response.messages;
-      }, error => {
-        this._errorNotificationService.notifyOnError(error);
-      })
+      this._messagesService.searchMessages(this.activeChatId, this.searchMessagesQuery).subscribe({
+        next: response => {
+          this.messages = response.messages;
+        },
+        error: error => {
+          this._errorNotificationService.notifyOnError(error);
+        }
+      });
     } else {
       this.getChatMessages(this.activeChatId);
     }
@@ -139,42 +151,51 @@ export class ChatsComponent implements OnInit {
     let div = event.currentTarget as HTMLDivElement;
     this.chatFilter = div.innerText;
 
-    this._communitiesService.getUserChats().subscribe(response => {
-      let chats = response.chats;
-      switch (this.chatFilter) {
-        case 'All chats':
-          this.ngOnInit();
-          break;
-        case 'Groups':
-          this.chats = chats.filter(x => x.communityType === CommunityType.PublicChannel);
-          break;
-        case 'Direct chats':
-          this.chats = chats.filter(x => x.communityType === CommunityType.DirectChat);
-          break;
-        case 'Archived':
-          this.chats = chats.filter(x => x.isArchived);
-          break;
+    this._communitiesService.getUserChats().subscribe({
+      next: response => {
+        let chats = response.chats;
+        switch (this.chatFilter) {
+          case 'All chats':
+            this.ngOnInit();
+            break;
+          case 'Groups':
+            this.chats = chats.filter(x => x.communityType === CommunityType.PublicChannel);
+            break;
+          case 'Direct chats':
+            this.chats = chats.filter(x => x.communityType === CommunityType.DirectChat);
+            break;
+          case 'Archived':
+            this.chats = chats.filter(x => x.isArchived);
+            break;
+        }
+      },
+      error: error => {
+        this._errorNotificationService.notifyOnError(error);
       }
-    }, error => {
-      this._errorNotificationService.notifyOnError(error);
     });
   }
 
   onSearchMessageClick(): void {
-    this._messagesService.searchMessages(this.activeChatId, this.searchMessagesQuery).subscribe(response => {
-      this.messages = response.messages;
-      this.searchMessagesQuery = '';
-    }, error => {
-      this._errorNotificationService.notifyOnError(error);
-    })
+    this._messagesService.searchMessages(this.activeChatId, this.searchMessagesQuery).subscribe({
+      next: response => {
+        this.messages = response.messages;
+        this.searchMessagesQuery = '';
+      },
+      error: error => {
+        this._errorNotificationService.notifyOnError(error);
+      }
+    });
   }
 
   onLeaveChatClick(): void {
-    this._userChatsService.leaveCommunity(this.activeChatId).subscribe(_ => {
-      this.activeChatId = '';
-      this.initializeView();
-    }, error => {
-      this._errorNotificationService.notifyOnError(error);
+    this._userChatsService.leaveCommunity(this.activeChatId).subscribe({
+      next: _ => {
+        this.activeChatId = '';
+        this.initializeView();
+      },
+      error: error => {
+        this._errorNotificationService.notifyOnError(error);
+      }
     });
   }
 }

@@ -42,11 +42,13 @@ export class RegisterComponent {
       return;
     }
 
-    this._usersService.createUser(this.registerCommand).subscribe(_ => {
+    this._usersService.createUser(this.registerCommand).subscribe({
+      next: _ => {
         this._router.navigateByUrl(this.routingConstants.CheckEmailNote).then(r => r);
-      }, error => {
+      },
+      error: error => {
         this._errorNotificationService.notifyOnError(error);
       }
-    );
+    });
   }
 }
