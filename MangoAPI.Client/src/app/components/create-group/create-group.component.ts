@@ -20,10 +20,13 @@ export class CreateGroupComponent{
 
   onCreateChatClick(): void {
     let command = new CreateChannelCommand(this.chatTitle, this.chatDescription);
-    this._communitiesService.createChannel(command).subscribe(_ => {
-      this._router.navigateByUrl(RoutingConstants.Chats).then(r => r);
-    }, error => {
-      this._errorNotificationService.notifyOnError(error);
+    this._communitiesService.createChannel(command).subscribe({
+      next: _  => {
+        this._router.navigateByUrl(RoutingConstants.Chats).then(r => r);
+      },
+      error: error => {
+        this._errorNotificationService.notifyOnError(error);
+      }
     });
   }
 }
