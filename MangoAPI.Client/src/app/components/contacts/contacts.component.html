@@ -32,7 +32,7 @@
     </header>
     <ul class='list overflow py-3 px-2'>
       <li class='mb-2' *ngFor="let contact of contacts">
-        <div class='list-item active' *ngIf="contact.userId === activeContactUserId; else elseContact;">
+        <div class='list-item active' *ngIf="contact.userId === activeContactUserId; else elseContact;" (click)="onContactTabClick(contact.userId)">
           <img alt='Chat avatar' class='avatar' src='{{contact.pictureUrl}}'>
           <div class='content'>
             <div class='title'>
@@ -55,7 +55,7 @@
           </div>
         </div>
         <ng-template #elseContact>
-          <div class='list-item'>
+          <div class='list-item' (click)="onContactTabClick(contact.userId)">
             <img alt='Chat avatar' class='avatar' src='{{contact.pictureUrl}}'>
             <div class='content'>
               <div class='content'>
