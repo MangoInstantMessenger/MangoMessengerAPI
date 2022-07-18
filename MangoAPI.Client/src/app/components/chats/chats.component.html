@@ -24,17 +24,11 @@
           <div class="d-inline">
             <div class="input-group mb-3">
               <label for="searchBar"></label>
-              <input aria-describedby="basic-addon1" class="form-control ml-3" id="searchBar" name="searchBar"
+              <input aria-describedby="basic-addon1" class="form-control ml-3 rounded" id="searchBar" name="searchBar"
                      placeholder="Search chats..."
                      type="text"
                      [(ngModel)]="searchChatQuery"
-                     (keyup.enter)="onSearchChatClick()"
                      (ngModelChange)="onSearchChatQueryChange()">
-              <div class="input-group-prepend">
-                <button class="input-group-text" id="basic-addon1">
-                  <img alt="Search Icon" (click)="onSearchChatClick()" src="./../../../assets/svg/search-icon.svg"/>
-                </button>
-              </div>
             </div>
           </div>
         </div>
