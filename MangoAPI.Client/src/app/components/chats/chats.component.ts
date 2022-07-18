@@ -132,6 +132,21 @@ export class ChatsComponent implements OnInit {
     });
   }
 
+  onSearchChatQueryChange(): void {
+    if(this.searchChatQuery != '') {
+      this._communitiesService.searchChat(this.searchChatQuery).subscribe({
+        next: response => {
+          this.chats = response.chats;
+        },
+        error: error => {
+          this._errorNotificationService.notifyOnError(error);
+        }
+      });
+    } else {
+      this.initializeView();
+    }
+  }
+
   onSearchMessageQueryChange(): void {
     if(this.searchMessagesQuery != '') {
       this._messagesService.searchMessages(this.activeChatId, this.searchMessagesQuery).subscribe({
