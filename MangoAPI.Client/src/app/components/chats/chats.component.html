@@ -28,7 +28,8 @@
                      placeholder="Search chats..."
                      type="text"
                      [(ngModel)]="searchChatQuery"
-                     (keyup.enter)="onSearchChatClick()">
+                     (keyup.enter)="onSearchChatClick()"
+                     (ngModelChange)="onSearchChatQueryChange()">
               <div class="input-group-prepend">
                 <button class="input-group-text" id="basic-addon1">
                   <img alt="Search Icon" (click)="onSearchChatClick()" src="./../../../assets/svg/search-icon.svg"/>
