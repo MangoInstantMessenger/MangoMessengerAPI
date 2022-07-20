@@ -37,6 +37,7 @@ export class ContactsComponent implements OnInit {
   };
   public currentUserId: string = '';
   public activeContactUserId: string = '';
+  public contactSearchQuery: string = '';
 
   ngOnInit(): void {
     this.currentUserId = this._tokensService.getTokens()?.userId as string;
@@ -50,8 +51,7 @@ export class ContactsComponent implements OnInit {
       error: error => {
         this._errorNotificationService.notifyOnError(error);
       }
-    })
-
+    });
   }
 
   getUsersContacts(): void {
@@ -76,5 +76,20 @@ export class ContactsComponent implements OnInit {
         this._errorNotificationService.notifyOnError(error);
       }
     });
+  }
+
+  onContactSearchQueryChange(): void {
+    if(this.contactSearchQuery != '') {
+      this._contactsService.searchContacts(this.contactSearchQuery).subscribe({
+        next: response => {
+          this.contacts = response.contacts;
+        },
+        error: error => {
+          this._errorNotificationService.notifyOnError(error);
+        }
+      });
+    } else {
+      this.ngOnInit();
+    }
   }
 }
