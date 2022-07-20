@@ -19,7 +19,7 @@ export class ContactsComponent implements OnInit {
   }
 
   public contacts: Contact[] = [];
-  public activeContact: User = {
+  public activeUser: User = {
     userId:  '',
     displayName:  '',
     birthdayDate:  '',
@@ -36,8 +36,9 @@ export class ContactsComponent implements OnInit {
     pictureUrl:  '',
   };
   public currentUserId: string = '';
-  public activeContactUserId: string = '';
+  public activeUserId: string = '';
   public contactSearchQuery: string = '';
+  public isActiveUserContact: boolean = false;
 
   ngOnInit(): void {
     this.currentUserId = this._tokensService.getTokens()?.userId as string;
@@ -45,8 +46,8 @@ export class ContactsComponent implements OnInit {
       next: response => {
         let user = response.user;
         this.getUsersContacts();
-        this.activeContactUserId = user.userId;
-        this.activeContact = user;
+        this.activeUserId = user.userId;
+        this.activeUser = user;
       },
       error: error => {
         this._errorNotificationService.notifyOnError(error);
@@ -65,12 +66,13 @@ export class ContactsComponent implements OnInit {
     });
   }
 
-  onContactTabClick(contactId: string): void {
-    this._usersService.getUserById(contactId).subscribe({
+  onContactTabClick(contact: Contact): void {
+    this._usersService.getUserById(contact.userId).subscribe({
       next: response => {
-        let contact = response.user;
-        this.activeContactUserId = contact.userId;
-        this.activeContact = contact;
+        let user = response.user;
+        this.activeUserId = user.userId;
+        this.activeUser = user;
+        this.isActiveUserContact = contact.isContact;
       },
       error: error => {
         this._errorNotificationService.notifyOnError(error);
@@ -91,5 +93,17 @@ export class ContactsComponent implements OnInit {
     } else {
       this.ngOnInit();
     }
+  }
+
+  onAddContactClick(contactId: string): void {
+    this._contactsService.addContact(contactId).subscribe({
+      next: _ => {
+        this.isActiveUserContact = true;
+        this.ngOnInit();
+      },
+      error: error  => {
+        this._errorNotificationService.notifyOnError(error);
+      }
+    });
   }
 }

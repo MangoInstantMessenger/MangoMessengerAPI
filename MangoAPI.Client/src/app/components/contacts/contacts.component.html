@@ -29,7 +29,7 @@
     </header>
     <ul class='list overflow py-3 px-2'>
       <li class='mb-2' *ngFor="let contact of contacts">
-        <div class='list-item active' *ngIf="contact.userId === activeContactUserId; else elseContact;" (click)="onContactTabClick(contact.userId)">
+        <div class='list-item active' *ngIf="contact.userId === activeUserId; else elseContact;" (click)="onContactTabClick(contact)">
           <img alt='Chat avatar' class='avatar' src='{{contact.pictureUrl}}'>
           <div class='content'>
             <div class='title'>
@@ -52,7 +52,7 @@
           </div>
         </div>
         <ng-template #elseContact>
-          <div class='list-item' (click)="onContactTabClick(contact.userId)">
+          <div class='list-item' (click)="onContactTabClick(contact)">
             <img alt='Chat avatar' class='avatar' src='{{contact.pictureUrl}}'>
             <div class='content'>
               <div class='content'>
@@ -83,14 +83,18 @@
 </div>
 <main class='contact'>
   <div class='main-info background-pattern'>
-    <img src='{{activeContact.pictureUrl}}' alt='User Avatar' class='avatar'>
+    <img src='{{activeUser.pictureUrl}}' alt='User Avatar' class='avatar'>
     <div class='d-flex flex-column'>
-      <p>{{activeContact.displayName}}</p>
-      <p>{{activeContact.bio}}</p>
+      <p>{{activeUser.displayName}}</p>
+      <p>{{activeUser.bio}}</p>
     </div>
-    <div class='d-flex gap-fix' *ngIf="activeContactUserId !== currentUserId">
-      <button class='button-dark py-2 px-4'>Start Direct Chat</button>
-      <button class='button-dark py-2 px-4 ml-3 text-red'>Remove Contact</button>
+    <div class='d-flex gap-fix' *ngIf="activeUserId !== currentUserId">
+      <button class='button-dark py-2 px-4' *ngIf="isActiveUserContact">Start Direct Chat</button>
+      <button class='button-dark py-2 px-4 ml-3' *ngIf="isActiveUserContact">Remove Contact</button>
+
+      <button class='button-dark py-2 px-4 ml-3' *ngIf="!isActiveUserContact" (click)="onAddContactClick(activeUser.userId)">
+        Add Contact
+      </button>
     </div>
   </div>
 
@@ -98,66 +102,66 @@
     <li>
       <div class='info'>
         <p class='title'>Birthdate</p>
-        <p>{{activeContact.birthdayDate | date}}</p>
+        <p>{{activeUser.birthdayDate | date}}</p>
       </div>
       <img src='./assets/svg/calendar.svg' alt='Calendar Icon'>
     </li>
     <li>
       <div class='info'>
         <p class='title'>Email</p>
-        <a href='mailto:#'>{{activeContact.email}}</a>
+        <a href='mailto:#'>{{activeUser.email}}</a>
       </div>
       <img src='./assets/svg/mail.svg' alt='Mail Icon'>
     </li>
     <li>
       <div class='info'>
         <p class='title'>Username</p>
-        <p>{{activeContact.username}}</p>
+        <p>{{activeUser.username}}</p>
       </div>
       <img src='./assets/svg/mail.svg' alt='Mail Icon'>
     </li>
     <li>
       <div class='info'>
         <p class='title'>Website</p>
-        <p>{{activeContact.website}}</p>
+        <p>{{activeUser.website}}</p>
       </div>
       <img src='./assets/svg/world.svg' alt='World Icon'>
     </li>
     <li>
       <div class='info'>
         <p class='title'>Address</p>
-        <p>{{activeContact.address}}</p>
+        <p>{{activeUser.address}}</p>
       </div>
       <img src='./assets/svg/home.svg' alt='Home Icon'>
     </li>
   </ul>
 
   <ul class='user-info'>
-    <li *ngIf="activeContact.facebook">
+    <li *ngIf="activeUser.facebook">
       <div class='info'>
         <p class='title'>Facebook</p>
-        <a href='#'>{{activeContact.facebook}}</a>
+        <a href='#'>{{activeUser.facebook}}</a>
       </div>
       <img src='./assets/svg/facebook.svg' alt='Facebook Icon'>
     </li>
-    <li *ngIf="activeContact.twitter">
+    <li *ngIf="activeUser.twitter">
       <div class='info'>
         <p class='title'>Twitter</p>
-        <a href='#'>{{activeContact.twitter}}</a>
+        <a href='#'>{{activeUser.twitter}}</a>
       </div>
       <img src='./assets/svg/twitter.svg' alt='Twitter Icon'>
     </li>
-    <li *ngIf="activeContact.instagram">
+    <li *ngIf="activeUser.instagram">
       <div class='info'>
         <p class='title'>Instagram</p>
-        <a href='#'>{{activeContact.instagram}}</a>
+        <a href='#'>{{activeUser.instagram}}</a>
       </div>
       <img src='./assets/svg/instagram.svg' alt='Instagram Icon'>
     </li>
-    <li *ngIf="activeContact.linkedIn">
+    <li *ngIf="activeUser.linkedIn">
       <div class='info'>
         <p class='title'>LinkedIn</p>
-        <a href='#'>{{activeContact.linkedIn}}</a>
+        <a href='#'>{{activeUser.linkedIn}}</a>
       </div>
       <img src='./assets/svg/linkedin.svg' alt='LinkedIn Icon'>
     </li>
