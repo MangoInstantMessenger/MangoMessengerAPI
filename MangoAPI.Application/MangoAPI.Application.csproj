@@ -20,7 +20,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="Azure.Storage.Blobs" Version="12.10.0" />
+        <PackageReference Include="Azure.Storage.Blobs" Version="12.13.0" />
         <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.2.0" />
         <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.2.0" />
         <PackageReference Include="Microsoft.IdentityModel.JsonWebTokens" Version="6.15.0" />
