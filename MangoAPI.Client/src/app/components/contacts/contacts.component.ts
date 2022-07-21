@@ -39,6 +39,7 @@ export class ContactsComponent implements OnInit {
   public activeUserId: string = '';
   public contactSearchQuery: string = '';
   public isActiveUserContact: boolean = false;
+  public contactFilter: string = 'All contacts';
 
   ngOnInit(): void {
     this.currentUserId = this._tokensService.getTokens()?.userId as string;
@@ -84,6 +85,7 @@ export class ContactsComponent implements OnInit {
     if(this.contactSearchQuery != '') {
       this._contactsService.searchContacts(this.contactSearchQuery).subscribe({
         next: response => {
+          this.contactFilter = 'Search results';
           this.contacts = response.contacts;
         },
         error: error => {
@@ -91,6 +93,7 @@ export class ContactsComponent implements OnInit {
         }
       });
     } else {
+      this.contactFilter = 'All contacts';
       this.ngOnInit();
     }
   }
@@ -102,6 +105,24 @@ export class ContactsComponent implements OnInit {
         this.ngOnInit();
       },
       error: error  => {
+        this._errorNotificationService.notifyOnError(error);
+      }
+    });
+  }
+
+  onContactFilterClick(event: Event): void {
+    let div = event.currentTarget as HTMLDivElement;
+    this.contactFilter = div.innerText;
+
+    this._contactsService.getCurrentUserContacts().subscribe({
+      next: response => {
+        switch(this.contactFilter) {
+          case 'All contacts':
+            this.contacts = response.contacts;
+            break;
+        }
+      },
+      error: error => {
         this._errorNotificationService.notifyOnError(error);
       }
     });
