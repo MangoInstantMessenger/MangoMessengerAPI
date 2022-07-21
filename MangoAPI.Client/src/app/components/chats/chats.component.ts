@@ -136,6 +136,7 @@ export class ChatsComponent implements OnInit {
     if(this.searchChatQuery != '') {
       this._communitiesService.searchChat(this.searchChatQuery).subscribe({
         next: response => {
+          this.chatFilter = 'Search results';
           this.chats = response.chats;
         },
         error: error => {
