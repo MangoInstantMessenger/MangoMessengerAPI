@@ -144,6 +144,7 @@ export class ChatsComponent implements OnInit {
         }
       });
     } else {
+      this.chatFilter = 'All chats';
       this.initializeView();
     }
   }
