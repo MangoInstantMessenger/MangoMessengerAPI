@@ -215,4 +215,18 @@ export class ChatsComponent implements OnInit {
       }
     });
   }
+
+  onArchiveChatClick(): void {
+    this._userChatsService.archiveCommunity(this.activeChatId).subscribe({
+      next: _ =>  {
+        this.initializeView();
+        console.log(this.activeChatId);
+        this.activeChatId = '';
+      },
+      error: error => {
+        console.log(this.activeChatId);
+        this._errorNotificationService.notifyOnError(error);
+      }
+    });
+  }
 }

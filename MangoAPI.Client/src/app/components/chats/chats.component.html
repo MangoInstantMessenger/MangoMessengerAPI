@@ -134,10 +134,13 @@
 
               <div class="dropdown-menu dropdown-menu-right">
                 <div class="dropdown-item gap-fix d-flex" data-target="#startConversation" data-toggle="modal"
-                     role="button">
+                     role="button" (click)="onArchiveChatClick()">
                   <img alt="Archive Icon" class="mr-1" src="./../../../assets/svg/archive.svg">
 
-                  <span>Archive Chat</span>
+                  <span *ngIf="!activeChat.isArchived; else elseBlock">Archive Chat</span>
+                  <ng-template #elseBlock>
+                    <span>Unarchive Chat</span>
+                  </ng-template>
                 </div>
                 <div class="dropdown-item gap-fix d-flex" data-target="#createGroup" data-toggle="modal" role="button" (click)="onLeaveChatClick()">
                   <img alt="Leave Chat Icon" class="mr-1" src="./../../../assets/svg/trash.svg">

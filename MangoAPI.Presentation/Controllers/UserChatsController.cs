@@ -45,7 +45,7 @@ public class UserChatsController : ApiControllerBase, IUserChatsController
         CancellationToken cancellationToken)
     {
         var userId = CorrelationContext.GetUserId();
-        var command = new ArchiveChatCommand(userId, chatId);
+        var command = new ArchiveChatCommand(chatId, userId);
 
         return await RequestAsync(command, cancellationToken);
     }
