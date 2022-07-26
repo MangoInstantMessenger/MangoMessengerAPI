@@ -10,6 +10,8 @@ import {Message} from "../../types/models/Message";
 import {CommunityType} from "../../types/enums/CommunityType";
 import {RoutingConstants} from "../../types/constants/RoutingConstants";
 import {UserChatsService} from "../../services/api/user-chats.service";
+import {RoutingService} from "../../services/messenger/routing.service";
+import {StartDirectChatQueryObject} from "../../types/query-objects/StartDirectChatQueryObject";
 
 @Component({
   selector: 'app-chats',
@@ -23,7 +25,8 @@ export class ChatsComponent implements OnInit {
               private _userChatsService: UserChatsService,
               private _messagesService: MessagesService,
               private _errorNotificationService: ErrorNotificationService,
-              private _router: Router) {
+              private _router: Router,
+              private _routingService: RoutingService) {
   }
 
   public userId: string | undefined = '';
@@ -71,6 +74,11 @@ export class ChatsComponent implements OnInit {
     this._communitiesService.getUserChats().subscribe({
       next: response => {
         this.chats = response.chats.filter(x => !x.isArchived);
+        let queryObject = this._routingService.getQueryData() as StartDirectChatQueryObject;
+        if(queryObject.chatId) {
+          this.loadChat(queryObject.chatId);
+          localStorage.removeItem("queryData");
+        }
       },
       error: error => {
         this._errorNotificationService.notifyOnError(error);
@@ -110,7 +118,7 @@ export class ChatsComponent implements OnInit {
     chatMessages.scrollTop = chatMessages.scrollHeight;
   }
 
-  onChatTabClick(chatId: string): void {
+  loadChat(chatId: string): void {
     this.activeChatId = chatId;
     this.activeChat = this.chats.filter(x => x.chatId === this.activeChatId)[0];
     this.getChatMessages(this.activeChatId);
@@ -220,11 +228,9 @@ export class ChatsComponent implements OnInit {
     this._userChatsService.archiveCommunity(this.activeChatId).subscribe({
       next: _ =>  {
         this.initializeView();
-        console.log(this.activeChatId);
         this.activeChatId = '';
       },
       error: error => {
-        console.log(this.activeChatId);
         this._errorNotificationService.notifyOnError(error);
       }
     });

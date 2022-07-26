@@ -12,7 +12,7 @@
             {{contactFilter}}
           </button>
           <div aria-labelledby='dLabel' class='dropdown-menu mt-0' role='menu'>
-            <div class='dropdown-item'>All contacts</div>
+            <div class='dropdown-item' (click)="onContactFilterClick($event)">All contacts</div>
           </div>
         </div>
         <div class='d-inline'>
@@ -89,7 +89,7 @@
       <p>{{activeUser.bio}}</p>
     </div>
     <div class='d-flex gap-fix' *ngIf="activeUserId !== currentUserId">
-      <button class='button-dark py-2 px-4' *ngIf="isActiveUserContact">Start Direct Chat</button>
+      <button class='button-dark py-2 px-4' *ngIf="isActiveUserContact" (click)="onStartDirectChatButtonClick(activeUser.userId)">Start Direct Chat</button>
       <button class='button-dark py-2 px-4 ml-3' *ngIf="isActiveUserContact">Remove Contact</button>
 
       <button class='button-dark py-2 px-4 ml-3' *ngIf="!isActiveUserContact" (click)="onAddContactClick(activeUser.userId)">
