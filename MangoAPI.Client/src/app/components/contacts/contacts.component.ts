@@ -109,6 +109,8 @@ export class ContactsComponent implements OnInit {
     this._contactsService.addContact(contactId).subscribe({
       next: _ => {
         this.isActiveUserContact = true;
+        this.contactFilter = 'All contacts';
+        this.contactSearchQuery = '';
         this.ngOnInit();
       },
       error: error  => {
