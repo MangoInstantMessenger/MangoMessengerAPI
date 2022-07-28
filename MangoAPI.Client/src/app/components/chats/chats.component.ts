@@ -77,7 +77,7 @@ export class ChatsComponent implements OnInit {
         let queryObject = this._routingService.getQueryData() as StartDirectChatQueryObject;
         if(queryObject.chatId) {
           this.loadChat(queryObject.chatId);
-          localStorage.removeItem("queryData");
+          this._routingService.clearQueryData();
         }
       },
       error: error => {

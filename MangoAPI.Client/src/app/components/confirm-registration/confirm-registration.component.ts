@@ -36,12 +36,13 @@ export class ConfirmRegistrationComponent implements OnInit {
 
     this._usersService.confirmEmail(verifyEmailCommand).subscribe({
       next: result => {
-        this.response = result
+        this.response = result;
       },
       error: _ => {
         this.errorMessage = "Invalid or expired activation link.";
       }
     });
+    this._routingService.clearQueryData();
   }
 
   redirectToLogin(): void {

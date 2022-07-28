@@ -63,4 +63,8 @@ export class RoutingService {
 
     return queryDataString === null ? null : JSON.parse(queryDataString);
   }
+
+  clearQueryData(): void {
+    localStorage.removeItem('queryData');
+  }
 }
