@@ -5,6 +5,10 @@ import {Contact} from "../../types/models/Contact";
 import {UsersService} from "../../services/api/users.service";
 import {TokensService} from "../../services/messenger/tokens.service";
 import {User} from "../../types/models/User";
+import {CommunitiesService} from "../../services/api/communities.service";
+import {Router} from "@angular/router";
+import {StartDirectChatQueryObject} from "../../types/query-objects/StartDirectChatQueryObject";
+import {RoutingService} from "../../services/messenger/routing.service";
 
 @Component({
   selector: 'app-contacts',
@@ -15,7 +19,10 @@ export class ContactsComponent implements OnInit {
   constructor(private _contactsService: ContactsService,
               private _errorNotificationService: ErrorNotificationService,
               private _usersService: UsersService,
-              private _tokensService: TokensService) {
+              private _tokensService: TokensService,
+              private _communitiesService: CommunitiesService,
+              private _router: Router,
+              private _routingService: RoutingService) {
   }
 
   public contacts: Contact[] = [];
@@ -118,9 +125,25 @@ export class ContactsComponent implements OnInit {
       next: response => {
         switch(this.contactFilter) {
           case 'All contacts':
+            this.contactSearchQuery = '';
             this.contacts = response.contacts;
             break;
         }
+      },
+      error: error => {
+        this._errorNotificationService.notifyOnError(error);
+      }
+    });
+  }
+
+  onStartDirectChatButtonClick(contactId: string): void {
+    this._communitiesService.createChat(contactId).subscribe({
+      next: response => {
+        let queryObject: StartDirectChatQueryObject = {
+          chatId: response.chatId
+        };
+        this._routingService.setQueryData(queryObject);
+        this._router.navigateByUrl("app?methodName=chats").then(r => r);
       },
       error: error => {
         this._errorNotificationService.notifyOnError(error);
