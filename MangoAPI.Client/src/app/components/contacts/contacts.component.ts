@@ -150,4 +150,15 @@ export class ContactsComponent implements OnInit {
       }
     });
   }
+
+  onRemoveContactButtonClick(contactId: string): void {
+    this._contactsService.deleteContact(contactId).subscribe({
+      next: _ => {
+        this.ngOnInit();
+      },
+      error: error => {
+        this._errorNotificationService.notifyOnError(error);
+      }
+    });
+  }
 }

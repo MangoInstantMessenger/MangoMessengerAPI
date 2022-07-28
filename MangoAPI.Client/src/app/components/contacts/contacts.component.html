@@ -89,8 +89,8 @@
       <p>{{activeUser.bio}}</p>
     </div>
     <div class='d-flex gap-fix' *ngIf="activeUserId !== currentUserId">
-      <button class='button-dark py-2 px-4' *ngIf="isActiveUserContact" (click)="onStartDirectChatButtonClick(activeUser.userId)">Start Direct Chat</button>
-      <button class='button-dark py-2 px-4 ml-3' *ngIf="isActiveUserContact">Remove Contact</button>
+      <button class='button-dark py-2 px-4' *ngIf="isActiveUserContact" (click)="onStartDirectChatButtonClick(activeUserId)">Start Direct Chat</button>
+      <button class='button-dark py-2 px-4 ml-3' *ngIf="isActiveUserContact" (click)="onRemoveContactButtonClick(activeUserId)">Remove Contact</button>
 
       <button class='button-dark py-2 px-4 ml-3' *ngIf="!isActiveUserContact" (click)="onAddContactClick(activeUser.userId)">
         Add Contact
