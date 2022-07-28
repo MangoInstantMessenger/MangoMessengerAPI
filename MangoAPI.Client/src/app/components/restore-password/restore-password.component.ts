@@ -53,5 +53,7 @@ export class RestorePasswordComponent{
         this._errorNotificationService.notifyOnError(error);
       }
     });
+
+    this._routingService.clearQueryData();
   }
 }
