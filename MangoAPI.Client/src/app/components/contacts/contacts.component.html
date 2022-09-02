@@ -99,7 +99,7 @@
   </div>
 
   <ul class='user-info'>
-    <li>
+    <li *ngIf="activeUser.birthdayDate">
       <div class='info'>
         <p class='title'>Birthdate</p>
         <p>{{activeUser.birthdayDate | date}}</p>
@@ -113,21 +113,21 @@
       </div>
       <img src='./assets/svg/mail.svg' alt='Mail Icon'>
     </li>
-    <li>
+    <li *ngIf="activeUser.username">
       <div class='info'>
         <p class='title'>Username</p>
         <p>{{activeUser.username}}</p>
       </div>
       <img src='./assets/svg/mail.svg' alt='Mail Icon'>
     </li>
-    <li>
+    <li *ngIf="activeUser.website">
       <div class='info'>
         <p class='title'>Website</p>
         <p>{{activeUser.website}}</p>
       </div>
       <img src='./assets/svg/world.svg' alt='World Icon'>
     </li>
-    <li>
+    <li *ngIf="activeUser.address">
       <div class='info'>
         <p class='title'>Address</p>
         <p>{{activeUser.address}}</p>

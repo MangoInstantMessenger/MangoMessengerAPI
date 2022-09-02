@@ -8,32 +8,24 @@ public class UpdateUserAccountInfoCommandValidator : AbstractValidator<UpdateUse
     {
         RuleFor(x => x.Address)
             .Cascade(CascadeMode.Stop)
-            .NotEmpty()
-            .Length(1, 120);
+            .Length(0, 120);
 
-        RuleFor(x => x.Bio).Cascade(CascadeMode.Stop)
-            .NotEmpty()
-            .Length(1, 120);
-
-        RuleFor(x => x.BirthdayDate)
+        RuleFor(x => x.Bio)
             .Cascade(CascadeMode.Stop)
-            .NotEmpty();
+            .Length(0, 120);
 
         RuleFor(x => x.DisplayName)
             .Cascade(CascadeMode.Stop)
-            .NotEmpty()
             .Length(1, 40);
 
         RuleFor(x => x.UserId).NotEmpty();
 
         RuleFor(x => x.Username)
             .Cascade(CascadeMode.Stop)
-            .NotEmpty()
-            .Length(1, 40);
+            .Length(0, 40);
 
         RuleFor(x => x.Website)
             .Cascade(CascadeMode.Stop)
-            .NotEmpty()
-            .Length(1, 30);
+            .Length(0, 30);
     }
 }
