@@ -8,23 +8,23 @@ public class UpdateUserSocialInformationCommandValidator : AbstractValidator<Upd
     {
         RuleFor(x => x.Facebook)
             .Cascade(CascadeMode.Stop)
-            .NotEmpty()
-            .Length(1, 30);
+            .NotNull()
+            .Length(0, 30);
 
         RuleFor(x => x.Instagram)
             .Cascade(CascadeMode.Stop)
-            .NotEmpty()
-            .Length(1, 30);
+            .NotNull()
+            .Length(0, 30);
 
         RuleFor(x => x.LinkedIn)
             .Cascade(CascadeMode.Stop)
-            .NotEmpty()
-            .Length(1, 30);
+            .NotNull()
+            .Length(0, 30);
 
         RuleFor(x => x.Twitter)
             .Cascade(CascadeMode.Stop)
-            .NotEmpty()
-            .Length(1, 30);
+            .NotNull()
+            .Length(0, 30);
 
         RuleFor(x => x.UserId).NotEmpty();
     }
