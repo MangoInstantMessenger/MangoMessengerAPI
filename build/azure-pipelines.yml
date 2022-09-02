@@ -22,7 +22,7 @@ stages:
       - job: "Build"
         displayName: 'Build and Test'
         pool:
-          vmImage: 'ubuntu-20.04'
-        
+          vmImage: 'ubuntu-latest'
+
         steps:
           - template: azure-pipelines-common.yml
