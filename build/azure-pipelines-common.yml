@@ -1,20 +1,4 @@
 steps:
-  - task: gittools.gittools.setup-gitversion-task.gitversion/setup@0
-    displayName: 'GitVersion Setup'
-    inputs:
-      versionSpec: '5.8.x'
-
-  - task: gittools.gittools.execute-gitversion-task.gitversion/execute@0
-    displayName: 'GitVersion Execute'
-    inputs:
-      updateAssemblyInfo: true
-
-  - bash: echo $Action$BuildVersion
-    displayName: 'Set Build Version Number'
-    env:
-      Action: '##vso[build.updatebuildnumber]'
-      BuildVersion: $(GitVersion.SemVer)
-
   - task: NodeTool@0
     displayName: 'Install Node.js 16.x'
     inputs:
@@ -46,6 +30,22 @@ steps:
     inputs:
       packageType: sdk
       version: 6.x
+
+  - task: gittools.gittools.setup-gitversion-task.gitversion/setup@0
+    displayName: 'GitVersion Setup'
+    inputs:
+      versionSpec: '5.8.x'
+
+  - task: gittools.gittools.execute-gitversion-task.gitversion/execute@0
+    displayName: 'GitVersion Execute'
+    inputs:
+      updateAssemblyInfo: true
+
+  - bash: echo $Action$BuildVersion
+    displayName: 'Set Build Version Number'
+    env:
+      Action: '##vso[build.updatebuildnumber]'
+      BuildVersion: $(GitVersion.SemVer)
 
   - task: NuGetToolInstaller@1
     displayName: 'Install Nuget'
