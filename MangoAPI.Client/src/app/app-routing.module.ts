@@ -35,7 +35,7 @@ const routes: Routes = [
   { path: 'settings', component: SettingsComponent },
   { path: 'create-group', component: CreateGroupComponent},
   { path: 'app', component: GatewayComponent },
-  { path: '**', component: NotFoundComponent },
+  { path: '**', component: GatewayComponent },
 ];
 
 @NgModule({
