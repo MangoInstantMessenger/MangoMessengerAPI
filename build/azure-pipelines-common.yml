@@ -17,12 +17,12 @@ steps:
 
   - script: |
       ng build --aot --configuration production
-    displayName: 'Build angular application for production'
+    displayName: 'Build Angular production'
     workingDirectory: '$(frontEndProjectPath)'
 
   - script: |
       ng lint
-    displayName: 'Lint angular application'
+    displayName: 'Lint Angular'
     workingDirectory: '$(frontEndProjectPath)'
 
   - task: UseDotNet@2
@@ -40,7 +40,7 @@ steps:
       restoreSolution: '$(solution)'
 
   - task: DotNetCoreCLI@2
-    displayName: 'dotnet build $(buildConfiguration)'
+    displayName: 'Run dotnet build config $(buildConfiguration)'
     inputs:
       command: 'build'
       arguments: '--configuration $(buildConfiguration)'
