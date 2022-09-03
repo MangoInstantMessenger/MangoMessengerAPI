@@ -31,6 +31,22 @@ steps:
       packageType: sdk
       version: 6.x
 
+  - task: gittools.gittools.setup-gitversion-task.gitversion/setup@0
+    displayName: 'GitVersion Setup'
+    inputs:
+      versionSpec: '5.8.x'
+
+  - task: gittools.gittools.execute-gitversion-task.gitversion/execute@0
+    displayName: 'GitVersion Execute'
+    inputs:
+      updateAssemblyInfo: true
+
+  - bash: echo $Action$BuildVersion
+    displayName: 'Set Build Version Number'
+    env:
+      Action: '##vso[build.updatebuildnumber]'
+      BuildVersion: $(GitVersion.SemVer)
+
   - task: NuGetToolInstaller@1
     displayName: 'Install Nuget'
 
@@ -45,11 +61,11 @@ steps:
       command: 'build'
       arguments: '--configuration $(buildConfiguration)'
 
-#  - task: PowerShell@2
-#    displayName: 'Docker Login'
-#    inputs:
-#      targetType: 'inline'
-#      script: docker login -u $(DOCKER_USERNAME) -p $(DOCKER_PASSWORD)
+  #  - task: PowerShell@2
+  #    displayName: 'Docker Login'
+  #    inputs:
+  #      targetType: 'inline'
+  #      script: docker login -u $(DOCKER_USERNAME) -p $(DOCKER_PASSWORD)
 
   - task: PowerShell@2
     displayName: 'Run database container'
@@ -69,6 +85,7 @@ steps:
     inputs:
       command: 'test'
       projects: 'MangoAPI.IntegrationTests/MangoAPI.IntegrationTests.csproj'
+      arguments: '--no-restore --collect:"XPlat Code Coverage" --settings build/coverage.runsettings'
 
   - task: DotNetCoreCLI@2
     displayName: 'Run dotnet Publish'
