@@ -47,7 +47,7 @@ export class RoutingService {
         this.router.navigate(['login'], {skipLocationChange: true}).then(r => r);
         break;
       default:
-        this.router.navigate(['**'], {skipLocationChange: true}).then(r => r);
+        this.router.navigate(['chats'], {skipLocationChange: true}).then(r => r);
 
     }
   }

@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import {Component, OnInit} from '@angular/core';
+import {ActivatedRoute, Router} from '@angular/router';
 import {RoutingService} from "../../services/messenger/routing.service";
 import {SessionService} from "../../services/api/session.service";
 
@@ -10,8 +10,8 @@ import {SessionService} from "../../services/api/session.service";
 export class GatewayComponent implements OnInit {
   constructor(private route: ActivatedRoute,
               private router: Router,
-              private routingService: RoutingService,
-              private sessionService: SessionService) {}
+              private routingService: RoutingService) {
+  }
 
   ngOnInit(): void {
     this.route.queryParams.subscribe(params => {
