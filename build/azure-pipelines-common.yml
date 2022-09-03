@@ -52,7 +52,7 @@ steps:
 #      script: docker login -u $(DOCKER_USERNAME) -p $(DOCKER_PASSWORD)
 
   - task: PowerShell@2
-    displayName: 'Docker Run'
+    displayName: 'Run database container'
     inputs:
       targetType: 'inline'
       script: 'docker run -e ''SA_PASSWORD=x2yiJt!Fs'' -e ACCEPT_EULA=y --name mango-mssql-db --hostname mango-mssql-db -p 1433:1433 -d mcr.microsoft.com/mssql/server:2019-latest'
@@ -65,13 +65,13 @@ steps:
       script: .\build\docker\mssql-docker\wait_database.ps1
 
   - task: DotNetCoreCLI@2
-    displayName: 'Run dotnet integration tests'
+    displayName: 'Run integration tests'
     inputs:
       command: 'test'
       projects: 'MangoAPI.IntegrationTests/MangoAPI.IntegrationTests.csproj'
 
   - task: DotNetCoreCLI@2
-    displayName: 'Run dotnet publish for Backend project'
+    displayName: 'Run dotnet Publish'
     inputs:
       command: 'publish'
       publishWebProjects: false
@@ -79,7 +79,7 @@ steps:
       arguments: '--configuration $(BuildConfiguration) --output $(build.artifactstagingdirectory)/$(BuildConfiguration) --no-build'
 
   - task: PublishBuildArtifacts@1
-    displayName: 'Publish Artifacts for Backend project'
+    displayName: 'Publish Artifacts'
     inputs:
       PathtoPublish: '$(Build.ArtifactStagingDirectory)'
       ArtifactName: 'drop'
