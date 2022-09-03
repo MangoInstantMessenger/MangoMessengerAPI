@@ -36,7 +36,7 @@ stages:
         steps:
           - task: SonarCloudPrepare@1
             inputs:
-              SonarCloud: 'SonarCloud'
+              SonarCloud: 'SonarCloud_Mango'
               organization: 'mangoinstantmessenger'
               scannerMode: 'MSBuild'
               projectKey: 'MangoMessenger.AzureDevops'
