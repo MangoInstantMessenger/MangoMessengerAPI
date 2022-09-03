@@ -45,17 +45,17 @@ steps:
       command: 'build'
       arguments: '--configuration $(buildConfiguration)'
 
-  - task: PowerShell@2
-    displayName: 'Docker Login'
-    inputs:
-      targetType: 'inline'
-      script: docker login -u $(DOCKER_USERNAME) -p $(DOCKER_PASSWORD)
+#  - task: PowerShell@2
+#    displayName: 'Docker Login'
+#    inputs:
+#      targetType: 'inline'
+#      script: docker login -u $(DOCKER_USERNAME) -p $(DOCKER_PASSWORD)
 
   - task: PowerShell@2
     displayName: 'Docker Run'
     inputs:
       targetType: 'inline'
-      script: 'docker run -e ''SA_PASSWORD=x2yiJt!Fs'' --name mango-mssql-db -p 1433:1433 -d petrokolosov/mango-mssql-db:latest'
+      script: 'docker run -e ''SA_PASSWORD=x2yiJt!Fs'' -e ACCEPT_EULA=y --name mango-mssql-db --hostname mango-mssql-db -p 1433:1433 -d mcr.microsoft.com/mssql/server:2019-latest'
 
   - task: PowerShell@2
     displayName: 'Wait for container'
