@@ -52,7 +52,7 @@ stages:
 
           - template: azure-pipelines-common.yml
 
-          - task: reportgenerator@4
+          - task: reportgenerator@5
             displayName: 'Generate Code Coverage Report'
             inputs:
               reports: '$(Agent.TempDirectory)/**/*cobertura.xml'
