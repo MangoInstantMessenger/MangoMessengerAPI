@@ -1,0 +1,78 @@
+trigger:
+  batch: true
+  branches:
+    include:
+      - develop
+
+pr:
+  branches:
+    include:
+      - '*'
+
+variables:
+  - group: MANGO_INTEGRATION_TESTS
+  - name: solution
+    value: 'MangoAPI.sln'
+  - name: buildPlatform
+    value: 'Any CPU'
+  - name: buildConfiguration
+    value: 'Release'
+  - name: backendProjectPath
+    value: 'MangoAPI.Presentation/MangoAPI.Presentation.csproj'
+  - name: frontEndProjectPath
+    value: 'MangoAPI.Client'
+  - name: codeCoverageReportDirPath
+    value: '$(Build.SourcesDirectory)/TestResults/CodeCoverageReport'
+
+stages:
+  - stage: 'Build_Test'
+    displayName: 'Build/Test'
+    jobs:
+      - job: 'Build'
+        displayName: 'Build/Test'
+        pool:
+          vmImage: 'ubuntu-latest'
+
+        steps:
+          - task: SonarCloudPrepare@1
+            inputs:
+              SonarCloud: 'SonarCloud'
+              organization: 'mangoinstantmessenger'
+              scannerMode: 'MSBuild'
+              projectKey: 'MangoMessenger.AzureDevops'
+              projectName: 'MangoMessenger.AzureDevops'
+              projectVersion: '$(GitVersion.SemVer)'
+              extraProperties: |
+                # Additional properties that will be passed to the scanner,
+                # Put one key=value per line, example:
+                # sonar.exclusions=**/*.bin
+                #sonar.verbose=true
+                sonar.cs.vstest.reportsPaths=$(Agent.TempDirectory)/**/*.trx
+                sonar.cs.opencover.reportsPaths=$(Agent.TempDirectory)/**/*opencover.xml
+
+          - template: azure-pipelines-common.yml
+
+          - task: reportgenerator@4
+            displayName: 'Generate Code Coverage Report'
+            inputs:
+              reports: '$(Agent.TempDirectory)/**/*cobertura.xml'
+              targetdir: '$(codeCoverageReportDirPath)'
+              reporttypes: 'HtmlInline_AzurePipelines;Cobertura;HTMLChart'
+              assemblyfilters: '-xunit*;-System.*'
+
+          - task: SonarCloudAnalyze@1
+            displayName: 'Run Code Analysis'
+
+          - task: SonarCloudPublish@1
+            displayName: 'Publish Quality Gate Results'
+
+          - task: PublishTestResults@2
+            inputs:
+              testRunner: VSTest
+              testResultsFiles: '$(Agent.TempDirectory)/**/*.trx'
+
+          - task: PublishCodeCoverageResults@1
+            inputs:
+              summaryFileLocation: $(codeCoverageReportDirPath)/Cobertura.xml
+              reportDirectory: $(codeCoverageReportDirPath)
+              codecoverageTool: cobertura

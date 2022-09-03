@@ -85,6 +85,7 @@ steps:
     inputs:
       command: 'test'
       projects: 'MangoAPI.IntegrationTests/MangoAPI.IntegrationTests.csproj'
+      arguments: '--no-restore --collect:"XPlat Code Coverage" --settings build/coverage.runsettings'
 
   - task: DotNetCoreCLI@2
     displayName: 'Run dotnet Publish'
