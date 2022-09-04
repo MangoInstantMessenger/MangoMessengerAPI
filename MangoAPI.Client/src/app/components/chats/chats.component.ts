@@ -139,6 +139,7 @@ export class ChatsComponent implements OnInit {
     this._messagesService.getChatMessages(chatId).subscribe({
       next: response => {
         this.messages = response.messages;
+        this.scrollToEnd();
       },
       error: error => {
         this._errorNotificationService.notifyOnError(error);
@@ -310,10 +311,12 @@ export class ChatsComponent implements OnInit {
   }
 
   scrollToEnd(): void {
-    let chatMessages = document.getElementById('chatMessages');
-    if(!chatMessages) {
-      return;
-    }
-    chatMessages.scrollTop = chatMessages.scrollHeight;
+    setTimeout(() => {
+      let chatMessages = document.getElementById('chatMessages');
+      if (!chatMessages) {
+        return;
+      }
+      chatMessages.scrollTop = chatMessages.scrollHeight;
+    })
   }
 }
