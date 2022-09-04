@@ -15,7 +15,8 @@ import {ValidationService} from "../../services/messenger/validation.service";
 import {SendMessageCommand} from "../../types/requests/SendMessageCommand";
 import * as signalR from '@microsoft/signalr';
 import {environment} from "../../../environments/environment";
-import {SignalrService} from "../../services/messenger/signalr.service";
+import {EditMessageNotification} from "../../types/models/EditMessageNotification";
+import {DeleteMessageNotification} from "../../types/models/DeleteMessageNotification";
 
 @Component({
   selector: 'app-chats',
@@ -31,8 +32,7 @@ export class ChatsComponent implements OnInit {
               private _errorNotificationService: ErrorNotificationService,
               private _router: Router,
               private _routingService: RoutingService,
-              private _validationService: ValidationService,
-              private _signalRService: SignalrService) {
+              private _validationService: ValidationService) {
   }
 
   private connectionBuilder: signalR.HubConnectionBuilder = new signalR.HubConnectionBuilder();
@@ -94,24 +94,11 @@ export class ChatsComponent implements OnInit {
         this.chats = response.chats.filter(x => !x.isArchived);
 
         if (this.connection.state !== signalR.HubConnectionState.Connected) {
-          this._signalRService.connectChatsToHub(this.connection, this.chats, this.realTimeConnections, this.userId);
+          this.connectChatsToHub();
         }
 
         if (!this.signalRConnected) {
-
-          this._signalRService.setSignalRMethods(
-            this.connection,
-            this.userId,
-            this.activeChat,
-            this.chats,
-            this.messages,
-            () => {
-              console.log('chats: ' + JSON.stringify(this.chats));
-              const chats = this.chats.filter(x => x.chatId !== this.activeChat.chatId);
-              const chat = this.chats.filter(x => x.chatId === this.activeChat.chatId)[0];
-              this.chats = [chat, ...chats];
-            });
-
+          this.setSignalRMethods();
           this.signalRConnected = true;
         }
       },
@@ -119,6 +106,77 @@ export class ChatsComponent implements OnInit {
         this._errorNotificationService.notifyOnError(error);
       }
     });
+  }
+
+  connectChatsToHub(): void {
+    this.connection.start().then(() => {
+      this.chats.forEach(x => {
+        if (this.realTimeConnections.includes(x.chatId)) {
+          return;
+        }
+
+        this.connection.invoke("JoinGroup", x.chatId).then(() => this.realTimeConnections.push(x.chatId));
+      });
+
+      if (this.userId != null && this.realTimeConnections.includes(this.userId)) {
+        return;
+      }
+
+      this.connection.invoke("JoinGroup", this.userId).then(r => r);
+
+    }).catch(err => console.error(err.toString()));
+  }
+
+  setSignalRMethods(): void {
+    this.connection.on("BroadcastMessageAsync", (message: Message) => this.onBroadcastMessage(message));
+
+    this.connection.on("UpdateUserChatsAsync", (chat: Chat) => this.chats.push(chat));
+
+    this.connection.on('NotifyOnMessageDeleteAsync', (notification: DeleteMessageNotification) => {
+        let message = this.messages.filter(x => x.messageId === notification.messageId)[0];
+
+        if (message.messageId === this.activeChat.lastMessageId) {
+          this.activeChat.lastMessageAuthor = notification.newLastMessageAuthor;
+          this.activeChat.lastMessageText = notification.newLastMessageText;
+          this.activeChat.lastMessageTime = notification.newLastMessageTime;
+          this.activeChat.lastMessageId = notification.newLastMessageId;
+        }
+
+
+        this.messages = this.messages.filter(x => x.messageId !== notification.messageId);
+      }
+    );
+
+    this.connection.on('NotifyOnMessageEditAsync', (notification: EditMessageNotification) => {
+      let message = this.messages.filter(x => x.messageId === notification.messageId)[0];
+
+      if (message) {
+        message.messageText = notification.modifiedText;
+        message.updatedAt = notification.updatedAt;
+      }
+
+      if (notification.isLastMessage) {
+        this.activeChat.lastMessageText = notification.modifiedText;
+        this.activeChat.lastMessageTime = notification.updatedAt;
+      }
+    });
+  }
+
+  onBroadcastMessage(message: Message): void {
+    message.self = message.userId == this.userId;
+    let chat = this.chats.filter(x => x.chatId === message.chatId)[0];
+    chat.lastMessageAuthor = message.userDisplayName;
+    chat.lastMessageText = message.messageText;
+    chat.lastMessageTime = message.createdAt;
+    chat.lastMessageId = message.messageId;
+    this.chats = this.chats.filter(x => x.chatId !== message.chatId);
+    this.chats = [chat, ...this.chats];
+
+    if (message.chatId === this.activeChatId) {
+      this.messages.push(message);
+    }
+
+    this.scrollToEnd();
   }
 
   onEmojiClick(event: Event): void {
