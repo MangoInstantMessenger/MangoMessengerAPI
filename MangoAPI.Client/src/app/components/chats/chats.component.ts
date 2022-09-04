@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {TokensService} from "../../services/messenger/tokens.service";
 import {Chat} from "../../types/models/Chat";
 import {CommunitiesService} from "../../services/api/communities.service";
@@ -17,13 +17,14 @@ import * as signalR from '@microsoft/signalr';
 import {environment} from "../../../environments/environment";
 import {EditMessageNotification} from "../../types/models/EditMessageNotification";
 import {DeleteMessageNotification} from "../../types/models/DeleteMessageNotification";
+import {Subject, takeUntil} from "rxjs";
 
 @Component({
   selector: 'app-chats',
   templateUrl: './chats.component.html',
   styleUrls: ['./chats.component.scss']
 })
-export class ChatsComponent implements OnInit {
+export class ChatsComponent implements OnInit, OnDestroy {
 
   constructor(private _tokensService: TokensService,
               private _communitiesService: CommunitiesService,
@@ -71,6 +72,8 @@ export class ChatsComponent implements OnInit {
   public searchMessagesQuery: string = '';
   public chatFilter: string = 'All chats';
 
+  componentDestroyed$: Subject<boolean> = new Subject()
+
   public get routingConstants(): typeof RoutingConstants {
     return RoutingConstants;
   }
@@ -89,7 +92,7 @@ export class ChatsComponent implements OnInit {
 
     this.userId = tokens.userId;
 
-    this._communitiesService.getUserChats().subscribe({
+    this._communitiesService.getUserChats().pipe(takeUntil(this.componentDestroyed$)).subscribe({
       next: response => {
         this.chats = response.chats.filter(x => !x.isArchived);
 
@@ -172,7 +175,9 @@ export class ChatsComponent implements OnInit {
     this.chats = this.chats.filter(x => x.chatId !== message.chatId);
     this.chats = [chat, ...this.chats];
 
-    if (message.chatId === this.activeChatId) {
+    const includesMessage = this.messages.some(x => x.messageId === message.messageId);
+
+    if (message.chatId === this.activeChatId && !includesMessage) {
       this.messages.push(message);
     }
 
@@ -194,7 +199,7 @@ export class ChatsComponent implements OnInit {
       return;
     }
 
-    this._messagesService.getChatMessages(chatId).subscribe({
+    this._messagesService.getChatMessages(chatId).pipe(takeUntil(this.componentDestroyed$)).subscribe({
       next: response => {
         this.messages = response.messages;
         this.scrollToEnd();
@@ -216,7 +221,7 @@ export class ChatsComponent implements OnInit {
   }
 
   onSearchChatClick() {
-    this._communitiesService.searchChat(this.searchChatQuery).subscribe({
+    this._communitiesService.searchChat(this.searchChatQuery).pipe(takeUntil(this.componentDestroyed$)).subscribe({
       next: response => {
         this.chats = response.chats;
       },
@@ -228,7 +233,7 @@ export class ChatsComponent implements OnInit {
 
   onSearchChatQueryChange(): void {
     if (this.searchChatQuery) {
-      this._communitiesService.searchChat(this.searchChatQuery).subscribe({
+      this._communitiesService.searchChat(this.searchChatQuery).pipe(takeUntil(this.componentDestroyed$)).subscribe({
         next: response => {
           this.chatFilter = 'Search results';
           this.chats = response.chats;
@@ -245,14 +250,15 @@ export class ChatsComponent implements OnInit {
 
   onSearchMessageQueryChange(): void {
     if (this.searchMessagesQuery) {
-      this._messagesService.searchMessages(this.activeChatId, this.searchMessagesQuery).subscribe({
-        next: response => {
-          this.messages = response.messages;
-        },
-        error: error => {
-          this._errorNotificationService.notifyOnError(error);
-        }
-      });
+      this._messagesService.searchMessages(this.activeChatId, this.searchMessagesQuery).pipe(takeUntil(this.componentDestroyed$))
+        .subscribe({
+          next: response => {
+            this.messages = response.messages;
+          },
+          error: error => {
+            this._errorNotificationService.notifyOnError(error);
+          }
+        });
     } else {
       this.getChatMessages(this.activeChatId);
     }
@@ -262,7 +268,7 @@ export class ChatsComponent implements OnInit {
     let div = event.currentTarget as HTMLDivElement;
     this.chatFilter = div.innerText;
 
-    this._communitiesService.getUserChats().subscribe({
+    this._communitiesService.getUserChats().pipe(takeUntil(this.componentDestroyed$)).subscribe({
       next: response => {
         let chats = response.chats;
         switch (this.chatFilter) {
@@ -287,19 +293,21 @@ export class ChatsComponent implements OnInit {
   }
 
   onSearchMessageClick(): void {
-    this._messagesService.searchMessages(this.activeChatId, this.searchMessagesQuery).subscribe({
-      next: response => {
-        this.messages = response.messages;
-        this.searchMessagesQuery = '';
-      },
-      error: error => {
-        this._errorNotificationService.notifyOnError(error);
-      }
-    });
+    this._messagesService.searchMessages(this.activeChatId, this.searchMessagesQuery)
+      .pipe(takeUntil(this.componentDestroyed$))
+      .subscribe({
+        next: response => {
+          this.messages = response.messages;
+          this.searchMessagesQuery = '';
+        },
+        error: error => {
+          this._errorNotificationService.notifyOnError(error);
+        }
+      });
   }
 
   onLeaveChatClick(): void {
-    this._userChatsService.leaveCommunity(this.activeChatId).subscribe({
+    this._userChatsService.leaveCommunity(this.activeChatId).pipe(takeUntil(this.componentDestroyed$)).subscribe({
       next: _ => {
         this.activeChatId = '';
         this.initializeView();
@@ -311,7 +319,7 @@ export class ChatsComponent implements OnInit {
   }
 
   onArchiveChatClick(): void {
-    this._userChatsService.archiveCommunity(this.activeChatId).subscribe({
+    this._userChatsService.archiveCommunity(this.activeChatId).pipe(takeUntil(this.componentDestroyed$)).subscribe({
       next: _ => {
         this.initializeView();
         this.activeChatId = '';
@@ -332,8 +340,10 @@ export class ChatsComponent implements OnInit {
     }
 
     const isoString = new Date().toISOString();
+    const messageId = crypto.randomUUID();
 
     const newMessage = new Message(
+      messageId,
       tokens.userId,
       this.activeChatId,
       tokens.userDisplayName,
@@ -345,9 +355,10 @@ export class ChatsComponent implements OnInit {
     this.messages.push(newMessage);
 
     const sendMessageCommand = new SendMessageCommand(this.messageText, this.activeChatId);
+    sendMessageCommand.setMessageId(messageId);
     sendMessageCommand.setCreatedAt(isoString);
 
-    this._messagesService.sendMessage(sendMessageCommand).subscribe({
+    this._messagesService.sendMessage(sendMessageCommand).pipe(takeUntil(this.componentDestroyed$)).subscribe({
       next: data => {
         newMessage.messageId = data.messageId;
         this.clearMessageInput();
@@ -356,7 +367,7 @@ export class ChatsComponent implements OnInit {
       error: error => {
         this._errorNotificationService.notifyOnError(error);
       }
-    })
+    });
   }
 
   onEnterClick(event: any): void {
@@ -376,5 +387,11 @@ export class ChatsComponent implements OnInit {
       }
       chatMessages.scrollTop = chatMessages.scrollHeight;
     })
+  }
+
+  ngOnDestroy(): void {
+    this.connection.stop().then(r => r);
+    this.componentDestroyed$.next(true);
+    this.componentDestroyed$.complete();
   }
 }

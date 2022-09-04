@@ -11,5 +11,6 @@ public record SendMessageCommand(
         string AttachmentUrl,
         string InReplayToAuthor,
         string InReplayToText,
-        DateTime? CreatedAt)
+        DateTime? CreatedAt,
+        Guid? MessageId)
     : IRequest<Result<SendMessageResponse>>;

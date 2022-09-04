@@ -14,6 +14,7 @@
 
 
   constructor(
+    messageId: string,
     userId: string,
     chatId: string,
     userDisplayName: string,
@@ -21,6 +22,7 @@
     createdAt: string,
     self: boolean,
     messageAuthorPictureUrl: string) {
+    this.messageId = messageId;
     this.userId = userId;
     this.chatId = chatId;
     this.userDisplayName = userDisplayName;
