@@ -35,8 +35,10 @@
       </header>
       <ul class="list overflow py-3 px-2">
         <li *ngFor="let chat of chats" class="mb-2">
-          <div class="list-item active" (click)="loadChat(chat.chatId)" *ngIf="activeChatId === chat.chatId; else chatElse">
-            <img alt="Chat avatar" class="avatar" src="{{chat.chatLogoImageUrl ? chat.chatLogoImageUrl : './../../../assets/img/chat-avatar.png'}}">
+          <div class="list-item active" (click)="loadChat(chat.chatId)"
+               *ngIf="activeChatId === chat.chatId; else chatElse">
+            <img alt="Chat avatar" class="avatar"
+                 src="{{chat.chatLogoImageUrl ? chat.chatLogoImageUrl : './../../../assets/img/chat-avatar.png'}}">
             <div class="content">
               <div class="title" *ngIf="chat.communityType === 2; else elseBlock;">
                 <img alt="Group Icon" class="mr-1" height="16" src="../../../assets/svg/group.svg" width="16">
@@ -69,7 +71,8 @@
           </div>
           <ng-template #chatElse>
             <div class="list-item" (click)="loadChat(chat.chatId)">
-              <img alt="Chat avatar" class="avatar" src="{{chat.chatLogoImageUrl ? chat.chatLogoImageUrl : './../../../assets/img/chat-avatar.png'}}">
+              <img alt="Chat avatar" class="avatar"
+                   src="{{chat.chatLogoImageUrl ? chat.chatLogoImageUrl : './../../../assets/img/chat-avatar.png'}}">
               <div class="content">
                 <div class="title" *ngIf="chat.communityType === 2; else elseBlock;">
                   <img alt="Group Icon" class="mr-1" height="16" src="../../../assets/svg/group.svg" width="16">
@@ -119,7 +122,8 @@
           <div class="chat-actions">
             <div class="input-group mb-3">
               <label for="searchBar"></label>
-              <input aria-describedby="basic-addon2" class="form-control ml-3" id="searchMessageBar" name="searchMessageBar"
+              <input aria-describedby="basic-addon2" class="form-control ml-3" id="searchMessageBar"
+                     name="searchMessageBar"
                      placeholder="Search messages..."
                      type="text"
                      [(ngModel)]="searchMessagesQuery"
@@ -142,7 +146,8 @@
                     <span>Unarchive Chat</span>
                   </ng-template>
                 </div>
-                <div class="dropdown-item gap-fix d-flex" data-target="#createGroup" data-toggle="modal" role="button" (click)="onLeaveChatClick()">
+                <div class="dropdown-item gap-fix d-flex" data-target="#createGroup" data-toggle="modal" role="button"
+                     (click)="onLeaveChatClick()">
                   <img alt="Leave Chat Icon" class="mr-1" src="./../../../assets/svg/trash.svg">
 
                   <span class="text-red">Leave Chat</span>
@@ -268,8 +273,13 @@
           </div>
         </div>
 
-        <textarea id="message-input" class="message-input overflow" placeholder="Write message..." [(ngModel)]="messageText"></textarea>
-        <button class="send-message">
+        <textarea id="message-input"
+                  class="message-input overflow"
+                  placeholder="Write message..."
+                  [(ngModel)]="messageText"
+                  (keydown.enter)="onEnterClick($event)">
+        </textarea>
+        <button class="send-message" (click)="onSendMessageClick()">
           <img alt="Arrow Right Icon" src="./../../../assets/svg/arrow-right.svg">
         </button>
       </div>

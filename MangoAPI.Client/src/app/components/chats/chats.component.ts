@@ -11,7 +11,12 @@ import {CommunityType} from "../../types/enums/CommunityType";
 import {RoutingConstants} from "../../types/constants/RoutingConstants";
 import {UserChatsService} from "../../services/api/user-chats.service";
 import {RoutingService} from "../../services/messenger/routing.service";
-import {StartDirectChatQueryObject} from "../../types/query-objects/StartDirectChatQueryObject";
+import {ValidationService} from "../../services/messenger/validation.service";
+import {SendMessageCommand} from "../../types/requests/SendMessageCommand";
+import * as signalR from '@microsoft/signalr';
+import {environment} from "../../../environments/environment";
+import {EditMessageNotification} from "../../types/models/EditMessageNotification";
+import {DeleteMessageNotification} from "../../types/models/DeleteMessageNotification";
 
 @Component({
   selector: 'app-chats',
@@ -26,11 +31,21 @@ export class ChatsComponent implements OnInit {
               private _messagesService: MessagesService,
               private _errorNotificationService: ErrorNotificationService,
               private _router: Router,
-              private _routingService: RoutingService) {
+              private _routingService: RoutingService,
+              private _validationService: ValidationService) {
   }
+
+  private connectionBuilder: signalR.HubConnectionBuilder = new signalR.HubConnectionBuilder();
+  private connection: signalR.HubConnection = this.connectionBuilder
+    .configureLogging(signalR.LogLevel.Information)
+    .withUrl(environment.baseUrl + 'notify')
+    .build();
+  private signalRConnected = false;
+  public realTimeConnections: string[] = [];
 
   public userId: string | undefined = '';
   public chats: Chat[] = [];
+
   public activeChat: Chat = {
     lastMessageId: "",
     lastMessageAuthor: "",
@@ -47,6 +62,7 @@ export class ChatsComponent implements OnInit {
     membersCount: 0,
     title: ""
   };
+
   public activeChatId: string = '';
   public messages: Message[] = [];
 
@@ -64,26 +80,103 @@ export class ChatsComponent implements OnInit {
   }
 
   initializeView(): void {
-    this.scrollToEnd();
     let tokens = this._tokensService.getTokens();
+
     if (!tokens) {
       this._router.navigateByUrl(this.routingConstants.Login).then(r => r);
       return;
     }
-    this.userId = tokens?.userId;
+
+    this.userId = tokens.userId;
+
     this._communitiesService.getUserChats().subscribe({
       next: response => {
         this.chats = response.chats.filter(x => !x.isArchived);
-        let queryObject = this._routingService.getQueryData() as StartDirectChatQueryObject;
-        if(queryObject.chatId) {
-          this.loadChat(queryObject.chatId);
-          this._routingService.clearQueryData();
+
+        if (this.connection.state !== signalR.HubConnectionState.Connected) {
+          this.connectChatsToHub();
+        }
+
+        if (!this.signalRConnected) {
+          this.setSignalRMethods();
+          this.signalRConnected = true;
         }
       },
       error: error => {
         this._errorNotificationService.notifyOnError(error);
       }
     });
+  }
+
+  connectChatsToHub(): void {
+    this.connection.start().then(() => {
+      this.chats.forEach(x => {
+        if (this.realTimeConnections.includes(x.chatId)) {
+          return;
+        }
+
+        this.connection.invoke("JoinGroup", x.chatId).then(() => this.realTimeConnections.push(x.chatId));
+      });
+
+      if (this.userId != null && this.realTimeConnections.includes(this.userId)) {
+        return;
+      }
+
+      this.connection.invoke("JoinGroup", this.userId).then(r => r);
+
+    }).catch(err => console.error(err.toString()));
+  }
+
+  setSignalRMethods(): void {
+    this.connection.on("BroadcastMessageAsync", (message: Message) => this.onBroadcastMessage(message));
+
+    this.connection.on("UpdateUserChatsAsync", (chat: Chat) => this.chats.push(chat));
+
+    this.connection.on('NotifyOnMessageDeleteAsync', (notification: DeleteMessageNotification) => {
+        let message = this.messages.filter(x => x.messageId === notification.messageId)[0];
+
+        if (message.messageId === this.activeChat.lastMessageId) {
+          this.activeChat.lastMessageAuthor = notification.newLastMessageAuthor;
+          this.activeChat.lastMessageText = notification.newLastMessageText;
+          this.activeChat.lastMessageTime = notification.newLastMessageTime;
+          this.activeChat.lastMessageId = notification.newLastMessageId;
+        }
+
+
+        this.messages = this.messages.filter(x => x.messageId !== notification.messageId);
+      }
+    );
+
+    this.connection.on('NotifyOnMessageEditAsync', (notification: EditMessageNotification) => {
+      let message = this.messages.filter(x => x.messageId === notification.messageId)[0];
+
+      if (message) {
+        message.messageText = notification.modifiedText;
+        message.updatedAt = notification.updatedAt;
+      }
+
+      if (notification.isLastMessage) {
+        this.activeChat.lastMessageText = notification.modifiedText;
+        this.activeChat.lastMessageTime = notification.updatedAt;
+      }
+    });
+  }
+
+  onBroadcastMessage(message: Message): void {
+    message.self = message.userId == this.userId;
+    let chat = this.chats.filter(x => x.chatId === message.chatId)[0];
+    chat.lastMessageAuthor = message.userDisplayName;
+    chat.lastMessageText = message.messageText;
+    chat.lastMessageTime = message.createdAt;
+    chat.lastMessageId = message.messageId;
+    this.chats = this.chats.filter(x => x.chatId !== message.chatId);
+    this.chats = [chat, ...this.chats];
+
+    if (message.chatId === this.activeChatId) {
+      this.messages.push(message);
+    }
+
+    this.scrollToEnd();
   }
 
   onEmojiClick(event: Event): void {
@@ -97,7 +190,9 @@ export class ChatsComponent implements OnInit {
   }
 
   getChatMessages(chatId: string | null): void {
-    if (chatId == null) return;
+    if (!chatId) {
+      return;
+    }
 
     this._messagesService.getChatMessages(chatId).subscribe({
       next: response => {
@@ -110,14 +205,6 @@ export class ChatsComponent implements OnInit {
     });
   }
 
-  scrollToEnd(): void {
-    let chatMessages = document.getElementById('chatMessages');
-    if(!chatMessages) {
-      return;
-    }
-    chatMessages.scrollTop = chatMessages.scrollHeight;
-  }
-
   loadChat(chatId: string): void {
     this.activeChatId = chatId;
     this.activeChat = this.chats.filter(x => x.chatId === this.activeChatId)[0];
@@ -125,8 +212,7 @@ export class ChatsComponent implements OnInit {
   }
 
   chatContainsMessages(chat: Chat): boolean {
-    return chat.lastMessageAuthor != null &&
-      chat.lastMessageText != null;
+    return chat.lastMessageAuthor != null && chat.lastMessageText != null;
   }
 
   onSearchChatClick() {
@@ -141,7 +227,7 @@ export class ChatsComponent implements OnInit {
   }
 
   onSearchChatQueryChange(): void {
-    if(this.searchChatQuery != '') {
+    if (this.searchChatQuery) {
       this._communitiesService.searchChat(this.searchChatQuery).subscribe({
         next: response => {
           this.chatFilter = 'Search results';
@@ -158,7 +244,7 @@ export class ChatsComponent implements OnInit {
   }
 
   onSearchMessageQueryChange(): void {
-    if(this.searchMessagesQuery != '') {
+    if (this.searchMessagesQuery) {
       this._messagesService.searchMessages(this.activeChatId, this.searchMessagesQuery).subscribe({
         next: response => {
           this.messages = response.messages;
@@ -181,7 +267,7 @@ export class ChatsComponent implements OnInit {
         let chats = response.chats;
         switch (this.chatFilter) {
           case 'All chats':
-            this.ngOnInit();
+            this.chats = chats;
             break;
           case 'Groups':
             this.chats = chats.filter(x => x.communityType === CommunityType.PublicChannel);
@@ -226,7 +312,7 @@ export class ChatsComponent implements OnInit {
 
   onArchiveChatClick(): void {
     this._userChatsService.archiveCommunity(this.activeChatId).subscribe({
-      next: _ =>  {
+      next: _ => {
         this.initializeView();
         this.activeChatId = '';
       },
@@ -234,5 +320,61 @@ export class ChatsComponent implements OnInit {
         this._errorNotificationService.notifyOnError(error);
       }
     });
+  }
+
+  onSendMessageClick(): void {
+    this._validationService.validateField(this.messageText, 'Message Text Field');
+    const tokens = this._tokensService.getTokens();
+
+    if (!tokens) {
+      alert('User tokens are empty.');
+      return;
+    }
+
+    const isoString = new Date().toISOString();
+
+    const newMessage = new Message(
+      tokens.userId,
+      this.activeChatId,
+      tokens.userDisplayName,
+      this.messageText,
+      isoString,
+      true,
+      tokens.userProfilePictureUrl);
+
+    this.messages.push(newMessage);
+
+    const sendMessageCommand = new SendMessageCommand(this.messageText, this.activeChatId);
+    sendMessageCommand.setCreatedAt(isoString);
+
+    this._messagesService.sendMessage(sendMessageCommand).subscribe({
+      next: data => {
+        newMessage.messageId = data.messageId;
+        this.clearMessageInput();
+        this.scrollToEnd();
+      },
+      error: error => {
+        this._errorNotificationService.notifyOnError(error);
+      }
+    })
+  }
+
+  onEnterClick(event: any): void {
+    event.preventDefault();
+    this.onSendMessageClick();
+  }
+
+  private clearMessageInput(): void {
+    this.messageText = '';
+  }
+
+  scrollToEnd(): void {
+    setTimeout(() => {
+      let chatMessages = document.getElementById('chatMessages');
+      if (!chatMessages) {
+        return;
+      }
+      chatMessages.scrollTop = chatMessages.scrollHeight;
+    })
   }
 }

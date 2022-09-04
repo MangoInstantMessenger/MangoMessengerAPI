@@ -3,4 +3,6 @@
   refreshToken: string,
   userId: string,
   expires: number,
+  userDisplayName: string,
+  userProfilePictureUrl: string
 }

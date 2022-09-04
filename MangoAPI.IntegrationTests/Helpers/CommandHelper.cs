@@ -62,7 +62,8 @@ public static class CommandHelper
             ChatId: chatId,
             AttachmentUrl: " ",
             InReplayToAuthor: " ",
-            InReplayToText: " ");
+            InReplayToText: " ",
+            null);
 
         return command;
     }

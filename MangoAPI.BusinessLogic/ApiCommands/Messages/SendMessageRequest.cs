@@ -12,13 +12,15 @@ public record SendMessageRequest
         Guid chatId,
         string attachmentUrl,
         string inReplayToAuthor,
-        string inReplayToText)
+        string inReplayToText,
+        DateTime? createdAt)
     {
         MessageText = messageText;
         ChatId = chatId;
         AttachmentUrl = attachmentUrl;
         InReplayToAuthor = inReplayToAuthor;
         InReplayToText = inReplayToText;
+        CreatedAt = createdAt;
     }
 
     [DefaultValue("hello world")]
@@ -35,4 +37,6 @@ public record SendMessageRequest
 
     [DefaultValue("Hello world!")]
     public string InReplayToText { get; }
+
+    public DateTime? CreatedAt { get; }
 }

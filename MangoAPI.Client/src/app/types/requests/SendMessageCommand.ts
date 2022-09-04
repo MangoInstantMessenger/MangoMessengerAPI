@@ -5,6 +5,7 @@
   attachmentUrl: string | null = null;
   inReplayToAuthor: string | null = null;
   inReplayToText: string | null = null;
+  createdAt: string | null = null;
 
   constructor(content: string, chatId: string) {
     this.messageText = content;
@@ -21,5 +22,9 @@
 
   setReplayToText(text: string | null): void {
     this.inReplayToText = text;
+  }
+
+  setCreatedAt(text: string | null) : void {
+    this.createdAt = text;
   }
 }

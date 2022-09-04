@@ -18,17 +18,20 @@ public class RefreshSessionCommandHandler : IRequestHandler<RefreshSessionComman
     private readonly MangoDbContext dbContext;
     private readonly ResponseFactory<TokensResponse> responseFactory;
     private readonly IJwtGeneratorSettings jwtGeneratorSettings;
+    private readonly IBlobServiceSettings blobServiceSettings;
 
     public RefreshSessionCommandHandler(
         MangoDbContext dbContext,
         IJwtGenerator jwtGenerator,
         ResponseFactory<TokensResponse> responseFactory,
-        IJwtGeneratorSettings jwtGeneratorSettings)
+        IJwtGeneratorSettings jwtGeneratorSettings,
+        IBlobServiceSettings blobServiceSettings)
     {
         this.dbContext = dbContext;
         this.jwtGenerator = jwtGenerator;
         this.responseFactory = responseFactory;
         this.jwtGeneratorSettings = jwtGeneratorSettings;
+        this.blobServiceSettings = blobServiceSettings;
     }
 
     public async Task<Result<TokensResponse>> Handle(
@@ -72,18 +75,22 @@ public class RefreshSessionCommandHandler : IRequestHandler<RefreshSessionComman
             CreatedAt = DateTime.UtcNow,
         };
 
-        var jwtToken = jwtGenerator.GenerateJwtToken(session.UserEntity);
+        var accessToken = jwtGenerator.GenerateJwtToken(session.UserEntity);
 
         dbContext.Sessions.Add(newSession);
         await dbContext.SaveChangesAsync(cancellationToken);
 
         var expires = ((DateTimeOffset)session.ExpiresAt).ToUnixTimeSeconds();
+        var userDisplayName = session.UserEntity.DisplayName;
+        var userProfilePictureUrl = $"{blobServiceSettings.MangoBlobAccess}/{session.UserEntity.Image}";
 
         var result = TokensResponse.FromSuccess(
-            jwtToken,
+            accessToken,
             newSession.RefreshToken,
             session.UserId,
-            expires);
+            expires,
+            userDisplayName,
+            userProfilePictureUrl);
 
         return responseFactory.SuccessResponse(result);
     }

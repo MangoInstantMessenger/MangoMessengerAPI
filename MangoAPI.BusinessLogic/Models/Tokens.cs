@@ -18,4 +18,10 @@ public record Tokens
 
     [DefaultValue(1633084830)]
     public long Expires { get; init; }
+
+    [DefaultValue("razumovsky_r")]
+    public string UserDisplayName { get; init; }
+
+    [DefaultValue("blob.url/razumovsky_r.jpg")]
+    public string UserProfilePictureUrl { get; init; }
 }
