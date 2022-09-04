@@ -63,7 +63,8 @@ public static class CommandHelper
             AttachmentUrl: " ",
             InReplayToAuthor: " ",
             InReplayToText: " ",
-            null);
+            CreatedAt: null,
+            MessageId: null);
 
         return command;
     }

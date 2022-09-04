@@ -6,6 +6,7 @@
   inReplayToAuthor: string | null = null;
   inReplayToText: string | null = null;
   createdAt: string | null = null;
+  messageId: string | null = null;
 
   constructor(content: string, chatId: string) {
     this.messageText = content;
@@ -24,7 +25,11 @@
     this.inReplayToText = text;
   }
 
-  setCreatedAt(text: string | null) : void {
+  setCreatedAt(text: string | null): void {
     this.createdAt = text;
+  }
+
+  setMessageId(text: string | null): void {
+    this.messageId = text;
   }
 }

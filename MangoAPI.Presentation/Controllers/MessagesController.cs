@@ -105,7 +105,8 @@ public class MessagesController : ApiControllerBase, IMessagesController
             request.AttachmentUrl,
             request.InReplayToAuthor,
             request.InReplayToText,
-            request.CreatedAt);
+            request.CreatedAt,
+            request.MessageId);
 
         return await RequestAsync(command, cancellationToken);
     }

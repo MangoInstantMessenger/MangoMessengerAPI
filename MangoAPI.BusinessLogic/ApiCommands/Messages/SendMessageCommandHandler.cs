@@ -77,7 +77,7 @@ public class SendMessageCommandHandler
 
         var messageEntity = new MessageEntity
         {
-            Id = Guid.NewGuid(),
+            Id = request.MessageId ?? Guid.NewGuid(),
             ChatId = request.ChatId,
             UserId = request.UserId,
             Content = request.MessageText,
