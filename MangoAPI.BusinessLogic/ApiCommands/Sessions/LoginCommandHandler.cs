@@ -19,19 +19,22 @@ public class LoginCommandHandler : IRequestHandler<LoginCommand, Result<TokensRe
     private readonly ISignInManagerService signInManager;
     private readonly ResponseFactory<TokensResponse> responseFactory;
     private readonly IJwtGeneratorSettings jwtGeneratorSettings;
+    private readonly IBlobServiceSettings blobServiceSettings;
 
     public LoginCommandHandler(
         ISignInManagerService signInManager,
         IJwtGenerator jwtGenerator,
         MangoDbContext dbContext,
         ResponseFactory<TokensResponse> responseFactory,
-        IJwtGeneratorSettings jwtGeneratorSettings)
+        IJwtGeneratorSettings jwtGeneratorSettings,
+        IBlobServiceSettings blobServiceSettings)
     {
         this.signInManager = signInManager;
         this.jwtGenerator = jwtGenerator;
         this.dbContext = dbContext;
         this.responseFactory = responseFactory;
         this.jwtGeneratorSettings = jwtGeneratorSettings;
+        this.blobServiceSettings = blobServiceSettings;
     }
 
     public async Task<Result<TokensResponse>> Handle(
@@ -77,7 +80,7 @@ public class LoginCommandHandler : IRequestHandler<LoginCommand, Result<TokensRe
             CreatedAt = DateTime.UtcNow,
         };
 
-        var jwtToken = jwtGenerator.GenerateJwtToken(user);
+        var accessToken = jwtGenerator.GenerateJwtToken(user);
 
         var userSessions = dbContext.Sessions
             .Where(entity => entity.UserId == user.Id);
@@ -93,7 +96,16 @@ public class LoginCommandHandler : IRequestHandler<LoginCommand, Result<TokensRe
         await dbContext.SaveChangesAsync(cancellationToken);
 
         var expires = ((DateTimeOffset)session.ExpiresAt).ToUnixTimeSeconds();
-        var tokens = TokensResponse.FromSuccess(jwtToken, session.RefreshToken, user.Id, expires);
+        var userDisplayName = user.DisplayName;
+        var userProfilePictureUrl = $"{blobServiceSettings.MangoBlobAccess}/{user.Image}";
+
+        var tokens = TokensResponse.FromSuccess(
+            accessToken,
+            session.RefreshToken,
+            user.Id,
+            expires,
+            userDisplayName,
+            userProfilePictureUrl);
 
         return responseFactory.SuccessResponse(tokens);
     }

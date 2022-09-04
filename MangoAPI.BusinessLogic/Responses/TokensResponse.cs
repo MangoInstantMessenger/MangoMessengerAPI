@@ -8,7 +8,13 @@ public record TokensResponse : ResponseBase
 {
     public Tokens Tokens { get; set; }
 
-    public static TokensResponse FromSuccess(string accessToken, Guid refreshToken, Guid userId, long expires)
+    public static TokensResponse FromSuccess(
+        string accessToken,
+        Guid refreshToken,
+        Guid userId,
+        long expires,
+        string userDisplayName,
+        string userProfilePictureUrl)
     {
         return new TokensResponse
         {
@@ -20,6 +26,8 @@ public record TokensResponse : ResponseBase
                 RefreshToken = refreshToken,
                 Expires = expires,
                 UserId = userId,
+                UserDisplayName = userDisplayName,
+                UserProfilePictureUrl = userProfilePictureUrl,
             },
         };
     }

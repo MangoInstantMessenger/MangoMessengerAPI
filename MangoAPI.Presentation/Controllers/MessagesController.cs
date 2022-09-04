@@ -99,12 +99,13 @@ public class MessagesController : ApiControllerBase, IMessagesController
     {
         var userId = CorrelationContext.GetUserId();
         var command = new SendMessageCommand(
-            UserId: userId,
-            ChatId: request.ChatId,
-            MessageText: request.MessageText,
-            AttachmentUrl: request.AttachmentUrl,
-            InReplayToAuthor: request.InReplayToAuthor,
-            InReplayToText: request.InReplayToText);
+            request.MessageText,
+            userId,
+            request.ChatId,
+            request.AttachmentUrl,
+            request.InReplayToAuthor,
+            request.InReplayToText,
+            request.CreatedAt);
 
         return await RequestAsync(command, cancellationToken);
     }

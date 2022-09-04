@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component} from '@angular/core';
 import {LoginCommand} from "../../types/requests/LoginCommand";
 import {SessionService} from "../../services/api/session.service";
 import {Router} from "@angular/router";
@@ -16,7 +16,8 @@ export class LoginComponent {
               private _tokensService: TokensService,
               private _router: Router,
               private _validationService: ValidationService,
-              private _errorNotificationService: ErrorNotificationService) {}
+              private _errorNotificationService: ErrorNotificationService) {
+  }
 
   public loginCommand: LoginCommand = {
     email: '',
@@ -31,7 +32,7 @@ export class LoginComponent {
     let emailFieldValidationResult = this._validationService.validateField(this.loginCommand.email, 'Email');
     let passwordFieldValidationResult = this._validationService.validateField(this.loginCommand.password, 'Password');
 
-    if(!emailFieldValidationResult || !passwordFieldValidationResult) {
+    if (!emailFieldValidationResult || !passwordFieldValidationResult) {
       return;
     }
 

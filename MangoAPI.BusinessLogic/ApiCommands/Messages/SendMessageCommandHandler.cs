@@ -81,7 +81,7 @@ public class SendMessageCommandHandler
             ChatId = request.ChatId,
             UserId = request.UserId,
             Content = request.MessageText,
-            CreatedAt = DateTime.UtcNow,
+            CreatedAt = request.CreatedAt ?? DateTime.UtcNow,
             Attachment = request.AttachmentUrl,
             InReplayToAuthor = request.InReplayToAuthor,
             InReplayToText = request.InReplayToText,

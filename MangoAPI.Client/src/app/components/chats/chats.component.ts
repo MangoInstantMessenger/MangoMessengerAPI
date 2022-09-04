@@ -12,6 +12,8 @@ import {RoutingConstants} from "../../types/constants/RoutingConstants";
 import {UserChatsService} from "../../services/api/user-chats.service";
 import {RoutingService} from "../../services/messenger/routing.service";
 import {StartDirectChatQueryObject} from "../../types/query-objects/StartDirectChatQueryObject";
+import {ValidationService} from "../../services/messenger/validation.service";
+import {SendMessageCommand} from "../../types/requests/SendMessageCommand";
 
 @Component({
   selector: 'app-chats',
@@ -26,11 +28,13 @@ export class ChatsComponent implements OnInit {
               private _messagesService: MessagesService,
               private _errorNotificationService: ErrorNotificationService,
               private _router: Router,
-              private _routingService: RoutingService) {
+              private _routingService: RoutingService,
+              private _validationService: ValidationService) {
   }
 
   public userId: string | undefined = '';
   public chats: Chat[] = [];
+
   public activeChat: Chat = {
     lastMessageId: "",
     lastMessageAuthor: "",
@@ -47,6 +51,7 @@ export class ChatsComponent implements OnInit {
     membersCount: 0,
     title: ""
   };
+
   public activeChatId: string = '';
   public messages: Message[] = [];
 
@@ -65,17 +70,21 @@ export class ChatsComponent implements OnInit {
 
   initializeView(): void {
     this.scrollToEnd();
+
     let tokens = this._tokensService.getTokens();
+
     if (!tokens) {
       this._router.navigateByUrl(this.routingConstants.Login).then(r => r);
       return;
     }
+
     this.userId = tokens?.userId;
+
     this._communitiesService.getUserChats().subscribe({
       next: response => {
         this.chats = response.chats.filter(x => !x.isArchived);
         let queryObject = this._routingService.getQueryData() as StartDirectChatQueryObject;
-        if(queryObject.chatId) {
+        if (queryObject && queryObject.chatId) {
           this.loadChat(queryObject.chatId);
           this._routingService.clearQueryData();
         }
@@ -112,7 +121,7 @@ export class ChatsComponent implements OnInit {
 
   scrollToEnd(): void {
     let chatMessages = document.getElementById('chatMessages');
-    if(!chatMessages) {
+    if (!chatMessages) {
       return;
     }
     chatMessages.scrollTop = chatMessages.scrollHeight;
@@ -141,7 +150,7 @@ export class ChatsComponent implements OnInit {
   }
 
   onSearchChatQueryChange(): void {
-    if(this.searchChatQuery != '') {
+    if (this.searchChatQuery != '') {
       this._communitiesService.searchChat(this.searchChatQuery).subscribe({
         next: response => {
           this.chatFilter = 'Search results';
@@ -158,7 +167,7 @@ export class ChatsComponent implements OnInit {
   }
 
   onSearchMessageQueryChange(): void {
-    if(this.searchMessagesQuery != '') {
+    if (this.searchMessagesQuery != '') {
       this._messagesService.searchMessages(this.activeChatId, this.searchMessagesQuery).subscribe({
         next: response => {
           this.messages = response.messages;
@@ -226,7 +235,7 @@ export class ChatsComponent implements OnInit {
 
   onArchiveChatClick(): void {
     this._userChatsService.archiveCommunity(this.activeChatId).subscribe({
-      next: _ =>  {
+      next: _ => {
         this.initializeView();
         this.activeChatId = '';
       },
@@ -234,5 +243,56 @@ export class ChatsComponent implements OnInit {
         this._errorNotificationService.notifyOnError(error);
       }
     });
+  }
+
+  onSendMessageClick(): void {
+    this._validationService.validateField(this.messageText, 'Message Text Field');
+    const tokens = this._tokensService.getTokens();
+
+    if (!tokens) {
+      alert('User tokens are empty.');
+      return;
+    }
+
+    const isoString = new Date().toISOString();
+    console.log(isoString);
+
+    const newMessage = new Message(
+      tokens.userId,
+      this.activeChatId,
+      tokens.userDisplayName,
+      this.messageText,
+      isoString,
+      true,
+      tokens.userProfilePictureUrl);
+
+    this.messages.push(newMessage);
+
+    const sendMessageCommand = new SendMessageCommand(this.messageText, this.activeChatId);
+    sendMessageCommand.setCreatedAt(isoString);
+
+    this._messagesService.sendMessage(sendMessageCommand).subscribe({
+      next: data => {
+        newMessage.messageId = data.messageId;
+        newMessage.self = false;
+        this.clearMessageInput();
+      },
+      error: error => {
+        this._errorNotificationService.notifyOnError(error);
+      }
+    })
+
+    // send request to API then
+
+    // on request success: update message id, notify all subs by signalR
+  }
+
+  onEnterClick(event: any): void {
+    event.preventDefault();
+    this.onSendMessageClick();
+  }
+
+  private clearMessageInput(): void {
+    this.messageText = '';
   }
 }
