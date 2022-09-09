@@ -1,5 +1,5 @@
 // noinspection TypeScriptUnresolvedVariable
-import { Component, OnInit } from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import { ErrorNotificationService } from 'src/app/services/messenger/error-notification.service';
 import { ContactsService } from 'src/app/services/api/contacts.service';
 import {TokensService} from "../../services/messenger/tokens.service";
@@ -11,13 +11,14 @@ import {ValidationService} from "../../services/messenger/validation.service";
 import {UpdateAccountInformationCommand} from "../../types/requests/UpdateAccountInformationCommand";
 import {SessionService} from "../../services/api/session.service";
 import {Router} from "@angular/router";
+import {Subject, takeUntil} from "rxjs";
 
 
 @Component({
   selector: 'app-settings',
   templateUrl: './settings.component.html'
 })
-export class SettingsComponent implements OnInit {
+export class SettingsComponent implements OnInit, OnDestroy {
 
   constructor(private _contactsService: ContactsService,
               private _errorNotificationService: ErrorNotificationService,
@@ -52,10 +53,11 @@ export class SettingsComponent implements OnInit {
   };
   public fileName = '';
   public file: File | null = null;
+  componentDestroyed$: Subject<boolean> = new Subject()
 
   ngOnInit(): void {
     this.currentUserId = this._tokensService.getTokens()?.userId as string;
-    this._usersService.getUserById(this.currentUserId).subscribe({
+    this._usersService.getUserById(this.currentUserId).pipe(takeUntil(this.componentDestroyed$)).subscribe({
       next: response => {
         this.currentUser = response.user;
       },
@@ -65,9 +67,14 @@ export class SettingsComponent implements OnInit {
     });
   }
 
+  ngOnDestroy(): void {
+    this.componentDestroyed$.next(true);
+    this.componentDestroyed$.complete();
+  }
+
   onLogoutClick() : void {
     let refreshToken = this._tokensService.getTokens()?.refreshToken as string;
-    this._sessionService.deleteSession(refreshToken).subscribe({
+    this._sessionService.deleteSession(refreshToken).pipe(takeUntil(this.componentDestroyed$)).subscribe({
       next: _ => {
         this._router.navigateByUrl("app?methodName=login").then(r => r);
       },
@@ -78,7 +85,7 @@ export class SettingsComponent implements OnInit {
   }
 
   onLogoutAllClick() : void {
-    this._sessionService.deleteAllSessions().subscribe({
+    this._sessionService.deleteAllSessions().pipe(takeUntil(this.componentDestroyed$)).subscribe({
       next: _ => {
         this._router.navigateByUrl("app?methodName=login").then(r => r);
       },
@@ -98,7 +105,7 @@ export class SettingsComponent implements OnInit {
       displayName: this.currentUser.displayName
     };
 
-    this._usersService.updateUserAccountInformation(command).subscribe({
+    this._usersService.updateUserAccountInformation(command).pipe(takeUntil(this.componentDestroyed$)).subscribe({
       next: _ => {
         this.ngOnInit()
       },
@@ -134,7 +141,7 @@ export class SettingsComponent implements OnInit {
     let file = this.file as File;
     formData.append("pictureFile", file);
 
-    this._usersService.updateProfilePicture(formData).subscribe({
+    this._usersService.updateProfilePicture(formData).pipe(takeUntil(this.componentDestroyed$)).subscribe({
       next: _ =>  {
         this.clearProfilePictureFile();
       },
@@ -153,7 +160,7 @@ export class SettingsComponent implements OnInit {
       return;
     }
 
-    this._usersService.changePassword(this.changePasswordCommand).subscribe({
+    this._usersService.changePassword(this.changePasswordCommand).pipe(takeUntil(this.componentDestroyed$)).subscribe({
       next: _ => {
         this.clearChangePasswordCommand();
       },
@@ -171,7 +178,7 @@ export class SettingsComponent implements OnInit {
       linkedIn: this.currentUser.linkedIn
     };
 
-    this._usersService.updateUserSocials(command).subscribe({
+    this._usersService.updateUserSocials(command).pipe(takeUntil(this.componentDestroyed$)).subscribe({
       next: _ => {
         this.ngOnInit();
       },

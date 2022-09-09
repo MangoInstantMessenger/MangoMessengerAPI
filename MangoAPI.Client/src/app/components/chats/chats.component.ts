@@ -145,7 +145,6 @@ export class ChatsComponent implements OnInit, OnDestroy {
           this.activeChat.lastMessageId = notification.newLastMessageId;
         }
 
-
         this.messages = this.messages.filter(x => x.messageId !== notification.messageId);
       }
     );
