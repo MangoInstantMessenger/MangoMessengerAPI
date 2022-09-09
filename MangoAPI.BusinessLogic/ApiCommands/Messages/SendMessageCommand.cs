@@ -10,5 +10,7 @@ public record SendMessageCommand(
         Guid ChatId,
         string AttachmentUrl,
         string InReplayToAuthor,
-        string InReplayToText)
+        string InReplayToText,
+        DateTime? CreatedAt,
+        Guid? MessageId)
     : IRequest<Result<SendMessageResponse>>;

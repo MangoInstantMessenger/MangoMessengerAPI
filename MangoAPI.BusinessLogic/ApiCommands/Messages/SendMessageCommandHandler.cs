@@ -77,11 +77,11 @@ public class SendMessageCommandHandler
 
         var messageEntity = new MessageEntity
         {
-            Id = Guid.NewGuid(),
+            Id = request.MessageId ?? Guid.NewGuid(),
             ChatId = request.ChatId,
             UserId = request.UserId,
             Content = request.MessageText,
-            CreatedAt = DateTime.UtcNow,
+            CreatedAt = request.CreatedAt ?? DateTime.UtcNow,
             Attachment = request.AttachmentUrl,
             InReplayToAuthor = request.InReplayToAuthor,
             InReplayToText = request.InReplayToText,
