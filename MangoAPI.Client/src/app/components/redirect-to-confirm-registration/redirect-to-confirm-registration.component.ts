@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {RoutingService} from "../../services/messenger/routing.service";
 import {ConfirmEmailObject} from "../../types/query-objects/ConfirmEmailObject";
 import {Router} from "@angular/router";

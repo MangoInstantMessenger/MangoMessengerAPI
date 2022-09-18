@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ContactsService} from "../../services/api/contacts.service";
 import {ErrorNotificationService} from "../../services/messenger/error-notification.service";
 import {Contact} from "../../types/models/Contact";
@@ -9,12 +9,13 @@ import {CommunitiesService} from "../../services/api/communities.service";
 import {Router} from "@angular/router";
 import {StartDirectChatQueryObject} from "../../types/query-objects/StartDirectChatQueryObject";
 import {RoutingService} from "../../services/messenger/routing.service";
+import {Subject, takeUntil} from "rxjs";
 
 @Component({
   selector: 'app-contacts',
   templateUrl: './contacts.component.html'
 })
-export class ContactsComponent implements OnInit {
+export class ContactsComponent implements OnInit, OnDestroy {
 
   constructor(private _contactsService: ContactsService,
               private _errorNotificationService: ErrorNotificationService,
@@ -48,9 +49,16 @@ export class ContactsComponent implements OnInit {
   public isActiveUserContact: boolean = false;
   public contactFilter: string = 'All contacts';
 
+  componentDestroyed$: Subject<boolean> = new Subject();
+
+  ngOnDestroy(): void {
+    this.componentDestroyed$.next(true);
+    this.componentDestroyed$.complete();
+  }
+
   ngOnInit(): void {
     this.currentUserId = this._tokensService.getTokens()?.userId as string;
-    this._usersService.getUserById(this.currentUserId).subscribe({
+    this._usersService.getUserById(this.currentUserId).pipe(takeUntil(this.componentDestroyed$)).subscribe({
       next: response => {
         let user = response.user;
         this.getUsersContacts();
@@ -64,7 +72,7 @@ export class ContactsComponent implements OnInit {
   }
 
   getUsersContacts(): void {
-    this._contactsService.getCurrentUserContacts().subscribe({
+    this._contactsService.getCurrentUserContacts().pipe(takeUntil(this.componentDestroyed$)).subscribe({
       next: response => {
         this.contacts = response.contacts;
       },
@@ -75,7 +83,7 @@ export class ContactsComponent implements OnInit {
   }
 
   onContactTabClick(contact: Contact): void {
-    this._usersService.getUserById(contact.userId).subscribe({
+    this._usersService.getUserById(contact.userId).pipe(takeUntil(this.componentDestroyed$)).subscribe({
       next: response => {
         let user = response.user;
         this.activeUserId = user.userId;
@@ -90,7 +98,7 @@ export class ContactsComponent implements OnInit {
 
   onContactSearchQueryChange(): void {
     if(this.contactSearchQuery != '') {
-      this._contactsService.searchContacts(this.contactSearchQuery).subscribe({
+      this._contactsService.searchContacts(this.contactSearchQuery).pipe(takeUntil(this.componentDestroyed$)).subscribe({
         next: response => {
           this.contactFilter = 'Search results';
           this.contacts = response.contacts;
@@ -106,7 +114,7 @@ export class ContactsComponent implements OnInit {
   }
 
   onAddContactClick(contactId: string): void {
-    this._contactsService.addContact(contactId).subscribe({
+    this._contactsService.addContact(contactId).pipe(takeUntil(this.componentDestroyed$)).subscribe({
       next: _ => {
         this.isActiveUserContact = true;
         this.contactFilter = 'All contacts';
@@ -123,7 +131,7 @@ export class ContactsComponent implements OnInit {
     let div = event.currentTarget as HTMLDivElement;
     this.contactFilter = div.innerText;
 
-    this._contactsService.getCurrentUserContacts().subscribe({
+    this._contactsService.getCurrentUserContacts().pipe(takeUntil(this.componentDestroyed$)).subscribe({
       next: response => {
         switch(this.contactFilter) {
           case 'All contacts':
@@ -139,7 +147,7 @@ export class ContactsComponent implements OnInit {
   }
 
   onStartDirectChatButtonClick(contactId: string): void {
-    this._communitiesService.createChat(contactId).subscribe({
+    this._communitiesService.createChat(contactId).pipe(takeUntil(this.componentDestroyed$)).subscribe({
       next: response => {
         let queryObject: StartDirectChatQueryObject = {
           chatId: response.chatId
@@ -154,7 +162,7 @@ export class ContactsComponent implements OnInit {
   }
 
   onRemoveContactButtonClick(contactId: string): void {
-    this._contactsService.deleteContact(contactId).subscribe({
+    this._contactsService.deleteContact(contactId).pipe(takeUntil(this.componentDestroyed$)).subscribe({
       next: _ => {
         this.ngOnInit();
       },

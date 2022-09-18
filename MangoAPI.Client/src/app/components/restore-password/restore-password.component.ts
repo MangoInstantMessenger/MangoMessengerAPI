@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, OnDestroy} from '@angular/core';
 import {RoutingService} from "../../services/messenger/routing.service";
 import {PasswordRestoreService} from "../../services/api/password-restore.service";
 import {RestorePasswordRequest} from "../../types/requests/RestorePasswordRequest";
@@ -7,12 +7,13 @@ import {Router} from "@angular/router";
 import {ErrorNotificationService} from "../../services/messenger/error-notification.service";
 import {ValidationService} from "../../services/messenger/validation.service";
 import {RoutingConstants} from "../../types/constants/RoutingConstants";
+import {Subject, takeUntil} from "rxjs";
 
 @Component({
   selector: 'app-restore-password',
   templateUrl: './restore-password.component.html'
 })
-export class RestorePasswordComponent{
+export class RestorePasswordComponent implements OnDestroy {
   constructor(private _routingService: RoutingService,
               private _restorePasswordService: PasswordRestoreService,
               private _router: Router,
@@ -21,6 +22,12 @@ export class RestorePasswordComponent{
 
   public newPassword: string = '';
   public repeatPassword: string = '';
+  componentDestroyed$: Subject<boolean> = new Subject();
+
+  ngOnDestroy(): void {
+    this.componentDestroyed$.next(true);
+    this.componentDestroyed$.complete();
+  }
 
   onRestorePasswordClick(): void {
     let newPasswordFieldValidationResult = this._validationService.validateField(this.newPassword, "New password");
@@ -44,7 +51,7 @@ export class RestorePasswordComponent{
 
     const restorePasswordRequest = new RestorePasswordRequest(restorePasswordQueryObject.requestId, this.newPassword, this.repeatPassword);
 
-    this._restorePasswordService.restorePassword(restorePasswordRequest).subscribe({
+    this._restorePasswordService.restorePassword(restorePasswordRequest).pipe(takeUntil(this.componentDestroyed$)).subscribe({
       next: _ => {
         alert("Password restoration succeeded!");
         this._router.navigateByUrl(RoutingConstants.Login).then(r => r);
