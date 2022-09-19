@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, OnDestroy} from '@angular/core';
 import {LoginCommand} from "../../types/requests/LoginCommand";
 import {SessionService} from "../../services/api/session.service";
 import {Router} from "@angular/router";
@@ -6,12 +6,13 @@ import {ValidationService} from "../../services/messenger/validation.service";
 import {ErrorNotificationService} from "../../services/messenger/error-notification.service";
 import {TokensService} from "../../services/messenger/tokens.service";
 import {RoutingConstants} from "../../types/constants/RoutingConstants";
+import {Subject, takeUntil} from "rxjs";
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html'
 })
-export class LoginComponent {
+export class LoginComponent implements OnDestroy {
   constructor(private _sessionService: SessionService,
               private _tokensService: TokensService,
               private _router: Router,
@@ -28,6 +29,13 @@ export class LoginComponent {
     return RoutingConstants;
   }
 
+  componentDestroyed$: Subject<boolean> = new Subject();
+
+  ngOnDestroy(): void {
+    this.componentDestroyed$.next(true);
+    this.componentDestroyed$.complete();
+  }
+
   onLoginClick(): void {
     let emailFieldValidationResult = this._validationService.validateField(this.loginCommand.email, 'Email');
     let passwordFieldValidationResult = this._validationService.validateField(this.loginCommand.password, 'Password');
@@ -38,7 +46,7 @@ export class LoginComponent {
 
     this._tokensService.clearTokens();
 
-    this._sessionService.createSession(this.loginCommand).subscribe({
+    this._sessionService.createSession(this.loginCommand).pipe(takeUntil(this.componentDestroyed$)).subscribe({
       next: response => {
         this._tokensService.setTokens(response.tokens);
         this._router.navigateByUrl(this.routingConstants.Chats).then(r => r);

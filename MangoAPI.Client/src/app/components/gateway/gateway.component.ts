@@ -1,20 +1,27 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {RoutingService} from "../../services/messenger/routing.service";
-import {SessionService} from "../../services/api/session.service";
+import {Subject, takeUntil} from "rxjs";
 
 @Component({
   selector: 'app-gateway',
   templateUrl: './gateway.component.html'
 })
-export class GatewayComponent implements OnInit {
+export class GatewayComponent implements OnInit, OnDestroy {
   constructor(private route: ActivatedRoute,
               private router: Router,
               private routingService: RoutingService) {
   }
 
+  componentDestroyed$: Subject<boolean> = new Subject();
+
+  ngOnDestroy(): void {
+    this.componentDestroyed$.next(true);
+    this.componentDestroyed$.complete();
+  }
+
   ngOnInit(): void {
-    this.route.queryParams.subscribe(params => {
+    this.route.queryParams.pipe(takeUntil(this.componentDestroyed$)).subscribe(params => {
       const methodName = params['methodName'];
       this.routingService.matchMethodName(methodName);
     });
