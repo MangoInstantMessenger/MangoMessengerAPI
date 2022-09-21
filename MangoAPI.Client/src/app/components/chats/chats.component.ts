@@ -92,6 +92,10 @@ export class ChatsComponent implements OnInit, OnDestroy {
 
     this.userId = tokens.userId;
 
+    this.getChats();
+  }
+
+  getChats() : void {
     this._communitiesService.getUserChats().pipe(takeUntil(this.componentDestroyed$)).subscribe({
       next: response => {
         this.chats = response.chats.filter(x => !x.isArchived);
@@ -128,6 +132,16 @@ export class ChatsComponent implements OnInit, OnDestroy {
       this.connection.invoke("JoinGroup", this.userId).then(r => r);
 
     }).catch(err => console.error(err.toString()));
+  }
+
+  onJoinChatClick() : void {
+    this._userChatsService.joinCommunity(this.activeChatId).pipe(takeUntil(this.componentDestroyed$)).subscribe( {
+      next: _ => {
+        this.searchChatQuery = '';
+        this.chatFilter = 'All chats';
+        this.getChats();
+      }
+    });
   }
 
   setSignalRMethods(): void {

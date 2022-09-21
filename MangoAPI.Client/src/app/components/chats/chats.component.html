@@ -219,7 +219,7 @@
         </ul>
       </div>
 
-      <div class="chat-footer">
+      <div class="chat-footer" *ngIf="activeChat.isMember; else elseNotMember">
         <div class="dropdown">
           <button class="button-dark button-dark-no-hover align-text-top"
                   data-bs-toggle="dropdown">
@@ -272,17 +272,20 @@
             </div>
           </div>
         </div>
-
         <textarea id="message-input"
                   class="message-input overflow"
                   placeholder="Write message..."
                   [(ngModel)]="messageText"
                   (keydown.enter)="onEnterClick($event)">
-        </textarea>
+          </textarea>
         <button class="send-message" (click)="onSendMessageClick()">
           <img alt="Arrow Right Icon" src="./../../../assets/svg/arrow-right.svg">
         </button>
       </div>
+
+      <ng-template #elseNotMember>
+        <button class="button-orange button-fix" (click)="onJoinChatClick()">JOIN CHAT</button>
+      </ng-template>
     </div>
     <ng-template #elseNoChatOpened>
       <div class="background-pattern">
