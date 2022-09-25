@@ -138,7 +138,9 @@ export class ChatsComponent implements OnInit, OnDestroy {
     this._userChatsService.joinCommunity(this.activeChatId).pipe(takeUntil(this.componentDestroyed$)).subscribe( {
       next: _ => {
         this.searchChatQuery = '';
+        this.activeChat.isMember = true;
         this.chatFilter = 'All chats';
+        this.connectChatsToHub();
         this.getChats();
       }
     });
