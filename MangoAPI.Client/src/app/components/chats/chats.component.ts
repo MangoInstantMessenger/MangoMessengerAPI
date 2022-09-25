@@ -46,6 +46,7 @@ export class ChatsComponent implements OnInit, OnDestroy {
 
   public userId: string | undefined = '';
   public chats: Chat[] = [];
+  public userChats: Chat[] = [];
 
   public activeChat: Chat = {
     lastMessageId: "",
@@ -72,7 +73,7 @@ export class ChatsComponent implements OnInit, OnDestroy {
   public searchMessagesQuery: string = '';
   public chatFilter: string = 'All chats';
 
-  componentDestroyed$: Subject<boolean> = new Subject()
+  componentDestroyed$: Subject<boolean> = new Subject();
 
   public get routingConstants(): typeof RoutingConstants {
     return RoutingConstants;
@@ -135,13 +136,15 @@ export class ChatsComponent implements OnInit, OnDestroy {
   }
 
   onJoinChatClick() : void {
+
+    console.log(this.chats);
     this._userChatsService.joinCommunity(this.activeChatId).pipe(takeUntil(this.componentDestroyed$)).subscribe( {
       next: _ => {
+        this.chats = this.userChats;
+        this.chats.push(this.activeChat);
         this.searchChatQuery = '';
-        this.activeChat.isMember = true;
         this.chatFilter = 'All chats';
-        this.connectChatsToHub();
-        this.getChats();
+        this.activeChat.isMember = true;
       }
     });
   }
@@ -235,18 +238,8 @@ export class ChatsComponent implements OnInit, OnDestroy {
     return chat.lastMessageAuthor != null && chat.lastMessageText != null;
   }
 
-  onSearchChatClick() {
-    this._communitiesService.searchChat(this.searchChatQuery).pipe(takeUntil(this.componentDestroyed$)).subscribe({
-      next: response => {
-        this.chats = response.chats;
-      },
-      error: error => {
-        this._errorNotificationService.notifyOnError(error);
-      }
-    });
-  }
-
   onSearchChatQueryChange(): void {
+    this.userChats = this.chats;
     if (this.searchChatQuery) {
       this._communitiesService.searchChat(this.searchChatQuery).pipe(takeUntil(this.componentDestroyed$)).subscribe({
         next: response => {
