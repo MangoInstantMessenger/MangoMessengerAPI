@@ -136,8 +136,6 @@ export class ChatsComponent implements OnInit, OnDestroy {
   }
 
   onJoinChatClick() : void {
-
-    console.log(this.chats);
     this._userChatsService.joinCommunity(this.activeChatId).pipe(takeUntil(this.componentDestroyed$)).subscribe( {
       next: _ => {
         this.chats = this.userChats;
