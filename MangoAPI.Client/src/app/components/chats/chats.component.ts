@@ -142,11 +142,13 @@ export class ChatsComponent implements OnInit, OnDestroy {
         this.chats = this.userChats;
         this.chats.push(this.activeChat);
         this.chats.sort((chat1, chat2) => {
-          if (chat1.lastMessageTime > chat2.lastMessageTime) {
+          let chat1LastMessageTime = new Date(chat1.lastMessageTime)
+          let chat2LastMessageTime = new Date(chat2.lastMessageTime)
+          if (chat1LastMessageTime > chat2LastMessageTime) {
             return 1;
           }
 
-          if (chat1.lastMessageTime < chat2.lastMessageTime) {
+          if (chat1LastMessageTime < chat2LastMessageTime) {
             return -1;
           }
 
