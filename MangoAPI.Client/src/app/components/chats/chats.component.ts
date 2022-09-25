@@ -100,6 +100,7 @@ export class ChatsComponent implements OnInit, OnDestroy {
     this._communitiesService.getUserChats().pipe(takeUntil(this.componentDestroyed$)).subscribe({
       next: response => {
         this.chats = response.chats.filter(x => !x.isArchived);
+        this.userChats = this.chats;
 
         if (this.connection.state !== signalR.HubConnectionState.Connected) {
           this.connectChatsToHub();
@@ -140,6 +141,17 @@ export class ChatsComponent implements OnInit, OnDestroy {
       next: _ => {
         this.chats = this.userChats;
         this.chats.push(this.activeChat);
+        this.chats.sort((chat1, chat2) => {
+          if (chat1.lastMessageTime > chat2.lastMessageTime) {
+            return 1;
+          }
+
+          if (chat1.lastMessageTime < chat2.lastMessageTime) {
+            return -1;
+          }
+
+          return 0;
+        })
         this.searchChatQuery = '';
         this.chatFilter = 'All chats';
         this.activeChat.isMember = true;
@@ -237,7 +249,6 @@ export class ChatsComponent implements OnInit, OnDestroy {
   }
 
   onSearchChatQueryChange(): void {
-    this.userChats = this.chats;
     if (this.searchChatQuery) {
       this._communitiesService.searchChat(this.searchChatQuery).pipe(takeUntil(this.componentDestroyed$)).subscribe({
         next: response => {
@@ -317,6 +328,7 @@ export class ChatsComponent implements OnInit, OnDestroy {
       next: _ => {
         this.activeChatId = '';
         this.initializeView();
+        this.userChats = this.userChats.filter(x => x !== this.activeChat);
       },
       error: error => {
         this._errorNotificationService.notifyOnError(error);
