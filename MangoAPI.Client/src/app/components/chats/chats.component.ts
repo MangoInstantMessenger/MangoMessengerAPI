@@ -119,12 +119,9 @@ export class ChatsComponent implements OnInit, OnDestroy {
 
   connectChatsToHub(): void {
     this.connection.start().then(() => {
-      this.chats.forEach(x => {
-        if (this.realTimeConnections.includes(x.chatId)) {
-          return;
-        }
 
-        this.connection.invoke("JoinGroup", x.chatId).then(() => this.realTimeConnections.push(x.chatId));
+      this.chats.forEach(x => {
+        this.connectChatToHub(x.chatId);
       });
 
       if (this.userId != null && this.realTimeConnections.includes(this.userId)) {
@@ -134,6 +131,14 @@ export class ChatsComponent implements OnInit, OnDestroy {
       this.connection.invoke("JoinGroup", this.userId).then(r => r);
 
     }).catch(err => console.error(err.toString()));
+  }
+
+  connectChatToHub(chatId: string): void {
+    if (this.realTimeConnections.includes(chatId)) {
+      return;
+    }
+
+    this.connection.invoke("JoinGroup", chatId).then(() => this.realTimeConnections.push(chatId));
   }
 
   onJoinChatClick() : void {
@@ -153,7 +158,7 @@ export class ChatsComponent implements OnInit, OnDestroy {
           }
 
           return 0;
-        })
+        });
         this.searchChatQuery = '';
         this.chatFilter = 'All chats';
         this.activeChat.isMember = true;
@@ -243,6 +248,7 @@ export class ChatsComponent implements OnInit, OnDestroy {
   loadChat(chatId: string): void {
     this.activeChatId = chatId;
     this.activeChat = this.chats.filter(x => x.chatId === this.activeChatId)[0];
+    this.connectChatToHub(this.activeChatId);
     this.getChatMessages(this.activeChatId);
   }
 
