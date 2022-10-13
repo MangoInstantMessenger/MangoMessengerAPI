@@ -166,7 +166,7 @@
                 <img alt="User Avatar" class="user-avatar" src="{{message.messageAuthorPictureUrl}}"/>
                 <div class="message-wrapper">
                   <div class="message-content">
-                    <div class="display-name">{{message.userDisplayName}}</div>
+                    <div class="display-name" *ngIf="!message.self">{{message.userDisplayName}}</div>
                     <span>{{message.messageText}}</span>
                   </div>
                   <div class="message-options gap-fix">
