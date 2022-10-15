@@ -46,6 +46,7 @@ export class ChatsComponent implements OnInit, OnDestroy {
 
   public userId: string | undefined = '';
   public chats: Chat[] = [];
+  public userChats: Chat[] = [];
 
   public activeChat: Chat = {
     lastMessageId: "",
@@ -72,7 +73,7 @@ export class ChatsComponent implements OnInit, OnDestroy {
   public searchMessagesQuery: string = '';
   public chatFilter: string = 'All chats';
 
-  componentDestroyed$: Subject<boolean> = new Subject()
+  componentDestroyed$: Subject<boolean> = new Subject();
 
   public get routingConstants(): typeof RoutingConstants {
     return RoutingConstants;
@@ -92,9 +93,14 @@ export class ChatsComponent implements OnInit, OnDestroy {
 
     this.userId = tokens.userId;
 
+    this.getChats();
+  }
+
+  getChats() : void {
     this._communitiesService.getUserChats().pipe(takeUntil(this.componentDestroyed$)).subscribe({
       next: response => {
         this.chats = response.chats.filter(x => !x.isArchived);
+        this.userChats = this.chats;
 
         if (this.connection.state !== signalR.HubConnectionState.Connected) {
           this.connectChatsToHub();
@@ -113,12 +119,9 @@ export class ChatsComponent implements OnInit, OnDestroy {
 
   connectChatsToHub(): void {
     this.connection.start().then(() => {
-      this.chats.forEach(x => {
-        if (this.realTimeConnections.includes(x.chatId)) {
-          return;
-        }
 
-        this.connection.invoke("JoinGroup", x.chatId).then(() => this.realTimeConnections.push(x.chatId));
+      this.chats.forEach(x => {
+        this.connectChatToHub(x.chatId);
       });
 
       if (this.userId != null && this.realTimeConnections.includes(this.userId)) {
@@ -128,6 +131,39 @@ export class ChatsComponent implements OnInit, OnDestroy {
       this.connection.invoke("JoinGroup", this.userId).then(r => r);
 
     }).catch(err => console.error(err.toString()));
+  }
+
+  connectChatToHub(chatId: string): void {
+    if (this.realTimeConnections.includes(chatId)) {
+      return;
+    }
+
+    this.connection.invoke("JoinGroup", chatId).then(() => this.realTimeConnections.push(chatId));
+  }
+
+  onJoinChatClick() : void {
+    this._userChatsService.joinCommunity(this.activeChatId).pipe(takeUntil(this.componentDestroyed$)).subscribe( {
+      next: _ => {
+        this.chats = this.userChats;
+        this.chats.push(this.activeChat);
+        this.chats.sort((chat1, chat2) => {
+          let chat1LastMessageTime = new Date(chat1.lastMessageTime)
+          let chat2LastMessageTime = new Date(chat2.lastMessageTime)
+          if (chat1LastMessageTime > chat2LastMessageTime) {
+            return 1;
+          }
+
+          if (chat1LastMessageTime < chat2LastMessageTime) {
+            return -1;
+          }
+
+          return 0;
+        });
+        this.searchChatQuery = '';
+        this.chatFilter = 'All chats';
+        this.activeChat.isMember = true;
+      }
+    });
   }
 
   setSignalRMethods(): void {
@@ -212,22 +248,12 @@ export class ChatsComponent implements OnInit, OnDestroy {
   loadChat(chatId: string): void {
     this.activeChatId = chatId;
     this.activeChat = this.chats.filter(x => x.chatId === this.activeChatId)[0];
+    this.connectChatToHub(this.activeChatId);
     this.getChatMessages(this.activeChatId);
   }
 
   chatContainsMessages(chat: Chat): boolean {
     return chat.lastMessageAuthor != null && chat.lastMessageText != null;
-  }
-
-  onSearchChatClick() {
-    this._communitiesService.searchChat(this.searchChatQuery).pipe(takeUntil(this.componentDestroyed$)).subscribe({
-      next: response => {
-        this.chats = response.chats;
-      },
-      error: error => {
-        this._errorNotificationService.notifyOnError(error);
-      }
-    });
   }
 
   onSearchChatQueryChange(): void {
@@ -310,6 +336,7 @@ export class ChatsComponent implements OnInit, OnDestroy {
       next: _ => {
         this.activeChatId = '';
         this.initializeView();
+        this.userChats = this.userChats.filter(x => x !== this.activeChat);
       },
       error: error => {
         this._errorNotificationService.notifyOnError(error);
