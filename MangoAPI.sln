@@ -39,6 +39,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "build", "build", "{66E218B1
 		build\azure-pipelines.yml = build\azure-pipelines.yml
 		build\azure-pipelines-sonarqube.yml = build\azure-pipelines-sonarqube.yml
 		build\coverage.runsettings = build\coverage.runsettings
+		build\terraform-plan.yml = build\terraform-plan.yml
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".github", ".github", "{B8CB0A21-BB6E-478B-A755-49CEA1435CD1}"
@@ -67,6 +68,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "scripts", "scripts", "{C75F
 		scripts\wait_database.ps1 = scripts\wait_database.ps1
 		scripts\wait-for-mssql.sh = scripts\wait-for-mssql.sh
 	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "terraform", "terraform", "{D5B04B5C-55E7-48C0-BA17-A084C24610BA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

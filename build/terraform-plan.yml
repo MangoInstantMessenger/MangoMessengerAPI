@@ -1,0 +1,12 @@
+trigger:
+  batch: true
+  branches:
+    include:
+      - develop
+
+pr:
+  branches:
+    include:
+      - '*'
+
+
