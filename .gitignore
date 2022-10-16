@@ -17,7 +17,7 @@
 *.lock.hcl
 *.tfplan
 *.tfstate
-/.terraform
+/terraform/.terraform
 *.backup
 *.lock.info
 
