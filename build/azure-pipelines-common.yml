@@ -74,7 +74,7 @@ steps:
     timeoutInMinutes: 5
     inputs:
       targetType: 'inline'
-      script: .\build\docker\mssql-docker\wait_database.ps1
+      script: .\scripts\wait_database.ps1
 
   - task: DotNetCoreCLI@2
     displayName: 'Run integration tests'
