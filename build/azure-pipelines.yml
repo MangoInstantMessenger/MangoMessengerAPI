@@ -3,6 +3,11 @@ trigger:
     include:
       - develop
 
+pr:
+  branches:
+    include:
+      - '*'
+
 variables:
   - group: MANGO_INTEGRATION_TESTS
   - name: solution
