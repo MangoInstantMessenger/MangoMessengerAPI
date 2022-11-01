@@ -1,10 +1,10 @@
 steps:
-  - task: gittools.gittools.setup-gitversion-task.gitversion/setup@0
+  - task: gitversion/setup@0
     displayName: 'GitVersion Setup'
     inputs:
       versionSpec: '5.8.x'
 
-  - task: gittools.gittools.execute-gitversion-task.gitversion/execute@0
+  - task: gitversion/execute@0
     displayName: 'GitVersion Execute'
     inputs:
       updateAssemblyInfo: true
@@ -60,12 +60,6 @@ steps:
     inputs:
       command: 'build'
       arguments: '--configuration $(buildConfiguration)'
-
-  #  - task: PowerShell@2
-  #    displayName: 'Docker Login'
-  #    inputs:
-  #      targetType: 'inline'
-  #      script: docker login -u $(DOCKER_USERNAME) -p $(DOCKER_PASSWORD)
 
   - task: PowerShell@2
     displayName: 'Run database container'
