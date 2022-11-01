@@ -31,7 +31,7 @@ The defence is completed, however it is worth to continue working on the project
 
 ## Build and run the project
 
-### Part 1. Prerequisites
+### Prerequisites
 
 Obligatory required software:
 
@@ -44,30 +44,7 @@ Obligatory required software:
 - **NPM:** `8.1.2`
 - **Code Editor or IDE:** Visual studio, Visual studio code, Rider.
 
-### Part 2. Environmental variables
-
-Set up the following environmental variables:
-
-- `MANGO_JWT_ISSUER`: JWT issuer claim (default `https://localhost:4200`)
-- `MANGO_JWT_AUDIENCE`: JWT audience claim (default `https://localhost:5001`)
-- `MANGO_JWT_SIGN_KEY`: Secret used to sign jwt token in form of GUID
-- `MANGO_EMAIL_NOTIFICATIONS_ADDRESS`: Email address used in notifications and verifications
-- `MANGO_FRONTEND_ADDRESS`: URL of the frontend application (default `https://localhost:4200/`)
-- `MANGO_DATABASE_URL`: Database connection string in Postgres format (
-  default: `Server=localhost;User Id=postgres;Password=postgres;Database=MangoApiDatabase;`)
-- `MANGO_BLOB_URL`: Connection string of the blob Azure blob storage server
-- `MANGO_BLOB_CONTAINER`: Name of the Azure blob storage container
-- `MANGO_BLOB_ACCESS`: Azure blob URL where files are available
-- `MANGO_MAILGUN_API_KEY`: API key of the MailGun service used for sending email notifications
-- `MANGO_MAILGUN_API_BASE_URL`: API base URL of the MailGun service (default: `https://api.mailgun.net`)
-- `MANGO_MAILGUN_API_DOMAIN`: Verified domain used in MailGun service
-- `MANGO_API_ADDRESS`: Used for Diffie-Hellman handshake test (default: `https://localhost:5001`)
-- `MANGO_INTEGRATION_TESTS_DATABASE_URL`: SQL server database used for integration tests
-    - Default: `Data Source=DESKTOP-1V4TC6J;Initial Catalog=MangoIntegrationTests;Integrated Security=true;Encrypt=True;TrustServerCertificate=True;Connection Timeout=30;`,
-    - Connection string for DB in
-      docker: `Server=tcp:localhost,1444;Initial Catalog=MANGO_DEV;Persist Security Info=False;User ID=sa;Password=x2yiJt!Fs;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=True;Connection Timeout=30;`
-
-### Part 3. Run using Docker compose
+### Run using Docker compose
 
 After setup of the environmental variables, run the following commands in order to up docker container under
 the http://localhost:8000:
@@ -75,7 +52,7 @@ the http://localhost:8000:
 - `docker-compose build`
 - `docker-compose up`
 
-### Part 4. Run in debug mode
+### Run in debug mode
 
 Perform the following steps:
 
@@ -97,6 +74,11 @@ Perform the following steps:
 - Navigate to the root url: `https://localhost:5001/app`
 
 In case of localhost HTTPS certificate issues: https://stackoverflow.com/a/67182991
+
+### Run integration tests
+
+- Run MsSQL database
+  container: `docker run -e SA_PASSWORD=x2yiJt!Fs -e ACCEPT_EULA=y --name mango-mssql-db --hostname mango-mssql-db -p 1433:1433 -d mcr.microsoft.com/mssql/server:2019-latest`
 
 ## Technology stack
 
