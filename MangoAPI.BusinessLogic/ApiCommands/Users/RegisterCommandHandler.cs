@@ -13,7 +13,6 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users;
 
 public class RegisterCommandHandler : IRequestHandler<RegisterCommand, Result<RegisterResponse>>
 {
-    private readonly IEmailSenderService emailSenderService;
     private readonly MangoDbContext dbContext;
     private readonly IUserManagerService userManager;
     private readonly ResponseFactory<RegisterResponse> responseFactory;
@@ -22,13 +21,11 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, Result<Re
     public RegisterCommandHandler(
         IUserManagerService userManager,
         MangoDbContext dbContext,
-        IEmailSenderService emailSenderService,
         ResponseFactory<RegisterResponse> responseFactory,
         IMailgunSettings mailgunSettings)
     {
         this.userManager = userManager;
         this.dbContext = dbContext;
-        this.emailSenderService = emailSenderService;
         this.responseFactory = responseFactory;
         this.mailgunSettings = mailgunSettings;
     }
@@ -72,8 +69,6 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, Result<Re
             UserId = newUser.Id,
             CreatedAt = DateTime.UtcNow,
         };
-
-        await emailSenderService.SendVerificationEmailAsync(newUser, cancellationToken);
 
         dbContext.UserInformation.Add(userInfo);
 

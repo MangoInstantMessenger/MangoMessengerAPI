@@ -13,12 +13,7 @@ public static class MessengerServices
         string mangoJwtIssuer,
         string mangoJwtAudience,
         int mangoJwtLifetimeMinutes,
-        int mangoRefreshTokenLifetimeDays,
-        string mailgunApiBaseUrl,
-        string mailgunApiKey,
-        string frontendAddress,
-        string notificationEmail,
-        string mailgunApiDomain)
+        int mangoRefreshTokenLifetimeDays)
     {
         services.AddAzureBlobServices(
             mangoBlobUrl,
@@ -31,13 +26,6 @@ public static class MessengerServices
             mangoJwtSignKey,
             mangoJwtLifetimeMinutes,
             mangoRefreshTokenLifetimeDays);
-
-        services.AddMailgunServices(
-            mailgunApiBaseUrl,
-            mailgunApiKey,
-            frontendAddress,
-            notificationEmail,
-            mailgunApiDomain);
 
         services.AddSingInManagerServices();
         services.AddPasswordHashServices();

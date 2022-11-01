@@ -60,7 +60,7 @@ public class Startup
         });
 
         // https://stackoverflow.com/a/62374509
-        app.Map("/app", spaApp => { spaApp.UseSpa(spa => { spa.Options.SourcePath = "/wwwroot"; }); });
+        app.Map("/app", builder => builder.UseSpa(spa => spa.Options.SourcePath = "/wwwroot"));
 
         app.MigrateDatabase();
     }
@@ -100,21 +100,6 @@ public class Startup
 
         const int mangoRefreshTokenLifetimeDays = EnvironmentConstants.MangoRefreshTokenLifetimeDays;
 
-        var mailgunApiBaseUrl = configuration
-            .GetValueFromAppSettingsOrEnvironment(EnvironmentConstants.MangoMailgunApiBaseUrl);
-
-        var mailgunApiKey = configuration
-            .GetValueFromAppSettingsOrEnvironment(EnvironmentConstants.MangoMailgunApiKey);
-
-        var frontendAddress = configuration
-            .GetValueFromAppSettingsOrEnvironment(EnvironmentConstants.MangoFrontendAddress);
-
-        var notificationEmail = configuration
-            .GetValueFromAppSettingsOrEnvironment(EnvironmentConstants.MangoEmailNotificationsAddress);
-
-        var mailgunApiDomain = configuration
-            .GetValueFromAppSettingsOrEnvironment(EnvironmentConstants.MangoMailgunApiDomain);
-
         services.AddDatabaseContextServices(databaseConnectionString);
 
         services.AddAppInfrastructure(mangoJwtSignKey, mangoJwtIssuer, mangoJwtAudience);
@@ -127,12 +112,7 @@ public class Startup
             mangoJwtIssuer,
             mangoJwtAudience,
             mangoJwtLifetimeMinutes,
-            mangoRefreshTokenLifetimeDays,
-            mailgunApiBaseUrl,
-            mailgunApiKey,
-            frontendAddress,
-            notificationEmail,
-            mailgunApiDomain);
+            mangoRefreshTokenLifetimeDays);
 
         services.AddSwagger();
 

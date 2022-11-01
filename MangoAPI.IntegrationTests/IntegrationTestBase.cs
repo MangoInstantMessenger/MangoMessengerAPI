@@ -36,13 +36,6 @@ public class IntegrationTestBase : IAsyncLifetime
         var mangoJwtAudience = GetFromEnvironmentOrThrow(EnvironmentConstants.MangoJwtAudience);
         const int mangoJwtLifetimeMinutes = EnvironmentConstants.MangoJwtLifetimeMinutes;
         const int mangoRefreshTokenLifetimeDays = EnvironmentConstants.MangoRefreshTokenLifetimeDays;
-        var mailgunApiBaseUrl = GetFromEnvironmentOrThrow(EnvironmentConstants.MangoMailgunApiBaseUrl);
-        var mailgunApiKey = GetFromEnvironmentOrThrow(EnvironmentConstants.MangoMailgunApiKey);
-        var frontendAddress = GetFromEnvironmentOrThrow(EnvironmentConstants.MangoFrontendAddress);
-        var notificationEmail = GetFromEnvironmentOrThrow(EnvironmentConstants.MangoEmailNotificationsAddress);
-        var mailgunApiDomain = GetFromEnvironmentOrThrow(EnvironmentConstants.MangoMailgunApiDomain);
-
-        var mailgunServiceMock = MockedObjects.GetEmailSenderServiceMock();
 
         MangoStartup.Initialize(
             ConnectionString,
@@ -53,13 +46,7 @@ public class IntegrationTestBase : IAsyncLifetime
             mangoJwtIssuer,
             mangoJwtAudience,
             mangoJwtLifetimeMinutes,
-            mangoRefreshTokenLifetimeDays,
-            mailgunApiBaseUrl,
-            mailgunApiKey,
-            frontendAddress,
-            notificationEmail,
-            mailgunApiDomain,
-            mailgunServiceMock);
+            mangoRefreshTokenLifetimeDays);
 
         ServiceProvider = MangoCompositionRoot.Provider;
 

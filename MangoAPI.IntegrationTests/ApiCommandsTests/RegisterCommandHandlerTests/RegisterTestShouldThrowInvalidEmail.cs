@@ -16,7 +16,7 @@ public class RegisterTestShouldThrowInvalidEmail : IntegrationTestBase
         const string expectedMessage = ResponseMessageCodes.InvalidEmailAddress;
         var expectedDetails = ResponseMessageCodes.ErrorDictionary[expectedMessage];
         var command = new RegisterCommand(
-            Email: MockedObjects.GetMailgunSettings().NotificationEmail,
+            Email: "test@gmail.com",
             DisplayName: "Test account",
             Password: "Bm3-`dPRv-/w#3)cw^97",
             TermsAccepted: true);
