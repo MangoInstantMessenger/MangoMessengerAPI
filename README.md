@@ -1,11 +1,8 @@
-# Mango Messenger WEB API
+# Mango Messenger Web API
 
 <p align="center">
-  <img src="https://github.com/MangoInstantMessenger/MangoInstantMessenger.github.io/blob/MANGO-414/src/img/logo.png" width="100" height="100"  alt="Mango Messenger Logo"/>
+  <img src="./img/mango.png" width="100" height="100"  alt="Mango Messenger Logo"/>
 </p>
-
-[![Run Build and Test (.NET, Angular)](https://github.com/MangoInstantMessenger/MangoMessengerAPI/actions/workflows/run-build-and-test-dotnet-angular.yml/badge.svg)](https://github.com/MangoInstantMessenger/MangoMessengerAPI/actions/workflows/run-build-and-test-dotnet-angular.yml)
-[![Coverage Status](https://coveralls.io/repos/github/MangoInstantMessenger/MangoMessengerAPI/badge.svg?branch=develop)](https://coveralls.io/github/MangoInstantMessenger/MangoMessengerAPI?branch=develop)
 
 ## Description
 
@@ -66,11 +63,9 @@ Set up the following environmental variables:
 - `MANGO_MAILGUN_API_DOMAIN`: Verified domain used in MailGun service
 - `MANGO_API_ADDRESS`: Used for Diffie-Hellman handshake test (default: `https://localhost:5001`)
 - `MANGO_INTEGRATION_TESTS_DATABASE_URL`: SQL server database used for integration tests
-- (
-  default: `Data Source=DESKTOP-1V4TC6J;Initial Catalog=MangoIntegrationTests;Integrated Security=true;Encrypt=True;TrustServerCertificate=True;Connection Timeout=30;`)
-  ,
-  connection string for the database in docker has
-  format: `Server=tcp:localhost,1444;Initial Catalog=MANGO_DEV;Persist Security Info=False;User ID=sa;Password=x2yiJt!Fs;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=True;Connection Timeout=30;`
+    - Default: `Data Source=DESKTOP-1V4TC6J;Initial Catalog=MangoIntegrationTests;Integrated Security=true;Encrypt=True;TrustServerCertificate=True;Connection Timeout=30;`,
+    - Connection string for DB in
+      docker: `Server=tcp:localhost,1444;Initial Catalog=MANGO_DEV;Persist Security Info=False;User ID=sa;Password=x2yiJt!Fs;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=True;Connection Timeout=30;`
 
 ### Part 3. Run using Docker compose
 
@@ -101,7 +96,7 @@ Perform the following steps:
 - Navigate to the swagger: `https://localhost:5001/swagger/index.html`
 - Navigate to the root url: `https://localhost:5001/app`
 
-In case of HTTPS certificate issues: https://stackoverflow.com/a/67182991
+In case of localhost HTTPS certificate issues: https://stackoverflow.com/a/67182991
 
 ## Technology stack
 

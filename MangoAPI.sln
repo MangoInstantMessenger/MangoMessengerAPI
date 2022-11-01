@@ -44,11 +44,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "build", "build", "{66E218B1
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".github", ".github", "{B8CB0A21-BB6E-478B-A755-49CEA1435CD1}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "workflows", "workflows", "{245C5E82-3AED-46CE-8562-B78682197D9B}"
-	ProjectSection(SolutionItems) = preProject
-		.github\workflows\run-build-and-test-dotnet-angular.yml = .github\workflows\run-build-and-test-dotnet-angular.yml
-	EndProjectSection
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "legacy_workflows", "legacy_workflows", "{E70E0E28-1954-4AC7-8C05-B8C221252450}"
 	ProjectSection(SolutionItems) = preProject
 		.github\legacy_workflows\azure-dev-vm-ssh-deploy.yml = .github\legacy_workflows\azure-dev-vm-ssh-deploy.yml
@@ -74,6 +69,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "terraform", "terraform", "{
 		terraform\main.tf = terraform\main.tf
 		terraform\output.tf = terraform\output.tf
 		terraform\variables.tf = terraform\variables.tf
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "img", "img", "{64F59099-7FFD-4D32-8C74-2BD1EBFF0B11}"
+	ProjectSection(SolutionItems) = preProject
+		img\mango.png = img\mango.png
 	EndProjectSection
 EndProject
 Global
@@ -119,7 +119,6 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{245C5E82-3AED-46CE-8562-B78682197D9B} = {B8CB0A21-BB6E-478B-A755-49CEA1435CD1}
 		{E70E0E28-1954-4AC7-8C05-B8C221252450} = {B8CB0A21-BB6E-478B-A755-49CEA1435CD1}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
