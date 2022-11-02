@@ -42,21 +42,26 @@ steps:
       packageType: sdk
       version: 6.x
 
-  - task: NuGetToolInstaller@1
-    displayName: 'Install Nuget'
+#  - task: NuGetToolInstaller@1
+#    displayName: 'Install Nuget'
 
-  - task: NuGetCommand@2
-    displayName: 'Restore Nuget Packages'
-    inputs:
-      restoreSolution: '$(solution)'
-      feedsToUse: 'config'
-      nugetConfigPath: 'nuget.config'
+#  - task: NuGetCommand@2
+#    displayName: 'Restore Nuget Packages'
+#    inputs:
+#      restoreSolution: '$(solution)'
+#      feedsToUse: 'config'
+#      nugetConfigPath: 'nuget.config'
 
   - task: DotNetCoreCLI@2
-    displayName: 'Run dotnet build config $(buildConfiguration)'
+    displayName: 'Dotnet restore'
+    inputs:
+      command: 'restore'
+
+  - task: DotNetCoreCLI@2
+    displayName: 'Dotnet build $(buildConfiguration)'
     inputs:
       command: 'build'
-      arguments: '--configuration $(buildConfiguration)'
+      arguments: '--configuration $(buildConfiguration) --no-restore'
 
   - bash: |
       sudo npm install -g azurite
