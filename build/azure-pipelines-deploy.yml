@@ -49,7 +49,7 @@ stages:
                 - task: AzureRmWebAppDeployment@4
                   inputs:
                     ConnectionType: "AzureRM"
-                    azureSubscription: "VisualStudioEnterprise"
+                    azureSubscription: "MangoRgServiceConnection"
                     appType: "webApp"
                     WebAppName: "$(WebAppName)"
                     packageForLinux: "$(Pipeline.Workspace)/drop/$(BuildConfiguration)/MangoAPI.Presentation.zip"
