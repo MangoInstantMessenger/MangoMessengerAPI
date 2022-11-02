@@ -5,6 +5,7 @@ using MangoAPI.Domain.Entities;
 using MangoAPI.Infrastructure.Exceptions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Microsoft.Extensions.Configuration;
 
 namespace MangoAPI.Infrastructure.Database.Configurations;
 
@@ -162,11 +163,15 @@ public class UserEntityConfiguration : IEntityTypeConfiguration<UserEntity>
 
         var passwordHasher = new PasswordHashService();
 
-        var seedPassword = Environment.GetEnvironmentVariable(EnvironmentConstants.MangoSeedPassword);
+        var appSettingsPath = AppSettingsService.GetAppSettingsPath();
+
+        var configuration = new ConfigurationBuilder().AddJsonFile(appSettingsPath).Build();
+
+        var seedPassword = configuration[EnvironmentConstants.SeedPassword];
 
         if (seedPassword == null)
         {
-            throw new EnvironmentVariableException(nameof(seedPassword));
+            throw new InvalidOperationException($"Configuration is not set: {nameof(seedPassword)}");
         }
 
         passwordHasher.HashPassword(user1, seedPassword);

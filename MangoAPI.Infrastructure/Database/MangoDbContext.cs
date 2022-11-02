@@ -8,10 +8,6 @@ namespace MangoAPI.Infrastructure.Database;
 
 public class MangoDbContext : IdentityDbContext<UserEntity, RoleEntity, Guid>
 {
-    public MangoDbContext()
-    {
-    }
-
     public MangoDbContext(DbContextOptions options) : base(options)
     {
     }

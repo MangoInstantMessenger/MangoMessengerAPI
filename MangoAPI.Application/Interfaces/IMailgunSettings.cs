@@ -1,5 +1,8 @@
-﻿namespace MangoAPI.Application.Interfaces;
+﻿using System;
 
+namespace MangoAPI.Application.Interfaces;
+
+[Obsolete("Mailgun service is not used. We plan to use Microsoft graph API in future to send emails.")]
 public interface IMailgunSettings
 {
     public string MailgunApiBaseUrl { get; }

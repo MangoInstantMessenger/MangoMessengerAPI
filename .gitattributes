@@ -1,1 +1,4 @@
 * text=auto eol=lf
+*.html linguist-detectable=false
+*.cshtml linguist-detectable=false
+*.htm linguist-detectable=false

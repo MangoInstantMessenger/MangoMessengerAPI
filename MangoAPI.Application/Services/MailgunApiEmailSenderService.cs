@@ -11,6 +11,7 @@ using MangoAPI.Domain.Entities;
 
 namespace MangoAPI.Application.Services;
 
+[Obsolete("Mailgun service is not used. We plan to use Microsoft graph API in future to send emails.")]
 public class MailgunApiEmailSenderService : IEmailSenderService
 {
     private readonly HttpClient httpClient;
