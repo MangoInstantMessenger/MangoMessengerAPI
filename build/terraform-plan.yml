@@ -15,7 +15,7 @@ stages:
 
         steps:
           - task: TerraformCLI@0
-            displayName: 'Terraform : init'
+            displayName: 'Terraform: init'
             inputs:
               command: "init"
               backendType: "azurerm"
@@ -27,7 +27,7 @@ stages:
               backendAzureRmKey: "$(TF_STATE_KEY)"
 
           - task: TerraformCLI@0
-            displayName: 'Terraform : init'
+            displayName: 'Terraform: fmt -check'
             inputs:
               command: "fmt -check"
               backendType: "azurerm"
