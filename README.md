@@ -1,33 +1,32 @@
 # Mango Messenger Web API
 
 <p align="center">
-  <img src="./img/mango.png" width="100" height="100"  alt="Mango Messenger Logo"/>
+  <img src="./img/mango.png" width="150" height="150"  alt="Mango Messenger Logo"/>
 </p>
 
 ## Description
 
-Mango Messenger is an opensource instant messaging system such that implemented using .NET 6 REST API backend
-along with Angular project as frontend part.
-In general, it is considered to be a bachelor's degree project.
+Mango Messenger is an opensource instant messaging system that implemented using .NET and Angular frameworks.
+In general, this project is considered to be a bachelor's degree project.
 Bachelor's project has been successfully completed by the team of three students on 10-02-2022.
-The defence is completed, however it is worth to continue working on the project pursuing the another predefined goals.
+However, it is worth to continue progress on the project pursuing another predefined goals.
 
 ## Main goals of the project
 
 - Implementation of simple, maintainable, safe and scalable code base following the KISS and YAGNI software development
-  principles. Make sure to use Null Reference Types.
+  principles.
 - To maintain the code quality using static code analyzers such as ReSharper, SonarQube where SonarQube analysis is a
-  part of the CI/CD pipeline with further publication of the QualityGate results. Also to use proper IDE configurations
-  and style rules, it is about editor config and stylecop extensions.
+  part of the CI/CD pipeline with further publication of the QualityGate results.
+- To use proper IDE configurations and style rules, it is about editor config and StyleCop extensions.
 - To maintain high (> 70%) code coverage using unit tests, integration tests and E2E tests with ongoing publication of
-  the coverage report to the Azure DevOps statistics.
-- Implementation of the layered architecture where each layers is a separate project responsible for single part of the
-  application. For example, the Domain layer is responsible for the business logic and validates itself, see issue #1.
-- Implementation of the productive quick and safe development process. It is mainly about organization of the CI/CD
+  the coverage report to the Azure DevOps workflow statistics.
+- To implement layered architecture where each layers is a separate project responsible for single part of the
+  application. For example, the Domain layer is responsible for the business logic and validates itself.
+- To implement productive, quick and safe development cycle. It is mainly about organization of the CI/CD
   process using Azure DevOps and Azure pipelines so that each pull request to be validated and tested. Moreover, the
   CD (Continuous Deployment) must be confirmed manually be designated person.
-- Implementation of the E2E tests inside CI/CD pipelines using Docker Compose and Postman.
-- Implementation of the IaaC using Hashicorp Terraform and applying this infrastructure on behalf of CI/CD pipelines.
+- To implement E2E tests inside CI/CD pipelines using Docker Compose and Postman.
+- To implement IaaC using Hashicorp Terraform and applying this infrastructure on behalf of CI/CD pipelines.
 
 ## Build and run the project
 
@@ -38,19 +37,12 @@ Obligatory required software:
 - **.NET SDK 6.0.202 or later:** https://dotnet.microsoft.com/en-us/download
 - **NVM For Windows:** https://github.com/coreybutler/nvm-windows
 - **Docker:** https://docs.docker.com/desktop/windows/install
+- **Azure storage explorer**: https://azure.microsoft.com/en-us/products/storage/storage-explorer
 - **Angular:** `13.3.5`
 - **Angular CLI:** `13.3.4`
 - **NodeJS:** `16.13.1`
 - **NPM:** `8.1.2`
-- **Code Editor or IDE:** Visual studio, Visual studio code, Rider.
-
-### Run using Docker compose
-
-After setup of the environmental variables, run the following commands in order to up docker container under
-the http://localhost:8000:
-
-- `docker-compose build`
-- `docker-compose up`
+- **Code Editor or IDE:** Visual studio, Visual studio code, Rider
 
 ### Run in debug mode
 
@@ -82,6 +74,14 @@ In case of localhost HTTPS certificate issues: https://stackoverflow.com/a/67182
 - Install Azurite: https://learn.microsoft.com/en-us/azure/storage/common/storage-use-azurite?tabs=npm
    - `npm install -g azurite`
    - `azurite --silent --location c:\azurite --debug c:\azurite\debug.log`
+
+### Run using Docker compose
+
+After setup of the environmental variables, run the following commands in order to up docker container under
+the http://localhost:8000:
+
+- `docker-compose build`
+- `docker-compose up`
 
 ## Technology stack
 

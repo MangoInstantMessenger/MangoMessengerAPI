@@ -76,6 +76,9 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "img", "img", "{64F59099-7FFD-4D32-8C74-2BD1EBFF0B11}"
 	ProjectSection(SolutionItems) = preProject
 		img\mango.png = img\mango.png
+		img\chats.PNG = img\chats.PNG
+		img\contacts.PNG = img\contacts.PNG
+		img\settings.PNG = img\settings.PNG
 	EndProjectSection
 EndProject
 Global
