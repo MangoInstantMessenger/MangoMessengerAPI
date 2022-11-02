@@ -17,14 +17,14 @@
 - Install terraform
     - `choco install terraform`
 
-- Update infrastructure
-    - `terraform init`
-    - `terraform plan -out main.tfplan`
-    - `terraform apply main.tfplan`
-
 - Set env variables
     - `TF_VAR_sql_admin_username`
     - `TF_VAR_sql_admin_password`
     - `TF_VAR_tf_state_rg`
     - `TF_VAR_tf_state_account_name`
     - `TF_VAR_tf_state_container_name`
+
+- Update infrastructure
+    - `terraform init -backend-config="resource_group_name=$env:TF_VAR_tf_state_rg" -backend-config="storage_account_name=$env:TF_VAR_tf_state_account_name" -backend-config="container_name=$env:TF_VAR_tf_state_container_name" -backend-config="key=mango.tfstate"`
+    - `terraform plan -out main.tfplan`
+    - `terraform apply main.tfplan`

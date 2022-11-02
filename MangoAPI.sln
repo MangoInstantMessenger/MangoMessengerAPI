@@ -71,6 +71,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "terraform", "terraform", "{
 		terraform\output.tf = terraform\output.tf
 		terraform\variables.tf = terraform\variables.tf
 		terraform\README.md = terraform\README.md
+		terraform\init_command.ps1 = terraform\init_command.ps1
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "img", "img", "{64F59099-7FFD-4D32-8C74-2BD1EBFF0B11}"
