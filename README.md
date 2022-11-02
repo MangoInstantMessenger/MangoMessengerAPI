@@ -28,6 +28,18 @@ However, it is worth to continue progress on the project pursuing another predef
 - To implement E2E tests inside CI/CD pipelines using Docker Compose and Postman.
 - To implement IaaC using Hashicorp Terraform and applying this infrastructure on behalf of CI/CD pipelines.
 
+
+## Screenshots
+
+### Chats
+![./img/chats.png](./img/chats.PNG)
+
+### Contacts
+![./img/contacts.png](./img/contacts.PNG)
+
+### Settings
+![./img/settings.png](./img/settings.PNG)
+
 ## Build and run the project
 
 ### Prerequisites
@@ -124,7 +136,6 @@ The opened tasks and issues to be organized an handled as follows:
 - Each task has an assigned number in the format `MANGO-ID`
 - Active tasks are available on the Trello board: https://trello.com/b/Z7IlfrRb/mango-messenger-trello
 - Each task branch is based on the actual `develop` branch and pull requested there on complete
-- Branch `develop` then merged to `azure-dev`, `azure-qa`, `master` branches on particular milestone complete
 
 ## Git flow
 
