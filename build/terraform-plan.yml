@@ -20,7 +20,7 @@ stages:
               command: "init"
               backendType: "azurerm"
               workingDirectory: "terraform"
-              backendServiceArm: ${{ parameters.AzureSubscriptionServiceConnectionName }}
+              backendServiceArm: "VisualStudioEnterprise"
               backendAzureRmResourceGroupName: "$(TF_STATE_RG)"
               backendAzureRmStorageAccountName: "$(TF_STATE_ACCOUNT)"
               backendAzureRmContainerName: "$(TF_STATE_CONTAINER)"
