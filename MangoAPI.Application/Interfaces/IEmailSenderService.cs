@@ -5,6 +5,7 @@ using MangoAPI.Domain.Entities;
 
 namespace MangoAPI.Application.Interfaces;
 
+[Obsolete("Emails are currently not supported")]
 public interface IEmailSenderService
 {
     Task SendVerificationEmailAsync(UserEntity user, CancellationToken cancellationToken);
