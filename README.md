@@ -79,6 +79,8 @@ In case of localhost HTTPS certificate issues: https://stackoverflow.com/a/67182
 
 - Run MsSQL database
   container: `docker run -e SA_PASSWORD=x2yiJt!Fs -e ACCEPT_EULA=y --name mango-mssql-db --hostname mango-mssql-db -p 1433:1433 -d mcr.microsoft.com/mssql/server:2019-latest`
+- Run azure blob storage locally: https://learn.microsoft.com/en-us/azure/storage/common/storage-use-emulator
+- Install Azurite: https://learn.microsoft.com/en-us/azure/storage/common/storage-use-azurite?tabs=npm
 
 ## Technology stack
 

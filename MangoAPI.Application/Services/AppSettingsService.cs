@@ -5,7 +5,7 @@ namespace MangoAPI.Application.Services;
 
 public static class AppSettingsService
 {
-    private const string AppSettingsPath = "../../../../Messenger.WebApi/appsettings.json";
+    private const string AppSettingsPath = "../../../../MangoAPI.Presentation/appsettings.json";
 
     public static string GetAppSettingsPath()
     {
