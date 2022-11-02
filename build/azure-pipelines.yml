@@ -3,7 +3,10 @@ trigger:
     include:
       - develop
 
-pr: none
+pr:
+  branches:
+    include:
+      - develop
 
 variables:
   - name: solution
