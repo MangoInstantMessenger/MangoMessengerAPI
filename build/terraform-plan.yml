@@ -6,9 +6,9 @@ variables:
   - group: TERRAFORM_DEV
 
 stages:
-  - stage: 'Terraform plan'
+  - stage: "Terraform_plan"
     jobs:
-      - job: "TerraformInitAndPlan"
+      - job: "Terraform_plan"
         displayName: 'Terraform init and plan'
         pool:
           vmImage: 'ubuntu-latest'
