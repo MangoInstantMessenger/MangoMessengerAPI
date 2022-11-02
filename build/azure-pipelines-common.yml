@@ -36,11 +36,6 @@ steps:
     displayName: 'Build Angular production'
     workingDirectory: '$(frontEndProjectPath)'
 
-  - script: |
-      ng lint
-    displayName: 'Lint Angular'
-    workingDirectory: '$(frontEndProjectPath)'
-
   - task: UseDotNet@2
     displayName: 'Install .NET 6.x SDK'
     inputs:
@@ -62,6 +57,12 @@ steps:
     inputs:
       command: 'build'
       arguments: '--configuration $(buildConfiguration)'
+
+  - bash: |
+      sudo npm install -g azurite
+      sudo mkdir azurite
+      sudo azurite --silent --location azurite --debug azurite\debug.log &
+    displayName: 'Install and Run Azurite'
 
   - task: PowerShell@2
     displayName: 'Run database container'
