@@ -1,4 +1,8 @@
 steps:
+  - checkout: self
+    displayName: 'Checkout'
+    fetchDepth: 0
+
   - task: gitversion/setup@0
     displayName: 'GitVersion Setup'
     inputs:
@@ -10,7 +14,7 @@ steps:
       updateAssemblyInfo: true
 
   - bash: echo $Action$BuildVersion
-    displayName: 'Set Build Version Number'
+    displayName: 'Set Build Version'
     env:
       Action: '##vso[build.updatebuildnumber]'
       BuildVersion: $(GitVersion.SemVer)
@@ -28,12 +32,12 @@ steps:
 
   - script: |
       npm ci
-    displayName: 'Install npm packages'
+    displayName: 'Npm ci'
     workingDirectory: '$(frontEndProjectPath)'
 
   - script: |
       ng build --aot --configuration production
-    displayName: 'Build Angular production'
+    displayName: 'Build Angular Prod'
     workingDirectory: '$(frontEndProjectPath)'
 
   - task: UseDotNet@2
@@ -80,7 +84,7 @@ steps:
       arguments: '--no-restore --collect:"XPlat Code Coverage" --settings build/coverage.runsettings'
 
   - task: DotNetCoreCLI@2
-    displayName: 'Run dotnet Publish'
+    displayName: 'Dotnet Publish'
     inputs:
       command: 'publish'
       publishWebProjects: false
