@@ -5,7 +5,6 @@ using MangoAPI.BusinessLogic.DependencyInjection;
 using MangoAPI.BusinessLogic.HubConfig;
 using MangoAPI.Domain.Constants;
 using MangoAPI.Presentation.Controllers;
-using MangoAPI.Presentation.Extensions;
 using MangoAPI.Presentation.Middlewares;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -75,44 +74,37 @@ public class Startup
             options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
         });
 
-        var databaseConnectionString = configuration
-            .GetValueFromAppSettingsOrEnvironment(EnvironmentConstants.MangoDatabaseUrl);
+        var databaseUrl = configuration[EnvironmentConstants.DatabaseUrl];
 
-        var mangoBlobUrl = configuration
-            .GetValueFromAppSettingsOrEnvironment(EnvironmentConstants.MangoBlobUrl);
+        var blobUrl = configuration[EnvironmentConstants.BlobUrl];
 
-        var mangoBlobContainerName = configuration
-            .GetValueFromAppSettingsOrEnvironment(EnvironmentConstants.MangoBlobContainer);
+        var blobContainerName = configuration[EnvironmentConstants.BlobContainer];
 
-        var mangoBlobAccess = configuration
-            .GetValueFromAppSettingsOrEnvironment(EnvironmentConstants.MangoBlobAccess);
+        var blobAccess = configuration[EnvironmentConstants.BlobAccess];
 
-        var mangoJwtSignKey = configuration
-            .GetValueFromAppSettingsOrEnvironment(EnvironmentConstants.MangoJwtSignKey);
+        var jwtSignKey = configuration[EnvironmentConstants.JwtSignKey];
 
-        var mangoJwtIssuer = configuration
-            .GetValueFromAppSettingsOrEnvironment(EnvironmentConstants.MangoJwtIssuer);
+        var jwtIssuer = configuration[EnvironmentConstants.JwtIssuer];
 
-        var mangoJwtAudience = configuration
-            .GetValueFromAppSettingsOrEnvironment(EnvironmentConstants.MangoJwtAudience);
+        var jwtAudience = configuration[EnvironmentConstants.JwtAudience];
 
-        const int mangoJwtLifetimeMinutes = EnvironmentConstants.MangoJwtLifetimeMinutes;
+        const int jwtLifetimeMinutes = EnvironmentConstants.JwtLifetimeMinutes;
 
-        const int mangoRefreshTokenLifetimeDays = EnvironmentConstants.MangoRefreshTokenLifetimeDays;
+        const int refreshTokenLifetimeDays = EnvironmentConstants.RefreshTokenLifetimeDays;
 
-        services.AddDatabaseContextServices(databaseConnectionString);
+        services.AddDatabaseContextServices(databaseUrl);
 
-        services.AddAppInfrastructure(mangoJwtSignKey, mangoJwtIssuer, mangoJwtAudience);
+        services.AddAppInfrastructure(jwtSignKey, jwtIssuer, jwtAudience);
 
         services.AddMessengerServices(
-            mangoBlobUrl,
-            mangoBlobContainerName,
-            mangoBlobAccess,
-            mangoJwtSignKey,
-            mangoJwtIssuer,
-            mangoJwtAudience,
-            mangoJwtLifetimeMinutes,
-            mangoRefreshTokenLifetimeDays);
+            blobUrl,
+            blobContainerName,
+            blobAccess,
+            jwtSignKey,
+            jwtIssuer,
+            jwtAudience,
+            jwtLifetimeMinutes,
+            refreshTokenLifetimeDays);
 
         services.AddSwagger();
 

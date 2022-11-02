@@ -12,8 +12,8 @@ public class DesignTimeDbContextFactory : IDesignTimeDbContextFactory<MangoDbCon
 
     public DesignTimeDbContextFactory()
     {
-        mangoDatabaseUrl = Environment.GetEnvironmentVariable(EnvironmentConstants.MangoDatabaseUrl)
-                            ?? throw new EnvironmentVariableException(EnvironmentConstants.MangoDatabaseUrl);
+        mangoDatabaseUrl = Environment.GetEnvironmentVariable(EnvironmentConstants.DatabaseUrl)
+                            ?? throw new EnvironmentVariableException(EnvironmentConstants.DatabaseUrl);
     }
 
     public MangoDbContext CreateDbContext(string[] args)
