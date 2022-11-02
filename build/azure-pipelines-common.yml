@@ -1,8 +1,4 @@
 steps:
-  - checkout: self
-    displayName: 'Checkout'
-    fetchDepth: 0
-
   - task: gitversion/setup@0
     displayName: 'GitVersion Setup'
     inputs:
