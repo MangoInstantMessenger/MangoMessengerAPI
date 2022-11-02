@@ -47,9 +47,10 @@ However, it is worth to continue progress on the project pursuing another predef
 Obligatory required software:
 
 - **.NET SDK 6.0.202 or later:** https://dotnet.microsoft.com/en-us/download
-- **NVM For Windows:** https://github.com/coreybutler/nvm-windows
-- **Docker:** https://docs.docker.com/desktop/windows/install
+- **NVM for windows:** https://github.com/coreybutler/nvm-windows
 - **Azure storage explorer**: https://azure.microsoft.com/en-us/products/storage/storage-explorer
+- **Azure data studio**: https://azure.microsoft.com/en-us/products/data-studio
+- **Docker:** https://docs.docker.com/desktop/windows/install
 - **Angular:** `13.3.5`
 - **Angular CLI:** `13.3.4`
 - **NodeJS:** `16.13.1`
