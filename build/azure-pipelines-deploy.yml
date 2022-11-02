@@ -6,7 +6,6 @@ trigger:
 pr: none
 
 variables:
-  - group: MANGO_INTEGRATION_TESTS
   - name: solution
     value: 'MangoAPI.sln'
   - name: buildPlatform

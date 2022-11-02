@@ -10,7 +10,6 @@ pr:
       - '*'
 
 variables:
-  - group: MANGO_INTEGRATION_TESTS
   - name: solution
     value: 'MangoAPI.sln'
   - name: buildPlatform
@@ -39,8 +38,8 @@ stages:
               SonarCloud: 'SonarCloud_Mango'
               organization: 'mangoinstantmessenger'
               scannerMode: 'MSBuild'
-              projectKey: 'MangoMessenger.AzureDevops'
-              projectName: 'MangoMessenger.AzureDevops'
+              projectKey: 'MangoMessengerAPI'
+              projectName: 'MangoMessengerAPI'
               projectVersion: '$(GitVersion.SemVer)'
               extraProperties: |
                 # Additional properties that will be passed to the scanner,
