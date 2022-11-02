@@ -1,1 +1,1 @@
-﻿terraform init -backend-config="resource_group_name=$env:TF_VAR_tf_state_rg" -backend-config="storage_account_name=$env:TF_VAR_tf_state_account_name" -backend-config="container_name=$env:TF_VAR_tf_state_container_name" -backend-config="key=mango.tfstate"
+﻿terraform init -backend-config="resource_group_name=$env:TF_STATE_RG" -backend-config="storage_account_name=$env:TF_STATE_ACCOUNT" -backend-config="container_name=$env:TF_STATE_CONTAINER" -backend-config="key=$env:TF_STATE_KEY"

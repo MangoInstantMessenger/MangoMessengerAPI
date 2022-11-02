@@ -1,12 +1,14 @@
-trigger:
-  batch: true
-  branches:
-    include:
-      - develop
+trigger: none
 
-pr:
-  branches:
-    include:
-      - '*'
+pr: none
 
+stages:
+  - stage: 'Terraform plan'
+    jobs:
+      - job: "TerraformInitAndPlan"
+        displayName: 'Terraform init and plan'
+        pool:
+          vmImage: 'ubuntu-latest'
 
+        steps:
+          - template: azure-pipelines-common.yml
