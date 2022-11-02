@@ -8,13 +8,7 @@ public static class ServicesInjectionExtensions
     {
         collection.AddSingleton(_ =>
         {
-            var clientHandler = new HttpClientHandler();
-
-            clientHandler.ServerCertificateCustomValidationCallback
-                = (_, _, _, _) => true;
-
-            var client = new HttpClient(clientHandler);
-
+            var client = new HttpClient();
             return client;
         });
 
