@@ -20,12 +20,8 @@
 - Set env variables
     - `TF_VAR_sql_admin_username`
     - `TF_VAR_sql_admin_password`
-    - `TF_STATE_RG`
-    - `TF_STATE_ACCOUNT`
-    - `TF_STATE_CONTAINER`
-    - `TF_STATE_KEY`
 
 - Update infrastructure
-    - `terraform init -backend-config="resource_group_name=$env:TF_STATE_RG" -backend-config="storage_account_name=$env:TF_STATE_ACCOUNT" -backend-config="container_name=$env:TF_STATE_CONTAINER" -backend-config="key=$env:TF_STATE_KEY"`
+    - `terraform init`
     - `terraform plan -out main.tfplan`
     - `terraform apply main.tfplan`
