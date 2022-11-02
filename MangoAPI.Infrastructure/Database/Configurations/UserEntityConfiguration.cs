@@ -163,7 +163,16 @@ public class UserEntityConfiguration : IEntityTypeConfiguration<UserEntity>
 
         var passwordHasher = new PasswordHashService();
 
-        const string seedPassword = "Dn2-~bRPw+*vR9(cw^84";
+        var appSettingsPath = AppSettingsService.GetAppSettingsPath();
+
+        var configuration = new ConfigurationBuilder().AddJsonFile(appSettingsPath).Build();
+
+        var seedPassword = configuration[EnvironmentConstants.SeedPassword];
+
+        if (seedPassword == null)
+        {
+            throw new InvalidOperationException($"Configuration is not set: {nameof(seedPassword)}");
+        }
 
         passwordHasher.HashPassword(user1, seedPassword);
         passwordHasher.HashPassword(user2, seedPassword);

@@ -1,8 +1,10 @@
 ﻿using System;
+using MangoAPI.Application.Services;
 using MangoAPI.Domain.Constants;
 using MangoAPI.Infrastructure.Exceptions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
+using Microsoft.Extensions.Configuration;
 
 namespace MangoAPI.Infrastructure.Database;
 
@@ -12,8 +14,12 @@ public class DesignTimeDbContextFactory : IDesignTimeDbContextFactory<MangoDbCon
 
     public DesignTimeDbContextFactory()
     {
-        mangoDatabaseUrl = Environment.GetEnvironmentVariable(EnvironmentConstants.DatabaseUrl)
-                            ?? throw new EnvironmentVariableException(EnvironmentConstants.DatabaseUrl);
+        var appSettingsPath = AppSettingsService.GetAppSettingsPath();
+
+        var configuration = new ConfigurationBuilder().AddJsonFile(appSettingsPath).Build();
+
+        mangoDatabaseUrl = configuration[EnvironmentConstants.DatabaseUrl]
+                            ?? throw new AppSettingException(EnvironmentConstants.DatabaseUrl);
     }
 
     public MangoDbContext CreateDbContext(string[] args)
