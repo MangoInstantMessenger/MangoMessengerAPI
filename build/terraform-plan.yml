@@ -2,6 +2,9 @@ trigger: none
 
 pr: none
 
+variables:
+  - group: TERRAFORM_DEV
+
 stages:
   - stage: 'Terraform plan'
     jobs:
@@ -11,4 +14,21 @@ stages:
           vmImage: 'ubuntu-latest'
 
         steps:
-          - template: azure-pipelines-common.yml
+          - task: TerraformCLI@0
+            displayName: 'Terraform : init'
+            inputs:
+              command: "init"
+              backendType: "azurerm"
+              workingDirectory: "terraform"
+              backendServiceArm: ${{ parameters.AzureSubscriptionServiceConnectionName }}
+              backendAzureRmResourceGroupName: "$(TF_STATE_RG)"
+              backendAzureRmStorageAccountName: "$(TF_STATE_ACCOUNT)"
+              backendAzureRmContainerName: "$(TF_STATE_CONTAINER)"
+              backendAzureRmKey: "$(TF_STATE_KEY)"
+
+          - task: TerraformCLI@0
+            displayName: 'Terraform : init'
+            inputs:
+              command: "fmt -check"
+              backendType: "azurerm"
+              workingDirectory: "terraform"

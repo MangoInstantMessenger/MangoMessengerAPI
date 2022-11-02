@@ -4,7 +4,7 @@ variable "resource_group_location" {
 }
 
 variable "resource_group_name" {
-    default     = "rg-messenger-d03"
+    default     = "rg-messenger-d04"
     description = "Prefix of the resource group name that's combined with a random ID so name is unique in your Azure subscription."
 }
 
