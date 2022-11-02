@@ -39,7 +39,7 @@ stages:
           vmImage: "ubuntu-latest"
         environment: dev
         variables:
-          - group: MANGO_DEV_ENV_VARS
+          - group: DEPLOY_DEV_VARS
         strategy:
           runOnce:
             deploy:
