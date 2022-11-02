@@ -17,7 +17,6 @@ namespace MangoAPI.Presentation;
 
 public class Startup
 {
-    private const string CorsPolicy = "MyDefaultCorsPolicy";
     private readonly IConfiguration configuration;
 
     public Startup(IConfiguration configuration)
@@ -37,7 +36,6 @@ public class Startup
         app.UseHttpsRedirection();
 
         app.UseRouting();
-        app.UseCors(CorsPolicy);
 
         app.UseStaticFiles();
 
@@ -54,8 +52,8 @@ public class Startup
 
         app.UseEndpoints(endpoints =>
         {
-            endpoints.MapControllers().RequireCors(CorsPolicy);
-            endpoints.MapHub<ChatHub>("/notify").RequireCors(CorsPolicy);
+            endpoints.MapControllers();
+            endpoints.MapHub<ChatHub>("/notify");
         });
 
         // https://stackoverflow.com/a/62374509
@@ -107,8 +105,6 @@ public class Startup
             refreshTokenLifetimeDays);
 
         services.AddSwagger();
-
-        services.ConfigureCors(configuration, CorsPolicy);
 
         services.AddSpaStaticFiles(config => { config.RootPath = "wwwroot"; });
 
