@@ -53,6 +53,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "legacy_workflows", "legacy_
 		.github\legacy_workflows\run-cng-dh-handshake.yml = .github\legacy_workflows\run-cng-dh-handshake.yml
 		.github\legacy_workflows\run-dotnet-sonarqube-analysis.yml = .github\legacy_workflows\run-dotnet-sonarqube-analysis.yml
 		.github\legacy_workflows\run-openssl-dh-handshake.yml = .github\legacy_workflows\run-openssl-dh-handshake.yml
+		.github\legacy_workflows\run-build-and-test-dotnet-angular.yml = .github\legacy_workflows\run-build-and-test-dotnet-angular.yml
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "scripts", "scripts", "{C75F67BF-1B37-4569-B8DB-25FDB3A9690F}"
