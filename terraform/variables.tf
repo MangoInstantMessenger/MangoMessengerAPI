@@ -45,3 +45,18 @@ variable "sql_admin_password" {
     type        = string
     description = "Sql admin password"
 }
+
+variable "tf_state_rg" {
+    type        = string
+    description = "Resource group for the terraform state storage account"
+}
+
+variable "tf_state_account_name" {
+    type        = string
+    description = "Terraform state storage account name"
+}
+
+variable "tf_state_container_name" {
+    type        = string
+    description = "Terraform state storage container name"
+}

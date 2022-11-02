@@ -6,25 +6,18 @@ terraform {
         }
     }
 
-    # az group create -g rg-hello-azure-tf -l westus
-    # az storage account create -n pkolosovtfstate02 -g rg-hello-azure-tf -l westus --sku Standard_LRS
-    # az storage container create -n terraform-state --account-name pkolosovtfstate02
-    # az ad sp create-for-rbac --name "sp-hello-azure-tf" --role Contributor --scopes /subscriptions/fab0735b-aac3-490e-ad20-68043a66483b --sdk-auth
-
     backend "azurerm" {
-        resource_group_name  = "rg-hello-azure-tf"
-        storage_account_name = "pkolosovtfstate02"
-        container_name       = "terraform-state"
+        resource_group_name  = var.tf_state_rg
+        storage_account_name = var.tf_state_account_name
+        container_name       = var.tf_state_container_name
         key                  = "terraform.tfstate"
     }
 }
 
-# Configure the Microsoft Azure Provider
 provider "azurerm" {
     features {}
 }
 
-# Create a resource group
 resource "azurerm_resource_group" "rg_messenger" {
     name     = var.resource_group_name
     location = var.resource_group_location
@@ -37,10 +30,6 @@ resource "azurerm_storage_account" "st_messenger" {
     location                 = azurerm_resource_group.rg_messenger.location
     account_tier             = var.storage_account_tier
     account_replication_type = var.storage_account_replication
-
-    tags = {
-        environment = "development"
-    }
 }
 
 resource "azurerm_storage_container" "container_messenger" {
