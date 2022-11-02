@@ -42,16 +42,6 @@ steps:
       packageType: sdk
       version: 6.x
 
-#  - task: NuGetToolInstaller@1
-#    displayName: 'Install Nuget'
-
-#  - task: NuGetCommand@2
-#    displayName: 'Restore Nuget Packages'
-#    inputs:
-#      restoreSolution: '$(solution)'
-#      feedsToUse: 'config'
-#      nugetConfigPath: 'nuget.config'
-
   - task: DotNetCoreCLI@2
     displayName: 'Dotnet restore'
     inputs:

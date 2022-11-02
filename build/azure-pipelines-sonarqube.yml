@@ -34,18 +34,15 @@ stages:
 
         steps:
           - task: SonarCloudPrepare@1
+            displayName: 'Prepare SonarCloud'
             inputs:
               SonarCloud: 'SonarCloud_Mango'
               organization: 'mangoinstantmessenger'
               scannerMode: 'MSBuild'
-              projectKey: 'MangoMessengerAPI'
+              projectKey: 'MangoInstantMessenger_MangoMessengerAPI'
               projectName: 'MangoMessengerAPI'
               projectVersion: '$(GitVersion.SemVer)'
               extraProperties: |
-                # Additional properties that will be passed to the scanner,
-                # Put one key=value per line, example:
-                # sonar.exclusions=**/*.bin
-                #sonar.verbose=true
                 sonar.cs.vstest.reportsPaths=$(Agent.TempDirectory)/**/*.trx
                 sonar.cs.opencover.reportsPaths=$(Agent.TempDirectory)/**/*opencover.xml
 
