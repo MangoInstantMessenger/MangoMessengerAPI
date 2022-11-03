@@ -109,7 +109,8 @@ export class SettingsComponent implements OnInit, OnDestroy {
     };
 
     this._usersService.updateUserAccountInformation(command).pipe(takeUntil(this.componentDestroyed$)).subscribe({
-      next: _ => {
+      next: response => {
+        alert(response.message);
         this.ngOnInit()
       },
       error: error => {
@@ -147,6 +148,7 @@ export class SettingsComponent implements OnInit, OnDestroy {
     this._usersService.updateProfilePicture(formData).pipe(takeUntil(this.componentDestroyed$)).subscribe({
       next: response => {
         this.clearProfilePictureFile();
+        alert(response.message);
         this.currentUser.pictureUrl = response.newUserPictureUrl;
       },
       error: error => {
@@ -165,7 +167,8 @@ export class SettingsComponent implements OnInit, OnDestroy {
     }
 
     this._usersService.changePassword(this.changePasswordCommand).pipe(takeUntil(this.componentDestroyed$)).subscribe({
-      next: _ => {
+      next: response => {
+        alert(response.message);
         this.clearChangePasswordCommand();
       },
       error: error => {
@@ -183,7 +186,8 @@ export class SettingsComponent implements OnInit, OnDestroy {
     };
 
     this._usersService.updateUserSocials(command).pipe(takeUntil(this.componentDestroyed$)).subscribe({
-      next: _ => {
+      next: response => {
+        alert(response.message);
         this.ngOnInit();
       },
       error: error => {
