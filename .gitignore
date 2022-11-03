@@ -9,8 +9,6 @@
 *.user
 *.userosscache
 *.sln.docstates
-*.xlsx
-*.bak
 
 # terraform
 *.lock.hcl

@@ -12,8 +12,6 @@ public static class EnvironmentConstants
 
     public const string JwtSignKey = "JWT_SIGN_KEY";
 
-    public const string SeedPassword = "SEED_PASSWORD";
-
     public const string DatabaseUrl = "DATABASE_URL";
 
     public const string IntegrationTestsDatabaseUrl = "INTEGRATION_TESTS_DATABASE_URL";
