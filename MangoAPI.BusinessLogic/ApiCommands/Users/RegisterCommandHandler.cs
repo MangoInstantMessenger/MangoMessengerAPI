@@ -47,6 +47,7 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, Result<Re
             Email = request.Email,
             EmailCode = Guid.NewGuid(),
             Image = "default_avatar.png",
+            EmailConfirmed = true,
         };
 
         await userManager.CreateAsync(newUser, request.Password);
