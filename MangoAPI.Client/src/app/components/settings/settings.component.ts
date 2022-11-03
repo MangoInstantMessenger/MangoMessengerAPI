@@ -76,6 +76,7 @@ export class SettingsComponent implements OnInit, OnDestroy {
     let refreshToken = this._tokensService.getTokens()?.refreshToken as string;
     this._sessionService.deleteSession(refreshToken).pipe(takeUntil(this.componentDestroyed$)).subscribe({
       next: _ => {
+        this._tokensService.clearTokens();
         this._router.navigateByUrl("app?methodName=login").then(r => r);
       },
       error: error => {
@@ -87,6 +88,7 @@ export class SettingsComponent implements OnInit, OnDestroy {
   onLogoutAllClick() : void {
     this._sessionService.deleteAllSessions().pipe(takeUntil(this.componentDestroyed$)).subscribe({
       next: _ => {
+        this._tokensService.clearTokens();
         this._router.navigateByUrl("app?methodName=login").then(r => r);
       },
       error: error => {
