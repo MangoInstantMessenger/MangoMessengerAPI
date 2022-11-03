@@ -62,7 +62,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "scripts", "scripts", "{C75F
 		scripts\OPENSSL_DH_HANDSHAKE_TEST.ps1 = scripts\OPENSSL_DH_HANDSHAKE_TEST.ps1
 		scripts\run-sonarqube-dotnet.sh = scripts\run-sonarqube-dotnet.sh
 		scripts\wait_database.ps1 = scripts\wait_database.ps1
-		scripts\wait-for-mssql.sh = scripts\wait-for-mssql.sh
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "terraform", "terraform", "{D5B04B5C-55E7-48C0-BA17-A084C24610BA}"

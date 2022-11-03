@@ -88,14 +88,6 @@ In case of localhost HTTPS certificate issues: https://stackoverflow.com/a/67182
    - `npm install -g azurite`
    - `azurite --silent --location c:\azurite --debug c:\azurite\debug.log`
 
-### Run using Docker compose
-
-After setup of the environmental variables, run the following commands in order to up docker container under
-the http://localhost:8000:
-
-- `docker-compose build`
-- `docker-compose up`
-
 ## Technology stack
 
 - **SDK:** `.NET 6`
