@@ -112,8 +112,6 @@ public class Startup
 
         services.AddTransient<ICorrelationContext, CorrelationContext>();
 
-        services.AddApplicationInsightsTelemetry();
-
         services.AddAutoMapper(typeof(ApiControllerBase));
 
         services.AddMvc();
