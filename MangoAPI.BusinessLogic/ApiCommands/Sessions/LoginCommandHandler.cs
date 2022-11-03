@@ -54,14 +54,6 @@ public class LoginCommandHandler : IRequestHandler<LoginCommand, Result<TokensRe
             return responseFactory.ConflictResponse(errorMessage, details);
         }
 
-        if (!user.EmailConfirmed)
-        {
-            const string errorMessage = ResponseMessageCodes.EmailIsNotVerified;
-            var details = ResponseMessageCodes.ErrorDictionary[errorMessage];
-
-            return responseFactory.ConflictResponse(errorMessage, details);
-        }
-
         var result = await signInManager.CheckPasswordSignInAsync(user, request.Password, false);
 
         if (!result.Succeeded)

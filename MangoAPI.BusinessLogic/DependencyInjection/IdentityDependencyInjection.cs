@@ -11,11 +11,11 @@ public static class IdentityDependencyInjection
     {
         var builder = services.AddIdentityCore<UserEntity>(options =>
         {
-            options.Password.RequireDigit = true;
+            options.Password.RequireDigit = false;
             options.Password.RequiredLength = 8;
-            options.Password.RequireNonAlphanumeric = true;
-            options.Password.RequireUppercase = true;
-            options.Password.RequireLowercase = true;
+            options.Password.RequireNonAlphanumeric = false;
+            options.Password.RequireUppercase = false;
+            options.Password.RequireLowercase = false;
         });
 
         var identityBuilder = new IdentityBuilder(builder.UserType, builder.Services);
