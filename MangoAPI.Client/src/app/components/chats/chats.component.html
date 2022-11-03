@@ -38,7 +38,7 @@
           <div class="list-item active" (click)="loadChat(chat.chatId)"
                *ngIf="activeChatId === chat.chatId; else chatElse">
             <img alt="Chat avatar" class="avatar"
-                 src="{{chat.chatLogoImageUrl ? chat.chatLogoImageUrl : './../../../assets/img/chat-avatar.png'}}">
+                 src="{{chat.chatLogoImageUrl}}">
             <div class="content">
               <div class="title" *ngIf="chat.communityType === 2; else elseBlock;">
                 <img alt="Group Icon" class="mr-1" height="16" src="../../../assets/svg/group.svg" width="16">
@@ -72,7 +72,7 @@
           <ng-template #chatElse>
             <div class="list-item" (click)="loadChat(chat.chatId)">
               <img alt="Chat avatar" class="avatar"
-                   src="{{chat.chatLogoImageUrl ? chat.chatLogoImageUrl : './../../../assets/img/chat-avatar.png'}}">
+                   src="{{chat.chatLogoImageUrl}}">
               <div class="content">
                 <div class="title" *ngIf="chat.communityType === 2; else elseBlock;">
                   <img alt="Group Icon" class="mr-1" height="16" src="../../../assets/svg/group.svg" width="16">
@@ -112,7 +112,7 @@
   <main class="chat" id="chat">
     <div class="chat-layout" *ngIf="activeChatId !== ''; else elseNoChatOpened;">
       <div class="chat-header">
-        <img alt="Chat Avatar" class="avatar" src="./../../../assets/img/chat-avatar.png"/>
+        <img alt="Chat Avatar" class="avatar" src="{{activeChat.chatLogoImageUrl}}"/>
         <div class="chat-info ml-2">
           <div class="chat-description">
             <span class="chat-name">{{activeChat.title}}</span>

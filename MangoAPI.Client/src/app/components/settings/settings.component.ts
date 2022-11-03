@@ -1,7 +1,7 @@
 // noinspection TypeScriptUnresolvedVariable
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import { ErrorNotificationService } from 'src/app/services/messenger/error-notification.service';
-import { ContactsService } from 'src/app/services/api/contacts.service';
+import {ErrorNotificationService} from 'src/app/services/messenger/error-notification.service';
+import {ContactsService} from 'src/app/services/api/contacts.service';
 import {TokensService} from "../../services/messenger/tokens.service";
 import {UpdateUserSocialsCommand} from "../../types/requests/UpdateUserSocialsCommand";
 import {ChangePasswordCommand} from "../../types/requests/ChangePasswordCommand";
@@ -27,23 +27,24 @@ export class SettingsComponent implements OnInit, OnDestroy {
               private _validationService: ValidationService,
               private _sessionService: SessionService,
               private _router: Router
-  ) {}
+  ) {
+  }
 
   public currentUser: User = {
-    userId:  '',
-    displayName:  '',
-    birthdayDate:  '',
-    email:  '',
-    website:  '',
-    username:  '',
-    bio:  '',
-    address:  '',
-    facebook:  '',
-    twitter:  '',
-    instagram:  '',
-    linkedIn:  '',
-    publicKey:  0,
-    pictureUrl:  '',
+    userId: '',
+    displayName: '',
+    birthdayDate: '',
+    email: '',
+    website: '',
+    username: '',
+    bio: '',
+    address: '',
+    facebook: '',
+    twitter: '',
+    instagram: '',
+    linkedIn: '',
+    publicKey: 0,
+    pictureUrl: '',
   };
   public currentUserId: string = '';
   public changePasswordCommand: ChangePasswordCommand = {
@@ -72,7 +73,7 @@ export class SettingsComponent implements OnInit, OnDestroy {
     this.componentDestroyed$.complete();
   }
 
-  onLogoutClick() : void {
+  onLogoutClick(): void {
     let refreshToken = this._tokensService.getTokens()?.refreshToken as string;
     this._sessionService.deleteSession(refreshToken).pipe(takeUntil(this.componentDestroyed$)).subscribe({
       next: _ => {
@@ -85,7 +86,7 @@ export class SettingsComponent implements OnInit, OnDestroy {
     });
   }
 
-  onLogoutAllClick() : void {
+  onLogoutAllClick(): void {
     this._sessionService.deleteAllSessions().pipe(takeUntil(this.componentDestroyed$)).subscribe({
       next: _ => {
         this._tokensService.clearTokens();
@@ -97,8 +98,8 @@ export class SettingsComponent implements OnInit, OnDestroy {
     });
   }
 
-  onSaveChangesAccountInfoClick() : void {
-    let command : UpdateAccountInformationCommand = {
+  onSaveChangesAccountInfoClick(): void {
+    let command: UpdateAccountInformationCommand = {
       username: this.currentUser.username,
       birthdayDate: this.currentUser.birthdayDate,
       website: this.currentUser.website,
@@ -117,26 +118,26 @@ export class SettingsComponent implements OnInit, OnDestroy {
     });
   }
 
-  onUpdateProfilePictureChange(event: any) : void {
+  onUpdateProfilePictureChange(event: any): void {
     const file: File = event.currentTarget.files[0];
 
     const validationResult = this._validationService.validatePictureFileName(file.name);
 
-    if(!validationResult) {
+    if (!validationResult) {
       return;
     }
 
-    if(file) {
+    if (file) {
       this.file = file;
       this.fileName = file.name;
     }
   }
 
-  onSaveChangesUpdateProfilePictureClick() : void {
+  onSaveChangesUpdateProfilePictureClick(): void {
     let formData = new FormData();
     let validationResult = this._validationService.validatePictureFileName(this.fileName);
 
-    if(!validationResult) {
+    if (!validationResult) {
       return;
     }
 
@@ -144,8 +145,9 @@ export class SettingsComponent implements OnInit, OnDestroy {
     formData.append("pictureFile", file);
 
     this._usersService.updateProfilePicture(formData).pipe(takeUntil(this.componentDestroyed$)).subscribe({
-      next: _ =>  {
+      next: response => {
         this.clearProfilePictureFile();
+        this.currentUser.pictureUrl = response.newUserPictureUrl;
       },
       error: error => {
         this._errorNotificationService.notifyOnError(error);
@@ -153,12 +155,12 @@ export class SettingsComponent implements OnInit, OnDestroy {
     });
   }
 
-  onSaveChangesChangePasswordClick() : void {
+  onSaveChangesChangePasswordClick(): void {
     let newPasswordValidationResult = this._validationService.validateField('New password', this.changePasswordCommand.newPassword);
     let currentPasswordValidationResult = this._validationService.validateField('Current password', this.changePasswordCommand.currentPassword);
     let repeatPasswordValidationResult = this._validationService.validateField('Repeat password', this.changePasswordCommand.repeatNewPassword);
 
-    if(!newPasswordValidationResult || !currentPasswordValidationResult || !repeatPasswordValidationResult) {
+    if (!newPasswordValidationResult || !currentPasswordValidationResult || !repeatPasswordValidationResult) {
       return;
     }
 
@@ -172,8 +174,8 @@ export class SettingsComponent implements OnInit, OnDestroy {
     });
   }
 
-  onSaveChangesSocialsClick() : void {
-    let command : UpdateUserSocialsCommand =  {
+  onSaveChangesSocialsClick(): void {
+    let command: UpdateUserSocialsCommand = {
       instagram: this.currentUser.instagram,
       facebook: this.currentUser.facebook,
       twitter: this.currentUser.twitter,
@@ -190,7 +192,7 @@ export class SettingsComponent implements OnInit, OnDestroy {
     });
   }
 
-  clearChangePasswordCommand() : void {
+  clearChangePasswordCommand(): void {
     this.changePasswordCommand = {
       currentPassword: '',
       newPassword: '',
@@ -198,7 +200,7 @@ export class SettingsComponent implements OnInit, OnDestroy {
     };
   }
 
-  clearProfilePictureFile() : void {
+  clearProfilePictureFile(): void {
     this.file = null;
     this.fileName = '';
   }
