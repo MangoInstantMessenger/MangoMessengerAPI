@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data.Common;
 using System.Threading.Tasks;
 using MangoAPI.Application.Interfaces;
 using MangoAPI.Application.Services;
@@ -6,9 +7,12 @@ using MangoAPI.BusinessLogic;
 using MangoAPI.BusinessLogic.Configuration;
 using MangoAPI.Domain.Constants;
 using MangoAPI.Infrastructure.Database;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Respawn;
+using Respawn.Graph;
 using Xunit;
 
 namespace MangoAPI.IntegrationTests;
@@ -25,6 +29,10 @@ public class IntegrationTestBase : IAsyncLifetime
     private string ConnectionString { get; }
 
     private IServiceProvider ServiceProvider { get; }
+
+    private DbConnection DbConnection { get; set; }
+
+    private Respawner RespawnerObject { get; set; }
 
     protected IntegrationTestBase()
     {
@@ -69,7 +77,19 @@ public class IntegrationTestBase : IAsyncLifetime
     public async Task InitializeAsync()
     {
         await DbContextFixture.Database.MigrateAsync();
-        await DatabaseCleaner.Clean(ConnectionString, MangoDbContext.DefaultSchema);
+        DbConnection = new SqlConnection(ConnectionString);
+
+        await DbConnection.OpenAsync();
+
+        RespawnerObject = await Respawner.CreateAsync(DbConnection, new RespawnerOptions
+        {
+            DbAdapter = DbAdapter.SqlServer,
+            TablesToIgnore = new Table[] { "__EFMigrationsHistory" },
+            SchemasToInclude = new[] { MangoDbContext.DefaultSchema },
+            WithReseed = true,
+        });
+
+        await RespawnerObject.ResetAsync(ConnectionString);
     }
 
     public Task DisposeAsync()
