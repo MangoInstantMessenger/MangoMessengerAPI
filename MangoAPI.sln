@@ -15,11 +15,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MangoAPI.Application", "Man
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "items", "items", "{F8A0C2AF-AB92-4D4E-8EB9-FEC56B93DD01}"
 	ProjectSection(SolutionItems) = preProject
-		.dockerignore = .dockerignore
 		.editorconfig = .editorconfig
 		.gitignore = .gitignore
-		docker-compose.yml = docker-compose.yml
-		Dockerfile = Dockerfile
 		LICENSE.txt = LICENSE.txt
 		README.md = README.md
 		stylecop.json = stylecop.json
