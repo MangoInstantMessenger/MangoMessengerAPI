@@ -2,7 +2,7 @@ steps:
   - task: gitversion/setup@0
     displayName: 'GitVersion Setup'
     inputs:
-      versionSpec: '5.8.x'
+      versionSpec: '5.9.x'
 
   - task: gitversion/execute@0
     displayName: 'GitVersion Execute'
