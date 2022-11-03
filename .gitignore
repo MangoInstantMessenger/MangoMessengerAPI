@@ -7,11 +7,8 @@
 *.rsuser
 *.suo
 *.user
-*.DotSettings
 *.userosscache
 *.sln.docstates
-*.xlsx
-*.bak
 
 # terraform
 *.lock.hcl

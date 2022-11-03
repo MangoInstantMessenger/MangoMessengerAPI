@@ -15,16 +15,14 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MangoAPI.Application", "Man
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "items", "items", "{F8A0C2AF-AB92-4D4E-8EB9-FEC56B93DD01}"
 	ProjectSection(SolutionItems) = preProject
-		.dockerignore = .dockerignore
 		.editorconfig = .editorconfig
 		.gitignore = .gitignore
-		docker-compose.yml = docker-compose.yml
-		Dockerfile = Dockerfile
 		LICENSE.txt = LICENSE.txt
 		README.md = README.md
 		stylecop.json = stylecop.json
 		stylecop.ruleset = stylecop.ruleset
 		.gitattributes = .gitattributes
+		MangoAPI.sln.DotSettings = MangoAPI.sln.DotSettings
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MangoAPI.DiffieHellmanConsole", "MangoAPI.DiffieHellmanConsole\MangoAPI.DiffieHellmanConsole.csproj", "{85D35610-B0C7-4439-871C-0578E1FC7BB5}"
@@ -62,7 +60,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "scripts", "scripts", "{C75F
 		scripts\OPENSSL_DH_HANDSHAKE_TEST.ps1 = scripts\OPENSSL_DH_HANDSHAKE_TEST.ps1
 		scripts\run-sonarqube-dotnet.sh = scripts\run-sonarqube-dotnet.sh
 		scripts\wait_database.ps1 = scripts\wait_database.ps1
-		scripts\wait-for-mssql.sh = scripts\wait-for-mssql.sh
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "terraform", "terraform", "{D5B04B5C-55E7-48C0-BA17-A084C24610BA}"
@@ -76,6 +73,9 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "img", "img", "{64F59099-7FFD-4D32-8C74-2BD1EBFF0B11}"
 	ProjectSection(SolutionItems) = preProject
 		img\mango.png = img\mango.png
+		img\chats.PNG = img\chats.PNG
+		img\contacts.PNG = img\contacts.PNG
+		img\settings.PNG = img\settings.PNG
 	EndProjectSection
 EndProject
 Global
