@@ -35,7 +35,6 @@ public static class ResponseMessageCodes
     public const string TokensNotFound = "TOKENS_NOT_FOUND";
     public const string KeyExchangeIsNotConfirmed = "KEY_EXCHANGE_IS_NOT_CONFIRMED";
     public const string KeyExchangeDoesNotBelongToUser = "KEY_EXCHANGE_DOES_NOT_BELONG_TO_USER";
-    public const string InvalidEmailAddress = "INVALID_EMAIL_ADDRESS";
 
     private static readonly Dictionary<string, string> Dictionary = new()
     {
@@ -72,6 +71,5 @@ public static class ResponseMessageCodes
         { KeyExchangeIsNotConfirmed, "Key exchange is not confirmed yet, please wait for response." },
         { KeyExchangeDoesNotBelongToUser, "Key exchange does not belong to you." },
         { Unauthorized, "User not authorized, please, sign in." },
-        { InvalidEmailAddress, "Invalid email address. Please try another one." },
     };
 }

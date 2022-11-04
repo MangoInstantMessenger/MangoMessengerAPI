@@ -7,15 +7,12 @@ public class PasswordRestoreCommandValidator : AbstractValidator<PasswordRestore
 {
     public PasswordRestoreCommandValidator()
     {
-        var passwordValidator = new PasswordValidatorService();
-
         RuleFor(x => x.NewPassword)
             .Equal(x => x.RepeatPassword)
             .WithMessage("Passwords should be same.")
             .NotEmpty()
-            .Must(passwordValidator.ValidatePassword)
-            .WithMessage("Password must be at least 8 characters with: 1 uppercase, 1 lowercase, 1 digit, 1 symbol.")
-            .Length(8, 50);
+            .Length(8, 50)
+            .WithMessage("Password must be at least 8 characters.");
 
         RuleFor(x => x.RequestId).NotEmpty();
     }

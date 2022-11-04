@@ -1,5 +1,4 @@
-﻿using MangoAPI.Application.Interfaces;
-using MangoAPI.BusinessLogic.DependencyInjection;
+﻿using MangoAPI.BusinessLogic.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace MangoAPI.BusinessLogic.Configuration;
@@ -15,13 +14,7 @@ public static class MangoStartup
         string mangoJwtIssuer,
         string mangoJwtAudience,
         int mangoJwtLifetimeMinutes,
-        int mangoRefreshTokenLifetimeDays,
-        string mailgunApiBaseUrl,
-        string mailgunApiKey,
-        string frontendAddress,
-        string notificationEmail,
-        string mailgunApiDomain,
-        IEmailSenderService service = null)
+        int mangoRefreshTokenLifetimeDays)
     {
         var services = new ServiceCollection();
 
@@ -40,14 +33,6 @@ public static class MangoStartup
             mangoJwtSignKey,
             mangoJwtLifetimeMinutes,
             mangoRefreshTokenLifetimeDays);
-
-        services.AddMailgunServices(
-            mailgunApiBaseUrl,
-            mailgunApiKey,
-            frontendAddress,
-            notificationEmail,
-            mailgunApiDomain,
-            service);
 
         services.AddSingInManagerServices();
         services.AddPasswordHashServices();

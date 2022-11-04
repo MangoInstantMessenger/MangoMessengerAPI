@@ -1,8 +1,6 @@
-﻿using System;
-using MangoAPI.Application.Services;
+﻿using MangoAPI.Application.Services;
 using MangoAPI.Domain.Constants;
 using MangoAPI.Domain.Entities;
-using MangoAPI.Infrastructure.Exceptions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -171,12 +169,7 @@ public class UserEntityConfiguration : IEntityTypeConfiguration<UserEntity>
 
         var passwordHasher = new PasswordHashService();
 
-        var seedPassword = Environment.GetEnvironmentVariable(EnvironmentConstants.MangoSeedPassword);
-
-        if (seedPassword == null)
-        {
-            throw new EnvironmentVariableException(nameof(seedPassword));
-        }
+        const string seedPassword = "Dn2-~bRPw+*vR9(cw^84";
 
         passwordHasher.HashPassword(user1, seedPassword);
         passwordHasher.HashPassword(user2, seedPassword);

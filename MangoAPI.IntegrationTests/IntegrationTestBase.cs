@@ -1,13 +1,18 @@
 ﻿using System;
+using System.Data.Common;
 using System.Threading.Tasks;
 using MangoAPI.Application.Interfaces;
+using MangoAPI.Application.Services;
 using MangoAPI.BusinessLogic;
 using MangoAPI.BusinessLogic.Configuration;
 using MangoAPI.Domain.Constants;
 using MangoAPI.Infrastructure.Database;
-using MangoAPI.Infrastructure.Exceptions;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Respawn;
+using Respawn.Graph;
 using Xunit;
 
 namespace MangoAPI.IntegrationTests;
@@ -25,41 +30,38 @@ public class IntegrationTestBase : IAsyncLifetime
 
     private IServiceProvider ServiceProvider { get; }
 
+    private DbConnection DbConnection { get; set; }
+
+    private Respawner RespawnerObject { get; set; }
+
     protected IntegrationTestBase()
     {
-        ConnectionString = GetFromEnvironmentOrThrow(EnvironmentConstants.MangoIntegrationTestsDatabaseUrl);
-        var mangoBlobUrl = GetFromEnvironmentOrThrow(EnvironmentConstants.MangoBlobUrl);
-        var mangoBlobContainerName = GetFromEnvironmentOrThrow(EnvironmentConstants.MangoBlobContainer);
-        var mangoBlobAccess = GetFromEnvironmentOrThrow(EnvironmentConstants.MangoBlobAccess);
-        var mangoJwtSignKey = GetFromEnvironmentOrThrow(EnvironmentConstants.MangoJwtSignKey);
-        var mangoJwtIssuer = GetFromEnvironmentOrThrow(EnvironmentConstants.MangoJwtIssuer);
-        var mangoJwtAudience = GetFromEnvironmentOrThrow(EnvironmentConstants.MangoJwtAudience);
-        const int mangoJwtLifetimeMinutes = EnvironmentConstants.MangoJwtLifetimeMinutes;
-        const int mangoRefreshTokenLifetimeDays = EnvironmentConstants.MangoRefreshTokenLifetimeDays;
-        var mailgunApiBaseUrl = GetFromEnvironmentOrThrow(EnvironmentConstants.MangoMailgunApiBaseUrl);
-        var mailgunApiKey = GetFromEnvironmentOrThrow(EnvironmentConstants.MangoMailgunApiKey);
-        var frontendAddress = GetFromEnvironmentOrThrow(EnvironmentConstants.MangoFrontendAddress);
-        var notificationEmail = GetFromEnvironmentOrThrow(EnvironmentConstants.MangoEmailNotificationsAddress);
-        var mailgunApiDomain = GetFromEnvironmentOrThrow(EnvironmentConstants.MangoMailgunApiDomain);
+        var appSettingsPath = AppSettingsService.GetAppSettingsPath();
 
-        var mailgunServiceMock = MockedObjects.GetEmailSenderServiceMock();
+        var configuration = new ConfigurationBuilder().AddJsonFile(appSettingsPath).Build();
+
+        ConnectionString = configuration[EnvironmentConstants.IntegrationTestsDatabaseUrl];
+
+        var blobUrl = configuration[EnvironmentConstants.BlobUrl];
+        var containerName = configuration[EnvironmentConstants.BlobContainer];
+        var blobAccess = configuration[EnvironmentConstants.BlobAccess];
+        var jwtSignKey = configuration[EnvironmentConstants.JwtSignKey];
+        var jwtIssuer = configuration[EnvironmentConstants.JwtIssuer];
+        var jwtAudience = configuration[EnvironmentConstants.JwtAudience];
+
+        const int jwtLifetimeMinutes = EnvironmentConstants.JwtLifetimeMinutes;
+        const int refreshTokenLifetimeDays = EnvironmentConstants.RefreshTokenLifetimeDays;
 
         MangoStartup.Initialize(
             ConnectionString,
-            mangoBlobUrl,
-            mangoBlobContainerName,
-            mangoBlobAccess,
-            mangoJwtSignKey,
-            mangoJwtIssuer,
-            mangoJwtAudience,
-            mangoJwtLifetimeMinutes,
-            mangoRefreshTokenLifetimeDays,
-            mailgunApiBaseUrl,
-            mailgunApiKey,
-            frontendAddress,
-            notificationEmail,
-            mailgunApiDomain,
-            mailgunServiceMock);
+            blobUrl,
+            containerName,
+            blobAccess,
+            jwtSignKey,
+            jwtIssuer,
+            jwtAudience,
+            jwtLifetimeMinutes,
+            refreshTokenLifetimeDays);
 
         ServiceProvider = MangoCompositionRoot.Provider;
 
@@ -75,19 +77,23 @@ public class IntegrationTestBase : IAsyncLifetime
     public async Task InitializeAsync()
     {
         await DbContextFixture.Database.MigrateAsync();
-        await DatabaseCleaner.Clean(ConnectionString, MangoDbContext.DefaultSchema);
+        DbConnection = new SqlConnection(ConnectionString);
+
+        await DbConnection.OpenAsync();
+
+        RespawnerObject = await Respawner.CreateAsync(DbConnection, new RespawnerOptions
+        {
+            DbAdapter = DbAdapter.SqlServer,
+            TablesToIgnore = new Table[] { "__EFMigrationsHistory" },
+            SchemasToInclude = new[] { MangoDbContext.DefaultSchema },
+            WithReseed = true,
+        });
+
+        await RespawnerObject.ResetAsync(ConnectionString);
     }
 
     public Task DisposeAsync()
     {
         return Task.CompletedTask;
-    }
-
-    private static string GetFromEnvironmentOrThrow(string key)
-    {
-        var result = Environment.GetEnvironmentVariable(key)
-                     ?? throw new EnvironmentVariableException(key);
-
-        return result;
     }
 }

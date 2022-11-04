@@ -1,10 +1,11 @@
-using System.Net.Http;
+using System;
 using MangoAPI.Application.Interfaces;
 using MangoAPI.Application.Services;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace MangoAPI.BusinessLogic.DependencyInjection;
 
+[Obsolete("Mailgun service is not used. We plan to use Microsoft graph API in future to send emails.")]
 public static class MailgunDependencyInjection
 {
     public static IServiceCollection AddMailgunServices(
@@ -13,8 +14,7 @@ public static class MailgunDependencyInjection
         string mailgunApiKey,
         string frontendAddress,
         string notificationEmail,
-        string mangoMailgunApiDomain,
-        IEmailSenderService senderService = null)
+        string mangoMailgunApiDomain)
     {
         var mailgunApiUrlWithDomain = $"{mailgunApiBaseUrl}/v3/{mangoMailgunApiDomain}/messages";
 
@@ -26,11 +26,6 @@ public static class MailgunDependencyInjection
             notificationEmail);
 
         services.AddScoped<IMailgunSettings, MailgunSettings>(_ => mailgunSettings);
-
-        var serviceToRegister = senderService ??
-                                new MailgunApiEmailSenderService(new HttpClient(), mailgunSettings);
-
-        services.AddScoped(_ => serviceToRegister);
 
         return services;
     }

@@ -15,16 +15,13 @@ public class RequestPasswordRestoreCommandHandler
     : IRequestHandler<RequestPasswordRestoreCommand, Result<RequestPasswordRestoreResponse>>
 {
     private readonly MangoDbContext dbContext;
-    private readonly IEmailSenderService emailSenderService;
     private readonly ResponseFactory<RequestPasswordRestoreResponse> responseFactory;
 
     public RequestPasswordRestoreCommandHandler(
         MangoDbContext dbContext,
-        IEmailSenderService emailSenderService,
         ResponseFactory<RequestPasswordRestoreResponse> responseFactory)
     {
         this.dbContext = dbContext;
-        this.emailSenderService = emailSenderService;
         this.responseFactory = responseFactory;
     }
 
@@ -68,8 +65,6 @@ public class RequestPasswordRestoreCommandHandler
         dbContext.PasswordRestoreRequests.Add(passwordRestoreRequest);
 
         await dbContext.SaveChangesAsync(cancellationToken);
-
-        await emailSenderService.SendPasswordRestoreRequestAsync(user, passwordRestoreRequest.Id, cancellationToken);
 
         var response = RequestPasswordRestoreResponse.FromSuccess(passwordRestoreRequest.Id);
 

@@ -7,11 +7,16 @@
 *.rsuser
 *.suo
 *.user
-*.DotSettings
 *.userosscache
 *.sln.docstates
-*.xlsx
-*.bak
+
+# terraform
+*.lock.hcl
+*.tfplan
+*.tfstate
+/terraform/.terraform
+*.backup
+*.lock.info
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs

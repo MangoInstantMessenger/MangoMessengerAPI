@@ -5,7 +5,6 @@ using MangoAPI.BusinessLogic.DependencyInjection;
 using MangoAPI.BusinessLogic.HubConfig;
 using MangoAPI.Domain.Constants;
 using MangoAPI.Presentation.Controllers;
-using MangoAPI.Presentation.Extensions;
 using MangoAPI.Presentation.Middlewares;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -18,7 +17,6 @@ namespace MangoAPI.Presentation;
 
 public class Startup
 {
-    private const string CorsPolicy = "MyDefaultCorsPolicy";
     private readonly IConfiguration configuration;
 
     public Startup(IConfiguration configuration)
@@ -38,7 +36,6 @@ public class Startup
         app.UseHttpsRedirection();
 
         app.UseRouting();
-        app.UseCors(CorsPolicy);
 
         app.UseStaticFiles();
 
@@ -55,12 +52,12 @@ public class Startup
 
         app.UseEndpoints(endpoints =>
         {
-            endpoints.MapControllers().RequireCors(CorsPolicy);
-            endpoints.MapHub<ChatHub>("/notify").RequireCors(CorsPolicy);
+            endpoints.MapControllers();
+            endpoints.MapHub<ChatHub>("/notify");
         });
 
         // https://stackoverflow.com/a/62374509
-        app.Map("/app", spaApp => { spaApp.UseSpa(spa => { spa.Options.SourcePath = "/wwwroot"; }); });
+        app.Map("/app", builder => builder.UseSpa(spa => spa.Options.SourcePath = "/wwwroot"));
 
         app.MigrateDatabase();
     }
@@ -75,76 +72,45 @@ public class Startup
             options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
         });
 
-        var databaseConnectionString = configuration
-            .GetValueFromAppSettingsOrEnvironment(EnvironmentConstants.MangoDatabaseUrl);
+        var databaseUrl = configuration[EnvironmentConstants.DatabaseUrl];
 
-        var mangoBlobUrl = configuration
-            .GetValueFromAppSettingsOrEnvironment(EnvironmentConstants.MangoBlobUrl);
+        var blobUrl = configuration[EnvironmentConstants.BlobUrl];
 
-        var mangoBlobContainerName = configuration
-            .GetValueFromAppSettingsOrEnvironment(EnvironmentConstants.MangoBlobContainer);
+        var blobContainerName = configuration[EnvironmentConstants.BlobContainer];
 
-        var mangoBlobAccess = configuration
-            .GetValueFromAppSettingsOrEnvironment(EnvironmentConstants.MangoBlobAccess);
+        var blobAccess = configuration[EnvironmentConstants.BlobAccess];
 
-        var mangoJwtSignKey = configuration
-            .GetValueFromAppSettingsOrEnvironment(EnvironmentConstants.MangoJwtSignKey);
+        var jwtSignKey = configuration[EnvironmentConstants.JwtSignKey];
 
-        var mangoJwtIssuer = configuration
-            .GetValueFromAppSettingsOrEnvironment(EnvironmentConstants.MangoJwtIssuer);
+        var jwtIssuer = configuration[EnvironmentConstants.JwtIssuer];
 
-        var mangoJwtAudience = configuration
-            .GetValueFromAppSettingsOrEnvironment(EnvironmentConstants.MangoJwtAudience);
+        var jwtAudience = configuration[EnvironmentConstants.JwtAudience];
 
-        const int mangoJwtLifetimeMinutes = EnvironmentConstants.MangoJwtLifetimeMinutes;
+        const int jwtLifetimeMinutes = EnvironmentConstants.JwtLifetimeMinutes;
 
-        const int mangoRefreshTokenLifetimeDays = EnvironmentConstants.MangoRefreshTokenLifetimeDays;
+        const int refreshTokenLifetimeDays = EnvironmentConstants.RefreshTokenLifetimeDays;
 
-        var mailgunApiBaseUrl = configuration
-            .GetValueFromAppSettingsOrEnvironment(EnvironmentConstants.MangoMailgunApiBaseUrl);
+        services.AddDatabaseContextServices(databaseUrl);
 
-        var mailgunApiKey = configuration
-            .GetValueFromAppSettingsOrEnvironment(EnvironmentConstants.MangoMailgunApiKey);
-
-        var frontendAddress = configuration
-            .GetValueFromAppSettingsOrEnvironment(EnvironmentConstants.MangoFrontendAddress);
-
-        var notificationEmail = configuration
-            .GetValueFromAppSettingsOrEnvironment(EnvironmentConstants.MangoEmailNotificationsAddress);
-
-        var mailgunApiDomain = configuration
-            .GetValueFromAppSettingsOrEnvironment(EnvironmentConstants.MangoMailgunApiDomain);
-
-        services.AddDatabaseContextServices(databaseConnectionString);
-
-        services.AddAppInfrastructure(mangoJwtSignKey, mangoJwtIssuer, mangoJwtAudience);
+        services.AddAppInfrastructure(jwtSignKey, jwtIssuer, jwtAudience);
 
         services.AddMessengerServices(
-            mangoBlobUrl,
-            mangoBlobContainerName,
-            mangoBlobAccess,
-            mangoJwtSignKey,
-            mangoJwtIssuer,
-            mangoJwtAudience,
-            mangoJwtLifetimeMinutes,
-            mangoRefreshTokenLifetimeDays,
-            mailgunApiBaseUrl,
-            mailgunApiKey,
-            frontendAddress,
-            notificationEmail,
-            mailgunApiDomain);
+            blobUrl,
+            blobContainerName,
+            blobAccess,
+            jwtSignKey,
+            jwtIssuer,
+            jwtAudience,
+            jwtLifetimeMinutes,
+            refreshTokenLifetimeDays);
 
         services.AddSwagger();
-
-        services.ConfigureCors(configuration, CorsPolicy);
 
         services.AddSpaStaticFiles(config => { config.RootPath = "wwwroot"; });
 
         services.AddHttpContextAccessor();
 
         services.AddTransient<ICorrelationContext, CorrelationContext>();
-
-        services.AddApplicationInsightsTelemetry();
 
         services.AddAutoMapper(typeof(ApiControllerBase));
 

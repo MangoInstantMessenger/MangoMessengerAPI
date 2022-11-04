@@ -47,14 +47,6 @@ public class VerifyEmailCommandHandler
             return responseFactory.ConflictResponse(errorMessage, details);
         }
 
-        if (user.EmailConfirmed)
-        {
-            const string errorMessage = ResponseMessageCodes.EmailAlreadyVerified;
-            var details = ResponseMessageCodes.ErrorDictionary[errorMessage];
-
-            return responseFactory.ConflictResponse(errorMessage, details);
-        }
-
         user.EmailConfirmed = true;
 
         dbContext.Update(user);

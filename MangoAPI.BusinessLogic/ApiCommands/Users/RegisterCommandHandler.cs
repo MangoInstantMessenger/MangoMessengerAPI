@@ -13,24 +13,18 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users;
 
 public class RegisterCommandHandler : IRequestHandler<RegisterCommand, Result<RegisterResponse>>
 {
-    private readonly IEmailSenderService emailSenderService;
     private readonly MangoDbContext dbContext;
     private readonly IUserManagerService userManager;
     private readonly ResponseFactory<RegisterResponse> responseFactory;
-    private readonly IMailgunSettings mailgunSettings;
 
     public RegisterCommandHandler(
         IUserManagerService userManager,
         MangoDbContext dbContext,
-        IEmailSenderService emailSenderService,
-        ResponseFactory<RegisterResponse> responseFactory,
-        IMailgunSettings mailgunSettings)
+        ResponseFactory<RegisterResponse> responseFactory)
     {
         this.userManager = userManager;
         this.dbContext = dbContext;
-        this.emailSenderService = emailSenderService;
         this.responseFactory = responseFactory;
-        this.mailgunSettings = mailgunSettings;
     }
 
     public async Task<Result<RegisterResponse>> Handle(RegisterCommand request, CancellationToken cancellationToken)
@@ -46,18 +40,6 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, Result<Re
             return responseFactory.ConflictResponse(errorMessage, details);
         }
 
-        var notificationEmail = mailgunSettings.NotificationEmail;
-
-        if (request.Email == notificationEmail)
-        {
-            const string errorMessage = ResponseMessageCodes.InvalidEmailAddress;
-            var details = ResponseMessageCodes.ErrorDictionary[errorMessage];
-
-            return responseFactory.ConflictResponse(errorMessage, details);
-        }
-
-        var random = new Random();
-
         var newUser = new UserEntity
         {
             DisplayName = request.DisplayName,
@@ -65,7 +47,7 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, Result<Re
             Email = request.Email,
             EmailCode = Guid.NewGuid(),
             Image = "default_avatar.png",
-            DisplayNameColour = random.Next(0, 9),
+            EmailConfirmed = true,
         };
 
         await userManager.CreateAsync(newUser, request.Password);
@@ -75,8 +57,6 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, Result<Re
             UserId = newUser.Id,
             CreatedAt = DateTime.UtcNow,
         };
-
-        await emailSenderService.SendVerificationEmailAsync(newUser, cancellationToken);
 
         dbContext.UserInformation.Add(userInfo);
 

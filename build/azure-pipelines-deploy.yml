@@ -6,7 +6,6 @@ trigger:
 pr: none
 
 variables:
-  - group: MANGO_INTEGRATION_TESTS
   - name: solution
     value: 'MangoAPI.sln'
   - name: buildPlatform
@@ -40,7 +39,7 @@ stages:
           vmImage: "ubuntu-latest"
         environment: dev
         variables:
-          - group: MANGO_DEV_ENV_VARS
+          - group: DEPLOY_DEV_VARS
         strategy:
           runOnce:
             deploy:
@@ -50,7 +49,7 @@ stages:
                 - task: AzureRmWebAppDeployment@4
                   inputs:
                     ConnectionType: "AzureRM"
-                    azureSubscription: "VisualStudioEnterprise"
+                    azureSubscription: "MangoRgServiceConnection"
                     appType: "webApp"
                     WebAppName: "$(WebAppName)"
                     packageForLinux: "$(Pipeline.Workspace)/drop/$(BuildConfiguration)/MangoAPI.Presentation.zip"

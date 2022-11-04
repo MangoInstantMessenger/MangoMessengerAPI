@@ -13,35 +13,19 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MangoAPI.BusinessLogic", "M
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MangoAPI.Application", "MangoAPI.Application\MangoAPI.Application.csproj", "{18FF1265-DBFA-4AF7-8069-E895148848B2}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{F8A0C2AF-AB92-4D4E-8EB9-FEC56B93DD01}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "items", "items", "{F8A0C2AF-AB92-4D4E-8EB9-FEC56B93DD01}"
 	ProjectSection(SolutionItems) = preProject
-		.dockerignore = .dockerignore
 		.editorconfig = .editorconfig
 		.gitignore = .gitignore
-		CNG_DH_HANDSHAKE_TEST.ps1 = CNG_DH_HANDSHAKE_TEST.ps1
-		docker-compose.yml = docker-compose.yml
-		Dockerfile = Dockerfile
 		LICENSE.txt = LICENSE.txt
-		OPENSSL_DH_HANDSHAKE_TEST.ps1 = OPENSSL_DH_HANDSHAKE_TEST.ps1
 		README.md = README.md
-		run-sonarqube-dotnet.sh = run-sonarqube-dotnet.sh
 		stylecop.json = stylecop.json
 		stylecop.ruleset = stylecop.ruleset
+		.gitattributes = .gitattributes
+		MangoAPI.sln.DotSettings = MangoAPI.sln.DotSettings
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MangoAPI.DiffieHellmanConsole", "MangoAPI.DiffieHellmanConsole\MangoAPI.DiffieHellmanConsole.csproj", "{85D35610-B0C7-4439-871C-0578E1FC7BB5}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SQL", "SQL", "{2A176CBC-BD4E-4ED5-AA92-B99D34C084BC}"
-	ProjectSection(SolutionItems) = preProject
-		SQL\PostgresDeleteTestUser.sql = SQL\PostgresDeleteTestUser.sql
-		SQL\PostgresDropAllTablesCascade.sql = SQL\PostgresDropAllTablesCascade.sql
-		SQL\PostgresTruncateAllTablesCascade.sql = SQL\PostgresTruncateAllTablesCascade.sql
-		SQL\PostgresTruncateCngKeyExchangeRequests.sql = SQL\PostgresTruncateCngKeyExchangeRequests.sql
-		SQL\PostgresTruncateOpenSslKeyExchangeRequests.sql = SQL\PostgresTruncateOpenSslKeyExchangeRequests.sql
-		SQL\PostgresTruncatePasswordRestoreRequests.sql = SQL\PostgresTruncatePasswordRestoreRequests.sql
-		SQL\PostgresTruncatePublicKeys.sql = SQL\PostgresTruncatePublicKeys.sql
-		SQL\PostrgresValidateDatabaseSize.sql = SQL\PostrgresValidateDatabaseSize.sql
-	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MangoAPI.IntegrationTests", "MangoAPI.IntegrationTests\MangoAPI.IntegrationTests.csproj", "{7BE7D37C-B0FF-4231-A155-B8AA7CF8092B}"
 EndProject
@@ -58,29 +42,40 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "build", "build", "{66E218B1
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".github", ".github", "{B8CB0A21-BB6E-478B-A755-49CEA1435CD1}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "workflows", "workflows", "{245C5E82-3AED-46CE-8562-B78682197D9B}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "legacy_workflows", "legacy_workflows", "{E70E0E28-1954-4AC7-8C05-B8C221252450}"
 	ProjectSection(SolutionItems) = preProject
-		.github\workflows\azure-dev-vm-ssh-deploy.yml = .github\workflows\azure-dev-vm-ssh-deploy.yml
-		.github\workflows\azure-qa-vm-ssh-deploy.yml = .github\workflows\azure-qa-vm-ssh-deploy.yml
-		.github\workflows\heroku-container-deploy.yml = .github\workflows\heroku-container-deploy.yml
-		.github\workflows\run-angular-sonarqube-analysis.yml = .github\workflows\run-angular-sonarqube-analysis.yml
-		.github\workflows\run-build-and-test-dotnet-angular.yml = .github\workflows\run-build-and-test-dotnet-angular.yml
-		.github\workflows\run-cng-dh-handshake.yml = .github\workflows\run-cng-dh-handshake.yml
-		.github\workflows\run-dotnet-sonarqube-analysis.yml = .github\workflows\run-dotnet-sonarqube-analysis.yml
-		.github\workflows\run-openssl-dh-handshake.yml = .github\workflows\run-openssl-dh-handshake.yml
+		.github\legacy_workflows\azure-dev-vm-ssh-deploy.yml = .github\legacy_workflows\azure-dev-vm-ssh-deploy.yml
+		.github\legacy_workflows\azure-qa-vm-ssh-deploy.yml = .github\legacy_workflows\azure-qa-vm-ssh-deploy.yml
+		.github\legacy_workflows\heroku-container-deploy.yml = .github\legacy_workflows\heroku-container-deploy.yml
+		.github\legacy_workflows\run-angular-sonarqube-analysis.yml = .github\legacy_workflows\run-angular-sonarqube-analysis.yml
+		.github\legacy_workflows\run-cng-dh-handshake.yml = .github\legacy_workflows\run-cng-dh-handshake.yml
+		.github\legacy_workflows\run-dotnet-sonarqube-analysis.yml = .github\legacy_workflows\run-dotnet-sonarqube-analysis.yml
+		.github\legacy_workflows\run-openssl-dh-handshake.yml = .github\legacy_workflows\run-openssl-dh-handshake.yml
+		.github\legacy_workflows\run-build-and-test-dotnet-angular.yml = .github\legacy_workflows\run-build-and-test-dotnet-angular.yml
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docker", "docker", "{8F514700-EE42-4018-A95D-B3A06473CE86}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "mssql-docker", "mssql-docker", "{D5044538-3F69-4E1F-9393-7C77B7886898}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "scripts", "scripts", "{C75F67BF-1B37-4569-B8DB-25FDB3A9690F}"
 	ProjectSection(SolutionItems) = preProject
-		build\docker\mssql-docker\create-database.sql = build\docker\mssql-docker\create-database.sql
-		build\docker\mssql-docker\Dockerfile = build\docker\mssql-docker\Dockerfile
-		build\docker\mssql-docker\entrypoint.sh = build\docker\mssql-docker\entrypoint.sh
-		build\docker\mssql-docker\readme.md = build\docker\mssql-docker\readme.md
-		build\docker\mssql-docker\run-initialization.sh = build\docker\mssql-docker\run-initialization.sh
-		build\docker\mssql-docker\wait-for-mssql.sh = build\docker\mssql-docker\wait-for-mssql.sh
-		build\docker\mssql-docker\wait_database.ps1 = build\docker\mssql-docker\wait_database.ps1
+		scripts\CNG_DH_HANDSHAKE_TEST.ps1 = scripts\CNG_DH_HANDSHAKE_TEST.ps1
+		scripts\OPENSSL_DH_HANDSHAKE_TEST.ps1 = scripts\OPENSSL_DH_HANDSHAKE_TEST.ps1
+		scripts\run-sonarqube-dotnet.sh = scripts\run-sonarqube-dotnet.sh
+		scripts\wait_database.ps1 = scripts\wait_database.ps1
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "terraform", "terraform", "{D5B04B5C-55E7-48C0-BA17-A084C24610BA}"
+	ProjectSection(SolutionItems) = preProject
+		terraform\main.tf = terraform\main.tf
+		terraform\output.tf = terraform\output.tf
+		terraform\variables.tf = terraform\variables.tf
+		terraform\README.md = terraform\README.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "img", "img", "{64F59099-7FFD-4D32-8C74-2BD1EBFF0B11}"
+	ProjectSection(SolutionItems) = preProject
+		img\mango.png = img\mango.png
+		img\chats.PNG = img\chats.PNG
+		img\contacts.PNG = img\contacts.PNG
+		img\settings.PNG = img\settings.PNG
 	EndProjectSection
 EndProject
 Global
@@ -126,9 +121,7 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{245C5E82-3AED-46CE-8562-B78682197D9B} = {B8CB0A21-BB6E-478B-A755-49CEA1435CD1}
-		{8F514700-EE42-4018-A95D-B3A06473CE86} = {66E218B1-FCCA-42F3-81A4-E19AC6659ECA}
-		{D5044538-3F69-4E1F-9393-7C77B7886898} = {8F514700-EE42-4018-A95D-B3A06473CE86}
+		{E70E0E28-1954-4AC7-8C05-B8C221252450} = {B8CB0A21-BB6E-478B-A755-49CEA1435CD1}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {64B16C18-46ED-4D73-927F-B2E229345447}
