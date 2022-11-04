@@ -56,6 +56,7 @@ public class CreateChannelCommandHandler
             CreatedAt = DateTime.UtcNow,
             Description = request.ChannelDescription,
             MembersCount = 1,
+            Image = "default_group_logo.png",
         };
 
         dbContext.Chats.Add(channel);
