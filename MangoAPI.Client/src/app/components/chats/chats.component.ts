@@ -279,17 +279,6 @@ export class ChatsComponent implements OnInit, OnDestroy {
     return chat.lastMessageAuthor != null && chat.lastMessageText != null;
   }
 
-  onSearchChatClick() {
-    this._communitiesService.searchChat(this.searchChatQuery).pipe(takeUntil(this.componentDestroyed$)).subscribe({
-      next: response => {
-        this.chats = response.chats;
-      },
-      error: error => {
-        this._errorNotificationService.notifyOnError(error);
-      }
-    });
-  }
-
   onSearchChatQueryChange(): void {
     if (this.searchChatQuery) {
       this._communitiesService.searchChat(this.searchChatQuery).pipe(takeUntil(this.componentDestroyed$)).subscribe({
@@ -344,6 +333,8 @@ export class ChatsComponent implements OnInit, OnDestroy {
             this.chats = chats.filter(x => x.isArchived);
             break;
         }
+
+        this.searchChatQuery = '';
       },
       error: error => {
         this._errorNotificationService.notifyOnError(error);
