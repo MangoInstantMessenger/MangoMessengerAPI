@@ -11,6 +11,8 @@ In general, this project is considered to be a bachelor's degree project.
 Bachelor's project has been successfully completed by the team of three students on 10-02-2022.
 However, it is worth to continue progress on the project pursuing another predefined goals.
 
+How it works: https://www.youtube.com/watch?v=3lh3we1DrEY
+
 ## Main goals of the project
 
 - Implementation of simple, maintainable, safe and scalable code base following the KISS and YAGNI software development
@@ -27,7 +29,6 @@ However, it is worth to continue progress on the project pursuing another predef
   CD (Continuous Deployment) must be confirmed manually be designated person.
 - To implement E2E tests inside CI/CD pipelines using Docker Compose and Postman.
 - To implement IaaC using Hashicorp Terraform and applying this infrastructure on behalf of CI/CD pipelines.
-
 
 ## Screenshots
 
