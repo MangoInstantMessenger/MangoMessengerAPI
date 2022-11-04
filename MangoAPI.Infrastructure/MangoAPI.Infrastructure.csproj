@@ -4,6 +4,8 @@
         <TargetFramework>net6.0</TargetFramework>
         <LangVersion>10</LangVersion>
         <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+        <!-- Exclude the project from analysis -->
+        <SonarQubeExclude>true</SonarQubeExclude>
     </PropertyGroup>
 
     <ItemGroup>

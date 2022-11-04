@@ -6,6 +6,7 @@
         <LangVersion>10</LangVersion>
         <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
         <CodeAnalysisRuleSet>..\stylecop.ruleset</CodeAnalysisRuleSet>
+        <SonarQubeExclude>true</SonarQubeExclude>
     </PropertyGroup>
 
     <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
