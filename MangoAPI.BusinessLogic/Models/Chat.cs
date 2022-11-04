@@ -29,7 +29,7 @@ public record Chat
     public bool IsArchived { get; init; }
 
     [DefaultValue(true)]
-    public bool IsMember { get; init; }
+    public bool IsMember { get; set; }
 
     [DefaultValue(1)]
     public UserRole RoleId { get; init; }

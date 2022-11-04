@@ -55,7 +55,23 @@ public class SearchCommunityQueryHandler
                 LastMessageId = x.LastMessageId,
             }).Distinct();
 
+        var userChats = await dbContext.UserChats
+            .AsNoTracking()
+            .Where(x => x.UserId == request.UserId)
+            .Select(x => x.ChatId)
+            .ToListAsync(cancellationToken);
+
+        var set = userChats.ToHashSet();
+
         var chats = await query.Take(200).ToListAsync(cancellationToken);
+
+        foreach (var c in chats)
+        {
+            if (set.Contains(c.ChatId))
+            {
+                c.IsMember = true;
+            }
+        }
 
         return responseFactory.SuccessResponse(SearchCommunityResponse.FromSuccess(chats));
     }
