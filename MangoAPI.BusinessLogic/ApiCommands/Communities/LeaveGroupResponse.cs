@@ -2,7 +2,7 @@
 using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.Domain.Constants;
 
-namespace MangoAPI.BusinessLogic.ApiCommands.UserChats;
+namespace MangoAPI.BusinessLogic.ApiCommands.Communities;
 
 public record LeaveGroupResponse : ResponseBase
 {

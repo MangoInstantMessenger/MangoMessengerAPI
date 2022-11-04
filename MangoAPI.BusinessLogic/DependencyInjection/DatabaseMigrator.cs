@@ -1,4 +1,5 @@
-﻿using MangoAPI.Infrastructure.Database;
+﻿using System;
+using MangoAPI.Infrastructure.Database;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -14,6 +15,12 @@ public static class DatabaseMigrator
 
         using var context = serviceScope.ServiceProvider.GetService<MangoDbContext>();
 
-        context?.Database.Migrate();
+        if (context == null)
+        {
+            throw new InvalidOperationException("Database context is NULL at Migrator service.");
+        }
+
+        context.Database.EnsureDeleted();
+        context.Database.Migrate();
     }
 }

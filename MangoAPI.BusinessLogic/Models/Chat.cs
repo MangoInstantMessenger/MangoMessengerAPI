@@ -32,7 +32,7 @@ public record Chat
     public bool IsMember { get; init; }
 
     [DefaultValue(1)]
-    public int RoleId { get; init; }
+    public UserRole RoleId { get; init; }
 
     [DefaultValue("MyDisplayName")]
     public string LastMessageAuthor { get; init; }
@@ -65,7 +65,7 @@ public static class ChatEntityMapper
         {
             ChatId = entity.Id,
             Title = entity.Title,
-            CommunityType = (CommunityType)entity.CommunityType,
+            CommunityType = entity.CommunityType,
             Description = entity.Description,
             MembersCount = entity.MembersCount,
             IsArchived = false,

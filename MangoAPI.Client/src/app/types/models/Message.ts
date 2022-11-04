@@ -1,8 +1,11 @@
-﻿export class Message {
+﻿import { DisplayNameColours } from "../enums/DisplayNameColours";
+
+export class Message {
   messageId: string = '';
   userId: string;
   chatId: string;
   userDisplayName: string;
+  userDisplayNameColour: DisplayNameColours;
   messageText: string;
   createdAt: string;
   updatedAt: string | null | undefined;
@@ -18,6 +21,7 @@
     userId: string,
     chatId: string,
     userDisplayName: string,
+    userDisplayNameColour: DisplayNameColours,
     messageText: string,
     createdAt: string,
     self: boolean,
@@ -26,6 +30,7 @@
     this.userId = userId;
     this.chatId = chatId;
     this.userDisplayName = userDisplayName;
+    this.userDisplayNameColour = userDisplayNameColour;
     this.messageText = messageText;
     this.createdAt = createdAt;
     this.self = self;

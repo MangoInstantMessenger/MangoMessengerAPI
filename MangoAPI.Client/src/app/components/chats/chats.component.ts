@@ -10,7 +10,6 @@ import {Message} from "../../types/models/Message";
 import {CommunityType} from "../../types/enums/CommunityType";
 import {RoutingConstants} from "../../types/constants/RoutingConstants";
 import {UserChatsService} from "../../services/api/user-chats.service";
-import {RoutingService} from "../../services/messenger/routing.service";
 import {ValidationService} from "../../services/messenger/validation.service";
 import {SendMessageCommand} from "../../types/requests/SendMessageCommand";
 import * as signalR from '@microsoft/signalr';
@@ -18,6 +17,9 @@ import {environment} from "../../../environments/environment";
 import {EditMessageNotification} from "../../types/models/EditMessageNotification";
 import {DeleteMessageNotification} from "../../types/models/DeleteMessageNotification";
 import {Subject, takeUntil} from "rxjs";
+import {DisplayNameColours} from 'src/app/types/enums/DisplayNameColours';
+import {User} from 'src/app/types/models/User';
+import {UsersService} from 'src/app/services/api/users.service';
 
 @Component({
   selector: 'app-chats',
@@ -30,9 +32,9 @@ export class ChatsComponent implements OnInit, OnDestroy {
               private _communitiesService: CommunitiesService,
               private _userChatsService: UserChatsService,
               private _messagesService: MessagesService,
+              private _usersService: UsersService,
               private _errorNotificationService: ErrorNotificationService,
               private _router: Router,
-              private _routingService: RoutingService,
               private _validationService: ValidationService) {
   }
 
@@ -65,6 +67,24 @@ export class ChatsComponent implements OnInit, OnDestroy {
     title: ""
   };
 
+  public activeUser: User = {
+    userId: '',
+    displayName: '',
+    displayNameColour: 0,
+    birthdayDate: '',
+    email: '',
+    website: '',
+    username: '',
+    bio: '',
+    address: '',
+    facebook: '',
+    twitter: '',
+    instagram: '',
+    linkedIn: '',
+    publicKey: 0,
+    pictureUrl: '',
+  };
+
   public activeChatId: string = '';
   public messages: Message[] = [];
 
@@ -73,10 +93,14 @@ export class ChatsComponent implements OnInit, OnDestroy {
   public searchMessagesQuery: string = '';
   public chatFilter: string = 'All chats';
 
-  componentDestroyed$: Subject<boolean> = new Subject();
+  componentDestroyed$: Subject<boolean> = new Subject()
 
   public get routingConstants(): typeof RoutingConstants {
     return RoutingConstants;
+  }
+
+  public get displayNameColours(): typeof DisplayNameColours {
+    return DisplayNameColours;
   }
 
   ngOnInit(): void {
@@ -93,10 +117,15 @@ export class ChatsComponent implements OnInit, OnDestroy {
 
     this.userId = tokens.userId;
 
-    this.getChats();
-  }
+    this._usersService.getUserById(this.userId).pipe(takeUntil(this.componentDestroyed$)).subscribe({
+      next: response => {
+        this.activeUser = response.user;
+      },
+      error: error => {
+        this._errorNotificationService.notifyOnError(error);
+      }
+    });
 
-  getChats() : void {
     this._communitiesService.getUserChats().pipe(takeUntil(this.componentDestroyed$)).subscribe({
       next: response => {
         this.chats = response.chats.filter(x => !x.isArchived);
@@ -119,9 +148,12 @@ export class ChatsComponent implements OnInit, OnDestroy {
 
   connectChatsToHub(): void {
     this.connection.start().then(() => {
-
       this.chats.forEach(x => {
-        this.connectChatToHub(x.chatId);
+        if (this.realTimeConnections.includes(x.chatId)) {
+          return;
+        }
+
+        this.connection.invoke("JoinGroup", x.chatId).then(() => this.realTimeConnections.push(x.chatId));
       });
 
       if (this.userId != null && this.realTimeConnections.includes(this.userId)) {
@@ -131,39 +163,6 @@ export class ChatsComponent implements OnInit, OnDestroy {
       this.connection.invoke("JoinGroup", this.userId).then(r => r);
 
     }).catch(err => console.error(err.toString()));
-  }
-
-  connectChatToHub(chatId: string): void {
-    if (this.realTimeConnections.includes(chatId)) {
-      return;
-    }
-
-    this.connection.invoke("JoinGroup", chatId).then(() => this.realTimeConnections.push(chatId));
-  }
-
-  onJoinChatClick() : void {
-    this._userChatsService.joinCommunity(this.activeChatId).pipe(takeUntil(this.componentDestroyed$)).subscribe( {
-      next: _ => {
-        this.chats = this.userChats;
-        this.chats.push(this.activeChat);
-        this.chats.sort((chat1, chat2) => {
-          let chat1LastMessageTime = new Date(chat1.lastMessageTime)
-          let chat2LastMessageTime = new Date(chat2.lastMessageTime)
-          if (chat1LastMessageTime > chat2LastMessageTime) {
-            return 1;
-          }
-
-          if (chat1LastMessageTime < chat2LastMessageTime) {
-            return -1;
-          }
-
-          return 0;
-        });
-        this.searchChatQuery = '';
-        this.chatFilter = 'All chats';
-        this.activeChat.isMember = true;
-      }
-    });
   }
 
   setSignalRMethods(): void {
@@ -196,6 +195,31 @@ export class ChatsComponent implements OnInit, OnDestroy {
       if (notification.isLastMessage) {
         this.activeChat.lastMessageText = notification.modifiedText;
         this.activeChat.lastMessageTime = notification.updatedAt;
+      }
+    });
+  }
+
+  onJoinChatClick(): void {
+    this._userChatsService.joinCommunity(this.activeChatId).pipe(takeUntil(this.componentDestroyed$)).subscribe({
+      next: _ => {
+        this.chats = this.userChats;
+        this.chats.push(this.activeChat);
+        this.chats.sort((chat1, chat2) => {
+          let chat1LastMessageTime = new Date(chat1.lastMessageTime)
+          let chat2LastMessageTime = new Date(chat2.lastMessageTime)
+          if (chat1LastMessageTime > chat2LastMessageTime) {
+            return 1;
+          }
+
+          if (chat1LastMessageTime < chat2LastMessageTime) {
+            return -1;
+          }
+
+          return 0;
+        });
+        this.searchChatQuery = '';
+        this.chatFilter = 'All chats';
+        this.activeChat.isMember = true;
       }
     });
   }
@@ -248,12 +272,22 @@ export class ChatsComponent implements OnInit, OnDestroy {
   loadChat(chatId: string): void {
     this.activeChatId = chatId;
     this.activeChat = this.chats.filter(x => x.chatId === this.activeChatId)[0];
-    this.connectChatToHub(this.activeChatId);
     this.getChatMessages(this.activeChatId);
   }
 
   chatContainsMessages(chat: Chat): boolean {
     return chat.lastMessageAuthor != null && chat.lastMessageText != null;
+  }
+
+  onSearchChatClick() {
+    this._communitiesService.searchChat(this.searchChatQuery).pipe(takeUntil(this.componentDestroyed$)).subscribe({
+      next: response => {
+        this.chats = response.chats;
+      },
+      error: error => {
+        this._errorNotificationService.notifyOnError(error);
+      }
+    });
   }
 
   onSearchChatQueryChange(): void {
@@ -373,6 +407,7 @@ export class ChatsComponent implements OnInit, OnDestroy {
       tokens.userId,
       this.activeChatId,
       tokens.userDisplayName,
+      this.activeUser.displayNameColour,
       this.messageText,
       isoString,
       true,
@@ -413,6 +448,33 @@ export class ChatsComponent implements OnInit, OnDestroy {
       }
       chatMessages.scrollTop = chatMessages.scrollHeight;
     })
+  }
+
+  getDisplayNameColour(colour: number): string {
+    switch (colour) {
+      case DisplayNameColours.White:
+        return "color-white";
+      case DisplayNameColours.Blue:
+        return "color-blue";
+      case DisplayNameColours.Red:
+        return "color-red";
+      case DisplayNameColours.Yellow:
+        return "color-yellow";
+      case DisplayNameColours.Green:
+        return "color-green";
+      case DisplayNameColours.BrightYellow:
+        return "color-bright-yellow";
+      case DisplayNameColours.Aqua:
+        return "color-aqua";
+      case DisplayNameColours.Violet:
+        return "color-violet";
+      case DisplayNameColours.Pink:
+        return "color-pink";
+      case DisplayNameColours.Orange:
+        return "color-orange";
+      default:
+        return "color-pink";
+    }
   }
 
   ngOnDestroy(): void {

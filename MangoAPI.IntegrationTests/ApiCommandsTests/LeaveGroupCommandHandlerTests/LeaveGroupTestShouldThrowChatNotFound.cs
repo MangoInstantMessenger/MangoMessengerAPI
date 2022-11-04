@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
-using MangoAPI.BusinessLogic.ApiCommands.UserChats;
+using MangoAPI.BusinessLogic.ApiCommands.Communities;
 using MangoAPI.Domain.Constants;
 using MangoAPI.IntegrationTests.Helpers;
 using Xunit;

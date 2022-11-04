@@ -33,6 +33,7 @@ export class SettingsComponent implements OnInit, OnDestroy {
   public currentUser: User = {
     userId: '',
     displayName: '',
+    displayNameColour: 0,
     birthdayDate: '',
     email: '',
     website: '',

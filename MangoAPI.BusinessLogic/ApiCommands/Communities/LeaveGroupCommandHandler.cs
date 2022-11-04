@@ -8,7 +8,7 @@ using MangoAPI.Infrastructure.Database;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace MangoAPI.BusinessLogic.ApiCommands.UserChats;
+namespace MangoAPI.BusinessLogic.ApiCommands.Communities;
 
 public class LeaveGroupCommandHandler
     : IRequestHandler<LeaveGroupCommand, Result<LeaveGroupResponse>>
@@ -52,7 +52,7 @@ public class LeaveGroupCommandHandler
             return responseFactory.ConflictResponse(errorMessage, details);
         }
 
-        if (chat.CommunityType == (int)CommunityType.DirectChat)
+        if (chat.CommunityType == CommunityType.DirectChat)
         {
             var messages = await dbContext.Messages
                 .Where(messageEntity => messageEntity.ChatId == request.ChatId)

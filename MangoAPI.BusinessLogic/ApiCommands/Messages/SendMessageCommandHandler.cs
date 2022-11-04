@@ -43,6 +43,7 @@ public class SendMessageCommandHandler
             .Select(x => new
             {
                 x.DisplayName,
+                x.DisplayNameColour,
                 x.Image,
                 x.Id,
             }).FirstOrDefaultAsync(
@@ -98,7 +99,12 @@ public class SendMessageCommandHandler
 
         await dbContext.SaveChangesAsync(cancellationToken);
 
-        var messageDto = messageEntity.ToMessage(user.DisplayName, user.Id, user.Image, blobServiceSettings.MangoBlobAccess);
+        var messageDto = messageEntity.ToMessage(
+            user.DisplayName,
+            user.Id,
+            user.Image,
+            blobServiceSettings.MangoBlobAccess,
+            user.DisplayNameColour);
 
         await hubContext.Clients.Group(request.ChatId.ToString()).BroadcastMessageAsync(messageDto);
 

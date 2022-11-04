@@ -1,6 +1,9 @@
-﻿export interface User {
+﻿import { DisplayNameColours } from "../enums/DisplayNameColours";
+
+export interface User {
   userId: string;
   displayName: string;
+  displayNameColour: DisplayNameColours;
   birthdayDate: string;
   email: string;
   website: string;

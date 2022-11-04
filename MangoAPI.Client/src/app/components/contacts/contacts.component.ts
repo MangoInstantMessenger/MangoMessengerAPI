@@ -30,6 +30,7 @@ export class ContactsComponent implements OnInit, OnDestroy {
   public activeUser: User = {
     userId:  '',
     displayName:  '',
+    displayNameColour: 0,
     birthdayDate:  '',
     email:  '',
     website:  '',

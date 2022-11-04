@@ -3,7 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
 using MangoAPI.Application.Interfaces;
-using MangoAPI.BusinessLogic.ApiCommands.UserChats;
+using MangoAPI.BusinessLogic.ApiCommands.Communities;
 using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.Presentation.Interfaces;
 using MediatR;

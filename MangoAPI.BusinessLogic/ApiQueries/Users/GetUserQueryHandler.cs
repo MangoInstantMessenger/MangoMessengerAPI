@@ -38,6 +38,7 @@ public class GetUserQueryHandler : IRequestHandler<GetUserQuery, Result<GetUserR
             {
                 UserId = user.Id,
                 DisplayName = user.DisplayName,
+                DisplayNameColour = user.DisplayNameColour,
                 Address = user.UserInformation.Address,
                 BirthdayDate = user.UserInformation.BirthDay.HasValue
                     ? user.UserInformation.BirthDay.Value.ToString("yyyy-MM-dd")

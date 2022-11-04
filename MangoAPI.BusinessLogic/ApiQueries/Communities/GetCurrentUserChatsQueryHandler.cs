@@ -42,7 +42,7 @@ public class GetCurrentUserChatsQueryHandler
             {
                 ChatId = x.ChatId,
                 Title = x.Chat.Title,
-                CommunityType = (CommunityType)x.Chat.CommunityType,
+                CommunityType = x.Chat.CommunityType,
                 ChatLogoImageUrl = x.Chat.Image != null
                     ? $"{blobServiceSettings.MangoBlobAccess}/{x.Chat.Image}"
                     : null,

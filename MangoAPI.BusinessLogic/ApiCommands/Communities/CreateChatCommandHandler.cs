@@ -61,13 +61,13 @@ public class CreateChatCommandHandler
 
         var userPrivateChats = await dbContext.Chats
             .Include(chatEntity => chatEntity.ChatUsers)
-            .Where(chatEntity => chatEntity.CommunityType == (int)CommunityType.DirectChat &&
+            .Where(chatEntity => chatEntity.CommunityType == CommunityType.DirectChat &&
                                  chatEntity.ChatUsers.Any(userChatEntity => userChatEntity.UserId == request.UserId))
             .ToListAsync(cancellationToken);
 
         var existingChat = userPrivateChats
             .FirstOrDefault(x => x.ChatUsers.Any(t => t.UserId == partner.Id)
-                                 && x.CommunityType == (int)CommunityType.DirectChat);
+                                 && x.CommunityType == CommunityType.DirectChat);
 
         if (existingChat != null)
         {
@@ -77,7 +77,7 @@ public class CreateChatCommandHandler
         var chatEntity = new ChatEntity
         {
             Id = Guid.NewGuid(),
-            CommunityType = (int)CommunityType.DirectChat,
+            CommunityType = CommunityType.DirectChat,
             Title = $"{currentUserDisplayName} / {partner.DisplayName}",
             CreatedAt = DateTime.UtcNow,
             Description = $"Direct chat between {currentUserDisplayName} and {partner.DisplayName}",
@@ -86,8 +86,8 @@ public class CreateChatCommandHandler
 
         var userChats = new[]
         {
-            new UserChatEntity { ChatId = chatEntity.Id, RoleId = (int)UserRole.User, UserId = request.UserId },
-            new UserChatEntity { ChatId = chatEntity.Id, RoleId = (int)UserRole.User, UserId = request.PartnerId },
+            new UserChatEntity { ChatId = chatEntity.Id, RoleId = UserRole.User, UserId = request.UserId },
+            new UserChatEntity { ChatId = chatEntity.Id, RoleId = UserRole.User, UserId = request.PartnerId },
         };
 
         dbContext.Chats.Add(chatEntity);

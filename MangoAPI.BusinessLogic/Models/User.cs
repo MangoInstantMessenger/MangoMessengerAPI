@@ -1,5 +1,6 @@
 using System;
 using System.ComponentModel;
+using MangoAPI.Domain.Enums;
 
 namespace MangoAPI.BusinessLogic.Models;
 
@@ -10,6 +11,9 @@ public record User
 
     [DefaultValue("Ivan Ivanov")]
     public string DisplayName { get; init; }
+
+    [DefaultValue(5)]
+    public DisplayNameColour DisplayNameColour { get; set; }
 
     [DefaultValue("1983-05-25T00:00:00")]
     public string BirthdayDate { get; init; }

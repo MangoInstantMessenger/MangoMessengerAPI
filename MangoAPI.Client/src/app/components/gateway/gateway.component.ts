@@ -1,5 +1,5 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {ActivatedRoute, Router} from '@angular/router';
+import {ActivatedRoute} from '@angular/router';
 import {RoutingService} from "../../services/messenger/routing.service";
 import {Subject, takeUntil} from "rxjs";
 
@@ -9,7 +9,6 @@ import {Subject, takeUntil} from "rxjs";
 })
 export class GatewayComponent implements OnInit, OnDestroy {
   constructor(private route: ActivatedRoute,
-              private router: Router,
               private routingService: RoutingService) {
   }
 
