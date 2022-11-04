@@ -5,7 +5,6 @@ using MangoAPI.Application.Interfaces;
 using MangoAPI.BusinessLogic.Models;
 using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.Domain.Constants;
-using MangoAPI.Domain.Enums;
 using MangoAPI.Infrastructure.Database;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -56,7 +55,7 @@ public class SearchChatMessageQueryHandler
                 ChatId = x.ChatId,
                 UserId = x.UserId,
                 UserDisplayName = x.User.DisplayName,
-                UserDisplayNameColour = (DisplayNameColour)x.User.DisplayNameColour,
+                UserDisplayNameColour = x.User.DisplayNameColour,
                 MessageText = x.Content,
                 CreatedAt = x.CreatedAt,
                 UpdatedAt = x.UpdatedAt,

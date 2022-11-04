@@ -65,7 +65,7 @@ public static class ChatEntityMapper
         {
             ChatId = entity.Id,
             Title = entity.Title,
-            CommunityType = (CommunityType)entity.CommunityType,
+            CommunityType = entity.CommunityType,
             Description = entity.Description,
             MembersCount = entity.MembersCount,
             IsArchived = false,

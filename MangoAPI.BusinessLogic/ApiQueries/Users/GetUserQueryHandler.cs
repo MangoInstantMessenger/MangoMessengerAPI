@@ -6,7 +6,6 @@ using MangoAPI.Application.Services;
 using MangoAPI.BusinessLogic.Models;
 using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.Domain.Constants;
-using MangoAPI.Domain.Enums;
 using MangoAPI.Infrastructure.Database;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -39,7 +38,7 @@ public class GetUserQueryHandler : IRequestHandler<GetUserQuery, Result<GetUserR
             {
                 UserId = user.Id,
                 DisplayName = user.DisplayName,
-                DisplayNameColour = (DisplayNameColour)user.DisplayNameColour,
+                DisplayNameColour = user.DisplayNameColour,
                 Address = user.UserInformation.Address,
                 BirthdayDate = user.UserInformation.BirthDay.HasValue
                     ? user.UserInformation.BirthDay.Value.ToString("yyyy-MM-dd")
