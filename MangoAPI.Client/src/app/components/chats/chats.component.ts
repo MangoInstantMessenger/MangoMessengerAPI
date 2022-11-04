@@ -451,41 +451,40 @@ export class ChatsComponent implements OnInit, OnDestroy {
   }
 
   getDisplayNameColour(colour: number): string {
-    let hex = "";
+    let className = "";
     switch(colour) {
       case DisplayNameColours.White:
-        hex = "#fff";
+        className = "color-white";
         break;
       case DisplayNameColours.Blue:
-        hex = "#84afff";
+        className = "color-blue";
         break;
       case DisplayNameColours.Red:
-        hex = "#ff7979";
+        className = "color-red";
         break;
       case DisplayNameColours.Yellow:
-        hex = "#fff798";
+        className = "color-yellow";
         break;
       case DisplayNameColours.Green:
-        hex = "#a2ffa4";
+        className = "color-green";
         break;
       case DisplayNameColours.BrightYellow:
-        hex = "#f0ff72";
+        className = "color-bright-yellow";
         break;
       case DisplayNameColours.Aqua:
-        hex = "#77ddca";
+        className = "color-aqua";
         break;
       case DisplayNameColours.Violet:
-        hex = "#bdadff";
+        className = "color-violet";
         break;
       case DisplayNameColours.Pink:
-        hex = "#faa7ff";
+        className = "color-pink";
         break;
       case DisplayNameColours.Orange:
-        hex = "#ffc588";
+        className = "color-orange";
         break;
     }
-    console.log(hex);
-    return hex;
+    return className;
   }
 
   ngOnDestroy(): void {

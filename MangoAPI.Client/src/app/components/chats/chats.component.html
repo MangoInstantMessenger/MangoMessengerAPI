@@ -201,19 +201,9 @@
                   <img alt="User Avatar" class="user-avatar" src="{{message.messageAuthorPictureUrl}}"/>
                   <div class="message-wrapper">
                     <div class="message-content">
-                      <div class="display-name"
-                           [ngClass]="{
-                                        'color-white': message.userDisplayNameColour === displayNameColours.White, 
-                                        'color-yellow': message.userDisplayNameColour === displayNameColours.Yellow,
-                                        'color-bright-yellow': message.userDisplayNameColour === displayNameColours.BrightYellow,
-                                        'color-red': message.userDisplayNameColour === displayNameColours.Red,
-                                        'color-blue': message.userDisplayNameColour === displayNameColours.Blue,
-                                        'color-aqua': message.userDisplayNameColour === displayNameColours.Aqua,
-                                        'color-violet': message.userDisplayNameColour === displayNameColours.Violet,
-                                        'color-pink': message.userDisplayNameColour === displayNameColours.Pink,
-                                        'color-orange': message.userDisplayNameColour === displayNameColours.Orange,
-                                        'color-green': message.userDisplayNameColour === displayNameColours.Green
-                                      }">{{message.userDisplayName}}</div>
+                      <div class="display-name {{getDisplayNameColour(message.userDisplayNameColour)}}">
+                        {{message.userDisplayName}}
+                      </div>
                       <span>{{message.messageText}}</span>
                     </div>
                     <div class="message-options gap-fix">
