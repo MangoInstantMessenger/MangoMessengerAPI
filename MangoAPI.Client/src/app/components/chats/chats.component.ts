@@ -48,6 +48,7 @@ export class ChatsComponent implements OnInit, OnDestroy {
 
   public userId: string | undefined = '';
   public chats: Chat[] = [];
+  public userChats: Chat[] = [];
 
   public activeChat: Chat = {
     lastMessageId: "",
@@ -128,6 +129,7 @@ export class ChatsComponent implements OnInit, OnDestroy {
     this._communitiesService.getUserChats().pipe(takeUntil(this.componentDestroyed$)).subscribe({
       next: response => {
         this.chats = response.chats.filter(x => !x.isArchived);
+        this.userChats = this.chats;
 
         if (this.connection.state !== signalR.HubConnectionState.Connected) {
           this.connectChatsToHub();
@@ -193,6 +195,31 @@ export class ChatsComponent implements OnInit, OnDestroy {
       if (notification.isLastMessage) {
         this.activeChat.lastMessageText = notification.modifiedText;
         this.activeChat.lastMessageTime = notification.updatedAt;
+      }
+    });
+  }
+
+  onJoinChatClick() : void {
+    this._userChatsService.joinCommunity(this.activeChatId).pipe(takeUntil(this.componentDestroyed$)).subscribe( {
+      next: _ => {
+        this.chats = this.userChats;
+        this.chats.push(this.activeChat);
+        this.chats.sort((chat1, chat2) => {
+          let chat1LastMessageTime = new Date(chat1.lastMessageTime)
+          let chat2LastMessageTime = new Date(chat2.lastMessageTime)
+          if (chat1LastMessageTime > chat2LastMessageTime) {
+            return 1;
+          }
+
+          if (chat1LastMessageTime < chat2LastMessageTime) {
+            return -1;
+          }
+
+          return 0;
+        });
+        this.searchChatQuery = '';
+        this.chatFilter = 'All chats';
+        this.activeChat.isMember = true;
       }
     });
   }
@@ -343,6 +370,7 @@ export class ChatsComponent implements OnInit, OnDestroy {
       next: _ => {
         this.activeChatId = '';
         this.initializeView();
+        this.userChats = this.userChats.filter(x => x !== this.activeChat);
       },
       error: error => {
         this._errorNotificationService.notifyOnError(error);
