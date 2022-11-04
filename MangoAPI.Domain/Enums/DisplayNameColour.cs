@@ -30,7 +30,7 @@ public enum DisplayNameColour
     /// <summary>
     /// HEX colour: #f0ff72
     /// </summary>
-    BritghtYellow = 6,
+    BrightYellow = 6,
 
     /// <summary>
     /// HEX colour: #77ddca

@@ -17,9 +17,9 @@ import {environment} from "../../../environments/environment";
 import {EditMessageNotification} from "../../types/models/EditMessageNotification";
 import {DeleteMessageNotification} from "../../types/models/DeleteMessageNotification";
 import {Subject, takeUntil} from "rxjs";
-import { DisplayNameColours } from 'src/app/types/enums/DisplayNameColours';
-import { User } from 'src/app/types/models/User';
-import { UsersService } from 'src/app/services/api/users.service';
+import {DisplayNameColours} from 'src/app/types/enums/DisplayNameColours';
+import {User} from 'src/app/types/models/User';
+import {UsersService} from 'src/app/services/api/users.service';
 
 @Component({
   selector: 'app-chats',
@@ -68,21 +68,21 @@ export class ChatsComponent implements OnInit, OnDestroy {
   };
 
   public activeUser: User = {
-    userId:  '',
-    displayName:  '',
+    userId: '',
+    displayName: '',
     displayNameColour: 0,
-    birthdayDate:  '',
-    email:  '',
-    website:  '',
-    username:  '',
-    bio:  '',
-    address:  '',
-    facebook:  '',
-    twitter:  '',
-    instagram:  '',
-    linkedIn:  '',
-    publicKey:  0,
-    pictureUrl:  '',
+    birthdayDate: '',
+    email: '',
+    website: '',
+    username: '',
+    bio: '',
+    address: '',
+    facebook: '',
+    twitter: '',
+    instagram: '',
+    linkedIn: '',
+    publicKey: 0,
+    pictureUrl: '',
   };
 
   public activeChatId: string = '';
@@ -199,8 +199,8 @@ export class ChatsComponent implements OnInit, OnDestroy {
     });
   }
 
-  onJoinChatClick() : void {
-    this._userChatsService.joinCommunity(this.activeChatId).pipe(takeUntil(this.componentDestroyed$)).subscribe( {
+  onJoinChatClick(): void {
+    this._userChatsService.joinCommunity(this.activeChatId).pipe(takeUntil(this.componentDestroyed$)).subscribe({
       next: _ => {
         this.chats = this.userChats;
         this.chats.push(this.activeChat);
@@ -451,40 +451,30 @@ export class ChatsComponent implements OnInit, OnDestroy {
   }
 
   getDisplayNameColour(colour: number): string {
-    let className = "";
-    switch(colour) {
+    switch (colour) {
       case DisplayNameColours.White:
-        className = "color-white";
-        break;
+        return "color-white";
       case DisplayNameColours.Blue:
-        className = "color-blue";
-        break;
+        return "color-blue";
       case DisplayNameColours.Red:
-        className = "color-red";
-        break;
+        return "color-red";
       case DisplayNameColours.Yellow:
-        className = "color-yellow";
-        break;
+        return "color-yellow";
       case DisplayNameColours.Green:
-        className = "color-green";
-        break;
+        return "color-green";
       case DisplayNameColours.BrightYellow:
-        className = "color-bright-yellow";
-        break;
+        return "color-bright-yellow";
       case DisplayNameColours.Aqua:
-        className = "color-aqua";
-        break;
+        return "color-aqua";
       case DisplayNameColours.Violet:
-        className = "color-violet";
-        break;
+        return "color-violet";
       case DisplayNameColours.Pink:
-        className = "color-pink";
-        break;
+        return "color-pink";
       case DisplayNameColours.Orange:
-        className = "color-orange";
-        break;
+        return "color-orange";
+      default:
+        return "color-pink";
     }
-    return className;
   }
 
   ngOnDestroy(): void {
