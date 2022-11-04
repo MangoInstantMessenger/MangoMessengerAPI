@@ -1,3 +1,5 @@
+namespace MangoAPI.Domain.Enums;
+
 public enum DisplayNameColour
 {
     /// <summary>

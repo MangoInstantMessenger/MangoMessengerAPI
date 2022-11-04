@@ -1,6 +1,6 @@
 using System;
 using System.ComponentModel;
-using MangoAPI.Domain;
+using MangoAPI.Domain.Enums;
 
 namespace MangoAPI.BusinessLogic.Models;
 
