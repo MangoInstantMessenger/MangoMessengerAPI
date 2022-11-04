@@ -1,7 +1,6 @@
 // noinspection TypeScriptUnresolvedVariable
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import { ErrorNotificationService } from 'src/app/services/messenger/error-notification.service';
-import { ContactsService } from 'src/app/services/api/contacts.service';
 import {TokensService} from "../../services/messenger/tokens.service";
 import {UpdateUserSocialsCommand} from "../../types/requests/UpdateUserSocialsCommand";
 import {ChangePasswordCommand} from "../../types/requests/ChangePasswordCommand";
@@ -20,8 +19,7 @@ import {Subject, takeUntil} from "rxjs";
 })
 export class SettingsComponent implements OnInit, OnDestroy {
 
-  constructor(private _contactsService: ContactsService,
-              private _errorNotificationService: ErrorNotificationService,
+  constructor(private _errorNotificationService: ErrorNotificationService,
               private _usersService: UsersService,
               private _tokensService: TokensService,
               private _validationService: ValidationService,
@@ -32,6 +30,7 @@ export class SettingsComponent implements OnInit, OnDestroy {
   public currentUser: User = {
     userId:  '',
     displayName:  '',
+    displayNameColour: 0,
     birthdayDate:  '',
     email:  '',
     website:  '',

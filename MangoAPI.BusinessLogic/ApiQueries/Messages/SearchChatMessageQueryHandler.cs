@@ -55,6 +55,7 @@ public class SearchChatMessageQueryHandler
                 ChatId = x.ChatId,
                 UserId = x.UserId,
                 UserDisplayName = x.User.DisplayName,
+                UserDisplayNameColour = (DisplayNameColour)x.User.DisplayNameColour,
                 MessageText = x.Content,
                 CreatedAt = x.CreatedAt,
                 UpdatedAt = x.UpdatedAt,

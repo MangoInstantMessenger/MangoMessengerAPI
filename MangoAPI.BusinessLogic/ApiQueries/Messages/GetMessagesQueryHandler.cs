@@ -42,6 +42,7 @@ public class GetMessagesQueryHandler : IRequestHandler<GetMessagesQuery, Result<
                 UpdatedAt = messageEntity.UpdatedAt,
                 CreatedAt = messageEntity.CreatedAt,
                 UserDisplayName = messageEntity.User.DisplayName,
+                UserDisplayNameColour = (DisplayNameColour)messageEntity.User.DisplayNameColour,
                 Self = messageEntity.User.Id == request.UserId,
                 InReplayToAuthor = messageEntity.InReplayToAuthor,
                 InReplayToText = messageEntity.InReplayToText,

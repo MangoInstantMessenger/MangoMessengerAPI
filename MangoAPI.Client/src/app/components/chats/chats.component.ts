@@ -10,7 +10,6 @@ import {Message} from "../../types/models/Message";
 import {CommunityType} from "../../types/enums/CommunityType";
 import {RoutingConstants} from "../../types/constants/RoutingConstants";
 import {UserChatsService} from "../../services/api/user-chats.service";
-import {RoutingService} from "../../services/messenger/routing.service";
 import {ValidationService} from "../../services/messenger/validation.service";
 import {SendMessageCommand} from "../../types/requests/SendMessageCommand";
 import * as signalR from '@microsoft/signalr';
@@ -18,6 +17,9 @@ import {environment} from "../../../environments/environment";
 import {EditMessageNotification} from "../../types/models/EditMessageNotification";
 import {DeleteMessageNotification} from "../../types/models/DeleteMessageNotification";
 import {Subject, takeUntil} from "rxjs";
+import { DisplayNameColours } from 'src/app/types/enums/DisplayNameColours';
+import { User } from 'src/app/types/models/User';
+import { UsersService } from 'src/app/services/api/users.service';
 
 @Component({
   selector: 'app-chats',
@@ -30,9 +32,9 @@ export class ChatsComponent implements OnInit, OnDestroy {
               private _communitiesService: CommunitiesService,
               private _userChatsService: UserChatsService,
               private _messagesService: MessagesService,
+              private _usersService: UsersService,
               private _errorNotificationService: ErrorNotificationService,
               private _router: Router,
-              private _routingService: RoutingService,
               private _validationService: ValidationService) {
   }
 
@@ -64,6 +66,24 @@ export class ChatsComponent implements OnInit, OnDestroy {
     title: ""
   };
 
+  public activeUser: User = {
+    userId:  '',
+    displayName:  '',
+    displayNameColour: 0,
+    birthdayDate:  '',
+    email:  '',
+    website:  '',
+    username:  '',
+    bio:  '',
+    address:  '',
+    facebook:  '',
+    twitter:  '',
+    instagram:  '',
+    linkedIn:  '',
+    publicKey:  0,
+    pictureUrl:  '',
+  };
+
   public activeChatId: string = '';
   public messages: Message[] = [];
 
@@ -76,6 +96,10 @@ export class ChatsComponent implements OnInit, OnDestroy {
 
   public get routingConstants(): typeof RoutingConstants {
     return RoutingConstants;
+  }
+
+  public get displayNameColours(): typeof DisplayNameColours {
+    return DisplayNameColours;
   }
 
   ngOnInit(): void {
@@ -91,6 +115,15 @@ export class ChatsComponent implements OnInit, OnDestroy {
     }
 
     this.userId = tokens.userId;
+
+    this._usersService.getUserById(this.userId).pipe(takeUntil(this.componentDestroyed$)).subscribe({
+      next: response => {
+        this.activeUser = response.user;
+      },
+      error: error => {
+        this._errorNotificationService.notifyOnError(error);
+      }
+    });
 
     this._communitiesService.getUserChats().pipe(takeUntil(this.componentDestroyed$)).subscribe({
       next: response => {
@@ -346,6 +379,7 @@ export class ChatsComponent implements OnInit, OnDestroy {
       tokens.userId,
       this.activeChatId,
       tokens.userDisplayName,
+      this.activeUser.displayNameColour,
       this.messageText,
       isoString,
       true,
@@ -386,6 +420,44 @@ export class ChatsComponent implements OnInit, OnDestroy {
       }
       chatMessages.scrollTop = chatMessages.scrollHeight;
     })
+  }
+
+  getDisplayNameColour(colour: number): string {
+    let hex = "";
+    switch(colour) {
+      case DisplayNameColours.White:
+        hex = "#fff";
+        break;
+      case DisplayNameColours.Blue:
+        hex = "#84afff";
+        break;
+      case DisplayNameColours.Red:
+        hex = "#ff7979";
+        break;
+      case DisplayNameColours.Yellow:
+        hex = "#fff798";
+        break;
+      case DisplayNameColours.Green:
+        hex = "#a2ffa4";
+        break;
+      case DisplayNameColours.BrightYellow:
+        hex = "#f0ff72";
+        break;
+      case DisplayNameColours.Aqua:
+        hex = "#77ddca";
+        break;
+      case DisplayNameColours.Violet:
+        hex = "#bdadff";
+        break;
+      case DisplayNameColours.Pink:
+        hex = "#faa7ff";
+        break;
+      case DisplayNameColours.Orange:
+        hex = "#ffc588";
+        break;
+    }
+    console.log(hex);
+    return hex;
   }
 
   ngOnDestroy(): void {

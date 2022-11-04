@@ -21,6 +21,9 @@ public record Message
     [DefaultValue("Amelit")]
     public string UserDisplayName { get; init; }
 
+    [DefaultValue(5)]
+    public DisplayNameColour UserDisplayNameColour { get; init; }
+
     [DefaultValue("Hello World!")]
     public string MessageText { get; init; }
 
@@ -48,7 +51,7 @@ public record Message
 
 public static class MessageMapper
 {
-    public static Message ToMessage(this MessageEntity message, string displayName, Guid userId, string image, string mangoBlobAccess)
+    public static Message ToMessage(this MessageEntity message, string displayName, Guid userId, string image, string mangoBlobAccess, int displayNameColour)
     {
         var messageDto = new Message
         {
@@ -56,6 +59,7 @@ public static class MessageMapper
             UserId = message.UserId,
             ChatId = message.ChatId,
             UserDisplayName = displayName,
+            UserDisplayNameColour = (DisplayNameColour)displayNameColour,
             MessageText = message.Content,
             CreatedAt = message.CreatedAt,
             UpdatedAt = message.UpdatedAt,

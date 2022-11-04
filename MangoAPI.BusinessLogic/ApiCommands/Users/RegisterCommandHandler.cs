@@ -56,6 +56,8 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, Result<Re
             return responseFactory.ConflictResponse(errorMessage, details);
         }
 
+        var random = new Random();
+
         var newUser = new UserEntity
         {
             DisplayName = request.DisplayName,
@@ -63,6 +65,7 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, Result<Re
             Email = request.Email,
             EmailCode = Guid.NewGuid(),
             Image = "default_avatar.png",
+            DisplayNameColour = random.Next(0, 9),
         };
 
         await userManager.CreateAsync(newUser, request.Password);
