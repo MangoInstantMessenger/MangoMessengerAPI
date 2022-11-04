@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using MangoAPI.Domain.Enums;
 
 namespace MangoAPI.Domain.Entities;
 
@@ -9,7 +10,7 @@ public sealed class ChatEntity
 
     public string Title { get; set; }
 
-    public int CommunityType { get; set; }
+    public CommunityType CommunityType { get; set; }
 
     public string Description { get; set; }
 

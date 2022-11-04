@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using MangoAPI.Domain.Enums;
 using Microsoft.AspNetCore.Identity;
 
 namespace MangoAPI.Domain.Entities;
@@ -14,7 +15,7 @@ public sealed class UserEntity : IdentityUser<Guid>
 
     public Guid EmailCode { get; set; }
 
-    public int DisplayNameColour { get; set; }
+    public DisplayNameColour DisplayNameColour { get; set; }
 
     public ICollection<PasswordRestoreRequestEntity> PasswordRestoreRequests { get; set; }
 

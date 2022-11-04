@@ -47,7 +47,7 @@ public class
                 .Include(x => x.Chat)
                 .Where(x =>
                     x.UserId == user.Id &&
-                    x.Chat.CommunityType == (int)CommunityType.DirectChat)
+                    x.Chat.CommunityType == CommunityType.DirectChat)
                 .Select(x => x.Chat)
                 .ToListAsync(cancellationToken);
 

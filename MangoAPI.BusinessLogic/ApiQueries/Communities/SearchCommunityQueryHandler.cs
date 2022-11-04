@@ -34,13 +34,13 @@ public class SearchCommunityQueryHandler
     {
         var query = dbContext.Chats
             .AsNoTracking()
-            .Where(x => x.CommunityType == (int)CommunityType.PublicChannel)
+            .Where(x => x.CommunityType == CommunityType.PublicChannel)
             .Where(x => EF.Functions.Like(x.Title, $"%{request.DisplayName}%"))
             .Select(x => new Chat
             {
                 ChatId = x.Id,
                 Title = x.Title,
-                CommunityType = (CommunityType)x.CommunityType,
+                CommunityType = x.CommunityType,
                 ChatLogoImageUrl = x.Image != null
                     ? $"{blobServiceSettings.MangoBlobAccess}/{x.Image}"
                     : null,

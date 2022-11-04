@@ -1,6 +1,7 @@
 ﻿using MangoAPI.Application.Services;
 using MangoAPI.Domain.Constants;
 using MangoAPI.Domain.Entities;
+using MangoAPI.Domain.Enums;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -36,7 +37,7 @@ public class UserEntityConfiguration : IEntityTypeConfiguration<UserEntity>
         {
             PhoneNumber = "374775554310",
             DisplayName = "Khachatur Khachatryan",
-            DisplayNameColour = 6,
+            DisplayNameColour = DisplayNameColour.BrightYellow,
             Bio = "13 y. o. | C# pozer, Hearts Of Iron IV noob",
             Id = SeedDataConstants.KhachaturId,
             UserName = "KHACHATUR228",
@@ -51,7 +52,7 @@ public class UserEntityConfiguration : IEntityTypeConfiguration<UserEntity>
         {
             PhoneNumber = "48743615532",
             DisplayName = "razumovsky r",
-            DisplayNameColour = 9,
+            DisplayNameColour = DisplayNameColour.Pink,
             Bio = "11011 y.o Dotnet Developer from $\"{cityName}\"",
             Id = SeedDataConstants.RazumovskyId,
             UserName = "razumovsky_r",
@@ -66,7 +67,7 @@ public class UserEntityConfiguration : IEntityTypeConfiguration<UserEntity>
         {
             PhoneNumber = "77017506265",
             DisplayName = "Мусяка Колбасяка",
-            DisplayNameColour = 5,
+            DisplayNameColour = DisplayNameColour.Green,
             Bio = "Колбасятор.",
             Id = SeedDataConstants.KolbasatorId,
             UserName = "kolbasator",
@@ -81,7 +82,7 @@ public class UserEntityConfiguration : IEntityTypeConfiguration<UserEntity>
         {
             PhoneNumber = "12025550152",
             DisplayName = "Amelit",
-            DisplayNameColour = 4,
+            DisplayNameColour = DisplayNameColour.Yellow,
             Bio = "Дипломат",
             Id = SeedDataConstants.AmelitId,
             UserName = "TheMoonlightSonata",
@@ -96,7 +97,7 @@ public class UserEntityConfiguration : IEntityTypeConfiguration<UserEntity>
         {
             PhoneNumber = "48743615532",
             DisplayName = "Petro Kolosov",
-            DisplayNameColour = 1,
+            DisplayNameColour = DisplayNameColour.White,
             Bio = "Third year student of WSB at Poznan",
             Id = SeedDataConstants.PetroId,
             UserName = "petro.kolosov",
@@ -111,7 +112,7 @@ public class UserEntityConfiguration : IEntityTypeConfiguration<UserEntity>
         {
             PhoneNumber = "48743615532",
             DisplayName = "Szymon Murawski",
-            DisplayNameColour = 7,
+            DisplayNameColour = DisplayNameColour.Aqua,
             Bio = "Teacher of Computer Science at WSB Poznan",
             Id = SeedDataConstants.SzymonId,
             UserName = "szymon.murawski",
@@ -126,7 +127,7 @@ public class UserEntityConfiguration : IEntityTypeConfiguration<UserEntity>
         {
             PhoneNumber = "48352643123",
             DisplayName = "Illia Zubachov",
-            DisplayNameColour = 4,
+            DisplayNameColour = DisplayNameColour.Orange,
             Bio = "Third year student of WSB at Poznan",
             Id = SeedDataConstants.IlliaId,
             UserName = "illia.zubachov",
@@ -141,7 +142,7 @@ public class UserEntityConfiguration : IEntityTypeConfiguration<UserEntity>
         {
             PhoneNumber = "48278187781",
             DisplayName = "Arslanbek Temirbekov",
-            DisplayNameColour = 2,
+            DisplayNameColour = DisplayNameColour.Blue,
             Bio = "Third year student of WSB at Poznan",
             Id = SeedDataConstants.ArslanbekId,
             UserName = "arslanbek.temirbekov",
@@ -156,7 +157,7 @@ public class UserEntityConfiguration : IEntityTypeConfiguration<UserEntity>
         {
             PhoneNumber = "48175481653",
             DisplayName = "Serhii Holishevskii",
-            DisplayNameColour = 6,
+            DisplayNameColour = DisplayNameColour.Violet,
             Bio = "Third year student of WSB at Poznan",
             Id = SeedDataConstants.SerhiiId,
             UserName = "serhii.holishevskii",

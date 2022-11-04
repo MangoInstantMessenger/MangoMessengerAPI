@@ -12,7 +12,7 @@ public class UserChatEntityConfiguration : IEntityTypeConfiguration<UserChatEnti
     {
         builder.ToTable(nameof(UserChatEntity), MangoDbContext.DefaultSchema);
 
-        builder.HasKey(x => new {x.ChatId, x.UserId});
+        builder.HasKey(x => new { x.ChatId, x.UserId });
 
         builder.Property(x => x.RoleId).IsRequired();
 
@@ -29,187 +29,187 @@ public class UserChatEntityConfiguration : IEntityTypeConfiguration<UserChatEnti
             {
                 UserId = SeedDataConstants.PetroId,
                 ChatId = SeedDataConstants.WsbId,
-                RoleId = (int) UserRole.Moderator,
+                RoleId = UserRole.Moderator,
             },
             new UserChatEntity
             {
                 UserId = SeedDataConstants.SzymonId,
                 ChatId = SeedDataConstants.WsbId,
-                RoleId = (int) UserRole.Owner,
+                RoleId = UserRole.Owner,
             },
             new UserChatEntity
             {
                 UserId = SeedDataConstants.IlliaId,
                 ChatId = SeedDataConstants.WsbId,
-                RoleId = (int) UserRole.User,
+                RoleId = UserRole.User,
             },
             new UserChatEntity
             {
                 UserId = SeedDataConstants.ArslanbekId,
                 ChatId = SeedDataConstants.WsbId,
-                RoleId = (int) UserRole.User,
+                RoleId = UserRole.User,
             },
             new UserChatEntity
             {
                 UserId = SeedDataConstants.SerhiiId,
                 ChatId = SeedDataConstants.WsbId,
-                RoleId = (int) UserRole.User,
+                RoleId = UserRole.User,
             },
             new UserChatEntity
             {
                 UserId = SeedDataConstants.KhachaturId,
                 ChatId = SeedDataConstants.ExtremeCodeMainId,
-                RoleId = (int) UserRole.User,
+                RoleId = UserRole.User,
             },
             new UserChatEntity
             {
                 UserId = SeedDataConstants.RazumovskyId,
                 ChatId = SeedDataConstants.ExtremeCodeMainId,
-                RoleId = (int) UserRole.Admin,
+                RoleId = UserRole.Admin,
             },
             new UserChatEntity
             {
                 UserId = SeedDataConstants.KolbasatorId,
                 ChatId = SeedDataConstants.ExtremeCodeMainId,
-                RoleId = (int) UserRole.Moderator,
+                RoleId = UserRole.Moderator,
             },
             new UserChatEntity
             {
                 UserId = SeedDataConstants.AmelitId,
                 ChatId = SeedDataConstants.ExtremeCodeMainId,
-                RoleId = (int) UserRole.Owner,
+                RoleId = UserRole.Owner,
             },
             new UserChatEntity
             {
                 UserId = SeedDataConstants.RazumovskyId,
                 ChatId = SeedDataConstants.ExtremeCodeFloodId,
-                RoleId = (int) UserRole.Owner,
+                RoleId = UserRole.Owner,
             },
             new UserChatEntity
             {
                 UserId = SeedDataConstants.KolbasatorId,
                 ChatId = SeedDataConstants.ExtremeCodeFloodId,
-                RoleId = (int) UserRole.Moderator,
+                RoleId = UserRole.Moderator,
             },
             new UserChatEntity
             {
                 UserId = SeedDataConstants.KhachaturId,
                 ChatId = SeedDataConstants.ExtremeCodeFloodId,
-                RoleId = (int) UserRole.User,
+                RoleId = UserRole.User,
             },
             new UserChatEntity
             {
                 UserId = SeedDataConstants.AmelitId,
                 ChatId = SeedDataConstants.ExtremeCodeFloodId,
-                RoleId = (int) UserRole.User,
+                RoleId = UserRole.User,
             },
             new UserChatEntity
             {
                 UserId = SeedDataConstants.AmelitId,
                 ChatId = SeedDataConstants.ExtremeCodeCppId,
-                RoleId = (int) UserRole.Owner,
+                RoleId = UserRole.Owner,
             },
             new UserChatEntity
             {
                 UserId = SeedDataConstants.RazumovskyId,
                 ChatId = SeedDataConstants.ExtremeCodeCppId,
-                RoleId = (int) UserRole.Admin,
+                RoleId = UserRole.Admin,
             },
             new UserChatEntity
             {
                 UserId = SeedDataConstants.KhachaturId,
                 ChatId = SeedDataConstants.ExtremeCodeCppId,
-                RoleId = (int) UserRole.User,
+                RoleId = UserRole.User,
             },
             new UserChatEntity
             {
                 UserId = SeedDataConstants.KolbasatorId,
                 ChatId = SeedDataConstants.ExtremeCodeCppId,
-                RoleId = (int) UserRole.User,
+                RoleId = UserRole.User,
             },
             new UserChatEntity
             {
                 UserId = SeedDataConstants.RazumovskyId,
                 ChatId = SeedDataConstants.ExtremeCodeDotnetId,
-                RoleId = (int) UserRole.Owner,
+                RoleId = UserRole.Owner,
             },
             new UserChatEntity
             {
                 UserId = SeedDataConstants.KolbasatorId,
                 ChatId = SeedDataConstants.ExtremeCodeDotnetId,
-                RoleId = (int) UserRole.User,
+                RoleId = UserRole.User,
             },
             new UserChatEntity
             {
                 UserId = SeedDataConstants.KhachaturId,
                 ChatId = SeedDataConstants.ExtremeCodeDotnetId,
-                RoleId = (int) UserRole.User,
+                RoleId = UserRole.User,
             },
             new UserChatEntity
             {
                 UserId = SeedDataConstants.AmelitId,
                 ChatId = SeedDataConstants.ExtremeCodeDotnetId,
-                RoleId = (int) UserRole.User,
+                RoleId = UserRole.User,
             },
             new UserChatEntity
             {
                 UserId = SeedDataConstants.KhachaturId,
                 ChatId = SeedDataConstants.DirectKhachaturRazumovsky,
-                RoleId = (int) UserRole.User,
+                RoleId = UserRole.User,
             },
             new UserChatEntity
             {
                 UserId = SeedDataConstants.RazumovskyId,
                 ChatId = SeedDataConstants.DirectKhachaturRazumovsky,
-                RoleId = (int) UserRole.User,
+                RoleId = UserRole.User,
             },
             new UserChatEntity
             {
                 UserId = SeedDataConstants.KolbasatorId,
                 ChatId = SeedDataConstants.DirectKolbasatorRazumovsky,
-                RoleId = (int) UserRole.User,
+                RoleId = UserRole.User,
             },
             new UserChatEntity
             {
                 UserId = SeedDataConstants.RazumovskyId,
                 ChatId = SeedDataConstants.DirectKolbasatorRazumovsky,
-                RoleId = (int) UserRole.User,
+                RoleId = UserRole.User,
             },
             new UserChatEntity
             {
                 UserId = SeedDataConstants.AmelitId,
                 ChatId = SeedDataConstants.DirectAmelitRazumovsky,
-                RoleId = (int) UserRole.User,
+                RoleId = UserRole.User,
             },
             new UserChatEntity
             {
                 UserId = SeedDataConstants.RazumovskyId,
                 ChatId = SeedDataConstants.DirectAmelitRazumovsky,
-                RoleId = (int) UserRole.User,
+                RoleId = UserRole.User,
             },
             new UserChatEntity
             {
                 UserId = SeedDataConstants.KhachaturId,
                 ChatId = SeedDataConstants.DirectKhachaturKolbasator,
-                RoleId = (int) UserRole.User,
+                RoleId = UserRole.User,
             },
             new UserChatEntity
             {
                 UserId = SeedDataConstants.KolbasatorId,
                 ChatId = SeedDataConstants.DirectKhachaturKolbasator,
-                RoleId = (int) UserRole.User,
+                RoleId = UserRole.User,
             },
             new UserChatEntity
             {
                 UserId = SeedDataConstants.PetroId,
                 ChatId = SeedDataConstants.DirectPetroSzymon,
-                RoleId = (int) UserRole.User,
+                RoleId = UserRole.User,
             },
             new UserChatEntity
             {
                 UserId = SeedDataConstants.SzymonId,
                 ChatId = SeedDataConstants.DirectPetroSzymon,
-                RoleId = (int) UserRole.User,
+                RoleId = UserRole.User,
             });
     }
 }

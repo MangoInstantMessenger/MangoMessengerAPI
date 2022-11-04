@@ -7,7 +7,7 @@ using MangoAPI.Infrastructure.Database;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace MangoAPI.BusinessLogic.ApiCommands.UserChats;
+namespace MangoAPI.BusinessLogic.ApiCommands.Communities;
 
 public class ArchiveChatCommandHandler
     : IRequestHandler<ArchiveChatCommand, Result<ResponseBase>>

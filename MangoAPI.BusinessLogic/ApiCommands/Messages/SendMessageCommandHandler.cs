@@ -99,7 +99,12 @@ public class SendMessageCommandHandler
 
         await dbContext.SaveChangesAsync(cancellationToken);
 
-        var messageDto = messageEntity.ToMessage(user.DisplayName, user.Id, user.Image, blobServiceSettings.MangoBlobAccess, user.DisplayNameColour);
+        var messageDto = messageEntity.ToMessage(
+            user.DisplayName,
+            user.Id,
+            user.Image,
+            blobServiceSettings.MangoBlobAccess,
+            user.DisplayNameColour);
 
         await hubContext.Clients.Group(request.ChatId.ToString()).BroadcastMessageAsync(messageDto);
 

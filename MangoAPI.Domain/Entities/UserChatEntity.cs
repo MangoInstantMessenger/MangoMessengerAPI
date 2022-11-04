@@ -1,4 +1,5 @@
 ﻿using System;
+using MangoAPI.Domain.Enums;
 
 namespace MangoAPI.Domain.Entities;
 
@@ -8,7 +9,7 @@ public sealed class UserChatEntity
 
     public Guid ChatId { get; set; }
 
-    public int RoleId { get; set; }
+    public UserRole RoleId { get; set; }
 
     public bool IsArchived { get; set; }
 

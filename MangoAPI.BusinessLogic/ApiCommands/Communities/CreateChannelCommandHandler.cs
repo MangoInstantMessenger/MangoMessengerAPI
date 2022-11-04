@@ -38,7 +38,7 @@ public class CreateChannelCommandHandler
     {
         var ownerChatsCount =
             await dbContext.UserChats
-                .Where(x => x.RoleId == (int)UserRole.Owner && x.UserId == request.UserId)
+                .Where(x => x.RoleId == UserRole.Owner && x.UserId == request.UserId)
                 .CountAsync(cancellationToken);
 
         if (ownerChatsCount >= 100)
@@ -51,7 +51,7 @@ public class CreateChannelCommandHandler
 
         var channel = new ChatEntity
         {
-            CommunityType = (int)CommunityType.PublicChannel,
+            CommunityType = CommunityType.PublicChannel,
             Title = request.ChannelTitle,
             CreatedAt = DateTime.UtcNow,
             Description = request.ChannelDescription,
@@ -64,7 +64,7 @@ public class CreateChannelCommandHandler
         dbContext.UserChats.Add(new UserChatEntity
         {
             ChatId = channel.Id,
-            RoleId = (int)UserRole.Owner,
+            RoleId = UserRole.Owner,
             UserId = request.UserId,
         });
 

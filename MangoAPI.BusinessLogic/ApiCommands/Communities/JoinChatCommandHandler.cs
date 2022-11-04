@@ -9,7 +9,7 @@ using MangoAPI.Infrastructure.Database;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace MangoAPI.BusinessLogic.ApiCommands.UserChats;
+namespace MangoAPI.BusinessLogic.ApiCommands.Communities;
 
 public class JoinChatCommandHandler : IRequestHandler<JoinChatCommand, Result<ResponseBase>>
 {
@@ -43,7 +43,7 @@ public class JoinChatCommandHandler : IRequestHandler<JoinChatCommand, Result<Re
         }
 
         var chat = await dbContext.Chats
-            .Where(chatEntity => chatEntity.CommunityType != (int)CommunityType.DirectChat)
+            .Where(chatEntity => chatEntity.CommunityType != CommunityType.DirectChat)
             .FirstOrDefaultAsync(chatEntity => chatEntity.Id == request.ChatId, cancellationToken);
 
         if (chat == null)
@@ -59,7 +59,7 @@ public class JoinChatCommandHandler : IRequestHandler<JoinChatCommand, Result<Re
             {
                 ChatId = request.ChatId,
                 UserId = request.UserId,
-                RoleId = (int)UserRole.User,
+                RoleId = UserRole.User,
             });
 
         chat.MembersCount += 1;

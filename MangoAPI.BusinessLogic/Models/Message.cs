@@ -52,7 +52,13 @@ public record Message
 
 public static class MessageMapper
 {
-    public static Message ToMessage(this MessageEntity message, string displayName, Guid userId, string image, string mangoBlobAccess, int displayNameColour)
+    public static Message ToMessage(
+        this MessageEntity message,
+        string displayName,
+        Guid userId,
+        string image,
+        string mangoBlobAccess,
+        DisplayNameColour displayNameColour)
     {
         var messageDto = new Message
         {
@@ -60,7 +66,7 @@ public static class MessageMapper
             UserId = message.UserId,
             ChatId = message.ChatId,
             UserDisplayName = displayName,
-            UserDisplayNameColour = (DisplayNameColour)displayNameColour,
+            UserDisplayNameColour = displayNameColour,
             MessageText = message.Content,
             CreatedAt = message.CreatedAt,
             UpdatedAt = message.UpdatedAt,
