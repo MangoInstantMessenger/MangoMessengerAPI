@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using MangoAPI.Domain.Enums;
 
 namespace MangoAPI.BusinessLogic.Models;
 
@@ -24,4 +25,7 @@ public record Tokens
 
     [DefaultValue("blob.url/razumovsky_r.jpg")]
     public string UserProfilePictureUrl { get; init; }
+
+    [DefaultValue(DisplayNameColour.Aqua)]
+    public DisplayNameColour DisplayNameColour { get; set; }
 }

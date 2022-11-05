@@ -18,7 +18,6 @@ import {EditMessageNotification} from "../../types/models/EditMessageNotificatio
 import {DeleteMessageNotification} from "../../types/models/DeleteMessageNotification";
 import {Subject, takeUntil} from "rxjs";
 import {DisplayNameColours} from 'src/app/types/enums/DisplayNameColours';
-import {User} from 'src/app/types/models/User';
 import {UsersService} from 'src/app/services/api/users.service';
 
 @Component({
@@ -67,24 +66,6 @@ export class ChatsComponent implements OnInit, OnDestroy {
     title: ""
   };
 
-  public activeUser: User = {
-    userId: '',
-    displayName: '',
-    displayNameColour: 0,
-    birthdayDate: '',
-    email: '',
-    website: '',
-    username: '',
-    bio: '',
-    address: '',
-    facebook: '',
-    twitter: '',
-    instagram: '',
-    linkedIn: '',
-    publicKey: 0,
-    pictureUrl: '',
-  };
-
   public activeChatId: string = '';
   public messages: Message[] = [];
 
@@ -97,10 +78,6 @@ export class ChatsComponent implements OnInit, OnDestroy {
 
   public get routingConstants(): typeof RoutingConstants {
     return RoutingConstants;
-  }
-
-  public get displayNameColours(): typeof DisplayNameColours {
-    return DisplayNameColours;
   }
 
   ngOnInit(): void {
@@ -116,15 +93,6 @@ export class ChatsComponent implements OnInit, OnDestroy {
     }
 
     this.userId = tokens.userId;
-
-    this._usersService.getUserById(this.userId).pipe(takeUntil(this.componentDestroyed$)).subscribe({
-      next: response => {
-        this.activeUser = response.user;
-      },
-      error: error => {
-        this._errorNotificationService.notifyOnError(error);
-      }
-    });
 
     this._communitiesService.getUserChats().pipe(takeUntil(this.componentDestroyed$)).subscribe({
       next: response => {
@@ -398,7 +366,7 @@ export class ChatsComponent implements OnInit, OnDestroy {
       tokens.userId,
       this.activeChatId,
       tokens.userDisplayName,
-      this.activeUser.displayNameColour,
+      tokens.displayNameColour,
       this.messageText,
       isoString,
       true,
