@@ -5,6 +5,7 @@ using MangoAPI.Application.Interfaces;
 using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.Domain.Constants;
 using MangoAPI.Domain.Entities;
+using MangoAPI.Domain.Enums;
 using MangoAPI.Infrastructure.Database;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -40,6 +41,8 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, Result<Re
             return responseFactory.ConflictResponse(errorMessage, details);
         }
 
+        var color = new Random().Next(11);
+
         var newUser = new UserEntity
         {
             DisplayName = request.DisplayName,
@@ -48,6 +51,7 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, Result<Re
             EmailCode = Guid.NewGuid(),
             Image = "default_avatar.png",
             EmailConfirmed = true,
+            DisplayNameColour = (DisplayNameColour)color,
         };
 
         await userManager.CreateAsync(newUser, request.Password);
