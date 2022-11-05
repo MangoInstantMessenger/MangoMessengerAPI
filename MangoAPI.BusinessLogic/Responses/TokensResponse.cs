@@ -1,6 +1,7 @@
 ﻿using System;
 using MangoAPI.BusinessLogic.Models;
 using MangoAPI.Domain.Constants;
+using MangoAPI.Domain.Enums;
 
 namespace MangoAPI.BusinessLogic.Responses;
 
@@ -14,7 +15,8 @@ public record TokensResponse : ResponseBase
         Guid userId,
         long expires,
         string userDisplayName,
-        string userProfilePictureUrl)
+        string userProfilePictureUrl,
+        DisplayNameColour displayNameColour)
     {
         return new TokensResponse
         {
@@ -28,6 +30,7 @@ public record TokensResponse : ResponseBase
                 UserId = userId,
                 UserDisplayName = userDisplayName,
                 UserProfilePictureUrl = userProfilePictureUrl,
+                DisplayNameColour = displayNameColour,
             },
         };
     }

@@ -97,7 +97,8 @@ public class LoginCommandHandler : IRequestHandler<LoginCommand, Result<TokensRe
             user.Id,
             expires,
             userDisplayName,
-            userProfilePictureUrl);
+            userProfilePictureUrl,
+            user.DisplayNameColour);
 
         return responseFactory.SuccessResponse(tokens);
     }

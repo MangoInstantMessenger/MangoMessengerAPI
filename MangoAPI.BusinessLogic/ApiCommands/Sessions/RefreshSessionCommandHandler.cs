@@ -90,7 +90,8 @@ public class RefreshSessionCommandHandler : IRequestHandler<RefreshSessionComman
             session.UserId,
             expires,
             userDisplayName,
-            userProfilePictureUrl);
+            userProfilePictureUrl,
+            session.UserEntity.DisplayNameColour);
 
         return responseFactory.SuccessResponse(result);
     }
