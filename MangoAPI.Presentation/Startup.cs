@@ -17,6 +17,7 @@ namespace MangoAPI.Presentation;
 
 public class Startup
 {
+    private const string CorsPolicy = "MangoCorsPolicy";
     private readonly IConfiguration configuration;
 
     public Startup(IConfiguration configuration)
@@ -36,6 +37,7 @@ public class Startup
         app.UseHttpsRedirection();
 
         app.UseRouting();
+        app.UseCors(CorsPolicy);
 
         app.UseStaticFiles();
 
@@ -105,6 +107,8 @@ public class Startup
             refreshTokenLifetimeDays);
 
         services.AddSwagger();
+
+        services.ConfigureCors(configuration, CorsPolicy);
 
         services.AddSpaStaticFiles(config => { config.RootPath = "wwwroot"; });
 

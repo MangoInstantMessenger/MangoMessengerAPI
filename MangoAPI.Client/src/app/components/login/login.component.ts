@@ -36,7 +36,7 @@ export class LoginComponent implements OnDestroy {
     this.componentDestroyed$.complete();
   }
 
-  onLoginClick(): void {
+  login(): void {
     let emailFieldValidationResult = this._validationService.validateField(this.loginCommand.email, 'Email');
     let passwordFieldValidationResult = this._validationService.validateField(this.loginCommand.password, 'Password');
 
