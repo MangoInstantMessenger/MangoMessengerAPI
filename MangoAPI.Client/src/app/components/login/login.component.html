@@ -8,7 +8,8 @@
          id='emailAddress'
          name='emailAddress' placeholder='Enter your email address'
          type='text'
-         [(ngModel)]="loginCommand.email">
+         [(ngModel)]="loginCommand.email"
+         (keyup.enter)="login()">
 
   <label for='password'></label>
   <input class='mb-3 form-input p-3 user-select-none'
@@ -16,9 +17,10 @@
          name='password'
          placeholder='Enter your password'
          type='password'
-         [(ngModel)]="loginCommand.password">
+         [(ngModel)]="loginCommand.password"
+         (keyup.enter)="login()">
 
-  <button class='form-button p-3 font-weight-bold mb-3' (click)="onLoginClick()">LOGIN</button>
+  <button class='form-button p-3 font-weight-bold mb-3' (click)="login()">LOGIN</button>
   <span class='form-label'>
 			Do not have an account? <a class='form-label' href='{{routingConstants.Register}}'>Register</a>.
   </span>
