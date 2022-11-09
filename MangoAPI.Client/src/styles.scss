@@ -339,6 +339,7 @@ i {
           display: flex;
           align-items: center;
           width: 100%;
+          gap: 5px;
 
           .info {
             display: flex;
@@ -541,6 +542,7 @@ i {
   background-color: #232526;
   padding: 24px;
 }
+
 .profile {
   height: 100vh;
   display: flex;
@@ -595,153 +597,3 @@ i {
     }
   }
 }
-
-//// Galaxy Fold
-//@media screen and (max-width: 280px) {
-//  input::placeholder {
-//    font-size: 13px;
-//  }
-//  .form-button {
-//    width: 40% !important;
-//  }
-//  .form-label {
-//    font-size: 16px;
-//  }
-//  .restore-password-button {
-//    width: 50% !important;
-//  }
-//  .restore-password-h1 {
-//    font-size: 30px;
-//  }
-//  .restore-password-h4 {
-//    font-size: 16px;
-//  }
-//
-//  .navigation-bar {
-//    position: relative;
-//    height: auto;
-//    flex-direction: row;
-//
-//    .menu-buttons {
-//      flex-direction: row;
-//    }
-//  }
-//
-//  .sidebar {
-//    margin-left: 0 !important;
-//    width: 100% !important;
-//    p, .last-message {
-//      max-width: 20ch !important;
-//    }
-//    .form-control {
-//      font-size: 16px !important;
-//      &::placeholder {
-//        font-size: 16px !important;
-//      }
-//    }
-//  }
-//}
-//
-///* Extra small devices (phones, 281px and up) */
-//@media screen and (min-width: 281px) {
-//  .form-input {
-//    width: 75%;
-//  }
-//  .terms-of-service {
-//    margin-top: 5px;
-//  }
-//  .form-button {
-//    width: 75%;
-//    background-color: #cf7d1f;
-//    border-radius: 15px;
-//    font-size: 15px;
-//  }
-//
-//  .navigation-bar {
-//    position: relative;
-//    height: auto;
-//    flex-direction: row;
-//
-//    .menu-buttons {
-//      flex-direction: row;
-//    }
-//  }
-//
-//  .sidebar {
-//    margin-left: 0 !important;
-//    width: 100% !important;
-//    p, .last-message {
-//      max-width: 30ch !important;
-//    }
-//  }
-//}
-//
-///* Medium devices (landscape tablets, 601px and up) */
-//@media screen and (min-width: 601px) {
-//  .auth-header {
-//    font-size: 40px !important;
-//  }
-//  .form-input {
-//    font-size: 20px;
-//  }
-//  input::placeholder {
-//    font-size: 20px;
-//  }
-//  p{
-//    font-size: 18px;
-//  }
-//  .restore-password-button {
-//    width: 50% !important;
-//  }
-//
-//  .navigation-bar {
-//    position: relative;
-//    height: auto;
-//    flex-direction: row;
-//
-//    .menu-buttons {
-//      flex-direction: row;
-//    }
-//  }
-//  .sidebar {
-//    margin-left: 0;
-//    width: 100%;
-//    p, .last-message {
-//      max-width: 90ch;
-//    }
-//  }
-//}
-//
-///* Large devices (laptops/desktops, 992px and up) */
-//@media screen and (min-width: 993px) {
-//  .navigation-bar {
-//    height: 100vh;
-//    position: absolute;
-//    background-color: $orange;
-//    display: flex;
-//    flex-direction: column;
-//    justify-content: center;
-//    align-items: center;
-//     .menu-buttons {
-//     display: flex;
-//     flex-direction: column;
-//     justify-content: space-evenly;
-//     flex-grow: 1;
-//     li{
-//       width: 35px;
-//     }
-//    }
-//  }
-//
-//  .sidebar {
-//    width: 420px !important;
-//    margin-left: 64px !important;
-//    p, .last-message {
-//      max-width: 35ch !important;
-//    }
-//  }
-//}
-//
-///* Extra large devices (large laptops and desktops, 1200px and up) */
-//@media screen and (min-width: 1200px) {
-//}

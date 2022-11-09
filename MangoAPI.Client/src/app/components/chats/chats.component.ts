@@ -350,7 +350,10 @@ export class ChatsComponent implements OnInit, OnDestroy {
   }
 
   onSendMessageClick(): void {
-    this._validationService.validateField(this.messageText, 'Message Text Field');
+    let messageTextValidationResult = this._validationService.validateField(this.messageText, "Message Text");
+    if(!messageTextValidationResult) {
+      return;
+    }
     const tokens = this._tokensService.getTokens();
 
     if (!tokens) {
