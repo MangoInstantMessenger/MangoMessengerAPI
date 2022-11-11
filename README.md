@@ -11,7 +11,7 @@ In general, this project is considered to be a bachelor's degree project.
 Bachelor's project has been successfully completed by the team of three students on 10-02-2022.
 However, it is worth to continue progress on the project pursuing another predefined goals.
 
-How it works: https://www.youtube.com/watch?v=3lh3we1DrEY
+**How it works (v1)**: https://www.youtube.com/watch?v=3lh3we1DrEY
 
 ## Main goals of the project
 
@@ -29,16 +29,27 @@ How it works: https://www.youtube.com/watch?v=3lh3we1DrEY
   CD (Continuous Deployment) must be confirmed manually be designated person.
 - To implement E2E tests inside CI/CD pipelines using Docker Compose and Postman.
 - To implement IaaC using Hashicorp Terraform and applying this infrastructure on behalf of CI/CD pipelines.
+- To implement cryptographic protocol that allows End-to-end (E2E) encryption using confidential clients.
+
+## Cryptography
+
+- Run CNG Diffie-Hellman
+  Handshake: [![Run CNG DH Handshake](https://github.com/MangoInstantMessenger/MangoMessengerAPI/actions/workflows/run-cng-dh-handshake.yml/badge.svg)](https://github.com/MangoInstantMessenger/MangoMessengerAPI/actions/workflows/run-cng-dh-handshake.yml)
+- Run OpenSSL Diffie-Hellman
+  Handshake: [![Run OpenSSL DH Handshake](https://github.com/MangoInstantMessenger/MangoMessengerAPI/actions/workflows/run-openssl-dh-handshake.yml/badge.svg)](https://github.com/MangoInstantMessenger/MangoMessengerAPI/actions/workflows/run-openssl-dh-handshake.yml)
 
 ## Screenshots
 
 ### Chats
+
 ![./img/chats.png](./img/chats.PNG)
 
 ### Contacts
+
 ![./img/contacts.png](./img/contacts.PNG)
 
 ### Settings
+
 ![./img/settings.png](./img/settings.PNG)
 
 ## Build and run the project
@@ -86,8 +97,9 @@ In case of localhost HTTPS certificate issues: https://stackoverflow.com/a/67182
 - Run MsSQL database
   container: `docker run -e SA_PASSWORD=x2yiJt!Fs -e ACCEPT_EULA=y --name mango-mssql-db --hostname mango-mssql-db -p 1433:1433 -d mcr.microsoft.com/mssql/server:2019-latest`
 - Install Azurite: https://learn.microsoft.com/en-us/azure/storage/common/storage-use-azurite?tabs=npm
-   - `npm install -g azurite`
-   - `azurite --silent --location c:\azurite --debug c:\azurite\debug.log`
+    - `npm install -g azurite`
+    - `azurite --silent --location c:\azurite --debug c:\azurite\debug.log`
+    - Upload mock images from `./img/seed_images/*` to local Azure Blob container
 
 ## Technology stack
 
@@ -106,12 +118,11 @@ In case of localhost HTTPS certificate issues: https://stackoverflow.com/a/67182
     - API Documentation: `OpenAPI (Swagger)`
     - Realtime Communication: `SignalR`
     - Frontend Development: `Angular`
-    - Desktop Development: `ElectronJS`
-- **Unit and Integration Testing:** `XUnit`, `Moq`, `FluentAssertions`
-- **Code Quality Tools:** `SonarQube`, `CodeCov`
+- **Unit and Integration Testing:** `XUnit`, `FluentAssertions`
+- **Code Quality Tools:** `SonarQube`
 - **Containerization:** `Docker`
-- **Continuous Integration:** `GitHub Actions`
-- **Continuous Delivery:** `GitHub Actions`, `Heroku`, `Azure Devops`, `Azure Pipelines`
+- **Continuous Integration:** `Azure Pipelines`, `GitHub Actions`
+- **Continuous Deployment:** `Azure Pipelines`, `GitHub Actions`, `Azure DevOps`, `Azure App Service`
 - **Programming languages:** `C#`, `SQL`, `TypeScript`
 - **Tools & IDE:** `Visual Studio`, `Rider`, `VS Code`, `WebStorm`, `SMSS`, `Postman`
 
