@@ -48,11 +48,6 @@ jobs:
           dotnet MangoAPI.DiffieHellmanConsole.dll login $env:SENDER_EMAIL $env:SENDER_PASSWORD
           dotnet MangoAPI.DiffieHellmanConsole.dll cng-generate-private-key $env:RECEIVER_ID
           dotnet MangoAPI.DiffieHellmanConsole.dll cng-create-key-exchange $env:RECEIVER_ID
-#        env:
-#          SENDER_EMAIL: ${{ secrets.SENDER_EMAIL }}
-#          SENDER_PASSWORD: ${{ secrets.SENDER_PASSWORD }}
-#          MANGO_API_ADDRESS: ${{ secrets.MANGO_API_ADDRESS }}
-#          RECEIVER_ID: ${{ secrets.RECEIVER_ID }}
 
       - name: 🤝 Bob (Receiver) confirms Key Exchange Request with Alice 🤝
         working-directory: ./MangoAPI.DiffieHellmanConsole/bin/Debug/net6.0
@@ -62,11 +57,6 @@ jobs:
           dotnet MangoAPI.DiffieHellmanConsole.dll cng-generate-private-key $env:SENDER_ID
           dotnet MangoAPI.DiffieHellmanConsole.dll cng-print-key-exchanges
           dotnet MangoAPI.DiffieHellmanConsole.dll cng-confirm-key-exchange $env:SENDER_ID
-#        env:
-#          RECEIVER_EMAIL: ${{ secrets.RECEIVER_EMAIL }}
-#          RECEIVER_PASSWORD: ${{ secrets.RECEIVER_PASSWORD }}
-#          MANGO_API_ADDRESS: ${{ secrets.MANGO_API_ADDRESS }}
-#          SENDER_ID: ${{ secrets.SENDER_ID }}
 
       - name: 🔑 Bob (Receiver) derives the Common Secret 🔑
         working-directory: ./MangoAPI.DiffieHellmanConsole/bin/Debug/net6.0
@@ -74,9 +64,6 @@ jobs:
         run: |
           dotnet MangoAPI.DiffieHellmanConsole.dll cng-download-public-key --receiver $env:SENDER_ID
           dotnet MangoAPI.DiffieHellmanConsole.dll cng-create-common-secret --receiver $env:SENDER_ID
-#        env:
-#          MANGO_API_ADDRESS: ${{ secrets.MANGO_API_ADDRESS }}
-#          SENDER_ID: ${{ secrets.SENDER_ID }}
 
       - name: 🔑 Alice (Sender) derives the Common Secret 🔑
         working-directory: ./MangoAPI.DiffieHellmanConsole/bin/Debug/net6.0
@@ -86,18 +73,9 @@ jobs:
           dotnet MangoAPI.DiffieHellmanConsole.dll cng-print-key-exchanges
           dotnet MangoAPI.DiffieHellmanConsole.dll cng-download-public-key --sender $env:RECEIVER_ID
           dotnet MangoAPI.DiffieHellmanConsole.dll cng-create-common-secret --sender $env:RECEIVER_ID
-#        env:
-#          SENDER_EMAIL: ${{ secrets.SENDER_EMAIL }}
-#          SENDER_PASSWORD: ${{ secrets.SENDER_PASSWORD }}
-#          MANGO_API_ADDRESS: ${{ secrets.MANGO_API_ADDRESS }}
-#          RECEIVER_ID: ${{ secrets.RECEIVER_ID }}
 
       - name: ✅ Validate the Common Secret ✅
         working-directory: ./MangoAPI.DiffieHellmanConsole/bin/Debug/net6.0
         shell: powershell
         run: |
           dotnet MangoAPI.DiffieHellmanConsole.dll cng-validate-common-secret $env:SENDER_ID $env:RECEIVER_ID
-#        env:
-#          MANGO_API_ADDRESS: ${{ secrets.MANGO_API_ADDRESS }}
-#          RECEIVER_ID: ${{ secrets.RECEIVER_ID }}
-#          SENDER_ID: ${{ secrets.SENDER_ID }}
