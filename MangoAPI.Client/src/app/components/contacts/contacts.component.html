@@ -88,7 +88,9 @@
     </div>
     <div class='d-flex gap-fix' *ngIf="activeUserId !== currentUserId">
       <button class='button-dark py-2 px-4' *ngIf="isActiveUserContact" (click)="onStartDirectChatButtonClick(activeUserId)">Start Direct Chat</button>
-      <button class='button-dark py-2 px-4 ml-3' *ngIf="isActiveUserContact" (click)="onRemoveContactButtonClick(activeUserId)">Remove Contact</button>
+      <button class='button-dark py-2 px-4 ml-3' *ngIf="isActiveUserContact" (click)="onRemoveContactButtonClick(activeUserId)">
+        <span class='text-red' style='font-size: 16px;'>Remove Contact</span>
+      </button>
 
       <button class='button-dark py-2 px-4 ml-3' *ngIf="!isActiveUserContact" (click)="onAddContactClick(activeUser.userId)">
         Add Contact
