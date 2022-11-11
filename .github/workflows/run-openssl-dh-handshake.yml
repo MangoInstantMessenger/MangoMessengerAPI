@@ -29,13 +29,13 @@ jobs:
 
       - name: 🔄 Restore Nuget Packages 🔄
         run: |
-          dotnet restore ./MangoAPI.DiffieHellmanLibrary/MangoAPI.DiffieHellmanLibrary.csproj
-          dotnet restore ./MangoAPI.DiffieHellmanConsole/MangoAPI.DiffieHellmanConsole.csproj
+          dotnet restore MangoAPI.DiffieHellmanLibrary/MangoAPI.DiffieHellmanLibrary.csproj
+          dotnet restore MangoAPI.DiffieHellmanConsole/MangoAPI.DiffieHellmanConsole.csproj
 
       - name: 🛠 Build .NET Solution 🛠
         run: |
-          dotnet build ./MangoAPI.DiffieHellmanLibrary/MangoAPI.DiffieHellmanLibrary.csproj --no-restore
-          dotnet build ./MangoAPI.DiffieHellmanConsole/MangoAPI.DiffieHellmanConsole.csproj --no-restore
+          dotnet build MangoAPI.DiffieHellmanLibrary/MangoAPI.DiffieHellmanLibrary.csproj --no-restore
+          dotnet build MangoAPI.DiffieHellmanConsole/MangoAPI.DiffieHellmanConsole.csproj --no-restore
 
       - name: 🚀 Run OpenSSL Create & Upload DH Parameters 🚀
         working-directory: ./MangoAPI.DiffieHellmanConsole/bin/Debug/net6.0
