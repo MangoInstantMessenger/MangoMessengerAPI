@@ -8,7 +8,8 @@ import {Subject, takeUntil} from "rxjs";
 
 @Component({
   selector: 'app-create-group',
-  templateUrl: './create-group.component.html'
+  templateUrl: './create-group.component.html',
+  styleUrls: [ './create-group.component.scss' ]
 })
 export class CreateGroupComponent implements OnDestroy{
 
@@ -36,5 +37,9 @@ export class CreateGroupComponent implements OnDestroy{
         this._errorNotificationService.notifyOnError(error);
       }
     });
+  }
+
+  onCancelClick(): void {
+    this._router.navigateByUrl(RoutingConstants.Chats).then(r => r);
   }
 }
