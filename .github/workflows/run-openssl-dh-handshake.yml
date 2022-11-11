@@ -27,6 +27,9 @@ jobs:
         with:
           dotnet-version: 6.0.x
 
+      - name: ls
+        run: ls -lsa
+
       - name: 🔄 Restore Nuget Packages 🔄
         run: |
           dotnet restore MangoAPI.DiffieHellmanLibrary/MangoAPI.DiffieHellmanLibrary.csproj
