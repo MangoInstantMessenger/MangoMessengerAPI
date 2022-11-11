@@ -14,10 +14,13 @@ jobs:
       DOTNET_NOLOGO: 1
       DOTNET_CLI_TELEMETRY_OPTOUT: 1
       NUGET_PACKAGES: ${{ github.workspace }}/.github/nuget-packages
+      SENDER_ID: ${{ secrets.SENDER_ID }}
       SENDER_EMAIL: ${{ secrets.SENDER_EMAIL }}
       SENDER_PASSWORD: ${{ secrets.SENDER_PASSWORD }}
-      MANGO_API_ADDRESS: ${{ secrets.MANGO_API_ADDRESS }}
       RECEIVER_ID: ${{ secrets.RECEIVER_ID }}
+      RECEIVER_EMAIL: ${{ secrets.RECEIVER_EMAIL }}
+      RECEIVER_PASSWORD: ${{ secrets.RECEIVER_PASSWORD }}
+      MANGO_API_ADDRESS: ${{ secrets.MANGO_API_ADDRESS }}
 
     steps:
       - name: 📝 Fetch Sources 📝
@@ -27,12 +30,6 @@ jobs:
         uses: actions/setup-dotnet@v3
         with:
           dotnet-version: 6.0.x
-
-      - name: ♻ NuGet Cache ♻
-        uses: actions/cache@v2
-        with:
-          path: ${{ env.NUGET_PACKAGES }}
-          key: ${{ runner.os }}.nuget.${{ hashFiles('**/*.csproj') }}
 
       - name: 🔄 Restore Nuget Packages 🔄
         run: |
