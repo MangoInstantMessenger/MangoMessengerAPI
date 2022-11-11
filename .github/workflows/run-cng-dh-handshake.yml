@@ -6,74 +6,79 @@ on:
 jobs:
   run-cng-dh-handshake:
     runs-on: windows-latest
-    name: Run CNG DH Handshake
+    name: Run CNG Diffie-Hellman Handshake
+
+    env:
+      DOTNET_NOLOGO: 1
+      DOTNET_CLI_TELEMETRY_OPTOUT: 1
+      SENDER_ID: ${{ secrets.SENDER_ID }}
+      SENDER_EMAIL: ${{ secrets.SENDER_EMAIL }}
+      SENDER_PASSWORD: ${{ secrets.SENDER_PASSWORD }}
+      RECEIVER_ID: ${{ secrets.RECEIVER_ID }}
+      RECEIVER_EMAIL: ${{ secrets.RECEIVER_EMAIL }}
+      RECEIVER_PASSWORD: ${{ secrets.RECEIVER_PASSWORD }}
+      MANGO_API_ADDRESS: ${{ secrets.MANGO_API_ADDRESS }}
+
     steps:
       - name: 📝 Fetch Sources 📝
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
+
+      - name: ⚙ Setup .NET 6.0 SDK ⚙
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: 6.0.x
 
       - name: 🔄 Restore Nuget Packages 🔄
-        run: dotnet restore
+        run: |
+          dotnet restore ./MangoAPI.DiffieHellmanLibrary/MangoAPI.DiffieHellmanLibrary.csproj
+          dotnet restore ./MangoAPI.DiffieHellmanConsole/MangoAPI.DiffieHellmanConsole.csproj
 
       - name: 🛠 Build .NET Solution 🛠
-        run: dotnet build --no-restore /p:ContinuousIntegrationBuild=true
+        run: |
+          dotnet build ./MangoAPI.DiffieHellmanLibrary/MangoAPI.DiffieHellmanLibrary.csproj --no-restore
+          dotnet build ./MangoAPI.DiffieHellmanConsole/MangoAPI.DiffieHellmanConsole.csproj --no-restore
 
-      - name: 🔓 Alice (Sender) Creates Key Exchange Request to Bob 🔓
+      - name: 🔓 Alice (Sender) creates Key Exchange Request to Bob (Receiver) 🔓
+        working-directory: ./MangoAPI.DiffieHellmanConsole/bin/Debug/net6.0
         shell: powershell
         run: |
-          Set-Location "MangoAPI.DiffieHellmanConsole/bin/Debug/net6.0"
           dotnet MangoAPI.DiffieHellmanConsole.dll login $env:SENDER_EMAIL $env:SENDER_PASSWORD
           dotnet MangoAPI.DiffieHellmanConsole.dll cng-generate-private-key $env:RECEIVER_ID
           dotnet MangoAPI.DiffieHellmanConsole.dll cng-create-key-exchange $env:RECEIVER_ID
-        env:
-          SENDER_EMAIL: ${{ secrets.SENDER_EMAIL }}
-          SENDER_PASSWORD: ${{ secrets.SENDER_PASSWORD }}
-          MANGO_API_ADDRESS: ${{ secrets.MANGO_API_ADDRESS }}
-          RECEIVER_ID: ${{ secrets.RECEIVER_ID }}
 
-      - name: 🤝 Bob (Receiver) confirms Key Exchange Request with Alice 🤝
+      - name: 🤝 Bob (Receiver) confirms Key Exchange Request with Alice (Sender) 🤝
+        working-directory: ./MangoAPI.DiffieHellmanConsole/bin/Debug/net6.0
         shell: powershell
         run: |
-          Set-Location "MangoAPI.DiffieHellmanConsole/bin/Debug/net6.0"
           dotnet MangoAPI.DiffieHellmanConsole.dll login $env:RECEIVER_EMAIL $env:RECEIVER_PASSWORD
           dotnet MangoAPI.DiffieHellmanConsole.dll cng-generate-private-key $env:SENDER_ID
           dotnet MangoAPI.DiffieHellmanConsole.dll cng-print-key-exchanges
           dotnet MangoAPI.DiffieHellmanConsole.dll cng-confirm-key-exchange $env:SENDER_ID
-        env:
-          RECEIVER_EMAIL: ${{ secrets.RECEIVER_EMAIL }}
-          RECEIVER_PASSWORD: ${{ secrets.RECEIVER_PASSWORD }}
-          MANGO_API_ADDRESS: ${{ secrets.MANGO_API_ADDRESS }}
-          SENDER_ID: ${{ secrets.SENDER_ID }}
 
       - name: 🔑 Bob (Receiver) derives the Common Secret 🔑
+        working-directory: ./MangoAPI.DiffieHellmanConsole/bin/Debug/net6.0
         shell: powershell
         run: |
-          Set-Location "MangoAPI.DiffieHellmanConsole/bin/Debug/net6.0"
           dotnet MangoAPI.DiffieHellmanConsole.dll cng-download-public-key --receiver $env:SENDER_ID
           dotnet MangoAPI.DiffieHellmanConsole.dll cng-create-common-secret --receiver $env:SENDER_ID
-        env:
-          MANGO_API_ADDRESS: ${{ secrets.MANGO_API_ADDRESS }}
-          SENDER_ID: ${{ secrets.SENDER_ID }}
 
       - name: 🔑 Alice (Sender) derives the Common Secret 🔑
+        working-directory: ./MangoAPI.DiffieHellmanConsole/bin/Debug/net6.0
         shell: powershell
         run: |
-          Set-Location "MangoAPI.DiffieHellmanConsole/bin/Debug/net6.0"
           dotnet MangoAPI.DiffieHellmanConsole.dll login $env:SENDER_EMAIL $env:SENDER_PASSWORD
           dotnet MangoAPI.DiffieHellmanConsole.dll cng-print-key-exchanges
           dotnet MangoAPI.DiffieHellmanConsole.dll cng-download-public-key --sender $env:RECEIVER_ID
           dotnet MangoAPI.DiffieHellmanConsole.dll cng-create-common-secret --sender $env:RECEIVER_ID
-        env:
-          SENDER_EMAIL: ${{ secrets.SENDER_EMAIL }}
-          SENDER_PASSWORD: ${{ secrets.SENDER_PASSWORD }}
-          MANGO_API_ADDRESS: ${{ secrets.MANGO_API_ADDRESS }}
-          RECEIVER_ID: ${{ secrets.RECEIVER_ID }}
 
       - name: ✅ Validate the Common Secret ✅
+        working-directory: ./MangoAPI.DiffieHellmanConsole/bin/Debug/net6.0
         shell: powershell
         run: |
-          Set-Location "MangoAPI.DiffieHellmanConsole/bin/Debug/net6.0"
           dotnet MangoAPI.DiffieHellmanConsole.dll cng-validate-common-secret $env:SENDER_ID $env:RECEIVER_ID
-        env:
-          MANGO_API_ADDRESS: ${{ secrets.MANGO_API_ADDRESS }}
-          RECEIVER_ID: ${{ secrets.RECEIVER_ID }}
-          SENDER_ID: ${{ secrets.SENDER_ID }}
+
+      - name: 📦 Drop Artifact 📦
+        uses: actions/upload-artifact@v3
+        with:
+          name: cng-common-secret
+          path: MangoAPI.DiffieHellmanConsole/CngWorkingDirectory/CngCommonSecrets
