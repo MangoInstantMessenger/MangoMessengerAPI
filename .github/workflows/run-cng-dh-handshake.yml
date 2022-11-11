@@ -13,11 +13,20 @@ jobs:
       - name: 📝 Fetch Sources 📝
         uses: actions/checkout@v2
 
+      - name: ⚙ Setup .NET 6.0 SDK ⚙
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: 6.0.x
+
       - name: 🔄 Restore Nuget Packages 🔄
-        run: dotnet restore
+        run: |
+          dotnet restore ./MangoAPI.DiffieHellmanLibrary/MangoAPI.DiffieHellmanLibrary.csproj
+          dotnet restore ./MangoAPI.DiffieHellmanConsole/MangoAPI.DiffieHellmanConsole.csproj
 
       - name: 🛠 Build .NET Solution 🛠
-        run: dotnet build --no-restore /p:ContinuousIntegrationBuild=true
+        run: |
+          dotnet build ./MangoAPI.DiffieHellmanLibrary/MangoAPI.DiffieHellmanLibrary.csproj --no-restore
+          dotnet build ./MangoAPI.DiffieHellmanConsole/MangoAPI.DiffieHellmanConsole.csproj --no-restore
 
       - name: 🔓 Alice (Sender) Creates Key Exchange Request to Bob 🔓
         working-directory: ./MangoAPI.DiffieHellmanConsole/bin/Debug/net6.0
