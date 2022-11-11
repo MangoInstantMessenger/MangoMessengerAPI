@@ -13,7 +13,6 @@ jobs:
     env:
       DOTNET_NOLOGO: 1
       DOTNET_CLI_TELEMETRY_OPTOUT: 1
-      NUGET_PACKAGES: ${{ github.workspace }}/.github/nuget-packages
       SENDER_ID: ${{ secrets.SENDER_ID }}
       SENDER_EMAIL: ${{ secrets.SENDER_EMAIL }}
       SENDER_PASSWORD: ${{ secrets.SENDER_PASSWORD }}
@@ -41,7 +40,7 @@ jobs:
           dotnet build ./MangoAPI.DiffieHellmanLibrary/MangoAPI.DiffieHellmanLibrary.csproj --no-restore
           dotnet build ./MangoAPI.DiffieHellmanConsole/MangoAPI.DiffieHellmanConsole.csproj --no-restore
 
-      - name: 🔓 Alice (Sender) Creates Key Exchange Request to Bob 🔓
+      - name: 🔓 Alice (Sender) creates Key Exchange Request to Bob (Receiver) 🔓
         working-directory: ./MangoAPI.DiffieHellmanConsole/bin/Debug/net6.0
         shell: powershell
         run: |
@@ -49,7 +48,7 @@ jobs:
           dotnet MangoAPI.DiffieHellmanConsole.dll cng-generate-private-key $env:RECEIVER_ID
           dotnet MangoAPI.DiffieHellmanConsole.dll cng-create-key-exchange $env:RECEIVER_ID
 
-      - name: 🤝 Bob (Receiver) confirms Key Exchange Request with Alice 🤝
+      - name: 🤝 Bob (Receiver) confirms Key Exchange Request with Alice (Sender) 🤝
         working-directory: ./MangoAPI.DiffieHellmanConsole/bin/Debug/net6.0
         shell: powershell
         run: |
@@ -79,3 +78,9 @@ jobs:
         shell: powershell
         run: |
           dotnet MangoAPI.DiffieHellmanConsole.dll cng-validate-common-secret $env:SENDER_ID $env:RECEIVER_ID
+
+      - name: 📦 Drop Artifact 📦
+        uses: actions/upload-artifact@v3
+        with:
+          name: cng-common-secret
+          path: MangoAPI.DiffieHellmanConsole/CngWorkingDirectory/CngCommonSecrets
