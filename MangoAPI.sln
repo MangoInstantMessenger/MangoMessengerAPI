@@ -48,9 +48,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "legacy_workflows", "legacy_
 		.github\legacy_workflows\azure-qa-vm-ssh-deploy.yml = .github\legacy_workflows\azure-qa-vm-ssh-deploy.yml
 		.github\legacy_workflows\heroku-container-deploy.yml = .github\legacy_workflows\heroku-container-deploy.yml
 		.github\legacy_workflows\run-angular-sonarqube-analysis.yml = .github\legacy_workflows\run-angular-sonarqube-analysis.yml
-		.github\legacy_workflows\run-cng-dh-handshake.yml = .github\legacy_workflows\run-cng-dh-handshake.yml
 		.github\legacy_workflows\run-dotnet-sonarqube-analysis.yml = .github\legacy_workflows\run-dotnet-sonarqube-analysis.yml
-		.github\legacy_workflows\run-openssl-dh-handshake.yml = .github\legacy_workflows\run-openssl-dh-handshake.yml
 		.github\legacy_workflows\run-build-and-test-dotnet-angular.yml = .github\legacy_workflows\run-build-and-test-dotnet-angular.yml
 	EndProjectSection
 EndProject
@@ -95,6 +93,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "seed_images", "seed_images"
 		img\seed_images\serhii_picture.png = img\seed_images\serhii_picture.png
 		img\seed_images\szymon_picture.png = img\seed_images\szymon_picture.png
 		img\seed_images\wsb_group_logo.png = img\seed_images\wsb_group_logo.png
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "workflows", "workflows", "{8AEBB05F-C450-4E77-8B91-9155BFB4FD56}"
+	ProjectSection(SolutionItems) = preProject
+		.github\workflows\run-cng-dh-handshake.yml = .github\workflows\run-cng-dh-handshake.yml
+		.github\workflows\run-openssl-dh-handshake.yml = .github\workflows\run-openssl-dh-handshake.yml
 	EndProjectSection
 EndProject
 Global
@@ -142,6 +146,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{E70E0E28-1954-4AC7-8C05-B8C221252450} = {B8CB0A21-BB6E-478B-A755-49CEA1435CD1}
 		{180A6309-24EE-4736-9DE5-AB36997D75BB} = {64F59099-7FFD-4D32-8C74-2BD1EBFF0B11}
+		{8AEBB05F-C450-4E77-8B91-9155BFB4FD56} = {B8CB0A21-BB6E-478B-A755-49CEA1435CD1}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {64B16C18-46ED-4D73-927F-B2E229345447}
