@@ -30,16 +30,6 @@ public class LogoutAllCommandHandler
         var userSessions = dbContext.Sessions
             .Where(entity => entity.UserId == request.UserId);
 
-        var sessionExists = await userSessions.AnyAsync(cancellationToken);
-
-        if (!sessionExists)
-        {
-            const string errorMessage = ResponseMessageCodes.SessionNotFound;
-            var details = ResponseMessageCodes.ErrorDictionary[errorMessage];
-
-            return responseFactory.ConflictResponse(errorMessage, details);
-        }
-
         dbContext.Sessions.RemoveRange(userSessions);
 
         await dbContext.SaveChangesAsync(cancellationToken);

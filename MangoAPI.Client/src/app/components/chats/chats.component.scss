@@ -2,6 +2,14 @@
   gap: 10px !important;
 }
 
+.button-fix {
+  padding: 25px;
+  font-size: 25px;
+  position: static;
+  width: 100%;
+  border-radius: 0 !important;
+}
+
 .no-hover {
   pointer-events: none;
 }

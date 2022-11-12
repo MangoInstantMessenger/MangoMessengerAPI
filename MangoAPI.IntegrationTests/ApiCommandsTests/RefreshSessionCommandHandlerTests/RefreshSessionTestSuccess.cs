@@ -18,7 +18,7 @@ public class RefreshSessionTestSuccess : IntegrationTestBase
         var user = await MangoModule.RequestAsync(
             request: CommandHelper.RegisterPetroCommand(),
             cancellationToken: CancellationToken.None);
-        var userId = user.Response.UserId;
+        var userId = user.Response.Tokens.UserId;
         var userEntity = await DbContextFixture.Users.FirstAsync(x => x.Id == userId);
         await MangoModule.RequestAsync(
             request: CommandHelper.CreateVerifyEmailCommand(userEntity.Email, userEntity.EmailCode),

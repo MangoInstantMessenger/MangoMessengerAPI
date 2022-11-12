@@ -18,9 +18,9 @@ public class ArchiveChatTestSuccess : IntegrationTestBase
             await MangoModule.RequestAsync(CommandHelper.RegisterPetroCommand(), CancellationToken.None);
         var chat =
             await MangoModule.RequestAsync(
-                CommandHelper.CreateExtremeCodeMainChatCommand(user.Response.UserId),
+                CommandHelper.CreateExtremeCodeMainChatCommand(user.Response.Tokens.UserId),
                 CancellationToken.None);
-        var command = new ArchiveChatCommand(ChatId: chat.Response.ChatId, UserId: user.Response.UserId);
+        var command = new ArchiveChatCommand(ChatId: chat.Response.ChatId, UserId: user.Response.Tokens.UserId);
 
         var result = await MangoModule.RequestAsync(command, CancellationToken.None);
 

@@ -8,4 +8,4 @@ public record RegisterCommand(
         string DisplayName,
         string Password,
         bool TermsAccepted)
-    : IRequest<Result<RegisterResponse>>;
+    : IRequest<Result<TokensResponse>>;

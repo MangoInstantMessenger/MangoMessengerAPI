@@ -20,7 +20,7 @@ public class DeleteContactShouldThrowContactNotFound : IntegrationTestBase
         var expectedDetails = ResponseMessageCodes.ErrorDictionary[expectedMessage];
         var user =
             await MangoModule.RequestAsync(CommandHelper.RegisterPetroCommand(), CancellationToken.None);
-        var command = new DeleteContactCommand(UserId: user.Response.UserId, ContactId: Guid.NewGuid());
+        var command = new DeleteContactCommand(UserId: user.Response.Tokens.UserId, ContactId: Guid.NewGuid());
 
         var result = await MangoModule.RequestAsync(command, CancellationToken.None);
 

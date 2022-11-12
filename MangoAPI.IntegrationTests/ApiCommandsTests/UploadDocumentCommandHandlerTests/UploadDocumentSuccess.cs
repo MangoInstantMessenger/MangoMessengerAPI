@@ -18,7 +18,7 @@ public class UploadDocumentSuccess : IntegrationTestBase
             request: CommandHelper.RegisterPetroCommand(),
             cancellationToken: CancellationToken.None);
         var command =
-            new UploadDocumentCommand(FormFile: file, UserId: user.Response.UserId, ContentType: "image/jpeg");
+            new UploadDocumentCommand(FormFile: file, UserId: user.Response.Tokens.UserId, ContentType: "image/jpeg");
 
         var result = await MangoModule.RequestAsync(command, CancellationToken.None);
 

@@ -22,7 +22,7 @@ public class DeclineKeyExchangeShouldThrowKeyExchangeRequestNotFound : Integrati
             await MangoModule.RequestAsync(CommandHelper.RegisterPetroCommand(), CancellationToken.None);
         var command = new DeclineKeyExchangeCommand(
             RequestId: Guid.NewGuid(),
-            UserId: requestedUser.Response.UserId);
+            UserId: requestedUser.Response.Tokens.UserId);
 
         var response = await MangoModule.RequestAsync(command, CancellationToken.None);
 

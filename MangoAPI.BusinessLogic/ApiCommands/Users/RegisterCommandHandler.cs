@@ -12,23 +12,32 @@ using Microsoft.EntityFrameworkCore;
 
 namespace MangoAPI.BusinessLogic.ApiCommands.Users;
 
-public class RegisterCommandHandler : IRequestHandler<RegisterCommand, Result<RegisterResponse>>
+public class RegisterCommandHandler : IRequestHandler<RegisterCommand, Result<TokensResponse>>
 {
     private readonly MangoDbContext dbContext;
     private readonly IUserManagerService userManager;
-    private readonly ResponseFactory<RegisterResponse> responseFactory;
+    private readonly ResponseFactory<TokensResponse> responseFactory;
+    private readonly IJwtGenerator jwtGenerator;
+    private readonly IJwtGeneratorSettings jwtGeneratorSettings;
+    private readonly IBlobServiceSettings blobServiceSettings;
 
     public RegisterCommandHandler(
         IUserManagerService userManager,
         MangoDbContext dbContext,
-        ResponseFactory<RegisterResponse> responseFactory)
+        IJwtGenerator jwtGenerator,
+        IJwtGeneratorSettings jwtGeneratorSettings,
+        ResponseFactory<TokensResponse> responseFactory,
+        IBlobServiceSettings blobServiceSettings)
     {
         this.userManager = userManager;
         this.dbContext = dbContext;
         this.responseFactory = responseFactory;
+        this.jwtGenerator = jwtGenerator;
+        this.jwtGeneratorSettings = jwtGeneratorSettings;
+        this.blobServiceSettings = blobServiceSettings;
     }
 
-    public async Task<Result<RegisterResponse>> Handle(RegisterCommand request, CancellationToken cancellationToken)
+    public async Task<Result<TokensResponse>> Handle(RegisterCommand request, CancellationToken cancellationToken)
     {
         var userExists = await dbContext.Users
             .AnyAsync(entity => entity.Email == request.Email, cancellationToken);
@@ -64,9 +73,32 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, Result<Re
 
         dbContext.UserInformation.Add(userInfo);
 
+        var session = new SessionEntity
+        {
+            UserId = newUser.Id,
+            RefreshToken = Guid.NewGuid(),
+            ExpiresAt = DateTime.UtcNow.AddDays(jwtGeneratorSettings.MangoRefreshTokenLifetimeDays),
+            CreatedAt = DateTime.UtcNow,
+        };
+
+        var accessToken = jwtGenerator.GenerateJwtToken(newUser);
+
+        dbContext.Sessions.Add(session);
+
         await dbContext.SaveChangesAsync(cancellationToken);
 
-        var response = RegisterResponse.FromSuccess(newUser.Id);
+        var expires = ((DateTimeOffset)session.ExpiresAt).ToUnixTimeSeconds();
+        var userDisplayName = newUser.DisplayName;
+        var userProfilePictureUrl = $"{blobServiceSettings.MangoBlobAccess}/{newUser.Image}";
+
+        var response = TokensResponse.FromSuccess(
+            accessToken,
+            session.RefreshToken,
+            newUser.Id,
+            expires,
+            userDisplayName,
+            userProfilePictureUrl,
+            newUser.DisplayNameColour);
         var result = responseFactory.SuccessResponse(response);
 
         return result;

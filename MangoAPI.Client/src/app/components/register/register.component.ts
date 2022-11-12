@@ -6,6 +6,7 @@ import {ValidationService} from "../../services/messenger/validation.service";
 import {ErrorNotificationService} from "../../services/messenger/error-notification.service";
 import {RoutingConstants} from "../../types/constants/RoutingConstants";
 import {Subject, takeUntil} from "rxjs";
+import { TokensService } from 'src/app/services/messenger/tokens.service';
 
 @Component({
   selector: 'app-register',
@@ -15,6 +16,7 @@ export class RegisterComponent implements OnDestroy {
   constructor(private _router: Router,
               private _usersService: UsersService,
               private _validationService: ValidationService,
+              private _tokensService: TokensService,
               private _errorNotificationService: ErrorNotificationService) {
   }
 
@@ -51,8 +53,9 @@ export class RegisterComponent implements OnDestroy {
     }
 
     this._usersService.createUser(this.registerCommand).pipe(takeUntil(this.componentDestroyed$)).subscribe({
-      next: _ => {
-        this._router.navigateByUrl(this.routingConstants.CheckEmailNote).then(r => r);
+      next: response => {
+        this._tokensService.setTokens(response.tokens);
+        this._router.navigateByUrl(this.routingConstants.Chats).then(r => r);
       },
       error: error => {
         this._errorNotificationService.notifyOnError(error);

@@ -18,7 +18,7 @@ public class CreateChannelTestSuccess : IntegrationTestBase
 
         var result =
             await MangoModule.RequestAsync(
-                CommandHelper.CreateExtremeCodeMainChatCommand(user.Response.UserId),
+                CommandHelper.CreateExtremeCodeMainChatCommand(user.Response.Tokens.UserId),
                 CancellationToken.None);
 
         assert.Pass(result);

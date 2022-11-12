@@ -21,7 +21,7 @@ public class LogoutTestShouldThrowUserNotFound : IntegrationTestBase
         var user = await MangoModule.RequestAsync(
             request: CommandHelper.RegisterPetroCommand(),
             cancellationToken: CancellationToken.None);
-        var userId = user.Response.UserId;
+        var userId = user.Response.Tokens.UserId;
         var userEntity = await DbContextFixture.Users.FirstOrDefaultAsync(x => x.Id == userId);
         await MangoModule.RequestAsync(
             request: CommandHelper.CreateVerifyEmailCommand(userEntity.Email, userEntity.EmailCode),
@@ -29,7 +29,7 @@ public class LogoutTestShouldThrowUserNotFound : IntegrationTestBase
         var user1 = await MangoModule.RequestAsync(
             request: CommandHelper.RegisterKhachaturCommand(),
             cancellationToken: CancellationToken.None);
-        var userId1 = user1.Response.UserId;
+        var userId1 = user1.Response.Tokens.UserId;
         var userEntity1 = await DbContextFixture.Users.FirstOrDefaultAsync(x => x.Id == userId1);
         await MangoModule.RequestAsync(
             request: CommandHelper.CreateVerifyEmailCommand(userEntity1.Email, userEntity1.EmailCode),

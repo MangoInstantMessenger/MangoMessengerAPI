@@ -22,17 +22,17 @@ public class DownloadPartnerPublicKeyTestSuccess : IntegrationTestBase
         var publicKey = MangoFilesHelper.GetTestImage();
         var keyExchange = await MangoModule.RequestAsync(
             request: CommandHelper.CreateOpenSslCreateKeyExchangeCommand(
-                receiverId: receiver.Response.UserId,
-                senderId: sender.Response.UserId,
+                receiverId: receiver.Response.Tokens.UserId,
+                senderId: sender.Response.Tokens.UserId,
                 senderPublicKey: publicKey),
             cancellationToken: CancellationToken.None);
         await MangoModule.RequestAsync(
             request: CommandHelper.CreateOpenSslConfirmKeyExchangeCommand(
                 requestId: keyExchange.Response.RequestId,
-                userId: receiver.Response.UserId,
+                userId: receiver.Response.Tokens.UserId,
                 receiverPublicKey: publicKey),
             cancellationToken: CancellationToken.None);
-        var query = new DownloadPartnerPublicKeyQuery(receiver.Response.UserId, keyExchange.Response.RequestId);
+        var query = new DownloadPartnerPublicKeyQuery(receiver.Response.Tokens.UserId, keyExchange.Response.RequestId);
 
         var response =
             await MangoModule.RequestAsync(query, CancellationToken.None);

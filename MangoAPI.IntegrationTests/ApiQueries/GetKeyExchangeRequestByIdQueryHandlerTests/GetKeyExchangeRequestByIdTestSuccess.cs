@@ -20,11 +20,11 @@ public class GetKeyExchangeRequestByIdTestSuccess : IntegrationTestBase
         var publicKey = MangoFilesHelper.GetTestImage();
         var keyExchange = await MangoModule.RequestAsync(
             request: CommandHelper.CreateOpenSslCreateKeyExchangeCommand(
-                receiverId: sender.Response.UserId,
-                senderId: requestedUser.Response.UserId,
+                receiverId: sender.Response.Tokens.UserId,
+                senderId: requestedUser.Response.Tokens.UserId,
                 senderPublicKey: publicKey),
             cancellationToken: CancellationToken.None);
-        var query = new GetKeyExchangeRequestByIdQuery(sender.Response.UserId, keyExchange.Response.RequestId);
+        var query = new GetKeyExchangeRequestByIdQuery(sender.Response.Tokens.UserId, keyExchange.Response.RequestId);
 
         var response = await MangoModule.RequestAsync(query, CancellationToken.None);
 

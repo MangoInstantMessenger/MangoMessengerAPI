@@ -22,10 +22,10 @@ public class EditMessageShouldThrowMessageNotFound : IntegrationTestBase
             await MangoModule.RequestAsync(CommandHelper.RegisterPetroCommand(), CancellationToken.None);
         var chat =
             await MangoModule.RequestAsync(
-                request: CommandHelper.CreateExtremeCodeMainChatCommand(user.Response.UserId),
+                request: CommandHelper.CreateExtremeCodeMainChatCommand(user.Response.Tokens.UserId),
                 cancellationToken: CancellationToken.None);
         var command = new EditMessageCommand(
-            UserId: user.Response.UserId,
+            UserId: user.Response.Tokens.UserId,
             ChatId: chat.Response.ChatId,
             MessageId: Guid.NewGuid(),
             ModifiedText: "Modified text");

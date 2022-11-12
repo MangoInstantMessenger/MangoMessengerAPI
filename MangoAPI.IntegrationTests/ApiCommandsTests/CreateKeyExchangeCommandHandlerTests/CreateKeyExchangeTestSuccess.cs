@@ -18,8 +18,8 @@ public class CreateKeyExchangeTestSuccess : IntegrationTestBase
         var requestedUser =
             await MangoModule.RequestAsync(CommandHelper.RegisterPetroCommand(), CancellationToken.None);
         var command = CommandHelper.CreateOpenSslCreateKeyExchangeCommand(
-            receiverId: sender.Response.UserId,
-            senderId: requestedUser.Response.UserId,
+            receiverId: sender.Response.Tokens.UserId,
+            senderId: requestedUser.Response.Tokens.UserId,
             senderPublicKey: MangoFilesHelper.GetTestImage());
 
         var response = await MangoModule.RequestAsync(command, CancellationToken.None);

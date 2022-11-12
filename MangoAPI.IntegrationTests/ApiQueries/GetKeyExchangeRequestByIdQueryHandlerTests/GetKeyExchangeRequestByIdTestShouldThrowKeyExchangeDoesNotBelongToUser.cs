@@ -24,8 +24,8 @@ public class GetKeyExchangeRequestByIdTestShouldThrowKeyExchangeDoesNotBelongToU
         var publicKey = MangoFilesHelper.GetTestImage();
         var keyExchange = await MangoModule.RequestAsync(
             request: CommandHelper.CreateOpenSslCreateKeyExchangeCommand(
-                receiverId: sender.Response.UserId,
-                senderId: requestedUser.Response.UserId,
+                receiverId: sender.Response.Tokens.UserId,
+                senderId: requestedUser.Response.Tokens.UserId,
                 senderPublicKey: publicKey),
             cancellationToken: CancellationToken.None);
         var query = new GetKeyExchangeRequestByIdQuery(Guid.NewGuid(), keyExchange.Response.RequestId);

@@ -18,9 +18,9 @@ public class GetCurrentUserChatsTestSuccess : IntegrationTestBase
             request: CommandHelper.RegisterPetroCommand(),
             cancellationToken: CancellationToken.None);
         await MangoModule.RequestAsync(
-            request: CommandHelper.CreateExtremeCodeMainChatCommand(user.Response.UserId),
+            request: CommandHelper.CreateExtremeCodeMainChatCommand(user.Response.Tokens.UserId),
             cancellationToken: CancellationToken.None);
-        var query = new GetCurrentUserChatsQuery(UserId: user.Response.UserId);
+        var query = new GetCurrentUserChatsQuery(UserId: user.Response.Tokens.UserId);
 
         var result = await MangoModule.RequestAsync(query, CancellationToken.None);
 

@@ -20,8 +20,8 @@ public class AddContactShouldThrowContactExists : IntegrationTestBase
         var sender = await MangoModule.RequestAsync(CommandHelper.RegisterKhachaturCommand(), CancellationToken.None);
         var receiver = await MangoModule.RequestAsync(CommandHelper.RegisterPetroCommand(), CancellationToken.None);
         var command = new AddContactCommand(
-            UserId: sender.Response.UserId,
-            ContactId: receiver.Response.UserId);
+            UserId: sender.Response.Tokens.UserId,
+            ContactId: receiver.Response.Tokens.UserId);
         await MangoModule.RequestAsync(command, CancellationToken.None);
 
         var result = await MangoModule.RequestAsync(command, CancellationToken.None);

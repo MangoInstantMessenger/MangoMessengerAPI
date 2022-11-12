@@ -15,7 +15,7 @@ public class LoginTestSuccess : IntegrationTestBase
     public async Task LoginTest_Success()
     {
         var user = await MangoModule.RequestAsync(CommandHelper.RegisterPetroCommand(), CancellationToken.None);
-        var userId = user.Response.UserId;
+        var userId = user.Response.Tokens.UserId;
         var userEntity = await DbContextFixture.Users.FirstOrDefaultAsync(x => x.Id == userId);
         await MangoModule.RequestAsync(
             request: CommandHelper.CreateVerifyEmailCommand(userEntity.Email, userEntity.EmailCode),

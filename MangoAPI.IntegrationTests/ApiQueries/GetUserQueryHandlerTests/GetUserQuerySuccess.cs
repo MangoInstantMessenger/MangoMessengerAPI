@@ -16,11 +16,11 @@ public class GetUserQuerySuccess : IntegrationTestBase
     {
         var user =
             await MangoModule.RequestAsync(CommandHelper.RegisterPetroCommand(), CancellationToken.None);
-        var query = new GetUserQuery(UserId: user.Response.UserId);
+        var query = new GetUserQuery(UserId: user.Response.Tokens.UserId);
 
         var result = await MangoModule.RequestAsync(query, CancellationToken.None);
 
         assert.Pass(result);
-        result.Response.User.UserId.Should().Be(user.Response.UserId);
+        result.Response.User.UserId.Should().Be(user.Response.Tokens.UserId);
     }
 }
