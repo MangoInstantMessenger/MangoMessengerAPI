@@ -12,6 +12,7 @@ import { SearchContactsResponse } from '../../types/responses/SearchContactsResp
 import { ChangePasswordCommand } from '../../types/requests/ChangePasswordCommand';
 import { User } from '../../types/models/User';
 import { UpdateProfilePictureResponse } from '../../types/responses/UpdateProfilePictureResponse';
+import { TokensResponse } from 'src/app/types/responses/TokensResponse';
 
 @Injectable({
   providedIn: 'root'
@@ -39,8 +40,8 @@ export class UsersService {
   }
 
   // POST /api/users
-  createUser(command: RegisterCommand): Observable<BaseResponse> {
-    return this.httpClient.post<BaseResponse>(
+  createUser(command: RegisterCommand): Observable<TokensResponse> {
+    return this.httpClient.post<TokensResponse>(
       environment.baseUrl + this.usersRoute,
       command
     );
