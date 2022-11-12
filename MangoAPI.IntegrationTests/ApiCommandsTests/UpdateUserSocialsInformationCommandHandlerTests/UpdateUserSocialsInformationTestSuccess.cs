@@ -18,7 +18,7 @@ public class UpdateUserSocialsInformationTestSuccess : IntegrationTestBase
             request: CommandHelper.RegisterPetroCommand(),
             cancellationToken: CancellationToken.None);
         var command = new UpdateUserSocialInformationCommand(
-            UserId: user.Response.UserId,
+            UserId: user.Response.Tokens.UserId,
             Instagram: "petro.kolosov",
             LinkedIn: "petro.kolosov",
             Facebook: "petro.kolosov",

@@ -18,8 +18,8 @@ public class CreateChatTestSuccess : IntegrationTestBase
         var partner =
             await MangoModule.RequestAsync(CommandHelper.RegisterKhachaturCommand(), CancellationToken.None);
         var command = new CreateChatCommand(
-            UserId: user.Response.UserId,
-            PartnerId: partner.Response.UserId);
+            UserId: user.Response.Tokens.UserId,
+            PartnerId: partner.Response.Tokens.UserId);
 
         var result = await MangoModule.RequestAsync(command, CancellationToken.None);
 

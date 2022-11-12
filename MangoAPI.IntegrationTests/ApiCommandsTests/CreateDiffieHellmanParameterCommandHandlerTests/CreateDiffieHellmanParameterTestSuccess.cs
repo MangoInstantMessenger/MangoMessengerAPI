@@ -18,7 +18,7 @@ public class CreateDiffieHellmanParameterTestSuccess : IntegrationTestBase
             cancellationToken: CancellationToken.None);
         var command = new CreateDiffieHellmanParameterCommand(
             DiffieHellmanParameter: MangoFilesHelper.GetTestImage(),
-            UserId: user.Response.UserId);
+            UserId: user.Response.Tokens.UserId);
 
         var response = await MangoModule.RequestAsync(
             request: command, cancellationToken: CancellationToken.None);

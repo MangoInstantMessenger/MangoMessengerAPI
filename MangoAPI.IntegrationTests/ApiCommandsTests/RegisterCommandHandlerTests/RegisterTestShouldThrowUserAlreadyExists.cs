@@ -1,6 +1,6 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
-using MangoAPI.BusinessLogic.ApiCommands.Users;
+using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.Domain.Constants;
 using MangoAPI.IntegrationTests.Helpers;
 using Xunit;
@@ -9,7 +9,7 @@ namespace MangoAPI.IntegrationTests.ApiCommandsTests.RegisterCommandHandlerTests
 
 public class RegisterTestShouldThrowUserAlreadyExists : IntegrationTestBase
 {
-    private readonly Assert<RegisterResponse> assert = new();
+    private readonly Assert<TokensResponse> assert = new();
 
     [Fact]
     public async Task RegisterTestShouldThrow_UserAlreadyExists()

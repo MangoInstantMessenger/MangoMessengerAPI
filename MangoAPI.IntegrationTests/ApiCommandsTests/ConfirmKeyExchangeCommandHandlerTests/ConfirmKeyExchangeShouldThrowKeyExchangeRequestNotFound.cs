@@ -22,7 +22,7 @@ public class ConfirmKeyExchangeShouldThrowKeyExchangeRequestNotFound : Integrati
             await MangoModule.RequestAsync(CommandHelper.RegisterPetroCommand(), CancellationToken.None);
         var command = new ConfirmKeyExchangeCommand(
             RequestId: Guid.NewGuid(),
-            UserId: requestedUser.Response.UserId,
+            UserId: requestedUser.Response.Tokens.UserId,
             ReceiverPublicKey: MangoFilesHelper.GetTestImage());
 
         var response = await MangoModule.RequestAsync(command, CancellationToken.None);

@@ -19,7 +19,7 @@ public class UpdateUserAccountInfoTestSuccess : IntegrationTestBase
             request: CommandHelper.RegisterPetroCommand(),
             cancellationToken: CancellationToken.None);
         var command = new UpdateUserAccountInfoCommand(
-            UserId: user.Response.UserId,
+            UserId: user.Response.Tokens.UserId,
             Username: "Petro_Kolosov",
             DisplayName: "Petro Kolosov",
             Website: "pkolosov.com",

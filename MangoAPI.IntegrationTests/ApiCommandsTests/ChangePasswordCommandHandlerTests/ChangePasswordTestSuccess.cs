@@ -17,7 +17,7 @@ public class ChangePasswordTestSuccess : IntegrationTestBase
         var user =
             await MangoModule.RequestAsync(CommandHelper.RegisterPetroCommand(), CancellationToken.None);
         var command = new ChangePasswordCommand(
-            UserId: user.Response.UserId,
+            UserId: user.Response.Tokens.UserId,
             CurrentPassword: "Bm3-`dPRv-/w#3)cw^97",
             NewPassword: "Gm3-`xPRr-/q#6)re^94",
             RepeatNewPassword: "Gm3-`xPRr-/q#6)re^94");

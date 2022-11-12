@@ -23,7 +23,7 @@ public class
             CancellationToken.None);
         var file = MangoFilesHelper.GetTestImage();
         var command = new UpdateChanelPictureCommand(
-            UserId: sender.Response.UserId,
+            UserId: sender.Response.Tokens.UserId,
             ChatId: Guid.NewGuid(),
             NewGroupPicture: file,
             ContentType: "image/jpeg");

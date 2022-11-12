@@ -19,7 +19,7 @@ public class DownloadPartnerPublicKeyTestShouldThrowKeyExchangeRequestNotFound :
         var expectedDetails = ResponseMessageCodes.ErrorDictionary[expectedMessage];
         var requestedUser =
             await MangoModule.RequestAsync(CommandHelper.RegisterPetroCommand(), CancellationToken.None);
-        var query = new DownloadPartnerPublicKeyQuery(requestedUser.Response.UserId, Guid.NewGuid());
+        var query = new DownloadPartnerPublicKeyQuery(requestedUser.Response.Tokens.UserId, Guid.NewGuid());
 
         var response =
             await MangoModule.RequestAsync(query, CancellationToken.None);

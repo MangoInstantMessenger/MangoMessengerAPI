@@ -20,13 +20,13 @@ public class ConfirmKeyExchangeSuccess : IntegrationTestBase
             await MangoModule.RequestAsync(CommandHelper.RegisterPetroCommand(), CancellationToken.None);
         var keyExchange = await MangoModule.RequestAsync(
             request: CommandHelper.CreateOpenSslCreateKeyExchangeCommand(
-                receiver.Response.UserId,
-                sender.Response.UserId,
+                receiver.Response.Tokens.UserId,
+                sender.Response.Tokens.UserId,
                 MangoFilesHelper.GetTestImage()),
             cancellationToken: CancellationToken.None);
         var command = new ConfirmKeyExchangeCommand(
             RequestId: keyExchange.Response.RequestId,
-            UserId: receiver.Response.UserId,
+            UserId: receiver.Response.Tokens.UserId,
             ReceiverPublicKey: MangoFilesHelper.GetTestImage());
 
         var response = await MangoModule.RequestAsync(command, CancellationToken.None);

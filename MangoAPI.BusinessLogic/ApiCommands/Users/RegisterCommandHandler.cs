@@ -73,7 +73,7 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, Result<To
 
         dbContext.UserInformation.Add(userInfo);
 
-        var session = new SessionEntity 
+        var session = new SessionEntity
         {
             UserId = newUser.Id,
             RefreshToken = Guid.NewGuid(),
@@ -98,8 +98,7 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, Result<To
             expires,
             userDisplayName,
             userProfilePictureUrl,
-            newUser.DisplayNameColour
-        );
+            newUser.DisplayNameColour);
         var result = responseFactory.SuccessResponse(response);
 
         return result;

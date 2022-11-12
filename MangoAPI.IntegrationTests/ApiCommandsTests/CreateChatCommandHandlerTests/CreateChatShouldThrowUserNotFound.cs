@@ -20,7 +20,7 @@ public class CreateChatShouldThrowUserNotFound : IntegrationTestBase
         var user =
             await MangoModule.RequestAsync(CommandHelper.RegisterPetroCommand(), CancellationToken.None);
         var command = new CreateChatCommand(
-            UserId: user.Response.UserId,
+            UserId: user.Response.Tokens.UserId,
             PartnerId: Guid.NewGuid());
 
         var result = await MangoModule.RequestAsync(command, CancellationToken.None);

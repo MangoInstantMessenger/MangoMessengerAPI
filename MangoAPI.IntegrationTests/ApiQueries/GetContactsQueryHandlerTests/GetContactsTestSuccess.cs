@@ -21,14 +21,14 @@ public class GetContactsTestSuccess : IntegrationTestBase
             request: CommandHelper.RegisterKhachaturCommand(),
             cancellationToken: CancellationToken.None);
         await MangoModule.RequestAsync(
-            request: CommandHelper.CreateContactCommand(user.Response.UserId, contact.Response.UserId),
+            request: CommandHelper.CreateContactCommand(user.Response.Tokens.UserId, contact.Response.Tokens.UserId),
             cancellationToken: CancellationToken.None);
-        var query = new GetContactsQuery(UserId: user.Response.UserId);
+        var query = new GetContactsQuery(UserId: user.Response.Tokens.UserId);
 
         var result = await MangoModule.RequestAsync(query, CancellationToken.None);
 
         assert.Pass(result);
         result.Response.Contacts.Count.Should().Be(1);
-        result.Response.Contacts[0].UserId.Should().Be(contact.Response.UserId);
+        result.Response.Contacts[0].UserId.Should().Be(contact.Response.Tokens.UserId);
     }
 }
