@@ -68,6 +68,7 @@ Obligatory required software:
 - **NodeJS:** `16.13.1`
 - **NPM:** `8.1.2`
 - **Code Editor or IDE:** Visual studio, Visual studio code, Rider
+- **For Visual studio code:** [ESlint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint) and [Prettier](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode) plugins (also included in the workspace recommendations)
 
 ### Run in debug mode
 
