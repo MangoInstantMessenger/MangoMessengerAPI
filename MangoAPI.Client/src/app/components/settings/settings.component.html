@@ -109,13 +109,12 @@
             <li class="d-flex flex-column w-50 profile-form-group">
               <label for="BirthdayDate">Birthday Date</label>
               <input
-                class="profile-form-input"
-                type="text"
-                value="{{ currentUser.birthdayDate }}"
-                id="BirthdayDate"
-                placeholder="Type your birthday date"
-                [(ngModel)]="currentUser.birthdayDate"
-              />
+                class='profile-form-input'
+                type='date'
+                value="{{currentUser.birthdayDate}}"
+                id='BirthdayDate'
+                placeholder='Type your birthday date'
+                [(ngModel)]="currentUser.birthdayDate">
             </li>
 
             <li class="d-flex flex-column w-50 profile-form-group">

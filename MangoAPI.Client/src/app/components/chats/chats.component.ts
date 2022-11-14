@@ -19,6 +19,7 @@ import { DeleteMessageNotification } from '../../types/models/DeleteMessageNotif
 import { Subject, takeUntil } from 'rxjs';
 import { DisplayNameColours } from 'src/app/types/enums/DisplayNameColours';
 import { UsersService } from 'src/app/services/api/users.service';
+import { DeleteMessageCommand } from 'src/app/types/requests/DeleteMessageCommand';
 
 @Component({
   selector: 'app-chats',
@@ -473,6 +474,25 @@ export class ChatsComponent implements OnInit, OnDestroy {
       default:
         return 'color-pink';
     }
+  }
+
+  deleteMessage(message: Message): void {
+    const deleteMessageCommand: DeleteMessageCommand = {
+      chatId: message.chatId,
+      messageId: message.messageId
+    };
+
+    this._messagesService
+      .deleteMessage(deleteMessageCommand)
+      .pipe(takeUntil(this.componentDestroyed$))
+      .subscribe({
+        // FIXME
+        // eslint-disable-next-line @typescript-eslint/no-empty-function
+        next: (_) => {},
+        error: (error) => {
+          this._errorNotificationService.notifyOnError(error);
+        }
+      });
   }
 
   ngOnDestroy(): void {
