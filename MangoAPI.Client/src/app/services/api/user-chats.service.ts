@@ -30,8 +30,6 @@ export class UserChatsService {
 
   // DELETE /api/user-chats/{chatId}
   leaveCommunity(chatId: string): Observable<BaseResponse> {
-    return this.httpClient.delete<BaseResponse>(
-      environment.baseUrl + this.userChatsRoute + chatId
-    );
+    return this.httpClient.delete<BaseResponse>(environment.baseUrl + this.userChatsRoute + chatId);
   }
 }

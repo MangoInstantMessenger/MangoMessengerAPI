@@ -4,13 +4,11 @@ import { Injectable } from '@angular/core';
   providedIn: 'root'
 })
 export class ValidationService {
-
-  private allowedFileExtensions = ["jpg", "JPG", "txt", "TXT", "pdf", "PDF", "png", "PNG"];
-  private allowedPictureFileExtensions = ["jpg", "JPG", "png", "PNG"];
-
+  private allowedFileExtensions = ['jpg', 'JPG', 'txt', 'TXT', 'pdf', 'PDF', 'png', 'PNG'];
+  private allowedPictureFileExtensions = ['jpg', 'JPG', 'png', 'PNG'];
 
   validateField(field: string, fieldName: string): boolean {
-    if(field == '' || field == undefined) {
+    if (field == '' || field == undefined) {
       alert(`Error: field '${fieldName}' is empty.`);
       return false;
     }
@@ -20,11 +18,11 @@ export class ValidationService {
   validateFileName(fileName: string): boolean {
     const fileExtension = fileName.split('.')[1];
 
-    if(!this.allowedFileExtensions.includes(fileExtension)) {
+    if (!this.allowedFileExtensions.includes(fileExtension)) {
       alert('Error: file extension not allowed.');
       return false;
     }
-    if(fileName.length > 50) {
+    if (fileName.length > 50) {
       alert('Error: file name length exceeds the allowed symbol count.');
       return false;
     }
@@ -35,12 +33,12 @@ export class ValidationService {
   validatePictureFileName(fileName: string): boolean {
     const fileExtension = fileName.split('.')[1];
 
-    if(!this.allowedPictureFileExtensions.includes(fileExtension)) {
+    if (!this.allowedPictureFileExtensions.includes(fileExtension)) {
       alert('Error: file extension not allowed.');
       return false;
     }
 
-    if(fileName.length > 50) {
+    if (fileName.length > 50) {
       alert('Error: file name length exceeds the allowed symbol count.');
       return false;
     }

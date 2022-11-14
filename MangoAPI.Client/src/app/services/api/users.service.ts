@@ -23,9 +23,7 @@ export class UsersService {
   constructor(private httpClient: HttpClient) {}
 
   // PUT /api/users/socials
-  updateUserSocials(
-    request: UpdateUserSocialsCommand
-  ): Observable<BaseResponse> {
+  updateUserSocials(request: UpdateUserSocialsCommand): Observable<BaseResponse> {
     return this.httpClient.put<BaseResponse>(
       environment.baseUrl + this.usersRoute + 'socials/',
       request
@@ -34,17 +32,12 @@ export class UsersService {
 
   // GET /api/users/{userId}
   getUserById(userId: string | null): Observable<GetUserResponse> {
-    return this.httpClient.get<GetUserResponse>(
-      environment.baseUrl + this.usersRoute + userId
-    );
+    return this.httpClient.get<GetUserResponse>(environment.baseUrl + this.usersRoute + userId);
   }
 
   // POST /api/users
   createUser(command: RegisterCommand): Observable<TokensResponse> {
-    return this.httpClient.post<TokensResponse>(
-      environment.baseUrl + this.usersRoute,
-      command
-    );
+    return this.httpClient.post<TokensResponse>(environment.baseUrl + this.usersRoute, command);
   }
 
   // PUT /api/users/email-confirmation
@@ -57,16 +50,11 @@ export class UsersService {
 
   // PUT /api/users/{phoneCode}
   confirmPhone(phoneCode: number): Observable<BaseResponse> {
-    return this.httpClient.put<BaseResponse>(
-      environment.baseUrl + this.usersRoute + phoneCode,
-      {}
-    );
+    return this.httpClient.put<BaseResponse>(environment.baseUrl + this.usersRoute + phoneCode, {});
   }
 
   // PUT /api/users/account
-  updateUserAccountInformation(
-    request: UpdateAccountInformationCommand
-  ): Observable<BaseResponse> {
+  updateUserAccountInformation(request: UpdateAccountInformationCommand): Observable<BaseResponse> {
     return this.httpClient.put<SearchContactsResponse>(
       environment.baseUrl + this.usersRoute + 'account/',
       request
@@ -86,9 +74,7 @@ export class UsersService {
   }
 
   // POST /api/users/picture/{image}
-  updateProfilePicture(
-    formData: FormData
-  ): Observable<UpdateProfilePictureResponse> {
+  updateProfilePicture(formData: FormData): Observable<UpdateProfilePictureResponse> {
     return this.httpClient.post<UpdateProfilePictureResponse>(
       environment.baseUrl + this.usersRoute + 'picture',
       formData

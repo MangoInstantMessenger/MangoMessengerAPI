@@ -1,5 +1,5 @@
 ﻿export class SendMessageCommand {
-  messageText: string
+  messageText: string;
   chatId: string;
   isEncrypted = false;
   attachmentUrl: string | null = null;

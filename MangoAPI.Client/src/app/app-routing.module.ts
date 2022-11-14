@@ -9,20 +9,23 @@ import { RestorePasswordComponent } from './components/restore-password/restore-
 import { ChatsComponent } from './components/chats/chats.component';
 import { ContactsComponent } from './components/contacts/contacts.component';
 import { SettingsComponent } from './components/settings/settings.component';
-import { CreateGroupComponent } from "./components/create-group/create-group.component";
-import { CheckEmailNoteComponent } from "./components/check-email-note/check-email-note.component";
-import { RedirectToConfirmRegistrationComponent }
-  from "./components/redirect-to-confirm-registration/redirect-to-confirm-registration.component";
-import {
-  RedirectToRestorePasswordComponent
-} from "./components/redirect-to-restore-password/redirect-to-restore-password.component";
+import { CreateGroupComponent } from './components/create-group/create-group.component';
+import { CheckEmailNoteComponent } from './components/check-email-note/check-email-note.component';
+import { RedirectToConfirmRegistrationComponent } from './components/redirect-to-confirm-registration/redirect-to-confirm-registration.component';
+import { RedirectToRestorePasswordComponent } from './components/redirect-to-restore-password/redirect-to-restore-password.component';
 
 const routes: Routes = [
   { path: 'register', component: RegisterComponent },
   { path: 'confirm-registration', component: ConfirmRegistrationComponent },
   { path: 'check-email-note', component: CheckEmailNoteComponent },
-  { path: 'redirect-to-confirm-registration', component: RedirectToConfirmRegistrationComponent },
-  { path: 'redirect-to-restore-password', component: RedirectToRestorePasswordComponent },
+  {
+    path: 'redirect-to-confirm-registration',
+    component: RedirectToConfirmRegistrationComponent
+  },
+  {
+    path: 'redirect-to-restore-password',
+    component: RedirectToRestorePasswordComponent
+  },
   { path: 'login', component: LoginComponent },
   {
     path: 'restore-password-request',
@@ -32,9 +35,9 @@ const routes: Routes = [
   { path: 'chats', component: ChatsComponent },
   { path: 'contacts', component: ContactsComponent },
   { path: 'settings', component: SettingsComponent },
-  { path: 'create-group', component: CreateGroupComponent},
+  { path: 'create-group', component: CreateGroupComponent },
   { path: 'app', component: GatewayComponent },
-  { path: '**', component: GatewayComponent },
+  { path: '**', component: GatewayComponent }
 ];
 
 @NgModule({

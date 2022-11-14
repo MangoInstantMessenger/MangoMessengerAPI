@@ -7,16 +7,13 @@ import {
   HttpHeaders
 } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import {TokensService} from "../services/messenger/tokens.service";
+import { TokensService } from '../services/messenger/tokens.service';
 
 @Injectable()
 export class RequestHeaderInterceptor implements HttpInterceptor {
   constructor(private tokensService: TokensService) {}
 
-  intercept(
-    request: HttpRequest<unknown>,
-    next: HttpHandler
-  ): Observable<HttpEvent<unknown>> {
+  intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
     const accessToken = this.tokensService.getTokens()?.accessToken;
 
     const addHeaderRequest = request.clone({

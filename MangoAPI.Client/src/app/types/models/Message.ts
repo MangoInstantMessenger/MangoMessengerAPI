@@ -1,4 +1,4 @@
-﻿import { DisplayNameColours } from "../enums/DisplayNameColours";
+﻿import { DisplayNameColours } from '../enums/DisplayNameColours';
 
 export class Message {
   messageId = '';
@@ -15,7 +15,6 @@ export class Message {
   inReplayToAuthor: string | null | undefined;
   inReplayToText: string | null | undefined;
 
-
   constructor(
     messageId: string,
     userId: string,
@@ -25,7 +24,8 @@ export class Message {
     messageText: string,
     createdAt: string,
     self: boolean,
-    messageAuthorPictureUrl: string) {
+    messageAuthorPictureUrl: string
+  ) {
     this.messageId = messageId;
     this.userId = userId;
     this.chatId = chatId;

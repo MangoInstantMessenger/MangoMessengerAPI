@@ -6,13 +6,13 @@
         <div class="d-flex justify-content-between align-items-center">
           <h5>Chats</h5>
           <button class="button-dark p-2">
-            <a href="{{routingConstants.CreateGroup}}">Create Group</a>
+            <a href="{{ routingConstants.CreateGroup }}">Create Group</a>
           </button>
         </div>
         <div class="d-flex justify-content-between mt-2 gap-fix">
           <div class="dropdown">
             <button class="dropdown-toggle p-2 button-dark" data-bs-toggle="dropdown" href="#">
-              {{chatFilter}}
+              {{ chatFilter }}
             </button>
             <div aria-labelledby="dLabel" class="dropdown-menu mt-0" role="menu">
               <div class="dropdown-item" (click)="onChatFilterClick($event)">All chats</div>
@@ -24,38 +24,55 @@
           <div class="d-inline">
             <div class="input-group mb-3">
               <label for="searchBar"></label>
-              <input aria-describedby="basic-addon1" class="form-control ml-3 rounded" id="searchBar" name="searchBar"
-                     placeholder="Search chats..."
-                     type="text"
-                     [(ngModel)]="searchChatQuery"
-                     (ngModelChange)="onSearchChatQueryChange()">
+              <input
+                aria-describedby="basic-addon1"
+                class="form-control ml-3 rounded"
+                id="searchBar"
+                name="searchBar"
+                placeholder="Search chats..."
+                type="text"
+                [(ngModel)]="searchChatQuery"
+                (ngModelChange)="onSearchChatQueryChange()"
+              />
             </div>
           </div>
         </div>
       </header>
       <ul class="list overflow py-3 px-2">
         <li *ngFor="let chat of chats" class="mb-2">
-          <div class="list-item active" (click)="loadChat(chat.chatId)"
-               *ngIf="activeChatId === chat.chatId; else chatElse">
-            <img alt="Chat avatar" class="avatar"
-                 src="{{chat.chatLogoImageUrl}}">
+          <div
+            class="list-item active"
+            (click)="loadChat(chat.chatId)"
+            *ngIf="activeChatId === chat.chatId; else chatElse"
+          >
+            <img alt="Chat avatar" class="avatar" src="{{ chat.chatLogoImageUrl }}" />
             <div class="content">
-              <div class="title" *ngIf="chat.communityType === 2; else elseBlock;">
-                <img alt="Group Icon" class="mr-1" height="16" src="../../../assets/svg/group.svg" width="16">
+              <div class="title" *ngIf="chat.communityType === 2; else elseBlock">
+                <img
+                  alt="Group Icon"
+                  class="mr-1"
+                  height="16"
+                  src="../../../assets/svg/group.svg"
+                  width="16"
+                />
                 <div class="info">
                   <p>
-                    {{chat.title}}
+                    {{ chat.title }}
                   </p>
-                  <div *ngIf="chatContainsMessages(chat)">{{toShortTimeString(chat.lastMessageTime)}}</div>
+                  <div *ngIf="chatContainsMessages(chat)">
+                    {{ toShortTimeString(chat.lastMessageTime) }}
+                  </div>
                 </div>
               </div>
               <ng-template class="title" #elseBlock>
                 <div class="title">
                   <div class="info">
                     <p>
-                      {{chat.title}}
+                      {{ chat.title }}
                     </p>
-                    <div *ngIf="chatContainsMessages(chat)">{{toShortTimeString(chat.lastMessageTime)}}</div>
+                    <div *ngIf="chatContainsMessages(chat)">
+                      {{ toShortTimeString(chat.lastMessageTime) }}
+                    </div>
                   </div>
                 </div>
               </ng-template>
@@ -64,32 +81,41 @@
               </div>
               <ng-template #lastMessageElse>
                 <div class="message">
-                  <strong>{{chat.lastMessageAuthor}}: </strong>{{chat.lastMessageText}}
+                  <strong>{{ chat.lastMessageAuthor }}: </strong>{{ chat.lastMessageText }}
                 </div>
               </ng-template>
             </div>
           </div>
           <ng-template #chatElse>
             <div class="list-item" (click)="loadChat(chat.chatId)">
-              <img alt="Chat avatar" class="avatar"
-                   src="{{chat.chatLogoImageUrl}}">
+              <img alt="Chat avatar" class="avatar" src="{{ chat.chatLogoImageUrl }}" />
               <div class="content">
-                <div class="title" *ngIf="chat.communityType === 2; else elseBlock;">
-                  <img alt="Group Icon" class="mr-1" height="16" src="../../../assets/svg/group.svg" width="16">
+                <div class="title" *ngIf="chat.communityType === 2; else elseBlock">
+                  <img
+                    alt="Group Icon"
+                    class="mr-1"
+                    height="16"
+                    src="../../../assets/svg/group.svg"
+                    width="16"
+                  />
                   <div class="info">
                     <p>
-                      {{chat.title}}
+                      {{ chat.title }}
                     </p>
-                    <div *ngIf="chatContainsMessages(chat)">{{toShortTimeString(chat.lastMessageTime)}}</div>
+                    <div *ngIf="chatContainsMessages(chat)">
+                      {{ toShortTimeString(chat.lastMessageTime) }}
+                    </div>
                   </div>
                 </div>
                 <ng-template class="title" #elseBlock>
                   <div class="title">
                     <div class="info">
                       <p>
-                        {{chat.title}}
+                        {{ chat.title }}
                       </p>
-                      <div *ngIf="chatContainsMessages(chat)">{{toShortTimeString(chat.lastMessageTime)}}</div>
+                      <div *ngIf="chatContainsMessages(chat)">
+                        {{ toShortTimeString(chat.lastMessageTime) }}
+                      </div>
                     </div>
                   </div>
                 </ng-template>
@@ -98,7 +124,7 @@
                 </div>
                 <ng-template #lastMessageElse>
                   <div class="message">
-                    <strong>{{chat.lastMessageAuthor}}: </strong>{{chat.lastMessageText}}
+                    <strong>{{ chat.lastMessageAuthor }}: </strong>{{ chat.lastMessageText }}
                   </div>
                 </ng-template>
               </div>
@@ -110,45 +136,65 @@
   </div>
 
   <main class="chat" id="chat">
-    <div class="chat-layout" *ngIf="activeChatId !== ''; else elseNoChatOpened;">
+    <div class="chat-layout" *ngIf="activeChatId !== ''; else elseNoChatOpened">
       <div class="chat-header">
-        <img alt="Chat Avatar" class="avatar" src="{{activeChat.chatLogoImageUrl}}"/>
+        <img alt="Chat Avatar" class="avatar" src="{{ activeChat.chatLogoImageUrl }}" />
         <div class="chat-info ml-2">
           <div class="chat-description">
-            <span class="chat-name">{{activeChat.title}}</span>
-            <span>{{activeChat.description}}</span>
-            <span>{{activeChat.membersCount}} members</span>
+            <span class="chat-name">{{ activeChat.title }}</span>
+            <span>{{ activeChat.description }}</span>
+            <span>{{ activeChat.membersCount }} members</span>
           </div>
           <div class="chat-actions">
             <div class="input-group mb-3">
               <label for="searchBar"></label>
-              <input aria-describedby="basic-addon2" class="form-control ml-3" id="searchMessageBar"
-                     name="searchMessageBar"
-                     placeholder="Search messages..."
-                     type="text"
-                     [(ngModel)]="searchMessagesQuery"
-                     (keyup.enter)="onSearchMessageClick()"
-                     (ngModelChange)="onSearchMessageQueryChange()">
+              <input
+                aria-describedby="basic-addon2"
+                class="form-control ml-3"
+                id="searchMessageBar"
+                name="searchMessageBar"
+                placeholder="Search messages..."
+                type="text"
+                [(ngModel)]="searchMessagesQuery"
+                (keyup.enter)="onSearchMessageClick()"
+                (ngModelChange)="onSearchMessageQueryChange()"
+              />
             </div>
             <div class="dropdown">
-              <button aria-expanded="false" aria-haspopup="true" class="button-dark" data-bs-toggle="dropdown"
-                      role="button" title="Details">
-                <img alt="Vertical Dots" src="./../../../assets/svg/dots-vertical.svg"/>
+              <button
+                aria-expanded="false"
+                aria-haspopup="true"
+                class="button-dark"
+                data-bs-toggle="dropdown"
+                role="button"
+                title="Details"
+              >
+                <img alt="Vertical Dots" src="./../../../assets/svg/dots-vertical.svg" />
               </button>
 
               <div class="dropdown-menu dropdown-menu-right">
-                <div class="dropdown-item gap-fix d-flex" data-target="#startConversation" data-toggle="modal"
-                     role="button" (click)="onArchiveChatClick()">
-                  <img alt="Archive Icon" class="mr-1" src="./../../../assets/svg/archive.svg">
+                <div
+                  class="dropdown-item gap-fix d-flex"
+                  data-target="#startConversation"
+                  data-toggle="modal"
+                  role="button"
+                  (click)="onArchiveChatClick()"
+                >
+                  <img alt="Archive Icon" class="mr-1" src="./../../../assets/svg/archive.svg" />
 
                   <span *ngIf="!activeChat.isArchived; else elseBlock">Archive Chat</span>
                   <ng-template #elseBlock>
                     <span>Unarchive Chat</span>
                   </ng-template>
                 </div>
-                <div class="dropdown-item gap-fix d-flex" data-target="#createGroup" data-toggle="modal" role="button"
-                     (click)="onLeaveChatClick()">
-                  <img alt="Leave Chat Icon" class="mr-1" src="./../../../assets/svg/trash.svg">
+                <div
+                  class="dropdown-item gap-fix d-flex"
+                  data-target="#createGroup"
+                  data-toggle="modal"
+                  role="button"
+                  (click)="onLeaveChatClick()"
+                >
+                  <img alt="Leave Chat Icon" class="mr-1" src="./../../../assets/svg/trash.svg" />
 
                   <span class="text-red">Leave Chat</span>
                 </div>
@@ -158,38 +204,65 @@
         </div>
       </div>
 
-      <div id='chatMessages' class="chat-messages overflow background-pattern ">
+      <div id="chatMessages" class="chat-messages overflow background-pattern">
         <ul>
           <li *ngFor="let message of messages">
-            <div class="message self" *ngIf="message.userId === this.userId; else elseBlock;">
+            <div class="message self" *ngIf="message.userId === this.userId; else elseBlock">
               <div class="message-layout active">
-                <img alt="User Avatar" class="user-avatar" src="{{message.messageAuthorPictureUrl}}"/>
+                <img
+                  alt="User Avatar"
+                  class="user-avatar"
+                  src="{{ message.messageAuthorPictureUrl }}"
+                />
                 <div class="message-wrapper">
                   <div class="message-content">
-                    <span>{{message.messageText}}</span>
+                    <span>{{ message.messageText }}</span>
                   </div>
                   <div class="message-options gap-fix">
-                    <p class="message-time mr-2">{{toShortTimeString(message.createdAt)}}</p>
+                    <p class="message-time mr-2">
+                      {{ toShortTimeString(message.createdAt) }}
+                    </p>
                     <div class="dropdown">
-                      <button aria-expanded="false" aria-haspopup="true" class="message-button mr-2"
-                              data-bs-toggle="dropdown" role="button" title="Details">
-                        <img alt="Horizontal Dots" src="./../../../assets/svg/dots-horizontal.svg"/>
+                      <button
+                        aria-expanded="false"
+                        aria-haspopup="true"
+                        class="message-button mr-2"
+                        data-bs-toggle="dropdown"
+                        role="button"
+                        title="Details"
+                      >
+                        <img
+                          alt="Horizontal Dots"
+                          src="./../../../assets/svg/dots-horizontal.svg"
+                        />
                       </button>
                       <div class="dropdown-menu">
-                        <div class="dropdown-item" data-target="#startConversation" data-toggle="modal"
-                             role="button">
-                          <img alt="Edit Icon" class="mr-1" src="./../../../assets/svg/edit.svg">
+                        <div
+                          class="dropdown-item"
+                          data-target="#startConversation"
+                          data-toggle="modal"
+                          role="button"
+                        >
+                          <img alt="Edit Icon" class="mr-1" src="./../../../assets/svg/edit.svg" />
                           <span>Edit</span>
                         </div>
-                        <div class="dropdown-item" data-target="#createGroup" data-toggle="modal"
-                             role="button">
-                          <img alt="Delete Message Icon" class="mr-1" src="./../../../assets/svg/trash.svg">
+                        <div
+                          class="dropdown-item"
+                          data-target="#createGroup"
+                          data-toggle="modal"
+                          role="button"
+                        >
+                          <img
+                            alt="Delete Message Icon"
+                            class="mr-1"
+                            src="./../../../assets/svg/trash.svg"
+                          />
                           <span class="text-red">Delete</span>
                         </div>
                       </div>
                     </div>
                     <div class="message-button">
-                      <img alt="Reply Icon" src="./../../../assets/svg/reply.svg">
+                      <img alt="Reply Icon" src="./../../../assets/svg/reply.svg" />
                     </div>
                   </div>
                 </div>
@@ -198,18 +271,28 @@
             <ng-template #elseBlock>
               <div class="message">
                 <div class="message-layout">
-                  <img alt="User Avatar" class="user-avatar" src="{{message.messageAuthorPictureUrl}}"/>
+                  <img
+                    alt="User Avatar"
+                    class="user-avatar"
+                    src="{{ message.messageAuthorPictureUrl }}"
+                  />
                   <div class="message-wrapper">
                     <div class="message-content">
-                      <div class="display-name {{getDisplayNameColour(message.userDisplayNameColour)}}">
-                        {{message.userDisplayName}}
+                      <div
+                        class="display-name {{
+                          getDisplayNameColour(message.userDisplayNameColour)
+                        }}"
+                      >
+                        {{ message.userDisplayName }}
                       </div>
-                      <span>{{message.messageText}}</span>
+                      <span>{{ message.messageText }}</span>
                     </div>
                     <div class="message-options gap-fix">
-                      <p class="message-time mr-2">{{toShortTimeString(message.createdAt)}}</p>
+                      <p class="message-time mr-2">
+                        {{ toShortTimeString(message.createdAt) }}
+                      </p>
                       <div class="message-button">
-                        <img alt="Reply Icon" src="./../../../assets/svg/reply.svg">
+                        <img alt="Reply Icon" src="./../../../assets/svg/reply.svg" />
                       </div>
                     </div>
                   </div>
@@ -222,19 +305,18 @@
 
       <div class="chat-footer" *ngIf="activeChat.isMember; else elseNotMember">
         <div class="dropdown">
-          <button class="button-dark button-dark-no-hover align-text-top"
-                  data-bs-toggle="dropdown">
-            <img alt="Attach icon" src="./../../../assets/svg/attach.svg">
+          <button class="button-dark button-dark-no-hover align-text-top" data-bs-toggle="dropdown">
+            <img alt="Attach icon" src="./../../../assets/svg/attach.svg" />
           </button>
           <div class="dropdown-menu">
             <div class="dropdown-item">
-              <input id="attachment" type="file">
+              <input id="attachment" type="file" />
             </div>
           </div>
         </div>
         <div class="dropdown">
           <button class="button-dark button-dark-no-hover mr-2" data-bs-toggle="dropdown">
-            <img alt="Emoji Icon" src="./../../../assets/svg/emoji.svg">
+            <img alt="Emoji Icon" src="./../../../assets/svg/emoji.svg" />
           </button>
           <div class="dropdown-menu emoji-dropdown-menu">
             <div class="dropdown-item no-hover">
@@ -273,14 +355,16 @@
             </div>
           </div>
         </div>
-        <textarea id="message-input"
-                  class="message-input overflow"
-                  placeholder="Write message..."
-                  [(ngModel)]="messageText"
-                  (keydown.enter)="onEnterClick($event)">
-          </textarea>
+        <textarea
+          id="message-input"
+          class="message-input overflow"
+          placeholder="Write message..."
+          [(ngModel)]="messageText"
+          (keydown.enter)="onEnterClick($event)"
+        >
+        </textarea>
         <button class="send-message" (click)="onSendMessageClick()">
-          <img alt="Arrow Right Icon" src="./../../../assets/svg/arrow-right.svg">
+          <img alt="Arrow Right Icon" src="./../../../assets/svg/arrow-right.svg" />
         </button>
       </div>
 

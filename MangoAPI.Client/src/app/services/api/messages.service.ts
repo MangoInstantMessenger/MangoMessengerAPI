@@ -34,9 +34,7 @@ export class MessagesService {
   }
 
   // DELETE /api/messages/{messageId}
-  deleteMessage(
-    request: DeleteMessageCommand
-  ): Observable<DeleteMessageResponse> {
+  deleteMessage(request: DeleteMessageCommand): Observable<DeleteMessageResponse> {
     const options = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json'
@@ -52,24 +50,13 @@ export class MessagesService {
 
   // PUT /api/messages
   editMessage(request: EditMessageCommand): Observable<BaseResponse> {
-    return this.httpClient.put<BaseResponse>(
-      environment.baseUrl + this.messagesRoute,
-      request
-    );
+    return this.httpClient.put<BaseResponse>(environment.baseUrl + this.messagesRoute, request);
   }
 
   // GET /api/messages/searches/{chatId}
-  searchMessages(
-    chatId: string,
-    text: string
-  ): Observable<GetChatMessagesResponse> {
+  searchMessages(chatId: string, text: string): Observable<GetChatMessagesResponse> {
     return this.httpClient.get<GetChatMessagesResponse>(
-      environment.baseUrl +
-        this.messagesRoute +
-        'searches/' +
-        chatId +
-        '?messageText=' +
-        text
+      environment.baseUrl + this.messagesRoute + 'searches/' + chatId + '?messageText=' + text
     );
   }
 }
