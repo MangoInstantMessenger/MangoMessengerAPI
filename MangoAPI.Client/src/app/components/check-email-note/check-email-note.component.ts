@@ -1,5 +1,5 @@
-import {Component} from '@angular/core';
-import {RoutingConstants} from "../../types/constants/RoutingConstants";
+import { Component } from '@angular/core';
+import { RoutingConstants } from '../../types/constants/RoutingConstants';
 
 @Component({
   selector: 'app-check-email-note',

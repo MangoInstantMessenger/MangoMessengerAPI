@@ -1,5 +1,15 @@
 {
   "singleQuote": true,
+  "overrides": [
+    {
+      "files": ["**/*.css", "**/*.scss", "**/*.html"],
+      "options": {
+        "singleQuote": false
+      }
+    }
+  ],
+
   "trailingComma": "none",
-  "endOfLine": "auto"
+  "endOfLine": "auto",
+  "printWidth": 100
 }

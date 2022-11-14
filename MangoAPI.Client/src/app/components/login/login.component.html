@@ -1,31 +1,38 @@
-<div class='background-pattern'>
-<div class='container d-flex justify-content-center align-items-center flex-column vh-100'>
-  <h1 class='font-weight-bold mb-4 auth-header'>Login</h1>
-  <h4 class='mb-4 text-center'>We are Different, We Make You Different.</h4>
+<div class="background-pattern">
+  <div class="container d-flex justify-content-center align-items-center flex-column vh-100">
+    <h1 class="font-weight-bold mb-4 auth-header">Login</h1>
+    <h4 class="mb-4 text-center">We are Different, We Make You Different.</h4>
 
-  <label for='emailAddress'></label>
-  <input class='mb-3 form-input p-3 user-select-none'
-         id='emailAddress'
-         name='emailAddress' placeholder='Enter your email address'
-         type='text'
-         [(ngModel)]="loginCommand.email"
-         (keyup.enter)="login()">
+    <label for="emailAddress"></label>
+    <input
+      class="mb-3 form-input p-3 user-select-none"
+      id="emailAddress"
+      name="emailAddress"
+      placeholder="Enter your email address"
+      type="text"
+      [(ngModel)]="loginCommand.email"
+      (keyup.enter)="login()"
+    />
 
-  <label for='password'></label>
-  <input class='mb-3 form-input p-3 user-select-none'
-         id='password'
-         name='password'
-         placeholder='Enter your password'
-         type='password'
-         [(ngModel)]="loginCommand.password"
-         (keyup.enter)="login()">
+    <label for="password"></label>
+    <input
+      class="mb-3 form-input p-3 user-select-none"
+      id="password"
+      name="password"
+      placeholder="Enter your password"
+      type="password"
+      [(ngModel)]="loginCommand.password"
+      (keyup.enter)="login()"
+    />
 
-  <button class='form-button p-3 font-weight-bold mb-3' (click)="login()">LOGIN</button>
-  <span class='form-label'>
-			Do not have an account? <a class='form-label' href='{{routingConstants.Register}}'>Register</a>.
-  </span>
-  <span class='form-label'>
-			Forgot password? <a class='form-label' href='{{routingConstants.RestorePasswordRequest}}'>Restore</a>.
-  </span>
-</div>
+    <button class="form-button p-3 font-weight-bold mb-3" (click)="login()">LOGIN</button>
+    <span class="form-label">
+      Do not have an account?
+      <a class="form-label" href="{{ routingConstants.Register }}">Register</a>.
+    </span>
+    <span class="form-label">
+      Forgot password?
+      <a class="form-label" href="{{ routingConstants.RestorePasswordRequest }}">Restore</a>.
+    </span>
+  </div>
 </div>

@@ -15,11 +15,9 @@ export class SessionService {
 
   // POST /api/sessions
   createSession(command: LoginCommand): Observable<TokensResponse> {
-    return this.httpClient.post<TokensResponse>(
-      environment.baseUrl + this.sessionsRoute,
-      command,
-      { withCredentials: true }
-    );
+    return this.httpClient.post<TokensResponse>(environment.baseUrl + this.sessionsRoute, command, {
+      withCredentials: true
+    });
   }
 
   // POST /api/sessions/{refreshToken}
@@ -39,8 +37,6 @@ export class SessionService {
 
   // DELETE /api/sessions
   deleteAllSessions(): Observable<BaseResponse> {
-    return this.httpClient.delete<BaseResponse>(
-      environment.baseUrl + this.sessionsRoute
-    );
+    return this.httpClient.delete<BaseResponse>(environment.baseUrl + this.sessionsRoute);
   }
 }

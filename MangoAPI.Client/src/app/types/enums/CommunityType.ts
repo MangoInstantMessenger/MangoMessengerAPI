@@ -1,4 +1,4 @@
 ﻿export enum CommunityType {
   DirectChat = 1,
-  PublicChannel = 2,
+  PublicChannel = 2
 }

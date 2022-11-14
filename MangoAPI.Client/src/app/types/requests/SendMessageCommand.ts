@@ -1,7 +1,7 @@
 ﻿export class SendMessageCommand {
-  messageText: string
+  messageText: string;
   chatId: string;
-  isEncrypted: boolean = false;
+  isEncrypted = false;
   attachmentUrl: string | null = null;
   inReplayToAuthor: string | null = null;
   inReplayToText: string | null = null;

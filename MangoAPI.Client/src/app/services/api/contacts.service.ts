@@ -16,9 +16,7 @@ export class ContactsService {
 
   // GET /api/contacts
   getCurrentUserContacts(): Observable<GetContactsResponse> {
-    return this.httpClient.get<GetContactsResponse>(
-      environment.baseUrl + this.contactsRoute
-    );
+    return this.httpClient.get<GetContactsResponse>(environment.baseUrl + this.contactsRoute);
   }
 
   // POST /api/contacts/{contactId}
@@ -39,10 +37,7 @@ export class ContactsService {
   // GET /api/contacts/searches
   searchContacts(displayName: string): Observable<SearchContactsResponse> {
     return this.httpClient.get<SearchContactsResponse>(
-      environment.baseUrl +
-        this.contactsRoute +
-        'searches?searchQuery=' +
-        displayName
+      environment.baseUrl + this.contactsRoute + 'searches?searchQuery=' + displayName
     );
   }
 }
