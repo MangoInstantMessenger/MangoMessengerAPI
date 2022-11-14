@@ -10,8 +10,21 @@
     "build-prod": "ng build --aot --configuration production",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "lint": "ng lint"
+    "lint": "ng lint -- --fix",
+    "postinstall": "cd .. && husky install MangoAPI.Client/.husky"
   },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged --relative"
+    }
+  },
+  "lint-staged": {
+    "*.{js,ts,tsx}": [
+      "prettier --write",
+      "eslint --fix"
+    ]
+  },
+
   "private": true,
   "dependencies": {
     "@angular/animations": "~13.3.0",
@@ -45,12 +58,14 @@
     "@typescript-eslint/parser": "5.17.0",
     "eslint": "^8.12.0",
     "eslint-config-prettier": "^8.5.0",
+    "husky": "^8.0.0",
     "jasmine-core": "~4.0.0",
     "karma": "~6.3.0",
     "karma-chrome-launcher": "~3.1.0",
     "karma-coverage": "~2.1.0",
     "karma-jasmine": "~4.0.0",
     "karma-jasmine-html-reporter": "~1.7.0",
+    "lint-staged": "^13.0.3",
     "prettier": "2.6.2",
     "typescript": "~4.6.2"
   }
