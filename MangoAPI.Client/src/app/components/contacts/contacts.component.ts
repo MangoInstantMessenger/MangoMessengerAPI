@@ -44,11 +44,11 @@ export class ContactsComponent implements OnInit, OnDestroy {
     publicKey:  0,
     pictureUrl:  '',
   };
-  public currentUserId: string = '';
-  public activeUserId: string = '';
-  public contactSearchQuery: string = '';
-  public isActiveUserContact: boolean = false;
-  public contactFilter: string = 'All contacts';
+  public currentUserId = '';
+  public activeUserId = '';
+  public contactSearchQuery = '';
+  public isActiveUserContact = false;
+  public contactFilter = 'All contacts';
 
   componentDestroyed$: Subject<boolean> = new Subject();
 
@@ -61,7 +61,7 @@ export class ContactsComponent implements OnInit, OnDestroy {
     this.currentUserId = this._tokensService.getTokens()?.userId as string;
     this._usersService.getUserById(this.currentUserId).pipe(takeUntil(this.componentDestroyed$)).subscribe({
       next: response => {
-        let user = response.user;
+        const user = response.user;
         this.getUsersContacts();
         this.activeUserId = user.userId;
         this.activeUser = user;
@@ -86,7 +86,7 @@ export class ContactsComponent implements OnInit, OnDestroy {
   onContactTabClick(contact: Contact): void {
     this._usersService.getUserById(contact.userId).pipe(takeUntil(this.componentDestroyed$)).subscribe({
       next: response => {
-        let user = response.user;
+        const user = response.user;
         this.activeUserId = user.userId;
         this.activeUser = user;
         this.isActiveUserContact = contact.isContact;
@@ -129,7 +129,7 @@ export class ContactsComponent implements OnInit, OnDestroy {
   }
 
   onContactFilterClick(event: Event): void {
-    let div = event.currentTarget as HTMLDivElement;
+    const div = event.currentTarget as HTMLDivElement;
     this.contactFilter = div.innerText;
 
     this._contactsService.getCurrentUserContacts().pipe(takeUntil(this.componentDestroyed$)).subscribe({
@@ -150,7 +150,7 @@ export class ContactsComponent implements OnInit, OnDestroy {
   onStartDirectChatButtonClick(contactId: string): void {
     this._communitiesService.createChat(contactId).pipe(takeUntil(this.componentDestroyed$)).subscribe({
       next: response => {
-        let queryObject: StartDirectChatQueryObject = {
+        const queryObject: StartDirectChatQueryObject = {
           chatId: response.chatId
         };
         this._routingService.setQueryData(queryObject);

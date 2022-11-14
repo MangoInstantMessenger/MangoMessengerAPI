@@ -20,8 +20,8 @@ export class RestorePasswordComponent implements OnDestroy {
               private _errorNotificationService: ErrorNotificationService,
               private _validationService: ValidationService) {}
 
-  public newPassword: string = '';
-  public repeatPassword: string = '';
+  public newPassword = '';
+  public repeatPassword = '';
   componentDestroyed$: Subject<boolean> = new Subject();
 
   ngOnDestroy(): void {
@@ -30,8 +30,8 @@ export class RestorePasswordComponent implements OnDestroy {
   }
 
   onRestorePasswordClick(): void {
-    let newPasswordFieldValidationResult = this._validationService.validateField(this.newPassword, "New password");
-    let repeatPasswordFieldValidationResult = this._validationService.validateField(this.repeatPassword, "Repeat password");
+    const newPasswordFieldValidationResult = this._validationService.validateField(this.newPassword, "New password");
+    const repeatPasswordFieldValidationResult = this._validationService.validateField(this.repeatPassword, "Repeat password");
 
     if(!newPasswordFieldValidationResult || !repeatPasswordFieldValidationResult) {
       return;

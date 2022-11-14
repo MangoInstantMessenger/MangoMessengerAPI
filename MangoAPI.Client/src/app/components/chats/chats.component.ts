@@ -66,13 +66,13 @@ export class ChatsComponent implements OnInit, OnDestroy {
     title: ""
   };
 
-  public activeChatId: string = '';
+  public activeChatId = '';
   public messages: Message[] = [];
 
-  public messageText: string = '';
-  public searchChatQuery: string = '';
-  public searchMessagesQuery: string = '';
-  public chatFilter: string = 'All chats';
+  public messageText = '';
+  public searchChatQuery = '';
+  public searchMessagesQuery = '';
+  public chatFilter = 'All chats';
 
   componentDestroyed$: Subject<boolean> = new Subject()
 
@@ -85,7 +85,7 @@ export class ChatsComponent implements OnInit, OnDestroy {
   }
 
   initializeView(): void {
-    let tokens = this._tokensService.getTokens();
+    const tokens = this._tokensService.getTokens();
 
     if (!tokens) {
       this._router.navigateByUrl(this.routingConstants.Login).then(r => r);
@@ -139,7 +139,7 @@ export class ChatsComponent implements OnInit, OnDestroy {
     this.connection.on("UpdateUserChatsAsync", (chat: Chat) => this.chats.push(chat));
 
     this.connection.on('NotifyOnMessageDeleteAsync', (notification: DeleteMessageNotification) => {
-        let message = this.messages.filter(x => x.messageId === notification.messageId)[0];
+        const message = this.messages.filter(x => x.messageId === notification.messageId)[0];
 
         if (message.messageId === this.activeChat.lastMessageId) {
           this.activeChat.lastMessageAuthor = notification.newLastMessageAuthor;
@@ -153,7 +153,7 @@ export class ChatsComponent implements OnInit, OnDestroy {
     );
 
     this.connection.on('NotifyOnMessageEditAsync', (notification: EditMessageNotification) => {
-      let message = this.messages.filter(x => x.messageId === notification.messageId)[0];
+      const message = this.messages.filter(x => x.messageId === notification.messageId)[0];
 
       if (message) {
         message.messageText = notification.modifiedText;
@@ -173,8 +173,8 @@ export class ChatsComponent implements OnInit, OnDestroy {
         this.chats = this.userChats;
         this.chats.push(this.activeChat);
         this.chats.sort((chat1, chat2) => {
-          let chat1LastMessageTime = new Date(chat1.lastMessageTime)
-          let chat2LastMessageTime = new Date(chat2.lastMessageTime)
+          const chat1LastMessageTime = new Date(chat1.lastMessageTime)
+          const chat2LastMessageTime = new Date(chat2.lastMessageTime)
           if (chat1LastMessageTime > chat2LastMessageTime) {
             return 1;
           }
@@ -194,7 +194,7 @@ export class ChatsComponent implements OnInit, OnDestroy {
 
   onBroadcastMessage(message: Message): void {
     message.self = message.userId == this.userId;
-    let chat = this.chats.filter(x => x.chatId === message.chatId)[0];
+    const chat = this.chats.filter(x => x.chatId === message.chatId)[0];
     chat.lastMessageAuthor = message.userDisplayName;
     chat.lastMessageText = message.messageText;
     chat.lastMessageTime = message.createdAt;
@@ -212,8 +212,8 @@ export class ChatsComponent implements OnInit, OnDestroy {
   }
 
   onEmojiClick(event: Event): void {
-    let button = event.currentTarget as HTMLButtonElement;
-    let emoji = button.innerText;
+    const button = event.currentTarget as HTMLButtonElement;
+    const emoji = button.innerText;
     this.messageText += emoji;
   }
 
@@ -281,12 +281,12 @@ export class ChatsComponent implements OnInit, OnDestroy {
   }
 
   onChatFilterClick(event: Event): void {
-    let div = event.currentTarget as HTMLDivElement;
+    const div = event.currentTarget as HTMLDivElement;
     this.chatFilter = div.innerText;
 
     this._communitiesService.getUserChats().pipe(takeUntil(this.componentDestroyed$)).subscribe({
       next: response => {
-        let chats = response.chats;
+        const chats = response.chats;
         switch (this.chatFilter) {
           case 'All chats':
             this.chats = chats;
@@ -350,7 +350,7 @@ export class ChatsComponent implements OnInit, OnDestroy {
   }
 
   onSendMessageClick(): void {
-    let messageTextValidationResult = this._validationService.validateField(this.messageText, "Message Text");
+    const messageTextValidationResult = this._validationService.validateField(this.messageText, "Message Text");
     if(!messageTextValidationResult) {
       return;
     }
@@ -404,7 +404,7 @@ export class ChatsComponent implements OnInit, OnDestroy {
 
   scrollToEnd(): void {
     setTimeout(() => {
-      let chatMessages = document.getElementById('chatMessages');
+      const chatMessages = document.getElementById('chatMessages');
       if (!chatMessages) {
         return;
       }

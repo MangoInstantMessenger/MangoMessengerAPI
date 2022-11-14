@@ -47,7 +47,7 @@ export class SettingsComponent implements OnInit, OnDestroy {
     publicKey: 0,
     pictureUrl: '',
   };
-  public currentUserId: string = '';
+  public currentUserId = '';
   public changePasswordCommand: ChangePasswordCommand = {
     currentPassword: '',
     newPassword: '',
@@ -75,7 +75,7 @@ export class SettingsComponent implements OnInit, OnDestroy {
   }
 
   onLogoutClick(): void {
-    let refreshToken = this._tokensService.getTokens()?.refreshToken as string;
+    const refreshToken = this._tokensService.getTokens()?.refreshToken as string;
     this._sessionService.deleteSession(refreshToken).pipe(takeUntil(this.componentDestroyed$)).subscribe({
       next: _ => {
         this._tokensService.clearTokens();
@@ -100,7 +100,7 @@ export class SettingsComponent implements OnInit, OnDestroy {
   }
 
   onSaveChangesAccountInfoClick(): void {
-    let command: UpdateAccountInformationCommand = {
+    const command: UpdateAccountInformationCommand = {
       username: this.currentUser.username,
       birthdayDate: this.currentUser.birthdayDate,
       website: this.currentUser.website,
@@ -136,14 +136,14 @@ export class SettingsComponent implements OnInit, OnDestroy {
   }
 
   onSaveChangesUpdateProfilePictureClick(): void {
-    let formData = new FormData();
-    let validationResult = this._validationService.validatePictureFileName(this.fileName);
+    const formData = new FormData();
+    const validationResult = this._validationService.validatePictureFileName(this.fileName);
 
     if (!validationResult) {
       return;
     }
 
-    let file = this.file as File;
+    const file = this.file as File;
     formData.append("pictureFile", file);
 
     this._usersService.updateProfilePicture(formData).pipe(takeUntil(this.componentDestroyed$)).subscribe({
@@ -159,9 +159,9 @@ export class SettingsComponent implements OnInit, OnDestroy {
   }
 
   onSaveChangesChangePasswordClick(): void {
-    let newPasswordValidationResult = this._validationService.validateField('New password', this.changePasswordCommand.newPassword);
-    let currentPasswordValidationResult = this._validationService.validateField('Current password', this.changePasswordCommand.currentPassword);
-    let repeatPasswordValidationResult = this._validationService.validateField('Repeat password', this.changePasswordCommand.repeatNewPassword);
+    const newPasswordValidationResult = this._validationService.validateField('New password', this.changePasswordCommand.newPassword);
+    const currentPasswordValidationResult = this._validationService.validateField('Current password', this.changePasswordCommand.currentPassword);
+    const repeatPasswordValidationResult = this._validationService.validateField('Repeat password', this.changePasswordCommand.repeatNewPassword);
 
     if (!newPasswordValidationResult || !currentPasswordValidationResult || !repeatPasswordValidationResult) {
       return;
@@ -179,7 +179,7 @@ export class SettingsComponent implements OnInit, OnDestroy {
   }
 
   onSaveChangesSocialsClick(): void {
-    let command: UpdateUserSocialsCommand = {
+    const command: UpdateUserSocialsCommand = {
       instagram: this.currentUser.instagram,
       facebook: this.currentUser.facebook,
       twitter: this.currentUser.twitter,

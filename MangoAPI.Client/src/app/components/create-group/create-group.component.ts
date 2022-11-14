@@ -17,8 +17,8 @@ export class CreateGroupComponent implements OnDestroy{
               private _router: Router,
               private _errorNotificationService: ErrorNotificationService) { }
 
-  public chatTitle: string = '';
-  public chatDescription: string = '';
+  public chatTitle = '';
+  public chatDescription = '';
 
   componentDestroyed$: Subject<boolean> = new Subject();
 
@@ -28,7 +28,7 @@ export class CreateGroupComponent implements OnDestroy{
   }
 
   onCreateChatClick(): void {
-    let command = new CreateChannelCommand(this.chatTitle, this.chatDescription);
+    const command = new CreateChannelCommand(this.chatTitle, this.chatDescription);
     this._communitiesService.createChannel(command).pipe(takeUntil(this.componentDestroyed$)).subscribe({
       next: _  => {
         this._router.navigateByUrl(RoutingConstants.Chats).then(r => r);

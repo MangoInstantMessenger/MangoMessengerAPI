@@ -14,7 +14,7 @@ export class RedirectToConfirmRegistrationComponent implements OnInit {
               private _router: Router) { }
 
   ngOnInit(): void {
-    let params = new URLSearchParams(window.location.search);
+    const params = new URLSearchParams(window.location.search);
     const email = params.get('email') as string;
     const emailCode = params.get('emailCode') as string;
     const queryObject: ConfirmEmailObject = { email: email, emailCode: emailCode };

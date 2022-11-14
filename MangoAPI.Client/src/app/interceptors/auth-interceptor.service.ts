@@ -29,7 +29,7 @@ export class AuthInterceptor implements HttpInterceptor {
       request.headers.get('Authorization')?.startsWith('Bearer');
 
     if (shouldHandle) {
-      let refreshToken = this.tokensService.getTokens()?.refreshToken ?? '';
+      const refreshToken = this.tokensService.getTokens()?.refreshToken ?? '';
 
       const refreshTokenResponse =
         this.sessionService.refreshSession(refreshToken);

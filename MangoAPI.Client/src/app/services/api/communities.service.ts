@@ -25,7 +25,7 @@ export class CommunitiesService {
 
   // POST /api/communities/chat
   createChat(userId: string): Observable<CreateCommunityResponse> {
-    let request = new CreateChatCommand(userId);
+    const request = new CreateChatCommand(userId);
     return this.httpClient.post<CreateCommunityResponse>(
       environment.baseUrl + this.chatsRoute + `chat/${userId}`,
       request

@@ -18,7 +18,7 @@ export class ValidationService {
   }
 
   validateFileName(fileName: string): boolean {
-    let fileExtension = fileName.split('.')[1];
+    const fileExtension = fileName.split('.')[1];
 
     if(!this.allowedFileExtensions.includes(fileExtension)) {
       alert('Error: file extension not allowed.');
@@ -33,7 +33,7 @@ export class ValidationService {
   }
 
   validatePictureFileName(fileName: string): boolean {
-    let fileExtension = fileName.split('.')[1];
+    const fileExtension = fileName.split('.')[1];
 
     if(!this.allowedPictureFileExtensions.includes(fileExtension)) {
       alert('Error: file extension not allowed.');

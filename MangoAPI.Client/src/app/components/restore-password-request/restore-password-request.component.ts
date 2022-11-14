@@ -20,7 +20,7 @@ export class RestorePasswordRequestComponent implements OnDestroy{
   componentDestroyed$: Subject<boolean> = new Subject();
 
   onRequestRestorePasswordClick(): void {
-    let emailFieldValidationResult = this._validationService.validateField(this.email, 'Email');
+    const emailFieldValidationResult = this._validationService.validateField(this.email, 'Email');
 
     if(!emailFieldValidationResult) {
       return;

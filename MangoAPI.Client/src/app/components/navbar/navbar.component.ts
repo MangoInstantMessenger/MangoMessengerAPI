@@ -7,7 +7,7 @@ import {RoutingConstants} from "../../types/constants/RoutingConstants";
 })
 export class NavbarComponent {
 
-  @Input() public activeComponent: string = '';
+  @Input() public activeComponent = '';
 
   public get routingConstants(): typeof RoutingConstants {
     return RoutingConstants;

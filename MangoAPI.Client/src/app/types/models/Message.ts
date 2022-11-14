@@ -1,7 +1,7 @@
 ﻿import { DisplayNameColours } from "../enums/DisplayNameColours";
 
 export class Message {
-  messageId: string = '';
+  messageId = '';
   userId: string;
   chatId: string;
   userDisplayName: string;

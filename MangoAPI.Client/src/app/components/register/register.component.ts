@@ -39,9 +39,9 @@ export class RegisterComponent implements OnDestroy {
   }
 
   onRegisterClick(): void {
-    let displayNameFieldValidationResult = this._validationService.validateField(this.registerCommand.displayName, 'Display name');
-    let emailFieldValidationResult = this._validationService.validateField(this.registerCommand.email, 'Email');
-    let passwordFieldValidationResult = this._validationService.validateField(this.registerCommand.password, 'Password');
+    const displayNameFieldValidationResult = this._validationService.validateField(this.registerCommand.displayName, 'Display name');
+    const emailFieldValidationResult = this._validationService.validateField(this.registerCommand.email, 'Email');
+    const passwordFieldValidationResult = this._validationService.validateField(this.registerCommand.password, 'Password');
 
     if(!displayNameFieldValidationResult || !emailFieldValidationResult || !passwordFieldValidationResult) {
       return;

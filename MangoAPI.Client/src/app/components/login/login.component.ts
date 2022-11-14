@@ -37,8 +37,8 @@ export class LoginComponent implements OnDestroy {
   }
 
   login(): void {
-    let emailFieldValidationResult = this._validationService.validateField(this.loginCommand.email, 'Email');
-    let passwordFieldValidationResult = this._validationService.validateField(this.loginCommand.password, 'Password');
+    const emailFieldValidationResult = this._validationService.validateField(this.loginCommand.email, 'Email');
+    const passwordFieldValidationResult = this._validationService.validateField(this.loginCommand.password, 'Password');
 
     if (!emailFieldValidationResult || !passwordFieldValidationResult) {
       return;
