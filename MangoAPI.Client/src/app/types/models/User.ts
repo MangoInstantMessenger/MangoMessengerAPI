@@ -1,4 +1,4 @@
-﻿import { DisplayNameColours } from "../enums/DisplayNameColours";
+﻿import { DisplayNameColours } from '../enums/DisplayNameColours';
 
 export interface User {
   userId: string;

@@ -1,14 +1,14 @@
 export class RoutingConstants {
-  static Login: string = 'app?methodName=login';
-  static CheckEmailNote: string = 'app?methodName=checkEmailNote';
-  static RestorePassword: string = 'app?methodName=restorePassword';
-  static RestorePasswordRequest: string = 'app?methodName=restorePasswordRequest';
-  static Register: string = 'app?methodName=register';
-  static Chats: string = 'app?methodName=chats';
-  static CreateGroup: string = 'app?methodName=createGroup';
-  static ConfirmRegistration: string = 'app?methodName=confirmRegistration';
+  static Login = 'app?methodName=login';
+  static CheckEmailNote = 'app?methodName=checkEmailNote';
+  static RestorePassword = 'app?methodName=restorePassword';
+  static RestorePasswordRequest = 'app?methodName=restorePasswordRequest';
+  static Register = 'app?methodName=register';
+  static Chats = 'app?methodName=chats';
+  static CreateGroup = 'app?methodName=createGroup';
+  static ConfirmRegistration = 'app?methodName=confirmRegistration';
   static Settings = 'app?methodName=settings';
   static Contacts = 'app?methodName=contacts';
-  static RedirectToConfirmRegistration: string = 'app?methodName=redirectToConfirmRegistration';
-  static RedirectToConfirmPassword: string = 'app?methodName=redirectToRestorePassword';
+  static RedirectToConfirmRegistration = 'app?methodName=redirectToConfirmRegistration';
+  static RedirectToConfirmPassword = 'app?methodName=redirectToRestorePassword';
 }

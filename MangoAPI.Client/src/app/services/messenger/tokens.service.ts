@@ -1,5 +1,5 @@
-import {Injectable} from "@angular/core";
-import {Tokens} from "../../types/models/Tokens";
+import { Injectable } from '@angular/core';
+import { Tokens } from '../../types/models/Tokens';
 
 @Injectable({
   providedIn: 'root'

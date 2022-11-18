@@ -1,4 +1,4 @@
-﻿import {CommunityType} from "../enums/CommunityType";
+﻿import { CommunityType } from '../enums/CommunityType';
 
 export interface Chat {
   chatId: string;
@@ -10,9 +10,9 @@ export interface Chat {
   isArchived: boolean;
   isMember: boolean;
   roleId: number;
-  lastMessageAuthor: string,
-  lastMessageText: string,
-  lastMessageTime: string,
-  lastMessageId: string,
-  updatedAt: string
+  lastMessageAuthor: string;
+  lastMessageText: string;
+  lastMessageTime: string;
+  lastMessageId: string;
+  updatedAt: string;
 }

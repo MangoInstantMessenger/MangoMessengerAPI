@@ -1,4 +1,4 @@
-﻿import {Injectable} from "@angular/core";
+﻿import { Injectable } from '@angular/core';
 
 @Injectable({
   providedIn: 'root'
@@ -6,13 +6,15 @@
 export class ErrorNotificationService {
   notifyOnError(error: any): void {
     if (error.status === 0) {
-      alert("Cannot connect to the server. Response code: 0.");
+      alert('Cannot connect to the server. Response code: 0.');
       return;
     }
 
     if (error.status === 403) {
-      alert("Your account is not activated yet. Activate to start chatting. " +
-        "Activation links is sent by email after registration.");
+      alert(
+        'Your account is not activated yet. Activate to start chatting. ' +
+          'Activation links is sent by email after registration.'
+      );
       return;
     }
 
@@ -33,13 +35,16 @@ export class ErrorNotificationService {
 
   notifyOnErrorWithComponentName(error: any, componentName: string): void {
     if (error.status === 0) {
-      alert("Cannot connect to the server. Response code: 0." + ` ${componentName}`);
+      alert('Cannot connect to the server. Response code: 0.' + ` ${componentName}`);
       return;
     }
 
     if (error.status === 403) {
-      alert("Your account is not activated yet. Activate to start chatting. " +
-        "Activation links is sent by email after registration." + ` ${componentName}`);
+      alert(
+        'Your account is not activated yet. Activate to start chatting. ' +
+          'Activation links is sent by email after registration.' +
+          ` ${componentName}`
+      );
       return;
     }
 

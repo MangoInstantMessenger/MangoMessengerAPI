@@ -18,14 +18,12 @@ export class CommunitiesService {
 
   // GET /api/communities
   getUserChats(): Observable<GetUserChatsResponse> {
-    return this.httpClient.get<GetUserChatsResponse>(
-      environment.baseUrl + this.chatsRoute
-    );
+    return this.httpClient.get<GetUserChatsResponse>(environment.baseUrl + this.chatsRoute);
   }
 
   // POST /api/communities/chat
   createChat(userId: string): Observable<CreateCommunityResponse> {
-    let request = new CreateChatCommand(userId);
+    const request = new CreateChatCommand(userId);
     return this.httpClient.post<CreateCommunityResponse>(
       environment.baseUrl + this.chatsRoute + `chat/${userId}`,
       request
@@ -33,9 +31,7 @@ export class CommunitiesService {
   }
 
   // POST /api/communities/channel
-  createChannel(
-    request: CreateChannelCommand
-  ): Observable<CreateCommunityResponse> {
+  createChannel(request: CreateChannelCommand): Observable<CreateCommunityResponse> {
     return this.httpClient.post<CreateCommunityResponse>(
       environment.baseUrl + this.chatsRoute + 'channel',
       request
@@ -45,18 +41,12 @@ export class CommunitiesService {
   // GET /api/communities/searches
   searchChat(displayName: string): Observable<GetUserChatsResponse> {
     return this.httpClient.get<GetUserChatsResponse>(
-      environment.baseUrl +
-        this.chatsRoute +
-        'searches?displayName=' +
-        displayName
+      environment.baseUrl + this.chatsRoute + 'searches?displayName=' + displayName
     );
   }
 
   // PUT /api/communities/picture
-  updateChatLogo(
-    chatId: string,
-    formData: FormData
-  ): Observable<UpdateChatLogoResponse> {
+  updateChatLogo(chatId: string, formData: FormData): Observable<UpdateChatLogoResponse> {
     return this.httpClient.post<UpdateChatLogoResponse>(
       environment.baseUrl + this.chatsRoute + `picture/${chatId}`,
       formData
