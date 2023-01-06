@@ -99,6 +99,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "workflows", "workflows", "{
 	ProjectSection(SolutionItems) = preProject
 		.github\workflows\run-cng-dh-handshake.yml = .github\workflows\run-cng-dh-handshake.yml
 		.github\workflows\run-openssl-dh-handshake.yml = .github\workflows\run-openssl-dh-handshake.yml
+		.github\workflows\build-test-coverage-dotnet.yml = .github\workflows\build-test-coverage-dotnet.yml
 	EndProjectSection
 EndProject
 Global

@@ -1,0 +1,65 @@
+﻿name: Build Test Coverage
+
+on:
+  push:
+    branches:
+      - develop
+      - gh-actions-coverage
+
+  pull_request:
+    branches: [ develop ]
+
+  workflow_dispatch:
+
+jobs:
+  build-and-test-dotnet:
+    name: Build Test Coverage
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Fetch Sources
+        uses: actions/checkout@v2
+
+      - name: Setup .NET 6.0 SDK
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: 6.0.x
+
+      - name: Restore Nuget Packages
+        run: dotnet restore
+
+      - name: Build .NET Project
+        run: |
+          dotnet build --no-restore /p:ContinuousIntegrationBuild=true --configuration Release
+
+      - name: Install and Run Azurite
+        run: |
+          npm install -g azurite
+          mkdir azurite
+          azurite --silent --location azurite --debug azurite\debug.log &
+
+      - name: Run SQLServer docker container
+        run: |
+          docker run -e 'SA_PASSWORD=x2yiJt!Fs' -e ACCEPT_EULA=y --name mango-mssql-db --hostname mango-mssql-db -p 1433:1433 -d mcr.microsoft.com/mssql/server:2019-latest
+
+      - name: Wait for container
+        run: pwsh ./build/docker/mssql-docker/wait_database.ps1
+
+      - name: Run Integration Tests
+        run: dotnet test MangoAPI.IntegrationTests/MangoAPI.IntegrationTests.csproj  /p:CollectCoverage=true /p:CoverletOutput=TestResults/ /p:CoverletOutputFormat=lcov
+
+#      - name: ✨ Publish coverage report to Coveralls ✨
+#        uses: coverallsapp/github-action@master
+#        with:
+#          github-token: ${{ secrets.GITHUB_TOKEN }}
+#          path-to-lcov: MangoAPI.IntegrationTests/TestResults/coverage.info
+
+      - name: Publish .NET Project
+        run: |
+          dotnet publish "MangoAPI.Presentation/MangoAPI.Presentation.csproj" --configuration "Release" --output "publish"
+
+      - name: Drop Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: 'drop'
+          path: 'publish'
