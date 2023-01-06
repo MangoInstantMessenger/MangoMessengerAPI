@@ -8,24 +8,29 @@
         <SonarQubeExclude>true</SonarQubeExclude>
     </PropertyGroup>
 
+    <!-- Exclude the project from coverage report -->
     <ItemGroup>
-        <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="6.0.10" />
+        <AssemblyAttribute Include="System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="6.0.10"/>
         <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.10">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
-        <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.10" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.10"/>
         <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.10">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
-        <PackageReference Include="Microsoft.Extensions.Configuration" Version="6.0.1" />
-        <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="6.0.0" />
+        <PackageReference Include="Microsoft.Extensions.Configuration" Version="6.0.1"/>
+        <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="6.0.0"/>
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\MangoAPI.Application\MangoAPI.Application.csproj" />
-        <ProjectReference Include="..\MangoAPI.Domain\MangoAPI.Domain.csproj" />
+        <ProjectReference Include="..\MangoAPI.Application\MangoAPI.Application.csproj"/>
+        <ProjectReference Include="..\MangoAPI.Domain\MangoAPI.Domain.csproj"/>
     </ItemGroup>
 
 </Project>

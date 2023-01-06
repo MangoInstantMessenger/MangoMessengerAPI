@@ -68,7 +68,9 @@ Obligatory required software:
 - **NodeJS:** `16.13.1`
 - **NPM:** `8.1.2`
 - **Code Editor or IDE:** Visual studio, Visual studio code, Rider
-- **For Visual studio code:** [ESlint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint) and [Prettier](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode) plugins (also included in the workspace recommendations)
+- **For Visual studio code:** [ESlint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint)
+  and [Prettier](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode) plugins (also included in
+  the workspace recommendations)
 
 ### Run in debug mode
 
@@ -166,6 +168,7 @@ Version control to be organized as follows:
 
 - Trello: https://trello.com/b/Z7IlfrRb/mango-messenger-trello
 - Database diagram: https://dbdiagram.io/d/60d66a13dd6a597148203e6b
+- How to exclude project from coverage: https://codyanhorn.tech/blog/excluding-your-net-test-project-from-code-coverage
 
 ## Logo Attribution
 
