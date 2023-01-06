@@ -43,7 +43,7 @@ jobs:
           docker run -e 'SA_PASSWORD=x2yiJt!Fs' -e ACCEPT_EULA=y --name mango-mssql-db --hostname mango-mssql-db -p 1433:1433 -d mcr.microsoft.com/mssql/server:2019-latest
 
       - name: Wait for container
-        run: pwsh ./build/docker/mssql-docker/wait_database.ps1
+        run: pwsh ./scripts/wait_database.ps1
 
       - name: Run Integration Tests
         run: dotnet test MangoAPI.IntegrationTests/MangoAPI.IntegrationTests.csproj  /p:CollectCoverage=true /p:CoverletOutput=TestResults/ /p:CoverletOutputFormat=lcov
