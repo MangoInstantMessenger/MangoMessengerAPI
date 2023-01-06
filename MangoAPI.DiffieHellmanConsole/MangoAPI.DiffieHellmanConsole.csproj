@@ -8,6 +8,11 @@
         <CodeAnalysisRuleSet>..\stylecop.ruleset</CodeAnalysisRuleSet>
     </PropertyGroup>
 
+    <!-- Exclude the project from coverage report -->
+    <ItemGroup>
+        <AssemblyAttribute Include="System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute"/>
+    </ItemGroup>
+
     <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
         <DocumentationFile>./bin/MangoAPI.DiffieHellmanConsole.xml</DocumentationFile>
     </PropertyGroup>
