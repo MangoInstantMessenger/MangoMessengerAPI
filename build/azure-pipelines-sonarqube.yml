@@ -32,6 +32,11 @@ stages:
           vmImage: 'ubuntu-latest'
 
         steps:
+          - task: mend@21
+            displayName: 'Mend security scan'
+            inputs:
+              cwd: '$(System.DefaultWorkingDirectory)'
+
           - task: SonarCloudPrepare@1
             displayName: 'Prepare SonarCloud'
             inputs:
