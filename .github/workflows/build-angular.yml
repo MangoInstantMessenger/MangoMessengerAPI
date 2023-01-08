@@ -25,6 +25,7 @@ jobs:
         with:
           node-version: '16.x'
           cache: 'npm'
+          cache-dependency-path: 'MangoAPI.Client/package-lock.json'
 
       - name: Npm ci
         working-directory: './MangoAPI.Client'
