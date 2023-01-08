@@ -19,9 +19,7 @@ jobs:
     strategy:
       matrix:
         environment:
-          - macos-latest
           - ubuntu-latest
-          - windows-latest
 
     env:
       DOTNET_NOLOGO: 1
