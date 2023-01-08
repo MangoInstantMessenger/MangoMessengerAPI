@@ -1,0 +1,35 @@
+name: Build Angular
+
+on:
+  push:
+    branches:
+      - develop
+      - cache
+
+  pull_request:
+    branches: [ develop ]
+
+  workflow_dispatch:
+
+jobs:
+  build-angular:
+    name: Build Angular
+    runs-on: 'ubuntu-latest'
+
+    steps:
+      - name: 'Checkout'
+        uses: actions/checkout@v2
+
+      - name: 'Setup Node.js 16.x'
+        uses: actions/setup-node@v1
+        with:
+          node-version: '16.x'
+          cache: 'npm'
+
+      - name: Npm ci
+        working-directory: './MangoAPI.Client'
+        run: npm ci
+
+      - name: Npm build prod
+        working-directory: './MangoAPI.Client'
+        run: npm run build --production
