@@ -20,7 +20,6 @@ jobs:
       matrix:
         environment:
           - ubuntu-latest
-          - windows-latest
 
     env:
       DOTNET_NOLOGO: 1
