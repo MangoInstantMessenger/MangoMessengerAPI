@@ -20,6 +20,7 @@ jobs:
       matrix:
         environment:
           - ubuntu-latest
+          - windows-latest
 
     env:
       DOTNET_NOLOGO: 1
@@ -49,6 +50,7 @@ jobs:
           dotnet build --no-restore /p:ContinuousIntegrationBuild=true --configuration Release
 
       - name: Install and Run Azurite
+        shell: bash
         run: |
           npm install -g azurite
           mkdir azurite
