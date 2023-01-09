@@ -33,3 +33,4 @@ stages:
       - template: templates/angular-build-job-template.yml
       - template: templates/dotnet-integration-tests-job-template.yml
       - template: templates/sonarcloud-job-template.yml
+      - template: templates/mend-scan-job-template.yml
