@@ -1,16 +1,16 @@
-#parameters:
-#  - name: buildConfiguration
-#    displayName: 'Build Configuration'
-#    type: string
-#    default: 'Release'
-#    values:
-#      - Release
-#      - Debug
+parameters:
+  - name: buildConfiguration
+    displayName: 'Build Configuration'
+    type: string
+    default: 'Release'
+    values:
+      - Release
+      - Debug
 
-#  - name: backendProjectPath
-#    displayName: 'Backend project path'
-#    type: string
-#    default: './MangoAPI.Presentation/MangoAPI.Presentation.csproj'
+  - name: backendProjectPath
+    displayName: 'Backend project path'
+    type: string
+    default: './MangoAPI.Presentation/MangoAPI.Presentation.csproj'
 
 jobs:
   - job: 'SonarCloud_Analyzer'
@@ -49,14 +49,14 @@ jobs:
         displayName: 'Dotnet restore'
         inputs:
           command: 'restore'
-          projects: '${{ parameters.integrationTestsProjectPath }}'
+          projects: '${{ parameters.backendProjectPath }}'
           arguments: '--verbosity minimal'
 
       - task: DotNetCoreCLI@2
         displayName: 'Dotnet build ${{ parameters.buildConfiguration }}'
         inputs:
           command: 'build'
-          projects: '${{ parameters.integrationTestsProjectPath }}'
+          projects: '${{ parameters.backendProjectPath }}'
           arguments: '--configuration ${{ parameters.buildConfiguration }} --no-restore'
 
       - task: SonarCloudAnalyze@1

@@ -17,12 +17,6 @@ jobs:
     displayName: 'Build Test .NET'
     steps:
 
-#      - task: UseDotNet@2
-#        displayName: 'Install .NET 6.x SDK'
-#        inputs:
-#          packageType: sdk
-#          version: 6.x
-
       - task: DotNetCoreCLI@2
         displayName: 'Dotnet restore'
         inputs:
