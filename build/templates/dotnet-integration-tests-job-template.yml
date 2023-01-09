@@ -12,11 +12,6 @@ parameters:
     type: string
     default: './MangoAPI.IntegrationTests/MangoAPI.IntegrationTests.csproj'
 
-#  - name: backendProjectPath
-#    displayName: 'Backend project path'
-#    type: string
-#    default: './MangoAPI.Presentation/MangoAPI.Presentation.csproj'
-
 jobs:
   - job: 'Build_Test_Dotnet'
     displayName: 'Build Test .NET'
@@ -68,17 +63,21 @@ jobs:
           projects: '${{ parameters.integrationTestsProjectPath }}'
           arguments: '--no-restore --collect:"XPlat Code Coverage" --settings build/coverage.runsettings'
 
-#      - task: DotNetCoreCLI@2
-#        displayName: 'Dotnet Publish'
-#        inputs:
-#          command: 'publish'
-#          publishWebProjects: false
-#          projects: '${{ parameters.backendProjectPath }}'
-#          arguments: '--configuration ${{ parameters.buildConfiguration }} --output $(Build.ArtifactStagingDirectory)/${{ parameters.buildConfiguration }} --no-build'
-#
-#      - task: PublishBuildArtifacts@1
-#        displayName: 'Publish Artifacts'
-#        inputs:
-#          PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-#          ArtifactName: 'web-api'
-#          publishLocation: 'Container'
+      - task: reportgenerator@5
+        displayName: 'Generate Code Coverage Report'
+        inputs:
+          reports: '$(Agent.TempDirectory)/**/*cobertura.xml'
+          targetdir: '$(codeCoverageReportDirPath)'
+          reporttypes: 'HtmlInline_AzurePipelines;Cobertura;HTMLChart'
+          assemblyfilters: '-xunit*;-System.*'
+
+      - task: PublishTestResults@2
+        inputs:
+          testRunner: VSTest
+          testResultsFiles: '$(Agent.TempDirectory)/**/*.trx'
+
+      - task: PublishCodeCoverageResults@1
+        inputs:
+          summaryFileLocation: $(codeCoverageReportDirPath)/Cobertura.xml
+          reportDirectory: $(codeCoverageReportDirPath)
+          codecoverageTool: cobertura

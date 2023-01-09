@@ -7,11 +7,6 @@ parameters:
       - Release
       - Debug
 
-#  - name: integrationTestsProjectPath
-#    displayName: 'Integration Tests Project Path'
-#    type: string
-#    default: './MangoAPI.IntegrationTests/MangoAPI.IntegrationTests.csproj'
-
   - name: backendProjectPath
     displayName: 'Backend project path'
     type: string
@@ -41,32 +36,6 @@ jobs:
           command: 'build'
           projects: '${{ parameters.backendProjectPath }}'
           arguments: '--configuration ${{ parameters.buildConfiguration }} --no-restore'
-
-#      - bash: |
-#          sudo npm install -g azurite
-#          sudo mkdir azurite
-#          sudo azurite --silent --location azurite --debug azurite\debug.log &
-#        displayName: 'Install and Run Azurite'
-#
-#      - task: PowerShell@2
-#        displayName: 'Run database container'
-#        inputs:
-#          targetType: 'inline'
-#          script: 'docker run -e ''SA_PASSWORD=x2yiJt!Fs'' -e ACCEPT_EULA=y --name mango-mssql-db --hostname mango-mssql-db -p 1433:1433 -d mcr.microsoft.com/mssql/server:2019-latest'
-#
-#      - task: PowerShell@2
-#        displayName: 'Wait for container'
-#        timeoutInMinutes: 5
-#        inputs:
-#          targetType: 'inline'
-#          script: .\scripts\wait_database.ps1
-#
-#      - task: DotNetCoreCLI@2
-#        displayName: 'Run integration tests'
-#        inputs:
-#          command: 'test'
-#          projects: '${{ parameters.integrationTestsProjectPath }}'
-#          arguments: '--no-restore --collect:"XPlat Code Coverage" --settings build/coverage.runsettings'
 
       - task: DotNetCoreCLI@2
         displayName: 'Dotnet Publish'
