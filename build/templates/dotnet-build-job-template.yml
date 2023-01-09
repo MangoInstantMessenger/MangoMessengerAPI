@@ -23,8 +23,8 @@ parameters:
     default: './MangoAPI.Presentation/wwwroot'
 
 jobs:
-  - job: 'Build_Pack_Dotnet'
-    displayName: 'Build Drop Artifact .NET'
+  - job: 'Build_Pack'
+    displayName: 'Build & Drop Artifact'
     steps:
 
       - task: Npm@1
