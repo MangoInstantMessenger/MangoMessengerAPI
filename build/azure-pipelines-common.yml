@@ -15,11 +15,6 @@ steps:
       Action: '##vso[build.updatebuildnumber]'
       BuildVersion: $(GitVersion.SemVer)
 
-  - task: NodeTool@0
-    displayName: 'Install Node.js 16.x'
-    inputs:
-      versionSpec: 16.x
-
   - task: Npm@1
     displayName: 'Install Angular CLI'
     inputs:
@@ -77,7 +72,7 @@ steps:
     displayName: 'Run integration tests'
     inputs:
       command: 'test'
-      projects: 'MangoAPI.IntegrationTests/MangoAPI.IntegrationTests.csproj'
+      projects: '$(integrationTestProjectPath)'
       arguments: '--no-restore --collect:"XPlat Code Coverage" --settings build/coverage.runsettings'
 
   - task: DotNetCoreCLI@2

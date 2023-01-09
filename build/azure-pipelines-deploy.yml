@@ -13,9 +13,11 @@ variables:
   - name: buildConfiguration
     value: 'Release'
   - name: backendProjectPath
-    value: 'MangoAPI.Presentation/MangoAPI.Presentation.csproj'
+    value: './MangoAPI.Presentation/MangoAPI.Presentation.csproj'
+  - name: integrationTestsProjectPath
+    value: './MangoAPI.IntegrationTests/MangoAPI.IntegrationTests.csproj'
   - name: frontEndProjectPath
-    value: 'MangoAPI.Client'
+    value: './MangoAPI.Client'
 
 stages:
   - stage: 'Build_Test'
