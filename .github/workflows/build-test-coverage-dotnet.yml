@@ -5,6 +5,7 @@ on:
     branches:
       - develop
       - gh-actions-coverage
+      - cache
 
   pull_request:
     branches: [ develop ]
@@ -14,7 +15,16 @@ on:
 jobs:
   build-and-test-dotnet:
     name: Build Test Coverage
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.environment }}
+    strategy:
+      matrix:
+        environment:
+          - ubuntu-latest
+
+    env:
+      DOTNET_NOLOGO: 1
+      DOTNET_CLI_TELEMETRY_OPTOUT: 1
+      NUGET_PACKAGES: ${{ github.workspace }}/.github/nuget-packages
 
     steps:
       - name: Fetch Sources
@@ -25,6 +35,12 @@ jobs:
         with:
           dotnet-version: 6.0.x
 
+      - name: NuGet Cache
+        uses: actions/cache@v3
+        with:
+          path: ${{ env.NUGET_PACKAGES }}
+          key: ${{ runner.os }}.nuget.${{ hashFiles('**/*.csproj') }}
+
       - name: Restore Nuget Packages
         run: dotnet restore
 
@@ -33,6 +49,7 @@ jobs:
           dotnet build --no-restore /p:ContinuousIntegrationBuild=true --configuration Release
 
       - name: Install and Run Azurite
+        shell: bash
         run: |
           npm install -g azurite
           mkdir azurite
