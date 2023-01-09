@@ -78,5 +78,5 @@ jobs:
         displayName: 'Publish Artifacts'
         inputs:
           PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-          ArtifactName: 'web-app'
+          ArtifactName: 'web-api'
           publishLocation: 'Container'

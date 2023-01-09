@@ -1,16 +1,37 @@
-steps:
-  - task: Npm@1
-    displayName: 'Install Angular CLI'
-    inputs:
-      command: 'custom'
-      customCommand: 'install -g @angular/cli'
+parameters:
+  - name: frontEndProjectPath
+    displayName: 'Frontend project path'
+    type: string
+    default: './MangoAPI.Client'
 
-  - script: |
-      npm ci
-    displayName: 'Npm ci'
-    workingDirectory: '$(frontEndProjectPath)'
+  - name: buildFolder
+    displayName: 'Folder containing angular build files'
+    type: string
+    default: './MangoAPI.Presentation/wwwroot'
 
-  - script: |
-      ng build --aot --configuration production
-    displayName: 'Build Angular Prod'
-    workingDirectory: '$(frontEndProjectPath)'
+jobs:
+  - job: 'Build_Angular'
+    displayName: 'Build Angular and Drop Artifact'
+    steps:
+      - task: Npm@1
+        displayName: 'Install Angular CLI'
+        inputs:
+          command: 'custom'
+          customCommand: 'install -g @angular/cli'
+
+      - script: |
+          npm ci
+        displayName: 'Npm ci'
+        workingDirectory: '${{ parameters.frontEndProjectPath }}'
+
+      - script: |
+          ng build --aot --configuration production
+        displayName: 'Build Angular Prod'
+        workingDirectory: '${{ parameters.frontEndProjectPath }}'
+
+      - task: PublishBuildArtifacts@1
+        displayName: 'Publish Artifacts'
+        inputs:
+          PathtoPublish: '${{ parameters.buildFolder }}'
+          ArtifactName: 'angular-app'
+          publishLocation: 'Container'

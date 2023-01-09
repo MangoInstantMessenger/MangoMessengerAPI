@@ -30,3 +30,4 @@ stages:
     displayName: 'Build Test and Drop Artifacts'
     jobs:
       - template: templates/dotnet-build-job-template.yml
+      - template: templates/angular-build-job-template.yml
