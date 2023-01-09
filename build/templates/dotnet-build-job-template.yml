@@ -35,10 +35,10 @@ jobs:
           arguments: '--verbosity minimal'
 
       - task: DotNetCoreCLI@2
-        displayName: 'Dotnet build $(buildConfiguration)'
+        displayName: 'Dotnet build ${{ parameters.buildConfiguration }}'
         inputs:
           command: 'build'
-          arguments: '--configuration $(buildConfiguration) --no-restore'
+          arguments: '--configuration ${{ parameters.buildConfiguration }} --no-restore'
 
       - bash: |
           sudo npm install -g azurite
@@ -63,7 +63,7 @@ jobs:
         displayName: 'Run integration tests'
         inputs:
           command: 'test'
-          projects: '$(integrationTestsProjectPath)'
+          projects: '${{ parameters.integrationTestsProjectPath }}'
           arguments: '--no-restore --collect:"XPlat Code Coverage" --settings build/coverage.runsettings'
 
       - task: DotNetCoreCLI@2
@@ -71,8 +71,8 @@ jobs:
         inputs:
           command: 'publish'
           publishWebProjects: false
-          projects: '$(backendProjectPath)'
-          arguments: '--configuration $(buildConfiguration) --output $(Build.ArtifactStagingDirectory)/$(buildConfiguration) --no-build'
+          projects: '${{ parameters.backendProjectPath }}'
+          arguments: '--configuration ${{ parameters.buildConfiguration }} --output $(Build.ArtifactStagingDirectory)/${{ parameters.buildConfiguration }} --no-build'
 
       - task: PublishBuildArtifacts@1
         displayName: 'Publish Artifacts'
