@@ -72,7 +72,7 @@ steps:
     displayName: 'Run integration tests'
     inputs:
       command: 'test'
-      projects: '$(integrationTestProjectPath)'
+      projects: '$(integrationTestsProjectPath)'
       arguments: '--no-restore --collect:"XPlat Code Coverage" --settings build/coverage.runsettings'
 
   - task: DotNetCoreCLI@2
