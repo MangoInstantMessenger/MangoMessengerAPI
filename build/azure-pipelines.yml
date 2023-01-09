@@ -36,6 +36,8 @@ stages:
         environment: dev
         variables:
           - group: DEPLOY_DEV_VARS
+          - name: buildConfiguration
+            value: 'Release'
         strategy:
           runOnce:
             deploy:
@@ -48,5 +50,5 @@ stages:
                     azureSubscription: "MangoRgServiceConnection"
                     appType: "webApp"
                     WebAppName: "$(WebAppName)"
-                    packageForLinux: "$(Pipeline.Workspace)/drop/$(BuildConfiguration)/MangoAPI.Presentation.zip"
+                    packageForLinux: "$(Pipeline.Workspace)/drop/$(buildConfiguration)/MangoAPI.Presentation.zip"
                     JSONFiles: "**/appsettings.json"
