@@ -106,6 +106,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "templates", "templates", "{
 	ProjectSection(SolutionItems) = preProject
 		build\templates\angular-build-job-template.yml = build\templates\angular-build-job-template.yml
 		build\templates\dotnet-build-job-template.yml = build\templates\dotnet-build-job-template.yml
+		build\templates\dotnet-integration-tests-job-template.yml = build\templates\dotnet-integration-tests-job-template.yml
 	EndProjectSection
 EndProject
 Global

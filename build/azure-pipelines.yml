@@ -31,3 +31,4 @@ stages:
     jobs:
       - template: templates/dotnet-build-job-template.yml
       - template: templates/angular-build-job-template.yml
+      - template: templates/dotnet-integration-tests-job-template.yml
