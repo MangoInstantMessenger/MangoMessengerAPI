@@ -1,0 +1,8 @@
+jobs:
+  - job: 'Mend_Security_Scan'
+    displayName: 'Mend Security Scan'
+    steps:
+      - task: WhiteSource@21
+        displayName: 'Mend security scan'
+        inputs:
+          cwd: '$(System.DefaultWorkingDirectory)'
