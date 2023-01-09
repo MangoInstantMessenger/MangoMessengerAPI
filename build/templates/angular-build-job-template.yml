@@ -1,0 +1,16 @@
+steps:
+  - task: Npm@1
+    displayName: 'Install Angular CLI'
+    inputs:
+      command: 'custom'
+      customCommand: 'install -g @angular/cli'
+
+  - script: |
+      npm ci
+    displayName: 'Npm ci'
+    workingDirectory: '$(frontEndProjectPath)'
+
+  - script: |
+      ng build --aot --configuration production
+    displayName: 'Build Angular Prod'
+    workingDirectory: '$(frontEndProjectPath)'

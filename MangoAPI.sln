@@ -33,7 +33,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MangoAPI.DiffieHellmanLibra
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "build", "build", "{66E218B1-FCCA-42F3-81A4-E19AC6659ECA}"
 	ProjectSection(SolutionItems) = preProject
-		build\azure-pipelines-common.yml = build\azure-pipelines-common.yml
 		build\azure-pipelines-deploy.yml = build\azure-pipelines-deploy.yml
 		build\azure-pipelines.yml = build\azure-pipelines.yml
 		build\azure-pipelines-sonarqube.yml = build\azure-pipelines-sonarqube.yml
@@ -103,6 +102,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "workflows", "workflows", "{
 		.github\workflows\build-angular.yml = .github\workflows\build-angular.yml
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "templates", "templates", "{79EB6A4D-7532-4D40-8E76-B168B442D3C0}"
+	ProjectSection(SolutionItems) = preProject
+		build\templates\angular-build-job-template.yml = build\templates\angular-build-job-template.yml
+		build\templates\dotnet-build-job-template.yml = build\templates\dotnet-build-job-template.yml
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -149,6 +154,7 @@ Global
 		{E70E0E28-1954-4AC7-8C05-B8C221252450} = {B8CB0A21-BB6E-478B-A755-49CEA1435CD1}
 		{180A6309-24EE-4736-9DE5-AB36997D75BB} = {64F59099-7FFD-4D32-8C74-2BD1EBFF0B11}
 		{8AEBB05F-C450-4E77-8B91-9155BFB4FD56} = {B8CB0A21-BB6E-478B-A755-49CEA1435CD1}
+		{79EB6A4D-7532-4D40-8E76-B168B442D3C0} = {66E218B1-FCCA-42F3-81A4-E19AC6659ECA}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {64B16C18-46ED-4D73-927F-B2E229345447}

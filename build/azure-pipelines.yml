@@ -8,27 +8,25 @@ pr:
     include:
       - develop
 
-variables:
-  - name: solution
-    value: 'MangoAPI.sln'
-  - name: buildPlatform
-    value: 'Any CPU'
-  - name: buildConfiguration
-    value: 'Release'
-  - name: backendProjectPath
-    value: './MangoAPI.Presentation/MangoAPI.Presentation.csproj'
-  - name: integrationTestsProjectPath
-    value: './MangoAPI.IntegrationTests/MangoAPI.IntegrationTests.csproj'
-  - name: frontEndProjectPath
-    value: './MangoAPI.Client'
+pool:
+  vmImage: 'ubuntu-latest'
+
+#variables:
+#  - name: solution
+#    value: 'MangoAPI.sln'
+#  - name: buildPlatform
+#    value: 'Any CPU'
+#  - name: buildConfiguration
+#    value: 'Release'
+#  - name: backendProjectPath
+#    value: './MangoAPI.Presentation/MangoAPI.Presentation.csproj'
+#  - name: integrationTestsProjectPath
+#    value: './MangoAPI.IntegrationTests/MangoAPI.IntegrationTests.csproj'
+#  - name: frontEndProjectPath
+#    value: './MangoAPI.Client'
 
 stages:
-  - stage: 'Build_Test'
+  - stage: 'Build_Test_Pack'
+    displayName: 'Build Test and Drop Artifacts'
     jobs:
-      - job: "Build"
-        displayName: 'Build and Test'
-        pool:
-          vmImage: 'ubuntu-latest'
-
-        steps:
-          - template: azure-pipelines-common.yml
+      - template: templates/dotnet-build-job-template.yml
