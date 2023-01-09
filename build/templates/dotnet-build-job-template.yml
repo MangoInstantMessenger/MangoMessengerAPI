@@ -12,10 +12,36 @@ parameters:
     type: string
     default: './MangoAPI.Presentation/MangoAPI.Presentation.csproj'
 
+  - name: frontEndProjectPath
+    displayName: 'Frontend project path'
+    type: string
+    default: './MangoAPI.Client'
+
+  - name: buildFolder
+    displayName: 'Folder containing angular build files'
+    type: string
+    default: './MangoAPI.Presentation/wwwroot'
+
 jobs:
   - job: 'Build_Pack_Dotnet'
     displayName: 'Build Drop Artifact .NET'
     steps:
+
+      - task: Npm@1
+        displayName: 'Install Angular CLI'
+        inputs:
+          command: 'custom'
+          customCommand: 'install -g @angular/cli@13.3.4'
+
+      - script: |
+          npm ci
+        displayName: 'Npm ci'
+        workingDirectory: '${{ parameters.frontEndProjectPath }}'
+
+      - script: |
+          ng build --aot --configuration production
+        displayName: 'Build Angular Prod'
+        workingDirectory: '${{ parameters.frontEndProjectPath }}'
 
       - task: DotNetCoreCLI@2
         displayName: 'Dotnet restore'
@@ -43,5 +69,5 @@ jobs:
         displayName: 'Publish Artifacts'
         inputs:
           PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-          ArtifactName: 'web-api'
+          ArtifactName: 'drop'
           publishLocation: 'Container'
