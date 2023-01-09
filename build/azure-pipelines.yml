@@ -11,11 +11,11 @@ pr:
 pool:
   vmImage: 'ubuntu-latest'
 
-#variables:
+variables:
+  - name: buildPlatform
+    value: 'Any CPU'
 #  - name: solution
 #    value: 'MangoAPI.sln'
-#  - name: buildPlatform
-#    value: 'Any CPU'
 #  - name: buildConfiguration
 #    value: 'Release'
 #  - name: backendProjectPath
