@@ -1,3 +1,4 @@
+using System.Reflection;
 using System.Text.Json;
 using MangoAPI.Application.Interfaces;
 using MangoAPI.Application.Services;
@@ -12,6 +13,7 @@ using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.OpenApi.Models;
 
 namespace MangoAPI.Presentation;
 
@@ -19,10 +21,14 @@ public class Startup
 {
     private const string CorsPolicy = "MangoCorsPolicy";
     private readonly IConfiguration configuration;
+    private readonly string version;
+    private readonly string swaggerTitle;
 
     public Startup(IConfiguration configuration)
     {
         this.configuration = configuration;
+        version = Assembly.GetExecutingAssembly().GetName().Version?.ToString() ?? "1";
+        swaggerTitle = $"MangoAPI v{version}";
     }
 
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -42,7 +48,8 @@ public class Startup
         app.UseStaticFiles();
 
         app.UseSwagger();
-        app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "MangoAPI v1"));
+
+        app.UseSwaggerUI(c => c.SwaggerEndpoint($"/swagger/v{version}/swagger.json", swaggerTitle));
 
         app.UseAuthorization();
 
@@ -106,7 +113,14 @@ public class Startup
             jwtLifetimeMinutes,
             refreshTokenLifetimeDays);
 
-        services.AddSwagger();
+        var apiInfo = new OpenApiInfo
+        {
+            Title = swaggerTitle,
+            Version = version,
+            Description = "Mango Messenger ASP .NET 6 Web API",
+        };
+
+        services.AddSwaggerGen(c => { c.SwaggerDoc($"v{version}", apiInfo); });
 
         services.ConfigureCors(configuration, CorsPolicy);
 
