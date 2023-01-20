@@ -20,6 +20,12 @@
         "storageAccounts_mangostorageaccounts_name": {
             "value": null
         },
+        "smartdetectoralertrules_failure_anomalies___mangomessenger_name": {
+            "value": null
+        },
+        "actiongroups_application_insights_smart_detection_externalid": {
+            "value": null
+        },
         "workspaces_defaultworkspace_25e77253_6d50_4029_96c6_6ace25c4b2f3_cus_externalid": {
             "value": null
         },

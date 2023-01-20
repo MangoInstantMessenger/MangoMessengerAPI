@@ -25,6 +25,14 @@
             "defaultValue": "mangostorageaccounts",
             "type": "String"
         },
+        "smartdetectoralertrules_failure_anomalies___mangomessenger_name": {
+            "defaultValue": "failure anomalies - mangomessenger",
+            "type": "String"
+        },
+        "actiongroups_application_insights_smart_detection_externalid": {
+            "defaultValue": "/subscriptions/25e77253-6d50-4029-96c6-6ace25c4b2f3/resourceGroups/hospital-rg/providers/microsoft.insights/actiongroups/application insights smart detection",
+            "type": "String"
+        },
         "workspaces_defaultworkspace_25e77253_6d50_4029_96c6_6ace25c4b2f3_cus_externalid": {
             "defaultValue": "/subscriptions/25e77253-6d50-4029-96c6-6ace25c4b2f3/resourceGroups/defaultresourcegroup-cus/providers/microsoft.operationalinsights/workspaces/defaultworkspace-25e77253-6d50-4029-96c6-6ace25c4b2f3-cus",
             "type": "String"
@@ -143,7 +151,7 @@
             "name": "[parameters('storageAccounts_mangostorageaccounts_name')]",
             "location": "northeurope",
             "sku": {
-                "name": "Standard_RAGRS",
+                "name": "Standard_LRS",
                 "tier": "Standard"
             },
             "kind": "StorageV2",
@@ -227,6 +235,32 @@
                 "publicNetworkAccess": "Enabled",
                 "storageAccountRequired": false,
                 "keyVaultReferenceIdentity": "SystemAssigned"
+            }
+        },
+        {
+            "type": "microsoft.alertsmanagement/smartdetectoralertrules",
+            "apiVersion": "2021-04-01",
+            "name": "[parameters('smartdetectoralertrules_failure_anomalies___mangomessenger_name')]",
+            "location": "global",
+            "dependsOn": [
+                "[resourceId('microsoft.insights/components', parameters('components_mangomessenger_name'))]"
+            ],
+            "properties": {
+                "description": "Failure Anomalies notifies you of an unusual rise in the rate of failed HTTP requests or dependency calls.",
+                "state": "Enabled",
+                "severity": "Sev3",
+                "frequency": "PT1M",
+                "detector": {
+                    "id": "FailureAnomaliesDetector"
+                },
+                "scope": [
+                    "[resourceId('microsoft.insights/components', parameters('components_mangomessenger_name'))]"
+                ],
+                "actionGroups": {
+                    "groupIds": [
+                        "[parameters('actiongroups_application_insights_smart_detection_externalid')]"
+                    ]
+                }
             }
         },
         {
@@ -902,7 +936,7 @@
                 "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_mangostorageaccounts_name'))]"
             ],
             "sku": {
-                "name": "Standard_RAGRS",
+                "name": "Standard_LRS",
                 "tier": "Standard"
             },
             "properties": {
@@ -935,7 +969,7 @@
                 "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_mangostorageaccounts_name'))]"
             ],
             "sku": {
-                "name": "Standard_RAGRS",
+                "name": "Standard_LRS",
                 "tier": "Standard"
             },
             "properties": {
