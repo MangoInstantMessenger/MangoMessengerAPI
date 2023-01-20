@@ -49,7 +49,7 @@ public class Startup
 
         app.UseSwagger();
 
-        app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", swaggerTitle));
+        app.UseSwaggerUI(c => c.SwaggerEndpoint($"/swagger/v{version}/swagger.json", swaggerTitle));
 
         app.UseAuthorization();
 
