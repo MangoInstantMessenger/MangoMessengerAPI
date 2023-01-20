@@ -16,27 +16,38 @@ However, it is worth to continue progress on the project pursuing another predef
 ## Main goals of the project
 
 - Implementation of simple, maintainable, safe and scalable code base following the KISS and YAGNI software development
-  principles.
-- To maintain the code quality using static code analyzers such as ReSharper, SonarQube where SonarQube analysis is a
-  part of the CI/CD pipeline with further publication of the QualityGate results.
-- To use proper IDE configurations and style rules, it is about editor config and StyleCop extensions.
-- To maintain high (> 70%) code coverage using unit tests, integration tests and E2E tests with ongoing publication of
-  the coverage report to the Azure DevOps workflow statistics.
+  principles
+- To maintain the code quality using static code analyzers such as ReSharper, SonarCloud where SonarCloud analysis is a
+  part of the CI/CD pipeline with further publication of the quality gate results
+- To setup proper IDE configurations and code style rules using editor config and StyleCop extensions
+- To maintain high (> 70%) code coverage using unit tests, integration tests with ongoing publication of
+  the coverage report to the Azure DevOps workflow statistics
 - To implement layered architecture where each layers is a separate project responsible for single part of the
-  application. For example, the Domain layer is responsible for the business logic and validates itself.
+  application. For example, the Domain layer is responsible for the business logic and validates itself
 - To implement productive, quick and safe development cycle. It is mainly about organization of the CI/CD
   process using Azure DevOps and Azure pipelines so that each pull request to be validated and tested. Moreover, the
-  CD (Continuous Deployment) must be confirmed manually be designated person.
-- To implement E2E tests inside CI/CD pipelines using Docker Compose and Postman.
-- To implement IaaC using Hashicorp Terraform and applying this infrastructure on behalf of CI/CD pipelines.
-- To implement cryptographic protocol that allows End-to-end (E2E) encryption using confidential clients.
+  CD (Continuous Deployment) must be confirmed manually be designated person
+- To implement and deploy IaaC using Terraform
+- To implement cryptographic protocol that allows End-to-end (E2E) encryption using confidential clients
+- To implement semantic versioning as part of CI/CD pipeline
+- To implement and deploy ARM templates utilizing Azure Pipelines and Github Actions
+- To explain release and versioning strategy
+- To implement CD pipeline to deploy app to IIS as part of Windows VM
+- To implement CD pipeline to deploy app to Nginx as part of Linux VM
+- To implement pen testing using OWASP ZAP tool
+- To implement various deployment patterns like Blue-Green, Canary etc
 
-## Cryptography
+## Infrastructure diagram and details
 
-- Run CNG Diffie-Hellman
-  Handshake: [![Run CNG DH Handshake](https://github.com/MangoInstantMessenger/MangoMessengerAPI/actions/workflows/run-cng-dh-handshake.yml/badge.svg)](https://github.com/MangoInstantMessenger/MangoMessengerAPI/actions/workflows/run-cng-dh-handshake.yml)
-- Run OpenSSL Diffie-Hellman
-  Handshake: [![Run OpenSSL DH Handshake](https://github.com/MangoInstantMessenger/MangoMessengerAPI/actions/workflows/run-openssl-dh-handshake.yml/badge.svg)](https://github.com/MangoInstantMessenger/MangoMessengerAPI/actions/workflows/run-openssl-dh-handshake.yml)
+![infra](./img/infrastructure.png)
+
+- Windows app service plan F1-tier
+- Windows app service
+- Azure `StorageV2` account with `LRS` redundancy
+- Azure storage account
+- Azure SQL server
+- Azure SQL database `S0 instance with 10 database transaction units` [Serverless]
+- Azure KeyVault
 
 ## Screenshots
 
