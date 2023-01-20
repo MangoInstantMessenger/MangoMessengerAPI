@@ -22,7 +22,7 @@ Write-Output "Creating $appServicePlanName"
 az appservice plan create --name $appServicePlanName --resource-group $resourceGroupName --sku $skuPlanName
 
 Write-Output "Creating $webAppName"
-az webapp create --name $webAppName --resource-group $resourceGroupName --plan $appServicePlan
+az webapp create --name $webAppName --resource-group $resourceGroupName --plan $appServicePlanName
 
 Write-Output "Creating $storageAccountName"
 az storage account create --name $storageAccountName --resource-group $resourceGroupName --location $location --sku $skuStorageName
