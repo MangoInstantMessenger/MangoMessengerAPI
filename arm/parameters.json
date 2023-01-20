@@ -1,0 +1,36 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "vulnerabilityAssessments_Default_storageContainerPath": {
+            "value": null
+        },
+        "sites_mangomessenger_name": {
+            "value": null
+        },
+        "serverfarms_ASP_mango_name": {
+            "value": null
+        },
+        "vaults_mango_keyvault_name": {
+            "value": null
+        },
+        "components_mangomessenger_name": {
+            "value": null
+        },
+        "servers_mangomessenger_service_name": {
+            "value": null
+        },
+        "storageAccounts_mangoaccounts_name": {
+            "value": null
+        },
+        "smartdetectoralertrules_failure_anomalies___mangomessenger_name": {
+            "value": null
+        },
+        "actiongroups_application_insights_smart_detection_externalid": {
+            "value": null
+        },
+        "workspaces_defaultworkspace_25e77253_6d50_4029_96c6_6ace25c4b2f3_cus_externalid": {
+            "value": null
+        }
+    }
+}
