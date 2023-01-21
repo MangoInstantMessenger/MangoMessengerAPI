@@ -13,58 +13,25 @@
             "defaultValue": "mangosqlserver",
             "type": "String"
         },
-        "vaults_mango_keyvaults_name": {
-            "defaultValue": "mango-keyvaults",
+        "serverfarms_mango_appservice_plan_name": {
+            "defaultValue": "mango-appservice-plan",
             "type": "String"
         },
-        "components_mangomessenger_name": {
-            "defaultValue": "mangomessenger",
+        "vaults_mangomessengerkeyvault_name": {
+            "defaultValue": "mangomessengerkeyvault",
             "type": "String"
         },
         "storageAccounts_mangostorageaccounts_name": {
             "defaultValue": "mangostorageaccounts",
-            "type": "String"
-        },
-        "smartdetectoralertrules_failure_anomalies___mangomessenger_name": {
-            "defaultValue": "failure anomalies - mangomessenger",
-            "type": "String"
-        },
-        "actiongroups_application_insights_smart_detection_externalid": {
-            "defaultValue": "/subscriptions/25e77253-6d50-4029-96c6-6ace25c4b2f3/resourceGroups/hospital-rg/providers/microsoft.insights/actiongroups/application insights smart detection",
-            "type": "String"
-        },
-        "workspaces_defaultworkspace_25e77253_6d50_4029_96c6_6ace25c4b2f3_cus_externalid": {
-            "defaultValue": "/subscriptions/25e77253-6d50-4029-96c6-6ace25c4b2f3/resourceGroups/defaultresourcegroup-cus/providers/microsoft.operationalinsights/workspaces/defaultworkspace-25e77253-6d50-4029-96c6-6ace25c4b2f3-cus",
-            "type": "String"
-        },
-        "serverfarms_ASP_hospitalrg_927d_externalid": {
-            "defaultValue": "/subscriptions/25e77253-6d50-4029-96c6-6ace25c4b2f3/resourceGroups/hospital-rg/providers/Microsoft.Web/serverfarms/ASP-hospitalrg-927d",
             "type": "String"
         }
     },
     "variables": {},
     "resources": [
         {
-            "type": "microsoft.insights/components",
-            "apiVersion": "2020-02-02",
-            "name": "[parameters('components_mangomessenger_name')]",
-            "location": "northeurope",
-            "kind": "web",
-            "properties": {
-                "Application_Type": "web",
-                "Flow_Type": "Redfield",
-                "Request_Source": "IbizaWebAppExtensionCreate",
-                "RetentionInDays": 90,
-                "WorkspaceResourceId": "[parameters('workspaces_defaultworkspace_25e77253_6d50_4029_96c6_6ace25c4b2f3_cus_externalid')]",
-                "IngestionMode": "LogAnalytics",
-                "publicNetworkAccessForIngestion": "Enabled",
-                "publicNetworkAccessForQuery": "Enabled"
-            }
-        },
-        {
             "type": "Microsoft.KeyVault/vaults",
             "apiVersion": "2022-07-01",
-            "name": "[parameters('vaults_mango_keyvaults_name')]",
+            "name": "[parameters('vaults_mangomessengerkeyvault_name')]",
             "location": "northeurope",
             "properties": {
                 "sku": {
@@ -126,7 +93,7 @@
                 "enableSoftDelete": true,
                 "softDeleteRetentionInDays": 90,
                 "enableRbacAuthorization": false,
-                "vaultUri": "[concat('https://', parameters('vaults_mango_keyvaults_name'), '.vault.azure.net/')]",
+                "vaultUri": "[concat('https://', parameters('vaults_mangomessengerkeyvault_name'), '.vault.azure.net/')]",
                 "provisioningState": "Succeeded",
                 "publicNetworkAccess": "Enabled"
             }
@@ -140,8 +107,7 @@
             "properties": {
                 "administratorLogin": "egor123",
                 "version": "12.0",
-                "minimalTlsVersion": "1.2",
-                "publicNetworkAccess": "Disabled",
+                "publicNetworkAccess": "Enabled",
                 "restrictOutboundNetworkAccess": "Disabled"
             }
         },
@@ -188,391 +154,29 @@
             }
         },
         {
-            "type": "Microsoft.Web/sites",
+            "type": "Microsoft.Web/serverfarms",
             "apiVersion": "2022-03-01",
-            "name": "[parameters('sites_mangomessenger_name')]",
+            "name": "[parameters('serverfarms_mango_appservice_plan_name')]",
             "location": "North Europe",
+            "sku": {
+                "name": "F1",
+                "tier": "Free",
+                "size": "F1",
+                "family": "F",
+                "capacity": 0
+            },
             "kind": "app",
             "properties": {
-                "enabled": true,
-                "hostNameSslStates": [
-                    {
-                        "name": "[concat(parameters('sites_mangomessenger_name'), '.azurewebsites.net')]",
-                        "sslState": "Disabled",
-                        "hostType": "Standard"
-                    },
-                    {
-                        "name": "[concat(parameters('sites_mangomessenger_name'), '.scm.azurewebsites.net')]",
-                        "sslState": "Disabled",
-                        "hostType": "Repository"
-                    }
-                ],
-                "serverFarmId": "[parameters('serverfarms_ASP_hospitalrg_927d_externalid')]",
+                "perSiteScaling": false,
+                "elasticScaleEnabled": false,
+                "maximumElasticWorkerCount": 1,
+                "isSpot": false,
                 "reserved": false,
                 "isXenon": false,
                 "hyperV": false,
-                "vnetRouteAllEnabled": false,
-                "vnetImagePullEnabled": false,
-                "vnetContentShareEnabled": false,
-                "siteConfig": {
-                    "numberOfWorkers": 1,
-                    "acrUseManagedIdentityCreds": false,
-                    "alwaysOn": false,
-                    "http20Enabled": false,
-                    "functionAppScaleLimit": 0,
-                    "minimumElasticInstanceCount": 0
-                },
-                "scmSiteAlsoStopped": false,
-                "clientAffinityEnabled": true,
-                "clientCertEnabled": false,
-                "clientCertMode": "Required",
-                "hostNamesDisabled": false,
-                "customDomainVerificationId": "7C67EE42B4FBFE8664493B66B463297E48DE79171FE89A24A38E611664E31095",
-                "containerSize": 0,
-                "dailyMemoryTimeQuota": 0,
-                "httpsOnly": true,
-                "redundancyMode": "None",
-                "publicNetworkAccess": "Enabled",
-                "storageAccountRequired": false,
-                "keyVaultReferenceIdentity": "SystemAssigned"
-            }
-        },
-        {
-            "type": "microsoft.alertsmanagement/smartdetectoralertrules",
-            "apiVersion": "2021-04-01",
-            "name": "[parameters('smartdetectoralertrules_failure_anomalies___mangomessenger_name')]",
-            "location": "global",
-            "dependsOn": [
-                "[resourceId('microsoft.insights/components', parameters('components_mangomessenger_name'))]"
-            ],
-            "properties": {
-                "description": "Failure Anomalies notifies you of an unusual rise in the rate of failed HTTP requests or dependency calls.",
-                "state": "Enabled",
-                "severity": "Sev3",
-                "frequency": "PT1M",
-                "detector": {
-                    "id": "FailureAnomaliesDetector"
-                },
-                "scope": [
-                    "[resourceId('microsoft.insights/components', parameters('components_mangomessenger_name'))]"
-                ],
-                "actionGroups": {
-                    "groupIds": [
-                        "[parameters('actiongroups_application_insights_smart_detection_externalid')]"
-                    ]
-                }
-            }
-        },
-        {
-            "type": "microsoft.insights/components/ProactiveDetectionConfigs",
-            "apiVersion": "2018-05-01-preview",
-            "name": "[concat(parameters('components_mangomessenger_name'), '/degradationindependencyduration')]",
-            "location": "northeurope",
-            "dependsOn": [
-                "[resourceId('microsoft.insights/components', parameters('components_mangomessenger_name'))]"
-            ],
-            "properties": {
-                "ruleDefinitions": {
-                    "Name": "degradationindependencyduration",
-                    "DisplayName": "Degradation in dependency duration",
-                    "Description": "Smart Detection rules notify you of performance anomaly issues.",
-                    "HelpUrl": "https://docs.microsoft.com/en-us/azure/application-insights/app-insights-proactive-performance-diagnostics",
-                    "IsHidden": false,
-                    "IsEnabledByDefault": true,
-                    "IsInPreview": false,
-                    "SupportsEmailNotifications": true
-                },
-                "enabled": true,
-                "sendEmailsToSubscriptionOwners": true,
-                "customEmails": []
-            }
-        },
-        {
-            "type": "microsoft.insights/components/ProactiveDetectionConfigs",
-            "apiVersion": "2018-05-01-preview",
-            "name": "[concat(parameters('components_mangomessenger_name'), '/degradationinserverresponsetime')]",
-            "location": "northeurope",
-            "dependsOn": [
-                "[resourceId('microsoft.insights/components', parameters('components_mangomessenger_name'))]"
-            ],
-            "properties": {
-                "ruleDefinitions": {
-                    "Name": "degradationinserverresponsetime",
-                    "DisplayName": "Degradation in server response time",
-                    "Description": "Smart Detection rules notify you of performance anomaly issues.",
-                    "HelpUrl": "https://docs.microsoft.com/en-us/azure/application-insights/app-insights-proactive-performance-diagnostics",
-                    "IsHidden": false,
-                    "IsEnabledByDefault": true,
-                    "IsInPreview": false,
-                    "SupportsEmailNotifications": true
-                },
-                "enabled": true,
-                "sendEmailsToSubscriptionOwners": true,
-                "customEmails": []
-            }
-        },
-        {
-            "type": "microsoft.insights/components/ProactiveDetectionConfigs",
-            "apiVersion": "2018-05-01-preview",
-            "name": "[concat(parameters('components_mangomessenger_name'), '/digestMailConfiguration')]",
-            "location": "northeurope",
-            "dependsOn": [
-                "[resourceId('microsoft.insights/components', parameters('components_mangomessenger_name'))]"
-            ],
-            "properties": {
-                "ruleDefinitions": {
-                    "Name": "digestMailConfiguration",
-                    "DisplayName": "Digest Mail Configuration",
-                    "Description": "This rule describes the digest mail preferences",
-                    "HelpUrl": "www.homail.com",
-                    "IsHidden": true,
-                    "IsEnabledByDefault": true,
-                    "IsInPreview": false,
-                    "SupportsEmailNotifications": true
-                },
-                "enabled": true,
-                "sendEmailsToSubscriptionOwners": true,
-                "customEmails": []
-            }
-        },
-        {
-            "type": "microsoft.insights/components/ProactiveDetectionConfigs",
-            "apiVersion": "2018-05-01-preview",
-            "name": "[concat(parameters('components_mangomessenger_name'), '/extension_billingdatavolumedailyspikeextension')]",
-            "location": "northeurope",
-            "dependsOn": [
-                "[resourceId('microsoft.insights/components', parameters('components_mangomessenger_name'))]"
-            ],
-            "properties": {
-                "ruleDefinitions": {
-                    "Name": "extension_billingdatavolumedailyspikeextension",
-                    "DisplayName": "Abnormal rise in daily data volume (preview)",
-                    "Description": "This detection rule automatically analyzes the billing data generated by your application, and can warn you about an unusual increase in your application's billing costs",
-                    "HelpUrl": "https://github.com/Microsoft/ApplicationInsights-Home/tree/master/SmartDetection/billing-data-volume-daily-spike.md",
-                    "IsHidden": false,
-                    "IsEnabledByDefault": true,
-                    "IsInPreview": true,
-                    "SupportsEmailNotifications": false
-                },
-                "enabled": true,
-                "sendEmailsToSubscriptionOwners": true,
-                "customEmails": []
-            }
-        },
-        {
-            "type": "microsoft.insights/components/ProactiveDetectionConfigs",
-            "apiVersion": "2018-05-01-preview",
-            "name": "[concat(parameters('components_mangomessenger_name'), '/extension_canaryextension')]",
-            "location": "northeurope",
-            "dependsOn": [
-                "[resourceId('microsoft.insights/components', parameters('components_mangomessenger_name'))]"
-            ],
-            "properties": {
-                "ruleDefinitions": {
-                    "Name": "extension_canaryextension",
-                    "DisplayName": "Canary extension",
-                    "Description": "Canary extension",
-                    "HelpUrl": "https://github.com/Microsoft/ApplicationInsights-Home/blob/master/SmartDetection/",
-                    "IsHidden": true,
-                    "IsEnabledByDefault": true,
-                    "IsInPreview": true,
-                    "SupportsEmailNotifications": false
-                },
-                "enabled": true,
-                "sendEmailsToSubscriptionOwners": true,
-                "customEmails": []
-            }
-        },
-        {
-            "type": "microsoft.insights/components/ProactiveDetectionConfigs",
-            "apiVersion": "2018-05-01-preview",
-            "name": "[concat(parameters('components_mangomessenger_name'), '/extension_exceptionchangeextension')]",
-            "location": "northeurope",
-            "dependsOn": [
-                "[resourceId('microsoft.insights/components', parameters('components_mangomessenger_name'))]"
-            ],
-            "properties": {
-                "ruleDefinitions": {
-                    "Name": "extension_exceptionchangeextension",
-                    "DisplayName": "Abnormal rise in exception volume (preview)",
-                    "Description": "This detection rule automatically analyzes the exceptions thrown in your application, and can warn you about unusual patterns in your exception telemetry.",
-                    "HelpUrl": "https://github.com/Microsoft/ApplicationInsights-Home/blob/master/SmartDetection/abnormal-rise-in-exception-volume.md",
-                    "IsHidden": false,
-                    "IsEnabledByDefault": true,
-                    "IsInPreview": true,
-                    "SupportsEmailNotifications": false
-                },
-                "enabled": true,
-                "sendEmailsToSubscriptionOwners": true,
-                "customEmails": []
-            }
-        },
-        {
-            "type": "microsoft.insights/components/ProactiveDetectionConfigs",
-            "apiVersion": "2018-05-01-preview",
-            "name": "[concat(parameters('components_mangomessenger_name'), '/extension_memoryleakextension')]",
-            "location": "northeurope",
-            "dependsOn": [
-                "[resourceId('microsoft.insights/components', parameters('components_mangomessenger_name'))]"
-            ],
-            "properties": {
-                "ruleDefinitions": {
-                    "Name": "extension_memoryleakextension",
-                    "DisplayName": "Potential memory leak detected (preview)",
-                    "Description": "This detection rule automatically analyzes the memory consumption of each process in your application, and can warn you about potential memory leaks or increased memory consumption.",
-                    "HelpUrl": "https://github.com/Microsoft/ApplicationInsights-Home/tree/master/SmartDetection/memory-leak.md",
-                    "IsHidden": false,
-                    "IsEnabledByDefault": true,
-                    "IsInPreview": true,
-                    "SupportsEmailNotifications": false
-                },
-                "enabled": true,
-                "sendEmailsToSubscriptionOwners": true,
-                "customEmails": []
-            }
-        },
-        {
-            "type": "microsoft.insights/components/ProactiveDetectionConfigs",
-            "apiVersion": "2018-05-01-preview",
-            "name": "[concat(parameters('components_mangomessenger_name'), '/extension_securityextensionspackage')]",
-            "location": "northeurope",
-            "dependsOn": [
-                "[resourceId('microsoft.insights/components', parameters('components_mangomessenger_name'))]"
-            ],
-            "properties": {
-                "ruleDefinitions": {
-                    "Name": "extension_securityextensionspackage",
-                    "DisplayName": "Potential security issue detected (preview)",
-                    "Description": "This detection rule automatically analyzes the telemetry generated by your application and detects potential security issues.",
-                    "HelpUrl": "https://github.com/Microsoft/ApplicationInsights-Home/blob/master/SmartDetection/application-security-detection-pack.md",
-                    "IsHidden": false,
-                    "IsEnabledByDefault": true,
-                    "IsInPreview": true,
-                    "SupportsEmailNotifications": false
-                },
-                "enabled": true,
-                "sendEmailsToSubscriptionOwners": true,
-                "customEmails": []
-            }
-        },
-        {
-            "type": "microsoft.insights/components/ProactiveDetectionConfigs",
-            "apiVersion": "2018-05-01-preview",
-            "name": "[concat(parameters('components_mangomessenger_name'), '/extension_traceseveritydetector')]",
-            "location": "northeurope",
-            "dependsOn": [
-                "[resourceId('microsoft.insights/components', parameters('components_mangomessenger_name'))]"
-            ],
-            "properties": {
-                "ruleDefinitions": {
-                    "Name": "extension_traceseveritydetector",
-                    "DisplayName": "Degradation in trace severity ratio (preview)",
-                    "Description": "This detection rule automatically analyzes the trace logs emitted from your application, and can warn you about unusual patterns in the severity of your trace telemetry.",
-                    "HelpUrl": "https://github.com/Microsoft/ApplicationInsights-Home/blob/master/SmartDetection/degradation-in-trace-severity-ratio.md",
-                    "IsHidden": false,
-                    "IsEnabledByDefault": true,
-                    "IsInPreview": true,
-                    "SupportsEmailNotifications": false
-                },
-                "enabled": true,
-                "sendEmailsToSubscriptionOwners": true,
-                "customEmails": []
-            }
-        },
-        {
-            "type": "microsoft.insights/components/ProactiveDetectionConfigs",
-            "apiVersion": "2018-05-01-preview",
-            "name": "[concat(parameters('components_mangomessenger_name'), '/longdependencyduration')]",
-            "location": "northeurope",
-            "dependsOn": [
-                "[resourceId('microsoft.insights/components', parameters('components_mangomessenger_name'))]"
-            ],
-            "properties": {
-                "ruleDefinitions": {
-                    "Name": "longdependencyduration",
-                    "DisplayName": "Long dependency duration",
-                    "Description": "Smart Detection rules notify you of performance anomaly issues.",
-                    "HelpUrl": "https://docs.microsoft.com/en-us/azure/application-insights/app-insights-proactive-performance-diagnostics",
-                    "IsHidden": false,
-                    "IsEnabledByDefault": true,
-                    "IsInPreview": false,
-                    "SupportsEmailNotifications": true
-                },
-                "enabled": true,
-                "sendEmailsToSubscriptionOwners": true,
-                "customEmails": []
-            }
-        },
-        {
-            "type": "microsoft.insights/components/ProactiveDetectionConfigs",
-            "apiVersion": "2018-05-01-preview",
-            "name": "[concat(parameters('components_mangomessenger_name'), '/migrationToAlertRulesCompleted')]",
-            "location": "northeurope",
-            "dependsOn": [
-                "[resourceId('microsoft.insights/components', parameters('components_mangomessenger_name'))]"
-            ],
-            "properties": {
-                "ruleDefinitions": {
-                    "Name": "migrationToAlertRulesCompleted",
-                    "DisplayName": "Migration To Alert Rules Completed",
-                    "Description": "A configuration that controls the migration state of Smart Detection to Smart Alerts",
-                    "HelpUrl": "https://docs.microsoft.com/en-us/azure/application-insights/app-insights-proactive-performance-diagnostics",
-                    "IsHidden": true,
-                    "IsEnabledByDefault": false,
-                    "IsInPreview": true,
-                    "SupportsEmailNotifications": false
-                },
-                "enabled": false,
-                "sendEmailsToSubscriptionOwners": true,
-                "customEmails": []
-            }
-        },
-        {
-            "type": "microsoft.insights/components/ProactiveDetectionConfigs",
-            "apiVersion": "2018-05-01-preview",
-            "name": "[concat(parameters('components_mangomessenger_name'), '/slowpageloadtime')]",
-            "location": "northeurope",
-            "dependsOn": [
-                "[resourceId('microsoft.insights/components', parameters('components_mangomessenger_name'))]"
-            ],
-            "properties": {
-                "ruleDefinitions": {
-                    "Name": "slowpageloadtime",
-                    "DisplayName": "Slow page load time",
-                    "Description": "Smart Detection rules notify you of performance anomaly issues.",
-                    "HelpUrl": "https://docs.microsoft.com/en-us/azure/application-insights/app-insights-proactive-performance-diagnostics",
-                    "IsHidden": false,
-                    "IsEnabledByDefault": true,
-                    "IsInPreview": false,
-                    "SupportsEmailNotifications": true
-                },
-                "enabled": true,
-                "sendEmailsToSubscriptionOwners": true,
-                "customEmails": []
-            }
-        },
-        {
-            "type": "microsoft.insights/components/ProactiveDetectionConfigs",
-            "apiVersion": "2018-05-01-preview",
-            "name": "[concat(parameters('components_mangomessenger_name'), '/slowserverresponsetime')]",
-            "location": "northeurope",
-            "dependsOn": [
-                "[resourceId('microsoft.insights/components', parameters('components_mangomessenger_name'))]"
-            ],
-            "properties": {
-                "ruleDefinitions": {
-                    "Name": "slowserverresponsetime",
-                    "DisplayName": "Slow server response time",
-                    "Description": "Smart Detection rules notify you of performance anomaly issues.",
-                    "HelpUrl": "https://docs.microsoft.com/en-us/azure/application-insights/app-insights-proactive-performance-diagnostics",
-                    "IsHidden": false,
-                    "IsEnabledByDefault": true,
-                    "IsInPreview": false,
-                    "SupportsEmailNotifications": true
-                },
-                "enabled": true,
-                "sendEmailsToSubscriptionOwners": true,
-                "customEmails": []
+                "targetWorkerCount": 0,
+                "targetWorkerSizeId": 0,
+                "zoneRedundant": false
             }
         },
         {
@@ -699,12 +303,12 @@
             "kind": "v12.0,user,vcore,serverless",
             "properties": {
                 "collation": "SQL_Latin1_General_CP1_CI_AS",
-                "maxSizeBytes": 23622320128,
+                "maxSizeBytes": 34359738368,
                 "catalogCollation": "SQL_Latin1_General_CP1_CI_AS",
                 "zoneRedundant": false,
                 "readScale": "Disabled",
                 "autoPauseDelay": 60,
-                "requestedBackupStorageRedundancy": "Geo",
+                "requestedBackupStorageRedundancy": "Local",
                 "minCapacity": 0.5,
                 "maintenanceConfigurationId": "/subscriptions/25e77253-6d50-4029-96c6-6ace25c4b2f3/providers/Microsoft.Maintenance/publicMaintenanceConfigurations/SQL_Default",
                 "isLedgerOn": false
@@ -1012,6 +616,59 @@
             }
         },
         {
+            "type": "Microsoft.Web/sites",
+            "apiVersion": "2022-03-01",
+            "name": "[parameters('sites_mangomessenger_name')]",
+            "location": "North Europe",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/serverfarms', parameters('serverfarms_mango_appservice_plan_name'))]"
+            ],
+            "kind": "app",
+            "properties": {
+                "enabled": true,
+                "hostNameSslStates": [
+                    {
+                        "name": "[concat(parameters('sites_mangomessenger_name'), '.azurewebsites.net')]",
+                        "sslState": "Disabled",
+                        "hostType": "Standard"
+                    },
+                    {
+                        "name": "[concat(parameters('sites_mangomessenger_name'), '.scm.azurewebsites.net')]",
+                        "sslState": "Disabled",
+                        "hostType": "Repository"
+                    }
+                ],
+                "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', parameters('serverfarms_mango_appservice_plan_name'))]",
+                "reserved": false,
+                "isXenon": false,
+                "hyperV": false,
+                "vnetRouteAllEnabled": false,
+                "vnetImagePullEnabled": false,
+                "vnetContentShareEnabled": false,
+                "siteConfig": {
+                    "numberOfWorkers": 1,
+                    "acrUseManagedIdentityCreds": false,
+                    "alwaysOn": false,
+                    "http20Enabled": false,
+                    "functionAppScaleLimit": 0,
+                    "minimumElasticInstanceCount": 0
+                },
+                "scmSiteAlsoStopped": false,
+                "clientAffinityEnabled": true,
+                "clientCertEnabled": false,
+                "clientCertMode": "Required",
+                "hostNamesDisabled": false,
+                "customDomainVerificationId": "7C67EE42B4FBFE8664493B66B463297E48DE79171FE89A24A38E611664E31095",
+                "containerSize": 0,
+                "dailyMemoryTimeQuota": 0,
+                "httpsOnly": true,
+                "redundancyMode": "None",
+                "publicNetworkAccess": "Enabled",
+                "storageAccountRequired": false,
+                "keyVaultReferenceIdentity": "SystemAssigned"
+            }
+        },
+        {
             "type": "Microsoft.Web/sites/basicPublishingCredentialsPolicies",
             "apiVersion": "2022-03-01",
             "name": "[concat(parameters('sites_mangomessenger_name'), '/ftp')]",
@@ -1280,7 +937,7 @@
                 "[resourceId('Microsoft.Sql/servers', parameters('servers_mangosqlserver_name'))]"
             ],
             "properties": {
-                "state": "Enabled"
+                "state": "Disabled"
             }
         },
         {
@@ -1343,7 +1000,7 @@
         {
             "type": "Microsoft.Storage/storageAccounts/blobServices/containers",
             "apiVersion": "2022-05-01",
-            "name": "[concat(parameters('storageAccounts_mangostorageaccounts_name'), '/default/mangocontainer')]",
+            "name": "[concat(parameters('storageAccounts_mangostorageaccounts_name'), '/default/mangomessengercontainer')]",
             "dependsOn": [
                 "[resourceId('Microsoft.Storage/storageAccounts/blobServices', parameters('storageAccounts_mangostorageaccounts_name'), 'default')]",
                 "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_mangostorageaccounts_name'))]"

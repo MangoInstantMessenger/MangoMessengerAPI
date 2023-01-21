@@ -11,25 +11,13 @@
         "servers_mangosqlserver_name": {
             "value": null
         },
-        "vaults_mango_keyvaults_name": {
+        "serverfarms_mango_appservice_plan_name": {
             "value": null
         },
-        "components_mangomessenger_name": {
+        "vaults_mangomessengerkeyvault_name": {
             "value": null
         },
         "storageAccounts_mangostorageaccounts_name": {
-            "value": null
-        },
-        "smartdetectoralertrules_failure_anomalies___mangomessenger_name": {
-            "value": null
-        },
-        "actiongroups_application_insights_smart_detection_externalid": {
-            "value": null
-        },
-        "workspaces_defaultworkspace_25e77253_6d50_4029_96c6_6ace25c4b2f3_cus_externalid": {
-            "value": null
-        },
-        "serverfarms_ASP_hospitalrg_927d_externalid": {
             "value": null
         }
     }
