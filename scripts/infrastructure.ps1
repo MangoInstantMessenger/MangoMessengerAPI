@@ -1,40 +1,40 @@
-$rgName = "mango-rg"
-$servicePlanName = "mango-appservice-plan"
-$webAppName = "mangomessenger"
-$storName = "mangostoreaccouts"
-$skuPlanName = "FREE"
+$rgName = "mango-rg-01"
+$servicePlanName = "mango-service-plan-01"
+$webAppName = "mangomessenger01"
+$storName = "mangostoracc01"
+$skuPlanName = "F1"
 $skuStorageName = "Standard_LRS"
 $contName = "mangomessengercont"
-$keyVaultName = "mangokeyvaults"
-$sqlServerName = "mangosqlserver"
+$keyVaultName = "mangokeyvault01"
+$sqlServerName = "mangosqlserver01"
 $mangoDb = "mangodb"
 
 $location = "North Europe"
 
-$adminUser = "egor123"
-$adminPassword = "Admin123"
+$adminUser = "razumovsky_r"
+$adminPassword = "bdr825GUSZspHw55mMPJ"
 
 
-Write-Output "Creating $resourceGroup in "$location"..."
+Write-Output "Creating $resourceGroup in $location ..."
 az group create --name $rgName --location "$location"
 
-Write-Output "Creating $storName"
-az storage account create --name "$storName" --resource-group "$rgName" --location $location --sku $skuStorageName
+Write-Output "Creating storage account $storName ..."
+az storage account create --name $storName --resource-group $rgName --location $location --sku $skuStorageName
 
-Write-Output "Creating $contName"
-az storage container create --name "$contName" --account-name "$storName" --public-access "off"
+Write-Output "Creating storage container $contName ..."
+az storage container create --name $contName --account-name $storName --public-access "blob"
 
-Write-Output "Creating $servicePlanName"
+Write-Output "Creating app service plan $servicePlanName ..."
 az appservice plan create --name $servicePlanName --resource-group $rgName --sku $skuPlanName
 
-Write-Output "Creating $webAppName"
+Write-Output "Creating app service $webAppName ..."
 az webapp create --name $webAppName --resource-group $rgName --plan $servicePlanName
 
-Write-Output "Creating $keyVaultName"
+Write-Output "Creating keyvault $keyVaultName ..."
 az keyvault create --name $keyVaultName --resource-group $rgName --location $location
 
-Write-Output "Creating $sqlServerName"
+Write-Output "Creating SQL server $sqlServerName ..."
 az sql server create --name $sqlServerName --resource-group $rgName --location $location --admin-user $adminUser --admin-password $adminPassword
 
-Write-Output "Creating $mangoDb"
+Write-Output "Creating SQL database $mangoDb ..."
 az sql db create --name $mangoDb --resource-group $resourceGroupName --server $sqlServerName

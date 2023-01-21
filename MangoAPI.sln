@@ -55,6 +55,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "scripts", "scripts", "{C75F
 		scripts\OPENSSL_DH_HANDSHAKE_TEST.ps1 = scripts\OPENSSL_DH_HANDSHAKE_TEST.ps1
 		scripts\run-sonarqube-dotnet.sh = scripts\run-sonarqube-dotnet.sh
 		scripts\wait_database.ps1 = scripts\wait_database.ps1
+		scripts\infrastructure.ps1 = scripts\infrastructure.ps1
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "terraform", "terraform", "{D5B04B5C-55E7-48C0-BA17-A084C24610BA}"
@@ -113,6 +114,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "legacy_pipelines", "legacy_
 	ProjectSection(SolutionItems) = preProject
 		build\legacy_pipelines\azure-pipelines-deploy.yml = build\legacy_pipelines\azure-pipelines-deploy.yml
 		build\legacy_pipelines\azure-pipelines-sonarqube.yml = build\legacy_pipelines\azure-pipelines-sonarqube.yml
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "arm", "arm", "{6E14DA5B-1B87-44F4-984A-73ED90AF24CC}"
+	ProjectSection(SolutionItems) = preProject
+		arm\parameters.json = arm\parameters.json
+		arm\template.json = arm\template.json
 	EndProjectSection
 EndProject
 Global
