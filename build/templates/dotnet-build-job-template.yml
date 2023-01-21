@@ -26,6 +26,18 @@ jobs:
   - job: 'Build_Pack'
     displayName: 'Build & Drop Artifact'
     steps:
+      - checkout: self
+        fetchDepth: 0
+
+      - task: gitversion/setup@0
+        displayName: 'GitVersion Setup'
+        inputs:
+          versionSpec: '5.9.x'
+
+      - task: gitversion/execute@0
+        displayName: 'GitVersion Execute'
+        inputs:
+          updateAssemblyInfo: true
 
       - task: Npm@1
         displayName: 'Install Angular CLI'
