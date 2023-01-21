@@ -1,10 +1,10 @@
 $rgName = "mango-rg"
 $servicePlanName = "mango-appservice-plan"
 $webAppName = "mangomessenger"
-$storName = "mangostorageaccounts"
+$storName = "mangostoreaccouts"
 $skuPlanName = "FREE"
 $skuStorageName = "Standard_LRS"
-$contName = "mangomessengercontainer"
+$contName = "mangomessengercont"
 $keyVaultName = "mangokeyvaults"
 $sqlServerName = "mangosqlserver"
 $mangoDb = "mangodb"
@@ -18,17 +18,17 @@ $adminPassword = "Admin123"
 Write-Output "Creating $resourceGroup in "$location"..."
 az group create --name $rgName --location "$location"
 
-Write-Output "Creating $appServicePlanName"
+Write-Output "Creating $storName"
+az storage account create --name "$storName" --resource-group "$rgName" --location $location --sku $skuStorageName
+
+Write-Output "Creating $contName"
+az storage container create --name "$contName" --account-name "$storName" --public-access "off"
+
+Write-Output "Creating $servicePlanName"
 az appservice plan create --name $servicePlanName --resource-group $rgName --sku $skuPlanName
 
 Write-Output "Creating $webAppName"
 az webapp create --name $webAppName --resource-group $rgName --plan $servicePlanName
-
-Write-Output "Creating $storName"
-az storage account create --name $storName --resource-group $rgName --location $location --sku $skuStorageName
-
-Write-Output "Creating $contName"
-az storage container create --name $contName --account-name $storName --public-access "off"
 
 Write-Output "Creating $keyVaultName"
 az keyvault create --name $keyVaultName --resource-group $rgName --location $location
