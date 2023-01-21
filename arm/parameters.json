@@ -1,0 +1,24 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "vulnerabilityAssessments_Default_storageContainerPath": {
+            "value": null
+        },
+        "sites_mangomessenger_name": {
+            "value": null
+        },
+        "servers_mangosqlserver_name": {
+            "value": null
+        },
+        "serverfarms_mango_appservice_plan_name": {
+            "value": null
+        },
+        "vaults_mangomessengerkeyvault_name": {
+            "value": null
+        },
+        "storageAccounts_mangostorageaccounts_name": {
+            "value": null
+        }
+    }
+}
