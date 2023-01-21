@@ -5,24 +5,24 @@
         "vulnerabilityAssessments_Default_storageContainerPath": {
             "type": "SecureString"
         },
-        "sites_mangomessenger_name": {
-            "defaultValue": "mangomessenger",
+        "sites_mangomessenger01_name": {
+            "defaultValue": "mangomessenger01",
             "type": "String"
         },
-        "servers_mangosqlserver_name": {
-            "defaultValue": "mangosqlserver",
+        "servers_mangosqlserver01_name": {
+            "defaultValue": "mangosqlserver01",
             "type": "String"
         },
-        "serverfarms_mango_appservice_plan_name": {
-            "defaultValue": "mango-appservice-plan",
+        "vaults_mangokeyvault01_name": {
+            "defaultValue": "mangokeyvault01",
             "type": "String"
         },
-        "vaults_mangomessengerkeyvault_name": {
-            "defaultValue": "mangomessengerkeyvault",
+        "serverfarms_mango_service_plan_01_name": {
+            "defaultValue": "mango-service-plan-01",
             "type": "String"
         },
-        "storageAccounts_mangostorageaccounts_name": {
-            "defaultValue": "mangostorageaccounts",
+        "storageAccounts_mangostoracc01_name": {
+            "defaultValue": "mangostoracc01",
             "type": "String"
         }
     },
@@ -31,69 +31,38 @@
         {
             "type": "Microsoft.KeyVault/vaults",
             "apiVersion": "2022-07-01",
-            "name": "[parameters('vaults_mangomessengerkeyvault_name')]",
+            "name": "[parameters('vaults_mangokeyvault01_name')]",
             "location": "northeurope",
             "properties": {
                 "sku": {
                     "family": "A",
-                    "name": "Standard"
+                    "name": "standard"
                 },
-                "tenantId": "ed9a056d-936b-48dc-a0d5-d10607731d96",
+                "tenantId": "a00b4132-b41c-477f-a155-729a0ff68e75",
                 "accessPolicies": [
                     {
-                        "tenantId": "ed9a056d-936b-48dc-a0d5-d10607731d96",
-                        "objectId": "2a63b33b-2f75-4213-ad89-319fe71c8151",
+                        "tenantId": "a00b4132-b41c-477f-a155-729a0ff68e75",
+                        "objectId": "66a7770f-0311-433d-9673-4f1877986857",
                         "permissions": {
                             "keys": [
-                                "Get",
-                                "List",
-                                "Update",
-                                "Create",
-                                "Import",
-                                "Delete",
-                                "Recover",
-                                "Backup",
-                                "Restore",
-                                "GetRotationPolicy",
-                                "SetRotationPolicy",
-                                "Rotate"
+                                "all"
                             ],
                             "secrets": [
-                                "Get",
-                                "List",
-                                "Set",
-                                "Delete",
-                                "Recover",
-                                "Backup",
-                                "Restore"
+                                "all"
                             ],
                             "certificates": [
-                                "Get",
-                                "List",
-                                "Update",
-                                "Create",
-                                "Import",
-                                "Delete",
-                                "Recover",
-                                "Backup",
-                                "Restore",
-                                "ManageContacts",
-                                "ManageIssuers",
-                                "GetIssuers",
-                                "ListIssuers",
-                                "SetIssuers",
-                                "DeleteIssuers"
+                                "all"
+                            ],
+                            "storage": [
+                                "all"
                             ]
                         }
                     }
                 ],
                 "enabledForDeployment": false,
-                "enabledForDiskEncryption": false,
-                "enabledForTemplateDeployment": false,
                 "enableSoftDelete": true,
                 "softDeleteRetentionInDays": 90,
-                "enableRbacAuthorization": false,
-                "vaultUri": "[concat('https://', parameters('vaults_mangomessengerkeyvault_name'), '.vault.azure.net/')]",
+                "vaultUri": "[concat('https://', parameters('vaults_mangokeyvault01_name'), '.vault.azure.net/')]",
                 "provisioningState": "Succeeded",
                 "publicNetworkAccess": "Enabled"
             }
@@ -101,11 +70,11 @@
         {
             "type": "Microsoft.Sql/servers",
             "apiVersion": "2022-05-01-preview",
-            "name": "[parameters('servers_mangosqlserver_name')]",
+            "name": "[parameters('servers_mangosqlserver01_name')]",
             "location": "northeurope",
             "kind": "v12.0",
             "properties": {
-                "administratorLogin": "egor123",
+                "administratorLogin": "razumovsky_r",
                 "version": "12.0",
                 "publicNetworkAccess": "Enabled",
                 "restrictOutboundNetworkAccess": "Disabled"
@@ -114,7 +83,7 @@
         {
             "type": "Microsoft.Storage/storageAccounts",
             "apiVersion": "2022-05-01",
-            "name": "[parameters('storageAccounts_mangostorageaccounts_name')]",
+            "name": "[parameters('storageAccounts_mangostoracc01_name')]",
             "location": "northeurope",
             "sku": {
                 "name": "Standard_LRS",
@@ -122,13 +91,8 @@
             },
             "kind": "StorageV2",
             "properties": {
-                "dnsEndpointType": "Standard",
-                "defaultToOAuthAuthentication": false,
-                "publicNetworkAccess": "Enabled",
-                "allowCrossTenantReplication": true,
-                "minimumTlsVersion": "TLS1_2",
+                "minimumTlsVersion": "TLS1_0",
                 "allowBlobPublicAccess": true,
-                "allowSharedKeyAccess": true,
                 "networkAcls": {
                     "bypass": "AzureServices",
                     "virtualNetworkRules": [],
@@ -137,7 +101,6 @@
                 },
                 "supportsHttpsTrafficOnly": true,
                 "encryption": {
-                    "requireInfrastructureEncryption": false,
                     "services": {
                         "file": {
                             "keyType": "Account",
@@ -156,7 +119,7 @@
         {
             "type": "Microsoft.Web/serverfarms",
             "apiVersion": "2022-03-01",
-            "name": "[parameters('serverfarms_mango_appservice_plan_name')]",
+            "name": "[parameters('serverfarms_mango_service_plan_01_name')]",
             "location": "North Europe",
             "sku": {
                 "name": "F1",
@@ -182,9 +145,9 @@
         {
             "type": "Microsoft.Sql/servers/advancedThreatProtectionSettings",
             "apiVersion": "2022-05-01-preview",
-            "name": "[concat(parameters('servers_mangosqlserver_name'), '/Default')]",
+            "name": "[concat(parameters('servers_mangosqlserver01_name'), '/Default')]",
             "dependsOn": [
-                "[resourceId('Microsoft.Sql/servers', parameters('servers_mangosqlserver_name'))]"
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_mangosqlserver01_name'))]"
             ],
             "properties": {
                 "state": "Disabled"
@@ -193,9 +156,9 @@
         {
             "type": "Microsoft.Sql/servers/advisors",
             "apiVersion": "2014-04-01",
-            "name": "[concat(parameters('servers_mangosqlserver_name'), '/CreateIndex')]",
+            "name": "[concat(parameters('servers_mangosqlserver01_name'), '/CreateIndex')]",
             "dependsOn": [
-                "[resourceId('Microsoft.Sql/servers', parameters('servers_mangosqlserver_name'))]"
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_mangosqlserver01_name'))]"
             ],
             "properties": {
                 "autoExecuteValue": "Disabled"
@@ -204,9 +167,9 @@
         {
             "type": "Microsoft.Sql/servers/advisors",
             "apiVersion": "2014-04-01",
-            "name": "[concat(parameters('servers_mangosqlserver_name'), '/DbParameterization')]",
+            "name": "[concat(parameters('servers_mangosqlserver01_name'), '/DbParameterization')]",
             "dependsOn": [
-                "[resourceId('Microsoft.Sql/servers', parameters('servers_mangosqlserver_name'))]"
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_mangosqlserver01_name'))]"
             ],
             "properties": {
                 "autoExecuteValue": "Disabled"
@@ -215,9 +178,9 @@
         {
             "type": "Microsoft.Sql/servers/advisors",
             "apiVersion": "2014-04-01",
-            "name": "[concat(parameters('servers_mangosqlserver_name'), '/DefragmentIndex')]",
+            "name": "[concat(parameters('servers_mangosqlserver01_name'), '/DefragmentIndex')]",
             "dependsOn": [
-                "[resourceId('Microsoft.Sql/servers', parameters('servers_mangosqlserver_name'))]"
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_mangosqlserver01_name'))]"
             ],
             "properties": {
                 "autoExecuteValue": "Disabled"
@@ -226,9 +189,9 @@
         {
             "type": "Microsoft.Sql/servers/advisors",
             "apiVersion": "2014-04-01",
-            "name": "[concat(parameters('servers_mangosqlserver_name'), '/DropIndex')]",
+            "name": "[concat(parameters('servers_mangosqlserver01_name'), '/DropIndex')]",
             "dependsOn": [
-                "[resourceId('Microsoft.Sql/servers', parameters('servers_mangosqlserver_name'))]"
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_mangosqlserver01_name'))]"
             ],
             "properties": {
                 "autoExecuteValue": "Disabled"
@@ -237,9 +200,9 @@
         {
             "type": "Microsoft.Sql/servers/advisors",
             "apiVersion": "2014-04-01",
-            "name": "[concat(parameters('servers_mangosqlserver_name'), '/ForceLastGoodPlan')]",
+            "name": "[concat(parameters('servers_mangosqlserver01_name'), '/ForceLastGoodPlan')]",
             "dependsOn": [
-                "[resourceId('Microsoft.Sql/servers', parameters('servers_mangosqlserver_name'))]"
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_mangosqlserver01_name'))]"
             ],
             "properties": {
                 "autoExecuteValue": "Enabled"
@@ -248,10 +211,10 @@
         {
             "type": "Microsoft.Sql/servers/auditingPolicies",
             "apiVersion": "2014-04-01",
-            "name": "[concat(parameters('servers_mangosqlserver_name'), '/Default')]",
+            "name": "[concat(parameters('servers_mangosqlserver01_name'), '/Default')]",
             "location": "North Europe",
             "dependsOn": [
-                "[resourceId('Microsoft.Sql/servers', parameters('servers_mangosqlserver_name'))]"
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_mangosqlserver01_name'))]"
             ],
             "properties": {
                 "auditingState": "Disabled"
@@ -260,9 +223,9 @@
         {
             "type": "Microsoft.Sql/servers/auditingSettings",
             "apiVersion": "2022-05-01-preview",
-            "name": "[concat(parameters('servers_mangosqlserver_name'), '/Default')]",
+            "name": "[concat(parameters('servers_mangosqlserver01_name'), '/Default')]",
             "dependsOn": [
-                "[resourceId('Microsoft.Sql/servers', parameters('servers_mangosqlserver_name'))]"
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_mangosqlserver01_name'))]"
             ],
             "properties": {
                 "retentionDays": 0,
@@ -277,10 +240,10 @@
         {
             "type": "Microsoft.Sql/servers/connectionPolicies",
             "apiVersion": "2022-05-01-preview",
-            "name": "[concat(parameters('servers_mangosqlserver_name'), '/default')]",
+            "name": "[concat(parameters('servers_mangosqlserver01_name'), '/default')]",
             "location": "northeurope",
             "dependsOn": [
-                "[resourceId('Microsoft.Sql/servers', parameters('servers_mangosqlserver_name'))]"
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_mangosqlserver01_name'))]"
             ],
             "properties": {
                 "connectionType": "Default"
@@ -289,16 +252,16 @@
         {
             "type": "Microsoft.Sql/servers/databases",
             "apiVersion": "2022-05-01-preview",
-            "name": "[concat(parameters('servers_mangosqlserver_name'), '/mangodb')]",
+            "name": "[concat(parameters('servers_mangosqlserver01_name'), '/mangodb')]",
             "location": "northeurope",
             "dependsOn": [
-                "[resourceId('Microsoft.Sql/servers', parameters('servers_mangosqlserver_name'))]"
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_mangosqlserver01_name'))]"
             ],
             "sku": {
                 "name": "GP_S_Gen5",
                 "tier": "GeneralPurpose",
                 "family": "Gen5",
-                "capacity": 1
+                "capacity": 2
             },
             "kind": "v12.0,user,vcore,serverless",
             "properties": {
@@ -307,19 +270,19 @@
                 "catalogCollation": "SQL_Latin1_General_CP1_CI_AS",
                 "zoneRedundant": false,
                 "readScale": "Disabled",
-                "autoPauseDelay": 60,
+                "autoPauseDelay": -1,
                 "requestedBackupStorageRedundancy": "Local",
                 "minCapacity": 0.5,
-                "maintenanceConfigurationId": "/subscriptions/25e77253-6d50-4029-96c6-6ace25c4b2f3/providers/Microsoft.Maintenance/publicMaintenanceConfigurations/SQL_Default",
+                "maintenanceConfigurationId": "/subscriptions/f32f6566-8fa0-4198-9c91-a3b8ac69e89a/providers/Microsoft.Maintenance/publicMaintenanceConfigurations/SQL_Default",
                 "isLedgerOn": false
             }
         },
         {
             "type": "Microsoft.Sql/servers/databases/advancedThreatProtectionSettings",
             "apiVersion": "2022-05-01-preview",
-            "name": "[concat(parameters('servers_mangosqlserver_name'), '/master/Default')]",
+            "name": "[concat(parameters('servers_mangosqlserver01_name'), '/master/Default')]",
             "dependsOn": [
-                "[resourceId('Microsoft.Sql/servers', parameters('servers_mangosqlserver_name'))]"
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_mangosqlserver01_name'))]"
             ],
             "properties": {
                 "state": "Disabled"
@@ -328,10 +291,10 @@
         {
             "type": "Microsoft.Sql/servers/databases/auditingPolicies",
             "apiVersion": "2014-04-01",
-            "name": "[concat(parameters('servers_mangosqlserver_name'), '/master/Default')]",
+            "name": "[concat(parameters('servers_mangosqlserver01_name'), '/master/Default')]",
             "location": "North Europe",
             "dependsOn": [
-                "[resourceId('Microsoft.Sql/servers', parameters('servers_mangosqlserver_name'))]"
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_mangosqlserver01_name'))]"
             ],
             "properties": {
                 "auditingState": "Disabled"
@@ -340,9 +303,9 @@
         {
             "type": "Microsoft.Sql/servers/databases/auditingSettings",
             "apiVersion": "2022-05-01-preview",
-            "name": "[concat(parameters('servers_mangosqlserver_name'), '/master/Default')]",
+            "name": "[concat(parameters('servers_mangosqlserver01_name'), '/master/Default')]",
             "dependsOn": [
-                "[resourceId('Microsoft.Sql/servers', parameters('servers_mangosqlserver_name'))]"
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_mangosqlserver01_name'))]"
             ],
             "properties": {
                 "retentionDays": 0,
@@ -354,9 +317,9 @@
         {
             "type": "Microsoft.Sql/servers/databases/extendedAuditingSettings",
             "apiVersion": "2022-05-01-preview",
-            "name": "[concat(parameters('servers_mangosqlserver_name'), '/master/Default')]",
+            "name": "[concat(parameters('servers_mangosqlserver01_name'), '/master/Default')]",
             "dependsOn": [
-                "[resourceId('Microsoft.Sql/servers', parameters('servers_mangosqlserver_name'))]"
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_mangosqlserver01_name'))]"
             ],
             "properties": {
                 "retentionDays": 0,
@@ -368,10 +331,10 @@
         {
             "type": "Microsoft.Sql/servers/databases/geoBackupPolicies",
             "apiVersion": "2014-04-01",
-            "name": "[concat(parameters('servers_mangosqlserver_name'), '/master/Default')]",
+            "name": "[concat(parameters('servers_mangosqlserver01_name'), '/master/Default')]",
             "location": "North Europe",
             "dependsOn": [
-                "[resourceId('Microsoft.Sql/servers', parameters('servers_mangosqlserver_name'))]"
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_mangosqlserver01_name'))]"
             ],
             "properties": {
                 "state": "Disabled"
@@ -380,18 +343,18 @@
         {
             "type": "Microsoft.Sql/servers/databases/ledgerDigestUploads",
             "apiVersion": "2022-05-01-preview",
-            "name": "[concat(parameters('servers_mangosqlserver_name'), '/master/Current')]",
+            "name": "[concat(parameters('servers_mangosqlserver01_name'), '/master/Current')]",
             "dependsOn": [
-                "[resourceId('Microsoft.Sql/servers', parameters('servers_mangosqlserver_name'))]"
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_mangosqlserver01_name'))]"
             ],
             "properties": {}
         },
         {
             "type": "Microsoft.Sql/servers/databases/securityAlertPolicies",
             "apiVersion": "2022-05-01-preview",
-            "name": "[concat(parameters('servers_mangosqlserver_name'), '/master/Default')]",
+            "name": "[concat(parameters('servers_mangosqlserver01_name'), '/master/Default')]",
             "dependsOn": [
-                "[resourceId('Microsoft.Sql/servers', parameters('servers_mangosqlserver_name'))]"
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_mangosqlserver01_name'))]"
             ],
             "properties": {
                 "state": "Disabled",
@@ -408,9 +371,9 @@
         {
             "type": "Microsoft.Sql/servers/databases/transparentDataEncryption",
             "apiVersion": "2022-05-01-preview",
-            "name": "[concat(parameters('servers_mangosqlserver_name'), '/master/Current')]",
+            "name": "[concat(parameters('servers_mangosqlserver01_name'), '/master/Current')]",
             "dependsOn": [
-                "[resourceId('Microsoft.Sql/servers', parameters('servers_mangosqlserver_name'))]"
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_mangosqlserver01_name'))]"
             ],
             "properties": {
                 "state": "Disabled"
@@ -419,9 +382,9 @@
         {
             "type": "Microsoft.Sql/servers/databases/vulnerabilityAssessments",
             "apiVersion": "2022-05-01-preview",
-            "name": "[concat(parameters('servers_mangosqlserver_name'), '/master/Default')]",
+            "name": "[concat(parameters('servers_mangosqlserver01_name'), '/master/Default')]",
             "dependsOn": [
-                "[resourceId('Microsoft.Sql/servers', parameters('servers_mangosqlserver_name'))]"
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_mangosqlserver01_name'))]"
             ],
             "properties": {
                 "recurringScans": {
@@ -433,9 +396,9 @@
         {
             "type": "Microsoft.Sql/servers/devOpsAuditingSettings",
             "apiVersion": "2022-05-01-preview",
-            "name": "[concat(parameters('servers_mangosqlserver_name'), '/Default')]",
+            "name": "[concat(parameters('servers_mangosqlserver01_name'), '/Default')]",
             "dependsOn": [
-                "[resourceId('Microsoft.Sql/servers', parameters('servers_mangosqlserver_name'))]"
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_mangosqlserver01_name'))]"
             ],
             "properties": {
                 "isAzureMonitorTargetEnabled": false,
@@ -447,9 +410,9 @@
         {
             "type": "Microsoft.Sql/servers/encryptionProtector",
             "apiVersion": "2022-05-01-preview",
-            "name": "[concat(parameters('servers_mangosqlserver_name'), '/current')]",
+            "name": "[concat(parameters('servers_mangosqlserver01_name'), '/current')]",
             "dependsOn": [
-                "[resourceId('Microsoft.Sql/servers', parameters('servers_mangosqlserver_name'))]"
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_mangosqlserver01_name'))]"
             ],
             "kind": "servicemanaged",
             "properties": {
@@ -461,9 +424,9 @@
         {
             "type": "Microsoft.Sql/servers/extendedAuditingSettings",
             "apiVersion": "2022-05-01-preview",
-            "name": "[concat(parameters('servers_mangosqlserver_name'), '/Default')]",
+            "name": "[concat(parameters('servers_mangosqlserver01_name'), '/Default')]",
             "dependsOn": [
-                "[resourceId('Microsoft.Sql/servers', parameters('servers_mangosqlserver_name'))]"
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_mangosqlserver01_name'))]"
             ],
             "properties": {
                 "retentionDays": 0,
@@ -478,9 +441,9 @@
         {
             "type": "Microsoft.Sql/servers/keys",
             "apiVersion": "2022-05-01-preview",
-            "name": "[concat(parameters('servers_mangosqlserver_name'), '/ServiceManaged')]",
+            "name": "[concat(parameters('servers_mangosqlserver01_name'), '/ServiceManaged')]",
             "dependsOn": [
-                "[resourceId('Microsoft.Sql/servers', parameters('servers_mangosqlserver_name'))]"
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_mangosqlserver01_name'))]"
             ],
             "kind": "servicemanaged",
             "properties": {
@@ -490,9 +453,9 @@
         {
             "type": "Microsoft.Sql/servers/securityAlertPolicies",
             "apiVersion": "2022-05-01-preview",
-            "name": "[concat(parameters('servers_mangosqlserver_name'), '/Default')]",
+            "name": "[concat(parameters('servers_mangosqlserver01_name'), '/Default')]",
             "dependsOn": [
-                "[resourceId('Microsoft.Sql/servers', parameters('servers_mangosqlserver_name'))]"
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_mangosqlserver01_name'))]"
             ],
             "properties": {
                 "state": "Disabled",
@@ -509,9 +472,9 @@
         {
             "type": "Microsoft.Sql/servers/sqlVulnerabilityAssessments",
             "apiVersion": "2022-05-01-preview",
-            "name": "[concat(parameters('servers_mangosqlserver_name'), '/Default')]",
+            "name": "[concat(parameters('servers_mangosqlserver01_name'), '/Default')]",
             "dependsOn": [
-                "[resourceId('Microsoft.Sql/servers', parameters('servers_mangosqlserver_name'))]"
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_mangosqlserver01_name'))]"
             ],
             "properties": {
                 "state": "Disabled"
@@ -520,9 +483,9 @@
         {
             "type": "Microsoft.Sql/servers/vulnerabilityAssessments",
             "apiVersion": "2022-05-01-preview",
-            "name": "[concat(parameters('servers_mangosqlserver_name'), '/Default')]",
+            "name": "[concat(parameters('servers_mangosqlserver01_name'), '/Default')]",
             "dependsOn": [
-                "[resourceId('Microsoft.Sql/servers', parameters('servers_mangosqlserver_name'))]"
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_mangosqlserver01_name'))]"
             ],
             "properties": {
                 "recurringScans": {
@@ -535,42 +498,30 @@
         {
             "type": "Microsoft.Storage/storageAccounts/blobServices",
             "apiVersion": "2022-05-01",
-            "name": "[concat(parameters('storageAccounts_mangostorageaccounts_name'), '/default')]",
+            "name": "[concat(parameters('storageAccounts_mangostoracc01_name'), '/default')]",
             "dependsOn": [
-                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_mangostorageaccounts_name'))]"
+                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_mangostoracc01_name'))]"
             ],
             "sku": {
                 "name": "Standard_LRS",
                 "tier": "Standard"
             },
             "properties": {
-                "changeFeed": {
-                    "enabled": false
-                },
-                "restorePolicy": {
-                    "enabled": false
-                },
-                "containerDeleteRetentionPolicy": {
-                    "enabled": true,
-                    "days": 7
-                },
                 "cors": {
                     "corsRules": []
                 },
                 "deleteRetentionPolicy": {
                     "allowPermanentDelete": false,
-                    "enabled": true,
-                    "days": 7
-                },
-                "isVersioningEnabled": false
+                    "enabled": false
+                }
             }
         },
         {
             "type": "Microsoft.Storage/storageAccounts/fileServices",
             "apiVersion": "2022-05-01",
-            "name": "[concat(parameters('storageAccounts_mangostorageaccounts_name'), '/default')]",
+            "name": "[concat(parameters('storageAccounts_mangostoracc01_name'), '/default')]",
             "dependsOn": [
-                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_mangostorageaccounts_name'))]"
+                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_mangostoracc01_name'))]"
             ],
             "sku": {
                 "name": "Standard_LRS",
@@ -592,9 +543,9 @@
         {
             "type": "Microsoft.Storage/storageAccounts/queueServices",
             "apiVersion": "2022-05-01",
-            "name": "[concat(parameters('storageAccounts_mangostorageaccounts_name'), '/default')]",
+            "name": "[concat(parameters('storageAccounts_mangostoracc01_name'), '/default')]",
             "dependsOn": [
-                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_mangostorageaccounts_name'))]"
+                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_mangostoracc01_name'))]"
             ],
             "properties": {
                 "cors": {
@@ -605,9 +556,9 @@
         {
             "type": "Microsoft.Storage/storageAccounts/tableServices",
             "apiVersion": "2022-05-01",
-            "name": "[concat(parameters('storageAccounts_mangostorageaccounts_name'), '/default')]",
+            "name": "[concat(parameters('storageAccounts_mangostoracc01_name'), '/default')]",
             "dependsOn": [
-                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_mangostorageaccounts_name'))]"
+                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_mangostoracc01_name'))]"
             ],
             "properties": {
                 "cors": {
@@ -618,27 +569,27 @@
         {
             "type": "Microsoft.Web/sites",
             "apiVersion": "2022-03-01",
-            "name": "[parameters('sites_mangomessenger_name')]",
+            "name": "[parameters('sites_mangomessenger01_name')]",
             "location": "North Europe",
             "dependsOn": [
-                "[resourceId('Microsoft.Web/serverfarms', parameters('serverfarms_mango_appservice_plan_name'))]"
+                "[resourceId('Microsoft.Web/serverfarms', parameters('serverfarms_mango_service_plan_01_name'))]"
             ],
             "kind": "app",
             "properties": {
                 "enabled": true,
                 "hostNameSslStates": [
                     {
-                        "name": "[concat(parameters('sites_mangomessenger_name'), '.azurewebsites.net')]",
+                        "name": "[concat(parameters('sites_mangomessenger01_name'), '.azurewebsites.net')]",
                         "sslState": "Disabled",
                         "hostType": "Standard"
                     },
                     {
-                        "name": "[concat(parameters('sites_mangomessenger_name'), '.scm.azurewebsites.net')]",
+                        "name": "[concat(parameters('sites_mangomessenger01_name'), '.scm.azurewebsites.net')]",
                         "sslState": "Disabled",
                         "hostType": "Repository"
                     }
                 ],
-                "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', parameters('serverfarms_mango_appservice_plan_name'))]",
+                "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', parameters('serverfarms_mango_service_plan_01_name'))]",
                 "reserved": false,
                 "isXenon": false,
                 "hyperV": false,
@@ -649,7 +600,7 @@
                     "numberOfWorkers": 1,
                     "acrUseManagedIdentityCreds": false,
                     "alwaysOn": false,
-                    "http20Enabled": false,
+                    "http20Enabled": true,
                     "functionAppScaleLimit": 0,
                     "minimumElasticInstanceCount": 0
                 },
@@ -658,12 +609,11 @@
                 "clientCertEnabled": false,
                 "clientCertMode": "Required",
                 "hostNamesDisabled": false,
-                "customDomainVerificationId": "7C67EE42B4FBFE8664493B66B463297E48DE79171FE89A24A38E611664E31095",
+                "customDomainVerificationId": "4FE97B202E1EDAC870E5D399E098B3756C2B00AE619B6AF257604B74603BEB93",
                 "containerSize": 0,
                 "dailyMemoryTimeQuota": 0,
-                "httpsOnly": true,
+                "httpsOnly": false,
                 "redundancyMode": "None",
-                "publicNetworkAccess": "Enabled",
                 "storageAccountRequired": false,
                 "keyVaultReferenceIdentity": "SystemAssigned"
             }
@@ -671,10 +621,10 @@
         {
             "type": "Microsoft.Web/sites/basicPublishingCredentialsPolicies",
             "apiVersion": "2022-03-01",
-            "name": "[concat(parameters('sites_mangomessenger_name'), '/ftp')]",
+            "name": "[concat(parameters('sites_mangomessenger01_name'), '/ftp')]",
             "location": "North Europe",
             "dependsOn": [
-                "[resourceId('Microsoft.Web/sites', parameters('sites_mangomessenger_name'))]"
+                "[resourceId('Microsoft.Web/sites', parameters('sites_mangomessenger01_name'))]"
             ],
             "properties": {
                 "allow": true
@@ -683,10 +633,10 @@
         {
             "type": "Microsoft.Web/sites/basicPublishingCredentialsPolicies",
             "apiVersion": "2022-03-01",
-            "name": "[concat(parameters('sites_mangomessenger_name'), '/scm')]",
+            "name": "[concat(parameters('sites_mangomessenger01_name'), '/scm')]",
             "location": "North Europe",
             "dependsOn": [
-                "[resourceId('Microsoft.Web/sites', parameters('sites_mangomessenger_name'))]"
+                "[resourceId('Microsoft.Web/sites', parameters('sites_mangomessenger01_name'))]"
             ],
             "properties": {
                 "allow": true
@@ -695,10 +645,10 @@
         {
             "type": "Microsoft.Web/sites/config",
             "apiVersion": "2022-03-01",
-            "name": "[concat(parameters('sites_mangomessenger_name'), '/web')]",
+            "name": "[concat(parameters('sites_mangomessenger01_name'), '/web')]",
             "location": "North Europe",
             "dependsOn": [
-                "[resourceId('Microsoft.Web/sites', parameters('sites_mangomessenger_name'))]"
+                "[resourceId('Microsoft.Web/sites', parameters('sites_mangomessenger01_name'))]"
             ],
             "properties": {
                 "numberOfWorkers": 1,
@@ -713,14 +663,15 @@
                     "index.php",
                     "hostingstart.html"
                 ],
-                "netFrameworkVersion": "v6.0",
+                "netFrameworkVersion": "v4.0",
+                "phpVersion": "5.6",
                 "requestTracingEnabled": false,
                 "remoteDebuggingEnabled": false,
                 "httpLoggingEnabled": false,
                 "acrUseManagedIdentityCreds": false,
                 "logsDirectorySizeLimit": 35,
                 "detailedErrorLoggingEnabled": false,
-                "publishingUsername": "$mangomessenger",
+                "publishingUsername": "$mangomessenger01",
                 "scmType": "None",
                 "use32BitWorkerProcess": true,
                 "webSocketsEnabled": false,
@@ -740,7 +691,6 @@
                 "autoHealEnabled": false,
                 "vnetRouteAllEnabled": false,
                 "vnetPrivatePortsCount": 0,
-                "publicNetworkAccess": "Enabled",
                 "localMySqlEnabled": false,
                 "ipSecurityRestrictions": [
                     {
@@ -761,10 +711,10 @@
                     }
                 ],
                 "scmIpSecurityRestrictionsUseMain": false,
-                "http20Enabled": false,
+                "http20Enabled": true,
                 "minTlsVersion": "1.2",
                 "scmMinTlsVersion": "1.2",
-                "ftpsState": "FtpsOnly",
+                "ftpsState": "AllAllowed",
                 "preWarmedInstanceCount": 0,
                 "functionsRuntimeScaleMonitoringEnabled": false,
                 "minimumElasticInstanceCount": 0,
@@ -774,23 +724,23 @@
         {
             "type": "Microsoft.Web/sites/hostNameBindings",
             "apiVersion": "2022-03-01",
-            "name": "[concat(parameters('sites_mangomessenger_name'), '/', parameters('sites_mangomessenger_name'), '.azurewebsites.net')]",
+            "name": "[concat(parameters('sites_mangomessenger01_name'), '/', parameters('sites_mangomessenger01_name'), '.azurewebsites.net')]",
             "location": "North Europe",
             "dependsOn": [
-                "[resourceId('Microsoft.Web/sites', parameters('sites_mangomessenger_name'))]"
+                "[resourceId('Microsoft.Web/sites', parameters('sites_mangomessenger01_name'))]"
             ],
             "properties": {
-                "siteName": "mangomessenger",
+                "siteName": "mangomessenger01",
                 "hostNameType": "Verified"
             }
         },
         {
             "type": "Microsoft.Sql/servers/databases/advancedThreatProtectionSettings",
             "apiVersion": "2022-05-01-preview",
-            "name": "[concat(parameters('servers_mangosqlserver_name'), '/mangodb/Default')]",
+            "name": "[concat(parameters('servers_mangosqlserver01_name'), '/mangodb/Default')]",
             "dependsOn": [
-                "[resourceId('Microsoft.Sql/servers/databases', parameters('servers_mangosqlserver_name'), 'mangodb')]",
-                "[resourceId('Microsoft.Sql/servers', parameters('servers_mangosqlserver_name'))]"
+                "[resourceId('Microsoft.Sql/servers/databases', parameters('servers_mangosqlserver01_name'), 'mangodb')]",
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_mangosqlserver01_name'))]"
             ],
             "properties": {
                 "state": "Disabled"
@@ -799,10 +749,10 @@
         {
             "type": "Microsoft.Sql/servers/databases/advisors",
             "apiVersion": "2014-04-01",
-            "name": "[concat(parameters('servers_mangosqlserver_name'), '/mangodb/CreateIndex')]",
+            "name": "[concat(parameters('servers_mangosqlserver01_name'), '/mangodb/CreateIndex')]",
             "dependsOn": [
-                "[resourceId('Microsoft.Sql/servers/databases', parameters('servers_mangosqlserver_name'), 'mangodb')]",
-                "[resourceId('Microsoft.Sql/servers', parameters('servers_mangosqlserver_name'))]"
+                "[resourceId('Microsoft.Sql/servers/databases', parameters('servers_mangosqlserver01_name'), 'mangodb')]",
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_mangosqlserver01_name'))]"
             ],
             "properties": {
                 "autoExecuteValue": "Disabled"
@@ -811,10 +761,10 @@
         {
             "type": "Microsoft.Sql/servers/databases/advisors",
             "apiVersion": "2014-04-01",
-            "name": "[concat(parameters('servers_mangosqlserver_name'), '/mangodb/DbParameterization')]",
+            "name": "[concat(parameters('servers_mangosqlserver01_name'), '/mangodb/DbParameterization')]",
             "dependsOn": [
-                "[resourceId('Microsoft.Sql/servers/databases', parameters('servers_mangosqlserver_name'), 'mangodb')]",
-                "[resourceId('Microsoft.Sql/servers', parameters('servers_mangosqlserver_name'))]"
+                "[resourceId('Microsoft.Sql/servers/databases', parameters('servers_mangosqlserver01_name'), 'mangodb')]",
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_mangosqlserver01_name'))]"
             ],
             "properties": {
                 "autoExecuteValue": "Disabled"
@@ -823,10 +773,10 @@
         {
             "type": "Microsoft.Sql/servers/databases/advisors",
             "apiVersion": "2014-04-01",
-            "name": "[concat(parameters('servers_mangosqlserver_name'), '/mangodb/DefragmentIndex')]",
+            "name": "[concat(parameters('servers_mangosqlserver01_name'), '/mangodb/DefragmentIndex')]",
             "dependsOn": [
-                "[resourceId('Microsoft.Sql/servers/databases', parameters('servers_mangosqlserver_name'), 'mangodb')]",
-                "[resourceId('Microsoft.Sql/servers', parameters('servers_mangosqlserver_name'))]"
+                "[resourceId('Microsoft.Sql/servers/databases', parameters('servers_mangosqlserver01_name'), 'mangodb')]",
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_mangosqlserver01_name'))]"
             ],
             "properties": {
                 "autoExecuteValue": "Disabled"
@@ -835,10 +785,10 @@
         {
             "type": "Microsoft.Sql/servers/databases/advisors",
             "apiVersion": "2014-04-01",
-            "name": "[concat(parameters('servers_mangosqlserver_name'), '/mangodb/DropIndex')]",
+            "name": "[concat(parameters('servers_mangosqlserver01_name'), '/mangodb/DropIndex')]",
             "dependsOn": [
-                "[resourceId('Microsoft.Sql/servers/databases', parameters('servers_mangosqlserver_name'), 'mangodb')]",
-                "[resourceId('Microsoft.Sql/servers', parameters('servers_mangosqlserver_name'))]"
+                "[resourceId('Microsoft.Sql/servers/databases', parameters('servers_mangosqlserver01_name'), 'mangodb')]",
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_mangosqlserver01_name'))]"
             ],
             "properties": {
                 "autoExecuteValue": "Disabled"
@@ -847,10 +797,10 @@
         {
             "type": "Microsoft.Sql/servers/databases/advisors",
             "apiVersion": "2014-04-01",
-            "name": "[concat(parameters('servers_mangosqlserver_name'), '/mangodb/ForceLastGoodPlan')]",
+            "name": "[concat(parameters('servers_mangosqlserver01_name'), '/mangodb/ForceLastGoodPlan')]",
             "dependsOn": [
-                "[resourceId('Microsoft.Sql/servers/databases', parameters('servers_mangosqlserver_name'), 'mangodb')]",
-                "[resourceId('Microsoft.Sql/servers', parameters('servers_mangosqlserver_name'))]"
+                "[resourceId('Microsoft.Sql/servers/databases', parameters('servers_mangosqlserver01_name'), 'mangodb')]",
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_mangosqlserver01_name'))]"
             ],
             "properties": {
                 "autoExecuteValue": "Enabled"
@@ -859,11 +809,11 @@
         {
             "type": "Microsoft.Sql/servers/databases/auditingPolicies",
             "apiVersion": "2014-04-01",
-            "name": "[concat(parameters('servers_mangosqlserver_name'), '/mangodb/Default')]",
+            "name": "[concat(parameters('servers_mangosqlserver01_name'), '/mangodb/Default')]",
             "location": "North Europe",
             "dependsOn": [
-                "[resourceId('Microsoft.Sql/servers/databases', parameters('servers_mangosqlserver_name'), 'mangodb')]",
-                "[resourceId('Microsoft.Sql/servers', parameters('servers_mangosqlserver_name'))]"
+                "[resourceId('Microsoft.Sql/servers/databases', parameters('servers_mangosqlserver01_name'), 'mangodb')]",
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_mangosqlserver01_name'))]"
             ],
             "properties": {
                 "auditingState": "Disabled"
@@ -872,10 +822,10 @@
         {
             "type": "Microsoft.Sql/servers/databases/auditingSettings",
             "apiVersion": "2022-05-01-preview",
-            "name": "[concat(parameters('servers_mangosqlserver_name'), '/mangodb/Default')]",
+            "name": "[concat(parameters('servers_mangosqlserver01_name'), '/mangodb/Default')]",
             "dependsOn": [
-                "[resourceId('Microsoft.Sql/servers/databases', parameters('servers_mangosqlserver_name'), 'mangodb')]",
-                "[resourceId('Microsoft.Sql/servers', parameters('servers_mangosqlserver_name'))]"
+                "[resourceId('Microsoft.Sql/servers/databases', parameters('servers_mangosqlserver01_name'), 'mangodb')]",
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_mangosqlserver01_name'))]"
             ],
             "properties": {
                 "retentionDays": 0,
@@ -887,10 +837,10 @@
         {
             "type": "Microsoft.Sql/servers/databases/backupLongTermRetentionPolicies",
             "apiVersion": "2022-05-01-preview",
-            "name": "[concat(parameters('servers_mangosqlserver_name'), '/mangodb/default')]",
+            "name": "[concat(parameters('servers_mangosqlserver01_name'), '/mangodb/default')]",
             "dependsOn": [
-                "[resourceId('Microsoft.Sql/servers/databases', parameters('servers_mangosqlserver_name'), 'mangodb')]",
-                "[resourceId('Microsoft.Sql/servers', parameters('servers_mangosqlserver_name'))]"
+                "[resourceId('Microsoft.Sql/servers/databases', parameters('servers_mangosqlserver01_name'), 'mangodb')]",
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_mangosqlserver01_name'))]"
             ],
             "properties": {
                 "weeklyRetention": "PT0S",
@@ -902,10 +852,10 @@
         {
             "type": "Microsoft.Sql/servers/databases/backupShortTermRetentionPolicies",
             "apiVersion": "2022-05-01-preview",
-            "name": "[concat(parameters('servers_mangosqlserver_name'), '/mangodb/default')]",
+            "name": "[concat(parameters('servers_mangosqlserver01_name'), '/mangodb/default')]",
             "dependsOn": [
-                "[resourceId('Microsoft.Sql/servers/databases', parameters('servers_mangosqlserver_name'), 'mangodb')]",
-                "[resourceId('Microsoft.Sql/servers', parameters('servers_mangosqlserver_name'))]"
+                "[resourceId('Microsoft.Sql/servers/databases', parameters('servers_mangosqlserver01_name'), 'mangodb')]",
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_mangosqlserver01_name'))]"
             ],
             "properties": {
                 "retentionDays": 7,
@@ -915,10 +865,10 @@
         {
             "type": "Microsoft.Sql/servers/databases/extendedAuditingSettings",
             "apiVersion": "2022-05-01-preview",
-            "name": "[concat(parameters('servers_mangosqlserver_name'), '/mangodb/Default')]",
+            "name": "[concat(parameters('servers_mangosqlserver01_name'), '/mangodb/Default')]",
             "dependsOn": [
-                "[resourceId('Microsoft.Sql/servers/databases', parameters('servers_mangosqlserver_name'), 'mangodb')]",
-                "[resourceId('Microsoft.Sql/servers', parameters('servers_mangosqlserver_name'))]"
+                "[resourceId('Microsoft.Sql/servers/databases', parameters('servers_mangosqlserver01_name'), 'mangodb')]",
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_mangosqlserver01_name'))]"
             ],
             "properties": {
                 "retentionDays": 0,
@@ -930,11 +880,11 @@
         {
             "type": "Microsoft.Sql/servers/databases/geoBackupPolicies",
             "apiVersion": "2014-04-01",
-            "name": "[concat(parameters('servers_mangosqlserver_name'), '/mangodb/Default')]",
+            "name": "[concat(parameters('servers_mangosqlserver01_name'), '/mangodb/Default')]",
             "location": "North Europe",
             "dependsOn": [
-                "[resourceId('Microsoft.Sql/servers/databases', parameters('servers_mangosqlserver_name'), 'mangodb')]",
-                "[resourceId('Microsoft.Sql/servers', parameters('servers_mangosqlserver_name'))]"
+                "[resourceId('Microsoft.Sql/servers/databases', parameters('servers_mangosqlserver01_name'), 'mangodb')]",
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_mangosqlserver01_name'))]"
             ],
             "properties": {
                 "state": "Disabled"
@@ -943,20 +893,20 @@
         {
             "type": "Microsoft.Sql/servers/databases/ledgerDigestUploads",
             "apiVersion": "2022-05-01-preview",
-            "name": "[concat(parameters('servers_mangosqlserver_name'), '/mangodb/Current')]",
+            "name": "[concat(parameters('servers_mangosqlserver01_name'), '/mangodb/Current')]",
             "dependsOn": [
-                "[resourceId('Microsoft.Sql/servers/databases', parameters('servers_mangosqlserver_name'), 'mangodb')]",
-                "[resourceId('Microsoft.Sql/servers', parameters('servers_mangosqlserver_name'))]"
+                "[resourceId('Microsoft.Sql/servers/databases', parameters('servers_mangosqlserver01_name'), 'mangodb')]",
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_mangosqlserver01_name'))]"
             ],
             "properties": {}
         },
         {
             "type": "Microsoft.Sql/servers/databases/securityAlertPolicies",
             "apiVersion": "2022-05-01-preview",
-            "name": "[concat(parameters('servers_mangosqlserver_name'), '/mangodb/Default')]",
+            "name": "[concat(parameters('servers_mangosqlserver01_name'), '/mangodb/Default')]",
             "dependsOn": [
-                "[resourceId('Microsoft.Sql/servers/databases', parameters('servers_mangosqlserver_name'), 'mangodb')]",
-                "[resourceId('Microsoft.Sql/servers', parameters('servers_mangosqlserver_name'))]"
+                "[resourceId('Microsoft.Sql/servers/databases', parameters('servers_mangosqlserver01_name'), 'mangodb')]",
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_mangosqlserver01_name'))]"
             ],
             "properties": {
                 "state": "Disabled",
@@ -973,10 +923,10 @@
         {
             "type": "Microsoft.Sql/servers/databases/transparentDataEncryption",
             "apiVersion": "2022-05-01-preview",
-            "name": "[concat(parameters('servers_mangosqlserver_name'), '/mangodb/Current')]",
+            "name": "[concat(parameters('servers_mangosqlserver01_name'), '/mangodb/Current')]",
             "dependsOn": [
-                "[resourceId('Microsoft.Sql/servers/databases', parameters('servers_mangosqlserver_name'), 'mangodb')]",
-                "[resourceId('Microsoft.Sql/servers', parameters('servers_mangosqlserver_name'))]"
+                "[resourceId('Microsoft.Sql/servers/databases', parameters('servers_mangosqlserver01_name'), 'mangodb')]",
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_mangosqlserver01_name'))]"
             ],
             "properties": {
                 "state": "Enabled"
@@ -985,10 +935,10 @@
         {
             "type": "Microsoft.Sql/servers/databases/vulnerabilityAssessments",
             "apiVersion": "2022-05-01-preview",
-            "name": "[concat(parameters('servers_mangosqlserver_name'), '/mangodb/Default')]",
+            "name": "[concat(parameters('servers_mangosqlserver01_name'), '/mangodb/Default')]",
             "dependsOn": [
-                "[resourceId('Microsoft.Sql/servers/databases', parameters('servers_mangosqlserver_name'), 'mangodb')]",
-                "[resourceId('Microsoft.Sql/servers', parameters('servers_mangosqlserver_name'))]"
+                "[resourceId('Microsoft.Sql/servers/databases', parameters('servers_mangosqlserver01_name'), 'mangodb')]",
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_mangosqlserver01_name'))]"
             ],
             "properties": {
                 "recurringScans": {
@@ -1000,10 +950,10 @@
         {
             "type": "Microsoft.Storage/storageAccounts/blobServices/containers",
             "apiVersion": "2022-05-01",
-            "name": "[concat(parameters('storageAccounts_mangostorageaccounts_name'), '/default/mangomessengercontainer')]",
+            "name": "[concat(parameters('storageAccounts_mangostoracc01_name'), '/default/mangomessengercont')]",
             "dependsOn": [
-                "[resourceId('Microsoft.Storage/storageAccounts/blobServices', parameters('storageAccounts_mangostorageaccounts_name'), 'default')]",
-                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_mangostorageaccounts_name'))]"
+                "[resourceId('Microsoft.Storage/storageAccounts/blobServices', parameters('storageAccounts_mangostoracc01_name'), 'default')]",
+                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_mangostoracc01_name'))]"
             ],
             "properties": {
                 "immutableStorageWithVersioning": {
@@ -1011,7 +961,7 @@
                 },
                 "defaultEncryptionScope": "$account-encryption-key",
                 "denyEncryptionScopeOverride": false,
-                "publicAccess": "None"
+                "publicAccess": "Blob"
             }
         }
     ]

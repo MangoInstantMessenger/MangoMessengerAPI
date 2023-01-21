@@ -5,19 +5,19 @@
         "vulnerabilityAssessments_Default_storageContainerPath": {
             "value": null
         },
-        "sites_mangomessenger_name": {
+        "sites_mangomessenger01_name": {
             "value": null
         },
-        "servers_mangosqlserver_name": {
+        "servers_mangosqlserver01_name": {
             "value": null
         },
-        "serverfarms_mango_appservice_plan_name": {
+        "vaults_mangokeyvault01_name": {
             "value": null
         },
-        "vaults_mangomessengerkeyvault_name": {
+        "serverfarms_mango_service_plan_01_name": {
             "value": null
         },
-        "storageAccounts_mangostorageaccounts_name": {
+        "storageAccounts_mangostoracc01_name": {
             "value": null
         }
     }

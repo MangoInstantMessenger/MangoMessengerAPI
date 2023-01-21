@@ -15,7 +15,7 @@ $adminUser = "razumovsky_r"
 $adminPassword = "bdr825GUSZspHw55mMPJ"
 
 
-Write-Output "Creating $resourceGroup in $location ..."
+Write-Output "Creating resource group $rgName in $location ..."
 az group create --name $rgName --location "$location"
 
 Write-Output "Creating storage account $storName ..."
@@ -37,4 +37,6 @@ Write-Output "Creating SQL server $sqlServerName ..."
 az sql server create --name $sqlServerName --resource-group $rgName --location $location --admin-user $adminUser --admin-password $adminPassword
 
 Write-Output "Creating SQL database $mangoDb ..."
-az sql db create --name $mangoDb --resource-group $resourceGroupName --server $sqlServerName
+az sql db create --name $mangoDb --resource-group $rgName --server $sqlServerName `
+--compute-model "Serverless" --zone-redundant "false" --auto-pause-delay "-1" `
+--edition "GeneralPurpose" --family "Gen5" --capacity "2" --backup-storage-redundancy "Local"
