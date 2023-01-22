@@ -52,3 +52,10 @@ Write-Output "Creating SQL database $mangoDb ..."
 az sql db create --name $mangoDb --resource-group $rgName --server $sqlServerName `
 --compute-model "Serverless" --zone-redundant "false" --auto-pause-delay "-1" `
 --edition "GeneralPurpose" --family "Gen5" --capacity "2" --backup-storage-redundancy "Local"
+
+# example call:
+
+#.\infrastructure.ps1 -rgName "mango-rg-01" -location "North Europe" -servicePlanName "mango-service-plan-01" `
+#-skuPlanName "F1" -webAppName "mangomessenger01" -storName "mangostoracc01" -skuStorageName "Standard_LRS" `
+#-contName "mangomessengercont" -keyVaultName "mangokeyvault01" -sqlServerName "mangosqlserver01" `
+#-mangoDb "mangodb" -adminUser "razumovsky_r" -adminPassword "bdr825GUSZspHw55mMPJ"
