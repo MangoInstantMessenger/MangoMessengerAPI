@@ -1,19 +1,31 @@
-$rgName = "mango-rg-01"
-$servicePlanName = "mango-service-plan-01"
-$webAppName = "mangomessenger01"
-$storName = "mangostoracc01"
-$skuPlanName = "F1"
-$skuStorageName = "Standard_LRS"
-$contName = "mangomessengercont"
-$keyVaultName = "mangokeyvault01"
-$sqlServerName = "mangosqlserver01"
-$mangoDb = "mangodb"
-
-$location = "North Europe"
-
-$adminUser = "razumovsky_r"
-$adminPassword = "bdr825GUSZspHw55mMPJ"
-
+param(
+    [Parameter(Mandatory = $true, Position = 0)]
+    [string] $rgName,
+    [Parameter(Mandatory = $true, Position = 1)]
+    [string] $location,
+    [Parameter(Mandatory = $true, Position = 2)]
+    [string] $servicePlanName,
+    [Parameter(Mandatory = $true, Position = 3)]
+    [string] $skuPlanName,
+    [Parameter(Mandatory = $true, Position = 4)]
+    [string] $webAppName,
+    [Parameter(Mandatory = $true, Position = 5)]
+    [string] $storName,
+    [Parameter(Mandatory = $true, Position = 6)]
+    [string] $skuStorageName,
+    [Parameter(Mandatory = $true, Position = 7)]
+    [string] $contName,
+    [Parameter(Mandatory = $true, Position = 8)]
+    [string] $keyVaultName,
+    [Parameter(Mandatory = $true, Position = 9)]
+    [string] $sqlServerName,
+    [Parameter(Mandatory = $true, Position = 10)]
+    [string] $mangoDb,
+    [Parameter(Mandatory = $true, Position = 11)]
+    [string] $adminUser,
+    [Parameter(Mandatory = $true, Position = 12)]
+    [string] $adminPassword
+)
 
 Write-Output "Creating resource group $rgName in $location ..."
 az group create --name $rgName --location "$location"
