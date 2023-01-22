@@ -116,12 +116,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "legacy_pipelines", "legacy_
 		build\legacy_pipelines\azure-pipelines-sonarqube.yml = build\legacy_pipelines\azure-pipelines-sonarqube.yml
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "arm", "arm", "{6E14DA5B-1B87-44F4-984A-73ED90AF24CC}"
-	ProjectSection(SolutionItems) = preProject
-		arm\parameters.json = arm\parameters.json
-		arm\template.json = arm\template.json
-	EndProjectSection
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
