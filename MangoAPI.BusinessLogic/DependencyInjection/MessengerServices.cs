@@ -15,20 +15,20 @@ public static class MessengerServices
         int mangoJwtLifetimeMinutes,
         int mangoRefreshTokenLifetimeDays)
     {
-        _ = services.AddAzureBlobServices(
+        services.AddAzureBlobServices(
             mangoBlobUrl,
             mangoBlobContainerName,
             mangoBlobAccess);
 
-        _ = services.AddJwtGeneratorServices(
+        services.AddJwtGeneratorServices(
             mangoJwtIssuer,
             mangoJwtAudience,
             mangoJwtSignKey,
             mangoJwtLifetimeMinutes,
             mangoRefreshTokenLifetimeDays);
 
-        _ = services.AddSingInManagerServices();
-        _ = services.AddPasswordHashServices();
+        services.AddSingInManagerServices();
+        services.AddPasswordHashServices();
 
         return services;
     }

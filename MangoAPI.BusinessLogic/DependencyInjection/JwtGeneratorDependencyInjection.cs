@@ -21,8 +21,8 @@ public static class JwtGeneratorDependencyInjection
             mangoJwtLifetimeMinutes,
             mangoRefreshTokenLifetimeDays);
 
-        _ = services.AddSingleton<IJwtGeneratorSettings, JwtGeneratorSettings>(_ => jwtGeneratorSettings);
-        _ = services.AddScoped<IJwtGenerator, JwtGenerator>(_ => new JwtGenerator(jwtGeneratorSettings));
+        services.AddSingleton<IJwtGeneratorSettings, JwtGeneratorSettings>(_ => jwtGeneratorSettings);
+        services.AddScoped<IJwtGenerator, JwtGenerator>(_ => new JwtGenerator(jwtGeneratorSettings));
 
         return services;
     }

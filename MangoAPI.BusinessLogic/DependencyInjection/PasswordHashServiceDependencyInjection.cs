@@ -7,7 +7,7 @@ public static class PasswordHashServiceDependencyInjection
 {
     public static IServiceCollection AddPasswordHashServices(this IServiceCollection services)
     {
-        _ = services.AddScoped<PasswordHashService>();
+        services.AddScoped<PasswordHashService>();
 
         return services;
     }

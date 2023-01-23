@@ -16,10 +16,6 @@
         <PackageReference Include="Azure.Storage.Blobs" Version="12.14.1" />
         <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.2.0" />
         <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.2.0" />
-        <PackageReference Include="Microsoft.CodeAnalysis.NetAnalyzers" Version="7.0.0">
-          <PrivateAssets>all</PrivateAssets>
-          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-        </PackageReference>
         <PackageReference Include="Microsoft.IdentityModel.JsonWebTokens" Version="6.25.0" />
         <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="6.25.0" />
         <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.25.0" />

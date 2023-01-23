@@ -8,7 +8,7 @@ public static class SwaggerServices
 {
     public static IServiceCollection AddSwagger(this IServiceCollection services)
     {
-        _ = services.AddSwaggerGen(c =>
+        services.AddSwaggerGen(c =>
         {
             c.EnableAnnotations();
             c.SwaggerDoc("v1", new OpenApiInfo { Title = "MangoAPI", Version = "v1" });
@@ -26,11 +26,7 @@ public static class SwaggerServices
                 {
                     new OpenApiSecurityScheme
                     {
-                        Reference = new OpenApiReference
-                        {
-                            Type = ReferenceType.SecurityScheme,
-                            Id = "Bearer",
-                        },
+                        Reference = new OpenApiReference { Type = ReferenceType.SecurityScheme, Id = "Bearer", },
                     },
                     Array.Empty<string>()
                 },

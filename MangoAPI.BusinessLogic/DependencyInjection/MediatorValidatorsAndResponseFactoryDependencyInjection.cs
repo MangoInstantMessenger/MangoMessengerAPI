@@ -12,10 +12,10 @@ public static class MediatorValidatorsAndResponseFactoryDependencyInjection
 {
     public static IServiceCollection AddMediatorValidatorsAndResponseFactory(this IServiceCollection services)
     {
-        _ = services.AddValidatorsFromAssembly(typeof(LoginCommandValidator).Assembly);
-        _ = services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehaviour<,>));
-        _ = services.AddTransient(typeof(ResponseFactory<>));
-        _ = services.AddMediatR(typeof(RegisterCommandHandler).Assembly);
+        services.AddValidatorsFromAssembly(typeof(LoginCommandValidator).Assembly);
+        services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehaviour<,>));
+        services.AddTransient(typeof(ResponseFactory<>));
+        services.AddMediatR(typeof(RegisterCommandHandler).Assembly);
 
         return services;
     }

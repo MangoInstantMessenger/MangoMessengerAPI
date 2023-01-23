@@ -8,9 +8,9 @@ public static class SingInManagerDependencyInjection
 {
     public static IServiceCollection AddSingInManagerServices(this IServiceCollection services)
     {
-        _ = services.AddScoped<IUserManagerService, UserManagerService>();
-        _ = services.AddScoped<ISignInManagerService, SignInManagerService>();
-        _ = services.AddScoped<PasswordHashService>();
+        services.AddScoped<IUserManagerService, UserManagerService>();
+        services.AddScoped<ISignInManagerService, SignInManagerService>();
+        services.AddScoped<PasswordHashService>();
 
         return services;
     }

@@ -16,9 +16,9 @@ public static class DatabaseDependencyInjection
             throw new ArgumentNullException(nameof(connectionString));
         }
 
-        _ = services.AddDbContext<MangoDbContext>(options =>
+        services.AddDbContext<MangoDbContext>(options =>
         {
-            _ = options.UseSqlServer(connectionString);
+            options.UseSqlServer(connectionString);
         });
 
         return services;

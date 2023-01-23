@@ -20,8 +20,8 @@ public static class IdentityDependencyInjection
 
         var identityBuilder = new IdentityBuilder(builder.UserType, builder.Services);
 
-        _ = identityBuilder.AddEntityFrameworkStores<MangoDbContext>();
-        _ = identityBuilder.AddSignInManager<SignInManager<UserEntity>>();
+        identityBuilder.AddEntityFrameworkStores<MangoDbContext>();
+        identityBuilder.AddSignInManager<SignInManager<UserEntity>>();
 
         return services;
     }

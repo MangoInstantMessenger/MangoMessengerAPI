@@ -25,7 +25,7 @@ public static class MailgunDependencyInjection
             frontendAddress,
             notificationEmail);
 
-        _ = services.AddScoped<IMailgunSettings, MailgunSettings>(_ => mailgunSettings);
+        services.AddScoped<IMailgunSettings, MailgunSettings>(_ => mailgunSettings);
 
         return services;
     }

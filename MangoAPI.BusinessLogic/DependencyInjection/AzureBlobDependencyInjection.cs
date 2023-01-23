@@ -17,11 +17,11 @@ public static class AzureBlobDependencyInjection
 
         var mangoBlobService = new BlobServiceSettings(mangoBlobContainerName, mangoBlobAccess);
 
-        _ = services.AddSingleton(_ => blobClient);
+        services.AddSingleton(_ => blobClient);
 
-        _ = services.AddSingleton<IBlobServiceSettings, BlobServiceSettings>(_ => mangoBlobService);
+        services.AddSingleton<IBlobServiceSettings, BlobServiceSettings>(_ => mangoBlobService);
 
-        _ = services.AddScoped<IBlobService, BlobService>(_ => new BlobService(blobClient, mangoBlobService));
+        services.AddScoped<IBlobService, BlobService>(_ => new BlobService(blobClient, mangoBlobService));
 
         return services;
     }
