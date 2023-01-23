@@ -1,0 +1,29 @@
+parameters:
+  - name: Solution
+    displayName: 'Solution'
+    type: string
+    default: './MangoAPI.sln'
+
+  - name: ServiceConnection
+    displayName: 'Snyk Service Connection'
+    type: string
+    default: 'Snyk_Mango_Connection'
+
+  - name: Organization
+    displayName: 'Organization name'
+    type: string
+    default: 'MangoMessenger'
+
+jobs:
+  - job: 'SonarCloud_Analyzer'
+    displayName: 'SonarCloud Static Code Analyzer'
+    steps:
+      - task: SnykSecurityScan@0
+        displayName: Snyk Security Scan
+        inputs:
+          serviceConnectionEndpoint: '${{ parameters.ServiceConnection }}'
+          testType: 'app'
+          targetFile: '${{ parameters.Solution }}'
+          monitorOnBuild: true
+          failOnIssues: false
+          organization: '${{ parameters.Organization }}'
