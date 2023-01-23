@@ -1,0 +1,56 @@
+parameters:
+  - name: Solution
+    displayName: 'Solution'
+    type: string
+    default: './MangoAPI.sln'
+
+  - name: ServiceConnection
+    displayName: 'Snyk Service Connection'
+    type: string
+    default: 'Snyk_Mango_Connection'
+
+  - name: Organization
+    displayName: 'Organization name'
+    type: string
+    default: 'kolosovpetro' #this is your snyk account, not az do organization
+
+  - name: buildConfiguration
+    displayName: 'Build Configuration'
+    type: string
+    default: 'Release'
+    values:
+      - Release
+      - Debug
+
+  - name: backendProjectPath
+    displayName: 'Backend project path'
+    type: string
+    default: './MangoAPI.Presentation/MangoAPI.Presentation.csproj'
+
+jobs:
+  - job: 'Snyk_Security_Scan'
+    displayName: 'Snyk Security Scan'
+    steps:
+      - task: DotNetCoreCLI@2
+        displayName: 'Dotnet restore'
+        inputs:
+          command: 'restore'
+          projects: '${{ parameters.backendProjectPath }}'
+          arguments: '--verbosity minimal'
+
+      - task: DotNetCoreCLI@2
+        displayName: 'Dotnet build ${{ parameters.buildConfiguration }}'
+        inputs:
+          command: 'build'
+          projects: '${{ parameters.backendProjectPath }}'
+          arguments: '--configuration ${{ parameters.buildConfiguration }} --no-restore'
+
+      - task: SnykSecurityScan@1
+        displayName: 'Snyk Security Scan'
+        inputs:
+          serviceConnectionEndpoint: '${{ parameters.ServiceConnection }}'
+          testType: 'app'
+          targetFile: '${{ parameters.Solution }}'
+          monitorOnBuild: true
+          failOnIssues: false
+          organization: '${{ parameters.Organization }}'
