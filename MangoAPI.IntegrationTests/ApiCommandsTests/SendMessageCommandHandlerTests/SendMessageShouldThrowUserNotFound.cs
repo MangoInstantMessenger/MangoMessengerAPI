@@ -13,7 +13,7 @@ public class SendMessageShouldThrowUserNotFound : IntegrationTestBase
     private readonly Assert<SendMessageResponse> assert = new();
 
     [Fact]
-    public async Task SendMessage_ShouldThrow_UserNotFound()
+    public async Task SendMessageShouldThrowUserNotFoundAsync()
     {
         const string expectedMessage = ResponseMessageCodes.UserNotFound;
         var expectedDetails = ResponseMessageCodes.ErrorDictionary[expectedMessage];

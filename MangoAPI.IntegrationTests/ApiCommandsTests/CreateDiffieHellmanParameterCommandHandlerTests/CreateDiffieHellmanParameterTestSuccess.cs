@@ -11,7 +11,7 @@ public class CreateDiffieHellmanParameterTestSuccess : IntegrationTestBase
     private readonly Assert<CreateDiffieHellmanParameterResponse> assert = new();
 
     [Fact]
-    public async Task CreateDiffieHellmanParameterTest_Success()
+    public async Task CreateDiffieHellmanParameterTestSuccessAsync()
     {
         var user = await MangoModule.RequestAsync(
             request: CommandHelper.RegisterPetroCommand(),

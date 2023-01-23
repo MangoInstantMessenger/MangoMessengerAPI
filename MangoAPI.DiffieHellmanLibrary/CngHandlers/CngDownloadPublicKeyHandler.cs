@@ -31,30 +31,22 @@ public class CngDownloadPublicKeyHandler : BaseHandler, IDownloadPublicKeyHandle
 
         var keyExchangeRequestList = await GetKeyExchangesAsync();
 
-        OpenSslKeyExchangeRequest keyExchangeRequest;
-
-        if (actor == Actor.Receiver)
-        {
-            keyExchangeRequest = keyExchangeRequestList.First(request =>
+        var keyExchangeRequest = actor == Actor.Receiver
+            ? keyExchangeRequestList.First(request =>
                 request.SenderId == userId &&
                 request.ReceiverId == currentUserId &&
                 request.IsConfirmed &&
-                request.KeyExchangeType == KeyExchangeType.Cng);
-        }
-        else
-        {
-            keyExchangeRequest = keyExchangeRequestList.First(request =>
+                request.KeyExchangeType == KeyExchangeType.Cng)
+            : keyExchangeRequestList.First(request =>
                 request.ReceiverId == userId &&
                 request.SenderId == currentUserId &&
                 request.IsConfirmed &&
                 request.KeyExchangeType == KeyExchangeType.Cng);
-        }
-
         var address = $"{KeyExchangeRoutes.PublicKeys}/{keyExchangeRequest.RequestId}";
         var uri = new Uri(address, UriKind.Absolute);
 
         var response = await HttpClient.GetAsync(uri);
-        response.EnsureSuccessStatusCode();
+        _ = response.EnsureSuccessStatusCode();
 
         await using var stream = await response.Content.ReadAsStreamAsync();
 

@@ -6,13 +6,13 @@ public class PasswordRestoreCommandValidator : AbstractValidator<PasswordRestore
 {
     public PasswordRestoreCommandValidator()
     {
-        RuleFor(x => x.NewPassword)
+        _ = RuleFor(x => x.NewPassword)
             .Equal(x => x.RepeatPassword)
             .WithMessage("Passwords should be same.")
             .NotEmpty()
             .Length(8, 50)
             .WithMessage("Password must be at least 8 characters.");
 
-        RuleFor(x => x.RequestId).NotEmpty();
+        _ = RuleFor(x => x.RequestId).NotEmpty();
     }
 }

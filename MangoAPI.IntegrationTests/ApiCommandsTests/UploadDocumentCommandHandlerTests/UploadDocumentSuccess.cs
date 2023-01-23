@@ -11,7 +11,7 @@ public class UploadDocumentSuccess : IntegrationTestBase
     private readonly Assert<UploadDocumentResponse> assert = new();
 
     [Fact]
-    public async Task UploadDocument_Success()
+    public async Task UploadDocumentSuccessAsync()
     {
         var file = MangoFilesHelper.GetTestImage();
         var user = await MangoModule.RequestAsync(
@@ -23,6 +23,6 @@ public class UploadDocumentSuccess : IntegrationTestBase
         var result = await MangoModule.RequestAsync(command, CancellationToken.None);
 
         assert.Pass(result);
-        await BlobService.DeleteBlobAsync(result.Response.FileName);
+        _ = await BlobService.DeleteBlobAsync(result.Response.FileName);
     }
 }

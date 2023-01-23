@@ -42,9 +42,9 @@ public class ArchiveChatCommandHandler
 
         chat.IsArchived = !chat.IsArchived;
 
-        dbContext.UserChats.Update(chat);
+        _ = dbContext.UserChats.Update(chat);
 
-        await dbContext.SaveChangesAsync(cancellationToken);
+        _ = await dbContext.SaveChangesAsync(cancellationToken);
 
         return responseFactory.SuccessResponse(ResponseBase.SuccessResponse);
     }

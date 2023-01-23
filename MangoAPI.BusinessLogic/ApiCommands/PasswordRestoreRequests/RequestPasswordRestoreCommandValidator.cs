@@ -6,7 +6,7 @@ public class RequestPasswordRestoreCommandValidator : AbstractValidator<RequestP
 {
     public RequestPasswordRestoreCommandValidator()
     {
-        RuleFor(x => x.Email)
+        _ = RuleFor(x => x.Email)
             .Cascade(CascadeMode.Stop)
             .NotEmpty()
             .Length(1, 300);

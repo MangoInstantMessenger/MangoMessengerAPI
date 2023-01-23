@@ -13,20 +13,20 @@ public class LogoutAllTestSuccess : IntegrationTestBase
     private readonly Assert<ResponseBase> assert = new();
 
     [Fact]
-    public async Task LogoutAllCommandHandlerTest_Success()
+    public async Task LogoutAllCommandHandlerTestSuccessAsync()
     {
         var user = await MangoModule.RequestAsync(
             request: CommandHelper.RegisterPetroCommand(),
             cancellationToken: CancellationToken.None);
         var userId = user.Response.Tokens.UserId;
         var userEntity = await DbContextFixture.Users.FirstAsync(x => x.Id == userId);
-        await MangoModule.RequestAsync(
+        _ = await MangoModule.RequestAsync(
             request: CommandHelper.CreateVerifyEmailCommand(userEntity.Email, userEntity.EmailCode),
             cancellationToken: CancellationToken.None);
-        await MangoModule.RequestAsync(
+        _ = await MangoModule.RequestAsync(
             request: CommandHelper.CreateLoginCommand("kolosovp95@gmail.com", "Bm3-`dPRv-/w#3)cw^97"),
             cancellationToken: CancellationToken.None);
-        await MangoModule.RequestAsync(
+        _ = await MangoModule.RequestAsync(
             request: CommandHelper.CreateLoginCommand("kolosovp95@gmail.com", "Bm3-`dPRv-/w#3)cw^97"),
             cancellationToken: CancellationToken.None);
         var command = new LogoutAllCommand(UserId: userId);

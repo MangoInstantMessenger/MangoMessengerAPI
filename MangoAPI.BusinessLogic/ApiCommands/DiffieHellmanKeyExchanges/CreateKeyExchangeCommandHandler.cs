@@ -47,7 +47,7 @@ public class CreateKeyExchangeCommandHandler : IRequestHandler<CreateKeyExchange
         if (allRequests.Count != 0)
         {
             mangoDbContext.DiffieHellmanKeyExchangeEntities.RemoveRange(allRequests);
-            await mangoDbContext.SaveChangesAsync(cancellationToken);
+            _ = await mangoDbContext.SaveChangesAsync(cancellationToken);
         }
 
         await using var target = new MemoryStream();
@@ -64,9 +64,9 @@ public class CreateKeyExchangeCommandHandler : IRequestHandler<CreateKeyExchange
             KeyExchangeType = request.KeyExchangeType,
         };
 
-        mangoDbContext.DiffieHellmanKeyExchangeEntities.Add(keyExchangeRequest);
+        _ = mangoDbContext.DiffieHellmanKeyExchangeEntities.Add(keyExchangeRequest);
 
-        await mangoDbContext.SaveChangesAsync(cancellationToken);
+        _ = await mangoDbContext.SaveChangesAsync(cancellationToken);
 
         var response = new CreateKeyExchangeResponse
         {

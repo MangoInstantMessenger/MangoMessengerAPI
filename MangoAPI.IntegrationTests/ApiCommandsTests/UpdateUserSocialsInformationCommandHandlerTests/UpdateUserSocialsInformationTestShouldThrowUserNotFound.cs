@@ -13,7 +13,7 @@ public class UpdateUserSocialsInformationTestShouldThrowUserNotFound : Integrati
     private readonly Assert<ResponseBase> assert = new();
 
     [Fact]
-    public async Task UpdateUserSocialsInformationTest_Success()
+    public async Task UpdateUserSocialsInformationTestSuccessAsync()
     {
         const string expectedMessage = ResponseMessageCodes.UserNotFound;
         var expectedDetails = ResponseMessageCodes.ErrorDictionary[expectedMessage];

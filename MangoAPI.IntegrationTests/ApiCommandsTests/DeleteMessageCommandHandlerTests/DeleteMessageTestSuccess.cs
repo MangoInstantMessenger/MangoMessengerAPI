@@ -11,7 +11,7 @@ public class DeleteMessageTestSuccess : IntegrationTestBase
     private readonly Assert<DeleteMessageResponse> assert = new();
 
     [Fact]
-    public async Task DeleteMessageTest_Success()
+    public async Task DeleteMessageTestSuccessAsync()
     {
         var user =
             await MangoModule.RequestAsync(CommandHelper.RegisterPetroCommand(), CancellationToken.None);

@@ -13,7 +13,7 @@ public class AddContactShouldThrowCannotAddSelf : IntegrationTestBase
     private readonly Assert<ResponseBase> assert = new();
 
     [Fact]
-    public async Task AddContactCommandHandlerTest_ShouldThrow_CannotAddSelf()
+    public async Task AddContactCommandHandlerTestShouldThrowCannotAddSelfAsync()
     {
         const string expectedMessage = ResponseMessageCodes.CannotAddSelfToContacts;
         var expectedDetails = ResponseMessageCodes.ErrorDictionary[expectedMessage];

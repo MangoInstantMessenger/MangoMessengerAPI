@@ -94,10 +94,10 @@ public class SendMessageCommandHandler
         userChat.Chat.LastMessageTime = messageEntity.CreatedAt;
         userChat.Chat.LastMessageId = messageEntity.Id;
 
-        dbContext.Chats.Update(userChat.Chat);
-        dbContext.Messages.Add(messageEntity);
+        _ = dbContext.Chats.Update(userChat.Chat);
+        _ = dbContext.Messages.Add(messageEntity);
 
-        await dbContext.SaveChangesAsync(cancellationToken);
+        _ = await dbContext.SaveChangesAsync(cancellationToken);
 
         var messageDto = messageEntity.ToMessage(
             user.DisplayName,

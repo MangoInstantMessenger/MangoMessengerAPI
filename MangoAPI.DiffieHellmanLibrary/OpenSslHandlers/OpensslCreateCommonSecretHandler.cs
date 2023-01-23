@@ -31,23 +31,15 @@ public class OpensslCreateCommonSecretHandler : BaseHandler, ICreateCommonSecret
         var tokens = TokensResponse.Tokens;
         var currentUserId = tokens.UserId;
 
-        OpenSslKeyExchangeRequest keyExchangeRequest;
-
-        if (actor == Actor.Receiver)
-        {
-            keyExchangeRequest = allKeyExchanges.FirstOrDefault(x =>
+        var keyExchangeRequest = actor == Actor.Receiver
+            ? allKeyExchanges.FirstOrDefault(x =>
                 x.SenderId == partnerId &&
                 x.ReceiverId == currentUserId &&
-                x.KeyExchangeType == KeyExchangeType.OpenSsl);
-        }
-        else
-        {
-            keyExchangeRequest = allKeyExchanges.FirstOrDefault(x =>
+                x.KeyExchangeType == KeyExchangeType.OpenSsl)
+            : allKeyExchanges.FirstOrDefault(x =>
                 x.SenderId == currentUserId &&
                 x.ReceiverId == partnerId &&
                 x.KeyExchangeType == KeyExchangeType.OpenSsl);
-        }
-
         if (keyExchangeRequest == null)
         {
             throw new InvalidOperationException();
@@ -79,6 +71,6 @@ public class OpensslCreateCommonSecretHandler : BaseHandler, ICreateCommonSecret
                 "pkeyutl", "-derive", "-inkey", privateKeyPath, "-peerkey", publicKeyPath, "-out", commonSecretPath,
             });
 
-        await command.ExecuteAsync();
+        _ = await command.ExecuteAsync();
     }
 }

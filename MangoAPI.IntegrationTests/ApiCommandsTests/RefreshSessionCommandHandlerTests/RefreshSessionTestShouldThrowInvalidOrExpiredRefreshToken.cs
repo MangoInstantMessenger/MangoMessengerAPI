@@ -13,7 +13,7 @@ public class RefreshSessionTestShouldThrowInvalidOrExpiredRefreshToken : Integra
     private readonly Assert<TokensResponse> assert = new();
 
     [Fact]
-    public async Task RefreshSessionTestShouldThrow_InvalidOrExpiredRefreshToken()
+    public async Task RefreshSessionTestShouldThrowInvalidOrExpiredRefreshTokenAsync()
     {
         const string expectedMessage = ResponseMessageCodes.InvalidOrExpiredRefreshToken;
         var expectedDetails = ResponseMessageCodes.ErrorDictionary[expectedMessage];

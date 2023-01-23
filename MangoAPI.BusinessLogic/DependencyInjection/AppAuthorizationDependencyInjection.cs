@@ -14,7 +14,7 @@ public static class AppAuthorizationDependencyInjection
             throw new ArgumentNullException(nameof(services));
         }
 
-        services.AddAuthorization(options =>
+        _ = services.AddAuthorization(options =>
         {
             options.DefaultPolicy = new AuthorizationPolicyBuilder()
                 .RequireAuthenticatedUser()

@@ -12,7 +12,7 @@ public class DownloadPartnerPublicKeyTestShouldThrowKeyExchangeDoesNotBelongToUs
     private readonly Assert<DownloadPartnerPublicKeyResponse> assert = new();
 
     [Fact]
-    public async Task DownloadPartnerPublicKeyTest_ShouldThrow_KeyExchangeDoesNotBelongToUser()
+    public async Task DownloadPartnerPublicKeyTestShouldThrowKeyExchangeDoesNotBelongToUserAsync()
     {
         const string expectedMessage = ResponseMessageCodes.KeyExchangeIsNotConfirmed;
         var expectedDetails = ResponseMessageCodes.ErrorDictionary[expectedMessage];

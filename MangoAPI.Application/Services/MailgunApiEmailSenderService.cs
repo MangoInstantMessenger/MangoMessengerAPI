@@ -45,7 +45,7 @@ public class MailgunApiEmailSenderService : IEmailSenderService
             .PostAsync(mailgunSettings.MailgunApiBaseUrlWithDomain, emailContent, cancellationToken)
             .ConfigureAwait(false);
 
-        response.EnsureSuccessStatusCode();
+        _ = response.EnsureSuccessStatusCode();
     }
 
     public async Task SendPasswordRestoreRequestAsync(
@@ -62,7 +62,7 @@ public class MailgunApiEmailSenderService : IEmailSenderService
             .PostAsync(mailgunSettings.MailgunApiBaseUrlWithDomain, emailContent, cancellationToken)
             .ConfigureAwait(false);
 
-        response.EnsureSuccessStatusCode();
+        _ = response.EnsureSuccessStatusCode();
     }
 
     private static string GenerateHttpAuthHeader(string tokenName, string tokenValue)

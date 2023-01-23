@@ -11,7 +11,7 @@ public static class DirectoryExtensions
 
         if (!Directory.Exists(path))
         {
-            Directory.CreateDirectory(path);
+            _ = Directory.CreateDirectory(path);
         }
     }
 }

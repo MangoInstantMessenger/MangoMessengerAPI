@@ -13,7 +13,7 @@ public class AddContactShouldThrowContactExists : IntegrationTestBase
     private readonly Assert<ResponseBase> assert = new();
 
     [Fact]
-    public async Task AddContactCommandHandlerTest_ShouldThrow_ContactExists()
+    public async Task AddContactCommandHandlerTestShouldThrowContactExistsAsync()
     {
         const string expectedMessage = ResponseMessageCodes.ContactAlreadyExist;
         var expectedDetails = ResponseMessageCodes.ErrorDictionary[expectedMessage];
@@ -22,7 +22,7 @@ public class AddContactShouldThrowContactExists : IntegrationTestBase
         var command = new AddContactCommand(
             UserId: sender.Response.Tokens.UserId,
             ContactId: receiver.Response.Tokens.UserId);
-        await MangoModule.RequestAsync(command, CancellationToken.None);
+        _ = await MangoModule.RequestAsync(command, CancellationToken.None);
 
         var result = await MangoModule.RequestAsync(command, CancellationToken.None);
 

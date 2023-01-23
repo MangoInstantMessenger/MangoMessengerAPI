@@ -12,7 +12,7 @@ public class GetMessagesTestSuccess : IntegrationTestBase
     private readonly Assert<GetMessagesResponse> assert = new();
 
     [Fact]
-    public async Task GetMessagesTest_Success()
+    public async Task GetMessagesTestSuccessAsync()
     {
         var user = await MangoModule.RequestAsync(
             request: CommandHelper.RegisterPetroCommand(),
@@ -20,10 +20,10 @@ public class GetMessagesTestSuccess : IntegrationTestBase
         var chat = await MangoModule.RequestAsync(
             request: CommandHelper.CreateExtremeCodeMainChatCommand(user.Response.Tokens.UserId),
             cancellationToken: CancellationToken.None);
-        await MangoModule.RequestAsync(
+        _ = await MangoModule.RequestAsync(
             request: CommandHelper.SendMessageToChannelCommand(user.Response.Tokens.UserId, chat.Response.ChatId),
             cancellationToken: CancellationToken.None);
-        await MangoModule.RequestAsync(
+        _ = await MangoModule.RequestAsync(
             request: CommandHelper.SendMessageToChannelCommand(user.Response.Tokens.UserId, chat.Response.ChatId),
             cancellationToken: CancellationToken.None);
         var query = new GetMessagesQuery(UserId: user.Response.Tokens.UserId, ChatId: chat.Response.ChatId);
@@ -31,6 +31,6 @@ public class GetMessagesTestSuccess : IntegrationTestBase
         var result = await MangoModule.RequestAsync(query, CancellationToken.None);
 
         assert.Pass(result);
-        result.Response.Messages.Count.Should().Be(2);
+        _ = result.Response.Messages.Count.Should().Be(2);
     }
 }

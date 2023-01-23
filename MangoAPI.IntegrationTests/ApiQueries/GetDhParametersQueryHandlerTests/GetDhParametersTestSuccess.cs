@@ -13,12 +13,12 @@ public class GetDhParametersTestSuccess : IntegrationTestBase
     private readonly Assert<GetDhParametersResponse> assert = new();
 
     [Fact]
-    public async Task GetDhParametersTest_Success()
+    public async Task GetDhParametersTestSuccessAsync()
     {
         var file = MangoFilesHelper.GetTestImage();
         var user =
             await MangoModule.RequestAsync(CommandHelper.RegisterKhachaturCommand(), CancellationToken.None);
-        await MangoModule.RequestAsync(
+        _ = await MangoModule.RequestAsync(
             request: CommandHelper.CreateOpenSslCreateDiffieHellmanParameterCommand(
                 diffieHellmanParameter: file,
                 userId: user.Response.Tokens.UserId),
@@ -31,6 +31,6 @@ public class GetDhParametersTestSuccess : IntegrationTestBase
         await using var target = new MemoryStream();
         await file.CopyToAsync(target, CancellationToken.None);
         var targetBytes = target.ToArray();
-        response.Response.FileContent.Should().BeEquivalentTo(targetBytes);
+        _ = response.Response.FileContent.Should().BeEquivalentTo(targetBytes);
     }
 }

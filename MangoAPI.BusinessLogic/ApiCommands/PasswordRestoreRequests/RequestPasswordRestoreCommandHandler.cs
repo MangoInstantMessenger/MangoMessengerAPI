@@ -61,9 +61,9 @@ public class RequestPasswordRestoreCommandHandler
             ExpiresAt = DateTime.UtcNow.AddHours(3),
         };
 
-        dbContext.PasswordRestoreRequests.Add(passwordRestoreRequest);
+        _ = dbContext.PasswordRestoreRequests.Add(passwordRestoreRequest);
 
-        await dbContext.SaveChangesAsync(cancellationToken);
+        _ = await dbContext.SaveChangesAsync(cancellationToken);
 
         var response = RequestPasswordRestoreResponse.FromSuccess(passwordRestoreRequest.Id);
 

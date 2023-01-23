@@ -50,7 +50,7 @@ public class
         keyExchangeRequest.IsConfirmed = true;
         keyExchangeRequest.UpdatedAt = DateTime.UtcNow;
 
-        await mangoDbContext.SaveChangesAsync(cancellationToken);
+        _ = await mangoDbContext.SaveChangesAsync(cancellationToken);
         return responseFactory.SuccessResponse(ResponseBase.SuccessResponse);
     }
 }

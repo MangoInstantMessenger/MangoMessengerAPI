@@ -12,7 +12,7 @@ public class DeclineKeyExchangeTestSuccess : IntegrationTestBase
     private readonly Assert<ResponseBase> assert = new();
 
     [Fact]
-    public async Task DeclineKeyExchangeTest_Success()
+    public async Task DeclineKeyExchangeTestSuccessAsync()
     {
         var sender =
             await MangoModule.RequestAsync(CommandHelper.RegisterKhachaturCommand(), CancellationToken.None);

@@ -6,7 +6,7 @@ public class DownloadPartnerPublicKeyQueryValidator : AbstractValidator<Download
 {
     public DownloadPartnerPublicKeyQueryValidator()
     {
-        RuleFor(x => x.RequestId).NotEmpty();
-        RuleFor(x => x.UserId).NotEmpty();
+        _ = RuleFor(x => x.RequestId).NotEmpty();
+        _ = RuleFor(x => x.UserId).NotEmpty();
     }
 }

@@ -13,7 +13,7 @@ public class UploadDocumentTestShouldThrowUploadedDocumentsLimitReached10 : Inte
     private readonly Assert<UploadDocumentResponse> assert = new();
 
     [Fact]
-    public async Task UploadDocumentTestShouldThrow_UploadedDocumentsLimitReached10()
+    public async Task UploadDocumentTestShouldThrowUploadedDocumentsLimitReached10Async()
     {
         const string expectedMessage = ResponseMessageCodes.UploadedDocumentsLimitReached10;
         var expectedDetails = ResponseMessageCodes.ErrorDictionary[expectedMessage];
@@ -35,7 +35,7 @@ public class UploadDocumentTestShouldThrowUploadedDocumentsLimitReached10 : Inte
         assert.Fail(result, expectedMessage, expectedDetails);
         foreach (var fileName in fileNamesList)
         {
-            await BlobService.DeleteBlobAsync(fileName);
+            _ = await BlobService.DeleteBlobAsync(fileName);
         }
     }
 }

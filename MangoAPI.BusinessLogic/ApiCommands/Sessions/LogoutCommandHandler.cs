@@ -46,8 +46,8 @@ public class LogoutCommandHandler : IRequestHandler<LogoutCommand, Result<Respon
             return responseFactory.ConflictResponse(errorMessage, details);
         }
 
-        dbContext.Sessions.Remove(session);
-        await dbContext.SaveChangesAsync(cancellationToken);
+        _ = dbContext.Sessions.Remove(session);
+        _ = await dbContext.SaveChangesAsync(cancellationToken);
 
         return responseFactory.SuccessResponse(ResponseBase.SuccessResponse);
     }

@@ -12,7 +12,7 @@ public class SearchCommunityTestSuccess : IntegrationTestBase
     private readonly Assert<SearchCommunityResponse> assert = new();
 
     [Fact]
-    public async Task SearchCommunityTest_Success()
+    public async Task SearchCommunityTestSuccessAsync()
     {
         var user =
             await MangoModule.RequestAsync(CommandHelper.RegisterPetroCommand(), CancellationToken.None);
@@ -24,7 +24,7 @@ public class SearchCommunityTestSuccess : IntegrationTestBase
         var result = await MangoModule.RequestAsync(query, CancellationToken.None);
 
         assert.Pass(result);
-        result.Response.Chats.Count.Should().Be(1);
-        result.Response.Chats[0].ChatId.Should().Be(chat.Response.ChatId);
+        _ = result.Response.Chats.Count.Should().Be(1);
+        _ = result.Response.Chats[0].ChatId.Should().Be(chat.Response.ChatId);
     }
 }

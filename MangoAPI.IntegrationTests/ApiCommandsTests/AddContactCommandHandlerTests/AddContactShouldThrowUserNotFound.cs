@@ -14,7 +14,7 @@ public class AddContactShouldThrowUserNotFound : IntegrationTestBase
     private readonly Assert<ResponseBase> assert = new();
 
     [Fact]
-    public async Task AddContactCommandHandlerTest_ShouldThrow_UserNotFound()
+    public async Task AddContactCommandHandlerTestShouldThrowUserNotFoundAsync()
     {
         const string expectedMessage = ResponseMessageCodes.UserNotFound;
         var expectedDetails = ResponseMessageCodes.ErrorDictionary[expectedMessage];

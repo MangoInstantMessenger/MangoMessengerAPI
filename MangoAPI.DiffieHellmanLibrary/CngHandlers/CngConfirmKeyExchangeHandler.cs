@@ -16,13 +16,13 @@ public class CngConfirmKeyExchangeHandler : BaseHandler, IConfirmKeyExchangeHand
     {
         Console.WriteLine($@"Confirming key exchange with the user {senderId} ... ");
 
-        await CngConfirmKeyExchangeRequest(senderId);
+        await CngConfirmKeyExchangeRequestAsync(senderId);
 
         Console.WriteLine($@"Key exchange request with the user {senderId} has been confirmed successfully.");
         Console.WriteLine();
     }
 
-    private async Task CngConfirmKeyExchangeRequest(Guid senderId)
+    private async Task CngConfirmKeyExchangeRequestAsync(Guid senderId)
     {
         var userId = TokensResponse.Tokens.UserId;
 
@@ -55,6 +55,6 @@ public class CngConfirmKeyExchangeHandler : BaseHandler, IConfirmKeyExchangeHand
 
         var httpResponseMessage = await HttpClient.SendAsync(request);
 
-        httpResponseMessage.EnsureSuccessStatusCode();
+        _ = httpResponseMessage.EnsureSuccessStatusCode();
     }
 }

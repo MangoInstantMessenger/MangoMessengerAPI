@@ -11,7 +11,7 @@ public class CreateKeyExchangeTestSuccess : IntegrationTestBase
     private readonly Assert<CreateKeyExchangeResponse> assert = new();
 
     [Fact]
-    public async Task OpenSslCreateKeyExchangeTest_Success()
+    public async Task OpenSslCreateKeyExchangeTestSuccessAsync()
     {
         var sender =
             await MangoModule.RequestAsync(CommandHelper.RegisterKhachaturCommand(), CancellationToken.None);

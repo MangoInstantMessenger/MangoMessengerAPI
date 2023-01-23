@@ -11,7 +11,7 @@ public class CreateChannelTestSuccess : IntegrationTestBase
     private readonly Assert<CreateCommunityResponse> assert = new();
 
     [Fact]
-    public async Task CreateChannelTest_Success()
+    public async Task CreateChannelTestSuccessAsync()
     {
         var user =
             await MangoModule.RequestAsync(CommandHelper.RegisterPetroCommand(), CancellationToken.None);

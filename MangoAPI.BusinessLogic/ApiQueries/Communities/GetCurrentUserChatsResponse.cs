@@ -9,10 +9,13 @@ public record GetCurrentUserChatsResponse : ResponseBase
 {
     public List<Chat> Chats { get; init; }
 
-    public static GetCurrentUserChatsResponse FromSuccess(List<Chat> chats) => new()
+    public static GetCurrentUserChatsResponse FromSuccess(List<Chat> chats)
     {
-        Message = ResponseMessageCodes.Success,
-        Success = true,
-        Chats = chats,
-    };
+        return new()
+        {
+            Message = ResponseMessageCodes.Success,
+            Success = true,
+            Chats = chats,
+        };
+    }
 }

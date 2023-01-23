@@ -13,7 +13,7 @@ public class UpdateUserAccountInfoTestShouldThrowUserNotFound : IntegrationTestB
     private readonly Assert<ResponseBase> assert = new();
 
     [Fact]
-    public async Task UpdateUserAccountInfoTestShouldThrow_UserNotFound()
+    public async Task UpdateUserAccountInfoTestShouldThrowUserNotFoundAsync()
     {
         const string expectedMessage = ResponseMessageCodes.UserNotFound;
         var expectedDetails = ResponseMessageCodes.ErrorDictionary[expectedMessage];

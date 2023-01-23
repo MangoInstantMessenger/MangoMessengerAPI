@@ -9,7 +9,7 @@ namespace MangoAPI.IntegrationTests.ApiCommandsTests.ChangePasswordCommandHandle
 public class ChangePasswordValidatorTestShouldThrowCurrentPasswordError
 {
     [Fact]
-    public void ChangePasswordValidatorTest_ShouldThrowCurrentPasswordError()
+    public void ChangePasswordValidatorTestShouldThrowCurrentPasswordErrorTest()
     {
         var validator = new ChangePasswordCommandValidator();
         var command = new ChangePasswordCommand(
@@ -20,8 +20,8 @@ public class ChangePasswordValidatorTestShouldThrowCurrentPasswordError
 
         var result = validator.TestValidate(command);
 
-        result.ShouldHaveValidationErrorFor(x => x.CurrentPassword);
-        result.Errors.Count.Should().Be(1);
-        result.Errors[0].ErrorMessage.Should().Be("New and old passwords cannot be same");
+        _ = result.ShouldHaveValidationErrorFor(x => x.CurrentPassword);
+        _ = result.Errors.Count.Should().Be(1);
+        _ = result.Errors[0].ErrorMessage.Should().Be("New and old passwords cannot be same");
     }
 }

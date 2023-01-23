@@ -14,7 +14,7 @@ public class EditMessageShouldThrowChatNotFound : IntegrationTestBase
     private readonly Assert<ResponseBase> assert = new();
 
     [Fact]
-    public async Task EditMessageCommandHandlerTest_ShouldThrow_ChatNotFound()
+    public async Task EditMessageCommandHandlerTestShouldThrowChatNotFoundAsync()
     {
         const string expectedMessage = ResponseMessageCodes.ChatNotFound;
         var expectedDetails = ResponseMessageCodes.ErrorDictionary[expectedMessage];

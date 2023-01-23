@@ -14,7 +14,7 @@ public class EditMessageSuccess : IntegrationTestBase
     private readonly Assert<ResponseBase> assert = new();
 
     [Fact]
-    public async Task EditMessageHandlerTest_Success()
+    public async Task EditMessageHandlerTestSuccessAsync()
     {
         var user =
             await MangoModule.RequestAsync(CommandHelper.RegisterPetroCommand(), CancellationToken.None);
@@ -37,6 +37,6 @@ public class EditMessageSuccess : IntegrationTestBase
             await DbContextFixture.Messages.FirstAsync(x => x.Id == message.Response.MessageId);
 
         assert.Pass(result);
-        editedMessage.Content.Should().Be(command.ModifiedText);
+        _ = editedMessage.Content.Should().Be(command.ModifiedText);
     }
 }

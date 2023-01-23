@@ -14,13 +14,13 @@ public class CommonFileValidator : AbstractValidator<IFormFile>
 
     public CommonFileValidator()
     {
-        RuleFor(x => x.Length)
+        _ = RuleFor(x => x.Length)
             .Cascade(CascadeMode.Stop)
             .GreaterThan(0)
             .LessThanOrEqualTo(5 * 1024 * 1024)
             .WithMessage("File should not exceed 5 MB.");
 
-        RuleFor(x => x.FileName)
+        _ = RuleFor(x => x.FileName)
             .Cascade(CascadeMode.Stop)
             .NotEmpty()
             .Must(HaveAllowedExtension)

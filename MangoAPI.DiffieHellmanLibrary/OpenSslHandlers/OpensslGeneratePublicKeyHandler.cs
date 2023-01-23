@@ -42,6 +42,6 @@ public class OpensslGeneratePublicKeyHandler : BaseHandler, IGeneratePublicKeyHa
         var command = Cli.Wrap("openssl").WithArguments(
             new[] { "pkey", "-in", privateKeyPath, "-pubout", "-out", publicKeyPath });
 
-        await command.ExecuteAsync();
+        _ = await command.ExecuteAsync();
     }
 }

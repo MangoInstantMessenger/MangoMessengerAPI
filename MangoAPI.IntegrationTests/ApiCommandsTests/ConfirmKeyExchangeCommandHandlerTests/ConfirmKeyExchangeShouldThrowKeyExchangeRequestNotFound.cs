@@ -14,7 +14,7 @@ public class ConfirmKeyExchangeShouldThrowKeyExchangeRequestNotFound : Integrati
     private readonly Assert<ResponseBase> assert = new();
 
     [Fact]
-    public async Task ConfirmKeyExchange_ShouldThrowKeyExchangeRequestNotFound()
+    public async Task ConfirmKeyExchangeShouldThrowKeyExchangeRequestNotFoundAsync()
     {
         const string expectedMessage = ResponseMessageCodes.KeyExchangeRequestNotFound;
         var expectedDetails = ResponseMessageCodes.ErrorDictionary[expectedMessage];

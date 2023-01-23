@@ -19,29 +19,21 @@ public static class Program
         switch (FetchMethodName(args[0]))
         {
             case "openssl":
-                await OpenSslController.FetchOpenSslHandler(args, method);
+                await OpenSslController.FetchOpenSslHandlerAsync(args, method);
                 break;
             case "cng":
-                await CngController.FetchCngHandler(args, method);
+                await CngController.FetchCngHandlerAsync(args, method);
                 break;
             case "auth":
-                await AuthController.FetchAuthHandler(args, method);
+                await AuthController.FetchAuthHandlerAsync(args, method);
+                break;
+            default:
                 break;
         }
     }
 
     private static string FetchMethodName(string method)
     {
-        if (method.StartsWith("openssl"))
-        {
-            return "openssl";
-        }
-
-        if (method.StartsWith("cng"))
-        {
-            return "cng";
-        }
-
-        return "auth";
+        return method.StartsWith("openssl") ? "openssl" : method.StartsWith("cng") ? "cng" : "auth";
     }
 }

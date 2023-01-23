@@ -11,7 +11,7 @@ public class UpdateChannelPictureSuccess : IntegrationTestBase
     private readonly Assert<UpdateChannelPictureResponse> assert = new();
 
     [Fact]
-    public async Task UpdateChannelPicture_Success()
+    public async Task UpdateChannelPictureSuccessAsync()
     {
         var sender = await MangoModule.RequestAsync(
             CommandHelper.RegisterPetroCommand(), CancellationToken.None);
@@ -30,6 +30,6 @@ public class UpdateChannelPictureSuccess : IntegrationTestBase
         var result = await MangoModule.RequestAsync(command, CancellationToken.None);
 
         assert.Pass(result);
-        await BlobService.DeleteBlobAsync(result.Response.FileName);
+        _ = await BlobService.DeleteBlobAsync(result.Response.FileName);
     }
 }

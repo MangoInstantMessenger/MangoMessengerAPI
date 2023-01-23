@@ -11,7 +11,7 @@ public class GetKeyExchangeRequestByIdTestSuccess : IntegrationTestBase
     private readonly Assert<GetKeyExchangeRequestByIdResponse> assert = new();
 
     [Fact]
-    public async Task GetKeyExchangeRequestByIdTest_Success()
+    public async Task GetKeyExchangeRequestByIdTestSuccessAsync()
     {
         var sender =
             await MangoModule.RequestAsync(CommandHelper.RegisterKhachaturCommand(), CancellationToken.None);

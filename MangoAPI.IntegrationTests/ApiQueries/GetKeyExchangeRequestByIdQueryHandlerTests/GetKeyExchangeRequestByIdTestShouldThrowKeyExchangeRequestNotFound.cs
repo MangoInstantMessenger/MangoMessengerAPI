@@ -12,7 +12,7 @@ public class GetKeyExchangeRequestByIdTestShouldThrowKeyExchangeRequestNotFound 
     private readonly Assert<GetKeyExchangeRequestByIdResponse> assert = new();
 
     [Fact]
-    public async Task OpenSslGetKeyExchangeRequestByIdTest_ShouldThrow_KeyExchangeRequestNotFound()
+    public async Task OpenSslGetKeyExchangeRequestByIdTestShouldThrowKeyExchangeRequestNotFoundAsync()
     {
         const string expectedMessage = ResponseMessageCodes.KeyExchangeRequestNotFound;
         var expectedDetails = ResponseMessageCodes.ErrorDictionary[expectedMessage];

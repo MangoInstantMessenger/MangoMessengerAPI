@@ -12,7 +12,7 @@ public class GetUserQuerySuccess : IntegrationTestBase
     private readonly Assert<GetUserResponse> assert = new();
 
     [Fact]
-    public async Task GetUserTest_Success()
+    public async Task GetUserTestSuccessAsync()
     {
         var user =
             await MangoModule.RequestAsync(CommandHelper.RegisterPetroCommand(), CancellationToken.None);
@@ -21,6 +21,6 @@ public class GetUserQuerySuccess : IntegrationTestBase
         var result = await MangoModule.RequestAsync(query, CancellationToken.None);
 
         assert.Pass(result);
-        result.Response.User.UserId.Should().Be(user.Response.Tokens.UserId);
+        _ = result.Response.User.UserId.Should().Be(user.Response.Tokens.UserId);
     }
 }

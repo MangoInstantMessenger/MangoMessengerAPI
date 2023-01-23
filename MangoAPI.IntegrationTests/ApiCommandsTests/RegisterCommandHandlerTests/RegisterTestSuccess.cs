@@ -11,7 +11,7 @@ public class RegisterTestSuccess : IntegrationTestBase
     private readonly Assert<TokensResponse> assert = new();
 
     [Fact]
-    public async Task RegisterTest_Success()
+    public async Task RegisterTestSuccessAsync()
     {
         var command = CommandHelper.RegisterPetroCommand();
 

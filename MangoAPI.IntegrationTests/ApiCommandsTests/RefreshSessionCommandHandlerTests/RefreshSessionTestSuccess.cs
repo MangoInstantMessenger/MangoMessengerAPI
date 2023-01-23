@@ -13,14 +13,14 @@ public class RefreshSessionTestSuccess : IntegrationTestBase
     private readonly Assert<TokensResponse> assert = new();
 
     [Fact]
-    public async Task RefreshSessionTest_Success()
+    public async Task RefreshSessionTestSuccessAsync()
     {
         var user = await MangoModule.RequestAsync(
             request: CommandHelper.RegisterPetroCommand(),
             cancellationToken: CancellationToken.None);
         var userId = user.Response.Tokens.UserId;
         var userEntity = await DbContextFixture.Users.FirstAsync(x => x.Id == userId);
-        await MangoModule.RequestAsync(
+        _ = await MangoModule.RequestAsync(
             request: CommandHelper.CreateVerifyEmailCommand(userEntity.Email, userEntity.EmailCode),
             cancellationToken: CancellationToken.None);
         var login = await MangoModule.RequestAsync(

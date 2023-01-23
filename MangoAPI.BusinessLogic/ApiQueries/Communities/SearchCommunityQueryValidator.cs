@@ -6,7 +6,7 @@ public class SearchCommunityQueryValidator : AbstractValidator<SearchCommunityQu
 {
     public SearchCommunityQueryValidator()
     {
-        RuleFor(x => x.DisplayName).NotEmpty().Length(1, 30);
-        RuleFor(x => x.UserId).NotEmpty();
+        _ = RuleFor(x => x.DisplayName).NotEmpty().Length(1, 30);
+        _ = RuleFor(x => x.UserId).NotEmpty();
     }
 }

@@ -13,7 +13,7 @@ public class SendMessageSuccessTest : IntegrationTestBase
     private readonly Assert<SendMessageResponse> assert = new();
 
     [Fact]
-    public async Task SendMessage_Test_Success()
+    public async Task SendMessageTestSuccessAsync()
     {
         var user = await MangoModule.RequestAsync(
             request: CommandHelper.RegisterPetroCommand(),
@@ -33,9 +33,9 @@ public class SendMessageSuccessTest : IntegrationTestBase
             .FirstAsync(x => x.Id == result.Response.MessageId);
         var chatEntity = messageEntity.Chat;
         var userEntity = messageEntity.User;
-        chatEntity.LastMessageAuthor.Should().Be(userEntity.DisplayName);
-        chatEntity.LastMessageId.Should().Be(messageEntity.Id);
-        chatEntity.LastMessageText.Should().Be(messageEntity.Content);
-        chatEntity.LastMessageTime.Should().Be(messageEntity.CreatedAt);
+        _ = chatEntity.LastMessageAuthor.Should().Be(userEntity.DisplayName);
+        _ = chatEntity.LastMessageId.Should().Be(messageEntity.Id);
+        _ = chatEntity.LastMessageText.Should().Be(messageEntity.Content);
+        _ = chatEntity.LastMessageTime.Should().Be(messageEntity.CreatedAt);
     }
 }

@@ -12,13 +12,13 @@ public static class CorsServices
         IConfiguration configuration,
         string corsPolicy)
     {
-        services.AddCors(options =>
+        _ = services.AddCors(options =>
         {
             options.AddPolicy(corsPolicy, builder =>
             {
                 var allowedOrigins = configuration.GetSection("AllowedOrigins").Get<string[]>();
 
-                builder.WithOrigins(allowedOrigins)
+                _ = builder.WithOrigins(allowedOrigins)
                     .AllowAnyMethod()
                     .AllowCredentials()
                     .AllowAnyHeader();

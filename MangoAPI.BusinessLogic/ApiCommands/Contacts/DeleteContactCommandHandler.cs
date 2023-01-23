@@ -54,8 +54,8 @@ public class DeleteContactCommandHandler
             return responseFactory.ConflictResponse(errorMessage, errorDescription);
         }
 
-        dbContext.UserContacts.Remove(contact);
-        await dbContext.SaveChangesAsync(cancellationToken);
+        _ = dbContext.UserContacts.Remove(contact);
+        _ = await dbContext.SaveChangesAsync(cancellationToken);
 
         return responseFactory.SuccessResponse(ResponseBase.SuccessResponse);
     }

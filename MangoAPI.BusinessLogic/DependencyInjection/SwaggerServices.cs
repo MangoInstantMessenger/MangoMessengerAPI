@@ -8,7 +8,7 @@ public static class SwaggerServices
 {
     public static IServiceCollection AddSwagger(this IServiceCollection services)
     {
-        services.AddSwaggerGen(c =>
+        _ = services.AddSwaggerGen(c =>
         {
             c.EnableAnnotations();
             c.SwaggerDoc("v1", new OpenApiInfo { Title = "MangoAPI", Version = "v1" });

@@ -92,10 +92,10 @@ public class DeleteMessageCommandHandler
             chat.LastMessageTime = newLastMessage?.CreatedAt;
         }
 
-        dbContext.Messages.Remove(message);
-        dbContext.Chats.Update(chat);
+        _ = dbContext.Messages.Remove(message);
+        _ = dbContext.Chats.Update(chat);
 
-        await dbContext.SaveChangesAsync(cancellationToken);
+        _ = await dbContext.SaveChangesAsync(cancellationToken);
 
         await hubContext.Clients.Group(message.ChatId.ToString()).NotifyOnMessageDeleteAsync(messageDeleteNotification);
 

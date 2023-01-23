@@ -11,14 +11,14 @@ public class GetKeyExchangeRequestsTestSuccess : IntegrationTestBase
     private readonly Assert<GetKeyExchangeRequestsResponse> assert = new();
 
     [Fact]
-    public async Task GetKeyExchangeRequestsTest_Success()
+    public async Task GetKeyExchangeRequestsTestSuccessAsync()
     {
         var sender =
             await MangoModule.RequestAsync(CommandHelper.RegisterKhachaturCommand(), CancellationToken.None);
         var requestedUser =
             await MangoModule.RequestAsync(CommandHelper.RegisterPetroCommand(), CancellationToken.None);
         var publicKey = MangoFilesHelper.GetTestImage();
-        await MangoModule.RequestAsync(
+        _ = await MangoModule.RequestAsync(
             request: CommandHelper.CreateOpenSslCreateKeyExchangeCommand(
                 receiverId: sender.Response.Tokens.UserId,
                 senderId: requestedUser.Response.Tokens.UserId,

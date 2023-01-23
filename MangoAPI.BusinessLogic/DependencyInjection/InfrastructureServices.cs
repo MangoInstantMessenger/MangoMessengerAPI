@@ -16,22 +16,22 @@ public static class InfrastructureServices
             throw new ArgumentNullException(nameof(services));
         }
 
-        services.AddIdentityUsers();
+        _ = services.AddIdentityUsers();
 
-        services.AddSignalR();
+        _ = services.AddSignalR();
 
-        services.AddAppAuthorization();
+        _ = services.AddAppAuthorization();
 
-        services.AddAppAuthentication(
+        _ = services.AddAppAuthentication(
             mangoJwtSignKey,
             mangoJwtIssuer,
             mangoJwtAudience);
 
-        services.AddMediatorValidatorsAndResponseFactory();
+        _ = services.AddMediatorValidatorsAndResponseFactory();
 
-        services.AddLogging();
+        _ = services.AddLogging();
 
-        services.AddHttpClient();
+        _ = services.AddHttpClient();
 
         return services;
     }

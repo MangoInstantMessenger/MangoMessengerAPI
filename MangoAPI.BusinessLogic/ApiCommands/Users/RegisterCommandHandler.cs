@@ -63,7 +63,7 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, Result<To
             DisplayNameColour = (DisplayNameColour)color,
         };
 
-        await userManager.CreateAsync(newUser, request.Password);
+        _ = await userManager.CreateAsync(newUser, request.Password);
 
         var userInfo = new UserInformationEntity
         {
@@ -71,7 +71,7 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, Result<To
             CreatedAt = DateTime.UtcNow,
         };
 
-        dbContext.UserInformation.Add(userInfo);
+        _ = dbContext.UserInformation.Add(userInfo);
 
         var session = new SessionEntity
         {
@@ -83,9 +83,9 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, Result<To
 
         var accessToken = jwtGenerator.GenerateJwtToken(newUser);
 
-        dbContext.Sessions.Add(session);
+        _ = dbContext.Sessions.Add(session);
 
-        await dbContext.SaveChangesAsync(cancellationToken);
+        _ = await dbContext.SaveChangesAsync(cancellationToken);
 
         var expires = ((DateTimeOffset)session.ExpiresAt).ToUnixTimeSeconds();
         var userDisplayName = newUser.DisplayName;

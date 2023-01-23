@@ -20,8 +20,8 @@ public record OpenSslKeyExchangeRequest
             $"Sender Id: {SenderId}, \n" +
             $"Receiver Id: {ReceiverId}, \n" +
             $"Confirmed: {IsConfirmed}, \n" +
-            $"Actor: {Actor.ToString()} \n" +
-            $"KeyExchangeType: {KeyExchangeType.ToString()} \n";
+            $"Actor: {Actor} \n" +
+            $"KeyExchangeType: {KeyExchangeType} \n";
     }
 }
 

@@ -6,24 +6,24 @@ public class SendMessageCommandValidator : AbstractValidator<SendMessageCommand>
 {
     public SendMessageCommandValidator()
     {
-        RuleFor(x => x.MessageText)
+        _ = RuleFor(x => x.MessageText)
             .Cascade(CascadeMode.Stop)
             .NotEmpty()
             .Length(1, 300);
 
-        RuleFor(x => x.InReplayToAuthor)
+        _ = RuleFor(x => x.InReplayToAuthor)
             .Cascade(CascadeMode.Stop)
             .Length(1, 50);
 
-        RuleFor(x => x.InReplayToText)
+        _ = RuleFor(x => x.InReplayToText)
             .Cascade(CascadeMode.Stop)
             .Length(1, 300);
 
-        RuleFor(x => x.AttachmentUrl)
+        _ = RuleFor(x => x.AttachmentUrl)
             .Cascade(CascadeMode.Stop)
             .Length(1, 150);
 
-        RuleFor(x => x.ChatId).NotEmpty();
-        RuleFor(x => x.UserId).NotEmpty();
+        _ = RuleFor(x => x.ChatId).NotEmpty();
+        _ = RuleFor(x => x.UserId).NotEmpty();
     }
 }

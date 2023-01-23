@@ -43,6 +43,6 @@ public class OpensslUploadDhParametersHandler : BaseHandler, IUploadDhParameters
 
         var httpResponseMessage = await HttpClient.SendAsync(request);
 
-        httpResponseMessage.EnsureSuccessStatusCode();
+        _ = httpResponseMessage.EnsureSuccessStatusCode();
     }
 }

@@ -25,7 +25,7 @@ public static class AppAuthenticationDependencyInjection
 
         var signingKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(mangoJwtSignKey));
 
-        services.AddAuthentication(options =>
+        _ = services.AddAuthentication(options =>
         {
             options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
             options.DefaultSignInScheme = JwtBearerDefaults.AuthenticationScheme;

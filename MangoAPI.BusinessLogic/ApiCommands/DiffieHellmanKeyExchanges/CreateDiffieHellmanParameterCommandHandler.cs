@@ -39,9 +39,9 @@ public class CreateDiffieHellmanParameterCommandHandler : IRequestHandler<Create
             CreatedAt = DateTime.UtcNow,
         };
 
-        dbContext.DiffieHellmanParameterEntities.Add(entity);
+        _ = dbContext.DiffieHellmanParameterEntities.Add(entity);
 
-        await dbContext.SaveChangesAsync(cancellationToken);
+        _ = await dbContext.SaveChangesAsync(cancellationToken);
 
         var response = new CreateDiffieHellmanParameterResponse
         {

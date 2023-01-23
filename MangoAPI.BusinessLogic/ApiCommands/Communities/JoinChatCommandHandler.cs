@@ -54,7 +54,7 @@ public class JoinChatCommandHandler : IRequestHandler<JoinChatCommand, Result<Re
             return responseFactory.ConflictResponse(errorMessage, details);
         }
 
-        dbContext.UserChats.Add(
+        _ = dbContext.UserChats.Add(
             new UserChatEntity
             {
                 ChatId = request.ChatId,
@@ -64,9 +64,9 @@ public class JoinChatCommandHandler : IRequestHandler<JoinChatCommand, Result<Re
 
         chat.MembersCount += 1;
 
-        dbContext.Update(chat);
+        _ = dbContext.Update(chat);
 
-        await dbContext.SaveChangesAsync(cancellationToken);
+        _ = await dbContext.SaveChangesAsync(cancellationToken);
 
         return responseFactory.SuccessResponse(ResponseBase.SuccessResponse);
     }

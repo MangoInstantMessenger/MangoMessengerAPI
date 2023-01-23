@@ -12,7 +12,7 @@ public class CreateChatShouldThrowCannotCreateSelfChat : IntegrationTestBase
     private readonly Assert<CreateCommunityResponse> assert = new();
 
     [Fact]
-    public async Task CreateChatShouldThrow_CannotCreateSelfChat()
+    public async Task CreateChatShouldThrowCannotCreateSelfChatAsync()
     {
         const string expectedMessage = ResponseMessageCodes.CannotCreateSelfChat;
         var expectedDetails = ResponseMessageCodes.ErrorDictionary[expectedMessage];

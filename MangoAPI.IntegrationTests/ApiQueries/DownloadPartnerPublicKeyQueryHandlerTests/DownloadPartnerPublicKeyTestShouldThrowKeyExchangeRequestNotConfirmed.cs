@@ -12,7 +12,7 @@ public class DownloadPartnerPublicKeyTestShouldThrowKeyExchangeRequestNotConfirm
     private readonly Assert<DownloadPartnerPublicKeyResponse> assert = new();
 
     [Fact]
-    public async Task OpenSslDownloadPartnerPublicKeyTest_ShouldThrow_KeyExchangeRequestNotConfirmed()
+    public async Task OpenSslDownloadPartnerPublicKeyTestShouldThrowKeyExchangeRequestNotConfirmedAsync()
     {
         const string expectedMessage = ResponseMessageCodes.KeyExchangeIsNotConfirmed;
         var expectedDetails = ResponseMessageCodes.ErrorDictionary[expectedMessage];

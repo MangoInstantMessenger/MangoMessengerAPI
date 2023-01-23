@@ -6,22 +6,22 @@ public class UpdateUserSocialInformationCommandValidator : AbstractValidator<Upd
 {
     public UpdateUserSocialInformationCommandValidator()
     {
-        RuleFor(x => x.Facebook)
+        _ = RuleFor(x => x.Facebook)
             .Cascade(CascadeMode.Stop)
             .Length(0, 30);
 
-        RuleFor(x => x.Instagram)
+        _ = RuleFor(x => x.Instagram)
             .Cascade(CascadeMode.Stop)
             .Length(0, 30);
 
-        RuleFor(x => x.LinkedIn)
+        _ = RuleFor(x => x.LinkedIn)
             .Cascade(CascadeMode.Stop)
             .Length(0, 30);
 
-        RuleFor(x => x.Twitter)
+        _ = RuleFor(x => x.Twitter)
             .Cascade(CascadeMode.Stop)
             .Length(0, 30);
 
-        RuleFor(x => x.UserId).NotEmpty();
+        _ = RuleFor(x => x.UserId).NotEmpty();
     }
 }

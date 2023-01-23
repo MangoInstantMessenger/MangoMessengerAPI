@@ -46,13 +46,13 @@ public class PasswordRestoreCommandHandler
 
         var user = restorePasswordRequest.UserEntity;
 
-        await userManager.RemovePasswordAsync(user);
+        _ = await userManager.RemovePasswordAsync(user);
 
-        await userManager.AddPasswordAsync(user, request.NewPassword);
+        _ = await userManager.AddPasswordAsync(user, request.NewPassword);
 
-        dbContext.PasswordRestoreRequests.Remove(restorePasswordRequest);
+        _ = dbContext.PasswordRestoreRequests.Remove(restorePasswordRequest);
 
-        await dbContext.SaveChangesAsync(cancellationToken);
+        _ = await dbContext.SaveChangesAsync(cancellationToken);
 
         return responseFactory.SuccessResponse(ResponseBase.SuccessResponse);
     }

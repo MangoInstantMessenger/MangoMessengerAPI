@@ -13,7 +13,7 @@ public class GetKeyExchangeRequestByIdTestShouldThrowKeyExchangeDoesNotBelongToU
     private readonly Assert<GetKeyExchangeRequestByIdResponse> assert = new();
 
     [Fact]
-    public async Task OpenSslGetKeyExchangeRequestByIdTest_ShouldThrow_KeyExchangeDoesNotBelongToUser()
+    public async Task OpenSslGetKeyExchangeRequestByIdTestShouldThrowKeyExchangeDoesNotBelongToUserAsync()
     {
         const string expectedMessage = ResponseMessageCodes.KeyExchangeDoesNotBelongToUser;
         var expectedDetails = ResponseMessageCodes.ErrorDictionary[expectedMessage];

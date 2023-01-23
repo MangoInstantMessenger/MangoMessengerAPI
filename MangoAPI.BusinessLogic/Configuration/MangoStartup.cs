@@ -18,25 +18,25 @@ public static class MangoStartup
     {
         var services = new ServiceCollection();
 
-        services.AddDatabaseContextServices(databaseConnectionString);
+        _ = services.AddDatabaseContextServices(databaseConnectionString);
 
-        services.AddAppInfrastructure(mangoJwtSignKey, mangoJwtIssuer, mangoJwtAudience);
+        _ = services.AddAppInfrastructure(mangoJwtSignKey, mangoJwtIssuer, mangoJwtAudience);
 
-        services.AddAzureBlobServices(
+        _ = services.AddAzureBlobServices(
             mangoBlobUrl,
             mangoBlobContainerName,
             mangoBlobAccess);
 
-        services.AddJwtGeneratorServices(
+        _ = services.AddJwtGeneratorServices(
             mangoJwtIssuer,
             mangoJwtAudience,
             mangoJwtSignKey,
             mangoJwtLifetimeMinutes,
             mangoRefreshTokenLifetimeDays);
 
-        services.AddSingInManagerServices();
-        services.AddPasswordHashServices();
-        services.AddSignalR();
+        _ = services.AddSingInManagerServices();
+        _ = services.AddPasswordHashServices();
+        _ = services.AddSignalR();
 
         var provider = services.BuildServiceProvider();
         MangoCompositionRoot.SetProvider(provider);

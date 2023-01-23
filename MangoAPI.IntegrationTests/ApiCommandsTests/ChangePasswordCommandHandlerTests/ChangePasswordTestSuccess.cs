@@ -12,7 +12,7 @@ public class ChangePasswordTestSuccess : IntegrationTestBase
     private readonly Assert<ResponseBase> assert = new();
 
     [Fact]
-    public async Task ChangePasswordTest_Success()
+    public async Task ChangePasswordTestSuccessAsync()
     {
         var user =
             await MangoModule.RequestAsync(CommandHelper.RegisterPetroCommand(), CancellationToken.None);

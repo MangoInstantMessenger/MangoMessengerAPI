@@ -26,6 +26,6 @@ public class OpensslDeclineKeyExchangeHandler : BaseHandler, IDeclineKeyExchange
         var uri = new Uri(address, UriKind.Absolute);
 
         var httpResponseMessage = await HttpClient.DeleteAsync(uri);
-        httpResponseMessage.EnsureSuccessStatusCode();
+        _ = httpResponseMessage.EnsureSuccessStatusCode();
     }
 }

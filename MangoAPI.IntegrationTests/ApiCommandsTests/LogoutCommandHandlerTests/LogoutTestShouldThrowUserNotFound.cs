@@ -14,7 +14,7 @@ public class LogoutTestShouldThrowUserNotFound : IntegrationTestBase
     private readonly Assert<ResponseBase> assert = new();
 
     [Fact]
-    public async Task LogoutTestShouldThrow_UserNotFound()
+    public async Task LogoutTestShouldThrowUserNotFoundAsync()
     {
         const string expectedMessage = ResponseMessageCodes.UserNotFound;
         var expectedDetails = ResponseMessageCodes.ErrorDictionary[expectedMessage];
@@ -23,7 +23,7 @@ public class LogoutTestShouldThrowUserNotFound : IntegrationTestBase
             cancellationToken: CancellationToken.None);
         var userId = user.Response.Tokens.UserId;
         var userEntity = await DbContextFixture.Users.FirstOrDefaultAsync(x => x.Id == userId);
-        await MangoModule.RequestAsync(
+        _ = await MangoModule.RequestAsync(
             request: CommandHelper.CreateVerifyEmailCommand(userEntity.Email, userEntity.EmailCode),
             cancellationToken: CancellationToken.None);
         var user1 = await MangoModule.RequestAsync(
@@ -31,7 +31,7 @@ public class LogoutTestShouldThrowUserNotFound : IntegrationTestBase
             cancellationToken: CancellationToken.None);
         var userId1 = user1.Response.Tokens.UserId;
         var userEntity1 = await DbContextFixture.Users.FirstOrDefaultAsync(x => x.Id == userId1);
-        await MangoModule.RequestAsync(
+        _ = await MangoModule.RequestAsync(
             request: CommandHelper.CreateVerifyEmailCommand(userEntity1.Email, userEntity1.EmailCode),
             cancellationToken: CancellationToken.None);
         var session = await MangoModule.RequestAsync(

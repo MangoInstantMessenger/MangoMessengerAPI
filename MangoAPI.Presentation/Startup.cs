@@ -35,47 +35,47 @@ public class Startup
     {
         if (env.IsDevelopment())
         {
-            app.UseDeveloperExceptionPage();
+            _ = app.UseDeveloperExceptionPage();
         }
 
         app.ConfigureExceptionHandler();
 
-        app.UseHttpsRedirection();
+        _ = app.UseHttpsRedirection();
 
-        app.UseRouting();
-        app.UseCors(CorsPolicy);
+        _ = app.UseRouting();
+        _ = app.UseCors(CorsPolicy);
 
-        app.UseStaticFiles();
+        _ = app.UseStaticFiles();
 
-        app.UseSwagger();
+        _ = app.UseSwagger();
 
-        app.UseSwaggerUI(c => c.SwaggerEndpoint($"/swagger/v{version}/swagger.json", swaggerTitle));
+        _ = app.UseSwaggerUI(c => c.SwaggerEndpoint($"/swagger/v{version}/swagger.json", swaggerTitle));
 
-        app.UseAuthorization();
+        _ = app.UseAuthorization();
 
-        app.UseForwardedHeaders(new ForwardedHeadersOptions
+        _ = app.UseForwardedHeaders(new ForwardedHeadersOptions
         {
             ForwardedHeaders = ForwardedHeaders.XForwardedFor |
                                ForwardedHeaders.XForwardedProto,
         });
 
-        app.UseEndpoints(endpoints =>
+        _ = app.UseEndpoints(endpoints =>
         {
-            endpoints.MapControllers();
-            endpoints.MapHub<ChatHub>("/notify");
+            _ = endpoints.MapControllers();
+            _ = endpoints.MapHub<ChatHub>("/notify");
         });
 
         // https://stackoverflow.com/a/62374509
-        app.Map("/app", builder => builder.UseSpa(spa => spa.Options.SourcePath = "/wwwroot"));
+        _ = app.Map("/app", builder => builder.UseSpa(spa => spa.Options.SourcePath = "/wwwroot"));
 
         app.MigrateDatabase();
     }
 
     public void ConfigureServices(IServiceCollection services)
     {
-        services.AddSignalR();
+        _ = services.AddSignalR();
 
-        services.AddControllers().AddJsonOptions(options =>
+        _ = services.AddControllers().AddJsonOptions(options =>
         {
             options.JsonSerializerOptions.WriteIndented = true;
             options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
@@ -99,11 +99,11 @@ public class Startup
 
         const int refreshTokenLifetimeDays = EnvironmentConstants.RefreshTokenLifetimeDays;
 
-        services.AddDatabaseContextServices(databaseUrl);
+        _ = services.AddDatabaseContextServices(databaseUrl);
 
-        services.AddAppInfrastructure(jwtSignKey, jwtIssuer, jwtAudience);
+        _ = services.AddAppInfrastructure(jwtSignKey, jwtIssuer, jwtAudience);
 
-        services.AddMessengerServices(
+        _ = services.AddMessengerServices(
             blobUrl,
             blobContainerName,
             blobAccess,
@@ -120,18 +120,18 @@ public class Startup
             Description = "Mango Messenger ASP .NET 6 Web API",
         };
 
-        services.AddSwaggerGen(c => { c.SwaggerDoc($"v{version}", apiInfo); });
+        _ = services.AddSwaggerGen(c => { c.SwaggerDoc($"v{version}", apiInfo); });
 
-        services.ConfigureCors(configuration, CorsPolicy);
+        _ = services.ConfigureCors(configuration, CorsPolicy);
 
         services.AddSpaStaticFiles(config => { config.RootPath = "wwwroot"; });
 
-        services.AddHttpContextAccessor();
+        _ = services.AddHttpContextAccessor();
 
-        services.AddTransient<ICorrelationContext, CorrelationContext>();
+        _ = services.AddTransient<ICorrelationContext, CorrelationContext>();
 
-        services.AddAutoMapper(typeof(ApiControllerBase));
+        _ = services.AddAutoMapper(typeof(ApiControllerBase));
 
-        services.AddMvc();
+        _ = services.AddMvc();
     }
 }

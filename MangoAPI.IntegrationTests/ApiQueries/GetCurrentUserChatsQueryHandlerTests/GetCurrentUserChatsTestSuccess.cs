@@ -12,12 +12,12 @@ public class GetCurrentUserChatsTestSuccess : IntegrationTestBase
     private readonly Assert<GetCurrentUserChatsResponse> assert = new();
 
     [Fact]
-    public async Task GetCurrentUserChatsTest_Success()
+    public async Task GetCurrentUserChatsTestSuccessAsync()
     {
         var user = await MangoModule.RequestAsync(
             request: CommandHelper.RegisterPetroCommand(),
             cancellationToken: CancellationToken.None);
-        await MangoModule.RequestAsync(
+        _ = await MangoModule.RequestAsync(
             request: CommandHelper.CreateExtremeCodeMainChatCommand(user.Response.Tokens.UserId),
             cancellationToken: CancellationToken.None);
         var query = new GetCurrentUserChatsQuery(UserId: user.Response.Tokens.UserId);
@@ -25,6 +25,6 @@ public class GetCurrentUserChatsTestSuccess : IntegrationTestBase
         var result = await MangoModule.RequestAsync(query, CancellationToken.None);
 
         assert.Pass(result);
-        result.Response.Chats.Count.Should().Be(1);
+        _ = result.Response.Chats.Count.Should().Be(1);
     }
 }

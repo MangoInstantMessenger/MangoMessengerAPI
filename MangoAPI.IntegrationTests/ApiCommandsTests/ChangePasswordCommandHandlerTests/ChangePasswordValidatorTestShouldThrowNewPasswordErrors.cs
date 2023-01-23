@@ -9,7 +9,7 @@ namespace MangoAPI.IntegrationTests.ApiCommandsTests.ChangePasswordCommandHandle
 public class ChangePasswordValidatorTestShouldThrowNewPasswordErrors
 {
     [Fact]
-    public void ChangePasswordValidatorTest_ShouldThrowNewAndRepeatPasswordAreNotSame()
+    public void ChangePasswordValidatorTestShouldThrowNewAndRepeatPasswordAreNotSame()
     {
         var validator = new ChangePasswordCommandValidator();
         var command = new ChangePasswordCommand(
@@ -20,8 +20,8 @@ public class ChangePasswordValidatorTestShouldThrowNewPasswordErrors
 
         var result = validator.TestValidate(command);
 
-        result.ShouldHaveValidationErrorFor(x => x.NewPassword);
-        result.Errors.Count.Should().Be(1);
-        result.Errors[0].ErrorMessage.Should().Be("New password and repeat password should be same.");
+        _ = result.ShouldHaveValidationErrorFor(x => x.NewPassword);
+        _ = result.Errors.Count.Should().Be(1);
+        _ = result.Errors[0].ErrorMessage.Should().Be("New password and repeat password should be same.");
     }
 }

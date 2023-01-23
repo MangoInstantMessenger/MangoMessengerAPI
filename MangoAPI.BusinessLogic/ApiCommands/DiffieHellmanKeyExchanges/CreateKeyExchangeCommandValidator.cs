@@ -6,9 +6,9 @@ public class CreateKeyExchangeCommandValidator : AbstractValidator<CreateKeyExch
 {
     public CreateKeyExchangeCommandValidator()
     {
-        RuleFor(x => x.ReceiverId).NotEmpty();
-        RuleFor(x => x.SenderId).NotEmpty();
-        RuleFor(x => x.SenderPublicKey).NotEmpty();
-        RuleFor(x => x.KeyExchangeType).IsInEnum();
+        _ = RuleFor(x => x.ReceiverId).NotEmpty();
+        _ = RuleFor(x => x.SenderId).NotEmpty();
+        _ = RuleFor(x => x.SenderPublicKey).NotEmpty();
+        _ = RuleFor(x => x.KeyExchangeType).IsInEnum();
     }
 }

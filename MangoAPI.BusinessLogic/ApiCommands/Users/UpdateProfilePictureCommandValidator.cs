@@ -7,10 +7,10 @@ public class UpdateProfilePictureCommandValidator : AbstractValidator<UpdateProf
 {
     public UpdateProfilePictureCommandValidator()
     {
-        RuleFor(x => x.UserId).NotEmpty();
-        RuleFor(x => x.ContentType).NotEmpty();
+        _ = RuleFor(x => x.UserId).NotEmpty();
+        _ = RuleFor(x => x.ContentType).NotEmpty();
 
-        RuleFor(x => x.PictureFile)
+        _ = RuleFor(x => x.PictureFile)
             .NotNull()
             .SetValidator(new CommonImageValidator());
     }

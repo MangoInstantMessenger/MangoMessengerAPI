@@ -6,7 +6,7 @@ public class CreateChatCommandValidator : AbstractValidator<CreateChatCommand>
 {
     public CreateChatCommandValidator()
     {
-        RuleFor(x => x.PartnerId).NotEmpty();
-        RuleFor(x => x.UserId).NotEmpty();
+        _ = RuleFor(x => x.PartnerId).NotEmpty();
+        _ = RuleFor(x => x.UserId).NotEmpty();
     }
 }

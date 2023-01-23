@@ -8,11 +8,6 @@ public static class GuidHelper
     {
         var isParsed = Guid.TryParse(guidAsString, out var guid);
 
-        if (!isParsed)
-        {
-            throw new InvalidCastException("ReceiverId is not a valid Guid.");
-        }
-
-        return guid;
+        return !isParsed ? throw new InvalidCastException("ReceiverId is not a valid Guid.") : guid;
     }
 }

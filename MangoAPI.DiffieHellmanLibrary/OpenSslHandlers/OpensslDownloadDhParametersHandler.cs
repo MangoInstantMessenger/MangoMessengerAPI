@@ -30,7 +30,7 @@ public class OpensslDownloadDhParametersHandler : BaseHandler, IDownloadDhParame
 
         var response = await HttpClient.GetAsync(uri);
 
-        response.EnsureSuccessStatusCode();
+        _ = response.EnsureSuccessStatusCode();
 
         await using var stream = await response.Content.ReadAsStreamAsync();
 

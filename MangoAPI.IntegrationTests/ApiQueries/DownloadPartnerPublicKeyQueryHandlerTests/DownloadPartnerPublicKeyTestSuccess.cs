@@ -13,7 +13,7 @@ public class DownloadPartnerPublicKeyTestSuccess : IntegrationTestBase
     private readonly Assert<DownloadPartnerPublicKeyResponse> assert = new();
 
     [Fact]
-    public async Task OpenSslDownloadPartnerPublicKeyTest_Success()
+    public async Task OpenSslDownloadPartnerPublicKeyTestSuccessAsync()
     {
         var sender =
             await MangoModule.RequestAsync(CommandHelper.RegisterKhachaturCommand(), CancellationToken.None);
@@ -26,7 +26,7 @@ public class DownloadPartnerPublicKeyTestSuccess : IntegrationTestBase
                 senderId: sender.Response.Tokens.UserId,
                 senderPublicKey: publicKey),
             cancellationToken: CancellationToken.None);
-        await MangoModule.RequestAsync(
+        _ = await MangoModule.RequestAsync(
             request: CommandHelper.CreateOpenSslConfirmKeyExchangeCommand(
                 requestId: keyExchange.Response.RequestId,
                 userId: receiver.Response.Tokens.UserId,
@@ -41,6 +41,6 @@ public class DownloadPartnerPublicKeyTestSuccess : IntegrationTestBase
         await using var target = new MemoryStream();
         await publicKey.CopyToAsync(target, CancellationToken.None);
         var publicKeyBytes = target.ToArray();
-        response.Response.PublicKey.Should().BeEquivalentTo(publicKeyBytes);
+        _ = response.Response.PublicKey.Should().BeEquivalentTo(publicKeyBytes);
     }
 }

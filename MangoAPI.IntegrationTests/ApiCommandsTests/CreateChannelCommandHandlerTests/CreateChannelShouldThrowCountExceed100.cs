@@ -12,7 +12,7 @@ public class CreateChannelShouldThrowCountExceed100 : IntegrationTestBase
     private readonly Assert<CreateCommunityResponse> assert = new();
 
     [Fact]
-    public async Task CreateChannel_ShouldThrow_CountExceed100()
+    public async Task CreateChannelShouldThrowCountExceed100Async()
     {
         const string expectedMessage = ResponseMessageCodes.MaximumOwnerChatsExceeded100;
         var expectedDetails = ResponseMessageCodes.ErrorDictionary[expectedMessage];
@@ -20,7 +20,7 @@ public class CreateChannelShouldThrowCountExceed100 : IntegrationTestBase
             await MangoModule.RequestAsync(CommandHelper.RegisterPetroCommand(), CancellationToken.None);
         for (var i = 0; i <= 100; i++)
         {
-            await MangoModule.RequestAsync(
+            _ = await MangoModule.RequestAsync(
                 CommandHelper.CreateExtremeCodeMainChatCommand(user.Response.Tokens.UserId),
                 CancellationToken.None);
         }

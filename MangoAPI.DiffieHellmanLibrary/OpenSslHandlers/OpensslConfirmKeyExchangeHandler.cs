@@ -16,13 +16,13 @@ public class OpensslConfirmKeyExchangeHandler : BaseHandler, IConfirmKeyExchange
     {
         Console.WriteLine($@"Confirming key exchange with the user {senderId} ... ");
 
-        await OpensslConfirmKeyExchange(senderId);
+        await OpensslConfirmKeyExchangeAsync(senderId);
 
         Console.WriteLine($@"Key exchange request with the user {senderId} has been confirmed successfully.");
         Console.WriteLine();
     }
 
-    private async Task OpensslConfirmKeyExchange(Guid senderId)
+    private async Task OpensslConfirmKeyExchangeAsync(Guid senderId)
     {
         var allRequests = await GetKeyExchangesAsync();
 
@@ -62,6 +62,6 @@ public class OpensslConfirmKeyExchangeHandler : BaseHandler, IConfirmKeyExchange
 
         var httpResponseMessage = await HttpClient.SendAsync(request);
 
-        httpResponseMessage.EnsureSuccessStatusCode();
+        _ = httpResponseMessage.EnsureSuccessStatusCode();
     }
 }

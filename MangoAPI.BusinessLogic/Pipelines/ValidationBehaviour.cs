@@ -37,11 +37,6 @@ public class ValidationBehaviour<TRequest, TResponse> : IPipelineBehavior<TReque
             .Where(validationFailure => validationFailure != null)
             .ToList();
 
-        if (failureList.Count != 0)
-        {
-            throw new ValidationException(failureList);
-        }
-
-        return await next();
+        return failureList.Count != 0 ? throw new ValidationException(failureList) : await next();
     }
 }

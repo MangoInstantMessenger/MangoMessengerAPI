@@ -90,10 +90,10 @@ public class CreateChatCommandHandler
             new UserChatEntity { ChatId = chatEntity.Id, RoleId = UserRole.User, UserId = request.PartnerId },
         };
 
-        dbContext.Chats.Add(chatEntity);
+        _ = dbContext.Chats.Add(chatEntity);
         dbContext.UserChats.AddRange(userChats);
 
-        await dbContext.SaveChangesAsync(cancellationToken);
+        _ = await dbContext.SaveChangesAsync(cancellationToken);
 
         var chatDto = chatEntity.ToChatDto();
         await hubContext.Clients.Group(request.UserId.ToString()).UpdateUserChatsAsync(chatDto);

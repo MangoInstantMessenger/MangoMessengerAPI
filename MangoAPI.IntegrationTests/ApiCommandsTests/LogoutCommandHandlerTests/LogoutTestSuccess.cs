@@ -13,14 +13,14 @@ public class LogoutTestSuccess : IntegrationTestBase
     private readonly Assert<ResponseBase> assert = new();
 
     [Fact]
-    public async Task LogoutTest_Success()
+    public async Task LogoutTestSuccessAsync()
     {
         var user = await MangoModule.RequestAsync(
             request: CommandHelper.RegisterPetroCommand(),
             cancellationToken: CancellationToken.None);
         var userId = user.Response.Tokens.UserId;
         var userEntity = await DbContextFixture.Users.FirstOrDefaultAsync(x => x.Id == userId);
-        await MangoModule.RequestAsync(
+        _ = await MangoModule.RequestAsync(
             request: CommandHelper.CreateVerifyEmailCommand(userEntity.Email, userEntity.EmailCode),
             cancellationToken: CancellationToken.None);
         var session = await MangoModule.RequestAsync(

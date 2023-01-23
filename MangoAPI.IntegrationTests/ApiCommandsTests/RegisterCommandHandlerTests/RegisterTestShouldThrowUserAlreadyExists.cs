@@ -12,12 +12,12 @@ public class RegisterTestShouldThrowUserAlreadyExists : IntegrationTestBase
     private readonly Assert<TokensResponse> assert = new();
 
     [Fact]
-    public async Task RegisterTestShouldThrow_UserAlreadyExists()
+    public async Task RegisterTestShouldThrowUserAlreadyExistsAsync()
     {
         const string expectedMessage = ResponseMessageCodes.UserAlreadyExists;
         var expectedDetails = ResponseMessageCodes.ErrorDictionary[expectedMessage];
         var command = CommandHelper.RegisterPetroCommand();
-        await MangoModule.RequestAsync(command, CancellationToken.None);
+        _ = await MangoModule.RequestAsync(command, CancellationToken.None);
 
         var registrationsResult = await MangoModule.RequestAsync(command, CancellationToken.None);
 

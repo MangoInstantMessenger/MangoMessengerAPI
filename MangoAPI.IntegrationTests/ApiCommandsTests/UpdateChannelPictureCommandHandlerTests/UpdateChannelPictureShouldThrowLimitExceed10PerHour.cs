@@ -20,7 +20,7 @@ public class UpdateChannelPictureShouldThrowLimitExceed10 : IntegrationTestBase
     }
 
     [Fact]
-    public async Task UpdateChannelPicture_ShouldThrow_LimitReached10()
+    public async Task UpdateChannelPictureShouldThrowLimitReached10Async()
     {
         const string expectedMessage = ResponseMessageCodes.UploadedDocumentsLimitReached10;
         var expectedDetails = ResponseMessageCodes.ErrorDictionary[expectedMessage];
@@ -51,7 +51,7 @@ public class UpdateChannelPictureShouldThrowLimitExceed10 : IntegrationTestBase
         assert.Fail(result, expectedMessage, expectedDetails);
         foreach (var fileName in imageNamesList)
         {
-            await BlobService.DeleteBlobAsync(fileName);
+            _ = await BlobService.DeleteBlobAsync(fileName);
         }
     }
 }

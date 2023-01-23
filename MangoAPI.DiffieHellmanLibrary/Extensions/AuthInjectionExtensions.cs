@@ -7,8 +7,8 @@ public static class AuthInjectionExtensions
 {
     public static IServiceCollection AddAuthServicesAndHandlers(this IServiceCollection collection)
     {
-        collection.AddSingleton<LoginHandler>();
-        collection.AddSingleton<RefreshTokenHandler>();
+        _ = collection.AddSingleton<LoginHandler>();
+        _ = collection.AddSingleton<RefreshTokenHandler>();
 
         return collection;
     }

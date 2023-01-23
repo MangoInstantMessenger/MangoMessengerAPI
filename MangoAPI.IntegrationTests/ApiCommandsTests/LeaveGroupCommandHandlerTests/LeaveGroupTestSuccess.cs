@@ -11,7 +11,7 @@ public class LeaveGroupTestSuccess : IntegrationTestBase
     private readonly Assert<LeaveGroupResponse> assert = new();
 
     [Fact]
-    public async Task LeaveGroupTest_Success()
+    public async Task LeaveGroupTestSuccessAsync()
     {
         var user =
             await MangoModule.RequestAsync(CommandHelper.RegisterPetroCommand(), CancellationToken.None);

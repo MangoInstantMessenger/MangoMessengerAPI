@@ -12,7 +12,7 @@ public class UpdateUserSocialsInformationTestSuccess : IntegrationTestBase
     private readonly Assert<ResponseBase> assert = new();
 
     [Fact]
-    public async Task UpdateUserSocialsInformationTest_Success()
+    public async Task UpdateUserSocialsInformationTestSuccessAsync()
     {
         var user = await MangoModule.RequestAsync(
             request: CommandHelper.RegisterPetroCommand(),

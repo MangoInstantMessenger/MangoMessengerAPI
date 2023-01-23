@@ -6,8 +6,8 @@ public class ConfirmKeyExchangeCommandValidator : AbstractValidator<ConfirmKeyEx
 {
     public ConfirmKeyExchangeCommandValidator()
     {
-        RuleFor(x => x.UserId).NotEmpty();
-        RuleFor(x => x.RequestId).NotEmpty();
-        RuleFor(x => x.ReceiverPublicKey).NotEmpty();
+        _ = RuleFor(x => x.UserId).NotEmpty();
+        _ = RuleFor(x => x.RequestId).NotEmpty();
+        _ = RuleFor(x => x.ReceiverPublicKey).NotEmpty();
     }
 }

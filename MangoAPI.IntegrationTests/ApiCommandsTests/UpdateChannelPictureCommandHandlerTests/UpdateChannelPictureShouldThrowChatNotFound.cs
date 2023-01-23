@@ -14,7 +14,7 @@ public class
     private readonly Assert<UpdateChannelPictureResponse> assert = new();
 
     [Fact]
-    public async Task UpdateChannelPicture_ShouldThrow_ChatNotFound()
+    public async Task UpdateChannelPictureShouldThrowChatNotFoundAsync()
     {
         const string expectedMessage = ResponseMessageCodes.ChatNotFound;
         var expectedDetails = ResponseMessageCodes.ErrorDictionary[expectedMessage];

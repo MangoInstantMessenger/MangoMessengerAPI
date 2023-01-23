@@ -6,16 +6,16 @@ public class ChangePasswordCommandValidator : AbstractValidator<ChangePasswordCo
 {
     public ChangePasswordCommandValidator()
     {
-        RuleFor(x => x.CurrentPassword).NotEmpty();
-        RuleFor(x => x.NewPassword).NotEmpty();
-        RuleFor(x => x.RepeatNewPassword).NotEmpty();
+        _ = RuleFor(x => x.CurrentPassword).NotEmpty();
+        _ = RuleFor(x => x.NewPassword).NotEmpty();
+        _ = RuleFor(x => x.RepeatNewPassword).NotEmpty();
 
-        RuleFor(x => x.CurrentPassword)
+        _ = RuleFor(x => x.CurrentPassword)
             .NotEqual(x => x.NewPassword)
             .WithMessage("New and old passwords cannot be same")
             .Length(8, 50);
 
-        RuleFor(x => x.NewPassword)
+        _ = RuleFor(x => x.NewPassword)
             .Equal(x => x.RepeatNewPassword)
             .WithMessage("New password and repeat password should be same.")
             .Length(8, 50)

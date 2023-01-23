@@ -42,6 +42,6 @@ public class OpensslGeneratePrivateKeyHandler : BaseHandler, IGeneratePrivateKey
         var command = Cli.Wrap("openssl").WithArguments(
             new[] { "genpkey", "-paramfile", dhParametersPath, "-out", privateKeyPath });
 
-        await command.ExecuteAsync();
+        _ = await command.ExecuteAsync();
     }
 }
