@@ -1,0 +1,27 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "rgName": {
+      "type":"string",
+      "defaultValue":"mango-rg-01"
+    },
+    "location": {
+      "type": "string",
+      "defaultValue": "North Europe"
+    }
+  },
+  "functions": [],
+  "variables": {},
+  "resources": [
+    {
+      "name": "[parameters('rgName')]",
+      "type": "Microsoft.Resources/resourceGroups",
+      "apiVersion": "2019-10-01",
+      "location": "North Europe",
+      "dependsOn": [
+      ]
+    }
+  ],
+  "outputs": {}
+}
