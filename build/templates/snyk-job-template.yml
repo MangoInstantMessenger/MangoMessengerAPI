@@ -15,11 +15,11 @@ parameters:
     default: 'MangoMessenger'
 
 jobs:
-  - job: 'SonarCloud_Analyzer'
-    displayName: 'SonarCloud Static Code Analyzer'
+  - job: 'Snyk_Security_Scan'
+    displayName: 'Snyk Security Scan'
     steps:
       - task: SnykSecurityScan@0
-        displayName: Snyk Security Scan
+        displayName: 'Snyk Security Scan'
         inputs:
           serviceConnectionEndpoint: '${{ parameters.ServiceConnection }}'
           testType: 'app'
