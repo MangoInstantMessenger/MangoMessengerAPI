@@ -18,7 +18,7 @@ jobs:
   - job: 'Snyk_Security_Scan'
     displayName: 'Snyk Security Scan'
     steps:
-      - task: SnykSecurityScan@0
+      - task: SnykSecurityScan@1
         displayName: 'Snyk Security Scan'
         inputs:
           serviceConnectionEndpoint: '${{ parameters.ServiceConnection }}'
