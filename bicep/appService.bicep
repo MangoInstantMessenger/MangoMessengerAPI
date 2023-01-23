@@ -1,9 +1,26 @@
 param location string
-param appServicePlan object
+param servicePlanName string
+param skuPlanName string
 param webAppName string
+
+resource appServicePlan 'Microsoft.Web/serverfarms@2022-03-01' = {
+  name: servicePlanName
+  location: location
+  properties: {
+    reserved: false
+  }
+  sku: {
+    name: skuPlanName
+    tier: 'Free'
+  }
+  kind: 'windows'
+}
 
 resource appService 'Microsoft.Web/sites@2022-03-01' = {
   name: webAppName
+  dependsOn: [
+    appServicePlan
+  ]
   location: location
   properties: {
     serverFarmId: appServicePlan.id

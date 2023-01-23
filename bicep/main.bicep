@@ -14,23 +14,14 @@ param adminUser string
 @secure()
 param adminPassword string
 
-module appServicePlan './appServicePlan.bicep' = {
-  name: 'appServicePlanDeployment'
-  scope: resourceGroup(rgName)
-  params: {
-    location: location
-    servicePlanName: servicePlanName
-    skuPlanName: skuPlanName
-  }
-}
-
 module appService './appService.bicep' = {
   name: 'appServiceDeployment'
   scope: resourceGroup(rgName)
   params: {
-    location: location
     webAppName: webAppName
-    appServicePlan: appServicePlan
+    location: location
+    servicePlanName: servicePlanName
+    skuPlanName: skuPlanName
   }
 }
 
