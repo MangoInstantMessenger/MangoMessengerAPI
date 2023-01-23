@@ -1,11 +1,11 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
         <TargetFramework>net6.0</TargetFramework>
         <LangVersion>10</LangVersion>
         <EnableNETAnalyzers>true</EnableNETAnalyzers>
         <AnalysisMode>Recommended</AnalysisMode>
+        <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
     </PropertyGroup>
 
     <ItemGroup>
