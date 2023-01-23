@@ -12,7 +12,7 @@ parameters:
   - name: Organization
     displayName: 'Organization name'
     type: string
-    default: 'MangoMessenger'
+    default: 'kolosovpetro' #this is your snyk account, not az do organization
 
   - name: buildConfiguration
     displayName: 'Build Configuration'
