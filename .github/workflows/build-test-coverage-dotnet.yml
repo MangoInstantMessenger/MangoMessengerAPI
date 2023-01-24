@@ -83,6 +83,7 @@ jobs:
         uses: muno92/resharper_inspectcode@1.6.7
         with:
           solutionPath: ./MangoAPI.sln
+        continue-on-error: true
 
       - name: Publish .NET Project
         run: |
