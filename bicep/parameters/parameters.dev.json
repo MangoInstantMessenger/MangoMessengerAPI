@@ -1,0 +1,39 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "rgName": {
+      "value": "mango-rg-228"
+    },
+    "location": {
+      "value": "North Europe"
+    },
+    "servicePlanName": {
+      "value": "mango-service-plan-228"
+    },
+    "skuPlanName": {
+      "value": "F1"
+    },
+    "webAppName": {
+      "value": "mangomessenger228"
+    },
+    "storName": {
+      "value": "mangostoracc228"
+    },
+    "skuStorageName": {
+      "value": "Standard_LRS"
+    },
+    "contName": {
+      "value": "mangomessengercont228"
+    },
+    "keyVaultName": {
+      "value": "mangokeyvault228"
+    },
+    "sqlServerName": {
+      "value": "mangosqlserver228"
+    },
+    "dbName": {
+      "value": "mangodb228"
+    }
+  }
+}

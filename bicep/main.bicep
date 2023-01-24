@@ -1,6 +1,6 @@
 targetScope = 'resourceGroup'
-param location string
 param rgName string
+param location string
 param servicePlanName string
 param skuPlanName string
 param webAppName string

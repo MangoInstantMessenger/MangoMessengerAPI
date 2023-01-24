@@ -18,9 +18,6 @@ resource appServicePlan 'Microsoft.Web/serverfarms@2022-03-01' = {
 
 resource appService 'Microsoft.Web/sites@2022-03-01' = {
   name: webAppName
-  dependsOn: [
-    appServicePlan
-  ]
   location: location
   properties: {
     serverFarmId: appServicePlan.id
