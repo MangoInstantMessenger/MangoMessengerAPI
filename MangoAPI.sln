@@ -115,6 +115,23 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "legacy_pipelines", "legacy_
 		build\legacy_pipelines\azure-pipelines-sonarqube.yml = build\legacy_pipelines\azure-pipelines-sonarqube.yml
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "bicep", "bicep", "{D553C98E-AC84-4EA6-81EA-39548AD267F8}"
+	ProjectSection(SolutionItems) = preProject
+		bicep\appService.bicep = bicep\appService.bicep
+		bicep\keyVault.bicep = bicep\keyVault.bicep
+		bicep\main.bicep = bicep\main.bicep
+		bicep\rgAzureDeploy.bicep = bicep\rgAzureDeploy.bicep
+		bicep\sqlSeverAndDb.bicep = bicep\sqlSeverAndDb.bicep
+		bicep\storAccountAndCont.bicep = bicep\storAccountAndCont.bicep
+		bicep\README.txt = bicep\README.txt
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "parameters", "parameters", "{BA8CDB8A-341D-42EC-A56F-B52322A34296}"
+	ProjectSection(SolutionItems) = preProject
+		bicep\parameters\rg-azure-deploy.parameters.dev.json = bicep\parameters\rg-azure-deploy.parameters.dev.json
+		bicep\parameters\parameters.dev.json = bicep\parameters\parameters.dev.json
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -163,6 +180,7 @@ Global
 		{8AEBB05F-C450-4E77-8B91-9155BFB4FD56} = {B8CB0A21-BB6E-478B-A755-49CEA1435CD1}
 		{79EB6A4D-7532-4D40-8E76-B168B442D3C0} = {66E218B1-FCCA-42F3-81A4-E19AC6659ECA}
 		{A751035E-CEC1-4074-8872-803C23909931} = {66E218B1-FCCA-42F3-81A4-E19AC6659ECA}
+		{BA8CDB8A-341D-42EC-A56F-B52322A34296} = {D553C98E-AC84-4EA6-81EA-39548AD267F8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {64B16C18-46ED-4D73-927F-B2E229345447}
