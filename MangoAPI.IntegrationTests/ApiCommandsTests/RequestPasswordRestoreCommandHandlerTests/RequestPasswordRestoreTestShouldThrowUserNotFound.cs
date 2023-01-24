@@ -11,7 +11,7 @@ public class RequestPasswordRestoreTestShouldThrowUserNotFound : IntegrationTest
     private readonly Assert<RequestPasswordRestoreResponse> assert = new();
 
     [Fact]
-    public async Task RequestPasswordRestoreTestShouldThrow_UserNotFound()
+    public async Task RequestPasswordRestoreTestShouldThrowUserNotFoundAsync()
     {
         const string expectedMessage = ResponseMessageCodes.UserNotFound;
         var expectedDetails = ResponseMessageCodes.ErrorDictionary[expectedMessage];

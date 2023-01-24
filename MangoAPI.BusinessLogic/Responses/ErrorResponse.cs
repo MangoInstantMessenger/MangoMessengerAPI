@@ -18,7 +18,10 @@ public record ErrorResponse
     [DefaultValue(false)]
     public bool Success { get; init; }
 
-    public override string ToString() => JsonSerializer.Serialize(
+    public override string ToString()
+    {
+        return JsonSerializer.Serialize(
         this,
         new JsonSerializerOptions(JsonSerializerDefaults.Web));
+    }
 }

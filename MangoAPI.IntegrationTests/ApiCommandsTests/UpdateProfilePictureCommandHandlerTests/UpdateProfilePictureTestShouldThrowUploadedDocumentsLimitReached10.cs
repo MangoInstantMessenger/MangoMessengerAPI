@@ -13,7 +13,7 @@ public class UpdateProfilePictureTestShouldThrowUploadedDocumentsLimitReached10 
     private readonly Assert<UpdateProfilePictureResponse> assert = new();
 
     [Fact]
-    public async Task UpdateProfilePictureTestShouldThrow_UploadedDocumentsLimitReached10()
+    public async Task UpdateProfilePictureTestShouldThrowUploadedDocumentsLimitReached10Async()
     {
         const string expectedMessage = ResponseMessageCodes.UploadedDocumentsLimitReached10;
         var expectedDetails = ResponseMessageCodes.ErrorDictionary[expectedMessage];

@@ -11,32 +11,50 @@ public static class FileNameHelper
     private const string CngPrefix = "CNG";
 
     // Begin OpenSsl Methods
-    public static string GenerateOpenSslPrivateKeyFileName(Guid senderId, Guid receiverId) =>
-        GeneratePrivateKeyFileName(senderId, receiverId, OpensslPrefix);
+    public static string GenerateOpenSslPrivateKeyFileName(Guid senderId, Guid receiverId)
+    {
+        return GeneratePrivateKeyFileName(senderId, receiverId, OpensslPrefix);
+    }
 
-    public static string GenerateOpenSslPublicKeyFileName(Guid senderId, Guid receiverId) =>
-        GeneratePublicKeyFileName(senderId, receiverId, OpensslPrefix);
+    public static string GenerateOpenSslPublicKeyFileName(Guid senderId, Guid receiverId)
+    {
+        return GeneratePublicKeyFileName(senderId, receiverId, OpensslPrefix);
+    }
 
-    public static string GenerateOpensslCommonSecretFileName(Guid senderId, Guid receiverId) =>
-        GenerateCommonSecretFileName(senderId, receiverId, OpensslPrefix);
+    public static string GenerateOpensslCommonSecretFileName(Guid senderId, Guid receiverId)
+    {
+        return GenerateCommonSecretFileName(senderId, receiverId, OpensslPrefix);
+    }
 
     // Begin CNG Methods
-    public static string GenerateCngPrivateKeyFileName(Guid senderId, Guid receiverId) =>
-        GeneratePrivateKeyFileName(senderId, receiverId, CngPrefix);
+    public static string GenerateCngPrivateKeyFileName(Guid senderId, Guid receiverId)
+    {
+        return GeneratePrivateKeyFileName(senderId, receiverId, CngPrefix);
+    }
 
-    public static string GenerateCngPublicKeyFileName(Guid senderId, Guid receiverId) =>
-        GeneratePublicKeyFileName(senderId, receiverId, CngPrefix);
+    public static string GenerateCngPublicKeyFileName(Guid senderId, Guid receiverId)
+    {
+        return GeneratePublicKeyFileName(senderId, receiverId, CngPrefix);
+    }
 
-    public static string GenerateCngCommonSecretFileName(Guid senderId, Guid receiverId) =>
-        GenerateCommonSecretFileName(senderId, receiverId, CngPrefix);
+    public static string GenerateCngCommonSecretFileName(Guid senderId, Guid receiverId)
+    {
+        return GenerateCommonSecretFileName(senderId, receiverId, CngPrefix);
+    }
 
     // Begin private methods
-    private static string GeneratePrivateKeyFileName(Guid senderId, Guid receiverId, string prefix) =>
-        $"{prefix}_PRIVATE_KEY_{senderId}_{receiverId}.pem";
+    private static string GeneratePrivateKeyFileName(Guid senderId, Guid receiverId, string prefix)
+    {
+        return $"{prefix}_PRIVATE_KEY_{senderId}_{receiverId}.pem";
+    }
 
-    private static string GeneratePublicKeyFileName(Guid senderId, Guid receiverId, string prefix) =>
-        $"{prefix}_PUBLIC_KEY_{senderId}_{receiverId}.pem";
+    private static string GeneratePublicKeyFileName(Guid senderId, Guid receiverId, string prefix)
+    {
+        return $"{prefix}_PUBLIC_KEY_{senderId}_{receiverId}.pem";
+    }
 
-    private static string GenerateCommonSecretFileName(Guid senderId, Guid receiverId, string prefix) =>
-        $"{prefix}_COMMON_SECRET_{senderId}_{receiverId}.pem";
+    private static string GenerateCommonSecretFileName(Guid senderId, Guid receiverId, string prefix)
+    {
+        return $"{prefix}_COMMON_SECRET_{senderId}_{receiverId}.pem";
+    }
 }

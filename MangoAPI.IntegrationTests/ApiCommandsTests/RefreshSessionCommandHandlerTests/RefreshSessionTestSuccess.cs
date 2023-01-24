@@ -13,7 +13,7 @@ public class RefreshSessionTestSuccess : IntegrationTestBase
     private readonly Assert<TokensResponse> assert = new();
 
     [Fact]
-    public async Task RefreshSessionTest_Success()
+    public async Task RefreshSessionTestSuccessAsync()
     {
         var user = await MangoModule.RequestAsync(
             request: CommandHelper.RegisterPetroCommand(),

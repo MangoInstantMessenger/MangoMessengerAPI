@@ -12,16 +12,15 @@ public class DeleteContactTestSuccess : IntegrationTestBase
     private readonly Assert<ResponseBase> assert = new();
 
     [Fact]
-    public async Task DeleteContactTest_Success()
+    public async Task DeleteContactTestSuccessAsync()
     {
         var user =
             await MangoModule.RequestAsync(CommandHelper.RegisterPetroCommand(), CancellationToken.None);
         var partner =
             await MangoModule.RequestAsync(CommandHelper.RegisterKhachaturCommand(), CancellationToken.None);
-        var contact =
-            await MangoModule.RequestAsync(
-                request: CommandHelper.CreateContactCommand(user.Response.Tokens.UserId, partner.Response.Tokens.UserId),
-                cancellationToken: CancellationToken.None);
+        await MangoModule.RequestAsync(
+            request: CommandHelper.CreateContactCommand(user.Response.Tokens.UserId, partner.Response.Tokens.UserId),
+            cancellationToken: CancellationToken.None);
         var command = new DeleteContactCommand(UserId: user.Response.Tokens.UserId, ContactId: partner.Response.Tokens.UserId);
 
         var result = await MangoModule.RequestAsync(command, CancellationToken.None);

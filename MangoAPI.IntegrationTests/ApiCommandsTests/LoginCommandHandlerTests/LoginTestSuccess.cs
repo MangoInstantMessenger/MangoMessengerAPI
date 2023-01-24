@@ -12,7 +12,7 @@ public class LoginTestSuccess : IntegrationTestBase
     private readonly Assert<TokensResponse> assert = new();
 
     [Fact]
-    public async Task LoginTest_Success()
+    public async Task LoginTestSuccessAsync()
     {
         var user = await MangoModule.RequestAsync(CommandHelper.RegisterPetroCommand(), CancellationToken.None);
         var userId = user.Response.Tokens.UserId;

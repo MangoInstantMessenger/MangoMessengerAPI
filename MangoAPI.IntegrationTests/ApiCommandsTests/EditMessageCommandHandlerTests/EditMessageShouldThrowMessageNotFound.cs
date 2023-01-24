@@ -14,7 +14,7 @@ public class EditMessageShouldThrowMessageNotFound : IntegrationTestBase
     private readonly Assert<ResponseBase> assert = new();
 
     [Fact]
-    public async Task EditMessageTestShouldThrow_MessageNotFound()
+    public async Task EditMessageTestShouldThrowMessageNotFoundAsync()
     {
         const string expectedMessage = ResponseMessageCodes.MessageNotFound;
         var expectedDetails = ResponseMessageCodes.ErrorDictionary[expectedMessage];

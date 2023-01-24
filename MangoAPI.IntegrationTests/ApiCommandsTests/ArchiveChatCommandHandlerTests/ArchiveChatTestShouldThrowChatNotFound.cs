@@ -14,7 +14,7 @@ public class ArchiveChatTestShouldThrowChatNotFound : IntegrationTestBase
     private readonly Assert<ResponseBase> assert = new();
 
     [Fact]
-    public async Task ArchiveChatTestShouldThrow_ChatNotFound()
+    public async Task ArchiveChatTestShouldThrowChatNotFoundAsync()
     {
         const string expectedMessage = ResponseMessageCodes.ChatNotFound;
         var expectedDetails = ResponseMessageCodes.ErrorDictionary[expectedMessage];

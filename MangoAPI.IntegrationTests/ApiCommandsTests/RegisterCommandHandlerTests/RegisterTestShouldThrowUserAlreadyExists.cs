@@ -12,7 +12,7 @@ public class RegisterTestShouldThrowUserAlreadyExists : IntegrationTestBase
     private readonly Assert<TokensResponse> assert = new();
 
     [Fact]
-    public async Task RegisterTestShouldThrow_UserAlreadyExists()
+    public async Task RegisterTestShouldThrowUserAlreadyExistsAsync()
     {
         const string expectedMessage = ResponseMessageCodes.UserAlreadyExists;
         var expectedDetails = ResponseMessageCodes.ErrorDictionary[expectedMessage];

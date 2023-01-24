@@ -14,7 +14,7 @@ public class LogoutTestShouldThrowUserNotFound : IntegrationTestBase
     private readonly Assert<ResponseBase> assert = new();
 
     [Fact]
-    public async Task LogoutTestShouldThrow_UserNotFound()
+    public async Task LogoutTestShouldThrowUserNotFoundAsync()
     {
         const string expectedMessage = ResponseMessageCodes.UserNotFound;
         var expectedDetails = ResponseMessageCodes.ErrorDictionary[expectedMessage];

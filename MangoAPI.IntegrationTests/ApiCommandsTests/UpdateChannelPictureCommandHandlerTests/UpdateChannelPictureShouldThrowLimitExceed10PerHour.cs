@@ -20,7 +20,7 @@ public class UpdateChannelPictureShouldThrowLimitExceed10 : IntegrationTestBase
     }
 
     [Fact]
-    public async Task UpdateChannelPicture_ShouldThrow_LimitReached10()
+    public async Task UpdateChannelPictureShouldThrowLimitReached10Async()
     {
         const string expectedMessage = ResponseMessageCodes.UploadedDocumentsLimitReached10;
         var expectedDetails = ResponseMessageCodes.ErrorDictionary[expectedMessage];

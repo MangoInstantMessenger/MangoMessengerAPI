@@ -12,7 +12,7 @@ public class AddContactSuccess : IntegrationTestBase
     private readonly Assert<ResponseBase> assert = new();
 
     [Fact]
-    public async Task AddContactsCommandHandlerTest_Success()
+    public async Task AddContactsCommandHandlerTestSuccessAsync()
     {
         var sender = await MangoModule.RequestAsync(CommandHelper.RegisterKhachaturCommand(), CancellationToken.None);
         var receiver = await MangoModule.RequestAsync(CommandHelper.RegisterPetroCommand(), CancellationToken.None);

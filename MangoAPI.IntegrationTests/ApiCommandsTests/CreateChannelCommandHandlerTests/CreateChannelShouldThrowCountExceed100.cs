@@ -12,7 +12,7 @@ public class CreateChannelShouldThrowCountExceed100 : IntegrationTestBase
     private readonly Assert<CreateCommunityResponse> assert = new();
 
     [Fact]
-    public async Task CreateChannel_ShouldThrow_CountExceed100()
+    public async Task CreateChannelShouldThrowCountExceed100Async()
     {
         const string expectedMessage = ResponseMessageCodes.MaximumOwnerChatsExceeded100;
         var expectedDetails = ResponseMessageCodes.ErrorDictionary[expectedMessage];

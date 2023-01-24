@@ -18,36 +18,28 @@ public class CngCreateCommonSecretHandler : BaseHandler, ICreateCommonSecretHand
     {
         Console.WriteLine($@"Creating common secret with the user {userId} ...");
 
-        await CngCreateCommonSecret(actor, userId);
+        await CngCreateCommonSecretAsync(actor, userId);
 
         Console.WriteLine($@"Common secret with the user {userId} has been successfully created.");
         Console.WriteLine();
     }
 
-    private async Task CngCreateCommonSecret(Actor actor, Guid partnerId)
+    private async Task CngCreateCommonSecretAsync(Actor actor, Guid partnerId)
     {
         var allKeyExchanges = await GetKeyExchangesAsync();
 
         var tokens = TokensResponse.Tokens;
         var currentUserId = tokens.UserId;
 
-        OpenSslKeyExchangeRequest keyExchangeRequest;
-
-        if (actor == Actor.Receiver)
-        {
-            keyExchangeRequest = allKeyExchanges.FirstOrDefault(x =>
+        var keyExchangeRequest = actor == Actor.Receiver
+            ? allKeyExchanges.FirstOrDefault(x =>
                 x.SenderId == partnerId &&
                 x.ReceiverId == currentUserId &&
-                x.KeyExchangeType == KeyExchangeType.Cng);
-        }
-        else
-        {
-            keyExchangeRequest = allKeyExchanges.FirstOrDefault(x =>
+                x.KeyExchangeType == KeyExchangeType.Cng)
+            : allKeyExchanges.FirstOrDefault(x =>
                 x.SenderId == currentUserId &&
                 x.ReceiverId == partnerId &&
                 x.KeyExchangeType == KeyExchangeType.Cng);
-        }
-
         if (keyExchangeRequest == null)
         {
             throw new InvalidOperationException();

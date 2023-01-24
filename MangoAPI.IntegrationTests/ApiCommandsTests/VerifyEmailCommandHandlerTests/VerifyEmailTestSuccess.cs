@@ -12,7 +12,7 @@ public class VerifyEmailTestSuccess : IntegrationTestBase
     private readonly Assert<ResponseBase> assert = new();
 
     [Fact]
-    public async Task VerifyEmailTest_Success()
+    public async Task VerifyEmailTestSuccessAsync()
     {
         var user = await MangoModule.RequestAsync(
             request: CommandHelper.RegisterPetroCommand(),

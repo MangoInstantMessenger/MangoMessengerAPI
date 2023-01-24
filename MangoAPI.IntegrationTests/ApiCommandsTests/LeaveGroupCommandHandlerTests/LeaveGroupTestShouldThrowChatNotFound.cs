@@ -13,7 +13,7 @@ public class LeaveGroupTestShouldThrowChatNotFound : IntegrationTestBase
     private readonly Assert<LeaveGroupResponse> assert = new();
 
     [Fact]
-    public async Task LeaveGroupTestShouldThrow_UserNotFound()
+    public async Task LeaveGroupTestShouldThrowUserNotFoundAsync()
     {
         const string expectedMessage = ResponseMessageCodes.ChatNotFound;
         var expectedDetails = ResponseMessageCodes.ErrorDictionary[expectedMessage];

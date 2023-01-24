@@ -12,7 +12,7 @@ public class SearchCommunityTestSuccess : IntegrationTestBase
     private readonly Assert<SearchCommunityResponse> assert = new();
 
     [Fact]
-    public async Task SearchCommunityTest_Success()
+    public async Task SearchCommunityTestSuccessAsync()
     {
         var user =
             await MangoModule.RequestAsync(CommandHelper.RegisterPetroCommand(), CancellationToken.None);

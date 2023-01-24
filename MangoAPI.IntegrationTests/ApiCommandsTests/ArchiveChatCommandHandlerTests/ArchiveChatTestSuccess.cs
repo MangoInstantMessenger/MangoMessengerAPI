@@ -12,7 +12,7 @@ public class ArchiveChatTestSuccess : IntegrationTestBase
     private readonly Assert<ResponseBase> assert = new();
 
     [Fact]
-    public async Task ArchiveChatTest_Success()
+    public async Task ArchiveChatTestSuccessAsync()
     {
         var user =
             await MangoModule.RequestAsync(CommandHelper.RegisterPetroCommand(), CancellationToken.None);

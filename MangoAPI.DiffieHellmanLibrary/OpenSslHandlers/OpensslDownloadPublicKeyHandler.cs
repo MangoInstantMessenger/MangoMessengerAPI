@@ -31,24 +31,16 @@ public class OpensslDownloadPublicKeyHandler : BaseHandler, IDownloadPublicKeyHa
 
         var allRequests = await GetKeyExchangesAsync();
 
-        OpenSslKeyExchangeRequest keyExchangeRequest;
-
-        if (actor == Actor.Receiver)
-        {
-            keyExchangeRequest = allRequests.FirstOrDefault(request =>
+        var keyExchangeRequest = actor == Actor.Receiver
+            ? allRequests.FirstOrDefault(request =>
                 request.SenderId == userId && request.ReceiverId == currentUserId &&
                 request.IsConfirmed &&
-                request.KeyExchangeType == KeyExchangeType.OpenSsl);
-        }
-        else
-        {
-            keyExchangeRequest = allRequests.FirstOrDefault(request =>
+                request.KeyExchangeType == KeyExchangeType.OpenSsl)
+            : allRequests.FirstOrDefault(request =>
                 request.ReceiverId == userId &&
                 request.SenderId == currentUserId &&
                 request.IsConfirmed &&
                 request.KeyExchangeType == KeyExchangeType.OpenSsl);
-        }
-
         if (keyExchangeRequest == null)
         {
             throw new InvalidOperationException();

@@ -9,11 +9,13 @@ public record SearchChatMessagesResponse : ResponseBase
 {
     public List<Message> Messages { get; init; }
 
-    public static SearchChatMessagesResponse FromSuccess(List<Message> messages) =>
-        new()
+    public static SearchChatMessagesResponse FromSuccess(List<Message> messages)
+    {
+        return new()
         {
             Messages = messages,
             Message = ResponseMessageCodes.Success,
             Success = true,
         };
+    }
 }

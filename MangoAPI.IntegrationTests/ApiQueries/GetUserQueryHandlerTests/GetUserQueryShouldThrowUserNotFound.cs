@@ -12,7 +12,7 @@ public class GetUserQueryShouldThrowUserNotFound : IntegrationTestBase
     private readonly Assert<GetUserResponse> assert = new();
 
     [Fact]
-    public async Task GetUserQueryShouldThrow_UserNotFound()
+    public async Task GetUserQueryShouldThrowUserNotFoundAsync()
     {
         const string expectedMessage = ResponseMessageCodes.UserNotFound;
         var expectedDetails = ResponseMessageCodes.ErrorDictionary[expectedMessage];

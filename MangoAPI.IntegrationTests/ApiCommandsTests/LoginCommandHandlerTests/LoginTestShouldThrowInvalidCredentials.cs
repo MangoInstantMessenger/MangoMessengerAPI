@@ -12,7 +12,7 @@ public class LoginTestShouldThrowInvalidCredentials : IntegrationTestBase
     private readonly Assert<TokensResponse> assert = new();
 
     [Fact]
-    public async Task LoginTestShouldThrow_InvalidCredentials()
+    public async Task LoginTestShouldThrowInvalidCredentialsAsync()
     {
         const string expectedMessage = ResponseMessageCodes.InvalidCredentials;
         var expectedDetails = ResponseMessageCodes.ErrorDictionary[expectedMessage];

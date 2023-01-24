@@ -13,7 +13,7 @@ public class SendMessageShouldThrowChatNotFound : IntegrationTestBase
     private readonly Assert<SendMessageResponse> assert = new();
 
     [Fact]
-    public async Task SendMessage_ShouldThrow_ChatNotFound()
+    public async Task SendMessageShouldThrowChatNotFoundAsync()
     {
         const string expectedMessage = ResponseMessageCodes.ChatNotFound;
         var expectedDetails = ResponseMessageCodes.ErrorDictionary[expectedMessage];

@@ -13,7 +13,7 @@ public class LogoutTestShouldThrowInvalidOrExpiredRefreshToken : IntegrationTest
     private readonly Assert<ResponseBase> assert = new();
 
     [Fact]
-    public async Task LogoutTestShouldThrow_InvalidOrExpiredRefreshToken()
+    public async Task LogoutTestShouldThrowInvalidOrExpiredRefreshTokenAsync()
     {
         const string expectedMessage = ResponseMessageCodes.InvalidOrExpiredRefreshToken;
         var expectedDetails = ResponseMessageCodes.ErrorDictionary[expectedMessage];

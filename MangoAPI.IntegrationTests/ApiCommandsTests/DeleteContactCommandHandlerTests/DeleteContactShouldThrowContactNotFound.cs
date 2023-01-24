@@ -14,7 +14,7 @@ public class DeleteContactShouldThrowContactNotFound : IntegrationTestBase
     private readonly Assert<ResponseBase> assert = new();
 
     [Fact]
-    public async Task DeleteContactTestShouldThrow_ContactNotFound()
+    public async Task DeleteContactTestShouldThrowContactNotFoundAsync()
     {
         const string expectedMessage = ResponseMessageCodes.ContactNotFound;
         var expectedDetails = ResponseMessageCodes.ErrorDictionary[expectedMessage];

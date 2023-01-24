@@ -13,7 +13,7 @@ public class DeleteMessageShouldThrowMessageNotFound : IntegrationTestBase
     private readonly Assert<DeleteMessageResponse> assert = new();
 
     [Fact]
-    public async Task DeleteMessageTestShouldThrow_MessageNotFound()
+    public async Task DeleteMessageTestShouldThrowMessageNotFoundAsync()
     {
         const string expectedMessage = ResponseMessageCodes.MessageNotFound;
         var expectedDetails = ResponseMessageCodes.ErrorDictionary[expectedMessage];

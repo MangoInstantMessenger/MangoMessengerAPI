@@ -13,7 +13,7 @@ public class PasswordRestoreTestShouldThrowInvalidOrExpired : IntegrationTestBas
     private readonly Assert<ResponseBase> assert = new();
 
     [Fact]
-    public async Task PasswordRestoreTestShouldThrow_InvalidOrExpired()
+    public async Task PasswordRestoreTestShouldThrowInvalidOrExpiredAsync()
     {
         const string expectedMessage = ResponseMessageCodes.InvalidOrExpiredRestorePasswordRequest;
         var expectedDetails = ResponseMessageCodes.ErrorDictionary[expectedMessage];

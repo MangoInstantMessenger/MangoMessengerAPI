@@ -11,7 +11,7 @@ public class UpdateProfilePictureTestSuccess : IntegrationTestBase
     private readonly Assert<UpdateProfilePictureResponse> assert = new();
 
     [Fact]
-    public async Task UpdateProfilePictureTest_Success()
+    public async Task UpdateProfilePictureTestSuccessAsync()
     {
         var userResult = await MangoModule.RequestAsync(CommandHelper.RegisterPetroCommand(), CancellationToken.None);
         var userId = userResult.Response.Tokens.UserId;

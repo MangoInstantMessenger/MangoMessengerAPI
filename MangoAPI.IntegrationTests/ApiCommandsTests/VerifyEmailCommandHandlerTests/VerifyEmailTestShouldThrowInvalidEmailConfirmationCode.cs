@@ -13,7 +13,7 @@ public class VerifyEmailTestShouldThrowInvalidEmailConfirmationCode : Integratio
     private readonly Assert<ResponseBase> assert = new();
 
     [Fact]
-    public async Task VerifyEmailTest_ShouldThrowInvalidEmailConfirmationCode()
+    public async Task VerifyEmailTestShouldThrowInvalidEmailConfirmationCodeAsync()
     {
         const string expectedMessage = ResponseMessageCodes.InvalidEmailConfirmationCode;
         var expectedDetails = ResponseMessageCodes.ErrorDictionary[expectedMessage];

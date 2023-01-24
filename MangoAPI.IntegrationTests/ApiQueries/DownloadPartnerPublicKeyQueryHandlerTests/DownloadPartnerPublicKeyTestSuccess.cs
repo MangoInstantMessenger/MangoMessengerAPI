@@ -13,7 +13,7 @@ public class DownloadPartnerPublicKeyTestSuccess : IntegrationTestBase
     private readonly Assert<DownloadPartnerPublicKeyResponse> assert = new();
 
     [Fact]
-    public async Task OpenSslDownloadPartnerPublicKeyTest_Success()
+    public async Task OpenSslDownloadPartnerPublicKeyTestSuccessAsync()
     {
         var sender =
             await MangoModule.RequestAsync(CommandHelper.RegisterKhachaturCommand(), CancellationToken.None);

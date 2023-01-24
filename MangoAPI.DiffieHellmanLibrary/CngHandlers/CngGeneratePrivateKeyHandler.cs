@@ -15,13 +15,13 @@ public class CngGeneratePrivateKeyHandler : BaseHandler, IGeneratePrivateKeyHand
     {
         Console.WriteLine(@$"Generating CNG private key for user {receiverId} ... ");
 
-        await GenerateBase64PrivateKey(receiverId);
+        await GenerateBase64PrivateKeyAsync(receiverId);
 
         Console.WriteLine(@"Private key has been generated successfully.");
         Console.WriteLine();
     }
 
-    private async Task GenerateBase64PrivateKey(Guid receiverId)
+    private async Task GenerateBase64PrivateKeyAsync(Guid receiverId)
     {
         var senderId = TokensResponse.Tokens.UserId;
         var privateKeyFolder = CngDirectoryHelper.CngPrivateKeysDirectory;

@@ -12,7 +12,7 @@ public class SearchContactByDisplayNameTestSuccess : IntegrationTestBase
     private readonly Assert<SearchContactResponse> assert = new();
 
     [Fact]
-    public async Task SearchContactByDisplayNameTest_Success()
+    public async Task SearchContactByDisplayNameTestSuccessAsync()
     {
         var user =
             await MangoModule.RequestAsync(CommandHelper.RegisterKhachaturCommand(), CancellationToken.None);

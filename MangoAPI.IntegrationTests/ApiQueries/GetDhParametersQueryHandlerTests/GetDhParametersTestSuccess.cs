@@ -13,7 +13,7 @@ public class GetDhParametersTestSuccess : IntegrationTestBase
     private readonly Assert<GetDhParametersResponse> assert = new();
 
     [Fact]
-    public async Task GetDhParametersTest_Success()
+    public async Task GetDhParametersTestSuccessAsync()
     {
         var file = MangoFilesHelper.GetTestImage();
         var user =

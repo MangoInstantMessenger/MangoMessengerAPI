@@ -8,7 +8,7 @@ namespace MangoAPI.IntegrationTests.ApiCommandsTests.ChangePasswordCommandHandle
 public class ChangePasswordValidatorTestSuccess
 {
     [Fact]
-    public void ChangePasswordValidatorTest_Success()
+    public void ChangePasswordValidatorTestSuccessTest()
     {
         var validator = new ChangePasswordCommandValidator();
         var command = new ChangePasswordCommand(

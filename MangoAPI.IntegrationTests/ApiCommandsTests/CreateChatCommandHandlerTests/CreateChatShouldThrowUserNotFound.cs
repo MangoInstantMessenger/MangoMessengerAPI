@@ -13,7 +13,7 @@ public class CreateChatShouldThrowUserNotFound : IntegrationTestBase
     private readonly Assert<CreateCommunityResponse> assert = new();
 
     [Fact]
-    public async Task CreateChatShouldThrow_UserNotFound()
+    public async Task CreateChatShouldThrowUserNotFoundAsync()
     {
         const string expectedMessage = ResponseMessageCodes.UserNotFound;
         var expectedDetails = ResponseMessageCodes.ErrorDictionary[expectedMessage];

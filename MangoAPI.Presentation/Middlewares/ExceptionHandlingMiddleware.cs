@@ -41,10 +41,10 @@ public class ExceptionHandlingMiddleware
             },
         };
 
-        await ThrowError(context, errorContext);
+        await ThrowErrorAsync(context, errorContext);
     }
 
-    private static async Task ThrowError(HttpContext context, ErrorContext errorContext)
+    private static async Task ThrowErrorAsync(HttpContext context, ErrorContext errorContext)
     {
         context.Response.ContentType = "application/json";
         context.Response.StatusCode = (int)errorContext.StatusCode;
@@ -66,7 +66,7 @@ public static class HandlingMiddlewareExtenstion
     }
 }
 
-internal class ErrorContext
+internal sealed class ErrorContext
 {
     public ErrorContext(string errorMessage, Exception exception)
     {

@@ -77,9 +77,7 @@ public class DeleteMessageCommandHandler
         if (messageIsLast)
         {
             var newLastMessage = chat.Messages
-                .Where(x => x != message)
-                .OrderBy(x => x.CreatedAt)
-                .LastOrDefault();
+                .Where(x => x != message).MaxBy(x => x.CreatedAt);
 
             messageDeleteNotification.NewLastMessageAuthor = newLastMessage?.User?.DisplayName;
             messageDeleteNotification.NewLastMessageId = newLastMessage?.Id;

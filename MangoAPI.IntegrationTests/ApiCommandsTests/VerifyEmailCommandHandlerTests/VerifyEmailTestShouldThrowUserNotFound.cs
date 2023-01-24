@@ -13,7 +13,7 @@ public class VerifyEmailTestShouldThrowUserNotFound : IntegrationTestBase
     private readonly Assert<ResponseBase> assert = new();
 
     [Fact]
-    public async Task VerifyEmailTestShouldThrow_UserNotFound()
+    public async Task VerifyEmailTestShouldThrowUserNotFoundAsync()
     {
         const string expectedMessage = ResponseMessageCodes.UserNotFound;
         var expectedDetails = ResponseMessageCodes.ErrorDictionary[expectedMessage];

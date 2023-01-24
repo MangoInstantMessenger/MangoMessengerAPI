@@ -12,7 +12,7 @@ public class GetDhParametersTestShouldThrowDhParameterNotFound : IntegrationTest
     private readonly Assert<GetDhParametersResponse> assert = new();
 
     [Fact]
-    public async Task DownloadPartnerPublicKeyTest_ShouldThrow_DhParameterNotFound()
+    public async Task DownloadPartnerPublicKeyTestShouldThrowDhParameterNotFoundAsync()
     {
         const string expectedMessage = ResponseMessageCodes.DhParameterNotFound;
         var expectedDetails = ResponseMessageCodes.ErrorDictionary[expectedMessage];

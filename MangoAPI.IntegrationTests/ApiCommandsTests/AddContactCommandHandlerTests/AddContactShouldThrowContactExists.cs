@@ -13,7 +13,7 @@ public class AddContactShouldThrowContactExists : IntegrationTestBase
     private readonly Assert<ResponseBase> assert = new();
 
     [Fact]
-    public async Task AddContactCommandHandlerTest_ShouldThrow_ContactExists()
+    public async Task AddContactCommandHandlerTestShouldThrowContactExistsAsync()
     {
         const string expectedMessage = ResponseMessageCodes.ContactAlreadyExist;
         var expectedDetails = ResponseMessageCodes.ErrorDictionary[expectedMessage];

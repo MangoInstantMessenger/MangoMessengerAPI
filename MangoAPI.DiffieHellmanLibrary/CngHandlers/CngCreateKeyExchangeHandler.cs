@@ -13,10 +13,10 @@ public class CngCreateKeyExchangeHandler : BaseHandler, ICreateKeyExchangeHandle
 
     public async Task CreateKeyExchangeAsync(Guid receiverId)
     {
-        await CngRequestKeyExchange(receiverId);
+        await CngRequestKeyExchangeAsync(receiverId);
     }
 
-    private async Task CngRequestKeyExchange(Guid receiverId)
+    private async Task CngRequestKeyExchangeAsync(Guid receiverId)
     {
         var senderId = TokensResponse.Tokens.UserId;
 

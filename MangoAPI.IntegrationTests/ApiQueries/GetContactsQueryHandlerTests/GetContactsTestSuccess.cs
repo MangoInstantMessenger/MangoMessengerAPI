@@ -12,7 +12,7 @@ public class GetContactsTestSuccess : IntegrationTestBase
     private readonly Assert<GetContactsResponse> assert = new();
 
     [Fact]
-    public async Task GetContactsTest_Success()
+    public async Task GetContactsTestSuccessAsync()
     {
         var user = await MangoModule.RequestAsync(
             request: CommandHelper.RegisterPetroCommand(),

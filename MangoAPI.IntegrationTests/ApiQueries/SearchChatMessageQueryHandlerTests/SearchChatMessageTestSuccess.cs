@@ -12,7 +12,7 @@ public class SearchChatMessageTestSuccess : IntegrationTestBase
     private readonly Assert<SearchChatMessagesResponse> assert = new();
 
     [Fact]
-    public async Task SearchChatMessageTest_Success()
+    public async Task SearchChatMessageTestSuccessAsync()
     {
         var user =
             await MangoModule.RequestAsync(CommandHelper.RegisterPetroCommand(), CancellationToken.None);

@@ -14,7 +14,7 @@ public class EditMessageSuccess : IntegrationTestBase
     private readonly Assert<ResponseBase> assert = new();
 
     [Fact]
-    public async Task EditMessageHandlerTest_Success()
+    public async Task EditMessageHandlerTestSuccessAsync()
     {
         var user =
             await MangoModule.RequestAsync(CommandHelper.RegisterPetroCommand(), CancellationToken.None);

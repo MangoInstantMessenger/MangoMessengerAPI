@@ -13,7 +13,7 @@ public class LogoutAllTestSuccess : IntegrationTestBase
     private readonly Assert<ResponseBase> assert = new();
 
     [Fact]
-    public async Task LogoutAllCommandHandlerTest_Success()
+    public async Task LogoutAllCommandHandlerTestSuccessAsync()
     {
         var user = await MangoModule.RequestAsync(
             request: CommandHelper.RegisterPetroCommand(),

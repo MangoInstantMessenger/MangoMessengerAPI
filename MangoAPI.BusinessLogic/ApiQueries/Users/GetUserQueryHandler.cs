@@ -9,6 +9,7 @@ using MangoAPI.Domain.Constants;
 using MangoAPI.Infrastructure.Database;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using System.Globalization;
 
 namespace MangoAPI.BusinessLogic.ApiQueries.Users;
 
@@ -41,7 +42,7 @@ public class GetUserQueryHandler : IRequestHandler<GetUserQuery, Result<GetUserR
                 DisplayNameColour = user.DisplayNameColour,
                 Address = user.UserInformation.Address,
                 BirthdayDate = user.UserInformation.BirthDay.HasValue
-                    ? user.UserInformation.BirthDay.Value.ToString("yyyy-MM-dd")
+                    ? user.UserInformation.BirthDay.Value.ToString("yyyy-MM-dd", CultureInfo.CurrentCulture)
                     : null,
                 Email = user.Email,
                 Website = user.UserInformation.Website,

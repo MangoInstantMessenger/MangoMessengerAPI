@@ -13,7 +13,7 @@ public class ChangePasswordTestShouldThrowInvalidCredentials : IntegrationTestBa
     private readonly Assert<ResponseBase> assert = new();
 
     [Fact]
-    public async Task ChangePasswordTestShouldThrow_InvalidCredentials()
+    public async Task ChangePasswordTestShouldThrowInvalidCredentialsAsync()
     {
         const string expectedMessage = ResponseMessageCodes.InvalidCredentials;
         var expectedDetails = ResponseMessageCodes.ErrorDictionary[expectedMessage];

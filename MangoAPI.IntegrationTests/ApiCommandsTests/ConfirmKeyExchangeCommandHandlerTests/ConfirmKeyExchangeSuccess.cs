@@ -12,7 +12,7 @@ public class ConfirmKeyExchangeSuccess : IntegrationTestBase
     private readonly Assert<ResponseBase> assert = new();
 
     [Fact]
-    public async Task ConfirmKeyExchange_Success()
+    public async Task ConfirmKeyExchangeSuccessAsync()
     {
         var sender =
             await MangoModule.RequestAsync(CommandHelper.RegisterKhachaturCommand(), CancellationToken.None);

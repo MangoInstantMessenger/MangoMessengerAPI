@@ -13,7 +13,7 @@ public class SendMessageSuccessTest : IntegrationTestBase
     private readonly Assert<SendMessageResponse> assert = new();
 
     [Fact]
-    public async Task SendMessage_Test_Success()
+    public async Task SendMessageTestSuccessAsync()
     {
         var user = await MangoModule.RequestAsync(
             request: CommandHelper.RegisterPetroCommand(),

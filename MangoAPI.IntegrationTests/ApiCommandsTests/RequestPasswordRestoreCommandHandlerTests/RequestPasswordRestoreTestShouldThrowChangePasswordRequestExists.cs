@@ -12,7 +12,7 @@ public class RequestPasswordRestoreTestShouldThrowChangePasswordRequestExists : 
     private readonly Assert<RequestPasswordRestoreResponse> assert = new();
 
     [Fact]
-    public async Task RequestPasswordRestoreTestShouldThrow_ChangePasswordRequestExists()
+    public async Task RequestPasswordRestoreTestShouldThrowChangePasswordRequestExistsAsync()
     {
         const string expectedMessage = ResponseMessageCodes.ChangePasswordRequestExists;
         var expectedDetails = ResponseMessageCodes.ErrorDictionary[expectedMessage];

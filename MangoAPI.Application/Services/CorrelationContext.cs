@@ -23,13 +23,10 @@ public class CorrelationContext : ICorrelationContext
 
         var parsed = Guid.TryParse(correlationContextUserId, out var parsedUserId);
 
-        if (!parsed)
-        {
-            throw new InvalidOperationException(
-                $"User ID cannot be parsed. {nameof(correlationContextUserId)}.");
-        }
-
-        return parsedUserId;
+        return !parsed
+            ? throw new InvalidOperationException(
+                $"User ID cannot be parsed. {nameof(correlationContextUserId)}.")
+            : parsedUserId;
     }
 
     public string GetUserName()
@@ -38,12 +35,9 @@ public class CorrelationContext : ICorrelationContext
 
         var correlationUserName = context.User.FindFirstValue(JwtRegisteredClaimNames.Name);
 
-        if (string.IsNullOrEmpty(correlationUserName))
-        {
-            throw new InvalidOperationException(
-                $"User Name cannot be null or empty. {nameof(correlationUserName)}.");
-        }
-
-        return correlationUserName;
+        return string.IsNullOrEmpty(correlationUserName)
+            ? throw new InvalidOperationException(
+                $"User Name cannot be null or empty. {nameof(correlationUserName)}.")
+            : correlationUserName;
     }
 }

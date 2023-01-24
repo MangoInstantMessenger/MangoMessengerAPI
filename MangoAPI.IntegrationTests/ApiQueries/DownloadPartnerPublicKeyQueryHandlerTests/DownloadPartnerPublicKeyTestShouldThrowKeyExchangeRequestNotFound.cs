@@ -13,7 +13,7 @@ public class DownloadPartnerPublicKeyTestShouldThrowKeyExchangeRequestNotFound :
     private readonly Assert<DownloadPartnerPublicKeyResponse> assert = new();
 
     [Fact]
-    public async Task OpenSslDownloadPartnerPublicKeyTest_ShouldThrow_KeyExchangeRequestNotFound()
+    public async Task OpenSslDownloadPartnerPublicKeyTestShouldThrowKeyExchangeRequestNotFoundAsync()
     {
         const string expectedMessage = ResponseMessageCodes.KeyExchangeRequestNotFound;
         var expectedDetails = ResponseMessageCodes.ErrorDictionary[expectedMessage];

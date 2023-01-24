@@ -11,7 +11,7 @@ public class UpdateChannelPictureSuccess : IntegrationTestBase
     private readonly Assert<UpdateChannelPictureResponse> assert = new();
 
     [Fact]
-    public async Task UpdateChannelPicture_Success()
+    public async Task UpdateChannelPictureSuccessAsync()
     {
         var sender = await MangoModule.RequestAsync(
             CommandHelper.RegisterPetroCommand(), CancellationToken.None);

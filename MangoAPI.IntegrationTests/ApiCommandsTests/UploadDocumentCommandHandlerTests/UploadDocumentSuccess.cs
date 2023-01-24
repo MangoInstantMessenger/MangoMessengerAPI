@@ -11,7 +11,7 @@ public class UploadDocumentSuccess : IntegrationTestBase
     private readonly Assert<UploadDocumentResponse> assert = new();
 
     [Fact]
-    public async Task UploadDocument_Success()
+    public async Task UploadDocumentSuccessAsync()
     {
         var file = MangoFilesHelper.GetTestImage();
         var user = await MangoModule.RequestAsync(
