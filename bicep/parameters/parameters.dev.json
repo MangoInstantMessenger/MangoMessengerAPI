@@ -3,37 +3,37 @@
   "contentVersion": "1.0.0.0",
   "parameters": {
     "rgName": {
-      "value": "mango-rg-228"
+      "value": "mango-rg-230"
     },
     "location": {
       "value": "North Europe"
     },
     "servicePlanName": {
-      "value": "mango-service-plan-228"
+      "value": "mango-service-plan-230"
     },
     "skuPlanName": {
       "value": "F1"
     },
     "webAppName": {
-      "value": "mangomessenger228"
+      "value": "mangomessenger230"
     },
     "storName": {
-      "value": "mangostoracc228"
+      "value": "mangostoracc230"
     },
     "skuStorageName": {
       "value": "Standard_LRS"
     },
     "contName": {
-      "value": "mangomessengercont228"
+      "value": "mangomessengercont230"
     },
     "keyVaultName": {
-      "value": "mangokeyvault228"
+      "value": "mangokeyvault230"
     },
     "sqlServerName": {
-      "value": "mangosqlserver228"
+      "value": "mangosqlserver230"
     },
     "dbName": {
-      "value": "mangodb228"
+      "value": "mangodb230"
     }
   }
 }
