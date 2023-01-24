@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using MangoAPI.Application.Interfaces;
 using MangoAPI.Domain.Constants;
 using MangoAPI.Domain.Entities;
+using System.Globalization;
 
 namespace MangoAPI.Application.Services;
 
@@ -77,6 +78,7 @@ public class MailgunApiEmailSenderService : IEmailSenderService
     private string GenerateEmailConfirmBody(UserEntity user)
     {
         return string.Format(
+            CultureInfo.InvariantCulture,
             Resources.EmailConfirmation,
             user.DisplayName,
             mailgunSettings.FrontendAddress,
@@ -88,6 +90,7 @@ public class MailgunApiEmailSenderService : IEmailSenderService
     private string GeneratePasswordRestoreRequestBody(UserEntity user, Guid requestId)
     {
         return string.Format(
+            CultureInfo.InvariantCulture,
             Resources.PasswordRestoration,
             user.DisplayName,
             mailgunSettings.FrontendAddress,

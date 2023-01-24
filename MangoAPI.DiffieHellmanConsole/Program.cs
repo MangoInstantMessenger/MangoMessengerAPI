@@ -34,6 +34,16 @@ public static class Program
 
     private static string FetchMethodName(string method)
     {
-        return method.StartsWith("openssl") ? "openssl" : method.StartsWith("cng") ? "cng" : "auth";
+        if (method.StartsWith("openssl", StringComparison.Ordinal))
+        {
+            return "openssl";
+        }
+
+        if (method.StartsWith("cng", StringComparison.Ordinal))
+        {
+            return "cng";
+        }
+
+        return "auth";
     }
 }
