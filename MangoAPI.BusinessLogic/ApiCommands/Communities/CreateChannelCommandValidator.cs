@@ -6,12 +6,12 @@ public class CreateChannelCommandValidator : AbstractValidator<CreateChannelComm
 {
     public CreateChannelCommandValidator()
     {
-        _ = RuleFor(x => x.ChannelTitle)
+        RuleFor(x => x.ChannelTitle)
             .Cascade(CascadeMode.Stop)
             .NotEmpty()
             .Length(1, 50);
 
-        _ = RuleFor(x => x.ChannelDescription)
+        RuleFor(x => x.ChannelDescription)
             .Cascade(CascadeMode.Stop)
             .NotEmpty()
             .Length(1, 100);

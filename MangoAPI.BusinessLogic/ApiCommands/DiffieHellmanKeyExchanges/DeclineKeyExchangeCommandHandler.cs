@@ -48,9 +48,9 @@ public class
             return responseFactory.ConflictResponse(message, description);
         }
 
-        _ = mangoDbContext.DiffieHellmanKeyExchangeEntities.Remove(keyExchangeRequest);
+        mangoDbContext.DiffieHellmanKeyExchangeEntities.Remove(keyExchangeRequest);
 
-        _ = await mangoDbContext.SaveChangesAsync(cancellationToken);
+        await mangoDbContext.SaveChangesAsync(cancellationToken);
 
         var result = ResponseBase.SuccessResponse;
 

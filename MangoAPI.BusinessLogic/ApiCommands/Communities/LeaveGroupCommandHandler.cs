@@ -60,18 +60,18 @@ public class LeaveGroupCommandHandler
 
             dbContext.Messages.RemoveRange(messages);
             dbContext.UserChats.RemoveRange(chat.ChatUsers);
-            _ = dbContext.Chats.Remove(chat);
+            dbContext.Chats.Remove(chat);
 
-            _ = await dbContext.SaveChangesAsync(cancellationToken);
+            await dbContext.SaveChangesAsync(cancellationToken);
 
             return responseFactory.SuccessResponse(LeaveGroupResponse.FromSuccess(chat.Id));
         }
 
-        _ = dbContext.UserChats.Remove(userChat);
+        dbContext.UserChats.Remove(userChat);
         chat.MembersCount--;
 
-        _ = dbContext.Update(chat);
-        _ = await dbContext.SaveChangesAsync(cancellationToken);
+        dbContext.Update(chat);
+        await dbContext.SaveChangesAsync(cancellationToken);
 
         return responseFactory.SuccessResponse(LeaveGroupResponse.FromSuccess(chat.Id));
     }

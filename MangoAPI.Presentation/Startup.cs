@@ -61,8 +61,8 @@ public class Startup
 
         app.UseEndpoints(endpoints =>
         {
-            _ = endpoints.MapControllers();
-            _ = endpoints.MapHub<ChatHub>("/notify");
+            endpoints.MapControllers();
+            endpoints.MapHub<ChatHub>("/notify");
         });
 
         // https://stackoverflow.com/a/62374509

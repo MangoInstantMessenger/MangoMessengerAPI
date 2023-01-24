@@ -17,7 +17,7 @@ public class VerifyEmailTestShouldThrowInvalidEmailConfirmationCode : Integratio
     {
         const string expectedMessage = ResponseMessageCodes.InvalidEmailConfirmationCode;
         var expectedDetails = ResponseMessageCodes.ErrorDictionary[expectedMessage];
-        _ = await MangoModule.RequestAsync(
+        await MangoModule.RequestAsync(
             request: CommandHelper.RegisterPetroCommand(),
             cancellationToken: CancellationToken.None);
 

@@ -7,18 +7,18 @@ public static class OpenSslInjectionExtensions
 {
     public static IServiceCollection AddOpenSslServicesAndHandlers(this IServiceCollection collection)
     {
-        _ = collection.AddSingleton<OpensslUploadDhParametersHandler>();
-        _ = collection.AddSingleton<OpensslDownloadDhParametersHandler>();
-        _ = collection.AddSingleton<OpensslGeneratePrivateKeyHandler>();
-        _ = collection.AddSingleton<OpensslGeneratePublicKeyHandler>();
-        _ = collection.AddSingleton<OpensslCreateKeyExchangeHandler>();
-        _ = collection.AddSingleton<OpensslPrintKeyExchangesHandler>();
-        _ = collection.AddSingleton<OpensslConfirmKeyExchangeHandler>();
-        _ = collection.AddSingleton<OpensslCreateCommonSecretHandler>();
-        _ = collection.AddSingleton<OpensslDownloadPublicKeyHandler>();
-        _ = collection.AddSingleton<OpensslDeclineKeyExchangeHandler>();
-        _ = collection.AddSingleton<OpensslPrintKeyExchangeByIdHandler>();
-        _ = collection.AddSingleton<OpensslValidateCommonSecretHandler>();
+        collection.AddSingleton<OpensslUploadDhParametersHandler>();
+        collection.AddSingleton<OpensslDownloadDhParametersHandler>();
+        collection.AddSingleton<OpensslGeneratePrivateKeyHandler>();
+        collection.AddSingleton<OpensslGeneratePublicKeyHandler>();
+        collection.AddSingleton<OpensslCreateKeyExchangeHandler>();
+        collection.AddSingleton<OpensslPrintKeyExchangesHandler>();
+        collection.AddSingleton<OpensslConfirmKeyExchangeHandler>();
+        collection.AddSingleton<OpensslCreateCommonSecretHandler>();
+        collection.AddSingleton<OpensslDownloadPublicKeyHandler>();
+        collection.AddSingleton<OpensslDeclineKeyExchangeHandler>();
+        collection.AddSingleton<OpensslPrintKeyExchangeByIdHandler>();
+        collection.AddSingleton<OpensslValidateCommonSecretHandler>();
 
         return collection;
     }

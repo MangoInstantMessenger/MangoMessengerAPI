@@ -20,8 +20,8 @@ public class ChangePasswordValidatorTestShouldThrowNewPasswordErrors
 
         var result = validator.TestValidate(command);
 
-        _ = result.ShouldHaveValidationErrorFor(x => x.NewPassword);
-        _ = result.Errors.Count.Should().Be(1);
-        _ = result.Errors[0].ErrorMessage.Should().Be("New password and repeat password should be same.");
+        result.ShouldHaveValidationErrorFor(x => x.NewPassword);
+        result.Errors.Count.Should().Be(1);
+        result.Errors[0].ErrorMessage.Should().Be("New password and repeat password should be same.");
     }
 }

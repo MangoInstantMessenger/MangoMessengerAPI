@@ -37,6 +37,6 @@ public class EditMessageSuccess : IntegrationTestBase
             await DbContextFixture.Messages.FirstAsync(x => x.Id == message.Response.MessageId);
 
         assert.Pass(result);
-        _ = editedMessage.Content.Should().Be(command.ModifiedText);
+        editedMessage.Content.Should().Be(command.ModifiedText);
     }
 }

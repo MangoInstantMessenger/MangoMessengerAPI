@@ -24,7 +24,7 @@ public class SearchCommunityTestSuccess : IntegrationTestBase
         var result = await MangoModule.RequestAsync(query, CancellationToken.None);
 
         assert.Pass(result);
-        _ = result.Response.Chats.Count.Should().Be(1);
-        _ = result.Response.Chats[0].ChatId.Should().Be(chat.Response.ChatId);
+        result.Response.Chats.Count.Should().Be(1);
+        result.Response.Chats[0].ChatId.Should().Be(chat.Response.ChatId);
     }
 }

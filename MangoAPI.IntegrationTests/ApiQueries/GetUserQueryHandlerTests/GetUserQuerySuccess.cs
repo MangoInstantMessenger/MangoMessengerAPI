@@ -21,6 +21,6 @@ public class GetUserQuerySuccess : IntegrationTestBase
         var result = await MangoModule.RequestAsync(query, CancellationToken.None);
 
         assert.Pass(result);
-        _ = result.Response.User.UserId.Should().Be(user.Response.Tokens.UserId);
+        result.Response.User.UserId.Should().Be(user.Response.Tokens.UserId);
     }
 }

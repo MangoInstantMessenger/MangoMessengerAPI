@@ -18,7 +18,7 @@ public class GetDhParametersTestSuccess : IntegrationTestBase
         var file = MangoFilesHelper.GetTestImage();
         var user =
             await MangoModule.RequestAsync(CommandHelper.RegisterKhachaturCommand(), CancellationToken.None);
-        _ = await MangoModule.RequestAsync(
+        await MangoModule.RequestAsync(
             request: CommandHelper.CreateOpenSslCreateDiffieHellmanParameterCommand(
                 diffieHellmanParameter: file,
                 userId: user.Response.Tokens.UserId),
@@ -31,6 +31,6 @@ public class GetDhParametersTestSuccess : IntegrationTestBase
         await using var target = new MemoryStream();
         await file.CopyToAsync(target, CancellationToken.None);
         var targetBytes = target.ToArray();
-        _ = response.Response.FileContent.Should().BeEquivalentTo(targetBytes);
+        response.Response.FileContent.Should().BeEquivalentTo(targetBytes);
     }
 }

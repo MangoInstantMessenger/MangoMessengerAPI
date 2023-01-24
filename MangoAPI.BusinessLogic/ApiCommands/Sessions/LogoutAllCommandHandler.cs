@@ -30,7 +30,7 @@ public class LogoutAllCommandHandler
 
         dbContext.Sessions.RemoveRange(userSessions);
 
-        _ = await dbContext.SaveChangesAsync(cancellationToken);
+        await dbContext.SaveChangesAsync(cancellationToken);
 
         return responseFactory.SuccessResponse(ResponseBase.SuccessResponse);
     }

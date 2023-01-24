@@ -78,10 +78,10 @@ public class EditMessageCommandHandler
             chat.LastMessageTime = updatedAt;
         }
 
-        _ = dbContext.Messages.Update(message);
-        _ = dbContext.Chats.Update(chat);
+        dbContext.Messages.Update(message);
+        dbContext.Chats.Update(chat);
 
-        _ = await dbContext.SaveChangesAsync(cancellationToken);
+        await dbContext.SaveChangesAsync(cancellationToken);
 
         var messageDeleteNotification = new MessageEditNotification
         {

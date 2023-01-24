@@ -49,9 +49,9 @@ public class VerifyEmailCommandHandler
 
         user.EmailConfirmed = true;
 
-        _ = dbContext.Update(user);
+        dbContext.Update(user);
 
-        _ = await dbContext.SaveChangesAsync(cancellationToken);
+        await dbContext.SaveChangesAsync(cancellationToken);
 
         return responseFactory.SuccessResponse(ResponseBase.SuccessResponse);
     }

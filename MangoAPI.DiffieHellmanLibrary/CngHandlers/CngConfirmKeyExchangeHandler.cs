@@ -55,6 +55,6 @@ public class CngConfirmKeyExchangeHandler : BaseHandler, IConfirmKeyExchangeHand
 
         var httpResponseMessage = await HttpClient.SendAsync(request);
 
-        _ = httpResponseMessage.EnsureSuccessStatusCode();
+        httpResponseMessage.EnsureSuccessStatusCode();
     }
 }

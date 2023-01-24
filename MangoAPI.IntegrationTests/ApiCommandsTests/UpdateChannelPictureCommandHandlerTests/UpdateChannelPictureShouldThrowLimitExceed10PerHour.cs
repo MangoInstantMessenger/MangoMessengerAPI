@@ -51,7 +51,7 @@ public class UpdateChannelPictureShouldThrowLimitExceed10 : IntegrationTestBase
         assert.Fail(result, expectedMessage, expectedDetails);
         foreach (var fileName in imageNamesList)
         {
-            _ = await BlobService.DeleteBlobAsync(fileName);
+            await BlobService.DeleteBlobAsync(fileName);
         }
     }
 }

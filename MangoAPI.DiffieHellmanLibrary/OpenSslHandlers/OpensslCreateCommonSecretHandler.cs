@@ -71,6 +71,6 @@ public class OpensslCreateCommonSecretHandler : BaseHandler, ICreateCommonSecret
                 "pkeyutl", "-derive", "-inkey", privateKeyPath, "-peerkey", publicKeyPath, "-out", commonSecretPath,
             });
 
-        _ = await command.ExecuteAsync();
+        await command.ExecuteAsync();
     }
 }

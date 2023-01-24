@@ -17,7 +17,7 @@ public class RegisterTestShouldThrowUserAlreadyExists : IntegrationTestBase
         const string expectedMessage = ResponseMessageCodes.UserAlreadyExists;
         var expectedDetails = ResponseMessageCodes.ErrorDictionary[expectedMessage];
         var command = CommandHelper.RegisterPetroCommand();
-        _ = await MangoModule.RequestAsync(command, CancellationToken.None);
+        await MangoModule.RequestAsync(command, CancellationToken.None);
 
         var registrationsResult = await MangoModule.RequestAsync(command, CancellationToken.None);
 

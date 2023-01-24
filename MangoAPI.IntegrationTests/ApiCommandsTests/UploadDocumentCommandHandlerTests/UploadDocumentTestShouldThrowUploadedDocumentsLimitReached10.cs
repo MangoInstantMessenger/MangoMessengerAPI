@@ -35,7 +35,7 @@ public class UploadDocumentTestShouldThrowUploadedDocumentsLimitReached10 : Inte
         assert.Fail(result, expectedMessage, expectedDetails);
         foreach (var fileName in fileNamesList)
         {
-            _ = await BlobService.DeleteBlobAsync(fileName);
+            await BlobService.DeleteBlobAsync(fileName);
         }
     }
 }

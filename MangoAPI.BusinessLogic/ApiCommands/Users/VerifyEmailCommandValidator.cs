@@ -6,7 +6,7 @@ public class VerifyEmailCommandValidator : AbstractValidator<VerifyEmailCommand>
 {
     public VerifyEmailCommandValidator()
     {
-        _ = RuleFor(x => x.Email)
+        RuleFor(x => x.Email)
             .Cascade(CascadeMode.Stop)
             .NotEmpty()
             .Length(1, 300);

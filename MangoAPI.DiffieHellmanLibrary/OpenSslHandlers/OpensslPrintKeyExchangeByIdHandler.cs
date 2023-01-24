@@ -32,7 +32,7 @@ public class OpensslPrintKeyExchangeByIdHandler : BaseHandler, IPrintKeyExchange
         var uri = new Uri(address, UriKind.Absolute);
 
         var response = await HttpClient.GetAsync(uri);
-        _ = response.EnsureSuccessStatusCode();
+        response.EnsureSuccessStatusCode();
 
         var jsonAsString = await response.Content.ReadAsStringAsync();
 

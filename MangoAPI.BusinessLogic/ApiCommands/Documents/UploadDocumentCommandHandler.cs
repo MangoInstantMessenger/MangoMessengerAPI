@@ -48,7 +48,7 @@ public class UploadDocumentCommandHandler
         var file = request.FormFile;
         var uniqueFileName = StringService.GetUniqueFileName(file.FileName);
 
-        _ = await blobService.UploadFileBlobAsync(file.OpenReadStream(), request.ContentType, uniqueFileName);
+        await blobService.UploadFileBlobAsync(file.OpenReadStream(), request.ContentType, uniqueFileName);
 
         var documentEntity = new DocumentEntity
         {
@@ -57,9 +57,9 @@ public class UploadDocumentCommandHandler
             UploadedAt = DateTime.UtcNow,
         };
 
-        _ = dbContext.Documents.Add(documentEntity);
+        dbContext.Documents.Add(documentEntity);
 
-        _ = await dbContext.SaveChangesAsync(cancellationToken);
+        await dbContext.SaveChangesAsync(cancellationToken);
 
         var fileUrl = await blobService.GetBlobAsync(uniqueFileName);
 

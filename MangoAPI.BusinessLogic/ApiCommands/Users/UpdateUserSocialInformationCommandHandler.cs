@@ -48,9 +48,9 @@ public class UpdateUserSocialInformationCommandHandler
 
         user.UserInformation.UpdatedAt = DateTime.UtcNow;
 
-        _ = dbContext.UserInformation.Update(user.UserInformation);
+        dbContext.UserInformation.Update(user.UserInformation);
 
-        _ = await dbContext.SaveChangesAsync(cancellationToken);
+        await dbContext.SaveChangesAsync(cancellationToken);
 
         return responseFactory.SuccessResponse(ResponseBase.SuccessResponse);
     }

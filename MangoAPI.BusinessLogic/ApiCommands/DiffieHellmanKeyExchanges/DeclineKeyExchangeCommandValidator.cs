@@ -6,7 +6,7 @@ public class DeclineKeyExchangeCommandValidator : AbstractValidator<DeclineKeyEx
 {
     public DeclineKeyExchangeCommandValidator()
     {
-        _ = RuleFor(x => x.RequestId).NotEmpty();
-        _ = RuleFor(x => x.UserId).NotEmpty();
+        RuleFor(x => x.RequestId).NotEmpty();
+        RuleFor(x => x.UserId).NotEmpty();
     }
 }

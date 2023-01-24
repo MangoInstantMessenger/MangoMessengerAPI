@@ -33,7 +33,7 @@ public class UpdateProfilePictureTestShouldThrowUploadedDocumentsLimitReached10 
         assert.Fail(result, expectedMessage, expectedDetails);
         foreach (var fileName in fileNameList)
         {
-            _ = await BlobService.DeleteBlobAsync(fileName);
+            await BlobService.DeleteBlobAsync(fileName);
         }
     }
 }

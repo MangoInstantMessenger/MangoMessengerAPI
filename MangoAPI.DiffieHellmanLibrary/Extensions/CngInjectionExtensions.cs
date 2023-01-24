@@ -7,14 +7,14 @@ public static class CngInjectionExtensions
 {
     public static IServiceCollection AddCngServicesAndHandlers(this IServiceCollection collection)
     {
-        _ = collection.AddSingleton<CngGeneratePrivateKeyHandler>();
-        _ = collection.AddSingleton<CngGeneratePublicKeyHandler>();
-        _ = collection.AddSingleton<CngPrintKeyExchangesHandler>();
-        _ = collection.AddSingleton<CngConfirmKeyExchangeHandler>();
-        _ = collection.AddSingleton<CngCreateCommonSecretHandler>();
-        _ = collection.AddSingleton<CngCreateKeyExchangeHandler>();
-        _ = collection.AddSingleton<CngDownloadPublicKeyHandler>();
-        _ = collection.AddSingleton<CngValidateCommonSecretHandler>();
+        collection.AddSingleton<CngGeneratePrivateKeyHandler>();
+        collection.AddSingleton<CngGeneratePublicKeyHandler>();
+        collection.AddSingleton<CngPrintKeyExchangesHandler>();
+        collection.AddSingleton<CngConfirmKeyExchangeHandler>();
+        collection.AddSingleton<CngCreateCommonSecretHandler>();
+        collection.AddSingleton<CngCreateKeyExchangeHandler>();
+        collection.AddSingleton<CngDownloadPublicKeyHandler>();
+        collection.AddSingleton<CngValidateCommonSecretHandler>();
 
         return collection;
     }

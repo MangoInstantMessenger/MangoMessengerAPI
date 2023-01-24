@@ -43,6 +43,6 @@ public class CngCreateKeyExchangeHandler : BaseHandler, ICreateKeyExchangeHandle
 
         var httpResponseMessage = await HttpClient.SendAsync(request);
 
-        _ = httpResponseMessage.EnsureSuccessStatusCode();
+        httpResponseMessage.EnsureSuccessStatusCode();
     }
 }

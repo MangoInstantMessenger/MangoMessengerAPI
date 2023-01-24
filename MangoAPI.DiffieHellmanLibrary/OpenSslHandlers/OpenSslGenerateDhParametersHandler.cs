@@ -23,7 +23,7 @@ public static class OpenSslGenerateDhParametersHandler
             var command = Cli.Wrap("openssl").WithArguments(
                 new[] { "genpkey", "-genparam", "-algorithm", "DH", "-out", parametersPath });
 
-            _ = await command.ExecuteAsync();
+            await command.ExecuteAsync();
         }
 
         Console.WriteLine(@"DH parameters has been generated successfully.");

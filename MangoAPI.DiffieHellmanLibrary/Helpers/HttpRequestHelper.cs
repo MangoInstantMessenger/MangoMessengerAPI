@@ -12,7 +12,7 @@ public static class HttpRequestHelper
         var uri = new Uri(route, UriKind.Absolute);
         var data = new StringContent(json, Encoding.UTF8, "application/json");
         var response = await client.PostAsync(uri, data);
-        _ = response.EnsureSuccessStatusCode();
+        response.EnsureSuccessStatusCode();
         var responseBody = await response.Content.ReadAsStringAsync();
         return responseBody;
     }
@@ -21,7 +21,7 @@ public static class HttpRequestHelper
     {
         var uri = new Uri(route);
         var response = await client.PostAsync(uri, null!);
-        _ = response.EnsureSuccessStatusCode();
+        response.EnsureSuccessStatusCode();
         var responseBody = await response.Content.ReadAsStringAsync();
         return responseBody;
     }

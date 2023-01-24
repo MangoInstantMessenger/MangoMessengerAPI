@@ -20,7 +20,7 @@ public class GetContactsTestSuccess : IntegrationTestBase
         var contact = await MangoModule.RequestAsync(
             request: CommandHelper.RegisterKhachaturCommand(),
             cancellationToken: CancellationToken.None);
-        _ = await MangoModule.RequestAsync(
+        await MangoModule.RequestAsync(
             request: CommandHelper.CreateContactCommand(user.Response.Tokens.UserId, contact.Response.Tokens.UserId),
             cancellationToken: CancellationToken.None);
         var query = new GetContactsQuery(UserId: user.Response.Tokens.UserId);
@@ -28,7 +28,7 @@ public class GetContactsTestSuccess : IntegrationTestBase
         var result = await MangoModule.RequestAsync(query, CancellationToken.None);
 
         assert.Pass(result);
-        _ = result.Response.Contacts.Count.Should().Be(1);
-        _ = result.Response.Contacts[0].UserId.Should().Be(contact.Response.Tokens.UserId);
+        result.Response.Contacts.Count.Should().Be(1);
+        result.Response.Contacts[0].UserId.Should().Be(contact.Response.Tokens.UserId);
     }
 }

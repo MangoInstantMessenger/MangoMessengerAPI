@@ -59,16 +59,16 @@ public class CreateChannelCommandHandler
             Image = "default_group_logo.png",
         };
 
-        _ = dbContext.Chats.Add(channel);
+        dbContext.Chats.Add(channel);
 
-        _ = dbContext.UserChats.Add(new UserChatEntity
+        dbContext.UserChats.Add(new UserChatEntity
         {
             ChatId = channel.Id,
             RoleId = UserRole.Owner,
             UserId = request.UserId,
         });
 
-        _ = await dbContext.SaveChangesAsync(cancellationToken);
+        await dbContext.SaveChangesAsync(cancellationToken);
 
         var chatDto = channel.ToChatDto();
         await hubContext.Clients.Group(request.UserId.ToString()).UpdateUserChatsAsync(chatDto);

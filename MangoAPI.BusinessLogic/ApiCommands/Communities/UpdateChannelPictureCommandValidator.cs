@@ -7,11 +7,11 @@ public class UpdateChanelPictureCommandValidator : AbstractValidator<UpdateChane
 {
     public UpdateChanelPictureCommandValidator()
     {
-        _ = RuleFor(x => x.ChatId).NotEmpty();
-        _ = RuleFor(x => x.UserId).NotEmpty();
-        _ = RuleFor(x => x.ContentType).NotEmpty();
+        RuleFor(x => x.ChatId).NotEmpty();
+        RuleFor(x => x.UserId).NotEmpty();
+        RuleFor(x => x.ContentType).NotEmpty();
 
-        _ = RuleFor(x => x.NewGroupPicture)
+        RuleFor(x => x.NewGroupPicture)
             .NotNull()
             .SetValidator(new CommonImageValidator());
     }

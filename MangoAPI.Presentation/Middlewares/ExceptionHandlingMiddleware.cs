@@ -62,7 +62,7 @@ public static class HandlingMiddlewareExtenstion
 {
     public static void ConfigureExceptionHandler(this IApplicationBuilder app)
     {
-        _ = app.UseMiddleware<ExceptionHandlingMiddleware>();
+        app.UseMiddleware<ExceptionHandlingMiddleware>();
     }
 }
 

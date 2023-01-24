@@ -37,7 +37,7 @@ public abstract class BaseHandler
 
         var response = await HttpClient.GetAsync(uri);
 
-        _ = response.EnsureSuccessStatusCode();
+        response.EnsureSuccessStatusCode();
 
         var responseBody = await response.Content.ReadAsStringAsync();
 

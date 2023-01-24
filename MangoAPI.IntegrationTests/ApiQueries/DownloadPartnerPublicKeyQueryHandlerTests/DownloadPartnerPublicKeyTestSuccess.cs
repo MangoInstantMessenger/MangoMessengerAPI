@@ -26,7 +26,7 @@ public class DownloadPartnerPublicKeyTestSuccess : IntegrationTestBase
                 senderId: sender.Response.Tokens.UserId,
                 senderPublicKey: publicKey),
             cancellationToken: CancellationToken.None);
-        _ = await MangoModule.RequestAsync(
+        await MangoModule.RequestAsync(
             request: CommandHelper.CreateOpenSslConfirmKeyExchangeCommand(
                 requestId: keyExchange.Response.RequestId,
                 userId: receiver.Response.Tokens.UserId,
@@ -41,6 +41,6 @@ public class DownloadPartnerPublicKeyTestSuccess : IntegrationTestBase
         await using var target = new MemoryStream();
         await publicKey.CopyToAsync(target, CancellationToken.None);
         var publicKeyBytes = target.ToArray();
-        _ = response.Response.PublicKey.Should().BeEquivalentTo(publicKeyBytes);
+        response.Response.PublicKey.Should().BeEquivalentTo(publicKeyBytes);
     }
 }

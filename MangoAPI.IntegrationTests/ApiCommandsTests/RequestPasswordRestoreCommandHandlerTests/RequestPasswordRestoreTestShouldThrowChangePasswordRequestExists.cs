@@ -16,10 +16,10 @@ public class RequestPasswordRestoreTestShouldThrowChangePasswordRequestExists : 
     {
         const string expectedMessage = ResponseMessageCodes.ChangePasswordRequestExists;
         var expectedDetails = ResponseMessageCodes.ErrorDictionary[expectedMessage];
-        _ = await MangoModule.RequestAsync(
+        await MangoModule.RequestAsync(
             request: CommandHelper.RegisterPetroCommand(),
             cancellationToken: CancellationToken.None);
-        _ = await MangoModule.RequestAsync(
+        await MangoModule.RequestAsync(
             request: CommandHelper.CreateRequestPasswordRestoreCommand("kolosovp95@gmail.com"),
             cancellationToken: CancellationToken.None);
 

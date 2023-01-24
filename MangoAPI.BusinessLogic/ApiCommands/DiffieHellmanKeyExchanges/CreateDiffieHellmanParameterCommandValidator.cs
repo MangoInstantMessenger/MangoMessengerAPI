@@ -7,7 +7,7 @@ public class
 {
     public CreateDiffieHellmanParameterCommandValidator()
     {
-        _ = RuleFor(x => x.UserId).NotEmpty();
-        _ = RuleFor(x => x.DiffieHellmanParameter).NotEmpty();
+        RuleFor(x => x.UserId).NotEmpty();
+        RuleFor(x => x.DiffieHellmanParameter).NotEmpty();
     }
 }

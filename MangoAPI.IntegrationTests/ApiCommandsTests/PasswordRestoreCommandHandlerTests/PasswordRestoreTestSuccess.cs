@@ -14,7 +14,7 @@ public class PasswordRestoreTestSuccess : IntegrationTestBase
     [Fact]
     public async Task PasswordRestoreTestSuccessAsync()
     {
-        _ = await MangoModule.RequestAsync(
+        await MangoModule.RequestAsync(
             request: CommandHelper.RegisterPetroCommand(),
             cancellationToken: CancellationToken.None);
         var passwordRestoreRequest = await MangoModule.RequestAsync(

@@ -6,8 +6,8 @@ public class SearchChatMessageQueryValidator : AbstractValidator<SearchChatMessa
 {
     public SearchChatMessageQueryValidator()
     {
-        _ = RuleFor(x => x.ChatId).NotEmpty();
-        _ = RuleFor(x => x.MessageText).NotEmpty().Length(1, 30);
-        _ = RuleFor(x => x.UserId).NotEmpty();
+        RuleFor(x => x.ChatId).NotEmpty();
+        RuleFor(x => x.MessageText).NotEmpty().Length(1, 30);
+        RuleFor(x => x.UserId).NotEmpty();
     }
 }

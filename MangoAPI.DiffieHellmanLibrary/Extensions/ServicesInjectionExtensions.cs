@@ -6,7 +6,7 @@ public static class ServicesInjectionExtensions
 {
     public static IServiceCollection AddServices(this IServiceCollection collection)
     {
-        _ = collection.AddSingleton(_ =>
+        collection.AddSingleton(_ =>
         {
             var client = new HttpClient();
             return client;

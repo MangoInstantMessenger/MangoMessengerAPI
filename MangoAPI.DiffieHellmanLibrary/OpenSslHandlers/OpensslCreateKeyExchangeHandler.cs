@@ -48,6 +48,6 @@ public class OpensslCreateKeyExchangeHandler : BaseHandler, ICreateKeyExchangeHa
 
         var httpResponseMessage = await HttpClient.SendAsync(request);
 
-        _ = httpResponseMessage.EnsureSuccessStatusCode();
+        httpResponseMessage.EnsureSuccessStatusCode();
     }
 }

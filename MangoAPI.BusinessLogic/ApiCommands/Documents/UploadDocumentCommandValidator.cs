@@ -7,10 +7,10 @@ public class UploadDocumentCommandValidator : AbstractValidator<UploadDocumentCo
 {
     public UploadDocumentCommandValidator()
     {
-        _ = RuleFor(x => x.UserId).NotEmpty();
-        _ = RuleFor(x => x.ContentType).NotEmpty();
+        RuleFor(x => x.UserId).NotEmpty();
+        RuleFor(x => x.ContentType).NotEmpty();
 
-        _ = RuleFor(x => x.FormFile)
+        RuleFor(x => x.FormFile)
             .NotNull()
             .SetValidator(new CommonFileValidator());
     }

@@ -23,6 +23,6 @@ public class UploadDocumentSuccess : IntegrationTestBase
         var result = await MangoModule.RequestAsync(command, CancellationToken.None);
 
         assert.Pass(result);
-        _ = await BlobService.DeleteBlobAsync(result.Response.FileName);
+        await BlobService.DeleteBlobAsync(result.Response.FileName);
     }
 }

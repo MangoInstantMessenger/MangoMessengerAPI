@@ -16,13 +16,13 @@ public class SearchContactByDisplayNameTestSuccess : IntegrationTestBase
     {
         var user =
             await MangoModule.RequestAsync(CommandHelper.RegisterKhachaturCommand(), CancellationToken.None);
-        _ = await MangoModule.RequestAsync(CommandHelper.RegisterPetroCommand(), CancellationToken.None);
+        await MangoModule.RequestAsync(CommandHelper.RegisterPetroCommand(), CancellationToken.None);
         var query = new SearchContactQuery(UserId: user.Response.Tokens.UserId, SearchQuery: "Kolosov");
 
         var result = await MangoModule.RequestAsync(query, CancellationToken.None);
 
         assert.Pass(result);
-        _ = result.Response.Contacts.Count.Should().Be(1);
-        _ = result.Response.Contacts[0].DisplayName.Should().Be("Petro Kolosov");
+        result.Response.Contacts.Count.Should().Be(1);
+        result.Response.Contacts[0].DisplayName.Should().Be("Petro Kolosov");
     }
 }

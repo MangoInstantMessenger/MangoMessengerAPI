@@ -20,7 +20,7 @@ public class SearchChatMessageTestSuccess : IntegrationTestBase
             await MangoModule.RequestAsync(
                 request: CommandHelper.CreateExtremeCodeMainChatCommand(user.Response.Tokens.UserId),
                 cancellationToken: CancellationToken.None);
-        _ = await MangoModule.RequestAsync(
+        await MangoModule.RequestAsync(
             request: CommandHelper.SendMessageToChannelCommand(user.Response.Tokens.UserId, chat.Response.ChatId),
             cancellationToken: CancellationToken.None);
         var query = new SearchChatMessagesQuery(
@@ -31,6 +31,6 @@ public class SearchChatMessageTestSuccess : IntegrationTestBase
         var result = await MangoModule.RequestAsync(query, CancellationToken.None);
 
         assert.Pass(result);
-        _ = result.Response.Messages.Count.Should().Be(1);
+        result.Response.Messages.Count.Should().Be(1);
     }
 }

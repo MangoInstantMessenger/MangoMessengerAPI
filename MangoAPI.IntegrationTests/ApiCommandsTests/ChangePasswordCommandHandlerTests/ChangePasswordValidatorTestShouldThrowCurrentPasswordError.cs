@@ -20,8 +20,8 @@ public class ChangePasswordValidatorTestShouldThrowCurrentPasswordError
 
         var result = validator.TestValidate(command);
 
-        _ = result.ShouldHaveValidationErrorFor(x => x.CurrentPassword);
-        _ = result.Errors.Count.Should().Be(1);
-        _ = result.Errors[0].ErrorMessage.Should().Be("New and old passwords cannot be same");
+        result.ShouldHaveValidationErrorFor(x => x.CurrentPassword);
+        result.Errors.Count.Should().Be(1);
+        result.Errors[0].ErrorMessage.Should().Be("New and old passwords cannot be same");
     }
 }

@@ -46,7 +46,7 @@ public class CngDownloadPublicKeyHandler : BaseHandler, IDownloadPublicKeyHandle
         var uri = new Uri(address, UriKind.Absolute);
 
         var response = await HttpClient.GetAsync(uri);
-        _ = response.EnsureSuccessStatusCode();
+        response.EnsureSuccessStatusCode();
 
         await using var stream = await response.Content.ReadAsStreamAsync();
 

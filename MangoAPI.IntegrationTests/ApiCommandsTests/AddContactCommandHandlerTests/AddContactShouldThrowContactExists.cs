@@ -22,7 +22,7 @@ public class AddContactShouldThrowContactExists : IntegrationTestBase
         var command = new AddContactCommand(
             UserId: sender.Response.Tokens.UserId,
             ContactId: receiver.Response.Tokens.UserId);
-        _ = await MangoModule.RequestAsync(command, CancellationToken.None);
+        await MangoModule.RequestAsync(command, CancellationToken.None);
 
         var result = await MangoModule.RequestAsync(command, CancellationToken.None);
 

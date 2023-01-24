@@ -6,8 +6,8 @@ public class DeleteMessageCommandValidator : AbstractValidator<DeleteMessageComm
 {
     public DeleteMessageCommandValidator()
     {
-        _ = RuleFor(x => x.ChatId).NotEmpty();
-        _ = RuleFor(x => x.UserId).NotEmpty();
-        _ = RuleFor(x => x.MessageId).NotEmpty();
+        RuleFor(x => x.ChatId).NotEmpty();
+        RuleFor(x => x.UserId).NotEmpty();
+        RuleFor(x => x.MessageId).NotEmpty();
     }
 }

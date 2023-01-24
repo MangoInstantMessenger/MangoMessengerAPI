@@ -16,7 +16,7 @@ public class GetDhParametersTestShouldThrowDhParameterNotFound : IntegrationTest
     {
         const string expectedMessage = ResponseMessageCodes.DhParameterNotFound;
         var expectedDetails = ResponseMessageCodes.ErrorDictionary[expectedMessage];
-        _ = await MangoModule.RequestAsync(CommandHelper.RegisterKhachaturCommand(), CancellationToken.None);
+        await MangoModule.RequestAsync(CommandHelper.RegisterKhachaturCommand(), CancellationToken.None);
         var query = new GetDhParametersQuery();
 
         var response = await MangoModule.RequestAsync(query, CancellationToken.None);

@@ -20,7 +20,7 @@ public class RefreshSessionTestSuccess : IntegrationTestBase
             cancellationToken: CancellationToken.None);
         var userId = user.Response.Tokens.UserId;
         var userEntity = await DbContextFixture.Users.FirstAsync(x => x.Id == userId);
-        _ = await MangoModule.RequestAsync(
+        await MangoModule.RequestAsync(
             request: CommandHelper.CreateVerifyEmailCommand(userEntity.Email, userEntity.EmailCode),
             cancellationToken: CancellationToken.None);
         var login = await MangoModule.RequestAsync(

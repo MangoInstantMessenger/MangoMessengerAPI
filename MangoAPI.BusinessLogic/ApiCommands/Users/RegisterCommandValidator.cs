@@ -6,22 +6,22 @@ public class RegisterCommandValidator : AbstractValidator<RegisterCommand>
 {
     public RegisterCommandValidator()
     {
-        _ = RuleFor(x => x.Email)
+        RuleFor(x => x.Email)
             .NotEmpty()
             .WithMessage("Email address required.")
             .EmailAddress()
             .WithMessage("Email address should be in proper format.")
             .Length(1, 50);
 
-        _ = RuleFor(x => x.Password)
+        RuleFor(x => x.Password)
             .NotEmpty()
             .Length(8, 50)
             .WithMessage("Password must be at least 8 characters.");
 
-        _ = RuleFor(x => x.DisplayName)
+        RuleFor(x => x.DisplayName)
             .NotEmpty()
             .Length(1, 50);
 
-        _ = RuleFor(x => x.TermsAccepted).Equal(true);
+        RuleFor(x => x.TermsAccepted).Equal(true);
     }
 }

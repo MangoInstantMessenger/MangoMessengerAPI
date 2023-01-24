@@ -33,9 +33,9 @@ public class SendMessageSuccessTest : IntegrationTestBase
             .FirstAsync(x => x.Id == result.Response.MessageId);
         var chatEntity = messageEntity.Chat;
         var userEntity = messageEntity.User;
-        _ = chatEntity.LastMessageAuthor.Should().Be(userEntity.DisplayName);
-        _ = chatEntity.LastMessageId.Should().Be(messageEntity.Id);
-        _ = chatEntity.LastMessageText.Should().Be(messageEntity.Content);
-        _ = chatEntity.LastMessageTime.Should().Be(messageEntity.CreatedAt);
+        chatEntity.LastMessageAuthor.Should().Be(userEntity.DisplayName);
+        chatEntity.LastMessageId.Should().Be(messageEntity.Id);
+        chatEntity.LastMessageText.Should().Be(messageEntity.Content);
+        chatEntity.LastMessageTime.Should().Be(messageEntity.CreatedAt);
     }
 }

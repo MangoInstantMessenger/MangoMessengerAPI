@@ -6,7 +6,7 @@ public class GetKeyExchangeRequestByIdQueryValidator : AbstractValidator<GetKeyE
 {
     public GetKeyExchangeRequestByIdQueryValidator()
     {
-        _ = RuleFor(x => x.UserId).NotEmpty();
-        _ = RuleFor(x => x.KeyExchangeRequestId).NotEmpty();
+        RuleFor(x => x.UserId).NotEmpty();
+        RuleFor(x => x.KeyExchangeRequestId).NotEmpty();
     }
 }

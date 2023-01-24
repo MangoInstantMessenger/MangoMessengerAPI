@@ -53,9 +53,9 @@ public class ChangePasswordCommandHandler
             return responseFactory.ConflictResponse(errorMessage, details);
         }
 
-        _ = await userManager.RemovePasswordAsync(user);
+        await userManager.RemovePasswordAsync(user);
 
-        _ = await userManager.AddPasswordAsync(user, request.NewPassword);
+        await userManager.AddPasswordAsync(user, request.NewPassword);
 
         return responseFactory.SuccessResponse(ResponseBase.SuccessResponse);
     }

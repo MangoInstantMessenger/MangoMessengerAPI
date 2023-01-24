@@ -63,7 +63,7 @@ public class RefreshSessionCommandHandler : IRequestHandler<RefreshSessionComman
                 dbContext.Sessions.RemoveRange(userSessions);
                 break;
             default:
-                _ = dbContext.Sessions.Remove(session);
+                dbContext.Sessions.Remove(session);
                 break;
         }
 
@@ -77,8 +77,8 @@ public class RefreshSessionCommandHandler : IRequestHandler<RefreshSessionComman
 
         var accessToken = jwtGenerator.GenerateJwtToken(session.UserEntity);
 
-        _ = dbContext.Sessions.Add(newSession);
-        _ = await dbContext.SaveChangesAsync(cancellationToken);
+        dbContext.Sessions.Add(newSession);
+        await dbContext.SaveChangesAsync(cancellationToken);
 
         var expires = ((DateTimeOffset)session.ExpiresAt).ToUnixTimeSeconds();
         var userDisplayName = session.UserEntity.DisplayName;

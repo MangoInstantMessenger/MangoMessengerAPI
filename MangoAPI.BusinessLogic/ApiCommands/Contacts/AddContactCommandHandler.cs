@@ -68,8 +68,8 @@ public class AddContactCommandHandler
             CreatedAt = DateTime.UtcNow,
         };
 
-        _ = dbContext.UserContacts.Add(contactEntity);
-        _ = await dbContext.SaveChangesAsync(cancellationToken);
+        dbContext.UserContacts.Add(contactEntity);
+        await dbContext.SaveChangesAsync(cancellationToken);
 
         return responseFactory.SuccessResponse(ResponseBase.SuccessResponse);
     }

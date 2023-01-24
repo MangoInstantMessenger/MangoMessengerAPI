@@ -55,7 +55,7 @@ public class BlobService : IBlobService
     private BlobContainerClient GetContainerClient(string blobContainerName)
     {
         var containerClient = blobClient.GetBlobContainerClient(blobContainerName);
-        _ = containerClient.CreateIfNotExists();
+        containerClient.CreateIfNotExists();
         return containerClient;
     }
 }

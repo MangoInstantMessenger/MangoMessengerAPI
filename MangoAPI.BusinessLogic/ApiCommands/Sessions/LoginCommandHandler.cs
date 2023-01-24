@@ -84,8 +84,8 @@ public class LoginCommandHandler : IRequestHandler<LoginCommand, Result<TokensRe
             dbContext.Sessions.RemoveRange(userSessions);
         }
 
-        _ = dbContext.Sessions.Add(session);
-        _ = await dbContext.SaveChangesAsync(cancellationToken);
+        dbContext.Sessions.Add(session);
+        await dbContext.SaveChangesAsync(cancellationToken);
 
         var expires = ((DateTimeOffset)session.ExpiresAt).ToUnixTimeSeconds();
         var userDisplayName = user.DisplayName;

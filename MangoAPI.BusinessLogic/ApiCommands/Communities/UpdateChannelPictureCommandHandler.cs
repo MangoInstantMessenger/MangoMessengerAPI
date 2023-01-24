@@ -68,7 +68,7 @@ public class
         var uniqueFileName = StringService.GetUniqueFileName(file.FileName);
         var stream = file.OpenReadStream();
 
-        _ = await blobService.UploadFileBlobAsync(stream, request.ContentType, uniqueFileName);
+        await blobService.UploadFileBlobAsync(stream, request.ContentType, uniqueFileName);
 
         var newUserPicture = new DocumentEntity
         {
@@ -77,13 +77,13 @@ public class
             UploadedAt = DateTime.UtcNow,
         };
 
-        _ = dbContext.Documents.Add(newUserPicture);
+        dbContext.Documents.Add(newUserPicture);
 
         userChat.Chat.Image = uniqueFileName;
 
-        _ = dbContext.Update(userChat.Chat);
+        dbContext.Update(userChat.Chat);
 
-        _ = await dbContext.SaveChangesAsync(cancellationToken);
+        await dbContext.SaveChangesAsync(cancellationToken);
 
         var blobUrl = await blobService.GetBlobAsync(uniqueFileName);
         var response = UpdateChannelPictureResponse.FromSuccess(blobUrl, uniqueFileName);
