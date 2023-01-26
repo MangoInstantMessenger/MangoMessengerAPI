@@ -184,3 +184,12 @@ Version control to be organized as follows:
 ## Logo Attribution
 
 <div>Icons made by <a href="https://www.freepik.com" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></div>
+
+## Badges
+
+| Syntax                   | Description                                                                                                                                                                                                                                                   |
+|--------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Build Angular            | [![Build Angular](https://github.com/MangoInstantMessenger/MangoMessengerAPI/actions/workflows/build-angular.yml/badge.svg)](https://github.com/MangoInstantMessenger/MangoMessengerAPI/actions/workflows/build-angular.yml)                                  |
+| Build Test Coverage      | [![Build Test Coverage](https://github.com/MangoInstantMessenger/MangoMessengerAPI/actions/workflows/build-test-coverage-dotnet.yml/badge.svg)](https://github.com/MangoInstantMessenger/MangoMessengerAPI/actions/workflows/build-test-coverage-dotnet.yml)  |
+| Run CNG DH Handshake     | [![Run CNG DH Handshake](https://github.com/MangoInstantMessenger/MangoMessengerAPI/actions/workflows/run-cng-dh-handshake.yml/badge.svg)](https://github.com/MangoInstantMessenger/MangoMessengerAPI/actions/workflows/run-cng-dh-handshake.yml)             |
+| Run OpenSSL DH Handshake | [![Run OpenSSL DH Handshake](https://github.com/MangoInstantMessenger/MangoMessengerAPI/actions/workflows/run-openssl-dh-handshake.yml/badge.svg)](https://github.com/MangoInstantMessenger/MangoMessengerAPI/actions/workflows/run-openssl-dh-handshake.yml) |
