@@ -187,7 +187,7 @@ Version control to be organized as follows:
 
 ## Badges
 
-| Syntax                   | Description                                                                                                                                                                                                                                                   |
+| Workflow                 | Status                                                                                                                                                                                                                                                        |
 |--------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | Build Angular            | [![Build Angular](https://github.com/MangoInstantMessenger/MangoMessengerAPI/actions/workflows/build-angular.yml/badge.svg)](https://github.com/MangoInstantMessenger/MangoMessengerAPI/actions/workflows/build-angular.yml)                                  |
 | Build Test Coverage      | [![Build Test Coverage](https://github.com/MangoInstantMessenger/MangoMessengerAPI/actions/workflows/build-test-coverage-dotnet.yml/badge.svg)](https://github.com/MangoInstantMessenger/MangoMessengerAPI/actions/workflows/build-test-coverage-dotnet.yml)  |
