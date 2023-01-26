@@ -184,3 +184,15 @@ Version control to be organized as follows:
 ## Logo Attribution
 
 <div>Icons made by <a href="https://www.freepik.com" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></div>
+
+## Badges
+
+| Workflow                 | Status                                                                                                                                                                                                                                                        |
+|--------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Build Angular            | [![Build Angular](https://github.com/MangoInstantMessenger/MangoMessengerAPI/actions/workflows/build-angular.yml/badge.svg)](https://github.com/MangoInstantMessenger/MangoMessengerAPI/actions/workflows/build-angular.yml)                                  |
+| Build Test Coverage      | [![Build Test Coverage](https://github.com/MangoInstantMessenger/MangoMessengerAPI/actions/workflows/build-test-coverage-dotnet.yml/badge.svg)](https://github.com/MangoInstantMessenger/MangoMessengerAPI/actions/workflows/build-test-coverage-dotnet.yml)  |
+| Run CNG DH Handshake     | [![Run CNG DH Handshake](https://github.com/MangoInstantMessenger/MangoMessengerAPI/actions/workflows/run-cng-dh-handshake.yml/badge.svg)](https://github.com/MangoInstantMessenger/MangoMessengerAPI/actions/workflows/run-cng-dh-handshake.yml)             |
+| Run OpenSSL DH Handshake | [![Run OpenSSL DH Handshake](https://github.com/MangoInstantMessenger/MangoMessengerAPI/actions/workflows/run-openssl-dh-handshake.yml/badge.svg)](https://github.com/MangoInstantMessenger/MangoMessengerAPI/actions/workflows/run-openssl-dh-handshake.yml) |
+| Azure Pipelines          | [![Build Status](https://dev.azure.com/MangoMessenger/MangoAPI/_apis/build/status/Build%20and%20Test?branchName=develop)](https://dev.azure.com/MangoMessenger/MangoAPI/_build/latest?definitionId=11&branchName=develop)                                     |
+| Code coverage            | [![Coverage Status](https://coveralls.io/repos/github/MangoInstantMessenger/MangoMessengerAPI/badge.svg?branch=develop)](https://coveralls.io/github/MangoInstantMessenger/MangoMessengerAPI?branch=develop)                                                  |
+| Quality gate             | [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=MangoInstantMessenger_MangoMessengerAPI&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=MangoInstantMessenger_MangoMessengerAPI)                             |
