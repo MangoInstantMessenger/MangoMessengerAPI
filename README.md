@@ -65,9 +65,7 @@ However, it is worth to continue progress on the project pursuing another predef
 
 ## Build and run the project
 
-### Prerequisites
-
-Obligatory required software:
+### Required Software
 
 - **.NET SDK 6.0.202 or later:** https://dotnet.microsoft.com/en-us/download
 - **NVM for windows:** https://github.com/coreybutler/nvm-windows
@@ -78,20 +76,18 @@ Obligatory required software:
 - **Angular CLI:** `13.3.4`
 - **NodeJS:** `16.13.1`
 - **NPM:** `8.1.2`
-- **Code Editor or IDE:** Visual studio, Visual studio code, Rider
-- **For Visual studio code:** [ESlint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint)
-  and [Prettier](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode) plugins (also included in
-  the workspace recommendations)
+- **Code Editor & IDE:** Visual studio, Visual studio code, Rider
+- **VS Code Plugins:**
+    - [ESlint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint)
+    - [Prettier](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode)
 
 ### Run in debug mode
 
-Perform the following steps:
-
 - Install NVM: https://github.com/coreybutler/nvm-windows
-- Install NodeJS 14.17.3 using NVM via PowerShell as Administrator: `nvm install 16.13.1`
-- Use NodeJS 14.17.3 using NVM via PowerShell as Administrator: `nvm use 16.13.1`
-- Check NodeJS installed properly (should be 16.13.1): `node -v`
-- Check NPM installed properly (should be 8.1.2): `npm -v`
+- Install NodeJS `14.17.3` using NVM & PowerShell as Administrator: `nvm install 16.13.1`
+- Use NodeJS `14.17.3` using NVM via PowerShell as Administrator: `nvm use 16.13.1`
+- Check NodeJS installed properly (should be `16.13.1`): `node -v`
+- Check NPM installed properly (should be `8.1.2`): `npm -v`
 - Go to the project folder: `cd MangoAPI.Client`
 - Restore node modules: `npm ci`
 - Install Angular CLI globally: `npm install -g @angular/cli@13.3.4`
@@ -121,9 +117,9 @@ In case of localhost HTTPS certificate issues: https://stackoverflow.com/a/67182
 - **Frameworks:** `ASP .NET`, `Angular`
 - **Persistence:**
     - Database: `MS SQL Server`
-    - ORM: `Entity Framework Core 6.0`
+    - ORM: `Entity Framework Core`
     - Storage: `Azure Blob Storage`
-- **Authorization:** `ASP .NET Identity Core`, `JWT Bearer`
+- **Authorization:** `ASP .NET Identity`, `JWT Bearer`
 - **Business Logic:**
     - `MediatR`
     - `Fluent Validation`
@@ -140,25 +136,13 @@ In case of localhost HTTPS certificate issues: https://stackoverflow.com/a/67182
 - **Programming languages:** `C#`, `SQL`, `TypeScript`
 - **Tools & IDE:** `Visual Studio`, `Rider`, `VS Code`, `WebStorm`, `SMSS`, `Postman`
 
-## Versions
-
-- **.NET SDK:** `.NET 6.0.202`
-- **Angular:** `13.3.5`
-- **Angular CLI:** `13.3.4`
-- **NodeJS:** `16.13.1`
-- **NPM:** `8.1.2`
-
 ## Tasks management
-
-The opened tasks and issues to be organized an handled as follows:
 
 - Each task has an assigned number in the format `MANGO-ID`
 - Active tasks are available on the Trello board: https://trello.com/b/Z7IlfrRb/mango-messenger-trello
 - Each task branch is based on the actual `develop` branch and pull requested there on complete
 
-## Git flow
-
-Version control to be organized as follows:
+## GitHub flow
 
 - Fork this repository
 - Clone this repository using `git clone https://github.com/${{ username }}/MangoMessengerAPI.git`
