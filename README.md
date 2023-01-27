@@ -6,9 +6,9 @@
 
 ## Description
 
-Mango Messenger is an opensource instant messaging system that implemented using .NET and Angular frameworks.
-In general, this project is considered to be a bachelor's degree project.
-Bachelor's project has been successfully completed by the team of three students on 10-02-2022.
+Mango Messenger is an opensource instant messaging system implemented using .NET Core and Angular frameworks.
+In general, mango messenger is considered to be a bachelor's degree project.
+Bachelor's degree has been successfully completed by the team of three students on 10-02-2022.
 However, it is worth to continue progress on the project pursuing another predefined goals.
 
 **How it works (v1)**: https://www.youtube.com/watch?v=3lh3we1DrEY
