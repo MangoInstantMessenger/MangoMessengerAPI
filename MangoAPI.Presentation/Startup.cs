@@ -24,9 +24,18 @@ public class Startup
     private readonly string version;
     private readonly string swaggerTitle;
 
-    public Startup(IConfiguration configuration)
+    public Startup(IWebHostEnvironment env)
     {
-        this.configuration = configuration;
+        var builder = new ConfigurationBuilder()
+            .SetBasePath(env.ContentRootPath)
+            .AddEnvironmentVariables();
+
+        var configName = env.IsDevelopment() ? "appsettings.json" : "appsettings.Docker.json";
+
+        builder.AddJsonFile(configName, optional: false, reloadOnChange: true);
+
+        configuration = builder.Build();
+
         version = Assembly.GetExecutingAssembly().GetName().Version?.ToString() ?? "1";
         swaggerTitle = $"MangoAPI v{version}";
     }
