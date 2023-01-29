@@ -6,9 +6,9 @@
 
 ## Description
 
-Mango Messenger is an opensource instant messaging system that implemented using .NET and Angular frameworks.
-In general, this project is considered to be a bachelor's degree project.
-Bachelor's project has been successfully completed by the team of three students on 10-02-2022.
+Mango Messenger is an opensource instant messaging system implemented using .NET Core and Angular frameworks.
+In general, mango messenger is considered to be a bachelor's degree project.
+Bachelor's degree has been successfully completed by the team of three students on 10-02-2022.
 However, it is worth to continue progress on the project pursuing another predefined goals.
 
 **How it works (v1)**: https://www.youtube.com/watch?v=3lh3we1DrEY
@@ -36,6 +36,7 @@ However, it is worth to continue progress on the project pursuing another predef
 - To implement CD pipeline to deploy app to Nginx as part of Linux VM
 - To implement pen testing using OWASP ZAP tool
 - To implement various deployment patterns like Blue-Green, Canary etc
+- To implement release flow according to the documentation: [PDF](https://kolosovpetro.github.io/pdf/ReleaseFlowProposal.pdf)
 
 ## Infrastructure diagram and details
 
@@ -65,9 +66,7 @@ However, it is worth to continue progress on the project pursuing another predef
 
 ## Build and run the project
 
-### Prerequisites
-
-Obligatory required software:
+### Required Software
 
 - **.NET SDK 6.0.202 or later:** https://dotnet.microsoft.com/en-us/download
 - **NVM for windows:** https://github.com/coreybutler/nvm-windows
@@ -78,20 +77,18 @@ Obligatory required software:
 - **Angular CLI:** `13.3.4`
 - **NodeJS:** `16.13.1`
 - **NPM:** `8.1.2`
-- **Code Editor or IDE:** Visual studio, Visual studio code, Rider
-- **For Visual studio code:** [ESlint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint)
-  and [Prettier](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode) plugins (also included in
-  the workspace recommendations)
+- **Code Editor & IDE:** Visual studio, Visual studio code, Rider
+- **VS Code Plugins:**
+    - [ESlint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint)
+    - [Prettier](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode)
 
 ### Run in debug mode
 
-Perform the following steps:
-
 - Install NVM: https://github.com/coreybutler/nvm-windows
-- Install NodeJS 14.17.3 using NVM via PowerShell as Administrator: `nvm install 16.13.1`
-- Use NodeJS 14.17.3 using NVM via PowerShell as Administrator: `nvm use 16.13.1`
-- Check NodeJS installed properly (should be 16.13.1): `node -v`
-- Check NPM installed properly (should be 8.1.2): `npm -v`
+- Install NodeJS `14.17.3` using NVM & PowerShell as Administrator: `nvm install 16.13.1`
+- Use NodeJS `14.17.3` using NVM via PowerShell as Administrator: `nvm use 16.13.1`
+- Check NodeJS installed properly (should be `16.13.1`): `node -v`
+- Check NPM installed properly (should be `8.1.2`): `npm -v`
 - Go to the project folder: `cd MangoAPI.Client`
 - Restore node modules: `npm ci`
 - Install Angular CLI globally: `npm install -g @angular/cli@13.3.4`
@@ -121,9 +118,9 @@ In case of localhost HTTPS certificate issues: https://stackoverflow.com/a/67182
 - **Frameworks:** `ASP .NET`, `Angular`
 - **Persistence:**
     - Database: `MS SQL Server`
-    - ORM: `Entity Framework Core 6.0`
+    - ORM: `Entity Framework Core`
     - Storage: `Azure Blob Storage`
-- **Authorization:** `ASP .NET Identity Core`, `JWT Bearer`
+- **Authorization:** `ASP .NET Identity`, `JWT Bearer`
 - **Business Logic:**
     - `MediatR`
     - `Fluent Validation`
@@ -140,25 +137,13 @@ In case of localhost HTTPS certificate issues: https://stackoverflow.com/a/67182
 - **Programming languages:** `C#`, `SQL`, `TypeScript`
 - **Tools & IDE:** `Visual Studio`, `Rider`, `VS Code`, `WebStorm`, `SMSS`, `Postman`
 
-## Versions
-
-- **.NET SDK:** `.NET 6.0.202`
-- **Angular:** `13.3.5`
-- **Angular CLI:** `13.3.4`
-- **NodeJS:** `16.13.1`
-- **NPM:** `8.1.2`
-
 ## Tasks management
-
-The opened tasks and issues to be organized an handled as follows:
 
 - Each task has an assigned number in the format `MANGO-ID`
 - Active tasks are available on the Trello board: https://trello.com/b/Z7IlfrRb/mango-messenger-trello
 - Each task branch is based on the actual `develop` branch and pull requested there on complete
 
-## Git flow
-
-Version control to be organized as follows:
+## GitHub flow
 
 - Fork this repository
 - Clone this repository using `git clone https://github.com/${{ username }}/MangoMessengerAPI.git`
@@ -181,10 +166,6 @@ Version control to be organized as follows:
 - Database diagram: https://dbdiagram.io/d/60d66a13dd6a597148203e6b
 - How to exclude project from coverage: https://codyanhorn.tech/blog/excluding-your-net-test-project-from-code-coverage
 
-## Logo Attribution
-
-<div>Icons made by <a href="https://www.freepik.com" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></div>
-
 ## Badges
 
 | Workflow                 | Status                                                                                                                                                                                                                                                        |
@@ -196,3 +177,7 @@ Version control to be organized as follows:
 | Azure Pipelines          | [![Build Status](https://dev.azure.com/MangoMessenger/MangoAPI/_apis/build/status/Build%20and%20Test?branchName=develop)](https://dev.azure.com/MangoMessenger/MangoAPI/_build/latest?definitionId=11&branchName=develop)                                     |
 | Code coverage            | [![Coverage Status](https://coveralls.io/repos/github/MangoInstantMessenger/MangoMessengerAPI/badge.svg?branch=develop)](https://coveralls.io/github/MangoInstantMessenger/MangoMessengerAPI?branch=develop)                                                  |
 | Quality gate             | [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=MangoInstantMessenger_MangoMessengerAPI&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=MangoInstantMessenger_MangoMessengerAPI)                             |
+
+## Logo Attribution
+
+<div>Icons made by <a href="https://www.freepik.com" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></div>
