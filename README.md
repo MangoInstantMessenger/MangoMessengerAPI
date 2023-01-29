@@ -36,6 +36,7 @@ However, it is worth to continue progress on the project pursuing another predef
 - To implement CD pipeline to deploy app to Nginx as part of Linux VM
 - To implement pen testing using OWASP ZAP tool
 - To implement various deployment patterns like Blue-Green, Canary etc
+- To implement release flow according to the documentation: [PDF](https://kolosovpetro.github.io/pdf/ReleaseFlowProposal.pdf)
 
 ## Infrastructure diagram and details
 
@@ -165,10 +166,6 @@ In case of localhost HTTPS certificate issues: https://stackoverflow.com/a/67182
 - Database diagram: https://dbdiagram.io/d/60d66a13dd6a597148203e6b
 - How to exclude project from coverage: https://codyanhorn.tech/blog/excluding-your-net-test-project-from-code-coverage
 
-## Logo Attribution
-
-<div>Icons made by <a href="https://www.freepik.com" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></div>
-
 ## Badges
 
 | Workflow                 | Status                                                                                                                                                                                                                                                        |
@@ -180,3 +177,7 @@ In case of localhost HTTPS certificate issues: https://stackoverflow.com/a/67182
 | Azure Pipelines          | [![Build Status](https://dev.azure.com/MangoMessenger/MangoAPI/_apis/build/status/Build%20and%20Test?branchName=develop)](https://dev.azure.com/MangoMessenger/MangoAPI/_build/latest?definitionId=11&branchName=develop)                                     |
 | Code coverage            | [![Coverage Status](https://coveralls.io/repos/github/MangoInstantMessenger/MangoMessengerAPI/badge.svg?branch=develop)](https://coveralls.io/github/MangoInstantMessenger/MangoMessengerAPI?branch=develop)                                                  |
 | Quality gate             | [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=MangoInstantMessenger_MangoMessengerAPI&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=MangoInstantMessenger_MangoMessengerAPI)                             |
+
+## Logo Attribution
+
+<div>Icons made by <a href="https://www.freepik.com" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></div>
