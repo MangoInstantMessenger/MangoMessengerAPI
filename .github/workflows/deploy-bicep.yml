@@ -7,16 +7,13 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-        with:
-          path: repo
-
+      - uses: actions/checkout@master    
       - uses: azure/login@v1
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
 
       - uses: azure/arm-deploy@v1
         with:
-          resourceGroupName: ${{ env.AZURE_RESOURCEGROUP_NAME }}
-          template: ../../bicep/main.bicep
-          parameters: ../../bicep/parameters/parameters.dev.json adminUser=${{ secrets.SQL_ADMIN }} adminPassword=${{ secrets.SQL_PASSWORD }}
+          resourceGroupName: mango-rg-230
+          template: ./bicep/main.bicep
+          parameters: ./bicep/parameters/parameters.dev.json adminUser=${{ secrets.SQL_ADMIN }} adminPassword=${{ secrets.SQL_PASSWORD }}
