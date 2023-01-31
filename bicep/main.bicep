@@ -1,28 +1,38 @@
 targetScope = 'resourceGroup'
+// Parameters from cli 
 param rgName string
-param location string
-param servicePlanName string
-param skuPlanName string
-param webAppName string
-param storName string
-param skuStorageName string
-param contName string
-param keyVaultName string
-param sqlServerName string
-param dbName string
 param adminUser string
 @secure()
 param adminPassword string
+
+// Parameters from .json
+param location string
+param skuPlanName string
+param skuStorageName string
+
+// ---------- Creating resources ----------
+
+// Random name script
+module rnd './randomScript.bicep' = {
+  name: 'randomName'
+  scope: resourceGroup(rgName)
+  params: {
+    location: location
+  }
+}
 
 module appService './appService.bicep' = {
   name: 'appServiceDeployment'
   scope: resourceGroup(rgName)
   params: {
-    webAppName: webAppName
+    webAppName: take('webapp${rnd.outputs.name}', 15)
     location: location
-    servicePlanName: servicePlanName
+    servicePlanName: take('plan${rnd.outputs.name}', 15)
     skuPlanName: skuPlanName
   }
+  dependsOn: [
+    rnd
+  ]
 }
 
 module keyVault './keyVault.bicep' = {
@@ -30,29 +40,38 @@ module keyVault './keyVault.bicep' = {
   scope: resourceGroup(rgName)
   params:{
     location: location
-    keyVaultName: keyVaultName
+    keyVaultName: take('kv${rnd.outputs.name}', 15)
   }
+  dependsOn: [
+    rnd
+  ]
 }
 
 module stgAcc './storAccountAndCont.bicep' = {
   name: 'storageAccDeployment'
   scope: resourceGroup(rgName)
   params: {
-    contName: contName
+    contName: take('cont${rnd.outputs.name}', 15)
     location: location
-    storageAccountName: storName
+    storageAccountName: take('stor${rnd.outputs.name}', 15)
     skuStorageName: skuStorageName
   }
+  dependsOn: [
+    rnd
+  ]
 }
 
 module sqlServer './sqlSeverAndDb.bicep' = {
   name: 'sqlServerDeployment'
   scope: resourceGroup(rgName)
   params: {
-    dbName: dbName
-    sqlServerName: sqlServerName
+    dbName: take('db${rnd.outputs.name}', 15)
+    sqlServerName: take('sqlserver${rnd.outputs.name}', 20)
     location: location
     adminUser: adminUser
     adminPassword: adminPassword
   }
+  dependsOn: [
+    rnd
+  ]
 }

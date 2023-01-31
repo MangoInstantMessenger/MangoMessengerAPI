@@ -6,6 +6,9 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    env:
+      RG_NAME: "mango-rg-230"      
+
     steps:
       - uses: actions/checkout@master    
       - uses: azure/login@v1
@@ -14,6 +17,6 @@ jobs:
 
       - uses: azure/arm-deploy@v1
         with:
-          resourceGroupName: mango-rg-230
+          resourceGroupName: ${{ env.RG_NAME }}
           template: ./bicep/main.bicep
-          parameters: ./bicep/parameters/parameters.dev.json adminUser=${{ secrets.SQL_ADMIN }} adminPassword=${{ secrets.SQL_PASSWORD }}
+          parameters: ./bicep/parameters/parameters.dev.json rgName=${{ env.RG_NAME }} adminUser=${{ secrets.SQL_ADMIN }} adminPassword=${{ secrets.SQL_PASSWORD }}
