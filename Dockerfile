@@ -13,7 +13,7 @@ WORKDIR /angular
 COPY ["MangoAPI.Client", "MangoAPI.Client/"]
 RUN npm install -g @angular/cli@13.3.4
 WORKDIR "/angular/MangoAPI.Client"
-RUN ng build --aot --configuration development
+RUN ng build --aot --configuration docker
 
 
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
