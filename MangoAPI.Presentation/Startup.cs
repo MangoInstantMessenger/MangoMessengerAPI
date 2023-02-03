@@ -14,6 +14,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using System;
 
 namespace MangoAPI.Presentation;
 
@@ -81,7 +82,7 @@ public class Startup
             options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
         });
 
-        var databaseUrl = configuration[EnvironmentConstants.DatabaseUrl];
+        var databaseUrl = TryGetFromEnvironment(EnvironmentConstants.DatabaseUrl, configuration);
 
         var blobUrl = configuration[EnvironmentConstants.BlobUrl];
 
@@ -115,9 +116,9 @@ public class Startup
 
         var apiInfo = new OpenApiInfo
         {
-            Title = swaggerTitle,
-            Version = version,
-            Description = "Mango Messenger ASP .NET 6 Web API",
+#pragma warning disable IDE0055
+            Title = swaggerTitle, Version = version, Description = "Mango Messenger ASP .NET 6 Web API",
+#pragma warning restore IDE0055
         };
 
         services.AddSwaggerGen(c => { c.SwaggerDoc($"v{version}", apiInfo); });
@@ -133,5 +134,16 @@ public class Startup
         services.AddAutoMapper(typeof(ApiControllerBase));
 
         services.AddMvc();
+    }
+
+    /// <summary>
+    /// This method is created as workaround for docker compose. Parameters in docker compose is better to pass via
+    /// environment variables.
+    /// </summary>
+    private static string TryGetFromEnvironment(string key, IConfiguration configuration)
+    {
+        var value = Environment.GetEnvironmentVariable(key) ?? configuration[key];
+
+        return value;
     }
 }

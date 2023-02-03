@@ -1,0 +1,33 @@
+version: "3.4"
+
+services:
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:80"
+    environment:
+      DATABASE_URL: "Server=db;Database=MANGO_DOCKER_COMPOSE;User Id=sa;Password=x2yiJt!Fs;TrustServerCertificate=true;"
+    depends_on:
+      - db
+      - storage
+  
+  db:
+    image: "mcr.microsoft.com/mssql/server:2022-latest"
+    ports:
+      - "1444:1433"
+    
+    environment:
+      SA_PASSWORD: "x2yiJt!Fs"
+      ACCEPT_EULA: "Y"
+      
+  # azurite doesn't work yet, I am too lazy to fix it now
+  storage:
+    image: mcr.microsoft.com/azure-storage/azurite
+    hostname: azurite
+    restart: always
+    command: "azurite --blobHost 127.0.0.1 --blobPort 10000 --queueHost 127.0.0.1 --queuePort 10001"
+    ports:
+      - "10000:10000"
+      - "10001:10001"

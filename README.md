@@ -36,7 +36,8 @@ However, it is worth to continue progress on the project pursuing another predef
 - To implement CD pipeline to deploy app to Nginx as part of Linux VM
 - To implement pen testing using OWASP ZAP tool
 - To implement various deployment patterns like Blue-Green, Canary etc
-- To implement release flow according to the documentation: [PDF](https://kolosovpetro.github.io/pdf/ReleaseFlowProposal.pdf)
+- To implement release flow according to the
+  documentation: [PDF](https://kolosovpetro.github.io/pdf/ReleaseFlowProposal.pdf)
 
 ## Infrastructure diagram and details
 
@@ -81,6 +82,11 @@ However, it is worth to continue progress on the project pursuing another predef
 - **VS Code Plugins:**
     - [ESlint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint)
     - [Prettier](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode)
+
+### Run docker compose
+
+- `docker-compose build`
+- `docker-compose up`
 
 ### Run in debug mode
 

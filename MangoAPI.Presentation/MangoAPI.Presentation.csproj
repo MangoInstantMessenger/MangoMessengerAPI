@@ -8,6 +8,7 @@
         <EnableNETAnalyzers>true</EnableNETAnalyzers>
         <AnalysisMode>Recommended</AnalysisMode>
         <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+        <UserSecretsId>3f259e1e-18a7-420c-a458-517f9704c3e9</UserSecretsId>
     </PropertyGroup>
 
     <!-- Exclude the project from coverage report -->
@@ -23,6 +24,7 @@
         <PackageReference Include="AutoMapper" Version="12.0.0" />
         <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.0" />
         <PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="6.0.10" />
+        <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.17.0" />
     </ItemGroup>
 
 </Project>
