@@ -17,9 +17,7 @@ resource sqlServer 'Microsoft.Sql/servers@2022-05-01-preview' = {
 
 resource sqlServerDatabase 'Microsoft.Sql/servers/databases@2022-05-01-preview' = {
   name: '${sqlServerName}/${dbName}'
-  dependsOn: [
-    sqlServer
-  ]
+  parent: sqlServer
   location: location
   sku: {
     name: 'GP_S_Gen5'
