@@ -7,7 +7,9 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     env:
-      RG_NAME: "mango-rg-230"      
+      RG_NAME: "mango-rg-230"
+      SERVICE_PLAN: "abcd"$(1 + RANDOM % 1000)
+
 
     steps:
       - uses: actions/checkout@master    
