@@ -46,23 +46,20 @@ stages:
     jobs:
       - template: templates/dotnet-build-job-template.yml
       - template: templates/dotnet-integration-tests-job-template.yml
-#      - template: templates/sonarcloud-job-template.yml
-#      - template: templates/mend-scan-job-template.yml
-#      - template: templates/snyk-job-template.yml  
   
   - stage: 'Security_checks'
     displayName: 'Run security checks'
+    dependsOn: 'Build_Test_Pack'
+    condition: succeeded('Build_Test_Pack')
     jobs:
-#      - template: templates/dotnet-build-job-template.yml
-#      - template: templates/dotnet-integration-tests-job-template.yml
       - template: templates/sonarcloud-job-template.yml
       - template: templates/mend-scan-job-template.yml
       - template: templates/snyk-job-template.yml
 
   - stage: 'dev'
     displayName: 'Deploy Mango Messenger to DEV Environment'
-    dependsOn: 'Build_Test_Pack'
-    condition: succeeded('Build_Test_Pack')
+    dependsOn: 'Security_checks'
+    condition: succeeded('Security_checks')
     jobs:
       - deployment: 'Deploy_Mango_Web_API_to_Dev'
         displayName: 'Deploy Mango Messenger to DEV Environment'
