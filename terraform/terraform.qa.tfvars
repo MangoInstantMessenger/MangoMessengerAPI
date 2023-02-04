@@ -1,0 +1,7 @@
+resource_group_name    = "rg-qa-mango03"
+app_service_plan_name  = "qa-service-plan"
+app_service_name       = "mangowebappqa101"
+storage_account_name   = "mangostorqa101"
+storage_container_name = "storagemangoqa101"
+sql_server_name        = "sqlserverqa216"
+sql_database_name      = "sqldbqa"

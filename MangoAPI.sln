@@ -68,6 +68,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "terraform", "terraform", "{
 		terraform\README.md = terraform\README.md
 		terraform\provider.tf = terraform\provider.tf
 		terraform\versions.tf = terraform\versions.tf
+		terraform\terraform.qa.tfvars = terraform\terraform.qa.tfvars
+		terraform\terraform.dev.tfvars = terraform\terraform.dev.tfvars
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "img", "img", "{64F59099-7FFD-4D32-8C74-2BD1EBFF0B11}"

@@ -1,0 +1,7 @@
+resource_group_name    = "rg-dev-mango03"
+app_service_plan_name  = "dev-service-plan"
+app_service_name       = "mangowebappdev101"
+storage_account_name   = "mangostordev101"
+storage_container_name = "storagemangodev101"
+sql_server_name        = "sqlserverdev216"
+sql_database_name      = "sqldbdev"
