@@ -2,7 +2,10 @@ jobs:
   - job: 'Mend_Security_Scan'
     displayName: 'Mend Security Scan'
     steps:
+      - checkout: self
+        fetchDepth: 0
+
       - task: WhiteSource@21
         displayName: 'Mend security scan'
         inputs:
-          cwd: '$(System.DefaultWorkingDirectory)'
+          cwd: '$(Build.SourcesDirectory)'

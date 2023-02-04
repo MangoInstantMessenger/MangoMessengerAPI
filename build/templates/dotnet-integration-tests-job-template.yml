@@ -16,6 +16,8 @@ jobs:
   - job: 'Build_Test_Dotnet'
     displayName: 'Build Test .NET'
     steps:
+      - checkout: self
+        fetchDepth: 0
 
       - task: DotNetCoreCLI@2
         displayName: 'Dotnet restore'

@@ -13,54 +13,64 @@ parameters:
     default: './MangoAPI.Presentation/MangoAPI.Presentation.csproj'
 
 jobs:
-  - job: 'SonarCloud_Analyzer'
+  # sonarcloud scan is done as deployment in order to be able to control CI from forks
+  - deployment: 'SonarCloud_Analyzer'
     displayName: 'SonarCloud Static Code Analyzer'
-    steps:
-      - task: gitversion/setup@0
-        displayName: 'GitVersion Setup'
-        inputs:
-          versionSpec: '5.9.x'
+    pool:
+      vmImage: 'ubuntu-latest'
+    environment: 'NeedApproval'
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+            - checkout: self
+              fetchDepth: 0
 
-      - task: gitversion/execute@0
-        displayName: 'GitVersion Execute'
-        inputs:
-          updateAssemblyInfo: true
+            - task: gitversion/setup@0
+              displayName: 'GitVersion Setup'
+              inputs:
+                versionSpec: '5.9.x'
 
-      - bash: echo $Action$BuildVersion
-        displayName: 'Set Build Version'
-        env:
-          Action: '##vso[build.updatebuildnumber]'
-          BuildVersion: $(GitVersion.SemVer)
+            - task: gitversion/execute@0
+              displayName: 'GitVersion Execute'
+              inputs:
+                updateAssemblyInfo: true
 
-      - task: SonarCloudPrepare@1
-        displayName: 'Prepare SonarCloud'
-        inputs:
-          SonarCloud: 'SonarCloud_Mango'
-          organization: 'mangoinstantmessenger'
-          scannerMode: 'MSBuild'
-          projectKey: 'MangoInstantMessenger_MangoMessengerAPI'
-          projectName: 'MangoMessengerAPI'
-          projectVersion: '$(GitVersion.SemVer)'
-          extraProperties: |
-            sonar.cs.vstest.reportsPaths=$(Agent.TempDirectory)/**/*.trx
-            sonar.cs.opencover.reportsPaths=$(Agent.TempDirectory)/**/*opencover.xml
+            - bash: echo $Action$BuildVersion
+              displayName: 'Set Build Version'
+              env:
+                Action: '##vso[build.updatebuildnumber]'
+                BuildVersion: $(GitVersion.SemVer)
 
-      - task: DotNetCoreCLI@2
-        displayName: 'Dotnet restore'
-        inputs:
-          command: 'restore'
-          projects: '${{ parameters.backendProjectPath }}'
-          arguments: '--verbosity minimal'
+            - task: SonarCloudPrepare@1
+              displayName: 'Prepare SonarCloud'
+              inputs:
+                SonarCloud: 'SonarCloud_Mango'
+                organization: 'mangoinstantmessenger'
+                scannerMode: 'MSBuild'
+                projectKey: 'MangoInstantMessenger_MangoMessengerAPI'
+                projectName: 'MangoMessengerAPI'
+                projectVersion: '$(GitVersion.SemVer)'
+                extraProperties: |
+                  sonar.cs.vstest.reportsPaths=$(Agent.TempDirectory)/**/*.trx
+                  sonar.cs.opencover.reportsPaths=$(Agent.TempDirectory)/**/*opencover.xml
 
-      - task: DotNetCoreCLI@2
-        displayName: 'Dotnet build ${{ parameters.buildConfiguration }}'
-        inputs:
-          command: 'build'
-          projects: '${{ parameters.backendProjectPath }}'
-          arguments: '--configuration ${{ parameters.buildConfiguration }} --no-restore'
+            - task: DotNetCoreCLI@2
+              displayName: 'Dotnet restore'
+              inputs:
+                command: 'restore'
+                projects: '${{ parameters.backendProjectPath }}'
+                arguments: '--verbosity minimal'
 
-      - task: SonarCloudAnalyze@1
-        displayName: 'Run Code Analysis'
+            - task: DotNetCoreCLI@2
+              displayName: 'Dotnet build ${{ parameters.buildConfiguration }}'
+              inputs:
+                command: 'build'
+                projects: '${{ parameters.backendProjectPath }}'
+                arguments: '--configuration ${{ parameters.buildConfiguration }} --no-restore'
 
-      - task: SonarCloudPublish@1
-        displayName: 'Publish Quality Gate Results'
+            - task: SonarCloudAnalyze@1
+              displayName: 'Run Code Analysis'
+
+            - task: SonarCloudPublish@1
+              displayName: 'Publish Quality Gate Results'
