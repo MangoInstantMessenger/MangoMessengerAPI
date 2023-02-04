@@ -1,0 +1,24 @@
+name: Deploy bicep
+
+on: 
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    env:
+      RG_NAME: "mango-rg-230"
+      SERVICE_PLAN: "abcd$(1 + RANDOM % 1000)"
+
+
+    steps:
+      - uses: actions/checkout@master    
+      - uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - uses: azure/arm-deploy@v1
+        with:
+          resourceGroupName: ${{ env.RG_NAME }}
+          template: ./bicep/main.bicep
+          parameters: ./bicep/parameters/parameters.dev.json rgName=${{ env.RG_NAME }} adminUser=${{ secrets.SQL_ADMIN }} adminPassword=${{ secrets.SQL_PASSWORD }} servicePlanName=${{ env.SERVICE_PLAN }} storName="mangostoracc1000"
