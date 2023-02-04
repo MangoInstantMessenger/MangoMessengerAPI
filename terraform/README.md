@@ -47,13 +47,13 @@ See also [Terraform cheat sheet](https://medium.com/itnext/terraform-cheat-sheet
 Debugging terraform: [Debugging Terraform](https://developer.hashicorp.com/terraform/internals/debugging)
 
 - `terraform init`
-- `terraform init -get=false`
 - `terraform plan -out main.tfplan`
 - `terraform plan -var-file='terraform.dev.tfvars' -var sql_admin_username='razumovsky_r' -var sql_admin_password='Zd2yqLgyV4uHVC0eTPiH' -out 'dev.tfplan'`
-- `terraform plan -var-file='terraform.dev.tfvars' -var sql_admin_username='razumovsky_r' -var sql_admin_password='Zd2yqLgyV4uHVC0eTPiH' -out 'dev.tfplan' -lock=false`
-- `terraform apply main.tfplan`
+- `terraform plan -var-file='terraform.dev.tfvars' -out 'dev.tfplan'`
 - `terraform apply dev.tfplan`
 - `terraform fmt --check`
+- `terraform workspace new d01` 
+- `terraform workspace select d01`
 
 ## Documentation
 
