@@ -1,14 +1,11 @@
 jobs:
-  - deployment: 'Mend_Security_Scan'
+  - job: 'Mend_Security_Scan'
     displayName: 'Mend Security Scan'
-    pool:
-      vmImage: 'ubuntu-latest'
-    environment: 'NeedApproval'
-    strategy:
-      runOnce:
-        deploy:
-          steps:
-            - task: WhiteSource@21
-              displayName: 'Mend security scan'
-              inputs:
-                cwd: '$(System.DefaultWorkingDirectory)'
+    steps:
+      - checkout: self
+        fetchDepth: 0
+
+      - task: WhiteSource@21
+        displayName: 'Mend security scan'
+        inputs:
+          cwd: '$(Build.SourcesDirectory)'
