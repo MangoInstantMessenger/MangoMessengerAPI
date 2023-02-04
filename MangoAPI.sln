@@ -20,7 +20,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "items", "items", "{F8A0C2AF
 		LICENSE.txt = LICENSE.txt
 		README.md = README.md
 		.gitattributes = .gitattributes
-		MangoAPI.sln.DotSettings = MangoAPI.sln.DotSettings
 		CHANGELOG.md = CHANGELOG.md
 		Dockerfile = Dockerfile
 		.dockerignore = .dockerignore

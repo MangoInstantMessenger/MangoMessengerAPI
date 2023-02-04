@@ -7,9 +7,9 @@ terraform {
   }
 
   backend "azurerm" {
-    resource_group_name  = "rg-mango-tf-state"
-    storage_account_name = "mangotfstate02"
-    container_name       = "mangotfstate"
+    resource_group_name  = "pkolosov-tstate-rg"
+    storage_account_name = "pkolosovfstate673"
+    container_name       = "pkolosovtfstate"
     key                  = "terraform.tfstate"
   }
 }

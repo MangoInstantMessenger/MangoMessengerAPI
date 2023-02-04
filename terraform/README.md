@@ -40,13 +40,20 @@
 
 - `az ad sp create-for-rbac --role="Contributor" --scopes="/subscriptions/f32f6566-8fa0-4198-9c91-a3b8ac69e89a" --name="AzurePipelinesTerraform"`
 
-## Update infrastructure
+## Terraform commands
+
+See also [Terraform cheat sheet](https://medium.com/itnext/terraform-cheat-sheet-3f7c5c55cfbc)
+
+Debugging terraform: [Debugging Terraform](https://developer.hashicorp.com/terraform/internals/debugging)
 
 - `terraform init`
+- `terraform init -get=false`
 - `terraform plan -out main.tfplan`
-- `terraform plan -var-file='terraform.dev.tfvars' -out 'dev.tfplan'`
+- `terraform plan -var-file='terraform.dev.tfvars' -var sql_admin_username='razumovsky_r' -var sql_admin_password='Zd2yqLgyV4uHVC0eTPiH' -out 'dev.tfplan'`
+- `terraform plan -var-file='terraform.dev.tfvars' -var sql_admin_username='razumovsky_r' -var sql_admin_password='Zd2yqLgyV4uHVC0eTPiH' -out 'dev.tfplan' -lock=false`
 - `terraform apply main.tfplan`
 - `terraform apply dev.tfplan`
+- `terraform fmt --check`
 
 ## Documentation
 
