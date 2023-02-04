@@ -1,3 +1,5 @@
+data "azurerm_client_config" "current" {}
+
 resource "azurerm_resource_group" "public" {
   location = var.resource_group_location
   name     = "${var.resource_group_name}-${terraform.workspace}"
@@ -77,3 +79,69 @@ resource "azurerm_mssql_database" "public" {
 }
 
 # create sql database process ends
+
+# create keyvault starts
+
+resource "azurerm_key_vault" "public" {
+  name                        = "${var.keyvault_name}${terraform.workspace}"
+  location                    = azurerm_resource_group.public.location
+  resource_group_name         = azurerm_resource_group.public.name
+  enabled_for_disk_encryption = true
+  tenant_id                   = data.azurerm_client_config.current.tenant_id
+  soft_delete_retention_days  = 7
+  purge_protection_enabled    = false
+
+  sku_name = "standard"
+
+  access_policy {
+    tenant_id = data.azurerm_client_config.current.tenant_id
+    object_id = data.azurerm_client_config.current.object_id
+
+    key_permissions = [
+      "Create",
+      "Get",
+      "List"
+    ]
+
+    secret_permissions = [
+      "Set",
+      "Get",
+      "Delete",
+      "Purge",
+      "Recover"
+    ]
+  }
+}
+
+resource "azurerm_key_vault_secret" "blob_url" {
+  name         = "BlobUrl"
+  value        = azurerm_storage_account.public.primary_connection_string
+  key_vault_id = azurerm_key_vault.public.id
+
+  depends_on = [azurerm_key_vault.public, azurerm_storage_account.public]
+}
+
+resource "azurerm_key_vault_secret" "blob_container" {
+  name         = "BlobContainer"
+  value        = azurerm_storage_container.public.name
+  key_vault_id = azurerm_key_vault.public.id
+
+  depends_on = [azurerm_key_vault.public, azurerm_storage_container.public]
+}
+
+resource "azurerm_key_vault_secret" "database_url" {
+  name         = "DatabaseUrl"
+  value        = "Server=tcp:${azurerm_mssql_server.public.fully_qualified_domain_name},1433;Initial Catalog=${azurerm_mssql_database.public.name};Persist Security Info=False;User ID=${azurerm_mssql_server.public.administrator_login};Password=${azurerm_mssql_server.public.administrator_login_password};MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;"
+  key_vault_id = azurerm_key_vault.public.id
+
+  depends_on = [azurerm_key_vault.public, azurerm_mssql_server.public, azurerm_mssql_database.public]
+}
+
+resource "azurerm_key_vault_secret" "webapp_name" {
+  name         = "WebAppName"
+  value        = azurerm_windows_web_app.public.name
+  key_vault_id = azurerm_key_vault.public.id
+
+  depends_on = [azurerm_key_vault.public, azurerm_windows_web_app.public]
+}
+

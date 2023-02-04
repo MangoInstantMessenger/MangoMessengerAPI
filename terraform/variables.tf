@@ -6,7 +6,7 @@ variable "resource_group_name" {
 
 variable "resource_group_location" {
   type        = string
-  default     = "westus"
+  default     = "northeurope"
   description = "Location of the resource group."
 }
 
@@ -68,4 +68,10 @@ variable "sql_admin_password" {
   type        = string
   default     = "Zd2yqLgyV4uHVC0eTPiH"
   description = "Sql admin password"
+}
+
+variable "keyvault_name" {
+  type        = string
+  default     = "kvmangodev"
+  description = "Keyvault name"
 }

@@ -63,5 +63,6 @@ Debugging terraform: [Debugging Terraform](https://developer.hashicorp.com/terra
 - [Windows web app](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/windows_web_app)
 - [Storage account](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/storage_account)
 - [Storage container](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/storage_container)
+- [KeyVault](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault)
 - [CosmosDB account](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/cosmosdb_account)
 - [App insights](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/application_insights)
