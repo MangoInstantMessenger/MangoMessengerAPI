@@ -64,12 +64,14 @@ resource "azurerm_mssql_server" "public" {
 resource "azurerm_mssql_database" "public" {
   name                        = var.sql_database_name
   server_id                   = azurerm_mssql_server.public.id
-  license_type                = "LicenseIncluded"
-  max_size_gb                 = 2
+  max_size_gb                 = 32
   read_scale                  = false
-  sku_name                    = "S0"
+  sku_name                    = "GP_S_Gen5_2"
   zone_redundant              = false
   auto_pause_delay_in_minutes = -1
+  geo_backup_enabled          = false
+  storage_account_type        = "Local"
+  min_capacity                = 0.5
 
   depends_on = [azurerm_mssql_server.public]
 }
