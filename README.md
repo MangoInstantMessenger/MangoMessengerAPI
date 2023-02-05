@@ -50,6 +50,7 @@ However, it is worth to continue progress on the project pursuing another predef
 - Azure SQL server
 - Azure SQL database `S0 instance with 10 database transaction units` [Serverless]
 - Azure KeyVault
+- Application Insights
 
 ## Screenshots
 
