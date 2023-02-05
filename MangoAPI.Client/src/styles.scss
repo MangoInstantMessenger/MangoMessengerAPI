@@ -469,6 +469,9 @@ i {
           border-radius: 15px 15px 15px 0;
           display: flex;
           flex-direction: column;
+          .message-image {
+              max-width: 200px;
+            }
           .display-name {
             font-weight: bold;
             white-space: nowrap;

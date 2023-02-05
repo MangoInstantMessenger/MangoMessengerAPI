@@ -216,6 +216,8 @@
                 />
                 <div class="message-wrapper">
                   <div class="message-content">
+                    <span *ngIf="message.messageAttachmentUrl"><img class="message-image"
+                        (click)="onImageClick(message.messageAttachmentUrl)" src="{{message.messageAttachmentUrl}}" alt=""></span>
                     <span>{{ message.messageText }}</span>
                   </div>
                   <div class="message-options gap-fix">
@@ -311,7 +313,7 @@
           </button>
           <div class="dropdown-menu">
             <div class="dropdown-item">
-              <input id="attachment" type="file" />
+              <input id="attachment" accept="image/png, image/gif, image/jpeg" (change)="imageSelected($event)" type="file" />
             </div>
           </div>
         </div>
