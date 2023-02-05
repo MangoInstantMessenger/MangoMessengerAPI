@@ -3,37 +3,43 @@
   "contentVersion": "1.0.0.0",
   "parameters": {
     "rgName": {
-      "value": "mango-rg-230"
+      "value": "rg-mango-dev"
     },
     "location": {
       "value": "North Europe"
     },
-    "servicePlanName": {
-      "value": "mango-service-plan-230"
+    "aspName": {
+      "value": "asp-mango-dev"
     },
     "skuPlanName": {
       "value": "F1"
     },
-    "webAppName": {
-      "value": "mangomessenger230"
+    "appName": {
+      "value": "app-mango-dev"
     },
-    "storName": {
-      "value": "mangostoracc230"
+    "stName": {
+      "value": "stmangodatadev"
     },
     "skuStorageName": {
       "value": "Standard_LRS"
     },
     "contName": {
-      "value": "mangomessengercont230"
+      "value": "mangocontainer"
     },
-    "keyVaultName": {
-      "value": "mangokeyvault230"
+    "kvName": {
+      "value": "kvmangodev"
     },
-    "sqlServerName": {
-      "value": "mangosqlserver230"
+    "sqlName": {
+      "value": "sqlmangodev"
     },
-    "dbName": {
-      "value": "mangodb230"
+    "sqldbName": {
+      "value": "sql-mango-dev"
+    },
+    "appiName": {
+      "value": "appi-mango-dev"
+    },
+    "jwtSignKey": {
+      "value": "bc3188d6-cde4-41e5-a40b-20ac7002fc3b"
     }
   }
 }
