@@ -15,7 +15,7 @@ parameters:
 jobs:
   # sonarcloud scan is done as deployment in order to be able to control CI from forks
   - deployment: 'SonarCloud_Analyzer'
-    displayName: 'SonarCloud Static Code Analyzer'
+    displayName: 'SonarCloud Scan'
     pool:
       vmImage: 'ubuntu-latest'
     environment: 'NeedApproval'
