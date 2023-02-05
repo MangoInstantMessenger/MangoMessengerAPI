@@ -9,5 +9,6 @@ and this project adheres to [Semantic Versioning v2.0.0](https://semver.org/spec
 
 ### Changed
 
+- CI/CD pipelines separated into two separate files
 - Implement terraform infrastructure as code
 - Azure pipelines CI/CD trigger approval added for: Sonarcloud, Mend bolt scan jobs
