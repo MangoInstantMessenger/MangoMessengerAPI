@@ -78,6 +78,16 @@ resource "azurerm_mssql_database" "public" {
   depends_on = [azurerm_mssql_server.public]
 }
 
+resource "azurerm_mssql_firewall_rule" "public" {
+  for_each         = toset(azurerm_windows_web_app.public.outbound_ip_address_list)
+  name             = "FirewallRule_${replace(each.key, ".", "_")}"
+  server_id        = azurerm_mssql_server.public.id
+  start_ip_address = each.key
+  end_ip_address   = each.key
+
+  depends_on = [azurerm_mssql_server.public, azurerm_mssql_database.public, azurerm_windows_web_app.public]
+}
+
 # create sql database process ends
 
 # application insights starts
