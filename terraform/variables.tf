@@ -75,3 +75,15 @@ variable "keyvault_name" {
   default     = "kvmangodev"
   description = "Keyvault name"
 }
+
+variable "application_insights_name" {
+  type        = string
+  default     = "appi-mango-dev"
+  description = "Application insights name"
+}
+
+variable "jwt_sign_key" {
+  type        = string
+  default     = "ca5f6aa4-c62e-4706-87dd-062d84645674"
+  description = "JWT token sign secret"
+}

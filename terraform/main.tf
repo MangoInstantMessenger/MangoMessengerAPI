@@ -80,6 +80,15 @@ resource "azurerm_mssql_database" "public" {
 
 # create sql database process ends
 
+# application insights starts
+
+resource "azurerm_application_insights" "public" {
+  name                = "${var.application_insights_name}-${terraform.workspace}"
+  location            = azurerm_resource_group.public.location
+  resource_group_name = azurerm_resource_group.public.name
+  application_type    = "web"
+}
+
 # create keyvault starts
 
 resource "azurerm_key_vault" "public" {
@@ -113,6 +122,14 @@ resource "azurerm_key_vault" "public" {
   }
 }
 
+resource "azurerm_key_vault_secret" "app_insights_key" {
+  name         = "AppInsightsInstrumentationKey"
+  value        = azurerm_application_insights.public.instrumentation_key
+  key_vault_id = azurerm_key_vault.public.id
+
+  depends_on = [azurerm_key_vault.public, azurerm_application_insights.public]
+}
+
 resource "azurerm_key_vault_secret" "blob_url" {
   name         = "BlobUrl"
   value        = azurerm_storage_account.public.primary_connection_string
@@ -127,6 +144,14 @@ resource "azurerm_key_vault_secret" "blob_container" {
   key_vault_id = azurerm_key_vault.public.id
 
   depends_on = [azurerm_key_vault.public, azurerm_storage_container.public]
+}
+
+resource "azurerm_key_vault_secret" "blob_access" {
+  name         = "BlobAccess"
+  value        = "https://${azurerm_storage_account.public.name}.blob.core.windows.net/${azurerm_storage_container.public.name}"
+  key_vault_id = azurerm_key_vault.public.id
+
+  depends_on = [azurerm_key_vault.public, azurerm_storage_account.public, azurerm_storage_container.public]
 }
 
 resource "azurerm_key_vault_secret" "database_url" {
@@ -144,4 +169,31 @@ resource "azurerm_key_vault_secret" "webapp_name" {
 
   depends_on = [azurerm_key_vault.public, azurerm_windows_web_app.public]
 }
+
+resource "azurerm_key_vault_secret" "jwt_sign_key" {
+  name         = "JwtSignKey"
+  value        = var.jwt_sign_key
+  key_vault_id = azurerm_key_vault.public.id
+
+  depends_on = [azurerm_key_vault.public, azurerm_windows_web_app.public]
+}
+
+resource "azurerm_key_vault_secret" "jwt_issuer" {
+  name         = "JwtIssuer"
+  value        = "https://${azurerm_windows_web_app.public.name}.azurewebsites.net"
+  key_vault_id = azurerm_key_vault.public.id
+
+  depends_on = [azurerm_key_vault.public, azurerm_windows_web_app.public]
+}
+
+resource "azurerm_key_vault_secret" "jwt_audience" {
+  name         = "JwtAudience"
+  value        = "https://${azurerm_windows_web_app.public.name}.azurewebsites.net"
+  key_vault_id = azurerm_key_vault.public.id
+
+  depends_on = [azurerm_key_vault.public, azurerm_windows_web_app.public]
+}
+
+# keyvault ends
+
 
