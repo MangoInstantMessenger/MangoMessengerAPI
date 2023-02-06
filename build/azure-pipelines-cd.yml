@@ -63,7 +63,7 @@ stages:
 
                 - task: AzureKeyVault@2
                   inputs:
-                    azureSubscription: '$(ServiceConnectionName)'
+                    azureSubscription: 'MangoServiceConnection'
                     KeyVaultName: '$(KeyVaultName)'
                     SecretsFilter: "*"
                     RunAsPreJob: false
@@ -72,7 +72,7 @@ stages:
                   displayName: 'Deploy to Azure Web App'
                   inputs:
                     ConnectionType: 'AzureRM'
-                    azureSubscription: '$(ServiceConnectionName)'
+                    azureSubscription: 'MangoServiceConnection'
                     appType: 'webApp'
                     WebAppName: '$(WebAppName)'
                     packageForLinux: '$(Pipeline.Workspace)/drop/$(buildConfiguration)/MangoAPI.Presentation.zip'
