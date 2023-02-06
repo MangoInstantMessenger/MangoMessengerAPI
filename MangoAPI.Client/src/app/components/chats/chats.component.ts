@@ -20,6 +20,7 @@ import { Subject, takeUntil } from 'rxjs';
 import { DisplayNameColours } from 'src/app/types/enums/DisplayNameColours';
 import { UsersService } from 'src/app/services/api/users.service';
 import { DeleteMessageCommand } from 'src/app/types/requests/DeleteMessageCommand';
+import { DocumentsService } from 'src/app/services/api/documents.service';
 
 @Component({
   selector: 'app-chats',
@@ -35,7 +36,8 @@ export class ChatsComponent implements OnInit, OnDestroy {
     private _usersService: UsersService,
     private _errorNotificationService: ErrorNotificationService,
     private _router: Router,
-    private _validationService: ValidationService
+    private _validationService: ValidationService,
+    private _documentsService: DocumentsService
   ) {}
 
   private connectionBuilder: signalR.HubConnectionBuilder = new signalR.HubConnectionBuilder();
@@ -70,7 +72,9 @@ export class ChatsComponent implements OnInit, OnDestroy {
   public activeChatId = '';
   public messages: Message[] = [];
 
+  public messageAttachment: File | null = null;
   public messageText = '';
+  public messageAttachmentUrl = '';
   public searchChatQuery = '';
   public searchMessagesQuery = '';
   public chatFilter = 'All chats';
@@ -141,6 +145,25 @@ export class ChatsComponent implements OnInit, OnDestroy {
       .catch((err) => console.error(err.toString()));
   }
 
+  imageSelected(event: any) {
+    this.messageAttachment = event.target.files[0];
+  }
+
+  onImageClick(imageUrl: string) {
+    window.open(imageUrl);
+  }
+
+  async uploadFile(file: File) {
+    let fileName = null;
+    if (file) {
+      const formData = new FormData();
+      formData.append('formFile', file, file.name);
+      const response = await this._documentsService.uploadDocument(formData).toPromise();
+      this.messageAttachmentUrl = response?.fileUrl ?? '';
+      fileName = response?.fileName ?? '';
+    }
+    return fileName;
+  }
   setSignalRMethods(): void {
     this.connection.on('BroadcastMessageAsync', (message: Message) =>
       this.onBroadcastMessage(message)
@@ -379,7 +402,7 @@ export class ChatsComponent implements OnInit, OnDestroy {
       });
   }
 
-  onSendMessageClick(): void {
+  async onSendMessageClick() {
     const messageTextValidationResult = this._validationService.validateField(
       this.messageText,
       'Message Text'
@@ -396,7 +419,7 @@ export class ChatsComponent implements OnInit, OnDestroy {
 
     const isoString = new Date().toISOString();
     const messageId = crypto.randomUUID();
-
+    const sendMessageCommand = new SendMessageCommand(this.messageText, this.activeChatId);
     const newMessage = new Message(
       messageId,
       tokens.userId,
@@ -409,9 +432,15 @@ export class ChatsComponent implements OnInit, OnDestroy {
       tokens.userProfilePictureUrl
     );
 
+    if (this.messageAttachment) {
+      const fileName = await this.uploadFile(this.messageAttachment);
+      this.messageAttachment = null;
+      sendMessageCommand.setAttachmentUrl(fileName);
+      newMessage.setMessageAttachmentUrl(this.messageAttachmentUrl);
+    }
+
     this.messages.push(newMessage);
 
-    const sendMessageCommand = new SendMessageCommand(this.messageText, this.activeChatId);
     sendMessageCommand.setMessageId(messageId);
     sendMessageCommand.setCreatedAt(isoString);
 

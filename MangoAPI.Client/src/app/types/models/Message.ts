@@ -36,4 +36,8 @@ export class Message {
     this.self = self;
     this.messageAuthorPictureUrl = messageAuthorPictureUrl;
   }
+
+  setMessageAttachmentUrl(url: string | null): void {
+    this.messageAttachmentUrl = url;
+  }
 }
