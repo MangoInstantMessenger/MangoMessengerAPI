@@ -54,17 +54,27 @@ stages:
         environment: 'dev'
         variables:
           - group: DEPLOY_DEV_VARS
+          - name: 'ApplicationInsights.InstrumentationKey'
+            value: '$(ApplicationInsightsInstrumentationKey)'
         strategy:
           runOnce:
             deploy:
               steps:
                 - download: current
                   artifact: drop
+
+                - task: AzureKeyVault@2
+                  inputs:
+                    azureSubscription: 'MangoServiceConnection'
+                    KeyVaultName: '$(KeyVaultName)'
+                    SecretsFilter: "*"
+                    RunAsPreJob: false
+
                 - task: AzureRmWebAppDeployment@4
                   displayName: 'Deploy to Azure Web App'
                   inputs:
                     ConnectionType: 'AzureRM'
-                    azureSubscription: 'MangoRgServiceConnection'
+                    azureSubscription: 'MangoServiceConnection'
                     appType: 'webApp'
                     WebAppName: '$(WebAppName)'
                     packageForLinux: '$(Pipeline.Workspace)/drop/$(buildConfiguration)/MangoAPI.Presentation.zip'
