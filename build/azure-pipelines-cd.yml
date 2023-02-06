@@ -54,6 +54,8 @@ stages:
         environment: 'dev'
         variables:
           - group: DEPLOY_DEV_VARS
+          - name: 'ApplicationInsights.InstrumentationKey'
+            value: '$(ApplicationInsightsInstrumentationKey)'
         strategy:
           runOnce:
             deploy:
@@ -77,5 +79,3 @@ stages:
                     WebAppName: '$(WebAppName)'
                     packageForLinux: '$(Pipeline.Workspace)/drop/$(buildConfiguration)/MangoAPI.Presentation.zip'
                     JSONFiles: '**/appsettings.json'
-                  env:
-                    ApplicationInsights.InstrumentationKey: $(ApplicationInsightsInstrumentationKey)
