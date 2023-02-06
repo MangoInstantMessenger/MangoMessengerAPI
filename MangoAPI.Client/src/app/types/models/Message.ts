@@ -24,8 +24,7 @@ export class Message {
     messageText: string,
     createdAt: string,
     self: boolean,
-    messageAuthorPictureUrl: string,
-    messageAttachmentUrl: string
+    messageAuthorPictureUrl: string
   ) {
     this.messageId = messageId;
     this.userId = userId;
@@ -36,6 +35,5 @@ export class Message {
     this.createdAt = createdAt;
     this.self = self;
     this.messageAuthorPictureUrl = messageAuthorPictureUrl;
-    this.messageAttachmentUrl = messageAttachmentUrl
   }
 }

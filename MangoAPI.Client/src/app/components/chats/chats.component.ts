@@ -20,7 +20,6 @@ import { Subject, takeUntil } from 'rxjs';
 import { DisplayNameColours } from 'src/app/types/enums/DisplayNameColours';
 import { UsersService } from 'src/app/services/api/users.service';
 import { DeleteMessageCommand } from 'src/app/types/requests/DeleteMessageCommand';
-import { BlobStorageService } from 'src/app/shared/blob-storage.service';
 
 @Component({
   selector: 'app-chats',
@@ -36,8 +35,7 @@ export class ChatsComponent implements OnInit, OnDestroy {
     private _usersService: UsersService,
     private _errorNotificationService: ErrorNotificationService,
     private _router: Router,
-    private _validationService: ValidationService,
-    private _blobStorageService: BlobStorageService
+    private _validationService: ValidationService
   ) {}
 
   private connectionBuilder: signalR.HubConnectionBuilder = new signalR.HubConnectionBuilder();
@@ -72,9 +70,7 @@ export class ChatsComponent implements OnInit, OnDestroy {
   public activeChatId = '';
   public messages: Message[] = [];
 
-  public messageAttachment: File | null = null;
   public messageText = '';
-  public messageAttachmentUrl = '';
   public searchChatQuery = '';
   public searchMessagesQuery = '';
   public chatFilter = 'All chats';
@@ -145,19 +141,6 @@ export class ChatsComponent implements OnInit, OnDestroy {
       .catch((err) => console.error(err.toString()));
   }
 
-  imageSelected(event: any) {
-    this.messageAttachment = event.target.files[0];
-  }
-
-  onImageClick(imageUrl: string) {
-    window.open(imageUrl);
-  }
-
-  uploadFile(file: File, messageId: string) {
-    if (file) {
-      this._blobStorageService.uploadFile(file, messageId);
-    }
-  }
   setSignalRMethods(): void {
     this.connection.on('BroadcastMessageAsync', (message: Message) =>
       this.onBroadcastMessage(message)
@@ -262,10 +245,6 @@ export class ChatsComponent implements OnInit, OnDestroy {
         next: (response) => {
           this.messages = response.messages;
           this.scrollToEnd();
-          this.messages.forEach(async (x) => {
-            if (x.messageAttachmentUrl)
-              await this.fetchMessageImage(x.messageId, x.messageAttachmentUrl);
-          });
         },
         error: (error) => {
           this._errorNotificationService.notifyOnError(error);
@@ -417,14 +396,6 @@ export class ChatsComponent implements OnInit, OnDestroy {
 
     const isoString = new Date().toISOString();
     const messageId = crypto.randomUUID();
-    const sendMessageCommand = new SendMessageCommand(this.messageText, this.activeChatId);
-
-    if (this.messageAttachment) {
-      this.uploadFile(this.messageAttachment, messageId);
-      this.messageAttachment = null;
-      sendMessageCommand.setAttachmentUrl(messageId);
-    }
-
 
     const newMessage = new Message(
       messageId,
@@ -435,13 +406,12 @@ export class ChatsComponent implements OnInit, OnDestroy {
       this.messageText,
       isoString,
       true,
-      tokens.userProfilePictureUrl,
-      this.messageAttachmentUrl
+      tokens.userProfilePictureUrl
     );
 
     this.messages.push(newMessage);
 
-
+    const sendMessageCommand = new SendMessageCommand(this.messageText, this.activeChatId);
     sendMessageCommand.setMessageId(messageId);
     sendMessageCommand.setCreatedAt(isoString);
 
@@ -451,7 +421,6 @@ export class ChatsComponent implements OnInit, OnDestroy {
       .subscribe({
         next: (data) => {
           newMessage.messageId = data.messageId;
-          this.loadChat(this.activeChatId);
           this.clearMessageInput();
           this.scrollToEnd();
         },
@@ -459,12 +428,6 @@ export class ChatsComponent implements OnInit, OnDestroy {
           this._errorNotificationService.notifyOnError(error);
         }
       });
-  }
-
-  private fetchMessageImage(messageId: string, messageAttachmentUrl: string) {
-    this._blobStorageService.downloadImage(messageId, (blob: any) => {
-      messageAttachmentUrl = URL.createObjectURL(blob);
-    });
   }
 
   onEnterClick(event: any): void {
