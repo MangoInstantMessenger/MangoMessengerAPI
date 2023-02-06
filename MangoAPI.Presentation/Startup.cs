@@ -134,6 +134,10 @@ public class Startup
         services.AddAutoMapper(typeof(ApiControllerBase));
 
         services.AddMvc();
+
+        services.AddApplicationInsightsTelemetry();
+
+        services.AddLogging();
     }
 
     /// <summary>

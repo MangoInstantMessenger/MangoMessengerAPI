@@ -6,16 +6,19 @@ using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.Domain.Constants;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Logging;
 
 namespace MangoAPI.Presentation.Middlewares;
 
 public class ExceptionHandlingMiddleware
 {
     private readonly RequestDelegate next;
+    private readonly ILogger<Startup> logger;
 
-    public ExceptionHandlingMiddleware(RequestDelegate next)
+    public ExceptionHandlingMiddleware(RequestDelegate next, ILogger<Startup> logger)
     {
         this.next = next;
+        this.logger = logger;
     }
 
     public async Task InvokeAsync(HttpContext httpContext)
@@ -30,7 +33,7 @@ public class ExceptionHandlingMiddleware
         }
     }
 
-    private static async Task HandleExceptionAsync(HttpContext context, Exception exception)
+    private async Task HandleExceptionAsync(HttpContext context, Exception exception)
     {
         var errorContext = new ErrorContext(exception.Message, exception)
         {
@@ -41,18 +44,26 @@ public class ExceptionHandlingMiddleware
             },
         };
 
-        await ThrowErrorAsync(context, errorContext);
+        await ReturnErrorResponseAsync(context, errorContext);
     }
 
-    private static async Task ThrowErrorAsync(HttpContext context, ErrorContext errorContext)
+    private async Task ReturnErrorResponseAsync(HttpContext context, ErrorContext errorContext)
     {
+        var errorDetails = ResponseMessageCodes.ErrorDictionary[ResponseMessageCodes.InvalidRequestModel];
+        var loggerMessage = $"ERROR ${errorContext.StatusCode}: \n " +
+                            $"Error message: ${errorContext.ErrorMessage}, \n " +
+                            $"Error details: ${errorDetails}";
+
         context.Response.ContentType = "application/json";
         context.Response.StatusCode = (int)errorContext.StatusCode;
+        
+        LoggingHelper.LoggerError(logger, loggerMessage, errorContext.Exception);
+        
         await context.Response.WriteAsync(new ErrorResponse
         {
             Success = false,
             ErrorMessage = errorContext.ErrorMessage,
-            ErrorDetails = ResponseMessageCodes.ErrorDictionary[ResponseMessageCodes.InvalidRequestModel],
+            ErrorDetails = errorDetails,
             StatusCode = errorContext.StatusCode,
         }.ToString());
     }
