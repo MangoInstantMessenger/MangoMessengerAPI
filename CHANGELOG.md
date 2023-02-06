@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning v2.0.0](https://semver.org/spec
 
 ### Changed
 
+- Azure Application insights added
 - Message file attachment implemented (by [@islamumarov](https://github.com/MangoInstantMessenger/MangoMessengerAPI/pull/354))
 - CI/CD pipelines separated into two separate files
 - Implement terraform infrastructure as code

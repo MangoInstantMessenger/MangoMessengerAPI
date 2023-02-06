@@ -3,8 +3,6 @@ root = true
 
 # C# files
 [*.cs]
-
-[*.{cs,vb}]
 dotnet_diagnostic.CA1824.severity = none
 dotnet_diagnostic.IDE0055.severity = none
 dotnet_diagnostic.IDE0005.severity = none
