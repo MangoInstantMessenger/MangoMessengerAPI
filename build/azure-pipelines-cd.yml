@@ -60,12 +60,22 @@ stages:
               steps:
                 - download: current
                   artifact: drop
+
+                - task: AzureKeyVault@2
+                  inputs:
+                    azureSubscription: '$(ServiceConnectionName)'
+                    KeyVaultName: '$(KeyVaultName)'
+                    SecretsFilter: "*"
+                    RunAsPreJob: false
+
                 - task: AzureRmWebAppDeployment@4
                   displayName: 'Deploy to Azure Web App'
                   inputs:
                     ConnectionType: 'AzureRM'
-                    azureSubscription: 'MangoRgServiceConnection'
+                    azureSubscription: '$(ServiceConnectionName)'
                     appType: 'webApp'
                     WebAppName: '$(WebAppName)'
                     packageForLinux: '$(Pipeline.Workspace)/drop/$(buildConfiguration)/MangoAPI.Presentation.zip'
                     JSONFiles: '**/appsettings.json'
+                  env:
+                    ApplicationInsights.InstrumentationKey: $(ApplicationInsightsInstrumentationKey)

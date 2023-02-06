@@ -6,19 +6,19 @@ public static class EnvironmentConstants
 
     public const int RefreshTokenLifetimeDays = 7;
 
-    public const string JwtIssuer = "JWT_ISSUER";
+    public const string JwtIssuer = "JwtIssuer";
 
-    public const string JwtAudience = "JWT_AUDIENCE";
+    public const string JwtAudience = "JwtAudience";
 
-    public const string JwtSignKey = "JWT_SIGN_KEY";
+    public const string JwtSignKey = "JwtSignKey";
 
-    public const string DatabaseUrl = "DATABASE_URL";
+    public const string DatabaseUrl = "DatabaseUrl";
 
-    public const string IntegrationTestsDatabaseUrl = "INTEGRATION_TESTS_DATABASE_URL";
+    public const string IntegrationTestsDatabaseUrl = "IntegrationTestsDatabaseUrl";
 
-    public const string BlobUrl = "BLOB_URL";
+    public const string BlobUrl = "BlobUrl";
 
-    public const string BlobContainer = "BLOB_CONTAINER";
+    public const string BlobContainer = "BlobContainer";
 
-    public const string BlobAccess = "BLOB_ACCESS";
+    public const string BlobAccess = "BlobAccess";
 }
