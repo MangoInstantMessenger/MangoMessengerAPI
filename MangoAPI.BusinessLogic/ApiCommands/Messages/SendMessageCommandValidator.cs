@@ -20,8 +20,7 @@ public class SendMessageCommandValidator : AbstractValidator<SendMessageCommand>
             .Length(1, 300);
 
         RuleFor(x => x.AttachmentUrl)
-            .Cascade(CascadeMode.Stop)
-            .Length(1, 150);
+            .Cascade(CascadeMode.Stop);
 
         RuleFor(x => x.ChatId).NotEmpty();
         RuleFor(x => x.UserId).NotEmpty();
