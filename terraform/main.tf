@@ -148,14 +148,6 @@ resource "azurerm_key_vault_secret" "blob_url" {
   depends_on = [azurerm_key_vault.public, azurerm_storage_account.public]
 }
 
-resource "azurerm_key_vault_secret" "storage_account_key" {
-  name         = "StorageAccountPrimaryKey"
-  value        = azurerm_storage_account.public.primary_access_key
-  key_vault_id = azurerm_key_vault.public.id
-
-  depends_on = [azurerm_key_vault.public, azurerm_storage_account.public]
-}
-
 resource "azurerm_key_vault_secret" "storage_account_name" {
   name         = "StorageAccountName"
   value        = var.storage_account_name
