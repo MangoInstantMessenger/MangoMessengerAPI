@@ -20,7 +20,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "items", "items", "{F8A0C2AF
 		LICENSE.txt = LICENSE.txt
 		README.md = README.md
 		.gitattributes = .gitattributes
-		MangoAPI.sln.DotSettings = MangoAPI.sln.DotSettings
 		CHANGELOG.md = CHANGELOG.md
 		Dockerfile = Dockerfile
 		.dockerignore = .dockerignore
@@ -35,8 +34,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MangoAPI.DiffieHellmanLibra
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "build", "build", "{66E218B1-FCCA-42F3-81A4-E19AC6659ECA}"
 	ProjectSection(SolutionItems) = preProject
-		build\azure-pipelines.yml = build\azure-pipelines.yml
 		build\coverage.runsettings = build\coverage.runsettings
+		build\azure-pipelines-ci.yml = build\azure-pipelines-ci.yml
+		build\azure-pipelines-cd.yml = build\azure-pipelines-cd.yml
+		build\azure-pipelines-azcopy.yml = build\azure-pipelines-azcopy.yml
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".github", ".github", "{B8CB0A21-BB6E-478B-A755-49CEA1435CD1}"
@@ -58,6 +59,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "scripts", "scripts", "{C75F
 		scripts\run-sonarqube-dotnet.sh = scripts\run-sonarqube-dotnet.sh
 		scripts\wait_database.ps1 = scripts\wait_database.ps1
 		scripts\infrastructure.ps1 = scripts\infrastructure.ps1
+		scripts\CopyAssetsToStorageAccount.ps1 = scripts\CopyAssetsToStorageAccount.ps1
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "terraform", "terraform", "{D5B04B5C-55E7-48C0-BA17-A084C24610BA}"
@@ -66,6 +68,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "terraform", "terraform", "{
 		terraform\output.tf = terraform\output.tf
 		terraform\variables.tf = terraform\variables.tf
 		terraform\README.md = terraform\README.md
+		terraform\provider.tf = terraform\provider.tf
+		terraform\versions.tf = terraform\versions.tf
+		terraform\terraform.qa.tfvars = terraform\terraform.qa.tfvars
+		terraform\terraform.dev.tfvars = terraform\terraform.dev.tfvars
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "img", "img", "{64F59099-7FFD-4D32-8C74-2BD1EBFF0B11}"
@@ -113,12 +119,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "templates", "templates", "{
 		build\templates\snyk-job-template.yml = build\templates\snyk-job-template.yml
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "legacy_pipelines", "legacy_pipelines", "{A751035E-CEC1-4074-8872-803C23909931}"
-	ProjectSection(SolutionItems) = preProject
-		build\legacy_pipelines\azure-pipelines-deploy.yml = build\legacy_pipelines\azure-pipelines-deploy.yml
-		build\legacy_pipelines\azure-pipelines-sonarqube.yml = build\legacy_pipelines\azure-pipelines-sonarqube.yml
-	EndProjectSection
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "bicep", "bicep", "{D553C98E-AC84-4EA6-81EA-39548AD267F8}"
 	ProjectSection(SolutionItems) = preProject
 		bicep\appService.bicep = bicep\appService.bicep
@@ -134,6 +134,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "parameters", "parameters", 
 	ProjectSection(SolutionItems) = preProject
 		bicep\parameters\rg-azure-deploy.parameters.dev.json = bicep\parameters\rg-azure-deploy.parameters.dev.json
 		bicep\parameters\parameters.dev.json = bicep\parameters\parameters.dev.json
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".vscode", ".vscode", "{9B21A232-CC44-4B14-B117-D9D441441483}"
+	ProjectSection(SolutionItems) = preProject
+		.vscode\extensions.json = .vscode\extensions.json
+		.vscode\launch.json = .vscode\launch.json
+		.vscode\tasks.json = .vscode\tasks.json
 	EndProjectSection
 EndProject
 Global
@@ -183,7 +190,6 @@ Global
 		{180A6309-24EE-4736-9DE5-AB36997D75BB} = {64F59099-7FFD-4D32-8C74-2BD1EBFF0B11}
 		{8AEBB05F-C450-4E77-8B91-9155BFB4FD56} = {B8CB0A21-BB6E-478B-A755-49CEA1435CD1}
 		{79EB6A4D-7532-4D40-8E76-B168B442D3C0} = {66E218B1-FCCA-42F3-81A4-E19AC6659ECA}
-		{A751035E-CEC1-4074-8872-803C23909931} = {66E218B1-FCCA-42F3-81A4-E19AC6659ECA}
 		{BA8CDB8A-341D-42EC-A56F-B52322A34296} = {D553C98E-AC84-4EA6-81EA-39548AD267F8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution

@@ -42,10 +42,7 @@ public class SendMessageCommandHandler
         var user = await dbContext.Users.AsNoTracking()
             .Select(x => new
             {
-                x.DisplayName,
-                x.DisplayNameColour,
-                x.Image,
-                x.Id,
+                x.DisplayName, x.DisplayNameColour, x.Image, x.Id,
             }).FirstOrDefaultAsync(
                 x => x.Id == request.UserId,
                 cancellationToken);
@@ -59,12 +56,7 @@ public class SendMessageCommandHandler
         }
 
         var userChat = await dbContext.UserChats.AsNoTracking()
-            .Select(x => new
-            {
-                x.ChatId,
-                x.RoleId,
-                x.Chat,
-            }).FirstOrDefaultAsync(
+            .Select(x => new { x.ChatId, x.RoleId, x.Chat, }).FirstOrDefaultAsync(
                 x => x.ChatId == request.ChatId,
                 cancellationToken);
 

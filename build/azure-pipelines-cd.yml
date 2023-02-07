@@ -1,8 +1,8 @@
 trigger:
   batch: true
-  branches:
+  tags:
     include:
-      - develop
+      - 'v*'
   paths:
     include:
       - build
@@ -15,21 +15,7 @@ trigger:
       - MangoAPI.IntegrationTests
       - MangoAPI.Presentation
 
-pr:
-  branches:
-    include:
-      - develop
-  paths:
-    include:
-      - build
-      - MangoAPI.Application
-      - MangoAPI.BusinessLogic
-      - MangoAPI.Client
-      - MangoAPI.DiffieHellmanConsole
-      - MangoAPI.DiffieHellmanLibrary
-      - MangoAPI.Domain
-      - MangoAPI.IntegrationTests
-      - MangoAPI.Presentation
+pr: none
 
 pool:
   vmImage: 'ubuntu-latest'
@@ -46,7 +32,7 @@ stages:
     jobs:
       - template: templates/dotnet-build-job-template.yml
       - template: templates/dotnet-integration-tests-job-template.yml
-  
+
   - stage: 'Security_checks'
     displayName: 'Run security checks'
     dependsOn: 'Build_Test_Pack'
@@ -68,17 +54,27 @@ stages:
         environment: 'dev'
         variables:
           - group: DEPLOY_DEV_VARS
+          - name: 'ApplicationInsights.InstrumentationKey'
+            value: '$(ApplicationInsightsInstrumentationKey)'
         strategy:
           runOnce:
             deploy:
               steps:
                 - download: current
                   artifact: drop
+
+                - task: AzureKeyVault@2
+                  inputs:
+                    azureSubscription: 'MangoServiceConnection'
+                    KeyVaultName: '$(KeyVaultName)'
+                    SecretsFilter: "*"
+                    RunAsPreJob: false
+
                 - task: AzureRmWebAppDeployment@4
                   displayName: 'Deploy to Azure Web App'
                   inputs:
                     ConnectionType: 'AzureRM'
-                    azureSubscription: 'MangoRgServiceConnection'
+                    azureSubscription: 'MangoServiceConnection'
                     appType: 'webApp'
                     WebAppName: '$(WebAppName)'
                     packageForLinux: '$(Pipeline.Workspace)/drop/$(buildConfiguration)/MangoAPI.Presentation.zip'

@@ -1,0 +1,57 @@
+trigger:
+  batch: true
+  branches:
+    include:
+      - develop
+  paths:
+    include:
+      - build
+      - MangoAPI.Application
+      - MangoAPI.BusinessLogic
+      - MangoAPI.Client
+      - MangoAPI.DiffieHellmanConsole
+      - MangoAPI.DiffieHellmanLibrary
+      - MangoAPI.Domain
+      - MangoAPI.IntegrationTests
+      - MangoAPI.Presentation
+
+pr:
+  branches:
+    include:
+      - develop
+  paths:
+    include:
+      - build
+      - MangoAPI.Application
+      - MangoAPI.BusinessLogic
+      - MangoAPI.Client
+      - MangoAPI.DiffieHellmanConsole
+      - MangoAPI.DiffieHellmanLibrary
+      - MangoAPI.Domain
+      - MangoAPI.IntegrationTests
+      - MangoAPI.Presentation
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+variables:
+  - name: buildPlatform
+    value: 'Any CPU'
+  - name: buildConfiguration
+    value: 'Release'
+
+stages:
+  - stage: 'Build_Test_Pack'
+    displayName: 'Build Test and Drop Artifacts'
+    jobs:
+      - template: templates/dotnet-build-job-template.yml
+      - template: templates/dotnet-integration-tests-job-template.yml
+
+  - stage: 'Security_checks'
+    displayName: 'Run security checks'
+    dependsOn: 'Build_Test_Pack'
+    condition: succeeded('Build_Test_Pack')
+    jobs:
+      - template: templates/sonarcloud-job-template.yml
+      - template: templates/mend-scan-job-template.yml
+      - template: templates/snyk-job-template.yml
