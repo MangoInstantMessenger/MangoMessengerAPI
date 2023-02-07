@@ -17,6 +17,8 @@ $sas = $( az storage container generate-sas --name $container --expiry $Date --p
 
 Write-Output "AzCopy copy started ..."
 $targetUri = "https://${account}.blob.core.windows.net/${container}?$sas"
+
 azcopy copy "$sourceFolder" "$targetUri" --recursive=true
 
-# example call: ./scripts/CopyAssetsToStorageAccount.ps1 -storageAccount "mangostoraged01" -container "mangocontainer" -storageAccountKey $accountKey -sourcePath "../img/seed_images/*"
+# example call: ./scripts/CopyAssetsToStorageAccount.ps1 -storageAccount "mangostoraged01" -container "mangocontainer" -storageAccountKey $accountKey -sourcePath "img/seed_images/*"
+# example call: ./scripts/CopyAssetsToStorageAccount.ps1 -storageAccount "mangostoraged01" -container "mangocontainer" -storageAccountKey $accountKey -sourcePath "D:\RiderProjects\MangoMessengerAPI\img\seed_images\*"

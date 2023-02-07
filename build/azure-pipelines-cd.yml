@@ -70,15 +70,6 @@ stages:
                     SecretsFilter: "*"
                     RunAsPreJob: false
 
-                - task: AzureCLI@2
-                  displayName: 'Copy assets to blob storage'
-                  inputs:
-                    azureSubscription:  MangoServiceConnection'
-                    scriptType: ps
-                    scriptLocation: inlineScript
-                    inlineScript: |
-                      ./scripts/CopyAssetsToStorageAccount.ps1 -storageAccount $(StorageAccountName) -container "mangocontainer" -storageAccountKey $(StorageAccountPrimaryKey) -sourcePath "./img/seed_images/*"
-
                 - task: AzureRmWebAppDeployment@4
                   displayName: 'Deploy to Azure Web App'
                   inputs:
