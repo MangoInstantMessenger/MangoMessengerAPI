@@ -1,0 +1,31 @@
+trigger: none
+
+pr: none
+
+pool:
+  vmImage: 'windows-latest'
+
+variables:
+  - group: DEPLOY_DEV_VARS
+
+stages:
+  - stage: 'azcopy'
+    displayName: 'AzCopy Assets'
+    jobs:
+      - job: 'AzCopy_Assets'
+        displayName: 'AzCopy Assets'
+        steps:
+          - task: AzureKeyVault@2
+            inputs:
+              azureSubscription: 'MangoServiceConnection'
+              KeyVaultName: '$(KeyVaultName)'
+              SecretsFilter: "*"
+              RunAsPreJob: false
+
+          - task: AzureFileCopy@4
+            inputs:
+              SourcePath: "$(Build.SourcesDirectory)/img/seed_images/*"
+              azureSubscription: 'MangoServiceConnection'
+              Destination: 'AzureBlob'
+              storage: "$(StorageAccountName)"
+              ContainerName: "mangocontainer"

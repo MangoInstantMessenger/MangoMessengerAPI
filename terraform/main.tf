@@ -148,12 +148,20 @@ resource "azurerm_key_vault_secret" "blob_url" {
   depends_on = [azurerm_key_vault.public, azurerm_storage_account.public]
 }
 
-resource "azurerm_key_vault_secret" "blob_container" {
-  name         = "BlobContainer"
-  value        = azurerm_storage_container.public.name
+resource "azurerm_key_vault_secret" "storage_account_name" {
+  name         = "StorageAccountName"
+  value        = var.storage_account_name
   key_vault_id = azurerm_key_vault.public.id
 
-  depends_on = [azurerm_key_vault.public, azurerm_storage_container.public]
+  depends_on = [azurerm_key_vault.public]
+}
+
+resource "azurerm_key_vault_secret" "blob_container" {
+  name         = "BlobContainer"
+  value        = var.storage_container_name
+  key_vault_id = azurerm_key_vault.public.id
+
+  depends_on = [azurerm_key_vault.public]
 }
 
 resource "azurerm_key_vault_secret" "blob_access" {
