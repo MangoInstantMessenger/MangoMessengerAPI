@@ -1,10 +1,10 @@
 param location string
-param storageAccountName string
+param stName string
 param contName string
 param skuStorageName string
 
-resource stg 'Microsoft.Storage/storageAccounts@2022-09-01' = {
-  name: storageAccountName
+resource st 'Microsoft.Storage/storageAccounts@2022-09-01' = {
+  name: stName
   location: location
   sku: {
     name: skuStorageName
@@ -12,12 +12,14 @@ resource stg 'Microsoft.Storage/storageAccounts@2022-09-01' = {
   kind: 'StorageV2'
 }
 
-resource stgCont 'Microsoft.Storage/storageAccounts/blobServices/containers@2022-09-01' = {
-  name: '${storageAccountName}/default/${contName}'
+resource cont 'Microsoft.Storage/storageAccounts/blobServices/containers@2022-09-01' = {
+  name: '${stName}/default/${contName}'
   dependsOn: [
-    stg
+    st
   ]
   properties: {
     publicAccess: 'None'
   }
 }
+
+output stKey string = listKeys(st.id, st.apiVersion).keys[0].value

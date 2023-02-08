@@ -1,10 +1,11 @@
 param location string
-param servicePlanName string
+param aspName string
 param skuPlanName string
-param webAppName string
+param appName string
+param appiName string
 
-resource appServicePlan 'Microsoft.Web/serverfarms@2022-03-01' = {
-  name: servicePlanName
+resource asp 'Microsoft.Web/serverfarms@2022-03-01' = {
+  name: aspName
   location: location
   properties: {
     reserved: false
@@ -16,11 +17,11 @@ resource appServicePlan 'Microsoft.Web/serverfarms@2022-03-01' = {
   kind: 'windows'
 }
 
-resource appService 'Microsoft.Web/sites@2022-03-01' = {
-  name: webAppName
+resource app 'Microsoft.Web/sites@2022-03-01' = {
+  name: appName
   location: location
   properties: {
-    serverFarmId: appServicePlan.id
+    serverFarmId: asp.id
     redundancyMode: 'None'
     siteConfig: {
       netFrameworkVersion: 'v6.0'
@@ -30,3 +31,15 @@ resource appService 'Microsoft.Web/sites@2022-03-01' = {
   }
   kind: 'windows'
 }
+
+resource appi 'Microsoft.Insights/components@2020-02-02' = {
+  name: appiName
+  location: location
+  kind: 'web'
+  properties: {
+    Application_Type: 'web'
+  }
+}
+
+output appInsightsKey string = appi.properties.InstrumentationKey
+output ipAddresses string = app.properties.outboundIpAddresses

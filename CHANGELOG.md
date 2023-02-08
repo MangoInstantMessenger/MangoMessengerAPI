@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning v2.0.0](https://semver.org/spec
 
 ### Changed
 
+- Updated bicep infrastructure as code
 - Azure storage account for terraform state is created via Azure Pipelines
 - Assets copied to azure blob storage as part of CI/CD
 - Azure KeyVault used to access secrets inside CI/CD pipelines
