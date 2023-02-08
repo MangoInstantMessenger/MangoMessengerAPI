@@ -1,0 +1,30 @@
+trigger: none
+
+pr: none
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+stages:
+  - stage: 'tfstate_storage'
+    displayName: 'Create terraform state storage'
+    jobs:
+      - job: 'Terraform_State_Storage'
+        displayName: 'Create terraform state storage'
+        steps:
+          - task: AzureCLI@2
+            displayName: 'Create terraform state storage'
+            inputs:
+              workingDirectory: '$(Build.SourcesDirectory)/scripts'
+              azureSubscription: 'MangoServiceConnection'
+              scriptType: pscore
+              scriptLocation: inlineScript
+              inlineScript: |
+                $rgName="rg-tf-state-$(Get-Random 100)"
+                $location = "northeurope"
+                $accountName="sttfstate$(Get-Random 1000)"
+                $sku="Standard_LRS"
+                $containerName="terraformcontainer"
+                $kvName="kvtfstate$(Get-Random 1000)"
+                ./create_terraform_backend.ps1 -rgName $rgName -location $location -storageAccount $accountName `
+                -storageSku $sku -container $containerName -keyVaultName $kvName
