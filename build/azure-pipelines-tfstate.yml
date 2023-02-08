@@ -5,9 +5,6 @@ pr: none
 pool:
   vmImage: 'ubuntu-latest'
 
-#variables:
-#  - group: DEPLOY_DEV_VARS
-
 stages:
   - stage: 'tfstate_storage'
     displayName: 'Create terraform state storage'
@@ -16,7 +13,7 @@ stages:
         displayName: 'Create terraform state storage'
         steps:
           - task: AzureCLI@2
-            displayName: Azure CLI
+            displayName: 'Create terraform state storage'
             inputs:
               workingDirectory: '$(Build.SourcesDirectory)/scripts'
               azureSubscription: 'MangoServiceConnection'
