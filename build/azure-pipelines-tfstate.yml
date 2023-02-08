@@ -18,11 +18,16 @@ stages:
           - task: AzureCLI@2
             displayName: Azure CLI
             inputs:
+              workingDirectory: '$(Build.SourcesDirectory)/scripts'
               azureSubscription: 'MangoServiceConnection'
               scriptType: pscore
               scriptLocation: inlineScript
               inlineScript: |
-                $rgName = "rg-tfstate-dev-d$(Get-Random 1000)"
+                $rgName="rg-tf-state-$(Get-Random 100)"
                 $location = "northeurope"
-                $accountName = "tfstate$(Get-Random 1000)"
-                $containerName = "tfstate"
+                $accountName="sttfstate$(Get-Random 1000)"
+                $sku="Standard_LRS"
+                $containerName="terraformcontainer"
+                $kvName="kvtfstate$(Get-Random 1000)"
+                ./create_terraform_backend.ps1 -rgName $rgName -location $location -storageAccount $accountName `
+                -storageSku $sku -container $containerName -keyVaultName $kvName
