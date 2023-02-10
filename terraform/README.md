@@ -47,7 +47,9 @@ See also [Terraform cheat sheet](https://medium.com/itnext/terraform-cheat-sheet
 Debugging terraform: [Debugging Terraform](https://developer.hashicorp.com/terraform/internals/debugging)
 
 - `terraform init`
+- `terraform plan -var "prefix=${prefix}" -out "main.tfplan"`
 - `terraform plan -out main.tfplan`
+- `terraform apply main.tfplan`
 - `terraform plan -var-file='terraform.dev.tfvars' -var sql_admin_username='razumovsky_r' -var sql_admin_password='Zd2yqLgyV4uHVC0eTPiH' -out 'dev.tfplan'`
 - `terraform plan -var-file='terraform.dev.tfvars' -out 'dev.tfplan'`
 - `terraform apply dev.tfplan`
