@@ -25,3 +25,15 @@ module "storage" {
   depends_on = [azurerm_resource_group.public]
 }
 
+module "sql" {
+  source                  = "./modules/sql"
+  sql_server_name         = "${var.sql_server_name}${var.prefix}"
+  sql_location            = azurerm_resource_group.public.location
+  sql_resource_group_name = azurerm_resource_group.public.name
+  sql_admin_username      = var.sql_admin_username
+  sql_admin_password      = var.sql_admin_password
+  sql_database_name       = var.sql_database_name
+
+  depends_on = [azurerm_resource_group.public]
+}
+
