@@ -81,3 +81,11 @@ variable "sql_admin_password" {
   default     = "Zd2yqLgyV4uHVC0eTPiH"
   description = "Sql admin password"
 }
+
+# keyvault
+
+variable "kv_name" {
+  type        = string
+  default     = "kvmangodev"
+  description = "Keyvault name"
+}

@@ -37,3 +37,14 @@ module "sql" {
   depends_on = [azurerm_resource_group.public]
 }
 
+module "keyvault" {
+  source                 = "./modules/keyvault"
+  kv_name                = "${var.kv_name}${var.prefix}"
+  kv_location            = azurerm_resource_group.public.location
+  kv_resource_group_name = azurerm_resource_group.public.name
+  tenant_id              = data.azurerm_client_config.current.tenant_id
+  object_id              = data.azurerm_client_config.current.object_id
+
+  depends_on = [azurerm_resource_group.public]
+}
+
