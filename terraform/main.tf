@@ -5,14 +5,19 @@ resource "azurerm_resource_group" "public" {
   name     = "${var.resource_group_name}-${var.prefix}"
 }
 
+resource "azurerm_application_insights" "public" {
+  name                = "${var.application_insights_name}-${var.prefix}"
+  location            = azurerm_resource_group.public.location
+  resource_group_name = azurerm_resource_group.public.name
+  application_type    = "web"
+}
+
 module "webapp" {
   source                      = "./modules/webapp"
   web_app_resource_group_name = azurerm_resource_group.public.name
   web_app_location            = azurerm_resource_group.public.location
   app_service_name            = "${var.app_service_name}-${var.prefix}"
   app_service_plan_name       = "${var.app_service_plan_name}-${var.prefix}"
-
-  depends_on = [azurerm_resource_group.public]
 }
 
 module "storage" {
@@ -21,8 +26,6 @@ module "storage" {
   storage_container_name      = "${var.storage_container_name}${var.prefix}"
   storage_resource_group_name = azurerm_resource_group.public.name
   storage_location            = azurerm_resource_group.public.location
-
-  depends_on = [azurerm_resource_group.public]
 }
 
 module "sql" {
@@ -33,8 +36,6 @@ module "sql" {
   sql_admin_username      = var.sql_admin_username
   sql_admin_password      = var.sql_admin_password
   sql_database_name       = var.sql_database_name
-
-  depends_on = [azurerm_resource_group.public]
 }
 
 module "keyvault" {
@@ -44,7 +45,4 @@ module "keyvault" {
   kv_resource_group_name = azurerm_resource_group.public.name
   tenant_id              = data.azurerm_client_config.current.tenant_id
   object_id              = data.azurerm_client_config.current.object_id
-
-  depends_on = [azurerm_resource_group.public]
 }
-
