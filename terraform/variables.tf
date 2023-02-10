@@ -16,6 +16,8 @@ variable "resource_group_location" {
   description = "Location of the resource group."
 }
 
+# app service
+
 variable "app_service_plan_name" {
   type        = string
   default     = "asp-mango-dev01"
@@ -38,4 +40,18 @@ variable "app_service_os" {
   type        = string
   default     = "Windows"
   description = "Messenger app service os"
+}
+
+# storage
+
+variable "storage_account_name" {
+  type        = string
+  default     = "stmangodatadev"
+  description = "Messenger storage account name"
+}
+
+variable "storage_container_name" {
+  type        = string
+  default     = "mangocontainer"
+  description = "Messenger storage container name"
 }

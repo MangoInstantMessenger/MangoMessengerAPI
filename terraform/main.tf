@@ -15,3 +15,13 @@ module "webapp" {
   depends_on = [azurerm_resource_group.public]
 }
 
+module "storage" {
+  source                      = "./modules/storage"
+  storage_account_name        = "${var.storage_account_name}${var.prefix}"
+  storage_container_name      = "${var.storage_container_name}${var.prefix}"
+  storage_resource_group_name = azurerm_resource_group.public.name
+  storage_location            = azurerm_resource_group.public.location
+
+  depends_on = [azurerm_resource_group.public]
+}
+
