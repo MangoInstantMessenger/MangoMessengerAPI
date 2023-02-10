@@ -145,6 +145,36 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".vscode", ".vscode", "{9B21
 		.vscode\tasks.json = .vscode\tasks.json
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "webapp", "webapp", "{7C0022ED-AF4E-4965-8668-CC286037CB16}"
+	ProjectSection(SolutionItems) = preProject
+		terraform\modules\webapp\main.tf = terraform\modules\webapp\main.tf
+		terraform\modules\webapp\output.tf = terraform\modules\webapp\output.tf
+		terraform\modules\webapp\variables.tf = terraform\modules\webapp\variables.tf
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "storage", "storage", "{CC550048-3A31-4C1F-A3BA-8844D5FAE5D3}"
+	ProjectSection(SolutionItems) = preProject
+		terraform\modules\storage\main.tf = terraform\modules\storage\main.tf
+		terraform\modules\storage\output.tf = terraform\modules\storage\output.tf
+		terraform\modules\storage\variables.tf = terraform\modules\storage\variables.tf
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "sql", "sql", "{01CB1860-327D-4A94-9916-05A179DA892B}"
+	ProjectSection(SolutionItems) = preProject
+		terraform\modules\sql\main.tf = terraform\modules\sql\main.tf
+		terraform\modules\sql\output.tf = terraform\modules\sql\output.tf
+		terraform\modules\sql\variables.tf = terraform\modules\sql\variables.tf
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "keyvault", "keyvault", "{E6F8F8D3-7BDB-4769-AF09-AC99AA4C9883}"
+	ProjectSection(SolutionItems) = preProject
+		terraform\modules\keyvault\main.tf = terraform\modules\keyvault\main.tf
+		terraform\modules\keyvault\output.tf = terraform\modules\keyvault\output.tf
+		terraform\modules\keyvault\variables.tf = terraform\modules\keyvault\variables.tf
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "modules", "modules", "{201AE3DB-8A7D-4D0C-B0DE-4765007E35E7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -193,6 +223,11 @@ Global
 		{8AEBB05F-C450-4E77-8B91-9155BFB4FD56} = {B8CB0A21-BB6E-478B-A755-49CEA1435CD1}
 		{79EB6A4D-7532-4D40-8E76-B168B442D3C0} = {66E218B1-FCCA-42F3-81A4-E19AC6659ECA}
 		{BA8CDB8A-341D-42EC-A56F-B52322A34296} = {D553C98E-AC84-4EA6-81EA-39548AD267F8}
+		{201AE3DB-8A7D-4D0C-B0DE-4765007E35E7} = {D5B04B5C-55E7-48C0-BA17-A084C24610BA}
+		{E6F8F8D3-7BDB-4769-AF09-AC99AA4C9883} = {201AE3DB-8A7D-4D0C-B0DE-4765007E35E7}
+		{01CB1860-327D-4A94-9916-05A179DA892B} = {201AE3DB-8A7D-4D0C-B0DE-4765007E35E7}
+		{CC550048-3A31-4C1F-A3BA-8844D5FAE5D3} = {201AE3DB-8A7D-4D0C-B0DE-4765007E35E7}
+		{7C0022ED-AF4E-4965-8668-CC286037CB16} = {201AE3DB-8A7D-4D0C-B0DE-4765007E35E7}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {64B16C18-46ED-4D73-927F-B2E229345447}
