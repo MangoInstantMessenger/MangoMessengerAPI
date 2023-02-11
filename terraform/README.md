@@ -17,7 +17,7 @@
     - `az group create -n $rgName -l $location`
 
 - Create storage account
-    - `az storage account create -g $rgName -n $account --sku "Standard_LRS" --encryption-services blob`
+    - `az storage account create --name $account --resource-group $rgName --kind "StorageV2" --sku "Standard_LRS" --https-only true --allow-blob-public-access false`
 
 - Get storage account key
     - `$key=$(az storage account keys list --resource-group $rgName --account-name $account --query [0].value -o tsv)`
@@ -32,7 +32,7 @@
 
 - Init examples:
     - `terraform init`
-    - `terraform init -backend-config=azure.conf`
+    - `terraform init -backend-config="azure.conf"`
     - ![tf_init](../img/terraform_init.PNG)
 - Plan examples
     - `terraform plan -var "prefix=${prefix}" -out "main.tfplan"`

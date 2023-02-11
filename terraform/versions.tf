@@ -6,10 +6,5 @@ terraform {
     }
   }
 
-  backend "azurerm" {
-    resource_group_name  = "pkolosov-tstate-rg"
-    storage_account_name = "pkolosovfstate673"
-    container_name       = "pkolosovtfstate"
-    key                  = "terraform.tfstate"
-  }
+  backend "azurerm" {}
 }

@@ -17,6 +17,7 @@
 /terraform/.terraform
 *.backup
 *.lock.info
+*.conf
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
