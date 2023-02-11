@@ -14,10 +14,10 @@ stages:
         pool:
           vmImage: 'ubuntu-latest'
         variables:
-          TF_STATE_BLOB_ACCOUNT_NAME: $(kv-tf-state-blob-account)
-          TF_STATE_BLOB_CONTAINER_NAME: $(kv-tf-state-blob-container)
-          TF_STATE_BLOB_FILE: 'terraform.mango$(prefix).tfstate'
-          TF_STATE_BLOB_SAS_TOKEN: $(kv-tf-state-sas-token)
+#          TF_STATE_BLOB_ACCOUNT_NAME: $(kv-tf-state-blob-account)
+#          TF_STATE_BLOB_CONTAINER_NAME: $(kv-tf-state-blob-container)
+#          TF_STATE_BLOB_FILE: 'terraform.mango$(prefix).tfstate'
+#          TF_STATE_BLOB_SAS_TOKEN: $(kv-tf-state-sas-token)
           ARM_SUBSCRIPTION_ID: $(kv-arm-subscription-id)
           ARM_CLIENT_ID: $(kv-arm-client-id)
           ARM_CLIENT_SECRET: $(kv-arm-client-secret)
@@ -44,11 +44,16 @@ stages:
                 -backend-config="sas_token=$TF_STATE_BLOB_SAS_TOKEN"
             displayName: Terraform Init
             workingDirectory: '$(System.DefaultWorkingDirectory)/terraform'
+            env:
+              TF_STATE_BLOB_ACCOUNT_NAME: $(kv-tf-state-blob-account)
+              TF_STATE_BLOB_CONTAINER_NAME: $(kv-tf-state-blob-container)
+              TF_STATE_BLOB_FILE: 'mytestfile.tfstate'
+              TF_STATE_BLOB_SAS_TOKEN: $(kv-tf-state-sas-token)
 
-          - bash: terraform plan -var "prefix=$(prefix)" -out "main-$(prefix).tfplan"
-            displayName: Terraform Plan
-            workingDirectory: '$(System.DefaultWorkingDirectory)/terraform'
-
-          - bash: terraform apply -auto-approve "main-$(prefix).tfplan"
-            displayName: Terraform Apply
-            workingDirectory: '$(System.DefaultWorkingDirectory)/terraform'
+#          - bash: terraform plan -var "prefix=$(prefix)" -out "main-$(prefix).tfplan"
+#            displayName: Terraform Plan
+#            workingDirectory: '$(System.DefaultWorkingDirectory)/terraform'
+#
+#          - bash: terraform apply -auto-approve "main-$(prefix).tfplan"
+#            displayName: Terraform Apply
+#            workingDirectory: '$(System.DefaultWorkingDirectory)/terraform'
