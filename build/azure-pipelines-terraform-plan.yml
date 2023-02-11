@@ -1,0 +1,42 @@
+trigger: none
+
+variables:
+  - group: TERRAFORM_DEV
+#  - name: serviceConnection
+#    value: 'AzurePipelinesTerraform'
+#  - name: rgName
+#    value: 'pkolosov-tstate-rg'
+#  - name: storageAccountName
+#    value: 'pkolosovfstate673'
+#  - name: containerName
+#    value: 'azpipelinestfstate'
+#  - name: key
+#    value: 'terraform.mango.tfstate'
+
+stages:
+  - stage: 'Terraform_Plan'
+    displayName: 'Terraform plan'
+    jobs:
+      - job: 'TerraformPlan'
+        displayName: 'Terraform plan'
+        pool:
+          vmImage: 'ubuntu-latest'
+        
+        steps:
+          - task: TerraformInstaller@0
+            displayName: 'Terraform Installer'
+            inputs:
+              terraformVersion: 'latest'
+              
+          - bash: |
+              terraform init \
+                -backend-config="storage_account_name=$storageAccountName" \
+                -backend-config="container_name=$containerName" \
+                -backend-config="key=$TF_STATE_BLOB_FILE" \
+                -backend-config="sas_token=$TF_STATE_BLOB_SAS_TOKEN"
+            displayName: Terraform Init
+            env:
+              TF_STATE_BLOB_ACCOUNT_NAME: $(kv-tf-state-blob-account)
+              TF_STATE_BLOB_CONTAINER_NAME: $(kv-tf-state-blob-container)
+              TF_STATE_BLOB_FILE: $(kv-tf-state-blob-file)
+              TF_STATE_BLOB_SAS_TOKEN: $(kv-tf-state-sas-token)
