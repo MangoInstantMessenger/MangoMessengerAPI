@@ -6,17 +6,17 @@ variables:
   - group: TERRAFORM_DEV
 
 stages:
-  - stage: 'Terraform_Plan'
-    displayName: 'Terraform plan'
+  - stage: 'Terraform'
+    displayName: 'Terraform'
     jobs:
-      - job: 'TerraformPlan'
-        displayName: 'Terraform plan'
+      - job: 'Terraform'
+        displayName: 'Terraform'
         pool:
           vmImage: 'ubuntu-latest'
         variables:
           TF_STATE_BLOB_ACCOUNT_NAME: $(kv-tf-state-blob-account)
           TF_STATE_BLOB_CONTAINER_NAME: $(kv-tf-state-blob-container)
-          TF_STATE_BLOB_FILE: $(kv-tf-state-blob-file)
+          TF_STATE_BLOB_FILE: 'terraform.mango$(prefix).tfstate'
           TF_STATE_BLOB_SAS_TOKEN: $(kv-tf-state-sas-token)
           ARM_SUBSCRIPTION_ID: $(kv-arm-subscription-id)
           ARM_CLIENT_ID: $(kv-arm-client-id)
@@ -42,6 +42,6 @@ stages:
             displayName: Terraform Plan
             workingDirectory: '$(System.DefaultWorkingDirectory)/terraform'
 
-          - bash: terraform apply -auto-approve "main-$(prefix).tfplan"
-            displayName: Terraform Apply
-            workingDirectory: '$(System.DefaultWorkingDirectory)/terraform'
+#          - bash: terraform apply -auto-approve "main-$(prefix).tfplan"
+#            displayName: Terraform Apply
+#            workingDirectory: '$(System.DefaultWorkingDirectory)/terraform'
