@@ -39,6 +39,10 @@ Write-Output "Creating service principal $spName ..."
 $password = $( az ad sp create-for-rbac --role contributor --scopes "/subscriptions/$subscriptionId" --name $spName --query "password" --output tsv )
 $username = $( az ad sp list --display-name $spName --query "[].appId" --output tsv )
 $tenant = $( az ad sp list --display-name $spName --query "[].appOwnerOrganizationId" --output tsv )
+$spObjectId = $( az ad sp list --display-name $spName --query "[].id" --output tsv )
+
+Write-Output "Setting up keyvault permissions for service principal $spName ..."
+az keyvault set-policy -n $keyVaultName --secret-permissions get list --object-id $spObjectId
 
 Write-Output "Creating keyvault secret [kv-tf-state-blob-account] ..."
 az keyvault secret set --name "kv-tf-state-blob-account" --vault-name $keyVaultName --value $storageAccount
@@ -63,9 +67,6 @@ az keyvault secret set --name "kv-arm-tenant-id" --vault-name $keyVaultName --va
 
 Write-Output "Creating keyvault secret [prefix] ..."
 az keyvault secret set --name "prefix" --vault-name $keyVaultName --value "ado02"
-
-Write-Output "Setting up keyvault permissions for service principal $spName ..."
-az keyvault set-policy -n $keyVaultName --secret-permissions get list --object-id $username
 
 # example call:
 # $rgName = "rg-tf-state$(Get-Random 1000)"
