@@ -54,6 +54,7 @@ stages:
 
           - bash: terraform apply -auto-approve "main-$(prefix).tfplan"
             displayName: Terraform Apply
+            workingDirectory: '$(System.DefaultWorkingDirectory)/terraform'
             env:
               ARM_SUBSCRIPTION_ID: $(kv-arm-subscription-id)
               ARM_CLIENT_ID: $(kv-arm-client-id)
