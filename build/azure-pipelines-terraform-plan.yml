@@ -43,7 +43,7 @@ stages:
               TF_STATE_BLOB_SAS_TOKEN: $(kv-tf-state-sas-token)
 
           - bash: |
-              terraform plan -var "prefix=$(prefix)" -out "main-$(prefix).tfstate"
+              terraform plan -var "prefix=$(prefix)" -out "main-$(prefix).tfplan"
             displayName: Terraform Plan
             workingDirectory: '$(System.DefaultWorkingDirectory)/terraform'
             env:
@@ -52,7 +52,7 @@ stages:
               ARM_CLIENT_SECRET: $(kv-arm-client-secret)
               ARM_TENANT_ID: $(kv-arm-tenant-id)
 
-          - bash: terraform apply -auto-approve "main-$(prefix).tfstate"
+          - bash: terraform apply -auto-approve "main-$(prefix).tfplan"
             displayName: Terraform Apply
             env:
               ARM_SUBSCRIPTION_ID: $(kv-arm-subscription-id)
