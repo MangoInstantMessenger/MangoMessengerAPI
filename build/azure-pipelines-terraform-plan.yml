@@ -35,6 +35,7 @@ stages:
                 -backend-config="key=$TF_STATE_BLOB_FILE" \
                 -backend-config="sas_token=$TF_STATE_BLOB_SAS_TOKEN"
             displayName: Terraform Init
+            workingDirectory: '$(System.DefaultWorkingDirectory)/terraform'
             env:
               TF_STATE_BLOB_ACCOUNT_NAME: $(kv-tf-state-blob-account)
               TF_STATE_BLOB_CONTAINER_NAME: $(kv-tf-state-blob-container)
