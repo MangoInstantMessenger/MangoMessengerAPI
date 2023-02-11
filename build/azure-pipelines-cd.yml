@@ -53,7 +53,7 @@ stages:
           vmImage: 'ubuntu-latest'
         environment: 'dev'
         variables:
-          - group: DEPLOY_DEV_VARS
+          - group: DEPLOY_DEV_VARS #contains keyvault name and webapp name
           - name: 'ApplicationInsights.InstrumentationKey'
             value: '$(ApplicationInsightsInstrumentationKey)'
         strategy:
