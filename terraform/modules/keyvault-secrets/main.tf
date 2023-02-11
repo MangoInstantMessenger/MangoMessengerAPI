@@ -40,22 +40,22 @@ resource "azurerm_key_vault_secret" "app_service_name" {
   key_vault_id = var.keyvault_id
 }
 
-#resource "azurerm_key_vault_secret" "jwt_sign_key" {
-#  name         = "JwtSignKey"
-#  value        = var.jwt_sign_key
-#  key_vault_id = var.keyvault_id
-#}
-#
-#resource "azurerm_key_vault_secret" "jwt_issuer" {
-#  name         = "JwtIssuer"
-#  value        = "https://${var.web_app_name}.azurewebsites.net"
-#  key_vault_id = var.keyvault_id
-#}
-#
-#resource "azurerm_key_vault_secret" "jwt_audience" {
-#  name         = "JwtAudience"
-#  value        = "https://${var.web_app_name}.azurewebsites.net"
-#  key_vault_id = var.keyvault_id
-#}
+resource "azurerm_key_vault_secret" "jwt_issuer" {
+  name         = "JwtIssuer"
+  value        = "https://${var.kv_app_service_name}.azurewebsites.net"
+  key_vault_id = var.keyvault_id
+}
+
+resource "azurerm_key_vault_secret" "jwt_audience" {
+  name         = "JwtAudience"
+  value        = "https://${var.kv_app_service_name}.azurewebsites.net"
+  key_vault_id = var.keyvault_id
+}
+
+resource "azurerm_key_vault_secret" "jwt_sign_key" {
+  name         = "JwtSignKey"
+  value        = var.kv_jwt_sign_key
+  key_vault_id = var.keyvault_id
+}
 
 

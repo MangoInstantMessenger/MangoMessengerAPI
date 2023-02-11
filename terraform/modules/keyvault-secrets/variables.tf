@@ -33,8 +33,8 @@ variable "kv_app_service_name" {
   description = "The name of the web app."
 }
 
-#variable "jwt_sign_key" {
-#  type        = string
-#  default     = "ca5f6aa4-c62e-4706-87dd-062d84645674"
-#  description = "JWT token sign secret"
-#}
+variable "kv_jwt_sign_key" {
+  type        = string
+  default     = "ca5f6aa4-c62e-4706-87dd-062d84645674"
+  description = "JWT token sign secret"
+}

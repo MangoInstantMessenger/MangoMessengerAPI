@@ -67,7 +67,6 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "terraform", "terraform", "{D5B04B5C-55E7-48C0-BA17-A084C24610BA}"
 	ProjectSection(SolutionItems) = preProject
 		terraform\main.tf = terraform\main.tf
-		terraform\output.tf = terraform\output.tf
 		terraform\variables.tf = terraform\variables.tf
 		terraform\README.md = terraform\README.md
 		terraform\provider.tf = terraform\provider.tf
@@ -182,7 +181,6 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "keyvault-secrets", "keyvault-secrets", "{A0EE0AAD-30D6-418E-AD1F-55872A4D52BC}"
 	ProjectSection(SolutionItems) = preProject
 		terraform\modules\keyvault-secrets\main.tf = terraform\modules\keyvault-secrets\main.tf
-		terraform\modules\keyvault-secrets\output.tf = terraform\modules\keyvault-secrets\output.tf
 		terraform\modules\keyvault-secrets\variables.tf = terraform\modules\keyvault-secrets\variables.tf
 	EndProjectSection
 EndProject
