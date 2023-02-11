@@ -46,3 +46,14 @@ module "keyvault" {
   tenant_id              = data.azurerm_client_config.current.tenant_id
   object_id              = data.azurerm_client_config.current.object_id
 }
+
+module "keyvault_secrets" {
+  source           = "./modules/keyvault-secrets"
+  keyvault_id      = module.keyvault.id
+  app_insights_key = azurerm_application_insights.public.instrumentation_key
+
+  depends_on = [
+    azurerm_application_insights.public,
+    module.keyvault.id
+  ]
+}
