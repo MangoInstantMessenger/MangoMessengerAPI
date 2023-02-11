@@ -1,61 +1,61 @@
 # Infrastructure as Code (IaC) using Terraform
 
-## Install terraform and set variables
+## Install or update terraform (Windows)
 
-- Install terraform
-    - `choco install terraform`
+- `choco install terraform`
+- `choco upgrade terraform`
 
-- Set env variables
-    - `TF_VAR_sql_admin_username`
-    - `TF_VAR_sql_admin_password`
+## Create storage account for terraform state
 
-## Create terraform state storage
+- Define variables
+    - `$rgName="pkolosov-tstate-rg"`
+    - `$account="pkolosovfstate673"`
+    - `$container="pkolosovtfstate"`
+    - `$location="northeurope"`
 
-#### Define variables
+- Create resource group
+    - `az group create -n $rgName -l $location`
 
-- `$RESOURCE_GROUP_NAME="pkolosov-tstate-rg"`
-- `$STORAGE_ACCOUNT_NAME="pkolosovfstate673"`
-- `$CONTAINER_NAME="pkolosovtfstate"`
+- Create storage account
+    - `az storage account create --name $account --resource-group $rgName --kind "StorageV2" --sku "Standard_LRS" --https-only true --allow-blob-public-access false`
 
-#### Create resource group
+- Get storage account key
+    - `$key=$(az storage account keys list --resource-group $rgName --account-name $account --query [0].value -o tsv)`
 
-- `az group create --name $RESOURCE_GROUP_NAME --location "westus"`
+- Create storage container
+    - `az storage container create --name $container --account-name $account--account-key $key`
 
-#### Create storage account
-
-- `az storage account create --resource-group $RESOURCE_GROUP_NAME --name $STORAGE_ACCOUNT_NAME --sku "Standard_LRS" --encryption-services blob`
-
-#### Get storage account key
-
-- `$ACCOUNT_KEY=$(az storage account keys list --resource-group $RESOURCE_GROUP_NAME --account-name $STORAGE_ACCOUNT_NAME --query [0].value -o tsv)`
-
-##### Create blob container
-
-- `az storage container create --name $CONTAINER_NAME --account-name $STORAGE_ACCOUNT_NAME --account-key $ACCOUNT_KEY`
-- `echo "storage_account_name: $STORAGE_ACCOUNT_NAME"`
-- `echo "container_name: $CONTAINER_NAME"`
-- `echo "access_key: $ACCOUNT_KEY"`
-
-#### Create Service Principal
-
-- `az ad sp create-for-rbac --role="Contributor" --scopes="/subscriptions/f32f6566-8fa0-4198-9c91-a3b8ac69e89a" --name="AzurePipelinesTerraform"`
+- Create Service Principal
+    - `az ad sp create-for-rbac --role="Contributor" --scopes="/subscriptions/f32f6566-8fa0-4198-9c91-a3b8ac69e89a" --name="AzurePipelinesTerraform"`
 
 ## Terraform commands
 
-See also [Terraform cheat sheet](https://medium.com/itnext/terraform-cheat-sheet-3f7c5c55cfbc)
+- Init examples:
+    - `terraform init`
+    - `terraform init -backend-config="azure.conf"`
+    - ![tf_init](../img/terraform_init.PNG)
+- Plan examples
+    - `terraform plan -var "prefix=${prefix}" -out "main.tfplan"`
+    - `terraform plan -out main.tfplan`
+    - `terraform plan -var-file='terraform.dev.tfvars' -var sql_admin_username='razumovsky_r' -var sql_admin_password='Zd2yqLgyV4uHVC0eTPiH' -out 'main.tfplan'`
+    - `terraform plan -var-file='terraform.dev.tfvars' -out 'dev.tfplan'`
+- Apply examples:
+    - `terraform apply main.tfplan`
+    - `terraform fmt --check`
+- Workspace examples:
+    - `terraform workspace new d01`
+    - `terraform workspace select d01`
 
-Debugging terraform: [Debugging Terraform](https://developer.hashicorp.com/terraform/internals/debugging)
+## Useful links
 
-- `terraform init`
-- `terraform plan -out main.tfplan`
-- `terraform plan -var-file='terraform.dev.tfvars' -var sql_admin_username='razumovsky_r' -var sql_admin_password='Zd2yqLgyV4uHVC0eTPiH' -out 'dev.tfplan'`
-- `terraform plan -var-file='terraform.dev.tfvars' -out 'dev.tfplan'`
-- `terraform apply dev.tfplan`
-- `terraform fmt --check`
-- `terraform workspace new d01` 
-- `terraform workspace select d01`
+- [Terraform cheat sheet](https://medium.com/itnext/terraform-cheat-sheet-3f7c5c55cfbc)
+- [Debugging Terraform](https://developer.hashicorp.com/terraform/internals/debugging)
+- [Input variables](https://developer.hashicorp.com/terraform/language/values/variables)
+- [Terraform .tfvars files: Variables Management with Examples](https://spacelift.io/blog/terraform-tfvars)
+- [Backend configuration](https://developer.hashicorp.com/terraform/language/settings/backends/configuration)
+- [Terraform on Azure Pipelines Best Practices](https://julie.io/writing/terraform-on-azure-pipelines-best-practices/)
 
-## Documentation
+## Hashicorp Documentation
 
 - [Terraform provider](https://registry.terraform.io/providers/hashicorp/azurerm/latest)
 - [Resource group](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/resource_group)
