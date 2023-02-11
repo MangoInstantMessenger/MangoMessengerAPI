@@ -51,3 +51,11 @@ stages:
               ARM_CLIENT_ID: $(kv-arm-client-id)
               ARM_CLIENT_SECRET: $(kv-arm-client-secret)
               ARM_TENANT_ID: $(kv-arm-tenant-id)
+
+          - bash: terraform apply -auto-approve "main-$(prefix).tfstate"
+            displayName: Terraform Apply
+            env:
+              ARM_SUBSCRIPTION_ID: $(kv-arm-subscription-id)
+              ARM_CLIENT_ID: $(kv-arm-client-id)
+              ARM_CLIENT_SECRET: $(kv-arm-client-secret)
+              ARM_TENANT_ID: $(kv-arm-tenant-id)
