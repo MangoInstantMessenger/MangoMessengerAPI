@@ -59,7 +59,7 @@ Write-Output "Creating keyvault secret [kv-arm-client-secret] ..."
 az keyvault secret set --name "kv-arm-client-secret" --vault-name $keyVaultName --value $password
 
 Write-Output "Creating keyvault secret [kv-arm-tenant-id] ..."
-az keyvault secret set --name "kv-arm-client-secret" --vault-name $keyVaultName --value $tenant
+az keyvault secret set --name "kv-arm-tenant-id" --vault-name $keyVaultName --value $tenant
 
 Write-Output "Creating keyvault secret [prefix] ..."
 az keyvault secret set --name "prefix" --vault-name $keyVaultName --value "ado02"

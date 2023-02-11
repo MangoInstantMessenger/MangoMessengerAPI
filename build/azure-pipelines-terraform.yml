@@ -49,6 +49,6 @@ stages:
             displayName: Terraform Plan
             workingDirectory: '$(System.DefaultWorkingDirectory)/terraform'
 
-#          - bash: terraform apply -auto-approve "main-$(prefix).tfplan"
-#            displayName: Terraform Apply
-#            workingDirectory: '$(System.DefaultWorkingDirectory)/terraform'
+          - bash: terraform apply -auto-approve "main-$(prefix).tfplan"
+            displayName: Terraform Apply
+            workingDirectory: '$(System.DefaultWorkingDirectory)/terraform'
