@@ -20,7 +20,7 @@ Write-Output "Creating storage account $storageAccount ..."
 az storage account create --name $storageAccount --resource-group $rgName --location $location --sku $storageSku
 
 Write-Output "Creating storage container $contName ..."
-az storage container create --name $container --account-name $storageAccount --public-access "blob"
+az storage container create --name $container --account-name $storageAccount --public-access "off"
 
 Write-Output "Creating keyvault $keyVaultName ..."
 az keyvault create --name $keyVaultName --resource-group $rgName --location $location
