@@ -13,12 +13,6 @@ stages:
         displayName: 'Terraform'
         pool:
           vmImage: 'ubuntu-latest'
-        variables:
-          ARM_SUBSCRIPTION_ID: $(kv-arm-subscription-id)
-          ARM_CLIENT_ID: $(kv-arm-client-id)
-          ARM_CLIENT_SECRET: $(kv-arm-client-secret)
-          ARM_TENANT_ID: $(kv-arm-tenant-id)
-        
         steps:
           - task: TerraformInstaller@0
             displayName: 'Terraform Installer'
