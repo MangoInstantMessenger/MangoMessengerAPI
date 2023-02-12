@@ -43,6 +43,9 @@
 - Apply examples:
     - `terraform apply main.tfplan`
     - `terraform fmt --check`
+- Destroy examples:
+    - `terraform plan -destroy -out "main.destroy.tfplan"`
+    - `terraform apply -destroy -auto-approve "main.destroy.tfplan"`
 - Workspace examples:
     - `terraform workspace new d01`
     - `terraform workspace select d01`
