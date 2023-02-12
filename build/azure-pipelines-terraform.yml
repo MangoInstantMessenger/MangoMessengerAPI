@@ -4,6 +4,7 @@ pr: none
 
 variables:
   - group: TERRAFORM_DEV # keeps keyvault name only
+  - TF_LOG: 'INFO'
 
 stages:
   - stage: 'Terraform'
