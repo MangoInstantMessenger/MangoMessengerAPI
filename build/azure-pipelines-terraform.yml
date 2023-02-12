@@ -21,7 +21,7 @@ stages:
 
           - task: AzureKeyVault@2
             inputs:
-              azureSubscription: 'MangoServiceConnection'
+              azureSubscription: 'AzureForStudents'
               KeyVaultName: '$(KeyVaultName)'
               SecretsFilter: "*"
               RunAsPreJob: false
