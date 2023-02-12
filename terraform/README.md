@@ -33,6 +33,7 @@
 - Init examples:
     - `terraform init`
     - `terraform init -backend-config="azure.conf"`
+    - `terraform init -backend-config="azure.sas.conf"`
     - ![tf_init](../img/terraform_init.PNG)
 - Plan examples
     - `terraform plan -var "prefix=${prefix}" -out "main.tfplan"`
