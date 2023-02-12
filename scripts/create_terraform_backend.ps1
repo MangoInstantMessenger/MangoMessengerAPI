@@ -12,7 +12,9 @@ param(
     [Parameter(Mandatory = $true, Position = 5)]
     [string] $spName,
     [Parameter(Mandatory = $true, Position = 6)]
-    [string] $subscriptionId
+    [string] $subscriptionId,
+    [Parameter(Mandatory = $true, Position = 7)]
+    [string] $prefix
 )
 
 Write-Output "Creating resource group $rgName in $location ..."
@@ -66,7 +68,7 @@ Write-Output "Creating keyvault secret [kv-arm-tenant-id] ..."
 az keyvault secret set --name "kv-arm-tenant-id" --vault-name $keyVaultName --value $tenant
 
 Write-Output "Creating keyvault secret [prefix] ..."
-az keyvault secret set --name "prefix" --vault-name $keyVaultName --value "ado02"
+az keyvault secret set --name "prefix" --vault-name $keyVaultName --value $prefix
 
 # example call:
 # $rgName = "rg-tf-state$(Get-Random 1000)"
@@ -76,4 +78,5 @@ az keyvault secret set --name "prefix" --vault-name $keyVaultName --value "ado02
 # $keyVaultName = "kv-tf-state$(Get-Random 1000)"
 # $spName = "SpTfAzureDevops"
 # $subscriptionId = "f32f6566-8fa0-4198-9c91-a3b8ac69e89a"
-# .\create_terraform_backend.ps1 -rgName $rgName -location $location -storageAccount $storageAccount -container $container -keyVaultName $keyVaultName -spName $spName -subscriptionId $subscriptionId
+# $prefix = "ado03"
+# .\create_terraform_backend.ps1 -rgName $rgName -location $location -storageAccount $storageAccount -container $container -keyVaultName $keyVaultName -spName $spName -subscriptionId $subscriptionId -prefix $prefix
