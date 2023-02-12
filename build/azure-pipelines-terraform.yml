@@ -63,7 +63,7 @@ stages:
               workingDirectory: '$(System.DefaultWorkingDirectory)/terraform'
               targetType: 'inline'
               script: |
-                ./../scripts/checkTerraformChanges.ps1 -planFile $PLAN_FILE
+                ./../scripts/checkTerraformChanges.ps1 -planPath $PLAN_FILE
             env:
               PLAN_FILE: 'main-$(prefix).tfplan'
 
