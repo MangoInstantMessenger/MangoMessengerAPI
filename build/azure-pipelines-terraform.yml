@@ -28,6 +28,11 @@ stages:
               SecretsFilter: "*"
               RunAsPreJob: false
 
+          - bash: terraform fmt -check
+            displayName: Terraform Format
+            workingDirectory: '$(System.DefaultWorkingDirectory)/terraform'
+            continueOnError: true
+
           - bash: |
               terraform init \
                 -backend-config="storage_account_name=$TF_STATE_BLOB_ACCOUNT_NAME" \
@@ -42,7 +47,7 @@ stages:
               TF_STATE_BLOB_FILE: 'terraform.mango$(prefix).tfstate'
               TF_STATE_BLOB_SAS_TOKEN: $(kv-tf-state-sas-token)
 
-          - bash: terraform plan -var "prefix=$(prefix)" -out "main-$(prefix).tfplan"
+          - bash: terraform plan -var "prefix=$(prefix)" -out $PLAN_FILE
             displayName: Terraform Plan
             workingDirectory: '$(System.DefaultWorkingDirectory)/terraform'
             env:
@@ -50,12 +55,25 @@ stages:
               ARM_CLIENT_ID: $(kv-arm-client-id)
               ARM_CLIENT_SECRET: $(kv-arm-client-secret)
               ARM_TENANT_ID: $(kv-arm-tenant-id)
+              PLAN_FILE: 'main-$(prefix).tfplan'
 
-          - bash: terraform apply -auto-approve "main-$(prefix).tfplan"
+          - task: PowerShell@2
+            displayName: Detect changes in plan
+            inputs:
+              workingDirectory: '$(System.DefaultWorkingDirectory)/terraform'
+              targetType: 'inline'
+              script: |
+                ./../scripts/checkTerraformChanges.ps1 -planPath $env:PLAN_FILE
+            env:
+              PLAN_FILE: 'main-$(prefix).tfplan'
+
+          - bash: terraform apply -auto-approve $PLAN_FILE
             displayName: Terraform Apply
+            condition: eq(variables.anyTfChanges, true)
             workingDirectory: '$(System.DefaultWorkingDirectory)/terraform'
             env:
               ARM_SUBSCRIPTION_ID: $(kv-arm-subscription-id)
               ARM_CLIENT_ID: $(kv-arm-client-id)
               ARM_CLIENT_SECRET: $(kv-arm-client-secret)
               ARM_TENANT_ID: $(kv-arm-tenant-id)
+              PLAN_FILE: 'main-$(prefix).tfplan'
