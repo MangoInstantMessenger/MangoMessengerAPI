@@ -8,11 +8,11 @@ variables:
     value: 'INFO'
 
 stages:
-  - stage: 'Terraform_Apply'
-    displayName: 'Terraform Apply'
+  - stage: 'Terraform_Destroy'
+    displayName: 'Terraform Destroy'
     jobs:
-      - job: 'Terraform_Apply'
-        displayName: 'Terraform Apply'
+      - job: 'Terraform_Destroy'
+        displayName: 'Terraform Destroy'
         pool:
           vmImage: 'ubuntu-latest'
         steps:
@@ -47,15 +47,15 @@ stages:
               TF_STATE_BLOB_FILE: 'terraform.mango$(prefix).tfstate'
               TF_STATE_BLOB_SAS_TOKEN: $(kv-tf-state-sas-token)
 
-          - bash: terraform plan -var "prefix=$(prefix)" -out $PLAN_FILE
-            displayName: Terraform Plan
+          - bash: terraform plan -destroy -var "prefix=$(prefix)" -out $PLAN_FILE
+            displayName: Terraform Plan -Destroy
             workingDirectory: '$(System.DefaultWorkingDirectory)/terraform'
             env:
               ARM_SUBSCRIPTION_ID: $(kv-arm-subscription-id)
               ARM_CLIENT_ID: $(kv-arm-client-id)
               ARM_CLIENT_SECRET: $(kv-arm-client-secret)
               ARM_TENANT_ID: $(kv-arm-tenant-id)
-              PLAN_FILE: 'main-$(prefix).tfplan'
+              PLAN_FILE: 'main-$(prefix).destroy.tfplan'
 
           - task: PowerShell@2
             displayName: Detect changes in plan
@@ -65,9 +65,9 @@ stages:
               script: |
                 ./../scripts/checkTerraformChanges.ps1 -planPath $env:PLAN_FILE
             env:
-              PLAN_FILE: 'main-$(prefix).tfplan'
+              PLAN_FILE: 'main-$(prefix).destroy.tfplan'
 
-          - bash: terraform apply -auto-approve $PLAN_FILE
+          - bash: terraform apply -destroy -auto-approve $PLAN_FILE
             displayName: Terraform Apply
             condition: eq(variables.anyTfChanges, true)
             workingDirectory: '$(System.DefaultWorkingDirectory)/terraform'
@@ -76,4 +76,4 @@ stages:
               ARM_CLIENT_ID: $(kv-arm-client-id)
               ARM_CLIENT_SECRET: $(kv-arm-client-secret)
               ARM_TENANT_ID: $(kv-arm-tenant-id)
-              PLAN_FILE: 'main-$(prefix).tfplan'
+              PLAN_FILE: 'main-$(prefix).destroy.tfplan'

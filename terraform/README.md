@@ -43,6 +43,9 @@
 - Apply examples:
     - `terraform apply main.tfplan`
     - `terraform fmt --check`
+- Destroy examples:
+    - `terraform plan -destroy -out "main.destroy.tfplan"`
+    - `terraform apply -destroy -auto-approve "main.destroy.tfplan"`
 - Workspace examples:
     - `terraform workspace new d01`
     - `terraform workspace select d01`
@@ -55,6 +58,7 @@
 - [Terraform .tfvars files: Variables Management with Examples](https://spacelift.io/blog/terraform-tfvars)
 - [Backend configuration](https://developer.hashicorp.com/terraform/language/settings/backends/configuration)
 - [Terraform on Azure Pipelines Best Practices](https://julie.io/writing/terraform-on-azure-pipelines-best-practices/)
+- [Azure DevOps: Deploying Azure Resources using Terraform](https://faun.pub/azure-devops-deploying-azure-resources-using-terraform-1f2fe46c6aa0) [About terraform destroy]
 
 ## Hashicorp Documentation
 
