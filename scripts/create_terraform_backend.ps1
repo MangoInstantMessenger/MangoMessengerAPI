@@ -78,5 +78,6 @@ az keyvault secret set --name "prefix" --vault-name $keyVaultName --value $prefi
 # $keyVaultName = "kv-tf-state$(Get-Random 1000)"
 # $spName = "SpTfAzureDevops"
 # $subscriptionId = "f32f6566-8fa0-4198-9c91-a3b8ac69e89a"
-# $prefix = "ado03"
+# $subscriptionId = "e3b8e7eb-628d-4a3c-80e5-b80bf1eab292"
+# $prefix = "ado08"
 # .\create_terraform_backend.ps1 -rgName $rgName -location $location -storageAccount $storageAccount -container $container -keyVaultName $keyVaultName -spName $spName -subscriptionId $subscriptionId -prefix $prefix
