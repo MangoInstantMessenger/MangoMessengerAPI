@@ -65,13 +65,18 @@ stages:
                 - download: current
                   artifact: drop
 
-                - task: Bash@3
-                  displayName: 'Unzip artifact'
+#                - task: Bash@3
+#                  displayName: 'Unzip artifact'
+#                  inputs:
+#                    targetType: 'inline'
+#                    workingDirectory: '$(Pipeline.Workspace)/drop/$(buildConfiguration)'
+#                    script: |
+#                      unzip MangoAPI.Presentation.zip -d /MangoAPI.Presentation
+                - task: ExtractFiles@1
                   inputs:
-                    targetType: 'inline'
-                    workingDirectory: '$(Pipeline.Workspace)/drop/$(buildConfiguration)'
-                    script: |
-                      unzip MangoAPI.Presentation.zip -d /MangoAPI.Presentation
+                    archiveFilePatterns: '$(artifactPath)'
+                    destinationFolder: '$(Pipeline.Workspace)/drop/$(buildConfiguration)/MangoAPI.Presentation'
+                    cleanDestinationFolder: true
                       
                 - task: replacetokens@5
                   displayName: 'Transform base URL'
@@ -88,14 +93,23 @@ stages:
                     useLegacyPattern: false
                     enableTelemetry: true
                     
-                    #zip -r MyDocsFolder.zip MyDocsFolder
-                - task: Bash@3
-                  displayName: 'Zip artifact'
+                - task: ArchiveFiles@2
                   inputs:
-                    targetType: 'inline'
-                    workingDirectory: '$(Pipeline.Workspace)/drop/$(buildConfiguration)'
-                    script: |
-                      zip -r MangoAPI.Presentation.zip  /MangoAPI.Presentation
+                    rootFolderOrFile: '$(Pipeline.Workspace)/drop/$(buildConfiguration)/MangoAPI.Presentation'
+                    includeRootFolder: false
+                    archiveType: 'zip'
+                    archiveFile: '$(artifactPath)'
+                    replaceExistingArchive: true
+                    verbose: true
+                    
+#                  #zip -r MyDocsFolder.zip MyDocsFolder
+#                - task: Bash@3
+#                  displayName: 'Zip artifact'
+#                  inputs:
+#                    targetType: 'inline'
+#                    workingDirectory: '$(Pipeline.Workspace)/drop/$(buildConfiguration)'
+#                    script: |
+#                      zip -r MangoAPI.Presentation.zip  /MangoAPI.Presentation
 
                 - task: AzureKeyVault@2
                   inputs:
