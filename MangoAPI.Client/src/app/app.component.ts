@@ -6,7 +6,7 @@ import Config from './types/config/Config';
   selector: 'app-root',
   templateUrl: './app.component.html'
 })
-export class AppComponent implements OnInit {
+export class AppComponent {
   title = 'Mango Messenger';
   httpClient;
 
@@ -14,8 +14,8 @@ export class AppComponent implements OnInit {
     this.httpClient = http;
   }
 
-  ngOnInit(): void {
-    this.httpClient.get<Config>('assets/config/config.json')
-    .subscribe(data => localStorage.setItem("baseUrl", data.baseUrl));
-  }
+  // ngOnInit(): void {
+  //   this.httpClient.get<Config>('assets/config/config.json')
+  //   .subscribe(data => localStorage.setItem("baseUrl", data.baseUrl));
+  // }
 }
