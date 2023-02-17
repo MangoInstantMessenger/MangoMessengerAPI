@@ -111,5 +111,5 @@ stages:
                     WebAppName: '$(WebAppName)'
                     packageForLinux: '$(artifactPath)'
                     JSONFiles: | 
-                      '**/appsettings.json'
-                      '**/config.json'
+                      **/appsettings.json
+                      **/config.json
