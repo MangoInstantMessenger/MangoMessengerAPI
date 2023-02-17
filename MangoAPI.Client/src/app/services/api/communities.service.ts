@@ -1,31 +1,35 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { environment } from '../../../environments/environment';
 import { GetUserChatsResponse } from '../../types/responses/GetUserChatsResponse';
 import { CreateCommunityResponse } from '../../types/responses/CreateCommunityResponse';
 import { CreateChatCommand } from '../../types/requests/CreateChatCommand';
 import { CreateChannelCommand } from '../../types/requests/CreateChannelCommand';
 import { UpdateChatLogoResponse } from '../../types/responses/UpdateChatLogoResponse';
+import ApiBase from './ApiBase';
 
 @Injectable({
   providedIn: 'root'
 })
-export class CommunitiesService {
+export class CommunitiesService extends ApiBase {
   private chatsRoute = 'api/communities/';
+  private readonly baseUrl: string;
 
-  constructor(private httpClient: HttpClient) {}
+  constructor(private httpClient: HttpClient) {
+    super();
+    this.baseUrl = super.getUrl();
+  }
 
   // GET /api/communities
   getUserChats(): Observable<GetUserChatsResponse> {
-    return this.httpClient.get<GetUserChatsResponse>(environment.baseUrl + this.chatsRoute);
+    return this.httpClient.get<GetUserChatsResponse>(this.baseUrl + this.chatsRoute);
   }
 
   // POST /api/communities/chat
   createChat(userId: string): Observable<CreateCommunityResponse> {
     const request = new CreateChatCommand(userId);
     return this.httpClient.post<CreateCommunityResponse>(
-      environment.baseUrl + this.chatsRoute + `chat/${userId}`,
+      this.baseUrl + this.chatsRoute + `chat/${userId}`,
       request
     );
   }
@@ -33,7 +37,7 @@ export class CommunitiesService {
   // POST /api/communities/channel
   createChannel(request: CreateChannelCommand): Observable<CreateCommunityResponse> {
     return this.httpClient.post<CreateCommunityResponse>(
-      environment.baseUrl + this.chatsRoute + 'channel',
+      this.baseUrl + this.chatsRoute + 'channel',
       request
     );
   }
@@ -41,14 +45,14 @@ export class CommunitiesService {
   // GET /api/communities/searches
   searchChat(displayName: string): Observable<GetUserChatsResponse> {
     return this.httpClient.get<GetUserChatsResponse>(
-      environment.baseUrl + this.chatsRoute + 'searches?displayName=' + displayName
+      this.baseUrl + this.chatsRoute + 'searches?displayName=' + displayName
     );
   }
 
   // PUT /api/communities/picture
   updateChatLogo(chatId: string, formData: FormData): Observable<UpdateChatLogoResponse> {
     return this.httpClient.post<UpdateChatLogoResponse>(
-      environment.baseUrl + this.chatsRoute + `picture/${chatId}`,
+      this.baseUrl + this.chatsRoute + `picture/${chatId}`,
       formData
     );
   }

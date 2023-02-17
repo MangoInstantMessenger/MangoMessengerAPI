@@ -1,21 +1,25 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { environment } from '../../../environments/environment';
 import { UploadDocumentResponse } from '../../types/responses/UploadDocumentResponse';
+import ApiBase from './ApiBase';
 
 @Injectable({
   providedIn: 'root'
 })
-export class DocumentsService {
+export class DocumentsService extends ApiBase {
   private documentsRoute = 'api/documents/';
+  private readonly baseUrl: string;
 
-  constructor(private httpClient: HttpClient) {}
+  constructor(private httpClient: HttpClient) {
+    super();
+    this.baseUrl = super.getUrl();
+  }
 
   // POST /api/documents
   uploadDocument(formData: FormData): Observable<UploadDocumentResponse> {
     return this.httpClient.post<UploadDocumentResponse>(
-      environment.baseUrl + this.documentsRoute,
+      this.baseUrl + this.documentsRoute,
       formData
     );
   }
