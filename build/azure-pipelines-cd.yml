@@ -72,35 +72,35 @@ stages:
                     SecretsFilter: "*"
                     RunAsPreJob: false
  
-                - task: ExtractFiles@1
-                  inputs:
-                    archiveFilePatterns: '$(artifactPath)'
-                    destinationFolder: '$(Pipeline.Workspace)/drop/$(buildConfiguration)/MangoAPI.Presentation'
-                    cleanDestinationFolder: true
-                      
-                - task: replacetokens@5
-                  displayName: 'Transform base URL'
-                  inputs:
-                    targetFiles: '$(Pipeline.Workspace)/drop/$(buildConfiguration)/MangoAPI.Presentation/wwwroot/assets/config/config.json'
-                    encoding: 'auto'
-                    tokenPattern: 'default'
-                    writeBOM: true
-                    actionOnMissing: 'warn'
-                    keepToken: false
-                    actionOnNoFiles: 'continue'
-                    enableTransforms: false
-                    enableRecursion: false
-                    useLegacyPattern: false
-                    enableTelemetry: true
-                    
-                - task: ArchiveFiles@2
-                  inputs:
-                    rootFolderOrFile: '$(Pipeline.Workspace)/drop/$(buildConfiguration)/MangoAPI.Presentation'
-                    includeRootFolder: false
-                    archiveType: 'zip'
-                    archiveFile: '$(artifactPath)'
-                    replaceExistingArchive: true
-                    verbose: true
+#                - task: ExtractFiles@1
+#                  inputs:
+#                    archiveFilePatterns: '$(artifactPath)'
+#                    destinationFolder: '$(Pipeline.Workspace)/drop/$(buildConfiguration)/MangoAPI.Presentation'
+#                    cleanDestinationFolder: true
+#                      
+#                - task: replacetokens@5
+#                  displayName: 'Transform base URL'
+#                  inputs:
+#                    targetFiles: '$(Pipeline.Workspace)/drop/$(buildConfiguration)/MangoAPI.Presentation/wwwroot/assets/config/config.json'
+#                    encoding: 'auto'
+#                    tokenPattern: 'default'
+#                    writeBOM: true
+#                    actionOnMissing: 'warn'
+#                    keepToken: false
+#                    actionOnNoFiles: 'continue'
+#                    enableTransforms: false
+#                    enableRecursion: false
+#                    useLegacyPattern: false
+#                    enableTelemetry: true
+#                    
+#                - task: ArchiveFiles@2
+#                  inputs:
+#                    rootFolderOrFile: '$(Pipeline.Workspace)/drop/$(buildConfiguration)/MangoAPI.Presentation'
+#                    includeRootFolder: false
+#                    archiveType: 'zip'
+#                    archiveFile: '$(artifactPath)'
+#                    replaceExistingArchive: true
+#                    verbose: true
 
                 - task: AzureRmWebAppDeployment@4
                   displayName: 'Deploy to Azure Web App'
@@ -110,4 +110,6 @@ stages:
                     appType: 'webApp'
                     WebAppName: '$(WebAppName)'
                     packageForLinux: '$(artifactPath)'
-                    JSONFiles: '**/appsettings.json'
+                    JSONFiles: | 
+                      '**/appsettings.json'
+                      '**/config.json'
