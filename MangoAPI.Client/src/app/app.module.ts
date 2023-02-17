@@ -25,12 +25,17 @@ import { NavbarComponent } from './components/navbar/navbar.component';
 import { catchError, Observable, Subscription, tap } from 'rxjs';
 import Config from './types/config/Config';
 
-// const initializeAppFactory = (): Promise<void> => {
-//   return fetch('assets/config/config.json').then(res => res.json()).then(data => {
-//     console.log(data.baseUrl);
-//     localStorage.setItem("baseUrl", data.baseUrl)
-//   });
-//  }
+const initializeAppFactory = (): Promise<void> => {
+  return fetch('assets/config/config.json', {
+		method: 'GET',
+		headers: {
+			'test': '4343',
+		},
+	}).then(res => res.json()).then(data => {
+    console.log(data.baseUrl);
+    localStorage.setItem("baseUrl", data.baseUrl)
+  });
+ }
 
 // function initializeAppFactory(httpClient: HttpClient): () => Observable<Config> {
 //   return () =>
@@ -43,10 +48,10 @@ import Config from './types/config/Config';
 //     );
 // }
 
-function initializeAppFactory(httpClient: HttpClient): () => Observable<Config> {
-  return () => httpClient.get<Config>("assets/config/config.json")
-    .pipe(tap(t => localStorage.setItem("baseUrl", t.baseUrl)))
-};
+// function initializeAppFactory(httpClient: HttpClient): () => Observable<Config> {
+//   return () => httpClient.get<Config>("assets/config/config.json")
+//     .pipe(tap(t => localStorage.setItem("baseUrl", t.baseUrl)))
+// };
 
 @NgModule({
   declarations: [
@@ -77,7 +82,7 @@ function initializeAppFactory(httpClient: HttpClient): () => Observable<Config> 
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
     {
       provide: APP_INITIALIZER,
-      useFactory: initializeAppFactory,
+      useFactory: () => initializeAppFactory,
       deps: [HttpClient],
       multi: true
     },
