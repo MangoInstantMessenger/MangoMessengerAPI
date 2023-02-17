@@ -1,6 +1,4 @@
-import { HttpClient } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
-import Config from './types/config/Config';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-root',
@@ -8,14 +6,4 @@ import Config from './types/config/Config';
 })
 export class AppComponent {
   title = 'Mango Messenger';
-  httpClient;
-
-  constructor(http: HttpClient) {
-    this.httpClient = http;
-  }
-
-  // ngOnInit(): void {
-  //   this.httpClient.get<Config>('assets/config/config.json')
-  //   .subscribe(data => localStorage.setItem("baseUrl", data.baseUrl));
-  // }
 }
