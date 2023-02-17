@@ -6,6 +6,13 @@ root = true
 dotnet_diagnostic.CA1824.severity = none
 dotnet_diagnostic.IDE0055.severity = none
 dotnet_diagnostic.IDE0005.severity = none
+dotnet_diagnostic.IDE0058.severity = none
+dotnet_diagnostic.CA1707.severity = none
+dotnet_diagnostic.CA1822.severity = none
+dotnet_diagnostic.IDE0046.severity = none
+dotnet_diagnostic.CA1416.severity = none
+dotnet_diagnostic.IDE0072.severity = none
+dotnet_diagnostic.IDE0270.severity = none
 
 #### Core EditorConfig Options ####
 
