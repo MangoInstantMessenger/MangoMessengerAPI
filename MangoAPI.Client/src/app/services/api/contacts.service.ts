@@ -1,28 +1,32 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
-import { environment } from '../../../environments/environment';
 import { GetContactsResponse } from '../../types/responses/GetContactsResponse';
 import { BaseResponse } from '../../types/responses/BaseResponse';
 import { SearchContactsResponse } from '../../types/responses/SearchContactsResponse';
+import ApiBase from './ApiBase';
 
 @Injectable({
   providedIn: 'root'
 })
-export class ContactsService {
+export class ContactsService extends ApiBase {
   private contactsRoute = 'api/contacts/';
+  private readonly baseUrl: string;
 
-  constructor(private httpClient: HttpClient) {}
+  constructor(private httpClient: HttpClient) {
+    super();
+    this.baseUrl = super.getUrl();
+  }
 
   // GET /api/contacts
   getCurrentUserContacts(): Observable<GetContactsResponse> {
-    return this.httpClient.get<GetContactsResponse>(environment.baseUrl + this.contactsRoute);
+    return this.httpClient.get<GetContactsResponse>(this.baseUrl + this.contactsRoute);
   }
 
   // POST /api/contacts/{contactId}
   addContact(userId: string): Observable<BaseResponse> {
     return this.httpClient.post<GetContactsResponse>(
-      environment.baseUrl + this.contactsRoute + userId,
+      this.baseUrl + this.contactsRoute + userId,
       {}
     );
   }
@@ -30,14 +34,14 @@ export class ContactsService {
   // DELETE /api/contacts/{contactId}
   deleteContact(userId: string): Observable<BaseResponse> {
     return this.httpClient.delete<GetContactsResponse>(
-      environment.baseUrl + this.contactsRoute + userId
+      this.baseUrl + this.contactsRoute + userId
     );
   }
 
   // GET /api/contacts/searches
   searchContacts(displayName: string): Observable<SearchContactsResponse> {
     return this.httpClient.get<SearchContactsResponse>(
-      environment.baseUrl + this.contactsRoute + 'searches?searchQuery=' + displayName
+      this.baseUrl + this.contactsRoute + 'searches?searchQuery=' + displayName
     );
   }
 }
