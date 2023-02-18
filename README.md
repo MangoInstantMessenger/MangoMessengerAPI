@@ -101,8 +101,7 @@ However, it is worth to continue progress on the project pursuing another predef
 - Install Angular CLI globally: `npm install -g @angular/cli@13.3.4`
 - Open PowerShell as Administrator and type: `Set-ExecutionPolicy -ExecutionPolicy RemoteSigned`
 - Check that Angular CLI installed properly: `ng version`
-- Build project for development using Angular CLI: `ng build --aot --configuration development`
-- NOTE: for production command is: `ng build --aot --configuration production`
+- Build project for development using Angular CLI: `ng build`
 - Restore .NET packages: `cd .. & dotnet restore`
 - Run the .NET web API: `dotnet run`
 - Navigate to the swagger: `https://localhost:5001/swagger/index.html`

@@ -136,7 +136,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "bicep", "bicep", "{D553C98E
 		bicep\rgAzureDeploy.bicep = bicep\rgAzureDeploy.bicep
 		bicep\sqlSeverAndDb.bicep = bicep\sqlSeverAndDb.bicep
 		bicep\storAccountAndCont.bicep = bicep\storAccountAndCont.bicep
-		bicep\README.txt = bicep\README.txt
+		bicep\README.md = bicep\README.md
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "parameters", "parameters", "{BA8CDB8A-341D-42EC-A56F-B52322A34296}"

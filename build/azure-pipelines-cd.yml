@@ -25,6 +25,8 @@ variables:
     value: 'Any CPU'
   - name: buildConfiguration
     value: 'Release'
+  - name: artifactPath
+    value: '$(Pipeline.Workspace)/drop/$(buildConfiguration)/MangoAPI.Presentation.zip'
 
 stages:
   - stage: 'Build_Test_Pack'
@@ -62,7 +64,7 @@ stages:
               steps:
                 - download: current
                   artifact: drop
-
+                  
                 - task: AzureKeyVault@2
                   inputs:
                     azureSubscription: 'MangoServiceConnection'
@@ -77,5 +79,7 @@ stages:
                     azureSubscription: 'MangoServiceConnection'
                     appType: 'webApp'
                     WebAppName: '$(WebAppName)'
-                    packageForLinux: '$(Pipeline.Workspace)/drop/$(buildConfiguration)/MangoAPI.Presentation.zip'
-                    JSONFiles: '**/appsettings.json'
+                    packageForLinux: '$(artifactPath)'
+                    JSONFiles: | 
+                      **/appsettings.json
+                      **/config.json

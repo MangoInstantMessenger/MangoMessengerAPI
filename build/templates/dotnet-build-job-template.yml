@@ -51,7 +51,7 @@ jobs:
         workingDirectory: '${{ parameters.frontEndProjectPath }}'
 
       - script: |
-          ng build --aot --configuration production
+          ng build
         displayName: 'Build Angular Prod'
         workingDirectory: '${{ parameters.frontEndProjectPath }}'
 
