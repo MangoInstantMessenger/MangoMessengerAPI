@@ -55,10 +55,14 @@ module "keyvault_secrets" {
   kv_app_insights_key       = azurerm_application_insights.public.instrumentation_key
   kv_blob_connection_string = module.storage.primary_connection_string
   kv_storage_account_name   = module.storage.account_name
-  kv_storage_container_name = module.storage.container_name
+  kv_blob_container         = module.storage.container_name
+  kv_blob_access            = module.storage.blob_access_url
   kv_sql_connection_string  = module.sql.connection_string
   kv_app_service_name       = module.webapp.app_service_name
+  kv_jwt_issuer             = module.webapp.app_service_url
+  kv_jwt_audience           = module.webapp.app_service_url
   kv_jwt_sign_key           = random_uuid.random_id.result
+  kv_web_app_base_url       = module.webapp.app_service_url
 
   depends_on = [
     module.keyvault.id,
@@ -68,6 +72,7 @@ module "keyvault_secrets" {
     module.storage.container_name,
     module.sql.connection_string,
     module.webapp.app_service_name,
-    random_uuid.random_id
+    random_uuid.random_id,
+    module.webapp.app_service_url
   ]
 }

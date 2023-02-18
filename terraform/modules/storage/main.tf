@@ -1,4 +1,3 @@
-# create storage account and container
 resource "azurerm_storage_account" "public" {
   name                     = var.storage_account_name
   location                 = var.storage_location
@@ -14,5 +13,3 @@ resource "azurerm_storage_container" "public" {
 
   depends_on = [azurerm_storage_account.public]
 }
-
-
