@@ -2,12 +2,12 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { BaseResponse } from '../../types/responses/BaseResponse';
-import ApiBase from './ApiBase';
+import ApiBaseService from './apiBase.service';
 
 @Injectable({
   providedIn: 'root'
 })
-export class UserChatsService extends ApiBase {
+export class UserChatsService extends ApiBaseService {
   private userChatsRoute = 'api/user-chats/';
   private readonly baseUrl: string;
 

@@ -21,6 +21,7 @@ import { DisplayNameColours } from 'src/app/types/enums/DisplayNameColours';
 import { UsersService } from 'src/app/services/api/users.service';
 import { DeleteMessageCommand } from 'src/app/types/requests/DeleteMessageCommand';
 import { DocumentsService } from 'src/app/services/api/documents.service';
+import ApiBaseService from 'src/app/services/api/apiBase.service';
 
 @Component({
   selector: 'app-chats',
@@ -37,13 +38,14 @@ export class ChatsComponent implements OnInit, OnDestroy {
     private _errorNotificationService: ErrorNotificationService,
     private _router: Router,
     private _validationService: ValidationService,
-    private _documentsService: DocumentsService
+    private _documentsService: DocumentsService,
+    private _apiBaseService: ApiBaseService
   ) {}
 
   private connectionBuilder: signalR.HubConnectionBuilder = new signalR.HubConnectionBuilder();
   private connection: signalR.HubConnection = this.connectionBuilder
     .configureLogging(signalR.LogLevel.Information)
-    .withUrl(environment.baseUrl + 'notify')
+    .withUrl(this._apiBaseService.getUrl() + 'notify')
     .build();
   private signalRConnected = false;
   public realTimeConnections: string[] = [];

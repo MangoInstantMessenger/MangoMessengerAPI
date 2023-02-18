@@ -8,12 +8,12 @@ import { DeleteMessageResponse } from '../../types/responses/DeleteMessageRespon
 import { EditMessageCommand } from '../../types/requests/EditMessageCommand';
 import { BaseResponse } from '../../types/responses/BaseResponse';
 import { DeleteMessageCommand } from '../../types/requests/DeleteMessageCommand';
-import ApiBase from './ApiBase';
+import ApiBaseService from './apiBase.service';
 
 @Injectable({
   providedIn: 'root'
 })
-export class MessagesService extends ApiBase {
+export class MessagesService extends ApiBaseService {
   private messagesRoute = 'api/messages/';
   private readonly baseUrl: string;
 

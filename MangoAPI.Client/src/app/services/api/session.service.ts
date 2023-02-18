@@ -4,12 +4,12 @@ import { Observable } from 'rxjs';
 import { LoginCommand } from '../../types/requests/LoginCommand';
 import { TokensResponse } from '../../types/responses/TokensResponse';
 import { BaseResponse } from '../../types/responses/BaseResponse';
-import ApiBase from './ApiBase';
+import ApiBaseService from './apiBase.service';
 
 @Injectable({
   providedIn: 'root'
 })
-export class SessionService extends ApiBase {
+export class SessionService extends ApiBaseService {
   private sessionsRoute = 'api/sessions/';
   private readonly baseUrl: string;
 

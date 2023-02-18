@@ -12,12 +12,12 @@ import { ChangePasswordCommand } from '../../types/requests/ChangePasswordComman
 import { User } from '../../types/models/User';
 import { UpdateProfilePictureResponse } from '../../types/responses/UpdateProfilePictureResponse';
 import { TokensResponse } from 'src/app/types/responses/TokensResponse';
-import ApiBase from './ApiBase';
+import ApiBaseService from './apiBase.service';
 
 @Injectable({
   providedIn: 'root'
 })
-export class UsersService extends ApiBase {
+export class UsersService extends ApiBaseService {
   private usersRoute = 'api/users/';
   private readonly baseUrl: string;
 

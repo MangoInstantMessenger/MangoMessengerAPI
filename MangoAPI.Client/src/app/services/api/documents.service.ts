@@ -2,12 +2,12 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { UploadDocumentResponse } from '../../types/responses/UploadDocumentResponse';
-import ApiBase from './ApiBase';
+import ApiBaseService from './apiBase.service';
 
 @Injectable({
   providedIn: 'root'
 })
-export class DocumentsService extends ApiBase {
+export class DocumentsService extends ApiBaseService {
   private documentsRoute = 'api/documents/';
   private readonly baseUrl: string;
 
