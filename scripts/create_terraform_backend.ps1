@@ -17,6 +17,12 @@ param(
     [string] $prefix
 )
 
+Write-Output "Generating sql server password ..."
+$g = [guid]::NewGuid()
+$v = [string]$g
+$v = $v.Replace("-", "")
+$sqlPassword = $v
+
 Write-Output "Creating resource group $rgName in $location ..."
 az group create --name $rgName --location "$location"
 
@@ -58,6 +64,9 @@ az keyvault secret set --name "kv-tf-state-sas-token" --vault-name $keyVaultName
 Write-Output "Creating keyvault secret [kv-arm-subscription-id] ..."
 az keyvault secret set --name "kv-arm-subscription-id" --vault-name $keyVaultName --value $subscriptionId
 
+Write-Output "Creating keyvault secret [kv-sp-name] ..."
+az keyvault secret set --name "kv-sp-name" --vault-name $keyVaultName --value $spName
+
 Write-Output "Creating keyvault secret [kv-arm-client-id] ..."
 az keyvault secret set --name "kv-arm-client-id" --vault-name $keyVaultName --value $username
 
@@ -69,6 +78,9 @@ az keyvault secret set --name "kv-arm-tenant-id" --vault-name $keyVaultName --va
 
 Write-Output "Creating keyvault secret [prefix] ..."
 az keyvault secret set --name "prefix" --vault-name $keyVaultName --value $prefix
+
+Write-Output "Creating keyvault secret [kv-sql-password] ..."
+az keyvault secret set --name "kv-sql-password" --vault-name $keyVaultName --value $sqlPassword
 
 # example call:
 # $rgName = "rg-tf-state$(Get-Random 1000)"

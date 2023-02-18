@@ -66,6 +66,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "scripts", "scripts", "{C75F
 		scripts\CopyAssetsToStorageAccount.ps1 = scripts\CopyAssetsToStorageAccount.ps1
 		scripts\create_terraform_backend.ps1 = scripts\create_terraform_backend.ps1
 		scripts\checkTerraformChanges.ps1 = scripts\checkTerraformChanges.ps1
+		scripts\deploy_terraform_backend.ps1 = scripts\deploy_terraform_backend.ps1
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "terraform", "terraform", "{D5B04B5C-55E7-48C0-BA17-A084C24610BA}"
@@ -205,6 +206,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "keyvault-secrets", "keyvaul
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MangoAPI.UnitTests", "MangoAPI.UnitTests\MangoAPI.UnitTests.csproj", "{4128BDA5-00F6-4500-A249-1B12C84840AA}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "random-generator", "random-generator", "{7275AA19-E293-41BA-9336-73C7F9005162}"
+	ProjectSection(SolutionItems) = preProject
+		terraform\modules\random-generator\main.tf = terraform\modules\random-generator\main.tf
+		terraform\modules\random-generator\output.tf = terraform\modules\random-generator\output.tf
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -263,6 +270,7 @@ Global
 		{CC550048-3A31-4C1F-A3BA-8844D5FAE5D3} = {201AE3DB-8A7D-4D0C-B0DE-4765007E35E7}
 		{7C0022ED-AF4E-4965-8668-CC286037CB16} = {201AE3DB-8A7D-4D0C-B0DE-4765007E35E7}
 		{A0EE0AAD-30D6-418E-AD1F-55872A4D52BC} = {201AE3DB-8A7D-4D0C-B0DE-4765007E35E7}
+		{7275AA19-E293-41BA-9336-73C7F9005162} = {201AE3DB-8A7D-4D0C-B0DE-4765007E35E7}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {64B16C18-46ED-4D73-927F-B2E229345447}

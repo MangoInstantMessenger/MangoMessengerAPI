@@ -1,5 +1,3 @@
-# create sql database process begins
-
 resource "azurerm_mssql_server" "public" {
   name                         = var.sql_server_name
   location                     = var.sql_location
@@ -33,7 +31,5 @@ resource "azurerm_mssql_database" "public" {
 #
 #  depends_on = [azurerm_mssql_server.public, azurerm_mssql_database.public, azurerm_windows_web_app.public]
 #}
-
-# create sql database process ends
 
 

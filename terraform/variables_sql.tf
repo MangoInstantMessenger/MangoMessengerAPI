@@ -18,6 +18,5 @@ variable "sql_admin_username" {
 
 variable "sql_admin_password" {
   type        = string
-  default     = "Zd2yqLgyV4uHVC0eTPiH"
   description = "Sql admin password"
 }
