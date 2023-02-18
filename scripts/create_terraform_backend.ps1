@@ -76,8 +76,8 @@ az keyvault secret set --name "kv-arm-client-secret" --vault-name $keyVaultName 
 Write-Output "Creating keyvault secret [kv-arm-tenant-id] ..."
 az keyvault secret set --name "kv-arm-tenant-id" --vault-name $keyVaultName --value $tenant
 
-Write-Output "Creating keyvault secret [prefix] ..."
-az keyvault secret set --name "prefix" --vault-name $keyVaultName --value $prefix
+Write-Output "Creating keyvault secret [kv-prefix] ..."
+az keyvault secret set --name "kv-prefix" --vault-name $keyVaultName --value $prefix
 
 Write-Output "Creating keyvault secret [kv-sql-password] ..."
 az keyvault secret set --name "kv-sql-password" --vault-name $keyVaultName --value $sqlPassword
