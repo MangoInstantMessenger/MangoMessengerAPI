@@ -4,12 +4,12 @@ import { HttpClient } from '@angular/common/http';
 import { GetContactsResponse } from '../../types/responses/GetContactsResponse';
 import { BaseResponse } from '../../types/responses/BaseResponse';
 import { SearchContactsResponse } from '../../types/responses/SearchContactsResponse';
-import ApiBase from './ApiBase';
+import ApiBaseService from './apiBase.service';
 
 @Injectable({
   providedIn: 'root'
 })
-export class ContactsService extends ApiBase {
+export class ContactsService extends ApiBaseService {
   private contactsRoute = 'api/contacts/';
   private readonly baseUrl: string;
 

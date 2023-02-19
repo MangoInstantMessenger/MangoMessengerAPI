@@ -1,7 +1,10 @@
+import { Injectable } from "@angular/core";
 
 
-
-export default class ApiBase {
+@Injectable({
+  providedIn: 'root'
+})
+export default class ApiBaseService {
   private readonly LocalStorageBaseUrl = 'baseUrl';
 
   getUrl(): string {

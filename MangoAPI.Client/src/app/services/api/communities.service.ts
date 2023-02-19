@@ -6,12 +6,12 @@ import { CreateCommunityResponse } from '../../types/responses/CreateCommunityRe
 import { CreateChatCommand } from '../../types/requests/CreateChatCommand';
 import { CreateChannelCommand } from '../../types/requests/CreateChannelCommand';
 import { UpdateChatLogoResponse } from '../../types/responses/UpdateChatLogoResponse';
-import ApiBase from './ApiBase';
+import ApiBaseService from './apiBase.service';
 
 @Injectable({
   providedIn: 'root'
 })
-export class CommunitiesService extends ApiBase {
+export class CommunitiesService extends ApiBaseService {
   private chatsRoute = 'api/communities/';
   private readonly baseUrl: string;
 
