@@ -44,7 +44,7 @@ stages:
             env:
               TF_STATE_BLOB_ACCOUNT_NAME: $(kv-tf-state-blob-account)
               TF_STATE_BLOB_CONTAINER_NAME: $(kv-tf-state-blob-container)
-              TF_STATE_BLOB_FILE: 'terraform.mango$(prefix).tfstate'
+              TF_STATE_BLOB_FILE: 'terraform.mango$(kv-prefix).tfstate'
               TF_STATE_BLOB_SAS_TOKEN: $(kv-tf-state-sas-token)
 
           - bash: terraform plan -destroy -var "prefix=$(prefix)" -out $PLAN_FILE
@@ -55,7 +55,7 @@ stages:
               ARM_CLIENT_ID: $(kv-arm-client-id)
               ARM_CLIENT_SECRET: $(kv-arm-client-secret)
               ARM_TENANT_ID: $(kv-arm-tenant-id)
-              PLAN_FILE: 'main-$(prefix).destroy.tfplan'
+              PLAN_FILE: 'main-$(kv-prefix).destroy.tfplan'
 
           - task: PowerShell@2
             displayName: Detect changes in plan
@@ -65,7 +65,7 @@ stages:
               script: |
                 ./../scripts/checkTerraformChanges.ps1 -planPath $env:PLAN_FILE
             env:
-              PLAN_FILE: 'main-$(prefix).destroy.tfplan'
+              PLAN_FILE: 'main-$(kv-prefix).destroy.tfplan'
 
           - bash: terraform apply -destroy -auto-approve $PLAN_FILE
             displayName: Terraform Apply
@@ -76,4 +76,4 @@ stages:
               ARM_CLIENT_ID: $(kv-arm-client-id)
               ARM_CLIENT_SECRET: $(kv-arm-client-secret)
               ARM_TENANT_ID: $(kv-arm-tenant-id)
-              PLAN_FILE: 'main-$(prefix).destroy.tfplan'
+              PLAN_FILE: 'main-$(kv-prefix).destroy.tfplan'

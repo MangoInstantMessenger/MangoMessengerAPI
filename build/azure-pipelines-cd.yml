@@ -59,7 +59,7 @@ stages:
         variables:
           - group: AZURE_FOR_STUDENTS #contains keyvault name and webapp name
           - name: 'ApplicationInsights.InstrumentationKey'
-            value: '$(ApplicationInsightsInstrumentationKey)'
+            value: '$(AppInsightsInstrumentationKey)'
         strategy:
           runOnce:
             deploy:
