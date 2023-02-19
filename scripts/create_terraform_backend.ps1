@@ -18,10 +18,8 @@ param(
 )
 
 Write-Output "Generating sql server password ..."
-$g = [guid]::NewGuid()
-$v = [string]$g
-$v = $v.Replace("-", "")
-$sqlPassword = $v
+$sqlPassword = .\generate_strong_password.ps1 -length 20 -amountOfNonAlphanumeric 1
+Write-Output "sql pass: $sqlPassword"
 
 Write-Output "Creating resource group $rgName in $location ..."
 az group create --name $rgName --location "$location"
@@ -71,7 +69,7 @@ Write-Output "Creating keyvault secret [kv-arm-client-id] ..."
 az keyvault secret set --name "kv-arm-client-id" --vault-name $keyVaultName --value $username
 
 Write-Output "Creating keyvault secret [kv-arm-client-secret] ..."
-az keyvault secret set --name "kv-arm-client-secret" --vault-name $keyVaultName --value $password
+az keyvault secret set --name "kv-arm-client-secret" --vault-name $keyVaultName --value "$password"
 
 Write-Output "Creating keyvault secret [kv-arm-tenant-id] ..."
 az keyvault secret set --name "kv-arm-tenant-id" --vault-name $keyVaultName --value $tenant
@@ -80,7 +78,7 @@ Write-Output "Creating keyvault secret [kv-prefix] ..."
 az keyvault secret set --name "kv-prefix" --vault-name $keyVaultName --value $prefix
 
 Write-Output "Creating keyvault secret [kv-sql-password] ..."
-az keyvault secret set --name "kv-sql-password" --vault-name $keyVaultName --value $sqlPassword
+az keyvault secret set --name "kv-sql-password" --vault-name $keyVaultName --value "$sqlPassword"
 
 # example call:
 # $rgName = "rg-tf-state$(Get-Random 1000)"
