@@ -6,7 +6,11 @@ pool:
   vmImage: 'windows-latest'
 
 variables:
-  - group: DEPLOY_DEV_VARS
+  - group: AZURE_FOR_STUDENTS
+  - name: serviceConnection
+    value: 'MangoServiceConnection'
+  - name: sourcePath
+    value: '$(Build.SourcesDirectory)/img/seed_images/*'
 
 stages:
   - stage: 'azcopy'
@@ -17,15 +21,15 @@ stages:
         steps:
           - task: AzureKeyVault@2
             inputs:
-              azureSubscription: 'MangoServiceConnection'
+              azureSubscription: '$(serviceConnection)'
               KeyVaultName: '$(KeyVaultName)'
               SecretsFilter: "*"
               RunAsPreJob: false
 
           - task: AzureFileCopy@4
             inputs:
-              SourcePath: "$(Build.SourcesDirectory)/img/seed_images/*"
-              azureSubscription: 'MangoServiceConnection'
+              SourcePath: '$(sourcePath)'
+              azureSubscription: '$(serviceConnection)'
               Destination: 'AzureBlob'
-              storage: "$(StorageAccountName)"
-              ContainerName: "mangocontainer"
+              storage: '$(StorageAccountName)'
+              ContainerName: '$(BlobContainer)'
