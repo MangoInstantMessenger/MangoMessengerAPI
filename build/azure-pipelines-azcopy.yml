@@ -8,7 +8,7 @@ pool:
 variables:
   - group: AZURE_FOR_STUDENTS
   - name: serviceConnection
-    value: 'MangoServiceConnection'
+    value: 'AzureForStudents'
   - name: sourcePath
     value: '$(Build.SourcesDirectory)/img/seed_images/*'
 
