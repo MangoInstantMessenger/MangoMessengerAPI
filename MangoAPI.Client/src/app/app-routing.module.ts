@@ -16,26 +16,26 @@ import { RedirectToRestorePasswordComponent } from './components/redirect-to-res
 
 const routes: Routes = [
   { path: 'register', component: RegisterComponent },
-  { path: 'confirm-registration', component: ConfirmRegistrationComponent },
-  { path: 'check-email-note', component: CheckEmailNoteComponent },
+  { path: 'confirmRegistration', component: ConfirmRegistrationComponent },
+  { path: 'checkEmailNote', component: CheckEmailNoteComponent },
   {
-    path: 'redirect-to-confirm-registration',
+    path: 'redirectToConfirmRegistration',
     component: RedirectToConfirmRegistrationComponent
   },
   {
-    path: 'redirect-to-restore-password',
+    path: 'redirectToRestorePassword',
     component: RedirectToRestorePasswordComponent
   },
   { path: 'login', component: LoginComponent },
   {
-    path: 'restore-password-request',
+    path: 'restorePasswordRequest',
     component: RestorePasswordRequestComponent
   },
-  { path: 'restore-password', component: RestorePasswordComponent },
+  { path: 'restorePassword', component: RestorePasswordComponent },
   { path: 'chats', component: ChatsComponent },
   { path: 'contacts', component: ContactsComponent },
   { path: 'settings', component: SettingsComponent },
-  { path: 'create-group', component: CreateGroupComponent },
+  { path: 'createGroup', component: CreateGroupComponent },
   { path: 'app', component: GatewayComponent },
   { path: '**', component: GatewayComponent }
 ];

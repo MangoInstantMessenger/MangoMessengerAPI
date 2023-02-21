@@ -1,3 +1,4 @@
+import { RoutingConstants } from './../../types/constants/RoutingConstants';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ContactsService } from '../../services/api/contacts.service';
 import { ErrorNotificationService } from '../../services/messenger/error-notification.service';
@@ -52,12 +53,23 @@ export class ContactsComponent implements OnInit, OnDestroy {
 
   componentDestroyed$: Subject<boolean> = new Subject();
 
+  public get routingConstants(): typeof RoutingConstants {
+    return RoutingConstants;
+  }
+
   ngOnDestroy(): void {
     this.componentDestroyed$.next(true);
     this.componentDestroyed$.complete();
   }
 
   ngOnInit(): void {
+    const tokens = this._tokensService.getTokens();
+
+    if (!tokens) {
+      this._router.navigateByUrl(this.routingConstants.Login).then((r) => r);
+      return;
+    }
+
     this.currentUserId = this._tokensService.getTokens()?.userId as string;
     this._usersService
       .getUserById(this.currentUserId)
