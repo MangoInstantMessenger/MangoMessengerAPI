@@ -12,6 +12,7 @@ import { UpdateAccountInformationCommand } from '../../types/requests/UpdateAcco
 import { SessionService } from '../../services/api/session.service';
 import { Router } from '@angular/router';
 import { Subject, takeUntil } from 'rxjs';
+import { RoutingConstants } from 'src/app/types/constants/RoutingConstants';
 
 @Component({
   selector: 'app-settings',
@@ -55,7 +56,18 @@ export class SettingsComponent implements OnInit, OnDestroy {
   public file: File | null = null;
   componentDestroyed$: Subject<boolean> = new Subject();
 
+  public get routingConstants(): typeof RoutingConstants {
+    return RoutingConstants;
+  }
+
   ngOnInit(): void {
+    const tokens = this._tokensService.getTokens();
+
+    if (!tokens) {
+      this._router.navigateByUrl(this.routingConstants.Login).then((r) => r);
+      return;
+    }
+
     this.currentUserId = this._tokensService.getTokens()?.userId as string;
     this._usersService
       .getUserById(this.currentUserId)

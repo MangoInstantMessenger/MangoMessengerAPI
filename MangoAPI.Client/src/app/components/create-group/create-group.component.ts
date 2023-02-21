@@ -1,4 +1,5 @@
-import { Component, OnDestroy } from '@angular/core';
+import { TokensService } from './../../services/messenger/tokens.service';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { CommunitiesService } from '../../services/api/communities.service';
 import { CreateChannelCommand } from '../../types/requests/CreateChannelCommand';
 import { Router } from '@angular/router';
@@ -11,17 +12,31 @@ import { Subject, takeUntil } from 'rxjs';
   templateUrl: './create-group.component.html',
   styleUrls: ['./create-group.component.scss']
 })
-export class CreateGroupComponent implements OnDestroy {
+export class CreateGroupComponent implements OnDestroy, OnInit {
   constructor(
     private _communitiesService: CommunitiesService,
     private _router: Router,
-    private _errorNotificationService: ErrorNotificationService
+    private _errorNotificationService: ErrorNotificationService,
+    private _tokensService: TokensService
   ) {}
 
   public chatTitle = '';
   public chatDescription = '';
 
   componentDestroyed$: Subject<boolean> = new Subject();
+  
+  public get routingConstants(): typeof RoutingConstants {
+    return RoutingConstants;
+  }
+
+  ngOnInit() {
+    const tokens = this._tokensService.getTokens();
+
+    if (!tokens) {
+      this._router.navigateByUrl(this.routingConstants.Login).then((r) => r);
+      return;
+    }
+  }
 
   ngOnDestroy(): void {
     this.componentDestroyed$.next(true);

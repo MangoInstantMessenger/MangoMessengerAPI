@@ -28,11 +28,11 @@
     <button class="form-button p-3 font-weight-bold mb-3" (click)="login()">LOGIN</button>
     <span class="form-label">
       Do not have an account?
-      <a class="form-label" href="{{ routingConstants.Register }}">Register</a>.
+      <a class="form-label" [routerLink]="[routingConstants.Register]">Register</a>.
     </span>
     <span class="form-label">
       Forgot password?
-      <a class="form-label" href="{{ routingConstants.RestorePasswordRequest }}">Restore</a>.
+      <a class="form-label" [routerLink]="[routingConstants.RestorePasswordRequest]">Restore</a>.
     </span>
   </div>
 </div>
