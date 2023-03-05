@@ -1,4 +1,6 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using MangoAPI.Application.Interfaces;
+using MangoAPI.Application.Services;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace MangoAPI.BusinessLogic.DependencyInjection;
 
@@ -29,6 +31,8 @@ public static class MessengerServices
 
         services.AddSingInManagerServices();
         services.AddPasswordHashServices();
+
+        services.AddSingleton<IParameterService, ParameterService>();
 
         return services;
     }
