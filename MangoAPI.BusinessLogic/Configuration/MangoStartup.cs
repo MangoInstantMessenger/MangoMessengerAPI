@@ -1,4 +1,6 @@
-﻿using MangoAPI.BusinessLogic.DependencyInjection;
+﻿using MangoAPI.Application.Interfaces;
+using MangoAPI.Application.Services;
+using MangoAPI.BusinessLogic.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace MangoAPI.BusinessLogic.Configuration;
@@ -37,6 +39,8 @@ public static class MangoStartup
         services.AddSingInManagerServices();
         services.AddPasswordHashServices();
         services.AddSignalR();
+
+        services.AddSingleton<IParameterService, ParameterService>();
 
         var provider = services.BuildServiceProvider();
         MangoCompositionRoot.SetProvider(provider);

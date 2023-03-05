@@ -28,7 +28,8 @@ export class SettingsComponent implements OnInit, OnDestroy {
     private _sessionService: SessionService,
     private _router: Router
   ) {}
-
+    
+  public apiVersion = "";
   public currentUser: User = {
     userId: '',
     displayName: '',
@@ -75,6 +76,7 @@ export class SettingsComponent implements OnInit, OnDestroy {
       .subscribe({
         next: (response) => {
           this.currentUser = response.user;
+          this.apiVersion = response.apiVersion;
         },
         error: (error) => {
           this._errorNotificationService.notifyOnError(error);

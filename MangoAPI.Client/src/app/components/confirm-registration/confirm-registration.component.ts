@@ -15,7 +15,8 @@ import { Subject, takeUntil } from 'rxjs';
 export class ConfirmRegistrationComponent implements OnInit, OnDestroy {
   public response: BaseResponse = {
     message: '',
-    success: false
+    success: false,
+    apiVersion: ""
   };
   public errorMessage = '';
 
