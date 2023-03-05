@@ -1,4 +1,3 @@
-using System.Reflection;
 using System.Text.Json;
 using MangoAPI.Application.Interfaces;
 using MangoAPI.Application.Services;
@@ -27,8 +26,10 @@ public class Startup
 
     public Startup(IConfiguration configuration)
     {
+        var parameterService = new ParameterService();
+
         this.configuration = configuration;
-        version = Assembly.GetExecutingAssembly().GetName().Version?.ToString() ?? "1";
+        version = parameterService.GetVersionParameter();
         swaggerTitle = $"MangoAPI v{version}";
     }
 
@@ -116,9 +117,7 @@ public class Startup
 
         var apiInfo = new OpenApiInfo
         {
-#pragma warning disable IDE0055
             Title = swaggerTitle, Version = version, Description = "Mango Messenger ASP .NET 6 Web API",
-#pragma warning restore IDE0055
         };
 
         services.AddSwaggerGen(c => { c.SwaggerDoc($"v{version}", apiInfo); });
