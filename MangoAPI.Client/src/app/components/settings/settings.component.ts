@@ -13,6 +13,7 @@ import { SessionService } from '../../services/api/session.service';
 import { Router } from '@angular/router';
 import { Subject, takeUntil } from 'rxjs';
 import { RoutingConstants } from 'src/app/types/constants/RoutingConstants';
+import { AppInfoService } from 'src/app/services/api/app-info.service';
 
 @Component({
   selector: 'app-settings',
@@ -23,13 +24,14 @@ export class SettingsComponent implements OnInit, OnDestroy {
     private _contactsService: ContactsService,
     private _errorNotificationService: ErrorNotificationService,
     private _usersService: UsersService,
+    private _appInfoService: AppInfoService,
     private _tokensService: TokensService,
     private _validationService: ValidationService,
     private _sessionService: SessionService,
     private _router: Router
   ) {}
-    
-  public apiVersion = "";
+
+  public apiVersion: string = "";
   public currentUser: User = {
     userId: '',
     displayName: '',
@@ -76,7 +78,17 @@ export class SettingsComponent implements OnInit, OnDestroy {
       .subscribe({
         next: (response) => {
           this.currentUser = response.user;
-          this.apiVersion = response.apiVersion;
+        },
+        error: (error) => {
+          this._errorNotificationService.notifyOnError(error);
+        }
+      });
+    this._appInfoService
+      .getAppInfo()
+      .pipe(takeUntil(this.componentDestroyed$))
+      .subscribe({
+        next: (response) => {
+          this.apiVersion = response.appInfo.apiVersion;
         },
         error: (error) => {
           this._errorNotificationService.notifyOnError(error);
