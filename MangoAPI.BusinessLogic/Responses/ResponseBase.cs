@@ -11,6 +11,9 @@ public record ResponseBase
     [DefaultValue(true)]
     public bool Success { get; set; }
 
+    [DefaultValue("1.0.0.0")]
+    public string ApiVersion { get; set; } = ParameterConstants.GetVersionParameter() ?? "1.0.0.0";
+    
     public static ResponseBase SuccessResponse => new()
     {
         Message = ResponseMessageCodes.Success,

@@ -1,3 +1,4 @@
+using System.Reflection;
 using System.Text.Json;
 using MangoAPI.Application.Interfaces;
 using MangoAPI.Application.Services;
@@ -26,10 +27,8 @@ public class Startup
 
     public Startup(IConfiguration configuration)
     {
-        var parameterService = new ParameterService();
-        
         this.configuration = configuration;
-        version = parameterService.GetVersionParameter();
+        version = Assembly.GetExecutingAssembly().GetName().Version?.ToString() ?? "1";
         swaggerTitle = $"MangoAPI v{version}";
     }
 
