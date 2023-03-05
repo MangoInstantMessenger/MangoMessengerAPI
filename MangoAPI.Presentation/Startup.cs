@@ -28,7 +28,7 @@ public class Startup
     public Startup(IConfiguration configuration)
     {
         this.configuration = configuration;
-        version = Assembly.GetExecutingAssembly().GetName().Version?.ToString() ?? "1";
+        version = ParameterConstants.GetVersionParameter() ?? "1.0.0.0";
         swaggerTitle = $"MangoAPI v{version}";
     }
 
