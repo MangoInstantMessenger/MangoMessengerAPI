@@ -13,7 +13,7 @@ namespace MangoAPI.Presentation.Controllers;
 
 [ApiController]
 [Route("api/app-info")]
-// [Authorize]
+[Authorize]
 public class AppInfoController : ApiControllerBase
 {
     public AppInfoController(IMediator mediator, IMapper mapper, ICorrelationContext correlationContext) : base(mediator, mapper, correlationContext)
