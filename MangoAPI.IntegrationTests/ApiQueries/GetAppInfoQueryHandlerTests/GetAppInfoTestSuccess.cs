@@ -1,4 +1,5 @@
 ﻿using FluentAssertions;
+using MangoAPI.Application.Services;
 using MangoAPI.BusinessLogic.ApiQueries.AppInfo;
 using System.Reflection;
 using System.Threading;
@@ -13,11 +14,10 @@ public class GetAppInfoTestSuccess : IntegrationTestBase
     public async Task GetAppInfoTestSuccessAsync()
     {
         var query = new GetAppInfoQuery();
-        
+
         var result = await MangoModule.RequestAsync(query, CancellationToken.None);
 
-        var version = Assembly.GetExecutingAssembly().GetName().Version?.ToString();
-
-        result.Response.AppInfo.ApiVersion.Should().Be(version ?? "1.0.0.0");
+        const string expectedVersion = ParameterService.DefaultVersion;
+        result.Response.AppInfo.ApiVersion.Should().Be(expectedVersion);
     }
 }
