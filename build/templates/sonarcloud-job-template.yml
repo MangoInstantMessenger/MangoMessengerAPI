@@ -54,6 +54,7 @@ jobs:
                 extraProperties: |
                   sonar.cs.vstest.reportsPaths=$(Agent.TempDirectory)/**/*.trx
                   sonar.cs.opencover.reportsPaths=$(Agent.TempDirectory)/**/*opencover.xml
+                  sonar.exclusions=**/Properties/**, **/bin/**, **/obj/**, **/Migrations/**
 
             - task: DotNetCoreCLI@2
               displayName: 'Dotnet restore'

@@ -18,22 +18,13 @@ public class LogoutTestShouldThrowUserNotFound : IntegrationTestBase
     {
         const string expectedMessage = ResponseMessageCodes.UserNotFound;
         var expectedDetails = ResponseMessageCodes.ErrorDictionary[expectedMessage];
-        var user = await MangoModule.RequestAsync(
-            request: CommandHelper.RegisterPetroCommand(),
-            cancellationToken: CancellationToken.None);
-        var userId = user.Response.Tokens.UserId;
-        var userEntity = await DbContextFixture.Users.FirstOrDefaultAsync(x => x.Id == userId);
         await MangoModule.RequestAsync(
-            request: CommandHelper.CreateVerifyEmailCommand(userEntity.Email, userEntity.EmailCode),
+            request: CommandHelper.RegisterPetroCommand(),
             cancellationToken: CancellationToken.None);
         var user1 = await MangoModule.RequestAsync(
             request: CommandHelper.RegisterKhachaturCommand(),
             cancellationToken: CancellationToken.None);
         var userId1 = user1.Response.Tokens.UserId;
-        var userEntity1 = await DbContextFixture.Users.FirstOrDefaultAsync(x => x.Id == userId1);
-        await MangoModule.RequestAsync(
-            request: CommandHelper.CreateVerifyEmailCommand(userEntity1.Email, userEntity1.EmailCode),
-            cancellationToken: CancellationToken.None);
         var session = await MangoModule.RequestAsync(
             request: CommandHelper.CreateLoginCommand("kolosovp95@gmail.com", "Bm3-`dPRv-/w#3)cw^97"),
             cancellationToken: CancellationToken.None);

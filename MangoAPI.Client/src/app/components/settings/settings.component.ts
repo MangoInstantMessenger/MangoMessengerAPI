@@ -31,7 +31,7 @@ export class SettingsComponent implements OnInit, OnDestroy {
     private _router: Router
   ) {}
 
-  public apiVersion: string = "";
+  public apiVersion = '';
   public currentUser: User = {
     userId: '',
     displayName: '',
@@ -109,7 +109,7 @@ export class SettingsComponent implements OnInit, OnDestroy {
       .subscribe({
         next: (_) => {
           this._tokensService.clearTokens();
-          this._router.navigateByUrl('app?methodName=login').then((r) => r);
+          this._router.navigateByUrl('login').then((r) => r);
         },
         error: (error) => {
           this._errorNotificationService.notifyOnError(error);
@@ -124,7 +124,7 @@ export class SettingsComponent implements OnInit, OnDestroy {
       .subscribe({
         next: (_) => {
           this._tokensService.clearTokens();
-          this._router.navigateByUrl('app?methodName=login').then((r) => r);
+          this._router.navigateByUrl('login').then((r) => r);
         },
         error: (error) => {
           this._errorNotificationService.notifyOnError(error);

@@ -11,8 +11,6 @@ public interface IUsersController
 {
     Task<IActionResult> RegisterAsync(RegisterRequest request, CancellationToken cancellationToken);
 
-    Task<IActionResult> EmailConfirmationAsync(VerifyEmailRequest request, CancellationToken cancellationToken);
-
     Task<IActionResult> ChangePassword(ChangePasswordRequest request, CancellationToken cancellationToken);
 
     Task<IActionResult> GetUserById(Guid userId, CancellationToken cancellationToken);
