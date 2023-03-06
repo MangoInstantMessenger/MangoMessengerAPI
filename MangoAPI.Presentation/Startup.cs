@@ -68,7 +68,10 @@ public class Startup
         });
 
         // https://stackoverflow.com/a/62374509
-        app.Map("/app", builder => builder.UseSpa(spa => spa.Options.SourcePath = "/wwwroot"));
+        app.Map("/chats", builder => builder.UseSpa(spa => spa.Options.SourcePath = "/wwwroot"));
+        app.Map("/contacts", builder => builder.UseSpa(spa => spa.Options.SourcePath = "/wwwroot"));
+        app.Map("/settings", builder => builder.UseSpa(spa => spa.Options.SourcePath = "/wwwroot"));
+        app.Map("/createGroup", builder => builder.UseSpa(spa => spa.Options.SourcePath = "/wwwroot"));
 
         app.MigrateDatabase();
     }

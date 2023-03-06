@@ -15,6 +15,6 @@ public class RootController : Controller
         Summary = "Workaround for the redirect to angular UI.")]
     public IActionResult RedirectToTheAngularSpa()
     {
-        return Redirect(@"~/app");
+        return Redirect(@"~/chats");
     }
 }
