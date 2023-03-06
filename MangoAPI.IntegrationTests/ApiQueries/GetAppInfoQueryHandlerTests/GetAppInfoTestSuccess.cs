@@ -1,7 +1,6 @@
 ﻿using FluentAssertions;
 using MangoAPI.Application.Services;
 using MangoAPI.BusinessLogic.ApiQueries.AppInfo;
-using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using Xunit;

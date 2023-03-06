@@ -17,8 +17,6 @@ public sealed class UserEntity : IdentityUser<Guid>
 
     public DisplayNameColour DisplayNameColour { get; set; }
 
-    public ICollection<PasswordRestoreRequestEntity> PasswordRestoreRequests { get; set; }
-
     public ICollection<SessionEntity> Sessions { get; set; }
 
     public ICollection<MessageEntity> Messages { get; set; }

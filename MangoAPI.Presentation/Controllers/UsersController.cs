@@ -50,28 +50,6 @@ public class UsersController : ApiControllerBase, IUsersController
     }
 
     /// <summary>
-    /// Confirms user's email address.
-    /// </summary>
-    /// <param name="request">VerifyEmailRequest instance.</param>
-    /// <param name="cancellationToken">CancellationToken instance.</param>
-    /// <returns>Possible codes: 200, 400, 409.</returns>
-    [HttpPut("email-confirmation")]
-    [AllowAnonymous]
-    [SwaggerOperation(
-        Description = "Confirms user's email address.",
-        Summary = "Confirms user's email address.")]
-    [ProducesResponseType(typeof(ResponseBase), StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
-    [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
-    public async Task<IActionResult> EmailConfirmationAsync(
-        [FromBody] VerifyEmailRequest request,
-        CancellationToken cancellationToken)
-    {
-        var command = Mapper.Map<VerifyEmailCommand>(request);
-        return await RequestAsync(command, cancellationToken);
-    }
-
-    /// <summary>
     /// Changes password by current password.
     /// </summary>
     /// <param name="request">Request instance.</param>

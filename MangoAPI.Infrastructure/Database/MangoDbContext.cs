@@ -24,8 +24,6 @@ public class MangoDbContext : IdentityDbContext<UserEntity, RoleEntity, Guid>
 
     public DbSet<UserInformationEntity> UserInformation { get; set; }
 
-    public DbSet<PasswordRestoreRequestEntity> PasswordRestoreRequests { get; set; }
-
     public DbSet<DocumentEntity> Documents { get; set; }
 
     public DbSet<DiffieHellmanParameterEntity> DiffieHellmanParameterEntities { get; set; }

@@ -13,10 +13,6 @@ public class UserEntityConfiguration : IEntityTypeConfiguration<UserEntity>
     {
         builder.ToTable(nameof(UserEntity), MangoDbContext.DefaultSchema);
 
-        builder.HasMany(x => x.PasswordRestoreRequests)
-            .WithOne(x => x.UserEntity)
-            .HasForeignKey(x => x.UserId);
-
         builder.HasMany(x => x.Sessions)
             .WithOne(x => x.UserEntity)
             .HasForeignKey(x => x.UserId);
