@@ -72,6 +72,8 @@ public class Startup
         app.Map(RoutingConstants.Contacts, builder => builder.UseSpa(spa => spa.Options.SourcePath = "/wwwroot"));
         app.Map(RoutingConstants.Settings, builder => builder.UseSpa(spa => spa.Options.SourcePath = "/wwwroot"));
         app.Map(RoutingConstants.CreateGroup, builder => builder.UseSpa(spa => spa.Options.SourcePath = "/wwwroot"));
+        app.Map(RoutingConstants.Register, builder => builder.UseSpa(spa => spa.Options.SourcePath = "/wwwroot"));
+        app.Map(RoutingConstants.Login, builder => builder.UseSpa(spa => spa.Options.SourcePath = "/wwwroot"));
 
         app.MigrateDatabase();
     }

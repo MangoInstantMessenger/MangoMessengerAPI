@@ -7,7 +7,6 @@ import { RegisterComponent } from './components/register/register.component';
 import { ChatsComponent } from './components/chats/chats.component';
 import { ContactsComponent } from './components/contacts/contacts.component';
 import { SettingsComponent } from './components/settings/settings.component';
-// import { GatewayComponent } from './components/gateway/gateway.component';
 import { NotFoundComponent } from './components/not-found/not-found.component';
 import { HTTP_INTERCEPTORS, HttpClientModule, HttpClient } from '@angular/common/http';
 import { RequestHeaderInterceptor } from './interceptors/request-header.interceptor';
@@ -38,7 +37,6 @@ const initializeAppFactory = (): Promise<void> => {
     ChatsComponent,
     ContactsComponent,
     SettingsComponent,
-    // GatewayComponent,
     NotFoundComponent,
     CreateGroupComponent,
     NavbarComponent
