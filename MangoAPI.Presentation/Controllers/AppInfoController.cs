@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using MangoAPI.Application.Interfaces;
 using MangoAPI.BusinessLogic.ApiQueries.AppInfo;
-using MangoAPI.BusinessLogic.Models;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;

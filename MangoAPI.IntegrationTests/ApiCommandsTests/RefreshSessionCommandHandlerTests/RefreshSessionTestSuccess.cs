@@ -15,13 +15,8 @@ public class RefreshSessionTestSuccess : IntegrationTestBase
     [Fact]
     public async Task RefreshSessionTestSuccessAsync()
     {
-        var user = await MangoModule.RequestAsync(
-            request: CommandHelper.RegisterPetroCommand(),
-            cancellationToken: CancellationToken.None);
-        var userId = user.Response.Tokens.UserId;
-        var userEntity = await DbContextFixture.Users.FirstAsync(x => x.Id == userId);
         await MangoModule.RequestAsync(
-            request: CommandHelper.CreateVerifyEmailCommand(userEntity.Email, userEntity.EmailCode),
+            request: CommandHelper.RegisterPetroCommand(),
             cancellationToken: CancellationToken.None);
         var login = await MangoModule.RequestAsync(
             request: CommandHelper.CreateLoginCommand("kolosovp95@gmail.com", "Bm3-`dPRv-/w#3)cw^97"),

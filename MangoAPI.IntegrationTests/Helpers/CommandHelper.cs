@@ -3,7 +3,6 @@ using MangoAPI.BusinessLogic.ApiCommands.Communities;
 using MangoAPI.BusinessLogic.ApiCommands.Contacts;
 using MangoAPI.BusinessLogic.ApiCommands.DiffieHellmanKeyExchanges;
 using MangoAPI.BusinessLogic.ApiCommands.Messages;
-using MangoAPI.BusinessLogic.ApiCommands.PasswordRestoreRequests;
 using MangoAPI.BusinessLogic.ApiCommands.Sessions;
 using MangoAPI.BusinessLogic.ApiCommands.Users;
 using MangoAPI.Domain.Enums;
@@ -69,27 +68,11 @@ public static class CommandHelper
         return command;
     }
 
-    public static VerifyEmailCommand CreateVerifyEmailCommand(string email, Guid emailCode)
-    {
-        var command = new VerifyEmailCommand(
-            Email: email,
-            EmailCode: emailCode);
-
-        return command;
-    }
-
     public static LoginCommand CreateLoginCommand(string email, string password)
     {
         var command = new LoginCommand(
             Email: email,
             Password: password);
-
-        return command;
-    }
-
-    public static RequestPasswordRestoreCommand CreateRequestPasswordRestoreCommand(string email)
-    {
-        var command = new RequestPasswordRestoreCommand(email);
 
         return command;
     }

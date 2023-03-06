@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using MangoAPI.BusinessLogic.ApiCommands.Messages;
-using MangoAPI.BusinessLogic.ApiCommands.PasswordRestoreRequests;
 using MangoAPI.BusinessLogic.ApiCommands.Sessions;
 using MangoAPI.BusinessLogic.ApiCommands.Users;
 
@@ -12,9 +11,7 @@ public class PresentationProfile : Profile
     {
         CreateMap<SendMessageRequest, SendMessageCommand>();
         CreateMap<EditMessageRequest, EditMessageCommand>();
-        CreateMap<PasswordRestoreRequest, PasswordRestoreCommand>();
         CreateMap<RegisterRequest, RegisterCommand>();
-        CreateMap<VerifyEmailRequest, VerifyEmailCommand>();
         CreateMap<ChangePasswordRequest, ChangePasswordCommand>();
         CreateMap<UpdateUserSocialInformationRequest, UpdateUserSocialInformationCommand>();
         CreateMap<UpdateUserAccountInfoRequest, UpdateUserAccountInfoCommand>();
