@@ -13,7 +13,6 @@ import { UserChatsService } from '../../services/api/user-chats.service';
 import { ValidationService } from '../../services/messenger/validation.service';
 import { SendMessageCommand } from '../../types/requests/SendMessageCommand';
 import * as signalR from '@microsoft/signalr';
-import { environment } from '../../../environments/environment';
 import { EditMessageNotification } from '../../types/models/EditMessageNotification';
 import { DeleteMessageNotification } from '../../types/models/DeleteMessageNotification';
 import { Subject, takeUntil } from 'rxjs';
@@ -166,6 +165,7 @@ export class ChatsComponent implements OnInit, OnDestroy {
     }
     return fileName;
   }
+
   setSignalRMethods(): void {
     this.connection.on('BroadcastMessageAsync', (message: Message) =>
       this.onBroadcastMessage(message)
@@ -405,13 +405,17 @@ export class ChatsComponent implements OnInit, OnDestroy {
   }
 
   async onSendMessageClick() {
+    const newMessageText = this.messageText.repeat(1); // deep copy
+
     const messageTextValidationResult = this._validationService.validateField(
-      this.messageText,
+      newMessageText,
       'Message Text'
     );
+
     if (!messageTextValidationResult) {
       return;
     }
+
     const tokens = this._tokensService.getTokens();
 
     if (!tokens) {
@@ -428,11 +432,13 @@ export class ChatsComponent implements OnInit, OnDestroy {
       this.activeChatId,
       tokens.userDisplayName,
       tokens.displayNameColour,
-      this.messageText,
+      newMessageText,
       isoString,
       true,
       tokens.userProfilePictureUrl
     );
+
+    this.clearMessageInput();
 
     if (this.messageAttachment) {
       const fileName = await this.uploadFile(this.messageAttachment);
@@ -452,7 +458,6 @@ export class ChatsComponent implements OnInit, OnDestroy {
       .subscribe({
         next: (data) => {
           newMessage.messageId = data.messageId;
-          this.clearMessageInput();
           this.scrollToEnd();
         },
         error: (error) => {
@@ -463,7 +468,7 @@ export class ChatsComponent implements OnInit, OnDestroy {
 
   onEnterClick(event: any): void {
     event.preventDefault();
-    this.onSendMessageClick();
+    this.onSendMessageClick().then((r) => r);
   }
 
   private clearMessageInput(): void {
