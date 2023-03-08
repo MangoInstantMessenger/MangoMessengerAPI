@@ -336,12 +336,19 @@ i {
     }
 
     .list-item {
+      position: relative;
       transition: all 0.3s ease;
       display: inline-flex;
       border: 1px $gray solid;
       width: 100%;
       padding: 16px;
       border-radius: 10px;
+
+      .last-message-time {
+        position: absolute;
+        top: 15px;
+        right: 15px;
+      }
 
       .content {
         margin-left: 14px;
@@ -353,6 +360,7 @@ i {
           gap: 5px;
 
           .info {
+            position: relative;
             display: flex;
             justify-content: space-between !important;
             align-items: center;
@@ -372,6 +380,7 @@ i {
           user-select: none;
           color: $light-gray;
           max-width: 35ch;
+          padding-right: 40px;
           text-overflow: ellipsis;
           overflow: hidden;
           white-space: nowrap;

@@ -5,6 +5,7 @@ namespace MangoAPI.Domain.Constants;
 public static class SeedDataConstants
 {
     // User Id
+    public static readonly Guid MangoId = Guid.Parse("9dca18b9-7bb5-48d9-b589-ba8b7b6ff854");
     public static readonly Guid KhachaturId = Guid.Parse("e77cf2cb-3f3a-4f0b-ac5a-90a3263d075a");
     public static readonly Guid RazumovskyId = Guid.Parse("fd3c67c5-c6ff-4a5d-a166-98ece1b7752b");
     public static readonly Guid KolbasatorId = Guid.Parse("5b515247-f6f5-47e1-ad06-95f317a0599b");

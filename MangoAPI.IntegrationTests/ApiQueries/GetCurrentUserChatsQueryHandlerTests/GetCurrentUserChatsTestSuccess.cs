@@ -25,6 +25,6 @@ public class GetCurrentUserChatsTestSuccess : IntegrationTestBase
         var result = await MangoModule.RequestAsync(query, CancellationToken.None);
 
         assert.Pass(result);
-        result.Response.Chats.Count.Should().Be(1);
+        result.Response.Chats.Count.Should().Be(2);
     }
 }

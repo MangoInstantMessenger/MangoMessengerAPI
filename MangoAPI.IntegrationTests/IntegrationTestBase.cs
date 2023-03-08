@@ -48,6 +48,7 @@ public class IntegrationTestBase : IAsyncLifetime
         var jwtSignKey = configuration[EnvironmentConstants.JwtSignKey];
         var jwtIssuer = configuration[EnvironmentConstants.JwtIssuer];
         var jwtAudience = configuration[EnvironmentConstants.JwtAudience];
+        var mangoUserPassword = configuration[EnvironmentConstants.MangoUserPassword];
 
         const int jwtLifetimeMinutes = EnvironmentConstants.JwtLifetimeMinutes;
         const int refreshTokenLifetimeDays = EnvironmentConstants.RefreshTokenLifetimeDays;
@@ -61,7 +62,8 @@ public class IntegrationTestBase : IAsyncLifetime
             jwtIssuer,
             jwtAudience,
             jwtLifetimeMinutes,
-            refreshTokenLifetimeDays);
+            refreshTokenLifetimeDays,
+            mangoUserPassword);
 
         ServiceProvider = MangoCompositionRoot.Provider;
 

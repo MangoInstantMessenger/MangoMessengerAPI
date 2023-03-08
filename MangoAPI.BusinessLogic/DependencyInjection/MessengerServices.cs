@@ -15,7 +15,8 @@ public static class MessengerServices
         string mangoJwtIssuer,
         string mangoJwtAudience,
         int mangoJwtLifetimeMinutes,
-        int mangoRefreshTokenLifetimeDays)
+        int mangoRefreshTokenLifetimeDays,
+        string mangoUserPassword)
     {
         services.AddAzureBlobServices(
             mangoBlobUrl,
@@ -34,6 +35,9 @@ public static class MessengerServices
 
         services.AddSingleton<IParameterService, ParameterService>();
 
+        
+        services.AddSingleton<IMangoUserSettings, MangoUserSettings>(_ => new MangoUserSettings(mangoUserPassword));
+        
         return services;
     }
 }

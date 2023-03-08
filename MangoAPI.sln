@@ -109,6 +109,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "seed_images", "seed_images"
 		img\seed_images\serhii_picture.png = img\seed_images\serhii_picture.png
 		img\seed_images\szymon_picture.png = img\seed_images\szymon_picture.png
 		img\seed_images\wsb_group_logo.png = img\seed_images\wsb_group_logo.png
+		img\seed_images\mango_logo.jpg = img\seed_images\mango_logo.jpg
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "workflows", "workflows", "{8AEBB05F-C450-4E77-8B91-9155BFB4FD56}"
