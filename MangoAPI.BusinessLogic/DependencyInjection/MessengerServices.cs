@@ -36,7 +36,7 @@ public static class MessengerServices
         services.AddSingleton<IParameterService, ParameterService>();
 
         
-        services.AddSingleton<IMangoUserSettings, MangoUserSettings>(_ => new MangoUserSettings(password: mangoUserPassword));
+        services.AddSingleton<IMangoUserSettings, MangoUserSettings>(_ => new MangoUserSettings(mangoUserPassword));
         
         return services;
     }

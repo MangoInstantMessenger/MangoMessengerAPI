@@ -43,7 +43,7 @@ public static class MangoStartup
         
         services.AddSingleton<IParameterService, ParameterService>();
 
-        services.AddSingleton<IMangoUserSettings, MangoUserSettings>(_ => new MangoUserSettings(password: mangoUserPassword));
+        services.AddSingleton<IMangoUserSettings, MangoUserSettings>(_ => new MangoUserSettings(mangoUserPassword));
 
         var provider = services.BuildServiceProvider();
         MangoCompositionRoot.SetProvider(provider);

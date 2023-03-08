@@ -45,7 +45,9 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, Result<To
         IJwtGenerator jwtGenerator,
         IJwtGeneratorSettings jwtGeneratorSettings,
         ResponseFactory<TokensResponse> responseFactory,
-        IBlobServiceSettings blobServiceSettings, PasswordHashService passwordHashService, IMangoUserSettings mangoUserSettings)
+        IBlobServiceSettings blobServiceSettings,
+        PasswordHashService passwordHashService, 
+        IMangoUserSettings mangoUserSettings)
     {
         this.userManager = userManager;
         this.dbContext = dbContext;
@@ -148,16 +150,14 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, Result<To
             Content = GreetingsConstants.Guide,
         };
         
-        dbContext.Messages.AddRange(new [] {firstMessage, secondMessage});
-
-        await dbContext.SaveChangesAsync(cancellationToken);
-
         mangoChatEntity.LastMessageId = secondMessage.Id;
         mangoChatEntity.LastMessageAuthor = mangoUser.DisplayName;
         mangoChatEntity.LastMessageText = secondMessage.Content;
         mangoChatEntity.LastMessageTime = secondMessage.CreatedAt;
 
-        dbContext.Chats.Update(mangoChatEntity);
+        dbContext.Chats.Add(mangoChatEntity);
+        dbContext.UserChats.AddRange(userChats);
+        dbContext.Messages.AddRange(new [] {firstMessage, secondMessage});
         
         await dbContext.SaveChangesAsync(cancellationToken);
 

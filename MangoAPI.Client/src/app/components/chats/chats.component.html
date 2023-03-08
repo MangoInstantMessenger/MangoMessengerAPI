@@ -45,6 +45,9 @@
             (click)="loadChat(chat.chatId)"
             *ngIf="activeChatId === chat.chatId; else chatElse"
           >
+          <div class="last-message-time" *ngIf="chatContainsMessages(chat)">
+            {{ toShortTimeString(chat.lastMessageTime) }}
+          </div>
             <img alt="Chat avatar" class="avatar" src="{{ chat.chatLogoImageUrl }}" />
             <div class="content">
               <div class="title" *ngIf="chat.communityType === 2; else elseBlock">
@@ -59,9 +62,6 @@
                   <p>
                     {{ chat.title }}
                   </p>
-                  <div *ngIf="chatContainsMessages(chat)">
-                    {{ toShortTimeString(chat.lastMessageTime) }}
-                  </div>
                 </div>
               </div>
               <ng-template class="title" #elseBlock>
@@ -70,9 +70,6 @@
                     <p>
                       {{ chat.title }}
                     </p>
-                    <div *ngIf="chatContainsMessages(chat)">
-                      {{ toShortTimeString(chat.lastMessageTime) }}
-                    </div>
                   </div>
                 </div>
               </ng-template>
@@ -88,6 +85,9 @@
           </div>
           <ng-template #chatElse>
             <div class="list-item" (click)="loadChat(chat.chatId)">
+              <div class="last-message-time" *ngIf="chatContainsMessages(chat)">
+                {{ toShortTimeString(chat.lastMessageTime) }}
+              </div>
               <img alt="Chat avatar" class="avatar" src="{{ chat.chatLogoImageUrl }}" />
               <div class="content">
                 <div class="title" *ngIf="chat.communityType === 2; else elseBlock">
@@ -102,9 +102,6 @@
                     <p>
                       {{ chat.title }}
                     </p>
-                    <div *ngIf="chatContainsMessages(chat)">
-                      {{ toShortTimeString(chat.lastMessageTime) }}
-                    </div>
                   </div>
                 </div>
                 <ng-template class="title" #elseBlock>
@@ -113,9 +110,6 @@
                       <p>
                         {{ chat.title }}
                       </p>
-                      <div *ngIf="chatContainsMessages(chat)">
-                        {{ toShortTimeString(chat.lastMessageTime) }}
-                      </div>
                     </div>
                   </div>
                 </ng-template>

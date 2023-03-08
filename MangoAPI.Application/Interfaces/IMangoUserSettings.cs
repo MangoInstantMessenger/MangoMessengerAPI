@@ -2,5 +2,5 @@
 
 public interface IMangoUserSettings
 {
-    string Password { get; set; }
+    string Password { get; }
 }

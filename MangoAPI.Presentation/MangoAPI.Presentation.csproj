@@ -28,4 +28,40 @@
         <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.17.0" />
     </ItemGroup>
 
+    <ItemGroup>
+      <_ContentIncludedByDefault Remove="wwwroot\assets\config\config.json" />
+      <_ContentIncludedByDefault Remove="wwwroot\assets\img\chat-avatar.png" />
+      <_ContentIncludedByDefault Remove="wwwroot\assets\img\logo.png" />
+      <_ContentIncludedByDefault Remove="wwwroot\assets\img\razumovsky_picture.jpg" />
+      <_ContentIncludedByDefault Remove="wwwroot\assets\svg\api.svg" />
+      <_ContentIncludedByDefault Remove="wwwroot\assets\svg\archive.svg" />
+      <_ContentIncludedByDefault Remove="wwwroot\assets\svg\arrow-right.svg" />
+      <_ContentIncludedByDefault Remove="wwwroot\assets\svg\attach.svg" />
+      <_ContentIncludedByDefault Remove="wwwroot\assets\svg\background-pattern.svg" />
+      <_ContentIncludedByDefault Remove="wwwroot\assets\svg\calendar.svg" />
+      <_ContentIncludedByDefault Remove="wwwroot\assets\svg\dots-horizontal.svg" />
+      <_ContentIncludedByDefault Remove="wwwroot\assets\svg\dots-vertical.svg" />
+      <_ContentIncludedByDefault Remove="wwwroot\assets\svg\edit.svg" />
+      <_ContentIncludedByDefault Remove="wwwroot\assets\svg\emoji.svg" />
+      <_ContentIncludedByDefault Remove="wwwroot\assets\svg\facebook.svg" />
+      <_ContentIncludedByDefault Remove="wwwroot\assets\svg\group.svg" />
+      <_ContentIncludedByDefault Remove="wwwroot\assets\svg\home.svg" />
+      <_ContentIncludedByDefault Remove="wwwroot\assets\svg\info-white.svg" />
+      <_ContentIncludedByDefault Remove="wwwroot\assets\svg\info.svg" />
+      <_ContentIncludedByDefault Remove="wwwroot\assets\svg\instagram.svg" />
+      <_ContentIncludedByDefault Remove="wwwroot\assets\svg\linkedin.svg" />
+      <_ContentIncludedByDefault Remove="wwwroot\assets\svg\mail.svg" />
+      <_ContentIncludedByDefault Remove="wwwroot\assets\svg\point-white.svg" />
+      <_ContentIncludedByDefault Remove="wwwroot\assets\svg\point.svg" />
+      <_ContentIncludedByDefault Remove="wwwroot\assets\svg\reply.svg" />
+      <_ContentIncludedByDefault Remove="wwwroot\assets\svg\search-icon.svg" />
+      <_ContentIncludedByDefault Remove="wwwroot\assets\svg\trash.svg" />
+      <_ContentIncludedByDefault Remove="wwwroot\assets\svg\twitter.svg" />
+      <_ContentIncludedByDefault Remove="wwwroot\assets\svg\world.svg" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="wwwroot" />
+    </ItemGroup>
+
 </Project>
