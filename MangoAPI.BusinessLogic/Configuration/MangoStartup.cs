@@ -16,7 +16,8 @@ public static class MangoStartup
         string mangoJwtIssuer,
         string mangoJwtAudience,
         int mangoJwtLifetimeMinutes,
-        int mangoRefreshTokenLifetimeDays)
+        int mangoRefreshTokenLifetimeDays,
+        string mangoUserPassword)
     {
         var services = new ServiceCollection();
 
@@ -41,6 +42,8 @@ public static class MangoStartup
         services.AddSignalR();
         
         services.AddSingleton<IParameterService, ParameterService>();
+
+        services.AddSingleton<IMangoUserSettings, MangoUserSettings>(_ => new MangoUserSettings(password: mangoUserPassword));
 
         var provider = services.BuildServiceProvider();
         MangoCompositionRoot.SetProvider(provider);

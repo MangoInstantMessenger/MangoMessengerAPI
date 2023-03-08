@@ -4,7 +4,6 @@ using MangoAPI.BusinessLogic.ApiCommands.Sessions;
 using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.Domain.Constants;
 using MangoAPI.IntegrationTests.Helpers;
-using Microsoft.EntityFrameworkCore;
 using Xunit;
 
 namespace MangoAPI.IntegrationTests.ApiCommandsTests.LogoutCommandHandlerTests;

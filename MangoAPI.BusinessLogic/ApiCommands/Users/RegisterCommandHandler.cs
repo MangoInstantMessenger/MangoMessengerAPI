@@ -2,6 +2,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using MangoAPI.Application.Interfaces;
+using MangoAPI.Application.Services;
 using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.Domain.Constants;
 using MangoAPI.Domain.Entities;
@@ -20,14 +21,31 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, Result<To
     private readonly IJwtGenerator jwtGenerator;
     private readonly IJwtGeneratorSettings jwtGeneratorSettings;
     private readonly IBlobServiceSettings blobServiceSettings;
+    private readonly PasswordHashService passwordHashService;
+    private readonly IMangoUserSettings mangoUserSettings; 
 
+    private readonly UserEntity mangoUser = new()
+    {
+        PhoneNumber = "56272381753",
+        DisplayName = "Mango Messenger",
+        DisplayNameColour = DisplayNameColour.Violet,
+        Bio = "Service notifications",
+        Id = SeedDataConstants.MangoId,
+        UserName = "MangoMessenger",
+        Email = "mango.messenger@wp.pl",
+        NormalizedEmail = "MANGO.MESSENGER@WP.PL",
+        EmailConfirmed = true,
+        PhoneNumberConfirmed = true,
+        Image = "mango_logo.png",
+    };
+    
     public RegisterCommandHandler(
         IUserManagerService userManager,
         MangoDbContext dbContext,
         IJwtGenerator jwtGenerator,
         IJwtGeneratorSettings jwtGeneratorSettings,
         ResponseFactory<TokensResponse> responseFactory,
-        IBlobServiceSettings blobServiceSettings)
+        IBlobServiceSettings blobServiceSettings, PasswordHashService passwordHashService, IMangoUserSettings mangoUserSettings)
     {
         this.userManager = userManager;
         this.dbContext = dbContext;
@@ -35,6 +53,8 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, Result<To
         this.jwtGenerator = jwtGenerator;
         this.jwtGeneratorSettings = jwtGeneratorSettings;
         this.blobServiceSettings = blobServiceSettings;
+        this.passwordHashService = passwordHashService;
+        this.mangoUserSettings = mangoUserSettings;
     }
 
     public async Task<Result<TokensResponse>> Handle(RegisterCommand request, CancellationToken cancellationToken)
@@ -85,6 +105,60 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, Result<To
 
         dbContext.Sessions.Add(session);
 
+        var isMangoUserExists = await dbContext.Users.AnyAsync(x => x.Id == SeedDataConstants.MangoId, cancellationToken);
+
+        if (isMangoUserExists == false)
+        {
+            passwordHashService.HashPassword(mangoUser, mangoUserSettings.Password);
+            dbContext.Users.Add(mangoUser);
+        }
+        
+        var mangoChatEntity = new ChatEntity
+        {
+            Id = Guid.NewGuid(),
+            CommunityType = CommunityType.DirectChat,
+            Title = "Mango Messenger",
+            CreatedAt = DateTime.UtcNow,
+            Description = "Service notifications",
+            MembersCount = 2
+        };
+        
+        var userChats = new[]
+        {
+            new UserChatEntity { ChatId = mangoChatEntity.Id, RoleId = UserRole.User, UserId = newUser.Id },
+            new UserChatEntity { ChatId = mangoChatEntity.Id, RoleId = UserRole.User, UserId = SeedDataConstants.MangoId }
+        };
+        
+        dbContext.Chats.Add(mangoChatEntity);
+        dbContext.UserChats.AddRange(userChats);
+
+        var firstMessage = new MessageEntity
+        {
+            Id = Guid.NewGuid(),
+            UserId = SeedDataConstants.MangoId,
+            ChatId = mangoChatEntity.Id,
+            Content = GreetingsConstants.Hello,
+        };
+        
+        var secondMessage = new MessageEntity
+        {
+            Id = Guid.NewGuid(),
+            UserId = SeedDataConstants.MangoId,
+            ChatId = mangoChatEntity.Id,
+            Content = GreetingsConstants.Guide,
+        };
+        
+        dbContext.Messages.AddRange(new [] {firstMessage, secondMessage});
+
+        await dbContext.SaveChangesAsync(cancellationToken);
+
+        mangoChatEntity.LastMessageId = secondMessage.Id;
+        mangoChatEntity.LastMessageAuthor = mangoUser.DisplayName;
+        mangoChatEntity.LastMessageText = secondMessage.Content;
+        mangoChatEntity.LastMessageTime = secondMessage.CreatedAt;
+
+        dbContext.Chats.Update(mangoChatEntity);
+        
         await dbContext.SaveChangesAsync(cancellationToken);
 
         var expires = ((DateTimeOffset)session.ExpiresAt).ToUnixTimeSeconds();

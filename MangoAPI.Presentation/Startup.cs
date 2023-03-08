@@ -102,6 +102,8 @@ public class Startup
 
         var jwtAudience = configuration[EnvironmentConstants.JwtAudience];
 
+        var mangoUserPassword = configuration[EnvironmentConstants.MangoUserPassword];
+
         const int jwtLifetimeMinutes = EnvironmentConstants.JwtLifetimeMinutes;
 
         const int refreshTokenLifetimeDays = EnvironmentConstants.RefreshTokenLifetimeDays;
@@ -118,7 +120,8 @@ public class Startup
             jwtIssuer,
             jwtAudience,
             jwtLifetimeMinutes,
-            refreshTokenLifetimeDays);
+            refreshTokenLifetimeDays,
+            mangoUserPassword);
 
         var apiInfo = new OpenApiInfo
         {
