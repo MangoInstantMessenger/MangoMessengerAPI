@@ -24,7 +24,6 @@ public class UpdateUserAccountInfoCommandValidator : AbstractValidator<UpdateUse
 
         RuleFor(x => x.Username)
             .Cascade(CascadeMode.Stop)
-            .Must(username => Guid.TryParse(username, out _) == false)
             .Must(username => username.All(char.IsLetterOrDigit))
             .NotEmpty()
             .Length(1, 40);
