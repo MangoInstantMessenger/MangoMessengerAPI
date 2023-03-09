@@ -34,9 +34,10 @@ public static class MessengerServices
         services.AddPasswordHashServices();
 
         services.AddSingleton<IVersionService, VersionService>();
-
         
         services.AddSingleton<IMangoUserSettings, MangoUserSettings>(_ => new MangoUserSettings(mangoUserPassword));
+
+        services.AddScoped<IAvatarService, AvatarService>();
         
         return services;
     }
