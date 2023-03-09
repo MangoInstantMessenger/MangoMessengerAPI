@@ -41,7 +41,7 @@ public static class MangoStartup
         services.AddPasswordHashServices();
         services.AddSignalR();
         
-        services.AddSingleton<IParameterService, ParameterService>();
+        services.AddSingleton<IVersionService, VersionService>();
 
         services.AddSingleton<IMangoUserSettings, MangoUserSettings>(_ => new MangoUserSettings(mangoUserPassword));
 

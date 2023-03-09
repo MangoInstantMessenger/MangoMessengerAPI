@@ -102,10 +102,26 @@ However, it is worth to continue progress on the project pursuing another predef
 - Open PowerShell as Administrator and type: `Set-ExecutionPolicy -ExecutionPolicy RemoteSigned`
 - Check that Angular CLI installed properly: `ng version`
 - Build project for development using Angular CLI: `ng build`
+- Run database
+  container: `docker run -e "SA_PASSWORD=x2yiJt!Fs" -e "ACCEPT_EULA=y" --name "mango-mssql-db" --hostname "mango-mssql-db" -p "1433:1433" -d mcr.microsoft.com/mssql/server:2022-latest`
+- Run azurite storage emulator:
+    - `npm install -g azurite`
+    - `azurite --silent --location c:\azurite --debug c:\azurite\debug.log`
+- Upload mock images from `./img/seed_images/*` to local Azure Blob container
 - Restore .NET packages: `cd .. & dotnet restore`
 - Run the .NET web API: `dotnet run`
 - Navigate to the swagger: `https://localhost:5001/swagger/index.html`
 - Navigate to the root url: `https://localhost:5001/app`
+
+**PS**: Sometimes it is not convenient for come people to use docker container as database.
+In this case, you can set db connection string environment variables for web app and integration tests.
+For example,
+
+- DatabaseUrl:
+  `Data Source=DESKTOP-CK5PEBD;Initial Catalog=MANGO_DEV;Integrated Security=true;TrustServerCertificate=True;`
+- IntegrationTestsDatabaseUrl:
+  `Data Source=DESKTOP-CK5PEBD;Initial Catalog=MANGO_INTEGRATION_TESTS;Integrated Security=true;TrustServerCertificate=True;`
+- [How to set environment variables in Windows](https://phoenixnap.com/kb/windows-set-environment-variable)
 
 In case of localhost HTTPS certificate issues: https://stackoverflow.com/a/67182991
 

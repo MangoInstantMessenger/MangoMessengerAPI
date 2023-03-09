@@ -46,7 +46,7 @@ public class UploadDocumentCommandHandler
         }
 
         var file = request.FormFile;
-        var uniqueFileName = StringService.GetUniqueFileName(file.FileName);
+        var uniqueFileName = FileNameHelper.CreateUniqueFileName(file.FileName);
 
         await blobService.UploadFileBlobAsync(file.OpenReadStream(), request.ContentType, uniqueFileName);
 

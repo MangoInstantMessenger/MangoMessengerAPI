@@ -9,17 +9,17 @@ namespace MangoAPI.BusinessLogic.ApiQueries.AppInfo;
 public class GetAppInfoQueryHandler : IRequestHandler<GetAppInfoQuery, Result<GetAppInfoResponse>>
 {
     private readonly ResponseFactory<GetAppInfoResponse> responseFactory;
-    private readonly IParameterService parameterService;
+    private readonly IVersionService versionService;
 
-    public GetAppInfoQueryHandler(IParameterService parameterService, ResponseFactory<GetAppInfoResponse> responseFactory)
+    public GetAppInfoQueryHandler(IVersionService versionService, ResponseFactory<GetAppInfoResponse> responseFactory)
     {
-        this.parameterService = parameterService;
+        this.versionService = versionService;
         this.responseFactory = responseFactory;
     }
 
     public Task<Result<GetAppInfoResponse>> Handle(GetAppInfoQuery request, CancellationToken cancellationToken)
     {
-        var appInfo = new Models.AppInfo(parameterService.GetVersionParameter());
+        var appInfo = new Models.AppInfo(versionService.GetVersion());
 
         return Task.FromResult(responseFactory.SuccessResponse(GetAppInfoResponse.FromSuccess(appInfo)));
     }

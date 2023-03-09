@@ -59,7 +59,7 @@ public class UpdateProfilePictureCommandHandler
         }
 
         var file = request.PictureFile;
-        var uniqueFileName = StringService.GetUniqueFileName(file.FileName);
+        var uniqueFileName = FileNameHelper.CreateUniqueFileName(file.FileName);
 
         await blobService.UploadFileBlobAsync(file.OpenReadStream(), request.ContentType, uniqueFileName);
 

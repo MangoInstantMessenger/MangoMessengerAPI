@@ -79,9 +79,9 @@ export class SettingsComponent implements OnInit, OnDestroy {
       .subscribe({
         next: (response) => {
           this.currentUser = response.user;
-          
+
           if (response.user.userNameChanged === false) {
-            this.currentUser.username = "";
+            this.currentUser.username = '';
           }
         },
         error: (error) => {
