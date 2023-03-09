@@ -38,7 +38,7 @@
             </div>
             <img src="./../../../assets/svg/mail.svg" alt="Mail Icon" />
           </li>
-          <li *ngIf="currentUser.username">
+          <li *ngIf="currentUser.username && currentUser.userNameChanged">
             <div class="info">
               <p class="title">Username</p>
               <p>{{ currentUser.username }}</p>
