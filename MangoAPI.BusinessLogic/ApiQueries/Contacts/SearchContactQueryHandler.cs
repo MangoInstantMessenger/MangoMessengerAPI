@@ -2,7 +2,6 @@
 using System.Threading;
 using System.Threading.Tasks;
 using MangoAPI.Application.Interfaces;
-using MangoAPI.Application.Services;
 using MangoAPI.BusinessLogic.Models;
 using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.Infrastructure.Database;
@@ -43,7 +42,7 @@ public class SearchContactByDisplayNameQueryHandler
                 DisplayName = x.DisplayName,
                 Address = x.UserInformation.Address,
                 Bio = x.Bio,
-                PictureUrl = StringService.GetDocumentUrl(x.Image, blobServiceSettings.MangoBlobAccess),
+                PictureUrl = $"{blobServiceSettings.MangoBlobAccess}/{x.Image}",
                 Email = x.Email,
             });
 

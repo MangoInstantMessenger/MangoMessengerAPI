@@ -65,7 +65,7 @@ public class
         }
 
         var file = request.NewGroupPicture;
-        var uniqueFileName = StringService.GetUniqueFileName(file.FileName);
+        var uniqueFileName = FileNameHelper.CreateUniqueFileName(file.FileName);
         var stream = file.OpenReadStream();
 
         await blobService.UploadFileBlobAsync(stream, request.ContentType, uniqueFileName);

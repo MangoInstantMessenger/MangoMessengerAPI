@@ -2,7 +2,6 @@
 using System.Threading;
 using System.Threading.Tasks;
 using MangoAPI.Application.Interfaces;
-using MangoAPI.Application.Services;
 using MangoAPI.BusinessLogic.Models;
 using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.Domain.Constants;
@@ -52,7 +51,7 @@ public class GetUserQueryHandler : IRequestHandler<GetUserQuery, Result<GetUserR
                 LinkedIn = user.UserInformation.LinkedIn,
                 Username = user.UserName,
                 Bio = user.Bio,
-                PictureUrl = StringService.GetDocumentUrl(user.Image, blobServiceSettings.MangoBlobAccess),
+                PictureUrl = $"{blobServiceSettings.MangoBlobAccess}/{user.Image}",
             }).FirstOrDefaultAsync(x => x.UserId == request.UserId, cancellationToken);
 
         if (user is null)

@@ -2,7 +2,6 @@
 using System.Threading;
 using System.Threading.Tasks;
 using MangoAPI.Application.Interfaces;
-using MangoAPI.Application.Services;
 using MangoAPI.BusinessLogic.Models;
 using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.Infrastructure.Database;
@@ -30,20 +29,20 @@ public class GetContactsQueryHandler : IRequestHandler<GetContactsQuery, Result<
     public async Task<Result<GetContactsResponse>> Handle(GetContactsQuery request, CancellationToken cancellationToken)
     {
         var query = from userContact in dbContext.UserContacts.AsNoTracking()
-                    join userEntity in dbContext.Users.Include(x => x.UserInformation)
-                    on userContact.ContactId equals userEntity.Id
-                    where userContact.UserId == request.UserId
-                    orderby userContact.CreatedAt
-                    select new Contact
-                    {
-                        UserId = userEntity.Id,
-                        DisplayName = userEntity.DisplayName,
-                        Address = userEntity.UserInformation.Address,
-                        Bio = userEntity.Bio,
-                        PictureUrl = StringService.GetDocumentUrl(userEntity.Image, blobServiceSettings.MangoBlobAccess),
-                        Email = userEntity.Email,
-                        IsContact = true,
-                    };
+            join userEntity in dbContext.Users.Include(x => x.UserInformation)
+                on userContact.ContactId equals userEntity.Id
+            where userContact.UserId == request.UserId
+            orderby userContact.CreatedAt
+            select new Contact
+            {
+                UserId = userEntity.Id,
+                DisplayName = userEntity.DisplayName,
+                Address = userEntity.UserInformation.Address,
+                Bio = userEntity.Bio,
+                PictureUrl = $"{blobServiceSettings.MangoBlobAccess}/{userEntity.Image}",
+                Email = userEntity.Email,
+                IsContact = true,
+            };
 
         var contacts = await query.Take(200).ToListAsync(cancellationToken);
 

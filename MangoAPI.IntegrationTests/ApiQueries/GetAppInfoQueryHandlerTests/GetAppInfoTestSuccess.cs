@@ -16,7 +16,7 @@ public class GetAppInfoTestSuccess : IntegrationTestBase
 
         var result = await MangoModule.RequestAsync(query, CancellationToken.None);
 
-        const string expectedVersion = ParameterService.DefaultVersion;
+        const string expectedVersion = VersionService.DefaultVersion;
         result.Response.AppInfo.ApiVersion.Should().Be(expectedVersion);
     }
 }

@@ -13,7 +13,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
-using System;
 
 namespace MangoAPI.Presentation;
 
@@ -26,10 +25,10 @@ public class Startup
 
     public Startup(IConfiguration configuration)
     {
-        var parameterService = new ParameterService();
+        var versionService = new VersionService();
 
         this.configuration = configuration;
-        version = parameterService.GetVersionParameter();
+        version = versionService.GetVersion();
         swaggerTitle = $"MangoAPI v{version}";
     }
 
@@ -88,7 +87,7 @@ public class Startup
             options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
         });
 
-        var databaseUrl = TryGetFromEnvironment(EnvironmentConstants.DatabaseUrl, configuration);
+        var databaseUrl = ConfigurationHelper.TryGetFromEnvironment(EnvironmentConstants.DatabaseUrl, configuration);
 
         var blobUrl = configuration[EnvironmentConstants.BlobUrl];
 
@@ -145,16 +144,5 @@ public class Startup
         services.AddApplicationInsightsTelemetry();
 
         services.AddLogging();
-    }
-
-    /// <summary>
-    /// This method is created as workaround for docker compose. Parameters in docker compose is better to pass via
-    /// environment variables.
-    /// </summary>
-    private static string TryGetFromEnvironment(string key, IConfiguration configuration)
-    {
-        var value = Environment.GetEnvironmentVariable(key) ?? configuration[key];
-
-        return value;
     }
 }

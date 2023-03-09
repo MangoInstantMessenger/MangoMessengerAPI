@@ -33,7 +33,7 @@ public static class MessengerServices
         services.AddSingInManagerServices();
         services.AddPasswordHashServices();
 
-        services.AddSingleton<IParameterService, ParameterService>();
+        services.AddSingleton<IVersionService, VersionService>();
 
         
         services.AddSingleton<IMangoUserSettings, MangoUserSettings>(_ => new MangoUserSettings(mangoUserPassword));
