@@ -79,7 +79,6 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, Result<To
             DisplayName = request.DisplayName,
             UserName = Guid.NewGuid().ToString(),
             Email = request.Email,
-            EmailCode = Guid.NewGuid(),
             Image = "default_avatar.png",
             EmailConfirmed = true,
             DisplayNameColour = (DisplayNameColour)color,

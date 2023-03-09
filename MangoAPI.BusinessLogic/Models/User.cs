@@ -30,6 +30,9 @@ public record User
     [DefaultValue("User of the Mango messenger")]
     public string Bio { get; init; }
 
+    [DefaultValue(false)]
+    public bool UserNameChanged { get; init; }
+    
     [DefaultValue("Kyiv, Ukraine")]
     public string Address { get; init; }
 

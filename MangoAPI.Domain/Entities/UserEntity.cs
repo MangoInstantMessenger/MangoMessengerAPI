@@ -13,8 +13,8 @@ public sealed class UserEntity : IdentityUser<Guid>
 
     public string Bio { get; set; }
 
-    public Guid EmailCode { get; set; }
-
+    public bool UserNameChanged { get; set; }
+    
     public DisplayNameColour DisplayNameColour { get; set; }
 
     public ICollection<SessionEntity> Sessions { get; set; }
