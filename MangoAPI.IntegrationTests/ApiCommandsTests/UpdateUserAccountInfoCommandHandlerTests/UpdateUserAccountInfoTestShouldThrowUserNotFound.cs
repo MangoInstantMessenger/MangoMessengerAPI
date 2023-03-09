@@ -19,7 +19,7 @@ public class UpdateUserAccountInfoTestShouldThrowUserNotFound : IntegrationTestB
         var expectedDetails = ResponseMessageCodes.ErrorDictionary[expectedMessage];
         var command = new UpdateUserAccountInfoCommand(
             UserId: Guid.NewGuid(),
-            Username: "Petro_Kolosov",
+            Username: "PetroKolosov",
             DisplayName: "Petro Kolosov",
             Website: "pkolosov.com",
             Bio: "Third year student of WSB at Poznan",

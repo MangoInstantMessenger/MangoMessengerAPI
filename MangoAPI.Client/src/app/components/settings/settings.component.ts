@@ -41,6 +41,7 @@ export class SettingsComponent implements OnInit, OnDestroy {
     website: '',
     username: '',
     bio: '',
+    userNameChanged: false,
     address: '',
     facebook: '',
     twitter: '',
@@ -78,6 +79,10 @@ export class SettingsComponent implements OnInit, OnDestroy {
       .subscribe({
         next: (response) => {
           this.currentUser = response.user;
+          
+          if (response.user.userNameChanged === false) {
+            this.currentUser.username = "";
+          }
         },
         error: (error) => {
           this._errorNotificationService.notifyOnError(error);
@@ -147,8 +152,8 @@ export class SettingsComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.componentDestroyed$))
       .subscribe({
         next: (response) => {
+          this.currentUser.userNameChanged = true;
           alert(response.message);
-          this.ngOnInit();
         },
         error: (error) => {
           this._errorNotificationService.notifyOnError(error);

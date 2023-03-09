@@ -136,7 +136,7 @@
         </div>
         <img src="./assets/svg/mail.svg" alt="Mail Icon" />
       </li>
-      <li *ngIf="activeUser.username">
+      <li *ngIf="activeUser.username && activeUser.userNameChanged">
         <div class="info">
           <p class="title">Username</p>
           <p>{{ activeUser.username }}</p>

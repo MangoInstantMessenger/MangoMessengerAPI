@@ -37,6 +37,7 @@ export class ContactsComponent implements OnInit, OnDestroy {
     website: '',
     username: '',
     bio: '',
+    userNameChanged: false,
     address: '',
     facebook: '',
     twitter: '',
