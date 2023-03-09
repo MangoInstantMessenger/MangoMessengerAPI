@@ -62,25 +62,14 @@ public class
             dbContext.Chats.UpdateRange(userChats);
         }
 
-        if (user.UserName != request.Username)
-        {
-            user.UserNameChanged = true;
-
-            if (Guid.TryParse(request.Username, out _))
-            {
-                const string errorMessage = ResponseMessageCodes.InvalidRequestModel;
-                var details = ResponseMessageCodes.ErrorDictionary[errorMessage];
-
-                return responseFactory.ConflictResponse(errorMessage, details);
-            }
-        }
-        
         user.UserInformation.BirthDay = request.BirthdayDate;
 
         user.UserInformation.Website = request.Website;
 
         user.UserName = request.Username;
 
+        user.UserNameChanged = true;
+        
         user.Bio = request.Bio;
 
         user.UserInformation.Address = request.Address;

@@ -80,9 +80,7 @@ export class SettingsComponent implements OnInit, OnDestroy {
         next: (response) => {
           this.currentUser = response.user;
           
-          console.log(response.user);
           if (response.user.userNameChanged === false) {
-            console.log(2);
             this.currentUser.username = "";
           }
         },
@@ -156,7 +154,6 @@ export class SettingsComponent implements OnInit, OnDestroy {
         next: (response) => {
           this.currentUser.userNameChanged = true;
           alert(response.message);
-          this.ngOnInit();
         },
         error: (error) => {
           this._errorNotificationService.notifyOnError(error);

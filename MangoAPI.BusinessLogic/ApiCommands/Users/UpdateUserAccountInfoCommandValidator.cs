@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using System;
 
 namespace MangoAPI.BusinessLogic.ApiCommands.Users;
 
@@ -22,6 +23,7 @@ public class UpdateUserAccountInfoCommandValidator : AbstractValidator<UpdateUse
 
         RuleFor(x => x.Username)
             .Cascade(CascadeMode.Stop)
+            .Must(username => Guid.TryParse(username, out _) == false)
             .Length(0, 40);
 
         RuleFor(x => x.Website)
