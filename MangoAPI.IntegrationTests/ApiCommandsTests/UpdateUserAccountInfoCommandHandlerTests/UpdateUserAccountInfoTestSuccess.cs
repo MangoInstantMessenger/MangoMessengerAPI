@@ -20,7 +20,7 @@ public class UpdateUserAccountInfoTestSuccess : IntegrationTestBase
             cancellationToken: CancellationToken.None);
         var command = new UpdateUserAccountInfoCommand(
             UserId: user.Response.Tokens.UserId,
-            Username: "Petro_Kolosov",
+            Username: "PetroKolosov",
             DisplayName: "Petro Kolosov",
             Website: "pkolosov.com",
             Bio: "Third year student of WSB at Poznan",
