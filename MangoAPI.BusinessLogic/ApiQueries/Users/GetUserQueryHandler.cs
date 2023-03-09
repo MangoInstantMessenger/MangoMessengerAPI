@@ -2,7 +2,6 @@
 using System.Threading;
 using System.Threading.Tasks;
 using MangoAPI.Application.Interfaces;
-using MangoAPI.Application.Services;
 using MangoAPI.BusinessLogic.Models;
 using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.Domain.Constants;
@@ -53,7 +52,6 @@ public class GetUserQueryHandler : IRequestHandler<GetUserQuery, Result<GetUserR
                 Username = user.UserName,
                 Bio = user.Bio,
                 UserNameChanged = user.UserNameChanged,
-                PictureUrl = StringService.GetDocumentUrl(user.Image, blobServiceSettings.MangoBlobAccess),
                 PictureUrl = $"{blobServiceSettings.MangoBlobAccess}/{user.Image}",
             }).FirstOrDefaultAsync(x => x.UserId == request.UserId, cancellationToken);
 
