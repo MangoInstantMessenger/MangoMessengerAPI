@@ -114,13 +114,13 @@
         <div class="profile-form-content">
           <ul class="d-flex justify-content-between">
             <li class="d-flex flex-column w-50 profile-form-group">
-              <label for="BirthdayDate">Birthday Date</label>
+              <label for="BirthdayDate">Birthday</label>
               <input
                 class='profile-form-input'
                 type='date'
                 value="{{currentUser.birthdayDate}}"
                 id='BirthdayDate'
-                placeholder='Type your birthday date'
+                placeholder='Type your birthday'
                 [(ngModel)]="currentUser.birthdayDate">
             </li>
 
@@ -137,7 +137,7 @@
           </ul>
           <ul class="d-flex justify-content-between flex-row">
             <li class="d-flex flex-column w-50 profile-form-group">
-              <label for="UserName">User Name</label>
+              <label for="UserName">Username (required)</label>
               <input
                 class="profile-form-input"
                 type="text"
