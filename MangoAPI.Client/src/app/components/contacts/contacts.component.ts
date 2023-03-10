@@ -91,7 +91,6 @@ export class ContactsComponent implements OnInit, OnDestroy {
   }
 
   onOpenAvatarClick(): void {
-    console.log(1);
     this._blackCoverStateService.setIsBlackCoverShowing(true)
     this._blackCoverStateService.setPicture(this.activeUser.pictureUrl)
   }
