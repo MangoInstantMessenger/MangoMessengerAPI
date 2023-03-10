@@ -10,10 +10,11 @@ import { User } from '../../types/models/User';
 import { ValidationService } from '../../services/messenger/validation.service';
 import { UpdateAccountInformationCommand } from '../../types/requests/UpdateAccountInformationCommand';
 import { SessionService } from '../../services/api/session.service';
-import { Router } from '@angular/router';
+import { Event, Router } from '@angular/router';
 import { Subject, takeUntil } from 'rxjs';
 import { RoutingConstants } from 'src/app/types/constants/RoutingConstants';
 import { AppInfoService } from 'src/app/services/api/app-info.service';
+import { BlackCoverStateService } from 'src/app/services/states/blackCoverState.service';
 
 @Component({
   selector: 'app-settings',
@@ -21,13 +22,13 @@ import { AppInfoService } from 'src/app/services/api/app-info.service';
 })
 export class SettingsComponent implements OnInit, OnDestroy {
   constructor(
-    private _contactsService: ContactsService,
     private _errorNotificationService: ErrorNotificationService,
     private _usersService: UsersService,
     private _appInfoService: AppInfoService,
     private _tokensService: TokensService,
     private _validationService: ValidationService,
     private _sessionService: SessionService,
+    public _blackCoverStateService: BlackCoverStateService,
     private _router: Router
   ) {}
 
@@ -104,6 +105,16 @@ export class SettingsComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.componentDestroyed$.next(true);
     this.componentDestroyed$.complete();
+  }
+
+  onOpenAvatarClick(): void {
+    this._blackCoverStateService.setIsBlackCoverShowing(true)
+    this._blackCoverStateService.setPicture(this.currentUser.pictureUrl)
+  }
+
+  closeBlackCoverClick(): void {
+    this._blackCoverStateService.setIsBlackCoverShowing(false)
+    this._blackCoverStateService.setPictureNull()
   }
 
   onLogoutClick(): void {

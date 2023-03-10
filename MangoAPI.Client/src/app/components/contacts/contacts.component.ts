@@ -11,6 +11,7 @@ import { Router } from '@angular/router';
 import { StartDirectChatQueryObject } from '../../types/query-objects/StartDirectChatQueryObject';
 import { RoutingService } from '../../services/messenger/routing.service';
 import { Subject, takeUntil } from 'rxjs';
+import { BlackCoverStateService } from 'src/app/services/states/blackCoverState.service';
 
 @Component({
   selector: 'app-contacts',
@@ -24,7 +25,8 @@ export class ContactsComponent implements OnInit, OnDestroy {
     private _tokensService: TokensService,
     private _communitiesService: CommunitiesService,
     private _router: Router,
-    private _routingService: RoutingService
+    private _routingService: RoutingService,
+    public _blackCoverStateService: BlackCoverStateService,
   ) {}
 
   public contacts: Contact[] = [];
@@ -86,6 +88,17 @@ export class ContactsComponent implements OnInit, OnDestroy {
           this._errorNotificationService.notifyOnError(error);
         }
       });
+  }
+
+  onOpenAvatarClick(): void {
+    console.log(1);
+    this._blackCoverStateService.setIsBlackCoverShowing(true)
+    this._blackCoverStateService.setPicture(this.activeUser.pictureUrl)
+  }
+
+  closeBlackCoverClick(): void {
+    this._blackCoverStateService.setIsBlackCoverShowing(false)
+    this._blackCoverStateService.setPictureNull()
   }
 
   getUsersContacts(): void {

@@ -1,5 +1,14 @@
 <body class="d-flex">
   <div class="menu" id="menu">
+    <div *ngIf="_blackCoverStateService.isBlackCoverShowing" class="black-cover" (click)="closeBlackCoverClick()">
+      <img
+        *ngIf="_blackCoverStateService.picture"
+        src="{{ _blackCoverStateService.picture }}"
+        class="profile-avatar"
+        alt=""
+        (click)="$event.stopPropagation()"
+      />
+    </div>
     <app-navbar [activeComponent]="'contacts'"></app-navbar>
     <aside class="sidebar contacts">
       <header class="sidebar-header p-3">
@@ -39,7 +48,7 @@
             *ngIf="contact.userId === activeUserId; else elseContact"
             (click)="onContactTabClick(contact)"
           >
-            <img alt="Chat avatar" class="avatar" src="{{ contact.pictureUrl }}" />
+            <img alt="Chat avatar" class="avatar" src="{{ contact.pictureUrl }}"/>
             <div class="content">
               <div class="title">
                 <div class="info pl-1">
@@ -90,7 +99,7 @@
   </div>
   <main class="contact">
     <div class="main-info background-pattern">
-      <img src="{{ activeUser.pictureUrl }}" alt="User Avatar" class="avatar" />
+      <img src="{{ activeUser.pictureUrl }}" alt="User Avatar" class="avatar" (click)="onOpenAvatarClick()"/>
       <div class="d-flex flex-column">
         <p>{{ activeUser.displayName }}</p>
         <p>{{ activeUser.bio }}</p>
