@@ -48,7 +48,8 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, Result<To
         ResponseFactory<TokensResponse> responseFactory,
         IBlobServiceSettings blobServiceSettings,
         PasswordHashService passwordHashService, 
-        IMangoUserSettings mangoUserSettings, IAvatarService avatarService)
+        IMangoUserSettings mangoUserSettings, 
+        IAvatarService avatarService)
     {
         this.userManager = userManager;
         this.dbContext = dbContext;
