@@ -1,4 +1,4 @@
-﻿name: Build Test Coverage
+﻿name: Quodana Analysis
 
 on:
   push:
@@ -13,7 +13,7 @@ on:
 
 jobs:
   quodana-scan:
-    name: Resharper Analysis
+    name: Quodana Analysis
     runs-on: ${{ matrix.environment }}
     strategy:
       matrix:
