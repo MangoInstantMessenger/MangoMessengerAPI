@@ -1,5 +1,6 @@
 root = true
 
+# noinspection EditorConfigKeyCorrectness
 [*.cs]
 dotnet_diagnostic.CA1824.severity = warning
 dotnet_diagnostic.IDE0005.severity = warning
@@ -284,3 +285,4 @@ resharper_comment_typo_highlighting = warning
 resharper_identifier_typo_highlighting = warning
 resharper_string_literal_typo_highlighting = warning
 resharper_unused_type_global_highlighting = warning
+resharper_unused_member_global_highlighting = warning
