@@ -9,16 +9,6 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\MangoAPI.Domain\MangoAPI.Domain.csproj" />
+        <ProjectReference Include="..\MangoAPI.Domain\MangoAPI.Domain.csproj"/>
     </ItemGroup>
-
-    <ItemGroup>
-        <PackageReference Include="Azure.Storage.Blobs" Version="12.14.1" />
-        <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.2.0" />
-        <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.2.0" />
-        <PackageReference Include="Microsoft.IdentityModel.JsonWebTokens" Version="6.25.0" />
-        <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="6.25.0" />
-        <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.25.0" />
-    </ItemGroup>
-
 </Project>

@@ -18,7 +18,6 @@ using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.OpenApi.Models;
 
 namespace MangoAPI.Presentation;
 
@@ -143,7 +142,7 @@ public class Startup
         
         services.AddTransient(typeof(ResponseFactory<>));
         
-        services.AddMediatR(typeof(RegisterCommandHandler).Assembly);
+        services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(RegisterCommandHandler).Assembly));
         
         services.AddScoped<PasswordHashService>();
         
