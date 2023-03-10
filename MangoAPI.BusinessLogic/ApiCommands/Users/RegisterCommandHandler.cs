@@ -161,7 +161,7 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, Result<To
 
         dbContext.Chats.Add(mangoChatEntity);
         dbContext.UserChats.AddRange(userChats);
-        dbContext.Messages.AddRange(new [] {firstMessage, secondMessage});
+        dbContext.Messages.AddRange(firstMessage, secondMessage);
         
         await dbContext.SaveChangesAsync(cancellationToken);
 

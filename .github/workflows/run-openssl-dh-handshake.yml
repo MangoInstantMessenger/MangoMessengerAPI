@@ -1,8 +1,6 @@
 ﻿name: Run OpenSSL DH Handshake
 
 on:
-  push:
-    branches: [ MANGO-520 ]
   workflow_dispatch:
 
 jobs:

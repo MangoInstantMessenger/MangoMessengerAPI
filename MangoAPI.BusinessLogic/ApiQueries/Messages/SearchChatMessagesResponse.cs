@@ -11,7 +11,7 @@ public record SearchChatMessagesResponse : ResponseBase
 
     public static SearchChatMessagesResponse FromSuccess(List<Message> messages)
     {
-        return new()
+        return new SearchChatMessagesResponse
         {
             Messages = messages,
             Message = ResponseMessageCodes.Success,

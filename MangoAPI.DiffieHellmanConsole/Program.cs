@@ -27,8 +27,6 @@ public static class Program
             case "auth":
                 await AuthController.FetchAuthHandlerAsync(args, method);
                 break;
-            default:
-                break;
         }
     }
 

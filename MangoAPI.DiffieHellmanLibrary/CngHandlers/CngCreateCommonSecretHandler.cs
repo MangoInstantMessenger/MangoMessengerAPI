@@ -40,6 +40,7 @@ public class CngCreateCommonSecretHandler : BaseHandler, ICreateCommonSecretHand
                 x.SenderId == currentUserId &&
                 x.ReceiverId == partnerId &&
                 x.KeyExchangeType == KeyExchangeType.Cng);
+        
         if (keyExchangeRequest == null)
         {
             throw new InvalidOperationException();
