@@ -28,16 +28,4 @@ public class CorrelationContext : ICorrelationContext
                 $"User ID cannot be parsed. {nameof(correlationContextUserId)}.")
             : parsedUserId;
     }
-
-    public string GetUserName()
-    {
-        var context = httpContextAccessor.HttpContext;
-
-        var correlationUserName = context.User.FindFirstValue(JwtRegisteredClaimNames.Name);
-
-        return string.IsNullOrEmpty(correlationUserName)
-            ? throw new InvalidOperationException(
-                $"User Name cannot be null or empty. {nameof(correlationUserName)}.")
-            : correlationUserName;
-    }
 }
