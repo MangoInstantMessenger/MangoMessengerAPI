@@ -65,8 +65,6 @@ public class IntegrationTestBase : IAsyncLifetime
 
         ServiceProvider = MangoCompositionRoot.Provider;
 
-        // MangoModule = new MangoModule();
-
         DbContextFixture = ServiceProvider.GetRequiredService<MangoDbContext>() ??
                            throw new InvalidOperationException("MangoDbContext service is not registered in the DI.");
 

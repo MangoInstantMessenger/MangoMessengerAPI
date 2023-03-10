@@ -161,13 +161,6 @@ public class Startup
         services.AddLogging();
 
         services.AddHttpClient();
-        
-        var apiInfo = new OpenApiInfo
-        {
-            Title = swaggerTitle, Version = version, Description = "Mango Messenger ASP .NET 6 Web API",
-        };
-
-        services.AddSwaggerGen(c => { c.SwaggerDoc($"v{version}", apiInfo); });
 
         services.ConfigureCors(configuration, CorsPolicy);
 
