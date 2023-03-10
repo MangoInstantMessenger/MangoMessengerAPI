@@ -135,6 +135,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "workflows", "workflows", "{
 		.github\workflows\run-openssl-dh-handshake.yml = .github\workflows\run-openssl-dh-handshake.yml
 		.github\workflows\build-test-coverage-dotnet.yml = .github\workflows\build-test-coverage-dotnet.yml
 		.github\workflows\build-angular.yml = .github\workflows\build-angular.yml
+		.github\workflows\qoudana-scan.yml = .github\workflows\qoudana-scan.yml
+		.github\workflows\resharper-scan.yml = .github\workflows\resharper-scan.yml
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "templates", "templates", "{79EB6A4D-7532-4D40-8E76-B168B442D3C0}"
