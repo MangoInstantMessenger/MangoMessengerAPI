@@ -1,0 +1,54 @@
+﻿name: Resharper Analysis
+
+on:
+  push:
+    branches:
+      - develop
+      - master
+
+  pull_request:
+    branches: [ develop ]
+
+  workflow_dispatch:
+
+jobs:
+  resharper-analysis:
+    name: Resharper Analysis
+    runs-on: ${{ matrix.environment }}
+    strategy:
+      matrix:
+        environment:
+          - ubuntu-latest
+
+    env:
+      DOTNET_NOLOGO: 1
+      DOTNET_CLI_TELEMETRY_OPTOUT: 1
+      NUGET_PACKAGES: ${{ github.workspace }}/.github/nuget-packages
+
+    steps:
+      - name: Fetch Sources
+        uses: actions/checkout@v3
+
+      - name: Setup .NET 6.0 SDK
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: 6.0.x
+
+      - name: NuGet Cache
+        uses: actions/cache@v3
+        with:
+          path: ${{ env.NUGET_PACKAGES }}
+          key: ${{ runner.os }}.nuget.${{ hashFiles('**/*.csproj') }}
+
+      - name: Restore Nuget Packages
+        run: dotnet restore
+
+      - name: Build .NET Project
+        run: |
+          dotnet build --no-restore /p:ContinuousIntegrationBuild=true --configuration Release
+
+      - name: Inspect code
+        uses: muno92/resharper_inspectcode@1.6.7
+        with:
+          solutionPath: ./MangoAPI.sln
+        continue-on-error: true
