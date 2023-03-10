@@ -1,6 +1,12 @@
-﻿using MangoAPI.Application.Interfaces;
+﻿using FluentValidation;
+using MangoAPI.Application.Interfaces;
 using MangoAPI.Application.Services;
+using MangoAPI.BusinessLogic.ApiCommands.Sessions;
+using MangoAPI.BusinessLogic.ApiCommands.Users;
 using MangoAPI.BusinessLogic.DependencyInjection;
+using MangoAPI.BusinessLogic.Pipelines;
+using MangoAPI.BusinessLogic.Responses;
+using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace MangoAPI.BusinessLogic.Configuration;
@@ -23,8 +29,6 @@ public static class MangoStartup
 
         services.AddDatabaseContextServices(databaseConnectionString);
 
-        services.AddAppInfrastructure(mangoJwtSignKey, mangoJwtIssuer, mangoJwtAudience);
-
         services.AddAzureBlobServices(
             mangoBlobUrl,
             mangoBlobContainerName,
@@ -38,7 +42,7 @@ public static class MangoStartup
             mangoRefreshTokenLifetimeDays);
 
         services.AddSingInManagerServices();
-        services.AddPasswordHashServices();
+        
         services.AddSignalR();
         
         services.AddSingleton<IVersionService, VersionService>();
@@ -46,6 +50,31 @@ public static class MangoStartup
         services.AddSingleton<IMangoUserSettings, MangoUserSettings>(_ => new MangoUserSettings(mangoUserPassword));
 
         services.AddScoped<IAvatarService, AvatarService>();
+        
+        services.AddValidatorsFromAssembly(typeof(LoginCommandValidator).Assembly);
+        
+        services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehaviour<,>));
+        
+        services.AddTransient(typeof(ResponseFactory<>));
+        
+        services.AddMediatR(typeof(RegisterCommandHandler).Assembly);
+        
+        services.AddScoped<PasswordHashService>();
+        
+        services.AddIdentityUsers();
+
+        services.AddSignalR();
+
+        services.AddAppAuthorization();
+
+        services.AddAppAuthentication(
+            mangoJwtSignKey,
+            mangoJwtIssuer,
+            mangoJwtAudience);
+
+        services.AddLogging();
+
+        services.AddHttpClient();
         
         var provider = services.BuildServiceProvider();
         MangoCompositionRoot.SetProvider(provider);

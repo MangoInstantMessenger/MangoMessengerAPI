@@ -6,9 +6,9 @@ using MediatR;
 
 namespace MangoAPI.BusinessLogic;
 
-public class MangoModule
+public static class MangoModule
 {
-    public async Task<Result<TResponse>> RequestAsync<TResponse>(
+    public static async Task<Result<TResponse>> RequestAsync<TResponse>(
         IRequest<Result<TResponse>> request,
         CancellationToken cancellationToken) where TResponse : ResponseBase
     {

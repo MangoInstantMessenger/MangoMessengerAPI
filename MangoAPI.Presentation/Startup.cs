@@ -1,11 +1,17 @@
+using FluentValidation;
 using System.Text.Json;
 using MangoAPI.Application.Interfaces;
 using MangoAPI.Application.Services;
+using MangoAPI.BusinessLogic.ApiCommands.Sessions;
+using MangoAPI.BusinessLogic.ApiCommands.Users;
 using MangoAPI.BusinessLogic.DependencyInjection;
 using MangoAPI.BusinessLogic.HubConfig;
+using MangoAPI.BusinessLogic.Pipelines;
+using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.Domain.Constants;
 using MangoAPI.Presentation.Controllers;
 using MangoAPI.Presentation.Middlewares;
+using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpOverrides;
@@ -49,7 +55,7 @@ public class Startup
         app.UseStaticFiles();
 
         app.UseSwagger();
-
+        
         app.UseSwaggerUI(c => c.SwaggerEndpoint($"/swagger/v{version}/swagger.json", swaggerTitle));
 
         app.UseAuthorization();
@@ -109,19 +115,53 @@ public class Startup
 
         services.AddDatabaseContextServices(databaseUrl);
 
-        services.AddAppInfrastructure(jwtSignKey, jwtIssuer, jwtAudience);
-
-        services.AddMessengerServices(
+        services.AddSwagger(title: swaggerTitle, version: version);
+        
+        services.AddAzureBlobServices(
             blobUrl,
             blobContainerName,
-            blobAccess,
-            jwtSignKey,
+            blobAccess);
+
+        services.AddJwtGeneratorServices(
             jwtIssuer,
             jwtAudience,
+            jwtSignKey,
             jwtLifetimeMinutes,
-            refreshTokenLifetimeDays,
-            mangoUserPassword);
+            refreshTokenLifetimeDays);
 
+        services.AddSingInManagerServices();
+
+        services.AddSingleton<IVersionService, VersionService>();
+        
+        services.AddSingleton<IMangoUserSettings, MangoUserSettings>(_ => new MangoUserSettings(mangoUserPassword));
+        
+        services.AddScoped<IAvatarService, AvatarService>();
+        
+        services.AddValidatorsFromAssembly(typeof(LoginCommandValidator).Assembly);
+        
+        services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehaviour<,>));
+        
+        services.AddTransient(typeof(ResponseFactory<>));
+        
+        services.AddMediatR(typeof(RegisterCommandHandler).Assembly);
+        
+        services.AddScoped<PasswordHashService>();
+        
+        services.AddIdentityUsers();
+
+        services.AddSignalR();
+
+        services.AddAppAuthorization();
+
+        services.AddAppAuthentication(
+            jwtSignKey,
+            jwtIssuer,
+            jwtAudience);
+
+        services.AddLogging();
+
+        services.AddHttpClient();
+        
         var apiInfo = new OpenApiInfo
         {
             Title = swaggerTitle, Version = version, Description = "Mango Messenger ASP .NET 6 Web API",

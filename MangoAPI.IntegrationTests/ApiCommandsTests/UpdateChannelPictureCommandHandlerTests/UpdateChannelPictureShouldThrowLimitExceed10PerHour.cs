@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using MangoAPI.BusinessLogic;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using MangoAPI.BusinessLogic.ApiCommands.Communities;

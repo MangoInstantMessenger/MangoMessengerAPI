@@ -3,7 +3,6 @@ using System.Data.Common;
 using System.Threading.Tasks;
 using MangoAPI.Application.Interfaces;
 using MangoAPI.Application.Services;
-using MangoAPI.BusinessLogic;
 using MangoAPI.BusinessLogic.Configuration;
 using MangoAPI.Domain.Constants;
 using MangoAPI.Infrastructure.Database;
@@ -21,8 +20,6 @@ namespace MangoAPI.IntegrationTests;
 public class IntegrationTestBase : IAsyncLifetime
 {
     protected MangoDbContext DbContextFixture { get; }
-
-    protected MangoModule MangoModule { get; }
 
     protected IBlobService BlobService { get; }
 
@@ -68,7 +65,7 @@ public class IntegrationTestBase : IAsyncLifetime
 
         ServiceProvider = MangoCompositionRoot.Provider;
 
-        MangoModule = new MangoModule();
+        // MangoModule = new MangoModule();
 
         DbContextFixture = ServiceProvider.GetRequiredService<MangoDbContext>() ??
                            throw new InvalidOperationException("MangoDbContext service is not registered in the DI.");
