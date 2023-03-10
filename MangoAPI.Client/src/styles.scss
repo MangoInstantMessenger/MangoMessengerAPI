@@ -222,6 +222,7 @@ i {
     height: 80px;
     margin-bottom: 25px;
     object-fit: cover;
+    cursor: pointer;
   }
   p {
     font-size: 16px;
@@ -536,6 +537,7 @@ i {
           border-radius: 50%;
           align-self: flex-end;
           object-fit: cover;
+          cursor: pointer;
         }
       }
     }
