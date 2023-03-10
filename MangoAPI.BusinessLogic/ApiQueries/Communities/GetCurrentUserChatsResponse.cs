@@ -11,7 +11,7 @@ public record GetCurrentUserChatsResponse : ResponseBase
 
     public static GetCurrentUserChatsResponse FromSuccess(List<Chat> chats)
     {
-        return new()
+        return new GetCurrentUserChatsResponse
         {
             Message = ResponseMessageCodes.Success,
             Success = true,
