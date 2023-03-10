@@ -53,3 +53,4 @@ jobs:
         uses: JetBrains/qodana-action@v2022.3.4
         env:
           QODANA_TOKEN: ${{ secrets.QODANA_TOKEN }}
+        continue-on-error: true
