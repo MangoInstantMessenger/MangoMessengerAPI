@@ -110,6 +110,23 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "seed_images", "seed_images"
 		img\seed_images\szymon_picture.png = img\seed_images\szymon_picture.png
 		img\seed_images\wsb_group_logo.png = img\seed_images\wsb_group_logo.png
 		img\seed_images\mango_logo.jpg = img\seed_images\mango_logo.jpg
+		img\seed_images\animetyanpic16.jpg = img\seed_images\animetyanpic16.jpg
+		img\seed_images\animetyanpic10.jpg = img\seed_images\animetyanpic10.jpg
+		img\seed_images\animetyanpic9.jpg = img\seed_images\animetyanpic9.jpg
+		img\seed_images\animetyanpic3.jpg = img\seed_images\animetyanpic3.jpg
+		img\seed_images\animetyanpic1.jpg = img\seed_images\animetyanpic1.jpg
+		img\seed_images\animetyanpic7.jpg = img\seed_images\animetyanpic7.jpg
+		img\seed_images\animetyanpic6.jpg = img\seed_images\animetyanpic6.jpg
+		img\seed_images\animetyanpic2.jpg = img\seed_images\animetyanpic2.jpg
+		img\seed_images\animetyanpic4.jpg = img\seed_images\animetyanpic4.jpg
+		img\seed_images\animetyanpic5.jpg = img\seed_images\animetyanpic5.jpg
+		img\seed_images\animetyanpic8.jpg = img\seed_images\animetyanpic8.jpg
+		img\seed_images\animetyanpic11.jpg = img\seed_images\animetyanpic11.jpg
+		img\seed_images\animetyanpic12.jpg = img\seed_images\animetyanpic12.jpg
+		img\seed_images\animetyanpic13.jpg = img\seed_images\animetyanpic13.jpg
+		img\seed_images\animetyanpic14.jpg = img\seed_images\animetyanpic14.jpg
+		img\seed_images\animetyanpic15.jpg = img\seed_images\animetyanpic15.jpg
+		img\seed_images\animetyanpic17.jpg = img\seed_images\animetyanpic17.jpg
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "workflows", "workflows", "{8AEBB05F-C450-4E77-8B91-9155BFB4FD56}"

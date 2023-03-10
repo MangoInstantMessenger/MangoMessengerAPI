@@ -206,6 +206,7 @@ i {
     width: 80px;
     height: 80px;
     margin-bottom: 25px;
+    object-fit: cover;
   }
   p {
     font-size: 16px;
@@ -418,6 +419,7 @@ i {
     align-items: center;
     .avatar {
       margin-right: 20px;
+      object-fit: cover;
     }
     .chat-info {
       display: flex;
@@ -518,6 +520,7 @@ i {
           height: 40px;
           border-radius: 50%;
           align-self: flex-end;
+          object-fit: cover;
         }
       }
     }

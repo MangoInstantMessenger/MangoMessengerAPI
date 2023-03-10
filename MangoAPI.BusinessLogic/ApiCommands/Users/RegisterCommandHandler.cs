@@ -23,6 +23,7 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, Result<To
     private readonly IBlobServiceSettings blobServiceSettings;
     private readonly PasswordHashService passwordHashService;
     private readonly IMangoUserSettings mangoUserSettings; 
+    private readonly IAvatarService avatarService; 
 
     private readonly UserEntity mangoUser = new()
     {
@@ -47,7 +48,8 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, Result<To
         ResponseFactory<TokensResponse> responseFactory,
         IBlobServiceSettings blobServiceSettings,
         PasswordHashService passwordHashService, 
-        IMangoUserSettings mangoUserSettings)
+        IMangoUserSettings mangoUserSettings, 
+        IAvatarService avatarService)
     {
         this.userManager = userManager;
         this.dbContext = dbContext;
@@ -57,6 +59,7 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, Result<To
         this.blobServiceSettings = blobServiceSettings;
         this.passwordHashService = passwordHashService;
         this.mangoUserSettings = mangoUserSettings;
+        this.avatarService = avatarService;
     }
 
     public async Task<Result<TokensResponse>> Handle(RegisterCommand request, CancellationToken cancellationToken)
@@ -74,12 +77,14 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, Result<To
 
         var color = new Random().Next(11);
 
+        var defaultAvatar = avatarService.GetRandomAvatar();
+        
         var newUser = new UserEntity
         {
             DisplayName = request.DisplayName,
             UserName = Guid.NewGuid().ToString(),
             Email = request.Email,
-            Image = "default_avatar.png",
+            Image = defaultAvatar,
             EmailConfirmed = true,
             DisplayNameColour = (DisplayNameColour)color,
         };

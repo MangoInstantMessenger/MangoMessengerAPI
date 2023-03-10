@@ -45,6 +45,8 @@ public static class MangoStartup
 
         services.AddSingleton<IMangoUserSettings, MangoUserSettings>(_ => new MangoUserSettings(mangoUserPassword));
 
+        services.AddScoped<IAvatarService, AvatarService>();
+        
         var provider = services.BuildServiceProvider();
         MangoCompositionRoot.SetProvider(provider);
     }
