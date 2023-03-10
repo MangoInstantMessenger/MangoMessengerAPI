@@ -41,6 +41,7 @@ public class OpensslDownloadPublicKeyHandler : BaseHandler, IDownloadPublicKeyHa
                 request.SenderId == currentUserId &&
                 request.IsConfirmed &&
                 request.KeyExchangeType == KeyExchangeType.OpenSsl);
+
         if (keyExchangeRequest == null)
         {
             throw new InvalidOperationException();

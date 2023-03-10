@@ -1,18 +1,25 @@
-# Remove the line below if you want to inherit .editorconfig settings from higher directories
 root = true
 
-# C# files
 [*.cs]
-dotnet_diagnostic.CA1824.severity = none
+dotnet_diagnostic.CA1824.severity = warning
+dotnet_diagnostic.IDE0005.severity = warning
+dotnet_diagnostic.CA1707.severity = warning
+dotnet_diagnostic.CA1822.severity = warning
+dotnet_diagnostic.CA1416.severity = warning
+dotnet_diagnostic.IDE0072.severity = warning
+dotnet_diagnostic.IDE0270.severity = warning
+
+# populate switch
+dotnet_diagnostic.IDE0010.severity = warning
+
+# fix formatting
 dotnet_diagnostic.IDE0055.severity = none
-dotnet_diagnostic.IDE0005.severity = none
+
+# if statement can be simplified
+dotnet_diagnostic.IDE0046.severity = warning
+
+# expression value never used
 dotnet_diagnostic.IDE0058.severity = none
-dotnet_diagnostic.CA1707.severity = none
-dotnet_diagnostic.CA1822.severity = none
-dotnet_diagnostic.IDE0046.severity = none
-dotnet_diagnostic.CA1416.severity = none
-dotnet_diagnostic.IDE0072.severity = none
-dotnet_diagnostic.IDE0270.severity = none
 
 #### Core EditorConfig Options ####
 
@@ -264,7 +271,7 @@ charset = utf-8
 
 # Set severity = error for all analyzers
 
-# dotnet_analyzer_diagnostic.severity = error
+dotnet_analyzer_diagnostic.severity = error
 
 # resharper rules
 
