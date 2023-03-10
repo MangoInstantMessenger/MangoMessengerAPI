@@ -6,12 +6,12 @@ namespace MangoAPI.BusinessLogic.DependencyInjection;
 
 public static class SwaggerServices
 {
-    public static IServiceCollection AddSwagger(this IServiceCollection services)
+    public static IServiceCollection AddSwagger(this IServiceCollection services, string title, string version)
     {
         services.AddSwaggerGen(c =>
         {
             c.EnableAnnotations();
-            c.SwaggerDoc("v1", new OpenApiInfo { Title = "MangoAPI", Version = "v1" });
+            c.SwaggerDoc($"v{version}", new OpenApiInfo { Title = $"{title}", Version = $"v{version}" });
 
             c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
             {

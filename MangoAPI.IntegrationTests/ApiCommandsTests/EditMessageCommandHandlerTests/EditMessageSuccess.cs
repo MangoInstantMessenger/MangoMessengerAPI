@@ -1,6 +1,7 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 using FluentAssertions;
+using MangoAPI.BusinessLogic;
 using MangoAPI.BusinessLogic.ApiCommands.Messages;
 using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.IntegrationTests.Helpers;
