@@ -18,7 +18,6 @@ import { DeleteMessageNotification } from '../../types/models/DeleteMessageNotif
 import { firstValueFrom, Subject, takeUntil } from 'rxjs';
 import { DisplayNameColours } from 'src/app/types/enums/DisplayNameColours';
 import { DeleteMessageCommand } from 'src/app/types/requests/DeleteMessageCommand';
-import { DocumentsService } from 'src/app/services/api/documents.service';
 import ApiBaseService from 'src/app/services/api/apiBase.service';
 import { SendMessageResponse } from '../../types/responses/SendMessageResponse';
 
@@ -36,7 +35,6 @@ export class ChatsComponent implements OnInit, OnDestroy {
     private _errorNotificationService: ErrorNotificationService,
     private _router: Router,
     private _validationService: ValidationService,
-    private _documentsService: DocumentsService,
     private _apiBaseService: ApiBaseService,
     public _modalWindowStateService: ModalWindowStateService
   ) {}
