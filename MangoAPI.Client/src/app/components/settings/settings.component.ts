@@ -51,6 +51,26 @@ export class SettingsComponent implements OnInit, OnDestroy {
     publicKey: 0,
     pictureUrl: ''
   };
+
+  public currentUserForUpdating: User = {
+    userId: '',
+    displayName: '',
+    displayNameColour: 0,
+    birthdayDate: '',
+    email: '',
+    website: '',
+    username: '',
+    bio: '',
+    userNameChanged: false,
+    address: '',
+    facebook: '',
+    twitter: '',
+    instagram: '',
+    linkedIn: '',
+    publicKey: 0,
+    pictureUrl: ''
+  };
+
   public currentUserId = '';
   public changePasswordCommand: ChangePasswordCommand = {
     currentPassword: '',
@@ -80,6 +100,7 @@ export class SettingsComponent implements OnInit, OnDestroy {
       .subscribe({
         next: (response) => {
           this.currentUser = response.user;
+          this.currentUserForUpdating = {...response.user};
 
           if (response.user.userNameChanged === false) {
             this.currentUser.username = '';
@@ -133,29 +154,14 @@ export class SettingsComponent implements OnInit, OnDestroy {
       });
   }
 
-  onLogoutAllClick(): void {
-    this._sessionService
-      .deleteAllSessions()
-      .pipe(takeUntil(this.componentDestroyed$))
-      .subscribe({
-        next: (_) => {
-          this._tokensService.clearTokens();
-          this._router.navigateByUrl('login').then((r) => r);
-        },
-        error: (error) => {
-          this._errorNotificationService.notifyOnError(error);
-        }
-      });
-  }
-
   onSaveChangesAccountInfoClick(): void {
     const command: UpdateAccountInformationCommand = {
-      username: this.currentUser.username,
-      birthdayDate: this.currentUser.birthdayDate,
-      website: this.currentUser.website,
-      address: this.currentUser.address,
-      bio: this.currentUser.bio,
-      displayName: this.currentUser.displayName
+      username: this.currentUserForUpdating.username,
+      birthdayDate: this.currentUserForUpdating.birthdayDate,
+      website: this.currentUserForUpdating.website,
+      address: this.currentUserForUpdating.address,
+      bio: this.currentUserForUpdating.bio,
+      displayName: this.currentUserForUpdating.displayName
     };
 
     this._usersService
@@ -163,6 +169,7 @@ export class SettingsComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.componentDestroyed$))
       .subscribe({
         next: (response) => {
+          this.currentUser = {...this.currentUserForUpdating};
           this.currentUser.userNameChanged = true;
           alert(response.message);
         },

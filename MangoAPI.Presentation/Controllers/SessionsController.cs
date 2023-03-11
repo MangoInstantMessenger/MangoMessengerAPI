@@ -96,26 +96,4 @@ public class SessionsController : ApiControllerBase, ISessionsController
 
         return await RequestAsync(command, cancellationToken);
     }
-
-    /// <summary>
-    /// Deletes all current user's sessions.
-    /// </summary>
-    /// <param name="cancellationToken">Cancellation token instance.</param>
-    /// <returns>Possible codes: 200, 400, 409.</returns>
-    [HttpDelete]
-    [Authorize]
-    [SwaggerOperation(
-        Description = "Deletes all current user's sessions.",
-        Summary = "Deletes all current user's sessions.")]
-    [ProducesResponseType(typeof(ResponseBase), StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
-    [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
-    public async Task<IActionResult> LogoutAllAsync(CancellationToken cancellationToken)
-    {
-        var userId = CorrelationContext.GetUserId();
-
-        var command = new LogoutAllCommand(userId);
-
-        return await RequestAsync(command, cancellationToken);
-    }
 }

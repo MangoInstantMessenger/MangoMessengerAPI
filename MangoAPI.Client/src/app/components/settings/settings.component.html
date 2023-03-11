@@ -32,9 +32,6 @@
             <button class="button-dark py-2 contact-button px-4" (click)="onLogoutClick()">
               Logout
             </button>
-            <button class="button-dark py-2 contact-button px-4 ml-3" (click)="onLogoutAllClick()">
-              Logout All Devices
-            </button>
           </div>
         </div>
         <ul class="user-info">
@@ -135,7 +132,7 @@
                 value="{{ currentUser.birthdayDate }}"
                 id="BirthdayDate"
                 placeholder="Type your birthday"
-                [(ngModel)]="currentUser.birthdayDate"
+                [(ngModel)]="currentUserForUpdating.birthdayDate"
               />
             </li>
 
@@ -146,7 +143,7 @@
                 type="text"
                 id="Website"
                 placeholder="Type your website"
-                [(ngModel)]="currentUser.website"
+                [(ngModel)]="currentUserForUpdating.website"
               />
             </li>
           </ul>
@@ -158,7 +155,7 @@
                 type="text"
                 id="UserName"
                 placeholder="Type your user name"
-                [(ngModel)]="currentUser.username"
+                [(ngModel)]="currentUserForUpdating.username"
               />
             </li>
 
@@ -169,7 +166,7 @@
                 type="text"
                 id="DisplayName"
                 placeholder="Type your display name"
-                [(ngModel)]="currentUser.displayName"
+                [(ngModel)]="currentUserForUpdating.displayName"
               />
             </li>
           </ul>
@@ -180,7 +177,7 @@
               type="text"
               id="Bio"
               placeholder="Type your bio"
-              [(ngModel)]="currentUser.bio"
+              [(ngModel)]="currentUserForUpdating.bio"
             />
           </div>
           <div class="d-flex flex-column profile-form-group">
@@ -190,7 +187,7 @@
               type="text"
               id="Address"
               placeholder="Type your address"
-              [(ngModel)]="currentUser.address"
+              [(ngModel)]="currentUserForUpdating.address"
             />
           </div>
         </div>
@@ -215,7 +212,7 @@
                 type="text"
                 id="Facebook"
                 placeholder="Username"
-                [(ngModel)]="currentUser.facebook"
+                [(ngModel)]="currentUserForUpdating.facebook"
               />
             </li>
 
@@ -226,7 +223,7 @@
                 type="text"
                 id="Twitter"
                 placeholder="Username"
-                [(ngModel)]="currentUser.twitter"
+                [(ngModel)]="currentUserForUpdating.twitter"
               />
             </li>
           </ul>
@@ -238,7 +235,7 @@
                 type="text"
                 id="Instagram"
                 placeholder="Username"
-                [(ngModel)]="currentUser.instagram"
+                [(ngModel)]="currentUserForUpdating.instagram"
               />
             </li>
 
@@ -249,7 +246,7 @@
                 type="text"
                 id="LinkedIn"
                 placeholder="Username"
-                [(ngModel)]="currentUser.linkedIn"
+                [(ngModel)]="currentUserForUpdating.linkedIn"
               />
             </li>
           </ul>

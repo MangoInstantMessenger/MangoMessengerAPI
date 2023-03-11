@@ -29,7 +29,7 @@ export class AuthInterceptor implements HttpInterceptor {
       err.status === 401 &&
       request.headers.has('Authorization') &&
       request.headers.get('Authorization')?.startsWith('Bearer');
-
+    
     if (shouldHandle) {
       const refreshToken = this.tokensService.getTokens()?.refreshToken ?? '';
 

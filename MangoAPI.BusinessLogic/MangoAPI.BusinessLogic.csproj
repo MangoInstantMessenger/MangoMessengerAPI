@@ -9,8 +9,8 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\MangoAPI.Application\MangoAPI.Application.csproj"/>
-        <ProjectReference Include="..\MangoAPI.Infrastructure\MangoAPI.Infrastructure.csproj"/>
-        <ProjectReference Include="..\MangoAPI.Domain\MangoAPI.Domain.csproj"/>
+        <ProjectReference Include="..\MangoAPI.Application\MangoAPI.Application.csproj" />
+        <ProjectReference Include="..\MangoAPI.Infrastructure\MangoAPI.Infrastructure.csproj" />
+        <ProjectReference Include="..\MangoAPI.Domain\MangoAPI.Domain.csproj" />
     </ItemGroup>
 </Project>
