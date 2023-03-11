@@ -13,6 +13,4 @@ public interface ISessionsController
     Task<IActionResult> RefreshSession(Guid refreshToken, CancellationToken cancellationToken);
 
     Task<IActionResult> LogoutAsync(Guid refreshToken, CancellationToken cancellationToken);
-
-    Task<IActionResult> LogoutAllAsync(CancellationToken cancellationToken);
 }
