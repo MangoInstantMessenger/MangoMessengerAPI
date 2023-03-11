@@ -19,10 +19,6 @@ export class RequestHeaderInterceptor implements HttpInterceptor {
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
     const accessToken = this.tokensService.getTokens()?.accessToken;
 
-    if (accessToken === undefined) {
-      this.router.navigateByUrl("login");
-    }
-
     const addHeaderRequest = request.clone({
       headers: new HttpHeaders({ Authorization: 'Bearer ' + accessToken })
     });
