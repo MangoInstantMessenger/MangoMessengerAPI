@@ -96,16 +96,22 @@ public class SendMessageCommandHandler
 
         await dbContext.SaveChangesAsync(cancellationToken);
 
+        var authorPictureUrl = $"{blobServiceSettings.MangoBlobAccess}/{user.Image}";
+
+        var attachmentUrl = attachmentUniqueFileName == null
+            ? null
+            : $"{blobServiceSettings.MangoBlobAccess}/{attachmentUniqueFileName}";
+
         var messageDto = messageEntity.ToMessage(
             user.DisplayName,
             user.Id,
-            user.Image,
-            blobServiceSettings.MangoBlobAccess,
-            user.DisplayNameColour);
+            user.DisplayNameColour,
+            authorPictureUrl,
+            attachmentUrl);
 
         await hubContext.Clients.Group(request.ChatId.ToString()).BroadcastMessageAsync(messageDto);
 
-        return responseFactory.SuccessResponse(SendMessageResponse.FromSuccess(messageEntity.Id));
+        return responseFactory.SuccessResponse(SendMessageResponse.FromSuccess(messageEntity.Id, attachmentUrl));
     }
 
     private async Task<string> UploadAttachmentIfExistsAsync(SendMessageCommand request)

@@ -6,6 +6,7 @@ import { ChatsComponent } from './components/chats/chats.component';
 import { ContactsComponent } from './components/contacts/contacts.component';
 import { SettingsComponent } from './components/settings/settings.component';
 import { CreateGroupComponent } from './components/create-group/create-group.component';
+import { NotFoundComponent } from './components/not-found/not-found.component';
 
 const routes: Routes = [
   { path: 'register', component: RegisterComponent },
@@ -14,6 +15,8 @@ const routes: Routes = [
   { path: 'contacts', component: ContactsComponent },
   { path: 'settings', component: SettingsComponent },
   { path: 'createGroup', component: CreateGroupComponent },
+  { path: '', redirectTo: '/chats', pathMatch: 'full' },
+  { path: '**', component: NotFoundComponent }
 ];
 
 @NgModule({

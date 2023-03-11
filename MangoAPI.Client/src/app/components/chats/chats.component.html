@@ -3,7 +3,7 @@
     <div
       *ngIf="_modalWindowStateService.isModalWindowShowing"
       class="black-cover"
-      (click)="closeModalWindowrClick()"
+      (click)="closeModalWindowClick()"
     >
       <img
         *ngIf="_modalWindowStateService.picture"
@@ -191,7 +191,7 @@
 
                   <span *ngIf="!activeChat.isArchived; else elseBlock">Archive Chat</span>
                   <ng-template #elseBlock>
-                    <span>Unarchive Chat</span>
+                    <span>Un-Archive Chat</span>
                   </ng-template>
                 </div>
                 <div

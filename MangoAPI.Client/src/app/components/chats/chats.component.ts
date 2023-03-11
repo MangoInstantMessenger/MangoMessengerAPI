@@ -1,4 +1,4 @@
-import { ModalWindowStateService } from './../../services/states/modalWindowState.service';
+import { ModalWindowStateService } from '../../services/states/modalWindowState.service';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { TokensService } from '../../services/messenger/tokens.service';
 import { Chat } from '../../types/models/Chat';
@@ -12,16 +12,15 @@ import { CommunityType } from '../../types/enums/CommunityType';
 import { RoutingConstants } from '../../types/constants/RoutingConstants';
 import { UserChatsService } from '../../services/api/user-chats.service';
 import { ValidationService } from '../../services/messenger/validation.service';
-import { SendMessageCommand } from '../../types/requests/SendMessageCommand';
 import * as signalR from '@microsoft/signalr';
 import { EditMessageNotification } from '../../types/models/EditMessageNotification';
 import { DeleteMessageNotification } from '../../types/models/DeleteMessageNotification';
-import { Subject, takeUntil } from 'rxjs';
+import { firstValueFrom, Subject, takeUntil } from 'rxjs';
 import { DisplayNameColours } from 'src/app/types/enums/DisplayNameColours';
-import { UsersService } from 'src/app/services/api/users.service';
 import { DeleteMessageCommand } from 'src/app/types/requests/DeleteMessageCommand';
 import { DocumentsService } from 'src/app/services/api/documents.service';
 import ApiBaseService from 'src/app/services/api/apiBase.service';
+import { SendMessageResponse } from '../../types/responses/SendMessageResponse';
 
 @Component({
   selector: 'app-chats',
@@ -152,25 +151,13 @@ export class ChatsComponent implements OnInit, OnDestroy {
   }
 
   onOpenImageClick(imageLink: string): void {
-    this._modalWindowStateService.setIsModalWindowShowing(true)
-    this._modalWindowStateService.setPicture(imageLink)
+    this._modalWindowStateService.setIsModalWindowShowing(true);
+    this._modalWindowStateService.setPicture(imageLink);
   }
 
-  closeModalWindowrClick(): void {
-    this._modalWindowStateService.setIsModalWindowShowing(false)
-    this._modalWindowStateService.setPictureNull()
-  }
-
-  async uploadFile(file: File) {
-    let fileName = null;
-    if (file) {
-      const formData = new FormData();
-      formData.append('formFile', file, file.name);
-      const response = await this._documentsService.uploadDocument(formData).toPromise();
-      this.messageAttachmentUrl = response?.fileUrl ?? '';
-      fileName = response?.fileName ?? '';
-    }
-    return fileName;
+  closeModalWindowClick(): void {
+    this._modalWindowStateService.setIsModalWindowShowing(false);
+    this._modalWindowStateService.setPictureNull();
   }
 
   setSignalRMethods(): void {
@@ -285,6 +272,10 @@ export class ChatsComponent implements OnInit, OnDestroy {
   }
 
   loadChat(chatId: string): void {
+    if (this.activeChatId === chatId) {
+      return;
+    }
+
     this.activeChatId = chatId;
     this.activeChat = this.chats.filter((x) => x.chatId === this.activeChatId)[0];
     this.getChatMessages(this.activeChatId);
@@ -411,7 +402,7 @@ export class ChatsComponent implements OnInit, OnDestroy {
       });
   }
 
-  async onSendMessageClick() {
+  public async onSendMessageClick() {
     const newMessageText = this.messageText.repeat(1); // deep copy
 
     const messageTextValidationResult = this._validationService.validateField(
@@ -432,7 +423,16 @@ export class ChatsComponent implements OnInit, OnDestroy {
 
     const isoString = new Date().toISOString();
     const messageId = crypto.randomUUID();
-    const sendMessageCommand = new SendMessageCommand(this.messageText, this.activeChatId);
+    const sendMessageFormData = new FormData();
+
+    sendMessageFormData.append('messageText', newMessageText);
+    sendMessageFormData.append('chatId', this.activeChatId);
+    sendMessageFormData.append('messageId', messageId);
+
+    if (this.messageAttachment) {
+      sendMessageFormData.append('Attachment', this.messageAttachment);
+    }
+
     const newMessage = new Message(
       messageId,
       tokens.userId,
@@ -447,35 +447,22 @@ export class ChatsComponent implements OnInit, OnDestroy {
 
     this.clearMessageInput();
 
-    if (this.messageAttachment) {
-      const fileName = await this.uploadFile(this.messageAttachment);
-      this.messageAttachment = null;
-      sendMessageCommand.setAttachmentUrl(fileName);
-      newMessage.setMessageAttachmentUrl(this.messageAttachmentUrl);
-    }
-
     this.messages.push(newMessage);
 
-    sendMessageCommand.setMessageId(messageId);
-    sendMessageCommand.setCreatedAt(isoString);
+    const sendMessage$ = this._messagesService.sendMessage(sendMessageFormData);
 
-    this._messagesService
-      .sendMessage(sendMessageCommand)
-      .pipe(takeUntil(this.componentDestroyed$))
-      .subscribe({
-        next: (data) => {
-          newMessage.messageId = data.messageId;
-          this.scrollToEnd();
-        },
-        error: (error) => {
-          this._errorNotificationService.notifyOnError(error);
-        }
-      });
+    const response = await firstValueFrom<SendMessageResponse>(sendMessage$);
+
+    newMessage.messageId = response.messageId;
+    newMessage.messageAttachmentUrl = response.attachmentUrl;
+
+    this.clearAttachmentInput();
+    this.scrollToEnd();
   }
 
-  onEnterClick(event: any): void {
+  async onEnterClick(event: any) {
     event.preventDefault();
-    this.onSendMessageClick().then((r) => r);
+    await this.onSendMessageClick().then((r) => r);
   }
 
   private clearMessageInput(): void {
@@ -542,5 +529,16 @@ export class ChatsComponent implements OnInit, OnDestroy {
     this.connection.stop().then((r) => r);
     this.componentDestroyed$.next(true);
     this.componentDestroyed$.complete();
+  }
+
+  clearAttachmentInput() {
+    const fileInput = document.getElementById('attachment') as HTMLInputElement;
+
+    if (!fileInput) {
+      return;
+    }
+
+    fileInput.value = '';
+    this.messageAttachment = null;
   }
 }

@@ -19,23 +19,17 @@ public record Message
     [DefaultValue("11aed827-db8a-47de-bc81-13337703091f")]
     public Guid UserId { get; init; }
 
-    [DefaultValue("Amelit")]
-    public string UserDisplayName { get; init; }
+    [DefaultValue("Amelit")] public string UserDisplayName { get; init; }
 
-    [DefaultValue(5)]
-    public DisplayNameColour UserDisplayNameColour { get; init; }
+    [DefaultValue(5)] public DisplayNameColour UserDisplayNameColour { get; init; }
 
-    [DefaultValue("Hello World!")]
-    public string MessageText { get; init; }
+    [DefaultValue("Hello World!")] public string MessageText { get; init; }
 
-    [DefaultValue("12:56")]
-    public DateTime CreatedAt { get; init; }
+    [DefaultValue("12:56")] public DateTime CreatedAt { get; init; }
 
-    [DefaultValue("12:57")]
-    public DateTime? UpdatedAt { get; init; }
+    [DefaultValue("12:57")] public DateTime? UpdatedAt { get; init; }
 
-    [DefaultValue(false)]
-    public bool Self { get; init; }
+    [DefaultValue(false)] public bool Self { get; init; }
 
     [DefaultValue("https://localhost:5001/Uploads/amelit_picture.jpg")]
     public string MessageAuthorPictureUrl { get; init; }
@@ -43,11 +37,9 @@ public record Message
     [DefaultValue("https://localhost:5001/Uploads/message_attachment.pdf")]
     public string MessageAttachmentUrl { get; init; }
 
-    [DefaultValue("John Doe")]
-    public string InReplayToAuthor { get; init; }
+    [DefaultValue("John Doe")] public string InReplayToAuthor { get; init; }
 
-    [DefaultValue("Hello world!")]
-    public string InReplayToText { get; init; }
+    [DefaultValue("Hello world!")] public string InReplayToText { get; init; }
 }
 
 public static class MessageMapper
@@ -56,9 +48,9 @@ public static class MessageMapper
         this MessageEntity message,
         string displayName,
         Guid userId,
-        string image,
-        string mangoBlobAccess,
-        DisplayNameColour displayNameColour)
+        DisplayNameColour displayNameColour,
+        string authorPictureUrl,
+        string attachmentUrl)
     {
         var messageDto = new Message
         {
@@ -73,14 +65,8 @@ public static class MessageMapper
             Self = message.UserId == userId,
             InReplayToAuthor = message.InReplayToAuthor,
             InReplayToText = message.InReplayToText,
-
-            MessageAuthorPictureUrl = image != null
-                ? $"{mangoBlobAccess}/{image}"
-                : null,
-
-            MessageAttachmentUrl = message.AttachmentFileName != null
-                ? $"{mangoBlobAccess}/{message.AttachmentFileName}"
-                : null,
+            MessageAuthorPictureUrl = authorPictureUrl,
+            MessageAttachmentUrl = attachmentUrl
         };
 
         return messageDto;
