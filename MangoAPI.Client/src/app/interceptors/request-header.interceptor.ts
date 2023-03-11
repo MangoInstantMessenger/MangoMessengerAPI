@@ -1,3 +1,4 @@
+import { Router } from '@angular/router';
 import { Injectable } from '@angular/core';
 import {
   HttpRequest,
@@ -11,7 +12,9 @@ import { TokensService } from '../services/messenger/tokens.service';
 
 @Injectable()
 export class RequestHeaderInterceptor implements HttpInterceptor {
-  constructor(private tokensService: TokensService) {}
+  constructor(
+    private tokensService: TokensService,
+    private router: Router) {}
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
     const accessToken = this.tokensService.getTokens()?.accessToken;

@@ -51,7 +51,7 @@ export class AuthInterceptor implements HttpInterceptor {
         )
         .pipe(
           catchError((_: HttpErrorResponse) => {
-            this.router.navigateByUrl('app?methodName=login').then((r) => r);
+            this.router.navigateByUrl('login').then((r) => r);
             return of<never>();
           })
         );
