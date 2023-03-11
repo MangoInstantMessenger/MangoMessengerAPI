@@ -9,13 +9,11 @@ public record RegisterRequest
     public RegisterRequest(
         string email,
         string displayName,
-        string password,
-        bool termsAccepted)
+        string password)
     {
         Email = email;
         DisplayName = displayName;
         Password = password;
-        TermsAccepted = termsAccepted;
     }
 
     [DefaultValue("test@gmail.com")]
@@ -26,7 +24,4 @@ public record RegisterRequest
 
     [DefaultValue("x[?6dME#xrp=nr7q")]
     public string Password { get; }
-
-    [DefaultValue(true)]
-    public bool TermsAccepted { get; }
 }

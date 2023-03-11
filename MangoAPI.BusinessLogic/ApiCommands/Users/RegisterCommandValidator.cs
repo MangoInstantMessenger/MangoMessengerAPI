@@ -21,7 +21,5 @@ public class RegisterCommandValidator : AbstractValidator<RegisterCommand>
         RuleFor(x => x.DisplayName)
             .NotEmpty()
             .Length(1, 50);
-
-        RuleFor(x => x.TermsAccepted).Equal(true);
     }
 }
