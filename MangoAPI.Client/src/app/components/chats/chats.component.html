@@ -1,5 +1,18 @@
 <div class="d-flex">
   <div class="menu" id="menu">
+    <div
+      *ngIf="_modalWindowStateService.isModalWindowShowing"
+      class="black-cover"
+      (click)="closeModalWindowrClick()"
+    >
+      <img
+        *ngIf="_modalWindowStateService.picture"
+        src="{{ _modalWindowStateService.picture }}"
+        class="profile-avatar"
+        alt=""
+        (click)="$event.stopPropagation()"
+      />
+    </div>
     <app-navbar [activeComponent]="'chats'"></app-navbar>
     <aside class="sidebar">
       <header class="sidebar-header p-3">
@@ -45,9 +58,9 @@
             (click)="loadChat(chat.chatId)"
             *ngIf="activeChatId === chat.chatId; else chatElse"
           >
-          <div class="last-message-time" *ngIf="chatContainsMessages(chat)">
-            {{ toShortTimeString(chat.lastMessageTime) }}
-          </div>
+            <div class="last-message-time" *ngIf="chatContainsMessages(chat)">
+              {{ toShortTimeString(chat.lastMessageTime) }}
+            </div>
             <img alt="Chat avatar" class="avatar" src="{{ chat.chatLogoImageUrl }}" />
             <div class="content">
               <div class="title" *ngIf="chat.communityType === 2; else elseBlock">
@@ -206,12 +219,18 @@
                 <img
                   alt="User Avatar"
                   class="user-avatar"
+                  (click)="onOpenImageClick(message.messageAuthorPictureUrl)"
                   src="{{ message.messageAuthorPictureUrl }}"
                 />
                 <div class="message-wrapper">
                   <div class="message-content">
-                    <span *ngIf="message.messageAttachmentUrl"><img class="message-image"
-                        (click)="onImageClick(message.messageAttachmentUrl)" src="{{message.messageAttachmentUrl}}" alt=""></span>
+                    <span *ngIf="message.messageAttachmentUrl"
+                      ><img
+                        class="message-image"
+                        (click)="onOpenImageClick(message.messageAttachmentUrl)"
+                        src="{{ message.messageAttachmentUrl }}"
+                        alt=""
+                    /></span>
                     <span>{{ message.messageText }}</span>
                   </div>
                   <div class="message-options gap-fix">
@@ -271,17 +290,26 @@
                   <img
                     alt="User Avatar"
                     class="user-avatar"
+                    (click)="onOpenImageClick(message.messageAuthorPictureUrl)"
                     src="{{ message.messageAuthorPictureUrl }}"
                   />
                   <div class="message-wrapper">
                     <div class="message-content">
                       <div
+                        *ngIf="!message.messageAttachmentUrl"
                         class="display-name {{
                           getDisplayNameColour(message.userDisplayNameColour)
                         }}"
                       >
                         {{ message.userDisplayName }}
                       </div>
+                      <span *ngIf="message.messageAttachmentUrl"
+                        ><img
+                          class="message-image"
+                          (click)="onOpenImageClick(message.messageAttachmentUrl)"
+                          src="{{ message.messageAttachmentUrl }}"
+                          alt=""
+                      /></span>
                       <span>{{ message.messageText }}</span>
                     </div>
                     <div class="message-options gap-fix">
@@ -307,7 +335,12 @@
           </button>
           <div class="dropdown-menu">
             <div class="dropdown-item">
-              <input id="attachment" accept="image/png, image/gif, image/jpeg" (change)="imageSelected($event)" type="file" />
+              <input
+                id="attachment"
+                accept="image/png, image/gif, image/jpeg"
+                (change)="imageSelected($event)"
+                type="file"
+              />
             </div>
           </div>
         </div>

@@ -5,6 +5,7 @@ $dark-gray: #505558;
 $orange: #cf7d1f;
 $orange-dark: #c18d1a;
 $red: #ff3333;
+$transparentBlackLight: rgba(0, 0, 0, 0.300);
 
 * {
   box-sizing: border-box;
@@ -127,6 +128,20 @@ i {
   height: 50px;
 }
 
+.black-cover {
+  display: flex;
+  position: absolute;
+  z-index: 3;
+  width: 100vw;
+  height: 100vh;
+  background-color: $transparentBlackLight;
+
+  .profile-avatar {
+    margin: auto;
+    max-height: 80%;
+  }
+}
+
 .contacts {
   .list {
     li {
@@ -207,6 +222,7 @@ i {
     height: 80px;
     margin-bottom: 25px;
     object-fit: cover;
+    cursor: pointer;
   }
   p {
     font-size: 16px;
@@ -489,6 +505,7 @@ i {
           flex-direction: column;
           .message-image {
               max-width: 200px;
+              cursor: pointer;
             }
           .display-name {
             font-weight: bold;
@@ -521,6 +538,7 @@ i {
           border-radius: 50%;
           align-self: flex-end;
           object-fit: cover;
+          cursor: pointer;
         }
       }
     }

@@ -1,5 +1,14 @@
 <div class="d-flex">
   <div class="menu" id="menu">
+    <div *ngIf="_modalWindowStateService.isModalWindowShowing" class="black-cover" (click)="closeModalWindowClick()">
+      <img
+        *ngIf="_modalWindowStateService.picture"
+        src="{{ _modalWindowStateService.picture }}"
+        class="profile-avatar"
+        alt=""
+        (click)="$event.stopPropagation()"
+      />
+    </div>
     <app-navbar [activeComponent]="'settings'"></app-navbar>
     <aside class="sidebar">
       <header class="sidebar-header p-3">
@@ -10,7 +19,12 @@
       </header>
       <div class="p-3 overflow height-fix">
         <div class="main-info background-pattern">
-          <img src="{{ currentUser.pictureUrl }}" alt="User Avatar" class="avatar" />
+          <img
+            src="{{ currentUser.pictureUrl }}"
+            alt="User Avatar"
+            class="avatar"
+            (click)="onOpenAvatarClick()"
+          />
           <div class="d-flex flex-column">
             <p>{{ currentUser.displayName }}</p>
           </div>
@@ -92,7 +106,7 @@
           <li>
             <div class="info">
               <p class="title">Api Version</p>
-              <p>{{apiVersion}}</p>
+              <p>{{ apiVersion }}</p>
             </div>
             <img src="./../../../assets/svg/api.svg" alt="Api Icon" />
           </li>
@@ -116,12 +130,13 @@
             <li class="d-flex flex-column w-50 profile-form-group">
               <label for="BirthdayDate">Birthday</label>
               <input
-                class='profile-form-input'
-                type='date'
-                value="{{currentUser.birthdayDate}}"
-                id='BirthdayDate'
-                placeholder='Type your birthday'
-                [(ngModel)]="currentUser.birthdayDate">
+                class="profile-form-input"
+                type="date"
+                value="{{ currentUser.birthdayDate }}"
+                id="BirthdayDate"
+                placeholder="Type your birthday"
+                [(ngModel)]="currentUser.birthdayDate"
+              />
             </li>
 
             <li class="d-flex flex-column w-50 profile-form-group">

@@ -11,6 +11,7 @@ import { Router } from '@angular/router';
 import { StartDirectChatQueryObject } from '../../types/query-objects/StartDirectChatQueryObject';
 import { RoutingService } from '../../services/messenger/routing.service';
 import { Subject, takeUntil } from 'rxjs';
+import { ModalWindowStateService } from 'src/app/services/states/modalWindowState.service';
 
 @Component({
   selector: 'app-contacts',
@@ -24,7 +25,8 @@ export class ContactsComponent implements OnInit, OnDestroy {
     private _tokensService: TokensService,
     private _communitiesService: CommunitiesService,
     private _router: Router,
-    private _routingService: RoutingService
+    private _routingService: RoutingService,
+    public _modalWindowStateService: ModalWindowStateService,
   ) {}
 
   public contacts: Contact[] = [];
@@ -86,6 +88,16 @@ export class ContactsComponent implements OnInit, OnDestroy {
           this._errorNotificationService.notifyOnError(error);
         }
       });
+  }
+
+  onOpenAvatarClick(): void {
+    this._modalWindowStateService.setIsModalWindowShowing(true)
+    this._modalWindowStateService.setPicture(this.activeUser.pictureUrl)
+  }
+
+  closeModalWindowrClick(): void {
+    this._modalWindowStateService.setIsModalWindowShowing(false)
+    this._modalWindowStateService.setPictureNull()
   }
 
   getUsersContacts(): void {
