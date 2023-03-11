@@ -1,7 +1,6 @@
 // noinspection TypeScriptUnresolvedVariable
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ErrorNotificationService } from 'src/app/services/messenger/error-notification.service';
-import { ContactsService } from 'src/app/services/api/contacts.service';
 import { TokensService } from '../../services/messenger/tokens.service';
 import { UpdateUserSocialsCommand } from '../../types/requests/UpdateUserSocialsCommand';
 import { ChangePasswordCommand } from '../../types/requests/ChangePasswordCommand';
@@ -10,7 +9,7 @@ import { User } from '../../types/models/User';
 import { ValidationService } from '../../services/messenger/validation.service';
 import { UpdateAccountInformationCommand } from '../../types/requests/UpdateAccountInformationCommand';
 import { SessionService } from '../../services/api/session.service';
-import { Event, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { firstValueFrom, Subject, takeUntil } from 'rxjs';
 import { RoutingConstants } from 'src/app/types/constants/RoutingConstants';
 import { AppInfoService } from 'src/app/services/api/app-info.service';
