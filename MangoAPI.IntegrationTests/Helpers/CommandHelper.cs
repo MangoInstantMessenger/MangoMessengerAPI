@@ -17,8 +17,7 @@ public static class CommandHelper
         var command = new RegisterCommand(
             Email: "xachulxx@gmail.com",
             DisplayName: "Khachatur Khachatryan",
-            Password: "Bm3-`dPRv-/w#3)cw^97",
-            TermsAccepted: true);
+            Password: "Bm3-`dPRv-/w#3)cw^97");
 
         return command;
     }
@@ -28,8 +27,7 @@ public static class CommandHelper
         var command = new RegisterCommand(
             Email: "kolosovp95@gmail.com",
             DisplayName: "Petro Kolosov",
-            Password: "Bm3-`dPRv-/w#3)cw^97",
-            TermsAccepted: true);
+            Password: "Bm3-`dPRv-/w#3)cw^97");
 
         return command;
     }

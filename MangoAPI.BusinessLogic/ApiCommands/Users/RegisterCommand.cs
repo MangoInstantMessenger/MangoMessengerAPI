@@ -6,6 +6,5 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users;
 public record RegisterCommand(
         string Email,
         string DisplayName,
-        string Password,
-        bool TermsAccepted)
+        string Password)
     : IRequest<Result<TokensResponse>>;

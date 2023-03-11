@@ -25,7 +25,6 @@ export class RegisterComponent implements OnDestroy {
     displayName: '',
     email: '',
     password: '',
-    termsAccepted: false
   };
 
   componentDestroyed$: Subject<boolean> = new Subject();
@@ -58,11 +57,6 @@ export class RegisterComponent implements OnDestroy {
       !emailFieldValidationResult ||
       !passwordFieldValidationResult
     ) {
-      return;
-    }
-
-    if (!this.registerCommand.termsAccepted) {
-      alert('Terms not accepted');
       return;
     }
 
