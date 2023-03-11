@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.ComponentModel;
 using System.Text.Json.Serialization;
 
@@ -10,19 +11,19 @@ public record SendMessageRequest
     public SendMessageRequest(
         string messageText,
         Guid chatId,
-        string attachmentUrl,
         string inReplayToAuthor,
         string inReplayToText,
         DateTime? createdAt,
-        Guid? messageId)
+        Guid? messageId,
+        IFormFile attachment)
     {
         MessageText = messageText;
         ChatId = chatId;
-        AttachmentUrl = attachmentUrl;
         InReplayToAuthor = inReplayToAuthor;
         InReplayToText = inReplayToText;
         CreatedAt = createdAt;
         MessageId = messageId;
+        Attachment = attachment;
     }
 
     [DefaultValue("hello world")]
@@ -31,16 +32,17 @@ public record SendMessageRequest
     [DefaultValue("a8747c37-c5ef-4a87-943c-3ee3ae0a2871")]
     public Guid ChatId { get; }
 
-    [DefaultValue("https://localhost:5001/Uploads/khachatur_picture.jpg")]
-    public string AttachmentUrl { get; }
-
     [DefaultValue("John Doe")]
     public string InReplayToAuthor { get; }
 
     [DefaultValue("Hello world!")]
     public string InReplayToText { get; }
 
+    [DefaultValue("2021-08-01T00:00:00.0000000")]
     public DateTime? CreatedAt { get; }
 
+    [DefaultValue("f56ac722-a57b-411c-8306-c2e05fb1a8df")]
     public Guid? MessageId { get; }
+    
+    public IFormFile Attachment { get; }
 }

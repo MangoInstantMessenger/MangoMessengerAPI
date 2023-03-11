@@ -67,8 +67,8 @@ public class SearchChatMessageQueryHandler
                     ? $"{blobServiceSettings.MangoBlobAccess}/{x.User.Image}"
                     : null,
 
-                MessageAttachmentUrl = x.Attachment != null
-                    ? $"{blobServiceSettings.MangoBlobAccess}/{x.Attachment}"
+                MessageAttachmentUrl = x.AttachmentFileName != null
+                    ? $"{blobServiceSettings.MangoBlobAccess}/{x.AttachmentFileName}"
                     : null,
             }).Take(200);
 

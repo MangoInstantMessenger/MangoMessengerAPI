@@ -51,8 +51,8 @@ public class GetMessagesQueryHandler : IRequestHandler<GetMessagesQuery, Result<
                     ? $"{blobServiceSettings.MangoBlobAccess}/{messageEntity.User.Image}"
                     : null,
 
-                MessageAttachmentUrl = messageEntity.Attachment != null
-                    ? $"{blobServiceSettings.MangoBlobAccess}/{messageEntity.Attachment}"
+                MessageAttachmentUrl = messageEntity.AttachmentFileName != null
+                    ? $"{blobServiceSettings.MangoBlobAccess}/{messageEntity.AttachmentFileName}"
                     : null,
             }).Take(200).ToListAsync(cancellationToken);
 

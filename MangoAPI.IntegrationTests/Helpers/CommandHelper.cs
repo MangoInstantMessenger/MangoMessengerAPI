@@ -59,11 +59,11 @@ public static class CommandHelper
             MessageText: "test message",
             UserId: userId,
             ChatId: chatId,
-            AttachmentUrl: " ",
             InReplayToAuthor: " ",
             InReplayToText: " ",
             CreatedAt: null,
-            MessageId: null);
+            MessageId: null,
+            Attachment: null);
 
         return command;
     }

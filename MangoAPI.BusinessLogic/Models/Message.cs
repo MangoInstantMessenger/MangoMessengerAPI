@@ -78,8 +78,8 @@ public static class MessageMapper
                 ? $"{mangoBlobAccess}/{image}"
                 : null,
 
-            MessageAttachmentUrl = message.Attachment != null
-                ? $"{mangoBlobAccess}/{message.Attachment}"
+            MessageAttachmentUrl = message.AttachmentFileName != null
+                ? $"{mangoBlobAccess}/{message.AttachmentFileName}"
                 : null,
         };
 
