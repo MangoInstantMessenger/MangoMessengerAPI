@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { GetChatMessagesResponse } from '../../types/responses/GetChatMessagesResponse';
-import { SendMessageCommand } from '../../types/requests/SendMessageCommand';
 import { SendMessageResponse } from '../../types/responses/SendMessageResponse';
 import { DeleteMessageResponse } from '../../types/responses/DeleteMessageResponse';
 import { EditMessageCommand } from '../../types/requests/EditMessageCommand';
@@ -24,17 +23,12 @@ export class MessagesService extends ApiBaseService {
 
   // GET /api/messages/{chatId}
   getChatMessages(chatId: string): Observable<GetChatMessagesResponse> {
-    return this.httpClient.get<GetChatMessagesResponse>(
-      this.baseUrl + this.messagesRoute + chatId
-    );
+    return this.httpClient.get<GetChatMessagesResponse>(this.baseUrl + this.messagesRoute + chatId);
   }
 
   // POST /api/messages
-  sendMessage(request: SendMessageCommand): Observable<SendMessageResponse> {
-    return this.httpClient.post<SendMessageResponse>(
-      this.baseUrl + this.messagesRoute,
-      request
-    );
+  sendMessage(request: FormData): Observable<SendMessageResponse> {
+    return this.httpClient.post<SendMessageResponse>(this.baseUrl + this.messagesRoute, request);
   }
 
   // DELETE /api/messages/{messageId}

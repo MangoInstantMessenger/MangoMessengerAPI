@@ -1,7 +1,6 @@
 // noinspection TypeScriptUnresolvedVariable
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ErrorNotificationService } from 'src/app/services/messenger/error-notification.service';
-import { ContactsService } from 'src/app/services/api/contacts.service';
 import { TokensService } from '../../services/messenger/tokens.service';
 import { UpdateUserSocialsCommand } from '../../types/requests/UpdateUserSocialsCommand';
 import { ChangePasswordCommand } from '../../types/requests/ChangePasswordCommand';
@@ -10,11 +9,12 @@ import { User } from '../../types/models/User';
 import { ValidationService } from '../../services/messenger/validation.service';
 import { UpdateAccountInformationCommand } from '../../types/requests/UpdateAccountInformationCommand';
 import { SessionService } from '../../services/api/session.service';
-import { Event, Router } from '@angular/router';
-import { Subject, takeUntil } from 'rxjs';
+import { Router } from '@angular/router';
+import { firstValueFrom, Subject, takeUntil } from 'rxjs';
 import { RoutingConstants } from 'src/app/types/constants/RoutingConstants';
 import { AppInfoService } from 'src/app/services/api/app-info.service';
 import { ModalWindowStateService } from 'src/app/services/states/modalWindowState.service';
+import { UpdateProfilePictureResponse } from '../../types/responses/UpdateProfilePictureResponse';
 
 @Component({
   selector: 'app-settings',
@@ -102,7 +102,7 @@ export class SettingsComponent implements OnInit, OnDestroy {
           this.currentUser = response.user;
           this.currentUserForUpdating = {...response.user};
 
-          if (response.user.userNameChanged === false) {
+          if (!response.user.userNameChanged) {
             this.currentUser.username = '';
           }
         },
@@ -129,13 +129,13 @@ export class SettingsComponent implements OnInit, OnDestroy {
   }
 
   onOpenAvatarClick(): void {
-    this._modalWindowStateService.setIsModalWindowShowing(true)
-    this._modalWindowStateService.setPicture(this.currentUser.pictureUrl)
+    this._modalWindowStateService.setIsModalWindowShowing(true);
+    this._modalWindowStateService.setPicture(this.currentUser.pictureUrl);
   }
 
   closeModalWindowClick(): void {
-    this._modalWindowStateService.setIsModalWindowShowing(false)
-    this._modalWindowStateService.setPictureNull()
+    this._modalWindowStateService.setIsModalWindowShowing(false);
+    this._modalWindowStateService.setPictureNull();
   }
 
   onLogoutClick(): void {
@@ -194,7 +194,7 @@ export class SettingsComponent implements OnInit, OnDestroy {
     }
   }
 
-  onSaveChangesUpdateProfilePictureClick(): void {
+  async onSaveChangesUpdateProfilePictureClick() {
     const formData = new FormData();
     const validationResult = this._validationService.validatePictureFileName(this.fileName);
 
@@ -205,19 +205,17 @@ export class SettingsComponent implements OnInit, OnDestroy {
     const file = this.file as File;
     formData.append('pictureFile', file);
 
-    this._usersService
-      .updateProfilePicture(formData)
-      .pipe(takeUntil(this.componentDestroyed$))
-      .subscribe({
-        next: (response) => {
-          this.clearProfilePictureFile();
-          alert(response.message);
-          this.currentUser.pictureUrl = response.newUserPictureUrl;
-        },
-        error: (error) => {
-          this._errorNotificationService.notifyOnError(error);
-        }
-      });
+    const updateProfileImage$ = this._usersService.updateProfilePicture(formData);
+
+    try {
+      const result = await firstValueFrom<UpdateProfilePictureResponse>(updateProfileImage$);
+      alert(result.message);
+      this.currentUser.pictureUrl = result.newUserPictureUrl;
+    } catch (e: any) {
+      alert(e.error.errorMessage);
+    }
+
+    this.clearProfilePictureFile();
   }
 
   onSaveChangesChangePasswordClick(): void {
@@ -286,7 +284,14 @@ export class SettingsComponent implements OnInit, OnDestroy {
     };
   }
 
-  clearProfilePictureFile(): void {
+  clearProfilePictureFile() {
+    const fileInput = document.getElementById('ProfilePicture') as HTMLInputElement;
+
+    if (!fileInput) {
+      return;
+    }
+
+    fileInput.value = '';
     this.file = null;
     this.fileName = '';
   }

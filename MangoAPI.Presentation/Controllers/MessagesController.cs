@@ -94,7 +94,7 @@ public class MessagesController : ApiControllerBase, IMessagesController
     [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
     public async Task<IActionResult> SendMessage(
-        [FromBody] SendMessageRequest request,
+        [FromForm] SendMessageRequest request,
         CancellationToken cancellationToken)
     {
         var userId = CorrelationContext.GetUserId();
@@ -102,11 +102,11 @@ public class MessagesController : ApiControllerBase, IMessagesController
             request.MessageText,
             userId,
             request.ChatId,
-            request.AttachmentUrl,
             request.InReplayToAuthor,
             request.InReplayToText,
             request.CreatedAt,
-            request.MessageId);
+            request.MessageId,
+            request.Attachment);
 
         return await RequestAsync(command, cancellationToken);
     }

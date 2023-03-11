@@ -2,4 +2,5 @@
 
 export interface SendMessageResponse extends BaseResponse {
   messageId: string;
+  attachmentUrl: string;
 }

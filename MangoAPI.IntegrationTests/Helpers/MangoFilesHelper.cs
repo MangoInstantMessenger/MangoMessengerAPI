@@ -17,7 +17,11 @@ public static class MangoFilesHelper
             baseStreamOffset: 0,
             stream.Length,
             name: FileName,
-            Path.GetFileName(stream.Name));
+            Path.GetFileName(stream.Name))
+        {
+            Headers = new HeaderDictionary(),
+            ContentType = "image/jpeg"
+        };
 
         return file;
     }

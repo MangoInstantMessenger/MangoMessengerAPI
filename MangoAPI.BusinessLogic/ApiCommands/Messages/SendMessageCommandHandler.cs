@@ -1,8 +1,10 @@
-﻿using System;
+﻿using FluentValidation;
+using System;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using MangoAPI.Application.Interfaces;
+using MangoAPI.Application.Services;
 using MangoAPI.BusinessLogic.HubConfig;
 using MangoAPI.BusinessLogic.Models;
 using MangoAPI.BusinessLogic.Responses;
@@ -22,17 +24,20 @@ public class SendMessageCommandHandler
     private readonly IHubContext<ChatHub, IHubClient> hubContext;
     private readonly ResponseFactory<SendMessageResponse> responseFactory;
     private readonly IBlobServiceSettings blobServiceSettings;
+    private readonly IBlobService blobService;
 
     public SendMessageCommandHandler(
         MangoDbContext dbContext,
         IHubContext<ChatHub, IHubClient> hubContext,
         ResponseFactory<SendMessageResponse> responseFactory,
-        IBlobServiceSettings blobServiceSettings)
+        IBlobServiceSettings blobServiceSettings,
+        IBlobService blobService)
     {
         this.dbContext = dbContext;
         this.hubContext = hubContext;
         this.responseFactory = responseFactory;
         this.blobServiceSettings = blobServiceSettings;
+        this.blobService = blobService;
     }
 
     public async Task<Result<SendMessageResponse>> Handle(
@@ -44,8 +49,7 @@ public class SendMessageCommandHandler
             {
                 x.DisplayName, x.DisplayNameColour, x.Image, x.Id,
             }).FirstOrDefaultAsync(
-                x => x.Id == request.UserId,
-                cancellationToken);
+                x => x.Id == request.UserId, cancellationToken);
 
         if (user == null)
         {
@@ -68,6 +72,8 @@ public class SendMessageCommandHandler
             return responseFactory.ConflictResponse(errorMessage, errorDescription);
         }
 
+        var attachmentUniqueFileName = await UploadAttachmentIfExistsAsync(request);
+
         var messageEntity = new MessageEntity
         {
             Id = request.MessageId ?? Guid.NewGuid(),
@@ -75,7 +81,7 @@ public class SendMessageCommandHandler
             UserId = request.UserId,
             Content = request.MessageText,
             CreatedAt = request.CreatedAt ?? DateTime.UtcNow,
-            Attachment = request.AttachmentUrl,
+            AttachmentFileName = attachmentUniqueFileName,
             InReplayToAuthor = request.InReplayToAuthor,
             InReplayToText = request.InReplayToText,
         };
@@ -91,15 +97,38 @@ public class SendMessageCommandHandler
 
         await dbContext.SaveChangesAsync(cancellationToken);
 
+        var authorPictureUrl = $"{blobServiceSettings.MangoBlobAccess}/{user.Image}";
+
+        var attachmentUrl = attachmentUniqueFileName == null
+            ? null
+            : $"{blobServiceSettings.MangoBlobAccess}/{attachmentUniqueFileName}";
+
         var messageDto = messageEntity.ToMessage(
             user.DisplayName,
             user.Id,
-            user.Image,
-            blobServiceSettings.MangoBlobAccess,
-            user.DisplayNameColour);
+            user.DisplayNameColour,
+            authorPictureUrl,
+            attachmentUrl);
 
         await hubContext.Clients.Group(request.ChatId.ToString()).BroadcastMessageAsync(messageDto);
 
-        return responseFactory.SuccessResponse(SendMessageResponse.FromSuccess(messageEntity.Id));
+        return responseFactory.SuccessResponse(SendMessageResponse.FromSuccess(messageEntity.Id, attachmentUrl));
+    }
+
+    private async Task<string> UploadAttachmentIfExistsAsync(SendMessageCommand request)
+    {
+        if (request.Attachment == null)
+        {
+            return null;
+        }
+
+        await new CommonFileValidator().ValidateAndThrowAsync(request.Attachment);
+
+        var file = request.Attachment;
+        var uniqueFileName = FileNameHelper.CreateUniqueFileName(file.FileName);
+
+        await blobService.UploadFileBlobAsync(file.OpenReadStream(), file.ContentType, uniqueFileName);
+
+        return uniqueFileName;
     }
 }

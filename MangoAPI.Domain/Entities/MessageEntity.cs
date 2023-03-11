@@ -16,7 +16,7 @@ public sealed class MessageEntity
 
     public string InReplayToText { get; set; }
 
-    public string Attachment { get; set; }
+    public string AttachmentFileName { get; set; }
 
     public DateTime CreatedAt { get; set; }
 
