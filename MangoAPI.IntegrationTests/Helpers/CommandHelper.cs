@@ -53,7 +53,7 @@ public static class CommandHelper
         return command;
     }
 
-    public static SendMessageCommand SendMessageToChannelCommand(Guid userId, Guid chatId)
+    public static SendMessageCommand SendMessageToChannelCommand(Guid userId, Guid chatId, IFormFile attachment = null)
     {
         var command = new SendMessageCommand(
             MessageText: "test message",
@@ -63,7 +63,7 @@ public static class CommandHelper
             InReplayToText: " ",
             CreatedAt: null,
             MessageId: null,
-            Attachment: null);
+            Attachment: attachment);
 
         return command;
     }
