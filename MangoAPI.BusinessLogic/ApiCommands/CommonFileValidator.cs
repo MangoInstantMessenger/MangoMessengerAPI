@@ -1,32 +1,31 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using FluentValidation;
+﻿using FluentValidation;
 using Microsoft.AspNetCore.Http;
+using System.Collections.Generic;
+using System.Linq;
 
-namespace MangoAPI.BusinessLogic.Pipelines;
+namespace MangoAPI.BusinessLogic.ApiCommands;
 
-public class CommonImageValidator : AbstractValidator<IFormFile>
+public class CommonFileValidator : AbstractValidator<IFormFile>
 {
     private readonly List<string> allowedExtensions = new()
     {
-        "jpg", "JPG", "png", "PNG",
+        "jpg", "JPG", "txt", "TXT", "pdf", "PDF", "png", "PNG", "jpeg", "JPEG",
     };
 
-    public CommonImageValidator()
+    public CommonFileValidator()
     {
         RuleFor(x => x.Length)
             .Cascade(CascadeMode.Stop)
             .GreaterThan(0)
-            .LessThanOrEqualTo(2 * 1024 * 1024)
-            .WithMessage("Image file should not exceed 2 MB.");
+            .LessThanOrEqualTo(5 * 1024 * 1024)
+            .WithMessage("File should not exceed 5 MB.");
 
         RuleFor(x => x.FileName)
             .Cascade(CascadeMode.Stop)
             .NotEmpty()
             .Must(HaveAllowedExtension)
             .WithMessage(
-                $"File extension is not allowed. Allowed extensions: {string.Join(", ", allowedExtensions)}.")
-            .Length(1, 50);
+                $"File extension is not allowed. Allowed extensions: {string.Join(", ", allowedExtensions)}.");
     }
 
     private bool HaveAllowedExtension(string str)

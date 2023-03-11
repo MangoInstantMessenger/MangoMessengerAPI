@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FluentValidation;
+using System;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -120,6 +121,8 @@ public class SendMessageCommandHandler
         {
             return null;
         }
+
+        await new CommonFileValidator().ValidateAndThrowAsync(request.Attachment);
 
         var file = request.Attachment;
         var uniqueFileName = FileNameHelper.CreateUniqueFileName(file.FileName);
