@@ -1,9 +1,9 @@
 <body class="d-flex">
   <div class="menu" id="menu">
-    <div *ngIf="_blackCoverStateService.isBlackCoverShowing" class="black-cover" (click)="closeBlackCoverClick()">
+    <div *ngIf="_modalWindowStateService.isModalWindowShowing" class="black-cover" (click)="closeModalWindowrClick()">
       <img
-        *ngIf="_blackCoverStateService.picture"
-        src="{{ _blackCoverStateService.picture }}"
+        *ngIf="_modalWindowStateService.picture"
+        src="{{ _modalWindowStateService.picture }}"
         class="profile-avatar"
         alt=""
         (click)="$event.stopPropagation()"

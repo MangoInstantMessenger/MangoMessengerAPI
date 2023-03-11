@@ -11,7 +11,7 @@ import { Router } from '@angular/router';
 import { StartDirectChatQueryObject } from '../../types/query-objects/StartDirectChatQueryObject';
 import { RoutingService } from '../../services/messenger/routing.service';
 import { Subject, takeUntil } from 'rxjs';
-import { BlackCoverStateService } from 'src/app/services/states/blackCoverState.service';
+import { ModalWindowStateService } from 'src/app/services/states/modalWindowState.service';
 
 @Component({
   selector: 'app-contacts',
@@ -26,7 +26,7 @@ export class ContactsComponent implements OnInit, OnDestroy {
     private _communitiesService: CommunitiesService,
     private _router: Router,
     private _routingService: RoutingService,
-    public _blackCoverStateService: BlackCoverStateService,
+    public _modalWindowStateService: ModalWindowStateService,
   ) {}
 
   public contacts: Contact[] = [];
@@ -91,13 +91,13 @@ export class ContactsComponent implements OnInit, OnDestroy {
   }
 
   onOpenAvatarClick(): void {
-    this._blackCoverStateService.setIsBlackCoverShowing(true)
-    this._blackCoverStateService.setPicture(this.activeUser.pictureUrl)
+    this._modalWindowStateService.setIsModalWindowShowing(true)
+    this._modalWindowStateService.setPicture(this.activeUser.pictureUrl)
   }
 
-  closeBlackCoverClick(): void {
-    this._blackCoverStateService.setIsBlackCoverShowing(false)
-    this._blackCoverStateService.setPictureNull()
+  closeModalWindowrClick(): void {
+    this._modalWindowStateService.setIsModalWindowShowing(false)
+    this._modalWindowStateService.setPictureNull()
   }
 
   getUsersContacts(): void {

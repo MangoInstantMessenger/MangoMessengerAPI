@@ -14,7 +14,7 @@ import { Event, Router } from '@angular/router';
 import { Subject, takeUntil } from 'rxjs';
 import { RoutingConstants } from 'src/app/types/constants/RoutingConstants';
 import { AppInfoService } from 'src/app/services/api/app-info.service';
-import { BlackCoverStateService } from 'src/app/services/states/blackCoverState.service';
+import { ModalWindowStateService } from 'src/app/services/states/modalWindowState.service';
 
 @Component({
   selector: 'app-settings',
@@ -28,7 +28,7 @@ export class SettingsComponent implements OnInit, OnDestroy {
     private _tokensService: TokensService,
     private _validationService: ValidationService,
     private _sessionService: SessionService,
-    public _blackCoverStateService: BlackCoverStateService,
+    public _modalWindowStateService: ModalWindowStateService,
     private _router: Router
   ) {}
 
@@ -108,13 +108,13 @@ export class SettingsComponent implements OnInit, OnDestroy {
   }
 
   onOpenAvatarClick(): void {
-    this._blackCoverStateService.setIsBlackCoverShowing(true)
-    this._blackCoverStateService.setPicture(this.currentUser.pictureUrl)
+    this._modalWindowStateService.setIsModalWindowShowing(true)
+    this._modalWindowStateService.setPicture(this.currentUser.pictureUrl)
   }
 
-  closeBlackCoverClick(): void {
-    this._blackCoverStateService.setIsBlackCoverShowing(false)
-    this._blackCoverStateService.setPictureNull()
+  closeModalWindowClick(): void {
+    this._modalWindowStateService.setIsModalWindowShowing(false)
+    this._modalWindowStateService.setPictureNull()
   }
 
   onLogoutClick(): void {

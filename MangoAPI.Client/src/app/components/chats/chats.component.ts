@@ -1,3 +1,4 @@
+import { ModalWindowStateService } from './../../services/states/modalWindowState.service';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { TokensService } from '../../services/messenger/tokens.service';
 import { Chat } from '../../types/models/Chat';
@@ -33,12 +34,12 @@ export class ChatsComponent implements OnInit, OnDestroy {
     private _communitiesService: CommunitiesService,
     private _userChatsService: UserChatsService,
     private _messagesService: MessagesService,
-    private _usersService: UsersService,
     private _errorNotificationService: ErrorNotificationService,
     private _router: Router,
     private _validationService: ValidationService,
     private _documentsService: DocumentsService,
-    private _apiBaseService: ApiBaseService
+    private _apiBaseService: ApiBaseService,
+    public _modalWindowStateService: ModalWindowStateService
   ) {}
 
   private connectionBuilder: signalR.HubConnectionBuilder = new signalR.HubConnectionBuilder();
@@ -150,8 +151,14 @@ export class ChatsComponent implements OnInit, OnDestroy {
     this.messageAttachment = event.target.files[0];
   }
 
-  onImageClick(imageUrl: string) {
-    window.open(imageUrl);
+  onOpenImageClick(imageLink: string): void {
+    this._modalWindowStateService.setIsModalWindowShowing(true)
+    this._modalWindowStateService.setPicture(imageLink)
+  }
+
+  closeModalWindowrClick(): void {
+    this._modalWindowStateService.setIsModalWindowShowing(false)
+    this._modalWindowStateService.setPictureNull()
   }
 
   async uploadFile(file: File) {

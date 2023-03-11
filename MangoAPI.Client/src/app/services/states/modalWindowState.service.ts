@@ -4,13 +4,13 @@ import { Injectable } from '@angular/core';
 @Injectable({
   providedIn: 'root'
 })
-export class BlackCoverStateService {
-  public isBlackCoverShowing: boolean = false;
+export class ModalWindowStateService {
+  public isModalWindowShowing: boolean = false;
   public picture: string | null = null;
 
 
-  public setIsBlackCoverShowing = (value: boolean) => {
-    this.isBlackCoverShowing = value;
+  public setIsModalWindowShowing = (value: boolean) => {
+    this.isModalWindowShowing = value;
   }
 
   public setPicture = (fileName: string) => {
