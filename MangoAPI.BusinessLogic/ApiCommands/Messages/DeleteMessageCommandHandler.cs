@@ -88,11 +88,6 @@ public class DeleteMessageCommandHandler
             messageDeleteNotification.NewLastMessageText = newLastMessage?.Text;
             messageDeleteNotification.NewLastMessageTime = newLastMessage?.CreatedAt;
 
-            // chat.LastMessageAuthor = newLastMessage?.User?.DisplayName;
-            // chat.LastMessageId = newLastMessage?.Id;
-            // chat.LastMessageText = newLastMessage?.Content;
-            // chat.LastMessageTime = newLastMessage?.CreatedAt;
-
             chat.UpdateLastMessage(
                 lastMessageAuthor: newLastMessage?.User?.DisplayName,
                 lastMessageText: newLastMessage?.Text,
