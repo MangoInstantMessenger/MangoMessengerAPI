@@ -15,8 +15,7 @@ public static class CommandHelper
     public static RegisterCommand RegisterKhachaturCommand()
     {
         var command = new RegisterCommand(
-            Email: "xachulxx@gmail.com",
-            DisplayName: "Khachatur Khachatryan",
+            Username: "xachulxx@gmail.com",
             Password: "Bm3-`dPRv-/w#3)cw^97");
 
         return command;
@@ -25,8 +24,7 @@ public static class CommandHelper
     public static RegisterCommand RegisterPetroCommand()
     {
         var command = new RegisterCommand(
-            Email: "kolosovp95@gmail.com",
-            DisplayName: "Petro Kolosov",
+            Username: "kolosovp95@gmail.com",
             Password: "Bm3-`dPRv-/w#3)cw^97");
 
         return command;
@@ -69,7 +67,7 @@ public static class CommandHelper
     public static LoginCommand CreateLoginCommand(string email, string password)
     {
         var command = new LoginCommand(
-            Email: email,
+            Username: email,
             Password: password);
 
         return command;

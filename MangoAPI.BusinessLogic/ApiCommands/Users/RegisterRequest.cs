@@ -7,20 +7,15 @@ public record RegisterRequest
 {
     [JsonConstructor]
     public RegisterRequest(
-        string email,
-        string displayName,
+        string username,
         string password)
     {
-        Email = email;
-        DisplayName = displayName;
+        Username = username;
         Password = password;
     }
 
-    [DefaultValue("test@gmail.com")]
-    public string Email { get; }
-
-    [DefaultValue("Test User")]
-    public string DisplayName { get; }
+    [DefaultValue("MyUniqueUsername")]
+    public string Username { get; }
 
     [DefaultValue("x[?6dME#xrp=nr7q")]
     public string Password { get; }

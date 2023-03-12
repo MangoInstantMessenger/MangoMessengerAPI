@@ -1,11 +1,11 @@
-﻿using System.Threading;
-using System.Threading.Tasks;
-using MangoAPI.Application.Interfaces;
+﻿using MangoAPI.Application.Interfaces;
 using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.Domain.Constants;
 using MangoAPI.Infrastructure.Database;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace MangoAPI.BusinessLogic.ApiCommands.Users;
 
@@ -13,17 +13,17 @@ public class ChangePasswordCommandHandler
     : IRequestHandler<ChangePasswordCommand, Result<ResponseBase>>
 {
     private readonly MangoDbContext dbContext;
-    private readonly IUserManagerService userManager;
     private readonly ResponseFactory<ResponseBase> responseFactory;
+    private readonly IPasswordService passwordService;
 
     public ChangePasswordCommandHandler(
         MangoDbContext dbContext,
-        IUserManagerService userManager,
-        ResponseFactory<ResponseBase> responseFactory)
+        ResponseFactory<ResponseBase> responseFactory,
+        IPasswordService passwordService)
     {
         this.dbContext = dbContext;
-        this.userManager = userManager;
         this.responseFactory = responseFactory;
+        this.passwordService = passwordService;
     }
 
     public async Task<Result<ResponseBase>> Handle(
@@ -35,7 +35,7 @@ public class ChangePasswordCommandHandler
                 userEntity => userEntity.Id == request.UserId,
                 cancellationToken);
 
-        if (user is null)
+        if (user == null)
         {
             const string errorMessage = ResponseMessageCodes.UserNotFound;
             var details = ResponseMessageCodes.ErrorDictionary[errorMessage];
@@ -43,7 +43,7 @@ public class ChangePasswordCommandHandler
             return responseFactory.ConflictResponse(errorMessage, details);
         }
 
-        var currentPasswordVerified = await userManager.CheckPasswordAsync(user, request.CurrentPassword);
+        var currentPasswordVerified = passwordService.ValidateCredentials(user, request.CurrentPassword);
 
         if (!currentPasswordVerified)
         {
@@ -53,9 +53,11 @@ public class ChangePasswordCommandHandler
             return responseFactory.ConflictResponse(errorMessage, details);
         }
 
-        await userManager.RemovePasswordAsync(user);
+        passwordService.ChangePassword(user, request.NewPassword);
 
-        await userManager.AddPasswordAsync(user, request.NewPassword);
+        dbContext.Users.Update(user);
+
+        await dbContext.SaveChangesAsync(cancellationToken);
 
         return responseFactory.SuccessResponse(ResponseBase.SuccessResponse);
     }

@@ -24,5 +24,5 @@ public record Contact
     public string PictureUrl { get; init; }
 
     [DefaultValue("my-email@gmail.com")]
-    public string Email { get; init; }
+    public string Username { get; init; }
 }

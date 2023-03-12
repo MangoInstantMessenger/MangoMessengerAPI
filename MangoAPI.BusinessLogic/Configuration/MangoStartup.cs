@@ -41,8 +41,6 @@ public static class MangoStartup
             mangoJwtLifetimeMinutes,
             mangoRefreshTokenLifetimeDays);
 
-        services.AddSingInManagerServices();
-
         services.AddSignalR();
 
         services.AddSingleton<IVersionService, VersionService>();
@@ -58,10 +56,6 @@ public static class MangoStartup
         services.AddTransient(typeof(ResponseFactory<>));
 
         services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(RegisterCommandHandler).Assembly));
-
-        services.AddScoped<PasswordHashService>();
-
-        services.AddIdentityUsers();
 
         services.AddSignalR();
 

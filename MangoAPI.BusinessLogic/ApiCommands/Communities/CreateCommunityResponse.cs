@@ -2,7 +2,6 @@
 using System.ComponentModel;
 using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.Domain.Constants;
-using MangoAPI.Domain.Entities;
 using MangoAPI.Domain.Entities.ChatEntities;
 
 namespace MangoAPI.BusinessLogic.ApiCommands.Communities;

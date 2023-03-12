@@ -43,13 +43,12 @@ public class GetUserQueryHandler : IRequestHandler<GetUserQuery, Result<GetUserR
                 BirthdayDate = user.UserInformation.BirthDay.HasValue
                     ? user.UserInformation.BirthDay.Value.ToString("yyyy-MM-dd", CultureInfo.CurrentCulture)
                     : null,
-                Email = user.Email,
                 Website = user.UserInformation.Website,
                 Facebook = user.UserInformation.Facebook,
                 Twitter = user.UserInformation.Twitter,
                 Instagram = user.UserInformation.Instagram,
                 LinkedIn = user.UserInformation.LinkedIn,
-                Username = user.UserName,
+                Username = user.Username,
                 Bio = user.Bio,
                 UserNameChanged = user.UserNameChanged,
                 PictureUrl = $"{blobServiceSettings.MangoBlobAccess}/{user.Image}",

@@ -1,13 +1,20 @@
 ﻿using MangoAPI.Domain.Entities.ChatEntities;
-using System;
 using System.Collections.Generic;
 using MangoAPI.Domain.Enums;
-using Microsoft.AspNetCore.Identity;
+using System;
 
 namespace MangoAPI.Domain.Entities;
 
-public sealed class UserEntity : IdentityUser<Guid>
+public sealed class UserEntity
 {
+    public Guid Id { get; set; }
+
+    public string Username { get; set; }
+
+    public byte[] PasswordHash { get; set; }
+
+    public byte[] PasswordSalt { get; set; }
+
     public string DisplayName { get; set; }
 
     public string Image { get; set; }
@@ -15,7 +22,7 @@ public sealed class UserEntity : IdentityUser<Guid>
     public string Bio { get; set; }
 
     public bool UserNameChanged { get; set; }
-    
+
     public DisplayNameColour DisplayNameColour { get; set; }
 
     public ICollection<SessionEntity> Sessions { get; set; }

@@ -66,7 +66,7 @@ public class
 
         user.UserInformation.Website = request.Website;
 
-        user.UserName = request.Username;
+        user.Username = request.Username;
 
         user.UserNameChanged = true;
 

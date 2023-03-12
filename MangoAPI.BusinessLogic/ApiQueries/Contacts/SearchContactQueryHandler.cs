@@ -43,7 +43,7 @@ public class SearchContactByDisplayNameQueryHandler
                 Address = x.UserInformation.Address,
                 Bio = x.Bio,
                 PictureUrl = $"{blobServiceSettings.MangoBlobAccess}/{x.Image}",
-                Email = x.Email,
+                Username = x.Username,
             });
 
         var searchResult = await query.Take(200).ToListAsync(cancellationToken);
