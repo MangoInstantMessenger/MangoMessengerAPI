@@ -22,4 +22,30 @@ public class ChatEntityHelper
 
         return chat;
     }
+    
+    public static ChatEntity CreateWithImage(string image)
+    {
+        var chat = ChatEntity.Create(
+            Title,
+            CommunityType.DirectChat,
+            Description,
+            image,
+            DateTime.UtcNow,
+            membersCount: 2);
+
+        return chat;
+    }
+
+    public static ChatEntity CreateSuccess()
+    {
+        var chat = ChatEntity.Create(
+            Title,
+            CommunityType.DirectChat,
+            Description,
+            Image,
+            DateTime.UtcNow,
+            membersCount: 2);
+
+        return chat;
+    }
 }

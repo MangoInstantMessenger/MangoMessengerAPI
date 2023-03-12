@@ -111,14 +111,4 @@ public sealed class ChatEntity
         Title = title;
         new ChatEntityValidator().ValidateAndThrow(this);
     }
-
-    // var channel = new ChatEntity
-    // {
-    //     CommunityType = CommunityType.PublicChannel,
-    //     Title = request.ChannelTitle,
-    //     CreatedAt = DateTime.UtcNow,
-    //     Description = request.ChannelDescription,
-    //     MembersCount = 1,
-    //     Image = "default_group_logo.png",
-    // };
 }

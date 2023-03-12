@@ -16,7 +16,8 @@ public class ChatEntityValidator : AbstractValidator<ChatEntity>
             .MaximumLength(100)
             .WithMessage("Description cannot exceed 100 characters.");
 
-        RuleFor(x => x.Image).MaximumLength(100)
+        RuleFor(x => x.Image)
+            .MaximumLength(100)
             .WithMessage("Image cannot exceed 100 characters.");
 
         RuleFor(x => x.CreatedAt).NotEmpty();
