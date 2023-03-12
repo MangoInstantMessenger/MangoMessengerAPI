@@ -17,11 +17,6 @@ public sealed class UserChatEntity
 
     public ChatEntity Chat { get; private set; }
 
-    // dbContext.UserChats.Add(new UserChatEntity
-    // {
-    //     ChatId = channel.Id, RoleId = UserRole.Owner, UserId = request.UserId,
-    // });
-
     private UserChatEntity()
     {
     }

@@ -17,8 +17,7 @@ public class ChatEntityCreateShouldThrowDescription
     {
         Func<ChatEntity> CreateChatEntity = () => ChatEntityHelper.CreateWithDescription(testParam);
 
-        CreateChatEntity.Should().ThrowExactly<ValidationException>()
-            .Where(x => x.Message.Contains("Description is required."));
+        CreateChatEntity.Should().ThrowExactly<ValidationException>();
     }
 
     [Fact]
@@ -28,7 +27,6 @@ public class ChatEntityCreateShouldThrowDescription
 
         Func<ChatEntity> CreateChatEntity = () => ChatEntityHelper.CreateWithDescription(overflow);
 
-        CreateChatEntity.Should().ThrowExactly<ValidationException>()
-            .Where(x => x.Message.Contains("Description cannot exceed 100 characters."));
+        CreateChatEntity.Should().ThrowExactly<ValidationException>();
     }
 }

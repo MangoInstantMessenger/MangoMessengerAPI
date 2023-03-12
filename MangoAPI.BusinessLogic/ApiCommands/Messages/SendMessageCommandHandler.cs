@@ -86,12 +86,6 @@ public class SendMessageCommandHandler
             InReplayToText = request.InReplayToText,
         };
 
-        // userChat.Chat.UpdatedAt = messageEntity.CreatedAt;
-        // userChat.Chat.LastMessageAuthor = user.DisplayName;
-        // userChat.Chat.LastMessageText = messageEntity.Content;
-        // userChat.Chat.LastMessageTime = messageEntity.CreatedAt;
-        // userChat.Chat.LastMessageId = messageEntity.Id;
-
         userChat.Chat.UpdateLastMessage(
             lastMessageAuthor: user.DisplayName,
             lastMessageText: messageEntity.Content,

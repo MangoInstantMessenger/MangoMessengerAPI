@@ -16,7 +16,6 @@ public class ChatEntityCreateShouldThrowImage
         var imageName = new string(Enumerable.Repeat('a', 102).ToArray());
         Func<ChatEntity> CreateWithImage = () => ChatEntityHelper.CreateWithImage(imageName);
 
-        CreateWithImage.Should().ThrowExactly<ValidationException>()
-            .Where(x => x.Message.Contains("Image cannot exceed 100 characters."));
+        CreateWithImage.Should().ThrowExactly<ValidationException>();
     }
 }

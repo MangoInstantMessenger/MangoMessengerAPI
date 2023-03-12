@@ -82,8 +82,6 @@ public class EditMessageCommandHandler
 
         if (messageIsLast)
         {
-            // chat.LastMessageText = request.ModifiedText;
-            // chat.LastMessageTime = updatedAt;
             chat.UpdateLastMessage(request.ModifiedText, updatedAt);
         }
 

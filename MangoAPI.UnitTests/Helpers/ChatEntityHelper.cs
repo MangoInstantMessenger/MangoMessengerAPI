@@ -4,7 +4,7 @@ using System;
 
 namespace MangoAPI.UnitTests.Helpers;
 
-public class ChatEntityHelper
+public static class ChatEntityHelper
 {
     public const string Title = "Mango Messenger";
     public const string Description = "Service notifications";
@@ -22,7 +22,7 @@ public class ChatEntityHelper
 
         return chat;
     }
-    
+
     public static ChatEntity CreateWithImage(string image)
     {
         var chat = ChatEntity.Create(
@@ -32,6 +32,64 @@ public class ChatEntityHelper
             image,
             DateTime.UtcNow,
             membersCount: 2);
+
+        return chat;
+    }
+
+    public static ChatEntity CreateWithMembersCount(int membersCount)
+    {
+        var chat = ChatEntity.Create(
+            Title,
+            CommunityType.DirectChat,
+            Description,
+            Image,
+            DateTime.UtcNow,
+            membersCount);
+
+        return chat;
+    }
+
+    public static ChatEntity CreateWithTitle(string title)
+    {
+        var chat = ChatEntity.Create(
+            title,
+            CommunityType.DirectChat,
+            Description,
+            Image,
+            DateTime.UtcNow,
+            membersCount: 2);
+
+        return chat;
+    }
+
+    public static ChatEntity CreateWithCommunityType(CommunityType communityType)
+    {
+        var chat = ChatEntity.Create(
+            Title,
+            communityType,
+            Description,
+            Image,
+            DateTime.UtcNow,
+            membersCount: 2);
+
+        return chat;
+    }
+
+    public static ChatEntity CreateWithLastMessageText(string lastMessageText)
+    {
+        var chat = CreateSuccess();
+
+        chat.UpdateLastMessage(lastMessageText, DateTime.UtcNow);
+
+        return chat;
+    }
+
+    public static ChatEntity CreateWithLastMessageAuthor(string lastAuthor)
+    {
+        var chat = CreateSuccess();
+        const string LastMessage = "Hello, world!";
+
+        chat.UpdateLastMessage(lastAuthor, LastMessage, DateTime.UtcNow, Guid.NewGuid());
 
         return chat;
     }

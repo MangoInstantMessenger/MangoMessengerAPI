@@ -55,11 +55,11 @@ public sealed class ChatEntity
         Image = image;
         CreatedAt = createdAt;
         MembersCount = membersCount;
-        
+
         _messages = new List<MessageEntity>();
         _chatUsers = new List<UserChatEntity>();
         Id = Guid.NewGuid();
-        
+
         new ChatEntityValidator().ValidateAndThrow(this);
     }
 
@@ -91,19 +91,20 @@ public sealed class ChatEntity
     public void UpdateLastMessage(
         string lastMessageAuthor,
         string lastMessageText,
-        DateTime? lastMessageTime,
+        DateTime? lastMessageDate,
         Guid? lastMessageId)
     {
+        UpdateLastMessage(lastMessageText, lastMessageDate);
         LastMessageAuthor = lastMessageAuthor;
-        LastMessageText = lastMessageText;
-        LastMessageTime = lastMessageTime;
         LastMessageId = lastMessageId;
+        new ChatEntityValidator().ValidateAndThrow(this);
     }
 
-    public void UpdateLastMessage(string lastMessageText, DateTime lastMessageDate)
+    public void UpdateLastMessage(string lastMessageText, DateTime? lastMessageDate)
     {
         LastMessageText = lastMessageText;
         LastMessageTime = lastMessageDate;
+        new ChatEntityValidator().ValidateAndThrow(this);
     }
 
     public void UpdateTitle(string title)
