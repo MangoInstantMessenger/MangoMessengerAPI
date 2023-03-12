@@ -50,7 +50,7 @@ jobs:
       - name: Run unit tests
         run: |
           dotnet test MangoAPI.UnitTests/MangoAPI.UnitTests.csproj --configuration Release --no-build
-          env:
+        env:
           CollectCoverage: true
           CoverletOutputFormat: lcov
           ThresholdStat: total
