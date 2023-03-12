@@ -33,12 +33,21 @@ public class DeleteMessageCommandHandler
         DeleteMessageCommand request,
         CancellationToken cancellationToken)
     {
-        var isMessageExists = await dbContext.Messages
-            .AnyAsync(t => t.Id == request.MessageId, cancellationToken);
+        var checkMessage = await dbContext.Messages
+            .Include(x => x.User)
+            .FirstOrDefaultAsync(t => t.Id == request.MessageId, cancellationToken);
 
-        if (!isMessageExists)
+        if (checkMessage == null)
         {
             const string errorMessage = ResponseMessageCodes.MessageNotFound;
+            var errorDescription = ResponseMessageCodes.ErrorDictionary[errorMessage];
+
+            return responseFactory.ConflictResponse(errorMessage, errorDescription);
+        }
+
+        if (checkMessage.User.Id != request.UserId)
+        {
+            const string errorMessage = ResponseMessageCodes.Unauthorized;
             var errorDescription = ResponseMessageCodes.ErrorDictionary[errorMessage];
 
             return responseFactory.ConflictResponse(errorMessage, errorDescription);
@@ -49,13 +58,10 @@ public class DeleteMessageCommandHandler
             .ThenInclude(x => x.Messages)
             .ThenInclude(x => x.User)
             .Where(x => x.ChatId == request.ChatId && x.UserId == request.UserId)
-            .Select(x => x.Chat)
-            .Where(x => isMessageExists);
+            .Select(x => x.Chat);
 
         var chat = await query.FirstOrDefaultAsync(cancellationToken);
 
-        // TODO: separate concerns, it is not immediately clear which is null, chat or message?
-        // TODO: update tests as well
         if (chat == null)
         {
             const string errorMessage = ResponseMessageCodes.ChatNotFound;
@@ -65,12 +71,10 @@ public class DeleteMessageCommandHandler
         }
 
         var message = chat.Messages.First(x => x.Id == request.MessageId);
+
         dbContext.Entry(message.User).State = EntityState.Detached;
 
-        var messageDeleteNotification = new MessageDeleteNotification
-        {
-            MessageId = request.MessageId,
-        };
+        var messageDeleteNotification = new MessageDeleteNotification { MessageId = request.MessageId, };
 
         var messageIsLast = chat.LastMessageId.HasValue && chat.LastMessageId == request.MessageId;
 
@@ -84,10 +88,16 @@ public class DeleteMessageCommandHandler
             messageDeleteNotification.NewLastMessageText = newLastMessage?.Content;
             messageDeleteNotification.NewLastMessageTime = newLastMessage?.CreatedAt;
 
-            chat.LastMessageAuthor = newLastMessage?.User?.DisplayName;
-            chat.LastMessageId = newLastMessage?.Id;
-            chat.LastMessageText = newLastMessage?.Content;
-            chat.LastMessageTime = newLastMessage?.CreatedAt;
+            // chat.LastMessageAuthor = newLastMessage?.User?.DisplayName;
+            // chat.LastMessageId = newLastMessage?.Id;
+            // chat.LastMessageText = newLastMessage?.Content;
+            // chat.LastMessageTime = newLastMessage?.CreatedAt;
+
+            chat.UpdateLastMessage(
+                lastMessageAuthor: newLastMessage?.User?.DisplayName,
+                lastMessageText: newLastMessage?.Content,
+                newLastMessage?.CreatedAt,
+                newLastMessage?.Id);
         }
 
         dbContext.Messages.Remove(message);

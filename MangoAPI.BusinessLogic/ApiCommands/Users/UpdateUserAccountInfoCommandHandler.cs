@@ -54,7 +54,7 @@ public class
             foreach (var chatEntity in userChats)
             {
                 var newTitle = chatEntity.Title.Replace(user.DisplayName, request.DisplayName);
-                chatEntity.Title = newTitle;
+                chatEntity.UpdateTitle(newTitle);
             }
 
             user.DisplayName = request.DisplayName;
@@ -69,7 +69,7 @@ public class
         user.UserName = request.Username;
 
         user.UserNameChanged = true;
-        
+
         user.Bio = request.Bio;
 
         user.UserInformation.Address = request.Address;

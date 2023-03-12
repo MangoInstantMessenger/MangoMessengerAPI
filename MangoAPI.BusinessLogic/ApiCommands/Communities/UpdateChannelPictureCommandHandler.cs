@@ -72,14 +72,12 @@ public class
 
         var newUserPicture = new DocumentEntity
         {
-            FileName = uniqueFileName,
-            UserId = request.UserId,
-            UploadedAt = DateTime.UtcNow,
+            FileName = uniqueFileName, UserId = request.UserId, UploadedAt = DateTime.UtcNow,
         };
 
         dbContext.Documents.Add(newUserPicture);
 
-        userChat.Chat.Image = uniqueFileName;
+        userChat.Chat.ChangeChatImage(uniqueFileName);
 
         dbContext.Update(userChat.Chat);
 

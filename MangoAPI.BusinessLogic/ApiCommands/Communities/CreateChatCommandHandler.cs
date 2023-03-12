@@ -74,30 +74,44 @@ public class CreateChatCommandHandler
             return responseFactory.SuccessResponse(CreateCommunityResponse.FromSuccess(existingChat));
         }
 
-        var chatEntity = new ChatEntity
-        {
-            Id = Guid.NewGuid(),
-            CommunityType = CommunityType.DirectChat,
-            Title = $"{currentUserDisplayName} / {partner.DisplayName}",
-            CreatedAt = DateTime.UtcNow,
-            Description = $"Direct chat between {currentUserDisplayName} and {partner.DisplayName}",
-            MembersCount = 2,
-        };
+        // var chatEntity = new ChatEntity
+        // {
+        //     Id = Guid.NewGuid(),
+        //     CommunityType = CommunityType.DirectChat,
+        //     Title = $"{currentUserDisplayName} / {partner.DisplayName}",
+        //     CreatedAt = DateTime.UtcNow,
+        //     Description = $"Direct chat between {currentUserDisplayName} and {partner.DisplayName}",
+        //     MembersCount = 2,
+        // };
 
-        var userChats = new[]
-        {
-            new UserChatEntity { ChatId = chatEntity.Id, RoleId = UserRole.User, UserId = request.UserId },
-            new UserChatEntity { ChatId = chatEntity.Id, RoleId = UserRole.User, UserId = request.PartnerId },
-        };
+        var title = $"{currentUserDisplayName} / {partner.DisplayName}";
+        var description = $"Direct chat between {currentUserDisplayName} and {partner.DisplayName}";
 
-        dbContext.Chats.Add(chatEntity);
-        dbContext.UserChats.AddRange(userChats);
+        var chat = ChatEntity.Create(
+            title,
+            CommunityType.DirectChat,
+            description,
+            image: null,
+            DateTime.UtcNow,
+            membersCount: 2);
+
+        var senderUserChat = UserChatEntity.Create(request.UserId, chat.Id, UserRole.User);
+        var receiverUserChat = UserChatEntity.Create(request.PartnerId, chat.Id, UserRole.User);
+
+        // var userChats = new[]
+        // {
+        //     new UserChatEntity { ChatId = chat.Id, RoleId = UserRole.User, UserId = request.UserId },
+        //     new UserChatEntity { ChatId = chat.Id, RoleId = UserRole.User, UserId = request.PartnerId },
+        // };
+
+        dbContext.Chats.Add(chat);
+        dbContext.UserChats.AddRange(senderUserChat, receiverUserChat);
 
         await dbContext.SaveChangesAsync(cancellationToken);
 
-        var chatDto = chatEntity.ToChatDto();
+        var chatDto = chat.ToChatDto();
         await hubContext.Clients.Group(request.UserId.ToString()).UpdateUserChatsAsync(chatDto);
 
-        return responseFactory.SuccessResponse(CreateCommunityResponse.FromSuccess(chatEntity));
+        return responseFactory.SuccessResponse(CreateCommunityResponse.FromSuccess(chat));
     }
 }

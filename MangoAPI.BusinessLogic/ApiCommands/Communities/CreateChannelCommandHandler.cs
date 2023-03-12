@@ -18,6 +18,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Communities;
 public class CreateChannelCommandHandler
     : IRequestHandler<CreateChannelCommand, Result<CreateCommunityResponse>>
 {
+    private const string DefaultChannelImage = "default_group_logo.png";
     private readonly MangoDbContext dbContext;
     private readonly IHubContext<ChatHub, IHubClient> hubContext;
     private readonly ResponseFactory<CreateCommunityResponse> responseFactory;
@@ -49,30 +50,35 @@ public class CreateChannelCommandHandler
             return responseFactory.ConflictResponse(errorMessage, description);
         }
 
-        var channel = new ChatEntity
-        {
-            CommunityType = CommunityType.PublicChannel,
-            Title = request.ChannelTitle,
-            CreatedAt = DateTime.UtcNow,
-            Description = request.ChannelDescription,
-            MembersCount = 1,
-            Image = "default_group_logo.png",
-        };
+        // var channel = new ChatEntity
+        // {
+        //     CommunityType = CommunityType.PublicChannel,
+        //     Title = request.ChannelTitle,
+        //     CreatedAt = DateTime.UtcNow,
+        //     Description = request.ChannelDescription,
+        //     MembersCount = 1,
+        //     Image = "default_group_logo.png",
+        // };
 
-        dbContext.Chats.Add(channel);
+        var chat = ChatEntity.Create(
+            request.ChannelTitle,
+            CommunityType.PublicChannel,
+            request.ChannelDescription,
+            DefaultChannelImage,
+            DateTime.UtcNow,
+            membersCount: 1);
 
-        dbContext.UserChats.Add(new UserChatEntity
-        {
-            ChatId = channel.Id,
-            RoleId = UserRole.Owner,
-            UserId = request.UserId,
-        });
+        var userChat = UserChatEntity.Create(request.UserId, chat.Id, UserRole.Owner);
+
+        dbContext.Chats.Add(chat);
+
+        dbContext.UserChats.Add(userChat);
 
         await dbContext.SaveChangesAsync(cancellationToken);
 
-        var chatDto = channel.ToChatDto();
+        var chatDto = chat.ToChatDto();
         await hubContext.Clients.Group(request.UserId.ToString()).UpdateUserChatsAsync(chatDto);
 
-        return responseFactory.SuccessResponse(CreateCommunityResponse.FromSuccess(channel));
+        return responseFactory.SuccessResponse(CreateCommunityResponse.FromSuccess(chat));
     }
 }

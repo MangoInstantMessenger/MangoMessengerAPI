@@ -40,7 +40,7 @@ public class ArchiveChatCommandHandler
             return responseFactory.ConflictResponse(errorMessage, details);
         }
 
-        chat.IsArchived = !chat.IsArchived;
+        chat.Archive();
 
         dbContext.UserChats.Update(chat);
 

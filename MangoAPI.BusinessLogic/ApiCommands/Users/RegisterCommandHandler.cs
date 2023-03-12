@@ -22,8 +22,8 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, Result<To
     private readonly IJwtGeneratorSettings jwtGeneratorSettings;
     private readonly IBlobServiceSettings blobServiceSettings;
     private readonly PasswordHashService passwordHashService;
-    private readonly IMangoUserSettings mangoUserSettings; 
-    private readonly IAvatarService avatarService; 
+    private readonly IMangoUserSettings mangoUserSettings;
+    private readonly IAvatarService avatarService;
 
     private readonly UserEntity mangoUser = new()
     {
@@ -39,7 +39,7 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, Result<To
         PhoneNumberConfirmed = true,
         Image = "mango_logo.png",
     };
-    
+
     public RegisterCommandHandler(
         IUserManagerService userManager,
         MangoDbContext dbContext,
@@ -47,8 +47,8 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, Result<To
         IJwtGeneratorSettings jwtGeneratorSettings,
         ResponseFactory<TokensResponse> responseFactory,
         IBlobServiceSettings blobServiceSettings,
-        PasswordHashService passwordHashService, 
-        IMangoUserSettings mangoUserSettings, 
+        PasswordHashService passwordHashService,
+        IMangoUserSettings mangoUserSettings,
         IAvatarService avatarService)
     {
         this.userManager = userManager;
@@ -78,7 +78,7 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, Result<To
         var color = new Random().Next(11);
 
         var defaultAvatar = avatarService.GetRandomAvatar();
-        
+
         var newUser = new UserEntity
         {
             DisplayName = request.DisplayName,
@@ -91,11 +91,7 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, Result<To
 
         await userManager.CreateAsync(newUser, request.Password);
 
-        var userInfo = new UserInformationEntity
-        {
-            UserId = newUser.Id,
-            CreatedAt = DateTime.UtcNow,
-        };
+        var userInfo = new UserInformationEntity { UserId = newUser.Id, CreatedAt = DateTime.UtcNow, };
 
         dbContext.UserInformation.Add(userInfo);
 
@@ -111,7 +107,8 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, Result<To
 
         dbContext.Sessions.Add(session);
 
-        var isMangoUserExists = await dbContext.Users.AnyAsync(x => x.Id == SeedDataConstants.MangoId, cancellationToken);
+        var isMangoUserExists =
+            await dbContext.Users.AnyAsync(x => x.Id == SeedDataConstants.MangoId, cancellationToken);
 
         if (isMangoUserExists == false)
         {
@@ -119,24 +116,29 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, Result<To
             dbContext.Users.Add(mangoUser);
         }
         
-        var mangoChatEntity = new ChatEntity
-        {
-            Id = Guid.NewGuid(),
-            CommunityType = CommunityType.DirectChat,
-            Title = "Mango Messenger",
-            CreatedAt = DateTime.UtcNow,
-            Description = "Service notifications",
-            MembersCount = 2
-        };
-        
-        var userChats = new[]
-        {
-            new UserChatEntity { ChatId = mangoChatEntity.Id, RoleId = UserRole.User, UserId = newUser.Id },
-            new UserChatEntity { ChatId = mangoChatEntity.Id, RoleId = UserRole.User, UserId = SeedDataConstants.MangoId }
-        };
-        
-        dbContext.Chats.Add(mangoChatEntity);
-        dbContext.UserChats.AddRange(userChats);
+        // var mangoChatEntity = new ChatEntity
+        // {
+        //     Id = Guid.NewGuid(),
+        //     CommunityType = CommunityType.DirectChat,
+        //     Title = "Mango Messenger",
+        //     CreatedAt = DateTime.UtcNow,
+        //     Description = "Service notifications",
+        //     MembersCount = 2
+        // };
+
+        const string title = "Mango Messenger";
+        const string description = "Service notifications";
+
+        var mangoChatEntity = ChatEntity.Create(
+            title,
+            CommunityType.DirectChat,
+            description,
+            mangoUser.Image,
+            DateTime.UtcNow,
+            membersCount: 2);
+
+        var senderChat = UserChatEntity.Create(newUser.Id, mangoChatEntity.Id, UserRole.User);
+        var receiverChat = UserChatEntity.Create(userId: SeedDataConstants.MangoId, mangoChatEntity.Id, UserRole.User);
 
         var firstMessage = new MessageEntity
         {
@@ -145,7 +147,7 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, Result<To
             ChatId = mangoChatEntity.Id,
             Content = GreetingsConstants.Hello,
         };
-        
+
         var secondMessage = new MessageEntity
         {
             Id = Guid.NewGuid(),
@@ -153,16 +155,22 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, Result<To
             ChatId = mangoChatEntity.Id,
             Content = GreetingsConstants.Guide,
         };
-        
-        mangoChatEntity.LastMessageId = secondMessage.Id;
-        mangoChatEntity.LastMessageAuthor = mangoUser.DisplayName;
-        mangoChatEntity.LastMessageText = secondMessage.Content;
-        mangoChatEntity.LastMessageTime = secondMessage.CreatedAt;
+
+        // mangoChatEntity.LastMessageId = secondMessage.Id;
+        // mangoChatEntity.LastMessageAuthor = mangoUser.DisplayName;
+        // mangoChatEntity.LastMessageText = secondMessage.Content;
+        // mangoChatEntity.LastMessageTime = secondMessage.CreatedAt;
+
+        mangoChatEntity.UpdateLastMessage(
+            lastMessageAuthor: mangoUser.DisplayName,
+            lastMessageText: secondMessage.Content,
+            secondMessage.CreatedAt,
+            secondMessage.Id);
 
         dbContext.Chats.Add(mangoChatEntity);
-        dbContext.UserChats.AddRange(userChats);
+        dbContext.UserChats.AddRange(senderChat, receiverChat);
         dbContext.Messages.AddRange(firstMessage, secondMessage);
-        
+
         await dbContext.SaveChangesAsync(cancellationToken);
 
         var expires = ((DateTimeOffset)session.ExpiresAt).ToUnixTimeSeconds();

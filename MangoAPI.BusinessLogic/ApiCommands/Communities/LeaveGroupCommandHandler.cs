@@ -68,7 +68,7 @@ public class LeaveGroupCommandHandler
         }
 
         dbContext.UserChats.Remove(userChat);
-        chat.MembersCount--;
+        chat.IncrementMembersCount(-1);
 
         dbContext.Update(chat);
         await dbContext.SaveChangesAsync(cancellationToken);
