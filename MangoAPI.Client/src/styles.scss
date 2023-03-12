@@ -503,6 +503,33 @@ i {
           border-radius: 15px 15px 15px 0;
           display: flex;
           flex-direction: column;
+          .message-reply {
+            width: 100%;
+            height: 40px;
+            padding-left: 10px;
+            border-left: 2px solid white;
+            margin-top: 5px;
+            margin-bottom: 5px;
+            
+            .message-reply-displayname {
+              max-width: 400px;
+              text-overflow: ellipsis;
+              overflow: hidden;
+              white-space:nowrap;
+              margin: 0;
+              font-size: 14px;
+              font-weight: 600;
+            }
+
+            .message-reply-text {
+              max-width: 400px;
+              text-overflow: ellipsis;
+              overflow: hidden;
+              white-space:nowrap;
+              margin: 0;
+              font-size: 14px;
+            }
+          }
           .message-image {
               max-width: 200px;
               cursor: pointer;
@@ -547,6 +574,10 @@ i {
       .message-layout {
         .message-content {
           background-color: $orange;
+
+          .message-reply {
+            border-left: 2px solid white;
+          }
         }
       }
     }
@@ -646,5 +677,77 @@ i {
         border-radius: 0 0 15px 15px;
       }
     }
+  }
+}
+
+.reply {
+  position: relative;
+  display: flex;
+  width: 100%;
+  height: 60px;
+  background-color: #262829;
+  flex-shrink: 0;
+
+  .reply-svg {
+    margin-left: 15px;
+    margin-top: 16px;
+    flex-shrink: 0;
+  }
+
+  .cross-svg {
+    position: absolute;
+    top: 16px;
+    right: 20px;
+    cursor: pointer;
+  }
+
+  .reply-container {
+    flex-shrink: 0; 
+    padding-right: 40px;
+    text-overflow: ellipsis;
+    .reply-displayname {
+      font-size: 16px;
+      margin-top: 5px;
+      margin-bottom: 0;
+    }
+
+    .reply-text {
+      display: inline-block;
+      color: $light-gray;
+      text-overflow: ellipsis;
+      white-space:nowrap;
+      width: 250px;
+      overflow: hidden;
+    }
+  }
+}
+
+.attachment {
+  position: relative;
+  display: flex;
+  width: 100%;
+  height: 60px;
+  background-color: #262829;
+  flex-shrink: 0;
+
+  .attachment-image {
+    margin-left: 10px;
+  }
+
+  .attachment-container {
+    margin-left: 10px;
+
+    .attachment-filename {
+      margin-top: 16px;
+      font-size: 14px;
+      font-weight: 500;
+    }
+  }
+
+  .cross-svg {
+    position: absolute;
+    top: 16px;
+    right: 20px;
+    cursor: pointer;
   }
 }
