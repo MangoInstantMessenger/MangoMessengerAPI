@@ -2,10 +2,10 @@
 using System.Threading;
 using System.Threading.Tasks;
 using MangoAPI.Application.Interfaces;
-using MangoAPI.Application.Services;
 using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.Domain.Constants;
 using MangoAPI.Domain.Entities;
+using MangoAPI.Domain.Entities.ChatEntities;
 using MangoAPI.Domain.Enums;
 using MangoAPI.Infrastructure.Database;
 using MediatR;
@@ -21,7 +21,7 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, Result<To
     private readonly IJwtGenerator jwtGenerator;
     private readonly IJwtGeneratorSettings jwtGeneratorSettings;
     private readonly IBlobServiceSettings blobServiceSettings;
-    private readonly PasswordHashService passwordHashService;
+    // private readonly PasswordHashService passwordHashService;
     private readonly IMangoUserSettings mangoUserSettings;
     private readonly IAvatarService avatarService;
 
@@ -47,7 +47,7 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, Result<To
         IJwtGeneratorSettings jwtGeneratorSettings,
         ResponseFactory<TokensResponse> responseFactory,
         IBlobServiceSettings blobServiceSettings,
-        PasswordHashService passwordHashService,
+        // PasswordHashService passwordHashService,
         IMangoUserSettings mangoUserSettings,
         IAvatarService avatarService)
     {
@@ -57,7 +57,7 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, Result<To
         this.jwtGenerator = jwtGenerator;
         this.jwtGeneratorSettings = jwtGeneratorSettings;
         this.blobServiceSettings = blobServiceSettings;
-        this.passwordHashService = passwordHashService;
+        // this.passwordHashService = passwordHashService;
         this.mangoUserSettings = mangoUserSettings;
         this.avatarService = avatarService;
     }
@@ -112,8 +112,9 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, Result<To
 
         if (isMangoUserExists == false)
         {
-            passwordHashService.HashPassword(mangoUser, mangoUserSettings.Password);
-            dbContext.Users.Add(mangoUser);
+            // passwordHashService.HashPassword(mangoUser, mangoUserSettings.Password);
+            // dbContext.Users.Add(mangoUser);
+            await userManager.CreateAsync(mangoUser, mangoUserSettings.Password);
         }
         
         // var mangoChatEntity = new ChatEntity

@@ -1,8 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using FluentValidation;
 using MangoAPI.Domain.Enums;
+using System;
+using System.Collections.Generic;
 
-namespace MangoAPI.Domain.Entities;
+namespace MangoAPI.Domain.Entities.ChatEntities;
 
 public sealed class ChatEntity
 {
@@ -46,7 +47,7 @@ public sealed class ChatEntity
         string description,
         string image,
         DateTime createdAt,
-        int membersCount) : base()
+        int membersCount)
     {
         Title = title;
         CommunityType = communityType;
@@ -58,6 +59,8 @@ public sealed class ChatEntity
         _messages = new List<MessageEntity>();
         _chatUsers = new List<UserChatEntity>();
         Id = Guid.NewGuid();
+        
+        new ChatEntityValidator().ValidateAndThrow(this);
     }
 
     public static ChatEntity Create(
@@ -76,11 +79,13 @@ public sealed class ChatEntity
     public void IncrementMembersCount(int value)
     {
         MembersCount += value;
+        new ChatEntityValidator().ValidateAndThrow(this);
     }
 
     public void ChangeChatImage(string fileName)
     {
         Image = fileName;
+        new ChatEntityValidator().ValidateAndThrow(this);
     }
 
     public void UpdateLastMessage(
@@ -104,6 +109,7 @@ public sealed class ChatEntity
     public void UpdateTitle(string title)
     {
         Title = title;
+        new ChatEntityValidator().ValidateAndThrow(this);
     }
 
     // var channel = new ChatEntity

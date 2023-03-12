@@ -1,7 +1,7 @@
-﻿using System;
-using MangoAPI.Domain.Enums;
+﻿using MangoAPI.Domain.Enums;
+using System;
 
-namespace MangoAPI.Domain.Entities;
+namespace MangoAPI.Domain.Entities.ChatEntities;
 
 public sealed class UserChatEntity
 {

@@ -369,7 +369,6 @@ namespace MangoAPI.Infrastructure.Migrations
                     Twitter = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Instagram = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     LinkedIn = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ProfilePicture = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },

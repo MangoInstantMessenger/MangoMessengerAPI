@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MangoAPI.Domain.Entities.ChatEntities;
+using System;
 using System.Collections.Generic;
 using MangoAPI.Domain.Enums;
 using Microsoft.AspNetCore.Identity;

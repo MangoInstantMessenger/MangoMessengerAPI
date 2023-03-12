@@ -208,6 +208,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "keyvault-secrets", "keyvaul
 		terraform\modules\keyvault-secrets\variables.tf = terraform\modules\keyvault-secrets\variables.tf
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MangoAPI.UnitTests", "MangoAPI.UnitTests\MangoAPI.UnitTests.csproj", "{4128BDA5-00F6-4500-A249-1B12C84840AA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -246,6 +248,10 @@ Global
 		{D60AA7DE-4121-4C89-91D3-8DBBF735E13F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D60AA7DE-4121-4C89-91D3-8DBBF735E13F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D60AA7DE-4121-4C89-91D3-8DBBF735E13F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4128BDA5-00F6-4500-A249-1B12C84840AA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4128BDA5-00F6-4500-A249-1B12C84840AA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4128BDA5-00F6-4500-A249-1B12C84840AA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4128BDA5-00F6-4500-A249-1B12C84840AA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Reflection;
 using MangoAPI.Domain.Entities;
+using MangoAPI.Domain.Entities.ChatEntities;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 

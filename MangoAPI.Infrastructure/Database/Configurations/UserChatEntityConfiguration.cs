@@ -1,5 +1,6 @@
 ﻿using MangoAPI.Domain.Constants;
 using MangoAPI.Domain.Entities;
+using MangoAPI.Domain.Entities.ChatEntities;
 using MangoAPI.Domain.Enums;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
