@@ -10,6 +10,7 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using Swashbuckle.AspNetCore.Annotations;
 
 namespace MangoAPI.Presentation.Controllers;
@@ -19,10 +20,14 @@ namespace MangoAPI.Presentation.Controllers;
 /// </summary>
 [ApiController]
 [Route("api/sessions")]
-public class SessionsController : ApiControllerBase, ISessionsController
+public class SessionsController : ApiControllerBase<SessionsController>, ISessionsController
 {
-    public SessionsController(IMediator mediator, IMapper mapper, ICorrelationContext correlationContext)
-        : base(mediator, mapper, correlationContext)
+    public SessionsController(
+        IMediator mediator,
+        IMapper mapper,
+        ICorrelationContext correlationContext,
+        ILogger<SessionsController> logger)
+        : base(mediator, mapper, correlationContext, logger)
     {
     }
 

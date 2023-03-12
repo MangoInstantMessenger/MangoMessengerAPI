@@ -12,6 +12,7 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using Swashbuckle.AspNetCore.Annotations;
 
 namespace MangoAPI.Presentation.Controllers;
@@ -23,10 +24,14 @@ namespace MangoAPI.Presentation.Controllers;
 [Route("api/key-exchange-requests")]
 [Produces("application/json")]
 [Authorize]
-public class KeyExchangeController : ApiControllerBase, IKeyExchangeController
+public class KeyExchangeController : ApiControllerBase<KeyExchangeController>, IKeyExchangeController
 {
-    public KeyExchangeController(IMediator mediator, IMapper mapper, ICorrelationContext correlationContext)
-        : base(mediator, mapper, correlationContext)
+    public KeyExchangeController(
+        IMediator mediator,
+        IMapper mapper, 
+        ICorrelationContext correlationContext,
+        ILogger<KeyExchangeController> logger)
+        : base(mediator, mapper, correlationContext, logger)
     {
     }
 

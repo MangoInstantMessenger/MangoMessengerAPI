@@ -4,15 +4,18 @@ using System.Threading.Tasks;
 using AutoMapper;
 using MangoAPI.Application.Interfaces;
 using MangoAPI.BusinessLogic.Responses;
+using MangoAPI.Domain.Constants;
+using MangoAPI.Presentation.Middlewares;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 namespace MangoAPI.Presentation.Controllers;
 
 /// <summary>
 /// Base controller class. Encapsulates common logic.
 /// </summary>
-public class ApiControllerBase : ControllerBase
+public class ApiControllerBase<TController> : ControllerBase where TController : ControllerBase
 {
     protected IMediator Mediator { get; }
 
@@ -20,17 +23,21 @@ public class ApiControllerBase : ControllerBase
 
     protected ICorrelationContext CorrelationContext { get; }
 
+    private readonly ILogger<TController> _logger;
+
     /// <summary>
     /// Initializes a new instance of the <see cref="ApiControllerBase"/> class.
     /// </summary>
     /// <param name="mediator">Mediator instance.</param>
     /// <param name="mapper">Automapper instance.</param>
     /// <param name="correlationContext">ICorrelationContext instance.</param>
-    public ApiControllerBase(IMediator mediator, IMapper mapper, ICorrelationContext correlationContext)
+    /// <param name="logger"></param>
+    public ApiControllerBase(IMediator mediator, IMapper mapper, ICorrelationContext correlationContext, ILogger<TController> logger)
     {
         Mediator = mediator;
         Mapper = mapper;
         CorrelationContext = correlationContext;
+        _logger = logger;
     }
 
     /// <summary>
@@ -47,11 +54,21 @@ public class ApiControllerBase : ControllerBase
     {
         var response = await Mediator.Send(request, cancellationToken);
 
-        return response.StatusCode switch
+        var errorDetails = ResponseMessageCodes.ErrorDictionary[ResponseMessageCodes.InvalidRequestModel];
+        var loggerMessage = $"ERROR ${response.StatusCode}: \n " +
+                            $"Error message: ${response.Error.ErrorMessage}, \n " +
+                            $"Error details: ${errorDetails}";
+        
+        switch (response.StatusCode)
         {
-            HttpStatusCode.BadRequest => BadRequest(response.Error),
-            HttpStatusCode.Conflict => Conflict(response.Error),
-            _ => Ok(response.Response),
-        };
+            case HttpStatusCode.BadRequest:
+                LoggingHelper.LoggerError(_logger, loggerMessage, null);
+                return BadRequest(response.Error);
+            case HttpStatusCode.Conflict:
+                LoggingHelper.LoggerError(_logger, loggerMessage, null);
+                return Conflict(response.Error);
+            default:
+                return Ok(response.Response);
+        }
     }
 }

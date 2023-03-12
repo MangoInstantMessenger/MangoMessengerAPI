@@ -169,7 +169,7 @@ public class Startup
 
         services.AddTransient<ICorrelationContext, CorrelationContext>();
 
-        services.AddAutoMapper(typeof(ApiControllerBase));
+        services.AddAutoMapper(typeof(ApiControllerBase<AppInfoController>));
 
         services.AddMvc();
 
