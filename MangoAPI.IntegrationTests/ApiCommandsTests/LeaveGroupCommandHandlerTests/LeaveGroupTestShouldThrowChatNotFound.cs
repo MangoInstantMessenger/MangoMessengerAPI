@@ -18,9 +18,11 @@ public class LeaveGroupTestShouldThrowChatNotFound : IntegrationTestBase
     {
         const string expectedMessage = ResponseMessageCodes.ChatNotFound;
         var expectedDetails = ResponseMessageCodes.ErrorDictionary[expectedMessage];
-        var user =
-            await MangoModule.RequestAsync(CommandHelper.RegisterPetroCommand(), CancellationToken.None);
-        var command = new LeaveGroupCommand(UserId: user.Response.Tokens.UserId, ChatId: Guid.NewGuid());
+
+        var petroCommand = CommandHelper.RegisterPetroCommand();
+        var petroResult = await MangoModule.RequestAsync(petroCommand, CancellationToken.None);
+        var chatId = Guid.NewGuid();
+        var command = new LeaveGroupCommand(petroResult.Response.Tokens.UserId, chatId);
 
         var result = await MangoModule.RequestAsync(command, CancellationToken.None);
 

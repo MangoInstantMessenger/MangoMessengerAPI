@@ -16,22 +16,20 @@ public class SendMessageSuccessTest : IntegrationTestBase
     [Fact]
     public async Task SendMessageNoAttachmentTestSuccessAsync()
     {
-        var user = await MangoModule.RequestAsync(
-            request: CommandHelper.RegisterPetroCommand(),
-            cancellationToken: CancellationToken.None);
-        var chat = await MangoModule.RequestAsync(
-            request: CommandHelper.CreateExtremeCodeMainChatCommand(user.Response.Tokens.UserId),
-            cancellationToken: CancellationToken.None);
+        var petroCommand = CommandHelper.RegisterPetroCommand();
+        var petroResult = await MangoModule.RequestAsync(petroCommand, CancellationToken.None);
+        var chatCommand = CommandHelper.CreateExtremeCodeMainChatCommand(petroResult.Response.Tokens.UserId);
+        var chatResult = await MangoModule.RequestAsync(chatCommand, CancellationToken.None);
+        var petroId = petroResult.Response.Tokens.UserId;
+        var sendCommand = CommandHelper.SendMessageToChannelCommand(petroId, chatResult.Response.ChatId);
 
-        var result = await MangoModule.RequestAsync(
-            request: CommandHelper.SendMessageToChannelCommand(user.Response.Tokens.UserId, chat.Response.ChatId),
-            cancellationToken: CancellationToken.None);
-
-        assert.Pass(result);
+        var result = await MangoModule.RequestAsync(sendCommand, CancellationToken.None);
         var messageEntity = await DbContextFixture.Messages
             .Include(x => x.User)
             .Include(x => x.Chat)
             .FirstAsync(x => x.Id == result.Response.MessageId);
+
+        assert.Pass(result);
         var chatEntity = messageEntity.Chat;
         var userEntity = messageEntity.User;
         chatEntity.LastMessageAuthor.Should().Be(userEntity.DisplayName);
@@ -43,23 +41,21 @@ public class SendMessageSuccessTest : IntegrationTestBase
     [Fact]
     public async Task SendMessageWithAttachmentTestSuccessAsync()
     {
-        var user = await MangoModule.RequestAsync(
-            request: CommandHelper.RegisterPetroCommand(),
-            cancellationToken: CancellationToken.None);
-        var chat = await MangoModule.RequestAsync(
-            request: CommandHelper.CreateExtremeCodeMainChatCommand(user.Response.Tokens.UserId),
-            cancellationToken: CancellationToken.None);
+        var petroCommand = CommandHelper.RegisterPetroCommand();
+        var petroResult = await MangoModule.RequestAsync(petroCommand, CancellationToken.None);
+        var chatCommand = CommandHelper.CreateExtremeCodeMainChatCommand(petroResult.Response.Tokens.UserId);
+        var chatResult = await MangoModule.RequestAsync(chatCommand, CancellationToken.None);
+        var petroId = petroResult.Response.Tokens.UserId;
         var file = MangoFilesHelper.GetTestImage();
+        var sendCommand = CommandHelper.SendMessageToChannelCommand(petroId, chatResult.Response.ChatId, file);
 
-        var result = await MangoModule.RequestAsync(
-            request: CommandHelper.SendMessageToChannelCommand(user.Response.Tokens.UserId, chat.Response.ChatId, file),
-            cancellationToken: CancellationToken.None);
-
-        assert.Pass(result);
+        var result = await MangoModule.RequestAsync(sendCommand, CancellationToken.None);
         var messageEntity = await DbContextFixture.Messages
             .Include(x => x.User)
             .Include(x => x.Chat)
             .FirstAsync(x => x.Id == result.Response.MessageId);
+
+        assert.Pass(result);
         var chatEntity = messageEntity.Chat;
         var userEntity = messageEntity.User;
         chatEntity.LastMessageAuthor.Should().Be(userEntity.DisplayName);

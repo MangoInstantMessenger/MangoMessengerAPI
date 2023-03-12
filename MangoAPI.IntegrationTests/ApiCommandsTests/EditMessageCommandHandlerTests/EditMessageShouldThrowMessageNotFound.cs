@@ -19,17 +19,16 @@ public class EditMessageShouldThrowMessageNotFound : IntegrationTestBase
     {
         const string expectedMessage = ResponseMessageCodes.MessageNotFound;
         var expectedDetails = ResponseMessageCodes.ErrorDictionary[expectedMessage];
-        var user =
-            await MangoModule.RequestAsync(CommandHelper.RegisterPetroCommand(), CancellationToken.None);
-        var chat =
-            await MangoModule.RequestAsync(
-                request: CommandHelper.CreateExtremeCodeMainChatCommand(user.Response.Tokens.UserId),
-                cancellationToken: CancellationToken.None);
+
+        var petroCommand = CommandHelper.RegisterPetroCommand();
+        var petro = await MangoModule.RequestAsync(petroCommand, CancellationToken.None);
+        var chatCommand = CommandHelper.CreateExtremeCodeMainChatCommand(petro.Response.Tokens.UserId);
+        var chat = await MangoModule.RequestAsync(chatCommand, CancellationToken.None);
         var command = new EditMessageCommand(
-            UserId: user.Response.Tokens.UserId,
-            ChatId: chat.Response.ChatId,
-            MessageId: Guid.NewGuid(),
-            ModifiedText: "Modified text");
+            chat.Response.ChatId,
+            petro.Response.Tokens.UserId,
+            Guid.NewGuid(),
+            "Modified text");
 
         var result = await MangoModule.RequestAsync(command, CancellationToken.None);
 

@@ -17,27 +17,23 @@ public class EditMessageSuccess : IntegrationTestBase
     [Fact]
     public async Task EditMessageHandlerTestSuccessAsync()
     {
-        var user =
-            await MangoModule.RequestAsync(CommandHelper.RegisterPetroCommand(), CancellationToken.None);
-        var chat =
-            await MangoModule.RequestAsync(
-                request: CommandHelper.CreateExtremeCodeMainChatCommand(user.Response.Tokens.UserId),
-                cancellationToken: CancellationToken.None);
-        var message =
-            await MangoModule.RequestAsync(
-                request: CommandHelper.SendMessageToChannelCommand(user.Response.Tokens.UserId, chat.Response.ChatId),
-                cancellationToken: CancellationToken.None);
-        var command = new EditMessageCommand(
-            ChatId: chat.Response.ChatId,
-            UserId: user.Response.Tokens.UserId,
-            MessageId: message.Response.MessageId,
-            ModifiedText: "Message edited");
+        var petroCommand = CommandHelper.RegisterPetroCommand();
+        var petroResult = await MangoModule.RequestAsync(petroCommand, CancellationToken.None);
+        var chatCommand = CommandHelper.CreateExtremeCodeMainChatCommand(petroResult.Response.Tokens.UserId);
+        var chatResult = await MangoModule.RequestAsync(chatCommand, CancellationToken.None);
+        var messageCommand = CommandHelper.SendMessageToChannelCommand(petroResult.Response.Tokens.UserId, chatResult.Response.ChatId);
+        var messageResult = await MangoModule.RequestAsync(messageCommand, CancellationToken.None);
+        var editCommand = new EditMessageCommand(
+            chatResult.Response.ChatId,
+            petroResult.Response.Tokens.UserId,
+            messageResult.Response.MessageId,
+            "Message edited");
 
-        var result = await MangoModule.RequestAsync(command, CancellationToken.None);
+        var result = await MangoModule.RequestAsync(editCommand, CancellationToken.None);
         var editedMessage =
-            await DbContextFixture.Messages.FirstAsync(x => x.Id == message.Response.MessageId);
+            await DbContextFixture.Messages.FirstAsync(x => x.Id == messageResult.Response.MessageId);
 
         assert.Pass(result);
-        editedMessage.Content.Should().Be(command.ModifiedText);
+        editedMessage.Content.Should().Be(editCommand.ModifiedText);
     }
 }
