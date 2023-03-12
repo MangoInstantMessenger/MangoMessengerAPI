@@ -11,6 +11,7 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using Swashbuckle.AspNetCore.Annotations;
 
 namespace MangoAPI.Presentation.Controllers;
@@ -22,10 +23,13 @@ namespace MangoAPI.Presentation.Controllers;
 [Route("api/communities")]
 [Produces("application/json")]
 [Authorize]
-public class CommunitiesController : ApiControllerBase, ICommunitiesController
+public class CommunitiesController : ApiControllerBase<CommunitiesController>, ICommunitiesController
 {
-    public CommunitiesController(IMediator mediator, IMapper mapper, ICorrelationContext correlationContext)
-        : base(mediator, mapper, correlationContext)
+    public CommunitiesController(IMediator mediator,
+        IMapper mapper, 
+        ICorrelationContext correlationContext,
+        ILogger<CommunitiesController> logger)
+        : base(mediator, mapper, correlationContext, logger)
     {
     }
 

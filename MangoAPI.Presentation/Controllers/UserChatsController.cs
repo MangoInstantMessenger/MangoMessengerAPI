@@ -10,6 +10,7 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using Swashbuckle.AspNetCore.Annotations;
 
 namespace MangoAPI.Presentation.Controllers;
@@ -20,10 +21,14 @@ namespace MangoAPI.Presentation.Controllers;
 [ApiController]
 [Route("api/user-chats/{chatId:guid}")]
 [Authorize]
-public class UserChatsController : ApiControllerBase, IUserChatsController
+public class UserChatsController : ApiControllerBase<UserChatsController>, IUserChatsController
 {
-    public UserChatsController(IMediator mediator, IMapper mapper, ICorrelationContext correlationContext)
-        : base(mediator, mapper, correlationContext)
+    public UserChatsController(
+        IMediator mediator,
+        IMapper mapper, 
+        ICorrelationContext correlationContext,
+        ILogger<UserChatsController> logger)
+        : base(mediator, mapper, correlationContext, logger)
     {
     }
 

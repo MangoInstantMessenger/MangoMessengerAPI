@@ -11,6 +11,7 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using Swashbuckle.AspNetCore.Annotations;
 
 namespace MangoAPI.Presentation.Controllers;
@@ -21,10 +22,14 @@ namespace MangoAPI.Presentation.Controllers;
 [ApiController]
 [Route("api/contacts")]
 [Authorize]
-public class ContactsController : ApiControllerBase, IContactsController
+public class ContactsController : ApiControllerBase<ContactsController>, IContactsController
 {
-    public ContactsController(IMediator mediator, IMapper mapper, ICorrelationContext correlationContext)
-        : base(mediator, mapper, correlationContext)
+    public ContactsController(
+        IMediator mediator, 
+        IMapper mapper,
+        ICorrelationContext correlationContext,
+        ILogger<ContactsController> logger)
+        : base(mediator, mapper, correlationContext, logger)
     {
     }
 
