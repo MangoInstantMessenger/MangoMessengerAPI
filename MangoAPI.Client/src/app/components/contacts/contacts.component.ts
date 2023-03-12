@@ -35,7 +35,6 @@ export class ContactsComponent implements OnInit, OnDestroy {
     displayName: '',
     displayNameColour: 0,
     birthdayDate: '',
-    email: '',
     website: '',
     username: '',
     bio: '',
@@ -199,7 +198,7 @@ export class ContactsComponent implements OnInit, OnDestroy {
             chatId: response.chatId
           };
           this._routingService.setQueryData(queryObject);
-          this._router.navigateByUrl('app?methodName=chats').then((r) => r);
+          this._router.navigateByUrl('chats').then((r) => r);
         },
         error: (error) => {
           this._errorNotificationService.notifyOnError(error);

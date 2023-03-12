@@ -19,9 +19,10 @@
       placeholder="Enter group description"
       type="text"
       [(ngModel)]="chatDescription"
+      (keydown.enter)="onCreateGroupClick()"
     />
 
-    <button class="form-button p-3 font-weight-bold mb-3" (click)="onCreateChatClick()">
+    <button class="form-button p-3 font-weight-bold mb-3" (click)="onCreateGroupClick()">
       CREATE
     </button>
     <button

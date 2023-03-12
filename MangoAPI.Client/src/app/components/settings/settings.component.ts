@@ -38,7 +38,6 @@ export class SettingsComponent implements OnInit, OnDestroy {
     displayName: '',
     displayNameColour: 0,
     birthdayDate: '',
-    email: '',
     website: '',
     username: '',
     bio: '',
@@ -56,7 +55,6 @@ export class SettingsComponent implements OnInit, OnDestroy {
     displayName: '',
     displayNameColour: 0,
     birthdayDate: '',
-    email: '',
     website: '',
     username: '',
     bio: '',
@@ -204,6 +202,12 @@ export class SettingsComponent implements OnInit, OnDestroy {
       const result = await firstValueFrom<UpdateProfilePictureResponse>(updateProfileImage$);
       alert(result.message);
       this.currentUser.pictureUrl = result.newUserPictureUrl;
+      const tokens = this._tokensService.getTokens();
+
+      if (tokens?.userProfilePictureUrl) {
+        tokens.userProfilePictureUrl = result.newUserPictureUrl;
+        this._tokensService.setTokens(tokens);
+      }
     } catch (e: any) {
       alert(e.error.errorMessage);
     }
@@ -249,10 +253,10 @@ export class SettingsComponent implements OnInit, OnDestroy {
 
   onSaveChangesSocialsClick(): void {
     const command: UpdateUserSocialsCommand = {
-      instagram: this.currentUser.instagram,
-      facebook: this.currentUser.facebook,
-      twitter: this.currentUser.twitter,
-      linkedIn: this.currentUser.linkedIn
+      facebook: this.currentUserForUpdating.facebook,
+      twitter: this.currentUserForUpdating.twitter,
+      instagram: this.currentUserForUpdating.instagram,
+      linkedIn: this.currentUserForUpdating.linkedIn
     };
 
     this._usersService

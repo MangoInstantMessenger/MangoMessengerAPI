@@ -1,4 +1,4 @@
-import { Component, OnDestroy } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { LoginCommand } from '../../types/requests/LoginCommand';
 import { SessionService } from '../../services/api/session.service';
 import { Router } from '@angular/router';
@@ -12,7 +12,7 @@ import { Subject, takeUntil } from 'rxjs';
   selector: 'app-login',
   templateUrl: './login.component.html'
 })
-export class LoginComponent implements OnDestroy {
+export class LoginComponent implements OnDestroy, OnInit {
   constructor(
     private _sessionService: SessionService,
     private _tokensService: TokensService,
@@ -21,8 +21,12 @@ export class LoginComponent implements OnDestroy {
     private _errorNotificationService: ErrorNotificationService
   ) {}
 
+  ngOnInit(): void {
+    this._tokensService.clearTokens();
+  }
+
   public loginCommand: LoginCommand = {
-    email: '',
+    username: '',
     password: ''
   };
 
@@ -39,7 +43,7 @@ export class LoginComponent implements OnDestroy {
 
   login(): void {
     const emailFieldValidationResult = this._validationService.validateField(
-      this.loginCommand.email,
+      this.loginCommand.username,
       'Email'
     );
     const passwordFieldValidationResult = this._validationService.validateField(

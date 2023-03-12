@@ -186,7 +186,7 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, Result<To
             Bio = "Service notifications",
             Id = SeedDataConstants.MangoId,
             Username = "MangoMessenger",
-            ImageFileName = "mango_logo.png",
+            ImageFileName = "mango_logo.jpg",
             PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(password)),
             PasswordSalt = hmac.Key
         };

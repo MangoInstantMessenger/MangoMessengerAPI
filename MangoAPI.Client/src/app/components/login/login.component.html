@@ -8,9 +8,9 @@
       class="mb-3 form-input p-3 user-select-none"
       id="emailAddress"
       name="emailAddress"
-      placeholder="Enter your email address"
+      placeholder="Enter username"
       type="text"
-      [(ngModel)]="loginCommand.email"
+      [(ngModel)]="loginCommand.username"
       (keyup.enter)="login()"
     />
 
@@ -19,7 +19,7 @@
       class="mb-3 form-input p-3 user-select-none"
       id="password"
       name="password"
-      placeholder="Enter your password"
+      placeholder="Enter password"
       type="password"
       [(ngModel)]="loginCommand.password"
       (keyup.enter)="login()"

@@ -42,13 +42,13 @@
             </div>
             <img src="./../../../assets/svg/calendar.svg" alt="Calendar Icon"/>
           </li>
-          <li>
-            <div class="info">
-              <p class="title">Email</p>
-              <a href="mailto:#">{{ currentUser.email }}</a>
-            </div>
-            <img src="./../../../assets/svg/mail.svg" alt="Mail Icon"/>
-          </li>
+<!--          <li>-->
+<!--            <div class="info">-->
+<!--              <p class="title">Email</p>-->
+<!--              <a href="mailto:#">{{ currentUser.email }}</a>-->
+<!--            </div>-->
+<!--            <img src="./../../../assets/svg/mail.svg" alt="Mail Icon"/>-->
+<!--          </li>-->
           <li *ngIf="currentUser.username">
             <div class="info">
               <p class="title">Username</p>
@@ -59,7 +59,7 @@
           <li *ngIf="currentUser.website">
             <div class="info">
               <p class="title">Website</p>
-              <p>{{ currentUser.website }}</p>
+              <p><a href="https://{{ currentUser.website }}" target="_blank">{{ currentUser.website }}</a></p>
             </div>
             <img src="./../../../assets/svg/world.svg" alt="World Icon"/>
           </li>
@@ -75,28 +75,28 @@
           <li *ngIf="currentUser.facebook">
             <div class="info">
               <p class="title">Facebook</p>
-              <a href="facebook.com/{{ currentUser.facebook }}">{{ currentUser.facebook }}</a>
+              <a href="https://facebook.com/{{ currentUser.facebook }}" target="_blank">{{ currentUser.facebook }}</a>
             </div>
             <img src="./../../../assets/svg/facebook.svg" alt="Facebook Icon"/>
           </li>
           <li *ngIf="currentUser.twitter">
             <div class="info">
               <p class="title">Twitter</p>
-              <a href="twitter.com/{{ currentUser.twitter }}">{{ currentUser.twitter }}</a>
+              <a href="https://twitter.com/{{ currentUser.twitter }}" target="_blank">{{ currentUser.twitter }}</a>
             </div>
             <img src="./../../../assets/svg/twitter.svg" alt="Twitter Icon"/>
           </li>
           <li *ngIf="currentUser.instagram">
             <div class="info">
               <p class="title">Instagram</p>
-              <a href="instagram.com/{{ currentUser.instagram }}">{{ currentUser.instagram }}</a>
+              <a href="https://instagram.com/{{ currentUser.instagram }}" target="_blank">{{ currentUser.instagram }}</a>
             </div>
             <img src="./../../../assets/svg/instagram.svg" alt="Instagram Icon"/>
           </li>
           <li *ngIf="currentUser.linkedIn">
             <div class="info">
               <p class="title">LinkedIn</p>
-              <a href="linkedin.com/in/{{ currentUser.linkedIn }}">{{ currentUser.linkedIn }}</a>
+              <a href="https://linkedin.com/in/{{ currentUser.linkedIn }}" target="_blank">{{ currentUser.linkedIn }}</a>
             </div>
             <img src="./../../../assets/svg/linkedin.svg" alt="LinkedIn Icon"/>
           </li>
