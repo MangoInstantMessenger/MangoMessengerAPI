@@ -40,35 +40,35 @@
               <p class="title">Birthdate</p>
               <p>{{ currentUser.birthdayDate | date }}</p>
             </div>
-            <img src="./../../../assets/svg/calendar.svg" alt="Calendar Icon" />
+            <img src="./../../../assets/svg/calendar.svg" alt="Calendar Icon"/>
           </li>
           <li>
             <div class="info">
               <p class="title">Email</p>
               <a href="mailto:#">{{ currentUser.email }}</a>
             </div>
-            <img src="./../../../assets/svg/mail.svg" alt="Mail Icon" />
+            <img src="./../../../assets/svg/mail.svg" alt="Mail Icon"/>
           </li>
-          <li *ngIf="currentUser.username && currentUser.userNameChanged">
+          <li *ngIf="currentUser.username">
             <div class="info">
               <p class="title">Username</p>
               <p>{{ currentUser.username }}</p>
             </div>
-            <img src="./../../../assets/svg/mail.svg" alt="Mail Icon" />
+            <img src="./../../../assets/svg/mail.svg" alt="Mail Icon"/>
           </li>
           <li *ngIf="currentUser.website">
             <div class="info">
               <p class="title">Website</p>
               <p>{{ currentUser.website }}</p>
             </div>
-            <img src="./../../../assets/svg/world.svg" alt="World Icon" />
+            <img src="./../../../assets/svg/world.svg" alt="World Icon"/>
           </li>
           <li *ngIf="currentUser.address">
             <div class="info">
               <p class="title">Address</p>
               <p>{{ currentUser.address }}</p>
             </div>
-            <img src="./../../../assets/svg/home.svg" alt="Home Icon" />
+            <img src="./../../../assets/svg/home.svg" alt="Home Icon"/>
           </li>
         </ul>
         <ul class="user-info">
@@ -77,35 +77,35 @@
               <p class="title">Facebook</p>
               <a href="facebook.com/{{ currentUser.facebook }}">{{ currentUser.facebook }}</a>
             </div>
-            <img src="./../../../assets/svg/facebook.svg" alt="Facebook Icon" />
+            <img src="./../../../assets/svg/facebook.svg" alt="Facebook Icon"/>
           </li>
           <li *ngIf="currentUser.twitter">
             <div class="info">
               <p class="title">Twitter</p>
               <a href="twitter.com/{{ currentUser.twitter }}">{{ currentUser.twitter }}</a>
             </div>
-            <img src="./../../../assets/svg/twitter.svg" alt="Twitter Icon" />
+            <img src="./../../../assets/svg/twitter.svg" alt="Twitter Icon"/>
           </li>
           <li *ngIf="currentUser.instagram">
             <div class="info">
               <p class="title">Instagram</p>
               <a href="instagram.com/{{ currentUser.instagram }}">{{ currentUser.instagram }}</a>
             </div>
-            <img src="./../../../assets/svg/instagram.svg" alt="Instagram Icon" />
+            <img src="./../../../assets/svg/instagram.svg" alt="Instagram Icon"/>
           </li>
           <li *ngIf="currentUser.linkedIn">
             <div class="info">
               <p class="title">LinkedIn</p>
               <a href="linkedin.com/in/{{ currentUser.linkedIn }}">{{ currentUser.linkedIn }}</a>
             </div>
-            <img src="./../../../assets/svg/linkedin.svg" alt="LinkedIn Icon" />
+            <img src="./../../../assets/svg/linkedin.svg" alt="LinkedIn Icon"/>
           </li>
           <li>
             <div class="info">
               <p class="title">Api Version</p>
               <p>{{ apiVersion }}</p>
             </div>
-            <img src="./../../../assets/svg/api.svg" alt="Api Icon" />
+            <img src="./../../../assets/svg/api.svg" alt="Api Icon"/>
           </li>
         </ul>
       </div>
@@ -311,7 +311,7 @@
           <span class="text-light-gray">Update profile picture</span>
         </div>
         <div class="profile-form-content">
-          <input type="file" id="ProfilePicture" (change)="onUpdateProfilePictureChange($event)" />
+          <input type="file" id="ProfilePicture" (change)="onUpdateProfilePictureChange($event)"/>
         </div>
         <div class="profile-form-footer gap-fix">
           <button class="button-dark" (click)="clearProfilePictureFile()">Reset</button>

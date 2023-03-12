@@ -43,8 +43,8 @@ public class GetCurrentUserChatsQueryHandler
                 ChatId = x.ChatId,
                 Title = x.Chat.Title,
                 CommunityType = x.Chat.CommunityType,
-                ChatLogoImageUrl = x.Chat.Image != null
-                    ? $"{blobServiceSettings.MangoBlobAccess}/{x.Chat.Image}"
+                ChatLogoImageUrl = x.Chat.ImageFileName != null
+                    ? $"{blobServiceSettings.MangoBlobAccess}/{x.Chat.ImageFileName}"
                     : null,
                 Description = x.Chat.Description,
                 MembersCount = x.Chat.MembersCount,
@@ -85,8 +85,8 @@ public class GetCurrentUserChatsQueryHandler
                 .FirstOrDefault(x => x.ChatId == currentChat.ChatId)?.User;
 
             currentChat.Title = colleague?.DisplayName;
-            currentChat.ChatLogoImageUrl = colleague?.Image != null
-                ? $"{blobServiceSettings.MangoBlobAccess}/{colleague.Image}"
+            currentChat.ChatLogoImageUrl = colleague?.ImageFileName != null
+                ? $"{blobServiceSettings.MangoBlobAccess}/{colleague.ImageFileName}"
                 : null;
         }
 

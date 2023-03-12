@@ -37,9 +37,9 @@ public record Message
     [DefaultValue("https://localhost:5001/Uploads/message_attachment.pdf")]
     public string MessageAttachmentUrl { get; init; }
 
-    [DefaultValue("John Doe")] public string InReplayToAuthor { get; init; }
+    [DefaultValue("John Doe")] public string InReplyToUser { get; init; }
 
-    [DefaultValue("Hello world!")] public string InReplayToText { get; init; }
+    [DefaultValue("Hello world!")] public string InReplyToText { get; init; }
 }
 
 public static class MessageMapper
@@ -59,12 +59,12 @@ public static class MessageMapper
             ChatId = message.ChatId,
             UserDisplayName = displayName,
             UserDisplayNameColour = displayNameColour,
-            MessageText = message.Content,
+            MessageText = message.Text,
             CreatedAt = message.CreatedAt,
             UpdatedAt = message.UpdatedAt,
             Self = message.UserId == userId,
-            InReplayToAuthor = message.InReplayToAuthor,
-            InReplayToText = message.InReplayToText,
+            InReplyToUser = message.InReplyToUser,
+            InReplyToText = message.InReplyToText,
             MessageAuthorPictureUrl = authorPictureUrl,
             MessageAttachmentUrl = attachmentUrl
         };

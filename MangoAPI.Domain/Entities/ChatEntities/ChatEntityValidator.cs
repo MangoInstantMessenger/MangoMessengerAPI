@@ -17,7 +17,7 @@ public class ChatEntityValidator : AbstractValidator<ChatEntity>
             .NotEmpty()
             .MaximumLength(100);
 
-        RuleFor(x => x.Image)
+        RuleFor(x => x.ImageFileName)
             .MaximumLength(100);
 
         RuleFor(x => x.CreatedAt)

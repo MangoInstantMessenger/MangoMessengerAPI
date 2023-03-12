@@ -66,8 +66,8 @@ public class LoginCommandHandler : IRequestHandler<LoginCommand, Result<TokensRe
 
         var session = new SessionEntity
         {
+            Id = Guid.NewGuid(),
             UserId = user.Id,
-            RefreshToken = Guid.NewGuid(),
             ExpiresAt = DateTime.UtcNow.AddDays(jwtGeneratorSettings.MangoRefreshTokenLifetimeDays),
             CreatedAt = DateTime.UtcNow
         };
@@ -89,11 +89,11 @@ public class LoginCommandHandler : IRequestHandler<LoginCommand, Result<TokensRe
 
         var expires = ((DateTimeOffset)session.ExpiresAt).ToUnixTimeSeconds();
         var userDisplayName = user.DisplayName;
-        var userProfilePictureUrl = $"{blobServiceSettings.MangoBlobAccess}/{user.Image}";
+        var userProfilePictureUrl = $"{blobServiceSettings.MangoBlobAccess}/{user.ImageFileName}";
 
         var tokens = TokensResponse.FromSuccess(
             accessToken,
-            session.RefreshToken,
+            session.Id,
             user.Id,
             expires,
             userDisplayName,

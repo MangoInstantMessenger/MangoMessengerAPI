@@ -17,11 +17,9 @@ public sealed class UserEntity
 
     public string DisplayName { get; set; }
 
-    public string Image { get; set; }
+    public string ImageFileName { get; set; }
 
     public string Bio { get; set; }
-
-    public bool UserNameChanged { get; set; }
 
     public DisplayNameColour DisplayNameColour { get; set; }
 
@@ -34,6 +32,4 @@ public sealed class UserEntity
     public UserInformationEntity UserInformation { get; set; }
 
     public ICollection<UserContactEntity> Contacts { get; set; }
-
-    public ICollection<DocumentEntity> Documents { get; set; }
 }

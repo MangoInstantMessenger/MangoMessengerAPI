@@ -8,8 +8,6 @@ public sealed class SessionEntity
 
     public Guid UserId { get; set; }
 
-    public Guid RefreshToken { get; set; }
-
     public DateTime CreatedAt { get; set; }
 
     public DateTime ExpiresAt { get; set; }

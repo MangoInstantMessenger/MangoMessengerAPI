@@ -34,7 +34,7 @@ public class SendMessageSuccessTest : IntegrationTestBase
         var userEntity = messageEntity.User;
         chatEntity.LastMessageAuthor.Should().Be(userEntity.DisplayName);
         chatEntity.LastMessageId.Should().Be(messageEntity.Id);
-        chatEntity.LastMessageText.Should().Be(messageEntity.Content);
+        chatEntity.LastMessageText.Should().Be(messageEntity.Text);
         chatEntity.LastMessageTime.Should().Be(messageEntity.CreatedAt);
     }
 
@@ -60,7 +60,7 @@ public class SendMessageSuccessTest : IntegrationTestBase
         var userEntity = messageEntity.User;
         chatEntity.LastMessageAuthor.Should().Be(userEntity.DisplayName);
         chatEntity.LastMessageId.Should().Be(messageEntity.Id);
-        chatEntity.LastMessageText.Should().Be(messageEntity.Content);
+        chatEntity.LastMessageText.Should().Be(messageEntity.Text);
         chatEntity.LastMessageTime.Should().Be(messageEntity.CreatedAt);
     }
 }

@@ -14,14 +14,14 @@ public class CreateChatTestSuccess : IntegrationTestBase
     [Fact]
     public async Task CreateChatTestSuccessAsync()
     {
-        var user =
-            await MangoModule.RequestAsync(CommandHelper.RegisterPetroCommand(), CancellationToken.None);
-        var partner =
-            await MangoModule.RequestAsync(CommandHelper.RegisterKhachaturCommand(), CancellationToken.None);
-        var command = new CreateChatCommand(
-            UserId: user.Response.Tokens.UserId,
-            PartnerId: partner.Response.Tokens.UserId);
+        var petroCommand = CommandHelper.RegisterPetroCommand();
+        var petroResult = await MangoModule.RequestAsync(petroCommand, CancellationToken.None);
+        var khachaturCommand = CommandHelper.RegisterKhachaturCommand();
+        var khachaturResult = await MangoModule.RequestAsync(khachaturCommand, CancellationToken.None);
+        var petroId = petroResult.Response.Tokens.UserId;
+        var khachaturId = khachaturResult.Response.Tokens.UserId;
 
+        var command = new CreateChatCommand(petroId, khachaturId);
         var result = await MangoModule.RequestAsync(command, CancellationToken.None);
 
         assert.Pass(result);

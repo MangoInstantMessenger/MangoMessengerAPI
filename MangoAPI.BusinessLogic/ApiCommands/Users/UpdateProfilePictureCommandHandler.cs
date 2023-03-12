@@ -1,11 +1,9 @@
-﻿using System;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 using MangoAPI.Application.Interfaces;
 using MangoAPI.Application.Services;
 using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.Domain.Constants;
-using MangoAPI.Domain.Entities;
 using MangoAPI.Infrastructure.Database;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -33,18 +31,6 @@ public class UpdateProfilePictureCommandHandler
         UpdateProfilePictureCommand request,
         CancellationToken cancellationToken)
     {
-        var totalUploadedDocsCount = await dbContext.Documents.CountAsync(
-            x =>
-                x.UserId == request.UserId &&
-                x.UploadedAt > DateTime.UtcNow.AddHours(-1), cancellationToken);
-
-        if (totalUploadedDocsCount > 10)
-        {
-            const string message = ResponseMessageCodes.UploadedDocumentsLimitReached10;
-            var details = ResponseMessageCodes.ErrorDictionary[message];
-            return responseFactory.ConflictResponse(message, details);
-        }
-
         var user = await dbContext.Users
             .FirstOrDefaultAsync(
                 userEntity => userEntity.Id == request.UserId,
@@ -63,16 +49,7 @@ public class UpdateProfilePictureCommandHandler
 
         await blobService.UploadFileBlobAsync(file.OpenReadStream(), request.ContentType, uniqueFileName);
 
-        var newUserPicture = new DocumentEntity
-        {
-            FileName = uniqueFileName,
-            UserId = request.UserId,
-            UploadedAt = DateTime.UtcNow,
-        };
-
-        dbContext.Documents.Add(newUserPicture);
-
-        user.Image = uniqueFileName;
+        user.ImageFileName = uniqueFileName;
 
         dbContext.Users.Update(user);
 

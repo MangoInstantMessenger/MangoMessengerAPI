@@ -42,7 +42,6 @@ export class SettingsComponent implements OnInit, OnDestroy {
     website: '',
     username: '',
     bio: '',
-    userNameChanged: false,
     address: '',
     facebook: '',
     twitter: '',
@@ -61,7 +60,6 @@ export class SettingsComponent implements OnInit, OnDestroy {
     website: '',
     username: '',
     bio: '',
-    userNameChanged: false,
     address: '',
     facebook: '',
     twitter: '',
@@ -100,11 +98,7 @@ export class SettingsComponent implements OnInit, OnDestroy {
       .subscribe({
         next: (response) => {
           this.currentUser = response.user;
-          this.currentUserForUpdating = {...response.user};
-
-          if (!response.user.userNameChanged) {
-            this.currentUser.username = '';
-          }
+          this.currentUserForUpdating = { ...response.user };
         },
         error: (error) => {
           this._errorNotificationService.notifyOnError(error);
@@ -169,8 +163,7 @@ export class SettingsComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.componentDestroyed$))
       .subscribe({
         next: (response) => {
-          this.currentUser = {...this.currentUserForUpdating};
-          this.currentUser.userNameChanged = true;
+          this.currentUser = { ...this.currentUserForUpdating };
           alert(response.message);
         },
         error: (error) => {

@@ -50,8 +50,7 @@ public class GetUserQueryHandler : IRequestHandler<GetUserQuery, Result<GetUserR
                 LinkedIn = user.UserInformation.LinkedIn,
                 Username = user.Username,
                 Bio = user.Bio,
-                UserNameChanged = user.UserNameChanged,
-                PictureUrl = $"{blobServiceSettings.MangoBlobAccess}/{user.Image}",
+                PictureUrl = $"{blobServiceSettings.MangoBlobAccess}/{user.ImageFileName}",
             }).FirstOrDefaultAsync(x => x.UserId == request.UserId, cancellationToken);
 
         if (user is null)

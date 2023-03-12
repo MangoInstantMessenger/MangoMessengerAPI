@@ -39,7 +39,7 @@ public class GetContactsQueryHandler : IRequestHandler<GetContactsQuery, Result<
                 DisplayName = userEntity.DisplayName,
                 Address = userEntity.UserInformation.Address,
                 Bio = userEntity.Bio,
-                PictureUrl = $"{blobServiceSettings.MangoBlobAccess}/{userEntity.Image}",
+                PictureUrl = $"{blobServiceSettings.MangoBlobAccess}/{userEntity.ImageFileName}",
                 Username = userEntity.Username,
                 IsContact = true,
             };

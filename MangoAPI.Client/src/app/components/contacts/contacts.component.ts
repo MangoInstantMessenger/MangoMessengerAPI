@@ -1,4 +1,4 @@
-import { RoutingConstants } from './../../types/constants/RoutingConstants';
+import { RoutingConstants } from '../../types/constants/RoutingConstants';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ContactsService } from '../../services/api/contacts.service';
 import { ErrorNotificationService } from '../../services/messenger/error-notification.service';
@@ -26,7 +26,7 @@ export class ContactsComponent implements OnInit, OnDestroy {
     private _communitiesService: CommunitiesService,
     private _router: Router,
     private _routingService: RoutingService,
-    public _modalWindowStateService: ModalWindowStateService,
+    public _modalWindowStateService: ModalWindowStateService
   ) {}
 
   public contacts: Contact[] = [];
@@ -39,7 +39,6 @@ export class ContactsComponent implements OnInit, OnDestroy {
     website: '',
     username: '',
     bio: '',
-    userNameChanged: false,
     address: '',
     facebook: '',
     twitter: '',
@@ -91,13 +90,13 @@ export class ContactsComponent implements OnInit, OnDestroy {
   }
 
   onOpenAvatarClick(): void {
-    this._modalWindowStateService.setIsModalWindowShowing(true)
-    this._modalWindowStateService.setPicture(this.activeUser.pictureUrl)
+    this._modalWindowStateService.setIsModalWindowShowing(true);
+    this._modalWindowStateService.setPicture(this.activeUser.pictureUrl);
   }
 
   closeModalWindowrClick(): void {
-    this._modalWindowStateService.setIsModalWindowShowing(false)
-    this._modalWindowStateService.setPictureNull()
+    this._modalWindowStateService.setIsModalWindowShowing(false);
+    this._modalWindowStateService.setPictureNull();
   }
 
   getUsersContacts(): void {

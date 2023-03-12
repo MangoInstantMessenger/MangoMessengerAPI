@@ -85,7 +85,7 @@ public class DeleteMessageCommandHandler
 
             messageDeleteNotification.NewLastMessageAuthor = newLastMessage?.User?.DisplayName;
             messageDeleteNotification.NewLastMessageId = newLastMessage?.Id;
-            messageDeleteNotification.NewLastMessageText = newLastMessage?.Content;
+            messageDeleteNotification.NewLastMessageText = newLastMessage?.Text;
             messageDeleteNotification.NewLastMessageTime = newLastMessage?.CreatedAt;
 
             // chat.LastMessageAuthor = newLastMessage?.User?.DisplayName;
@@ -95,7 +95,7 @@ public class DeleteMessageCommandHandler
 
             chat.UpdateLastMessage(
                 lastMessageAuthor: newLastMessage?.User?.DisplayName,
-                lastMessageText: newLastMessage?.Content,
+                lastMessageText: newLastMessage?.Text,
                 newLastMessage?.CreatedAt,
                 newLastMessage?.Id);
         }

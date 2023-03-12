@@ -11,11 +11,11 @@ public sealed class MessageEntity
 
     public Guid ChatId { get; set; }
 
-    public string Content { get; set; }
+    public string Text { get; set; }
 
-    public string InReplayToAuthor { get; set; }
+    public string InReplyToUser { get; set; }
 
-    public string InReplayToText { get; set; }
+    public string InReplyToText { get; set; }
 
     public string AttachmentFileName { get; set; }
 

@@ -11,5 +11,8 @@ public class UserContactEntityConfiguration : IEntityTypeConfiguration<UserConta
         builder.ToTable(nameof(UserContactEntity), MangoDbContext.DefaultSchema);
 
         builder.HasKey(x => x.Id);
+
+        builder.Property(x => x.UserId).IsRequired();
+        builder.Property(x => x.ContactId).IsRequired();
     }
 }

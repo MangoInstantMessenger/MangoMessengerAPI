@@ -77,7 +77,7 @@ public class EditMessageCommandHandler
         var messageIsLast = chat.LastMessageId.HasValue && chat.LastMessageId == request.MessageId;
         var updatedAt = DateTime.UtcNow;
 
-        message.Content = request.ModifiedText;
+        message.Text = request.ModifiedText;
         message.UpdatedAt = updatedAt;
 
         if (messageIsLast)

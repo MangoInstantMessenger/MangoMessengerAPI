@@ -12,9 +12,11 @@ public class ChatEntityConfiguration : IEntityTypeConfiguration<ChatEntity>
 
         builder.HasKey(x => x.Id);
 
+        builder.Property(x => x.Title).IsRequired();
+        builder.Property(x => x.ImageFileName).IsRequired();
+        builder.Property(x => x.Description).IsRequired().HasMaxLength(150);
         builder.Property(x => x.CommunityType).IsRequired();
         builder.Property(x => x.CreatedAt).IsRequired();
-        builder.Property(x => x.Title).IsRequired();
 
         builder.HasMany(x => x.Messages)
             .WithOne(x => x.Chat)

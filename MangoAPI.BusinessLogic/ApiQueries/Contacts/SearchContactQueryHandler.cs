@@ -42,7 +42,7 @@ public class SearchContactByDisplayNameQueryHandler
                 DisplayName = x.DisplayName,
                 Address = x.UserInformation.Address,
                 Bio = x.Bio,
-                PictureUrl = $"{blobServiceSettings.MangoBlobAccess}/{x.Image}",
+                PictureUrl = $"{blobServiceSettings.MangoBlobAccess}/{x.ImageFileName}",
                 Username = x.Username,
             });
 

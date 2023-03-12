@@ -224,9 +224,9 @@
                 />
                 <div class="message-wrapper">
                   <div class="message-content">
-                    <div *ngIf="message.inReplayToAuthor" class="message-reply">
-                      <p class="message-reply-displayname">{{ message.inReplayToAuthor }}</p>
-                      <p class="message-reply-text">{{ message.inReplayToText }}</p>
+                    <div *ngIf="message.inReplyToUser" class="message-reply">
+                      <p class="message-reply-displayname">{{ message.inReplyToUser }}</p>
+                      <p class="message-reply-text">{{ message.inReplyToText }}</p>
                     </div>
                     <span *ngIf="message.messageAttachmentUrl"
                       ><img
@@ -318,15 +318,15 @@
                       >
                         {{ message.userDisplayName }}
                       </div>
-                      <div *ngIf="message.inReplayToAuthor" class="message-reply">
+                      <div *ngIf="message.inReplyToUser" class="message-reply">
                         <p
                           class="message-reply-displayname {{
                             getDisplayNameColour(message.userDisplayNameColour)
                           }}"
                         >
-                          {{ message.inReplayToAuthor }}
+                          {{ message.inReplyToUser }}
                         </p>
-                        <p class="message-reply-text">{{ message.inReplayToText }}</p>
+                        <p class="message-reply-text">{{ message.inReplyToText }}</p>
                       </div>
                       <span *ngIf="message.messageAttachmentUrl"
                         ><img

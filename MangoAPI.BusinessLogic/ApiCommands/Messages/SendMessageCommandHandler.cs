@@ -47,7 +47,7 @@ public class SendMessageCommandHandler
         var user = await dbContext.Users.AsNoTracking()
             .Select(x => new
             {
-                x.DisplayName, x.DisplayNameColour, x.Image, x.Id,
+                x.DisplayName, x.DisplayNameColour, Image = x.ImageFileName, x.Id,
             }).FirstOrDefaultAsync(
                 x => x.Id == request.UserId, cancellationToken);
 
@@ -79,16 +79,16 @@ public class SendMessageCommandHandler
             Id = request.MessageId ?? Guid.NewGuid(),
             ChatId = request.ChatId,
             UserId = request.UserId,
-            Content = request.MessageText,
+            Text = request.MessageText,
             CreatedAt = request.CreatedAt ?? DateTime.UtcNow,
             AttachmentFileName = attachmentUniqueFileName,
-            InReplayToAuthor = request.InReplayToAuthor,
-            InReplayToText = request.InReplayToText,
+            InReplyToUser = request.InReplayToAuthor,
+            InReplyToText = request.InReplayToText,
         };
 
         userChat.Chat.UpdateLastMessage(
             lastMessageAuthor: user.DisplayName,
-            lastMessageText: messageEntity.Content,
+            lastMessageText: messageEntity.Text,
             messageEntity.CreatedAt,
             messageEntity.Id);
 

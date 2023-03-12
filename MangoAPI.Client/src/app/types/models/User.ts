@@ -9,7 +9,6 @@ export interface User {
   website: string;
   username: string;
   bio: string;
-  userNameChanged: boolean;
   address: string;
   facebook: string;
   twitter: string;

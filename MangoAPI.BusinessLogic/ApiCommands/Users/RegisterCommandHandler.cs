@@ -66,7 +66,7 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, Result<To
         {
             DisplayName = request.Username,
             Username = request.Username,
-            Image = defaultAvatar,
+            ImageFileName = defaultAvatar,
             DisplayNameColour = (DisplayNameColour)color,
             PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(request.Password)),
             PasswordSalt = hmac.Key
@@ -80,8 +80,8 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, Result<To
 
         var session = new SessionEntity
         {
+            Id = Guid.NewGuid(),
             UserId = newUser.Id,
-            RefreshToken = Guid.NewGuid(),
             ExpiresAt = DateTime.UtcNow.AddDays(jwtGeneratorSettings.MangoRefreshTokenLifetimeDays),
             CreatedAt = DateTime.UtcNow,
         };
@@ -110,7 +110,7 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, Result<To
 
         mangoChatEntity.UpdateLastMessage(
             lastMessageAuthor: mangoUser.DisplayName,
-            lastMessageText: lastMessage.Content,
+            lastMessageText: lastMessage.Text,
             lastMessage.CreatedAt,
             lastMessage.Id);
 
@@ -122,11 +122,11 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, Result<To
 
         var expires = ((DateTimeOffset)session.ExpiresAt).ToUnixTimeSeconds();
         var userDisplayName = newUser.DisplayName;
-        var userProfilePictureUrl = $"{blobServiceSettings.MangoBlobAccess}/{newUser.Image}";
+        var userProfilePictureUrl = $"{blobServiceSettings.MangoBlobAccess}/{newUser.ImageFileName}";
 
         var response = TokensResponse.FromSuccess(
             accessToken,
-            session.RefreshToken,
+            session.Id,
             newUser.Id,
             expires,
             userDisplayName,
@@ -146,7 +146,7 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, Result<To
             title,
             CommunityType.DirectChat,
             description,
-            mangoUser.Image,
+            mangoUser.ImageFileName,
             DateTime.UtcNow,
             membersCount: 2);
         return mangoChatEntity;
@@ -159,7 +159,7 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, Result<To
             Id = Guid.NewGuid(),
             UserId = SeedDataConstants.MangoId,
             ChatId = mangoChatEntity.Id,
-            Content = GreetingsConstants.Hello,
+            Text = GreetingsConstants.Hello,
         };
 
         var secondMessage = new MessageEntity
@@ -167,7 +167,7 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, Result<To
             Id = Guid.NewGuid(),
             UserId = SeedDataConstants.MangoId,
             ChatId = mangoChatEntity.Id,
-            Content = GreetingsConstants.Guide,
+            Text = GreetingsConstants.Guide,
         };
 
         var greetingMessages = new[] { firstMessage, secondMessage };
@@ -186,7 +186,7 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, Result<To
             Bio = "Service notifications",
             Id = SeedDataConstants.MangoId,
             Username = "MangoMessenger",
-            Image = "mango_logo.png",
+            ImageFileName = "mango_logo.png",
             PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(password)),
             PasswordSalt = hmac.Key
         };

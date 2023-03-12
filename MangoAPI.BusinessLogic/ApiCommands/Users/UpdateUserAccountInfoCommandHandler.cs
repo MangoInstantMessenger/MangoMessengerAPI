@@ -68,8 +68,6 @@ public class
 
         user.Username = request.Username;
 
-        user.UserNameChanged = true;
-
         user.Bio = request.Bio;
 
         user.UserInformation.Address = request.Address;

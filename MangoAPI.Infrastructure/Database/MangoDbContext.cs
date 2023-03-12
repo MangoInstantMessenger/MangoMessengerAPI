@@ -12,6 +12,8 @@ public class MangoDbContext : DbContext
     public MangoDbContext(DbContextOptions options) : base(options)
     {
     }
+    
+    public DbSet<UserEntity> Users { get; set; }
 
     public DbSet<SessionEntity> Sessions { get; set; }
 
@@ -25,12 +27,9 @@ public class MangoDbContext : DbContext
 
     public DbSet<UserInformationEntity> UserInformation { get; set; }
 
-    public DbSet<DocumentEntity> Documents { get; set; }
-
     public DbSet<DiffieHellmanParameterEntity> DiffieHellmanParameterEntities { get; set; }
 
     public DbSet<DiffieHellmanKeyExchangeEntity> DiffieHellmanKeyExchangeEntities { get; set; }
-    public DbSet<UserEntity> Users { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

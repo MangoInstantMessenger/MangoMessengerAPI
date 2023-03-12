@@ -1,53 +1,76 @@
 <body class="d-flex">
-  <div class="menu" id="menu">
-    <div *ngIf="_modalWindowStateService.isModalWindowShowing" class="black-cover" (click)="closeModalWindowrClick()">
-      <img
-        *ngIf="_modalWindowStateService.picture"
-        src="{{ _modalWindowStateService.picture }}"
-        class="profile-avatar"
-        alt=""
-        (click)="$event.stopPropagation()"
-      />
-    </div>
-    <app-navbar [activeComponent]="'contacts'"></app-navbar>
-    <aside class="sidebar contacts">
-      <header class="sidebar-header p-3">
-        <div class="d-flex justify-content-between align-items-center">
-          <h5>Contacts</h5>
-        </div>
-        <div class="d-flex justify-content-between gap-fix mt-2">
-          <div class="dropdown">
-            <button class="dropdown-toggle p-2 button-dark" data-bs-toggle="dropdown">
-              {{ contactFilter }}
-            </button>
-            <div aria-labelledby="dLabel" class="dropdown-menu mt-0" role="menu">
-              <div class="dropdown-item" (click)="onContactFilterClick($event)">All contacts</div>
-            </div>
-          </div>
-          <div class="d-inline">
-            <div class="input-group mb-3">
-              <label for="searchBar"></label>
-              <input
-                aria-describedby="basic-addon1"
-                class="form-control ml-3 rounded"
-                id="searchBar"
-                name="searchBar"
-                placeholder="Search contacts..."
-                type="text"
-                [(ngModel)]="contactSearchQuery"
-                (ngModelChange)="onContactSearchQueryChange()"
-              />
-            </div>
+<div class="menu" id="menu">
+  <div *ngIf="_modalWindowStateService.isModalWindowShowing" class="black-cover" (click)="closeModalWindowrClick()">
+    <img
+      *ngIf="_modalWindowStateService.picture"
+      src="{{ _modalWindowStateService.picture }}"
+      class="profile-avatar"
+      alt=""
+      (click)="$event.stopPropagation()"
+    />
+  </div>
+  <app-navbar [activeComponent]="'contacts'"></app-navbar>
+  <aside class="sidebar contacts">
+    <header class="sidebar-header p-3">
+      <div class="d-flex justify-content-between align-items-center">
+        <h5>Contacts</h5>
+      </div>
+      <div class="d-flex justify-content-between gap-fix mt-2">
+        <div class="dropdown">
+          <button class="dropdown-toggle p-2 button-dark" data-bs-toggle="dropdown">
+            {{ contactFilter }}
+          </button>
+          <div aria-labelledby="dLabel" class="dropdown-menu mt-0" role="menu">
+            <div class="dropdown-item" (click)="onContactFilterClick($event)">All contacts</div>
           </div>
         </div>
-      </header>
-      <ul class="list overflow py-3 px-2">
-        <li class="mb-2" *ngFor="let contact of contacts">
-          <div
-            class="list-item active"
-            *ngIf="contact.userId === activeUserId; else elseContact"
-            (click)="onContactTabClick(contact)"
-          >
+        <div class="d-inline">
+          <div class="input-group mb-3">
+            <label for="searchBar"></label>
+            <input
+              aria-describedby="basic-addon1"
+              class="form-control ml-3 rounded"
+              id="searchBar"
+              name="searchBar"
+              placeholder="Search contacts..."
+              type="text"
+              [(ngModel)]="contactSearchQuery"
+              (ngModelChange)="onContactSearchQueryChange()"
+            />
+          </div>
+        </div>
+      </div>
+    </header>
+    <ul class="list overflow py-3 px-2">
+      <li class="mb-2" *ngFor="let contact of contacts">
+        <div
+          class="list-item active"
+          *ngIf="contact.userId === activeUserId; else elseContact"
+          (click)="onContactTabClick(contact)"
+        >
+          <img alt="Chat avatar" class="avatar" src="{{ contact.pictureUrl }}"/>
+          <div class="content">
+            <div class="title">
+              <div class="info pl-1">
+                <p>
+                  {{ contact.displayName }}
+                </p>
+              </div>
+            </div>
+            <div class="message">
+              <div class="d-flex">
+                <img src="./assets/svg/info-white.svg" alt="White Info Icon" class="p-1"/>
+                <p>{{ contact.bio }}</p>
+              </div>
+              <div class="d-flex">
+                <img src="./assets/svg/point-white.svg" alt="White Info Icon" class="p-1"/>
+                <p>{{ contact.address }}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <ng-template #elseContact>
+          <div class="list-item" (click)="onContactTabClick(contact)">
             <img alt="Chat avatar" class="avatar" src="{{ contact.pictureUrl }}"/>
             <div class="content">
               <div class="title">
@@ -59,144 +82,121 @@
               </div>
               <div class="message">
                 <div class="d-flex">
-                  <img src="./assets/svg/info-white.svg" alt="White Info Icon" class="p-1" />
+                  <img src="./assets/svg/info-white.svg" alt="White Info Icon" class="p-1"/>
                   <p>{{ contact.bio }}</p>
                 </div>
                 <div class="d-flex">
-                  <img src="./assets/svg/point-white.svg" alt="White Info Icon" class="p-1" />
+                  <img src="./assets/svg/point-white.svg" alt="White Info Icon" class="p-1"/>
                   <p>{{ contact.address }}</p>
                 </div>
               </div>
             </div>
           </div>
-          <ng-template #elseContact>
-            <div class="list-item" (click)="onContactTabClick(contact)">
-              <img alt="Chat avatar" class="avatar" src="{{ contact.pictureUrl }}" />
-              <div class="content">
-                <div class="title">
-                  <div class="info pl-1">
-                    <p>
-                      {{ contact.displayName }}
-                    </p>
-                  </div>
-                </div>
-                <div class="message">
-                  <div class="d-flex">
-                    <img src="./assets/svg/info-white.svg" alt="White Info Icon" class="p-1" />
-                    <p>{{ contact.bio }}</p>
-                  </div>
-                  <div class="d-flex">
-                    <img src="./assets/svg/point-white.svg" alt="White Info Icon" class="p-1" />
-                    <p>{{ contact.address }}</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </ng-template>
-        </li>
-      </ul>
-    </aside>
-  </div>
-  <main class="contact">
-    <div class="main-info background-pattern">
-      <img src="{{ activeUser.pictureUrl }}" alt="User Avatar" class="avatar" (click)="onOpenAvatarClick()"/>
-      <div class="d-flex flex-column">
-        <p>{{ activeUser.displayName }}</p>
-        <p>{{ activeUser.bio }}</p>
-      </div>
-      <div class="d-flex gap-fix" *ngIf="activeUserId !== currentUserId">
-        <button
-          class="button-dark py-2 px-4"
-          *ngIf="isActiveUserContact"
-          (click)="onStartDirectChatButtonClick(activeUserId)"
-        >
-          Start Direct Chat
-        </button>
-        <button
-          class="button-dark py-2 px-4 ml-3"
-          *ngIf="isActiveUserContact"
-          (click)="onRemoveContactButtonClick(activeUserId)"
-        >
-          <span class="text-red" style="font-size: 16px">Remove Contact</span>
-        </button>
-
-        <button
-          class="button-dark py-2 px-4 ml-3"
-          *ngIf="!isActiveUserContact"
-          (click)="onAddContactClick(activeUser.userId)"
-        >
-          Add Contact
-        </button>
-      </div>
+        </ng-template>
+      </li>
+    </ul>
+  </aside>
+</div>
+<main class="contact">
+  <div class="main-info background-pattern">
+    <img src="{{ activeUser.pictureUrl }}" alt="User Avatar" class="avatar" (click)="onOpenAvatarClick()"/>
+    <div class="d-flex flex-column">
+      <p>{{ activeUser.displayName }}</p>
+      <p>{{ activeUser.bio }}</p>
     </div>
+    <div class="d-flex gap-fix" *ngIf="activeUserId !== currentUserId">
+      <button
+        class="button-dark py-2 px-4"
+        *ngIf="isActiveUserContact"
+        (click)="onStartDirectChatButtonClick(activeUserId)"
+      >
+        Start Direct Chat
+      </button>
+      <button
+        class="button-dark py-2 px-4 ml-3"
+        *ngIf="isActiveUserContact"
+        (click)="onRemoveContactButtonClick(activeUserId)"
+      >
+        <span class="text-red" style="font-size: 16px">Remove Contact</span>
+      </button>
 
-    <ul class="user-info">
-      <li *ngIf="activeUser.birthdayDate">
-        <div class="info">
-          <p class="title">Birthdate</p>
-          <p>{{ activeUser.birthdayDate | date }}</p>
-        </div>
-        <img src="./assets/svg/calendar.svg" alt="Calendar Icon" />
-      </li>
-      <li>
-        <div class="info">
-          <p class="title">Email</p>
-          <a href="mailto:#">{{ activeUser.email }}</a>
-        </div>
-        <img src="./assets/svg/mail.svg" alt="Mail Icon" />
-      </li>
-      <li *ngIf="activeUser.username && activeUser.userNameChanged">
-        <div class="info">
-          <p class="title">Username</p>
-          <p>{{ activeUser.username }}</p>
-        </div>
-        <img src="./assets/svg/mail.svg" alt="Mail Icon" />
-      </li>
-      <li *ngIf="activeUser.website">
-        <div class="info">
-          <p class="title">Website</p>
-          <p>{{ activeUser.website }}</p>
-        </div>
-        <img src="./assets/svg/world.svg" alt="World Icon" />
-      </li>
-      <li *ngIf="activeUser.address">
-        <div class="info">
-          <p class="title">Address</p>
-          <p>{{ activeUser.address }}</p>
-        </div>
-        <img src="./assets/svg/home.svg" alt="Home Icon" />
-      </li>
-    </ul>
+      <button
+        class="button-dark py-2 px-4 ml-3"
+        *ngIf="!isActiveUserContact"
+        (click)="onAddContactClick(activeUser.userId)"
+      >
+        Add Contact
+      </button>
+    </div>
+  </div>
 
-    <ul class="user-info">
-      <li *ngIf="activeUser.facebook">
-        <div class="info">
-          <p class="title">Facebook</p>
-          <a href="#">{{ activeUser.facebook }}</a>
-        </div>
-        <img src="./assets/svg/facebook.svg" alt="Facebook Icon" />
-      </li>
-      <li *ngIf="activeUser.twitter">
-        <div class="info">
-          <p class="title">Twitter</p>
-          <a href="#">{{ activeUser.twitter }}</a>
-        </div>
-        <img src="./assets/svg/twitter.svg" alt="Twitter Icon" />
-      </li>
-      <li *ngIf="activeUser.instagram">
-        <div class="info">
-          <p class="title">Instagram</p>
-          <a href="#">{{ activeUser.instagram }}</a>
-        </div>
-        <img src="./assets/svg/instagram.svg" alt="Instagram Icon" />
-      </li>
-      <li *ngIf="activeUser.linkedIn">
-        <div class="info">
-          <p class="title">LinkedIn</p>
-          <a href="#">{{ activeUser.linkedIn }}</a>
-        </div>
-        <img src="./assets/svg/linkedin.svg" alt="LinkedIn Icon" />
-      </li>
-    </ul>
-  </main>
+  <ul class="user-info">
+    <li *ngIf="activeUser.birthdayDate">
+      <div class="info">
+        <p class="title">Birthdate</p>
+        <p>{{ activeUser.birthdayDate | date }}</p>
+      </div>
+      <img src="./assets/svg/calendar.svg" alt="Calendar Icon"/>
+    </li>
+    <li>
+      <div class="info">
+        <p class="title">Email</p>
+        <a href="mailto:#">{{ activeUser.email }}</a>
+      </div>
+      <img src="./assets/svg/mail.svg" alt="Mail Icon"/>
+    </li>
+    <li *ngIf="activeUser.username">
+      <div class="info">
+        <p class="title">Username</p>
+        <p>{{ activeUser.username }}</p>
+      </div>
+      <img src="./assets/svg/mail.svg" alt="Mail Icon"/>
+    </li>
+    <li *ngIf="activeUser.website">
+      <div class="info">
+        <p class="title">Website</p>
+        <p>{{ activeUser.website }}</p>
+      </div>
+      <img src="./assets/svg/world.svg" alt="World Icon"/>
+    </li>
+    <li *ngIf="activeUser.address">
+      <div class="info">
+        <p class="title">Address</p>
+        <p>{{ activeUser.address }}</p>
+      </div>
+      <img src="./assets/svg/home.svg" alt="Home Icon"/>
+    </li>
+  </ul>
+
+  <ul class="user-info">
+    <li *ngIf="activeUser.facebook">
+      <div class="info">
+        <p class="title">Facebook</p>
+        <a href="#">{{ activeUser.facebook }}</a>
+      </div>
+      <img src="./assets/svg/facebook.svg" alt="Facebook Icon"/>
+    </li>
+    <li *ngIf="activeUser.twitter">
+      <div class="info">
+        <p class="title">Twitter</p>
+        <a href="#">{{ activeUser.twitter }}</a>
+      </div>
+      <img src="./assets/svg/twitter.svg" alt="Twitter Icon"/>
+    </li>
+    <li *ngIf="activeUser.instagram">
+      <div class="info">
+        <p class="title">Instagram</p>
+        <a href="#">{{ activeUser.instagram }}</a>
+      </div>
+      <img src="./assets/svg/instagram.svg" alt="Instagram Icon"/>
+    </li>
+    <li *ngIf="activeUser.linkedIn">
+      <div class="info">
+        <p class="title">LinkedIn</p>
+        <a href="#">{{ activeUser.linkedIn }}</a>
+      </div>
+      <img src="./assets/svg/linkedin.svg" alt="LinkedIn Icon"/>
+    </li>
+  </ul>
+</main>
 </body>

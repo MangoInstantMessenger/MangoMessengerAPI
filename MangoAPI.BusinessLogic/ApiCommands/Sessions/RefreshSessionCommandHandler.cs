@@ -41,7 +41,7 @@ public class RefreshSessionCommandHandler : IRequestHandler<RefreshSessionComman
         var session = await dbContext.Sessions
             .Include(x => x.UserEntity)
             .FirstOrDefaultAsync(
-                entity => entity.RefreshToken == request.RefreshToken,
+                entity => entity.Id == request.RefreshToken,
                 cancellationToken);
 
         if (session is null || session.IsExpired)
@@ -69,7 +69,7 @@ public class RefreshSessionCommandHandler : IRequestHandler<RefreshSessionComman
 
         var newSession = new SessionEntity
         {
-            RefreshToken = Guid.NewGuid(),
+            Id = Guid.NewGuid(),
             UserId = session.UserId,
             ExpiresAt = DateTime.UtcNow.AddDays(jwtGeneratorSettings.MangoRefreshTokenLifetimeDays),
             CreatedAt = DateTime.UtcNow,
@@ -82,11 +82,11 @@ public class RefreshSessionCommandHandler : IRequestHandler<RefreshSessionComman
 
         var expires = ((DateTimeOffset)session.ExpiresAt).ToUnixTimeSeconds();
         var userDisplayName = session.UserEntity.DisplayName;
-        var userProfilePictureUrl = $"{blobServiceSettings.MangoBlobAccess}/{session.UserEntity.Image}";
+        var userProfilePictureUrl = $"{blobServiceSettings.MangoBlobAccess}/{session.UserEntity.ImageFileName}";
 
         var result = TokensResponse.FromSuccess(
             accessToken,
-            newSession.RefreshToken,
+            newSession.Id,
             session.UserId,
             expires,
             userDisplayName,
