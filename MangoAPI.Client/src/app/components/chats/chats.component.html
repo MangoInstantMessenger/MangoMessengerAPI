@@ -224,6 +224,10 @@
                 />
                 <div class="message-wrapper">
                   <div class="message-content">
+                    <div *ngIf="message.inReplayToAuthor" class="message-reply">
+                      <p class="message-reply-displayname">{{ message.inReplayToAuthor }}</p>
+                      <p class="message-reply-text">{{ message.inReplayToText }}</p>
+                    </div>
                     <span *ngIf="message.messageAttachmentUrl"
                       ><img
                         class="message-image"
@@ -278,7 +282,18 @@
                       </div>
                     </div>
                     <div class="message-button">
-                      <img alt="Reply Icon" src="./../../../assets/svg/reply.svg" />
+                      <img
+                        alt="Reply Icon"
+                        src="./../../../assets/svg/reply.svg"
+                        (click)="
+                          onReplyClick(
+                            message.messageId,
+                            message.userDisplayName,
+                            message.messageText,
+                            message.userDisplayNameColour
+                          )
+                        "
+                      />
                     </div>
                   </div>
                 </div>
@@ -303,6 +318,16 @@
                       >
                         {{ message.userDisplayName }}
                       </div>
+                      <div *ngIf="message.inReplayToAuthor" class="message-reply">
+                        <p
+                          class="message-reply-displayname {{
+                            getDisplayNameColour(message.userDisplayNameColour)
+                          }}"
+                        >
+                          {{ message.inReplayToAuthor }}
+                        </p>
+                        <p class="message-reply-text">{{ message.inReplayToText }}</p>
+                      </div>
                       <span *ngIf="message.messageAttachmentUrl"
                         ><img
                           class="message-image"
@@ -317,7 +342,18 @@
                         {{ toShortTimeString(message.createdAt) }}
                       </p>
                       <div class="message-button">
-                        <img alt="Reply Icon" src="./../../../assets/svg/reply.svg" />
+                        <img
+                          alt="Reply Icon"
+                          src="./../../../assets/svg/reply.svg"
+                          (click)="
+                            onReplyClick(
+                              message.messageId,
+                              message.userDisplayName,
+                              message.messageText,
+                              message.userDisplayNameColour
+                            )
+                          "
+                        />
                       </div>
                     </div>
                   </div>
@@ -327,7 +363,47 @@
           </li>
         </ul>
       </div>
-
+      <div *ngIf="_replyStateService.reply" class="reply">
+        <!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools -->
+        <svg
+          class="reply-svg"
+          fill="#adb5bd"
+          height="45"
+          width="45"
+          viewBox="0 0 45 45"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M10.53 5.03a.75.75 0 10-1.06-1.06l-6.25 6.25a.75.75 0 000 1.06l6.25 6.25a.75.75 0 101.06-1.06L5.56 11.5H17a3.248 3.248 0 013.25 3.248v4.502a.75.75 0 001.5 0v-4.502A4.748 4.748 0 0017 10H5.56l4.97-4.97z"
+          />
+        </svg>
+        <div class="reply-container">
+          <p
+            class="reply-displayname {{
+              getDisplayNameColour(_replyStateService.reply.displayNameColour)
+            }}"
+          >
+            {{ _replyStateService.reply.displayName }}
+          </p>
+          <p class="reply-text">{{ _replyStateService.reply.text }}</p>
+        </div>
+        <img
+          src="../../../assets/svg/cross.svg"
+          class="cross-svg"
+          (click)="_replyStateService.setReplyNull()"
+        />
+      </div>
+      <div *ngIf="messageAttachment" class="attachment">
+        <img src="{{messageAttachmentBlobUrl}}" class="attachment-image" alt="">
+        <div class="attachment-container">
+          <p class="attachment-filename">{{messageAttachment.name}}</p>
+        </div>
+        <img
+          src="../../../assets/svg/cross.svg"
+          class="cross-svg"
+          (click)="removeImageSelected()"
+        />
+      </div>
       <div class="chat-footer" *ngIf="activeChat.isMember; else elseNotMember">
         <div class="dropdown">
           <button class="button-dark button-dark-no-hover align-text-top" data-bs-toggle="dropdown">

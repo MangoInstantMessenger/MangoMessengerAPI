@@ -24,7 +24,9 @@ export class Message {
     messageText: string,
     createdAt: string,
     self: boolean,
-    messageAuthorPictureUrl: string
+    messageAuthorPictureUrl: string,
+    inReplayToAuthor: string | null,
+    inReplayToText: string | null
   ) {
     this.messageId = messageId;
     this.userId = userId;
@@ -35,5 +37,7 @@ export class Message {
     this.createdAt = createdAt;
     this.self = self;
     this.messageAuthorPictureUrl = messageAuthorPictureUrl;
+    this.inReplayToAuthor = inReplayToAuthor ?? null;
+    this.inReplayToText = inReplayToText ?? null;
   }
 }
