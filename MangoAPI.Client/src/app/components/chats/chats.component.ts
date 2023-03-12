@@ -1,13 +1,5 @@
 import { ModalWindowStateService } from '../../services/states/modalWindowState.service';
-import {
-  Component,
-  OnChanges,
-  OnDestroy,
-  OnInit,
-  Sanitizer,
-  SecurityContext,
-  SimpleChanges
-} from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { TokensService } from '../../services/messenger/tokens.service';
 import { Chat } from '../../types/models/Chat';
 import { CommunitiesService } from '../../services/api/communities.service';
@@ -23,21 +15,13 @@ import { ValidationService } from '../../services/messenger/validation.service';
 import * as signalR from '@microsoft/signalr';
 import { EditMessageNotification } from '../../types/models/EditMessageNotification';
 import { DeleteMessageNotification } from '../../types/models/DeleteMessageNotification';
-import {
-  Subject,
-  takeUntil,
-  of,
-  BehaviorSubject,
-  firstValueFrom,
-  distinctUntilKeyChanged
-} from 'rxjs';
+import { Subject, takeUntil, BehaviorSubject, firstValueFrom, distinctUntilKeyChanged } from 'rxjs';
 import { DisplayNameColours } from 'src/app/types/enums/DisplayNameColours';
 import { DeleteMessageCommand } from 'src/app/types/requests/DeleteMessageCommand';
 import ApiBaseService from 'src/app/services/api/apiBase.service';
 import { SendMessageResponse } from '../../types/responses/SendMessageResponse';
 import { ReplyStateSerivce } from 'src/app/services/states/replyState.service';
 import { Reply } from 'src/app/types/models/Reply';
-import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-chats',
@@ -87,13 +71,12 @@ export class ChatsComponent implements OnInit, OnDestroy {
     title: ''
   };
 
-  public activeChatId: string = '';
+  public activeChatId = '';
   public messages: Message[] = [];
 
   public messageAttachment: File | null = null;
   public messageAttachmentBlobUrl: string | ArrayBuffer | null = '';
   public messageText = '';
-  public messageAttachmentUrl: string = '';
   public searchChatQuery = '';
   public searchMessagesQuery = '';
   public chatFilter = 'All chats';
@@ -111,13 +94,11 @@ export class ChatsComponent implements OnInit, OnDestroy {
   }
 
   initializeView(): void {
-    this.activeChatBehaviorSubject
-      .pipe(distinctUntilKeyChanged('chatId'))
-      .subscribe(() => {
-        this._replyStateService.setReplyNull()
-        this.messageAttachment = null 
-        this.messageAttachmentBlobUrl = null 
-      });
+    this.activeChatBehaviorSubject.pipe(distinctUntilKeyChanged('chatId')).subscribe(() => {
+      this._replyStateService.setReplyNull();
+      this.messageAttachment = null;
+      this.messageAttachmentBlobUrl = null;
+    });
 
     const tokens = this._tokensService.getTokens();
 
@@ -189,12 +170,11 @@ export class ChatsComponent implements OnInit, OnDestroy {
   async imageSelected(event: any) {
     this.messageAttachment = event.target.files[0];
 
-    var reader = new FileReader();
-  reader.onload = () => {
-    console.log(reader.result);
-    this.messageAttachmentBlobUrl = reader.result
-  };
-  reader.readAsDataURL(event.target.files[0]);
+    const reader = new FileReader();
+    reader.onload = () => {
+      this.messageAttachmentBlobUrl = reader.result;
+    };
+    reader.readAsDataURL(event.target.files[0]);
   }
 
   removeImageSelected() {
