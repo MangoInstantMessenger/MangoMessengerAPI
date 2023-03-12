@@ -1,4 +1,5 @@
-﻿using MangoAPI.Domain.Enums;
+﻿using FluentValidation;
+using MangoAPI.Domain.Enums;
 using System;
 
 namespace MangoAPI.Domain.Entities.ChatEntities;
@@ -26,6 +27,8 @@ public sealed class UserChatEntity
         UserId = userId;
         ChatId = chatId;
         RoleId = roleId;
+
+        new UserChatEntityValidator().ValidateAndThrow(this);
     }
 
     public static UserChatEntity Create(Guid userId, Guid chatId, UserRole roleId)
@@ -34,7 +37,7 @@ public sealed class UserChatEntity
 
         return userChat;
     }
-    
+
     public void Archive()
     {
         IsArchived = true;
