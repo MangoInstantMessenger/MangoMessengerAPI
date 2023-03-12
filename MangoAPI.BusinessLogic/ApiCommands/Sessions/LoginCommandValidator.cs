@@ -12,8 +12,8 @@ public class LoginCommandValidator : AbstractValidator<LoginCommand>
             .NotEmpty()
             .Must(username => username.All(char.IsLetterOrDigit))
             .WithMessage("Username must only contain letters or numbers.")
-            .Length(8, 50)
-            .WithMessage("Username must be between 8 and 50 characters.");
+            .Length(1, 50)
+            .WithMessage("Username must be between 1 and 50 characters.");
 
         RuleFor(x => x.Password)
             .Cascade(CascadeMode.Stop)

@@ -23,6 +23,6 @@ public record Contact
     [DefaultValue("Uploads/razumovsky_picture.jpg")]
     public string PictureUrl { get; init; }
 
-    [DefaultValue("my-email@gmail.com")]
+    [DefaultValue("MyUniqueUsername")]
     public string Username { get; init; }
 }
