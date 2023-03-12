@@ -18,17 +18,17 @@ public class LogoutTestShouldThrowUserNotFound : IntegrationTestBase
     {
         const string expectedMessage = ResponseMessageCodes.UserNotFound;
         var expectedDetails = ResponseMessageCodes.ErrorDictionary[expectedMessage];
-        await MangoModule.RequestAsync(
-            request: CommandHelper.RegisterPetroCommand(),
-            cancellationToken: CancellationToken.None);
-        var user1 = await MangoModule.RequestAsync(
-            request: CommandHelper.RegisterKhachaturCommand(),
-            cancellationToken: CancellationToken.None);
-        var userId1 = user1.Response.Tokens.UserId;
-        var session = await MangoModule.RequestAsync(
-            request: CommandHelper.CreateLoginCommand("kolosovp95@gmail.com", "Bm3-`dPRv-/w#3)cw^97"),
-            cancellationToken: CancellationToken.None);
-        var command = new LogoutCommand(RefreshToken: session.Response.Tokens.RefreshToken, UserId: userId1);
+        var petroCommand = CommandHelper.RegisterPetroCommand();
+        var khachaturCommand = CommandHelper.RegisterKhachaturCommand();
+
+        var petro = await MangoModule.RequestAsync(petroCommand, CancellationToken.None);
+
+        var khachatur = await MangoModule.RequestAsync(khachaturCommand, CancellationToken.None);
+
+        var khachaturId = khachatur.Response.Tokens.UserId;
+        var petroRefresh = petro.Response.Tokens.RefreshToken;
+
+        var command = new LogoutCommand(khachaturId, petroRefresh);
 
         var result = await MangoModule.RequestAsync(command, CancellationToken.None);
 

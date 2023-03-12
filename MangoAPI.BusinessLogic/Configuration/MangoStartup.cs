@@ -49,6 +49,8 @@ public static class MangoStartup
 
         services.AddScoped<IAvatarService, AvatarService>();
 
+        services.AddSingleton<IPasswordService, PasswordService>();
+
         services.AddValidatorsFromAssembly(typeof(LoginCommandValidator).Assembly);
 
         services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehaviour<,>));

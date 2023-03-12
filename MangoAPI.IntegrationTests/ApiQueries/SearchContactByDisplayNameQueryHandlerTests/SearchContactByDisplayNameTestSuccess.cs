@@ -24,6 +24,6 @@ public class SearchContactByDisplayNameTestSuccess : IntegrationTestBase
 
         assert.Pass(result);
         result.Response.Contacts.Count.Should().Be(1);
-        result.Response.Contacts[0].DisplayName.Should().Be("Petro Kolosov");
+        result.Response.Contacts[0].DisplayName.Should().Be("PetroKolosov");
     }
 }
