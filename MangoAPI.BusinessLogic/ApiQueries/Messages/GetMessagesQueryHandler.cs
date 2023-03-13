@@ -38,7 +38,7 @@ public class GetMessagesQueryHandler : IRequestHandler<GetMessagesQuery, Result<
                 MessageId = messageEntity.Id,
                 ChatId = messageEntity.ChatId,
                 UserId = messageEntity.UserId,
-                MessageText = messageEntity.Text,
+                Text = messageEntity.Text,
                 UpdatedAt = messageEntity.UpdatedAt,
                 CreatedAt = messageEntity.CreatedAt,
                 UserDisplayName = messageEntity.User.DisplayName,
@@ -47,11 +47,11 @@ public class GetMessagesQueryHandler : IRequestHandler<GetMessagesQuery, Result<
                 InReplyToUser = messageEntity.InReplyToUser,
                 InReplyToText = messageEntity.InReplyToText,
 
-                MessageAuthorPictureUrl = messageEntity.User.ImageFileName != null
+                AuthorImageUrl = messageEntity.User.ImageFileName != null
                     ? $"{blobServiceSettings.MangoBlobAccess}/{messageEntity.User.ImageFileName}"
                     : null,
 
-                MessageAttachmentUrl = messageEntity.AttachmentFileName != null
+                AttachmentUrl = messageEntity.AttachmentFileName != null
                     ? $"{blobServiceSettings.MangoBlobAccess}/{messageEntity.AttachmentFileName}"
                     : null,
             }).Take(200).ToListAsync(cancellationToken);

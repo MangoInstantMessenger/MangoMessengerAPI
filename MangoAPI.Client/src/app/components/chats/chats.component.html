@@ -219,8 +219,8 @@
                 <img
                   alt="User Avatar"
                   class="user-avatar"
-                  (click)="onOpenImageClick(message.messageAuthorPictureUrl)"
-                  src="{{ message.messageAuthorPictureUrl }}"
+                  (click)="onOpenImageClick(message.authorImageUrl)"
+                  src="{{ message.authorImageUrl }}"
                 />
                 <div class="message-wrapper">
                   <div class="message-content">
@@ -228,14 +228,14 @@
                       <p class="message-reply-displayname">{{ message.inReplyToUser }}</p>
                       <p class="message-reply-text">{{ message.inReplyToText }}</p>
                     </div>
-                    <span *ngIf="message.messageAttachmentUrl"
+                    <span *ngIf="message.attachmentUrl"
                     ><img
                       class="message-image"
-                      (click)="onOpenImageClick(message.messageAttachmentUrl)"
-                      src="{{ message.messageAttachmentUrl }}"
+                      (click)="onOpenImageClick(message.attachmentUrl)"
+                      src="{{ message.attachmentUrl }}"
                       alt=""
                     /></span>
-                    <span>{{ message.messageText }}</span>
+                    <span>{{ message.text }}</span>
                   </div>
                   <div class="message-options gap-fix">
                     <p class="message-time mr-2">
@@ -289,7 +289,7 @@
                           onReplyClick(
                             message.messageId,
                             message.userDisplayName,
-                            message.messageText,
+                            message.text,
                             message.userDisplayNameColour
                           )
                         "
@@ -305,13 +305,13 @@
                   <img
                     alt="User Avatar"
                     class="user-avatar"
-                    (click)="onOpenImageClick(message.messageAuthorPictureUrl)"
-                    src="{{ message.messageAuthorPictureUrl }}"
+                    (click)="onOpenImageClick(message.authorImageUrl)"
+                    src="{{ message.authorImageUrl }}"
                   />
                   <div class="message-wrapper">
                     <div class="message-content">
                       <div
-                        *ngIf="!message.messageAttachmentUrl"
+                        *ngIf="!message.attachmentUrl"
                         class="display-name {{
                           getDisplayNameColour(message.userDisplayNameColour)
                         }}"
@@ -328,14 +328,14 @@
                         </p>
                         <p class="message-reply-text">{{ message.inReplyToText }}</p>
                       </div>
-                      <span *ngIf="message.messageAttachmentUrl"
+                      <span *ngIf="message.attachmentUrl"
                       ><img
                         class="message-image"
-                        (click)="onOpenImageClick(message.messageAttachmentUrl)"
-                        src="{{ message.messageAttachmentUrl }}"
+                        (click)="onOpenImageClick(message.attachmentUrl)"
+                        src="{{ message.attachmentUrl }}"
                         alt=""
                       /></span>
-                      <span>{{ message.messageText }}</span>
+                      <span>{{ message.text }}</span>
                     </div>
                     <div class="message-options gap-fix">
                       <p class="message-time mr-2">
@@ -349,7 +349,7 @@
                             onReplyClick(
                               message.messageId,
                               message.userDisplayName,
-                              message.messageText,
+                              message.text,
                               message.userDisplayNameColour
                             )
                           "

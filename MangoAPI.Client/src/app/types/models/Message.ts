@@ -2,41 +2,39 @@
 
 export class Message {
   messageId = '';
-  userId: string;
   chatId: string;
+  userId: string;
   userDisplayName: string;
   userDisplayNameColour: DisplayNameColours;
-  messageText: string;
-  createdAt: string;
+  text: string;
+  createdAt = '';
   updatedAt: string | null | undefined;
   self: boolean;
-  messageAuthorPictureUrl: string;
-  messageAttachmentUrl: string | null | undefined;
+  authorImageUrl: string;
+  attachmentUrl: string | null | undefined;
   inReplyToUser: string | null | undefined;
   inReplyToText: string | null | undefined;
 
   constructor(
-    messageId: string,
     userId: string,
     chatId: string,
     userDisplayName: string,
     userDisplayNameColour: DisplayNameColours,
-    messageText: string,
+    text: string,
     createdAt: string,
     self: boolean,
     messageAuthorPictureUrl: string,
     inReplyToUser: string | null,
     inReplyToText: string | null
   ) {
-    this.messageId = messageId;
     this.userId = userId;
     this.chatId = chatId;
     this.userDisplayName = userDisplayName;
     this.userDisplayNameColour = userDisplayNameColour;
-    this.messageText = messageText;
+    this.text = text;
     this.createdAt = createdAt;
     this.self = self;
-    this.messageAuthorPictureUrl = messageAuthorPictureUrl;
+    this.authorImageUrl = messageAuthorPictureUrl;
     this.inReplyToUser = inReplyToUser ?? null;
     this.inReplyToText = inReplyToText ?? null;
   }

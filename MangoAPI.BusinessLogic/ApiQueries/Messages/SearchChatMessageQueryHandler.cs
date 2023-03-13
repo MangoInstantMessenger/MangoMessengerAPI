@@ -56,18 +56,18 @@ public class SearchChatMessageQueryHandler
                 UserId = x.UserId,
                 UserDisplayName = x.User.DisplayName,
                 UserDisplayNameColour = x.User.DisplayNameColour,
-                MessageText = x.Text,
+                Text = x.Text,
                 CreatedAt = x.CreatedAt,
                 UpdatedAt = x.UpdatedAt,
                 Self = x.User.Id == request.UserId,
                 InReplyToUser = x.InReplyToUser,
                 InReplyToText = x.InReplyToText,
 
-                MessageAuthorPictureUrl = x.User.ImageFileName != null
+                AuthorImageUrl = x.User.ImageFileName != null
                     ? $"{blobServiceSettings.MangoBlobAccess}/{x.User.ImageFileName}"
                     : null,
 
-                MessageAttachmentUrl = x.AttachmentFileName != null
+                AttachmentUrl = x.AttachmentFileName != null
                     ? $"{blobServiceSettings.MangoBlobAccess}/{x.AttachmentFileName}"
                     : null,
             }).Take(200);

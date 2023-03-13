@@ -22,6 +22,7 @@ import ApiBaseService from 'src/app/services/api/apiBase.service';
 import { SendMessageResponse } from '../../types/responses/SendMessageResponse';
 import { ReplyStateService } from 'src/app/services/states/replyState.service';
 import { Reply } from 'src/app/types/models/Reply';
+import { GetChatMessagesResponse } from '../../types/responses/GetChatMessagesResponse';
 
 @Component({
   selector: 'app-chats',
@@ -215,7 +216,7 @@ export class ChatsComponent implements OnInit, OnDestroy {
       const message = this.messages.filter((x) => x.messageId === notification.messageId)[0];
 
       if (message) {
-        message.messageText = notification.modifiedText;
+        message.text = notification.modifiedText;
         message.updatedAt = notification.updatedAt;
       }
 
@@ -258,7 +259,7 @@ export class ChatsComponent implements OnInit, OnDestroy {
     message.self = message.userId == this.userId;
     const chat = this.chats.filter((x) => x.chatId === message.chatId)[0];
     chat.lastMessageAuthor = message.userDisplayName;
-    chat.lastMessageText = message.messageText;
+    chat.lastMessageText = message.text;
     chat.lastMessageTime = message.createdAt;
     chat.lastMessageId = message.messageId;
     this.chats = this.chats.filter((x) => x.chatId !== message.chatId);
@@ -292,7 +293,7 @@ export class ChatsComponent implements OnInit, OnDestroy {
       .getChatMessages(chatId)
       .pipe(takeUntil(this.componentDestroyed$))
       .subscribe({
-        next: (response) => {
+        next: (response: GetChatMessagesResponse) => {
           this.messages = response.messages;
           this.scrollToEnd();
         },
@@ -457,13 +458,11 @@ export class ChatsComponent implements OnInit, OnDestroy {
       return;
     }
 
-    const isoString = new Date().toISOString();
-    const messageId = crypto.randomUUID();
+    const createdAt = new Date().toISOString();
     const sendMessageFormData = new FormData();
 
-    sendMessageFormData.append('messageText', newMessageText);
+    sendMessageFormData.append('text', newMessageText);
     sendMessageFormData.append('chatId', this.activeChatId);
-    sendMessageFormData.append('messageId', messageId);
     sendMessageFormData.append(
       'inReplayToAuthor',
       this._replyStateService.reply?.displayName ?? ''
@@ -475,18 +474,19 @@ export class ChatsComponent implements OnInit, OnDestroy {
     }
 
     const newMessage = new Message(
-      messageId,
       tokens.userId,
       this.activeChatId,
       tokens.userDisplayName,
       tokens.displayNameColour,
       newMessageText,
-      isoString,
+      createdAt,
       true,
       tokens.userProfilePictureUrl,
       this._replyStateService.reply?.displayName ?? null,
       this._replyStateService.reply?.text ?? null
     );
+
+    console.log(newMessage);
 
     this.clearMessageInput();
 
@@ -498,8 +498,13 @@ export class ChatsComponent implements OnInit, OnDestroy {
 
     const response = await firstValueFrom<SendMessageResponse>(sendMessage$);
 
-    newMessage.messageId = response.messageId;
-    newMessage.messageAttachmentUrl = response.attachmentUrl;
+    newMessage.messageId = response.messageModel.messageId;
+    newMessage.attachmentUrl = response.messageModel.attachmentUrl;
+    newMessage.createdAt = response.messageModel.createdAt;
+
+    // console.log(response);
+    //
+    // console.log(newMessage);
 
     this.clearAttachmentInput();
     this.scrollToEnd();

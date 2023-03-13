@@ -20,20 +20,20 @@ public class SendMessageCommandHandler
     : IRequestHandler<SendMessageCommand, Result<SendMessageResponse>>
 {
     private readonly MangoDbContext dbContext;
-    private readonly IHubContext<ChatHub, IHubClient> hubContext;
+    // private readonly IHubContext<ChatHub, IHubClient> hubContext;
     private readonly ResponseFactory<SendMessageResponse> responseFactory;
     private readonly IBlobServiceSettings blobServiceSettings;
     private readonly IBlobService blobService;
 
     public SendMessageCommandHandler(
         MangoDbContext dbContext,
-        IHubContext<ChatHub, IHubClient> hubContext,
+        // IHubContext<ChatHub, IHubClient> hubContext,
         ResponseFactory<SendMessageResponse> responseFactory,
         IBlobServiceSettings blobServiceSettings,
         IBlobService blobService)
     {
         this.dbContext = dbContext;
-        this.hubContext = hubContext;
+        // this.hubContext = hubContext;
         this.responseFactory = responseFactory;
         this.blobServiceSettings = blobServiceSettings;
         this.blobService = blobService;
@@ -73,16 +73,6 @@ public class SendMessageCommandHandler
 
         var attachmentUniqueFileName = await UploadAttachmentIfExistsAsync(request);
 
-        // var messageEntity = new MessageEntity
-        // {
-        //     ChatId = request.ChatId,
-        //     UserId = request.UserId,
-        //     Text = request.MessageText,
-        //     AttachmentFileName = attachmentUniqueFileName,
-        //     InReplyToUser = request.InReplayToAuthor,
-        //     InReplyToText = request.InReplayToText,
-        // };
-
         var messageEntity = MessageEntity.Create(
             request.UserId,
             request.ChatId,
@@ -107,17 +97,17 @@ public class SendMessageCommandHandler
         var attachmentUrl = attachmentUniqueFileName == null
             ? null
             : $"{blobServiceSettings.MangoBlobAccess}/{attachmentUniqueFileName}";
-
-        var messageDto = messageEntity.ToMessage(
+        
+        Message messageResultDto = messageEntity.ToMessage(
             user.DisplayName,
             user.Id,
             user.DisplayNameColour,
             authorPictureUrl,
             attachmentUrl);
 
-        await hubContext.Clients.Group(request.ChatId.ToString()).BroadcastMessageAsync(messageDto);
+        // await hubContext.Clients.Group(request.ChatId.ToString()).BroadcastMessageAsync(messageDto);
 
-        return responseFactory.SuccessResponse(SendMessageResponse.FromSuccess(messageEntity.Id, attachmentUrl));
+        return responseFactory.SuccessResponse(SendMessageResponse.FromSuccess(messageResultDto));
     }
 
     private async Task<string> UploadAttachmentIfExistsAsync(SendMessageCommand request)
