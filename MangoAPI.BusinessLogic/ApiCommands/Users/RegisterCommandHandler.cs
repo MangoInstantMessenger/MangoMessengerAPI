@@ -151,20 +151,14 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, Result<To
             mangoUser.ImageFileName,
             DateTime.UtcNow,
             membersCount: 2);
+
         return mangoChatEntity;
     }
 
-    private static MessageEntity[] GenerateGreetingMessages(ChatEntity mangoChatEntity, Guid systemChatId)
+    private static MessageEntity[] GenerateGreetingMessages(ChatEntity chatEntity, Guid systemChatId)
     {
-        var firstMessage = new MessageEntity
-        {
-            Id = Guid.NewGuid(), UserId = systemChatId, ChatId = mangoChatEntity.Id, Text = GreetingsConstants.Hello,
-        };
-
-        var secondMessage = new MessageEntity
-        {
-            Id = Guid.NewGuid(), UserId = systemChatId, ChatId = mangoChatEntity.Id, Text = GreetingsConstants.Guide,
-        };
+        var firstMessage = MessageEntity.Create(systemChatId, chatEntity.Id, GreetingsConstants.Hello);
+        var secondMessage = MessageEntity.Create(systemChatId, chatEntity.Id, GreetingsConstants.Hello);
 
         var greetingMessages = new[] { firstMessage, secondMessage };
 

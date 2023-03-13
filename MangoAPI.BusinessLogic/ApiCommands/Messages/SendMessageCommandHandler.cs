@@ -1,5 +1,4 @@
 ﻿using FluentValidation;
-using System;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -74,17 +73,23 @@ public class SendMessageCommandHandler
 
         var attachmentUniqueFileName = await UploadAttachmentIfExistsAsync(request);
 
-        var messageEntity = new MessageEntity
-        {
-            Id = request.MessageId ?? Guid.NewGuid(),
-            ChatId = request.ChatId,
-            UserId = request.UserId,
-            Text = request.MessageText,
-            CreatedAt = request.CreatedAt ?? DateTime.UtcNow,
-            AttachmentFileName = attachmentUniqueFileName,
-            InReplyToUser = request.InReplayToAuthor,
-            InReplyToText = request.InReplayToText,
-        };
+        // var messageEntity = new MessageEntity
+        // {
+        //     ChatId = request.ChatId,
+        //     UserId = request.UserId,
+        //     Text = request.MessageText,
+        //     AttachmentFileName = attachmentUniqueFileName,
+        //     InReplyToUser = request.InReplayToAuthor,
+        //     InReplyToText = request.InReplayToText,
+        // };
+
+        var messageEntity = MessageEntity.Create(
+            request.UserId,
+            request.ChatId,
+            request.Text,
+            request.InReplyToUser,
+            request.InReplyToText,
+            attachmentUniqueFileName);
 
         userChat.Chat.UpdateLastMessage(
             lastMessageAuthor: user.DisplayName,

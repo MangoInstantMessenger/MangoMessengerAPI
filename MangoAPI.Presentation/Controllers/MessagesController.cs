@@ -103,14 +103,13 @@ public class MessagesController : ApiControllerBase<MessagesController>, IMessag
         CancellationToken cancellationToken)
     {
         var userId = CorrelationContext.GetUserId();
+
         var command = new SendMessageCommand(
-            request.MessageText,
             userId,
             request.ChatId,
-            request.InReplayToAuthor,
-            request.InReplayToText,
-            request.CreatedAt,
-            request.MessageId,
+            request.Text,
+            request.InReplyToUser,
+            request.InReplyToText,
             request.Attachment);
 
         return await RequestAsync(command, cancellationToken);

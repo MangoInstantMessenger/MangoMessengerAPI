@@ -6,12 +6,10 @@ using Microsoft.AspNetCore.Http;
 namespace MangoAPI.BusinessLogic.ApiCommands.Messages;
 
 public record SendMessageCommand(
-        string MessageText,
         Guid UserId,
         Guid ChatId,
-        string InReplayToAuthor,
-        string InReplayToText,
-        DateTime? CreatedAt,
-        Guid? MessageId,
+        string Text,
+        string InReplyToUser,
+        string InReplyToText,
         IFormFile Attachment)
     : IRequest<Result<SendMessageResponse>>;

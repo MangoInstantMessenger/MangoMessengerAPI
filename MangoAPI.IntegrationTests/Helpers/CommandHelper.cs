@@ -52,13 +52,11 @@ public static class CommandHelper
     public static SendMessageCommand SendMessageToChannelCommand(Guid userId, Guid chatId, IFormFile attachment = null)
     {
         var command = new SendMessageCommand(
-            MessageText: "test message",
+            Text: "test message",
             UserId: userId,
             ChatId: chatId,
-            InReplayToAuthor: " ",
-            InReplayToText: " ",
-            CreatedAt: null,
-            MessageId: null,
+            InReplyToUser: " ",
+            InReplyToText: " ",
             Attachment: attachment);
 
         return command;
