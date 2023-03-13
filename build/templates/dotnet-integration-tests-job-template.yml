@@ -11,6 +11,11 @@ parameters:
     displayName: 'Integration Tests Project Path'
     type: string
     default: './MangoAPI.IntegrationTests/MangoAPI.IntegrationTests.csproj'
+    
+  - name: unitTestsProjectPath
+    displayName: 'Unit Tests Project Path'
+    type: string
+    default: './MangoAPI.UnitTests/MangoAPI.UnitTests.csproj'
 
 jobs:
   - job: 'Build_Test_Dotnet'
@@ -32,6 +37,13 @@ jobs:
           command: 'build'
           projects: '${{ parameters.integrationTestsProjectPath }}'
           arguments: '--configuration ${{ parameters.buildConfiguration }} --no-restore'
+          
+      - task: DotNetCoreCLI@2
+        displayName: 'Run unit tests'
+        inputs:
+          command: 'test'
+          projects: '${{ parameters.unitTestsProjectPath }}'
+          arguments: '--no-restore --collect:"XPlat Code Coverage" --settings build/coverage.runsettings'
 
       - bash: |
           sudo npm install -g azurite

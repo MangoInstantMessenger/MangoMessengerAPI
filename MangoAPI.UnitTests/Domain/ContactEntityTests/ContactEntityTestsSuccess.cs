@@ -1,5 +1,4 @@
 ﻿using FluentAssertions;
-using FluentValidation;
 using MangoAPI.Domain.Entities;
 using System;
 using Xunit;
