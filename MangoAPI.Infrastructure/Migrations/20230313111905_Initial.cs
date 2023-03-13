@@ -18,15 +18,14 @@ namespace MangoAPI.Infrastructure.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Title = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     CommunityType = table.Column<int>(type: "int", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: false),
-                    ImageFileName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ImageFileName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
                     MembersCount = table.Column<int>(type: "int", nullable: false),
-                    LastMessageAuthor = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    LastMessageText = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    LastMessageAuthor = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
+                    LastMessageText = table.Column<string>(type: "nvarchar(300)", maxLength: 300, nullable: true),
                     LastMessageTime = table.Column<DateTime>(type: "datetime2", nullable: true),
                     LastMessageId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
                 },
@@ -80,13 +79,36 @@ namespace MangoAPI.Infrastructure.Migrations
                     PasswordHash = table.Column<byte[]>(type: "varbinary(max)", nullable: false),
                     PasswordSalt = table.Column<byte[]>(type: "varbinary(max)", nullable: false),
                     DisplayName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
-                    ImageFileName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    ImageFileName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     Bio = table.Column<string>(type: "nvarchar(120)", maxLength: 120, nullable: true),
+                    Website = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
+                    Birthday = table.Column<DateTime>(type: "datetime2", nullable: true),
                     DisplayNameColour = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_UserEntity", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ContactEntity",
+                schema: "mango",
+                columns: table => new
+                {
+                    ContactId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ContactEntity", x => new { x.UserId, x.ContactId });
+                    table.ForeignKey(
+                        name: "FK_ContactEntity_UserEntity_UserId",
+                        column: x => x.UserId,
+                        principalSchema: "mango",
+                        principalTable: "UserEntity",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -98,9 +120,9 @@ namespace MangoAPI.Infrastructure.Migrations
                     UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     ChatId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Text = table.Column<string>(type: "nvarchar(300)", maxLength: 300, nullable: false),
-                    InReplyToUser = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    InReplyToText = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    AttachmentFileName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    InReplyToUser = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
+                    InReplyToText = table.Column<string>(type: "nvarchar(300)", maxLength: 300, nullable: true),
+                    AttachmentFileName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
@@ -116,6 +138,33 @@ namespace MangoAPI.Infrastructure.Migrations
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_MessageEntity_UserEntity_UserId",
+                        column: x => x.UserId,
+                        principalSchema: "mango",
+                        principalTable: "UserEntity",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "PersonalInformationEntity",
+                schema: "mango",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Address = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
+                    Facebook = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
+                    Twitter = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
+                    Instagram = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
+                    LinkedIn = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PersonalInformationEntity", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_PersonalInformationEntity_UserEntity_UserId",
                         column: x => x.UserId,
                         principalSchema: "mango",
                         principalTable: "UserEntity",
@@ -174,57 +223,6 @@ namespace MangoAPI.Infrastructure.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
-            migrationBuilder.CreateTable(
-                name: "UserContactEntity",
-                schema: "mango",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    ContactId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_UserContactEntity", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_UserContactEntity_UserEntity_UserId",
-                        column: x => x.UserId,
-                        principalSchema: "mango",
-                        principalTable: "UserEntity",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "UserInformationEntity",
-                schema: "mango",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    BirthDay = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    Website = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: true),
-                    Address = table.Column<string>(type: "nvarchar(120)", maxLength: 120, nullable: true),
-                    Facebook = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: true),
-                    Twitter = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: true),
-                    Instagram = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: true),
-                    LinkedIn = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: true),
-                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_UserInformationEntity", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_UserInformationEntity_UserEntity_UserId",
-                        column: x => x.UserId,
-                        principalSchema: "mango",
-                        principalTable: "UserEntity",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
             migrationBuilder.CreateIndex(
                 name: "IX_MessageEntity_ChatId",
                 schema: "mango",
@@ -236,6 +234,13 @@ namespace MangoAPI.Infrastructure.Migrations
                 schema: "mango",
                 table: "MessageEntity",
                 column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PersonalInformationEntity_UserId",
+                schema: "mango",
+                table: "PersonalInformationEntity",
+                column: "UserId",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_SessionEntity_UserId",
@@ -250,28 +255,19 @@ namespace MangoAPI.Infrastructure.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_UserContactEntity_UserId",
-                schema: "mango",
-                table: "UserContactEntity",
-                column: "UserId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_UserEntity_Username",
                 schema: "mango",
                 table: "UserEntity",
                 column: "Username",
                 unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_UserInformationEntity_UserId",
-                schema: "mango",
-                table: "UserInformationEntity",
-                column: "UserId",
-                unique: true);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "ContactEntity",
+                schema: "mango");
+
             migrationBuilder.DropTable(
                 name: "DiffieHellmanKeyExchangeEntity",
                 schema: "mango");
@@ -285,19 +281,15 @@ namespace MangoAPI.Infrastructure.Migrations
                 schema: "mango");
 
             migrationBuilder.DropTable(
+                name: "PersonalInformationEntity",
+                schema: "mango");
+
+            migrationBuilder.DropTable(
                 name: "SessionEntity",
                 schema: "mango");
 
             migrationBuilder.DropTable(
                 name: "UserChatEntity",
-                schema: "mango");
-
-            migrationBuilder.DropTable(
-                name: "UserContactEntity",
-                schema: "mango");
-
-            migrationBuilder.DropTable(
-                name: "UserInformationEntity",
                 schema: "mango");
 
             migrationBuilder.DropTable(

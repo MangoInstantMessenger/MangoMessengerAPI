@@ -2,17 +2,11 @@
 
 namespace MangoAPI.Domain.Entities;
 
-public sealed class UserInformationEntity
+public sealed class PersonalInformationEntity
 {
     public Guid Id { get; set; }
-
+    
     public Guid UserId { get; set; }
-
-    public DateTime? BirthDay { get; set; }
-
-    public string Website { get; set; }
-
-    public string Address { get; set; }
 
     public string Facebook { get; set; }
 

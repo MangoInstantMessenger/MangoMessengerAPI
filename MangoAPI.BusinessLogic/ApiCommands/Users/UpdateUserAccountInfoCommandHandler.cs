@@ -30,7 +30,6 @@ public class
         CancellationToken cancellationToken)
     {
         var user = await dbContext.Users
-            .Include(x => x.UserInformation)
             .FirstOrDefaultAsync(x => x.Id == request.UserId, cancellationToken);
 
         if (user is null)
@@ -62,19 +61,19 @@ public class
             dbContext.Chats.UpdateRange(userChats);
         }
 
-        user.UserInformation.BirthDay = request.BirthdayDate;
+        user.Birthday = request.BirthdayDate;
 
-        user.UserInformation.Website = request.Website;
+        user.Website = request.Website;
 
         user.Username = request.Username;
 
         user.Bio = request.Bio;
 
-        user.UserInformation.Address = request.Address;
+        user.Address = request.Address;
 
-        user.UserInformation.UpdatedAt = DateTime.UtcNow;
+        // user.PersonalInformation.UpdatedAt = DateTime.UtcNow;
 
-        dbContext.UserInformation.Update(user.UserInformation);
+        // dbContext.UserInformation.Update(user.PersonalInformation);
 
         await dbContext.SaveChangesAsync(cancellationToken);
 

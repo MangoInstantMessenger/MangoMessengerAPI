@@ -33,14 +33,14 @@ public class SearchContactByDisplayNameQueryHandler
     {
         var query = dbContext.Users
             .AsNoTracking()
-            .Include(x => x.UserInformation)
+            .Include(x => x.PersonalInformation)
             .Where(x => x.Id != request.UserId)
             .Where(x => EF.Functions.Like(x.DisplayName, $"%{request.SearchQuery}%"))
             .Select(x => new Contact
             {
                 UserId = x.Id,
                 DisplayName = x.DisplayName,
-                Address = x.UserInformation.Address,
+                Address = x.Address,
                 Bio = x.Bio,
                 PictureUrl = $"{blobServiceSettings.MangoBlobAccess}/{x.ImageFileName}",
                 Username = x.Username,

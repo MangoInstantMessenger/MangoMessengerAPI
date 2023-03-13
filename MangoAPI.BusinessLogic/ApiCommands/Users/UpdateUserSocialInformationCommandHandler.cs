@@ -28,7 +28,7 @@ public class UpdateUserSocialInformationCommandHandler
         CancellationToken cancellationToken)
     {
         var user = await dbContext.Users
-            .Include(userEntity => userEntity.UserInformation)
+            .Include(userEntity => userEntity.PersonalInformation)
             .FirstOrDefaultAsync(
                 entity => entity.Id == request.UserId,
                 cancellationToken);
@@ -41,14 +41,14 @@ public class UpdateUserSocialInformationCommandHandler
             return responseFactory.ConflictResponse(errorMessage, details);
         }
 
-        user.UserInformation.Facebook = request.Facebook;
-        user.UserInformation.Twitter = request.Twitter;
-        user.UserInformation.Instagram = request.Instagram;
-        user.UserInformation.LinkedIn = request.LinkedIn;
+        user.PersonalInformation.Facebook = request.Facebook;
+        user.PersonalInformation.Twitter = request.Twitter;
+        user.PersonalInformation.Instagram = request.Instagram;
+        user.PersonalInformation.LinkedIn = request.LinkedIn;
 
-        user.UserInformation.UpdatedAt = DateTime.UtcNow;
+        user.PersonalInformation.UpdatedAt = DateTime.UtcNow;
 
-        dbContext.UserInformation.Update(user.UserInformation);
+        dbContext.UserInformation.Update(user.PersonalInformation);
 
         await dbContext.SaveChangesAsync(cancellationToken);
 

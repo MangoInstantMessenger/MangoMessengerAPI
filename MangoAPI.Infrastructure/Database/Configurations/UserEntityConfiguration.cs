@@ -20,14 +20,16 @@ public class UserEntityConfiguration : IEntityTypeConfiguration<UserEntity>
         builder.Property(x => x.DisplayName).HasMaxLength(50);
         builder.Property(x => x.ImageFileName).HasMaxLength(100).IsRequired();
         builder.Property(x => x.Bio).HasMaxLength(120);
+        builder.Property(x => x.Website).HasMaxLength(50);
+        builder.Property(x => x.Address).HasMaxLength(50);
 
         builder.HasMany(x => x.Sessions)
             .WithOne(x => x.UserEntity)
             .HasForeignKey(x => x.UserId);
 
-        builder.HasOne(x => x.UserInformation)
+        builder.HasOne(x => x.PersonalInformation)
             .WithOne(x => x.User)
-            .HasForeignKey<UserInformationEntity>(x => x.UserId);
+            .HasForeignKey<PersonalInformationEntity>(x => x.UserId);
 
         builder.HasMany(x => x.Contacts)
             .WithOne(x => x.User)

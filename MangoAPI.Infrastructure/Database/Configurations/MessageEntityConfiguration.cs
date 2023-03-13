@@ -16,6 +16,9 @@ public class MessageEntityConfiguration : IEntityTypeConfiguration<MessageEntity
         builder.Property(x => x.UserId).IsRequired();
         builder.Property(x => x.Text).HasMaxLength(300).IsRequired();
         builder.Property(x => x.CreatedAt).IsRequired();
+        builder.Property(x => x.InReplyToUser).HasMaxLength(50);
+        builder.Property(x => x.InReplyToText).HasMaxLength(300);
+        builder.Property(x => x.AttachmentFileName).HasMaxLength(100);
 
         builder.HasOne(x => x.User)
             .WithMany(x => x.Messages)

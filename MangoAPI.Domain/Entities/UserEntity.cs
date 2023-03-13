@@ -21,6 +21,12 @@ public sealed class UserEntity
 
     public string Bio { get; set; }
 
+    public string Website { get; set; }
+
+    public DateTime? Birthday { get; set; }
+    
+    public string Address { get; set; }
+
     public DisplayNameColour DisplayNameColour { get; set; }
 
     public ICollection<SessionEntity> Sessions { get; set; }
@@ -29,7 +35,7 @@ public sealed class UserEntity
 
     public ICollection<UserChatEntity> UserChats { get; set; }
 
-    public UserInformationEntity UserInformation { get; set; }
+    public PersonalInformationEntity PersonalInformation { get; set; }
 
-    public ICollection<UserContactEntity> Contacts { get; set; }
+    public ICollection<ContactEntity> Contacts { get; set; }
 }

@@ -23,9 +23,9 @@ public class MangoDbContext : DbContext
 
     public DbSet<UserChatEntity> UserChats { get; set; }
 
-    public DbSet<UserContactEntity> UserContacts { get; set; }
+    public DbSet<ContactEntity> UserContacts { get; set; }
 
-    public DbSet<UserInformationEntity> UserInformation { get; set; }
+    public DbSet<PersonalInformationEntity> UserInformation { get; set; }
 
     public DbSet<DiffieHellmanParameterEntity> DiffieHellmanParameterEntities { get; set; }
 

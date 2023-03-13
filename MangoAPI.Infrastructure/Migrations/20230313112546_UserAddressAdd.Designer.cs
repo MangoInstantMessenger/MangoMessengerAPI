@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MangoAPI.Infrastructure.Migrations
 {
     [DbContext(typeof(MangoDbContext))]
-    [Migration("20230313094439_ChatUpdatedAtRemoved")]
-    partial class ChatUpdatedAtRemoved
+    [Migration("20230313112546_UserAddressAdd")]
+    partial class UserAddressAdd
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -43,16 +43,19 @@ namespace MangoAPI.Infrastructure.Migrations
 
                     b.Property<string>("ImageFileName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("LastMessageAuthor")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<Guid?>("LastMessageId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("LastMessageText")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(300)
+                        .HasColumnType("nvarchar(300)");
 
                     b.Property<DateTime?>("LastMessageTime")
                         .HasColumnType("datetime2");
@@ -62,7 +65,8 @@ namespace MangoAPI.Infrastructure.Migrations
 
                     b.Property<string>("Title")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.HasKey("Id");
 
@@ -88,6 +92,22 @@ namespace MangoAPI.Infrastructure.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("UserChatEntity", "mango");
+                });
+
+            modelBuilder.Entity("MangoAPI.Domain.Entities.ContactEntity", b =>
+                {
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("ContactId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("UserId", "ContactId");
+
+                    b.ToTable("ContactEntity", "mango");
                 });
 
             modelBuilder.Entity("MangoAPI.Domain.Entities.DiffieHellmanKeyExchangeEntity", b =>
@@ -154,7 +174,8 @@ namespace MangoAPI.Infrastructure.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("AttachmentFileName")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<Guid>("ChatId")
                         .HasColumnType("uniqueidentifier");
@@ -163,10 +184,12 @@ namespace MangoAPI.Infrastructure.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("InReplyToText")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(300)
+                        .HasColumnType("nvarchar(300)");
 
                     b.Property<string>("InReplyToUser")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("Text")
                         .IsRequired()
@@ -186,6 +209,45 @@ namespace MangoAPI.Infrastructure.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("MessageEntity", "mango");
+                });
+
+            modelBuilder.Entity("MangoAPI.Domain.Entities.PersonalInformationEntity", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Facebook")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("Instagram")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("LinkedIn")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("Twitter")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId")
+                        .IsUnique();
+
+                    b.ToTable("PersonalInformationEntity", "mango");
                 });
 
             modelBuilder.Entity("MangoAPI.Domain.Entities.SessionEntity", b =>
@@ -210,37 +272,22 @@ namespace MangoAPI.Infrastructure.Migrations
                     b.ToTable("SessionEntity", "mango");
                 });
 
-            modelBuilder.Entity("MangoAPI.Domain.Entities.UserContactEntity", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("ContactId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("UserContactEntity", "mango");
-                });
-
             modelBuilder.Entity("MangoAPI.Domain.Entities.UserEntity", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<string>("Address")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
                     b.Property<string>("Bio")
                         .HasMaxLength(120)
                         .HasColumnType("nvarchar(120)");
+
+                    b.Property<DateTime?>("Birthday")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("DisplayName")
                         .HasMaxLength(50)
@@ -251,8 +298,8 @@ namespace MangoAPI.Infrastructure.Migrations
 
                     b.Property<string>("ImageFileName")
                         .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<byte[]>("PasswordHash")
                         .IsRequired()
@@ -267,62 +314,16 @@ namespace MangoAPI.Infrastructure.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
+                    b.Property<string>("Website")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
                     b.HasKey("Id");
 
                     b.HasIndex("Username")
                         .IsUnique();
 
                     b.ToTable("UserEntity", "mango");
-                });
-
-            modelBuilder.Entity("MangoAPI.Domain.Entities.UserInformationEntity", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Address")
-                        .HasMaxLength(120)
-                        .HasColumnType("nvarchar(120)");
-
-                    b.Property<DateTime?>("BirthDay")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Facebook")
-                        .HasMaxLength(30)
-                        .HasColumnType("nvarchar(30)");
-
-                    b.Property<string>("Instagram")
-                        .HasMaxLength(30)
-                        .HasColumnType("nvarchar(30)");
-
-                    b.Property<string>("LinkedIn")
-                        .HasMaxLength(30)
-                        .HasColumnType("nvarchar(30)");
-
-                    b.Property<string>("Twitter")
-                        .HasMaxLength(30)
-                        .HasColumnType("nvarchar(30)");
-
-                    b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Website")
-                        .HasMaxLength(30)
-                        .HasColumnType("nvarchar(30)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId")
-                        .IsUnique();
-
-                    b.ToTable("UserInformationEntity", "mango");
                 });
 
             modelBuilder.Entity("MangoAPI.Domain.Entities.ChatEntities.UserChatEntity", b =>
@@ -340,6 +341,17 @@ namespace MangoAPI.Infrastructure.Migrations
                         .IsRequired();
 
                     b.Navigation("Chat");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("MangoAPI.Domain.Entities.ContactEntity", b =>
+                {
+                    b.HasOne("MangoAPI.Domain.Entities.UserEntity", "User")
+                        .WithMany("Contacts")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("User");
                 });
@@ -363,6 +375,17 @@ namespace MangoAPI.Infrastructure.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("MangoAPI.Domain.Entities.PersonalInformationEntity", b =>
+                {
+                    b.HasOne("MangoAPI.Domain.Entities.UserEntity", "User")
+                        .WithOne("PersonalInformation")
+                        .HasForeignKey("MangoAPI.Domain.Entities.PersonalInformationEntity", "UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("MangoAPI.Domain.Entities.SessionEntity", b =>
                 {
                     b.HasOne("MangoAPI.Domain.Entities.UserEntity", "UserEntity")
@@ -372,28 +395,6 @@ namespace MangoAPI.Infrastructure.Migrations
                         .IsRequired();
 
                     b.Navigation("UserEntity");
-                });
-
-            modelBuilder.Entity("MangoAPI.Domain.Entities.UserContactEntity", b =>
-                {
-                    b.HasOne("MangoAPI.Domain.Entities.UserEntity", "User")
-                        .WithMany("Contacts")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("MangoAPI.Domain.Entities.UserInformationEntity", b =>
-                {
-                    b.HasOne("MangoAPI.Domain.Entities.UserEntity", "User")
-                        .WithOne("UserInformation")
-                        .HasForeignKey("MangoAPI.Domain.Entities.UserInformationEntity", "UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("MangoAPI.Domain.Entities.ChatEntities.ChatEntity", b =>
@@ -409,11 +410,11 @@ namespace MangoAPI.Infrastructure.Migrations
 
                     b.Navigation("Messages");
 
+                    b.Navigation("PersonalInformation");
+
                     b.Navigation("Sessions");
 
                     b.Navigation("UserChats");
-
-                    b.Navigation("UserInformation");
                 });
 #pragma warning restore 612, 618
         }
