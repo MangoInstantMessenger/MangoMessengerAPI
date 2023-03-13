@@ -35,10 +35,10 @@
           </div>
         </div>
         <ul class="user-info">
-          <li *ngIf="currentUser.birthdayDate">
+          <li *ngIf="currentUser.birthday">
             <div class="info">
               <p class="title">Birthdate</p>
-              <p>{{ currentUser.birthdayDate | date }}</p>
+              <p>{{ currentUser.birthday | date }}</p>
             </div>
             <img src="./../../../assets/svg/calendar.svg" alt="Calendar Icon"/>
           </li>
@@ -124,10 +124,10 @@
               <input
                 class="profile-form-input"
                 type="date"
-                value="{{ currentUser.birthdayDate }}"
+                value="{{ currentUser.birthday }}"
                 id="BirthdayDate"
                 placeholder="Type your birthday"
-                [(ngModel)]="currentUserForUpdating.birthdayDate"
+                [(ngModel)]="currentUserForUpdating.birthday"
               />
             </li>
 

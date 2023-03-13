@@ -1,5 +1,5 @@
 ﻿export class UpdateAccountInformationCommand {
-  birthdayDate: string;
+  birthday: string;
   website: string;
   username: string;
   bio: string;
@@ -14,7 +14,7 @@
     address: string,
     displayName: string
   ) {
-    this.birthdayDate = birthdayDate;
+    this.birthday = birthdayDate;
     this.website = website;
     this.username = username;
     this.bio = bio;

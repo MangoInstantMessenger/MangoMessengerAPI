@@ -6,27 +6,93 @@ namespace MangoAPI.Domain.Entities;
 
 public sealed class UserEntity
 {
-    public Guid Id { get; set; }
+    public Guid Id { get; private set; }
 
-    public string Username { get; set; }
+    public string Username { get; private set; }
 
-    public byte[] PasswordHash { get; set; }
+    public byte[] PasswordHash { get; private set; }
 
-    public byte[] PasswordSalt { get; set; }
+    public byte[] PasswordSalt { get; private set; }
 
-    public string DisplayName { get; set; }
+    public string DisplayName { get; private set; }
 
-    public string ImageFileName { get; set; }
+    public string ImageFileName { get; private set; }
 
-    public string Bio { get; set; }
+    public string Bio { get; private set; }
 
-    public string Website { get; set; }
+    public string Website { get; private set; }
 
-    public DateTime? Birthday { get; set; }
-    
-    public string Address { get; set; }
+    public DateTime? Birthday { get; private set; }
 
-    public DisplayNameColour DisplayNameColour { get; set; }
+    public string Address { get; private set; }
+
+    private UserEntity()
+    {
+        Id = Guid.NewGuid();
+    }
+
+    private UserEntity(
+        string username,
+        byte[] passwordHash,
+        byte[] passwordSalt,
+        string displayName,
+        string imageFileName,
+        DisplayNameColour displayNameColour)
+    {
+        Id = Guid.NewGuid();
+        Username = username;
+        PasswordHash = passwordHash;
+        PasswordSalt = passwordSalt;
+        DisplayName = displayName;
+        ImageFileName = imageFileName;
+        DisplayNameColour = displayNameColour;
+    }
+
+    public static UserEntity Create(
+        string username,
+        byte[] passwordHash,
+        byte[] passwordSalt,
+        string displayName,
+        string imageFileName,
+        DisplayNameColour displayNameColour)
+    {
+        var user = new UserEntity(
+            username,
+            passwordHash,
+            passwordSalt,
+            displayName,
+            imageFileName,
+            displayNameColour);
+
+        return user;
+    }
+
+    public void UpdateProfilePicture(string imageFileName)
+    {
+        ImageFileName = imageFileName;
+    }
+
+    public void SetDisplayName(string displayName)
+    {
+        DisplayName = displayName;
+    }
+
+    public void UpdateUserData(string bio, string website, DateTime? birthday, string address, string username)
+    {
+        Bio = bio;
+        Website = website;
+        Birthday = birthday;
+        Address = address;
+        Username = username;
+    }
+
+    public void UpdatePassword(byte[] passwordHash, byte[] passwordSalt)
+    {
+        PasswordHash = passwordHash;
+        PasswordSalt = passwordSalt;
+    }
+
+    public DisplayNameColour DisplayNameColour { get; private set; }
 
     public ICollection<SessionEntity> Sessions { get; set; }
 

@@ -32,7 +32,8 @@ public class ApiControllerBase<TController> : ControllerBase where TController :
     /// <param name="mapper">Automapper instance.</param>
     /// <param name="correlationContext">ICorrelationContext instance.</param>
     /// <param name="logger"></param>
-    public ApiControllerBase(IMediator mediator, IMapper mapper, ICorrelationContext correlationContext, ILogger<TController> logger)
+    public ApiControllerBase(IMediator mediator, IMapper mapper, ICorrelationContext correlationContext,
+        ILogger<TController> logger)
     {
         Mediator = mediator;
         Mapper = mapper;
@@ -54,21 +55,26 @@ public class ApiControllerBase<TController> : ControllerBase where TController :
     {
         var response = await Mediator.Send(request, cancellationToken);
 
-        var errorDetails = ResponseMessageCodes.ErrorDictionary[ResponseMessageCodes.InvalidRequestModel];
-        var loggerMessage = $"ERROR ${response.StatusCode}: \n " +
-                            $"Error message: ${response.Error.ErrorMessage}, \n " +
-                            $"Error details: ${errorDetails}";
-        
         switch (response.StatusCode)
         {
             case HttpStatusCode.BadRequest:
-                LoggingHelper.LoggerError(_logger, loggerMessage, null);
+                LoggingHelper.LoggerError(_logger, GetErrorMessage(response), null);
                 return BadRequest(response.Error);
             case HttpStatusCode.Conflict:
-                LoggingHelper.LoggerError(_logger, loggerMessage, null);
+                LoggingHelper.LoggerError(_logger, GetErrorMessage(response), null);
                 return Conflict(response.Error);
             default:
                 return Ok(response.Response);
         }
+    }
+
+    private static string GetErrorMessage<TResponse>(Result<TResponse> response) where TResponse : ResponseBase
+    {
+        var errorDetails = ResponseMessageCodes.ErrorDictionary[ResponseMessageCodes.InvalidRequestModel];
+        var loggerMessage = $"ERROR ${response.StatusCode}: \n " +
+                            $"Error message: ${response.Error.ErrorMessage}, \n " +
+                            $"Error details: ${errorDetails}";
+
+        return loggerMessage;
     }
 }

@@ -30,9 +30,11 @@ public class PasswordService : IPasswordService
     {
         var hmac = new HMACSHA512();
 
-        user.PasswordSalt = hmac.Key;
+        var passwordSalt = hmac.Key;
 
-        user.PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(newPassword));
+        var passwordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(newPassword));
+
+        user.UpdatePassword(passwordHash, passwordSalt);
 
         return user;
     }

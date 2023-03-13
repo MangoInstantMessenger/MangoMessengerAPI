@@ -28,10 +28,7 @@ export class UsersService extends ApiBaseService {
 
   // PUT /api/users/socials
   updateUserSocials(request: UpdateUserSocialsCommand): Observable<BaseResponse> {
-    return this.httpClient.put<BaseResponse>(
-      this.baseUrl + this.usersRoute + 'socials/',
-      request
-    );
+    return this.httpClient.put<BaseResponse>(this.baseUrl + this.usersRoute + 'socials/', request);
   }
 
   // GET /api/users/{userId}
@@ -40,7 +37,7 @@ export class UsersService extends ApiBaseService {
   }
 
   // POST /api/users
-  createUser(command: RegisterCommand): Observable<TokensResponse> {
+  register(command: RegisterCommand): Observable<TokensResponse> {
     return this.httpClient.post<TokensResponse>(this.baseUrl + this.usersRoute, command);
   }
 
@@ -67,10 +64,7 @@ export class UsersService extends ApiBaseService {
 
   // PUT /api/users/password
   changePassword(request: ChangePasswordCommand): Observable<BaseResponse> {
-    return this.httpClient.put<BaseResponse>(
-      this.baseUrl + this.usersRoute + 'password/',
-      request
-    );
+    return this.httpClient.put<BaseResponse>(this.baseUrl + this.usersRoute + 'password/', request);
   }
 
   getUserProfilePicture(user: User): string {

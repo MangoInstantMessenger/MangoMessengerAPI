@@ -37,7 +37,7 @@ export class SettingsComponent implements OnInit, OnDestroy {
     userId: '',
     displayName: '',
     displayNameColour: 0,
-    birthdayDate: '',
+    birthday: '',
     website: '',
     username: '',
     bio: '',
@@ -54,7 +54,7 @@ export class SettingsComponent implements OnInit, OnDestroy {
     userId: '',
     displayName: '',
     displayNameColour: 0,
-    birthdayDate: '',
+    birthday: '',
     website: '',
     username: '',
     bio: '',
@@ -149,7 +149,7 @@ export class SettingsComponent implements OnInit, OnDestroy {
   onSaveChangesAccountInfoClick(): void {
     const command: UpdateAccountInformationCommand = {
       username: this.currentUserForUpdating.username,
-      birthdayDate: this.currentUserForUpdating.birthdayDate,
+      birthday: this.currentUserForUpdating.birthday,
       website: this.currentUserForUpdating.website,
       address: this.currentUserForUpdating.address,
       bio: this.currentUserForUpdating.bio,

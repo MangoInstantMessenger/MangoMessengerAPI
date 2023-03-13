@@ -34,7 +34,7 @@ export class ContactsComponent implements OnInit, OnDestroy {
     userId: '',
     displayName: '',
     displayNameColour: 0,
-    birthdayDate: '',
+    birthday: '',
     website: '',
     username: '',
     bio: '',

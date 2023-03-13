@@ -4,7 +4,7 @@ export interface User {
   userId: string;
   displayName: string;
   displayNameColour: DisplayNameColours;
-  birthdayDate: string;
+  birthday: string;
   website: string;
   username: string;
   bio: string;

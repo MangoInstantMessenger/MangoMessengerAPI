@@ -49,7 +49,7 @@ public class UpdateProfilePictureCommandHandler
 
         await blobService.UploadFileBlobAsync(file.OpenReadStream(), request.ContentType, uniqueFileName);
 
-        user.ImageFileName = uniqueFileName;
+        user.UpdateProfilePicture(uniqueFileName);
 
         dbContext.Users.Update(user);
 

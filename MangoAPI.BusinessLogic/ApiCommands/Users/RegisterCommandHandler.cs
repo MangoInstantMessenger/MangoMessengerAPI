@@ -16,6 +16,7 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users;
 
 public class RegisterCommandHandler : IRequestHandler<RegisterCommand, Result<TokensResponse>>
 {
+    private const string MangoSystemAccountUsername = "MangoMessenger";
     private readonly MangoDbContext dbContext;
     private readonly ResponseFactory<TokensResponse> responseFactory;
     private readonly IJwtGenerator jwtGenerator;
@@ -57,19 +58,21 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, Result<To
 
         var color = new Random().Next(11);
 
-        var defaultAvatar = avatarService.GetRandomAvatar();
-
         var hmac = new HMACSHA512();
 
-        var newUser = new UserEntity
-        {
-            DisplayName = request.Username,
-            Username = request.Username,
-            ImageFileName = defaultAvatar,
-            DisplayNameColour = (DisplayNameColour)color,
-            PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(request.Password)),
-            PasswordSalt = hmac.Key
-        };
+        var passwordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(request.Password));
+        var passwordSalt = hmac.Key;
+        var displayName = request.Username;
+        var imageFileName = avatarService.GetRandomAvatar();
+        var displayColor = (DisplayNameColour)color;
+
+        var newUser = UserEntity.Create(
+            request.Username,
+            passwordHash,
+            passwordSalt,
+            displayName,
+            imageFileName,
+            displayColor);
 
         dbContext.Users.Add(newUser);
 
@@ -89,31 +92,31 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, Result<To
 
         dbContext.Sessions.Add(session);
 
-        var mangoUserExists =
-            await dbContext.Users.AnyAsync(x => x.Id == SeedDataConstants.MangoId, cancellationToken);
+        var mangoSystemAcc =
+            await dbContext.Users.FirstOrDefaultAsync(x => x.Username == MangoSystemAccountUsername, cancellationToken);
 
-        var mangoUser = GenerateMangoUser(mangoUserSettings.Password);
-
-        if (mangoUserExists == false)
+        if (mangoSystemAcc == null)
         {
+            var mangoUser = GenerateMangoUser(mangoUserSettings.Password);
             dbContext.Add(mangoUser);
+            mangoSystemAcc = mangoUser;
         }
 
-        var mangoChatEntity = CreateStarterChat(mangoUser);
+        var systemChat = CreateSystemChat(mangoSystemAcc);
 
-        var senderChat = UserChatEntity.Create(newUser.Id, mangoChatEntity.Id, UserRole.User);
-        var receiverChat = UserChatEntity.Create(userId: SeedDataConstants.MangoId, mangoChatEntity.Id, UserRole.User);
+        var senderChat = UserChatEntity.Create(newUser.Id, systemChat.Id, UserRole.User);
+        var receiverChat = UserChatEntity.Create(mangoSystemAcc.Id, systemChat.Id, UserRole.User);
 
-        var greetingMessages = GenerateGreetingMessages(mangoChatEntity);
+        var greetingMessages = GenerateGreetingMessages(systemChat, mangoSystemAcc.Id);
         var lastMessage = greetingMessages[1];
 
-        mangoChatEntity.UpdateLastMessage(
-            lastMessageAuthor: mangoUser.DisplayName,
+        systemChat.UpdateLastMessage(
+            lastMessageAuthor: mangoSystemAcc.DisplayName,
             lastMessageText: lastMessage.Text,
             lastMessage.CreatedAt,
             lastMessage.Id);
 
-        dbContext.Chats.Add(mangoChatEntity);
+        dbContext.Chats.Add(systemChat);
         dbContext.UserChats.AddRange(senderChat, receiverChat);
         dbContext.Messages.AddRange(greetingMessages);
 
@@ -136,7 +139,7 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, Result<To
         return result;
     }
 
-    private static ChatEntity CreateStarterChat(UserEntity mangoUser)
+    private static ChatEntity CreateSystemChat(UserEntity mangoUser)
     {
         const string title = "Mango Messenger";
         const string description = "Service notifications";
@@ -151,22 +154,16 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, Result<To
         return mangoChatEntity;
     }
 
-    private static MessageEntity[] GenerateGreetingMessages(ChatEntity mangoChatEntity)
+    private static MessageEntity[] GenerateGreetingMessages(ChatEntity mangoChatEntity, Guid systemChatId)
     {
         var firstMessage = new MessageEntity
         {
-            Id = Guid.NewGuid(),
-            UserId = SeedDataConstants.MangoId,
-            ChatId = mangoChatEntity.Id,
-            Text = GreetingsConstants.Hello,
+            Id = Guid.NewGuid(), UserId = systemChatId, ChatId = mangoChatEntity.Id, Text = GreetingsConstants.Hello,
         };
 
         var secondMessage = new MessageEntity
         {
-            Id = Guid.NewGuid(),
-            UserId = SeedDataConstants.MangoId,
-            ChatId = mangoChatEntity.Id,
-            Text = GreetingsConstants.Guide,
+            Id = Guid.NewGuid(), UserId = systemChatId, ChatId = mangoChatEntity.Id, Text = GreetingsConstants.Guide,
         };
 
         var greetingMessages = new[] { firstMessage, secondMessage };
@@ -178,17 +175,19 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, Result<To
     {
         var hmac = new HMACSHA512();
 
-        var mangoUser = new UserEntity
-        {
-            DisplayName = "Mango Messenger",
-            DisplayNameColour = DisplayNameColour.Violet,
-            Bio = "Service notifications",
-            Id = SeedDataConstants.MangoId,
-            Username = "MangoMessenger",
-            ImageFileName = "mango_logo.jpg",
-            PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(password)),
-            PasswordSalt = hmac.Key
-        };
+        const string displayName = "Mango Messenger";
+        const DisplayNameColour displayColor = DisplayNameColour.Violet;
+        const string imageFileName = "mango_logo.jpg";
+        var passwordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(password));
+        var passwordSalt = hmac.Key;
+
+        var mangoUser = UserEntity.Create(
+            MangoSystemAccountUsername,
+            passwordHash,
+            passwordSalt,
+            displayName,
+            imageFileName,
+            displayColor);
 
         return mangoUser;
     }

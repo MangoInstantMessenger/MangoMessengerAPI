@@ -27,7 +27,7 @@ public class UpdateUserAccountInfoTestSuccess : IntegrationTestBase
             Website: "pkolosov.com",
             Bio: "Third year student of WSB at Poznan",
             Address: "Poznan, Poland",
-            BirthdayDate: new DateTime(1994, 6, 12));
+            Birthday: new DateTime(1994, 6, 12));
 
         var result = await MangoModule.RequestAsync(command, CancellationToken.None);
 

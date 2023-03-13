@@ -159,7 +159,7 @@ public class UsersController : ApiControllerBase<UsersController>, IUsersControl
             Website: request.Website,
             Bio: request.Bio,
             Address: request.Address,
-            BirthdayDate: request.BirthdayDate);
+            Birthday: request.Birthday);
 
         return await RequestAsync(command, cancellationToken);
     }

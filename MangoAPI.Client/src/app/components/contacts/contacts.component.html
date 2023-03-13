@@ -131,10 +131,10 @@
   </div>
 
   <ul class="user-info">
-    <li *ngIf="activeUser.birthdayDate">
+    <li *ngIf="activeUser.birthday">
       <div class="info">
         <p class="title">Birthdate</p>
-        <p>{{ activeUser.birthdayDate | date }}</p>
+        <p>{{ activeUser.birthday | date }}</p>
       </div>
       <img src="./assets/svg/calendar.svg" alt="Calendar Icon"/>
     </li>

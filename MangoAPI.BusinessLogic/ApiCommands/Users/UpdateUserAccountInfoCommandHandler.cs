@@ -55,20 +55,27 @@ public class
                 chatEntity.UpdateTitle(newTitle);
             }
 
-            user.DisplayName = request.DisplayName;
+            user.SetDisplayName(request.DisplayName);
 
             dbContext.Chats.UpdateRange(userChats);
         }
 
-        user.Birthday = request.BirthdayDate;
+        // user.Birthday = request.BirthdayDate;
+        //
+        // user.Website = request.Website;
+        //
+        // user.Username = request.Username;
+        //
+        // user.Bio = request.Bio;
+        //
+        // user.Address = request.Address;
 
-        user.Website = request.Website;
-
-        user.Username = request.Username;
-
-        user.Bio = request.Bio;
-
-        user.Address = request.Address;
+        user.UpdateUserData(
+            request.Bio,
+            request.Website,
+            request.Birthday,
+            request.Address,
+            request.Username);
 
         await dbContext.SaveChangesAsync(cancellationToken);
 

@@ -11,5 +11,5 @@ public record UpdateUserAccountInfoCommand(
         string Website,
         string Bio,
         string Address,
-        DateTime? BirthdayDate)
+        DateTime? Birthday)
     : IRequest<Result<ResponseBase>>;

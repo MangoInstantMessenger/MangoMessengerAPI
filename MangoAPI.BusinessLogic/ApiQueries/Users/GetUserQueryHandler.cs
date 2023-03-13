@@ -40,7 +40,7 @@ public class GetUserQueryHandler : IRequestHandler<GetUserQuery, Result<GetUserR
                 DisplayName = user.DisplayName,
                 DisplayNameColour = user.DisplayNameColour,
                 Address = user.Address,
-                BirthdayDate = user.Birthday.HasValue
+                Birthday = user.Birthday.HasValue
                     ? user.Birthday.Value.ToString("yyyy-MM-dd", CultureInfo.CurrentCulture)
                     : null,
                 Website = user.Website,
