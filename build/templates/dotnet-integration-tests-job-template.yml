@@ -11,7 +11,7 @@ parameters:
     displayName: 'Integration Tests Project Path'
     type: string
     default: './MangoAPI.IntegrationTests/MangoAPI.IntegrationTests.csproj'
-    
+
   - name: unitTestsProjectPath
     displayName: 'Unit Tests Project Path'
     type: string
@@ -23,7 +23,7 @@ jobs:
     steps:
       - checkout: self
         fetchDepth: 0
-        
+
       - task: UseDotNet@2
         displayName: 'Install .NET 6.x SDK'
         inputs:
@@ -43,24 +43,12 @@ jobs:
           command: 'build'
           projects: '${{ parameters.integrationTestsProjectPath }}'
           arguments: '--configuration ${{ parameters.buildConfiguration }} --no-restore'
-          
+
       - task: DotNetCoreCLI@2
         displayName: 'Run unit tests'
         inputs:
           command: 'test'
           projects: '${{ parameters.unitTestsProjectPath }}'
-#          arguments: '--configuration ${{ parameters.buildConfiguration }} --no-build'
-      
-#      - bash: |
-#          dotnet test ${{ parameters.unitTestsProjectPath }} --configuration ${{ parameters.buildConfiguration }} --no-build
-#        displayName: 'Run unit tests'
-#        env:
-#          CollectCoverage: true
-#          CoverletOutputFormat: cobertura
-#          ThresholdStat: total
-#          ThresholdType: Line
-#          CoverletOutput: UnitTestResults/
-          
 
       - bash: |
           sudo npm install -g azurite
