@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using FluentValidation;
+using System.Collections.Generic;
 using MangoAPI.Domain.Enums;
 using System;
 
@@ -28,7 +29,6 @@ public sealed class UserEntity
 
     private UserEntity()
     {
-        Id = Guid.NewGuid();
     }
 
     private UserEntity(
@@ -46,6 +46,8 @@ public sealed class UserEntity
         DisplayName = displayName;
         ImageFileName = imageFileName;
         DisplayNameColour = displayNameColour;
+
+        new UserEntityValidator().ValidateAndThrow(this);
     }
 
     public static UserEntity Create(
@@ -70,6 +72,8 @@ public sealed class UserEntity
     public void UpdateProfilePicture(string imageFileName)
     {
         ImageFileName = imageFileName;
+        
+        new UserEntityValidator().ValidateAndThrow(this);
     }
 
     public void SetDisplayName(string displayName)
@@ -84,12 +88,16 @@ public sealed class UserEntity
         Birthday = birthday;
         Address = address;
         Username = username;
+        
+        new UserEntityValidator().ValidateAndThrow(this);
     }
 
     public void UpdatePassword(byte[] passwordHash, byte[] passwordSalt)
     {
         PasswordHash = passwordHash;
         PasswordSalt = passwordSalt;
+        
+        new UserEntityValidator().ValidateAndThrow(this);
     }
 
     public DisplayNameColour DisplayNameColour { get; private set; }

@@ -5,7 +5,7 @@ import { UsersService } from '../../services/api/users.service';
 import { ValidationService } from '../../services/messenger/validation.service';
 import { ErrorNotificationService } from '../../services/messenger/error-notification.service';
 import { RoutingConstants } from '../../types/constants/RoutingConstants';
-import { firstValueFrom, Subject, takeUntil } from 'rxjs';
+import { firstValueFrom, Subject } from 'rxjs';
 import { TokensService } from 'src/app/services/messenger/tokens.service';
 import { TokensResponse } from '../../types/responses/TokensResponse';
 
@@ -63,18 +63,5 @@ export class RegisterComponent implements OnDestroy {
       const errorMessage = `${e.error.errorMessage}: ${e.error.errorDetails}`;
       alert(errorMessage);
     }
-
-    // this._usersService
-    //   .createUser(this.registerCommand)
-    //   .pipe(takeUntil(this.componentDestroyed$))
-    //   .subscribe({
-    //     next: (response) => {
-    //       this._tokensService.setTokens(response.tokens);
-    //       this._router.navigateByUrl(this.routingConstants.Chats).then((r) => r);
-    //     },
-    //     error: (error) => {
-    //       this._errorNotificationService.notifyOnError(error);
-    //     }
-    //   });
   }
 }
