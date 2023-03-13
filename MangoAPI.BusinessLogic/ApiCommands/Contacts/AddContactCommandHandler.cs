@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.Domain.Constants;
@@ -31,7 +30,7 @@ public class AddContactCommandHandler
                 x => x.Id == request.ContactId,
                 cancellationToken);
 
-        if (contactToAdd is null)
+        if (contactToAdd == null)
         {
             const string errorMessage = ResponseMessageCodes.UserNotFound;
             var errorDescription = ResponseMessageCodes.ErrorDictionary[errorMessage];
@@ -61,12 +60,7 @@ public class AddContactCommandHandler
             return responseFactory.ConflictResponse(errorMessage, errorDescription);
         }
 
-        var contactEntity = new ContactEntity
-        {
-            ContactId = request.ContactId,
-            UserId = request.UserId,
-            CreatedAt = DateTime.UtcNow,
-        };
+        var contactEntity = ContactEntity.Create(request.UserId, request.ContactId);
 
         dbContext.UserContacts.Add(contactEntity);
         await dbContext.SaveChangesAsync(cancellationToken);

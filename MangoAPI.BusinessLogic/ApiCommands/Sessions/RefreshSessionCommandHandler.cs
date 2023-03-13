@@ -51,13 +51,9 @@ public class RefreshSessionCommandHandler : IRequestHandler<RefreshSessionComman
             return responseFactory.ConflictResponse(errorMessage, details);
         }
 
-        var newSession = new SessionEntity
-        {
-            Id = Guid.NewGuid(),
-            UserId = session.UserId,
-            ExpiresAt = DateTime.UtcNow.AddDays(jwtGeneratorSettings.MangoRefreshTokenLifetimeDays),
-            CreatedAt = DateTime.UtcNow,
-        };
+        var expiresAt = DateTime.UtcNow.AddDays(jwtGeneratorSettings.MangoRefreshTokenLifetimeDays);
+
+        var newSession = SessionEntity.Create(session.UserId, expiresAt);
 
         var accessToken = jwtGenerator.GenerateJwtToken(session.UserEntity);
 

@@ -64,13 +64,9 @@ public class LoginCommandHandler : IRequestHandler<LoginCommand, Result<TokensRe
             return responseFactory.ConflictResponse(errorMessage, details);
         }
 
-        var session = new SessionEntity
-        {
-            Id = Guid.NewGuid(),
-            UserId = user.Id,
-            ExpiresAt = DateTime.UtcNow.AddDays(jwtGeneratorSettings.MangoRefreshTokenLifetimeDays),
-            CreatedAt = DateTime.UtcNow
-        };
+        var expiresAt = DateTime.UtcNow.AddDays(jwtGeneratorSettings.MangoRefreshTokenLifetimeDays);
+
+        var session = SessionEntity.Create(user.Id, expiresAt);
 
         var accessToken = jwtGenerator.GenerateJwtToken(user);
 

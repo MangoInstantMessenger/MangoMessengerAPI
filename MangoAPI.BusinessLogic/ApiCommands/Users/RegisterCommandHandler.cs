@@ -80,13 +80,17 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, Result<To
 
         dbContext.PersonalInformation.Add(userInfo);
 
-        var session = new SessionEntity
-        {
-            Id = Guid.NewGuid(),
-            UserId = newUser.Id,
-            ExpiresAt = DateTime.UtcNow.AddDays(jwtGeneratorSettings.MangoRefreshTokenLifetimeDays),
-            CreatedAt = DateTime.UtcNow,
-        };
+        // var session = new SessionEntity
+        // {
+        //     Id = Guid.NewGuid(),
+        //     UserId = newUser.Id,
+        //     ExpiresAt = DateTime.UtcNow.AddDays(jwtGeneratorSettings.MangoRefreshTokenLifetimeDays),
+        //     CreatedAt = DateTime.UtcNow,
+        // };
+
+        var expiresAt = DateTime.UtcNow.AddDays(jwtGeneratorSettings.MangoRefreshTokenLifetimeDays);
+
+        var session = SessionEntity.Create(newUser.Id, expiresAt);
 
         var accessToken = jwtGenerator.GenerateJwtToken(newUser);
 
