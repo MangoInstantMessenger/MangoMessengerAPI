@@ -28,6 +28,12 @@ jobs:
     steps:
       - checkout: self
         fetchDepth: 0
+        
+      - task: UseDotNet@2
+        displayName: 'Install .NET 6.x SDK'
+        inputs:
+          packageType: sdk
+          version: 6.x
 
       - task: gitversion/setup@0
         displayName: 'GitVersion Setup'
