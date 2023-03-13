@@ -19,7 +19,7 @@ public class CorrelationContext : ICorrelationContext
     {
         var context = httpContextAccessor.HttpContext;
 
-        var correlationContextUserId = context.User.FindFirstValue(JwtRegisteredClaimNames.Jti);
+        var correlationContextUserId = context?.User.FindFirstValue(JwtRegisteredClaimNames.Jti);
 
         var parsed = Guid.TryParse(correlationContextUserId, out var parsedUserId);
 

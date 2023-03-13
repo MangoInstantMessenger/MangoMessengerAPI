@@ -13,12 +13,13 @@ public class ChangePasswordCommandValidator : AbstractValidator<ChangePasswordCo
         RuleFor(x => x.CurrentPassword)
             .NotEqual(x => x.NewPassword)
             .WithMessage("New and old passwords cannot be same")
-            .Length(8, 50);
+            .Length(5, 50)
+            .WithMessage("Password must be at least 5 characters.");
 
         RuleFor(x => x.NewPassword)
             .Equal(x => x.RepeatNewPassword)
             .WithMessage("New password and repeat password should be same.")
-            .Length(8, 50)
-            .WithMessage("Password must be at least 8 characters.");
+            .Length(5, 50)
+            .WithMessage("Password must be at least 5 characters.");
     }
 }

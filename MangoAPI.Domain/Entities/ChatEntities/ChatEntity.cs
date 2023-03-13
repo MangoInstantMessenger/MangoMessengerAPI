@@ -15,11 +15,9 @@ public sealed class ChatEntity
 
     public string Description { get; private set; }
 
-    public string Image { get; private set; }
+    public string ImageFileName { get; private set; }
 
     public DateTime CreatedAt { get; private set; }
-
-    public DateTime? UpdatedAt { get; private set; }
 
     public int MembersCount { get; private set; }
 
@@ -45,14 +43,14 @@ public sealed class ChatEntity
         string title,
         CommunityType communityType,
         string description,
-        string image,
+        string imageFileName,
         DateTime createdAt,
         int membersCount)
     {
         Title = title;
         CommunityType = communityType;
         Description = description;
-        Image = image;
+        ImageFileName = imageFileName;
         CreatedAt = createdAt;
         MembersCount = membersCount;
 
@@ -84,7 +82,7 @@ public sealed class ChatEntity
 
     public void ChangeChatImage(string fileName)
     {
-        Image = fileName;
+        ImageFileName = fileName;
         new ChatEntityValidator().ValidateAndThrow(this);
     }
 

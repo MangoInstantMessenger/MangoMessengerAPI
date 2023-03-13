@@ -22,9 +22,8 @@ export class RegisterComponent implements OnDestroy {
   ) {}
 
   public registerCommand: RegisterCommand = {
-    displayName: '',
-    email: '',
-    password: '',
+    username: '',
+    password: ''
   };
 
   componentDestroyed$: Subject<boolean> = new Subject();
@@ -39,24 +38,17 @@ export class RegisterComponent implements OnDestroy {
   }
 
   onRegisterClick(): void {
-    const displayNameFieldValidationResult = this._validationService.validateField(
-      this.registerCommand.displayName,
-      'Display name'
-    );
     const emailFieldValidationResult = this._validationService.validateField(
-      this.registerCommand.email,
-      'Email'
+      this.registerCommand.username,
+      'Username'
     );
+
     const passwordFieldValidationResult = this._validationService.validateField(
       this.registerCommand.password,
       'Password'
     );
 
-    if (
-      !displayNameFieldValidationResult ||
-      !emailFieldValidationResult ||
-      !passwordFieldValidationResult
-    ) {
+    if (!emailFieldValidationResult || !passwordFieldValidationResult) {
       return;
     }
 

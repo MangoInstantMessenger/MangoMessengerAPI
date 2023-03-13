@@ -38,11 +38,9 @@ export class SettingsComponent implements OnInit, OnDestroy {
     displayName: '',
     displayNameColour: 0,
     birthdayDate: '',
-    email: '',
     website: '',
     username: '',
     bio: '',
-    userNameChanged: false,
     address: '',
     facebook: '',
     twitter: '',
@@ -57,11 +55,9 @@ export class SettingsComponent implements OnInit, OnDestroy {
     displayName: '',
     displayNameColour: 0,
     birthdayDate: '',
-    email: '',
     website: '',
     username: '',
     bio: '',
-    userNameChanged: false,
     address: '',
     facebook: '',
     twitter: '',
@@ -100,11 +96,7 @@ export class SettingsComponent implements OnInit, OnDestroy {
       .subscribe({
         next: (response) => {
           this.currentUser = response.user;
-          this.currentUserForUpdating = {...response.user};
-
-          if (!response.user.userNameChanged) {
-            this.currentUser.username = '';
-          }
+          this.currentUserForUpdating = { ...response.user };
         },
         error: (error) => {
           this._errorNotificationService.notifyOnError(error);
@@ -169,8 +161,7 @@ export class SettingsComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.componentDestroyed$))
       .subscribe({
         next: (response) => {
-          this.currentUser = {...this.currentUserForUpdating};
-          this.currentUser.userNameChanged = true;
+          this.currentUser = { ...this.currentUserForUpdating };
           alert(response.message);
         },
         error: (error) => {
@@ -211,6 +202,12 @@ export class SettingsComponent implements OnInit, OnDestroy {
       const result = await firstValueFrom<UpdateProfilePictureResponse>(updateProfileImage$);
       alert(result.message);
       this.currentUser.pictureUrl = result.newUserPictureUrl;
+      const tokens = this._tokensService.getTokens();
+
+      if (tokens?.userProfilePictureUrl) {
+        tokens.userProfilePictureUrl = result.newUserPictureUrl;
+        this._tokensService.setTokens(tokens);
+      }
     } catch (e: any) {
       alert(e.error.errorMessage);
     }
@@ -256,10 +253,10 @@ export class SettingsComponent implements OnInit, OnDestroy {
 
   onSaveChangesSocialsClick(): void {
     const command: UpdateUserSocialsCommand = {
-      instagram: this.currentUser.instagram,
-      facebook: this.currentUser.facebook,
-      twitter: this.currentUser.twitter,
-      linkedIn: this.currentUser.linkedIn
+      facebook: this.currentUserForUpdating.facebook,
+      twitter: this.currentUserForUpdating.twitter,
+      instagram: this.currentUserForUpdating.instagram,
+      linkedIn: this.currentUserForUpdating.linkedIn
     };
 
     this._usersService

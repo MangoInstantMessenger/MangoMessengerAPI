@@ -23,7 +23,6 @@ public static class ResponseMessageCodes
     public const string MaximumOwnerChatsExceeded100 = "MAXIMUM_OWNER_CHATS_EXCEEDED_100";
     public const string InvalidRequestModel = "INVALID_REQUEST_FORMAT";
     public const string KeyExchangeRequestNotFound = "KEY_EXCHANGE_REQUEST_NOT_FOUND";
-    public const string UploadedDocumentsLimitReached10 = "UPLOADED_DOCUMENTS_LIMIT_REACHED";
     public const string MessageNotFound = "MESSAGE_NOT_FOUND";
     public const string DhParameterNotFound = "DH_PARAMETER_NOT_FOUND";
     public const string TokensNotFound = "TOKENS_NOT_FOUND";
@@ -34,7 +33,7 @@ public static class ResponseMessageCodes
     {
         { InvalidOrExpiredRefreshToken, "Your refresh token is invalid or expired." },
         { UserAlreadyExists, "User already exists in the system." },
-        { InvalidCredentials, "Invalid credentials. Please, enter valid email and password." },
+        { InvalidCredentials, "Invalid credentials. Please, enter valid username and password." },
         { UserNotFound, "User not found in the system." },
         { PermissionDenied, "You are not authorized to perform this action." },
         { ChatNotFound, "Cannot found this chat it the system." },
@@ -48,10 +47,6 @@ public static class ResponseMessageCodes
         {
             KeyExchangeRequestNotFound,
             "Key exchange request not found. Either request is not submitted yet or declined."
-        },
-        {
-            UploadedDocumentsLimitReached10,
-            "You have reached maximum amount of documents upload 10. Try again in 1 hour."
         },
         { MessageNotFound, "Message doesn't found in the system" },
         { DhParameterNotFound, "Diffie-Hellman parameter is not initialized. Please initialize first." },

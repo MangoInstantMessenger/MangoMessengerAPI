@@ -14,13 +14,11 @@ public class LeaveGroupTestSuccess : IntegrationTestBase
     [Fact]
     public async Task LeaveGroupTestSuccessAsync()
     {
-        var user =
-            await MangoModule.RequestAsync(CommandHelper.RegisterPetroCommand(), CancellationToken.None);
-        var chat =
-            await MangoModule.RequestAsync(
-                request: CommandHelper.CreateExtremeCodeMainChatCommand(user.Response.Tokens.UserId),
-                cancellationToken: CancellationToken.None);
-        var command = new LeaveGroupCommand(UserId: user.Response.Tokens.UserId, ChatId: chat.Response.ChatId);
+        var petroCommand = CommandHelper.RegisterPetroCommand();
+        var petroResult = await MangoModule.RequestAsync(petroCommand, CancellationToken.None);
+        var chatCommand = CommandHelper.CreateExtremeCodeMainChatCommand(petroResult.Response.Tokens.UserId);
+        var chatResult = await MangoModule.RequestAsync(chatCommand, CancellationToken.None);
+        var command = new LeaveGroupCommand(petroResult.Response.Tokens.UserId, chatResult.Response.ChatId);
 
         var result = await MangoModule.RequestAsync(command, CancellationToken.None);
 

@@ -41,14 +41,13 @@ public class SearchCommunityQueryHandler
                 ChatId = x.Id,
                 Title = x.Title,
                 CommunityType = x.CommunityType,
-                ChatLogoImageUrl = x.Image != null
-                    ? $"{blobServiceSettings.MangoBlobAccess}/{x.Image}"
+                ChatLogoImageUrl = x.ImageFileName != null
+                    ? $"{blobServiceSettings.MangoBlobAccess}/{x.ImageFileName}"
                     : null,
                 Description = x.Description,
                 MembersCount = x.MembersCount,
                 IsArchived = false,
                 IsMember = false,
-                UpdatedAt = x.UpdatedAt,
                 LastMessageAuthor = x.LastMessageAuthor,
                 LastMessageText = x.LastMessageText,
                 LastMessageTime = x.LastMessageTime,

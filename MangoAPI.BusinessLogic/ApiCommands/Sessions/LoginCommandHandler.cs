@@ -1,40 +1,40 @@
-﻿using System;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
-using MangoAPI.Application.Interfaces;
+﻿using MangoAPI.Application.Interfaces;
 using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.Domain.Constants;
 using MangoAPI.Domain.Entities;
 using MangoAPI.Infrastructure.Database;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using System;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace MangoAPI.BusinessLogic.ApiCommands.Sessions;
 
 public class LoginCommandHandler : IRequestHandler<LoginCommand, Result<TokensResponse>>
 {
-    private readonly IJwtGenerator jwtGenerator;
-    private readonly MangoDbContext dbContext;
-    private readonly ISignInManagerService signInManager;
-    private readonly ResponseFactory<TokensResponse> responseFactory;
-    private readonly IJwtGeneratorSettings jwtGeneratorSettings;
     private readonly IBlobServiceSettings blobServiceSettings;
+    private readonly MangoDbContext dbContext;
+    private readonly IJwtGenerator jwtGenerator;
+    private readonly IJwtGeneratorSettings jwtGeneratorSettings;
+    private readonly ResponseFactory<TokensResponse> responseFactory;
+    private readonly IPasswordService passwordService;
 
     public LoginCommandHandler(
-        ISignInManagerService signInManager,
         IJwtGenerator jwtGenerator,
         MangoDbContext dbContext,
         ResponseFactory<TokensResponse> responseFactory,
         IJwtGeneratorSettings jwtGeneratorSettings,
-        IBlobServiceSettings blobServiceSettings)
+        IBlobServiceSettings blobServiceSettings,
+        IPasswordService passwordService)
     {
-        this.signInManager = signInManager;
         this.jwtGenerator = jwtGenerator;
         this.dbContext = dbContext;
         this.responseFactory = responseFactory;
         this.jwtGeneratorSettings = jwtGeneratorSettings;
         this.blobServiceSettings = blobServiceSettings;
+        this.passwordService = passwordService;
     }
 
     public async Task<Result<TokensResponse>> Handle(
@@ -43,10 +43,10 @@ public class LoginCommandHandler : IRequestHandler<LoginCommand, Result<TokensRe
     {
         var user = await dbContext.Users
             .FirstOrDefaultAsync(
-                userEntity => userEntity.Email == request.Email,
+                userEntity => userEntity.Username == request.Username,
                 cancellationToken);
 
-        if (user is null)
+        if (user == null)
         {
             const string errorMessage = ResponseMessageCodes.InvalidCredentials;
             var details = ResponseMessageCodes.ErrorDictionary[errorMessage];
@@ -54,9 +54,9 @@ public class LoginCommandHandler : IRequestHandler<LoginCommand, Result<TokensRe
             return responseFactory.ConflictResponse(errorMessage, details);
         }
 
-        var result = await signInManager.CheckPasswordSignInAsync(user, request.Password, false);
+        var result = passwordService.ValidateCredentials(user, request.Password);
 
-        if (!result.Succeeded)
+        if (!result)
         {
             const string errorMessage = ResponseMessageCodes.InvalidCredentials;
             var details = ResponseMessageCodes.ErrorDictionary[errorMessage];
@@ -66,10 +66,10 @@ public class LoginCommandHandler : IRequestHandler<LoginCommand, Result<TokensRe
 
         var session = new SessionEntity
         {
+            Id = Guid.NewGuid(),
             UserId = user.Id,
-            RefreshToken = Guid.NewGuid(),
             ExpiresAt = DateTime.UtcNow.AddDays(jwtGeneratorSettings.MangoRefreshTokenLifetimeDays),
-            CreatedAt = DateTime.UtcNow,
+            CreatedAt = DateTime.UtcNow
         };
 
         var accessToken = jwtGenerator.GenerateJwtToken(user);
@@ -89,11 +89,11 @@ public class LoginCommandHandler : IRequestHandler<LoginCommand, Result<TokensRe
 
         var expires = ((DateTimeOffset)session.ExpiresAt).ToUnixTimeSeconds();
         var userDisplayName = user.DisplayName;
-        var userProfilePictureUrl = $"{blobServiceSettings.MangoBlobAccess}/{user.Image}";
+        var userProfilePictureUrl = $"{blobServiceSettings.MangoBlobAccess}/{user.ImageFileName}";
 
         var tokens = TokensResponse.FromSuccess(
             accessToken,
-            session.RefreshToken,
+            session.Id,
             user.Id,
             expires,
             userDisplayName,

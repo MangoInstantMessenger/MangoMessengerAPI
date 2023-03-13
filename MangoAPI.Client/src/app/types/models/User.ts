@@ -5,11 +5,9 @@ export interface User {
   displayName: string;
   displayNameColour: DisplayNameColours;
   birthdayDate: string;
-  email: string;
   website: string;
   username: string;
   bio: string;
-  userNameChanged: boolean;
   address: string;
   facebook: string;
   twitter: string;

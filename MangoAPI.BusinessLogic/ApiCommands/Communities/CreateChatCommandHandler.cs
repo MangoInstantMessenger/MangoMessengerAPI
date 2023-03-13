@@ -6,7 +6,6 @@ using MangoAPI.BusinessLogic.HubConfig;
 using MangoAPI.BusinessLogic.Models;
 using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.Domain.Constants;
-using MangoAPI.Domain.Entities;
 using MangoAPI.Domain.Entities.ChatEntities;
 using MangoAPI.Domain.Enums;
 using MangoAPI.Infrastructure.Database;
@@ -75,16 +74,6 @@ public class CreateChatCommandHandler
             return responseFactory.SuccessResponse(CreateCommunityResponse.FromSuccess(existingChat));
         }
 
-        // var chatEntity = new ChatEntity
-        // {
-        //     Id = Guid.NewGuid(),
-        //     CommunityType = CommunityType.DirectChat,
-        //     Title = $"{currentUserDisplayName} / {partner.DisplayName}",
-        //     CreatedAt = DateTime.UtcNow,
-        //     Description = $"Direct chat between {currentUserDisplayName} and {partner.DisplayName}",
-        //     MembersCount = 2,
-        // };
-
         var title = $"{currentUserDisplayName} / {partner.DisplayName}";
         var description = $"Direct chat between {currentUserDisplayName} and {partner.DisplayName}";
 
@@ -92,18 +81,12 @@ public class CreateChatCommandHandler
             title,
             CommunityType.DirectChat,
             description,
-            image: null,
+            image: String.Empty,
             DateTime.UtcNow,
             membersCount: 2);
 
         var senderUserChat = UserChatEntity.Create(request.UserId, chat.Id, UserRole.User);
         var receiverUserChat = UserChatEntity.Create(request.PartnerId, chat.Id, UserRole.User);
-
-        // var userChats = new[]
-        // {
-        //     new UserChatEntity { ChatId = chat.Id, RoleId = UserRole.User, UserId = request.UserId },
-        //     new UserChatEntity { ChatId = chat.Id, RoleId = UserRole.User, UserId = request.PartnerId },
-        // };
 
         dbContext.Chats.Add(chat);
         dbContext.UserChats.AddRange(senderUserChat, receiverUserChat);

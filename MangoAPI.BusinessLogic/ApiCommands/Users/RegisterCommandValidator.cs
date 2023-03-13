@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using System.Linq;
 
 namespace MangoAPI.BusinessLogic.ApiCommands.Users;
 
@@ -6,20 +7,18 @@ public class RegisterCommandValidator : AbstractValidator<RegisterCommand>
 {
     public RegisterCommandValidator()
     {
-        RuleFor(x => x.Email)
+        RuleFor(x => x.Username)
+            .Cascade(CascadeMode.Stop)
             .NotEmpty()
-            .WithMessage("Email address required.")
-            .EmailAddress()
-            .WithMessage("Email address should be in proper format.")
-            .Length(1, 50);
+            .Must(username => username.All(char.IsLetterOrDigit))
+            .WithMessage("Username must only contain letters or numbers.")
+            .Length(1, 50)
+            .WithMessage("Username must be between 1 and 50 characters.");
 
         RuleFor(x => x.Password)
+            .Cascade(CascadeMode.Stop)
             .NotEmpty()
-            .Length(8, 50)
-            .WithMessage("Password must be at least 8 characters.");
-
-        RuleFor(x => x.DisplayName)
-            .NotEmpty()
-            .Length(1, 50);
+            .Length(5, 50)
+            .WithMessage("Password must be at least 5 characters.");
     }
 }

@@ -18,16 +18,14 @@ public class SendMessageShouldThrowUserNotFound : IntegrationTestBase
     {
         const string expectedMessage = ResponseMessageCodes.UserNotFound;
         var expectedDetails = ResponseMessageCodes.ErrorDictionary[expectedMessage];
-        var user = await MangoModule.RequestAsync(
-            request: CommandHelper.RegisterPetroCommand(),
-            cancellationToken: CancellationToken.None);
-        var chat = await MangoModule.RequestAsync(
-            request: CommandHelper.CreateExtremeCodeMainChatCommand(user.Response.Tokens.UserId),
-            cancellationToken: CancellationToken.None);
 
-        var result = await MangoModule.RequestAsync(
-            request: CommandHelper.SendMessageToChannelCommand(Guid.NewGuid(), chat.Response.ChatId),
-            cancellationToken: CancellationToken.None);
+        var petroCommand = CommandHelper.RegisterPetroCommand();
+        var petroResult = await MangoModule.RequestAsync(petroCommand, CancellationToken.None);
+        var chatCommand = CommandHelper.CreateExtremeCodeMainChatCommand(petroResult.Response.Tokens.UserId);
+        var chatResult = await MangoModule.RequestAsync(chatCommand, CancellationToken.None);
+
+        var sendCommand = CommandHelper.SendMessageToChannelCommand(userId: Guid.NewGuid(), chatResult.Response.ChatId);
+        var result = await MangoModule.RequestAsync(sendCommand, CancellationToken.None);
 
         assert.Fail(result, expectedMessage, expectedDetails);
     }

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using MangoAPI.Application.Interfaces;
@@ -41,10 +40,10 @@ public class RefreshSessionCommandHandler : IRequestHandler<RefreshSessionComman
         var session = await dbContext.Sessions
             .Include(x => x.UserEntity)
             .FirstOrDefaultAsync(
-                entity => entity.RefreshToken == request.RefreshToken,
+                entity => entity.Id == request.RefreshToken,
                 cancellationToken);
 
-        if (session is null || session.IsExpired)
+        if (session == null || session.IsExpired)
         {
             const string errorMessage = ResponseMessageCodes.InvalidOrExpiredRefreshToken;
             var details = ResponseMessageCodes.ErrorDictionary[errorMessage];
@@ -52,24 +51,9 @@ public class RefreshSessionCommandHandler : IRequestHandler<RefreshSessionComman
             return responseFactory.ConflictResponse(errorMessage, details);
         }
 
-        var userSessions = dbContext.Sessions
-            .Where(x => x.UserId == session.UserId);
-
-        var userSessionCount = await userSessions.CountAsync(cancellationToken);
-
-        switch (userSessionCount)
-        {
-            case >= 5:
-                dbContext.Sessions.RemoveRange(userSessions);
-                break;
-            default:
-                dbContext.Sessions.Remove(session);
-                break;
-        }
-
         var newSession = new SessionEntity
         {
-            RefreshToken = Guid.NewGuid(),
+            Id = Guid.NewGuid(),
             UserId = session.UserId,
             ExpiresAt = DateTime.UtcNow.AddDays(jwtGeneratorSettings.MangoRefreshTokenLifetimeDays),
             CreatedAt = DateTime.UtcNow,
@@ -82,11 +66,11 @@ public class RefreshSessionCommandHandler : IRequestHandler<RefreshSessionComman
 
         var expires = ((DateTimeOffset)session.ExpiresAt).ToUnixTimeSeconds();
         var userDisplayName = session.UserEntity.DisplayName;
-        var userProfilePictureUrl = $"{blobServiceSettings.MangoBlobAccess}/{session.UserEntity.Image}";
+        var userProfilePictureUrl = $"{blobServiceSettings.MangoBlobAccess}/{session.UserEntity.ImageFileName}";
 
         var result = TokensResponse.FromSuccess(
             accessToken,
-            newSession.RefreshToken,
+            newSession.Id,
             session.UserId,
             expires,
             userDisplayName,

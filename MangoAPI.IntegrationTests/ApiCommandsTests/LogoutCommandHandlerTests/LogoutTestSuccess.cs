@@ -15,16 +15,15 @@ public class LogoutTestSuccess : IntegrationTestBase
     [Fact]
     public async Task LogoutTestSuccessAsync()
     {
-        var user = await MangoModule.RequestAsync(
-            request: CommandHelper.RegisterPetroCommand(),
-            cancellationToken: CancellationToken.None);
-        var userId = user.Response.Tokens.UserId;
-        var session = await MangoModule.RequestAsync(
-            request: CommandHelper.CreateLoginCommand("kolosovp95@gmail.com", "Bm3-`dPRv-/w#3)cw^97"),
-            cancellationToken: CancellationToken.None);
-        var command = new LogoutCommand(RefreshToken: session.Response.Tokens.RefreshToken, UserId: userId);
+        var petroCommand = CommandHelper.RegisterPetroCommand();
+        var petro = await MangoModule.RequestAsync(petroCommand, CancellationToken.None);
+        
+        var petroId = petro.Response.Tokens.UserId;
+        var petroRefresh = petro.Response.Tokens.RefreshToken;
+        
+        var petroLogout = new LogoutCommand(petroId, petroRefresh);
 
-        var result = await MangoModule.RequestAsync(command, CancellationToken.None);
+        var result = await MangoModule.RequestAsync(petroLogout, CancellationToken.None);
 
         assert.Pass(result);
     }

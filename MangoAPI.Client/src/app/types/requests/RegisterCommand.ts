@@ -1,11 +1,9 @@
 ﻿export class RegisterCommand {
-  email: string;
-  displayName: string;
+  username: string;
   password: string;
 
-  constructor(email: string, displayName: string, password: string) {
-    this.email = email;
-    this.displayName = displayName;
+  constructor(username: string, password: string) {
+    this.username = username;
     this.password = password;
   }
 }

@@ -16,23 +16,24 @@ public class DownloadPartnerPublicKeyTestShouldThrowKeyExchangeDoesNotBelongToUs
     public async Task DownloadPartnerPublicKeyTestShouldThrowKeyExchangeDoesNotBelongToUserAsync()
     {
         const string expectedMessage = ResponseMessageCodes.KeyExchangeIsNotConfirmed;
+        
         var expectedDetails = ResponseMessageCodes.ErrorDictionary[expectedMessage];
-        var sender =
-            await MangoModule.RequestAsync(CommandHelper.RegisterKhachaturCommand(), CancellationToken.None);
-        var requestedUser =
-            await MangoModule.RequestAsync(CommandHelper.RegisterPetroCommand(), CancellationToken.None);
+        var khachaturCommand = CommandHelper.RegisterKhachaturCommand();
+        var senderResult = await MangoModule.RequestAsync(khachaturCommand, CancellationToken.None);
+
+        var petroCommand = CommandHelper.RegisterPetroCommand();
+        var receiverResult = await MangoModule.RequestAsync(petroCommand, CancellationToken.None);
         var publicKey = MangoFilesHelper.GetTestImage();
-        var keyExchange = await MangoModule.RequestAsync(
-            request: CommandHelper.CreateOpenSslCreateKeyExchangeCommand(
-                receiverId: sender.Response.Tokens.UserId,
-                senderId: requestedUser.Response.Tokens.UserId,
-                senderPublicKey: publicKey),
-            cancellationToken: CancellationToken.None);
-        var query = new DownloadPartnerPublicKeyQuery(requestedUser.Response.Tokens.UserId, keyExchange.Response.RequestId);
 
-        var response =
-            await MangoModule.RequestAsync(query, CancellationToken.None);
+        var senderId = senderResult.Response.Tokens.UserId;
+        var receiverId = receiverResult.Response.Tokens.UserId;
+        
+        var sslCommand = CommandHelper.CreateOpenSslCreateKeyExchangeCommand(receiverId, senderId, publicKey);
+        var keyExchangeResult = await MangoModule.RequestAsync(sslCommand, CancellationToken.None);
+        
+        var query = new DownloadPartnerPublicKeyQuery(receiverId, keyExchangeResult.Response.RequestId);
+        var downloadResult = await MangoModule.RequestAsync(query, CancellationToken.None);
 
-        assert.Fail(response, expectedMessage, expectedDetails);
+        assert.Fail(downloadResult, expectedMessage, expectedDetails);
     }
 }

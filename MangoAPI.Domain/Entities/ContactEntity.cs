@@ -2,10 +2,8 @@
 
 namespace MangoAPI.Domain.Entities;
 
-public class UserContactEntity
+public class ContactEntity
 {
-    public Guid Id { get; set; }
-
     public Guid ContactId { get; set; }
 
     public Guid UserId { get; set; }

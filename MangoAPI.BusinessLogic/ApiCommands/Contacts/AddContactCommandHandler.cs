@@ -61,7 +61,7 @@ public class AddContactCommandHandler
             return responseFactory.ConflictResponse(errorMessage, errorDescription);
         }
 
-        var contactEntity = new UserContactEntity
+        var contactEntity = new ContactEntity
         {
             ContactId = request.ContactId,
             UserId = request.UserId,

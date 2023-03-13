@@ -16,11 +16,12 @@ public class UpdateUserAccountInfoTestSuccess : IntegrationTestBase
     [Fact]
     public async Task UpdateUserAccountInfoTestSuccessAsync()
     {
-        var user = await MangoModule.RequestAsync(
-            request: CommandHelper.RegisterPetroCommand(),
-            cancellationToken: CancellationToken.None);
+        var petroCommand = CommandHelper.RegisterPetroCommand();
+        var petroResult = await MangoModule.RequestAsync(petroCommand, CancellationToken.None);
+        var petroId = petroResult.Response.Tokens.UserId;
+        
         var command = new UpdateUserAccountInfoCommand(
-            UserId: user.Response.Tokens.UserId,
+            petroId,
             Username: "PetroKolosov",
             DisplayName: "Petro Kolosov",
             Website: "pkolosov.com",

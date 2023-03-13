@@ -12,8 +12,8 @@ export class Message {
   self: boolean;
   messageAuthorPictureUrl: string;
   messageAttachmentUrl: string | null | undefined;
-  inReplayToAuthor: string | null | undefined;
-  inReplayToText: string | null | undefined;
+  inReplyToUser: string | null | undefined;
+  inReplyToText: string | null | undefined;
 
   constructor(
     messageId: string,
@@ -25,8 +25,8 @@ export class Message {
     createdAt: string,
     self: boolean,
     messageAuthorPictureUrl: string,
-    inReplayToAuthor: string | null,
-    inReplayToText: string | null
+    inReplyToUser: string | null,
+    inReplyToText: string | null
   ) {
     this.messageId = messageId;
     this.userId = userId;
@@ -37,7 +37,7 @@ export class Message {
     this.createdAt = createdAt;
     this.self = self;
     this.messageAuthorPictureUrl = messageAuthorPictureUrl;
-    this.inReplayToAuthor = inReplayToAuthor ?? null;
-    this.inReplayToText = inReplayToText ?? null;
+    this.inReplyToUser = inReplyToUser ?? null;
+    this.inReplyToText = inReplyToText ?? null;
   }
 }

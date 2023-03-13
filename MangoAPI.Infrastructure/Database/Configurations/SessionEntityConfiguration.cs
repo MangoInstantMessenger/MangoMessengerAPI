@@ -12,6 +12,7 @@ public class SessionEntityConfiguration : IEntityTypeConfiguration<SessionEntity
 
         builder.HasKey(x => x.Id);
 
+        builder.Property(x => x.UserId).IsRequired();
         builder.Property(x => x.ExpiresAt).IsRequired();
         builder.Property(x => x.CreatedAt).IsRequired();
     }

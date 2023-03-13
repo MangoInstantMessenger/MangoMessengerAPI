@@ -17,10 +17,9 @@ public class LoginTestShouldThrowInvalidCredentials : IntegrationTestBase
     {
         const string expectedMessage = ResponseMessageCodes.InvalidCredentials;
         var expectedDetails = ResponseMessageCodes.ErrorDictionary[expectedMessage];
+        var command = CommandHelper.CreateLoginCommand("PetroKolosov337", "Bm3-`dPRv-/w#3)cw^97");
 
-        var result = await MangoModule.RequestAsync(
-            request: CommandHelper.CreateLoginCommand("kolosovp95@gmail.com", "Bm3-`dPRv-/w#3)cw^97"),
-            cancellationToken: CancellationToken.None);
+        var result = await MangoModule.RequestAsync(command, CancellationToken.None);
 
         assert.Fail(result, expectedMessage, expectedDetails);
     }

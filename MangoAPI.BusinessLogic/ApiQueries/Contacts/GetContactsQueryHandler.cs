@@ -29,7 +29,7 @@ public class GetContactsQueryHandler : IRequestHandler<GetContactsQuery, Result<
     public async Task<Result<GetContactsResponse>> Handle(GetContactsQuery request, CancellationToken cancellationToken)
     {
         var query = from userContact in dbContext.UserContacts.AsNoTracking()
-            join userEntity in dbContext.Users.Include(x => x.UserInformation)
+            join userEntity in dbContext.Users.Include(x => x.PersonalInformation)
                 on userContact.ContactId equals userEntity.Id
             where userContact.UserId == request.UserId
             orderby userContact.CreatedAt
@@ -37,10 +37,10 @@ public class GetContactsQueryHandler : IRequestHandler<GetContactsQuery, Result<
             {
                 UserId = userEntity.Id,
                 DisplayName = userEntity.DisplayName,
-                Address = userEntity.UserInformation.Address,
+                Address = userEntity.Address,
                 Bio = userEntity.Bio,
-                PictureUrl = $"{blobServiceSettings.MangoBlobAccess}/{userEntity.Image}",
-                Email = userEntity.Email,
+                PictureUrl = $"{blobServiceSettings.MangoBlobAccess}/{userEntity.ImageFileName}",
+                Username = userEntity.Username,
                 IsContact = true,
             };
 

@@ -1,17 +1,19 @@
-﻿using System;
-using System.Reflection;
+﻿using System.Reflection;
 using MangoAPI.Domain.Entities;
 using MangoAPI.Domain.Entities.ChatEntities;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace MangoAPI.Infrastructure.Database;
 
-public class MangoDbContext : IdentityDbContext<UserEntity, RoleEntity, Guid>
+public class MangoDbContext : DbContext
 {
+    public const string DefaultSchema = "mango";
+
     public MangoDbContext(DbContextOptions options) : base(options)
     {
     }
+    
+    public DbSet<UserEntity> Users { get; set; }
 
     public DbSet<SessionEntity> Sessions { get; set; }
 
@@ -21,21 +23,17 @@ public class MangoDbContext : IdentityDbContext<UserEntity, RoleEntity, Guid>
 
     public DbSet<UserChatEntity> UserChats { get; set; }
 
-    public DbSet<UserContactEntity> UserContacts { get; set; }
+    public DbSet<ContactEntity> UserContacts { get; set; }
 
-    public DbSet<UserInformationEntity> UserInformation { get; set; }
-
-    public DbSet<DocumentEntity> Documents { get; set; }
+    public DbSet<PersonalInformationEntity> UserInformation { get; set; }
 
     public DbSet<DiffieHellmanParameterEntity> DiffieHellmanParameterEntities { get; set; }
 
     public DbSet<DiffieHellmanKeyExchangeEntity> DiffieHellmanKeyExchangeEntities { get; set; }
 
-    public const string DefaultSchema = "mango";
-
-    protected override void OnModelCreating(ModelBuilder builder)
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        base.OnModelCreating(builder);
-        builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+        base.OnModelCreating(modelBuilder);
+        modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
     }
 }

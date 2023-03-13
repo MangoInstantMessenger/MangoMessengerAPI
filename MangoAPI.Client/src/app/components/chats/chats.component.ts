@@ -20,7 +20,7 @@ import { DisplayNameColours } from 'src/app/types/enums/DisplayNameColours';
 import { DeleteMessageCommand } from 'src/app/types/requests/DeleteMessageCommand';
 import ApiBaseService from 'src/app/services/api/apiBase.service';
 import { SendMessageResponse } from '../../types/responses/SendMessageResponse';
-import { ReplyStateSerivce } from 'src/app/services/states/replyState.service';
+import { ReplyStateService } from 'src/app/services/states/replyState.service';
 import { Reply } from 'src/app/types/models/Reply';
 
 @Component({
@@ -39,7 +39,7 @@ export class ChatsComponent implements OnInit, OnDestroy {
     private _validationService: ValidationService,
     private _apiBaseService: ApiBaseService,
     public _modalWindowStateService: ModalWindowStateService,
-    public _replyStateService: ReplyStateSerivce
+    public _replyStateService: ReplyStateService
   ) {}
 
   private connectionBuilder: signalR.HubConnectionBuilder = new signalR.HubConnectionBuilder();
@@ -59,7 +59,6 @@ export class ChatsComponent implements OnInit, OnDestroy {
     lastMessageAuthor: '',
     lastMessageText: '',
     lastMessageTime: '',
-    updatedAt: '',
     roleId: 1,
     communityType: CommunityType.PublicChannel,
     description: '',

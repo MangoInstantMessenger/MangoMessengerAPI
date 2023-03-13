@@ -15,14 +15,11 @@ public class RefreshSessionTestSuccess : IntegrationTestBase
     [Fact]
     public async Task RefreshSessionTestSuccessAsync()
     {
-        await MangoModule.RequestAsync(
-            request: CommandHelper.RegisterPetroCommand(),
-            cancellationToken: CancellationToken.None);
-        var login = await MangoModule.RequestAsync(
-            request: CommandHelper.CreateLoginCommand("kolosovp95@gmail.com", "Bm3-`dPRv-/w#3)cw^97"),
-            cancellationToken: CancellationToken.None);
-        var command = new RefreshSessionCommand(RefreshToken: login.Response.Tokens.RefreshToken);
-
+        var petroCommand = CommandHelper.RegisterPetroCommand();
+        var petro = await MangoModule.RequestAsync(petroCommand, CancellationToken.None);
+        var petroRefresh = petro.Response.Tokens.RefreshToken;
+        
+        var command = new RefreshSessionCommand(petroRefresh);
         var result = await MangoModule.RequestAsync(command, CancellationToken.None);
 
         assert.Pass(result);
