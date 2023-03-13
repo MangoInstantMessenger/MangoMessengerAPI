@@ -76,9 +76,9 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, Result<To
 
         dbContext.Users.Add(newUser);
 
-        var userInfo = new PersonalInformationEntity { UserId = newUser.Id, CreatedAt = DateTime.UtcNow, };
+        var userInfo = PersonalInformationEntity.Create(newUser.Id);
 
-        dbContext.UserInformation.Add(userInfo);
+        dbContext.PersonalInformation.Add(userInfo);
 
         var session = new SessionEntity
         {

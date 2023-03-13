@@ -27,6 +27,22 @@ public sealed class UserEntity
 
     public string Address { get; private set; }
 
+    public DisplayNameColour DisplayNameColour { get; private set; }
+
+    public PersonalInformationEntity PersonalInformation { get; private set; }
+
+    public IReadOnlyCollection<SessionEntity> Sessions => _sessions;
+    private readonly List<SessionEntity> _sessions;
+
+    public IReadOnlyCollection<MessageEntity> Messages => _messages;
+    private readonly List<MessageEntity> _messages;
+
+    public IReadOnlyCollection<UserChatEntity> UserChats => _userChats;
+    private readonly List<UserChatEntity> _userChats;
+
+    public IReadOnlyCollection<ContactEntity> Contacts => _contacts;
+    private readonly List<ContactEntity> _contacts;
+
     private UserEntity()
     {
     }
@@ -40,6 +56,11 @@ public sealed class UserEntity
         DisplayNameColour displayNameColour)
     {
         Id = Guid.NewGuid();
+        _sessions = new List<SessionEntity>();
+        _messages = new List<MessageEntity>();
+        _userChats = new List<UserChatEntity>();
+        _contacts = new List<ContactEntity>();
+        
         Username = username;
         PasswordHash = passwordHash;
         PasswordSalt = passwordSalt;
@@ -72,14 +93,14 @@ public sealed class UserEntity
     public void UpdateProfilePicture(string imageFileName)
     {
         ImageFileName = imageFileName;
-        
+
         new UserEntityValidator().ValidateAndThrow(this);
     }
 
     public void SetDisplayName(string displayName)
     {
         DisplayName = displayName;
-        
+
         new UserEntityValidator().ValidateAndThrow(this);
     }
 
@@ -90,7 +111,7 @@ public sealed class UserEntity
         Birthday = birthday;
         Address = address;
         Username = username;
-        
+
         new UserEntityValidator().ValidateAndThrow(this);
     }
 
@@ -98,19 +119,7 @@ public sealed class UserEntity
     {
         PasswordHash = passwordHash;
         PasswordSalt = passwordSalt;
-        
+
         new UserEntityValidator().ValidateAndThrow(this);
     }
-
-    public DisplayNameColour DisplayNameColour { get; private set; }
-
-    public ICollection<SessionEntity> Sessions { get; set; }
-
-    public ICollection<MessageEntity> Messages { get; set; }
-
-    public ICollection<UserChatEntity> UserChats { get; set; }
-
-    public PersonalInformationEntity PersonalInformation { get; set; }
-
-    public ICollection<ContactEntity> Contacts { get; set; }
 }

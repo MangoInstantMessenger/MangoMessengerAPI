@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.Domain.Constants;
@@ -27,13 +26,12 @@ public class UpdateUserSocialInformationCommandHandler
         UpdateUserSocialInformationCommand request,
         CancellationToken cancellationToken)
     {
-        var user = await dbContext.Users
-            .Include(userEntity => userEntity.PersonalInformation)
+        var personalInformation = await dbContext.PersonalInformation
             .FirstOrDefaultAsync(
-                entity => entity.Id == request.UserId,
+                entity => entity.UserId == request.UserId,
                 cancellationToken);
 
-        if (user is null)
+        if (personalInformation == null)
         {
             const string errorMessage = ResponseMessageCodes.UserNotFound;
             var details = ResponseMessageCodes.ErrorDictionary[errorMessage];
@@ -41,14 +39,19 @@ public class UpdateUserSocialInformationCommandHandler
             return responseFactory.ConflictResponse(errorMessage, details);
         }
 
-        user.PersonalInformation.Facebook = request.Facebook;
-        user.PersonalInformation.Twitter = request.Twitter;
-        user.PersonalInformation.Instagram = request.Instagram;
-        user.PersonalInformation.LinkedIn = request.LinkedIn;
+        // personalInformation.Facebook = request.Facebook;
+        // personalInformation.Twitter = request.Twitter;
+        // personalInformation.Instagram = request.Instagram;
+        // personalInformation.LinkedIn = request.LinkedIn;
+        // personalInformation.UpdatedAt = DateTime.UtcNow;
 
-        user.PersonalInformation.UpdatedAt = DateTime.UtcNow;
+        personalInformation.UpdateSocialInformation(
+            request.Facebook,
+            request.Twitter,
+            request.Instagram,
+            request.LinkedIn);
 
-        dbContext.UserInformation.Update(user.PersonalInformation);
+        dbContext.PersonalInformation.Update(personalInformation);
 
         await dbContext.SaveChangesAsync(cancellationToken);
 

@@ -23,9 +23,9 @@ public sealed class MessageEntity
 
     public DateTime? UpdatedAt { get; private set; }
 
-    public UserEntity User { get; set; }
+    public UserEntity User { get; private set; }
 
-    public ChatEntity Chat { get; set; }
+    public ChatEntity Chat { get; private set; }
 
     private MessageEntity()
     {
