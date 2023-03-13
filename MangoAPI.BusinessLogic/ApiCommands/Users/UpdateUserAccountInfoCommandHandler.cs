@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using MangoAPI.BusinessLogic.Responses;
@@ -70,10 +69,6 @@ public class
         user.Bio = request.Bio;
 
         user.Address = request.Address;
-
-        // user.PersonalInformation.UpdatedAt = DateTime.UtcNow;
-
-        // dbContext.UserInformation.Update(user.PersonalInformation);
 
         await dbContext.SaveChangesAsync(cancellationToken);
 
