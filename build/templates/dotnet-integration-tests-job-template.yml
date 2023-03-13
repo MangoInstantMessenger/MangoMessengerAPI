@@ -44,22 +44,22 @@ jobs:
           projects: '${{ parameters.integrationTestsProjectPath }}'
           arguments: '--configuration ${{ parameters.buildConfiguration }} --no-restore'
           
-#      - task: DotNetCoreCLI@2
-#        displayName: 'Run unit tests'
-#        inputs:
-#          command: 'test'
-#          projects: '${{ parameters.unitTestsProjectPath }}'
+      - task: DotNetCoreCLI@2
+        displayName: 'Run unit tests'
+        inputs:
+          command: 'test'
+          projects: '${{ parameters.unitTestsProjectPath }}'
 #          arguments: '--configuration ${{ parameters.buildConfiguration }} --no-build'
       
-      - bash: |
-          dotnet test ${{ parameters.unitTestsProjectPath }} --configuration ${{ parameters.buildConfiguration }} --no-build
-        displayName: 'Run unit tests'
-        env:
-          CollectCoverage: true
-          CoverletOutputFormat: cobertura
-          ThresholdStat: total
-          ThresholdType: Line
-          CoverletOutput: UnitTestResults/
+#      - bash: |
+#          dotnet test ${{ parameters.unitTestsProjectPath }} --configuration ${{ parameters.buildConfiguration }} --no-build
+#        displayName: 'Run unit tests'
+#        env:
+#          CollectCoverage: true
+#          CoverletOutputFormat: cobertura
+#          ThresholdStat: total
+#          ThresholdType: Line
+#          CoverletOutput: UnitTestResults/
           
 
       - bash: |
