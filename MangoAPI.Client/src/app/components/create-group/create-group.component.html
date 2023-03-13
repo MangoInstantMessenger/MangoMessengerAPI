@@ -9,6 +9,7 @@
       placeholder="Enter group title"
       type="text"
       [(ngModel)]="chatTitle"
+      (keydown.enter)="onCreateGroupClick()"
     />
 
     <label for="groupDescription"></label>

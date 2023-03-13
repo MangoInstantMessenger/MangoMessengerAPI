@@ -45,6 +45,6 @@ public record User
     [DefaultValue("ivan.ivanov")]
     public string LinkedIn { get; init; }
 
-    [DefaultValue("Uploads/ivan-ivanov.jpg")]
+    [DefaultValue("http://127.0.0.1:10000/devstoreaccount1/mangocontainer/ivan-ivanov.jpg")]
     public string PictureUrl { get; init; }
 }

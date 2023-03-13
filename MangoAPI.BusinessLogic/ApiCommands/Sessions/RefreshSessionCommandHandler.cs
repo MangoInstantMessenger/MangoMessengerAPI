@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using MangoAPI.Application.Interfaces;
@@ -44,27 +43,12 @@ public class RefreshSessionCommandHandler : IRequestHandler<RefreshSessionComman
                 entity => entity.Id == request.RefreshToken,
                 cancellationToken);
 
-        if (session is null || session.IsExpired)
+        if (session == null || session.IsExpired)
         {
             const string errorMessage = ResponseMessageCodes.InvalidOrExpiredRefreshToken;
             var details = ResponseMessageCodes.ErrorDictionary[errorMessage];
 
             return responseFactory.ConflictResponse(errorMessage, details);
-        }
-
-        var userSessions = dbContext.Sessions
-            .Where(x => x.UserId == session.UserId);
-
-        var userSessionCount = await userSessions.CountAsync(cancellationToken);
-
-        switch (userSessionCount)
-        {
-            case >= 5:
-                dbContext.Sessions.RemoveRange(userSessions);
-                break;
-            default:
-                dbContext.Sessions.Remove(session);
-                break;
         }
 
         var newSession = new SessionEntity

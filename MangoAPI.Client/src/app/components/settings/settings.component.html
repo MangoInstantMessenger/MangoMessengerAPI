@@ -42,13 +42,6 @@
             </div>
             <img src="./../../../assets/svg/calendar.svg" alt="Calendar Icon"/>
           </li>
-<!--          <li>-->
-<!--            <div class="info">-->
-<!--              <p class="title">Email</p>-->
-<!--              <a href="mailto:#">{{ currentUser.email }}</a>-->
-<!--            </div>-->
-<!--            <img src="./../../../assets/svg/mail.svg" alt="Mail Icon"/>-->
-<!--          </li>-->
           <li *ngIf="currentUser.username">
             <div class="info">
               <p class="title">Username</p>
@@ -89,14 +82,16 @@
           <li *ngIf="currentUser.instagram">
             <div class="info">
               <p class="title">Instagram</p>
-              <a href="https://instagram.com/{{ currentUser.instagram }}" target="_blank">{{ currentUser.instagram }}</a>
+              <a href="https://instagram.com/{{ currentUser.instagram }}"
+                 target="_blank">{{ currentUser.instagram }}</a>
             </div>
             <img src="./../../../assets/svg/instagram.svg" alt="Instagram Icon"/>
           </li>
           <li *ngIf="currentUser.linkedIn">
             <div class="info">
               <p class="title">LinkedIn</p>
-              <a href="https://linkedin.com/in/{{ currentUser.linkedIn }}" target="_blank">{{ currentUser.linkedIn }}</a>
+              <a href="https://linkedin.com/in/{{ currentUser.linkedIn }}"
+                 target="_blank">{{ currentUser.linkedIn }}</a>
             </div>
             <img src="./../../../assets/svg/linkedin.svg" alt="LinkedIn Icon"/>
           </li>
@@ -263,7 +258,7 @@
         </div>
         <div class="profile-form-content">
           <ul class="d-flex justify-content-between">
-            <li class="d-flex flex-column w-50 profile-form-group">
+            <li class="d-flex flex-column w-100 profile-form-group">
               <label for="CurrentPassword">Current Password</label>
               <input
                 class="profile-form-input"
@@ -275,7 +270,7 @@
             </li>
           </ul>
           <ul class="d-flex justify-content-between flex-row">
-            <li class="d-flex flex-column w-50 profile-form-group">
+            <li class="d-flex flex-column w-100 profile-form-group">
               <label for="NewPassword">New Password</label>
               <input
                 class="profile-form-input"
@@ -285,8 +280,10 @@
                 [(ngModel)]="changePasswordCommand.newPassword"
               />
             </li>
+          </ul>
 
-            <li class="d-flex flex-column w-50 profile-form-group">
+          <ul>
+            <li class="d-flex flex-column w-100 profile-form-group">
               <label for="RepeatNewPassword">Repeat New Password</label>
               <input
                 class="profile-form-input"

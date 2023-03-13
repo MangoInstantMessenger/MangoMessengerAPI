@@ -31,10 +31,10 @@ public record Message
 
     [DefaultValue(false)] public bool Self { get; init; }
 
-    [DefaultValue("https://localhost:5001/Uploads/amelit_picture.jpg")]
+    [DefaultValue("http://127.0.0.1:10000/devstoreaccount1/mangocontainer/animetyanpic8.jpg")]
     public string MessageAuthorPictureUrl { get; init; }
 
-    [DefaultValue("https://localhost:5001/Uploads/message_attachment.pdf")]
+    [DefaultValue("http://127.0.0.1:10000/devstoreaccount1/mangocontainer/message_attachment.pdf")]
     public string MessageAttachmentUrl { get; init; }
 
     [DefaultValue("John Doe")] public string InReplyToUser { get; init; }
