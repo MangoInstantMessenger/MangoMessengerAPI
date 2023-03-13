@@ -1,6 +1,6 @@
-﻿using System;
+﻿using MangoAPI.Domain.Entities;
+using System;
 using System.ComponentModel;
-using MangoAPI.Domain.Entities.ChatEntities;
 using MangoAPI.Domain.Enums;
 
 namespace MangoAPI.BusinessLogic.Models;

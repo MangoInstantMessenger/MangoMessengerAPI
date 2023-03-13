@@ -1,6 +1,6 @@
 ﻿using FluentAssertions;
 using FluentValidation;
-using MangoAPI.Domain.Entities.ChatEntities;
+using MangoAPI.Domain.Entities;
 using MangoAPI.UnitTests.Helpers;
 using System;
 using System.Linq;

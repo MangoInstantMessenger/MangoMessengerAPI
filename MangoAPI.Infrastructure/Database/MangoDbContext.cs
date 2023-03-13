@@ -1,6 +1,5 @@
 ﻿using System.Reflection;
 using MangoAPI.Domain.Entities;
-using MangoAPI.Domain.Entities.ChatEntities;
 using Microsoft.EntityFrameworkCore;
 
 namespace MangoAPI.Infrastructure.Database;

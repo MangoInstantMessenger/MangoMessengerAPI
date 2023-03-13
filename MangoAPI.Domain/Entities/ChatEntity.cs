@@ -3,7 +3,7 @@ using MangoAPI.Domain.Enums;
 using System;
 using System.Collections.Generic;
 
-namespace MangoAPI.Domain.Entities.ChatEntities;
+namespace MangoAPI.Domain.Entities;
 
 public sealed class ChatEntity
 {

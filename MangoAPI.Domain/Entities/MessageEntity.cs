@@ -1,5 +1,4 @@
-﻿using MangoAPI.Domain.Entities.ChatEntities;
-using System;
+﻿using System;
 
 namespace MangoAPI.Domain.Entities;
 

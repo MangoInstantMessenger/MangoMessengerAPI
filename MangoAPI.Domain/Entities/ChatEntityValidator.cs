@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 
-namespace MangoAPI.Domain.Entities.ChatEntities;
+namespace MangoAPI.Domain.Entities;
 
 public class ChatEntityValidator : AbstractValidator<ChatEntity>
 {

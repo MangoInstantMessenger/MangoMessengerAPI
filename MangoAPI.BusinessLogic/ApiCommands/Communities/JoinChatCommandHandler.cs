@@ -3,7 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.Domain.Constants;
-using MangoAPI.Domain.Entities.ChatEntities;
+using MangoAPI.Domain.Entities;
 using MangoAPI.Domain.Enums;
 using MangoAPI.Infrastructure.Database;
 using MediatR;
