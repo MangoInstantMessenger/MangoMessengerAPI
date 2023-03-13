@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { LoginCommand } from '../../types/requests/LoginCommand';
 import { TokensResponse } from '../../types/responses/TokensResponse';
 import { BaseResponse } from '../../types/responses/BaseResponse';
-import ApiBaseService from './apiBase.service';
+import ApiBaseService from './api-base.service';
 
 @Injectable({
   providedIn: 'root'
@@ -35,9 +35,7 @@ export class SessionService extends ApiBaseService {
 
   // DELETE /api/sessions/{refreshToken}
   deleteSession(refreshToken: string | null): Observable<BaseResponse> {
-    return this.httpClient.delete<BaseResponse>(
-      this.baseUrl + this.sessionsRoute + refreshToken
-    );
+    return this.httpClient.delete<BaseResponse>(this.baseUrl + this.sessionsRoute + refreshToken);
   }
 
   // DELETE /api/sessions

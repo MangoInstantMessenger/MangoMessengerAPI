@@ -6,7 +6,7 @@ import { CreateCommunityResponse } from '../../types/responses/CreateCommunityRe
 import { CreateChatCommand } from '../../types/requests/CreateChatCommand';
 import { CreateChannelCommand } from '../../types/requests/CreateChannelCommand';
 import { UpdateChatLogoResponse } from '../../types/responses/UpdateChatLogoResponse';
-import ApiBaseService from './apiBase.service';
+import ApiBaseService from './api-base.service';
 
 @Injectable({
   providedIn: 'root'

@@ -4,14 +4,12 @@ using System.Threading;
 using System.Threading.Tasks;
 using MangoAPI.Application.Interfaces;
 using MangoAPI.Application.Services;
-using MangoAPI.BusinessLogic.HubConfig;
 using MangoAPI.BusinessLogic.Models;
 using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.Domain.Constants;
 using MangoAPI.Domain.Entities;
 using MangoAPI.Infrastructure.Database;
 using MediatR;
-using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 
 namespace MangoAPI.BusinessLogic.ApiCommands.Messages;
@@ -20,20 +18,17 @@ public class SendMessageCommandHandler
     : IRequestHandler<SendMessageCommand, Result<SendMessageResponse>>
 {
     private readonly MangoDbContext dbContext;
-    // private readonly IHubContext<ChatHub, IHubClient> hubContext;
     private readonly ResponseFactory<SendMessageResponse> responseFactory;
     private readonly IBlobServiceSettings blobServiceSettings;
     private readonly IBlobService blobService;
 
     public SendMessageCommandHandler(
         MangoDbContext dbContext,
-        // IHubContext<ChatHub, IHubClient> hubContext,
         ResponseFactory<SendMessageResponse> responseFactory,
         IBlobServiceSettings blobServiceSettings,
         IBlobService blobService)
     {
         this.dbContext = dbContext;
-        // this.hubContext = hubContext;
         this.responseFactory = responseFactory;
         this.blobServiceSettings = blobServiceSettings;
         this.blobService = blobService;
@@ -98,14 +93,12 @@ public class SendMessageCommandHandler
             ? null
             : $"{blobServiceSettings.MangoBlobAccess}/{attachmentUniqueFileName}";
         
-        Message messageResultDto = messageEntity.ToMessage(
+        var messageResultDto = messageEntity.ToMessage(
             user.DisplayName,
             user.Id,
             user.DisplayNameColour,
             authorPictureUrl,
             attachmentUrl);
-
-        // await hubContext.Clients.Group(request.ChatId.ToString()).BroadcastMessageAsync(messageDto);
 
         return responseFactory.SuccessResponse(SendMessageResponse.FromSuccess(messageResultDto));
     }

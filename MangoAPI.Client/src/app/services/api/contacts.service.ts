@@ -4,7 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { GetContactsResponse } from '../../types/responses/GetContactsResponse';
 import { BaseResponse } from '../../types/responses/BaseResponse';
 import { SearchContactsResponse } from '../../types/responses/SearchContactsResponse';
-import ApiBaseService from './apiBase.service';
+import ApiBaseService from './api-base.service';
 
 @Injectable({
   providedIn: 'root'
@@ -33,9 +33,7 @@ export class ContactsService extends ApiBaseService {
 
   // DELETE /api/contacts/{contactId}
   deleteContact(userId: string): Observable<BaseResponse> {
-    return this.httpClient.delete<GetContactsResponse>(
-      this.baseUrl + this.contactsRoute + userId
-    );
+    return this.httpClient.delete<GetContactsResponse>(this.baseUrl + this.contactsRoute + userId);
   }
 
   // GET /api/contacts/searches

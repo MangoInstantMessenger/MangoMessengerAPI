@@ -30,7 +30,7 @@ public class EditMessageShouldThrowChatNotFound : IntegrationTestBase
         var command = new EditMessageCommand(
             ChatId: Guid.Empty,
             petroId,
-            message.Response.MessageId,
+            message.Response.MessageModel.MessageId,
             ModifiedText: "Message edited");
 
         var result = await MangoModule.RequestAsync(command, CancellationToken.None);

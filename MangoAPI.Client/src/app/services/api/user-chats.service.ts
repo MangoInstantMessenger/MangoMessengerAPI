@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { BaseResponse } from '../../types/responses/BaseResponse';
-import ApiBaseService from './apiBase.service';
+import ApiBaseService from './api-base.service';
 
 @Injectable({
   providedIn: 'root'
@@ -18,18 +18,12 @@ export class UserChatsService extends ApiBaseService {
 
   // POST /api/user-chats/{chatId}
   joinCommunity(chatId: string): Observable<BaseResponse> {
-    return this.httpClient.post<BaseResponse>(
-      this.baseUrl + this.userChatsRoute + chatId,
-      {}
-    );
+    return this.httpClient.post<BaseResponse>(this.baseUrl + this.userChatsRoute + chatId, {});
   }
 
   // PUT /api/user-chats/{chatId}
   archiveCommunity(chatId: string): Observable<BaseResponse> {
-    return this.httpClient.put<BaseResponse>(
-      this.baseUrl + this.userChatsRoute + chatId,
-      {}
-    );
+    return this.httpClient.put<BaseResponse>(this.baseUrl + this.userChatsRoute + chatId, {});
   }
 
   // DELETE /api/user-chats/{chatId}

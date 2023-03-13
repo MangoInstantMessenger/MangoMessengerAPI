@@ -1,5 +1,4 @@
-import { Injectable } from "@angular/core";
-
+import { Injectable } from '@angular/core';
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +9,7 @@ export default class ApiBaseService {
   getUrl(): string {
     const urlString = localStorage.getItem(this.LocalStorageBaseUrl);
 
-    if (urlString === null) throw new Error("Url not defined");
+    if (urlString === null) throw new Error('Url not defined');
 
     return urlString;
   }

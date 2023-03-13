@@ -12,7 +12,7 @@ import { ChangePasswordCommand } from '../../types/requests/ChangePasswordComman
 import { User } from '../../types/models/User';
 import { UpdateProfilePictureResponse } from '../../types/responses/UpdateProfilePictureResponse';
 import { TokensResponse } from 'src/app/types/responses/TokensResponse';
-import ApiBaseService from './apiBase.service';
+import ApiBaseService from './api-base.service';
 
 @Injectable({
   providedIn: 'root'

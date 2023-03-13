@@ -1,9 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { GetUserChatsResponse } from '../../types/responses/GetUserChatsResponse';
 import { GetAppInfoResponse } from '../../types/responses/GetAppInfoResponse';
-import ApiBaseService from './apiBase.service';
+import ApiBaseService from './api-base.service';
 
 @Injectable({
   providedIn: 'root'

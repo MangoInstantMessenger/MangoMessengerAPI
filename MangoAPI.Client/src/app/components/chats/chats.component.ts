@@ -18,11 +18,13 @@ import { DeleteMessageNotification } from '../../types/models/DeleteMessageNotif
 import { Subject, takeUntil, BehaviorSubject, firstValueFrom, distinctUntilKeyChanged } from 'rxjs';
 import { DisplayNameColours } from 'src/app/types/enums/DisplayNameColours';
 import { DeleteMessageCommand } from 'src/app/types/requests/DeleteMessageCommand';
-import ApiBaseService from 'src/app/services/api/apiBase.service';
+import ApiBaseService from 'src/app/services/api/api-base.service';
 import { SendMessageResponse } from '../../types/responses/SendMessageResponse';
 import { ReplyStateService } from 'src/app/services/states/replyState.service';
 import { Reply } from 'src/app/types/models/Reply';
 import { GetChatMessagesResponse } from '../../types/responses/GetChatMessagesResponse';
+import { RealtimeService } from '../../services/api/realtime.service';
+import { BaseResponse } from '../../types/responses/BaseResponse';
 
 @Component({
   selector: 'app-chats',
@@ -40,7 +42,8 @@ export class ChatsComponent implements OnInit, OnDestroy {
     private _validationService: ValidationService,
     private _apiBaseService: ApiBaseService,
     public _modalWindowStateService: ModalWindowStateService,
-    public _replyStateService: ReplyStateService
+    public _replyStateService: ReplyStateService,
+    private _realtimeService: RealtimeService
   ) {}
 
   private connectionBuilder: signalR.HubConnectionBuilder = new signalR.HubConnectionBuilder();
@@ -486,8 +489,6 @@ export class ChatsComponent implements OnInit, OnDestroy {
       this._replyStateService.reply?.text ?? null
     );
 
-    console.log(newMessage);
-
     this.clearMessageInput();
 
     this.messages.push(newMessage);
@@ -502,9 +503,11 @@ export class ChatsComponent implements OnInit, OnDestroy {
     newMessage.attachmentUrl = response.messageModel.attachmentUrl;
     newMessage.createdAt = response.messageModel.createdAt;
 
-    // console.log(response);
-    //
-    // console.log(newMessage);
+    const sendNotification$ = this._realtimeService.sendRealtimeNewMessageNotification(
+      response.messageModel
+    );
+
+    await firstValueFrom<BaseResponse>(sendNotification$);
 
     this.clearAttachmentInput();
     this.scrollToEnd();
