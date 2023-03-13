@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
-import { UpdateUserSocialsCommand } from '../../types/requests/UpdateUserSocialsCommand';
+import { UpdatePersonalInformationRequest } from '../../types/requests/UpdatePersonalInformationRequest';
 import { BaseResponse } from '../../types/responses/BaseResponse';
 import { GetUserResponse } from '../../types/responses/GetUserResponse';
 import { RegisterCommand } from '../../types/requests/RegisterCommand';
@@ -27,7 +27,7 @@ export class UsersService extends ApiBaseService {
   }
 
   // PUT /api/users/socials
-  updateUserSocials(request: UpdateUserSocialsCommand): Observable<BaseResponse> {
+  updateUserSocials(request: UpdatePersonalInformationRequest): Observable<BaseResponse> {
     return this.httpClient.put<BaseResponse>(this.baseUrl + this.usersRoute + 'socials/', request);
   }
 

@@ -13,7 +13,7 @@ public class PresentationProfile : Profile
         CreateMap<EditMessageRequest, EditMessageCommand>();
         CreateMap<RegisterRequest, RegisterCommand>();
         CreateMap<ChangePasswordRequest, ChangePasswordCommand>();
-        CreateMap<UpdateUserSocialInformationRequest, UpdateUserSocialInformationCommand>();
+        CreateMap<UpdatePersonalInformationRequest, UpdatePersonalInformationCommand>();
         CreateMap<UpdateUserAccountInfoRequest, UpdateUserAccountInfoCommand>();
         CreateMap<LoginRequest, LoginCommand>();
         CreateMap<DeleteMessageRequest, DeleteMessageCommand>();

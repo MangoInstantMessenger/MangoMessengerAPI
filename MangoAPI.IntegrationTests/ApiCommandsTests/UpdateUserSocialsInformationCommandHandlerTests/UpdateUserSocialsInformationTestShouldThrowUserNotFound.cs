@@ -18,7 +18,7 @@ public class UpdateUserSocialsInformationTestShouldThrowUserNotFound : Integrati
     {
         const string expectedMessage = ResponseMessageCodes.UserNotFound;
         var expectedDetails = ResponseMessageCodes.ErrorDictionary[expectedMessage];
-        var command = new UpdateUserSocialInformationCommand(
+        var command = new UpdatePersonalInformationCommand(
             UserId: Guid.NewGuid(),
             Instagram: "petro.kolosov",
             LinkedIn: "petro.kolosov",

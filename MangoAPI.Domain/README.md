@@ -69,11 +69,12 @@
 
 ## Personal Information Entity
 
-1. **UserId**: Id of the user (GUID). Unique. Required.
-2. **CreatedAt**: Date and time when the user was created. Required.
-3. **Facebook**: Facebook string. Must be a string up to 50 various characters. Optional.
-4. **Twitter**: Twitter string. Must be a string up to 50 various characters. Optional.
-5. **Instagram**: Instagram string. Must be a string up to 50 various characters. Optional.
-6. **LinkedIn**: LinkedIn string. Must be a string up to 50 various characters. Optional.
-7. **UpdatedAt**: Date and time when the user information was updated. Optional.
+1. **Id**: Primary of the personal info table (GUID). Unique. Required.
+2. **UserId**: Id of the user (GUID). Required.
+3. **CreatedAt**: Date and time when the user was created. Required.
+4. **Facebook**: Facebook string. Must be a string up to 50 various characters. Optional.
+5. **Twitter**: Twitter string. Must be a string up to 50 various characters. Optional.
+6. **Instagram**: Instagram string. Must be a string up to 50 various characters. Optional.
+7. **LinkedIn**: LinkedIn string. Must be a string up to 50 various characters. Optional.
+8. **UpdatedAt**: Date and time when the user information was updated. Optional.
 

@@ -60,16 +60,6 @@ public class
             dbContext.Chats.UpdateRange(userChats);
         }
 
-        // user.Birthday = request.BirthdayDate;
-        //
-        // user.Website = request.Website;
-        //
-        // user.Username = request.Username;
-        //
-        // user.Bio = request.Bio;
-        //
-        // user.Address = request.Address;
-
         user.UpdateUserData(
             request.Bio,
             request.Website,

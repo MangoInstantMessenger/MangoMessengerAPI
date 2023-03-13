@@ -4,7 +4,7 @@ using MediatR;
 
 namespace MangoAPI.BusinessLogic.ApiCommands.Users;
 
-public record UpdateUserSocialInformationCommand(
+public record UpdatePersonalInformationCommand(
         Guid UserId,
         string Instagram,
         string LinkedIn,

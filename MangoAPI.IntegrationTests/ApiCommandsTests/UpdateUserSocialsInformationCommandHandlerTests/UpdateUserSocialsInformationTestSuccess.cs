@@ -18,7 +18,7 @@ public class UpdateUserSocialsInformationTestSuccess : IntegrationTestBase
         var user = await MangoModule.RequestAsync(
             request: CommandHelper.RegisterPetroCommand(),
             cancellationToken: CancellationToken.None);
-        var command = new UpdateUserSocialInformationCommand(
+        var command = new UpdatePersonalInformationCommand(
             UserId: user.Response.Tokens.UserId,
             Instagram: "petro.kolosov",
             LinkedIn: "petro.kolosov",

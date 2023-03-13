@@ -23,14 +23,13 @@ public sealed class PersonalInformationEntity
 
     public UserEntity User { get; private set; }
 
-    // var userInfo = new PersonalInformationEntity { UserId = newUser.Id, CreatedAt = DateTime.UtcNow, };
-
     private PersonalInformationEntity()
     {
     }
 
     private PersonalInformationEntity(Guid userId)
     {
+        Id = Guid.NewGuid();
         UserId = userId;
         CreatedAt = DateTime.UtcNow;
 

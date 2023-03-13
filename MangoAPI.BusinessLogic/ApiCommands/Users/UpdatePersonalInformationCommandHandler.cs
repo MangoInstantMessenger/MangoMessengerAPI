@@ -8,13 +8,13 @@ using Microsoft.EntityFrameworkCore;
 
 namespace MangoAPI.BusinessLogic.ApiCommands.Users;
 
-public class UpdateUserSocialInformationCommandHandler
-    : IRequestHandler<UpdateUserSocialInformationCommand, Result<ResponseBase>>
+public class UpdatePersonalInformationCommandHandler
+    : IRequestHandler<UpdatePersonalInformationCommand, Result<ResponseBase>>
 {
     private readonly MangoDbContext dbContext;
     private readonly ResponseFactory<ResponseBase> responseFactory;
 
-    public UpdateUserSocialInformationCommandHandler(
+    public UpdatePersonalInformationCommandHandler(
         MangoDbContext dbContext,
         ResponseFactory<ResponseBase> responseFactory)
     {
@@ -23,7 +23,7 @@ public class UpdateUserSocialInformationCommandHandler
     }
 
     public async Task<Result<ResponseBase>> Handle(
-        UpdateUserSocialInformationCommand request,
+        UpdatePersonalInformationCommand request,
         CancellationToken cancellationToken)
     {
         var personalInformation = await dbContext.PersonalInformation
@@ -38,12 +38,6 @@ public class UpdateUserSocialInformationCommandHandler
 
             return responseFactory.ConflictResponse(errorMessage, details);
         }
-
-        // personalInformation.Facebook = request.Facebook;
-        // personalInformation.Twitter = request.Twitter;
-        // personalInformation.Instagram = request.Instagram;
-        // personalInformation.LinkedIn = request.LinkedIn;
-        // personalInformation.UpdatedAt = DateTime.UtcNow;
 
         personalInformation.UpdateSocialInformation(
             request.Facebook,

@@ -1,4 +1,4 @@
-﻿export class UpdateUserSocialsCommand {
+﻿export class UpdatePersonalInformationRequest {
   facebook: string;
   twitter: string;
   instagram: string;

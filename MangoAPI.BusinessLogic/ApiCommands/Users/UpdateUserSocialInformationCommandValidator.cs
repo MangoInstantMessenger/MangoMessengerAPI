@@ -2,7 +2,7 @@
 
 namespace MangoAPI.BusinessLogic.ApiCommands.Users;
 
-public class UpdateUserSocialInformationCommandValidator : AbstractValidator<UpdateUserSocialInformationCommand>
+public class UpdateUserSocialInformationCommandValidator : AbstractValidator<UpdatePersonalInformationCommand>
 {
     public UpdateUserSocialInformationCommandValidator()
     {

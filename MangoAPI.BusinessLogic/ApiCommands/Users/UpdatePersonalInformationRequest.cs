@@ -3,7 +3,7 @@ using System.Text.Json.Serialization;
 
 namespace MangoAPI.BusinessLogic.ApiCommands.Users;
 
-public record UpdateUserSocialInformationRequest
+public record UpdatePersonalInformationRequest
 {
     [DefaultValue("test.user")]
     public string Facebook { get; }
@@ -18,7 +18,7 @@ public record UpdateUserSocialInformationRequest
     public string LinkedIn { get; }
 
     [JsonConstructor]
-    public UpdateUserSocialInformationRequest(
+    public UpdatePersonalInformationRequest(
         string facebook,
         string twitter,
         string instagram,

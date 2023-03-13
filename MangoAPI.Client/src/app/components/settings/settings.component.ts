@@ -2,7 +2,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ErrorNotificationService } from 'src/app/services/messenger/error-notification.service';
 import { TokensService } from '../../services/messenger/tokens.service';
-import { UpdateUserSocialsCommand } from '../../types/requests/UpdateUserSocialsCommand';
+import { UpdatePersonalInformationRequest } from '../../types/requests/UpdatePersonalInformationRequest';
 import { ChangePasswordCommand } from '../../types/requests/ChangePasswordCommand';
 import { UsersService } from '../../services/api/users.service';
 import { User } from '../../types/models/User';
@@ -252,7 +252,7 @@ export class SettingsComponent implements OnInit, OnDestroy {
   }
 
   onSaveChangesSocialsClick(): void {
-    const command: UpdateUserSocialsCommand = {
+    const command: UpdatePersonalInformationRequest = {
       facebook: this.currentUserForUpdating.facebook,
       twitter: this.currentUserForUpdating.twitter,
       instagram: this.currentUserForUpdating.instagram,
