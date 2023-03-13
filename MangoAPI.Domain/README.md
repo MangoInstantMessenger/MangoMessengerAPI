@@ -9,7 +9,7 @@
 3. **PasswordHash**: Byte array of the hashed password. Required.
 4. **PasswordSalt**: Byte array that represents salt used to hash the password. Required.
 5. **ImageFileName**: Name of the image file. Must be a string up to 100 various characters. Required.
-6. **DisplayName**: Display name of the user as string. Can be up to 50 characters. Optional.
+6. **DisplayName**: Display name of the user as string. Can be up to 50 characters. Required.
 7. **Bio**: Short description of the user as string. Can be up to 120 various characters. Optional.
 8. **WebSite**: Web site of the user. Must be a string up to 50 various characters. Optional.
 9. **BirthDay**: Birthday of the user. Optional.

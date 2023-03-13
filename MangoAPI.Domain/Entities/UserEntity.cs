@@ -79,6 +79,8 @@ public sealed class UserEntity
     public void SetDisplayName(string displayName)
     {
         DisplayName = displayName;
+        
+        new UserEntityValidator().ValidateAndThrow(this);
     }
 
     public void UpdateUserData(string bio, string website, DateTime? birthday, string address, string username)

@@ -17,7 +17,7 @@ public class UserEntityConfiguration : IEntityTypeConfiguration<UserEntity>
         builder.Property(x => x.Username).HasMaxLength(50).IsRequired();
         builder.Property(x => x.PasswordSalt).IsRequired();
         builder.Property(x => x.PasswordHash).IsRequired();
-        builder.Property(x => x.DisplayName).HasMaxLength(50);
+        builder.Property(x => x.DisplayName).IsRequired().HasMaxLength(50);
         builder.Property(x => x.ImageFileName).HasMaxLength(100).IsRequired();
         builder.Property(x => x.Bio).HasMaxLength(120);
         builder.Property(x => x.Website).HasMaxLength(50);
