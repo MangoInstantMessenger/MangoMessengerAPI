@@ -48,7 +48,6 @@ public class SearchCommunityQueryHandler
                 MembersCount = x.MembersCount,
                 IsArchived = false,
                 IsMember = false,
-                UpdatedAt = x.UpdatedAt,
                 LastMessageAuthor = x.LastMessageAuthor,
                 LastMessageText = x.LastMessageText,
                 LastMessageTime = x.LastMessageTime,

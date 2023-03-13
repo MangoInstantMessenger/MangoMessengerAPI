@@ -19,8 +19,6 @@ public sealed class ChatEntity
 
     public DateTime CreatedAt { get; private set; }
 
-    public DateTime? UpdatedAt { get; private set; }
-
     public int MembersCount { get; private set; }
 
     public string LastMessageAuthor { get; private set; }

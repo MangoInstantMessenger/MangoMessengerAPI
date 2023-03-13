@@ -59,7 +59,6 @@ export class ChatsComponent implements OnInit, OnDestroy {
     lastMessageAuthor: '',
     lastMessageText: '',
     lastMessageTime: '',
-    updatedAt: '',
     roleId: 1,
     communityType: CommunityType.PublicChannel,
     description: '',

@@ -46,9 +46,6 @@ public record Chat
     [DefaultValue("12aed827-bn8c-47de-ac81-78641210918f")]
     public Guid? LastMessageId { get; set; }
 
-    [DefaultValue("10/02/2021")]
-    public DateTime? UpdatedAt { get; init; }
-
     public override string ToString()
     {
         return $"Chat Id: {ChatId} \n" +
