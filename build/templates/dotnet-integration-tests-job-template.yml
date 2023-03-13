@@ -43,7 +43,7 @@ jobs:
         inputs:
           command: 'test'
           projects: '${{ parameters.unitTestsProjectPath }}'
-          arguments: '--no-restore --collect:"XPlat Code Coverage" --settings build/coverage.runsettings'
+          arguments: '--no-restore --configuration ${{ parameters.buildConfiguration }}'
 
       - bash: |
           sudo npm install -g azurite
