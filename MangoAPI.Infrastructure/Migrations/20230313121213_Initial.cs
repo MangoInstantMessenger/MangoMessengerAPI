@@ -79,10 +79,11 @@ namespace MangoAPI.Infrastructure.Migrations
                     PasswordHash = table.Column<byte[]>(type: "varbinary(max)", nullable: false),
                     PasswordSalt = table.Column<byte[]>(type: "varbinary(max)", nullable: false),
                     DisplayName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
-                    ImageFileName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    ImageFileName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     Bio = table.Column<string>(type: "nvarchar(120)", maxLength: 120, nullable: true),
                     Website = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
                     Birthday = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    Address = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
                     DisplayNameColour = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -122,7 +123,7 @@ namespace MangoAPI.Infrastructure.Migrations
                     Text = table.Column<string>(type: "nvarchar(300)", maxLength: 300, nullable: false),
                     InReplyToUser = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
                     InReplyToText = table.Column<string>(type: "nvarchar(300)", maxLength: 300, nullable: true),
-                    AttachmentFileName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
+                    AttachmentFileName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
@@ -152,7 +153,6 @@ namespace MangoAPI.Infrastructure.Migrations
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Address = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
                     Facebook = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
                     Twitter = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
                     Instagram = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
