@@ -94,16 +94,16 @@ export class ChatsComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.initializeView();
-  }
-
-  initializeView(): void {
     this.activeChatBehaviorSubject.pipe(distinctUntilKeyChanged('chatId')).subscribe(() => {
       this._replyStateService.setReplyNull();
       this.messageAttachment = null;
       this.messageAttachmentBlobUrl = null;
     });
 
+    this.initializeView();
+  }
+
+  initializeView(): void {
     const tokens = this._tokensService.getTokens();
 
     if (!tokens) {
