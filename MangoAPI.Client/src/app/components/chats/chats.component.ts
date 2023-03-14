@@ -147,40 +147,20 @@ export class ChatsComponent implements OnInit {
   }
 
   setSignalRMethods(): void {
-    this.connection.on('BroadcastMessageAsync', (message: Message) =>
-      this.onBroadcastMessage(message)
-    );
+    this.connection.on('BroadcastMessageAsync', (message: Message) => {
+      this.onMessageSendHandler(message);
+    });
 
-    this.connection.on('UpdateUserChatsAsync', (chat: Chat) => this.chats.push(chat));
+    this.connection.on('UpdateUserChatsAsync', (chat: Chat) => {
+      this.chats.push(chat);
+    });
 
     this.connection.on('NotifyOnMessageDeleteAsync', (notification: DeleteMessageNotification) => {
-      const message = this.messages.filter((x) => x.messageId === notification.messageId)[0];
-
-      console.log(`deleted message id: ${notification.messageId}`);
-      console.log(`last message id: ${this.activeChat.lastMessageId}`);
-
-      if (message.messageId === this.activeChat.lastMessageId) {
-        this.activeChat.lastMessageAuthor = notification.newLastMessageAuthor;
-        this.activeChat.lastMessageText = notification.newLastMessageText;
-        this.activeChat.lastMessageTime = notification.newLastMessageTime;
-        this.activeChat.lastMessageId = notification.newLastMessageId;
-      }
-
-      this.messages = this.messages.filter((x) => x.messageId !== notification.messageId);
+      this.onMessageDeleteHandler(notification);
     });
 
     this.connection.on('NotifyOnMessageEditAsync', (notification: EditMessageNotification) => {
-      const message = this.messages.filter((x) => x.messageId === notification.messageId)[0];
-
-      if (message) {
-        message.text = notification.modifiedText;
-        message.updatedAt = notification.updatedAt;
-      }
-
-      if (notification.isLastMessage) {
-        this.activeChat.lastMessageText = notification.modifiedText;
-        this.activeChat.lastMessageTime = notification.updatedAt;
-      }
+      this.onMessageEditHandler(notification);
     });
   }
 
@@ -412,7 +392,7 @@ export class ChatsComponent implements OnInit {
     await this.initializeView();
   }
 
-  onBroadcastMessage(message: Message): void {
+  private onMessageSendHandler(message: Message) {
     message.self = message.userId == this.userId;
     const chat = this.chats.filter((x) => x.chatId === message.chatId)[0];
     chat.lastMessageAuthor = message.userDisplayName;
@@ -429,6 +409,36 @@ export class ChatsComponent implements OnInit {
     }
 
     this.scrollToEnd();
+  }
+
+  private onMessageEditHandler(notification: EditMessageNotification) {
+    const message = this.messages.filter((x) => x.messageId === notification.messageId)[0];
+
+    if (message) {
+      message.text = notification.modifiedText;
+      message.updatedAt = notification.updatedAt;
+    }
+
+    if (notification.isLastMessage) {
+      this.activeChat.lastMessageText = notification.modifiedText;
+      this.activeChat.lastMessageTime = notification.updatedAt;
+    }
+  }
+
+  private onMessageDeleteHandler(notification: DeleteMessageNotification) {
+    const message = this.messages.filter((x) => x.messageId === notification.messageId)[0];
+
+    console.log(`deleted message id: ${notification.messageId}`);
+    console.log(`last message id: ${this.activeChat.lastMessageId}`);
+
+    if (message.messageId === this.activeChat.lastMessageId) {
+      this.activeChat.lastMessageAuthor = notification.newLastMessageAuthor;
+      this.activeChat.lastMessageText = notification.newLastMessageText;
+      this.activeChat.lastMessageTime = notification.newLastMessageTime;
+      this.activeChat.lastMessageId = notification.newLastMessageId;
+    }
+
+    this.messages = this.messages.filter((x) => x.messageId !== notification.messageId);
   }
 
   private clearMessageInput(): void {
