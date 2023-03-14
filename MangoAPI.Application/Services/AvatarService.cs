@@ -24,7 +24,12 @@ public class AvatarService : IAvatarService
         "animetyanpic14.jpg",
         "animetyanpic15.jpg",
         "animetyanpic16.jpg",
-        "animetyanpic17.jpg"
+        "animetyanpic17.jpg",
+        "animetyanpic18.jpg",
+        "animetyanpic19.jpg",
+        "animetyanpic20.jpg",
+        "animetyanpic21.jpg",
+        "animetyanpic22.jpg",
     };
 
     public string GetRandomAvatar()

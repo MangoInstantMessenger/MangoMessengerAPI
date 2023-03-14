@@ -40,6 +40,6 @@ public sealed class UserChatEntity
 
     public void Archive()
     {
-        IsArchived = true;
+        IsArchived = !IsArchived;
     }
 }

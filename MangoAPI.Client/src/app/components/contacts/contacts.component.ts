@@ -155,8 +155,7 @@ export class ContactsComponent implements OnInit {
 
     console.log(newChatResult.chatId);
 
-    // set local storage new current chat id
-    // redirect to chats component
+    this._router.navigateByUrl('chats').then((r) => r);
   }
 
   async onRemoveContactButtonClick(contactId: string) {

@@ -94,21 +94,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "img", "img", "{64F59099-7FF
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "seed_images", "seed_images", "{180A6309-24EE-4736-9DE5-AB36997D75BB}"
 	ProjectSection(SolutionItems) = preProject
-		img\seed_images\amelit_picture.jpg = img\seed_images\amelit_picture.jpg
-		img\seed_images\arslan_picture.png = img\seed_images\arslan_picture.png
-		img\seed_images\default_avatar.png = img\seed_images\default_avatar.png
 		img\seed_images\default_group_logo.png = img\seed_images\default_group_logo.png
 		img\seed_images\extreme_code_main.jpg = img\seed_images\extreme_code_main.jpg
 		img\seed_images\extremecode_cpp_logo.jpg = img\seed_images\extremecode_cpp_logo.jpg
 		img\seed_images\extremecode_dotnet.png = img\seed_images\extremecode_dotnet.png
 		img\seed_images\extremecode_rest_logo.jpg = img\seed_images\extremecode_rest_logo.jpg
-		img\seed_images\illia_picture.png = img\seed_images\illia_picture.png
-		img\seed_images\khachatur_picture.jpg = img\seed_images\khachatur_picture.jpg
-		img\seed_images\musyaka_picture.jpg = img\seed_images\musyaka_picture.jpg
-		img\seed_images\razumovsky_picture.jpg = img\seed_images\razumovsky_picture.jpg
-		img\seed_images\serhii_picture.png = img\seed_images\serhii_picture.png
-		img\seed_images\szymon_picture.png = img\seed_images\szymon_picture.png
-		img\seed_images\wsb_group_logo.png = img\seed_images\wsb_group_logo.png
 		img\seed_images\mango_logo.jpg = img\seed_images\mango_logo.jpg
 		img\seed_images\animetyanpic16.jpg = img\seed_images\animetyanpic16.jpg
 		img\seed_images\animetyanpic10.jpg = img\seed_images\animetyanpic10.jpg
@@ -127,6 +117,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "seed_images", "seed_images"
 		img\seed_images\animetyanpic14.jpg = img\seed_images\animetyanpic14.jpg
 		img\seed_images\animetyanpic15.jpg = img\seed_images\animetyanpic15.jpg
 		img\seed_images\animetyanpic17.jpg = img\seed_images\animetyanpic17.jpg
+		img\seed_images\animetyanpic18.jpg = img\seed_images\animetyanpic18.jpg
+		img\seed_images\animetyanpic19.jpg = img\seed_images\animetyanpic19.jpg
+		img\seed_images\animetyanpic20.jpg = img\seed_images\animetyanpic20.jpg
+		img\seed_images\animetyanpic21.jpg = img\seed_images\animetyanpic21.jpg
+		img\seed_images\animetyanpic22.jpg = img\seed_images\animetyanpic22.jpg
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "workflows", "workflows", "{8AEBB05F-C450-4E77-8B91-9155BFB4FD56}"
