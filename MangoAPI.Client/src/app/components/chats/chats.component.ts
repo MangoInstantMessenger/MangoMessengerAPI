@@ -103,6 +103,7 @@ export class ChatsComponent implements OnInit, OnDestroy {
     this.initializeView();
   }
 
+  // test
   initializeView(): void {
     const tokens = this._tokensService.getTokens();
 
