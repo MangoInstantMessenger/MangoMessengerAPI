@@ -81,7 +81,7 @@ export class ChatsComponent implements OnInit, OnDestroy {
   public messageText = '';
   public searchChatQuery = '';
   public searchMessagesQuery = '';
-  public chatFilter = 'All chats';
+  public chatFilter = '';
   public activeChatBehaviorSubject = new BehaviorSubject<Chat>(this.activeChat);
 
   async ngOnInit() {
@@ -205,8 +205,6 @@ export class ChatsComponent implements OnInit, OnDestroy {
       this.realTimeConnections.push(this.activeChat.chatId);
       console.log(`SignalR JoinGroup: ${this.activeChat.chatId}`);
     });
-
-    this.scrollToEnd();
   }
 
   async loadMessages(chatId: string | null) {
@@ -340,7 +338,7 @@ export class ChatsComponent implements OnInit, OnDestroy {
     console.log(joinResult.message);
     // this.chats.push(this.activeChat);
     this.searchChatQuery = '';
-    this.chatFilter = 'All chats';
+    // this.chatFilter = 'All chats';
     this.activeChat.isMember = true;
 
     await this.initializeView();
@@ -348,7 +346,7 @@ export class ChatsComponent implements OnInit, OnDestroy {
 
   async onSearchChatQueryChange() {
     if (!this.searchChatQuery) {
-      this.chatFilter = 'All chats';
+      // this.chatFilter = 'All chats';
       await this.initializeView();
       return;
     }
