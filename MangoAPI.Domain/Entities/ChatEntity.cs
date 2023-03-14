@@ -110,4 +110,10 @@ public sealed class ChatEntity
         Title = title;
         new ChatEntityValidator().ValidateAndThrow(this);
     }
+
+    public void UpdateDescription(string newDescription)
+    {
+        Description = newDescription;
+        new ChatEntityValidator().ValidateAndThrow(this);
+    }
 }

@@ -52,7 +52,9 @@ public class
             foreach (var chatEntity in userChats)
             {
                 var newTitle = chatEntity.Title.Replace(user.DisplayName, request.DisplayName);
+                var newDescription = chatEntity.Description.Replace(user.DisplayName, request.DisplayName);
                 chatEntity.UpdateTitle(newTitle);
+                chatEntity.UpdateDescription(newDescription);
             }
 
             user.SetDisplayName(request.DisplayName);
