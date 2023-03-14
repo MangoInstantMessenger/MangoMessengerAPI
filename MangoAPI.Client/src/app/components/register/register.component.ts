@@ -60,8 +60,7 @@ export class RegisterComponent implements OnDestroy {
       this._tokensService.setTokens(result.tokens);
       this._router.navigateByUrl(this.routingConstants.Chats).then((r) => r);
     } catch (e: any) {
-      const errorMessage = `${e.error.errorMessage}: ${e.error.errorDetails}`;
-      alert(errorMessage);
+      this._errorNotificationService.notifyOnError(e);
     }
   }
 }

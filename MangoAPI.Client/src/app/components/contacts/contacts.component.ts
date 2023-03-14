@@ -10,8 +10,12 @@ import { CommunitiesService } from '../../services/api/communities.service';
 import { Router } from '@angular/router';
 import { StartDirectChatQueryObject } from '../../types/query-objects/StartDirectChatQueryObject';
 import { RoutingService } from '../../services/messenger/routing.service';
-import { Subject, takeUntil } from 'rxjs';
+import { firstValueFrom, Subject, takeUntil } from 'rxjs';
 import { ModalWindowStateService } from 'src/app/services/states/modalWindowState.service';
+import { GetContactsResponse } from '../../types/responses/GetContactsResponse';
+import { GetUserResponse } from '../../types/responses/GetUserResponse';
+import { SearchContactsResponse } from '../../types/responses/SearchContactsResponse';
+import { BaseResponse } from '../../types/responses/BaseResponse';
 
 @Component({
   selector: 'app-contacts',
@@ -30,7 +34,7 @@ export class ContactsComponent implements OnInit, OnDestroy {
   ) {}
 
   public contacts: Contact[] = [];
-  public activeUser: User = {
+  public activeContact: User = {
     userId: '',
     displayName: '',
     displayNameColour: 0,
@@ -47,9 +51,9 @@ export class ContactsComponent implements OnInit, OnDestroy {
     pictureUrl: ''
   };
   public currentUserId = '';
-  public activeUserId = '';
+  // public activeUserId = '';
   public contactSearchQuery = '';
-  public isActiveUserContact = false;
+  public isActiveContactAlreadyAdded = false;
   public contactFilter = 'All contacts';
 
   componentDestroyed$: Subject<boolean> = new Subject();
@@ -63,7 +67,11 @@ export class ContactsComponent implements OnInit, OnDestroy {
     this.componentDestroyed$.complete();
   }
 
-  ngOnInit(): void {
+  async ngOnInit() {
+    await this.loadContacts();
+  }
+
+  private async loadContacts() {
     const tokens = this._tokensService.getTokens();
 
     if (!tokens) {
@@ -72,25 +80,36 @@ export class ContactsComponent implements OnInit, OnDestroy {
     }
 
     this.currentUserId = this._tokensService.getTokens()?.userId as string;
-    this._usersService
-      .getUserById(this.currentUserId)
-      .pipe(takeUntil(this.componentDestroyed$))
-      .subscribe({
-        next: (response) => {
-          const user = response.user;
-          this.getUsersContacts();
-          this.activeUserId = user.userId;
-          this.activeUser = user;
-        },
-        error: (error) => {
-          this._errorNotificationService.notifyOnError(error);
-        }
-      });
+
+    const contactsSub$ = this._contactsService.getCurrentUserContacts();
+
+    const getContactsResponse = await firstValueFrom<GetContactsResponse>(contactsSub$);
+
+    console.log(getContactsResponse.contacts);
+
+    if (getContactsResponse.contacts.length === 0) {
+      console.log('No contacts');
+      const currentUserSub$ = this._usersService.getUserById(this.currentUserId);
+      const currentUserResponse = await firstValueFrom<GetUserResponse>(currentUserSub$);
+
+      this.activeContact = currentUserResponse.user;
+      return;
+    }
+
+    this.contacts = getContactsResponse.contacts;
+    const displayedContactId = getContactsResponse.contacts[0].userId;
+    const displayUserSub$ = this._usersService.getUserById(displayedContactId);
+    const displayedContactResult = await firstValueFrom<GetUserResponse>(displayUserSub$);
+    this.activeContact = displayedContactResult.user;
+    this.isActiveContactAlreadyAdded = true;
+
+    this.contactSearchQuery = '';
+    this.contactFilter = 'All Contacts';
   }
 
   onOpenAvatarClick(): void {
     this._modalWindowStateService.setIsModalWindowShowing(true);
-    this._modalWindowStateService.setPicture(this.activeUser.pictureUrl);
+    this._modalWindowStateService.setPicture(this.activeContact.pictureUrl);
   }
 
   closeModalWindowClick(): void {
@@ -98,94 +117,71 @@ export class ContactsComponent implements OnInit, OnDestroy {
     this._modalWindowStateService.setPictureNull();
   }
 
-  getUsersContacts(): void {
-    this._contactsService
-      .getCurrentUserContacts()
-      .pipe(takeUntil(this.componentDestroyed$))
-      .subscribe({
-        next: (response) => {
-          this.contacts = response.contacts;
-        },
-        error: (error) => {
-          this._errorNotificationService.notifyOnError(error);
-        }
-      });
+  // getUsersContacts(): void {
+  //   this._contactsService
+  //     .getCurrentUserContacts()
+  //     .pipe(takeUntil(this.componentDestroyed$))
+  //     .subscribe({
+  //       next: (response) => {
+  //         this.contacts = response.contacts;
+  //       },
+  //       error: (error) => {
+  //         this._errorNotificationService.notifyOnError(error);
+  //       }
+  //     });
+  // }
+
+  async onContactClick(contact: Contact) {
+    const getUserSub$ = this._usersService.getUserById(contact.userId);
+    const getUserResult = await firstValueFrom<GetUserResponse>(getUserSub$);
+    this.activeContact = getUserResult.user;
+    this.isActiveContactAlreadyAdded = contact.isContact;
   }
 
-  onContactTabClick(contact: Contact): void {
-    this._usersService
-      .getUserById(contact.userId)
-      .pipe(takeUntil(this.componentDestroyed$))
-      .subscribe({
-        next: (response) => {
-          const user = response.user;
-          this.activeUserId = user.userId;
-          this.activeUser = user;
-          this.isActiveUserContact = contact.isContact;
-        },
-        error: (error) => {
-          this._errorNotificationService.notifyOnError(error);
-        }
-      });
-  }
-
-  onContactSearchQueryChange(): void {
-    if (this.contactSearchQuery != '') {
-      this._contactsService
-        .searchContacts(this.contactSearchQuery)
-        .pipe(takeUntil(this.componentDestroyed$))
-        .subscribe({
-          next: (response) => {
-            this.contactFilter = 'Search results';
-            this.contacts = response.contacts;
-          },
-          error: (error) => {
-            this._errorNotificationService.notifyOnError(error);
-          }
-        });
-    } else {
-      this.contactFilter = 'All contacts';
-      this.ngOnInit();
+  async onContactSearchQueryChange() {
+    if (this.contactSearchQuery == '') {
+      this.contacts = [];
+      await this.loadContacts();
+      return;
     }
+
+    const searchContactsSub$ = this._contactsService.searchContacts(this.contactSearchQuery);
+    const searchResult = await firstValueFrom<SearchContactsResponse>(searchContactsSub$);
+
+    this.contactFilter = 'Search Results';
+    this.contacts = searchResult.contacts;
   }
 
-  onAddContactClick(contactId: string): void {
-    this._contactsService
-      .addContact(contactId)
-      .pipe(takeUntil(this.componentDestroyed$))
-      .subscribe({
-        next: (_) => {
-          this.isActiveUserContact = true;
-          this.contactFilter = 'All contacts';
-          this.contactSearchQuery = '';
-          this.ngOnInit();
-        },
-        error: (error) => {
-          this._errorNotificationService.notifyOnError(error);
-        }
-      });
+  async onAddContactClick(contactId: string) {
+    // this._contactsService
+    //   .addContact(contactId)
+    //   .pipe(takeUntil(this.componentDestroyed$))
+    //   .subscribe({
+    //     next: (_) => {
+    //       this.isActiveUserContact = true;
+    //       this.contactFilter = 'All contacts';
+    //       this.contactSearchQuery = '';
+    //       this.ngOnInit();
+    //     },
+    //     error: (error) => {
+    //       this._errorNotificationService.notifyOnError(error);
+    //     }
+    //   });
+
+    const addContactSub$ = this._contactsService.addContact(contactId);
+    const addContactResult = await firstValueFrom<BaseResponse>(addContactSub$);
+
+    console.log(addContactResult);
+
+    await this.loadContacts();
   }
 
-  onContactFilterClick(event: Event): void {
-    const div = event.currentTarget as HTMLDivElement;
-    this.contactFilter = div.innerText;
+  async onContactFilterClick() {
+    if (this.contactFilter === 'All Contacts') {
+      return;
+    }
 
-    this._contactsService
-      .getCurrentUserContacts()
-      .pipe(takeUntil(this.componentDestroyed$))
-      .subscribe({
-        next: (response) => {
-          switch (this.contactFilter) {
-            case 'All contacts':
-              this.contactSearchQuery = '';
-              this.contacts = response.contacts;
-              break;
-          }
-        },
-        error: (error) => {
-          this._errorNotificationService.notifyOnError(error);
-        }
-      });
+    await this.loadContacts();
   }
 
   onStartDirectChatButtonClick(contactId: string): void {

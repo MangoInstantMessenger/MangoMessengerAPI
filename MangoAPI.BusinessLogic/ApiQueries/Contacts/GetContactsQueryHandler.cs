@@ -28,11 +28,10 @@ public class GetContactsQueryHandler : IRequestHandler<GetContactsQuery, Result<
 
     public async Task<Result<GetContactsResponse>> Handle(GetContactsQuery request, CancellationToken cancellationToken)
     {
-        var query = from userContact in dbContext.UserContacts.AsNoTracking()
-            join userEntity in dbContext.Users.Include(x => x.PersonalInformation)
-                on userContact.ContactId equals userEntity.Id
-            where userContact.UserId == request.UserId
-            orderby userContact.CreatedAt
+        var query =
+            from contact in dbContext.UserContacts.AsNoTracking()
+            join userEntity in dbContext.Users on contact.ContactId equals userEntity.Id
+            where contact.UserId == request.UserId
             select new Contact
             {
                 UserId = userEntity.Id,
@@ -42,9 +41,10 @@ public class GetContactsQueryHandler : IRequestHandler<GetContactsQuery, Result<
                 PictureUrl = $"{blobServiceSettings.MangoBlobAccess}/{userEntity.ImageFileName}",
                 Username = userEntity.Username,
                 IsContact = true,
+                CreatedAt = contact.CreatedAt
             };
 
-        var contacts = await query.Take(200).ToListAsync(cancellationToken);
+        var contacts = await query.Take(200).OrderByDescending(x => x.CreatedAt).ToListAsync(cancellationToken);
 
         return responseFactory.SuccessResponse(GetContactsResponse.FromSuccess(contacts));
     }

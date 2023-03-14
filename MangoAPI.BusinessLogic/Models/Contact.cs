@@ -25,4 +25,6 @@ public record Contact
 
     [DefaultValue("MyUniqueUsername")]
     public string Username { get; init; }
+    
+    public DateTime CreatedAt { get; init; }
 }
