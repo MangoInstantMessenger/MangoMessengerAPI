@@ -73,6 +73,8 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, Result<To
             displayName,
             imageFileName,
             displayColor);
+        
+        newUser.UpdateBioAndLocation("Hello, I'm new here!", "Planet Earth");
 
         dbContext.Users.Add(newUser);
 

@@ -93,7 +93,7 @@ export class ContactsComponent implements OnInit, OnDestroy {
     this._modalWindowStateService.setPicture(this.activeUser.pictureUrl);
   }
 
-  closeModalWindowrClick(): void {
+  closeModalWindowClick(): void {
     this._modalWindowStateService.setIsModalWindowShowing(false);
     this._modalWindowStateService.setPictureNull();
   }

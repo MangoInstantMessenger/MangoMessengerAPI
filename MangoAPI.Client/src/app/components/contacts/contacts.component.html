@@ -1,6 +1,6 @@
 <body class="d-flex">
 <div class="menu" id="menu">
-  <div *ngIf="_modalWindowStateService.isModalWindowShowing" class="black-cover" (click)="closeModalWindowrClick()">
+  <div *ngIf="_modalWindowStateService.isModalWindowShowing" class="black-cover" (click)="closeModalWindowClick()">
     <img
       *ngIf="_modalWindowStateService.picture"
       src="{{ _modalWindowStateService.picture }}"

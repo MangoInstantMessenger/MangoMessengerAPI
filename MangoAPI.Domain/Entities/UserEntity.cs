@@ -60,7 +60,7 @@ public sealed class UserEntity
         _messages = new List<MessageEntity>();
         _userChats = new List<UserChatEntity>();
         _contacts = new List<ContactEntity>();
-        
+
         Username = username;
         PasswordHash = passwordHash;
         PasswordSalt = passwordSalt;
@@ -119,6 +119,14 @@ public sealed class UserEntity
     {
         PasswordHash = passwordHash;
         PasswordSalt = passwordSalt;
+
+        new UserEntityValidator().ValidateAndThrow(this);
+    }
+
+    public void UpdateBioAndLocation(string bio, string address)
+    {
+        Bio = bio;
+        Address = address;
 
         new UserEntityValidator().ValidateAndThrow(this);
     }
