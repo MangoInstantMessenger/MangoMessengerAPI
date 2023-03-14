@@ -426,19 +426,26 @@ export class ChatsComponent implements OnInit {
   }
 
   private onMessageDeleteHandler(notification: DeleteMessageNotification) {
-    const message = this.messages.filter((x) => x.messageId === notification.messageId)[0];
+    console.log(notification);
 
-    console.log(`deleted message id: ${notification.messageId}`);
+    // const message = this.messages.filter((x) => x.messageId === notification.deletedMessageId)[0];
+
+    console.log(`deleted message id: ${notification.deletedMessageId}`);
     console.log(`last message id: ${this.activeChat.lastMessageId}`);
 
-    if (message.messageId === this.activeChat.lastMessageId) {
-      this.activeChat.lastMessageAuthor = notification.newLastMessageAuthor;
-      this.activeChat.lastMessageText = notification.newLastMessageText;
-      this.activeChat.lastMessageTime = notification.newLastMessageTime;
-      this.activeChat.lastMessageId = notification.newLastMessageId;
+    if (notification.isLastMessage) {
+      const updatedChat = this.chats.filter((x) => x.chatId == notification.chatId)[0];
+      updatedChat.lastMessageAuthor = notification.newLastMessageAuthor;
+      updatedChat.lastMessageText = notification.newLastMessageText;
+      updatedChat.lastMessageTime = notification.newLastMessageTime;
+      updatedChat.lastMessageId = notification.newLastMessageId;
+
+      console.log(`updated chat: ${JSON.stringify(updatedChat)}`);
     }
 
-    this.messages = this.messages.filter((x) => x.messageId !== notification.messageId);
+    if (this.activeChatId === notification.chatId) {
+      this.messages = this.messages.filter((x) => x.messageId !== notification.deletedMessageId);
+    }
   }
 
   private clearMessageInput(): void {

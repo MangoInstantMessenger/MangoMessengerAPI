@@ -1,7 +1,9 @@
 ﻿export interface DeleteMessageNotification {
-  messageId: string;
+  chatId: string;
+  deletedMessageId: string;
   newLastMessageText: string;
   newLastMessageTime: string;
   newLastMessageId: string;
   newLastMessageAuthor: string;
+  isLastMessage: boolean;
 }

@@ -74,7 +74,10 @@ public class DeleteMessageCommandHandler
 
         dbContext.Entry(message.User).State = EntityState.Detached;
 
-        var messageDeleteNotification = new MessageDeleteNotification { MessageId = request.MessageId, };
+        var deleteNotification = new MessageDeleteNotification
+        {
+            ChatId = request.ChatId, DeletedMessageId = request.MessageId, IsLastMessage = false,
+        };
 
         var messageIsLast = chat.LastMessageId.HasValue && chat.LastMessageId == request.MessageId;
 
@@ -83,10 +86,11 @@ public class DeleteMessageCommandHandler
             var newLastMessage = chat.Messages
                 .Where(x => x != message).MaxBy(x => x.CreatedAt);
 
-            messageDeleteNotification.NewLastMessageAuthor = newLastMessage?.User?.DisplayName;
-            messageDeleteNotification.NewLastMessageId = newLastMessage?.Id;
-            messageDeleteNotification.NewLastMessageText = newLastMessage?.Text;
-            messageDeleteNotification.NewLastMessageTime = newLastMessage?.CreatedAt;
+            deleteNotification.NewLastMessageAuthor = newLastMessage?.User?.DisplayName;
+            deleteNotification.NewLastMessageId = newLastMessage?.Id;
+            deleteNotification.NewLastMessageText = newLastMessage?.Text;
+            deleteNotification.NewLastMessageTime = newLastMessage?.CreatedAt;
+            deleteNotification.IsLastMessage = true;
 
             chat.UpdateLastMessage(
                 lastMessageAuthor: newLastMessage?.User?.DisplayName,
@@ -100,7 +104,7 @@ public class DeleteMessageCommandHandler
 
         await dbContext.SaveChangesAsync(cancellationToken);
 
-        await hubContext.Clients.Group(message.ChatId.ToString()).NotifyOnMessageDeleteAsync(messageDeleteNotification);
+        await hubContext.Clients.Group(message.ChatId.ToString()).NotifyOnMessageDeleteAsync(deleteNotification);
 
         return responseFactory.SuccessResponse(DeleteMessageResponse.FromSuccess(message));
     }
