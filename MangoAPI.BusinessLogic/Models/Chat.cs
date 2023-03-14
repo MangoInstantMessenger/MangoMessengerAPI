@@ -47,12 +47,12 @@ public record Chat
 
 public static class ChatEntityMapper
 {
-    public static Chat ToChatDto(this ChatEntity entity, string chatLogoImageUrl = "")
+    public static Chat ToChatDto(this ChatEntity entity, string chatLogoImageUrl, string partnerDisplayName)
     {
         return new Chat
         {
             ChatId = entity.Id,
-            Title = entity.Title,
+            Title = partnerDisplayName,
             CommunityType = entity.CommunityType,
             Description = entity.Description,
             MembersCount = entity.MembersCount,

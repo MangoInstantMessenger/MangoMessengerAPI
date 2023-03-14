@@ -1,15 +1,11 @@
-﻿using MangoAPI.Application.Interfaces;
-using System;
+﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
-using MangoAPI.BusinessLogic.HubConfig;
-using MangoAPI.BusinessLogic.Models;
 using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.Domain.Entities;
 using MangoAPI.Domain.Enums;
 using MangoAPI.Infrastructure.Database;
 using MediatR;
-using Microsoft.AspNetCore.SignalR;
 
 namespace MangoAPI.BusinessLogic.ApiCommands.Communities;
 
@@ -18,20 +14,21 @@ public class CreateChannelCommandHandler
 {
     private const string DefaultChannelImage = "default_group_logo.png";
     private readonly MangoDbContext dbContext;
-    private readonly IHubContext<ChatHub, IHubClient> hubContext;
+    // private readonly IHubContext<ChatHub, IHubClient> hubContext;
     private readonly ResponseFactory<CreateCommunityResponse> responseFactory;
-    private readonly IBlobServiceSettings blobServiceSettings;
+    // private readonly IBlobServiceSettings blobServiceSettings;
 
     public CreateChannelCommandHandler(
         MangoDbContext dbContext,
-        IHubContext<ChatHub, IHubClient> hubContext,
-        ResponseFactory<CreateCommunityResponse> responseFactory,
-        IBlobServiceSettings blobServiceSettings)
+        // IHubContext<ChatHub, IHubClient> hubContext,
+        ResponseFactory<CreateCommunityResponse> responseFactory
+        // IBlobServiceSettings blobServiceSettings
+        )
     {
         this.dbContext = dbContext;
-        this.hubContext = hubContext;
+        // this.hubContext = hubContext;
         this.responseFactory = responseFactory;
-        this.blobServiceSettings = blobServiceSettings;
+        // this.blobServiceSettings = blobServiceSettings;
     }
 
     public async Task<Result<CreateCommunityResponse>> Handle(
@@ -54,10 +51,10 @@ public class CreateChannelCommandHandler
 
         await dbContext.SaveChangesAsync(cancellationToken);
 
-        var chatLogoImageUrl = $"{blobServiceSettings.MangoBlobAccess}/{DefaultChannelImage}";
+        // var chatLogoImageUrl = $"{blobServiceSettings.MangoBlobAccess}/{DefaultChannelImage}";
 
-        var chatDto = chat.ToChatDto(chatLogoImageUrl);
-        await hubContext.Clients.Group(request.UserId.ToString()).UpdateUserChatsAsync(chatDto);
+        // var chatDto = chat.ToChatDto(chatLogoImageUrl);
+        // await hubContext.Clients.Group(request.UserId.ToString()).PrivateChatCreatedAsync(chatDto);
 
         return responseFactory.SuccessResponse(CreateCommunityResponse.FromSuccess(chat));
     }

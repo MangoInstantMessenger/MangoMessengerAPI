@@ -13,7 +13,7 @@ public interface IHubClient
     /// <summary>
     /// Updates client list of chats via SignalR.
     /// </summary>
-    Task UpdateUserChatsAsync(Chat chat);
+    Task PrivateChatCreatedAsync(Chat chat);
 
     /// <summary>
     /// Notifies chat subscribers on the message delete via SignalR.

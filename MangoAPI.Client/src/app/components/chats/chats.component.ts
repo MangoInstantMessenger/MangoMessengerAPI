@@ -151,8 +151,17 @@ export class ChatsComponent implements OnInit {
       this.onMessageSendHandler(message);
     });
 
-    this.connection.on('UpdateUserChatsAsync', (chat: Chat) => {
+    this.connection.on('PrivateChatCreatedAsync', (chat: Chat) => {
       this.chats.push(chat);
+
+      if (this.realTimeConnections.includes(chat.chatId)) {
+        return;
+      }
+
+      this.connection.invoke('JoinGroup', chat.chatId).then(() => {
+        this.realTimeConnections.push(chat.chatId);
+        console.log(`SignalR JoinGroup: ${chat.chatId}`);
+      });
     });
 
     this.connection.on('NotifyOnMessageDeleteAsync', (notification: DeleteMessageNotification) => {

@@ -32,8 +32,8 @@
 ## Chat Entity
 
 1. **Id**: Primary key of chat entity (GUID). Required.
-2. **Title**: Title of the chat as string. Can be up to 50 characters. Required.
-3. **ImageFileName**: Name of the image file. Must be a string up to 50 various characters. Required.
+2. **Title**: Title of the chat as string. Can be up to 100 characters. Required.
+3. **ImageFileName**: Name of the image file. Must be a string up to 100 various characters. Required.
 4. **Description**: Short description of the chat as string. Can be up to 150 various characters. Required.
 5. **MembersCount**: Number of members in the chat as integer. Must be greater or equal to zero. Required.
 6. **CommunityType**: Type of the chat as enum. Can be one of the following: "DirectChat = 1", "PublicChannel = 2".
