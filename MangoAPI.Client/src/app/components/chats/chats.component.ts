@@ -1,5 +1,5 @@
 import { ModalWindowStateService } from '../../services/states/modalWindowState.service';
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { TokensService } from '../../services/messenger/tokens.service';
 import { Chat } from '../../types/models/Chat';
 import { CommunitiesService } from '../../services/api/communities.service';
@@ -15,7 +15,7 @@ import { ValidationService } from '../../services/messenger/validation.service';
 import * as signalR from '@microsoft/signalr';
 import { EditMessageNotification } from '../../types/models/EditMessageNotification';
 import { DeleteMessageNotification } from '../../types/models/DeleteMessageNotification';
-import { Subject, takeUntil, BehaviorSubject, firstValueFrom, distinctUntilKeyChanged } from 'rxjs';
+import { BehaviorSubject, firstValueFrom, distinctUntilKeyChanged } from 'rxjs';
 import { DisplayNameColours } from 'src/app/types/enums/DisplayNameColours';
 import { DeleteMessageCommand } from 'src/app/types/requests/DeleteMessageCommand';
 import ApiBaseService from 'src/app/services/api/api-base.service';
@@ -26,13 +26,14 @@ import { GetChatMessagesResponse } from '../../types/responses/GetChatMessagesRe
 import { RealtimeService } from '../../services/api/realtime.service';
 import { BaseResponse } from '../../types/responses/BaseResponse';
 import { GetUserChatsResponse } from '../../types/responses/GetUserChatsResponse';
+import { DeleteMessageResponse } from '../../types/responses/DeleteMessageResponse';
 
 @Component({
   selector: 'app-chats',
   templateUrl: './chats.component.html',
   styleUrls: ['./chats.component.scss']
 })
-export class ChatsComponent implements OnInit, OnDestroy {
+export class ChatsComponent implements OnInit {
   constructor(
     private _tokensService: TokensService,
     private _communitiesService: CommunitiesService,
@@ -56,7 +57,6 @@ export class ChatsComponent implements OnInit, OnDestroy {
   public realTimeConnections: string[] = [];
   public userId: string | undefined = '';
   public chats: Chat[] = [];
-  // public userChats: Chat[] = [];
 
   public activeChat: Chat = {
     lastMessageId: '',
@@ -305,40 +305,24 @@ export class ChatsComponent implements OnInit, OnDestroy {
     await this.onSendMessageClick().then((r) => r);
   }
 
-  async onJoinChatClick() {
-    // this._userChatsService
-    //   .joinCommunity(this.activeChatId)
-    //   .pipe(takeUntil(this.componentDestroyed$))
-    //   .subscribe({
-    //     next: (_) => {
-    //       this.chats = this.userChats;
-    //       this.chats.push(this.activeChat);
-    //       this.chats.sort((chat1, chat2) => {
-    //         const chat1LastMessageTime = new Date(chat1.lastMessageTime);
-    //         const chat2LastMessageTime = new Date(chat2.lastMessageTime);
-    //         if (chat1LastMessageTime > chat2LastMessageTime) {
-    //           return 1;
-    //         }
-    //
-    //         if (chat1LastMessageTime < chat2LastMessageTime) {
-    //           return -1;
-    //         }
-    //
-    //         return 0;
-    //       });
-    //       this.searchChatQuery = '';
-    //       this.chatFilter = 'All chats';
-    //       this.activeChat.isMember = true;
-    //     }
-    //   });
+  async deleteMessage(message: Message) {
+    const deleteMessageCommand: DeleteMessageCommand = {
+      chatId: message.chatId,
+      messageId: message.messageId
+    };
 
+    const deleteMessageSub$ = this._messagesService.deleteMessage(deleteMessageCommand);
+    const deleteMessageResult = await firstValueFrom<DeleteMessageResponse>(deleteMessageSub$);
+
+    console.log(deleteMessageResult.message);
+  }
+
+  async onJoinChatClick() {
     const joinChatSub$ = this._userChatsService.joinCommunity(this.activeChatId);
     const joinResult = await firstValueFrom<BaseResponse>(joinChatSub$);
 
     console.log(joinResult.message);
-    // this.chats.push(this.activeChat);
     this.searchChatQuery = '';
-    // this.chatFilter = 'All chats';
     this.activeChat.isMember = true;
 
     await this.initializeView();
@@ -346,7 +330,6 @@ export class ChatsComponent implements OnInit, OnDestroy {
 
   async onSearchChatQueryChange() {
     if (!this.searchChatQuery) {
-      // this.chatFilter = 'All chats';
       await this.initializeView();
       return;
     }
@@ -408,20 +391,6 @@ export class ChatsComponent implements OnInit, OnDestroy {
   }
 
   async onLeaveChatClick() {
-    // this._userChatsService
-    //   .leaveCommunity(this.activeChatId)
-    //   .pipe(takeUntil(this.componentDestroyed$))
-    //   .subscribe({
-    //     next: (_) => {
-    //       this.activeChatId = '';
-    //       this.initializeView();
-    //       this.userChats = this.userChats.filter((x) => x !== this.activeChat);
-    //     },
-    //     error: (error) => {
-    //       this._errorNotificationService.notifyOnError(error);
-    //     }
-    //   });
-
     const leaveChatSub$ = this._userChatsService.leaveCommunity(this.activeChatId);
     const leaveChatResult = await firstValueFrom<BaseResponse>(leaveChatSub$);
 
@@ -433,19 +402,6 @@ export class ChatsComponent implements OnInit, OnDestroy {
   }
 
   async onArchiveChatClick() {
-    // this._userChatsService
-    //   .archiveCommunity(this.activeChatId)
-    //   .pipe(takeUntil(this.componentDestroyed$))
-    //   .subscribe({
-    //     next: (_) => {
-    //       this.initializeView();
-    //       this.activeChatId = '';
-    //     },
-    //     error: (error) => {
-    //       this._errorNotificationService.notifyOnError(error);
-    //     }
-    //   });
-
     const archiveChatSub$ = this._userChatsService.archiveCommunity(this.activeChatId);
     const archiveResult = await firstValueFrom<BaseResponse>(archiveChatSub$);
 
@@ -487,31 +443,6 @@ export class ChatsComponent implements OnInit, OnDestroy {
       }
       chatMessages.scrollTop = chatMessages.scrollHeight;
     });
-  }
-
-  deleteMessage(message: Message): void {
-    const deleteMessageCommand: DeleteMessageCommand = {
-      chatId: message.chatId,
-      messageId: message.messageId
-    };
-
-    this._messagesService
-      .deleteMessage(deleteMessageCommand)
-      .pipe(takeUntil(this.componentDestroyed$))
-      .subscribe({
-        // FIXME
-        // eslint-disable-next-line @typescript-eslint/no-empty-function
-        next: (_) => {},
-        error: (error) => {
-          this._errorNotificationService.notifyOnError(error);
-        }
-      });
-  }
-
-  ngOnDestroy(): void {
-    this.connection.stop().then((r) => r);
-    this.componentDestroyed$.next(true);
-    this.componentDestroyed$.complete();
   }
 
   clearAttachmentInput() {
@@ -591,8 +522,6 @@ export class ChatsComponent implements OnInit, OnDestroy {
         return 'color-pink';
     }
   }
-
-  componentDestroyed$: Subject<boolean> = new Subject();
 
   public get routingConstants(): typeof RoutingConstants {
     return RoutingConstants;
