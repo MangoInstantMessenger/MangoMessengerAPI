@@ -203,16 +203,16 @@ export class ContactsComponent implements OnInit, OnDestroy {
   }
 
   onRemoveContactButtonClick(contactId: string): void {
-    this._contactsService
-      .deleteContact(contactId)
-      .pipe(takeUntil(this.componentDestroyed$))
-      .subscribe({
-        next: (_) => {
-          this.ngOnInit();
-        },
-        error: (error) => {
-          this._errorNotificationService.notifyOnError(error);
-        }
-      });
+    // this._contactsService
+    //   .deleteContact(contactId)
+    //   .pipe(takeUntil(this.componentDestroyed$))
+    //   .subscribe({
+    //     next: (_) => {
+    //       this.ngOnInit();
+    //     },
+    //     error: (error) => {
+    //       this._errorNotificationService.notifyOnError(error);
+    //     }
+    //   });
   }
 }
