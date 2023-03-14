@@ -54,10 +54,9 @@ export class ChatsComponent implements OnInit, OnDestroy {
     .build();
   private signalRConnected = false;
   public realTimeConnections: string[] = [];
-
   public userId: string | undefined = '';
   public chats: Chat[] = [];
-  public userChats: Chat[] = [];
+  // public userChats: Chat[] = [];
 
   public activeChat: Chat = {
     lastMessageId: '',
@@ -77,34 +76,25 @@ export class ChatsComponent implements OnInit, OnDestroy {
 
   public activeChatId = '';
   public messages: Message[] = [];
-
   public messageAttachment: File | null = null;
   public messageAttachmentBlobUrl: string | ArrayBuffer | null = '';
   public messageText = '';
   public searchChatQuery = '';
   public searchMessagesQuery = '';
   public chatFilter = 'All chats';
-
   public activeChatBehaviorSubject = new BehaviorSubject<Chat>(this.activeChat);
 
-  componentDestroyed$: Subject<boolean> = new Subject();
-
-  public get routingConstants(): typeof RoutingConstants {
-    return RoutingConstants;
-  }
-
-  ngOnInit(): void {
+  async ngOnInit() {
     this.activeChatBehaviorSubject.pipe(distinctUntilKeyChanged('chatId')).subscribe(() => {
       this._replyStateService.setReplyNull();
       this.messageAttachment = null;
       this.messageAttachmentBlobUrl = null;
     });
 
-    this.initializeView();
+    await this.initializeView();
   }
 
-  // test
-  initializeView(): void {
+  async initializeView() {
     const tokens = this._tokensService.getTokens();
 
     if (!tokens) {
@@ -113,32 +103,27 @@ export class ChatsComponent implements OnInit, OnDestroy {
     }
 
     this.userId = tokens.userId;
+    this.chatFilter = 'All chats';
 
-    this._communitiesService
-      .getUserChats()
-      .pipe(takeUntil(this.componentDestroyed$))
-      .subscribe({
-        next: (response: GetUserChatsResponse) => {
-          this.chats = response.chats.filter((x) => !x.isArchived);
-          this.userChats = this.chats;
+    const chatsSub$ = this._communitiesService.getUserChats();
+    const chatsResult = await firstValueFrom<GetUserChatsResponse>(chatsSub$);
 
-          if (this.connection.state !== signalR.HubConnectionState.Connected) {
-            this.connectChatsToHub();
-          }
+    console.log(chatsResult.chats);
 
-          if (!this.signalRConnected) {
-            this.setSignalRMethods();
-            this.signalRConnected = true;
-          }
-        },
-        error: (error) => {
-          this._errorNotificationService.notifyOnError(error);
-        }
-      });
+    this.chats = chatsResult.chats.filter((x) => !x.isArchived);
+
+    if (this.connection.state !== signalR.HubConnectionState.Connected) {
+      await this.connectToSignalRHubs();
+    }
+
+    if (!this.signalRConnected) {
+      this.setSignalRMethods();
+      this.signalRConnected = true;
+    }
   }
 
-  connectChatsToHub(): void {
-    this.connection
+  async connectToSignalRHubs() {
+    await this.connection
       .start()
       .then(() => {
         this.chats.forEach((x) => {
@@ -146,9 +131,10 @@ export class ChatsComponent implements OnInit, OnDestroy {
             return;
           }
 
-          this.connection
-            .invoke('JoinGroup', x.chatId)
-            .then(() => this.realTimeConnections.push(x.chatId));
+          this.connection.invoke('JoinGroup', x.chatId).then(() => {
+            this.realTimeConnections.push(x.chatId);
+            console.log(`SignalR JoinGroup: ${x.chatId}`);
+          });
         });
 
         if (this.userId != null && this.realTimeConnections.includes(this.userId)) {
@@ -160,43 +146,6 @@ export class ChatsComponent implements OnInit, OnDestroy {
       .catch((err) => console.error(err.toString()));
   }
 
-  onReplyClick(
-    messageId: string,
-    displayName: string,
-    text: string,
-    displayNameColour: DisplayNameColours
-  ) {
-    const replyEntity = new Reply(messageId, displayName, text, displayNameColour);
-
-    this._replyStateService.setReply(replyEntity);
-    this.scrollToEnd();
-  }
-
-  async imageSelected(event: any) {
-    this.messageAttachment = event.target.files[0];
-
-    const reader = new FileReader();
-    reader.onload = () => {
-      this.messageAttachmentBlobUrl = reader.result;
-    };
-    reader.readAsDataURL(event.target.files[0]);
-  }
-
-  removeImageSelected() {
-    this.messageAttachment = null;
-    this.messageAttachmentBlobUrl = null;
-  }
-
-  onOpenImageClick(imageLink: string): void {
-    this._modalWindowStateService.setIsModalWindowShowing(true);
-    this._modalWindowStateService.setPicture(imageLink);
-  }
-
-  closeModalWindowClick(): void {
-    this._modalWindowStateService.setIsModalWindowShowing(false);
-    this._modalWindowStateService.setPictureNull();
-  }
-
   setSignalRMethods(): void {
     this.connection.on('BroadcastMessageAsync', (message: Message) =>
       this.onBroadcastMessage(message)
@@ -206,6 +155,9 @@ export class ChatsComponent implements OnInit, OnDestroy {
 
     this.connection.on('NotifyOnMessageDeleteAsync', (notification: DeleteMessageNotification) => {
       const message = this.messages.filter((x) => x.messageId === notification.messageId)[0];
+
+      console.log(`deleted message id: ${notification.messageId}`);
+      console.log(`last message id: ${this.activeChat.lastMessageId}`);
 
       if (message.messageId === this.activeChat.lastMessageId) {
         this.activeChat.lastMessageAuthor = notification.newLastMessageAuthor;
@@ -232,83 +184,7 @@ export class ChatsComponent implements OnInit, OnDestroy {
     });
   }
 
-  onJoinChatClick(): void {
-    this._userChatsService
-      .joinCommunity(this.activeChatId)
-      .pipe(takeUntil(this.componentDestroyed$))
-      .subscribe({
-        next: (_) => {
-          this.chats = this.userChats;
-          this.chats.push(this.activeChat);
-          this.chats.sort((chat1, chat2) => {
-            const chat1LastMessageTime = new Date(chat1.lastMessageTime);
-            const chat2LastMessageTime = new Date(chat2.lastMessageTime);
-            if (chat1LastMessageTime > chat2LastMessageTime) {
-              return 1;
-            }
-
-            if (chat1LastMessageTime < chat2LastMessageTime) {
-              return -1;
-            }
-
-            return 0;
-          });
-          this.searchChatQuery = '';
-          this.chatFilter = 'All chats';
-          this.activeChat.isMember = true;
-        }
-      });
-  }
-
-  onBroadcastMessage(message: Message): void {
-    message.self = message.userId == this.userId;
-    const chat = this.chats.filter((x) => x.chatId === message.chatId)[0];
-    chat.lastMessageAuthor = message.userDisplayName;
-    chat.lastMessageText = message.text;
-    chat.lastMessageTime = message.createdAt;
-    chat.lastMessageId = message.messageId;
-    this.chats = this.chats.filter((x) => x.chatId !== message.chatId);
-    this.chats = [chat, ...this.chats];
-
-    const includesMessage = this.messages.some((x) => x.messageId === message.messageId);
-
-    if (message.chatId === this.activeChatId && !includesMessage) {
-      this.messages.push(message);
-    }
-
-    this.scrollToEnd();
-  }
-
-  onEmojiClick(event: Event): void {
-    const button = event.currentTarget as HTMLButtonElement;
-    const emoji = button.innerText;
-    this.messageText += emoji;
-  }
-
-  toShortTimeString(date: string): string {
-    return formatDate(date, 'hh:mm a', 'en-US');
-  }
-
-  getChatMessages(chatId: string | null): void {
-    if (!chatId) {
-      return;
-    }
-
-    this._messagesService
-      .getChatMessages(chatId)
-      .pipe(takeUntil(this.componentDestroyed$))
-      .subscribe({
-        next: (response: GetChatMessagesResponse) => {
-          this.messages = response.messages;
-          this.scrollToEnd();
-        },
-        error: (error) => {
-          this._errorNotificationService.notifyOnError(error);
-        }
-      });
-  }
-
-  loadChat(chatId: string): void {
+  async loadChat(chatId: string) {
     if (this.activeChatId === chatId) {
       return;
     }
@@ -319,132 +195,34 @@ export class ChatsComponent implements OnInit, OnDestroy {
 
     this.activeChatBehaviorSubject.next(newActiveChat);
 
-    this.getChatMessages(this.activeChatId);
+    await this.loadMessages(this.activeChatId);
+
+    if (this.realTimeConnections.includes(this.activeChat.chatId)) {
+      return;
+    }
+
+    this.connection.invoke('JoinGroup', this.activeChat.chatId).then(() => {
+      this.realTimeConnections.push(this.activeChat.chatId);
+      console.log(`SignalR JoinGroup: ${this.activeChat.chatId}`);
+    });
+
     this.scrollToEnd();
   }
 
-  chatContainsMessages(chat: Chat): boolean {
-    return chat.lastMessageAuthor != null && chat.lastMessageText != null;
-  }
-
-  onSearchChatQueryChange(): void {
-    if (this.searchChatQuery) {
-      this._communitiesService
-        .searchChat(this.searchChatQuery)
-        .pipe(takeUntil(this.componentDestroyed$))
-        .subscribe({
-          next: (response) => {
-            this.chatFilter = 'Search results';
-            this.chats = response.chats;
-          },
-          error: (error) => {
-            this._errorNotificationService.notifyOnError(error);
-          }
-        });
-    } else {
-      this.chatFilter = 'All chats';
-      this.initializeView();
+  async loadMessages(chatId: string | null) {
+    if (!chatId) {
+      return;
     }
+
+    const getMessagesSub$ = this._messagesService.getChatMessages(chatId);
+    const messagesResult = await firstValueFrom<GetChatMessagesResponse>(getMessagesSub$);
+
+    console.log(messagesResult.messages);
+    this.messages = messagesResult.messages;
+    this.scrollToEnd();
   }
 
-  onSearchMessageQueryChange(): void {
-    if (this.searchMessagesQuery) {
-      this._messagesService
-        .searchMessages(this.activeChatId, this.searchMessagesQuery)
-        .pipe(takeUntil(this.componentDestroyed$))
-        .subscribe({
-          next: (response) => {
-            this.messages = response.messages;
-          },
-          error: (error) => {
-            this._errorNotificationService.notifyOnError(error);
-          }
-        });
-    } else {
-      this.getChatMessages(this.activeChatId);
-    }
-  }
-
-  onChatFilterClick(event: Event): void {
-    const div = event.currentTarget as HTMLDivElement;
-    this.chatFilter = div.innerText;
-
-    this._communitiesService
-      .getUserChats()
-      .pipe(takeUntil(this.componentDestroyed$))
-      .subscribe({
-        next: (response) => {
-          const chats = response.chats;
-          switch (this.chatFilter) {
-            case 'All chats':
-              this.chats = chats;
-              break;
-            case 'Groups':
-              this.chats = chats.filter((x) => x.communityType === CommunityType.PublicChannel);
-              break;
-            case 'Direct chats':
-              this.chats = chats.filter((x) => x.communityType === CommunityType.DirectChat);
-              break;
-            case 'Archived':
-              this.chats = chats.filter((x) => x.isArchived);
-              break;
-          }
-
-          this.searchChatQuery = '';
-        },
-        error: (error) => {
-          this._errorNotificationService.notifyOnError(error);
-        }
-      });
-  }
-
-  onSearchMessageClick(): void {
-    this._messagesService
-      .searchMessages(this.activeChatId, this.searchMessagesQuery)
-      .pipe(takeUntil(this.componentDestroyed$))
-      .subscribe({
-        next: (response) => {
-          this.messages = response.messages;
-          this.searchMessagesQuery = '';
-        },
-        error: (error) => {
-          this._errorNotificationService.notifyOnError(error);
-        }
-      });
-  }
-
-  onLeaveChatClick(): void {
-    this._userChatsService
-      .leaveCommunity(this.activeChatId)
-      .pipe(takeUntil(this.componentDestroyed$))
-      .subscribe({
-        next: (_) => {
-          this.activeChatId = '';
-          this.initializeView();
-          this.userChats = this.userChats.filter((x) => x !== this.activeChat);
-        },
-        error: (error) => {
-          this._errorNotificationService.notifyOnError(error);
-        }
-      });
-  }
-
-  onArchiveChatClick(): void {
-    this._userChatsService
-      .archiveCommunity(this.activeChatId)
-      .pipe(takeUntil(this.componentDestroyed$))
-      .subscribe({
-        next: (_) => {
-          this.initializeView();
-          this.activeChatId = '';
-        },
-        error: (error) => {
-          this._errorNotificationService.notifyOnError(error);
-        }
-      });
-  }
-
-  public async onSendMessageClick() {
+  async onSendMessageClick() {
     const newMessageText = this.messageText.repeat(1); // deep copy
 
     const messageTextValidationResult = this._validationService.validateField(
@@ -512,9 +290,191 @@ export class ChatsComponent implements OnInit, OnDestroy {
     this.scrollToEnd();
   }
 
+  onReplyClick(
+    messageId: string,
+    displayName: string,
+    text: string,
+    displayNameColour: DisplayNameColours
+  ) {
+    const replyEntity = new Reply(messageId, displayName, text, displayNameColour);
+
+    this._replyStateService.setReply(replyEntity);
+    this.scrollToEnd();
+  }
+
   async onEnterClick(event: any) {
     event.preventDefault();
     await this.onSendMessageClick().then((r) => r);
+  }
+
+  async onJoinChatClick() {
+    // this._userChatsService
+    //   .joinCommunity(this.activeChatId)
+    //   .pipe(takeUntil(this.componentDestroyed$))
+    //   .subscribe({
+    //     next: (_) => {
+    //       this.chats = this.userChats;
+    //       this.chats.push(this.activeChat);
+    //       this.chats.sort((chat1, chat2) => {
+    //         const chat1LastMessageTime = new Date(chat1.lastMessageTime);
+    //         const chat2LastMessageTime = new Date(chat2.lastMessageTime);
+    //         if (chat1LastMessageTime > chat2LastMessageTime) {
+    //           return 1;
+    //         }
+    //
+    //         if (chat1LastMessageTime < chat2LastMessageTime) {
+    //           return -1;
+    //         }
+    //
+    //         return 0;
+    //       });
+    //       this.searchChatQuery = '';
+    //       this.chatFilter = 'All chats';
+    //       this.activeChat.isMember = true;
+    //     }
+    //   });
+
+    const joinChatSub$ = this._userChatsService.joinCommunity(this.activeChatId);
+    const joinResult = await firstValueFrom<BaseResponse>(joinChatSub$);
+
+    console.log(joinResult.message);
+    // this.chats.push(this.activeChat);
+    this.searchChatQuery = '';
+    this.chatFilter = 'All chats';
+    this.activeChat.isMember = true;
+
+    await this.initializeView();
+  }
+
+  async onSearchChatQueryChange() {
+    if (!this.searchChatQuery) {
+      this.chatFilter = 'All chats';
+      await this.initializeView();
+      return;
+    }
+
+    const searchChatSub$ = this._communitiesService.searchChat(this.searchChatQuery);
+    const searchChatResult = await firstValueFrom<GetUserChatsResponse>(searchChatSub$);
+
+    console.log(searchChatResult.chats);
+
+    this.chatFilter = 'Search results';
+    this.chats = searchChatResult.chats;
+  }
+
+  async onSearchMessageQueryChange() {
+    if (!this.searchMessagesQuery) {
+      await this.loadMessages(this.activeChatId);
+      return;
+    }
+
+    const searchMessageSub$ = this._messagesService.searchMessages(
+      this.activeChatId,
+      this.searchMessagesQuery
+    );
+    const searchMessageResult = await firstValueFrom<GetChatMessagesResponse>(searchMessageSub$);
+
+    console.log(searchMessageResult.messages);
+    this.messages = searchMessageResult.messages;
+  }
+
+  async onChatFilterClick(event: Event) {
+    const div = event.currentTarget as HTMLDivElement;
+    this.chatFilter = div.innerText;
+
+    console.log(this.chatFilter);
+
+    const getChatsSub$ = this._communitiesService.getUserChats();
+    const getChatsResult = await firstValueFrom<GetUserChatsResponse>(getChatsSub$);
+
+    console.log(getChatsResult.chats);
+
+    switch (this.chatFilter) {
+      case 'All chats':
+        this.chats = getChatsResult.chats.filter((x) => !x.isArchived);
+        break;
+      case 'Groups':
+        this.chats = getChatsResult.chats.filter(
+          (x) => x.communityType === CommunityType.PublicChannel && !x.isArchived
+        );
+        break;
+      case 'Direct chats':
+        this.chats = getChatsResult.chats.filter(
+          (x) => x.communityType === CommunityType.DirectChat && !x.isArchived
+        );
+        break;
+      case 'Archived':
+        this.chats = getChatsResult.chats.filter((x) => x.isArchived);
+        break;
+    }
+  }
+
+  async onLeaveChatClick() {
+    // this._userChatsService
+    //   .leaveCommunity(this.activeChatId)
+    //   .pipe(takeUntil(this.componentDestroyed$))
+    //   .subscribe({
+    //     next: (_) => {
+    //       this.activeChatId = '';
+    //       this.initializeView();
+    //       this.userChats = this.userChats.filter((x) => x !== this.activeChat);
+    //     },
+    //     error: (error) => {
+    //       this._errorNotificationService.notifyOnError(error);
+    //     }
+    //   });
+
+    const leaveChatSub$ = this._userChatsService.leaveCommunity(this.activeChatId);
+    const leaveChatResult = await firstValueFrom<BaseResponse>(leaveChatSub$);
+
+    console.log(leaveChatResult.message);
+
+    this.activeChatId = '';
+
+    await this.initializeView();
+  }
+
+  async onArchiveChatClick() {
+    // this._userChatsService
+    //   .archiveCommunity(this.activeChatId)
+    //   .pipe(takeUntil(this.componentDestroyed$))
+    //   .subscribe({
+    //     next: (_) => {
+    //       this.initializeView();
+    //       this.activeChatId = '';
+    //     },
+    //     error: (error) => {
+    //       this._errorNotificationService.notifyOnError(error);
+    //     }
+    //   });
+
+    const archiveChatSub$ = this._userChatsService.archiveCommunity(this.activeChatId);
+    const archiveResult = await firstValueFrom<BaseResponse>(archiveChatSub$);
+
+    console.log(archiveResult.message);
+
+    this.activeChatId = '';
+
+    await this.initializeView();
+  }
+
+  onBroadcastMessage(message: Message): void {
+    message.self = message.userId == this.userId;
+    const chat = this.chats.filter((x) => x.chatId === message.chatId)[0];
+    chat.lastMessageAuthor = message.userDisplayName;
+    chat.lastMessageText = message.text;
+    chat.lastMessageTime = message.createdAt;
+    chat.lastMessageId = message.messageId;
+    this.chats = this.chats.filter((x) => x.chatId !== message.chatId);
+    this.chats = [chat, ...this.chats];
+
+    const includesMessage = this.messages.some((x) => x.messageId === message.messageId);
+
+    if (message.chatId === this.activeChatId && !includesMessage) {
+      this.messages.push(message);
+    }
+
+    this.scrollToEnd();
   }
 
   private clearMessageInput(): void {
@@ -529,33 +489,6 @@ export class ChatsComponent implements OnInit, OnDestroy {
       }
       chatMessages.scrollTop = chatMessages.scrollHeight;
     });
-  }
-
-  getDisplayNameColour(colour: number): string {
-    switch (colour) {
-      case DisplayNameColours.White:
-        return 'color-white';
-      case DisplayNameColours.Blue:
-        return 'color-blue';
-      case DisplayNameColours.Red:
-        return 'color-red';
-      case DisplayNameColours.Yellow:
-        return 'color-yellow';
-      case DisplayNameColours.Green:
-        return 'color-green';
-      case DisplayNameColours.BrightYellow:
-        return 'color-bright-yellow';
-      case DisplayNameColours.Aqua:
-        return 'color-aqua';
-      case DisplayNameColours.Violet:
-        return 'color-violet';
-      case DisplayNameColours.Pink:
-        return 'color-pink';
-      case DisplayNameColours.Orange:
-        return 'color-orange';
-      default:
-        return 'color-pink';
-    }
   }
 
   deleteMessage(message: Message): void {
@@ -592,5 +525,78 @@ export class ChatsComponent implements OnInit, OnDestroy {
 
     fileInput.value = '';
     this.messageAttachment = null;
+  }
+
+  async imageSelected(event: any) {
+    this.messageAttachment = event.target.files[0];
+
+    const reader = new FileReader();
+    reader.onload = () => {
+      this.messageAttachmentBlobUrl = reader.result;
+    };
+
+    reader.readAsDataURL(event.target.files[0]);
+  }
+
+  removeImageSelected() {
+    this.messageAttachment = null;
+    this.messageAttachmentBlobUrl = null;
+  }
+
+  onOpenImageClick(imageLink: string): void {
+    this._modalWindowStateService.setIsModalWindowShowing(true);
+    this._modalWindowStateService.setPicture(imageLink);
+  }
+
+  closeModalWindowClick(): void {
+    this._modalWindowStateService.setIsModalWindowShowing(false);
+    this._modalWindowStateService.setPictureNull();
+  }
+
+  toShortTimeString(date: string): string {
+    return formatDate(date, 'hh:mm a', 'en-US');
+  }
+
+  onEmojiClick(event: Event): void {
+    const button = event.currentTarget as HTMLButtonElement;
+    const emoji = button.innerText;
+    this.messageText += emoji;
+  }
+
+  chatContainsMessages(chat: Chat): boolean {
+    return chat.lastMessageAuthor != null && chat.lastMessageText != null;
+  }
+
+  getDisplayNameColour(colour: number): string {
+    switch (colour) {
+      case DisplayNameColours.White:
+        return 'color-white';
+      case DisplayNameColours.Blue:
+        return 'color-blue';
+      case DisplayNameColours.Red:
+        return 'color-red';
+      case DisplayNameColours.Yellow:
+        return 'color-yellow';
+      case DisplayNameColours.Green:
+        return 'color-green';
+      case DisplayNameColours.BrightYellow:
+        return 'color-bright-yellow';
+      case DisplayNameColours.Aqua:
+        return 'color-aqua';
+      case DisplayNameColours.Violet:
+        return 'color-violet';
+      case DisplayNameColours.Pink:
+        return 'color-pink';
+      case DisplayNameColours.Orange:
+        return 'color-orange';
+      default:
+        return 'color-pink';
+    }
+  }
+
+  componentDestroyed$: Subject<boolean> = new Subject();
+
+  public get routingConstants(): typeof RoutingConstants {
+    return RoutingConstants;
   }
 }

@@ -156,7 +156,7 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, Result<To
     private static MessageEntity[] GenerateGreetingMessages(ChatEntity chatEntity, Guid systemChatId)
     {
         var firstMessage = MessageEntity.Create(systemChatId, chatEntity.Id, GreetingsConstants.Hello);
-        var secondMessage = MessageEntity.Create(systemChatId, chatEntity.Id, GreetingsConstants.Hello);
+        var secondMessage = MessageEntity.Create(systemChatId, chatEntity.Id, GreetingsConstants.Guide);
 
         var greetingMessages = new[] { firstMessage, secondMessage };
 
