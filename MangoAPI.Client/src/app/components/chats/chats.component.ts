@@ -25,6 +25,7 @@ import { Reply } from 'src/app/types/models/Reply';
 import { GetChatMessagesResponse } from '../../types/responses/GetChatMessagesResponse';
 import { RealtimeService } from '../../services/api/realtime.service';
 import { BaseResponse } from '../../types/responses/BaseResponse';
+import { GetUserChatsResponse } from '../../types/responses/GetUserChatsResponse';
 
 @Component({
   selector: 'app-chats',
@@ -116,7 +117,7 @@ export class ChatsComponent implements OnInit, OnDestroy {
       .getUserChats()
       .pipe(takeUntil(this.componentDestroyed$))
       .subscribe({
-        next: (response) => {
+        next: (response: GetUserChatsResponse) => {
           this.chats = response.chats.filter((x) => !x.isArchived);
           this.userChats = this.chats;
 
@@ -466,11 +467,8 @@ export class ChatsComponent implements OnInit, OnDestroy {
 
     sendMessageFormData.append('text', newMessageText);
     sendMessageFormData.append('chatId', this.activeChatId);
-    sendMessageFormData.append(
-      'inReplayToAuthor',
-      this._replyStateService.reply?.displayName ?? ''
-    );
-    sendMessageFormData.append('inReplayToText', this._replyStateService.reply?.text ?? '');
+    sendMessageFormData.append('inReplyToUser', this._replyStateService.reply?.displayName ?? '');
+    sendMessageFormData.append('inReplyToText', this._replyStateService.reply?.text ?? '');
 
     if (this.messageAttachment) {
       sendMessageFormData.append('Attachment', this.messageAttachment);
