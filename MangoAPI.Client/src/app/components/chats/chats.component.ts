@@ -298,10 +298,13 @@ export class ChatsComponent implements OnInit {
   }
 
   async deleteMessage(message: Message) {
-    const deleteMessageCommand: DeleteMessageCommand = {
-      chatId: message.chatId,
-      messageId: message.messageId
-    };
+    const deleteMessageCommand = new DeleteMessageCommand(message.messageId, message.chatId);
+
+    const messageIndex = this.messages.findIndex((x) => x.messageId === message.messageId);
+
+    if (messageIndex === -1) return;
+
+    this.messages.splice(messageIndex, 1);
 
     const deleteMessageSub$ = this._messagesService.deleteMessage(deleteMessageCommand);
     const deleteMessageResult = await firstValueFrom<DeleteMessageResponse>(deleteMessageSub$);
@@ -405,16 +408,28 @@ export class ChatsComponent implements OnInit {
   }
 
   private onMessageSendHandler(message: Message) {
-    console.log(JSON.stringify(message));
+    // console.log(JSON.stringify(message));
 
     message.self = message.userId == this.userId;
-    const chat = this.chats.filter((x) => x.chatId === message.chatId)[0];
+
+    const chatIndex = this.chats.findIndex((x) => x.chatId === message.chatId);
+
+    if (chatIndex === -1) return;
+
+    console.log('chats: ' + JSON.stringify(this.chats));
+
+    const chat = this.chats[chatIndex];
+
     chat.lastMessageAuthor = message.userDisplayName;
     chat.lastMessageText = message.text;
     chat.lastMessageTime = message.createdAt;
     chat.lastMessageId = message.messageId;
-    this.chats = this.chats.filter((x) => x.chatId !== message.chatId);
-    this.chats = [chat, ...this.chats];
+
+    this.chats.splice(chatIndex, 1);
+
+    console.log('chats excluded: ' + JSON.stringify(this.chats));
+
+    this.chats.splice(0, 0, chat);
 
     const includesMessage = this.messages.some((x) => x.messageId === message.messageId);
 
@@ -445,8 +460,11 @@ export class ChatsComponent implements OnInit {
     console.log(`deleted message id: ${notification.deletedMessageId}`);
     console.log(`last message id: ${this.activeChat.lastMessageId}`);
 
-    if (notification.isLastMessage) {
-      const updatedChat = this.chats.filter((x) => x.chatId == notification.chatId)[0];
+    const chatIndex = this.chats.findIndex((x) => x.chatId === notification.chatId);
+
+    if (notification.isLastMessage && chatIndex !== -1) {
+      const updatedChat = this.chats[chatIndex];
+
       updatedChat.lastMessageAuthor = notification.newLastMessageAuthor;
       updatedChat.lastMessageText = notification.newLastMessageText;
       updatedChat.lastMessageTime = notification.newLastMessageTime;
@@ -455,8 +473,14 @@ export class ChatsComponent implements OnInit {
       console.log(`updated chat: ${JSON.stringify(updatedChat)}`);
     }
 
-    if (this.activeChatId === notification.chatId) {
-      this.messages = this.messages.filter((x) => x.messageId !== notification.deletedMessageId);
+    if (this.activeChatId !== notification.chatId) return;
+
+    const messageIndex = this.messages.findIndex(
+      (x) => x.messageId === notification.deletedMessageId
+    );
+
+    if (messageIndex !== -1) {
+      this.messages.splice(messageIndex, 1);
     }
   }
 
