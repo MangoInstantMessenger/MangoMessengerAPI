@@ -17,26 +17,27 @@ param(
     [string] $prefix
 )
 
-Write-Output "Generating sql server password ..."
-$sqlPassword = .\generate_strong_password.ps1 -length 20 -amountOfNonAlphanumeric 1
-Write-Output "sql pass: $sqlPassword"
+$rgNameWithPrefix = "$rgName-$prefix"
 
-Write-Output "Creating resource group $rgName in $location ..."
-az group create --name $rgName --location "$location"
+$sqlPassword = $env:MANGO_TF_SQL_PASS
+#Write-Output "Using sql server password $sqlPassword ..."
+
+Write-Output "Creating resource group $rgNameWithPrefix in $location ..."
+az group create --name "$rgNameWithPrefix" --location "$location"
 
 Write-Output "Creating storage account $storageAccount ..."
-az storage account create --name $storageAccount --resource-group $rgName --kind "StorageV2" --sku "Standard_LRS" --https-only "true" --allow-blob-public-access "false"
+az storage account create --name $storageAccount --resource-group $rgNameWithPrefix --kind "StorageV2" --sku "Standard_LRS" --https-only "true" --allow-blob-public-access "false"
 
 Write-Output "Creating storage container $contName ..."
 az storage container create --name $container --account-name $storageAccount --public-access "off"
 
 Write-Output "Creating SAS token for $container ..."
 $Date = (Get-Date).AddDays(5).ToString('yyyy-MM-dd')
-$key = $( az storage account keys list --resource-group $rgName --account-name $storageAccount --query [0].value -o tsv )
+$key = $( az storage account keys list --resource-group $rgNameWithPrefix --account-name $storageAccount --query [0].value -o tsv )
 $sas = $( az storage container generate-sas --name $container --expiry $Date --permissions "racwdli" --account-name $storageAccount --account-key "$key" )
 
 Write-Output "Creating keyvault $keyVaultName ..."
-az keyvault create --name $keyVaultName --resource-group $rgName --location $location
+az keyvault create --name $keyVaultName --resource-group $rgNameWithPrefix --location $location
 
 #Write-Output "Creating keyvault secret [RgTfState] ..."
 #az keyvault secret set --name "RgTfState" --vault-name $keyVaultName --value $rgName
@@ -79,6 +80,13 @@ az keyvault secret set --name "kv-prefix" --vault-name $keyVaultName --value $pr
 
 Write-Output "Creating keyvault secret [kv-sql-password] ..."
 az keyvault secret set --name "kv-sql-password" --vault-name $keyVaultName --value "$sqlPassword"
+
+Write-Output "Creating role assignment [Storage Blob Data Contributor] for service principal $spName ..."
+az role assignment create `
+--role "Storage Blob Data Contributor"`
+--scope "/subscriptions/$subscriptionId"`
+--assignee-object-id "$spObjectId"`
+--assignee-principal-type "ServicePrincipal"
 
 # example call:
 # $rgName = "rg-tf-state$(Get-Random 1000)"
