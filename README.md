@@ -158,28 +158,16 @@ In case of localhost HTTPS certificate issues: https://stackoverflow.com/a/67182
 - **Programming languages:** `C#`, `SQL`, `TypeScript`
 - **Tools & IDE:** `Visual Studio`, `Rider`, `VS Code`, `WebStorm`, `SMSS`, `Postman`
 
-## Tasks management
+## Powered by JetBrains
 
-- Each task has an assigned number in the format `MANGO-ID`
-- Active tasks are available on the Trello board: https://trello.com/b/Z7IlfrRb/mango-messenger-trello
-- Each task branch is based on the actual `develop` branch and pull requested there on complete
+<p align="center">
+  <img src="./img/jetbrains.png" width="150" height="150"  alt="Mango Messenger Logo"/>
+</p>
 
-## GitHub flow
-
-- Fork this repository
-- Clone this repository using `git clone https://github.com/${{ username }}/MangoMessengerAPI.git`
-- If repository is cloned already then pull last changes from `develop` using
-    - `git checkout develop`
-    - `git pull`
-- Create new branch based on `develop` with name according to `MANGO-ID` of the task
-- Solve the task
-- Create pull request to `develop`
-
-## Commit messages
-
-- In case of bug fix, example of commit message `bugfix: some bug fixed`
-- In case of feature, example of commit message `feature: some new functionality added`
-- In case of refactor, example of commit message `refactor: some code part refactored`
+On March 14, 2023 Mango Messenger has received the JetBrains Open Source Licenses 
+for 1 year with opportunity to extend next years if opensource conditions met.
+These licenses are properly shared between active contributors.
+Thanks to JetBrains from the whole team of Mango Messenger.
 
 ## Useful Links
 
