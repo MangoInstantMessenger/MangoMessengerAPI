@@ -75,10 +75,9 @@ However, it is worth to continue progress on the project pursuing another predef
 - **Azure storage explorer**: https://azure.microsoft.com/en-us/products/storage/storage-explorer
 - **Azure data studio**: https://azure.microsoft.com/en-us/products/data-studio
 - **Docker:** https://docs.docker.com/desktop/windows/install
-- **Angular:** `13.3.5`
-- **Angular CLI:** `13.3.4`
+- **Angular CLI:** `15.2.2`
 - **NodeJS:** `16.13.1`
-- **NPM:** `8.1.2`
+- **NPM:** `8.7.0`
 - **Code Editor & IDE:** Visual studio, Visual studio code, Rider
 - **VS Code Plugins:**
     - [ESlint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint)
@@ -92,13 +91,13 @@ However, it is worth to continue progress on the project pursuing another predef
 ### Run in debug mode
 
 - Install NVM: https://github.com/coreybutler/nvm-windows
-- Install NodeJS `14.17.3` using NVM & PowerShell as Administrator: `nvm install 16.13.1`
-- Use NodeJS `14.17.3` using NVM via PowerShell as Administrator: `nvm use 16.13.1`
+- Install NodeJS `16.13.1` using NVM & PowerShell as Administrator: `nvm install 16.13.1`
+- Use NodeJS `16.13.1` using NVM via PowerShell as Administrator: `nvm use 16.13.1`
 - Check NodeJS installed properly (should be `16.13.1`): `node -v`
-- Check NPM installed properly (should be `8.1.2`): `npm -v`
+- Check NPM installed properly (should be `8.7.0`): `npm -v`
 - Go to the project folder: `cd MangoAPI.Client`
 - Restore node modules: `npm ci`
-- Install Angular CLI globally: `npm install -g @angular/cli@13.3.4`
+- Install Angular CLI globally: `npm install -g @angular/cli@15.2.2`
 - Open PowerShell as Administrator and type: `Set-ExecutionPolicy -ExecutionPolicy RemoteSigned`
 - Check that Angular CLI installed properly: `ng version`
 - Build project for development using Angular CLI: `ng build`
