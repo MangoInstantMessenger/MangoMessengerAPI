@@ -71,7 +71,7 @@ jobs:
 
       - script: |
           ng build
-        displayName: 'Angular build
+        displayName: 'Angular build'
         workingDirectory: '${{ parameters.frontEndProjectPath }}'
 
       - task: DotNetCoreCLI@2
