@@ -153,7 +153,11 @@ export class ChatsComponent implements OnInit {
 
     this.connection.on('PrivateChatDeletedAsync', (chatId: string) => {
       console.log(`Private chat deleted: ${chatId}`);
-      this.chats = this.chats.filter((x) => x.chatId !== chatId);
+      const chatIndex = this.chats.findIndex((x) => x.chatId === chatId);
+
+      if (chatIndex === -1) return;
+
+      this.chats.splice(chatIndex, 1);
 
       if (this.activeChatId === chatId) {
         this.activeChat = this._defaultChatHelper.getEmptyChat();
@@ -416,7 +420,7 @@ export class ChatsComponent implements OnInit {
 
     if (chatIndex === -1) return;
 
-    console.log('chats: ' + JSON.stringify(this.chats));
+    // console.log('chats: ' + JSON.stringify(this.chats));
 
     const chat = this.chats[chatIndex];
 
@@ -427,13 +431,15 @@ export class ChatsComponent implements OnInit {
 
     this.chats.splice(chatIndex, 1);
 
-    console.log('chats excluded: ' + JSON.stringify(this.chats));
+    // console.log('chats excluded: ' + JSON.stringify(this.chats));
 
     this.chats.splice(0, 0, chat);
 
-    const includesMessage = this.messages.some((x) => x.messageId === message.messageId);
+    if (this.activeChatId !== message.chatId) return;
 
-    if (message.chatId === this.activeChatId && !includesMessage) {
+    const messageIndex = this.messages.findIndex((x) => x.messageId === message.messageId);
+
+    if (messageIndex === -1) {
       this.messages.push(message);
     }
   }
