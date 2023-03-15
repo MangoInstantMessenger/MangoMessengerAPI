@@ -165,9 +165,10 @@
       }
     }
   },
-  "defaultProject": "MangoAPI.Client",
   "cli": {
     "analytics": false,
-    "defaultCollection": "@angular-eslint/schematics"
+    "schematicCollections": [
+      "@angular-eslint/schematics"
+    ]
   }
 }
