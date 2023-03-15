@@ -48,8 +48,8 @@ stages:
 
   - stage: 'dev'
     displayName: 'Deploy Mango Messenger to DEV Environment'
-    dependsOn: 'Security_checks'
-    condition: succeeded('Security_checks')
+    dependsOn: 'Build_Test_Pack'
+    condition: succeeded('Build_Test_Pack')
     jobs:
       - deployment: 'Deploy_Mango_Web_API_to_Dev'
         displayName: 'Deploy Mango Messenger to DEV Environment'
