@@ -73,11 +73,13 @@ public class LeaveGroupCommandHandler
 
             return responseFactory.SuccessResponse(LeaveGroupResponse.FromSuccess(chat.Id));
         }
-
-        dbContext.Chats.Remove(chat);
+        
+        var userChat = chat.ChatUsers.First(x => x.UserId == request.UserId);
         chat.IncrementMembersCount(-1);
 
         dbContext.Update(chat);
+        dbContext.UserChats.Remove(userChat);
+        
         await dbContext.SaveChangesAsync(cancellationToken);
 
         return responseFactory.SuccessResponse(LeaveGroupResponse.FromSuccess(chat.Id));
