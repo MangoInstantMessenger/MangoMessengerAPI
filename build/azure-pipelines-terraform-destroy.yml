@@ -47,7 +47,11 @@ stages:
               TF_STATE_BLOB_FILE: 'terraform.mango$(kv-prefix).tfstate'
               TF_STATE_BLOB_SAS_TOKEN: $(kv-tf-state-sas-token)
 
-          - bash: terraform plan -destroy -var "prefix=$(prefix)" -out $PLAN_FILE
+          - bash: |
+              terraform plan -destroy \
+                -var "prefix=$(prefix)" \
+                -var "sql_admin_password=$(kv-sql-password)" \
+                -out $PLAN_FILE
             displayName: Terraform Plan -Destroy
             workingDirectory: '$(System.DefaultWorkingDirectory)/terraform'
             env:
@@ -67,7 +71,7 @@ stages:
             env:
               PLAN_FILE: 'main-$(kv-prefix).destroy.tfplan'
 
-          - bash: terraform apply -var "sql_admin_password=$(kv-sql-password)" -destroy -auto-approve $PLAN_FILE
+          - bash: terraform apply -destroy -auto-approve $PLAN_FILE
             displayName: Terraform Apply
             condition: eq(variables.anyTfChanges, true)
             workingDirectory: '$(System.DefaultWorkingDirectory)/terraform'
