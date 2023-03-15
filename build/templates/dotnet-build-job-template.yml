@@ -52,11 +52,11 @@ jobs:
         
       - script: |
           node -v
-        displayName: 'Print current node version'
+        displayName: 'Print node version'
         
       - script: |
           npm -v
-        displayName: 'Print current npm version'
+        displayName: 'Print npm version'
 
       - task: Npm@1
         displayName: 'Install Angular CLI'
@@ -68,6 +68,10 @@ jobs:
           npm ci
         displayName: 'Npm ci'
         workingDirectory: '${{ parameters.frontEndProjectPath }}'
+        
+      - script: |
+          ng version
+        displayName: 'Print Angular version'
 
       - script: |
           ng build
