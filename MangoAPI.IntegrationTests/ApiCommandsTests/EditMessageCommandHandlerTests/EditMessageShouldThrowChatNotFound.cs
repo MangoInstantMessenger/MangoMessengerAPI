@@ -19,20 +19,18 @@ public class EditMessageShouldThrowChatNotFound : IntegrationTestBase
     {
         const string expectedMessage = ResponseMessageCodes.ChatNotFound;
         var expectedDetails = ResponseMessageCodes.ErrorDictionary[expectedMessage];
-        var user =
-            await MangoModule.RequestAsync(CommandHelper.RegisterPetroCommand(), CancellationToken.None);
-        var chat =
-            await MangoModule.RequestAsync(
-                request: CommandHelper.CreateExtremeCodeMainChatCommand(user.Response.Tokens.UserId),
-                cancellationToken: CancellationToken.None);
-        var message =
-            await MangoModule.RequestAsync(
-                request: CommandHelper.SendMessageToChannelCommand(user.Response.Tokens.UserId, chat.Response.ChatId),
-                cancellationToken: CancellationToken.None);
+        var petroCommand = CommandHelper.RegisterPetroCommand();
+            
+        var petro = await MangoModule.RequestAsync(petroCommand, CancellationToken.None);
+        var petroId = petro.Response.Tokens.UserId;
+        var chatCommand = CommandHelper.CreateExtremeCodeMainChatCommand(petroId);
+        var chat = await MangoModule.RequestAsync(chatCommand, CancellationToken.None);
+        var sendMessageCommand = CommandHelper.SendMessageToChannelCommand(petroId, chat.Response.ChatId);
+        var message = await MangoModule.RequestAsync(sendMessageCommand, CancellationToken.None);
         var command = new EditMessageCommand(
             ChatId: Guid.Empty,
-            UserId: user.Response.Tokens.UserId,
-            MessageId: message.Response.MessageId,
+            petroId,
+            message.Response.MessageModel.MessageId,
             ModifiedText: "Message edited");
 
         var result = await MangoModule.RequestAsync(command, CancellationToken.None);

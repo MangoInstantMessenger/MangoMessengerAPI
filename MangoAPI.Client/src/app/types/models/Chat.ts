@@ -14,5 +14,4 @@ export interface Chat {
   lastMessageText: string;
   lastMessageTime: string;
   lastMessageId: string;
-  updatedAt: string;
 }

@@ -2,25 +2,25 @@
 
 namespace MangoAPI.BusinessLogic.ApiCommands.Users;
 
-public class UpdateUserSocialInformationCommandValidator : AbstractValidator<UpdateUserSocialInformationCommand>
+public class UpdateUserSocialInformationCommandValidator : AbstractValidator<UpdatePersonalInformationCommand>
 {
     public UpdateUserSocialInformationCommandValidator()
     {
         RuleFor(x => x.Facebook)
             .Cascade(CascadeMode.Stop)
-            .Length(0, 30);
+            .Length(0, 50);
 
         RuleFor(x => x.Instagram)
             .Cascade(CascadeMode.Stop)
-            .Length(0, 30);
+            .Length(0, 50);
 
         RuleFor(x => x.LinkedIn)
             .Cascade(CascadeMode.Stop)
-            .Length(0, 30);
+            .Length(0, 50);
 
         RuleFor(x => x.Twitter)
             .Cascade(CascadeMode.Stop)
-            .Length(0, 30);
+            .Length(0, 50);
 
         RuleFor(x => x.UserId).NotEmpty();
     }

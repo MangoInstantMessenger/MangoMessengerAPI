@@ -8,14 +8,14 @@ public record UpdateUserAccountInfoRequest
 {
     [JsonConstructor]
     public UpdateUserAccountInfoRequest(
-        DateTime? birthdayDate,
+        DateTime? birthday,
         string website,
         string username,
         string bio,
         string address,
         string displayName)
     {
-        BirthdayDate = birthdayDate;
+        Birthday = birthday;
         Website = website;
         Username = username;
         Bio = bio;
@@ -27,7 +27,7 @@ public record UpdateUserAccountInfoRequest
     public string DisplayName { get; }
 
     [DefaultValue("1995-04-07T00:00:00")]
-    public DateTime? BirthdayDate { get; }
+    public DateTime? Birthday { get; }
 
     [DefaultValue("test.com")]
     public string Website { get; }

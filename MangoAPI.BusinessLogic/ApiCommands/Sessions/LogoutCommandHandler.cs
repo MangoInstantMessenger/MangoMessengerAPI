@@ -27,7 +27,7 @@ public class LogoutCommandHandler : IRequestHandler<LogoutCommand, Result<Respon
     {
         var session = await dbContext.Sessions
             .FirstOrDefaultAsync(
-                sessionEntity => sessionEntity.RefreshToken == request.RefreshToken,
+                sessionEntity => sessionEntity.Id == request.RefreshToken,
                 cancellationToken);
 
         if (session is null)

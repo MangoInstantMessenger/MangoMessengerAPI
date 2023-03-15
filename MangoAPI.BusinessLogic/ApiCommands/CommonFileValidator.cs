@@ -9,7 +9,16 @@ public class CommonFileValidator : AbstractValidator<IFormFile>
 {
     private readonly List<string> allowedExtensions = new()
     {
-        "jpg", "JPG", "txt", "TXT", "pdf", "PDF", "png", "PNG", "jpeg", "JPEG",
+        "jpg",
+        "JPG",
+        "txt",
+        "TXT",
+        "pdf",
+        "PDF",
+        "png",
+        "PNG",
+        "jpeg",
+        "JPEG",
     };
 
     public CommonFileValidator()
@@ -25,7 +34,8 @@ public class CommonFileValidator : AbstractValidator<IFormFile>
             .NotEmpty()
             .Must(HaveAllowedExtension)
             .WithMessage(
-                $"File extension is not allowed. Allowed extensions: {string.Join(", ", allowedExtensions)}.");
+                $"File extension is not allowed. Allowed extensions: {string.Join(", ", allowedExtensions)}.")
+            .Length(1, 50);
     }
 
     private bool HaveAllowedExtension(string str)

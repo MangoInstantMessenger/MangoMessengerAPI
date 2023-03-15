@@ -14,7 +14,12 @@ on:
 jobs:
   build-angular:
     name: Build Angular
-    runs-on: 'ubuntu-latest'
+    runs-on: ${{ matrix.environment }}
+    strategy:
+      matrix:
+        environment:
+          - ubuntu-latest
+          - windows-latest
 
     steps:
       - name: 'Checkout'
@@ -26,17 +31,29 @@ jobs:
           node-version: '16.x'
           cache: 'npm'
           cache-dependency-path: 'MangoAPI.Client/package-lock.json'
+        
+      - name: 'Print current node version'
+        run: node -v
+        
+      - name: 'Print current npm version'
+        run: npm -v
 
-      - name: Npm ci
+      - name: 'Npm ci'
         working-directory: './MangoAPI.Client'
         run: npm ci
+        
+      - name: 'Install angular cli 15.2.2'
+        run: npm install -g @angular/cli@15.2.2
+        
+      - name: 'Print current angular cli version'
+        run: ng version
 
-      - name: Npm build prod
+      - name: 'Angular build'
         working-directory: './MangoAPI.Client'
-        run: npm run build --production
+        run: ng build
 
-      - name: Drop artifact
+      - name: 'Drop artifact'
         uses: actions/upload-artifact@v3
         with:
-          name: 'angular-build'
+          name: 'angular-build-${{ matrix.environment }}'
           path: './MangoAPI.Presentation/wwwroot'

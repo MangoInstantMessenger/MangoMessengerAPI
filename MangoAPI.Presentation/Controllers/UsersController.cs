@@ -11,6 +11,7 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using Swashbuckle.AspNetCore.Annotations;
 
 namespace MangoAPI.Presentation.Controllers;
@@ -20,10 +21,14 @@ namespace MangoAPI.Presentation.Controllers;
 /// </summary>
 [ApiController]
 [Route("api/users")]
-public class UsersController : ApiControllerBase, IUsersController
+public class UsersController : ApiControllerBase<UsersController>, IUsersController
 {
-    public UsersController(IMediator mediator, IMapper mapper, ICorrelationContext correlationContext)
-        : base(mediator, mapper, correlationContext)
+    public UsersController(
+        IMediator mediator,
+        IMapper mapper, 
+        ICorrelationContext correlationContext,
+        ILogger<UsersController> logger)
+        : base(mediator, mapper, correlationContext, logger)
     {
     }
 
@@ -106,18 +111,18 @@ public class UsersController : ApiControllerBase, IUsersController
     [HttpPut("socials")]
     [Authorize]
     [SwaggerOperation(
-        Description = "Updates user's social network user names.",
-        Summary = "Updates user's social network user names.")]
+        Description = "Updates user's personal information like social networks.",
+        Summary = "Updates user's personal information like social networks.")]
     [ProducesResponseType(typeof(ResponseBase), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
     public async Task<IActionResult> UpdateUserSocialInformationAsync(
-        [FromBody] UpdateUserSocialInformationRequest request,
+        [FromBody] UpdatePersonalInformationRequest request,
         CancellationToken cancellationToken)
     {
         var userId = CorrelationContext.GetUserId();
 
-        var command = new UpdateUserSocialInformationCommand(
+        var command = new UpdatePersonalInformationCommand(
             UserId: userId,
             Instagram: request.Instagram,
             LinkedIn: request.LinkedIn,
@@ -128,7 +133,7 @@ public class UsersController : ApiControllerBase, IUsersController
     }
 
     /// <summary>
-    /// Updates user's personal account information.
+    /// Updates user's contact information.
     /// </summary>
     /// <param name="request">UpdateUserInformationRequest instance.</param>
     /// <param name="cancellationToken">CancellationToken instance.</param>
@@ -136,8 +141,8 @@ public class UsersController : ApiControllerBase, IUsersController
     [HttpPut("account")]
     [Authorize]
     [SwaggerOperation(
-        Description = "Updates user's personal account information.",
-        Summary = "Updates user's personal account information.")]
+        Description = "Updates user's contact information.",
+        Summary = "Updates user's contact information.")]
     [ProducesResponseType(typeof(ResponseBase), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
@@ -148,13 +153,13 @@ public class UsersController : ApiControllerBase, IUsersController
         var userId = CorrelationContext.GetUserId();
 
         var command = new UpdateUserAccountInfoCommand(
-            UserId: userId,
-            Username: request.Username,
-            DisplayName: request.DisplayName,
-            Website: request.Website,
-            Bio: request.Bio,
-            Address: request.Address,
-            BirthdayDate: request.BirthdayDate);
+            userId,
+            request.Username,
+            request.DisplayName,
+            request.Website,
+            request.Bio,
+            request.Address,
+            request.Birthday);
 
         return await RequestAsync(command, cancellationToken);
     }

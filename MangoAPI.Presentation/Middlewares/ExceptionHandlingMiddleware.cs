@@ -13,9 +13,9 @@ namespace MangoAPI.Presentation.Middlewares;
 public class ExceptionHandlingMiddleware
 {
     private readonly RequestDelegate next;
-    private readonly ILogger<Startup> logger;
+    private readonly ILogger<ExceptionHandlingMiddleware> logger;
 
-    public ExceptionHandlingMiddleware(RequestDelegate next, ILogger<Startup> logger)
+    public ExceptionHandlingMiddleware(RequestDelegate next, ILogger<ExceptionHandlingMiddleware> logger)
     {
         this.next = next;
         this.logger = logger;

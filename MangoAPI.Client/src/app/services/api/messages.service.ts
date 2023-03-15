@@ -7,7 +7,7 @@ import { DeleteMessageResponse } from '../../types/responses/DeleteMessageRespon
 import { EditMessageCommand } from '../../types/requests/EditMessageCommand';
 import { BaseResponse } from '../../types/responses/BaseResponse';
 import { DeleteMessageCommand } from '../../types/requests/DeleteMessageCommand';
-import ApiBaseService from './apiBase.service';
+import ApiBaseService from './api-base.service';
 
 @Injectable({
   providedIn: 'root'

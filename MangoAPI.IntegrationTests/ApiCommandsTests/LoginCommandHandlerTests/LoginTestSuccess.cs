@@ -15,10 +15,9 @@ public class LoginTestSuccess : IntegrationTestBase
     public async Task LoginTestSuccessAsync()
     {
         await MangoModule.RequestAsync(CommandHelper.RegisterPetroCommand(), CancellationToken.None);
+        var command = CommandHelper.CreateLoginCommand("PetroKolosov", "Bm3-`dPRv-/w#3)cw^97");
 
-        var result = await MangoModule.RequestAsync(
-            request: CommandHelper.CreateLoginCommand("kolosovp95@gmail.com", "Bm3-`dPRv-/w#3)cw^97"),
-            cancellationToken: CancellationToken.None);
+        var result = await MangoModule.RequestAsync(command, CancellationToken.None);
 
         assert.Pass(result);
     }

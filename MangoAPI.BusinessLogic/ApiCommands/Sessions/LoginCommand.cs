@@ -3,5 +3,5 @@ using MediatR;
 
 namespace MangoAPI.BusinessLogic.ApiCommands.Sessions;
 
-public record LoginCommand(string Email, string Password)
+public record LoginCommand(string Username, string Password)
     : IRequest<Result<TokensResponse>>;

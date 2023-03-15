@@ -7,7 +7,7 @@ namespace MangoAPI.BusinessLogic.Models;
 public record User
 {
     [DefaultValue("8e08f435-8bd9-4eae-8c0b-e981f9424f19")]
-    public Guid UserId { get; set; }
+    public Guid UserId { get; init; }
 
     [DefaultValue("Ivan Ivanov")]
     public string DisplayName { get; init; }
@@ -16,10 +16,7 @@ public record User
     public DisplayNameColour DisplayNameColour { get; set; }
 
     [DefaultValue("1983-05-25T00:00:00")]
-    public string BirthdayDate { get; init; }
-
-    [DefaultValue("ivan.ivanov@wp.pl")]
-    public string Email { get; init; }
+    public string Birthday { get; init; }
 
     [DefaultValue("ivan.ivanov.com")]
     public string Website { get; init; }
@@ -30,9 +27,6 @@ public record User
     [DefaultValue("User of the Mango messenger")]
     public string Bio { get; init; }
 
-    [DefaultValue(false)]
-    public bool UserNameChanged { get; init; }
-    
     [DefaultValue("Kyiv, Ukraine")]
     public string Address { get; init; }
 
@@ -48,6 +42,6 @@ public record User
     [DefaultValue("ivan.ivanov")]
     public string LinkedIn { get; init; }
 
-    [DefaultValue("Uploads/ivan-ivanov.jpg")]
+    [DefaultValue("http://127.0.0.1:10000/devstoreaccount1/mangocontainer/ivan-ivanov.jpg")]
     public string PictureUrl { get; init; }
 }

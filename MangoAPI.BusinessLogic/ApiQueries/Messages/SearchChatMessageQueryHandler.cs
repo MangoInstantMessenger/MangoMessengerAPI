@@ -47,7 +47,7 @@ public class SearchChatMessageQueryHandler
 
         var query = dbContext.Messages.AsNoTracking()
             .Where(x => x.ChatId == request.ChatId)
-            .Where(x => EF.Functions.Like(x.Content, $"%{request.MessageText}%"))
+            .Where(x => EF.Functions.Like(x.Text, $"%{request.MessageText}%"))
             .OrderBy(x => x.CreatedAt)
             .Select(x => new Message
             {
@@ -56,18 +56,18 @@ public class SearchChatMessageQueryHandler
                 UserId = x.UserId,
                 UserDisplayName = x.User.DisplayName,
                 UserDisplayNameColour = x.User.DisplayNameColour,
-                MessageText = x.Content,
+                Text = x.Text,
                 CreatedAt = x.CreatedAt,
                 UpdatedAt = x.UpdatedAt,
                 Self = x.User.Id == request.UserId,
-                InReplayToAuthor = x.InReplayToAuthor,
-                InReplayToText = x.InReplayToText,
+                InReplyToUser = x.InReplyToUser,
+                InReplyToText = x.InReplyToText,
 
-                MessageAuthorPictureUrl = x.User.Image != null
-                    ? $"{blobServiceSettings.MangoBlobAccess}/{x.User.Image}"
+                AuthorImageUrl = x.User.ImageFileName != null
+                    ? $"{blobServiceSettings.MangoBlobAccess}/{x.User.ImageFileName}"
                     : null,
 
-                MessageAttachmentUrl = x.AttachmentFileName != null
+                AttachmentUrl = x.AttachmentFileName != null
                     ? $"{blobServiceSettings.MangoBlobAccess}/{x.AttachmentFileName}"
                     : null,
             }).Take(200);

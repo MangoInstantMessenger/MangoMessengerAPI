@@ -35,77 +35,72 @@
           </div>
         </div>
         <ul class="user-info">
-          <li *ngIf="currentUser.birthdayDate">
+          <li *ngIf="currentUser.birthday">
             <div class="info">
               <p class="title">Birthdate</p>
-              <p>{{ currentUser.birthdayDate | date }}</p>
+              <p>{{ currentUser.birthday | date }}</p>
             </div>
-            <img src="./../../../assets/svg/calendar.svg" alt="Calendar Icon" />
+            <img src="./../../../assets/svg/calendar.svg" alt="Calendar Icon"/>
           </li>
-          <li>
-            <div class="info">
-              <p class="title">Email</p>
-              <a href="mailto:#">{{ currentUser.email }}</a>
-            </div>
-            <img src="./../../../assets/svg/mail.svg" alt="Mail Icon" />
-          </li>
-          <li *ngIf="currentUser.username && currentUser.userNameChanged">
+          <li *ngIf="currentUser.username">
             <div class="info">
               <p class="title">Username</p>
               <p>{{ currentUser.username }}</p>
             </div>
-            <img src="./../../../assets/svg/mail.svg" alt="Mail Icon" />
+            <img src="./../../../assets/svg/mail.svg" alt="Mail Icon"/>
           </li>
           <li *ngIf="currentUser.website">
             <div class="info">
               <p class="title">Website</p>
-              <p>{{ currentUser.website }}</p>
+              <p><a href="https://{{ currentUser.website }}" target="_blank">{{ currentUser.website }}</a></p>
             </div>
-            <img src="./../../../assets/svg/world.svg" alt="World Icon" />
+            <img src="./../../../assets/svg/world.svg" alt="World Icon"/>
           </li>
           <li *ngIf="currentUser.address">
             <div class="info">
               <p class="title">Address</p>
               <p>{{ currentUser.address }}</p>
             </div>
-            <img src="./../../../assets/svg/home.svg" alt="Home Icon" />
+            <img src="./../../../assets/svg/home.svg" alt="Home Icon"/>
           </li>
         </ul>
         <ul class="user-info">
           <li *ngIf="currentUser.facebook">
             <div class="info">
               <p class="title">Facebook</p>
-              <a href="facebook.com/{{ currentUser.facebook }}">{{ currentUser.facebook }}</a>
+              <a href="https://facebook.com/{{ currentUser.facebook }}" target="_blank">{{ currentUser.facebook }}</a>
             </div>
-            <img src="./../../../assets/svg/facebook.svg" alt="Facebook Icon" />
+            <img src="./../../../assets/svg/facebook.svg" alt="Facebook Icon"/>
           </li>
           <li *ngIf="currentUser.twitter">
             <div class="info">
               <p class="title">Twitter</p>
-              <a href="twitter.com/{{ currentUser.twitter }}">{{ currentUser.twitter }}</a>
+              <a href="https://twitter.com/{{ currentUser.twitter }}" target="_blank">{{ currentUser.twitter }}</a>
             </div>
-            <img src="./../../../assets/svg/twitter.svg" alt="Twitter Icon" />
+            <img src="./../../../assets/svg/twitter.svg" alt="Twitter Icon"/>
           </li>
           <li *ngIf="currentUser.instagram">
             <div class="info">
               <p class="title">Instagram</p>
-              <a href="instagram.com/{{ currentUser.instagram }}">{{ currentUser.instagram }}</a>
+              <a href="https://instagram.com/{{ currentUser.instagram }}"
+                 target="_blank">{{ currentUser.instagram }}</a>
             </div>
-            <img src="./../../../assets/svg/instagram.svg" alt="Instagram Icon" />
+            <img src="./../../../assets/svg/instagram.svg" alt="Instagram Icon"/>
           </li>
           <li *ngIf="currentUser.linkedIn">
             <div class="info">
               <p class="title">LinkedIn</p>
-              <a href="linkedin.com/in/{{ currentUser.linkedIn }}">{{ currentUser.linkedIn }}</a>
+              <a href="https://linkedin.com/in/{{ currentUser.linkedIn }}"
+                 target="_blank">{{ currentUser.linkedIn }}</a>
             </div>
-            <img src="./../../../assets/svg/linkedin.svg" alt="LinkedIn Icon" />
+            <img src="./../../../assets/svg/linkedin.svg" alt="LinkedIn Icon"/>
           </li>
           <li>
             <div class="info">
               <p class="title">Api Version</p>
               <p>{{ apiVersion }}</p>
             </div>
-            <img src="./../../../assets/svg/api.svg" alt="Api Icon" />
+            <img src="./../../../assets/svg/api.svg" alt="Api Icon"/>
           </li>
         </ul>
       </div>
@@ -129,10 +124,10 @@
               <input
                 class="profile-form-input"
                 type="date"
-                value="{{ currentUser.birthdayDate }}"
+                value="{{ currentUser.birthday }}"
                 id="BirthdayDate"
                 placeholder="Type your birthday"
-                [(ngModel)]="currentUserForUpdating.birthdayDate"
+                [(ngModel)]="currentUserForUpdating.birthday"
               />
             </li>
 
@@ -263,7 +258,7 @@
         </div>
         <div class="profile-form-content">
           <ul class="d-flex justify-content-between">
-            <li class="d-flex flex-column w-50 profile-form-group">
+            <li class="d-flex flex-column w-100 profile-form-group">
               <label for="CurrentPassword">Current Password</label>
               <input
                 class="profile-form-input"
@@ -275,7 +270,7 @@
             </li>
           </ul>
           <ul class="d-flex justify-content-between flex-row">
-            <li class="d-flex flex-column w-50 profile-form-group">
+            <li class="d-flex flex-column w-100 profile-form-group">
               <label for="NewPassword">New Password</label>
               <input
                 class="profile-form-input"
@@ -285,8 +280,10 @@
                 [(ngModel)]="changePasswordCommand.newPassword"
               />
             </li>
+          </ul>
 
-            <li class="d-flex flex-column w-50 profile-form-group">
+          <ul>
+            <li class="d-flex flex-column w-100 profile-form-group">
               <label for="RepeatNewPassword">Repeat New Password</label>
               <input
                 class="profile-form-input"
@@ -311,7 +308,7 @@
           <span class="text-light-gray">Update profile picture</span>
         </div>
         <div class="profile-form-content">
-          <input type="file" id="ProfilePicture" (change)="onUpdateProfilePictureChange($event)" />
+          <input type="file" id="ProfilePicture" (change)="onUpdateProfilePictureChange($event)"/>
         </div>
         <div class="profile-form-footer gap-fix">
           <button class="button-dark" (click)="clearProfilePictureFile()">Reset</button>

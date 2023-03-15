@@ -54,7 +54,7 @@ public class Startup
         app.UseStaticFiles();
 
         app.UseSwagger();
-        
+
         app.UseSwaggerUI(c => c.SwaggerEndpoint($"/swagger/v{version}/swagger.json", swaggerTitle));
 
         app.UseAuthorization();
@@ -115,7 +115,7 @@ public class Startup
         services.AddDatabaseContextServices(databaseUrl);
 
         services.AddSwagger(title: swaggerTitle, version: version);
-        
+
         services.AddAzureBlobServices(
             blobUrl,
             blobContainerName,
@@ -128,25 +128,21 @@ public class Startup
             jwtLifetimeMinutes,
             refreshTokenLifetimeDays);
 
-        services.AddSingInManagerServices();
-
         services.AddSingleton<IVersionService, VersionService>();
-        
+
+        services.AddSingleton<IPasswordService, PasswordService>();
+
         services.AddSingleton<IMangoUserSettings, MangoUserSettings>(_ => new MangoUserSettings(mangoUserPassword));
-        
+
         services.AddScoped<IAvatarService, AvatarService>();
-        
+
         services.AddValidatorsFromAssembly(typeof(LoginCommandValidator).Assembly);
-        
+
         services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehaviour<,>));
-        
+
         services.AddTransient(typeof(ResponseFactory<>));
-        
+
         services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(RegisterCommandHandler).Assembly));
-        
-        services.AddScoped<PasswordHashService>();
-        
-        services.AddIdentityUsers();
 
         services.AddSignalR();
 
@@ -169,7 +165,7 @@ public class Startup
 
         services.AddTransient<ICorrelationContext, CorrelationContext>();
 
-        services.AddAutoMapper(typeof(ApiControllerBase));
+        services.AddAutoMapper(typeof(ApiControllerBase<AppInfoController>));
 
         services.AddMvc();
 

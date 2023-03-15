@@ -34,12 +34,21 @@ public class EditMessageCommandHandler
         EditMessageCommand request,
         CancellationToken cancellationToken)
     {
-        var isMessageExists = await dbContext.Messages
-            .AnyAsync(t => t.Id == request.MessageId, cancellationToken);
+        var checkMessage = await dbContext.Messages
+            .Include(x => x.User)
+            .FirstOrDefaultAsync(t => t.Id == request.MessageId, cancellationToken);
 
-        if (!isMessageExists)
+        if (checkMessage == null)
         {
             const string errorMessage = ResponseMessageCodes.MessageNotFound;
+            var errorDescription = ResponseMessageCodes.ErrorDictionary[errorMessage];
+
+            return responseFactory.ConflictResponse(errorMessage, errorDescription);
+        }
+
+        if (checkMessage.User.Id != request.UserId)
+        {
+            const string errorMessage = ResponseMessageCodes.Unauthorized;
             var errorDescription = ResponseMessageCodes.ErrorDictionary[errorMessage];
 
             return responseFactory.ConflictResponse(errorMessage, errorDescription);
@@ -50,8 +59,7 @@ public class EditMessageCommandHandler
             .ThenInclude(x => x.Messages)
             .ThenInclude(x => x.User)
             .Where(x => x.ChatId == request.ChatId && x.UserId == request.UserId)
-            .Select(x => x.Chat)
-            .Where(x => isMessageExists);
+            .Select(x => x.Chat);
 
         var chat = await query.FirstOrDefaultAsync(cancellationToken);
 
@@ -69,13 +77,11 @@ public class EditMessageCommandHandler
         var messageIsLast = chat.LastMessageId.HasValue && chat.LastMessageId == request.MessageId;
         var updatedAt = DateTime.UtcNow;
 
-        message.Content = request.ModifiedText;
-        message.UpdatedAt = DateTime.UtcNow;
+        message.UpdateMessageText(request.ModifiedText);
 
         if (messageIsLast)
         {
-            chat.LastMessageText = request.ModifiedText;
-            chat.LastMessageTime = updatedAt;
+            chat.UpdateLastMessage(request.ModifiedText, updatedAt);
         }
 
         dbContext.Messages.Update(message);

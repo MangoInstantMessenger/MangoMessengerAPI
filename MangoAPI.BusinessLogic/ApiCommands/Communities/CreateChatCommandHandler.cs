@@ -1,3 +1,4 @@
+using MangoAPI.Application.Interfaces;
 using System;
 using System.Linq;
 using System.Threading;
@@ -21,15 +22,18 @@ public class CreateChatCommandHandler
     private readonly MangoDbContext dbContext;
     private readonly IHubContext<ChatHub, IHubClient> hubContext;
     private readonly ResponseFactory<CreateCommunityResponse> responseFactory;
+    private readonly IBlobServiceSettings blobServiceSettings;
 
     public CreateChatCommandHandler(
         MangoDbContext dbContext,
         IHubContext<ChatHub, IHubClient> hubContext,
-        ResponseFactory<CreateCommunityResponse> responseFactory)
+        ResponseFactory<CreateCommunityResponse> responseFactory,
+        IBlobServiceSettings blobServiceSettings)
     {
         this.dbContext = dbContext;
         this.hubContext = hubContext;
         this.responseFactory = responseFactory;
+        this.blobServiceSettings = blobServiceSettings;
     }
 
     public async Task<Result<CreateCommunityResponse>> Handle(
@@ -55,8 +59,8 @@ public class CreateChatCommandHandler
             return responseFactory.ConflictResponse(errorMessage, errorDescription);
         }
 
-        var currentUserDisplayName = await dbContext.Users.Where(x => x.Id == request.UserId)
-            .Select(x => x.DisplayName)
+        var senderData = await dbContext.Users.Where(x => x.Id == request.UserId)
+            .Select(x => new { x.DisplayName, x.ImageFileName })
             .FirstOrDefaultAsync(cancellationToken);
 
         var userPrivateChats = await dbContext.Chats
@@ -74,30 +78,31 @@ public class CreateChatCommandHandler
             return responseFactory.SuccessResponse(CreateCommunityResponse.FromSuccess(existingChat));
         }
 
-        var chatEntity = new ChatEntity
-        {
-            Id = Guid.NewGuid(),
-            CommunityType = CommunityType.DirectChat,
-            Title = $"{currentUserDisplayName} / {partner.DisplayName}",
-            CreatedAt = DateTime.UtcNow,
-            Description = $"Direct chat between {currentUserDisplayName} and {partner.DisplayName}",
-            MembersCount = 2,
-        };
+        var title = $"{senderData.DisplayName} / {partner.DisplayName}";
+        var description = $"Direct chat between {senderData.DisplayName} and {partner.DisplayName}";
 
-        var userChats = new[]
-        {
-            new UserChatEntity { ChatId = chatEntity.Id, RoleId = UserRole.User, UserId = request.UserId },
-            new UserChatEntity { ChatId = chatEntity.Id, RoleId = UserRole.User, UserId = request.PartnerId },
-        };
+        var chat = ChatEntity.Create(
+            title,
+            CommunityType.DirectChat,
+            description,
+            image: String.Empty,
+            DateTime.UtcNow,
+            membersCount: 2);
 
-        dbContext.Chats.Add(chatEntity);
-        dbContext.UserChats.AddRange(userChats);
+        var senderUserChat = UserChatEntity.Create(request.UserId, chat.Id, UserRole.User);
+        var receiverUserChat = UserChatEntity.Create(request.PartnerId, chat.Id, UserRole.User);
+
+        dbContext.Chats.Add(chat);
+        dbContext.UserChats.AddRange(senderUserChat, receiverUserChat);
 
         await dbContext.SaveChangesAsync(cancellationToken);
 
-        var chatDto = chatEntity.ToChatDto();
-        await hubContext.Clients.Group(request.UserId.ToString()).UpdateUserChatsAsync(chatDto);
+        var partnerImageUrl = $"{blobServiceSettings.MangoBlobAccess}/{senderData.ImageFileName}";
 
-        return responseFactory.SuccessResponse(CreateCommunityResponse.FromSuccess(chatEntity));
+        var chatDto = chat.ToChatDto(partnerImageUrl, partner.DisplayName);
+
+        await hubContext.Clients.Group(request.PartnerId.ToString()).PrivateChatCreatedAsync(chatDto);
+
+        return responseFactory.SuccessResponse(CreateCommunityResponse.FromSuccess(chat));
     }
 }

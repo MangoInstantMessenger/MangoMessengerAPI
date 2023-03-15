@@ -32,7 +32,7 @@ public class JwtGenerator : IJwtGenerator
         var claims = new List<Claim>
         {
             new Claim(JwtRegisteredClaimNames.Jti, userEntity.Id.ToString()),
-            new Claim(JwtRegisteredClaimNames.Name, userEntity.UserName),
+            new Claim(JwtRegisteredClaimNames.Name, userEntity.Username),
         };
 
         var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);

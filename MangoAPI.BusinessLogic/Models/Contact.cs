@@ -20,9 +20,11 @@ public record Contact
     [DefaultValue(true)]
     public bool IsContact { get; set; }
 
-    [DefaultValue("Uploads/razumovsky_picture.jpg")]
+    [DefaultValue("http://127.0.0.1:10000/devstoreaccount1/mangocontainer/animetyanpic8.jpg")]
     public string PictureUrl { get; init; }
 
-    [DefaultValue("my-email@gmail.com")]
-    public string Email { get; init; }
+    [DefaultValue("MyUniqueUsername")]
+    public string Username { get; init; }
+    
+    public DateTime CreatedAt { get; init; }
 }

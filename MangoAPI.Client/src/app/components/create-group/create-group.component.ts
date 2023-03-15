@@ -24,7 +24,7 @@ export class CreateGroupComponent implements OnDestroy, OnInit {
   public chatDescription = '';
 
   componentDestroyed$: Subject<boolean> = new Subject();
-  
+
   public get routingConstants(): typeof RoutingConstants {
     return RoutingConstants;
   }
@@ -43,7 +43,7 @@ export class CreateGroupComponent implements OnDestroy, OnInit {
     this.componentDestroyed$.complete();
   }
 
-  onCreateChatClick(): void {
+  onCreateGroupClick(): void {
     const command = new CreateChannelCommand(this.chatTitle, this.chatDescription);
     this._communitiesService
       .createChannel(command)

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
-import { UpdateUserSocialsCommand } from '../../types/requests/UpdateUserSocialsCommand';
+import { UpdatePersonalInformationRequest } from '../../types/requests/UpdatePersonalInformationRequest';
 import { BaseResponse } from '../../types/responses/BaseResponse';
 import { GetUserResponse } from '../../types/responses/GetUserResponse';
 import { RegisterCommand } from '../../types/requests/RegisterCommand';
@@ -12,7 +12,7 @@ import { ChangePasswordCommand } from '../../types/requests/ChangePasswordComman
 import { User } from '../../types/models/User';
 import { UpdateProfilePictureResponse } from '../../types/responses/UpdateProfilePictureResponse';
 import { TokensResponse } from 'src/app/types/responses/TokensResponse';
-import ApiBaseService from './apiBase.service';
+import ApiBaseService from './api-base.service';
 
 @Injectable({
   providedIn: 'root'
@@ -27,11 +27,8 @@ export class UsersService extends ApiBaseService {
   }
 
   // PUT /api/users/socials
-  updateUserSocials(request: UpdateUserSocialsCommand): Observable<BaseResponse> {
-    return this.httpClient.put<BaseResponse>(
-      this.baseUrl + this.usersRoute + 'socials/',
-      request
-    );
+  updateUserSocials(request: UpdatePersonalInformationRequest): Observable<BaseResponse> {
+    return this.httpClient.put<BaseResponse>(this.baseUrl + this.usersRoute + 'socials/', request);
   }
 
   // GET /api/users/{userId}
@@ -40,7 +37,7 @@ export class UsersService extends ApiBaseService {
   }
 
   // POST /api/users
-  createUser(command: RegisterCommand): Observable<TokensResponse> {
+  register(command: RegisterCommand): Observable<TokensResponse> {
     return this.httpClient.post<TokensResponse>(this.baseUrl + this.usersRoute, command);
   }
 
@@ -67,10 +64,7 @@ export class UsersService extends ApiBaseService {
 
   // PUT /api/users/password
   changePassword(request: ChangePasswordCommand): Observable<BaseResponse> {
-    return this.httpClient.put<BaseResponse>(
-      this.baseUrl + this.usersRoute + 'password/',
-      request
-    );
+    return this.httpClient.put<BaseResponse>(this.baseUrl + this.usersRoute + 'password/', request);
   }
 
   getUserProfilePicture(user: User): string {

@@ -15,8 +15,7 @@ public static class CommandHelper
     public static RegisterCommand RegisterKhachaturCommand()
     {
         var command = new RegisterCommand(
-            Email: "xachulxx@gmail.com",
-            DisplayName: "Khachatur Khachatryan",
+            Username: "Khachatur",
             Password: "Bm3-`dPRv-/w#3)cw^97");
 
         return command;
@@ -25,8 +24,7 @@ public static class CommandHelper
     public static RegisterCommand RegisterPetroCommand()
     {
         var command = new RegisterCommand(
-            Email: "kolosovp95@gmail.com",
-            DisplayName: "Petro Kolosov",
+            Username: "PetroKolosov",
             Password: "Bm3-`dPRv-/w#3)cw^97");
 
         return command;
@@ -54,22 +52,20 @@ public static class CommandHelper
     public static SendMessageCommand SendMessageToChannelCommand(Guid userId, Guid chatId, IFormFile attachment = null)
     {
         var command = new SendMessageCommand(
-            MessageText: "test message",
+            Text: "test message",
             UserId: userId,
             ChatId: chatId,
-            InReplayToAuthor: " ",
-            InReplayToText: " ",
-            CreatedAt: null,
-            MessageId: null,
+            InReplyToUser: " ",
+            InReplyToText: " ",
             Attachment: attachment);
 
         return command;
     }
 
-    public static LoginCommand CreateLoginCommand(string email, string password)
+    public static LoginCommand CreateLoginCommand(string username, string password)
     {
         var command = new LoginCommand(
-            Email: email,
+            Username: username,
             Password: password);
 
         return command;

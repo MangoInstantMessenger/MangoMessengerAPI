@@ -2,9 +2,10 @@
 
 namespace MangoAPI.BusinessLogic.Models;
 
-public class MessageDeleteNotification
+public record MessageDeleteNotification
 {
-    public Guid MessageId { get; set; }
+    public Guid ChatId { get; set; }
+    public Guid DeletedMessageId { get; set; }
 
     public string NewLastMessageText { get; set; }
 
@@ -13,4 +14,6 @@ public class MessageDeleteNotification
     public Guid? NewLastMessageId { get; set; }
 
     public string NewLastMessageAuthor { get; set; }
+
+    public bool IsLastMessage { get; set; }
 }

@@ -3,24 +3,15 @@
     <h1 class="font-weight-bold mb-4 auth-header">Register</h1>
     <h4 class="mb-4 text-center">We are Different, We Make You Different.</h4>
 
-    <label for="displayName"></label>
+    <label for="username"></label>
     <input
       class="mb-3 form-input p-3"
-      id="displayName"
-      name="displayName"
-      placeholder="Enter your display name"
+      id="username"
+      name="username-input"
+      placeholder="Enter username"
       type="text"
-      [(ngModel)]="registerCommand.displayName"
-    />
-
-    <label for="emailAddress"></label>
-    <input
-      class="mb-3 form-input p-3"
-      id="emailAddress"
-      name="emailAddress"
-      placeholder="Enter your email address (fake)"
-      type="text"
-      [(ngModel)]="registerCommand.email"
+      [(ngModel)]="registerCommand.username"
+      (keydown.enter)="onRegisterClick()"
     />
 
     <label for="password"></label>
@@ -31,6 +22,7 @@
       placeholder="Enter password"
       type="password"
       [(ngModel)]="registerCommand.password"
+      (keydown.enter)="onRegisterClick()"
     />
 
     <button class="form-button p-3 font-weight-bold mb-3" (click)="onRegisterClick()">

@@ -23,7 +23,7 @@ public record Message
 
     [DefaultValue(5)] public DisplayNameColour UserDisplayNameColour { get; init; }
 
-    [DefaultValue("Hello World!")] public string MessageText { get; init; }
+    [DefaultValue("Hello World!")] public string Text { get; init; }
 
     [DefaultValue("12:56")] public DateTime CreatedAt { get; init; }
 
@@ -31,15 +31,15 @@ public record Message
 
     [DefaultValue(false)] public bool Self { get; init; }
 
-    [DefaultValue("https://localhost:5001/Uploads/amelit_picture.jpg")]
-    public string MessageAuthorPictureUrl { get; init; }
+    [DefaultValue("http://127.0.0.1:10000/devstoreaccount1/mangocontainer/animetyanpic8.jpg")]
+    public string AuthorImageUrl { get; init; }
 
-    [DefaultValue("https://localhost:5001/Uploads/message_attachment.pdf")]
-    public string MessageAttachmentUrl { get; init; }
+    [DefaultValue("http://127.0.0.1:10000/devstoreaccount1/mangocontainer/message_attachment.pdf")]
+    public string AttachmentUrl { get; init; }
 
-    [DefaultValue("John Doe")] public string InReplayToAuthor { get; init; }
+    [DefaultValue("John Doe")] public string InReplyToUser { get; init; }
 
-    [DefaultValue("Hello world!")] public string InReplayToText { get; init; }
+    [DefaultValue("Hello world!")] public string InReplyToText { get; init; }
 }
 
 public static class MessageMapper
@@ -59,14 +59,14 @@ public static class MessageMapper
             ChatId = message.ChatId,
             UserDisplayName = displayName,
             UserDisplayNameColour = displayNameColour,
-            MessageText = message.Content,
+            Text = message.Text,
             CreatedAt = message.CreatedAt,
             UpdatedAt = message.UpdatedAt,
             Self = message.UserId == userId,
-            InReplayToAuthor = message.InReplayToAuthor,
-            InReplayToText = message.InReplayToText,
-            MessageAuthorPictureUrl = authorPictureUrl,
-            MessageAttachmentUrl = attachmentUrl
+            InReplyToUser = message.InReplyToUser,
+            InReplyToText = message.InReplyToText,
+            AuthorImageUrl = authorPictureUrl,
+            AttachmentUrl = attachmentUrl
         };
 
         return messageDto;

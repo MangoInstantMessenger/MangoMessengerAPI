@@ -5,8 +5,9 @@ import { UsersService } from '../../services/api/users.service';
 import { ValidationService } from '../../services/messenger/validation.service';
 import { ErrorNotificationService } from '../../services/messenger/error-notification.service';
 import { RoutingConstants } from '../../types/constants/RoutingConstants';
-import { Subject, takeUntil } from 'rxjs';
+import { firstValueFrom, Subject } from 'rxjs';
 import { TokensService } from 'src/app/services/messenger/tokens.service';
+import { TokensResponse } from '../../types/responses/TokensResponse';
 
 @Component({
   selector: 'app-register',
@@ -22,9 +23,8 @@ export class RegisterComponent implements OnDestroy {
   ) {}
 
   public registerCommand: RegisterCommand = {
-    displayName: '',
-    email: '',
-    password: '',
+    username: '',
+    password: ''
   };
 
   componentDestroyed$: Subject<boolean> = new Subject();
@@ -38,39 +38,29 @@ export class RegisterComponent implements OnDestroy {
     this.componentDestroyed$.complete();
   }
 
-  onRegisterClick(): void {
-    const displayNameFieldValidationResult = this._validationService.validateField(
-      this.registerCommand.displayName,
-      'Display name'
-    );
+  async onRegisterClick() {
     const emailFieldValidationResult = this._validationService.validateField(
-      this.registerCommand.email,
-      'Email'
+      this.registerCommand.username,
+      'Username'
     );
+
     const passwordFieldValidationResult = this._validationService.validateField(
       this.registerCommand.password,
       'Password'
     );
 
-    if (
-      !displayNameFieldValidationResult ||
-      !emailFieldValidationResult ||
-      !passwordFieldValidationResult
-    ) {
+    if (!emailFieldValidationResult || !passwordFieldValidationResult) {
       return;
     }
 
-    this._usersService
-      .createUser(this.registerCommand)
-      .pipe(takeUntil(this.componentDestroyed$))
-      .subscribe({
-        next: (response) => {
-          this._tokensService.setTokens(response.tokens);
-          this._router.navigateByUrl(this.routingConstants.Chats).then((r) => r);
-        },
-        error: (error) => {
-          this._errorNotificationService.notifyOnError(error);
-        }
-      });
+    const registerSub$ = this._usersService.register(this.registerCommand);
+
+    try {
+      const result = await firstValueFrom<TokensResponse>(registerSub$);
+      this._tokensService.setTokens(result.tokens);
+      this._router.navigateByUrl(this.routingConstants.Chats).then((r) => r);
+    } catch (e: any) {
+      this._errorNotificationService.notifyOnError(e);
+    }
   }
 }

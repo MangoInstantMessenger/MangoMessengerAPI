@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using MangoAPI.BusinessLogic.Responses;
@@ -30,7 +29,6 @@ public class
         CancellationToken cancellationToken)
     {
         var user = await dbContext.Users
-            .Include(x => x.UserInformation)
             .FirstOrDefaultAsync(x => x.Id == request.UserId, cancellationToken);
 
         if (user is null)
@@ -54,29 +52,22 @@ public class
             foreach (var chatEntity in userChats)
             {
                 var newTitle = chatEntity.Title.Replace(user.DisplayName, request.DisplayName);
-                chatEntity.Title = newTitle;
+                var newDescription = chatEntity.Description.Replace(user.DisplayName, request.DisplayName);
+                chatEntity.UpdateTitle(newTitle);
+                chatEntity.UpdateDescription(newDescription);
             }
 
-            user.DisplayName = request.DisplayName;
+            user.SetDisplayName(request.DisplayName);
 
             dbContext.Chats.UpdateRange(userChats);
         }
 
-        user.UserInformation.BirthDay = request.BirthdayDate;
-
-        user.UserInformation.Website = request.Website;
-
-        user.UserName = request.Username;
-
-        user.UserNameChanged = true;
-        
-        user.Bio = request.Bio;
-
-        user.UserInformation.Address = request.Address;
-
-        user.UserInformation.UpdatedAt = DateTime.UtcNow;
-
-        dbContext.UserInformation.Update(user.UserInformation);
+        user.UpdateUserData(
+            request.Bio,
+            request.Website,
+            request.Birthday,
+            request.Address,
+            request.Username);
 
         await dbContext.SaveChangesAsync(cancellationToken);
 

@@ -20,7 +20,7 @@ public interface IUsersController
         CancellationToken cancellationToken);
 
     Task<IActionResult> UpdateUserSocialInformationAsync(
-        UpdateUserSocialInformationRequest request,
+        UpdatePersonalInformationRequest request,
         CancellationToken cancellationToken);
 
     Task<IActionResult> UpdateProfilePictureAsync(IFormFile pictureFile, CancellationToken cancellationToken);

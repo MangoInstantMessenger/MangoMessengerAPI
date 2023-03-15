@@ -33,29 +33,27 @@ public class GetUserQueryHandler : IRequestHandler<GetUserQuery, Result<GetUserR
         CancellationToken cancellationToken)
     {
         var user = await dbContext.Users.AsNoTracking()
-            .Include(x => x.UserInformation)
+            .Include(x => x.PersonalInformation)
             .Select(user => new User
             {
                 UserId = user.Id,
                 DisplayName = user.DisplayName,
                 DisplayNameColour = user.DisplayNameColour,
-                Address = user.UserInformation.Address,
-                BirthdayDate = user.UserInformation.BirthDay.HasValue
-                    ? user.UserInformation.BirthDay.Value.ToString("yyyy-MM-dd", CultureInfo.CurrentCulture)
+                Address = user.Address,
+                Birthday = user.Birthday.HasValue
+                    ? user.Birthday.Value.ToString("yyyy-MM-dd", CultureInfo.CurrentCulture)
                     : null,
-                Email = user.Email,
-                Website = user.UserInformation.Website,
-                Facebook = user.UserInformation.Facebook,
-                Twitter = user.UserInformation.Twitter,
-                Instagram = user.UserInformation.Instagram,
-                LinkedIn = user.UserInformation.LinkedIn,
-                Username = user.UserName,
+                Website = user.Website,
+                Facebook = user.PersonalInformation.Facebook,
+                Twitter = user.PersonalInformation.Twitter,
+                Instagram = user.PersonalInformation.Instagram,
+                LinkedIn = user.PersonalInformation.LinkedIn,
+                Username = user.Username,
                 Bio = user.Bio,
-                UserNameChanged = user.UserNameChanged,
-                PictureUrl = $"{blobServiceSettings.MangoBlobAccess}/{user.Image}",
+                PictureUrl = $"{blobServiceSettings.MangoBlobAccess}/{user.ImageFileName}",
             }).FirstOrDefaultAsync(x => x.UserId == request.UserId, cancellationToken);
 
-        if (user is null)
+        if (user == null)
         {
             const string errorMessage = ResponseMessageCodes.UserNotFound;
             var details = ResponseMessageCodes.ErrorDictionary[errorMessage];

@@ -28,6 +28,12 @@ jobs:
     steps:
       - checkout: self
         fetchDepth: 0
+        
+      - task: UseDotNet@2
+        displayName: 'Install .NET 6.x SDK'
+        inputs:
+          packageType: sdk
+          version: 6.x
 
       - task: gitversion/setup@0
         displayName: 'GitVersion Setup'
@@ -38,21 +44,38 @@ jobs:
         displayName: 'GitVersion Execute'
         inputs:
           updateAssemblyInfo: true
+          
+      - task: NodeTool@0
+        inputs:
+          versionSpec: '16.x'
+        displayName: 'Install Node.js 16.x'
+        
+      - script: |
+          node -v
+        displayName: 'Print node version'
+        
+      - script: |
+          npm -v
+        displayName: 'Print npm version'
 
       - task: Npm@1
         displayName: 'Install Angular CLI'
         inputs:
           command: 'custom'
-          customCommand: 'install -g @angular/cli@13.3.4'
+          customCommand: 'install -g @angular/cli@15.2.2'
 
       - script: |
           npm ci
         displayName: 'Npm ci'
         workingDirectory: '${{ parameters.frontEndProjectPath }}'
+        
+      - script: |
+          ng version
+        displayName: 'Print Angular version'
 
       - script: |
           ng build
-        displayName: 'Build Angular Prod'
+        displayName: 'Angular build'
         workingDirectory: '${{ parameters.frontEndProjectPath }}'
 
       - task: DotNetCoreCLI@2

@@ -12,12 +12,23 @@ parameters:
     type: string
     default: './MangoAPI.IntegrationTests/MangoAPI.IntegrationTests.csproj'
 
+  - name: unitTestsProjectPath
+    displayName: 'Unit Tests Project Path'
+    type: string
+    default: './MangoAPI.UnitTests/MangoAPI.UnitTests.csproj'
+
 jobs:
   - job: 'Build_Test_Dotnet'
     displayName: 'Build Test .NET'
     steps:
       - checkout: self
         fetchDepth: 0
+
+      - task: UseDotNet@2
+        displayName: 'Install .NET 6.x SDK'
+        inputs:
+          packageType: sdk
+          version: 6.x
 
       - task: DotNetCoreCLI@2
         displayName: 'Dotnet restore'
@@ -32,6 +43,12 @@ jobs:
           command: 'build'
           projects: '${{ parameters.integrationTestsProjectPath }}'
           arguments: '--configuration ${{ parameters.buildConfiguration }} --no-restore'
+
+      - task: DotNetCoreCLI@2
+        displayName: 'Run unit tests'
+        inputs:
+          command: 'test'
+          projects: '${{ parameters.unitTestsProjectPath }}'
 
       - bash: |
           sudo npm install -g azurite

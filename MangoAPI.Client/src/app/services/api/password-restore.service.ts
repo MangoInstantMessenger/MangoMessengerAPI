@@ -3,13 +3,13 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { BaseResponse } from '../../types/responses/BaseResponse';
 import { RestorePasswordRequest } from '../../types/requests/RestorePasswordRequest';
-import ApiBaseService from './apiBase.service';
+import ApiBaseService from './api-base.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PasswordRestoreService extends ApiBaseService {
-  private readonly baseUrl: string; 
+  private readonly baseUrl: string;
 
   constructor(private httpClient: HttpClient) {
     super();

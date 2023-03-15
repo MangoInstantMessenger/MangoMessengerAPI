@@ -61,7 +61,7 @@
             <div class="last-message-time" *ngIf="chatContainsMessages(chat)">
               {{ toShortTimeString(chat.lastMessageTime) }}
             </div>
-            <img alt="Chat avatar" class="avatar" src="{{ chat.chatLogoImageUrl }}" />
+            <img alt="Chat avatar" class="avatar" src="{{ chat.chatLogoImageUrl }}"/>
             <div class="content">
               <div class="title" *ngIf="chat.communityType === 2; else elseBlock">
                 <img
@@ -101,7 +101,7 @@
               <div class="last-message-time" *ngIf="chatContainsMessages(chat)">
                 {{ toShortTimeString(chat.lastMessageTime) }}
               </div>
-              <img alt="Chat avatar" class="avatar" src="{{ chat.chatLogoImageUrl }}" />
+              <img alt="Chat avatar" class="avatar" src="{{ chat.chatLogoImageUrl }}"/>
               <div class="content">
                 <div class="title" *ngIf="chat.communityType === 2; else elseBlock">
                   <img
@@ -145,7 +145,7 @@
   <main class="chat" id="chat">
     <div class="chat-layout" *ngIf="activeChatId !== ''; else elseNoChatOpened">
       <div class="chat-header">
-        <img alt="Chat Avatar" class="avatar" src="{{ activeChat.chatLogoImageUrl }}" />
+        <img alt="Chat Avatar" class="avatar" src="{{ activeChat.chatLogoImageUrl }}"/>
         <div class="chat-info ml-2">
           <div class="chat-description">
             <span class="chat-name">{{ activeChat.title }}</span>
@@ -163,7 +163,6 @@
                 placeholder="Search messages..."
                 type="text"
                 [(ngModel)]="searchMessagesQuery"
-                (keyup.enter)="onSearchMessageClick()"
                 (ngModelChange)="onSearchMessageQueryChange()"
               />
             </div>
@@ -176,7 +175,7 @@
                 role="button"
                 title="Details"
               >
-                <img alt="Vertical Dots" src="./../../../assets/svg/dots-vertical.svg" />
+                <img alt="Vertical Dots" src="./../../../assets/svg/dots-vertical.svg"/>
               </button>
 
               <div class="dropdown-menu dropdown-menu-right">
@@ -187,7 +186,7 @@
                   role="button"
                   (click)="onArchiveChatClick()"
                 >
-                  <img alt="Archive Icon" class="mr-1" src="./../../../assets/svg/archive.svg" />
+                  <img alt="Archive Icon" class="mr-1" src="./../../../assets/svg/archive.svg"/>
 
                   <span *ngIf="!activeChat.isArchived; else elseBlock">Archive Chat</span>
                   <ng-template #elseBlock>
@@ -201,9 +200,10 @@
                   role="button"
                   (click)="onLeaveChatClick()"
                 >
-                  <img alt="Leave Chat Icon" class="mr-1" src="./../../../assets/svg/trash.svg" />
+                  <img alt="Leave Chat Icon" class="mr-1" src="./../../../assets/svg/trash.svg"/>
 
-                  <span class="text-red">Leave Chat</span>
+                  <span *ngIf="activeChat.communityType === 1" class="text-red">Delete chat</span>
+                  <span *ngIf="activeChat.communityType === 2" class="text-red">Leave chat</span>
                 </div>
               </div>
             </div>
@@ -219,23 +219,23 @@
                 <img
                   alt="User Avatar"
                   class="user-avatar"
-                  (click)="onOpenImageClick(message.messageAuthorPictureUrl)"
-                  src="{{ message.messageAuthorPictureUrl }}"
+                  (click)="onOpenImageClick(message.authorImageUrl)"
+                  src="{{ message.authorImageUrl }}"
                 />
                 <div class="message-wrapper">
                   <div class="message-content">
-                    <div *ngIf="message.inReplayToAuthor" class="message-reply">
-                      <p class="message-reply-displayname">{{ message.inReplayToAuthor }}</p>
-                      <p class="message-reply-text">{{ message.inReplayToText }}</p>
+                    <div *ngIf="message.inReplyToUser" class="message-reply">
+                      <p class="message-reply-displayname">{{ message.inReplyToUser }}</p>
+                      <p class="message-reply-text">{{ message.inReplyToText }}</p>
                     </div>
-                    <span *ngIf="message.messageAttachmentUrl"
-                      ><img
-                        class="message-image"
-                        (click)="onOpenImageClick(message.messageAttachmentUrl)"
-                        src="{{ message.messageAttachmentUrl }}"
-                        alt=""
+                    <span *ngIf="message.attachmentUrl"
+                    ><img
+                      class="message-image"
+                      (click)="onOpenImageClick(message.attachmentUrl)"
+                      src="{{ message.attachmentUrl }}"
+                      alt=""
                     /></span>
-                    <span>{{ message.messageText }}</span>
+                    <span>{{ message.text }}</span>
                   </div>
                   <div class="message-options gap-fix">
                     <p class="message-time mr-2">
@@ -262,7 +262,7 @@
                           data-toggle="modal"
                           role="button"
                         >
-                          <img alt="Edit Icon" class="mr-1" src="./../../../assets/svg/edit.svg" />
+                          <img alt="Edit Icon" class="mr-1" src="./../../../assets/svg/edit.svg"/>
                           <span>Edit</span>
                         </div>
                         <div
@@ -289,7 +289,7 @@
                           onReplyClick(
                             message.messageId,
                             message.userDisplayName,
-                            message.messageText,
+                            message.text,
                             message.userDisplayNameColour
                           )
                         "
@@ -305,37 +305,37 @@
                   <img
                     alt="User Avatar"
                     class="user-avatar"
-                    (click)="onOpenImageClick(message.messageAuthorPictureUrl)"
-                    src="{{ message.messageAuthorPictureUrl }}"
+                    (click)="onOpenImageClick(message.authorImageUrl)"
+                    src="{{ message.authorImageUrl }}"
                   />
                   <div class="message-wrapper">
                     <div class="message-content">
                       <div
-                        *ngIf="!message.messageAttachmentUrl"
+                        *ngIf="!message.attachmentUrl"
                         class="display-name {{
                           getDisplayNameColour(message.userDisplayNameColour)
                         }}"
                       >
                         {{ message.userDisplayName }}
                       </div>
-                      <div *ngIf="message.inReplayToAuthor" class="message-reply">
+                      <div *ngIf="message.inReplyToUser" class="message-reply">
                         <p
                           class="message-reply-displayname {{
                             getDisplayNameColour(message.userDisplayNameColour)
                           }}"
                         >
-                          {{ message.inReplayToAuthor }}
+                          {{ message.inReplyToUser }}
                         </p>
-                        <p class="message-reply-text">{{ message.inReplayToText }}</p>
+                        <p class="message-reply-text">{{ message.inReplyToText }}</p>
                       </div>
-                      <span *ngIf="message.messageAttachmentUrl"
-                        ><img
-                          class="message-image"
-                          (click)="onOpenImageClick(message.messageAttachmentUrl)"
-                          src="{{ message.messageAttachmentUrl }}"
-                          alt=""
+                      <span *ngIf="message.attachmentUrl"
+                      ><img
+                        class="message-image"
+                        (click)="onOpenImageClick(message.attachmentUrl)"
+                        src="{{ message.attachmentUrl }}"
+                        alt=""
                       /></span>
-                      <span>{{ message.messageText }}</span>
+                      <span>{{ message.text }}</span>
                     </div>
                     <div class="message-options gap-fix">
                       <p class="message-time mr-2">
@@ -349,7 +349,7 @@
                             onReplyClick(
                               message.messageId,
                               message.userDisplayName,
-                              message.messageText,
+                              message.text,
                               message.userDisplayNameColour
                             )
                           "
@@ -407,7 +407,7 @@
       <div class="chat-footer" *ngIf="activeChat.isMember; else elseNotMember">
         <div class="dropdown">
           <button class="button-dark button-dark-no-hover align-text-top" data-bs-toggle="dropdown">
-            <img alt="Attach icon" src="./../../../assets/svg/attach.svg" />
+            <img alt="Attach icon" src="./../../../assets/svg/attach.svg"/>
           </button>
           <div class="dropdown-menu">
             <div class="dropdown-item">
@@ -422,7 +422,7 @@
         </div>
         <div class="dropdown">
           <button class="button-dark button-dark-no-hover mr-2" data-bs-toggle="dropdown">
-            <img alt="Emoji Icon" src="./../../../assets/svg/emoji.svg" />
+            <img alt="Emoji Icon" src="./../../../assets/svg/emoji.svg"/>
           </button>
           <div class="dropdown-menu emoji-dropdown-menu">
             <div class="dropdown-item no-hover">
@@ -470,7 +470,7 @@
         >
         </textarea>
         <button class="send-message" (click)="onSendMessageClick()">
-          <img alt="Arrow Right Icon" src="./../../../assets/svg/arrow-right.svg" />
+          <img alt="Arrow Right Icon" src="./../../../assets/svg/arrow-right.svg"/>
         </button>
       </div>
 

@@ -53,16 +53,12 @@ public class JoinChatCommandHandler : IRequestHandler<JoinChatCommand, Result<Re
 
             return responseFactory.ConflictResponse(errorMessage, details);
         }
+        
+        var userChat = UserChatEntity.Create(request.UserId, request.ChatId, UserRole.User);
 
-        dbContext.UserChats.Add(
-            new UserChatEntity
-            {
-                ChatId = request.ChatId,
-                UserId = request.UserId,
-                RoleId = UserRole.User,
-            });
+        dbContext.UserChats.Add(userChat);
 
-        chat.MembersCount += 1;
+        chat.IncrementMembersCount(1);
 
         dbContext.Update(chat);
 

@@ -11,6 +11,7 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using Swashbuckle.AspNetCore.Annotations;
 
 namespace MangoAPI.Presentation.Controllers;
@@ -21,10 +22,14 @@ namespace MangoAPI.Presentation.Controllers;
 [ApiController]
 [Route("api/messages")]
 [Authorize]
-public class MessagesController : ApiControllerBase, IMessagesController
+public class MessagesController : ApiControllerBase<MessagesController>, IMessagesController
 {
-    public MessagesController(IMediator mediator, IMapper mapper, ICorrelationContext correlationContext)
-        : base(mediator, mapper, correlationContext)
+    public MessagesController(
+        IMediator mediator,
+        IMapper mapper,
+        ICorrelationContext correlationContext,
+        ILogger<MessagesController> logger)
+        : base(mediator, mapper, correlationContext, logger)
     {
     }
 
@@ -98,14 +103,13 @@ public class MessagesController : ApiControllerBase, IMessagesController
         CancellationToken cancellationToken)
     {
         var userId = CorrelationContext.GetUserId();
+
         var command = new SendMessageCommand(
-            request.MessageText,
             userId,
             request.ChatId,
-            request.InReplayToAuthor,
-            request.InReplayToText,
-            request.CreatedAt,
-            request.MessageId,
+            request.Text,
+            request.InReplyToUser,
+            request.InReplyToText,
             request.Attachment);
 
         return await RequestAsync(command, cancellationToken);
