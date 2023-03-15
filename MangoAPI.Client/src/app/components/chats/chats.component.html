@@ -202,7 +202,8 @@
                 >
                   <img alt="Leave Chat Icon" class="mr-1" src="./../../../assets/svg/trash.svg"/>
 
-                  <span class="text-red">Leave Chat</span>
+                  <span *ngIf="activeChat.communityType === 1" class="text-red">Delete chat</span>
+                  <span *ngIf="activeChat.communityType === 2" class="text-red">Leave chat</span>
                 </div>
               </div>
             </div>
