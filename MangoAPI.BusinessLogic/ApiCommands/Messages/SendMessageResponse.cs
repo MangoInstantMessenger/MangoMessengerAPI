@@ -1,20 +1,26 @@
-﻿using MangoAPI.BusinessLogic.Models;
-using MangoAPI.BusinessLogic.Responses;
+﻿using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.Domain.Constants;
+using System;
 
 namespace MangoAPI.BusinessLogic.ApiCommands.Messages;
 
 public record SendMessageResponse : ResponseBase
 {
-    public Message MessageModel { get; init; }
+    public string AttachmentUrl { get; set; }
 
-    public static SendMessageResponse FromSuccess(Message messageModel)
+    public Guid NewMessageId { get; set; }
+    
+    public DateTime CreatedAt { get; set; }
+
+    public static SendMessageResponse FromSuccess(Guid newMessageId, string attachmentUrl, DateTime createdAt)
     {
         return new SendMessageResponse
         {
             Success = true,
             Message = ResponseMessageCodes.Success,
-            MessageModel = messageModel,
+            NewMessageId = newMessageId,
+            AttachmentUrl = attachmentUrl,
+            CreatedAt = createdAt
         };
     }
 }

@@ -23,7 +23,6 @@ import { SendMessageResponse } from '../../types/responses/SendMessageResponse';
 import { ReplyStateService } from 'src/app/services/states/replyState.service';
 import { Reply } from 'src/app/types/models/Reply';
 import { GetChatMessagesResponse } from '../../types/responses/GetChatMessagesResponse';
-import { RealtimeService } from '../../services/api/realtime.service';
 import { BaseResponse } from '../../types/responses/BaseResponse';
 import { GetUserChatsResponse } from '../../types/responses/GetUserChatsResponse';
 import { DeleteMessageResponse } from '../../types/responses/DeleteMessageResponse';
@@ -46,7 +45,7 @@ export class ChatsComponent implements OnInit {
     private _apiBaseService: ApiBaseService,
     public _modalWindowStateService: ModalWindowStateService,
     public _replyStateService: ReplyStateService,
-    private _realtimeService: RealtimeService,
+    // private _realtimeService: RealtimeService,
     private _defaultChatHelper: DefaultChatHelper
   ) {}
 
@@ -227,10 +226,12 @@ export class ChatsComponent implements OnInit {
       return;
     }
 
+    const messageId = crypto.randomUUID();
     const createdAt = new Date().toISOString();
     const sendMessageFormData = new FormData();
 
     sendMessageFormData.append('text', newMessageText);
+    sendMessageFormData.append('messageId', messageId);
     sendMessageFormData.append('chatId', this.activeChatId);
     sendMessageFormData.append('inReplyToUser', this._replyStateService.reply?.displayName ?? '');
     sendMessageFormData.append('inReplyToText', this._replyStateService.reply?.text ?? '');
@@ -240,6 +241,7 @@ export class ChatsComponent implements OnInit {
     }
 
     const newMessage = new Message(
+      messageId,
       tokens.userId,
       this.activeChatId,
       tokens.userDisplayName,
@@ -262,15 +264,17 @@ export class ChatsComponent implements OnInit {
 
     const response = await firstValueFrom<SendMessageResponse>(sendMessage$);
 
-    newMessage.messageId = response.messageModel.messageId;
-    newMessage.attachmentUrl = response.messageModel.attachmentUrl;
-    newMessage.createdAt = response.messageModel.createdAt;
+    console.log(JSON.stringify(response));
 
-    const sendNotification$ = this._realtimeService.sendRealtimeNewMessageNotification(
-      response.messageModel
-    );
+    // newMessage.messageId = response.messageModel.messageId;
+    newMessage.attachmentUrl = response.attachmentUrl;
+    newMessage.createdAt = response.createdAt;
 
-    await firstValueFrom<BaseResponse>(sendNotification$);
+    // const sendNotification$ = this._realtimeService.sendRealtimeNewMessageNotification(
+    //   response.messageModel
+    // );
+    //
+    // await firstValueFrom<BaseResponse>(sendNotification$);
 
     this.clearAttachmentInput();
     this.scrollToEnd();
@@ -401,6 +405,8 @@ export class ChatsComponent implements OnInit {
   }
 
   private onMessageSendHandler(message: Message) {
+    console.log(JSON.stringify(message));
+
     message.self = message.userId == this.userId;
     const chat = this.chats.filter((x) => x.chatId === message.chatId)[0];
     chat.lastMessageAuthor = message.userDisplayName;
@@ -415,8 +421,6 @@ export class ChatsComponent implements OnInit {
     if (message.chatId === this.activeChatId && !includesMessage) {
       this.messages.push(message);
     }
-
-    this.scrollToEnd();
   }
 
   private onMessageEditHandler(notification: EditMessageNotification) {

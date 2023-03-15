@@ -104,7 +104,10 @@ public class MessagesController : ApiControllerBase<MessagesController>, IMessag
     {
         var userId = CorrelationContext.GetUserId();
 
+        var messageId = request.MessageId ?? Guid.NewGuid();
+
         var command = new SendMessageCommand(
+            messageId,
             userId,
             request.ChatId,
             request.Text,

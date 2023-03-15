@@ -30,7 +30,7 @@ public sealed class MessageEntity
     private MessageEntity()
     {
     }
-    
+
     private MessageEntity(Guid userId, Guid chatId, string text)
     {
         Id = Guid.NewGuid();
@@ -58,6 +58,19 @@ public sealed class MessageEntity
         new MessageEntityValidator().ValidateAndThrow(this);
     }
 
+    private MessageEntity(
+        Guid id,
+        Guid userId,
+        Guid chatId,
+        string text,
+        string inReplyToUser,
+        string inReplyToText,
+        string attachmentFileName) : this(userId, chatId, text, inReplyToUser, inReplyToText, attachmentFileName)
+    {
+        Id = id;
+        new MessageEntityValidator().ValidateAndThrow(this);
+    }
+
     public static MessageEntity Create(
         Guid userId,
         Guid chatId,
@@ -67,6 +80,27 @@ public sealed class MessageEntity
         string attachmentFileName)
     {
         var message = new MessageEntity(
+            userId,
+            chatId,
+            text,
+            inReplyToUser,
+            inReplyToText,
+            attachmentFileName);
+
+        return message;
+    }
+
+    public static MessageEntity Create(
+        Guid id,
+        Guid userId,
+        Guid chatId,
+        string text,
+        string inReplyToUser,
+        string inReplyToText,
+        string attachmentFileName)
+    {
+        var message = new MessageEntity(
+            id,
             userId,
             chatId,
             text,

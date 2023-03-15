@@ -31,7 +31,7 @@ public class DeleteMessageShouldThrowChatNotFound : IntegrationTestBase
         var command = new DeleteMessageCommand(
             UserId: user.Response.Tokens.UserId,
             ChatId: Guid.NewGuid(),
-            MessageId: message.Response.MessageModel.MessageId);
+            MessageId: message.Response.NewMessageId);
 
         var result = await MangoModule.RequestAsync(command, CancellationToken.None);
 
