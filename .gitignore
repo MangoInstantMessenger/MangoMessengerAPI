@@ -38,6 +38,7 @@ AuthWorkingDirectory/
 CngWorkingDirectory/
 OpenSslWorkingDirectory/
 wwwroot/
+dist/
 
 # sonar scanner
 MangoAPI.Client/.scannerwork/*
