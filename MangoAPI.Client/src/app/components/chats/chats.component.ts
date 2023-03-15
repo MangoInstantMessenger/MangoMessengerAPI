@@ -27,6 +27,7 @@ import { RealtimeService } from '../../services/api/realtime.service';
 import { BaseResponse } from '../../types/responses/BaseResponse';
 import { GetUserChatsResponse } from '../../types/responses/GetUserChatsResponse';
 import { DeleteMessageResponse } from '../../types/responses/DeleteMessageResponse';
+import { DefaultChatHelper } from './defaultChatHelper';
 
 @Component({
   selector: 'app-chats',
@@ -45,7 +46,8 @@ export class ChatsComponent implements OnInit {
     private _apiBaseService: ApiBaseService,
     public _modalWindowStateService: ModalWindowStateService,
     public _replyStateService: ReplyStateService,
-    private _realtimeService: RealtimeService
+    private _realtimeService: RealtimeService,
+    private _defaultChatHelper: DefaultChatHelper
   ) {}
 
   private connectionBuilder: signalR.HubConnectionBuilder = new signalR.HubConnectionBuilder();
@@ -58,21 +60,7 @@ export class ChatsComponent implements OnInit {
   public userId: string | undefined = '';
   public chats: Chat[] = [];
 
-  public activeChat: Chat = {
-    lastMessageId: '',
-    lastMessageAuthor: '',
-    lastMessageText: '',
-    lastMessageTime: '',
-    roleId: 1,
-    communityType: CommunityType.PublicChannel,
-    description: '',
-    chatId: '',
-    chatLogoImageUrl: '',
-    isArchived: false,
-    isMember: false,
-    membersCount: 0,
-    title: ''
-  };
+  public activeChat: Chat = this._defaultChatHelper.getEmptyChat();
 
   public activeChatId = '';
   public messages: Message[] = [];
@@ -167,6 +155,12 @@ export class ChatsComponent implements OnInit {
     this.connection.on('PrivateChatDeletedAsync', (chatId: string) => {
       console.log(`Private chat deleted: ${chatId}`);
       this.chats = this.chats.filter((x) => x.chatId !== chatId);
+
+      if (this.activeChatId === chatId) {
+        this.activeChat = this._defaultChatHelper.getEmptyChat();
+        this.activeChatId = '';
+        this.messages = [];
+      }
     });
 
     this.connection.on('NotifyOnMessageDeleteAsync', (notification: DeleteMessageNotification) => {
