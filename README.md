@@ -11,7 +11,14 @@ In general, mango messenger is considered to be a bachelor's degree project.
 Bachelor's degree has been successfully completed by the team of three students on 10-02-2022.
 However, it is worth to continue progress on the project pursuing another predefined goals.
 
-**How it works (v1)**: https://www.youtube.com/watch?v=3lh3we1DrEY
+## How it works
+
+- 🚀 Mango messenger: Live demo 2: https://youtu.be/tE-fzVb076Q
+- 🚀 Mango messenger: Live demo 1: https://youtu.be/WZ19vq4ayoo
+- 🚀 Mango messenger: Terraform infrastructure deploy: https://youtu.be/lImvRMW3498
+- 🚀 Mango messenger: Application deployment: https://youtu.be/0FXEj8utV-k
+- 🚀 Mango messenger: Upload file assets: https://youtu.be/giimO6YK1fk
+- 🚀 Mango messenger: Terraform backend up: https://youtu.be/4fRMS3gp5Uc
 
 ## Main goals of the project
 
