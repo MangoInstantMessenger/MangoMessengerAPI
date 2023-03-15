@@ -49,7 +49,7 @@ stages:
 
           - bash: |
               terraform plan -destroy \
-                -var "prefix=$(prefix)" \
+                -var "prefix=$(kv-prefix)" \
                 -var "sql_admin_password=$(kv-sql-password)" \
                 -out $PLAN_FILE
             displayName: Terraform Plan -Destroy
