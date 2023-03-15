@@ -164,6 +164,11 @@ export class ChatsComponent implements OnInit {
       });
     });
 
+    this.connection.on('PrivateChatDeletedAsync', (chatId: string) => {
+      console.log(`Private chat deleted: ${chatId}`);
+      this.chats = this.chats.filter((x) => x.chatId !== chatId);
+    });
+
     this.connection.on('NotifyOnMessageDeleteAsync', (notification: DeleteMessageNotification) => {
       this.onMessageDeleteHandler(notification);
     });

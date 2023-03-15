@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using MangoAPI.BusinessLogic.HubConfig;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using MangoAPI.BusinessLogic.Responses;
@@ -6,6 +7,7 @@ using MangoAPI.Domain.Constants;
 using MangoAPI.Domain.Enums;
 using MangoAPI.Infrastructure.Database;
 using MediatR;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 
 namespace MangoAPI.BusinessLogic.ApiCommands.Communities;
@@ -15,26 +17,27 @@ public class LeaveGroupCommandHandler
 {
     private readonly MangoDbContext dbContext;
     private readonly ResponseFactory<LeaveGroupResponse> responseFactory;
+    private readonly IHubContext<ChatHub, IHubClient> hubContext;
 
     public LeaveGroupCommandHandler(
         MangoDbContext dbContext,
-        ResponseFactory<LeaveGroupResponse> responseFactory)
+        ResponseFactory<LeaveGroupResponse> responseFactory,
+        IHubContext<ChatHub, IHubClient> hubContext)
     {
         this.dbContext = dbContext;
         this.responseFactory = responseFactory;
+        this.hubContext = hubContext;
     }
 
     public async Task<Result<LeaveGroupResponse>> Handle(
         LeaveGroupCommand request,
         CancellationToken cancellationToken)
     {
-        var userChat = await dbContext.UserChats
-            .Include(x => x.Chat)
-            .Where(chatEntity => chatEntity.UserId == request.UserId)
-            .Where(chatEntity => chatEntity.ChatId == request.ChatId)
-            .FirstOrDefaultAsync(cancellationToken);
+        var chat = await dbContext.Chats
+            .Include(x => x.ChatUsers)
+            .FirstOrDefaultAsync(x => x.Id == request.ChatId, cancellationToken);
 
-        if (userChat == null)
+        if (chat == null)
         {
             const string errorMessage = ResponseMessageCodes.ChatNotFound;
             var details = ResponseMessageCodes.ErrorDictionary[errorMessage];
@@ -42,11 +45,11 @@ public class LeaveGroupCommandHandler
             return responseFactory.ConflictResponse(errorMessage, details);
         }
 
-        var chat = userChat.Chat;
+        var userBelongsToChat = chat.ChatUsers.Any(x => x.UserId == request.UserId);
 
-        if (chat == null)
+        if (!userBelongsToChat)
         {
-            const string errorMessage = ResponseMessageCodes.ChatNotFound;
+            const string errorMessage = ResponseMessageCodes.Unauthorized;
             var details = ResponseMessageCodes.ErrorDictionary[errorMessage];
 
             return responseFactory.ConflictResponse(errorMessage, details);
@@ -58,16 +61,20 @@ public class LeaveGroupCommandHandler
                 .Where(messageEntity => messageEntity.ChatId == request.ChatId)
                 .ToListAsync(cancellationToken);
 
+            var partnerId = chat.ChatUsers.First(x => x.UserId != request.UserId).UserId;
+
             dbContext.Messages.RemoveRange(messages);
             dbContext.UserChats.RemoveRange(chat.ChatUsers);
             dbContext.Chats.Remove(chat);
 
             await dbContext.SaveChangesAsync(cancellationToken);
 
+            await hubContext.Clients.Group(partnerId.ToString()).PrivateChatDeletedAsync(request.ChatId);
+
             return responseFactory.SuccessResponse(LeaveGroupResponse.FromSuccess(chat.Id));
         }
 
-        dbContext.UserChats.Remove(userChat);
+        dbContext.Chats.Remove(chat);
         chat.IncrementMembersCount(-1);
 
         dbContext.Update(chat);
