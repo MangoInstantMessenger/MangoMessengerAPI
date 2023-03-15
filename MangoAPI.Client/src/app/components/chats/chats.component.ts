@@ -152,7 +152,6 @@ export class ChatsComponent implements OnInit {
     });
 
     this.connection.on('PrivateChatDeletedAsync', (chatId: string) => {
-      console.log(`Private chat deleted: ${chatId}`);
       const chatIndex = this.chats.findIndex((x) => x.chatId === chatId);
 
       if (chatIndex === -1) return;
@@ -194,7 +193,6 @@ export class ChatsComponent implements OnInit {
 
     this.connection.invoke('JoinGroup', this.activeChat.chatId).then(() => {
       this.realTimeConnections.push(this.activeChat.chatId);
-      console.log(`SignalR JoinGroup: ${this.activeChat.chatId}`);
     });
   }
 
@@ -262,26 +260,34 @@ export class ChatsComponent implements OnInit {
 
     this.messages.push(newMessage);
 
+    this.pushChatToTop(this.activeChatId);
+
     this._replyStateService.setReplyNull();
+
+    this.scrollToEnd();
 
     const sendMessage$ = this._messagesService.sendMessage(sendMessageFormData);
 
     const response = await firstValueFrom<SendMessageResponse>(sendMessage$);
 
-    console.log(JSON.stringify(response));
-
-    // newMessage.messageId = response.messageModel.messageId;
     newMessage.attachmentUrl = response.attachmentUrl;
     newMessage.createdAt = response.createdAt;
 
-    // const sendNotification$ = this._realtimeService.sendRealtimeNewMessageNotification(
-    //   response.messageModel
-    // );
-    //
-    // await firstValueFrom<BaseResponse>(sendNotification$);
+    if (this.messageAttachment) {
+      this.clearAttachmentInput();
+    }
+  }
 
-    this.clearAttachmentInput();
-    this.scrollToEnd();
+  pushChatToTop(chatId: string) {
+    const chatIndex = this.chats.findIndex((x) => x.chatId === chatId);
+
+    if (chatIndex === -1) return;
+
+    const chat = this.chats[chatIndex];
+
+    this.chats.splice(chatIndex, 1);
+
+    this.chats.splice(0, 0, chat);
   }
 
   onReplyClick(
@@ -311,9 +317,7 @@ export class ChatsComponent implements OnInit {
     this.messages.splice(messageIndex, 1);
 
     const deleteMessageSub$ = this._messagesService.deleteMessage(deleteMessageCommand);
-    const deleteMessageResult = await firstValueFrom<DeleteMessageResponse>(deleteMessageSub$);
-
-    console.log(deleteMessageResult.message);
+    await firstValueFrom<DeleteMessageResponse>(deleteMessageSub$);
   }
 
   async onJoinChatClick() {
@@ -362,12 +366,8 @@ export class ChatsComponent implements OnInit {
     const div = event.currentTarget as HTMLDivElement;
     this.chatFilter = div.innerText;
 
-    console.log(this.chatFilter);
-
     const getChatsSub$ = this._communitiesService.getUserChats();
     const getChatsResult = await firstValueFrom<GetUserChatsResponse>(getChatsSub$);
-
-    console.log(getChatsResult.chats);
 
     switch (this.chatFilter) {
       case 'All chats':
@@ -391,9 +391,7 @@ export class ChatsComponent implements OnInit {
 
   async onLeaveChatClick() {
     const leaveChatSub$ = this._userChatsService.leaveCommunity(this.activeChatId);
-    const leaveChatResult = await firstValueFrom<BaseResponse>(leaveChatSub$);
-
-    console.log(leaveChatResult.message);
+    await firstValueFrom<BaseResponse>(leaveChatSub$);
 
     this.activeChatId = '';
 
@@ -402,9 +400,7 @@ export class ChatsComponent implements OnInit {
 
   async onArchiveChatClick() {
     const archiveChatSub$ = this._userChatsService.archiveCommunity(this.activeChatId);
-    const archiveResult = await firstValueFrom<BaseResponse>(archiveChatSub$);
-
-    console.log(archiveResult.message);
+    await firstValueFrom<BaseResponse>(archiveChatSub$);
 
     this.activeChatId = '';
 
@@ -412,16 +408,11 @@ export class ChatsComponent implements OnInit {
   }
 
   private onMessageSendHandler(message: Message) {
-    // console.log(JSON.stringify(message));
-
     message.self = message.userId == this.userId;
 
     const chatIndex = this.chats.findIndex((x) => x.chatId === message.chatId);
 
     if (chatIndex === -1) return;
-
-    // console.log('chats: ' + JSON.stringify(this.chats));
-
     const chat = this.chats[chatIndex];
 
     chat.lastMessageAuthor = message.userDisplayName;
@@ -430,9 +421,6 @@ export class ChatsComponent implements OnInit {
     chat.lastMessageId = message.messageId;
 
     this.chats.splice(chatIndex, 1);
-
-    // console.log('chats excluded: ' + JSON.stringify(this.chats));
-
     this.chats.splice(0, 0, chat);
 
     if (this.activeChatId !== message.chatId) return;
@@ -459,13 +447,6 @@ export class ChatsComponent implements OnInit {
   }
 
   private onMessageDeleteHandler(notification: DeleteMessageNotification) {
-    console.log(notification);
-
-    // const message = this.messages.filter((x) => x.messageId === notification.deletedMessageId)[0];
-
-    console.log(`deleted message id: ${notification.deletedMessageId}`);
-    console.log(`last message id: ${this.activeChat.lastMessageId}`);
-
     const chatIndex = this.chats.findIndex((x) => x.chatId === notification.chatId);
 
     if (notification.isLastMessage && chatIndex !== -1) {
@@ -475,8 +456,6 @@ export class ChatsComponent implements OnInit {
       updatedChat.lastMessageText = notification.newLastMessageText;
       updatedChat.lastMessageTime = notification.newLastMessageTime;
       updatedChat.lastMessageId = notification.newLastMessageId;
-
-      console.log(`updated chat: ${JSON.stringify(updatedChat)}`);
     }
 
     if (this.activeChatId !== notification.chatId) return;
