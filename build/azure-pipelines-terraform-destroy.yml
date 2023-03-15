@@ -67,7 +67,7 @@ stages:
             env:
               PLAN_FILE: 'main-$(kv-prefix).destroy.tfplan'
 
-          - bash: terraform apply -destroy -auto-approve $PLAN_FILE
+          - bash: terraform apply -var "sql_admin_password=$(kv-sql-password)" -destroy -auto-approve $PLAN_FILE
             displayName: Terraform Apply
             condition: eq(variables.anyTfChanges, true)
             workingDirectory: '$(System.DefaultWorkingDirectory)/terraform'
