@@ -52,6 +52,7 @@ public static class CommandHelper
     public static SendMessageCommand SendMessageToChannelCommand(Guid userId, Guid chatId, IFormFile attachment = null)
     {
         var command = new SendMessageCommand(
+            Guid.NewGuid(),
             Text: "test message",
             UserId: userId,
             ChatId: chatId,

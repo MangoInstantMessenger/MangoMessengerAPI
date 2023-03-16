@@ -17,22 +17,27 @@ param(
     [string] $prefix
 )
 
-Write-Output "Creating resource group $rgName in $location ..."
-az group create --name $rgName --location "$location"
+$rgNameWithPrefix = "$rgName-$prefix"
+
+$sqlPassword = $env:MANGO_TF_SQL_PASS
+#Write-Output "Using sql server password $sqlPassword ..."
+
+Write-Output "Creating resource group $rgNameWithPrefix in $location ..."
+az group create --name "$rgNameWithPrefix" --location "$location"
 
 Write-Output "Creating storage account $storageAccount ..."
-az storage account create --name $storageAccount --resource-group $rgName --kind "StorageV2" --sku "Standard_LRS" --https-only "true" --allow-blob-public-access "false"
+az storage account create --name $storageAccount --resource-group $rgNameWithPrefix --kind "StorageV2" --sku "Standard_LRS" --https-only "true" --allow-blob-public-access "false"
 
 Write-Output "Creating storage container $contName ..."
 az storage container create --name $container --account-name $storageAccount --public-access "off"
 
 Write-Output "Creating SAS token for $container ..."
 $Date = (Get-Date).AddDays(5).ToString('yyyy-MM-dd')
-$key = $( az storage account keys list --resource-group $rgName --account-name $storageAccount --query [0].value -o tsv )
+$key = $( az storage account keys list --resource-group $rgNameWithPrefix --account-name $storageAccount --query [0].value -o tsv )
 $sas = $( az storage container generate-sas --name $container --expiry $Date --permissions "racwdli" --account-name $storageAccount --account-key "$key" )
 
 Write-Output "Creating keyvault $keyVaultName ..."
-az keyvault create --name $keyVaultName --resource-group $rgName --location $location
+az keyvault create --name $keyVaultName --resource-group $rgNameWithPrefix --location $location
 
 #Write-Output "Creating keyvault secret [RgTfState] ..."
 #az keyvault secret set --name "RgTfState" --vault-name $keyVaultName --value $rgName
@@ -58,17 +63,30 @@ az keyvault secret set --name "kv-tf-state-sas-token" --vault-name $keyVaultName
 Write-Output "Creating keyvault secret [kv-arm-subscription-id] ..."
 az keyvault secret set --name "kv-arm-subscription-id" --vault-name $keyVaultName --value $subscriptionId
 
+Write-Output "Creating keyvault secret [kv-sp-name] ..."
+az keyvault secret set --name "kv-sp-name" --vault-name $keyVaultName --value $spName
+
 Write-Output "Creating keyvault secret [kv-arm-client-id] ..."
 az keyvault secret set --name "kv-arm-client-id" --vault-name $keyVaultName --value $username
 
 Write-Output "Creating keyvault secret [kv-arm-client-secret] ..."
-az keyvault secret set --name "kv-arm-client-secret" --vault-name $keyVaultName --value $password
+az keyvault secret set --name "kv-arm-client-secret" --vault-name $keyVaultName --value "$password"
 
 Write-Output "Creating keyvault secret [kv-arm-tenant-id] ..."
 az keyvault secret set --name "kv-arm-tenant-id" --vault-name $keyVaultName --value $tenant
 
-Write-Output "Creating keyvault secret [prefix] ..."
-az keyvault secret set --name "prefix" --vault-name $keyVaultName --value $prefix
+Write-Output "Creating keyvault secret [kv-prefix] ..."
+az keyvault secret set --name "kv-prefix" --vault-name $keyVaultName --value $prefix
+
+Write-Output "Creating keyvault secret [kv-sql-password] ..."
+az keyvault secret set --name "kv-sql-password" --vault-name $keyVaultName --value "$sqlPassword"
+
+Write-Output "Creating role assignment [Storage Blob Data Contributor] for service principal $spName ..."
+az role assignment create `
+--role "Storage Blob Data Contributor"`
+--scope "/subscriptions/$subscriptionId"`
+--assignee-object-id "$spObjectId"`
+--assignee-principal-type "ServicePrincipal"
 
 # example call:
 # $rgName = "rg-tf-state$(Get-Random 1000)"
@@ -78,5 +96,6 @@ az keyvault secret set --name "prefix" --vault-name $keyVaultName --value $prefi
 # $keyVaultName = "kv-tf-state$(Get-Random 1000)"
 # $spName = "SpTfAzureDevops"
 # $subscriptionId = "f32f6566-8fa0-4198-9c91-a3b8ac69e89a"
-# $prefix = "ado03"
+# $subscriptionId = "e3b8e7eb-628d-4a3c-80e5-b80bf1eab292"
+# $prefix = "ado08"
 # .\create_terraform_backend.ps1 -rgName $rgName -location $location -storageAccount $storageAccount -container $container -keyVaultName $keyVaultName -spName $spName -subscriptionId $subscriptionId -prefix $prefix

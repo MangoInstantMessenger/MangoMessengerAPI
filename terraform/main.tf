@@ -1,5 +1,9 @@
 data "azurerm_client_config" "current" {}
 
+module "random_generator" {
+  source = "./modules/random-generator"
+}
+
 resource "azurerm_resource_group" "public" {
   location = var.resource_group_location
   name     = "${var.resource_group_name}-${var.prefix}"
@@ -34,8 +38,13 @@ module "sql" {
   sql_location            = azurerm_resource_group.public.location
   sql_resource_group_name = azurerm_resource_group.public.name
   sql_admin_username      = var.sql_admin_username
-  sql_admin_password      = var.sql_admin_password
+  sql_admin_password      = var.sql_admin_password == null ? module.random_generator.sql_password : var.sql_admin_password
   sql_database_name       = var.sql_database_name
+
+  depends_on = [
+    azurerm_resource_group.public,
+    module.random_generator.sql_password
+  ]
 }
 
 module "keyvault" {
@@ -47,18 +56,20 @@ module "keyvault" {
   object_id              = data.azurerm_client_config.current.object_id
 }
 
-resource "random_uuid" "random_id" {}
-
 module "keyvault_secrets" {
   source                    = "./modules/keyvault-secrets"
   keyvault_id               = module.keyvault.id
   kv_app_insights_key       = azurerm_application_insights.public.instrumentation_key
   kv_blob_connection_string = module.storage.primary_connection_string
   kv_storage_account_name   = module.storage.account_name
-  kv_storage_container_name = module.storage.container_name
+  kv_blob_container         = module.storage.container_name
+  kv_blob_access            = module.storage.blob_access_url
   kv_sql_connection_string  = module.sql.connection_string
   kv_app_service_name       = module.webapp.app_service_name
-  kv_jwt_sign_key           = random_uuid.random_id.result
+  kv_jwt_issuer             = module.webapp.app_service_url
+  kv_jwt_audience           = module.webapp.app_service_url
+  kv_jwt_sign_key           = module.random_generator.jwt_sign_guid
+  kv_web_app_base_url       = "${module.webapp.app_service_url}/"
 
   depends_on = [
     module.keyvault.id,
@@ -68,6 +79,7 @@ module "keyvault_secrets" {
     module.storage.container_name,
     module.sql.connection_string,
     module.webapp.app_service_name,
-    random_uuid.random_id
+    module.random_generator.jwt_sign_guid,
+    module.webapp.app_service_url
   ]
 }

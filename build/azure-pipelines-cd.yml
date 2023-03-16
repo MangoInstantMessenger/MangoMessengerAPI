@@ -27,6 +27,8 @@ variables:
     value: 'Release'
   - name: artifactPath
     value: '$(Pipeline.Workspace)/drop/$(buildConfiguration)/MangoAPI.Presentation.zip'
+  - name: serviceConnection
+    value: 'AzureForStudents'
 
 stages:
   - stage: 'Build_Test_Pack'
@@ -42,7 +44,7 @@ stages:
     jobs:
       - template: templates/sonarcloud-job-template.yml
       - template: templates/mend-scan-job-template.yml
-      - template: templates/snyk-job-template.yml
+#      - template: templates/snyk-job-template.yml
 
   - stage: 'dev'
     displayName: 'Deploy Mango Messenger to DEV Environment'
@@ -55,19 +57,19 @@ stages:
           vmImage: 'ubuntu-latest'
         environment: 'dev'
         variables:
-          - group: DEPLOY_DEV_VARS #contains keyvault name and webapp name
+          - group: AZURE_FOR_STUDENTS #contains keyvault name and webapp name
           - name: 'ApplicationInsights.InstrumentationKey'
-            value: '$(ApplicationInsightsInstrumentationKey)'
+            value: '$(AppInsightsInstrumentationKey)'
         strategy:
           runOnce:
             deploy:
               steps:
                 - download: current
                   artifact: drop
-                  
+
                 - task: AzureKeyVault@2
                   inputs:
-                    azureSubscription: 'MangoServiceConnection'
+                    azureSubscription: '$(serviceConnection)'
                     KeyVaultName: '$(KeyVaultName)'
                     SecretsFilter: "*"
                     RunAsPreJob: false
@@ -76,10 +78,10 @@ stages:
                   displayName: 'Deploy to Azure Web App'
                   inputs:
                     ConnectionType: 'AzureRM'
-                    azureSubscription: 'MangoServiceConnection'
+                    azureSubscription: '$(serviceConnection)'
                     appType: 'webApp'
                     WebAppName: '$(WebAppName)'
                     packageForLinux: '$(artifactPath)'
-                    JSONFiles: | 
+                    JSONFiles: |
                       **/appsettings.json
                       **/config.json

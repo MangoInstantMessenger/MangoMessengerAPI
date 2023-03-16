@@ -27,7 +27,7 @@ public class SendMessageSuccessTest : IntegrationTestBase
         var messageEntity = await DbContextFixture.Messages
             .Include(x => x.User)
             .Include(x => x.Chat)
-            .FirstAsync(x => x.Id == result.Response.MessageModel.MessageId);
+            .FirstAsync(x => x.Id == result.Response.NewMessageId);
 
         assert.Pass(result);
         var chatEntity = messageEntity.Chat;
@@ -53,7 +53,7 @@ public class SendMessageSuccessTest : IntegrationTestBase
         var messageEntity = await DbContextFixture.Messages
             .Include(x => x.User)
             .Include(x => x.Chat)
-            .FirstAsync(x => x.Id == result.Response.MessageModel.MessageId);
+            .FirstAsync(x => x.Id == result.Response.NewMessageId);
 
         assert.Pass(result);
         var chatEntity = messageEntity.Chat;

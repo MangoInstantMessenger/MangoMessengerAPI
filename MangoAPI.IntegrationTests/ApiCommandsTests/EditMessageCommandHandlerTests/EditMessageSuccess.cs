@@ -27,12 +27,12 @@ public class EditMessageSuccess : IntegrationTestBase
         var editCommand = new EditMessageCommand(
             chatResult.Response.ChatId,
             petroResult.Response.Tokens.UserId,
-            messageResult.Response.MessageModel.MessageId,
+            messageResult.Response.NewMessageId,
             "Message edited");
 
         var result = await MangoModule.RequestAsync(editCommand, CancellationToken.None);
         var editedMessage =
-            await DbContextFixture.Messages.FirstAsync(x => x.Id == messageResult.Response.MessageModel.MessageId);
+            await DbContextFixture.Messages.FirstAsync(x => x.Id == messageResult.Response.NewMessageId);
 
         assert.Pass(result);
         editedMessage.Text.Should().Be(editCommand.ModifiedText);

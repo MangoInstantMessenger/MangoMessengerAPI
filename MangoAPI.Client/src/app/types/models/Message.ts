@@ -16,6 +16,7 @@ export class Message {
   inReplyToText: string | null | undefined;
 
   constructor(
+    messageId: string,
     userId: string,
     chatId: string,
     userDisplayName: string,
@@ -27,6 +28,7 @@ export class Message {
     inReplyToUser: string | null,
     inReplyToText: string | null
   ) {
+    this.messageId = messageId;
     this.userId = userId;
     this.chatId = chatId;
     this.userDisplayName = userDisplayName;

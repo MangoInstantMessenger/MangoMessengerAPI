@@ -11,7 +11,14 @@ In general, mango messenger is considered to be a bachelor's degree project.
 Bachelor's degree has been successfully completed by the team of three students on 10-02-2022.
 However, it is worth to continue progress on the project pursuing another predefined goals.
 
-**How it works (v1)**: https://www.youtube.com/watch?v=3lh3we1DrEY
+## How it works
+
+- 🚀 Mango messenger: Live demo 2: https://youtu.be/tE-fzVb076Q
+- 🚀 Mango messenger: Live demo 1: https://youtu.be/WZ19vq4ayoo
+- 🚀 Mango messenger: Terraform infrastructure deploy: https://youtu.be/lImvRMW3498
+- 🚀 Mango messenger: Application deployment: https://youtu.be/0FXEj8utV-k
+- 🚀 Mango messenger: Upload file assets: https://youtu.be/giimO6YK1fk
+- 🚀 Mango messenger: Terraform backend up: https://youtu.be/4fRMS3gp5Uc
 
 ## Main goals of the project
 
@@ -127,7 +134,7 @@ In case of localhost HTTPS certificate issues: https://stackoverflow.com/a/67182
 ### Run integration tests
 
 - Run MsSQL database
-  container: `docker run -e SA_PASSWORD=x2yiJt!Fs -e ACCEPT_EULA=y --name mango-mssql-db --hostname mango-mssql-db -p 1433:1433 -d mcr.microsoft.com/mssql/server:2019-latest`
+  container: `docker run -e "SA_PASSWORD=x2yiJt!Fs" -e "ACCEPT_EULA=y" --name "mango-mssql-db" --hostname "mango-mssql-db" -p "1433:1433" -d mcr.microsoft.com/mssql/server:2022-latest`
 - Install Azurite: https://learn.microsoft.com/en-us/azure/storage/common/storage-use-azurite?tabs=npm
     - `npm install -g azurite`
     - `azurite --silent --location c:\azurite --debug c:\azurite\debug.log`
@@ -158,28 +165,16 @@ In case of localhost HTTPS certificate issues: https://stackoverflow.com/a/67182
 - **Programming languages:** `C#`, `SQL`, `TypeScript`
 - **Tools & IDE:** `Visual Studio`, `Rider`, `VS Code`, `WebStorm`, `SMSS`, `Postman`
 
-## Tasks management
+## Powered by JetBrains
 
-- Each task has an assigned number in the format `MANGO-ID`
-- Active tasks are available on the Trello board: https://trello.com/b/Z7IlfrRb/mango-messenger-trello
-- Each task branch is based on the actual `develop` branch and pull requested there on complete
+<p align="center">
+  <img src="./img/jetbrains.png" width="150" height="150"  alt="Mango Messenger Logo"/>
+</p>
 
-## GitHub flow
-
-- Fork this repository
-- Clone this repository using `git clone https://github.com/${{ username }}/MangoMessengerAPI.git`
-- If repository is cloned already then pull last changes from `develop` using
-    - `git checkout develop`
-    - `git pull`
-- Create new branch based on `develop` with name according to `MANGO-ID` of the task
-- Solve the task
-- Create pull request to `develop`
-
-## Commit messages
-
-- In case of bug fix, example of commit message `bugfix: some bug fixed`
-- In case of feature, example of commit message `feature: some new functionality added`
-- In case of refactor, example of commit message `refactor: some code part refactored`
+On March 14, 2023 Mango Messenger has received the JetBrains Open Source Licenses 
+for 1 year with opportunity to extend next years if opensource conditions met.
+These licenses are properly shared between active contributors.
+Thanks to JetBrains from the whole team of Mango Messenger.
 
 ## Useful Links
 
