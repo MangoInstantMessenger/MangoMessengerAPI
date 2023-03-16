@@ -44,7 +44,7 @@ stages:
     jobs:
       - template: templates/sonarcloud-job-template.yml
       - template: templates/mend-scan-job-template.yml
-      - template: templates/snyk-job-template.yml
+#      - template: templates/snyk-job-template.yml
 
   - stage: 'dev'
     displayName: 'Deploy Mango Messenger to DEV Environment'

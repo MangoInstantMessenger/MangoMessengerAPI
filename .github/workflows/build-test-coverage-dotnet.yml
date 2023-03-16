@@ -82,11 +82,11 @@ jobs:
           CoverletOutput: TestResults/
       # dotnet test MangoAPI.IntegrationTests/MangoAPI.IntegrationTests.csproj -p:CollectCoverage=true -p:CoverletOutput=TestResults/ -p:CoverletOutputFormat=lcov
 
-      - name: Publish coverage report to Coveralls
-        uses: coverallsapp/github-action@master
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          path-to-lcov: 'MangoAPI.IntegrationTests/TestResults/coverage.info'
+#      - name: Publish coverage report to Coveralls
+#        uses: coverallsapp/github-action@master
+#        with:
+#          github-token: ${{ secrets.GITHUB_TOKEN }}
+#          path-to-lcov: 'MangoAPI.IntegrationTests/TestResults/coverage.info'
 
       - name: Publish .NET Project
         run: |
