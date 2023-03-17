@@ -174,7 +174,7 @@ export class SettingsComponent implements OnInit {
     alert(response.message);
   }
 
-  async onSaveChangesSocialsClick() {
+  async onSavePersonalInformationClick() {
     const command: UpdatePersonalInformationCommand = {
       facebook: this.currentUserForUpdating.facebook,
       twitter: this.currentUserForUpdating.twitter,
