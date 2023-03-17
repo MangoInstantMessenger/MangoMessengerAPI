@@ -37,9 +37,4 @@ export class SessionService extends ApiBaseService {
   deleteSession(refreshToken: string | null): Observable<BaseResponse> {
     return this.httpClient.delete<BaseResponse>(this.baseUrl + this.sessionsRoute + refreshToken);
   }
-
-  // DELETE /api/sessions
-  deleteAllSessions(): Observable<BaseResponse> {
-    return this.httpClient.delete<BaseResponse>(this.baseUrl + this.sessionsRoute);
-  }
 }

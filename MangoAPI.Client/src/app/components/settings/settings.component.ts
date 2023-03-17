@@ -1,8 +1,8 @@
 // noinspection TypeScriptUnresolvedVariable
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ErrorNotificationService } from 'src/app/services/messenger/error-notification.service';
 import { TokensService } from '../../services/messenger/tokens.service';
-import { UpdatePersonalInformationRequest } from '../../types/requests/UpdatePersonalInformationRequest';
+import { UpdatePersonalInformationCommand } from '../../types/requests/UpdatePersonalInformationCommand';
 import { ChangePasswordCommand } from '../../types/requests/ChangePasswordCommand';
 import { UsersService } from '../../services/api/users.service';
 import { User } from '../../types/models/User';
@@ -10,17 +10,21 @@ import { ValidationService } from '../../services/messenger/validation.service';
 import { UpdateAccountInformationCommand } from '../../types/requests/UpdateAccountInformationCommand';
 import { SessionService } from '../../services/api/session.service';
 import { Router } from '@angular/router';
-import { firstValueFrom, Subject, takeUntil } from 'rxjs';
+import { firstValueFrom } from 'rxjs';
 import { RoutingConstants } from 'src/app/types/constants/RoutingConstants';
 import { AppInfoService } from 'src/app/services/api/app-info.service';
 import { ModalWindowStateService } from 'src/app/services/states/modalWindowState.service';
 import { UpdateProfilePictureResponse } from '../../types/responses/UpdateProfilePictureResponse';
+import { GetUserResponse } from '../../types/responses/GetUserResponse';
+import { GetAppInfoResponse } from '../../types/responses/GetAppInfoResponse';
+import { BaseResponse } from '../../types/responses/BaseResponse';
+import { SettingsHelper } from './settings.helper';
 
 @Component({
   selector: 'app-settings',
   templateUrl: './settings.component.html'
 })
-export class SettingsComponent implements OnInit, OnDestroy {
+export class SettingsComponent implements OnInit {
   constructor(
     private _errorNotificationService: ErrorNotificationService,
     private _usersService: UsersService,
@@ -29,44 +33,13 @@ export class SettingsComponent implements OnInit, OnDestroy {
     private _validationService: ValidationService,
     private _sessionService: SessionService,
     public _modalWindowStateService: ModalWindowStateService,
+    private _settingsHelper: SettingsHelper,
     private _router: Router
   ) {}
 
   public apiVersion = '';
-  public currentUser: User = {
-    userId: '',
-    displayName: '',
-    displayNameColour: 0,
-    birthday: '',
-    website: '',
-    username: '',
-    bio: '',
-    address: '',
-    facebook: '',
-    twitter: '',
-    instagram: '',
-    linkedIn: '',
-    publicKey: 0,
-    pictureUrl: ''
-  };
-
-  public currentUserForUpdating: User = {
-    userId: '',
-    displayName: '',
-    displayNameColour: 0,
-    birthday: '',
-    website: '',
-    username: '',
-    bio: '',
-    address: '',
-    facebook: '',
-    twitter: '',
-    instagram: '',
-    linkedIn: '',
-    publicKey: 0,
-    pictureUrl: ''
-  };
-
+  public currentUser: User = this._settingsHelper.generateEmptyUser();
+  public currentUserForUpdating: User = this._settingsHelper.generateEmptyUser();
   public currentUserId = '';
   public changePasswordCommand: ChangePasswordCommand = {
     currentPassword: '',
@@ -75,13 +48,8 @@ export class SettingsComponent implements OnInit, OnDestroy {
   };
   public fileName = '';
   public file: File | null = null;
-  componentDestroyed$: Subject<boolean> = new Subject();
 
-  public get routingConstants(): typeof RoutingConstants {
-    return RoutingConstants;
-  }
-
-  ngOnInit(): void {
+  async ngOnInit() {
     const tokens = this._tokensService.getTokens();
 
     if (!tokens) {
@@ -89,133 +57,96 @@ export class SettingsComponent implements OnInit, OnDestroy {
       return;
     }
 
-    this.currentUserId = this._tokensService.getTokens()?.userId as string;
-    this._usersService
-      .getUserById(this.currentUserId)
-      .pipe(takeUntil(this.componentDestroyed$))
-      .subscribe({
-        next: (response) => {
-          this.currentUser = response.user;
-          this.currentUserForUpdating = { ...response.user };
-        },
-        error: (error) => {
-          this._errorNotificationService.notifyOnError(error);
-        }
-      });
-    this._appInfoService
-      .getAppInfo()
-      .pipe(takeUntil(this.componentDestroyed$))
-      .subscribe({
-        next: (response) => {
-          this.apiVersion = response.appInfo.apiVersion;
-        },
-        error: (error) => {
-          this._errorNotificationService.notifyOnError(error);
-        }
-      });
+    this.currentUserId = tokens.userId;
+
+    const getUserInfoSub$ = this._usersService.getUserById(this.currentUserId);
+
+    const getUserInfoResponse = await firstValueFrom<GetUserResponse>(getUserInfoSub$);
+
+    // console.log(JSON.stringify(getUserInfoResponse.user));
+
+    this.currentUser = getUserInfoResponse.user;
+
+    this.currentUserForUpdating = { ...getUserInfoResponse.user };
+
+    const getApiVersionSub$ = this._appInfoService.getAppInfo();
+
+    const versionResponse = await firstValueFrom<GetAppInfoResponse>(getApiVersionSub$);
+
+    this.apiVersion = versionResponse.appInfo.apiVersion;
   }
 
-  ngOnDestroy(): void {
-    this.componentDestroyed$.next(true);
-    this.componentDestroyed$.complete();
-  }
+  async onLogoutClick() {
+    const tokens = this._tokensService.getTokens();
 
-  onOpenAvatarClick(): void {
-    this._modalWindowStateService.setIsModalWindowShowing(true);
-    this._modalWindowStateService.setPicture(this.currentUser.pictureUrl);
-  }
-
-  closeModalWindowClick(): void {
-    this._modalWindowStateService.setIsModalWindowShowing(false);
-    this._modalWindowStateService.setPictureNull();
-  }
-
-  onLogoutClick(): void {
-    const refreshToken = this._tokensService.getTokens()?.refreshToken as string;
-    this._sessionService
-      .deleteSession(refreshToken)
-      .pipe(takeUntil(this.componentDestroyed$))
-      .subscribe({
-        next: (_) => {
-          this._tokensService.clearTokens();
-          this._router.navigateByUrl('login').then((r) => r);
-        },
-        error: (error) => {
-          this._errorNotificationService.notifyOnError(error);
-        }
-      });
-  }
-
-  onSaveChangesAccountInfoClick(): void {
-    const command: UpdateAccountInformationCommand = {
-      username: this.currentUserForUpdating.username,
-      birthday: this.currentUserForUpdating.birthday,
-      website: this.currentUserForUpdating.website,
-      address: this.currentUserForUpdating.address,
-      bio: this.currentUserForUpdating.bio,
-      displayName: this.currentUserForUpdating.displayName
-    };
-
-    this._usersService
-      .updateUserAccountInformation(command)
-      .pipe(takeUntil(this.componentDestroyed$))
-      .subscribe({
-        next: (response) => {
-          this.currentUser = { ...this.currentUserForUpdating };
-          alert(response.message);
-        },
-        error: (error) => {
-          this._errorNotificationService.notifyOnError(error);
-        }
-      });
-  }
-
-  onUpdateProfilePictureChange(event: any): void {
-    const file: File = event.currentTarget.files[0];
-
-    const validationResult = this._validationService.validatePictureFileName(file.name);
-
-    if (!validationResult) {
+    if (!tokens?.refreshToken) {
+      this._router.navigateByUrl('login').then((r) => r);
       return;
     }
 
-    if (file) {
-      this.file = file;
-      this.fileName = file.name;
+    const refreshToken = tokens.refreshToken;
+    const logoutSub$ = this._sessionService.deleteSession(refreshToken);
+
+    const result = await firstValueFrom<BaseResponse>(logoutSub$);
+
+    if (result.success) {
+      this._router.navigateByUrl('login').then((r) => r);
     }
   }
 
+  async onSaveChangesAccountInfoClick() {
+    const command = new UpdateAccountInformationCommand(
+      this.currentUserForUpdating.birthday,
+      this.currentUserForUpdating.website,
+      this.currentUserForUpdating.username,
+      this.currentUserForUpdating.bio,
+      this.currentUserForUpdating.address,
+      this.currentUserForUpdating.displayName
+    );
+
+    const updateUserInfoSub$ = this._usersService.updateUserAccountInformation(command);
+
+    const response = await firstValueFrom<BaseResponse>(updateUserInfoSub$);
+
+    this.currentUser = { ...this.currentUserForUpdating };
+
+    alert(response.message);
+  }
+
   async onSaveChangesUpdateProfilePictureClick() {
-    const formData = new FormData();
+    const tokens = this._tokensService.getTokens();
+
+    if (!tokens) {
+      alert('Tokens are empty.');
+      return;
+    }
+
     const validationResult = this._validationService.validatePictureFileName(this.fileName);
 
     if (!validationResult) {
       return;
     }
 
+    const formData = new FormData();
     const file = this.file as File;
     formData.append('pictureFile', file);
 
     const updateProfileImage$ = this._usersService.updateProfilePicture(formData);
 
-    try {
-      const result = await firstValueFrom<UpdateProfilePictureResponse>(updateProfileImage$);
-      alert(result.message);
-      this.currentUser.pictureUrl = result.newUserPictureUrl;
-      const tokens = this._tokensService.getTokens();
+    const result = await firstValueFrom<UpdateProfilePictureResponse>(updateProfileImage$);
 
-      if (tokens?.userProfilePictureUrl) {
-        tokens.userProfilePictureUrl = result.newUserPictureUrl;
-        this._tokensService.setTokens(tokens);
-      }
-    } catch (e: any) {
-      alert(e.error.errorMessage);
-    }
+    alert(result.message);
+
+    this.currentUser.pictureUrl = result.newUserPictureUrl;
+
+    tokens.userProfilePictureUrl = result.newUserPictureUrl;
+
+    this._tokensService.setTokens(tokens);
 
     this.clearProfilePictureFile();
   }
 
-  onSaveChangesChangePasswordClick(): void {
+  async onSaveChangesChangePasswordClick() {
     const newPasswordValidationResult = this._validationService.validateField(
       'New password',
       this.changePasswordCommand.newPassword
@@ -237,40 +168,40 @@ export class SettingsComponent implements OnInit, OnDestroy {
       return;
     }
 
-    this._usersService
-      .changePassword(this.changePasswordCommand)
-      .pipe(takeUntil(this.componentDestroyed$))
-      .subscribe({
-        next: (response) => {
-          alert(response.message);
-          this.clearChangePasswordCommand();
-        },
-        error: (error) => {
-          this._errorNotificationService.notifyOnError(error);
-        }
-      });
+    const changePassSub$ = this._usersService.changePassword(this.changePasswordCommand);
+    const response = await firstValueFrom<BaseResponse>(changePassSub$);
+    this.clearChangePasswordCommand();
+    alert(response.message);
   }
 
-  onSaveChangesSocialsClick(): void {
-    const command: UpdatePersonalInformationRequest = {
+  async onSaveChangesSocialsClick() {
+    const command: UpdatePersonalInformationCommand = {
       facebook: this.currentUserForUpdating.facebook,
       twitter: this.currentUserForUpdating.twitter,
       instagram: this.currentUserForUpdating.instagram,
       linkedIn: this.currentUserForUpdating.linkedIn
     };
 
-    this._usersService
-      .updateUserSocials(command)
-      .pipe(takeUntil(this.componentDestroyed$))
-      .subscribe({
-        next: (response) => {
-          alert(response.message);
-          this.ngOnInit();
-        },
-        error: (error) => {
-          this._errorNotificationService.notifyOnError(error);
-        }
-      });
+    const saveSocialsSub$ = this._usersService.updateUserSocials(command);
+
+    const response = await firstValueFrom<BaseResponse>(saveSocialsSub$);
+
+    alert(response.message);
+  }
+
+  onUpdateProfilePictureChange(event: any): void {
+    const file: File = event.currentTarget.files[0];
+
+    const validationResult = this._validationService.validatePictureFileName(file.name);
+
+    if (!validationResult) {
+      return;
+    }
+
+    if (file) {
+      this.file = file;
+      this.fileName = file.name;
+    }
   }
 
   clearChangePasswordCommand(): void {
@@ -291,5 +222,19 @@ export class SettingsComponent implements OnInit, OnDestroy {
     fileInput.value = '';
     this.file = null;
     this.fileName = '';
+  }
+
+  onOpenAvatarClick(): void {
+    this._modalWindowStateService.setIsModalWindowShowing(true);
+    this._modalWindowStateService.setPicture(this.currentUser.pictureUrl);
+  }
+
+  closeModalWindowClick(): void {
+    this._modalWindowStateService.setIsModalWindowShowing(false);
+    this._modalWindowStateService.setPictureNull();
+  }
+
+  public get routingConstants(): typeof RoutingConstants {
+    return RoutingConstants;
   }
 }
