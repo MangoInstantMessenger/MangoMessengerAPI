@@ -99,7 +99,7 @@ public class CreateChatCommandHandler
 
         var partnerImageUrl = $"{blobServiceSettings.MangoBlobAccess}/{senderData.ImageFileName}";
 
-        var chatDto = chat.ToChatDto(partnerImageUrl, partner.DisplayName);
+        var chatDto = chat.ToChatDto(partnerImageUrl, senderData.DisplayName);
 
         await hubContext.Clients.Group(request.PartnerId.ToString()).PrivateChatCreatedAsync(chatDto);
 

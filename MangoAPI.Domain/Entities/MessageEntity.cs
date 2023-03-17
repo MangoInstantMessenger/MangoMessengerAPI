@@ -5,7 +5,7 @@ namespace MangoAPI.Domain.Entities;
 
 public sealed class MessageEntity
 {
-    public Guid Id { get; private set; } = Guid.NewGuid();
+    public Guid Id { get; private set; }
 
     public Guid UserId { get; private set; }
 
