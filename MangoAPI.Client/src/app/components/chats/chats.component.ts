@@ -4,7 +4,7 @@ import { TokensService } from '../../services/messenger/tokens.service';
 import { Chat } from '../../types/models/Chat';
 import { CommunitiesService } from '../../services/api/communities.service';
 import { ErrorNotificationService } from '../../services/messenger/error-notification.service';
-import { Router } from '@angular/router';
+import {Router} from "@angular/router";
 import { formatDate } from '@angular/common';
 import { MessagesService } from '../../services/api/messages.service';
 import { Message } from '../../types/models/Message';
@@ -39,13 +39,11 @@ export class ChatsComponent implements OnInit {
     private _communitiesService: CommunitiesService,
     private _userChatsService: UserChatsService,
     private _messagesService: MessagesService,
-    private _errorNotificationService: ErrorNotificationService,
     private _router: Router,
     private _validationService: ValidationService,
     private _apiBaseService: ApiBaseService,
     public _modalWindowStateService: ModalWindowStateService,
     public _replyStateService: ReplyStateService,
-    // private _realtimeService: RealtimeService,
     private _defaultChatHelper: DefaultChatHelper
   ) {}
 
@@ -233,7 +231,6 @@ export class ChatsComponent implements OnInit {
     const sendMessageFormData = new FormData();
 
     sendMessageFormData.append('text', newMessageText);
-    sendMessageFormData.append('messageId', messageId);
     sendMessageFormData.append('chatId', this.activeChatId);
     sendMessageFormData.append('inReplyToUser', this._replyStateService.reply?.displayName ?? '');
     sendMessageFormData.append('inReplyToText', this._replyStateService.reply?.text ?? '');
@@ -264,18 +261,19 @@ export class ChatsComponent implements OnInit {
 
     this._replyStateService.setReplyNull();
 
+    if (this.messageAttachment) {
+      this.clearAttachmentInput();
+    }
+
     this.scrollToEnd();
 
     const sendMessage$ = this._messagesService.sendMessage(sendMessageFormData);
 
     const response = await firstValueFrom<SendMessageResponse>(sendMessage$);
 
+    newMessage.messageId = response.newMessageId;
     newMessage.attachmentUrl = response.attachmentUrl;
     newMessage.createdAt = response.createdAt;
-
-    if (this.messageAttachment) {
-      this.clearAttachmentInput();
-    }
   }
 
   pushChatToTop(chatId: string) {
@@ -408,7 +406,7 @@ export class ChatsComponent implements OnInit {
   }
 
   private onMessageSendHandler(message: Message) {
-    message.self = message.userId == this.userId;
+    message.self = message.userId === this.userId;
 
     const chatIndex = this.chats.findIndex((x) => x.chatId === message.chatId);
 
@@ -423,7 +421,7 @@ export class ChatsComponent implements OnInit {
     this.chats.splice(chatIndex, 1);
     this.chats.splice(0, 0, chat);
 
-    if (this.activeChatId !== message.chatId) return;
+    if (this.activeChatId !== message.chatId || message.self) return;
 
     const messageIndex = this.messages.findIndex((x) => x.messageId === message.messageId);
 
