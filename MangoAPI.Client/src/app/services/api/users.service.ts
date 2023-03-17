@@ -1,15 +1,13 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
-import { UpdatePersonalInformationRequest } from '../../types/requests/UpdatePersonalInformationRequest';
+import { UpdatePersonalInformationCommand } from '../../types/requests/UpdatePersonalInformationCommand';
 import { BaseResponse } from '../../types/responses/BaseResponse';
 import { GetUserResponse } from '../../types/responses/GetUserResponse';
 import { RegisterCommand } from '../../types/requests/RegisterCommand';
-import { VerifyEmailCommand } from '../../types/requests/VerifyEmailCommand';
 import { UpdateAccountInformationCommand } from '../../types/requests/UpdateAccountInformationCommand';
 import { SearchContactsResponse } from '../../types/responses/SearchContactsResponse';
 import { ChangePasswordCommand } from '../../types/requests/ChangePasswordCommand';
-import { User } from '../../types/models/User';
 import { UpdateProfilePictureResponse } from '../../types/responses/UpdateProfilePictureResponse';
 import { TokensResponse } from 'src/app/types/responses/TokensResponse';
 import ApiBaseService from './api-base.service';
@@ -27,7 +25,7 @@ export class UsersService extends ApiBaseService {
   }
 
   // PUT /api/users/socials
-  updateUserSocials(request: UpdatePersonalInformationRequest): Observable<BaseResponse> {
+  updateUserSocials(request: UpdatePersonalInformationCommand): Observable<BaseResponse> {
     return this.httpClient.put<BaseResponse>(this.baseUrl + this.usersRoute + 'socials/', request);
   }
 
@@ -41,19 +39,6 @@ export class UsersService extends ApiBaseService {
     return this.httpClient.post<TokensResponse>(this.baseUrl + this.usersRoute, command);
   }
 
-  // PUT /api/users/email-confirmation
-  confirmEmail(request: VerifyEmailCommand): Observable<BaseResponse> {
-    return this.httpClient.put<BaseResponse>(
-      this.baseUrl + this.usersRoute + 'email-confirmation/',
-      request
-    );
-  }
-
-  // PUT /api/users/{phoneCode}
-  confirmPhone(phoneCode: number): Observable<BaseResponse> {
-    return this.httpClient.put<BaseResponse>(this.baseUrl + this.usersRoute + phoneCode, {});
-  }
-
   // PUT /api/users/account
   updateUserAccountInformation(request: UpdateAccountInformationCommand): Observable<BaseResponse> {
     return this.httpClient.put<SearchContactsResponse>(
@@ -65,10 +50,6 @@ export class UsersService extends ApiBaseService {
   // PUT /api/users/password
   changePassword(request: ChangePasswordCommand): Observable<BaseResponse> {
     return this.httpClient.put<BaseResponse>(this.baseUrl + this.usersRoute + 'password/', request);
-  }
-
-  getUserProfilePicture(user: User): string {
-    return user.pictureUrl ? user.pictureUrl : 'assets/media/avatar/4.png';
   }
 
   // POST /api/users/picture/{image}
