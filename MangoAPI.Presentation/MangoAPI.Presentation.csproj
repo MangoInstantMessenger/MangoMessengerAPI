@@ -7,7 +7,7 @@
         <LangVersion>10</LangVersion>
         <EnableNETAnalyzers>true</EnableNETAnalyzers>
         <AnalysisMode>Recommended</AnalysisMode>
-        <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+<!--        <GenerateAssemblyInfo>false</GenerateAssemblyInfo>-->
         <UserSecretsId>3f259e1e-18a7-420c-a458-517f9704c3e9</UserSecretsId>
     </PropertyGroup>
 
