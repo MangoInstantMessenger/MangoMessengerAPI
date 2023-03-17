@@ -18,8 +18,5 @@ public class SendMessageRequest
     [DefaultValue("2021-08-01T00:00:00.0000000")]
     public DateTime? CreatedAt { get; set; }
 
-    [DefaultValue("f56ac722-a57b-411c-8306-c2e05fb1a8df")]
-    public Guid? MessageId { get; set; }
-
     public IFormFile Attachment { get; set; }
 }

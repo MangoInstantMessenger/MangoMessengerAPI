@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Http;
 namespace MangoAPI.BusinessLogic.ApiCommands.Messages;
 
 public record SendMessageCommand(
-        Guid MessageId,
         Guid UserId,
         Guid ChatId,
         string Text,

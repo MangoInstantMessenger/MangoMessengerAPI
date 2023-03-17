@@ -73,7 +73,6 @@ public class SendMessageCommandHandler
         var attachmentUniqueFileName = await UploadAttachmentIfExistsAsync(request);
 
         var messageEntity = MessageEntity.Create(
-            request.MessageId,
             request.UserId,
             request.ChatId,
             request.Text,

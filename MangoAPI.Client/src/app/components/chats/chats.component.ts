@@ -3,7 +3,6 @@ import { Component, OnInit } from '@angular/core';
 import { TokensService } from '../../services/messenger/tokens.service';
 import { Chat } from '../../types/models/Chat';
 import { CommunitiesService } from '../../services/api/communities.service';
-import { ErrorNotificationService } from '../../services/messenger/error-notification.service';
 import { Router } from '@angular/router';
 import { formatDate } from '@angular/common';
 import { MessagesService } from '../../services/api/messages.service';
@@ -39,13 +38,11 @@ export class ChatsComponent implements OnInit {
     private _communitiesService: CommunitiesService,
     private _userChatsService: UserChatsService,
     private _messagesService: MessagesService,
-    private _errorNotificationService: ErrorNotificationService,
     private _router: Router,
     private _validationService: ValidationService,
     private _apiBaseService: ApiBaseService,
     public _modalWindowStateService: ModalWindowStateService,
     public _replyStateService: ReplyStateService,
-    // private _realtimeService: RealtimeService,
     private _defaultChatHelper: DefaultChatHelper
   ) {}
 
@@ -95,8 +92,6 @@ export class ChatsComponent implements OnInit {
     const chatsSub$ = this._communitiesService.getUserChats();
     const chatsResult = await firstValueFrom<GetUserChatsResponse>(chatsSub$);
 
-    console.log(chatsResult.chats);
-
     this.chats = chatsResult.chats.filter((x) => !x.isArchived);
 
     if (this.connection.state !== signalR.HubConnectionState.Connected) {
@@ -120,7 +115,6 @@ export class ChatsComponent implements OnInit {
 
           this.connection.invoke('JoinGroup', x.chatId).then(() => {
             this.realTimeConnections.push(x.chatId);
-            console.log(`SignalR JoinGroup: ${x.chatId}`);
           });
         });
 
@@ -147,7 +141,6 @@ export class ChatsComponent implements OnInit {
 
       this.connection.invoke('JoinGroup', chat.chatId).then(() => {
         this.realTimeConnections.push(chat.chatId);
-        console.log(`SignalR JoinGroup: ${chat.chatId}`);
       });
     });
 
@@ -204,7 +197,6 @@ export class ChatsComponent implements OnInit {
     const getMessagesSub$ = this._messagesService.getChatMessages(chatId);
     const messagesResult = await firstValueFrom<GetChatMessagesResponse>(getMessagesSub$);
 
-    console.log(messagesResult.messages);
     this.messages = messagesResult.messages;
     this.scrollToEnd();
   }
@@ -233,7 +225,6 @@ export class ChatsComponent implements OnInit {
     const sendMessageFormData = new FormData();
 
     sendMessageFormData.append('text', newMessageText);
-    sendMessageFormData.append('messageId', messageId);
     sendMessageFormData.append('chatId', this.activeChatId);
     sendMessageFormData.append('inReplyToUser', this._replyStateService.reply?.displayName ?? '');
     sendMessageFormData.append('inReplyToText', this._replyStateService.reply?.text ?? '');
@@ -260,9 +251,18 @@ export class ChatsComponent implements OnInit {
 
     this.messages.push(newMessage);
 
+    this.activeChat.lastMessageAuthor = newMessage.userDisplayName;
+    this.activeChat.lastMessageText = newMessage.text;
+    this.activeChat.lastMessageTime = newMessage.createdAt;
+    this.activeChat.lastMessageId = newMessage.messageId;
+
     this.pushChatToTop(this.activeChatId);
 
     this._replyStateService.setReplyNull();
+
+    if (this.messageAttachment) {
+      this.clearAttachmentInput();
+    }
 
     this.scrollToEnd();
 
@@ -270,12 +270,9 @@ export class ChatsComponent implements OnInit {
 
     const response = await firstValueFrom<SendMessageResponse>(sendMessage$);
 
+    newMessage.messageId = response.newMessageId;
     newMessage.attachmentUrl = response.attachmentUrl;
     newMessage.createdAt = response.createdAt;
-
-    if (this.messageAttachment) {
-      this.clearAttachmentInput();
-    }
   }
 
   pushChatToTop(chatId: string) {
@@ -322,12 +319,9 @@ export class ChatsComponent implements OnInit {
 
   async onJoinChatClick() {
     const joinChatSub$ = this._userChatsService.joinCommunity(this.activeChatId);
-    const joinResult = await firstValueFrom<BaseResponse>(joinChatSub$);
-
-    console.log(joinResult.message);
+    await firstValueFrom<BaseResponse>(joinChatSub$);
     this.searchChatQuery = '';
     this.activeChat.isMember = true;
-
     await this.initializeView();
   }
 
@@ -339,8 +333,6 @@ export class ChatsComponent implements OnInit {
 
     const searchChatSub$ = this._communitiesService.searchChat(this.searchChatQuery);
     const searchChatResult = await firstValueFrom<GetUserChatsResponse>(searchChatSub$);
-
-    console.log(searchChatResult.chats);
 
     this.chatFilter = 'Search results';
     this.chats = searchChatResult.chats;
@@ -357,8 +349,6 @@ export class ChatsComponent implements OnInit {
       this.searchMessagesQuery
     );
     const searchMessageResult = await firstValueFrom<GetChatMessagesResponse>(searchMessageSub$);
-
-    console.log(searchMessageResult.messages);
     this.messages = searchMessageResult.messages;
   }
 
@@ -408,7 +398,9 @@ export class ChatsComponent implements OnInit {
   }
 
   private onMessageSendHandler(message: Message) {
-    message.self = message.userId == this.userId;
+    message.self = message.userId === this.userId;
+
+    if (message.self) return;
 
     const chatIndex = this.chats.findIndex((x) => x.chatId === message.chatId);
 
