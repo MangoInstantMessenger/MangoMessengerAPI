@@ -10,4 +10,4 @@ public record UpdatePersonalInformationCommand(
         string LinkedIn,
         string Facebook,
         string Twitter)
-    : IRequest<Result<ResponseBase>>;
+    : IRequest<Result<UpdatePersonalInformationResponse>>;

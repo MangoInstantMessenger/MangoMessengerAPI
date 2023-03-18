@@ -19,6 +19,8 @@ import { GetUserResponse } from '../../types/responses/GetUserResponse';
 import { GetAppInfoResponse } from '../../types/responses/GetAppInfoResponse';
 import { BaseResponse } from '../../types/responses/BaseResponse';
 import { SettingsHelper } from './settings.helper';
+import { UpdatePersonalInformationResponse } from '../../types/responses/UpdatePersonalInformationResponse';
+import { UpdateUserAccountInfoResponse } from '../../types/responses/UpdateUserAccountInfoResponse';
 
 @Component({
   selector: 'app-settings',
@@ -63,8 +65,6 @@ export class SettingsComponent implements OnInit {
 
     const getUserInfoResponse = await firstValueFrom<GetUserResponse>(getUserInfoSub$);
 
-    // console.log(JSON.stringify(getUserInfoResponse.user));
-
     this.currentUser = getUserInfoResponse.user;
 
     this.currentUserForUpdating = { ...getUserInfoResponse.user };
@@ -106,14 +106,31 @@ export class SettingsComponent implements OnInit {
 
     const updateUserInfoSub$ = this._usersService.updateUserAccountInformation(command);
 
-    const response = await firstValueFrom<BaseResponse>(updateUserInfoSub$);
+    const response = await firstValueFrom<UpdateUserAccountInfoResponse>(updateUserInfoSub$);
 
-    this.currentUser = { ...this.currentUserForUpdating };
+    this.currentUser = response.user;
 
     alert(response.message);
   }
 
-  async onSaveChangesUpdateProfilePictureClick() {
+  async onSavePersonalInformationClick() {
+    const command: UpdatePersonalInformationCommand = {
+      facebook: this.currentUserForUpdating.facebook,
+      twitter: this.currentUserForUpdating.twitter,
+      instagram: this.currentUserForUpdating.instagram,
+      linkedIn: this.currentUserForUpdating.linkedIn
+    };
+
+    const saveSocialsSub$ = this._usersService.updateUserSocials(command);
+
+    const response = await firstValueFrom<UpdatePersonalInformationResponse>(saveSocialsSub$);
+
+    this.currentUser = response.user;
+
+    alert(response.message);
+  }
+
+  async onSaveProfilePictureClick() {
     const tokens = this._tokensService.getTokens();
 
     if (!tokens) {
@@ -131,19 +148,24 @@ export class SettingsComponent implements OnInit {
     const file = this.file as File;
     formData.append('pictureFile', file);
 
-    const updateProfileImage$ = this._usersService.updateProfilePicture(formData);
+    try {
+      const updateProfileImage$ = this._usersService.updateProfilePicture(formData);
 
-    const result = await firstValueFrom<UpdateProfilePictureResponse>(updateProfileImage$);
+      const result = await firstValueFrom<UpdateProfilePictureResponse>(updateProfileImage$);
 
-    alert(result.message);
+      alert(result.message);
 
-    this.currentUser.pictureUrl = result.newUserPictureUrl;
+      this.currentUser.pictureUrl = result.newUserPictureUrl;
 
-    tokens.userProfilePictureUrl = result.newUserPictureUrl;
+      tokens.userProfilePictureUrl = result.newUserPictureUrl;
 
-    this._tokensService.setTokens(tokens);
+      this._tokensService.setTokens(tokens);
 
-    this.clearProfilePictureFile();
+      this.clearProfilePictureFile();
+    } catch (e) {
+      this._errorNotificationService.notifyOnError(e);
+      this.clearProfilePictureFile();
+    }
   }
 
   async onSaveChangesChangePasswordClick() {
@@ -171,21 +193,6 @@ export class SettingsComponent implements OnInit {
     const changePassSub$ = this._usersService.changePassword(this.changePasswordCommand);
     const response = await firstValueFrom<BaseResponse>(changePassSub$);
     this.clearChangePasswordCommand();
-    alert(response.message);
-  }
-
-  async onSavePersonalInformationClick() {
-    const command: UpdatePersonalInformationCommand = {
-      facebook: this.currentUserForUpdating.facebook,
-      twitter: this.currentUserForUpdating.twitter,
-      instagram: this.currentUserForUpdating.instagram,
-      linkedIn: this.currentUserForUpdating.linkedIn
-    };
-
-    const saveSocialsSub$ = this._usersService.updateUserSocials(command);
-
-    const response = await firstValueFrom<BaseResponse>(saveSocialsSub$);
-
     alert(response.message);
   }
 

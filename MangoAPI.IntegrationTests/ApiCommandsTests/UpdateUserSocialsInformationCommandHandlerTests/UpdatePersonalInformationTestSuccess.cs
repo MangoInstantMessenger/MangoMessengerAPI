@@ -1,25 +1,24 @@
 ﻿using MangoAPI.BusinessLogic;
-using System;
 using System.Threading;
 using System.Threading.Tasks;
 using MangoAPI.BusinessLogic.ApiCommands.Users;
-using MangoAPI.BusinessLogic.Responses;
-using MangoAPI.Domain.Constants;
+using MangoAPI.IntegrationTests.Helpers;
 using Xunit;
 
 namespace MangoAPI.IntegrationTests.ApiCommandsTests.UpdateUserSocialsInformationCommandHandlerTests;
 
-public class UpdateUserSocialsInformationTestShouldThrowUserNotFound : IntegrationTestBase
+public class UpdatePersonalInformationTestSuccess : IntegrationTestBase
 {
-    private readonly Assert<ResponseBase> assert = new();
+    private readonly Assert<UpdatePersonalInformationResponse> assert = new();
 
     [Fact]
-    public async Task UpdateUserSocialsInformationTestSuccessAsync()
+    public async Task UpdatePersonalInformationTestSuccessAsync()
     {
-        const string expectedMessage = ResponseMessageCodes.UserNotFound;
-        var expectedDetails = ResponseMessageCodes.ErrorDictionary[expectedMessage];
+        var user = await MangoModule.RequestAsync(
+            request: CommandHelper.RegisterPetroCommand(),
+            cancellationToken: CancellationToken.None);
         var command = new UpdatePersonalInformationCommand(
-            UserId: Guid.NewGuid(),
+            UserId: user.Response.Tokens.UserId,
             Instagram: "petro.kolosov",
             LinkedIn: "petro.kolosov",
             Facebook: "petro.kolosov",
@@ -27,6 +26,6 @@ public class UpdateUserSocialsInformationTestShouldThrowUserNotFound : Integrati
 
         var result = await MangoModule.RequestAsync(command, CancellationToken.None);
 
-        assert.Fail(result, expectedMessage, expectedDetails);
+        assert.Pass(result);
     }
 }

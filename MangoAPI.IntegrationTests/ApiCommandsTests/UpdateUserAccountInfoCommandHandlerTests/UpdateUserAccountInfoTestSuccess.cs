@@ -3,7 +3,6 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using MangoAPI.BusinessLogic.ApiCommands.Users;
-using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.IntegrationTests.Helpers;
 using Xunit;
 
@@ -11,7 +10,7 @@ namespace MangoAPI.IntegrationTests.ApiCommandsTests.UpdateUserAccountInfoComman
 
 public class UpdateUserAccountInfoTestSuccess : IntegrationTestBase
 {
-    private readonly Assert<ResponseBase> assert = new();
+    private readonly Assert<UpdateUserAccountInfoResponse> assert = new();
 
     [Fact]
     public async Task UpdateUserAccountInfoTestSuccessAsync()
@@ -19,7 +18,7 @@ public class UpdateUserAccountInfoTestSuccess : IntegrationTestBase
         var petroCommand = CommandHelper.RegisterPetroCommand();
         var petroResult = await MangoModule.RequestAsync(petroCommand, CancellationToken.None);
         var petroId = petroResult.Response.Tokens.UserId;
-        
+
         var command = new UpdateUserAccountInfoCommand(
             petroId,
             Username: "PetroKolosov",
