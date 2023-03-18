@@ -15,7 +15,6 @@ import { DatePipe } from '@angular/common';
 import { CreateGroupComponent } from './components/create-group/create-group.component';
 import { FormsModule } from '@angular/forms';
 import { NavbarComponent } from './components/navbar/navbar.component';
-import { ChatHasMessagesPipe } from './components/chats/chatHasMessagesPipe';
 
 const initializeAppFactory = (): Promise<void> => {
   const configUrl = 'assets/config/config.json';
@@ -40,8 +39,7 @@ const initializeAppFactory = (): Promise<void> => {
     SettingsComponent,
     NotFoundComponent,
     CreateGroupComponent,
-    NavbarComponent,
-    ChatHasMessagesPipe
+    NavbarComponent
   ],
   imports: [BrowserModule, AppRoutingModule, FormsModule, HttpClientModule],
   providers: [
