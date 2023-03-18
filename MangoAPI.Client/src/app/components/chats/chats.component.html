@@ -288,9 +288,9 @@
                         (click)="
                           onReplyClick(
                             message.messageId,
-                            message.userDisplayName,
+                            message.displayName,
                             message.text,
-                            message.userDisplayNameColour
+                            message.displayNameColour
                           )
                         "
                       />
@@ -313,15 +313,15 @@
                       <div
                         *ngIf="!message.attachmentUrl"
                         class="display-name {{
-                          getDisplayNameColour(message.userDisplayNameColour)
+                          getDisplayNameColour(message.displayNameColour)
                         }}"
                       >
-                        {{ message.userDisplayName }}
+                        {{ message.displayName }}
                       </div>
                       <div *ngIf="message.inReplyToUser" class="message-reply">
                         <p
                           class="message-reply-displayname {{
-                            getDisplayNameColour(message.userDisplayNameColour)
+                            getDisplayNameColour(message.displayNameColour)
                           }}"
                         >
                           {{ message.inReplyToUser }}
@@ -348,9 +348,9 @@
                           (click)="
                             onReplyClick(
                               message.messageId,
-                              message.userDisplayName,
+                              message.displayName,
                               message.text,
-                              message.userDisplayNameColour
+                              message.displayNameColour
                             )
                           "
                         />

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.ComponentModel;
-using MangoAPI.Domain.Entities;
 using MangoAPI.Domain.Enums;
 
 namespace MangoAPI.BusinessLogic.Models;
@@ -42,33 +41,33 @@ public record Message
     [DefaultValue("Hello world!")] public string InReplyToText { get; init; }
 }
 
-public static class MessageMapper
-{
-    public static Message ToMessage(
-        this MessageEntity message,
-        string displayName,
-        Guid userId,
-        DisplayNameColour displayNameColour,
-        string authorPictureUrl,
-        string attachmentUrl)
-    {
-        var messageDto = new Message
-        {
-            MessageId = message.Id,
-            UserId = message.UserId,
-            ChatId = message.ChatId,
-            UserDisplayName = displayName,
-            UserDisplayNameColour = displayNameColour,
-            Text = message.Text,
-            CreatedAt = message.CreatedAt,
-            UpdatedAt = message.UpdatedAt,
-            Self = message.UserId == userId,
-            InReplyToUser = message.InReplyToUser,
-            InReplyToText = message.InReplyToText,
-            AuthorImageUrl = authorPictureUrl,
-            AttachmentUrl = attachmentUrl
-        };
-
-        return messageDto;
-    }
-}
+// public static class MessageMapper
+// {
+//     public static Message ToMessage(
+//         this MessageEntity message,
+//         string displayName,
+//         Guid userId,
+//         DisplayNameColour displayNameColour,
+//         string authorPictureUrl,
+//         string attachmentUrl)
+//     {
+//         var messageDto = new Message
+//         {
+//             MessageId = message.Id,
+//             UserId = message.UserId,
+//             ChatId = message.ChatId,
+//             UserDisplayName = displayName,
+//             UserDisplayNameColour = displayNameColour,
+//             Text = message.Text,
+//             CreatedAt = message.CreatedAt,
+//             UpdatedAt = message.UpdatedAt,
+//             Self = message.UserId == userId,
+//             InReplyToUser = message.InReplyToUser,
+//             InReplyToText = message.InReplyToText,
+//             AuthorImageUrl = authorPictureUrl,
+//             AttachmentUrl = attachmentUrl
+//         };
+//
+//         return messageDto;
+//     }
+// }

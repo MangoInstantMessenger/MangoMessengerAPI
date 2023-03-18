@@ -2,13 +2,10 @@
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using MangoAPI.BusinessLogic.HubConfig;
-using MangoAPI.BusinessLogic.Models;
 using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.Domain.Constants;
 using MangoAPI.Infrastructure.Database;
 using MediatR;
-using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 
 namespace MangoAPI.BusinessLogic.ApiCommands.Messages;
@@ -17,16 +14,13 @@ public class EditMessageCommandHandler
     : IRequestHandler<EditMessageCommand, Result<ResponseBase>>
 {
     private readonly MangoDbContext dbContext;
-    private readonly IHubContext<ChatHub, IHubClient> hubContext;
     private readonly ResponseFactory<ResponseBase> responseFactory;
 
     public EditMessageCommandHandler(
         MangoDbContext dbContext,
-        IHubContext<ChatHub, IHubClient> hubContext,
         ResponseFactory<ResponseBase> responseFactory)
     {
         this.dbContext = dbContext;
-        this.hubContext = hubContext;
         this.responseFactory = responseFactory;
     }
 
@@ -88,17 +82,6 @@ public class EditMessageCommandHandler
         dbContext.Chats.Update(chat);
 
         await dbContext.SaveChangesAsync(cancellationToken);
-
-        var messageDeleteNotification = new MessageEditNotification
-        {
-            MessageId = request.MessageId,
-            ModifiedText = request.ModifiedText,
-            UpdatedAt = updatedAt,
-            IsLastMessage = messageIsLast,
-        };
-
-        await hubContext.Clients.Group(message.ChatId.ToString())
-            .NotifyOnMessageEditAsync(messageDeleteNotification);
 
         return responseFactory.SuccessResponse(DeleteMessageResponse.FromSuccess(message));
     }

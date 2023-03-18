@@ -2,13 +2,15 @@
 using System.Threading;
 using System.Threading.Tasks;
 using MangoAPI.BusinessLogic.HubConfig;
-using MangoAPI.BusinessLogic.Models;
+using MangoAPI.BusinessLogic.Notifications;
 using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.Domain.Constants;
+using MangoAPI.Domain.Entities;
 using MangoAPI.Infrastructure.Database;
 using MediatR;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
+using System;
 
 namespace MangoAPI.BusinessLogic.ApiCommands.Messages;
 
@@ -33,9 +35,15 @@ public class DeleteMessageCommandHandler
         DeleteMessageCommand request,
         CancellationToken cancellationToken)
     {
+        // TODO: add select here, you need only two properties
         var checkMessage = await dbContext.Messages
             .Include(x => x.User)
-            .FirstOrDefaultAsync(t => t.Id == request.MessageId, cancellationToken);
+            .Select(x=> new
+            {
+                MessageId = x.Id,
+                UserId = x.User.Id
+            })
+            .FirstOrDefaultAsync(t => t.MessageId == request.MessageId, cancellationToken);
 
         if (checkMessage == null)
         {
@@ -45,7 +53,7 @@ public class DeleteMessageCommandHandler
             return responseFactory.ConflictResponse(errorMessage, errorDescription);
         }
 
-        if (checkMessage.User.Id != request.UserId)
+        if (checkMessage.UserId != request.UserId)
         {
             const string errorMessage = ResponseMessageCodes.Unauthorized;
             var errorDescription = ResponseMessageCodes.ErrorDictionary[errorMessage];
@@ -56,7 +64,7 @@ public class DeleteMessageCommandHandler
         var query = dbContext.UserChats
             .Include(x => x.Chat)
             .ThenInclude(x => x.Messages)
-            .ThenInclude(x => x.User)
+            // .ThenInclude(x => x.User)
             .Where(x => x.ChatId == request.ChatId && x.UserId == request.UserId)
             .Select(x => x.Chat);
 
@@ -70,42 +78,80 @@ public class DeleteMessageCommandHandler
             return responseFactory.ConflictResponse(errorMessage, errorDescription);
         }
 
-        var message = chat.Messages.First(x => x.Id == request.MessageId);
+        var deletedMessage = chat.Messages.First(x => x.Id == request.MessageId);
 
-        dbContext.Entry(message.User).State = EntityState.Detached;
+        // dbContext.Entry(deletedMessage.User).State = EntityState.Detached;
 
-        var deleteNotification = new MessageDeleteNotification
-        {
-            ChatId = request.ChatId, DeletedMessageId = request.MessageId, IsLastMessage = false,
-        };
+        // var deleteNotification = new MessageDeleteNotification
+        // {
+        //     ChatId = request.ChatId, DeletedMessageId = request.MessageId, IsLastMessage = false,
+        // };
 
-        var messageIsLast = chat.LastMessageId.HasValue && chat.LastMessageId == request.MessageId;
+        // var deleteNotification = new MessageDeleteNotification(request.ChatId, request.MessageId, String.Empty, null, null,string.Empty, fal)
 
-        if (messageIsLast)
-        {
-            var newLastMessage = chat.Messages
-                .Where(x => x != message).MaxBy(x => x.CreatedAt);
+        var isMessageLast = chat.LastMessageId.HasValue && chat.LastMessageId == request.MessageId;
 
-            deleteNotification.NewLastMessageAuthor = newLastMessage?.User?.DisplayName;
-            deleteNotification.NewLastMessageId = newLastMessage?.Id;
-            deleteNotification.NewLastMessageText = newLastMessage?.Text;
-            deleteNotification.NewLastMessageTime = newLastMessage?.CreatedAt;
-            deleteNotification.IsLastMessage = true;
+        var deleteNotification = isMessageLast
+            ? UpdateChatLastMessageAndReturnNotification(chat, deletedMessage)
+            : CreateNotLastMessageNotification(chat.Id, deletedMessage.Id);
 
-            chat.UpdateLastMessage(
-                lastMessageAuthor: newLastMessage?.User?.DisplayName,
-                lastMessageText: newLastMessage?.Text,
-                newLastMessage?.CreatedAt,
-                newLastMessage?.Id);
-        }
+        // if (isMessageLast)
+        // {
+        //     UpdateChatLastMessageAndReturnNotification(chat, deletedMessage);
+        // }
 
-        dbContext.Messages.Remove(message);
+        dbContext.Messages.Remove(deletedMessage);
         dbContext.Chats.Update(chat);
 
         await dbContext.SaveChangesAsync(cancellationToken);
 
-        await hubContext.Clients.Group(message.ChatId.ToString()).NotifyOnMessageDeleteAsync(deleteNotification);
+        await hubContext.Clients.Group(deletedMessage.ChatId.ToString()).MessageDeletedAsync(deleteNotification);
 
-        return responseFactory.SuccessResponse(DeleteMessageResponse.FromSuccess(message));
+        return responseFactory.SuccessResponse(DeleteMessageResponse.FromSuccess(deletedMessage));
+    }
+
+    private static MessageDeleteNotification UpdateChatLastMessageAndReturnNotification(
+        ChatEntity chat,
+        MessageEntity deletedMessage)
+    {
+        var newLastMessage = chat.Messages
+            .Where(x => x.Id != deletedMessage.Id).MaxBy(x => x.CreatedAt);
+
+        // deleteNotification.NewLastMessageAuthor = newLastMessage?.User?.DisplayName;
+        // deleteNotification.NewLastMessageId = newLastMessage?.Id;
+        // deleteNotification.NewLastMessageText = newLastMessage?.Text;
+        // deleteNotification.NewLastMessageTime = newLastMessage?.CreatedAt;
+        // deleteNotification.IsLastMessage = true;
+
+        chat.UpdateLastMessage(
+            lastMessageAuthor: newLastMessage?.User?.DisplayName,
+            lastMessageText: newLastMessage?.Text,
+            newLastMessage?.CreatedAt,
+            newLastMessage?.Id);
+
+        var deleteNotification = new MessageDeleteNotification(
+            chat.Id,
+            deletedMessage.Id,
+            newLastMessage?.Text,
+            newLastMessage?.CreatedAt,
+            newLastMessage?.Id,
+            newLastMessage?.User?.DisplayName,
+            IsLastMessage: true);
+
+        return deleteNotification;
+    }
+
+    private static MessageDeleteNotification CreateNotLastMessageNotification(Guid chatId, Guid deletedMessageId)
+    {
+        var deleteNotification = new MessageDeleteNotification(
+            chatId,
+            deletedMessageId,
+            NewLastMessageText: string.Empty,
+            NewLastMessageTime: null,
+            NewLastMessageId: null,
+            NewLastMessageDisplayName: null,
+            IsLastMessage: false);
+
+        return deleteNotification;
     }
 }
