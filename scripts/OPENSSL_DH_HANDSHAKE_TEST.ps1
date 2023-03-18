@@ -1,32 +1,47 @@
+param(
+    [Parameter(Mandatory = $true, Position = 0)]
+    [string] $senderId,
+    [Parameter(Mandatory = $true, Position = 1)]
+    [string] $senderUsername,
+    [Parameter(Mandatory = $true, Position = 2)]
+    [string] $senderPassword,
+    [Parameter(Mandatory = $true, Position = 3)]
+    [string] $receiverId,
+    [Parameter(Mandatory = $true, Position = 4)]
+    [string] $receiverUsername,
+    [Parameter(Mandatory = $true, Position = 5)]
+    [string] $receiverPassword
+)
+
 # generate dh parameters
-MangoAPI.DiffieHellmanConsole login $env:SENDER_EMAIL $env:SENDER_PASSWORD;
-MangoAPI.DiffieHellmanConsole openssl-generate-dh-parameters;
-MangoAPI.DiffieHellmanConsole openssl-upload-dh-parameters;
+dotnet MangoAPI.DiffieHellmanConsole.dll login $senderUsername $senderPassword;
+dotnet MangoAPI.DiffieHellmanConsole.dll openssl-generate-dh-parameters;
+dotnet MangoAPI.DiffieHellmanConsole.dll openssl-upload-dh-parameters;
 
 # sender sends key exchange request
-MangoAPI.DiffieHellmanConsole login $env:SENDER_EMAIL $env:SENDER_PASSWORD;
-MangoAPI.DiffieHellmanConsole openssl-download-dh-parameters;
-MangoAPI.DiffieHellmanConsole openssl-generate-private-key $env:RECEIVER_ID;
-MangoAPI.DiffieHellmanConsole openssl-generate-public-key $env:RECEIVER_ID;
-MangoAPI.DiffieHellmanConsole openssl-create-key-exchange $env:RECEIVER_ID;
+dotnet MangoAPI.DiffieHellmanConsole.dll login $senderUsername $senderPassword;
+dotnet MangoAPI.DiffieHellmanConsole.dll openssl-download-dh-parameters;
+dotnet MangoAPI.DiffieHellmanConsole.dll openssl-generate-private-key $receiverId;
+dotnet MangoAPI.DiffieHellmanConsole.dll openssl-generate-public-key $receiverId;
+dotnet MangoAPI.DiffieHellmanConsole.dll openssl-create-key-exchange $receiverId;
 
 # receiver confirms key exchange request
-MangoAPI.DiffieHellmanConsole login $env:RECEIVER_EMAIL $env:RECEIVER_PASSWORD;
-MangoAPI.DiffieHellmanConsole openssl-download-dh-parameters;
-MangoAPI.DiffieHellmanConsole openssl-generate-private-key $env:SENDER_ID;
-MangoAPI.DiffieHellmanConsole openssl-generate-public-key $env:SENDER_ID;
-MangoAPI.DiffieHellmanConsole openssl-print-key-exchanges;
-MangoAPI.DiffieHellmanConsole openssl-confirm-key-exchange $env:SENDER_ID;
+dotnet MangoAPI.DiffieHellmanConsole.dll login $receiverUsername $receiverPassword;
+dotnet MangoAPI.DiffieHellmanConsole.dll openssl-download-dh-parameters;
+dotnet MangoAPI.DiffieHellmanConsole.dll openssl-generate-private-key $senderId;
+dotnet MangoAPI.DiffieHellmanConsole.dll openssl-generate-public-key $senderId;
+dotnet MangoAPI.DiffieHellmanConsole.dll openssl-print-key-exchanges;
+dotnet MangoAPI.DiffieHellmanConsole.dll openssl-confirm-key-exchange $senderId;
 
 # receiver generates common secret
-MangoAPI.DiffieHellmanConsole openssl-download-public-key --receiver $env:SENDER_ID;
-MangoAPI.DiffieHellmanConsole openssl-create-common-secret --receiver $env:SENDER_ID;
+dotnet MangoAPI.DiffieHellmanConsole.dll openssl-download-public-key --receiver $senderId;
+dotnet MangoAPI.DiffieHellmanConsole.dll openssl-create-common-secret --receiver $senderId;
 
 # sender generates common secret
-MangoAPI.DiffieHellmanConsole login $env:SENDER_EMAIL $env:SENDER_PASSWORD;
-MangoAPI.DiffieHellmanConsole openssl-print-key-exchanges;
-MangoAPI.DiffieHellmanConsole openssl-download-public-key --sender $env:RECEIVER_ID;
-MangoAPI.DiffieHellmanConsole openssl-create-common-secret --sender $env:RECEIVER_ID;
+dotnet MangoAPI.DiffieHellmanConsole.dll login $senderUsername $senderPassword;
+dotnet MangoAPI.DiffieHellmanConsole.dll openssl-print-key-exchanges;
+dotnet MangoAPI.DiffieHellmanConsole.dll openssl-download-public-key --sender $receiverId;
+dotnet MangoAPI.DiffieHellmanConsole.dll openssl-create-common-secret --sender $receiverId;
 
 # validate common secrets
-MangoAPI.DiffieHellmanConsole openssl-validate-common-secret $env:SENDER_ID $env:RECEIVER_ID;
+dotnet MangoAPI.DiffieHellmanConsole.dll openssl-validate-common-secret $senderId $receiverId;
