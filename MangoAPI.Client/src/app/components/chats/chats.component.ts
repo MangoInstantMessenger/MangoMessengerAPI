@@ -330,8 +330,6 @@ export class ChatsComponent implements OnInit {
   }
 
   onReplyClick(message: Message) {
-    console.log(JSON.stringify(message));
-
     const replyEntity = new Reply(
       message.messageId,
       message.displayName,
