@@ -36,6 +36,7 @@ public class
         CancellationToken cancellationToken)
     {
         var user = await dbContext.Users
+            .Include(x => x.PersonalInformation)
             .FirstOrDefaultAsync(x => x.Id == request.UserId, cancellationToken);
 
         if (user is null)

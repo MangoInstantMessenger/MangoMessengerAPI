@@ -20,6 +20,7 @@ import { GetAppInfoResponse } from '../../types/responses/GetAppInfoResponse';
 import { BaseResponse } from '../../types/responses/BaseResponse';
 import { SettingsHelper } from './settings.helper';
 import { UpdatePersonalInformationResponse } from '../../types/responses/UpdatePersonalInformationResponse';
+import { UpdateUserAccountInfoResponse } from '../../types/responses/UpdateUserAccountInfoResponse';
 
 @Component({
   selector: 'app-settings',
@@ -105,9 +106,13 @@ export class SettingsComponent implements OnInit {
 
     const updateUserInfoSub$ = this._usersService.updateUserAccountInformation(command);
 
-    const response = await firstValueFrom<BaseResponse>(updateUserInfoSub$);
+    const response = await firstValueFrom<UpdateUserAccountInfoResponse>(updateUserInfoSub$);
 
-    this.currentUser = { ...this.currentUserForUpdating };
+    console.log(JSON.stringify(response.user));
+
+    this.currentUser = response.user;
+
+    // this.currentUser = { ...this.currentUserForUpdating };
 
     alert(response.message);
   }

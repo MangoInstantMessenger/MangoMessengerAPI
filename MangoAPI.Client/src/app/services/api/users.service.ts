@@ -12,6 +12,7 @@ import { UpdateProfilePictureResponse } from '../../types/responses/UpdateProfil
 import { TokensResponse } from 'src/app/types/responses/TokensResponse';
 import ApiBaseService from './api-base.service';
 import { UpdatePersonalInformationResponse } from '../../types/responses/UpdatePersonalInformationResponse';
+import { UpdateUserAccountInfoResponse } from '../../types/responses/UpdateUserAccountInfoResponse';
 
 @Injectable({
   providedIn: 'root'
@@ -46,8 +47,10 @@ export class UsersService extends ApiBaseService {
   }
 
   // PUT /api/users/account
-  updateUserAccountInformation(request: UpdateAccountInformationCommand): Observable<BaseResponse> {
-    return this.httpClient.put<SearchContactsResponse>(
+  updateUserAccountInformation(
+    request: UpdateAccountInformationCommand
+  ): Observable<UpdateUserAccountInfoResponse> {
+    return this.httpClient.put<UpdateUserAccountInfoResponse>(
       this.baseUrl + this.usersRoute + 'account/',
       request
     );
