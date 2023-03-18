@@ -329,13 +329,15 @@ export class ChatsComponent implements OnInit {
     this.chats.splice(0, 0, chat);
   }
 
-  onReplyClick(
-    messageId: string,
-    displayName: string,
-    text: string,
-    displayNameColour: DisplayNameColours
-  ) {
-    const replyEntity = new Reply(messageId, displayName, text, displayNameColour);
+  onReplyClick(message: Message) {
+    console.log(JSON.stringify(message));
+
+    const replyEntity = new Reply(
+      message.messageId,
+      message.displayName,
+      message.text,
+      message.displayNameColour
+    );
 
     this._replyStateService.setReply(replyEntity);
     this.scrollToEnd();

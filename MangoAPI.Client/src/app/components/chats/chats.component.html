@@ -286,12 +286,7 @@
                         alt="Reply Icon"
                         src="./../../../assets/svg/reply.svg"
                         (click)="
-                          onReplyClick(
-                            message.messageId,
-                            message.displayName,
-                            message.text,
-                            message.displayNameColour
-                          )
+                          onReplyClick(message)
                         "
                       />
                     </div>
@@ -345,14 +340,7 @@
                         <img
                           alt="Reply Icon"
                           src="./../../../assets/svg/reply.svg"
-                          (click)="
-                            onReplyClick(
-                              message.messageId,
-                              message.displayName,
-                              message.text,
-                              message.displayNameColour
-                            )
-                          "
+                          (click)="onReplyClick(message)"
                         />
                       </div>
                     </div>

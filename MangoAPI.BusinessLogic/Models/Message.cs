@@ -18,9 +18,9 @@ public record Message
     [DefaultValue("11aed827-db8a-47de-bc81-13337703091f")]
     public Guid UserId { get; init; }
 
-    [DefaultValue("Amelit")] public string UserDisplayName { get; init; }
+    [DefaultValue("Amelit")] public string DisplayName { get; init; }
 
-    [DefaultValue(5)] public DisplayNameColour UserDisplayNameColour { get; init; }
+    [DefaultValue(5)] public DisplayNameColour DisplayNameColour { get; init; }
 
     [DefaultValue("Hello World!")] public string Text { get; init; }
 
