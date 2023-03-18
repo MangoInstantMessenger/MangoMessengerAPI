@@ -34,24 +34,6 @@ public class UpdatePersonalInformationCommandHandler
     {
         var user = await dbContext.Users.AsNoTracking()
             .Include(x => x.PersonalInformation)
-            // .Select(user => new User
-            // {
-            //     UserId = user.Id,
-            //     DisplayName = user.DisplayName,
-            //     DisplayNameColour = user.DisplayNameColour,
-            //     Address = user.Address,
-            //     Birthday = user.Birthday.HasValue
-            //         ? user.Birthday.Value.ToString("yyyy-MM-dd", CultureInfo.CurrentCulture)
-            //         : null,
-            //     Website = user.Website,
-            //     Facebook = user.PersonalInformation.Facebook,
-            //     Twitter = user.PersonalInformation.Twitter,
-            //     Instagram = user.PersonalInformation.Instagram,
-            //     LinkedIn = user.PersonalInformation.LinkedIn,
-            //     Username = user.Username,
-            //     Bio = user.Bio,
-            //     PictureUrl = $"{blobServiceSettings.MangoBlobAccess}/{user.ImageFileName}",
-            // })
             .FirstOrDefaultAsync(x => x.Id == request.UserId, cancellationToken);
 
         if (user == null)

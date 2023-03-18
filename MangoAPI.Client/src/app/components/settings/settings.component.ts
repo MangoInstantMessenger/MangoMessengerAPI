@@ -108,11 +108,7 @@ export class SettingsComponent implements OnInit {
 
     const response = await firstValueFrom<UpdateUserAccountInfoResponse>(updateUserInfoSub$);
 
-    console.log(JSON.stringify(response.user));
-
     this.currentUser = response.user;
-
-    // this.currentUser = { ...this.currentUserForUpdating };
 
     alert(response.message);
   }
@@ -128,8 +124,6 @@ export class SettingsComponent implements OnInit {
     const saveSocialsSub$ = this._usersService.updateUserSocials(command);
 
     const response = await firstValueFrom<UpdatePersonalInformationResponse>(saveSocialsSub$);
-
-    console.log(JSON.stringify(response.user));
 
     this.currentUser = response.user;
 
