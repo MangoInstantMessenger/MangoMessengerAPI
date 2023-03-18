@@ -226,9 +226,11 @@ export class ChatsComponent implements OnInit {
       return;
     }
 
-    this.connection.invoke('JoinGroup', this.activeChat.chatId).then(() => {
-      this.realTimeConnections.push(this.activeChat.chatId);
-    });
+    this.connection
+      .invoke(this.signalRConstants.SubscribeToGroup, this.activeChat.chatId)
+      .then(() => {
+        this.realTimeConnections.push(this.activeChat.chatId);
+      });
   }
 
   async loadMessages(chatId: string | null) {
@@ -440,6 +442,7 @@ export class ChatsComponent implements OnInit {
   }
 
   private onMessageSendHandler(notification: SendMessageNotification) {
+    console.log('FROM API: ' + JSON.stringify(notification));
     const self = notification.userId === this.userId;
 
     if (self) return;
@@ -483,6 +486,8 @@ export class ChatsComponent implements OnInit {
       inReplyToUser: notification.inReplyToUser,
       inReplyToText: notification.inReplyToText
     };
+
+    console.log('IN MAPPER: ' + JSON.stringify(message));
 
     return message;
   }

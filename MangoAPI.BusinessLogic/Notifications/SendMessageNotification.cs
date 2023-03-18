@@ -8,7 +8,7 @@ public record SendMessageNotification(
     Guid UserId,
     Guid ChatId,
     string DisplayName,
-    DisplayNameColour UserDisplayNameColour,
+    DisplayNameColour DisplayNameColour,
     string Text,
     DateTime CreatedAt,
     DateTime? UpdatedAt,
