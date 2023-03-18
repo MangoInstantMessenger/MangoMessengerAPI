@@ -12,4 +12,4 @@ public record UpdateUserAccountInfoCommand(
         string Bio,
         string Address,
         DateTime? Birthday)
-    : IRequest<Result<ResponseBase>>;
+    : IRequest<Result<UpdateUserAccountInfoResponse>>;

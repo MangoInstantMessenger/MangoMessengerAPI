@@ -1,4 +1,6 @@
-﻿using System.Linq;
+﻿using MangoAPI.Application.Interfaces;
+using MangoAPI.BusinessLogic.Models;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using MangoAPI.BusinessLogic.Responses;
@@ -7,24 +9,29 @@ using MangoAPI.Domain.Enums;
 using MangoAPI.Infrastructure.Database;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using System.Globalization;
 
 namespace MangoAPI.BusinessLogic.ApiCommands.Users;
 
 public class
-    UpdateUserAccountInfoCommandHandler : IRequestHandler<UpdateUserAccountInfoCommand, Result<ResponseBase>>
+    UpdateUserAccountInfoCommandHandler : IRequestHandler<UpdateUserAccountInfoCommand,
+        Result<UpdateUserAccountInfoResponse>>
 {
     private readonly MangoDbContext dbContext;
-    private readonly ResponseFactory<ResponseBase> responseFactory;
+    private readonly ResponseFactory<UpdateUserAccountInfoResponse> responseFactory;
+    private readonly IBlobServiceSettings blobServiceSettings;
 
     public UpdateUserAccountInfoCommandHandler(
         MangoDbContext dbContext,
-        ResponseFactory<ResponseBase> responseFactory)
+        ResponseFactory<UpdateUserAccountInfoResponse> responseFactory,
+        IBlobServiceSettings blobServiceSettings)
     {
         this.dbContext = dbContext;
         this.responseFactory = responseFactory;
+        this.blobServiceSettings = blobServiceSettings;
     }
 
-    public async Task<Result<ResponseBase>> Handle(
+    public async Task<Result<UpdateUserAccountInfoResponse>> Handle(
         UpdateUserAccountInfoCommand request,
         CancellationToken cancellationToken)
     {
@@ -71,6 +78,26 @@ public class
 
         await dbContext.SaveChangesAsync(cancellationToken);
 
-        return responseFactory.SuccessResponse(ResponseBase.SuccessResponse);
+        var userDto = new User
+        {
+            UserId = user.Id,
+            DisplayName = user.DisplayName,
+            DisplayNameColour = user.DisplayNameColour,
+            Address = user.Address,
+            Birthday = user.Birthday?.ToString("yyyy-MM-dd", CultureInfo.CurrentCulture),
+            Website = user.Website,
+            Facebook = user.PersonalInformation?.Facebook,
+            Twitter = user.PersonalInformation?.Twitter,
+            Instagram = user.PersonalInformation?.Instagram,
+            LinkedIn = user.PersonalInformation?.LinkedIn,
+            Username = user.Username,
+            Bio = user.Bio,
+            PictureUrl = $"{blobServiceSettings.MangoBlobAccess}/{user.ImageFileName}",
+        };
+
+        var response = UpdateUserAccountInfoResponse.FromSuccess(userDto);
+        var result = responseFactory.SuccessResponse(response);
+
+        return result;
     }
 }

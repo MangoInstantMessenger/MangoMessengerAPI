@@ -11,6 +11,7 @@ import { ChangePasswordCommand } from '../../types/requests/ChangePasswordComman
 import { UpdateProfilePictureResponse } from '../../types/responses/UpdateProfilePictureResponse';
 import { TokensResponse } from 'src/app/types/responses/TokensResponse';
 import ApiBaseService from './api-base.service';
+import { UpdatePersonalInformationResponse } from '../../types/responses/UpdatePersonalInformationResponse';
 
 @Injectable({
   providedIn: 'root'
@@ -25,8 +26,13 @@ export class UsersService extends ApiBaseService {
   }
 
   // PUT /api/users/socials
-  updateUserSocials(request: UpdatePersonalInformationCommand): Observable<BaseResponse> {
-    return this.httpClient.put<BaseResponse>(this.baseUrl + this.usersRoute + 'socials/', request);
+  updateUserSocials(
+    request: UpdatePersonalInformationCommand
+  ): Observable<UpdatePersonalInformationResponse> {
+    return this.httpClient.put<UpdatePersonalInformationResponse>(
+      this.baseUrl + this.usersRoute + 'socials/',
+      request
+    );
   }
 
   // GET /api/users/{userId}

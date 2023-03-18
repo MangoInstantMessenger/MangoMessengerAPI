@@ -19,6 +19,7 @@ import { GetUserResponse } from '../../types/responses/GetUserResponse';
 import { GetAppInfoResponse } from '../../types/responses/GetAppInfoResponse';
 import { BaseResponse } from '../../types/responses/BaseResponse';
 import { SettingsHelper } from './settings.helper';
+import { UpdatePersonalInformationResponse } from '../../types/responses/UpdatePersonalInformationResponse';
 
 @Component({
   selector: 'app-settings',
@@ -62,8 +63,6 @@ export class SettingsComponent implements OnInit {
     const getUserInfoSub$ = this._usersService.getUserById(this.currentUserId);
 
     const getUserInfoResponse = await firstValueFrom<GetUserResponse>(getUserInfoSub$);
-
-    // console.log(JSON.stringify(getUserInfoResponse.user));
 
     this.currentUser = getUserInfoResponse.user;
 
@@ -109,6 +108,25 @@ export class SettingsComponent implements OnInit {
     const response = await firstValueFrom<BaseResponse>(updateUserInfoSub$);
 
     this.currentUser = { ...this.currentUserForUpdating };
+
+    alert(response.message);
+  }
+
+  async onSavePersonalInformationClick() {
+    const command: UpdatePersonalInformationCommand = {
+      facebook: this.currentUserForUpdating.facebook,
+      twitter: this.currentUserForUpdating.twitter,
+      instagram: this.currentUserForUpdating.instagram,
+      linkedIn: this.currentUserForUpdating.linkedIn
+    };
+
+    const saveSocialsSub$ = this._usersService.updateUserSocials(command);
+
+    const response = await firstValueFrom<UpdatePersonalInformationResponse>(saveSocialsSub$);
+
+    console.log(JSON.stringify(response.user));
+
+    this.currentUser = response.user;
 
     alert(response.message);
   }
@@ -171,21 +189,6 @@ export class SettingsComponent implements OnInit {
     const changePassSub$ = this._usersService.changePassword(this.changePasswordCommand);
     const response = await firstValueFrom<BaseResponse>(changePassSub$);
     this.clearChangePasswordCommand();
-    alert(response.message);
-  }
-
-  async onSavePersonalInformationClick() {
-    const command: UpdatePersonalInformationCommand = {
-      facebook: this.currentUserForUpdating.facebook,
-      twitter: this.currentUserForUpdating.twitter,
-      instagram: this.currentUserForUpdating.instagram,
-      linkedIn: this.currentUserForUpdating.linkedIn
-    };
-
-    const saveSocialsSub$ = this._usersService.updateUserSocials(command);
-
-    const response = await firstValueFrom<BaseResponse>(saveSocialsSub$);
-
     alert(response.message);
   }
 

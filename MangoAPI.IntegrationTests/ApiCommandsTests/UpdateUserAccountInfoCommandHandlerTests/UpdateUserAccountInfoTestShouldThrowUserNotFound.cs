@@ -11,7 +11,7 @@ namespace MangoAPI.IntegrationTests.ApiCommandsTests.UpdateUserAccountInfoComman
 
 public class UpdateUserAccountInfoTestShouldThrowUserNotFound : IntegrationTestBase
 {
-    private readonly Assert<ResponseBase> assert = new();
+    private readonly Assert<UpdateUserAccountInfoResponse> assert = new();
 
     [Fact]
     public async Task UpdateUserAccountInfoTestShouldThrowUserNotFoundAsync()
