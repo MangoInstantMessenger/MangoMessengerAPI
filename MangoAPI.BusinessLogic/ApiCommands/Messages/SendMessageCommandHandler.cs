@@ -97,13 +97,6 @@ public class SendMessageCommandHandler
             ? null
             : $"{blobServiceSettings.MangoBlobAccess}/{attachmentUniqueFileName}";
 
-        // var messageNotification = messageEntity.ToMessage(
-        //     user.DisplayName,
-        //     user.Id,
-        //     user.DisplayNameColour,
-        //     authorPictureUrl,
-        //     attachmentUrl);
-
         var messageNotification = new SendMessageNotification(
             messageEntity.Id,
             messageEntity.UserId,

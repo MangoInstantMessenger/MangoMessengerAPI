@@ -161,8 +161,6 @@ export class ChatsComponent implements OnInit {
   }
 
   private onPrivateChatCreatedHandler(notification: PrivateChatCreatedNotification) {
-    console.log(JSON.stringify(notification));
-
     const chat = this.convertPrivateChatCreatedNotification(notification);
     this.chats.push(chat);
 
@@ -490,7 +488,6 @@ export class ChatsComponent implements OnInit {
   }
 
   private onMessageDeleteHandler(notification: DeleteMessageNotification) {
-    console.log('delete message notification: ' + JSON.stringify(notification));
     const chatIndex = this.chats.findIndex((x) => x.chatId === notification.chatId);
 
     if (notification.isLastMessage && chatIndex !== -1) {
