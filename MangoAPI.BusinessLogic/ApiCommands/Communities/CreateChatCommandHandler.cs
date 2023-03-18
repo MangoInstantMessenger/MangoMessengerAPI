@@ -99,8 +99,6 @@ public class CreateChatCommandHandler
 
         var partnerImageUrl = $"{blobServiceSettings.MangoBlobAccess}/{senderData.ImageFileName}";
 
-        // var chatCreatedNotification = chat.ToChatDto(partnerImageUrl, senderData.DisplayName);
-
         var chatCreatedNotification = new PrivateChatCreatedNotification(
             chat.Id,
             senderData.DisplayName,
