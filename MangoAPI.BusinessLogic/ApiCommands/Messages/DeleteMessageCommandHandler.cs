@@ -35,7 +35,6 @@ public class DeleteMessageCommandHandler
         DeleteMessageCommand request,
         CancellationToken cancellationToken)
     {
-        // TODO: add select here, you need only two properties
         var checkMessage = await dbContext.Messages
             .Include(x => x.User)
             .Select(x=> new
@@ -64,7 +63,7 @@ public class DeleteMessageCommandHandler
         var query = dbContext.UserChats
             .Include(x => x.Chat)
             .ThenInclude(x => x.Messages)
-            // .ThenInclude(x => x.User)
+            .ThenInclude(x => x.User)
             .Where(x => x.ChatId == request.ChatId && x.UserId == request.UserId)
             .Select(x => x.Chat);
 
@@ -80,25 +79,13 @@ public class DeleteMessageCommandHandler
 
         var deletedMessage = chat.Messages.First(x => x.Id == request.MessageId);
 
-        // dbContext.Entry(deletedMessage.User).State = EntityState.Detached;
-
-        // var deleteNotification = new MessageDeleteNotification
-        // {
-        //     ChatId = request.ChatId, DeletedMessageId = request.MessageId, IsLastMessage = false,
-        // };
-
-        // var deleteNotification = new MessageDeleteNotification(request.ChatId, request.MessageId, String.Empty, null, null,string.Empty, fal)
+        dbContext.Entry(deletedMessage.User).State = EntityState.Detached;
 
         var isMessageLast = chat.LastMessageId.HasValue && chat.LastMessageId == request.MessageId;
 
         var deleteNotification = isMessageLast
             ? UpdateChatLastMessageAndReturnNotification(chat, deletedMessage)
             : CreateNotLastMessageNotification(chat.Id, deletedMessage.Id);
-
-        // if (isMessageLast)
-        // {
-        //     UpdateChatLastMessageAndReturnNotification(chat, deletedMessage);
-        // }
 
         dbContext.Messages.Remove(deletedMessage);
         dbContext.Chats.Update(chat);
@@ -116,12 +103,6 @@ public class DeleteMessageCommandHandler
     {
         var newLastMessage = chat.Messages
             .Where(x => x.Id != deletedMessage.Id).MaxBy(x => x.CreatedAt);
-
-        // deleteNotification.NewLastMessageAuthor = newLastMessage?.User?.DisplayName;
-        // deleteNotification.NewLastMessageId = newLastMessage?.Id;
-        // deleteNotification.NewLastMessageText = newLastMessage?.Text;
-        // deleteNotification.NewLastMessageTime = newLastMessage?.CreatedAt;
-        // deleteNotification.IsLastMessage = true;
 
         chat.UpdateLastMessage(
             lastMessageAuthor: newLastMessage?.User?.DisplayName,

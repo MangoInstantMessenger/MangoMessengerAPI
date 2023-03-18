@@ -43,21 +43,3 @@ public record Chat
                $"Chat Title: {Title} \n";
     }
 }
-
-// public static class ChatEntityMapper
-// {
-//     public static Chat ToChatDto(this ChatEntity entity, string chatLogoImageUrl, string partnerDisplayName)
-//     {
-//         return new Chat
-//         {
-//             ChatId = entity.Id,
-//             Title = partnerDisplayName,
-//             CommunityType = entity.CommunityType,
-//             Description = entity.Description,
-//             MembersCount = entity.MembersCount,
-//             IsArchived = false,
-//             IsMember = true,
-//             ChatLogoImageUrl = chatLogoImageUrl
-//         };
-//     }
-// }

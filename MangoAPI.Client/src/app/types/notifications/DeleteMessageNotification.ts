@@ -4,6 +4,6 @@
   newLastMessageText: string;
   newLastMessageTime: string;
   newLastMessageId: string;
-  newLastMessageAuthor: string;
+  newLastMessageDisplayName: string;
   isLastMessage: boolean;
 }

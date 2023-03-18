@@ -161,6 +161,8 @@ export class ChatsComponent implements OnInit {
   }
 
   private onPrivateChatCreatedHandler(notification: PrivateChatCreatedNotification) {
+    console.log(JSON.stringify(notification));
+
     const chat = this.convertPrivateChatCreatedNotification(notification);
     this.chats.push(chat);
 
@@ -488,12 +490,13 @@ export class ChatsComponent implements OnInit {
   }
 
   private onMessageDeleteHandler(notification: DeleteMessageNotification) {
+    console.log('delete message notification: ' + JSON.stringify(notification));
     const chatIndex = this.chats.findIndex((x) => x.chatId === notification.chatId);
 
     if (notification.isLastMessage && chatIndex !== -1) {
       const updatedChat = this.chats[chatIndex];
 
-      updatedChat.lastMessageAuthor = notification.newLastMessageAuthor;
+      updatedChat.lastMessageAuthor = notification.newLastMessageDisplayName;
       updatedChat.lastMessageText = notification.newLastMessageText;
       updatedChat.lastMessageTime = notification.newLastMessageTime;
       updatedChat.lastMessageId = notification.newLastMessageId;
@@ -562,7 +565,9 @@ export class ChatsComponent implements OnInit {
   }
 
   toShortTimeString(date: string): string {
-    return formatDate(date, 'hh:mm a', 'en-US');
+    const format = formatDate(date, 'hh:mm a', 'en-US');
+
+    return format;
   }
 
   onEmojiClick(event: Event): void {
@@ -572,7 +577,11 @@ export class ChatsComponent implements OnInit {
   }
 
   chatContainsMessages(chat: Chat): boolean {
-    return chat.lastMessageAuthor != null && chat.lastMessageText != null;
+    const hasLastMessageAuthor = chat.lastMessageAuthor !== null && chat.lastMessageAuthor !== '';
+    const hasLastMessageText = chat.lastMessageText !== null && chat.lastMessageText !== '';
+    const hasLastMessage = hasLastMessageAuthor && hasLastMessageText;
+
+    return hasLastMessage;
   }
 
   getDisplayNameColour(colour: number): string {
