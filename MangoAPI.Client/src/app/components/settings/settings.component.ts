@@ -136,7 +136,7 @@ export class SettingsComponent implements OnInit {
     alert(response.message);
   }
 
-  async onSaveChangesUpdateProfilePictureClick() {
+  async onSaveProfilePictureClick() {
     const tokens = this._tokensService.getTokens();
 
     if (!tokens) {
@@ -154,19 +154,24 @@ export class SettingsComponent implements OnInit {
     const file = this.file as File;
     formData.append('pictureFile', file);
 
-    const updateProfileImage$ = this._usersService.updateProfilePicture(formData);
+    try {
+      const updateProfileImage$ = this._usersService.updateProfilePicture(formData);
 
-    const result = await firstValueFrom<UpdateProfilePictureResponse>(updateProfileImage$);
+      const result = await firstValueFrom<UpdateProfilePictureResponse>(updateProfileImage$);
 
-    alert(result.message);
+      alert(result.message);
 
-    this.currentUser.pictureUrl = result.newUserPictureUrl;
+      this.currentUser.pictureUrl = result.newUserPictureUrl;
 
-    tokens.userProfilePictureUrl = result.newUserPictureUrl;
+      tokens.userProfilePictureUrl = result.newUserPictureUrl;
 
-    this._tokensService.setTokens(tokens);
+      this._tokensService.setTokens(tokens);
 
-    this.clearProfilePictureFile();
+      this.clearProfilePictureFile();
+    } catch (e) {
+      this._errorNotificationService.notifyOnError(e);
+      this.clearProfilePictureFile();
+    }
   }
 
   async onSaveChangesChangePasswordClick() {
