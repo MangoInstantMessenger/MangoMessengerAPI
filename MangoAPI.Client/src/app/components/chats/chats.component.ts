@@ -442,7 +442,6 @@ export class ChatsComponent implements OnInit {
   }
 
   private onMessageSendHandler(notification: SendMessageNotification) {
-    console.log('FROM API: ' + JSON.stringify(notification));
     const self = notification.userId === this.userId;
 
     if (self) return;
@@ -486,8 +485,6 @@ export class ChatsComponent implements OnInit {
       inReplyToUser: notification.inReplyToUser,
       inReplyToText: notification.inReplyToText
     };
-
-    console.log('IN MAPPER: ' + JSON.stringify(message));
 
     return message;
   }
