@@ -576,13 +576,13 @@ export class ChatsComponent implements OnInit {
     this.messageText += emoji;
   }
 
-  chatContainsMessages(chat: Chat): boolean {
-    const hasLastMessageAuthor = chat.lastMessageAuthor !== null && chat.lastMessageAuthor !== '';
-    const hasLastMessageText = chat.lastMessageText !== null && chat.lastMessageText !== '';
-    const hasLastMessage = hasLastMessageAuthor && hasLastMessageText;
-
-    return hasLastMessage;
-  }
+  // chatContainsMessages(chat: Chat): boolean {
+  //   const hasLastMessageAuthor = chat.lastMessageAuthor !== null && chat.lastMessageAuthor !== '';
+  //   const hasLastMessageText = chat.lastMessageText !== null && chat.lastMessageText !== '';
+  //   const hasLastMessage = hasLastMessageAuthor && hasLastMessageText;
+  //
+  //   return hasLastMessage;
+  // }
 
   getDisplayNameColour(colour: number): string {
     switch (colour) {
