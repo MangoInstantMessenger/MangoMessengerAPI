@@ -286,12 +286,7 @@
                         alt="Reply Icon"
                         src="./../../../assets/svg/reply.svg"
                         (click)="
-                          onReplyClick(
-                            message.messageId,
-                            message.userDisplayName,
-                            message.text,
-                            message.userDisplayNameColour
-                          )
+                          onReplyClick(message)
                         "
                       />
                     </div>
@@ -313,15 +308,15 @@
                       <div
                         *ngIf="!message.attachmentUrl"
                         class="display-name {{
-                          getDisplayNameColour(message.userDisplayNameColour)
+                          getDisplayNameColour(message.displayNameColour)
                         }}"
                       >
-                        {{ message.userDisplayName }}
+                        {{ message.displayName }}
                       </div>
                       <div *ngIf="message.inReplyToUser" class="message-reply">
                         <p
                           class="message-reply-displayname {{
-                            getDisplayNameColour(message.userDisplayNameColour)
+                            getDisplayNameColour(message.displayNameColour)
                           }}"
                         >
                           {{ message.inReplyToUser }}
@@ -345,14 +340,7 @@
                         <img
                           alt="Reply Icon"
                           src="./../../../assets/svg/reply.svg"
-                          (click)="
-                            onReplyClick(
-                              message.messageId,
-                              message.userDisplayName,
-                              message.text,
-                              message.userDisplayNameColour
-                            )
-                          "
+                          (click)="onReplyClick(message)"
                         />
                       </div>
                     </div>

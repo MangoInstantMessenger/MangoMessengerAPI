@@ -1,4 +1,5 @@
 ﻿using MangoAPI.BusinessLogic.HubConfig;
+using MangoAPI.BusinessLogic.Notifications;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -69,17 +70,19 @@ public class LeaveGroupCommandHandler
 
             await dbContext.SaveChangesAsync(cancellationToken);
 
-            await hubContext.Clients.Group(partnerId.ToString()).PrivateChatDeletedAsync(request.ChatId);
+            var chatDeletedNotification = new PrivateChatDeletedNotification(request.ChatId);
+
+            await hubContext.Clients.Group(partnerId.ToString()).PrivateChatDeletedAsync(chatDeletedNotification);
 
             return responseFactory.SuccessResponse(LeaveGroupResponse.FromSuccess(chat.Id));
         }
-        
+
         var userChat = chat.ChatUsers.First(x => x.UserId == request.UserId);
         chat.IncrementMembersCount(-1);
 
         dbContext.Update(chat);
         dbContext.UserChats.Remove(userChat);
-        
+
         await dbContext.SaveChangesAsync(cancellationToken);
 
         return responseFactory.SuccessResponse(LeaveGroupResponse.FromSuccess(chat.Id));

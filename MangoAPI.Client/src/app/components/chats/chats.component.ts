@@ -12,8 +12,7 @@ import { RoutingConstants } from '../../types/constants/RoutingConstants';
 import { UserChatsService } from '../../services/api/user-chats.service';
 import { ValidationService } from '../../services/messenger/validation.service';
 import * as signalR from '@microsoft/signalr';
-import { EditMessageNotification } from '../../types/models/EditMessageNotification';
-import { DeleteMessageNotification } from '../../types/models/DeleteMessageNotification';
+import { DeleteMessageNotification } from '../../types/notifications/DeleteMessageNotification';
 import { BehaviorSubject, firstValueFrom, distinctUntilKeyChanged } from 'rxjs';
 import { DisplayNameColours } from 'src/app/types/enums/DisplayNameColours';
 import { DeleteMessageCommand } from 'src/app/types/requests/DeleteMessageCommand';
@@ -26,6 +25,10 @@ import { BaseResponse } from '../../types/responses/BaseResponse';
 import { GetUserChatsResponse } from '../../types/responses/GetUserChatsResponse';
 import { DeleteMessageResponse } from '../../types/responses/DeleteMessageResponse';
 import { DefaultChatHelper } from './defaultChatHelper';
+import { SignalrConstants } from './signalr.constants';
+import { SendMessageNotification } from '../../types/notifications/SendMessageNotification';
+import { PrivateChatDeletedNotification } from '../../types/notifications/PrivateChatDeletedNotification';
+import { PrivateChatCreatedNotification } from '../../types/notifications/PrivateChatCreatedNotification';
 
 @Component({
   selector: 'app-chats',
@@ -113,7 +116,7 @@ export class ChatsComponent implements OnInit {
             return;
           }
 
-          this.connection.invoke('JoinGroup', x.chatId).then(() => {
+          this.connection.invoke(this.signalRConstants.SubscribeToGroup, x.chatId).then(() => {
             this.realTimeConnections.push(x.chatId);
           });
         });
@@ -122,49 +125,88 @@ export class ChatsComponent implements OnInit {
           return;
         }
 
-        this.connection.invoke('JoinGroup', this.userId).then((r) => r);
+        this.connection.invoke(this.signalRConstants.SubscribeToGroup, this.userId).then((r) => r);
       })
       .catch((err) => console.error(err.toString()));
   }
 
   setSignalRMethods(): void {
-    this.connection.on('BroadcastMessageAsync', (message: Message) => {
-      this.onMessageSendHandler(message);
-    });
-
-    this.connection.on('PrivateChatCreatedAsync', (chat: Chat) => {
-      this.chats.push(chat);
-
-      if (this.realTimeConnections.includes(chat.chatId)) {
-        return;
+    this.connection.on(
+      this.signalRConstants.MessageSentAsync,
+      (notification: SendMessageNotification) => {
+        this.onMessageSendHandler(notification);
       }
+    );
 
-      this.connection.invoke('JoinGroup', chat.chatId).then(() => {
-        this.realTimeConnections.push(chat.chatId);
-      });
-    });
-
-    this.connection.on('PrivateChatDeletedAsync', (chatId: string) => {
-      const chatIndex = this.chats.findIndex((x) => x.chatId === chatId);
-
-      if (chatIndex === -1) return;
-
-      this.chats.splice(chatIndex, 1);
-
-      if (this.activeChatId === chatId) {
-        this.activeChat = this._defaultChatHelper.getEmptyChat();
-        this.activeChatId = '';
-        this.messages = [];
+    this.connection.on(
+      this.signalRConstants.PrivateChatCreatedAsync,
+      (notification: PrivateChatCreatedNotification) => {
+        this.onPrivateChatCreatedHandler(notification);
       }
-    });
+    );
 
-    this.connection.on('NotifyOnMessageDeleteAsync', (notification: DeleteMessageNotification) => {
-      this.onMessageDeleteHandler(notification);
-    });
+    this.connection.on(
+      this.signalRConstants.PrivateChatDeletedAsync,
+      (notification: PrivateChatDeletedNotification) => {
+        this.onPrivateChatDeletedHandler(notification);
+      }
+    );
 
-    this.connection.on('NotifyOnMessageEditAsync', (notification: EditMessageNotification) => {
-      this.onMessageEditHandler(notification);
+    this.connection.on(
+      this.signalRConstants.MessageDeletedAsync,
+      (notification: DeleteMessageNotification) => {
+        this.onMessageDeleteHandler(notification);
+      }
+    );
+  }
+
+  private onPrivateChatCreatedHandler(notification: PrivateChatCreatedNotification) {
+    const chat = this.convertPrivateChatCreatedNotification(notification);
+    this.chats.push(chat);
+
+    if (this.realTimeConnections.includes(notification.chatId)) {
+      return;
+    }
+
+    this.connection.invoke(this.signalRConstants.SubscribeToGroup, notification.chatId).then(() => {
+      this.realTimeConnections.push(notification.chatId);
     });
+  }
+
+  private convertPrivateChatCreatedNotification(
+    notification: PrivateChatCreatedNotification
+  ): Chat {
+    const chat: Chat = {
+      chatId: notification.chatId,
+      title: notification.title,
+      communityType: notification.communityType,
+      chatLogoImageUrl: notification.chatLogoImageUrl,
+      description: notification.description,
+      membersCount: notification.membersCount,
+      isArchived: notification.isArchived,
+      isMember: notification.isMember,
+      roleId: 1,
+      lastMessageAuthor: '',
+      lastMessageText: '',
+      lastMessageTime: '',
+      lastMessageId: ''
+    };
+
+    return chat;
+  }
+
+  private onPrivateChatDeletedHandler(notification: PrivateChatDeletedNotification) {
+    const chatIndex = this.chats.findIndex((x) => x.chatId === notification.chatId);
+
+    if (chatIndex === -1) return;
+
+    this.chats.splice(chatIndex, 1);
+
+    if (this.activeChatId === notification.chatId) {
+      this.activeChat = this._defaultChatHelper.getEmptyChat();
+      this.activeChatId = '';
+      this.messages = [];
+    }
   }
 
   async loadChat(chatId: string) {
@@ -184,9 +226,11 @@ export class ChatsComponent implements OnInit {
       return;
     }
 
-    this.connection.invoke('JoinGroup', this.activeChat.chatId).then(() => {
-      this.realTimeConnections.push(this.activeChat.chatId);
-    });
+    this.connection
+      .invoke(this.signalRConstants.SubscribeToGroup, this.activeChat.chatId)
+      .then(() => {
+        this.realTimeConnections.push(this.activeChat.chatId);
+      });
   }
 
   async loadMessages(chatId: string | null) {
@@ -251,7 +295,7 @@ export class ChatsComponent implements OnInit {
 
     this.messages.push(newMessage);
 
-    this.activeChat.lastMessageAuthor = newMessage.userDisplayName;
+    this.activeChat.lastMessageAuthor = newMessage.displayName;
     this.activeChat.lastMessageText = newMessage.text;
     this.activeChat.lastMessageTime = newMessage.createdAt;
     this.activeChat.lastMessageId = newMessage.messageId;
@@ -287,13 +331,13 @@ export class ChatsComponent implements OnInit {
     this.chats.splice(0, 0, chat);
   }
 
-  onReplyClick(
-    messageId: string,
-    displayName: string,
-    text: string,
-    displayNameColour: DisplayNameColours
-  ) {
-    const replyEntity = new Reply(messageId, displayName, text, displayNameColour);
+  onReplyClick(message: Message) {
+    const replyEntity = new Reply(
+      message.messageId,
+      message.displayName,
+      message.text,
+      message.displayNameColour
+    );
 
     this._replyStateService.setReply(replyEntity);
     this.scrollToEnd();
@@ -397,45 +441,52 @@ export class ChatsComponent implements OnInit {
     await this.initializeView();
   }
 
-  private onMessageSendHandler(message: Message) {
-    message.self = message.userId === this.userId;
+  private onMessageSendHandler(notification: SendMessageNotification) {
+    const self = notification.userId === this.userId;
 
-    if (message.self) return;
+    if (self) return;
 
-    const chatIndex = this.chats.findIndex((x) => x.chatId === message.chatId);
+    const chatIndex = this.chats.findIndex((x) => x.chatId === notification.chatId);
 
     if (chatIndex === -1) return;
     const chat = this.chats[chatIndex];
 
-    chat.lastMessageAuthor = message.userDisplayName;
-    chat.lastMessageText = message.text;
-    chat.lastMessageTime = message.createdAt;
-    chat.lastMessageId = message.messageId;
+    chat.lastMessageAuthor = notification.displayName;
+    chat.lastMessageText = notification.text;
+    chat.lastMessageTime = notification.createdAt;
+    chat.lastMessageId = notification.messageId;
 
     this.chats.splice(chatIndex, 1);
     this.chats.splice(0, 0, chat);
 
-    if (this.activeChatId !== message.chatId) return;
+    if (this.activeChatId !== notification.chatId) return;
 
-    const messageIndex = this.messages.findIndex((x) => x.messageId === message.messageId);
+    const messageIndex = this.messages.findIndex((x) => x.messageId === notification.messageId);
 
     if (messageIndex === -1) {
+      const message = this.convertSendNotificationToMessage(notification);
       this.messages.push(message);
     }
   }
 
-  private onMessageEditHandler(notification: EditMessageNotification) {
-    const message = this.messages.filter((x) => x.messageId === notification.messageId)[0];
+  private convertSendNotificationToMessage(notification: SendMessageNotification): Message {
+    const message: Message = {
+      messageId: notification.messageId,
+      chatId: notification.chatId,
+      userId: notification.userId,
+      displayName: notification.displayName,
+      displayNameColour: notification.displayNameColour,
+      text: notification.text,
+      createdAt: notification.createdAt,
+      updatedAt: notification.updatedAt,
+      self: false,
+      authorImageUrl: notification.authorImageUrl,
+      attachmentUrl: notification.attachmentUrl,
+      inReplyToUser: notification.inReplyToUser,
+      inReplyToText: notification.inReplyToText
+    };
 
-    if (message) {
-      message.text = notification.modifiedText;
-      message.updatedAt = notification.updatedAt;
-    }
-
-    if (notification.isLastMessage) {
-      this.activeChat.lastMessageText = notification.modifiedText;
-      this.activeChat.lastMessageTime = notification.updatedAt;
-    }
+    return message;
   }
 
   private onMessageDeleteHandler(notification: DeleteMessageNotification) {
@@ -444,7 +495,7 @@ export class ChatsComponent implements OnInit {
     if (notification.isLastMessage && chatIndex !== -1) {
       const updatedChat = this.chats[chatIndex];
 
-      updatedChat.lastMessageAuthor = notification.newLastMessageAuthor;
+      updatedChat.lastMessageAuthor = notification.newLastMessageDisplayName;
       updatedChat.lastMessageText = notification.newLastMessageText;
       updatedChat.lastMessageTime = notification.newLastMessageTime;
       updatedChat.lastMessageId = notification.newLastMessageId;
@@ -513,7 +564,9 @@ export class ChatsComponent implements OnInit {
   }
 
   toShortTimeString(date: string): string {
-    return formatDate(date, 'hh:mm a', 'en-US');
+    const format = formatDate(date, 'hh:mm a', 'en-US');
+
+    return format;
   }
 
   onEmojiClick(event: Event): void {
@@ -523,7 +576,11 @@ export class ChatsComponent implements OnInit {
   }
 
   chatContainsMessages(chat: Chat): boolean {
-    return chat.lastMessageAuthor != null && chat.lastMessageText != null;
+    const hasLastMessageAuthor = chat.lastMessageAuthor !== null && chat.lastMessageAuthor !== '';
+    const hasLastMessageText = chat.lastMessageText !== null && chat.lastMessageText !== '';
+    const hasLastMessage = hasLastMessageAuthor && hasLastMessageText;
+
+    return hasLastMessage;
   }
 
   getDisplayNameColour(colour: number): string {
@@ -555,5 +612,9 @@ export class ChatsComponent implements OnInit {
 
   public get routingConstants(): typeof RoutingConstants {
     return RoutingConstants;
+  }
+
+  public get signalRConstants(): typeof SignalrConstants {
+    return SignalrConstants;
   }
 }
