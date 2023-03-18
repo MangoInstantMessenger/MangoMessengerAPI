@@ -1,12 +1,12 @@
 <nav class="navigation-bar p-2">
   <div class="logo p-1">
-    <a [routerLink]="[routingConstants.Chats]">
+    <a [routerLink]="[routingConstants.Chats]" routerLinkActive="active">
       <img alt="Mango Logo" src="./../../../assets/img/logo.png"/>
     </a>
   </div>
   <ul class="text-center menu-buttons">
     <li>
-      <a [routerLink]="[routingConstants.Chats]">
+      <a [routerLink]="[routingConstants.Chats]" routerLinkActive="active">
         <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path
             [ngClass]="activeComponent === 'chats' ? 'path active' : 'path'"
@@ -20,7 +20,7 @@
     </li>
 
     <li>
-      <a [routerLink]="[routingConstants.Contacts]">
+      <a [routerLink]="[routingConstants.Contacts]" routerLinkActive="active">
         <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path
             [ngClass]="activeComponent === 'contacts' ? 'path active' : 'path'"
@@ -34,7 +34,7 @@
     </li>
 
     <li>
-      <a [routerLink]="[routingConstants.Settings]">
+      <a [routerLink]="[routingConstants.Settings]" routerLinkActive="active">
         <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path
             [ngClass]="activeComponent === 'settings' ? 'path active' : 'path'"
