@@ -9,11 +9,11 @@
     type: string
     
 stages:
-  - stage: 'Terraform_Apply_${{ parameters.environment }}'
-    displayName: 'Terraform Apply ${{ parameters.environment }}'
+  - stage: 'Terraform_Destroy_${{ parameters.environment }}'
+    displayName: 'Terraform Destroy ${{ parameters.environment }}'
     jobs:
-      - deployment: 'Terraform_Apply_${{ parameters.environment }}'
-        displayName: 'Terraform Apply ${{ parameters.environment }}'
+      - deployment: 'Terraform_Destroy_${{ parameters.environment }}'
+        displayName: 'Terraform Destroy_${{ parameters.environment }}'
         pool:
           vmImage: 'ubuntu-latest'
         environment: ${{ parameters.environment }}
@@ -60,19 +60,18 @@ stages:
                     TF_STATE_BLOB_SAS_TOKEN: $(kv-tf-state-sas-token)
 
                 - bash: |
-                    terraform plan \
-                    -var "prefix=$(kv-prefix)" \
-                    -var "sql_admin_password=$SQL_SERVER_PASSWORD" \
-                    -out $PLAN_FILE
-                  displayName: Terraform Plan
+                    terraform plan -destroy \
+                      -var "prefix=$(kv-prefix)" \
+                      -var "sql_admin_password=$(kv-sql-password)" \
+                      -out $PLAN_FILE
+                  displayName: Terraform Plan -Destroy
                   workingDirectory: ${{ parameters.terraformWorkDir }}
                   env:
                     ARM_SUBSCRIPTION_ID: $(kv-arm-subscription-id)
                     ARM_CLIENT_ID: $(kv-arm-client-id)
                     ARM_CLIENT_SECRET: $(kv-arm-client-secret)
                     ARM_TENANT_ID: $(kv-arm-tenant-id)
-                    PLAN_FILE: 'main-$(kv-prefix).tfplan'
-                    SQL_SERVER_PASSWORD: $(kv-sql-password)
+                    PLAN_FILE: 'main-$(kv-prefix).destroy.tfplan'
 
                 - task: PowerShell@2
                   displayName: Detect changes in plan
@@ -82,9 +81,9 @@ stages:
                     script: |
                       ./../scripts/checkTerraformChanges.ps1 -planPath $env:PLAN_FILE
                   env:
-                    PLAN_FILE: 'main-$(kv-prefix).tfplan'
+                    PLAN_FILE: 'main-$(kv-prefix).destroy.tfplan'
 
-                - bash: terraform apply -auto-approve $PLAN_FILE
+                - bash: terraform apply -destroy -auto-approve $PLAN_FILE
                   displayName: Terraform Apply
                   condition: eq(variables.anyTfChanges, true)
                   workingDirectory: ${{ parameters.terraformWorkDir }}
@@ -93,4 +92,4 @@ stages:
                     ARM_CLIENT_ID: $(kv-arm-client-id)
                     ARM_CLIENT_SECRET: $(kv-arm-client-secret)
                     ARM_TENANT_ID: $(kv-arm-tenant-id)
-                    PLAN_FILE: 'main-$(kv-prefix).tfplan'
+                    PLAN_FILE: 'main-$(kv-prefix).destroy.tfplan'
