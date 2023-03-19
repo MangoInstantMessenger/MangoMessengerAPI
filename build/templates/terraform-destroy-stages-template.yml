@@ -7,10 +7,13 @@
     type: string
   - name: terraformWorkDir
     type: string
-    
+  - name: dependsOn
+    type: object
+
 stages:
   - stage: 'Terraform_Destroy_${{ parameters.environment }}'
     displayName: 'Terraform Destroy ${{ parameters.environment }}'
+    dependsOn: ${{ parameters.dependsOn }}
     jobs:
       - deployment: 'Terraform_Destroy_${{ parameters.environment }}'
         displayName: 'Terraform Destroy ${{ parameters.environment }}'
