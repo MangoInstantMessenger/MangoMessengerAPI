@@ -1,0 +1,7 @@
+﻿parameters:
+  - name: variableGroup # keeps keyvault name
+    type: string
+  - name: stageName
+    type: string
+  
+  
