@@ -13,7 +13,7 @@ import { UserChatsService } from '../../services/api/user-chats.service';
 import { ValidationService } from '../../services/messenger/validation.service';
 import * as signalR from '@microsoft/signalr';
 import { DeleteMessageNotification } from '../../types/notifications/DeleteMessageNotification';
-import { BehaviorSubject, firstValueFrom, distinctUntilKeyChanged, last } from 'rxjs';
+import { BehaviorSubject, firstValueFrom, distinctUntilKeyChanged } from 'rxjs';
 import { DisplayNameColours } from 'src/app/types/enums/DisplayNameColours';
 import { DeleteMessageCommand } from 'src/app/types/requests/DeleteMessageCommand';
 import ApiBaseService from 'src/app/services/api/api-base.service';
@@ -356,30 +356,36 @@ export class ChatsComponent implements OnInit {
     if (messageIndex === -1) return;
 
     const lastMessage = this.messages[this.messages.length - 1];
+
     const deletedMessage = this.messages.splice(messageIndex, 1)[0];
-    const lastMessageAfterDeleting = this.messages[this.messages.length - 1];
-    const isDeleteMessageLast = lastMessage.messageId === deletedMessage.messageId;
-    const chatIndex = this.chats.findIndex((x) => x.chatId === message.chatId)
+
+    const newLastMessage = this.messages[this.messages.length - 1];
+
+    const lastMessageDeleted = lastMessage.messageId === deletedMessage.messageId;
+
+    const chatIndex = this.chats.findIndex((x) => x.chatId === message.chatId);
+
     const chat = this.chats[chatIndex];
 
-    if (isDeleteMessageLast && lastMessageAfterDeleting) {
-      chat.lastMessageId = lastMessageAfterDeleting.messageId;
-      chat.lastMessageText = lastMessageAfterDeleting.text;
-      chat.lastMessageAuthor = lastMessageAfterDeleting.displayName;
-      chat.lastMessageTime = lastMessageAfterDeleting.createdAt;
+    if (lastMessageDeleted && newLastMessage) {
+      chat.lastMessageId = newLastMessage.messageId;
+      chat.lastMessageText = newLastMessage.text;
+      chat.lastMessageAuthor = newLastMessage.displayName;
+      chat.lastMessageTime = newLastMessage.createdAt;
 
       const deleteMessageSub$ = this._messagesService.deleteMessage(deleteMessageCommand);
       await firstValueFrom<DeleteMessageResponse>(deleteMessageSub$);
-      return
+      return;
     }
-    else if (isDeleteMessageLast && !lastMessageAfterDeleting) {
-      chat.lastMessageId = "";
-      chat.lastMessageText = "";
-      chat.lastMessageAuthor = "";
-      chat.lastMessageTime = "";
+
+    if (lastMessageDeleted && !newLastMessage) {
+      chat.lastMessageId = '';
+      chat.lastMessageText = '';
+      chat.lastMessageAuthor = '';
+      chat.lastMessageTime = '';
 
       const deleteMessageSub$ = this._messagesService.deleteMessage(deleteMessageCommand);
-      await firstValueFrom<DeleteMessageResponse>(deleteMessageSub$)
+      await firstValueFrom<DeleteMessageResponse>(deleteMessageSub$);
       return;
     }
 
@@ -516,37 +522,25 @@ export class ChatsComponent implements OnInit {
   }
 
   private onMessageDeleteHandler(notification: DeleteMessageNotification) {
-    const message = this.messages.find(x => x.messageId === notification.deletedMessageId);
+    const selfMessage = notification.userId === this.userId;
 
-    if (message === undefined) return;
+    if (selfMessage) return;
 
-    const isDeletedMessageSelf = message.userId === this.userId;
-
-    if (isDeletedMessageSelf) return;
+    if (this.activeChatId === notification.chatId) {
+      const messageIndex = this.messages.findIndex(
+        (x) => x.messageId === notification.deletedMessageId
+      );
+      this.messages.splice(messageIndex, 1);
+    }
 
     const chatIndex = this.chats.findIndex((x) => x.chatId === notification.chatId);
-
-    const lastMessage = this.messages[this.messages.length - 1];
-    const messageIndex = this.messages.findIndex(x => x.messageId === notification.deletedMessageId);
-    const deletedMessage = this.messages.splice(messageIndex, 1)[0];
-    const lastMessageAfterDeleting = this.messages[this.messages.length - 1];
-    const isDeleteMessageLast = lastMessage.messageId === deletedMessage.messageId;
     const chat = this.chats[chatIndex];
 
-    if (isDeleteMessageLast && lastMessageAfterDeleting) {
-      chat.lastMessageId = lastMessageAfterDeleting.messageId;
-      chat.lastMessageText = lastMessageAfterDeleting.text;
-      chat.lastMessageAuthor = lastMessageAfterDeleting.displayName;
-      chat.lastMessageTime = lastMessageAfterDeleting.createdAt;
-
-      return
-    }
-    else if (isDeleteMessageLast && !lastMessageAfterDeleting) {
-      chat.lastMessageId = "";
-      chat.lastMessageText = "";
-      chat.lastMessageAuthor = "";
-      chat.lastMessageTime = "";
-
+    if (notification.isLastMessage) {
+      chat.lastMessageId = notification.newLastMessageId;
+      chat.lastMessageText = notification.newLastMessageText;
+      chat.lastMessageAuthor = notification.newLastMessageDisplayName;
+      chat.lastMessageTime = notification.newLastMessageTime;
       return;
     }
   }

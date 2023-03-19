@@ -37,11 +37,7 @@ public class DeleteMessageCommandHandler
     {
         var checkMessage = await dbContext.Messages
             .Include(x => x.User)
-            .Select(x=> new
-            {
-                MessageId = x.Id,
-                UserId = x.User.Id
-            })
+            .Select(x => new { MessageId = x.Id, UserId = x.User.Id })
             .FirstOrDefaultAsync(t => t.MessageId == request.MessageId, cancellationToken);
 
         if (checkMessage == null)
@@ -85,7 +81,7 @@ public class DeleteMessageCommandHandler
 
         var deleteNotification = isMessageLast
             ? UpdateChatLastMessageAndReturnNotification(chat, deletedMessage)
-            : CreateNotLastMessageNotification(chat.Id, deletedMessage.Id);
+            : CreateNotLastMessageNotification(chat.Id, deletedMessage.Id, deletedMessage.UserId);
 
         dbContext.Messages.Remove(deletedMessage);
         dbContext.Chats.Update(chat);
@@ -97,7 +93,7 @@ public class DeleteMessageCommandHandler
         return responseFactory.SuccessResponse(DeleteMessageResponse.FromSuccess(deletedMessage));
     }
 
-    private static MessageDeleteNotification UpdateChatLastMessageAndReturnNotification(
+    private static DeleteMessageNotification UpdateChatLastMessageAndReturnNotification(
         ChatEntity chat,
         MessageEntity deletedMessage)
     {
@@ -110,7 +106,8 @@ public class DeleteMessageCommandHandler
             newLastMessage?.CreatedAt,
             newLastMessage?.Id);
 
-        var deleteNotification = new MessageDeleteNotification(
+        var deleteNotification = new DeleteMessageNotification(
+            deletedMessage.UserId,
             chat.Id,
             deletedMessage.Id,
             newLastMessage?.Text,
@@ -122,9 +119,13 @@ public class DeleteMessageCommandHandler
         return deleteNotification;
     }
 
-    private static MessageDeleteNotification CreateNotLastMessageNotification(Guid chatId, Guid deletedMessageId)
+    private static DeleteMessageNotification CreateNotLastMessageNotification(
+        Guid chatId,
+        Guid deletedMessageId,
+        Guid userId)
     {
-        var deleteNotification = new MessageDeleteNotification(
+        var deleteNotification = new DeleteMessageNotification(
+            userId,
             chatId,
             deletedMessageId,
             NewLastMessageText: string.Empty,
