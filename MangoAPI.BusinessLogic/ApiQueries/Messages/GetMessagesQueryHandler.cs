@@ -38,22 +38,20 @@ public class GetMessagesQueryHandler : IRequestHandler<GetMessagesQuery, Result<
                 MessageId = messageEntity.Id,
                 ChatId = messageEntity.ChatId,
                 UserId = messageEntity.UserId,
+                DisplayName = messageEntity.User.DisplayName,
+                DisplayNameColour = messageEntity.User.DisplayNameColour,
                 Text = messageEntity.Text,
-                UpdatedAt = messageEntity.UpdatedAt,
                 CreatedAt = messageEntity.CreatedAt,
-                UserDisplayName = messageEntity.User.DisplayName,
-                UserDisplayNameColour = messageEntity.User.DisplayNameColour,
+                UpdatedAt = messageEntity.UpdatedAt,
                 Self = messageEntity.User.Id == request.UserId,
-                InReplyToUser = messageEntity.InReplyToUser,
-                InReplyToText = messageEntity.InReplyToText,
-
                 AuthorImageUrl = messageEntity.User.ImageFileName != null
                     ? $"{blobServiceSettings.MangoBlobAccess}/{messageEntity.User.ImageFileName}"
                     : null,
-
                 AttachmentUrl = messageEntity.AttachmentFileName != null
                     ? $"{blobServiceSettings.MangoBlobAccess}/{messageEntity.AttachmentFileName}"
                     : null,
+                InReplyToUser = messageEntity.InReplyToUser,
+                InReplyToText = messageEntity.InReplyToText,
             }).Take(200).ToListAsync(cancellationToken);
 
         return responseFactory.SuccessResponse(GetMessagesResponse.FromSuccess(messages));

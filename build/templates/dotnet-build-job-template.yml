@@ -42,8 +42,12 @@ jobs:
 
       - task: gitversion/execute@0
         displayName: 'GitVersion Execute'
-        inputs:
-          updateAssemblyInfo: true
+#        inputs:
+#          updateAssemblyInfo: true
+        
+      - script: |
+          echo "Upcoming semantic version: $(SemVer)"
+        displayName: 'Print semantic version'
           
       - task: NodeTool@0
         inputs:
@@ -90,7 +94,7 @@ jobs:
         inputs:
           command: 'build'
           projects: '${{ parameters.backendProjectPath }}'
-          arguments: '--configuration ${{ parameters.buildConfiguration }} --no-restore'
+          arguments: '-c ${{ parameters.buildConfiguration }} -p:Version=$(SemVer) --no-restore'
 
       - task: DotNetCoreCLI@2
         displayName: 'Dotnet Publish'
@@ -98,7 +102,7 @@ jobs:
           command: 'publish'
           publishWebProjects: false
           projects: '${{ parameters.backendProjectPath }}'
-          arguments: '--configuration ${{ parameters.buildConfiguration }} --output $(Build.ArtifactStagingDirectory)/${{ parameters.buildConfiguration }} --no-build'
+          arguments: '-p:Version=$(SemVer) -c ${{ parameters.buildConfiguration }} -o $(Build.ArtifactStagingDirectory)/${{ parameters.buildConfiguration }} --no-build'
 
       - task: PublishBuildArtifacts@1
         displayName: 'Publish Artifacts'

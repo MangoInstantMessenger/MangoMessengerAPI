@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using MangoAPI.Application.Interfaces;
 using MangoAPI.Application.Services;
 using MangoAPI.BusinessLogic.HubConfig;
-using MangoAPI.BusinessLogic.Models;
+using MangoAPI.BusinessLogic.Notifications;
 using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.Domain.Constants;
 using MangoAPI.Domain.Entities;
@@ -73,7 +73,6 @@ public class SendMessageCommandHandler
         var attachmentUniqueFileName = await UploadAttachmentIfExistsAsync(request);
 
         var messageEntity = MessageEntity.Create(
-            request.MessageId,
             request.UserId,
             request.ChatId,
             request.Text,
@@ -92,20 +91,27 @@ public class SendMessageCommandHandler
 
         await dbContext.SaveChangesAsync(cancellationToken);
 
-        var authorPictureUrl = $"{blobServiceSettings.MangoBlobAccess}/{user.Image}";
+        var authorImageUrl = $"{blobServiceSettings.MangoBlobAccess}/{user.Image}";
 
         var attachmentUrl = attachmentUniqueFileName == null
             ? null
             : $"{blobServiceSettings.MangoBlobAccess}/{attachmentUniqueFileName}";
 
-        var messageResultDto = messageEntity.ToMessage(
+        var messageNotification = new SendMessageNotification(
+            messageEntity.Id,
+            messageEntity.UserId,
+            messageEntity.ChatId,
             user.DisplayName,
-            user.Id,
             user.DisplayNameColour,
-            authorPictureUrl,
+            messageEntity.Text,
+            messageEntity.CreatedAt,
+            messageEntity.UpdatedAt, 
+            messageEntity.InReplyToUser, 
+            messageEntity.InReplyToText, 
+            authorImageUrl,
             attachmentUrl);
 
-        await hubContext.Clients.Group(request.ChatId.ToString()).BroadcastMessageAsync(messageResultDto);
+        await hubContext.Clients.Group(request.ChatId.ToString()).MessageSentAsync(messageNotification);
 
         return responseFactory.SuccessResponse(SendMessageResponse.FromSuccess(messageEntity.Id, attachmentUrl,
             messageEntity.CreatedAt));

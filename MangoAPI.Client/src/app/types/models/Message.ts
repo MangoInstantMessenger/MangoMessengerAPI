@@ -4,8 +4,8 @@ export class Message {
   messageId = '';
   chatId: string;
   userId: string;
-  userDisplayName: string;
-  userDisplayNameColour: DisplayNameColours;
+  displayName: string;
+  displayNameColour: DisplayNameColours;
   text: string;
   createdAt = '';
   updatedAt: string | null | undefined;
@@ -31,8 +31,8 @@ export class Message {
     this.messageId = messageId;
     this.userId = userId;
     this.chatId = chatId;
-    this.userDisplayName = userDisplayName;
-    this.userDisplayNameColour = userDisplayNameColour;
+    this.displayName = userDisplayName;
+    this.displayNameColour = userDisplayNameColour;
     this.text = text;
     this.createdAt = createdAt;
     this.self = self;

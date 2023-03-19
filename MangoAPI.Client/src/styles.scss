@@ -484,6 +484,7 @@ i {
     }
   }
   .chat-messages {
+    scroll-behavior: smooth;
     height: 100%;
     padding: 12px;
     display: flex;

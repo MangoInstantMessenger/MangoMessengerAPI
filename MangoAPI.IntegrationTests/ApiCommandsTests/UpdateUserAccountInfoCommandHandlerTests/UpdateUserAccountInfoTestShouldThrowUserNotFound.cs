@@ -3,7 +3,6 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using MangoAPI.BusinessLogic.ApiCommands.Users;
-using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.Domain.Constants;
 using Xunit;
 
@@ -11,7 +10,7 @@ namespace MangoAPI.IntegrationTests.ApiCommandsTests.UpdateUserAccountInfoComman
 
 public class UpdateUserAccountInfoTestShouldThrowUserNotFound : IntegrationTestBase
 {
-    private readonly Assert<ResponseBase> assert = new();
+    private readonly Assert<UpdateUserAccountInfoResponse> assert = new();
 
     [Fact]
     public async Task UpdateUserAccountInfoTestShouldThrowUserNotFoundAsync()

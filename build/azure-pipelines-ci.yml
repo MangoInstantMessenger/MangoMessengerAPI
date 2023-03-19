@@ -3,6 +3,7 @@ trigger:
   branches:
     include:
       - develop
+      - main
   paths:
     include:
       - build
@@ -19,6 +20,7 @@ pr:
   branches:
     include:
       - develop
+      - main
   paths:
     include:
       - build

@@ -1,6 +1,5 @@
 ﻿using System.Threading.Tasks;
-using MangoAPI.BusinessLogic.Models;
-using System;
+using MangoAPI.BusinessLogic.Notifications;
 
 namespace MangoAPI.BusinessLogic.HubConfig;
 
@@ -9,25 +8,20 @@ public interface IHubClient
     /// <summary>
     /// Notifies chat subscribers on the message sent via SignalR.
     /// </summary>
-    Task BroadcastMessageAsync(Message message);
+    Task MessageSentAsync(SendMessageNotification notification);
 
     /// <summary>
     /// Pushes new created private chat to the receiver's chats list via SignalR.
     /// </summary>
-    Task PrivateChatCreatedAsync(Chat chat);
-    
+    Task PrivateChatCreatedAsync(PrivateChatCreatedNotification notification);
+
     /// <summary>
     /// Removes deleted private chat from the receiver's chats list via SignalR.
     /// </summary>
-    Task PrivateChatDeletedAsync(Guid chatId);
+    Task PrivateChatDeletedAsync(PrivateChatDeletedNotification notification);
 
     /// <summary>
     /// Notifies chat subscribers on the message delete via SignalR.
     /// </summary>
-    Task NotifyOnMessageDeleteAsync(MessageDeleteNotification notification);
-
-    /// <summary>
-    /// Notifies chat subscribers on the message edit via SignalR.
-    /// </summary>
-    Task NotifyOnMessageEditAsync(MessageEditNotification notification);
+    Task MessageDeletedAsync(DeleteMessageNotification notification);
 }

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using MangoAPI.BusinessLogic.HubConfig;
-using MangoAPI.BusinessLogic.Models;
+using MangoAPI.BusinessLogic.Notifications;
 using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.Domain.Constants;
 using MangoAPI.Domain.Entities;
@@ -99,9 +99,17 @@ public class CreateChatCommandHandler
 
         var partnerImageUrl = $"{blobServiceSettings.MangoBlobAccess}/{senderData.ImageFileName}";
 
-        var chatDto = chat.ToChatDto(partnerImageUrl, partner.DisplayName);
+        var chatCreatedNotification = new PrivateChatCreatedNotification(
+            chat.Id,
+            senderData.DisplayName,
+            chat.CommunityType,
+            chat.Description,
+            chat.MembersCount,
+            IsArchived: false,
+            IsMember: true,
+            partnerImageUrl);
 
-        await hubContext.Clients.Group(request.PartnerId.ToString()).PrivateChatCreatedAsync(chatDto);
+        await hubContext.Clients.Group(request.PartnerId.ToString()).PrivateChatCreatedAsync(chatCreatedNotification);
 
         return responseFactory.SuccessResponse(CreateCommunityResponse.FromSuccess(chat));
     }

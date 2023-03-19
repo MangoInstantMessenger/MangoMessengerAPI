@@ -16,6 +16,7 @@ However, it is worth to continue progress on the project pursuing another predef
 - 🚀 Mango messenger: Live demo 2: https://youtu.be/tE-fzVb076Q
 - 🚀 Mango messenger: Live demo 1: https://youtu.be/WZ19vq4ayoo
 - 🚀 Mango messenger: Terraform infrastructure deploy: https://youtu.be/lImvRMW3498
+- 🚀 Mango messenger: Automatic semantic version from tag: https://youtu.be/xYJxmH_xD-o
 - 🚀 Mango messenger: Application deployment: https://youtu.be/0FXEj8utV-k
 - 🚀 Mango messenger: Upload file assets: https://youtu.be/giimO6YK1fk
 - 🚀 Mango messenger: Terraform backend up: https://youtu.be/4fRMS3gp5Uc
@@ -171,7 +172,7 @@ In case of localhost HTTPS certificate issues: https://stackoverflow.com/a/67182
   <img src="./img/jetbrains.png" width="150" height="150"  alt="Mango Messenger Logo"/>
 </p>
 
-On March 14, 2023 Mango Messenger has received the JetBrains Open Source Licenses 
+On March 14, 2023 Mango Messenger has received the [JetBrains Open Source License](https://jb.gg/OpenSourceSupport)
 for 1 year with opportunity to extend next years if opensource conditions met.
 These licenses are properly shared between active contributors.
 Thanks to JetBrains from the whole team of Mango Messenger.
