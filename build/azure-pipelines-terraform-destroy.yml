@@ -19,6 +19,9 @@ stages:
           runOnce:
             deploy:
               steps:
+                - checkout: self
+                  fetchDepth: 0
+
                 - task: TerraformInstaller@0
                   displayName: 'Terraform Installer'
                   inputs:
