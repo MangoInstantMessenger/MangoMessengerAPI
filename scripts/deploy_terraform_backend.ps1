@@ -23,5 +23,7 @@ $spName = "SpTfAzureDevops$( Get-Random 1000 )"
 # exmaple call:
 
 #.\deploy_terraform_backend.ps1 -prefix "ado019"
-#.\deploy_terraform_backend.ps1 -prefix "ado01" -subscriptionId "e3b8e7eb-628d-4a3c-80e5-b80bf1eab292"
+
+# AZURE_FOR_STUDENTS_TFSTATE_RZAUMOVSKEY
+#.\deploy_terraform_backend.ps1 -prefix "qa01" -subscriptionId "fab0735b-aac3-490e-ad20-68043a66483b"
 
