@@ -13,7 +13,7 @@ stages:
     displayName: 'Terraform Destroy ${{ parameters.environment }}'
     jobs:
       - deployment: 'Terraform_Destroy_${{ parameters.environment }}'
-        displayName: 'Terraform Destroy_${{ parameters.environment }}'
+        displayName: 'Terraform Destroy ${{ parameters.environment }}'
         pool:
           vmImage: 'ubuntu-latest'
         environment: ${{ parameters.environment }}
