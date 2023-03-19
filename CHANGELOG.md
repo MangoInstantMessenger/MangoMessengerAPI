@@ -7,9 +7,22 @@ and this project adheres to [Semantic Versioning v2.0.0](https://semver.org/spec
 
 ## [Unreleased]
 
-- Semantic version is properly displayed on UI at settings
+### Changed
+
+## [0.2.1]
 
 ### Changed
+
+- Message submission flow updated ([#440](https://github.com/MangoInstantMessenger/MangoMessengerAPI/issues/440)
+  by [@Ketteiteki](https://github.com/Ketteiteki))
+- Semantic version is properly displayed on UI at
+  settings ([#438](https://github.com/MangoInstantMessenger/MangoMessengerAPI/issues/438))
+- Separate model for send message real-time
+  notification ([#449](https://github.com/MangoInstantMessenger/MangoMessengerAPI/issues/449))
+- Smooth scrolling added to message box ([#437](https://github.com/MangoInstantMessenger/MangoMessengerAPI/issues/437))
+- Settings UI bug fixed ([#445](https://github.com/MangoInstantMessenger/MangoMessengerAPI/issues/445))
+- Message deletion flow updated ([#442](https://github.com/MangoInstantMessenger/MangoMessengerAPI/issues/442)
+  by [@Ketteiteki](https://github.com/Ketteiteki))
 
 ## [v0.2.0]
 
