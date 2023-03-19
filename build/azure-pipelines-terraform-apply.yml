@@ -9,17 +9,20 @@ stages:
       variableGroup: 'AZURE_FOR_STUDENTS_TFSTATE_KOLOSOVP94'
       azureServiceConnection: 'AzureForStudentsKolosovp94'
       terraformWorkDir: '$(System.DefaultWorkingDirectory)/terraform'
-      
+      dependsOn: [ ]
+
   - template: templates/terraform-apply-stages-template.yml
     parameters:
       environment: 'qa'
       variableGroup: 'AZURE_FOR_STUDENTS_TFSTATE_RZAUMOVSKEY'
       azureServiceConnection: 'AzureForStudentsRzaumovskey'
       terraformWorkDir: '$(System.DefaultWorkingDirectory)/terraform'
-      
+      dependsOn: [ ]
+
   - template: templates/terraform-apply-stages-template.yml
     parameters:
       environment: 'uat'
       variableGroup: 'OSDS_TFSTATE_PKOLOSOV'
       azureServiceConnection: 'OsdsPkolosov'
       terraformWorkDir: '$(System.DefaultWorkingDirectory)/terraform'
+      dependsOn: [ ]
