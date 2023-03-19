@@ -23,10 +23,3 @@ stages:
       variableGroup: 'OSDS_TFSTATE_PKOLOSOV'
       azureServiceConnection: 'OsdsPkolosov'
       terraformWorkDir: '$(System.DefaultWorkingDirectory)/terraform'
-      
-  - template: templates/terraform-apply-stages-template.yml
-    parameters:
-      environment: 'prod'
-      variableGroup: 'OSDS_TFSTATE_ANOSAL'
-      azureServiceConnection: 'OsdsAnosal'
-      terraformWorkDir: '$(System.DefaultWorkingDirectory)/terraform'
