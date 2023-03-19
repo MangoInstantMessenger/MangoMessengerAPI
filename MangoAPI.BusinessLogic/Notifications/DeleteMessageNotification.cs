@@ -2,7 +2,8 @@
 
 namespace MangoAPI.BusinessLogic.Notifications;
 
-public record MessageDeleteNotification(
+public record DeleteMessageNotification(
+    Guid UserId,
     Guid ChatId,
     Guid DeletedMessageId,
     string NewLastMessageText,
