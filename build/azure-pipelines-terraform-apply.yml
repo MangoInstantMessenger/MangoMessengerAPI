@@ -3,7 +3,7 @@ trigger: none
 pr: none
 
 stages:
-  - template: templates/terraform-destroy-stages-template.yml
+  - template: templates/terraform-apply-stages-template.yml
     parameters:
       environment: 'dev'
       variableGroup: 'AZURE_FOR_STUDENTS_TFSTATE_KOLOSOVP94'
@@ -11,7 +11,7 @@ stages:
       terraformWorkDir: '$(System.DefaultWorkingDirectory)/terraform'
       dependsOn: [ ]
 
-  - template: templates/terraform-destroy-stages-template.yml
+  - template: templates/terraform-apply-stages-template.yml
     parameters:
       environment: 'qa'
       variableGroup: 'AZURE_FOR_STUDENTS_TFSTATE_RZAUMOVSKEY'
@@ -19,7 +19,7 @@ stages:
       terraformWorkDir: '$(System.DefaultWorkingDirectory)/terraform'
       dependsOn: [ ]
 
-  - template: templates/terraform-destroy-stages-template.yml
+  - template: templates/terraform-apply-stages-template.yml
     parameters:
       environment: 'uat'
       variableGroup: 'OSDS_TFSTATE_PKOLOSOV'
