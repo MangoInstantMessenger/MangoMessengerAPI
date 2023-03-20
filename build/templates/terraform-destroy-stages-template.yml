@@ -1,0 +1,98 @@
+﻿parameters:
+  - name: environment
+    type: string
+  - name: variableGroup # keeps key vault name only
+    type: string
+  - name: azureServiceConnection
+    type: string
+  - name: terraformWorkDir
+    type: string
+  - name: dependsOn
+    type: object
+
+stages:
+  - stage: 'Terraform_Destroy_${{ parameters.environment }}'
+    displayName: 'Terraform Destroy ${{ parameters.environment }}'
+    dependsOn: ${{ parameters.dependsOn }}
+    jobs:
+      - deployment: 'Terraform_Destroy_${{ parameters.environment }}'
+        displayName: 'Terraform Destroy ${{ parameters.environment }}'
+        pool:
+          vmImage: 'ubuntu-latest'
+        environment: ${{ parameters.environment }}
+        variables:
+          - group: ${{ parameters.variableGroup }} # keeps key vault name only
+          - name: 'TF_LOG'
+            value: 'INFO'
+        strategy:
+          runOnce:
+            deploy:
+              steps:
+                - checkout: self
+                  fetchDepth: 0
+
+                - task: TerraformInstaller@0
+                  displayName: 'Terraform Installer'
+                  inputs:
+                    terraformVersion: 'latest'
+
+                - task: AzureKeyVault@2
+                  inputs:
+                    azureSubscription: ${{ parameters.azureServiceConnection }}
+                    KeyVaultName: '$(KeyVaultName)' # it is inside variable group ${{ parameters.variableGroup }}
+                    SecretsFilter: "*"
+                    RunAsPreJob: false
+
+                - bash: terraform fmt -check
+                  displayName: Terraform Format
+                  workingDirectory: ${{ parameters.terraformWorkDir }}
+                  continueOnError: true
+
+                - bash: |
+                    terraform init \
+                      -backend-config="storage_account_name=$TF_STATE_BLOB_ACCOUNT_NAME" \
+                      -backend-config="container_name=$TF_STATE_BLOB_CONTAINER_NAME" \
+                      -backend-config="key=$TF_STATE_BLOB_FILE" \
+                      -backend-config="sas_token=$TF_STATE_BLOB_SAS_TOKEN"
+                  displayName: Terraform Init
+                  workingDirectory: ${{ parameters.terraformWorkDir }}
+                  env:
+                    TF_STATE_BLOB_ACCOUNT_NAME: $(kv-tf-state-blob-account)
+                    TF_STATE_BLOB_CONTAINER_NAME: $(kv-tf-state-blob-container)
+                    TF_STATE_BLOB_FILE: 'terraform.mango$(kv-prefix).tfstate'
+                    TF_STATE_BLOB_SAS_TOKEN: $(kv-tf-state-sas-token)
+
+                - bash: |
+                    terraform plan -destroy \
+                      -var "prefix=$(kv-prefix)" \
+                      -var "sql_admin_password=$(kv-sql-password)" \
+                      -out $PLAN_FILE
+                  displayName: Terraform Plan -Destroy
+                  workingDirectory: ${{ parameters.terraformWorkDir }}
+                  env:
+                    ARM_SUBSCRIPTION_ID: $(kv-arm-subscription-id)
+                    ARM_CLIENT_ID: $(kv-arm-client-id)
+                    ARM_CLIENT_SECRET: $(kv-arm-client-secret)
+                    ARM_TENANT_ID: $(kv-arm-tenant-id)
+                    PLAN_FILE: 'main-$(kv-prefix).destroy.tfplan'
+
+                - task: PowerShell@2
+                  displayName: Detect changes in plan
+                  inputs:
+                    workingDirectory: ${{ parameters.terraformWorkDir }}
+                    targetType: 'inline'
+                    script: |
+                      ./../scripts/checkTerraformChanges.ps1 -planPath $env:PLAN_FILE
+                  env:
+                    PLAN_FILE: 'main-$(kv-prefix).destroy.tfplan'
+
+                - bash: terraform apply -destroy -auto-approve $PLAN_FILE
+                  displayName: Terraform Apply
+                  condition: eq(variables.anyTfChanges, true)
+                  workingDirectory: ${{ parameters.terraformWorkDir }}
+                  env:
+                    ARM_SUBSCRIPTION_ID: $(kv-arm-subscription-id)
+                    ARM_CLIENT_ID: $(kv-arm-client-id)
+                    ARM_CLIENT_SECRET: $(kv-arm-client-secret)
+                    ARM_TENANT_ID: $(kv-arm-tenant-id)
+                    PLAN_FILE: 'main-$(kv-prefix).destroy.tfplan'
