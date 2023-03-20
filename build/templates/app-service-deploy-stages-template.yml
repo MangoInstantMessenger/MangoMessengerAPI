@@ -1,0 +1,51 @@
+parameters:
+  - name: environment
+    type: string
+  - name: variableGroup #contains key vault name
+    type: string
+  - name: serviceConnection
+    type: string
+  - name: artifactPath
+    type: string
+  - name: dependsOn
+    type: object
+
+stages:
+  - stage: ${{ parameters.environment }}
+    displayName: 'Deploy Web App ${{ parameters.environment }}'
+    dependsOn: ${{ parameters.dependsOn }}
+    jobs:
+      - deployment: 'Deploy_Web_App_${{ parameters.environment }}'
+        displayName: 'Deploy Web App ${{ parameters.environment }}'
+        pool:
+          vmImage: 'ubuntu-latest'
+        environment: ${{ parameters.environment }}
+        variables:
+          - group: ${{ parameters.variableGroup }} #contains key vault name
+          - name: 'ApplicationInsights.InstrumentationKey'
+            value: '$(AppInsightsInstrumentationKey)'
+        strategy:
+          runOnce:
+            deploy:
+              steps:
+                - download: current
+                  artifact: drop
+
+                - task: AzureKeyVault@2
+                  inputs:
+                    azureSubscription: ${{ parameters.serviceConnection }}
+                    KeyVaultName: '$(KeyVaultName)' # inside variables group
+                    SecretsFilter: "*"
+                    RunAsPreJob: false
+
+                - task: AzureRmWebAppDeployment@4
+                  displayName: 'Deploy to Azure Web App'
+                  inputs:
+                    ConnectionType: 'AzureRM'
+                    azureSubscription: '$(serviceConnection)'
+                    appType: 'webApp'
+                    WebAppName: '$(WebAppName)' # inside key vault
+                    packageForLinux: ${{ parameters.artifactPath }}
+                    JSONFiles: |
+                      **/appsettings.json
+                      **/config.json

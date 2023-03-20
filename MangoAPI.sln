@@ -148,6 +148,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "templates", "templates", "{
 		build\templates\snyk-job-template.yml = build\templates\snyk-job-template.yml
 		build\templates\terraform-apply-stages-template.yml = build\templates\terraform-apply-stages-template.yml
 		build\templates\terraform-destroy-stages-template.yml = build\templates\terraform-destroy-stages-template.yml
+		build\templates\app-service-deploy-stages-template.yml = build\templates\app-service-deploy-stages-template.yml
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "bicep", "bicep", "{D553C98E-AC84-4EA6-81EA-39548AD267F8}"
