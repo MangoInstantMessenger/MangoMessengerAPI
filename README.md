@@ -15,11 +15,13 @@ However, it is worth to continue progress on the project pursuing another predef
 
 - 🚀 Mango messenger: Live demo 2: https://youtu.be/tE-fzVb076Q
 - 🚀 Mango messenger: Live demo 1: https://youtu.be/WZ19vq4ayoo
-- 🚀 Mango messenger: Terraform infrastructure deploy: https://youtu.be/lImvRMW3498
 - 🚀 Mango messenger: Automatic semantic version from tag: https://youtu.be/xYJxmH_xD-o
 - 🚀 Mango messenger: Application deployment: https://youtu.be/0FXEj8utV-k
 - 🚀 Mango messenger: Upload file assets: https://youtu.be/giimO6YK1fk
 - 🚀 Mango messenger: Terraform backend up: https://youtu.be/4fRMS3gp5Uc
+- 🚀 Mango messenger: Terraform infrastructure deploy: https://youtu.be/lImvRMW3498
+- 🚀 Mango messenger: Terraform apply pipeline: https://youtu.be/ZjEffyyS_gQ 
+- 🚀 Mango messenger: Terraform destroy pipeline: https://youtu.be/lNcxfvSSCw0
 
 ## Main goals of the project
 
