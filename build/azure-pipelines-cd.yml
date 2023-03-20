@@ -27,8 +27,6 @@ variables:
     value: 'Release'
   - name: artifactPath
     value: '$(Pipeline.Workspace)/drop/$(buildConfiguration)/MangoAPI.Presentation.zip'
-  - name: serviceConnection
-    value: 'AzureForStudents'
   - name: buildStageName
     value: 'Build_Test_Pack'
 

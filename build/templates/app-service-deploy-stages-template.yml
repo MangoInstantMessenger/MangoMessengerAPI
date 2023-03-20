@@ -39,10 +39,10 @@ stages:
                     RunAsPreJob: false
 
                 - task: AzureRmWebAppDeployment@4
-                  displayName: 'Deploy to Azure Web App'
+                  displayName: 'Deploy Web App ${{ parameters.environment }}'
                   inputs:
                     ConnectionType: 'AzureRM'
-                    azureSubscription: '$(serviceConnection)'
+                    azureSubscription: ${{ parameters.serviceConnection }}
                     appType: 'webApp'
                     WebAppName: '$(WebAppName)' # inside key vault
                     packageForLinux: ${{ parameters.artifactPath }}
