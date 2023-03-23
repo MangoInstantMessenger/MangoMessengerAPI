@@ -79,10 +79,7 @@ export class ContactsComponent implements OnInit {
 
     const getContactsResponse = await firstValueFrom<GetContactsResponse>(contactsSub$);
 
-    console.log(getContactsResponse.contacts);
-
     if (getContactsResponse.contacts.length === 0) {
-      console.log('No contacts');
       const currentUserSub$ = this._usersService.getUserById(this.currentUserId);
       const currentUserResponse = await firstValueFrom<GetUserResponse>(currentUserSub$);
 

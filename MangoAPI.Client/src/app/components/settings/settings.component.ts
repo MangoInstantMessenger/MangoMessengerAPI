@@ -1,6 +1,5 @@
 // noinspection TypeScriptUnresolvedVariable
 import { Component, OnInit } from '@angular/core';
-import { ErrorNotificationService } from 'src/app/services/messenger/error-notification.service';
 import { TokensService } from '../../services/messenger/tokens.service';
 import { UpdatePersonalInformationCommand } from '../../types/requests/UpdatePersonalInformationCommand';
 import { ChangePasswordCommand } from '../../types/requests/ChangePasswordCommand';
@@ -28,7 +27,6 @@ import { UpdateUserAccountInfoResponse } from '../../types/responses/UpdateUserA
 })
 export class SettingsComponent implements OnInit {
   constructor(
-    private _errorNotificationService: ErrorNotificationService,
     private _usersService: UsersService,
     private _appInfoService: AppInfoService,
     private _tokensService: TokensService,
@@ -157,7 +155,6 @@ export class SettingsComponent implements OnInit {
 
       this.clearProfilePictureFile();
     } catch (e) {
-      this._errorNotificationService.notifyOnError(e);
       this.clearProfilePictureFile();
     }
   }
