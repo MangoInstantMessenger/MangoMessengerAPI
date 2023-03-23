@@ -3,7 +3,6 @@ import { LoginCommand } from '../../types/requests/LoginCommand';
 import { SessionService } from '../../services/api/session.service';
 import { Router } from '@angular/router';
 import { ValidationService } from '../../services/messenger/validation.service';
-import { ErrorNotificationService } from '../../services/messenger/error-notification.service';
 import { TokensService } from '../../services/messenger/tokens.service';
 import { RoutingConstants } from '../../types/constants/RoutingConstants';
 import { Subject, takeUntil } from 'rxjs';
@@ -17,8 +16,7 @@ export class LoginComponent implements OnDestroy, OnInit {
     private _sessionService: SessionService,
     private _tokensService: TokensService,
     private _router: Router,
-    private _validationService: ValidationService,
-    private _errorNotificationService: ErrorNotificationService
+    private _validationService: ValidationService
   ) {}
 
   ngOnInit(): void {
@@ -64,9 +62,6 @@ export class LoginComponent implements OnDestroy, OnInit {
         next: (response) => {
           this._tokensService.setTokens(response.tokens);
           this._router.navigateByUrl(this.routingConstants.Chats).then((r) => r);
-        },
-        error: (error) => {
-          this._errorNotificationService.notifyOnError(error);
         }
       });
   }

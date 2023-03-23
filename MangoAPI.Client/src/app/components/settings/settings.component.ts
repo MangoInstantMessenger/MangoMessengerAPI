@@ -109,8 +109,6 @@ export class SettingsComponent implements OnInit {
     const response = await firstValueFrom<UpdateUserAccountInfoResponse>(updateUserInfoSub$);
 
     this.currentUser = response.user;
-
-    alert(response.message);
   }
 
   async onSavePersonalInformationClick() {
@@ -126,8 +124,6 @@ export class SettingsComponent implements OnInit {
     const response = await firstValueFrom<UpdatePersonalInformationResponse>(saveSocialsSub$);
 
     this.currentUser = response.user;
-
-    alert(response.message);
   }
 
   async onSaveProfilePictureClick() {
@@ -152,8 +148,6 @@ export class SettingsComponent implements OnInit {
       const updateProfileImage$ = this._usersService.updateProfilePicture(formData);
 
       const result = await firstValueFrom<UpdateProfilePictureResponse>(updateProfileImage$);
-
-      alert(result.message);
 
       this.currentUser.pictureUrl = result.newUserPictureUrl;
 
@@ -191,9 +185,8 @@ export class SettingsComponent implements OnInit {
     }
 
     const changePassSub$ = this._usersService.changePassword(this.changePasswordCommand);
-    const response = await firstValueFrom<BaseResponse>(changePassSub$);
+    await firstValueFrom<BaseResponse>(changePassSub$);
     this.clearChangePasswordCommand();
-    alert(response.message);
   }
 
   onUpdateProfilePictureChange(event: any): void {
