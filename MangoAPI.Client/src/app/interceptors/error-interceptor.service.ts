@@ -13,7 +13,6 @@ import { Injectable } from '@angular/core';
 export class ErrorInterceptor implements HttpInterceptor {
   private handleError(err: HttpErrorResponse) {
     const shouldHandle = err.status === 409 || err.status === 400;
-    console.log('123');
     if (shouldHandle) {
       const errorMessage = `${err.error.errorDetails}`;
       alert(errorMessage);
