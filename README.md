@@ -20,7 +20,7 @@ However, it is worth to continue progress on the project pursuing another predef
 - 🚀 Mango messenger: Upload file assets: https://youtu.be/giimO6YK1fk
 - 🚀 Mango messenger: Terraform backend up: https://youtu.be/4fRMS3gp5Uc
 - 🚀 Mango messenger: Terraform infrastructure deploy: https://youtu.be/lImvRMW3498
-- 🚀 Mango messenger: Terraform apply pipeline: https://youtu.be/ZjEffyyS_gQ 
+- 🚀 Mango messenger: Terraform apply pipeline: https://youtu.be/ZjEffyyS_gQ
 - 🚀 Mango messenger: Terraform destroy pipeline: https://youtu.be/lNcxfvSSCw0
 
 ## Main goals of the project
@@ -108,6 +108,8 @@ However, it is worth to continue progress on the project pursuing another predef
 - Go to the project folder: `cd MangoAPI.Client`
 - Restore node modules: `npm ci`
 - Install Angular CLI globally: `npm install -g @angular/cli@15.2.2`
+- Install TypeScript globally: `npm install -g typescript@4.8`
+- (Optional) Compile TS files: `cd MangoAPI.Client && tsc -p tsconfig.json`
 - Open PowerShell as Administrator and type: `Set-ExecutionPolicy -ExecutionPolicy RemoteSigned`
 - Check that Angular CLI installed properly: `ng version`
 - Build project for development using Angular CLI: `ng build`

@@ -33,22 +33,29 @@ jobs:
           node-version: '16.x'
           cache: 'npm'
           cache-dependency-path: 'MangoAPI.Client/package-lock.json'
-        
+
+      - name: 'Setup Typescript 4.8'
+        run: npm install -g typescript@4.8
+
       - name: 'Print current node version'
         run: node -v
-        
+
       - name: 'Print current npm version'
         run: npm -v
 
       - name: 'Npm ci'
         working-directory: './MangoAPI.Client'
         run: npm ci
-        
+
       - name: 'Install angular cli 15.2.2'
         run: npm install -g @angular/cli@15.2.2
-        
+
       - name: 'Print current angular cli version'
         run: ng version
+
+      - name: 'Compile TS files'
+        working-directory: './MangoAPI.Client'
+        run: tsc -p tsconfig.json
 
       - name: 'Angular build'
         working-directory: './MangoAPI.Client'
