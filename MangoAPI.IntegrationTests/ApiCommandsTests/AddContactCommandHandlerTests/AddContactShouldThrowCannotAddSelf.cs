@@ -21,7 +21,7 @@ public class AddContactShouldThrowCannotAddSelf : IntegrationTestBase
         var registerPetroCommand = CommandHelper.RegisterPetroCommand();
         var user =
             await MangoModule.RequestAsync(registerPetroCommand, CancellationToken.None);
-        
+
         var command = new AddContactCommand(user.Response.Tokens.UserId, user.Response.Tokens.UserId);
         var result = await MangoModule.RequestAsync(command, CancellationToken.None);
 

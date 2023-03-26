@@ -31,9 +31,9 @@ public class LoginHandler : BaseHandler
         var command = new LoginCommand(login, password);
 
         var response = await HttpRequestHelper.PostWithBodyAsync(
-            client: HttpClient,
-            route: AuthRoutes.SessionsRoute,
-            body: command);
+            HttpClient,
+            AuthRoutes.SessionsRoute,
+            command);
 
         var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
         var result = JsonSerializer.Deserialize<TokensResponse>(response, options);

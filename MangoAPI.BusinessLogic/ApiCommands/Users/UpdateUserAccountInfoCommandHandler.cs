@@ -93,7 +93,7 @@ public class
             LinkedIn = user.PersonalInformation?.LinkedIn,
             Username = user.Username,
             Bio = user.Bio,
-            PictureUrl = $"{blobServiceSettings.MangoBlobAccess}/{user.ImageFileName}",
+            PictureUrl = $"{blobServiceSettings.MangoBlobAccess}/{user.ImageFileName}"
         };
 
         var response = UpdateUserAccountInfoResponse.FromSuccess(userDto);

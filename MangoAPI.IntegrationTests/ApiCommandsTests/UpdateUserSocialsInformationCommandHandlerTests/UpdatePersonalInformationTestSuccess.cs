@@ -15,14 +15,14 @@ public class UpdatePersonalInformationTestSuccess : IntegrationTestBase
     public async Task UpdatePersonalInformationTestSuccessAsync()
     {
         var user = await MangoModule.RequestAsync(
-            request: CommandHelper.RegisterPetroCommand(),
-            cancellationToken: CancellationToken.None);
+            CommandHelper.RegisterPetroCommand(),
+            CancellationToken.None);
         var command = new UpdatePersonalInformationCommand(
-            UserId: user.Response.Tokens.UserId,
-            Instagram: "petro.kolosov",
-            LinkedIn: "petro.kolosov",
-            Facebook: "petro.kolosov",
-            Twitter: "petro.kolosov");
+            user.Response.Tokens.UserId,
+            "petro.kolosov",
+            "petro.kolosov",
+            "petro.kolosov",
+            "petro.kolosov");
 
         var result = await MangoModule.RequestAsync(command, CancellationToken.None);
 

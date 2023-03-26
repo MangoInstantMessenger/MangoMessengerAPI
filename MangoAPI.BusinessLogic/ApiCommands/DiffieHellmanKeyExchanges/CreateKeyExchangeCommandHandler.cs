@@ -34,13 +34,13 @@ public class CreateKeyExchangeCommandHandler : IRequestHandler<CreateKeyExchange
             .Where(entity =>
                 entity.SenderId == request.SenderId &&
                 entity.ReceiverId == request.ReceiverId)
-            .ToListAsync(cancellationToken: cancellationToken);
+            .ToListAsync(cancellationToken);
 
         var receiverRequests = await mangoDbContext.DiffieHellmanKeyExchangeEntities
             .Where(entity =>
                 entity.SenderId == request.ReceiverId &&
                 entity.ReceiverId == request.SenderId)
-            .ToListAsync(cancellationToken: cancellationToken);
+            .ToListAsync(cancellationToken);
 
         var allRequests = sendersRequests.Concat(receiverRequests).ToList();
 
@@ -61,7 +61,7 @@ public class CreateKeyExchangeCommandHandler : IRequestHandler<CreateKeyExchange
             ReceiverId = request.ReceiverId,
             SenderPublicKey = bytes,
             CreatedAt = DateTime.UtcNow,
-            KeyExchangeType = request.KeyExchangeType,
+            KeyExchangeType = request.KeyExchangeType
         };
 
         mangoDbContext.DiffieHellmanKeyExchangeEntities.Add(keyExchangeRequest);
@@ -72,7 +72,7 @@ public class CreateKeyExchangeCommandHandler : IRequestHandler<CreateKeyExchange
         {
             Message = ResponseMessageCodes.Success,
             RequestId = keyExchangeRequest.Id,
-            Success = true,
+            Success = true
         };
 
         return responseFactory.SuccessResponse(response);

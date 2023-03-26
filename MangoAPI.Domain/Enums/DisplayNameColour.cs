@@ -50,5 +50,5 @@ public enum DisplayNameColour
     /// <summary>
     /// HEX colour: #ffc588
     /// </summary>
-    Orange = 10,
+    Orange = 10
 }

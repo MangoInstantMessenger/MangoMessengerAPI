@@ -51,7 +51,7 @@ public class SearchCommunityQueryHandler
                 LastMessageAuthor = x.LastMessageAuthor,
                 LastMessageText = x.LastMessageText,
                 LastMessageTime = x.LastMessageTime,
-                LastMessageId = x.LastMessageId,
+                LastMessageId = x.LastMessageId
             }).Distinct();
 
         var userChats = await dbContext.UserChats

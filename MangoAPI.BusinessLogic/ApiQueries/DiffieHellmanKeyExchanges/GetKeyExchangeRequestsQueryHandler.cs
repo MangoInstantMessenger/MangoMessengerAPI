@@ -37,14 +37,14 @@ public class GetKeyExchangeRequestsQueryHandler : IRequestHandler<GetKeyExchange
                 ReceiverId = x.ReceiverId,
                 RequestId = x.Id,
                 SenderId = x.SenderId,
-                KeyExchangeType = x.KeyExchangeType,
+                KeyExchangeType = x.KeyExchangeType
             }).ToListAsync(cancellationToken);
 
         var response = new GetKeyExchangeRequestsResponse
         {
             Message = ResponseMessageCodes.Success,
             OpenSslKeyExchangeRequests = requests,
-            Success = true,
+            Success = true
         };
 
         return responseFactory.SuccessResponse(response);

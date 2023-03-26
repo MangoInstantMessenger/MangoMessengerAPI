@@ -36,10 +36,10 @@ public class GetKeyExchangeRequestByIdQueryHandler : IRequestHandler<GetKeyExcha
                 SenderId = x.SenderId,
                 ReceiverId = x.ReceiverId,
                 IsConfirmed = x.IsConfirmed,
-                Actor = x.SenderId == request.UserId ? Actor.Sender : Actor.Receiver,
+                Actor = x.SenderId == request.UserId ? Actor.Sender : Actor.Receiver
             }).FirstOrDefaultAsync(
-                predicate: x => x.RequestId == request.KeyExchangeRequestId,
-                cancellationToken: cancellationToken);
+                x => x.RequestId == request.KeyExchangeRequestId,
+                cancellationToken);
 
         if (keyExchangeRequest == null)
         {

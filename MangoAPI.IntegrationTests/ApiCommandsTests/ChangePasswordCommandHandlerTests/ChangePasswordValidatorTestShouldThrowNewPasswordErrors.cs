@@ -13,10 +13,10 @@ public class ChangePasswordValidatorTestShouldThrowNewPasswordErrors
     {
         var validator = new ChangePasswordCommandValidator();
         var command = new ChangePasswordCommand(
-            UserId: Guid.NewGuid(),
-            CurrentPassword: "Bm3-`dPRv-/w#3)cw^97",
-            NewPassword: "Gm3-`xPRr-/q#6)re^94",
-            RepeatNewPassword: "Gm4-`xPRr-/q#6)re^92");
+            Guid.NewGuid(),
+            "Bm3-`dPRv-/w#3)cw^97",
+            "Gm3-`xPRr-/q#6)re^94",
+            "Gm4-`xPRr-/q#6)re^92");
 
         var result = validator.TestValidate(command);
 

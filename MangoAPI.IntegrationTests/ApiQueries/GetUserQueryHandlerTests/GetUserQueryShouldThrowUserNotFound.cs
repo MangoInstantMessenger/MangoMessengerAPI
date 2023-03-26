@@ -17,7 +17,7 @@ public class GetUserQueryShouldThrowUserNotFound : IntegrationTestBase
     {
         const string expectedMessage = ResponseMessageCodes.UserNotFound;
         var expectedDetails = ResponseMessageCodes.ErrorDictionary[expectedMessage];
-        var query = new GetUserQuery(UserId: Guid.NewGuid());
+        var query = new GetUserQuery(Guid.NewGuid());
 
         var result = await MangoModule.RequestAsync(query, CancellationToken.None);
 

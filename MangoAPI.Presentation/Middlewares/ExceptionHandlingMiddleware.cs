@@ -56,9 +56,9 @@ public class ExceptionHandlingMiddleware
 
         context.Response.ContentType = "application/json";
         context.Response.StatusCode = (int)errorContext.StatusCode;
-        
+
         LoggingHelper.LoggerError(logger, loggerMessage, errorContext.Exception);
-        
+
         await context.Response.WriteAsync(new ErrorResponse
         {
             Success = false,

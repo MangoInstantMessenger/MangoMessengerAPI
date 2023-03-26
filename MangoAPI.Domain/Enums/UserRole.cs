@@ -10,5 +10,5 @@ public enum UserRole
     /// <summary>
     /// Owner role in Chat.
     /// </summary>
-    Owner = 2,
+    Owner = 2
 }

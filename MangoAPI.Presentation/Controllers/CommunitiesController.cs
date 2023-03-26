@@ -26,7 +26,7 @@ namespace MangoAPI.Presentation.Controllers;
 public class CommunitiesController : ApiControllerBase<CommunitiesController>, ICommunitiesController
 {
     public CommunitiesController(IMediator mediator,
-        IMapper mapper, 
+        IMapper mapper,
         ICorrelationContext correlationContext,
         ILogger<CommunitiesController> logger)
         : base(mediator, mapper, correlationContext, logger)

@@ -20,7 +20,7 @@ public class EditMessageShouldThrowChatNotFound : IntegrationTestBase
         const string expectedMessage = ResponseMessageCodes.ChatNotFound;
         var expectedDetails = ResponseMessageCodes.ErrorDictionary[expectedMessage];
         var petroCommand = CommandHelper.RegisterPetroCommand();
-            
+
         var petro = await MangoModule.RequestAsync(petroCommand, CancellationToken.None);
         var petroId = petro.Response.Tokens.UserId;
         var chatCommand = CommandHelper.CreateExtremeCodeMainChatCommand(petroId);
@@ -28,10 +28,10 @@ public class EditMessageShouldThrowChatNotFound : IntegrationTestBase
         var sendMessageCommand = CommandHelper.SendMessageToChannelCommand(petroId, chat.Response.ChatId);
         var message = await MangoModule.RequestAsync(sendMessageCommand, CancellationToken.None);
         var command = new EditMessageCommand(
-            ChatId: Guid.Empty,
+            Guid.Empty,
             petroId,
             message.Response.NewMessageId,
-            ModifiedText: "Message edited");
+            "Message edited");
 
         var result = await MangoModule.RequestAsync(command, CancellationToken.None);
 

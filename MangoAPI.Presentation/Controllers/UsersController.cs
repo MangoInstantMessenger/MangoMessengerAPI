@@ -25,7 +25,7 @@ public class UsersController : ApiControllerBase<UsersController>, IUsersControl
 {
     public UsersController(
         IMediator mediator,
-        IMapper mapper, 
+        IMapper mapper,
         ICorrelationContext correlationContext,
         ILogger<UsersController> logger)
         : base(mediator, mapper, correlationContext, logger)

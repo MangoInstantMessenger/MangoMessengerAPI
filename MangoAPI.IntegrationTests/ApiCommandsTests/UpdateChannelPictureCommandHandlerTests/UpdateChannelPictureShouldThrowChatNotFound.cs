@@ -24,10 +24,10 @@ public class
             CancellationToken.None);
         var file = MangoFilesHelper.GetTestImage();
         var command = new UpdateChanelPictureCommand(
-            UserId: sender.Response.Tokens.UserId,
-            ChatId: Guid.NewGuid(),
-            NewGroupPicture: file,
-            ContentType: "image/jpeg");
+            sender.Response.Tokens.UserId,
+            Guid.NewGuid(),
+            file,
+            "image/jpeg");
 
         var result = await MangoModule.RequestAsync(command, CancellationToken.None);
 

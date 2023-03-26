@@ -14,9 +14,9 @@ public static class MangoFilesHelper
 
         var file = new FormFile(
             stream,
-            baseStreamOffset: 0,
+            0,
             stream.Length,
-            name: FileName,
+            FileName,
             Path.GetFileName(stream.Name))
         {
             Headers = new HeaderDictionary(),

@@ -9,6 +9,11 @@ public record GetAppInfoResponse : ResponseBase
 
     public static GetAppInfoResponse FromSuccess(Models.AppInfo appInfo)
     {
-        return new GetAppInfoResponse { Message = ResponseMessageCodes.Success, Success = true, AppInfo = appInfo };
+        return new GetAppInfoResponse
+        {
+            Message = ResponseMessageCodes.Success,
+            Success = true,
+            AppInfo = appInfo
+        };
     }
 }

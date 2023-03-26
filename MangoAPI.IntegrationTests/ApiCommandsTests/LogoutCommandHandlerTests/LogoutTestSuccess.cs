@@ -17,10 +17,10 @@ public class LogoutTestSuccess : IntegrationTestBase
     {
         var petroCommand = CommandHelper.RegisterPetroCommand();
         var petro = await MangoModule.RequestAsync(petroCommand, CancellationToken.None);
-        
+
         var petroId = petro.Response.Tokens.UserId;
         var petroRefresh = petro.Response.Tokens.RefreshToken;
-        
+
         var petroLogout = new LogoutCommand(petroId, petroRefresh);
 
         var result = await MangoModule.RequestAsync(petroLogout, CancellationToken.None);

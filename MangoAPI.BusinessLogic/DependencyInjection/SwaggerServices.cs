@@ -11,14 +11,18 @@ public static class SwaggerServices
         services.AddSwaggerGen(c =>
         {
             c.EnableAnnotations();
-            c.SwaggerDoc($"v{version}", new OpenApiInfo { Title = $"{title}", Version = $"v{version}" });
+            c.SwaggerDoc($"v{version}", new OpenApiInfo
+            {
+                Title = $"{title}",
+                Version = $"v{version}"
+            });
 
             c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
             {
                 In = ParameterLocation.Header,
                 Description = "Please insert JWT with Bearer into field",
                 Name = "Authorization",
-                Type = SecuritySchemeType.ApiKey,
+                Type = SecuritySchemeType.ApiKey
             });
 
             c.AddSecurityRequirement(new OpenApiSecurityRequirement
@@ -26,10 +30,14 @@ public static class SwaggerServices
                 {
                     new OpenApiSecurityScheme
                     {
-                        Reference = new OpenApiReference { Type = ReferenceType.SecurityScheme, Id = "Bearer", },
+                        Reference = new OpenApiReference
+                        {
+                            Type = ReferenceType.SecurityScheme,
+                            Id = "Bearer"
+                        }
                     },
                     Array.Empty<string>()
-                },
+                }
             });
         });
 

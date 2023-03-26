@@ -20,10 +20,10 @@ public class GetDhParametersTestSuccess : IntegrationTestBase
         var user =
             await MangoModule.RequestAsync(CommandHelper.RegisterKhachaturCommand(), CancellationToken.None);
         await MangoModule.RequestAsync(
-            request: CommandHelper.CreateOpenSslCreateDiffieHellmanParameterCommand(
-                diffieHellmanParameter: file,
-                userId: user.Response.Tokens.UserId),
-            cancellationToken: CancellationToken.None);
+            CommandHelper.CreateOpenSslCreateDiffieHellmanParameterCommand(
+                file,
+                user.Response.Tokens.UserId),
+            CancellationToken.None);
         var query = new GetDhParametersQuery();
 
         var response = await MangoModule.RequestAsync(query, CancellationToken.None);

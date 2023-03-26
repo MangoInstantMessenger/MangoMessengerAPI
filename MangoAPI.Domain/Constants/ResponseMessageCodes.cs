@@ -53,6 +53,6 @@ public static class ResponseMessageCodes
         { TokensNotFound, "Tokens not found. Please login to the system first." },
         { KeyExchangeIsNotConfirmed, "Key exchange is not confirmed yet, please wait for response." },
         { KeyExchangeDoesNotBelongToUser, "Key exchange does not belong to you." },
-        { Unauthorized, "User not authorized, please, sign in." },
+        { Unauthorized, "User not authorized, please, sign in." }
     };
 }

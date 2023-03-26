@@ -17,15 +17,12 @@ public record Tokens
     [DefaultValue("28aac181-2a67-4d09-a1fc-749fd3705804")]
     public Guid UserId { get; init; }
 
-    [DefaultValue(1633084830)]
-    public long Expires { get; init; }
+    [DefaultValue(1633084830)] public long Expires { get; init; }
 
-    [DefaultValue("razumovsky_r")]
-    public string UserDisplayName { get; init; }
+    [DefaultValue("razumovsky_r")] public string UserDisplayName { get; init; }
 
     [DefaultValue("blob.url/razumovsky_r.jpg")]
     public string UserProfilePictureUrl { get; init; }
 
-    [DefaultValue(DisplayNameColour.Aqua)]
-    public DisplayNameColour DisplayNameColour { get; set; }
+    [DefaultValue(DisplayNameColour.Aqua)] public DisplayNameColour DisplayNameColour { get; set; }
 }

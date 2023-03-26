@@ -21,7 +21,7 @@ public class ArchiveChatTestShouldThrowChatNotFound : IntegrationTestBase
         var expectedDetails = ResponseMessageCodes.ErrorDictionary[expectedMessage];
         var user =
             await MangoModule.RequestAsync(CommandHelper.RegisterPetroCommand(), CancellationToken.None);
-        var command = new ArchiveChatCommand(ChatId: Guid.NewGuid(), UserId: user.Response.Tokens.UserId);
+        var command = new ArchiveChatCommand(Guid.NewGuid(), user.Response.Tokens.UserId);
 
         var result = await MangoModule.RequestAsync(command, CancellationToken.None);
 

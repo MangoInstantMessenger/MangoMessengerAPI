@@ -5,17 +5,13 @@ namespace MangoAPI.BusinessLogic.ApiCommands.Users;
 
 public record UpdatePersonalInformationRequest
 {
-    [DefaultValue("test.user")]
-    public string Facebook { get; }
+    [DefaultValue("test.user")] public string Facebook { get; }
 
-    [DefaultValue("test.user")]
-    public string Twitter { get; }
+    [DefaultValue("test.user")] public string Twitter { get; }
 
-    [DefaultValue("test.user")]
-    public string Instagram { get; }
+    [DefaultValue("test.user")] public string Instagram { get; }
 
-    [DefaultValue("test.user")]
-    public string LinkedIn { get; }
+    [DefaultValue("test.user")] public string LinkedIn { get; }
 
     [JsonConstructor]
     public UpdatePersonalInformationRequest(

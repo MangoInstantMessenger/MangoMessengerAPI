@@ -10,5 +10,5 @@ public enum KeyExchangeType
     /// <summary>
     /// Openssl type key exchange
     /// </summary>
-    OpenSsl = 2,
+    OpenSsl = 2
 }

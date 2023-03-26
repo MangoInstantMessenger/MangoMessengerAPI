@@ -16,18 +16,18 @@ public class GetMessagesTestSuccess : IntegrationTestBase
     public async Task GetMessagesTestSuccessAsync()
     {
         var user = await MangoModule.RequestAsync(
-            request: CommandHelper.RegisterPetroCommand(),
-            cancellationToken: CancellationToken.None);
+            CommandHelper.RegisterPetroCommand(),
+            CancellationToken.None);
         var chat = await MangoModule.RequestAsync(
-            request: CommandHelper.CreateExtremeCodeMainChatCommand(user.Response.Tokens.UserId),
-            cancellationToken: CancellationToken.None);
+            CommandHelper.CreateExtremeCodeMainChatCommand(user.Response.Tokens.UserId),
+            CancellationToken.None);
         await MangoModule.RequestAsync(
-            request: CommandHelper.SendMessageToChannelCommand(user.Response.Tokens.UserId, chat.Response.ChatId),
-            cancellationToken: CancellationToken.None);
+            CommandHelper.SendMessageToChannelCommand(user.Response.Tokens.UserId, chat.Response.ChatId),
+            CancellationToken.None);
         await MangoModule.RequestAsync(
-            request: CommandHelper.SendMessageToChannelCommand(user.Response.Tokens.UserId, chat.Response.ChatId),
-            cancellationToken: CancellationToken.None);
-        var query = new GetMessagesQuery(UserId: user.Response.Tokens.UserId, ChatId: chat.Response.ChatId);
+            CommandHelper.SendMessageToChannelCommand(user.Response.Tokens.UserId, chat.Response.ChatId),
+            CancellationToken.None);
+        var query = new GetMessagesQuery(user.Response.Tokens.UserId, chat.Response.ChatId);
 
         var result = await MangoModule.RequestAsync(query, CancellationToken.None);
 

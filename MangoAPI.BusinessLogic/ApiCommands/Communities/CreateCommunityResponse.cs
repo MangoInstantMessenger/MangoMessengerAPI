@@ -17,7 +17,7 @@ public record CreateCommunityResponse : ResponseBase
         {
             ChatId = chatEntity.Id,
             Message = ResponseMessageCodes.Success,
-            Success = true,
+            Success = true
         };
     }
 }

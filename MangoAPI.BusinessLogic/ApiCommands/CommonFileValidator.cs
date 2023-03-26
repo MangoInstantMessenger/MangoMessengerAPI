@@ -18,7 +18,7 @@ public class CommonFileValidator : AbstractValidator<IFormFile>
         "png",
         "PNG",
         "jpeg",
-        "JPEG",
+        "JPEG"
     };
 
     public CommonFileValidator()

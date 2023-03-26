@@ -15,7 +15,7 @@ public record SearchCommunityResponse : ResponseBase
         {
             Message = ResponseMessageCodes.Success,
             Success = true,
-            Chats = chats,
+            Chats = chats
         };
     }
 }

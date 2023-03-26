@@ -29,8 +29,8 @@ public class
         var keyExchangeRequest =
             await mangoDbContext.DiffieHellmanKeyExchangeEntities
                 .FirstOrDefaultAsync(
-                    predicate: x => x.Id == request.RequestId,
-                    cancellationToken: cancellationToken);
+                    x => x.Id == request.RequestId,
+                    cancellationToken);
 
         if (keyExchangeRequest == null)
         {

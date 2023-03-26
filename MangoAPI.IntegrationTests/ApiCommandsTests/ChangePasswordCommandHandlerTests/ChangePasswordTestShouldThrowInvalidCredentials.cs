@@ -21,10 +21,10 @@ public class ChangePasswordTestShouldThrowInvalidCredentials : IntegrationTestBa
         var user =
             await MangoModule.RequestAsync(CommandHelper.RegisterPetroCommand(), CancellationToken.None);
         var command = new ChangePasswordCommand(
-            UserId: user.Response.Tokens.UserId,
-            CurrentPassword: "Gm3-`xPRr-/q#6)rgf^925",
-            NewPassword: "Gm3-`xPRr-/q#6)re^94",
-            RepeatNewPassword: "Gm3-`xPRr-/q#6)re^94");
+            user.Response.Tokens.UserId,
+            "Gm3-`xPRr-/q#6)rgf^925",
+            "Gm3-`xPRr-/q#6)re^94",
+            "Gm3-`xPRr-/q#6)re^94");
 
         var result = await MangoModule.RequestAsync(command, CancellationToken.None);
 

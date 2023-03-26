@@ -21,12 +21,12 @@ public class UpdateUserAccountInfoTestSuccess : IntegrationTestBase
 
         var command = new UpdateUserAccountInfoCommand(
             petroId,
-            Username: "PetroKolosov",
-            DisplayName: "Petro Kolosov",
-            Website: "pkolosov.com",
-            Bio: "Third year student of WSB at Poznan",
-            Address: "Poznan, Poland",
-            Birthday: new DateTime(1994, 6, 12));
+            "PetroKolosov",
+            "Petro Kolosov",
+            "pkolosov.com",
+            "Third year student of WSB at Poznan",
+            "Poznan, Poland",
+            new DateTime(1994, 6, 12));
 
         var result = await MangoModule.RequestAsync(command, CancellationToken.None);
 

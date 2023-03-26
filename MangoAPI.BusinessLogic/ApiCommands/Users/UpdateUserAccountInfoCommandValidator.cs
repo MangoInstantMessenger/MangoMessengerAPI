@@ -8,7 +8,7 @@ public class UpdateUserAccountInfoCommandValidator : AbstractValidator<UpdateUse
     public UpdateUserAccountInfoCommandValidator()
     {
         RuleFor(x => x.UserId).NotEmpty();
-        
+
         RuleFor(x => x.Address)
             .Cascade(CascadeMode.Stop)
             .Length(0, 50);

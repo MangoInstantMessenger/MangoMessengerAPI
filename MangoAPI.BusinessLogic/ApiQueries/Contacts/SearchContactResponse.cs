@@ -15,7 +15,7 @@ public record SearchContactResponse : ResponseBase
         {
             Message = ResponseMessageCodes.Success,
             Success = true,
-            Contacts = contacts,
+            Contacts = contacts
         };
     }
 }

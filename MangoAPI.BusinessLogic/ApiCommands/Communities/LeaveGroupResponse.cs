@@ -14,7 +14,7 @@ public record LeaveGroupResponse : ResponseBase
         {
             Success = true,
             Message = ResponseMessageCodes.Success,
-            ChatId = chatId,
+            ChatId = chatId
         };
     }
 }

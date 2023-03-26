@@ -18,7 +18,7 @@ public class DeleteContactShouldThrowUserNotFound : IntegrationTestBase
     {
         const string expectedMessage = ResponseMessageCodes.UserNotFound;
         var expectedDetails = ResponseMessageCodes.ErrorDictionary[expectedMessage];
-        var command = new DeleteContactCommand(UserId: Guid.NewGuid(), ContactId: Guid.NewGuid());
+        var command = new DeleteContactCommand(Guid.NewGuid(), Guid.NewGuid());
 
         var result = await MangoModule.RequestAsync(command, CancellationToken.None);
 

@@ -36,7 +36,7 @@ public class CreateDiffieHellmanParameterCommandHandler : IRequestHandler<Create
         {
             OpenSslDhParameter = bytes,
             CreatedBy = request.UserId,
-            CreatedAt = DateTime.UtcNow,
+            CreatedAt = DateTime.UtcNow
         };
 
         dbContext.DiffieHellmanParameterEntities.Add(entity);
@@ -47,7 +47,7 @@ public class CreateDiffieHellmanParameterCommandHandler : IRequestHandler<Create
         {
             Message = ResponseMessageCodes.Success,
             Success = true,
-            ParameterId = entity.Id,
+            ParameterId = entity.Id
         };
 
         return responseFactory.SuccessResponse(response);

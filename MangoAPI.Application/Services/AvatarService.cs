@@ -29,7 +29,7 @@ public class AvatarService : IAvatarService
         "animetyanpic19.jpg",
         "animetyanpic20.jpg",
         "animetyanpic21.jpg",
-        "animetyanpic22.jpg",
+        "animetyanpic22.jpg"
     };
 
     public string GetRandomAvatar()

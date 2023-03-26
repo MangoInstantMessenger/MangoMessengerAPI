@@ -10,17 +10,17 @@
 
     <!-- Exclude the project from coverage report -->
     <ItemGroup>
-        <AssemblyAttribute Include="System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute" />
+        <AssemblyAttribute Include="System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute"/>
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\MangoAPI.BusinessLogic\MangoAPI.BusinessLogic.csproj" />
-        <ProjectReference Include="..\MangoAPI.Domain\MangoAPI.Domain.csproj" />
+        <ProjectReference Include="..\MangoAPI.BusinessLogic\MangoAPI.BusinessLogic.csproj"/>
+        <ProjectReference Include="..\MangoAPI.Domain\MangoAPI.Domain.csproj"/>
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="CliWrap" Version="3.6.0" />
-        <PackageReference Include="Microsoft.Extensions.Http" Version="6.0.0" />
+        <PackageReference Include="CliWrap" Version="3.6.0"/>
+        <PackageReference Include="Microsoft.Extensions.Http" Version="6.0.0"/>
     </ItemGroup>
 
 </Project>

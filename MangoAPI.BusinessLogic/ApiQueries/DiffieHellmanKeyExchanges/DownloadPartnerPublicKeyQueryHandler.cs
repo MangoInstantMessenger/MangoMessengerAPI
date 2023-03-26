@@ -27,8 +27,8 @@ public class DownloadPartnerPublicKeyQueryHandler : IRequestHandler<DownloadPart
     {
         var keyExchangeRequest = await mangoDbContext.DiffieHellmanKeyExchangeEntities
             .FirstOrDefaultAsync(
-                predicate: entity => entity.Id == request.RequestId,
-                cancellationToken: cancellationToken);
+                entity => entity.Id == request.RequestId,
+                cancellationToken);
 
         if (keyExchangeRequest == null)
         {
@@ -72,7 +72,7 @@ public class DownloadPartnerPublicKeyQueryHandler : IRequestHandler<DownloadPart
             Message = ResponseMessageCodes.Success,
             PartnerId = partnerId,
             PublicKey = publicKey,
-            Success = true,
+            Success = true
         };
 
         return responseFactory.SuccessResponse(response);

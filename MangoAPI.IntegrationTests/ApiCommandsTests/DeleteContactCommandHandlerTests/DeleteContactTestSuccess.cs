@@ -20,9 +20,9 @@ public class DeleteContactTestSuccess : IntegrationTestBase
         var partner =
             await MangoModule.RequestAsync(CommandHelper.RegisterKhachaturCommand(), CancellationToken.None);
         await MangoModule.RequestAsync(
-            request: CommandHelper.CreateContactCommand(user.Response.Tokens.UserId, partner.Response.Tokens.UserId),
-            cancellationToken: CancellationToken.None);
-        var command = new DeleteContactCommand(UserId: user.Response.Tokens.UserId, ContactId: partner.Response.Tokens.UserId);
+            CommandHelper.CreateContactCommand(user.Response.Tokens.UserId, partner.Response.Tokens.UserId),
+            CancellationToken.None);
+        var command = new DeleteContactCommand(user.Response.Tokens.UserId, partner.Response.Tokens.UserId);
 
         var result = await MangoModule.RequestAsync(command, CancellationToken.None);
 

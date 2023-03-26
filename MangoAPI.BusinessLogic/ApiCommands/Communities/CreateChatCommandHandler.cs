@@ -60,7 +60,11 @@ public class CreateChatCommandHandler
         }
 
         var senderData = await dbContext.Users.Where(x => x.Id == request.UserId)
-            .Select(x => new { x.DisplayName, x.ImageFileName })
+            .Select(x => new
+            {
+                x.DisplayName,
+                x.ImageFileName
+            })
             .FirstOrDefaultAsync(cancellationToken);
 
         var userPrivateChats = await dbContext.Chats
@@ -85,9 +89,9 @@ public class CreateChatCommandHandler
             title,
             CommunityType.DirectChat,
             description,
-            image: String.Empty,
+            String.Empty,
             DateTime.UtcNow,
-            membersCount: 2);
+            2);
 
         var senderUserChat = UserChatEntity.Create(request.UserId, chat.Id, UserRole.User);
         var receiverUserChat = UserChatEntity.Create(request.PartnerId, chat.Id, UserRole.User);
@@ -105,8 +109,8 @@ public class CreateChatCommandHandler
             chat.CommunityType,
             chat.Description,
             chat.MembersCount,
-            IsArchived: false,
-            IsMember: true,
+            false,
+            true,
             partnerImageUrl);
 
         await hubContext.Clients.Group(request.PartnerId.ToString()).PrivateChatCreatedAsync(chatCreatedNotification);

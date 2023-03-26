@@ -11,11 +11,11 @@
 
     <!-- Exclude the project from coverage report -->
     <ItemGroup>
-        <AssemblyAttribute Include="System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute" />
+        <AssemblyAttribute Include="System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute"/>
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\MangoAPI.DiffieHellmanLibrary\MangoAPI.DiffieHellmanLibrary.csproj" />
+        <ProjectReference Include="..\MangoAPI.DiffieHellmanLibrary\MangoAPI.DiffieHellmanLibrary.csproj"/>
     </ItemGroup>
 
 </Project>

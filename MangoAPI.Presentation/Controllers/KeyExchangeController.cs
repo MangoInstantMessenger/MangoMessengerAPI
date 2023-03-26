@@ -28,7 +28,7 @@ public class KeyExchangeController : ApiControllerBase<KeyExchangeController>, I
 {
     public KeyExchangeController(
         IMediator mediator,
-        IMapper mapper, 
+        IMapper mapper,
         ICorrelationContext correlationContext,
         ILogger<KeyExchangeController> logger)
         : base(mediator, mapper, correlationContext, logger)

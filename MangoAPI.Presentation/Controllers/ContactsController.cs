@@ -25,7 +25,7 @@ namespace MangoAPI.Presentation.Controllers;
 public class ContactsController : ApiControllerBase<ContactsController>, IContactsController
 {
     public ContactsController(
-        IMediator mediator, 
+        IMediator mediator,
         IMapper mapper,
         ICorrelationContext correlationContext,
         ILogger<ContactsController> logger)

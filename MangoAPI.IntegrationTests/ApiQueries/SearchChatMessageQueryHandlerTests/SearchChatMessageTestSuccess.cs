@@ -19,15 +19,15 @@ public class SearchChatMessageTestSuccess : IntegrationTestBase
             await MangoModule.RequestAsync(CommandHelper.RegisterPetroCommand(), CancellationToken.None);
         var chat =
             await MangoModule.RequestAsync(
-                request: CommandHelper.CreateExtremeCodeMainChatCommand(user.Response.Tokens.UserId),
-                cancellationToken: CancellationToken.None);
+                CommandHelper.CreateExtremeCodeMainChatCommand(user.Response.Tokens.UserId),
+                CancellationToken.None);
         await MangoModule.RequestAsync(
-            request: CommandHelper.SendMessageToChannelCommand(user.Response.Tokens.UserId, chat.Response.ChatId),
-            cancellationToken: CancellationToken.None);
+            CommandHelper.SendMessageToChannelCommand(user.Response.Tokens.UserId, chat.Response.ChatId),
+            CancellationToken.None);
         var query = new SearchChatMessagesQuery(
-            UserId: user.Response.Tokens.UserId,
-            ChatId: chat.Response.ChatId,
-            MessageText: "test");
+            user.Response.Tokens.UserId,
+            chat.Response.ChatId,
+            "test");
 
         var result = await MangoModule.RequestAsync(query, CancellationToken.None);
 

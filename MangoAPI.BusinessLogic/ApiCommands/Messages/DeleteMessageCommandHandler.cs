@@ -37,7 +37,11 @@ public class DeleteMessageCommandHandler
     {
         var checkMessage = await dbContext.Messages
             .Include(x => x.User)
-            .Select(x => new { MessageId = x.Id, UserId = x.User.Id })
+            .Select(x => new
+            {
+                MessageId = x.Id,
+                UserId = x.User.Id
+            })
             .FirstOrDefaultAsync(t => t.MessageId == request.MessageId, cancellationToken);
 
         if (checkMessage == null)
@@ -101,8 +105,8 @@ public class DeleteMessageCommandHandler
             .Where(x => x.Id != deletedMessage.Id).MaxBy(x => x.CreatedAt);
 
         chat.UpdateLastMessage(
-            lastMessageAuthor: newLastMessage?.User?.DisplayName,
-            lastMessageText: newLastMessage?.Text,
+            newLastMessage?.User?.DisplayName,
+            newLastMessage?.Text,
             newLastMessage?.CreatedAt,
             newLastMessage?.Id);
 
@@ -114,7 +118,7 @@ public class DeleteMessageCommandHandler
             newLastMessage?.CreatedAt,
             newLastMessage?.Id,
             newLastMessage?.User?.DisplayName,
-            IsLastMessage: true);
+            true);
 
         return deleteNotification;
     }
@@ -128,11 +132,11 @@ public class DeleteMessageCommandHandler
             userId,
             chatId,
             deletedMessageId,
-            NewLastMessageText: string.Empty,
-            NewLastMessageTime: null,
-            NewLastMessageId: null,
-            NewLastMessageDisplayName: null,
-            IsLastMessage: false);
+            string.Empty,
+            null,
+            null,
+            null,
+            false);
 
         return deleteNotification;
     }

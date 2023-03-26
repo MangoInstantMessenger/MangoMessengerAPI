@@ -15,7 +15,7 @@ public record SearchChatMessagesResponse : ResponseBase
         {
             Messages = messages,
             Message = ResponseMessageCodes.Success,
-            Success = true,
+            Success = true
         };
     }
 }

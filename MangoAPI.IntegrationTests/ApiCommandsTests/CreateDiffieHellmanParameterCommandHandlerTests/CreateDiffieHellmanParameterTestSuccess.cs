@@ -15,14 +15,14 @@ public class CreateDiffieHellmanParameterTestSuccess : IntegrationTestBase
     public async Task CreateDiffieHellmanParameterTestSuccessAsync()
     {
         var user = await MangoModule.RequestAsync(
-            request: CommandHelper.RegisterPetroCommand(),
-            cancellationToken: CancellationToken.None);
+            CommandHelper.RegisterPetroCommand(),
+            CancellationToken.None);
         var command = new CreateDiffieHellmanParameterCommand(
-            DiffieHellmanParameter: MangoFilesHelper.GetTestImage(),
-            UserId: user.Response.Tokens.UserId);
+            MangoFilesHelper.GetTestImage(),
+            user.Response.Tokens.UserId);
 
         var response = await MangoModule.RequestAsync(
-            request: command, cancellationToken: CancellationToken.None);
+            command, CancellationToken.None);
 
         assert.Pass(response);
     }

@@ -68,7 +68,7 @@ public class OpensslCreateCommonSecretHandler : BaseHandler, ICreateCommonSecret
         var command = Cli.Wrap("openssl").WithArguments(
             new[]
             {
-                "pkeyutl", "-derive", "-inkey", privateKeyPath, "-peerkey", publicKeyPath, "-out", commonSecretPath,
+                "pkeyutl", "-derive", "-inkey", privateKeyPath, "-peerkey", publicKeyPath, "-out", commonSecretPath
             });
 
         await command.ExecuteAsync();

@@ -9,7 +9,7 @@ public record SendMessageResponse : ResponseBase
     public string AttachmentUrl { get; set; }
 
     public Guid NewMessageId { get; set; }
-    
+
     public DateTime CreatedAt { get; set; }
 
     public static SendMessageResponse FromSuccess(Guid newMessageId, string attachmentUrl, DateTime createdAt)

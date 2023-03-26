@@ -17,7 +17,7 @@ public class GetUserQuerySuccess : IntegrationTestBase
     {
         var user =
             await MangoModule.RequestAsync(CommandHelper.RegisterPetroCommand(), CancellationToken.None);
-        var query = new GetUserQuery(UserId: user.Response.Tokens.UserId);
+        var query = new GetUserQuery(user.Response.Tokens.UserId);
 
         var result = await MangoModule.RequestAsync(query, CancellationToken.None);
 

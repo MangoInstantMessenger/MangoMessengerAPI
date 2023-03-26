@@ -51,7 +51,7 @@ public class GetMessagesQueryHandler : IRequestHandler<GetMessagesQuery, Result<
                     ? $"{blobServiceSettings.MangoBlobAccess}/{messageEntity.AttachmentFileName}"
                     : null,
                 InReplyToUser = messageEntity.InReplyToUser,
-                InReplyToText = messageEntity.InReplyToText,
+                InReplyToText = messageEntity.InReplyToText
             }).Take(200).ToListAsync(cancellationToken);
 
         return responseFactory.SuccessResponse(GetMessagesResponse.FromSuccess(messages));

@@ -73,7 +73,7 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, Result<To
             displayName,
             imageFileName,
             displayColor);
-        
+
         newUser.UpdateBioAndLocation("Hello, I'm new here!", "Planet Earth");
 
         dbContext.Users.Add(newUser);
@@ -109,8 +109,8 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, Result<To
         var lastMessage = greetingMessages[1];
 
         systemChat.UpdateLastMessage(
-            lastMessageAuthor: mangoSystemAcc.DisplayName,
-            lastMessageText: lastMessage.Text,
+            mangoSystemAcc.DisplayName,
+            lastMessage.Text,
             lastMessage.CreatedAt,
             lastMessage.Id);
 
@@ -148,7 +148,7 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, Result<To
             description,
             mangoUser.ImageFileName,
             DateTime.UtcNow,
-            membersCount: 2);
+            2);
 
         return mangoChatEntity;
     }

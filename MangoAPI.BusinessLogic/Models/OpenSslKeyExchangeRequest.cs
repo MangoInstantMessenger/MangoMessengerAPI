@@ -35,5 +35,5 @@ public enum Actor
     /// <summary>
     /// Request receiver
     /// </summary>
-    Receiver = 2,
+    Receiver = 2
 }

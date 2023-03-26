@@ -14,7 +14,7 @@ public record GetUserResponse : ResponseBase
         {
             Message = ResponseMessageCodes.Success,
             Success = true,
-            User = user,
+            User = user
         };
     }
 }

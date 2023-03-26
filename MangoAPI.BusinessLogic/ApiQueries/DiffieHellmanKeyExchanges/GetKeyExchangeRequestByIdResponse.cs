@@ -14,7 +14,7 @@ public record GetKeyExchangeRequestByIdResponse : ResponseBase
         {
             Message = ResponseMessageCodes.Success,
             Success = true,
-            KeyExchangeRequest = keyExchangeRequest,
+            KeyExchangeRequest = keyExchangeRequest
         };
 
         return result;

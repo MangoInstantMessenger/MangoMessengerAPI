@@ -48,7 +48,7 @@ public class CngConfirmKeyExchangeHandler : BaseHandler, IConfirmKeyExchangeHand
 
         using var content = new MultipartFormDataContent
         {
-            { new StreamContent(stream), "receiverPublicKey", publicKeyFileName },
+            { new StreamContent(stream), "receiverPublicKey", publicKeyFileName }
         };
 
         request.Content = content;

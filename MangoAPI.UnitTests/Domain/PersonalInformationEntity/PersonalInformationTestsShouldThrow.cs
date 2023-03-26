@@ -61,7 +61,7 @@ public class PersonalInformationTestsShouldThrow
     {
         var linkedIn = new string(Enumerable.Repeat('a', size).ToArray());
         var act = () => PersonalInfoHelper.PersonalInfoUpdateWith(linkedIn: linkedIn);
-        
+
         act.Should().ThrowExactly<ValidationException>();
     }
 }

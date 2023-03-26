@@ -16,7 +16,7 @@ public class DownloadPartnerPublicKeyTestShouldThrowKeyExchangeDoesNotBelongToUs
     public async Task DownloadPartnerPublicKeyTestShouldThrowKeyExchangeDoesNotBelongToUserAsync()
     {
         const string expectedMessage = ResponseMessageCodes.KeyExchangeIsNotConfirmed;
-        
+
         var expectedDetails = ResponseMessageCodes.ErrorDictionary[expectedMessage];
         var khachaturCommand = CommandHelper.RegisterKhachaturCommand();
         var senderResult = await MangoModule.RequestAsync(khachaturCommand, CancellationToken.None);
@@ -27,10 +27,10 @@ public class DownloadPartnerPublicKeyTestShouldThrowKeyExchangeDoesNotBelongToUs
 
         var senderId = senderResult.Response.Tokens.UserId;
         var receiverId = receiverResult.Response.Tokens.UserId;
-        
+
         var sslCommand = CommandHelper.CreateOpenSslCreateKeyExchangeCommand(receiverId, senderId, publicKey);
         var keyExchangeResult = await MangoModule.RequestAsync(sslCommand, CancellationToken.None);
-        
+
         var query = new DownloadPartnerPublicKeyQuery(receiverId, keyExchangeResult.Response.RequestId);
         var downloadResult = await MangoModule.RequestAsync(query, CancellationToken.None);
 

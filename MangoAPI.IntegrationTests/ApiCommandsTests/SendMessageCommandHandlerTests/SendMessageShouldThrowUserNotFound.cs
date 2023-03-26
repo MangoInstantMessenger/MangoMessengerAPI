@@ -24,7 +24,7 @@ public class SendMessageShouldThrowUserNotFound : IntegrationTestBase
         var chatCommand = CommandHelper.CreateExtremeCodeMainChatCommand(petroResult.Response.Tokens.UserId);
         var chatResult = await MangoModule.RequestAsync(chatCommand, CancellationToken.None);
 
-        var sendCommand = CommandHelper.SendMessageToChannelCommand(userId: Guid.NewGuid(), chatResult.Response.ChatId);
+        var sendCommand = CommandHelper.SendMessageToChannelCommand(Guid.NewGuid(), chatResult.Response.ChatId);
         var result = await MangoModule.RequestAsync(sendCommand, CancellationToken.None);
 
         assert.Fail(result, expectedMessage, expectedDetails);

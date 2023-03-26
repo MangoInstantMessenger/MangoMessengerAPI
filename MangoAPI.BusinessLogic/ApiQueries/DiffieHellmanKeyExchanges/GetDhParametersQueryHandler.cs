@@ -44,7 +44,7 @@ public class GetDhParametersQueryHandler : IRequestHandler<GetDhParametersQuery,
         {
             FileContent = bytes,
             Message = ResponseMessageCodes.Success,
-            Success = true,
+            Success = true
         };
 
         return responseFactory.SuccessResponse(response);

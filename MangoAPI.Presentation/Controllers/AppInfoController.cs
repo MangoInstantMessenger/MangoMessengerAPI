@@ -20,11 +20,11 @@ public class AppInfoController : ApiControllerBase<AppInfoController>
         IMediator mediator,
         IMapper mapper,
         ICorrelationContext correlationContext,
-        ILogger<AppInfoController> logger) 
+        ILogger<AppInfoController> logger)
         : base(mediator, mapper, correlationContext, logger)
     {
     }
-    
+
     [HttpGet]
     [ProducesResponseType(typeof(GetAppInfoResponse), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetAppInfoAsync(CancellationToken cancellationToken)

@@ -34,10 +34,7 @@ public class OpensslUploadDhParametersHandler : BaseHandler, IUploadDhParameters
 
         using var request = new HttpRequestMessage(HttpMethod.Post, uri);
 
-        using var content = new MultipartFormDataContent
-        {
-            { new StreamContent(stream), "file", "dhp.pem" },
-        };
+        using var content = new MultipartFormDataContent { { new StreamContent(stream), "file", "dhp.pem" } };
 
         request.Content = content;
 

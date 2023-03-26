@@ -19,10 +19,10 @@ public class ChangePasswordTestShouldThrowUserNotFound : IntegrationTestBase
         const string expectedMessage = ResponseMessageCodes.UserNotFound;
         var expectedDetails = ResponseMessageCodes.ErrorDictionary[expectedMessage];
         var command = new ChangePasswordCommand(
-            UserId: Guid.NewGuid(),
-            CurrentPassword: "Bm3-`dPRv-/w#3)cw^97",
-            NewPassword: "Gm3-`xPRr-/q#6)re^94",
-            RepeatNewPassword: "Gm3-`xPRr-/q#6)re^94");
+            Guid.NewGuid(),
+            "Bm3-`dPRv-/w#3)cw^97",
+            "Gm3-`xPRr-/q#6)re^94",
+            "Gm3-`xPRr-/q#6)re^94");
 
         var result = await MangoModule.RequestAsync(command, CancellationToken.None);
 

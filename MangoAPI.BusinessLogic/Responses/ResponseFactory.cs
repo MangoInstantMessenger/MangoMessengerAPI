@@ -13,10 +13,10 @@ public class ResponseFactory<TResponse> where TResponse : ResponseBase
                 ErrorMessage = message,
                 ErrorDetails = description,
                 Success = false,
-                StatusCode = HttpStatusCode.Conflict,
+                StatusCode = HttpStatusCode.Conflict
             },
             Response = null,
-            StatusCode = HttpStatusCode.Conflict,
+            StatusCode = HttpStatusCode.Conflict
         };
     }
 
@@ -26,7 +26,7 @@ public class ResponseFactory<TResponse> where TResponse : ResponseBase
         {
             Error = null,
             Response = response,
-            StatusCode = HttpStatusCode.OK,
+            StatusCode = HttpStatusCode.OK
         };
     }
 }

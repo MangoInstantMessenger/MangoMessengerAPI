@@ -17,7 +17,7 @@ public record DeleteMessageResponse : ResponseBase
         {
             Success = true,
             Message = ResponseMessageCodes.Success,
-            MessageId = message.Id,
+            MessageId = message.Id
         };
     }
 }

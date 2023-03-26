@@ -20,14 +20,14 @@ public class DeclineKeyExchangeTestSuccess : IntegrationTestBase
         var receiver =
             await MangoModule.RequestAsync(CommandHelper.RegisterPetroCommand(), CancellationToken.None);
         var keyExchange = await MangoModule.RequestAsync(
-            request: CommandHelper.CreateOpenSslCreateKeyExchangeCommand(
-                receiverId: receiver.Response.Tokens.UserId,
-                senderId: sender.Response.Tokens.UserId,
-                senderPublicKey: MangoFilesHelper.GetTestImage()),
-            cancellationToken: CancellationToken.None);
+            CommandHelper.CreateOpenSslCreateKeyExchangeCommand(
+                receiver.Response.Tokens.UserId,
+                sender.Response.Tokens.UserId,
+                MangoFilesHelper.GetTestImage()),
+            CancellationToken.None);
         var command = new DeclineKeyExchangeCommand(
-            RequestId: keyExchange.Response.RequestId,
-            UserId: receiver.Response.Tokens.UserId);
+            keyExchange.Response.RequestId,
+            receiver.Response.Tokens.UserId);
 
         var response = await MangoModule.RequestAsync(command, CancellationToken.None);
 

@@ -35,7 +35,7 @@ public class CreateChannelCommandHandler
             request.ChannelDescription,
             DefaultChannelImage,
             DateTime.UtcNow,
-            membersCount: 1);
+            1);
 
         var userChat = UserChatEntity.Create(request.UserId, chat.Id, UserRole.Owner);
 

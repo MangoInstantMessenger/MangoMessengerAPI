@@ -79,13 +79,14 @@ public class IntegrationTestBase : IAsyncLifetime
 
         await DbConnection.OpenAsync();
 
-        RespawnerObject = await Respawner.CreateAsync(DbConnection, new RespawnerOptions
-        {
-            DbAdapter = DbAdapter.SqlServer,
-            TablesToIgnore = new Table[] { "__EFMigrationsHistory" },
-            SchemasToInclude = new[] { MangoDbContext.DefaultSchema },
-            WithReseed = true,
-        });
+        RespawnerObject = await Respawner.CreateAsync(DbConnection,
+            new RespawnerOptions
+            {
+                DbAdapter = DbAdapter.SqlServer,
+                TablesToIgnore = new Table[] { "__EFMigrationsHistory" },
+                SchemasToInclude = new[] { MangoDbContext.DefaultSchema },
+                WithReseed = true
+            });
 
         await RespawnerObject.ResetAsync(ConnectionString);
     }

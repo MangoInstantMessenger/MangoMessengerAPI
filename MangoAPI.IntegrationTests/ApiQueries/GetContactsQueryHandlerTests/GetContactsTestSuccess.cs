@@ -16,15 +16,15 @@ public class GetContactsTestSuccess : IntegrationTestBase
     public async Task GetContactsTestSuccessAsync()
     {
         var user = await MangoModule.RequestAsync(
-            request: CommandHelper.RegisterPetroCommand(),
-            cancellationToken: CancellationToken.None);
+            CommandHelper.RegisterPetroCommand(),
+            CancellationToken.None);
         var contact = await MangoModule.RequestAsync(
-            request: CommandHelper.RegisterKhachaturCommand(),
-            cancellationToken: CancellationToken.None);
+            CommandHelper.RegisterKhachaturCommand(),
+            CancellationToken.None);
         await MangoModule.RequestAsync(
-            request: CommandHelper.CreateContactCommand(user.Response.Tokens.UserId, contact.Response.Tokens.UserId),
-            cancellationToken: CancellationToken.None);
-        var query = new GetContactsQuery(UserId: user.Response.Tokens.UserId);
+            CommandHelper.CreateContactCommand(user.Response.Tokens.UserId, contact.Response.Tokens.UserId),
+            CancellationToken.None);
+        var query = new GetContactsQuery(user.Response.Tokens.UserId);
 
         var result = await MangoModule.RequestAsync(query, CancellationToken.None);
 

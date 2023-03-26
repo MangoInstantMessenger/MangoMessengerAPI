@@ -36,7 +36,7 @@ public class CngCreateKeyExchangeHandler : BaseHandler, ICreateKeyExchangeHandle
 
         using var content = new MultipartFormDataContent
         {
-            { new StreamContent(stream), "senderPublicKey", publicKeyFileName },
+            { new StreamContent(stream), "senderPublicKey", publicKeyFileName }
         };
 
         request.Content = content;

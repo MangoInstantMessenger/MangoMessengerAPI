@@ -18,9 +18,9 @@ public class SearchCommunityTestSuccess : IntegrationTestBase
         var user =
             await MangoModule.RequestAsync(CommandHelper.RegisterPetroCommand(), CancellationToken.None);
         var chat = await MangoModule.RequestAsync(
-                request: CommandHelper.CreateExtremeCodeMainChatCommand(user.Response.Tokens.UserId),
-                cancellationToken: CancellationToken.None);
-        var query = new SearchCommunityQuery(UserId: user.Response.Tokens.UserId, DisplayName: "Extreme");
+            CommandHelper.CreateExtremeCodeMainChatCommand(user.Response.Tokens.UserId),
+            CancellationToken.None);
+        var query = new SearchCommunityQuery(user.Response.Tokens.UserId, "Extreme");
 
         var result = await MangoModule.RequestAsync(query, CancellationToken.None);
 

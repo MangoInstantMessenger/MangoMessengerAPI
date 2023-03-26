@@ -195,7 +195,7 @@ public static class UserEntityHelper
             displayName,
             imageFileName,
             displayColor);
-        
+
         mangoUser.UpdateUserData("my bio 228", "username.com", null, address, MangoSystemAccountUsername);
 
         return mangoUser;

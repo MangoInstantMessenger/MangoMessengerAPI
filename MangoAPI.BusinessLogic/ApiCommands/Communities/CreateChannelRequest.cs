@@ -12,8 +12,7 @@ public record CreateChannelRequest
         ChannelDescription = channelDescription;
     }
 
-    [DefaultValue("Test Chat")]
-    public string ChannelTitle { get; }
+    [DefaultValue("Test Chat")] public string ChannelTitle { get; }
 
     [DefaultValue("Test Chat Public Group")]
     public string ChannelDescription { get; }

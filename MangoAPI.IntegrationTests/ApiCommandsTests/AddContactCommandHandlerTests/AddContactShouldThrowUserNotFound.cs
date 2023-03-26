@@ -22,8 +22,8 @@ public class AddContactShouldThrowUserNotFound : IntegrationTestBase
         var user =
             await MangoModule.RequestAsync(CommandHelper.RegisterPetroCommand(), CancellationToken.None);
         var command = new AddContactCommand(
-            UserId: user.Response.Tokens.UserId,
-            ContactId: Guid.Empty);
+            user.Response.Tokens.UserId,
+            Guid.Empty);
 
         var result = await MangoModule.RequestAsync(command, CancellationToken.None);
 

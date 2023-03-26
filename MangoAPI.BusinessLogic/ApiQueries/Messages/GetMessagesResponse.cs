@@ -15,7 +15,7 @@ public record GetMessagesResponse : ResponseBase
         {
             Message = ResponseMessageCodes.Success,
             Messages = messages,
-            Success = true,
+            Success = true
         };
     }
 }

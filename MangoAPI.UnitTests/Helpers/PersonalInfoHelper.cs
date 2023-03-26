@@ -11,7 +11,7 @@ public static class PersonalInfoHelper
 
         return personalInformation;
     }
-    
+
     public static PersonalInformationEntity CreateWithUserId(Guid userId)
     {
         var personalInformation = PersonalInformationEntity.Create(userId);

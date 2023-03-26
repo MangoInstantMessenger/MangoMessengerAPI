@@ -16,12 +16,12 @@ public class GetCurrentUserChatsTestSuccess : IntegrationTestBase
     public async Task GetCurrentUserChatsTestSuccessAsync()
     {
         var user = await MangoModule.RequestAsync(
-            request: CommandHelper.RegisterPetroCommand(),
-            cancellationToken: CancellationToken.None);
+            CommandHelper.RegisterPetroCommand(),
+            CancellationToken.None);
         await MangoModule.RequestAsync(
-            request: CommandHelper.CreateExtremeCodeMainChatCommand(user.Response.Tokens.UserId),
-            cancellationToken: CancellationToken.None);
-        var query = new GetCurrentUserChatsQuery(UserId: user.Response.Tokens.UserId);
+            CommandHelper.CreateExtremeCodeMainChatCommand(user.Response.Tokens.UserId),
+            CancellationToken.None);
+        var query = new GetCurrentUserChatsQuery(user.Response.Tokens.UserId);
 
         var result = await MangoModule.RequestAsync(query, CancellationToken.None);
 

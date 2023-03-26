@@ -12,7 +12,9 @@ public record UpdatePersonalInformationResponse : ResponseBase
     {
         var response = new UpdatePersonalInformationResponse
         {
-            Message = ResponseMessageCodes.Success, Success = true, User = user,
+            Message = ResponseMessageCodes.Success,
+            Success = true,
+            User = user
         };
 
         return response;

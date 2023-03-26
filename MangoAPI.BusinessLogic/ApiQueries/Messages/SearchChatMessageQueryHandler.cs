@@ -62,14 +62,12 @@ public class SearchChatMessageQueryHandler
                 Self = x.User.Id == request.UserId,
                 InReplyToUser = x.InReplyToUser,
                 InReplyToText = x.InReplyToText,
-
                 AuthorImageUrl = x.User.ImageFileName != null
                     ? $"{blobServiceSettings.MangoBlobAccess}/{x.User.ImageFileName}"
                     : null,
-
                 AttachmentUrl = x.AttachmentFileName != null
                     ? $"{blobServiceSettings.MangoBlobAccess}/{x.AttachmentFileName}"
-                    : null,
+                    : null
             }).Take(200);
 
         var result = await query.ToListAsync(cancellationToken);

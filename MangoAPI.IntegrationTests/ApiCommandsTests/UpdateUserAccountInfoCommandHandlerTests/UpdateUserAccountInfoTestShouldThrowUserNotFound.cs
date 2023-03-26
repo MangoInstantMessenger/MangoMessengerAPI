@@ -18,13 +18,13 @@ public class UpdateUserAccountInfoTestShouldThrowUserNotFound : IntegrationTestB
         const string expectedMessage = ResponseMessageCodes.UserNotFound;
         var expectedDetails = ResponseMessageCodes.ErrorDictionary[expectedMessage];
         var command = new UpdateUserAccountInfoCommand(
-            UserId: Guid.NewGuid(),
-            Username: "PetroKolosov",
-            DisplayName: "Petro Kolosov",
-            Website: "pkolosov.com",
-            Bio: "Third year student of WSB at Poznan",
-            Address: "Poznan, Poland",
-            Birthday: new DateTime(1994, 6, 12));
+            Guid.NewGuid(),
+            "PetroKolosov",
+            "Petro Kolosov",
+            "pkolosov.com",
+            "Third year student of WSB at Poznan",
+            "Poznan, Poland",
+            new DateTime(1994, 6, 12));
 
         var result = await MangoModule.RequestAsync(command, CancellationToken.None);
 

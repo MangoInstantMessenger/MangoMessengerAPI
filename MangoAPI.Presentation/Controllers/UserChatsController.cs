@@ -25,7 +25,7 @@ public class UserChatsController : ApiControllerBase<UserChatsController>, IUser
 {
     public UserChatsController(
         IMediator mediator,
-        IMapper mapper, 
+        IMapper mapper,
         ICorrelationContext correlationContext,
         ILogger<UserChatsController> logger)
         : base(mediator, mapper, correlationContext, logger)

@@ -16,12 +16,9 @@ public record ChangePasswordRequest
         RepeatNewPassword = repeatNewPassword;
     }
 
-    [DefaultValue("x[?6dME#xrp=nr7q")]
-    public string CurrentPassword { get; }
+    [DefaultValue("x[?6dME#xrp=nr7q")] public string CurrentPassword { get; }
 
-    [DefaultValue("W[?64Ms#xdp=Qr7q")]
-    public string NewPassword { get; }
+    [DefaultValue("W[?64Ms#xdp=Qr7q")] public string NewPassword { get; }
 
-    [DefaultValue("W[?64Ms#xdp=Qr7q")]
-    public string RepeatNewPassword { get; }
+    [DefaultValue("W[?64Ms#xdp=Qr7q")] public string RepeatNewPassword { get; }
 }

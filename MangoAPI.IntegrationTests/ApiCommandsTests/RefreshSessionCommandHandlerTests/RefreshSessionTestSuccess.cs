@@ -18,7 +18,7 @@ public class RefreshSessionTestSuccess : IntegrationTestBase
         var petroCommand = CommandHelper.RegisterPetroCommand();
         var petro = await MangoModule.RequestAsync(petroCommand, CancellationToken.None);
         var petroRefresh = petro.Response.Tokens.RefreshToken;
-        
+
         var command = new RefreshSessionCommand(petroRefresh);
         var result = await MangoModule.RequestAsync(command, CancellationToken.None);
 

@@ -16,7 +16,7 @@ public record UpdateChannelPictureResponse : ResponseBase
             Success = true,
             Message = ResponseMessageCodes.Success,
             UpdatedLogoUrl = updateLogoUrl,
-            FileName = fileName,
+            FileName = fileName
         };
     }
 }

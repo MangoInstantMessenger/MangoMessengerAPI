@@ -15,8 +15,8 @@ public static class CommandHelper
     public static RegisterCommand RegisterKhachaturCommand()
     {
         var command = new RegisterCommand(
-            Username: "Khachatur",
-            Password: "Bm3-`dPRv-/w#3)cw^97");
+            "Khachatur",
+            "Bm3-`dPRv-/w#3)cw^97");
 
         return command;
     }
@@ -24,8 +24,8 @@ public static class CommandHelper
     public static RegisterCommand RegisterPetroCommand()
     {
         var command = new RegisterCommand(
-            Username: "PetroKolosov",
-            Password: "Bm3-`dPRv-/w#3)cw^97");
+            "PetroKolosov",
+            "Bm3-`dPRv-/w#3)cw^97");
 
         return command;
     }
@@ -43,8 +43,8 @@ public static class CommandHelper
     public static AddContactCommand CreateContactCommand(Guid userId, Guid contactId)
     {
         var command = new AddContactCommand(
-            UserId: userId,
-            ContactId: contactId);
+            userId,
+            contactId);
 
         return command;
     }
@@ -65,8 +65,8 @@ public static class CommandHelper
     public static LoginCommand CreateLoginCommand(string username, string password)
     {
         var command = new LoginCommand(
-            Username: username,
-            Password: password);
+            username,
+            password);
 
         return command;
     }
@@ -89,9 +89,9 @@ public static class CommandHelper
         Guid requestId, Guid userId, IFormFile receiverPublicKey)
     {
         var command = new ConfirmKeyExchangeCommand(
-            RequestId: requestId,
-            UserId: userId,
-            ReceiverPublicKey: receiverPublicKey);
+            requestId,
+            userId,
+            receiverPublicKey);
 
         return command;
     }
@@ -100,8 +100,8 @@ public static class CommandHelper
         IFormFile diffieHellmanParameter, Guid userId)
     {
         var command = new CreateDiffieHellmanParameterCommand(
-            DiffieHellmanParameter: diffieHellmanParameter,
-            UserId: userId);
+            diffieHellmanParameter,
+            userId);
 
         return command;
     }

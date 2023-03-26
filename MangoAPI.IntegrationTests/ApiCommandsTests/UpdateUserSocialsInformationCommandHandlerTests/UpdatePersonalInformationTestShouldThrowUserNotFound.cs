@@ -18,11 +18,11 @@ public class UpdatePersonalInformationTestShouldThrowUserNotFound : IntegrationT
         const string expectedMessage = ResponseMessageCodes.UserNotFound;
         var expectedDetails = ResponseMessageCodes.ErrorDictionary[expectedMessage];
         var command = new UpdatePersonalInformationCommand(
-            UserId: Guid.NewGuid(),
-            Instagram: "petro.kolosov",
-            LinkedIn: "petro.kolosov",
-            Facebook: "petro.kolosov",
-            Twitter: "petro.kolosov");
+            Guid.NewGuid(),
+            "petro.kolosov",
+            "petro.kolosov",
+            "petro.kolosov",
+            "petro.kolosov");
 
         var result = await MangoModule.RequestAsync(command, CancellationToken.None);
 

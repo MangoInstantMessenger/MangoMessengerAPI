@@ -30,8 +30,8 @@ public record TokensResponse : ResponseBase
                 UserId = userId,
                 UserDisplayName = userDisplayName,
                 UserProfilePictureUrl = userProfilePictureUrl,
-                DisplayNameColour = displayNameColour,
-            },
+                DisplayNameColour = displayNameColour
+            }
         };
     }
 }

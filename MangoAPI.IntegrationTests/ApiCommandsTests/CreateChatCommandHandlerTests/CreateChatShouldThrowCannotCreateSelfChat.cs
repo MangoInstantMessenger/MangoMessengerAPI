@@ -20,8 +20,8 @@ public class CreateChatShouldThrowCannotCreateSelfChat : IntegrationTestBase
         var user =
             await MangoModule.RequestAsync(CommandHelper.RegisterPetroCommand(), CancellationToken.None);
         var command = new CreateChatCommand(
-            UserId: user.Response.Tokens.UserId,
-            PartnerId: user.Response.Tokens.UserId);
+            user.Response.Tokens.UserId,
+            user.Response.Tokens.UserId);
 
         var result = await MangoModule.RequestAsync(command, CancellationToken.None);
 

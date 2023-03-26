@@ -22,16 +22,16 @@ public class DeleteMessageShouldThrowChatNotFound : IntegrationTestBase
             await MangoModule.RequestAsync(CommandHelper.RegisterPetroCommand(), CancellationToken.None);
         var chat =
             await MangoModule.RequestAsync(
-                request: CommandHelper.CreateExtremeCodeMainChatCommand(user.Response.Tokens.UserId),
-                cancellationToken: CancellationToken.None);
+                CommandHelper.CreateExtremeCodeMainChatCommand(user.Response.Tokens.UserId),
+                CancellationToken.None);
         var message =
             await MangoModule.RequestAsync(
-                request: CommandHelper.SendMessageToChannelCommand(user.Response.Tokens.UserId, chat.Response.ChatId),
-                cancellationToken: CancellationToken.None);
+                CommandHelper.SendMessageToChannelCommand(user.Response.Tokens.UserId, chat.Response.ChatId),
+                CancellationToken.None);
         var command = new DeleteMessageCommand(
-            UserId: user.Response.Tokens.UserId,
-            ChatId: Guid.NewGuid(),
-            MessageId: message.Response.NewMessageId);
+            user.Response.Tokens.UserId,
+            Guid.NewGuid(),
+            message.Response.NewMessageId);
 
         var result = await MangoModule.RequestAsync(command, CancellationToken.None);
 

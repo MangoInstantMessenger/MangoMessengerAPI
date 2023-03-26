@@ -15,7 +15,7 @@ public record GetCurrentUserChatsResponse : ResponseBase
         {
             Message = ResponseMessageCodes.Success,
             Success = true,
-            Chats = chats,
+            Chats = chats
         };
     }
 }

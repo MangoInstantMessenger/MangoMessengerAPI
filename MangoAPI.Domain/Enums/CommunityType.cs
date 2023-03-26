@@ -10,5 +10,5 @@ public enum CommunityType
     /// <summary>
     /// Create public channel
     /// </summary>
-    PublicChannel = 2,
+    PublicChannel = 2
 }

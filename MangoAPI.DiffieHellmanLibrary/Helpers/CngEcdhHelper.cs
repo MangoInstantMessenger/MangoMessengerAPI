@@ -7,10 +7,7 @@ public static class CngEcdhHelper
 {
     public static EccDhKeyPair GenerateEcdhBase64StringPrivateKey()
     {
-        var parameters = new CngKeyCreationParameters
-        {
-            ExportPolicy = CngExportPolicies.AllowPlaintextExport,
-        };
+        var parameters = new CngKeyCreationParameters { ExportPolicy = CngExportPolicies.AllowPlaintextExport };
 
         var keys = CngKey.Create(CngAlgorithm.ECDiffieHellmanP256, null, parameters);
 
