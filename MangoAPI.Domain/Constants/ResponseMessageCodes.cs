@@ -20,7 +20,6 @@ public static class ResponseMessageCodes
     public const string ContactNotFound = "CONTACT_NOT_FOUND";
     public const string CannotAddSelfToContacts = "CANNOT_ADD_SELF_TO_CONTACTS";
     public const string CannotCreateSelfChat = "CANNOT_CREATE_SELF_CHAT";
-    public const string MaximumOwnerChatsExceeded100 = "MAXIMUM_OWNER_CHATS_EXCEEDED_100";
     public const string InvalidRequestModel = "INVALID_REQUEST_FORMAT";
     public const string KeyExchangeRequestNotFound = "KEY_EXCHANGE_REQUEST_NOT_FOUND";
     public const string MessageNotFound = "MESSAGE_NOT_FOUND";
@@ -42,7 +41,6 @@ public static class ResponseMessageCodes
         { ContactNotFound, "User is not found in your contact list." },
         { CannotAddSelfToContacts, "You cannot add yourself to the contacts." },
         { CannotCreateSelfChat, "You cannot create a direct chat with yourself." },
-        { MaximumOwnerChatsExceeded100, "One user cannot create more than 100 channels." },
         { InvalidRequestModel, "Invalid request format. Correct input data and try again." },
         {
             KeyExchangeRequestNotFound,
