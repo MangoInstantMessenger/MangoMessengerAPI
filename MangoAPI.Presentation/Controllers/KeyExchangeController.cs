@@ -149,9 +149,9 @@ public class KeyExchangeController : ApiControllerBase<KeyExchangeController>, I
         var userId = CorrelationContext.GetUserId();
 
         var command = new ConfirmKeyExchangeCommand(
-            RequestId: requestId,
-            UserId: userId,
-            ReceiverPublicKey: receiverPublicKey);
+            requestId,
+            userId,
+            receiverPublicKey);
 
         return await RequestAsync(command, cancellationToken);
     }
@@ -203,7 +203,7 @@ public class KeyExchangeController : ApiControllerBase<KeyExchangeController>, I
 
         var fileName = $"PUBLIC_KEY_{result.Response.PartnerId}";
 
-        var file = File(result.Response.PublicKey, contentType: "text/plain", fileName);
+        var file = File(result.Response.PublicKey, "text/plain", fileName);
 
         return file;
     }

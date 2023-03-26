@@ -43,7 +43,7 @@ public static class MessageEntityHelper
         var userId = Guid.NewGuid();
         var chatId = Guid.NewGuid();
 
-        return CreateBase(userId, chatId, text: messageText);
+        return CreateBase(userId, chatId, messageText);
     }
 
     public static MessageEntity CreateWithInReplyToUser(string inReplyToUser)

@@ -12,8 +12,8 @@ public class UserChatEntityTestsShouldThrow
     [Fact]
     public void UserChatEntityCreateShouldThrowChatIdEmpty()
     {
-        Func<UserChatEntity> CreateChatIdEmpty =
-            () => UserChatEntity.Create(Guid.NewGuid(), chatId: Guid.Empty, UserRole.User);
+        var CreateChatIdEmpty =
+            () => UserChatEntity.Create(Guid.NewGuid(), Guid.Empty, UserRole.User);
 
         CreateChatIdEmpty.Should().ThrowExactly<ValidationException>();
     }
@@ -21,8 +21,8 @@ public class UserChatEntityTestsShouldThrow
     [Fact]
     public void UserChatEntityCreateShouldThrowUserIdEmpty()
     {
-        Func<UserChatEntity> CreateUserIdEmpty =
-            () => UserChatEntity.Create(userId: Guid.Empty, Guid.NewGuid(), UserRole.User);
+        var CreateUserIdEmpty =
+            () => UserChatEntity.Create(Guid.Empty, Guid.NewGuid(), UserRole.User);
 
         CreateUserIdEmpty.Should().ThrowExactly<ValidationException>();
     }
@@ -36,7 +36,7 @@ public class UserChatEntityTestsShouldThrow
     {
         var enumRole = (UserRole)role;
 
-        Func<UserChatEntity> CreateRoleOutOfRange =
+        var CreateRoleOutOfRange =
             () => UserChatEntity.Create(Guid.NewGuid(), Guid.NewGuid(), enumRole);
 
         CreateRoleOutOfRange.Should().ThrowExactly<ValidationException>();

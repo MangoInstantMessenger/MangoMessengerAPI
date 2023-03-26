@@ -6,9 +6,9 @@ namespace MangoAPI.UnitTests.Helpers;
 
 public static class ChatEntityHelper
 {
-    public const string Title = "Mango Messenger";
-    public const string Description = "Service notifications";
-    public const string Image = "mango_image.png";
+    private const string Title = "Mango Messenger";
+    private const string Description = "Service notifications";
+    private const string Image = "mango_image.png";
 
     public static ChatEntity CreateWithDescription(string description)
     {
@@ -18,7 +18,7 @@ public static class ChatEntityHelper
             description,
             Image,
             DateTime.UtcNow,
-            membersCount: 2);
+            2);
 
         return chat;
     }
@@ -31,7 +31,7 @@ public static class ChatEntityHelper
             Description,
             image,
             DateTime.UtcNow,
-            membersCount: 2);
+            2);
 
         return chat;
     }
@@ -57,7 +57,7 @@ public static class ChatEntityHelper
             Description,
             Image,
             DateTime.UtcNow,
-            membersCount: 2);
+            2);
 
         return chat;
     }
@@ -70,7 +70,7 @@ public static class ChatEntityHelper
             Description,
             Image,
             DateTime.UtcNow,
-            membersCount: 2);
+            2);
 
         return chat;
     }
@@ -102,7 +102,7 @@ public static class ChatEntityHelper
             Description,
             Image,
             DateTime.UtcNow,
-            membersCount: 2);
+            2);
 
         return chat;
     }

@@ -62,7 +62,7 @@ public class Startup
         app.UseForwardedHeaders(new ForwardedHeadersOptions
         {
             ForwardedHeaders = ForwardedHeaders.XForwardedFor |
-                               ForwardedHeaders.XForwardedProto,
+                               ForwardedHeaders.XForwardedProto
         });
 
         app.UseEndpoints(endpoints =>
@@ -114,7 +114,7 @@ public class Startup
 
         services.AddDatabaseContextServices(databaseUrl);
 
-        services.AddSwagger(title: swaggerTitle, version: version);
+        services.AddSwagger(swaggerTitle, version);
 
         services.AddAzureBlobServices(
             blobUrl,

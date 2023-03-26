@@ -1,8 +1,6 @@
 ﻿using FluentAssertions;
 using FluentValidation;
-using MangoAPI.Domain.Entities;
 using MangoAPI.UnitTests.Helpers;
-using System;
 using System.Linq;
 using Xunit;
 
@@ -17,7 +15,7 @@ public class ChatEntityCreateShouldThrowLastMessageText
     public void ChatEntityCreateShouldThrowLastMessageTextOverflow(int size)
     {
         var lastMessage = new string(Enumerable.Repeat('a', size).ToArray());
-        Func<ChatEntity> CreateWithLastText = () => ChatEntityHelper.CreateWithLastMessageText(lastMessage);
+        var CreateWithLastText = () => ChatEntityHelper.CreateWithLastMessageText(lastMessage);
 
         if (size <= 300)
         {

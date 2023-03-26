@@ -74,9 +74,9 @@ public class CommunitiesController : ApiControllerBase<CommunitiesController>, I
         var userId = CorrelationContext.GetUserId();
 
         var command = new CreateChannelCommand(
-            UserId: userId,
-            ChannelTitle: request.ChannelTitle,
-            ChannelDescription: request.ChannelDescription);
+            userId,
+            request.ChannelTitle,
+            request.ChannelDescription);
 
         return await RequestAsync(command, cancellationToken);
     }
@@ -102,8 +102,8 @@ public class CommunitiesController : ApiControllerBase<CommunitiesController>, I
         var currentUserId = CorrelationContext.GetUserId();
 
         var command = new CreateChatCommand(
-            UserId: currentUserId,
-            PartnerId: userId);
+            currentUserId,
+            userId);
 
         return await RequestAsync(command, cancellationToken);
     }

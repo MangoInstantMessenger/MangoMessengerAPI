@@ -162,9 +162,9 @@ public class MessagesController : ApiControllerBase<MessagesController>, IMessag
         var userId = CorrelationContext.GetUserId();
 
         var command = new DeleteMessageCommand(
-            UserId: userId,
-            ChatId: request.ChatId,
-            MessageId: request.MessageId);
+            userId,
+            request.ChatId,
+            request.MessageId);
 
         return await RequestAsync(command, cancellationToken);
     }

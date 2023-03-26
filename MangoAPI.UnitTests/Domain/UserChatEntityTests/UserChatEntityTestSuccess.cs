@@ -14,7 +14,7 @@ public class UserChatEntityTestSuccess
     public void UserChatEntityCreateShouldSuccess(int roleId)
     {
         var role = (UserRole)roleId;
-        Func<UserChatEntity> CreateSuccess = () => UserChatEntity.Create(Guid.NewGuid(), Guid.NewGuid(), role);
+        var CreateSuccess = () => UserChatEntity.Create(Guid.NewGuid(), Guid.NewGuid(), role);
 
         CreateSuccess.Should().NotThrow();
     }

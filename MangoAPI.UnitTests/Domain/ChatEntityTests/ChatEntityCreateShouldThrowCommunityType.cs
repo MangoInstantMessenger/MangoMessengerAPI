@@ -1,9 +1,7 @@
 ﻿using FluentAssertions;
 using FluentValidation;
-using MangoAPI.Domain.Entities;
 using MangoAPI.Domain.Enums;
 using MangoAPI.UnitTests.Helpers;
-using System;
 using Xunit;
 
 namespace MangoAPI.UnitTests.Domain.ChatEntityTests;
@@ -18,7 +16,7 @@ public class ChatEntityCreateShouldThrowCommunityType
     public void ChatEntityCreateShouldThrowCommunityTypeOutOfRange(int communityType)
     {
         var community = (CommunityType)communityType;
-        Func<ChatEntity> CreateWithCommunity = () => ChatEntityHelper.CreateWithCommunityType(community);
+        var CreateWithCommunity = () => ChatEntityHelper.CreateWithCommunityType(community);
 
         CreateWithCommunity.Should().ThrowExactly<ValidationException>();
     }

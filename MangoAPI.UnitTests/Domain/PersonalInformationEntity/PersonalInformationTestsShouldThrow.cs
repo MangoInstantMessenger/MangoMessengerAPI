@@ -24,7 +24,7 @@ public class PersonalInformationTestsShouldThrow
     public void PersonalInformationTestsShouldThrowFacebookOverflow(int size)
     {
         var facebook = new string(Enumerable.Repeat('a', size).ToArray());
-        var act = () => PersonalInfoHelper.PersonalInfoUpdateWith(facebook: facebook);
+        var act = () => PersonalInfoHelper.PersonalInfoUpdateWith(facebook);
 
         act.Should().ThrowExactly<ValidationException>();
     }

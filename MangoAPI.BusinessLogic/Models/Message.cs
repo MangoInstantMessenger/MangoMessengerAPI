@@ -18,17 +18,23 @@ public record Message
     [DefaultValue("11aed827-db8a-47de-bc81-13337703091f")]
     public Guid UserId { get; init; }
 
-    [DefaultValue("Amelit")] public string DisplayName { get; init; }
+    [DefaultValue("Amelit")]
+    public string DisplayName { get; init; }
 
-    [DefaultValue(5)] public DisplayNameColour DisplayNameColour { get; init; }
+    [DefaultValue(5)]
+    public DisplayNameColour DisplayNameColour { get; init; }
 
-    [DefaultValue("Hello World!")] public string Text { get; init; }
+    [DefaultValue("Hello World!")]
+    public string Text { get; init; }
 
-    [DefaultValue("12:56")] public DateTime CreatedAt { get; init; }
+    [DefaultValue("12:56")]
+    public DateTime CreatedAt { get; init; }
 
-    [DefaultValue("12:57")] public DateTime? UpdatedAt { get; init; }
+    [DefaultValue("12:57")]
+    public DateTime? UpdatedAt { get; init; }
 
-    [DefaultValue(false)] public bool Self { get; init; }
+    [DefaultValue(false)]
+    public bool Self { get; init; }
 
     [DefaultValue("http://127.0.0.1:10000/devstoreaccount1/mangocontainer/animetyanpic8.jpg")]
     public string AuthorImageUrl { get; init; }
@@ -36,7 +42,9 @@ public record Message
     [DefaultValue("http://127.0.0.1:10000/devstoreaccount1/mangocontainer/message_attachment.pdf")]
     public string AttachmentUrl { get; init; }
 
-    [DefaultValue("John Doe")] public string InReplyToUser { get; init; }
+    [DefaultValue("John Doe")]
+    public string InReplyToUser { get; init; }
 
-    [DefaultValue("Hello world!")] public string InReplyToText { get; init; }
+    [DefaultValue("Hello world!")]
+    public string InReplyToText { get; init; }
 }

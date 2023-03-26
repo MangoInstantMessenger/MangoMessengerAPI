@@ -1,8 +1,6 @@
 ﻿using FluentAssertions;
 using FluentValidation;
-using MangoAPI.Domain.Entities;
 using MangoAPI.UnitTests.Helpers;
-using System;
 using System.Linq;
 using Xunit;
 
@@ -17,7 +15,7 @@ public class ChatEntityShouldThrowLastAuthor
     public void ChatEntityCreateShouldThrowLastAuthorOverflow(int size)
     {
         var lastAuthor = new string(Enumerable.Repeat('a', size).ToArray());
-        Func<ChatEntity> CreateWithLastAuthor = () => ChatEntityHelper.CreateWithLastMessageAuthor(lastAuthor);
+        var CreateWithLastAuthor = () => ChatEntityHelper.CreateWithLastMessageAuthor(lastAuthor);
 
         if (size <= 50)
         {

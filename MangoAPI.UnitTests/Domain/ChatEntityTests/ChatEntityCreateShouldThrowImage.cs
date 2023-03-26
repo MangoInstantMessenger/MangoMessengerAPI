@@ -1,8 +1,6 @@
 ﻿using FluentAssertions;
 using FluentValidation;
-using MangoAPI.Domain.Entities;
 using MangoAPI.UnitTests.Helpers;
-using System;
 using System.Linq;
 using Xunit;
 
@@ -14,7 +12,7 @@ public class ChatEntityCreateShouldThrowImage
     public void ChatEntityCreateShouldThrowImageOverflow()
     {
         var imageName = new string(Enumerable.Repeat('a', 102).ToArray());
-        Func<ChatEntity> CreateWithImage = () => ChatEntityHelper.CreateWithImage(imageName);
+        var CreateWithImage = () => ChatEntityHelper.CreateWithImage(imageName);
 
         CreateWithImage.Should().ThrowExactly<ValidationException>();
     }

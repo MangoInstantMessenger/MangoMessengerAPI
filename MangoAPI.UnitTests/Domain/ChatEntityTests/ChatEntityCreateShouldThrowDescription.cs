@@ -1,8 +1,6 @@
 ﻿using FluentAssertions;
 using FluentValidation;
-using MangoAPI.Domain.Entities;
 using MangoAPI.UnitTests.Helpers;
-using System;
 using System.Linq;
 using Xunit;
 
@@ -15,7 +13,7 @@ public class ChatEntityCreateShouldThrowDescription
     [InlineData("")]
     public void ChatEntityCreateShouldThrowDescriptionEmpty(string testParam)
     {
-        Func<ChatEntity> CreateChatEntity = () => ChatEntityHelper.CreateWithDescription(testParam);
+        var CreateChatEntity = () => ChatEntityHelper.CreateWithDescription(testParam);
 
         CreateChatEntity.Should().ThrowExactly<ValidationException>();
     }
@@ -25,7 +23,7 @@ public class ChatEntityCreateShouldThrowDescription
     {
         var overflow = new string(Enumerable.Repeat('a', 102).ToArray());
 
-        Func<ChatEntity> CreateChatEntity = () => ChatEntityHelper.CreateWithDescription(overflow);
+        var CreateChatEntity = () => ChatEntityHelper.CreateWithDescription(overflow);
 
         CreateChatEntity.Should().ThrowExactly<ValidationException>();
     }

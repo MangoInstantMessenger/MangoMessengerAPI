@@ -74,10 +74,10 @@ public class UsersController : ApiControllerBase<UsersController>, IUsersControl
         var userId = CorrelationContext.GetUserId();
 
         var command = new ChangePasswordCommand(
-            UserId: userId,
-            CurrentPassword: request.CurrentPassword,
-            NewPassword: request.NewPassword,
-            RepeatNewPassword: request.RepeatNewPassword);
+            userId,
+            request.CurrentPassword,
+            request.NewPassword,
+            request.RepeatNewPassword);
 
         return await RequestAsync(command, cancellationToken);
     }
@@ -123,11 +123,11 @@ public class UsersController : ApiControllerBase<UsersController>, IUsersControl
         var userId = CorrelationContext.GetUserId();
 
         var command = new UpdatePersonalInformationCommand(
-            UserId: userId,
-            Instagram: request.Instagram,
-            LinkedIn: request.LinkedIn,
-            Facebook: request.Facebook,
-            Twitter: request.Twitter);
+            userId,
+            request.Instagram,
+            request.LinkedIn,
+            request.Facebook,
+            request.Twitter);
 
         return await RequestAsync(command, cancellationToken);
     }
@@ -179,7 +179,7 @@ public class UsersController : ApiControllerBase<UsersController>, IUsersControl
         var userId = CorrelationContext.GetUserId();
 
         var command = new UpdateProfilePictureCommand(
-            UserId: userId,
+            userId,
             PictureFile: pictureFile,
             ContentType: pictureFile.ContentType);
 

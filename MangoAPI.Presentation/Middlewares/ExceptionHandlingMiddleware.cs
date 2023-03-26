@@ -40,8 +40,8 @@ public class ExceptionHandlingMiddleware
             StatusCode = exception switch
             {
                 ValidationException => HttpStatusCode.BadRequest,
-                _ => HttpStatusCode.InternalServerError,
-            },
+                _ => HttpStatusCode.InternalServerError
+            }
         };
 
         await ReturnErrorResponseAsync(context, errorContext);
@@ -64,7 +64,7 @@ public class ExceptionHandlingMiddleware
             Success = false,
             ErrorMessage = errorContext.ErrorMessage,
             ErrorDetails = errorDetails,
-            StatusCode = errorContext.StatusCode,
+            StatusCode = errorContext.StatusCode
         }.ToString());
     }
 }
