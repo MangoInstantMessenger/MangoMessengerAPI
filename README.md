@@ -104,7 +104,8 @@ However, it is worth to continue progress on the project pursuing another predef
 - Install NodeJS `16.13.1` using NVM & PowerShell as Administrator: `nvm install 16.13.1`
 - Use NodeJS `16.13.1` using NVM via PowerShell as Administrator: `nvm use 16.13.1`
 - Check NodeJS installed properly (should be `16.13.1`): `node -v`
-- Check NPM installed properly (should be `8.7.0`): `npm -v`
+- Check NPM installed properly (should be `8.1.2`): `npm -v`
+- (Optional) Install NPM properly `8.1.2`: `npm install -g npm@8.1.2`
 - Go to the project folder: `cd MangoAPI.Client`
 - Restore node modules: `npm ci`
 - Install Angular CLI globally: `npm install -g @angular/cli@15.2.2`
