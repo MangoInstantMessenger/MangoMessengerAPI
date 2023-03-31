@@ -1,4 +1,4 @@
-import { Component, OnDestroy } from '@angular/core';
+import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { RegisterCommand } from 'src/app/types/requests/RegisterCommand';
 import { UsersService } from '../../services/api/users.service';
@@ -12,7 +12,7 @@ import { TokensResponse } from '../../types/responses/TokensResponse';
   selector: 'app-register',
   templateUrl: './register.component.html'
 })
-export class RegisterComponent implements OnDestroy {
+export class RegisterComponent {
   constructor(
     private _router: Router,
     private _usersService: UsersService,
@@ -29,11 +29,6 @@ export class RegisterComponent implements OnDestroy {
 
   public get routingConstants(): typeof RoutingConstants {
     return RoutingConstants;
-  }
-
-  ngOnDestroy(): void {
-    this.componentDestroyed$.next(true);
-    this.componentDestroyed$.complete();
   }
 
   async onRegisterClick() {

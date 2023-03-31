@@ -1,18 +1,18 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { LoginCommand } from '../../types/requests/LoginCommand';
 import { SessionService } from '../../services/api/session.service';
 import { Router } from '@angular/router';
 import { ValidationService } from '../../services/messenger/validation.service';
 import { TokensService } from '../../services/messenger/tokens.service';
 import { RoutingConstants } from '../../types/constants/RoutingConstants';
-import {firstValueFrom, Subject, takeUntil} from 'rxjs';
+import {firstValueFrom, Subject} from 'rxjs';
 import {TokensResponse} from "../../types/responses/TokensResponse";
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html'
 })
-export class LoginComponent implements OnDestroy, OnInit {
+export class LoginComponent implements OnInit {
   constructor(
     private _sessionService: SessionService,
     private _tokensService: TokensService,
@@ -34,11 +34,6 @@ export class LoginComponent implements OnDestroy, OnInit {
   }
 
   componentDestroyed$: Subject<boolean> = new Subject();
-
-  ngOnDestroy(): void {
-    this.componentDestroyed$.next(true);
-    this.componentDestroyed$.complete();
-  }
 
   async login() {
     const emailFieldValidationResult = this._validationService.validateField(
