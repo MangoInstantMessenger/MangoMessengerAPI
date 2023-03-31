@@ -181,9 +181,15 @@ export class SettingsComponent implements OnInit {
       return;
     }
 
-    const changePassSub$ = this._usersService.changePassword(this.changePasswordCommand);
-    await firstValueFrom<BaseResponse>(changePassSub$);
-    this.clearChangePasswordCommand();
+    try {
+      const changePassSub$ = this._usersService.changePassword(this.changePasswordCommand);
+      await firstValueFrom<BaseResponse>(changePassSub$);
+      this.clearChangePasswordCommand();
+    }
+    catch (e)
+    {
+      this.clearChangePasswordCommand();
+    }
   }
 
   onUpdateProfilePictureChange(event: any): void {
@@ -192,6 +198,7 @@ export class SettingsComponent implements OnInit {
     const validationResult = this._validationService.validatePictureFileName(file.name);
 
     if (!validationResult) {
+      this.clearProfilePictureFile();
       return;
     }
 

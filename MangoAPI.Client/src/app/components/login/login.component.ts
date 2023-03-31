@@ -5,7 +5,8 @@ import { Router } from '@angular/router';
 import { ValidationService } from '../../services/messenger/validation.service';
 import { TokensService } from '../../services/messenger/tokens.service';
 import { RoutingConstants } from '../../types/constants/RoutingConstants';
-import { Subject, takeUntil } from 'rxjs';
+import {firstValueFrom, Subject, takeUntil} from 'rxjs';
+import {TokensResponse} from "../../types/responses/TokensResponse";
 
 @Component({
   selector: 'app-login',
@@ -39,7 +40,7 @@ export class LoginComponent implements OnDestroy, OnInit {
     this.componentDestroyed$.complete();
   }
 
-  login(): void {
+  async login() {
     const emailFieldValidationResult = this._validationService.validateField(
       this.loginCommand.username,
       'Email'
@@ -55,14 +56,9 @@ export class LoginComponent implements OnDestroy, OnInit {
 
     this._tokensService.clearTokens();
 
-    this._sessionService
-      .createSession(this.loginCommand)
-      .pipe(takeUntil(this.componentDestroyed$))
-      .subscribe({
-        next: (response) => {
-          this._tokensService.setTokens(response.tokens);
-          this._router.navigateByUrl(this.routingConstants.Chats).then((r) => r);
-        }
-      });
+    const loginSub$ = this._sessionService.createSession(this.loginCommand);
+    const response = await firstValueFrom<TokensResponse>(loginSub$);
+    this._tokensService.setTokens(response.tokens);
+    this._router.navigateByUrl(this.routingConstants.Chats).then((r) => r);
   }
 }
