@@ -18,6 +18,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "items", "items", "{F8A0C2AF
 		.editorconfig = .editorconfig
 		.gitignore = .gitignore
 		README.md = README.md
+		LICENSE = LICENSE
 		.gitattributes = .gitattributes
 		CHANGELOG.md = CHANGELOG.md
 		Dockerfile = Dockerfile
