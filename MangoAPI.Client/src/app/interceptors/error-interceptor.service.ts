@@ -14,7 +14,8 @@ export class ErrorInterceptor implements HttpInterceptor {
   private handleError(err: HttpErrorResponse) {
     const shouldHandle = err.status === 409 || err.status === 400;
     if (shouldHandle) {
-      const errorMessage = `${err.error.errorDetails}`;
+      const errorMessage = `${err.error.errorMessage}`;
+      console.log(JSON.stringify(err));
       alert(errorMessage);
     }
   }

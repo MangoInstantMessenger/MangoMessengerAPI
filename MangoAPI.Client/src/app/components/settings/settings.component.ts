@@ -106,6 +106,8 @@ export class SettingsComponent implements OnInit {
 
     const response = await firstValueFrom<UpdateUserAccountInfoResponse>(updateUserInfoSub$);
 
+    alert(response.message);
+
     this.currentUser = response.user;
   }
 
@@ -120,6 +122,8 @@ export class SettingsComponent implements OnInit {
     const saveSocialsSub$ = this._usersService.updateUserSocials(command);
 
     const response = await firstValueFrom<UpdatePersonalInformationResponse>(saveSocialsSub$);
+
+    alert(response.message);
 
     this.currentUser = response.user;
   }
@@ -154,6 +158,8 @@ export class SettingsComponent implements OnInit {
       this._tokensService.setTokens(tokens);
 
       this.clearProfilePictureFile();
+
+      alert(result.message);
     } catch (e) {
       this.clearProfilePictureFile();
     }
@@ -185,9 +191,7 @@ export class SettingsComponent implements OnInit {
       const changePassSub$ = this._usersService.changePassword(this.changePasswordCommand);
       await firstValueFrom<BaseResponse>(changePassSub$);
       this.clearChangePasswordCommand();
-    }
-    catch (e)
-    {
+    } catch (e) {
       this.clearChangePasswordCommand();
     }
   }
