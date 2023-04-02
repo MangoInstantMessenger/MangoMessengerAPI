@@ -8,7 +8,7 @@ export class ValidationService {
   private allowedPictureFileExtensions = ['jpg', 'JPG', 'png', 'PNG'];
 
   validateField(field: string, fieldName: string): boolean {
-    if (field == '' || field == undefined) {
+    if (!field) {
       alert(`Error: field '${fieldName}' is empty.`);
       return false;
     }

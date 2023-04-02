@@ -47,6 +47,19 @@ public class
             return responseFactory.ConflictResponse(errorMessage, details);
         }
 
+        var usernameExists = await dbContext.Users
+            .AnyAsync(
+                x => x.Username == request.Username && x.Id != request.UserId,
+                cancellationToken);
+
+        if (usernameExists)
+        {
+            const string errorMessage = ResponseMessageCodes.UserAlreadyExists;
+            var details = ResponseMessageCodes.ErrorDictionary[errorMessage];
+
+            return responseFactory.ConflictResponse(errorMessage, details);
+        }
+
         if (user.DisplayName != request.DisplayName)
         {
             var userChats = await dbContext.UserChats
