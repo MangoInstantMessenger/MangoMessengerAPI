@@ -42,8 +42,6 @@ jobs:
 
       - task: gitversion/execute@0
         displayName: 'GitVersion Execute'
-#        inputs:
-#          updateAssemblyInfo: true
         
       - script: |
           echo "Upcoming semantic version: $(SemVer)"
@@ -53,6 +51,10 @@ jobs:
         inputs:
           versionSpec: '16.x'
         displayName: 'Install Node.js 16.x'
+        
+      - script: |
+          npm install -g typescript@4.8
+        displayName: 'Install Typescript 4.8'
         
       - script: |
           node -v
@@ -76,6 +78,11 @@ jobs:
       - script: |
           ng version
         displayName: 'Print Angular version'
+        
+      - script: |
+          tsc -p tsconfig.json
+        displayName: 'Compile TS files'
+        workingDirectory: '${{ parameters.frontEndProjectPath }}'
 
       - script: |
           ng build

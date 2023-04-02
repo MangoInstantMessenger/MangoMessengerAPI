@@ -20,7 +20,7 @@ However, it is worth to continue progress on the project pursuing another predef
 - 🚀 Mango messenger: Upload file assets: https://youtu.be/giimO6YK1fk
 - 🚀 Mango messenger: Terraform backend up: https://youtu.be/4fRMS3gp5Uc
 - 🚀 Mango messenger: Terraform infrastructure deploy: https://youtu.be/lImvRMW3498
-- 🚀 Mango messenger: Terraform apply pipeline: https://youtu.be/ZjEffyyS_gQ 
+- 🚀 Mango messenger: Terraform apply pipeline: https://youtu.be/ZjEffyyS_gQ
 - 🚀 Mango messenger: Terraform destroy pipeline: https://youtu.be/lNcxfvSSCw0
 
 ## Main goals of the project
@@ -104,10 +104,13 @@ However, it is worth to continue progress on the project pursuing another predef
 - Install NodeJS `16.13.1` using NVM & PowerShell as Administrator: `nvm install 16.13.1`
 - Use NodeJS `16.13.1` using NVM via PowerShell as Administrator: `nvm use 16.13.1`
 - Check NodeJS installed properly (should be `16.13.1`): `node -v`
-- Check NPM installed properly (should be `8.7.0`): `npm -v`
+- Check NPM installed properly (should be `8.1.2`): `npm -v`
+- (Optional) Install NPM properly `8.1.2`: `npm install -g npm@8.1.2`
 - Go to the project folder: `cd MangoAPI.Client`
 - Restore node modules: `npm ci`
 - Install Angular CLI globally: `npm install -g @angular/cli@15.2.2`
+- Install TypeScript globally: `npm install -g typescript@4.8`
+- (Optional) Compile TS files: `cd MangoAPI.Client && tsc -p tsconfig.json`
 - Open PowerShell as Administrator and type: `Set-ExecutionPolicy -ExecutionPolicy RemoteSigned`
 - Check that Angular CLI installed properly: `ng version`
 - Build project for development using Angular CLI: `ng build`
