@@ -12,11 +12,19 @@ import { Injectable } from '@angular/core';
 @Injectable()
 export class ErrorInterceptor implements HttpInterceptor {
   private handleError(err: HttpErrorResponse) {
-    const shouldHandle = err.status === 409 || err.status === 400;
-    if (shouldHandle) {
+    const shouldHandle = err.status === 409 || err.status === 400 || err.status === 0;
+    if (shouldHandle && err.status !== 0) {
       const errorMessage = `${err.error.errorMessage}`;
       console.log(JSON.stringify(err));
       alert(errorMessage);
+      return;
+    }
+
+    if (shouldHandle && err.status === 0) {
+      const errorMessage = `${err.message}. Server not responding.`;
+      console.log(JSON.stringify(err));
+      alert(errorMessage);
+      return;
     }
   }
 
