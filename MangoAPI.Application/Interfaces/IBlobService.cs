@@ -5,9 +5,7 @@ namespace MangoAPI.Application.Interfaces;
 
 public interface IBlobService
 {
-    Task<bool> BlobExistsAsync(string fileName);
-    
-    Task<string> GetBlobAsync(string fileName);
+    string GetBlobAsync(string fileName);
 
     Task<bool> UploadFileBlobAsync(Stream stream, string contentType, string uniqueName);
 

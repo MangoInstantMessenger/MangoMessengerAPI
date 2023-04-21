@@ -18,7 +18,6 @@ using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using System.Threading.Tasks;
 
 namespace MangoAPI.Presentation;
 
@@ -81,7 +80,7 @@ public class Startup
         app.Map(RoutingConstants.Login, builder => builder.UseSpa(spa => spa.Options.SourcePath = "/wwwroot"));
 
         app.MigrateDatabase();
-        Task.FromResult(app.InitializeAzureBlobAsync());
+        app.InitializeAzureBlob();
     }
 
     public void ConfigureServices(IServiceCollection services)

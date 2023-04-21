@@ -18,17 +18,7 @@ public class BlobService : IBlobService
         this.blobServiceSettings = blobServiceSettings;
     }
 
-    public async Task<bool> BlobExistsAsync(string fileName)
-    {
-        var blobContainerName = blobServiceSettings.MangoBlobContainerName;
-        var containerClient = GetContainerClient(blobContainerName);
-        var client = containerClient.GetBlobClient(fileName);
-        var result = await client.ExistsAsync();
-
-        return result.Value;
-    }
-    
-    public async Task<string> GetBlobAsync(string fileName)
+    public string GetBlobAsync(string fileName)
     {
         var containerClient = blobClient.GetBlobContainerClient(blobServiceSettings.MangoBlobContainerName);
         var client = containerClient.GetBlobClient(fileName);
