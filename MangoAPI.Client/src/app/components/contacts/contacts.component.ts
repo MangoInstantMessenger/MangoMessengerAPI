@@ -1,7 +1,6 @@
 import { RoutingConstants } from '../../types/constants/RoutingConstants';
 import { Component, OnInit } from '@angular/core';
 import { ContactsService } from '../../services/api/contacts.service';
-import { ErrorNotificationService } from '../../services/messenger/error-notification.service';
 import { Contact } from '../../types/models/Contact';
 import { UsersService } from '../../services/api/users.service';
 import { TokensService } from '../../services/messenger/tokens.service';
@@ -24,7 +23,6 @@ import { CreateCommunityResponse } from '../../types/responses/CreateCommunityRe
 export class ContactsComponent implements OnInit {
   constructor(
     private _contactsService: ContactsService,
-    private _errorNotificationService: ErrorNotificationService,
     private _usersService: UsersService,
     private _tokensService: TokensService,
     private _communitiesService: CommunitiesService,
@@ -81,10 +79,7 @@ export class ContactsComponent implements OnInit {
 
     const getContactsResponse = await firstValueFrom<GetContactsResponse>(contactsSub$);
 
-    console.log(getContactsResponse.contacts);
-
     if (getContactsResponse.contacts.length === 0) {
-      console.log('No contacts');
       const currentUserSub$ = this._usersService.getUserById(this.currentUserId);
       const currentUserResponse = await firstValueFrom<GetUserResponse>(currentUserSub$);
 

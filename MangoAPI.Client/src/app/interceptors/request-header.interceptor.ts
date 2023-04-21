@@ -12,9 +12,7 @@ import { TokensService } from '../services/messenger/tokens.service';
 
 @Injectable()
 export class RequestHeaderInterceptor implements HttpInterceptor {
-  constructor(
-    private tokensService: TokensService,
-    private router: Router) {}
+  constructor(private tokensService: TokensService) {}
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
     const accessToken = this.tokensService.getTokens()?.accessToken;

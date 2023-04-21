@@ -17,6 +17,7 @@ $transparentBlackLight: rgba(0, 0, 0, 0.300);
 }
 html {
   overflow: hidden;
+  scrollbar-width: none;
 }
 body {
   margin: 0;
@@ -117,6 +118,7 @@ i {
   overflow-x: hidden !important;
   -ms-overflow-style: none;
   min-height: 0;
+  scrollbar-width: none;
   &::-webkit-scrollbar {
     display: none;
   }
