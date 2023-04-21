@@ -55,7 +55,7 @@ public class UpdateProfilePictureCommandHandler
 
         await dbContext.SaveChangesAsync(cancellationToken);
 
-        var newUserPictureUrl = await blobService.GetBlobAsync(uniqueFileName);
+        var newUserPictureUrl = blobService.GetBlobAsync(uniqueFileName);
         var response = UpdateProfilePictureResponse.FromSuccess(newUserPictureUrl, uniqueFileName);
 
         return responseFactory.SuccessResponse(response);
