@@ -18,12 +18,22 @@ public class BlobService : IBlobService
         this.blobServiceSettings = blobServiceSettings;
     }
 
-    public Task<string> GetBlobAsync(string fileName)
+    public async Task<bool> BlobExistsAsync(string fileName)
+    {
+        var blobContainerName = blobServiceSettings.MangoBlobContainerName;
+        var containerClient = GetContainerClient(blobContainerName);
+        var client = containerClient.GetBlobClient(fileName);
+        var result = await client.ExistsAsync();
+
+        return result.Value;
+    }
+    
+    public async Task<string> GetBlobAsync(string fileName)
     {
         var containerClient = blobClient.GetBlobContainerClient(blobServiceSettings.MangoBlobContainerName);
         var client = containerClient.GetBlobClient(fileName);
 
-        return Task.FromResult(client.Uri.AbsoluteUri);
+        return client.Uri.AbsoluteUri;
     }
 
     public async Task<bool> UploadFileBlobAsync(Stream stream, string contentType, string uniqueName)
@@ -56,6 +66,7 @@ public class BlobService : IBlobService
     {
         var containerClient = blobClient.GetBlobContainerClient(blobContainerName);
         containerClient.CreateIfNotExists();
+        containerClient.SetAccessPolicy(PublicAccessType.BlobContainer);
         return containerClient;
     }
 }
