@@ -18,6 +18,7 @@ using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using System.Threading.Tasks;
 
 namespace MangoAPI.Presentation;
 
@@ -80,6 +81,7 @@ public class Startup
         app.Map(RoutingConstants.Login, builder => builder.UseSpa(spa => spa.Options.SourcePath = "/wwwroot"));
 
         app.MigrateDatabase();
+        Task.FromResult(app.InitializeAzureBlobAsync());
     }
 
     public void ConfigureServices(IServiceCollection services)
@@ -92,7 +94,7 @@ public class Startup
             options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
         });
 
-        var databaseUrl = ConfigurationHelper.TryGetFromEnvironment(EnvironmentConstants.DatabaseUrl, configuration);
+        var databaseUrl = configuration[EnvironmentConstants.DatabaseUrl];
 
         var blobUrl = configuration[EnvironmentConstants.BlobUrl];
 
