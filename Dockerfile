@@ -13,7 +13,7 @@ WORKDIR /angular
 COPY ["MangoAPI.Client", "MangoAPI.Client/"]
 RUN npm install -g @angular/cli@13.3.4
 WORKDIR "/angular/MangoAPI.Client"
-RUN ng build --aot --configuration docker
+RUN ng build --aot
 
 
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
@@ -23,6 +23,7 @@ COPY ["MangoAPI.BusinessLogic/MangoAPI.BusinessLogic.csproj", "MangoAPI.Business
 COPY ["MangoAPI.Application/MangoAPI.Application.csproj", "MangoAPI.Application/"]
 COPY ["MangoAPI.Domain/MangoAPI.Domain.csproj", "MangoAPI.Domain/"]
 COPY ["MangoAPI.Infrastructure/MangoAPI.Infrastructure.csproj", "MangoAPI.Infrastructure/"]
+COPY /img .
 RUN dotnet restore "MangoAPI.Presentation/MangoAPI.Presentation.csproj"
 COPY . .
 WORKDIR "/src/MangoAPI.Presentation"
@@ -35,4 +36,5 @@ COPY --from=angularBuild /angular/MangoAPI.Presentation/wwwroot/ /app/publish/ww
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
+COPY --from=build ./src/img ./img
 ENTRYPOINT ["dotnet", "MangoAPI.Presentation.dll"]

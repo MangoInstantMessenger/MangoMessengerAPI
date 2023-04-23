@@ -22,10 +22,10 @@ public static class AzureBlobInitializer
         containerClient.CreateIfNotExists();
         containerClient.SetAccessPolicy(PublicAccessType.BlobContainer);
 
-        var files = Directory.GetFiles(Path.Combine(AppContext.BaseDirectory, "../../../../img/seed_images"));
+        var files = Directory.GetFiles(Path.Combine(AppContext.BaseDirectory, "img", "seed_images"));
         foreach (var filePath in files)
         {
-            var fileName = filePath.Split(@"\")[^1];
+            var fileName = filePath.Split(Path.DirectorySeparatorChar)[^1];
             var client = containerClient.GetBlobClient(fileName);
             var result = client.Exists();
             if (result.Value)
