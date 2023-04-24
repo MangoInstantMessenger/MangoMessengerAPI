@@ -38,7 +38,7 @@ public class IntegrationTestBase : IAsyncLifetime
         var configuration = new ConfigurationBuilder().AddJsonFile(appSettingsPath).Build();
 
         const string dbKey = EnvironmentConstants.IntegrationTestsDatabaseUrl;
-        ConnectionString = ConfigurationHelper.TryGetFromEnvironment(dbKey, configuration);
+        ConnectionString = Environment.GetEnvironmentVariable(dbKey) ?? configuration[dbKey];
 
         var blobUrl = configuration[EnvironmentConstants.BlobUrl];
         var containerName = configuration[EnvironmentConstants.BlobContainer];

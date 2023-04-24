@@ -79,7 +79,19 @@ public class Startup
         app.Map(RoutingConstants.Register, builder => builder.UseSpa(spa => spa.Options.SourcePath = "/wwwroot"));
         app.Map(RoutingConstants.Login, builder => builder.UseSpa(spa => spa.Options.SourcePath = "/wwwroot"));
 
-        app.MigrateDatabase();
+        var shouldMigrateDatabase = configuration.GetValue<bool>(EnvironmentConstants.MigrateDatabase);
+
+        if (shouldMigrateDatabase)
+        {
+            app.MigrateDatabase();
+        }
+
+        var shouldInitializeBlob = configuration.GetValue<bool>(EnvironmentConstants.InitializeBlob);
+
+        if (shouldInitializeBlob)
+        {
+            app.InitializeAzureBlob();
+        }
     }
 
     public void ConfigureServices(IServiceCollection services)
@@ -92,7 +104,7 @@ public class Startup
             options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
         });
 
-        var databaseUrl = ConfigurationHelper.TryGetFromEnvironment(EnvironmentConstants.DatabaseUrl, configuration);
+        var databaseUrl = configuration[EnvironmentConstants.DatabaseUrl];
 
         var blobUrl = configuration[EnvironmentConstants.BlobUrl];
 

@@ -62,7 +62,7 @@ public class
 
         await dbContext.SaveChangesAsync(cancellationToken);
 
-        var blobUrl = await blobService.GetBlobAsync(uniqueFileName);
+        var blobUrl = await blobService.GetBlobUrlAsync(uniqueFileName);
         var response = UpdateChannelPictureResponse.FromSuccess(blobUrl, uniqueFileName);
 
         return responseFactory.SuccessResponse(response);
