@@ -28,5 +28,5 @@ public static class EnvironmentConstants
 
     public const string InitializeBlob = "InitializeBlob";
 
-    public const string AspNetCoreRunningInContainer = "ASPNETCORE_RUNNING_IN_CONTAINER";
+    public const string SeedImagesFolder = "SeedImagesFolder";
 }

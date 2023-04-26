@@ -99,3 +99,7 @@ jobs:
         with:
           name: 'drop'
           path: 'publish'
+          
+      - name: Build Docker Compose
+        run: |
+          docker-compose build

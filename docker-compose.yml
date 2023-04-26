@@ -9,13 +9,10 @@ services:
       - "8080:80"
       - "5001:443"
     environment:
-      - DatabaseUrl=Server=db;Database=MANGO_DOCKER_COMPOSE;User Id=sa;Password=x2yiJt!Fs;TrustServerCertificate=true;
-      - ASPNETCORE_RUNNING_IN_CONTAINER=true
-      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_ENVIRONMENT=Docker
       - ASPNETCORE_URLS=https://+:443;http://+:80
       - ASPNETCORE_Kestrel__Certificates__Default__Password=password
       - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/MangoAPI.Presentation.pfx
-      - BlobUrl=AccountName=devstoreaccount1;AccountKey=Eby8vdM02xNOcqFlqUwJPLlmEtlCDXJ1OUzFT50uSRZ6IFsuFq2UVErCz4I6tq/K1SZFPTOtr/KBHBeksoGMGw==;DefaultEndpointsProtocol=http;BlobEndpoint=http://host.docker.internal:10000/devstoreaccount1;QueueEndpoint=http://host.docker.internal:10001/devstoreaccount1;TableEndpoint=http://host.docker.internal:10002/devstoreaccount1;
     volumes:
       - ~/.aspnet/https:/https:ro
     depends_on:

@@ -26,10 +26,10 @@ COPY /img .
 RUN dotnet restore "MangoAPI.Presentation/MangoAPI.Presentation.csproj"
 COPY . .
 WORKDIR "/src/MangoAPI.Presentation"
-RUN dotnet build "MangoAPI.Presentation.csproj" -c Release -o /app/build
+RUN dotnet build "MangoAPI.Presentation.csproj" -c Release -o /app/build --no-restore
 
 FROM build AS publish
-RUN dotnet publish "MangoAPI.Presentation.csproj" -c Release -o /app/publish /p:UseAppHost=false
+RUN dotnet publish "MangoAPI.Presentation.csproj" -c Release -o /app/publish --no-restore /p:UseAppHost=false
 COPY --from=angularBuild /angular/MangoAPI.Presentation/wwwroot/ /app/publish/wwwroot/
 
 FROM base AS final

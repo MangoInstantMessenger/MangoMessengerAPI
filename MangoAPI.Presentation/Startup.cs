@@ -90,7 +90,7 @@ public class Startup
 
         if (shouldInitializeBlob)
         {
-            app.InitializeAzureBlob();
+            app.InitializeAzureBlob(configuration);
         }
     }
 
