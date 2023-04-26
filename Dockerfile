@@ -5,13 +5,15 @@ EXPOSE 443
 
 FROM node:16.19-alpine AS angularBuild
 WORKDIR /angular
+RUN npm install -g @angular/cli@13.3.4
 COPY ["MangoAPI.Client/package.json", "MangoAPI.Client/"]
 COPY ["MangoAPI.Client/package-lock.json", "MangoAPI.Client/"]
 WORKDIR "/angular/MangoAPI.Client"
 RUN npm ci
 WORKDIR /angular
 COPY ["MangoAPI.Client", "MangoAPI.Client/"]
-RUN npm install -g @angular/cli@13.3.4
+WORKDIR "/angular/MangoAPI.Client/src/assets/config"
+RUN sed -i 's/"baseUrl": "https:\/\/localhost:5001\/"/"baseUrl": "https:\/\/localhost:8002\/"/g' config.json
 WORKDIR "/angular/MangoAPI.Client"
 RUN ng build
 
