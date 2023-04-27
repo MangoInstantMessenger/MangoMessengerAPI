@@ -95,8 +95,8 @@ However, it is worth to continue progress on the project pursuing another predef
 
 ### Run docker compose
 
-- `docker-compose build`
-- `docker-compose up`
+- `dotnet dev-certs https -ep "$env:USERPROFILE\.aspnet\https\MangoAPI.Presentation.pfx" -p password  --trust`
+- `docker-compose up --build`
 
 ### Run in debug mode
 

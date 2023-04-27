@@ -5,7 +5,7 @@ EXPOSE 443
 
 FROM node:16.19-alpine AS angularBuild
 WORKDIR /angular
-RUN npm install -g @angular/cli@13.3.4
+RUN npm install -g @angular/cli@15.2.2
 COPY ["MangoAPI.Client/package.json", "MangoAPI.Client/"]
 COPY ["MangoAPI.Client/package-lock.json", "MangoAPI.Client/"]
 WORKDIR "/angular/MangoAPI.Client"
