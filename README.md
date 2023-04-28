@@ -95,8 +95,13 @@ However, it is worth to continue progress on the project pursuing another predef
 
 ### Run docker compose
 
-- `docker-compose build`
-- `docker-compose up`
+1. `dotnet dev-certs https -ep "$env:USERPROFILE\.aspnet\https\MangoAPI.Presentation.pfx" -p password --trust`
+2. `docker compose build`
+3. `docker compose up`
+4. https://localhost:8002/swagger
+5. https://localhost:8002/app
+6. http://localhost:8001/swagger
+7. In case of https errors: https://stackoverflow.com/a/67182991
 
 ### Run in debug mode
 

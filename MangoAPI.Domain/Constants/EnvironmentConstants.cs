@@ -27,4 +27,6 @@ public static class EnvironmentConstants
     public const string MigrateDatabase = "MigrateDatabase";
 
     public const string InitializeBlob = "InitializeBlob";
+
+    public const string SeedImagesFolder = "SeedImagesFolder";
 }
