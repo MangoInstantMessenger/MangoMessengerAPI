@@ -33,5 +33,5 @@ services:
     hostname: azurite
     restart: always
     ports:
-      - 10000:10000
-      - 10001:10001
+      - "10000:10000"
+      - "10001:10001"
