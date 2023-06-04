@@ -1,4 +1,4 @@
-version: "3.4"
+version: '3.9'
 
 services:
   api:
@@ -6,9 +6,15 @@ services:
       context: .
       dockerfile: Dockerfile
     ports:
-      - "8080:80"
+      - "8001:80"
+      - "8002:443"
     environment:
-      DatabaseUrl: "Server=db;Database=MANGO_DOCKER_COMPOSE;User Id=sa;Password=x2yiJt!Fs;TrustServerCertificate=true;"
+      - ASPNETCORE_ENVIRONMENT=Docker
+      - ASPNETCORE_URLS=https://+:443;http://+:80
+      - ASPNETCORE_Kestrel__Certificates__Default__Password=password
+      - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/MangoAPI.Presentation.pfx
+    volumes:
+      - ~/.aspnet/https:/https:ro
     depends_on:
       - db
       - storage
@@ -17,17 +23,15 @@ services:
     image: "mcr.microsoft.com/mssql/server:2022-latest"
     ports:
       - "1444:1433"
-    
     environment:
       SA_PASSWORD: "x2yiJt!Fs"
       ACCEPT_EULA: "Y"
-      
-  # azurite doesn't work yet, I am too lazy to fix it now
+  
   storage:
     image: mcr.microsoft.com/azure-storage/azurite
+    command: "azurite --blobHost 0.0.0.0 --blobPort 10000 --queueHost 0.0.0.0 --queuePort 10001 --location /workspace --debug /workspace/debug.log"
     hostname: azurite
     restart: always
-    command: "azurite --blobHost 127.0.0.1 --blobPort 10000 --queueHost 127.0.0.1 --queuePort 10001"
     ports:
       - "10000:10000"
       - "10001:10001"

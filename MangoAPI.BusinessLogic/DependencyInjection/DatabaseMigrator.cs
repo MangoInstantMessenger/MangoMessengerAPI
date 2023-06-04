@@ -3,6 +3,7 @@ using MangoAPI.Infrastructure.Database;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using System.Linq;
 
 namespace MangoAPI.BusinessLogic.DependencyInjection;
 
@@ -20,6 +21,9 @@ public static class DatabaseMigrator
             throw new InvalidOperationException("Database context is NULL at Migrator service.");
         }
 
-        context.Database.Migrate();
+        if (context.Database.GetPendingMigrations().Any())
+        {
+            context.Database.Migrate();
+        }
     }
 }

@@ -1,6 +1,5 @@
 // noinspection TypeScriptUnresolvedVariable
 import { Component, OnInit } from '@angular/core';
-import { ErrorNotificationService } from 'src/app/services/messenger/error-notification.service';
 import { TokensService } from '../../services/messenger/tokens.service';
 import { UpdatePersonalInformationCommand } from '../../types/requests/UpdatePersonalInformationCommand';
 import { ChangePasswordCommand } from '../../types/requests/ChangePasswordCommand';
@@ -28,7 +27,6 @@ import { UpdateUserAccountInfoResponse } from '../../types/responses/UpdateUserA
 })
 export class SettingsComponent implements OnInit {
   constructor(
-    private _errorNotificationService: ErrorNotificationService,
     private _usersService: UsersService,
     private _appInfoService: AppInfoService,
     private _tokensService: TokensService,
@@ -108,9 +106,9 @@ export class SettingsComponent implements OnInit {
 
     const response = await firstValueFrom<UpdateUserAccountInfoResponse>(updateUserInfoSub$);
 
-    this.currentUser = response.user;
-
     alert(response.message);
+
+    this.currentUser = response.user;
   }
 
   async onSavePersonalInformationClick() {
@@ -125,9 +123,9 @@ export class SettingsComponent implements OnInit {
 
     const response = await firstValueFrom<UpdatePersonalInformationResponse>(saveSocialsSub$);
 
-    this.currentUser = response.user;
-
     alert(response.message);
+
+    this.currentUser = response.user;
   }
 
   async onSaveProfilePictureClick() {
@@ -153,8 +151,6 @@ export class SettingsComponent implements OnInit {
 
       const result = await firstValueFrom<UpdateProfilePictureResponse>(updateProfileImage$);
 
-      alert(result.message);
-
       this.currentUser.pictureUrl = result.newUserPictureUrl;
 
       tokens.userProfilePictureUrl = result.newUserPictureUrl;
@@ -162,8 +158,9 @@ export class SettingsComponent implements OnInit {
       this._tokensService.setTokens(tokens);
 
       this.clearProfilePictureFile();
+
+      alert(result.message);
     } catch (e) {
-      this._errorNotificationService.notifyOnError(e);
       this.clearProfilePictureFile();
     }
   }
@@ -190,10 +187,13 @@ export class SettingsComponent implements OnInit {
       return;
     }
 
-    const changePassSub$ = this._usersService.changePassword(this.changePasswordCommand);
-    const response = await firstValueFrom<BaseResponse>(changePassSub$);
-    this.clearChangePasswordCommand();
-    alert(response.message);
+    try {
+      const changePassSub$ = this._usersService.changePassword(this.changePasswordCommand);
+      await firstValueFrom<BaseResponse>(changePassSub$);
+      this.clearChangePasswordCommand();
+    } catch (e) {
+      this.clearChangePasswordCommand();
+    }
   }
 
   onUpdateProfilePictureChange(event: any): void {
@@ -202,6 +202,7 @@ export class SettingsComponent implements OnInit {
     const validationResult = this._validationService.validatePictureFileName(file.name);
 
     if (!validationResult) {
+      this.clearProfilePictureFile();
       return;
     }
 

@@ -45,6 +45,7 @@ public class UpdateProfilePictureCommandHandler
         }
 
         var file = request.PictureFile;
+
         var uniqueFileName = FileNameHelper.CreateUniqueFileName(file.FileName);
 
         await blobService.UploadFileBlobAsync(file.OpenReadStream(), request.ContentType, uniqueFileName);
@@ -55,7 +56,8 @@ public class UpdateProfilePictureCommandHandler
 
         await dbContext.SaveChangesAsync(cancellationToken);
 
-        var newUserPictureUrl = await blobService.GetBlobAsync(uniqueFileName);
+        var newUserPictureUrl = await blobService.GetBlobUrlAsync(uniqueFileName);
+
         var response = UpdateProfilePictureResponse.FromSuccess(newUserPictureUrl, uniqueFileName);
 
         return responseFactory.SuccessResponse(response);

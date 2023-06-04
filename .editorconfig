@@ -3,10 +3,6 @@ root = true
 # noinspection EditorConfigKeyCorrectness
 [*.cs]
 dotnet_diagnostic.CA1824.severity = warning
-
-# code format
-dotnet_diagnostic.IDE0005.severity = warning
-
 dotnet_diagnostic.CA1707.severity = warning
 dotnet_diagnostic.CA1822.severity = warning
 dotnet_diagnostic.CA1416.severity = warning
@@ -18,10 +14,10 @@ dotnet_diagnostic.CA1825.severity = warning
 dotnet_diagnostic.IDE0007.severity = warning
 
 # populate switch
-dotnet_diagnostic.IDE0010.severity = warning
+dotnet_diagnostic.IDE0010.severity = none
 
 # fix formatting
-dotnet_diagnostic.IDE0055.severity = none
+dotnet_diagnostic.IDE0055.severity = warning
 
 # if statement can be simplified
 dotnet_diagnostic.IDE0046.severity = warning

@@ -21,6 +21,12 @@ public static class EnvironmentConstants
     public const string BlobContainer = "BlobContainer";
 
     public const string BlobAccess = "BlobAccess";
-    
+
     public const string MangoUserPassword = "MangoUserPassword";
+
+    public const string MigrateDatabase = "MigrateDatabase";
+
+    public const string InitializeBlob = "InitializeBlob";
+
+    public const string SeedImagesFolder = "SeedImagesFolder";
 }

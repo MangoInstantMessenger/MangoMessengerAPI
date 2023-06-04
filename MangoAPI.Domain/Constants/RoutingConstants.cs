@@ -9,8 +9,8 @@ public static class RoutingConstants
     public const string Settings = "/settings";
 
     public const string CreateGroup = "/createGroup";
-    
+
     public const string Register = "/register";
-    
+
     public const string Login = "/login";
 }

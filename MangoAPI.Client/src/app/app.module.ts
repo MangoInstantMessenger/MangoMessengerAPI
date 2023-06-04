@@ -15,6 +15,7 @@ import { DatePipe } from '@angular/common';
 import { CreateGroupComponent } from './components/create-group/create-group.component';
 import { FormsModule } from '@angular/forms';
 import { NavbarComponent } from './components/navbar/navbar.component';
+import { ErrorInterceptor } from './interceptors/error-interceptor.service';
 
 const initializeAppFactory = (): Promise<void> => {
   const configUrl = 'assets/config/config.json';
@@ -48,7 +49,16 @@ const initializeAppFactory = (): Promise<void> => {
       useClass: RequestHeaderInterceptor,
       multi: true
     },
-    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: ErrorInterceptor,
+      multi: true
+    },
     {
       provide: APP_INITIALIZER,
       useFactory: () => initializeAppFactory,

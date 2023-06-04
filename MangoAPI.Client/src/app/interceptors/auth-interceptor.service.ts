@@ -29,7 +29,7 @@ export class AuthInterceptor implements HttpInterceptor {
       err.status === 401 &&
       request.headers.has('Authorization') &&
       request.headers.get('Authorization')?.startsWith('Bearer');
-    
+
     if (shouldHandle) {
       const refreshToken = this.tokensService.getTokens()?.refreshToken ?? '';
 
@@ -63,7 +63,7 @@ export class AuthInterceptor implements HttpInterceptor {
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
     return next.handle(request).pipe(
       catchError((error) => {
-        if (error instanceof HttpErrorResponse && error.status === 401) {
+        if (error instanceof HttpErrorResponse) {
           return this.handleAuthError(error, request, next);
         }
 
