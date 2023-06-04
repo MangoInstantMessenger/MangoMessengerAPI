@@ -2,14 +2,17 @@ using FluentValidation;
 using System.Text.Json;
 using MangoAPI.Application.Interfaces;
 using MangoAPI.Application.Services;
+using MangoAPI.BusinessLogic;
 using MangoAPI.BusinessLogic.ApiCommands.Sessions;
 using MangoAPI.BusinessLogic.ApiCommands.Users;
 using MangoAPI.BusinessLogic.DependencyInjection;
 using MangoAPI.BusinessLogic.HubConfig;
 using MangoAPI.BusinessLogic.Pipelines;
 using MangoAPI.BusinessLogic.Responses;
+using MangoAPI.Domain;
 using MangoAPI.Domain.Constants;
 using MangoAPI.Presentation.Controllers;
+using MangoAPI.Presentation.Extensions;
 using MangoAPI.Presentation.Middlewares;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
@@ -103,6 +106,7 @@ public class Startup
         var jwtSignKey = configuration[EnvironmentConstants.JwtSignKey];
 
         var jwtIssuer = configuration[EnvironmentConstants.JwtIssuer];
+        var chatGptOptions = configuration.GetSection(nameof(ChatGPTOptions)).Get<ChatGPTOptions>();
 
         var jwtAudience = configuration[EnvironmentConstants.JwtAudience];
 
@@ -129,12 +133,14 @@ public class Startup
             refreshTokenLifetimeDays);
 
         services.AddSingleton<IVersionService, VersionService>();
+        services.AddChatGPTClient(chatGptOptions);
 
         services.AddSingleton<IPasswordService, PasswordService>();
 
         services.AddSingleton<IMangoUserSettings, MangoUserSettings>(_ => new MangoUserSettings(mangoUserPassword));
 
         services.AddScoped<IAvatarService, AvatarService>();
+        services.AddScoped<IChatGPTAdapter, ChatGptAdapter>();
 
         services.AddValidatorsFromAssembly(typeof(LoginCommandValidator).Assembly);
 
