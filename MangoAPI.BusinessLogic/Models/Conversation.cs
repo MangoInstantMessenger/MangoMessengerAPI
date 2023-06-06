@@ -4,6 +4,6 @@ public sealed record Conversation(int LeftMessagesCount, string Request, bool Is
 
 public static class MessageAuthors
 {
-    public static readonly string User = "user";
-    public static readonly string AI = "assistant";
+    public const string User = "user";
+    public const string AI = "assistant";
 }

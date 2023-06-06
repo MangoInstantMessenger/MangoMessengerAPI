@@ -12,7 +12,6 @@
     </PropertyGroup>
 
     <!-- Exclude the project from coverage report -->
-    <PropertyGroup Condition=" '$(RunConfiguration)' == 'MangoAPI' " />
     <ItemGroup>
         <AssemblyAttribute Include="System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute" />
     </ItemGroup>
