@@ -13,4 +13,8 @@
         <ProjectReference Include="..\MangoAPI.Infrastructure\MangoAPI.Infrastructure.csproj" />
         <ProjectReference Include="..\MangoAPI.Domain\MangoAPI.Domain.csproj" />
     </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="OpenAI" Version="1.7.2" />
+    </ItemGroup>
 </Project>
