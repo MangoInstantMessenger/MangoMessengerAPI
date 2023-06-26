@@ -29,6 +29,8 @@ import { SignalrConstants } from './signalr.constants';
 import { SendMessageNotification } from '../../types/notifications/SendMessageNotification';
 import { PrivateChatDeletedNotification } from '../../types/notifications/PrivateChatDeletedNotification';
 import { PrivateChatCreatedNotification } from '../../types/notifications/PrivateChatCreatedNotification';
+import { Tokens } from '../../types/models/Tokens';
+import { TypingEventNotification } from 'src/app/types/notifications/TypingEventNotification';
 
 @Component({
   selector: 'app-chats',
@@ -57,7 +59,11 @@ export class ChatsComponent implements OnInit {
   private signalRConnected = false;
   public realTimeConnections: string[] = [];
   public userId: string | undefined = '';
+  public userData: Tokens | undefined;
   public chats: Chat[] = [];
+
+  public typingEventArray: TypingEventNotification[] = [];
+  public typingMessage = '';
 
   public activeChat: Chat = this._defaultChatHelper.getEmptyChat();
 
@@ -90,6 +96,7 @@ export class ChatsComponent implements OnInit {
     }
 
     this.userId = tokens.userId;
+    this.userData = tokens;
     this.chatFilter = 'All chats';
 
     const chatsSub$ = this._communitiesService.getUserChats();
@@ -156,6 +163,13 @@ export class ChatsComponent implements OnInit {
       this.signalRConstants.MessageDeletedAsync,
       (notification: DeleteMessageNotification) => {
         this.onMessageDeleteHandler(notification);
+      }
+    );
+
+    this.connection.on(
+      this.signalRConstants.PrivateChatSentTypingEventAsync,
+      (notification: TypingEventNotification) => {
+        this.onTypingEventHandler(notification);
       }
     );
   }
@@ -521,6 +535,36 @@ export class ChatsComponent implements OnInit {
     return message;
   }
 
+  private onTypingEventHandler(notification: TypingEventNotification) {
+    if (notification.userId === this.userId) return;
+
+    const existingNotification = this.typingEventArray.find((x) => x.userId === notification.userId);
+
+    if (existingNotification) {
+      clearTimeout(existingNotification.timeout);
+      existingNotification.timeout = setTimeout(
+        () => this.deleteTypingEventFromArray(notification.userId),
+        1000
+      );
+      return;
+    }
+
+    notification.timeout = setTimeout(
+      () => this.deleteTypingEventFromArray(notification.userId),
+      1000
+    );
+
+    this.typingEventArray.push(notification);
+  }
+
+  private deleteTypingEventFromArray(userId: string) {
+    const index = this.typingEventArray.findIndex((item) => item.userId === userId);
+
+    if (index !== -1) {
+      this.typingEventArray.splice(index, 1);
+    }
+  }
+
   private onMessageDeleteHandler(notification: DeleteMessageNotification) {
     const selfMessage = notification.userId === this.userId;
 
@@ -542,6 +586,19 @@ export class ChatsComponent implements OnInit {
       chat.lastMessageAuthor = notification.newLastMessageDisplayName;
       chat.lastMessageTime = notification.newLastMessageTime;
       return;
+    }
+  }
+
+  onTypingHandler(event: KeyboardEvent) {
+    if (!this.userData) return;
+
+    if (event.key.match(/^[a-zA-Zа-яА-ЯёЁ0-9+\-[\]{}(),./'"]$/)) {
+      this.connection.invoke(
+        this.signalRConstants.ShowTyping,
+        this.userData.userId,
+        this.activeChatId,
+        this.userData.userDisplayName
+      );
     }
   }
 
