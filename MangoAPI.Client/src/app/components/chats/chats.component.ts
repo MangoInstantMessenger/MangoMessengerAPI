@@ -59,11 +59,9 @@ export class ChatsComponent implements OnInit {
   private signalRConnected = false;
   public realTimeConnections: string[] = [];
   public userId: string | undefined = '';
-  public userData: Tokens | undefined;
   public chats: Chat[] = [];
 
   public typingEventArray: TypingEventNotification[] = [];
-  public typingMessage = '';
 
   public activeChat: Chat = this._defaultChatHelper.getEmptyChat();
 
@@ -96,7 +94,6 @@ export class ChatsComponent implements OnInit {
     }
 
     this.userId = tokens.userId;
-    this.userData = tokens;
     this.chatFilter = 'All chats';
 
     const chatsSub$ = this._communitiesService.getUserChats();
@@ -536,9 +533,11 @@ export class ChatsComponent implements OnInit {
   }
 
   private onTypingEventHandler(notification: TypingEventNotification) {
-    if (notification.userId === this.userId) return;
+    if (notification.userId === this.userId || notification.chatId !== this.activeChatId) return;
 
-    const existingNotification = this.typingEventArray.find((x) => x.userId === notification.userId);
+    const existingNotification = this.typingEventArray.find(
+      (x) => x.userId === notification.userId
+    );
 
     if (existingNotification) {
       clearTimeout(existingNotification.timeout);
@@ -590,15 +589,18 @@ export class ChatsComponent implements OnInit {
   }
 
   onTypingHandler(event: KeyboardEvent) {
-    if (!this.userData) return;
+    const userData = this._tokensService.getTokens();
+    if (!userData) return;
 
-    if (event.key.match(/^[a-zA-Zа-яА-ЯёЁ0-9+\-[\]{}(),./'"]$/)) {
-      this.connection.invoke(
-        this.signalRConstants.ShowTyping,
-        this.userData.userId,
-        this.activeChatId,
-        this.userData.userDisplayName
-      );
+    if (event.key.match(/^[a-zA-Zа-яА-ЯёЁ0-9+\-[\]{}(),./'"]$/) || event.key === 'Backspace') {
+      this.connection
+        .invoke(
+          this.signalRConstants.ShowTyping,
+          userData.userId,
+          this.activeChatId,
+          userData.userDisplayName
+        )
+        .then((r) => r);
     }
   }
 
