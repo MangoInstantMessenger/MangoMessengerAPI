@@ -1,5 +1,6 @@
 ﻿using FluentValidation;
 using System;
+using Uuids;
 
 namespace MangoAPI.Domain.Entities;
 
@@ -23,7 +24,7 @@ public sealed class SessionEntity
 
     private SessionEntity(Guid userId, DateTime expiresAt)
     {
-        Id = Guid.NewGuid();
+        Id = Uuid.NewMySqlOptimized().ToGuidByteLayout();
         CreatedAt = DateTime.UtcNow;
         UserId = userId;
         ExpiresAt = expiresAt;

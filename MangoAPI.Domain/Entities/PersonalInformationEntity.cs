@@ -1,5 +1,6 @@
 ﻿using FluentValidation;
 using System;
+using Uuids;
 
 namespace MangoAPI.Domain.Entities;
 
@@ -29,7 +30,7 @@ public sealed class PersonalInformationEntity
 
     private PersonalInformationEntity(Guid userId)
     {
-        Id = Guid.NewGuid();
+        Id = Uuid.NewMySqlOptimized().ToGuidByteLayout();
         UserId = userId;
         CreatedAt = DateTime.UtcNow;
 
