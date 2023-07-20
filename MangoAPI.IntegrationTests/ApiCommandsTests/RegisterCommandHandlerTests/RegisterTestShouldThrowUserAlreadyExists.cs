@@ -1,5 +1,4 @@
-﻿using MangoAPI.BusinessLogic;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.Domain.Constants;
@@ -18,9 +17,9 @@ public class RegisterTestShouldThrowUserAlreadyExists : IntegrationTestBase
         const string expectedMessage = ResponseMessageCodes.UserAlreadyExists;
         var expectedDetails = ResponseMessageCodes.ErrorDictionary[expectedMessage];
         var command = CommandHelper.RegisterPetroCommand();
-        await MangoModule.RequestAsync(command, CancellationToken.None);
+        await RequestAsync(command, CancellationToken.None);
 
-        var registrationsResult = await MangoModule.RequestAsync(command, CancellationToken.None);
+        var registrationsResult = await RequestAsync(command, CancellationToken.None);
 
         assert.Fail(registrationsResult, expectedMessage, expectedDetails);
     }

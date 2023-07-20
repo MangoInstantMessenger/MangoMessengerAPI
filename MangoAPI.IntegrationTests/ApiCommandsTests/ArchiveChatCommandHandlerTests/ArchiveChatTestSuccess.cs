@@ -1,5 +1,4 @@
-﻿using MangoAPI.BusinessLogic;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 using MangoAPI.BusinessLogic.ApiCommands.Communities;
 using MangoAPI.BusinessLogic.Responses;
@@ -15,15 +14,13 @@ public class ArchiveChatTestSuccess : IntegrationTestBase
     [Fact]
     public async Task ArchiveChatTestSuccessAsync()
     {
-        var user =
-            await MangoModule.RequestAsync(CommandHelper.RegisterPetroCommand(), CancellationToken.None);
-        var chat =
-            await MangoModule.RequestAsync(
+        var user = await RequestAsync(CommandHelper.RegisterPetroCommand(), CancellationToken.None);
+        var chat = await RequestAsync(
                 CommandHelper.CreateExtremeCodeMainChatCommand(user.Response.Tokens.UserId),
                 CancellationToken.None);
         var command = new ArchiveChatCommand(ChatId: chat.Response.ChatId, UserId: user.Response.Tokens.UserId);
 
-        var result = await MangoModule.RequestAsync(command, CancellationToken.None);
+        var result = await RequestAsync(command, CancellationToken.None);
 
         assert.Pass(result);
     }

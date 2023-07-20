@@ -1,7 +1,6 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 using FluentAssertions;
-using MangoAPI.BusinessLogic;
 using MangoAPI.BusinessLogic.ApiCommands.Messages;
 using MangoAPI.IntegrationTests.Helpers;
 using Microsoft.EntityFrameworkCore;
@@ -17,13 +16,13 @@ public class SendMessageSuccessTest : IntegrationTestBase
     public async Task SendMessageNoAttachmentTestSuccessAsync()
     {
         var petroCommand = CommandHelper.RegisterPetroCommand();
-        var petroResult = await MangoModule.RequestAsync(petroCommand, CancellationToken.None);
+        var petroResult = await RequestAsync(petroCommand, CancellationToken.None);
         var chatCommand = CommandHelper.CreateExtremeCodeMainChatCommand(petroResult.Response.Tokens.UserId);
-        var chatResult = await MangoModule.RequestAsync(chatCommand, CancellationToken.None);
+        var chatResult = await RequestAsync(chatCommand, CancellationToken.None);
         var petroId = petroResult.Response.Tokens.UserId;
         var sendCommand = CommandHelper.SendMessageToChannelCommand(petroId, chatResult.Response.ChatId);
 
-        var result = await MangoModule.RequestAsync(sendCommand, CancellationToken.None);
+        var result = await RequestAsync(sendCommand, CancellationToken.None);
         var messageEntity = await DbContextFixture.Messages
             .Include(x => x.User)
             .Include(x => x.Chat)
@@ -42,14 +41,14 @@ public class SendMessageSuccessTest : IntegrationTestBase
     public async Task SendMessageWithAttachmentTestSuccessAsync()
     {
         var petroCommand = CommandHelper.RegisterPetroCommand();
-        var petroResult = await MangoModule.RequestAsync(petroCommand, CancellationToken.None);
+        var petroResult = await RequestAsync(petroCommand, CancellationToken.None);
         var chatCommand = CommandHelper.CreateExtremeCodeMainChatCommand(petroResult.Response.Tokens.UserId);
-        var chatResult = await MangoModule.RequestAsync(chatCommand, CancellationToken.None);
+        var chatResult = await RequestAsync(chatCommand, CancellationToken.None);
         var petroId = petroResult.Response.Tokens.UserId;
         var file = MangoFilesHelper.GetTestImage();
         var sendCommand = CommandHelper.SendMessageToChannelCommand(petroId, chatResult.Response.ChatId, file);
 
-        var result = await MangoModule.RequestAsync(sendCommand, CancellationToken.None);
+        var result = await RequestAsync(sendCommand, CancellationToken.None);
         var messageEntity = await DbContextFixture.Messages
             .Include(x => x.User)
             .Include(x => x.Chat)

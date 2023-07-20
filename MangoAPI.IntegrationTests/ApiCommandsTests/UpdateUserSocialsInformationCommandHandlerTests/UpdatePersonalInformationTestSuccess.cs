@@ -1,5 +1,4 @@
-﻿using MangoAPI.BusinessLogic;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 using MangoAPI.BusinessLogic.ApiCommands.Users;
 using MangoAPI.IntegrationTests.Helpers;
@@ -14,7 +13,7 @@ public class UpdatePersonalInformationTestSuccess : IntegrationTestBase
     [Fact]
     public async Task UpdatePersonalInformationTestSuccessAsync()
     {
-        var user = await MangoModule.RequestAsync(
+        var user = await RequestAsync(
             request: CommandHelper.RegisterPetroCommand(),
             cancellationToken: CancellationToken.None);
         var command = new UpdatePersonalInformationCommand(
@@ -24,7 +23,7 @@ public class UpdatePersonalInformationTestSuccess : IntegrationTestBase
             Facebook: "petro.kolosov",
             Twitter: "petro.kolosov");
 
-        var result = await MangoModule.RequestAsync(command, CancellationToken.None);
+        var result = await RequestAsync(command, CancellationToken.None);
 
         assert.Pass(result);
     }

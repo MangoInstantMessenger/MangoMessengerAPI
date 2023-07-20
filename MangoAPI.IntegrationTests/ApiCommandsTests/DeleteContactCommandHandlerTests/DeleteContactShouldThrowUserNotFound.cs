@@ -1,5 +1,4 @@
-﻿using MangoAPI.BusinessLogic;
-using System;
+﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
 using MangoAPI.BusinessLogic.ApiCommands.Contacts;
@@ -20,7 +19,7 @@ public class DeleteContactShouldThrowUserNotFound : IntegrationTestBase
         var expectedDetails = ResponseMessageCodes.ErrorDictionary[expectedMessage];
         var command = new DeleteContactCommand(UserId: Guid.NewGuid(), ContactId: Guid.NewGuid());
 
-        var result = await MangoModule.RequestAsync(command, CancellationToken.None);
+        var result = await RequestAsync(command, CancellationToken.None);
 
         assert.Fail(result, expectedMessage, expectedDetails);
     }

@@ -1,5 +1,4 @@
-﻿using MangoAPI.BusinessLogic;
-using System;
+﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
 using MangoAPI.BusinessLogic.ApiCommands.Communities;
@@ -19,7 +18,7 @@ public class
     {
         const string expectedMessage = ResponseMessageCodes.ChatNotFound;
         var expectedDetails = ResponseMessageCodes.ErrorDictionary[expectedMessage];
-        var sender = await MangoModule.RequestAsync(
+        var sender = await RequestAsync(
             CommandHelper.RegisterPetroCommand(),
             CancellationToken.None);
         var file = MangoFilesHelper.GetTestImage();
@@ -29,7 +28,7 @@ public class
             NewGroupPicture: file,
             ContentType: "image/jpeg");
 
-        var result = await MangoModule.RequestAsync(command, CancellationToken.None);
+        var result = await RequestAsync(command, CancellationToken.None);
 
         assert.Fail(result, expectedMessage, expectedDetails);
     }

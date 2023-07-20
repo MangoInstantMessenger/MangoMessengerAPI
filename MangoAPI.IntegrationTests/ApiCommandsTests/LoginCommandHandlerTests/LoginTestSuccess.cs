@@ -1,5 +1,4 @@
-﻿using MangoAPI.BusinessLogic;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.IntegrationTests.Helpers;
@@ -14,10 +13,10 @@ public class LoginTestSuccess : IntegrationTestBase
     [Fact]
     public async Task LoginTestSuccessAsync()
     {
-        await MangoModule.RequestAsync(CommandHelper.RegisterPetroCommand(), CancellationToken.None);
+        await RequestAsync(CommandHelper.RegisterPetroCommand(), CancellationToken.None);
         var command = CommandHelper.CreateLoginCommand("PetroKolosov", "Bm3-`dPRv-/w#3)cw^97");
 
-        var result = await MangoModule.RequestAsync(command, CancellationToken.None);
+        var result = await RequestAsync(command, CancellationToken.None);
 
         assert.Pass(result);
     }

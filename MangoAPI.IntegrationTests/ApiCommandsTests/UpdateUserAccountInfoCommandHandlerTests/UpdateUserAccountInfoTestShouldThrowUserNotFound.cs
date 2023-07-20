@@ -1,5 +1,4 @@
-﻿using MangoAPI.BusinessLogic;
-using System;
+﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
 using MangoAPI.BusinessLogic.ApiCommands.Users;
@@ -26,7 +25,7 @@ public class UpdateUserAccountInfoTestShouldThrowUserNotFound : IntegrationTestB
             Address: "Poznan, Poland",
             Birthday: new DateTime(1994, 6, 12));
 
-        var result = await MangoModule.RequestAsync(command, CancellationToken.None);
+        var result = await RequestAsync(command, CancellationToken.None);
 
         assert.Fail(result, expectedMessage, expectedDetails);
     }

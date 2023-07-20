@@ -1,5 +1,4 @@
-﻿using MangoAPI.BusinessLogic;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 using MangoAPI.BusinessLogic.ApiCommands.Communities;
 using MangoAPI.IntegrationTests.Helpers;
@@ -14,11 +13,11 @@ public class UpdateChannelPictureSuccess : IntegrationTestBase
     [Fact]
     public async Task UpdateChannelPictureSuccessAsync()
     {
-        var sender = await MangoModule.RequestAsync(
+        var sender = await RequestAsync(
             CommandHelper.RegisterPetroCommand(), CancellationToken.None);
         var userId = sender.Response.Tokens.UserId;
         var createChannelCommand = CommandHelper.CreateExtremeCodeMainChatCommand(userId);
-        var chat = await MangoModule.RequestAsync(
+        var chat = await RequestAsync(
             createChannelCommand, CancellationToken.None);
         var chatId = chat.Response.ChatId;
         var file = MangoFilesHelper.GetTestImage();
@@ -28,7 +27,7 @@ public class UpdateChannelPictureSuccess : IntegrationTestBase
             NewGroupPicture: file,
             ContentType: "image/jpeg");
 
-        var result = await MangoModule.RequestAsync(command, CancellationToken.None);
+        var result = await RequestAsync(command, CancellationToken.None);
 
         assert.Pass(result);
         await BlobService.DeleteBlobAsync(result.Response.FileName);

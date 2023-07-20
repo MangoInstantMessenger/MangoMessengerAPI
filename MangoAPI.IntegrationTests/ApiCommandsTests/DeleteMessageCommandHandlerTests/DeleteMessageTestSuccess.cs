@@ -1,5 +1,4 @@
-﻿using MangoAPI.BusinessLogic;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 using MangoAPI.BusinessLogic.ApiCommands.Messages;
 using MangoAPI.IntegrationTests.Helpers;
@@ -14,14 +13,11 @@ public class DeleteMessageTestSuccess : IntegrationTestBase
     [Fact]
     public async Task DeleteMessageTestSuccessAsync()
     {
-        var user =
-            await MangoModule.RequestAsync(CommandHelper.RegisterPetroCommand(), CancellationToken.None);
-        var chat =
-            await MangoModule.RequestAsync(
+        var user = await RequestAsync(CommandHelper.RegisterPetroCommand(), CancellationToken.None);
+        var chat = await RequestAsync(
                 request: CommandHelper.CreateExtremeCodeMainChatCommand(user.Response.Tokens.UserId),
                 cancellationToken: CancellationToken.None);
-        var message =
-            await MangoModule.RequestAsync(
+        var message = await RequestAsync(
                 request: CommandHelper.SendMessageToChannelCommand(user.Response.Tokens.UserId, chat.Response.ChatId),
                 cancellationToken: CancellationToken.None);
         var command = new DeleteMessageCommand(
@@ -29,7 +25,7 @@ public class DeleteMessageTestSuccess : IntegrationTestBase
             ChatId: chat.Response.ChatId,
             MessageId: message.Response.NewMessageId);
 
-        var result = await MangoModule.RequestAsync(command, CancellationToken.None);
+        var result = await RequestAsync(command, CancellationToken.None);
 
         assert.Pass(result);
     }

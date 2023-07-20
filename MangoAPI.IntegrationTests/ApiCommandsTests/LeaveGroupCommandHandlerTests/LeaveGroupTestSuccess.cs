@@ -1,5 +1,4 @@
-﻿using MangoAPI.BusinessLogic;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 using MangoAPI.BusinessLogic.ApiCommands.Communities;
 using MangoAPI.IntegrationTests.Helpers;
@@ -15,12 +14,12 @@ public class LeaveGroupTestSuccess : IntegrationTestBase
     public async Task LeaveGroupTestSuccessAsync()
     {
         var petroCommand = CommandHelper.RegisterPetroCommand();
-        var petroResult = await MangoModule.RequestAsync(petroCommand, CancellationToken.None);
+        var petroResult = await RequestAsync(petroCommand, CancellationToken.None);
         var chatCommand = CommandHelper.CreateExtremeCodeMainChatCommand(petroResult.Response.Tokens.UserId);
-        var chatResult = await MangoModule.RequestAsync(chatCommand, CancellationToken.None);
+        var chatResult = await RequestAsync(chatCommand, CancellationToken.None);
         var command = new LeaveGroupCommand(petroResult.Response.Tokens.UserId, chatResult.Response.ChatId);
 
-        var result = await MangoModule.RequestAsync(command, CancellationToken.None);
+        var result = await RequestAsync(command, CancellationToken.None);
 
         assert.Pass(result);
     }

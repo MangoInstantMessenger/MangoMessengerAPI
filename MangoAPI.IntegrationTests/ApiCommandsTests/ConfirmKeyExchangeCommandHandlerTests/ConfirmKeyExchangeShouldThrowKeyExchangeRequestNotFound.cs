@@ -1,5 +1,4 @@
-﻿using MangoAPI.BusinessLogic;
-using System;
+﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
 using MangoAPI.BusinessLogic.ApiCommands.DiffieHellmanKeyExchanges;
@@ -19,14 +18,13 @@ public class ConfirmKeyExchangeShouldThrowKeyExchangeRequestNotFound : Integrati
     {
         const string expectedMessage = ResponseMessageCodes.KeyExchangeRequestNotFound;
         var expectedDetails = ResponseMessageCodes.ErrorDictionary[expectedMessage];
-        var requestedUser =
-            await MangoModule.RequestAsync(CommandHelper.RegisterPetroCommand(), CancellationToken.None);
+        var requestedUser = await RequestAsync(CommandHelper.RegisterPetroCommand(), CancellationToken.None);
         var command = new ConfirmKeyExchangeCommand(
             RequestId: Guid.NewGuid(),
             UserId: requestedUser.Response.Tokens.UserId,
             ReceiverPublicKey: MangoFilesHelper.GetTestImage());
 
-        var response = await MangoModule.RequestAsync(command, CancellationToken.None);
+        var response = await RequestAsync(command, CancellationToken.None);
 
         assert.Fail(response, expectedMessage, expectedDetails);
     }

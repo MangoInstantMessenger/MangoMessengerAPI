@@ -1,5 +1,4 @@
-﻿using MangoAPI.BusinessLogic;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 using MangoAPI.BusinessLogic.ApiQueries.DiffieHellmanKeyExchanges;
 using MangoAPI.Domain.Constants;
@@ -17,10 +16,10 @@ public class GetDhParametersTestShouldThrowDhParameterNotFound : IntegrationTest
     {
         const string expectedMessage = ResponseMessageCodes.DhParameterNotFound;
         var expectedDetails = ResponseMessageCodes.ErrorDictionary[expectedMessage];
-        await MangoModule.RequestAsync(CommandHelper.RegisterKhachaturCommand(), CancellationToken.None);
+        await RequestAsync(CommandHelper.RegisterKhachaturCommand(), CancellationToken.None);
         var query = new GetDhParametersQuery();
 
-        var response = await MangoModule.RequestAsync(query, CancellationToken.None);
+        var response = await RequestAsync(query, CancellationToken.None);
 
         assert.Fail(response, expectedMessage, expectedDetails);
     }

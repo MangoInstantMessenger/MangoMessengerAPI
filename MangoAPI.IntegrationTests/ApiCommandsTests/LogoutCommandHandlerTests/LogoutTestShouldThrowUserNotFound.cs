@@ -1,5 +1,4 @@
-﻿using MangoAPI.BusinessLogic;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 using MangoAPI.BusinessLogic.ApiCommands.Sessions;
 using MangoAPI.BusinessLogic.Responses;
@@ -21,16 +20,16 @@ public class LogoutTestShouldThrowUserNotFound : IntegrationTestBase
         var petroCommand = CommandHelper.RegisterPetroCommand();
         var khachaturCommand = CommandHelper.RegisterKhachaturCommand();
 
-        var petro = await MangoModule.RequestAsync(petroCommand, CancellationToken.None);
+        var petro = await RequestAsync(petroCommand, CancellationToken.None);
 
-        var khachatur = await MangoModule.RequestAsync(khachaturCommand, CancellationToken.None);
+        var khachatur = await RequestAsync(khachaturCommand, CancellationToken.None);
 
         var khachaturId = khachatur.Response.Tokens.UserId;
         var petroRefresh = petro.Response.Tokens.RefreshToken;
 
         var command = new LogoutCommand(khachaturId, petroRefresh);
 
-        var result = await MangoModule.RequestAsync(command, CancellationToken.None);
+        var result = await RequestAsync(command, CancellationToken.None);
 
         assert.Fail(result, expectedMessage, expectedDetails);
     }

@@ -1,5 +1,4 @@
-﻿using MangoAPI.BusinessLogic;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 using MangoAPI.BusinessLogic.ApiCommands.Communities;
 using MangoAPI.IntegrationTests.Helpers;
@@ -15,14 +14,14 @@ public class CreateChatTestSuccess : IntegrationTestBase
     public async Task CreateChatTestSuccessAsync()
     {
         var petroCommand = CommandHelper.RegisterPetroCommand();
-        var petroResult = await MangoModule.RequestAsync(petroCommand, CancellationToken.None);
+        var petroResult = await RequestAsync(petroCommand, CancellationToken.None);
         var khachaturCommand = CommandHelper.RegisterKhachaturCommand();
-        var khachaturResult = await MangoModule.RequestAsync(khachaturCommand, CancellationToken.None);
+        var khachaturResult = await RequestAsync(khachaturCommand, CancellationToken.None);
         var petroId = petroResult.Response.Tokens.UserId;
         var khachaturId = khachaturResult.Response.Tokens.UserId;
 
         var command = new CreateChatCommand(petroId, khachaturId);
-        var result = await MangoModule.RequestAsync(command, CancellationToken.None);
+        var result = await RequestAsync(command, CancellationToken.None);
 
         assert.Pass(result);
     }

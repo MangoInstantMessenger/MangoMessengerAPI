@@ -1,5 +1,4 @@
-﻿using MangoAPI.BusinessLogic;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 using MangoAPI.BusinessLogic.Responses;
 using MangoAPI.IntegrationTests.Helpers;
@@ -16,7 +15,7 @@ public class RegisterTestSuccess : IntegrationTestBase
     {
         var command = CommandHelper.RegisterPetroCommand();
 
-        var regResult = await MangoModule.RequestAsync(command, CancellationToken.None);
+        var regResult = await RequestAsync(command, CancellationToken.None);
 
         assert.Pass(regResult);
     }

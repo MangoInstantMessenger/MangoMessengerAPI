@@ -1,7 +1,6 @@
-﻿using System.Threading;
+﻿using FluentAssertions;
+using System.Threading;
 using System.Threading.Tasks;
-using FluentAssertions;
-using MangoAPI.BusinessLogic;
 using MangoAPI.BusinessLogic.ApiQueries.Communities;
 using MangoAPI.IntegrationTests.Helpers;
 using Xunit;
@@ -15,15 +14,15 @@ public class GetCurrentUserChatsTestSuccess : IntegrationTestBase
     [Fact]
     public async Task GetCurrentUserChatsTestSuccessAsync()
     {
-        var user = await MangoModule.RequestAsync(
+        var user = await RequestAsync(
             request: CommandHelper.RegisterPetroCommand(),
             cancellationToken: CancellationToken.None);
-        await MangoModule.RequestAsync(
+        await RequestAsync(
             request: CommandHelper.CreateExtremeCodeMainChatCommand(user.Response.Tokens.UserId),
             cancellationToken: CancellationToken.None);
         var query = new GetCurrentUserChatsQuery(UserId: user.Response.Tokens.UserId);
 
-        var result = await MangoModule.RequestAsync(query, CancellationToken.None);
+        var result = await RequestAsync(query, CancellationToken.None);
 
         assert.Pass(result);
         result.Response.Chats.Count.Should().Be(2);

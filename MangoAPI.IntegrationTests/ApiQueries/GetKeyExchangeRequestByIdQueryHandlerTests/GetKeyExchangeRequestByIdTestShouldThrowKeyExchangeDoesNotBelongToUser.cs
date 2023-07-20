@@ -1,5 +1,4 @@
-﻿using MangoAPI.BusinessLogic;
-using System;
+﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
 using MangoAPI.BusinessLogic.ApiQueries.DiffieHellmanKeyExchanges;
@@ -19,11 +18,11 @@ public class GetKeyExchangeRequestByIdTestShouldThrowKeyExchangeDoesNotBelongToU
         const string expectedMessage = ResponseMessageCodes.KeyExchangeDoesNotBelongToUser;
         var expectedDetails = ResponseMessageCodes.ErrorDictionary[expectedMessage];
         var sender =
-            await MangoModule.RequestAsync(CommandHelper.RegisterKhachaturCommand(), CancellationToken.None);
+            await RequestAsync(CommandHelper.RegisterKhachaturCommand(), CancellationToken.None);
         var requestedUser =
-            await MangoModule.RequestAsync(CommandHelper.RegisterPetroCommand(), CancellationToken.None);
+            await RequestAsync(CommandHelper.RegisterPetroCommand(), CancellationToken.None);
         var publicKey = MangoFilesHelper.GetTestImage();
-        var keyExchange = await MangoModule.RequestAsync(
+        var keyExchange = await RequestAsync(
             request: CommandHelper.CreateOpenSslCreateKeyExchangeCommand(
                 receiverId: sender.Response.Tokens.UserId,
                 senderId: requestedUser.Response.Tokens.UserId,
@@ -31,7 +30,7 @@ public class GetKeyExchangeRequestByIdTestShouldThrowKeyExchangeDoesNotBelongToU
             cancellationToken: CancellationToken.None);
         var query = new GetKeyExchangeRequestByIdQuery(Guid.NewGuid(), keyExchange.Response.RequestId);
 
-        var response = await MangoModule.RequestAsync(query, CancellationToken.None);
+        var response = await RequestAsync(query, CancellationToken.None);
 
         assert.Fail(response, expectedMessage, expectedDetails);
     }

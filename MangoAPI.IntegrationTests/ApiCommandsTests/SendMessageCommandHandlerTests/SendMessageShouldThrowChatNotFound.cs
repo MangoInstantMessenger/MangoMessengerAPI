@@ -1,5 +1,4 @@
-﻿using MangoAPI.BusinessLogic;
-using System;
+﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
 using MangoAPI.BusinessLogic.ApiCommands.Messages;
@@ -21,11 +20,11 @@ public class SendMessageShouldThrowChatNotFound : IntegrationTestBase
 
         var petroCommand = CommandHelper.RegisterPetroCommand();
 
-        var user = await MangoModule.RequestAsync(petroCommand, CancellationToken.None);
+        var user = await RequestAsync(petroCommand, CancellationToken.None);
         var chatId = Guid.NewGuid();
         var sendCommand = CommandHelper.SendMessageToChannelCommand(user.Response.Tokens.UserId, chatId);
 
-        var result = await MangoModule.RequestAsync(sendCommand, CancellationToken.None);
+        var result = await RequestAsync(sendCommand, CancellationToken.None);
 
         assert.Fail(result, expectedMessage, expectedDetails);
     }

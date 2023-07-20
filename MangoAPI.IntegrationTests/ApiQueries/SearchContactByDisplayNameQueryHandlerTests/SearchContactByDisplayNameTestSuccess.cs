@@ -1,7 +1,6 @@
-﻿using System.Threading;
+﻿using FluentAssertions;
+using System.Threading;
 using System.Threading.Tasks;
-using FluentAssertions;
-using MangoAPI.BusinessLogic;
 using MangoAPI.BusinessLogic.ApiQueries.Contacts;
 using MangoAPI.IntegrationTests.Helpers;
 using Xunit;
@@ -15,12 +14,11 @@ public class SearchContactByDisplayNameTestSuccess : IntegrationTestBase
     [Fact]
     public async Task SearchContactByDisplayNameTestSuccessAsync()
     {
-        var user =
-            await MangoModule.RequestAsync(CommandHelper.RegisterKhachaturCommand(), CancellationToken.None);
-        await MangoModule.RequestAsync(CommandHelper.RegisterPetroCommand(), CancellationToken.None);
+        var user = await RequestAsync(CommandHelper.RegisterKhachaturCommand(), CancellationToken.None);
+        await RequestAsync(CommandHelper.RegisterPetroCommand(), CancellationToken.None);
         var query = new SearchContactQuery(UserId: user.Response.Tokens.UserId, SearchQuery: "Kolosov");
 
-        var result = await MangoModule.RequestAsync(query, CancellationToken.None);
+        var result = await RequestAsync(query, CancellationToken.None);
 
         assert.Pass(result);
         result.Response.Contacts.Count.Should().Be(1);

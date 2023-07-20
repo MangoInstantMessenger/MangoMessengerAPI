@@ -32,7 +32,7 @@ public class UpdatePersonalInformationCommandHandler
         UpdatePersonalInformationCommand request,
         CancellationToken cancellationToken)
     {
-        var user = await dbContext.Users.AsNoTracking()
+        var user = await dbContext.Users
             .Include(x => x.PersonalInformation)
             .FirstOrDefaultAsync(x => x.Id == request.UserId, cancellationToken);
 

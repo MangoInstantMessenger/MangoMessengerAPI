@@ -1,5 +1,4 @@
-﻿using MangoAPI.BusinessLogic;
-using System;
+﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
 using MangoAPI.BusinessLogic.ApiCommands.Messages;
@@ -20,20 +19,20 @@ public class EditMessageShouldThrowChatNotFound : IntegrationTestBase
         const string expectedMessage = ResponseMessageCodes.ChatNotFound;
         var expectedDetails = ResponseMessageCodes.ErrorDictionary[expectedMessage];
         var petroCommand = CommandHelper.RegisterPetroCommand();
-            
-        var petro = await MangoModule.RequestAsync(petroCommand, CancellationToken.None);
+
+        var petro = await RequestAsync(petroCommand, CancellationToken.None);
         var petroId = petro.Response.Tokens.UserId;
         var chatCommand = CommandHelper.CreateExtremeCodeMainChatCommand(petroId);
-        var chat = await MangoModule.RequestAsync(chatCommand, CancellationToken.None);
+        var chat = await RequestAsync(chatCommand, CancellationToken.None);
         var sendMessageCommand = CommandHelper.SendMessageToChannelCommand(petroId, chat.Response.ChatId);
-        var message = await MangoModule.RequestAsync(sendMessageCommand, CancellationToken.None);
+        var message = await RequestAsync(sendMessageCommand, CancellationToken.None);
         var command = new EditMessageCommand(
             ChatId: Guid.Empty,
             petroId,
             message.Response.NewMessageId,
             ModifiedText: "Message edited");
 
-        var result = await MangoModule.RequestAsync(command, CancellationToken.None);
+        var result = await RequestAsync(command, CancellationToken.None);
 
         assert.Fail(result, expectedMessage, expectedDetails);
     }
