@@ -6,9 +6,9 @@ pool:
   vmImage: 'windows-latest'
 
 variables:
-  - group: AZURE_FOR_STUDENTS
+  - group: AzCopy_Settings
   - name: serviceConnection
-    value: 'AzureForStudents'
+    value: 'AKS_Service_Connection'
   - name: sourcePath
     value: '$(Build.SourcesDirectory)/img/seed_images/*'
 
@@ -19,12 +19,12 @@ stages:
       - job: 'AzCopy_Assets'
         displayName: 'AzCopy Assets'
         steps:
-          - task: AzureKeyVault@2
-            inputs:
-              azureSubscription: '$(serviceConnection)'
-              KeyVaultName: '$(KeyVaultName)'
-              SecretsFilter: "*"
-              RunAsPreJob: false
+#          - task: AzureKeyVault@2
+#            inputs:
+#              azureSubscription: '$(serviceConnection)'
+#              KeyVaultName: '$(KeyVaultName)'
+#              SecretsFilter: "*"
+#              RunAsPreJob: false
 
           - task: AzureFileCopy@4
             inputs:
