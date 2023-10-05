@@ -11,6 +11,8 @@ metadata:
     nginx.ingress.kubernetes.io/use-regex: 'true'
     kubernetes.io/tls-acme: 'true'
     nginx.ingress.kubernetes.io/ssl-redirect: 'true'
+    nginx.ingress.kubernetes.io/affinity: 'cookie'
+    nginx.org/websocket-services: 'mango-api-service'
 spec:
   ingressClassName: nginx
   tls:
