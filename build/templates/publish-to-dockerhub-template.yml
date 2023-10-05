@@ -54,7 +54,7 @@ jobs:
           VERSION: $(GitVersion.SemVer)
           DOCKERUSERNAME: ${{ parameters.dockerUsername }}
           BASEURL: ${{ parameters.baseUrl }}
-        workingDirectory: '$(Build.SourcesDirectory)/src'
+        workingDirectory: '$(Build.SourcesDirectory)'
         displayName: 'Build Docker Image'
 
       - task: Docker@2
