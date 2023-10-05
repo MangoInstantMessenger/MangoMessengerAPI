@@ -46,8 +46,8 @@ jobs:
       - bash: |
           IMAGE_FULL_NAME="$DOCKERUSERNAME/$REPOSITORY:$VERSION"
           echo "Image full name: $IMAGE_FULL_NAME"
-          docker build --build-arg FRONT_API_URL="http://$BASEURL" --build-arg VERSION=$VERSION -t "$IMAGE_FULL_NAME" -f "$DOCKERFILEPATH" .
-          docker build --build-arg FRONT_API_URL="http://$BASEURL" --build-arg VERSION=$VERSION -t "$DOCKERUSERNAME/$REPOSITORY:latest" -f "$DOCKERFILEPATH" .
+          docker build --build-arg FRONT_API_URL="https://$BASEURL" --build-arg VERSION=$VERSION -t "$IMAGE_FULL_NAME" -f "$DOCKERFILEPATH" .
+          docker build --build-arg FRONT_API_URL="https://$BASEURL" --build-arg VERSION=$VERSION -t "$DOCKERUSERNAME/$REPOSITORY:latest" -f "$DOCKERFILEPATH" .
         env:
           REPOSITORY: ${{ parameters.imageRepository }}
           DOCKERFILEPATH: ${{ parameters.dockerfilePath }}

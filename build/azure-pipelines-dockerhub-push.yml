@@ -19,4 +19,4 @@ stages:
           imageRepository: 'mango-api'
           dockerfilePath: 'Dockerfile'
           dockerfileServiceConnection: 'MangoDockerHub'
-          baseUrl: 'mango-api-service' # service from kubernetes
+          baseUrl: 'mangomessenger.devtest.team' # service from kubernetes
