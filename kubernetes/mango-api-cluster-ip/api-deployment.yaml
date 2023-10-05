@@ -20,20 +20,32 @@ spec:
           ports:
             - containerPort: 80
           env:
-            - name: EVENT_TRIANGLE_AD_CLIENT_SECRET
+            - name: BlobUrl
               valueFrom:
                 secretKeyRef:
-                  name: connection-creds
-                  key: EVENT_TRIANGLE_AD_CLIENT_SECRET
+                  name: mango-connection-creds
+                  key: BlobUrl
 
-            - name: DatabaseConnectionString
-              valueFrom:
-                secretKeyRef:
-                  name: connection-creds
-                  key: AuthDatabaseConnectionString
-                  
             - name: ASPNETCORE_ENVIRONMENT
               valueFrom:
                 configMapKeyRef:
-                  name: event-triangle-auth-configmap
+                  name: mango-api-configmap
                   key: ASPNETCORE_ENVIRONMENT
+
+            - name: BlobAccess
+              valueFrom:
+                configMapKeyRef:
+                  name: mango-api-configmap
+                  key: BlobAccess
+
+            - name: InitializeBlob
+              valueFrom:
+                configMapKeyRef:
+                  name: mango-api-configmap
+                  key: InitializeBlob            
+            
+            - name: DatabaseUrl
+              valueFrom:
+                configMapKeyRef:
+                  name: mango-api-configmap
+                  key: DatabaseUrl

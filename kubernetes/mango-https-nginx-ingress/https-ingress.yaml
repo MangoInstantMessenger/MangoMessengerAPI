@@ -1,7 +1,7 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: ing-event-triangle-auth
+  name: ing-mango-api
   annotations:
     nginx.ingress.kubernetes.io/enable-cors: 'true'
     nginx.ingress.kubernetes.io/cors-allow-headers: 'Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Authorization,Accept-Language'
@@ -15,16 +15,16 @@ spec:
   ingressClassName: nginx
   tls:
     - hosts:
-      - eventtriangleauth.devtest.team
+      - mangomessenger.devtest.team
       secretName: my-tls-secret
   rules:
-    - host: eventtriangleauth.devtest.team
+    - host: mangomessenger.devtest.team
       http:
         paths:
           - path: /
             pathType: Prefix
             backend:
               service:
-                name: event-triangle-auth-service
+                name: mango-api-service
                 port:
                   number: 80
