@@ -1,0 +1,39 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mango-api-deployment
+spec:
+  selector:
+    matchLabels:
+      app: mango-api
+  replicas: 3
+  template:
+    metadata:
+      labels:
+        app: mango-api
+    spec:
+      containers:
+        - name: mango-api
+          image: petrokolosov/mango-api:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 80
+          env:
+            - name: EVENT_TRIANGLE_AD_CLIENT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: connection-creds
+                  key: EVENT_TRIANGLE_AD_CLIENT_SECRET
+
+            - name: DatabaseConnectionString
+              valueFrom:
+                secretKeyRef:
+                  name: connection-creds
+                  key: AuthDatabaseConnectionString
+                  
+            - name: ASPNETCORE_ENVIRONMENT
+              valueFrom:
+                configMapKeyRef:
+                  name: event-triangle-auth-configmap
+                  key: ASPNETCORE_ENVIRONMENT

@@ -1,0 +1,30 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ing-event-triangle-auth
+  annotations:
+    nginx.ingress.kubernetes.io/enable-cors: 'true'
+    nginx.ingress.kubernetes.io/cors-allow-headers: 'Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Authorization,Accept-Language'
+    nginx.ingress.kubernetes.io/cors-max-age: '600'
+    nginx.ingress.kubernetes.io/proxy-body-size: '12m'
+    nginx.ingress.kubernetes.io/rewrite-target: '/'
+    nginx.ingress.kubernetes.io/use-regex: 'true'
+    kubernetes.io/tls-acme: 'true'
+    nginx.ingress.kubernetes.io/ssl-redirect: 'true'
+spec:
+  ingressClassName: nginx
+  tls:
+    - hosts:
+      - eventtriangleauth.devtest.team
+      secretName: my-tls-secret
+  rules:
+    - host: eventtriangleauth.devtest.team
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: event-triangle-auth-service
+                port:
+                  number: 80

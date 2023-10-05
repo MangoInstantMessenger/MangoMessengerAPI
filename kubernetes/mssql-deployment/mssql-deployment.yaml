@@ -1,0 +1,39 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mssql-deployment
+spec:
+  selector:
+    matchLabels:
+      app: mssql
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: mssql
+    spec:
+      securityContext:
+        fsGroup: 10001
+      terminationGracePeriodSeconds: 10
+      containers:
+        - name: mssql
+          image: mcr.microsoft.com/mssql/server:2022-latest
+          ports:
+            - containerPort: 1433
+          env:
+            - name: ACCEPT_EULA
+              value: "Y"
+            - name: SA_PASSWORD
+              value: "x2yiJt!Fs"
+            - name: MSSQL_ENABLE_HADR
+              value: "1"
+            - name: MSSQL_AGENT_ENABLED
+              value: "1"
+          volumeMounts:
+            - name: mssql-persistent-storage
+              mountPath: /var/opt/mssql
+      volumes:
+        - name: mssql-persistent-storage
+          persistentVolumeClaim:
+            claimName: mssql-pvc

@@ -1,0 +1,68 @@
+parameters:
+  - name: dockerUsername
+    type: string
+
+  - name: imageRepository
+    type: string
+
+  - name: dockerfilePath
+    type: string
+
+  - name: dockerfileServiceConnection
+    type: string
+
+  - name: baseUrl
+    type: string
+
+jobs:
+  - job: 'Publish_To_DockerHub'
+    displayName: 'Publish_To_DockerHub'
+    steps:
+      - checkout: self
+        fetchDepth: 0
+
+      - task: gitversion/setup@0
+        displayName: 'GitVersion Setup'
+        inputs:
+          versionSpec: '5.9.x'
+
+      - task: gitversion/execute@0
+        displayName: 'GitVersion Execute'
+        inputs:
+          updateAssemblyInfo: true
+
+      - bash: echo $Action$BuildVersion
+        displayName: 'Set Build Version'
+        env:
+          Action: '##vso[build.updatebuildnumber]'
+          BuildVersion: $(GitVersion.SemVer)
+
+      - task: Docker@2
+        displayName: 'Login to Docker Hub'
+        inputs:
+          command: login
+          containerRegistry: '${{ parameters.dockerfileServiceConnection }}'
+
+      - bash: |
+          IMAGE_FULL_NAME="$DOCKERUSERNAME/$REPOSITORY:$VERSION"
+          echo "Image full name: $IMAGE_FULL_NAME"
+          docker build --build-arg FRONT_API_URL="http://$BASEURL:80/" --build-arg VERSION=$VERSION -t "$IMAGE_FULL_NAME" -f "$DOCKERFILEPATH" .
+          docker build --build-arg FRONT_API_URL="http://$BASEURL:80/" --build-arg VERSION=$VERSION -t "$DOCKERUSERNAME/$REPOSITORY:latest" -f "$DOCKERFILEPATH" .
+        env:
+          REPOSITORY: ${{ parameters.imageRepository }}
+          DOCKERFILEPATH: ${{ parameters.dockerfilePath }}
+          VERSION: $(GitVersion.SemVer)
+          DOCKERUSERNAME: ${{ parameters.dockerUsername }}
+          BASEURL: ${{ parameters.baseUrl }}
+        workingDirectory: '$(Build.SourcesDirectory)/src'
+        displayName: 'Build Docker Image'
+
+      - task: Docker@2
+        displayName: 'Push to DockerHub'
+        inputs:
+          command: push
+          containerRegistry: '${{ parameters.dockerfileServiceConnection }}'
+          repository: '${{ parameters.dockerUsername }}/${{ parameters.imageRepository }}'
+          tags: |
+            $(GitVersion.SemVer)
+            latest

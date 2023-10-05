@@ -1,0 +1,9 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: mango-api-configmap
+  labels:
+    app: mango-api
+data:
+  ASPNETCORE_ENVIRONMENT: "Docker"

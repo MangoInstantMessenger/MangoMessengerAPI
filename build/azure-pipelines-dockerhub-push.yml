@@ -1,0 +1,22 @@
+trigger: none
+
+pr: none
+
+variables:
+  - name: appName
+    value: 'MangoAPI'
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+stages:
+  - stage: 'DockerHub_Push_${{ variables.appName }}'
+    displayName: 'DockerHub_Push_${{ variables.appName }}'
+    jobs:
+      - template: templates/publish-to-dockerhub-template.yml
+        parameters:
+          dockerUsername: 'petrokolosov'
+          imageRepository: 'mango-api'
+          dockerfilePath: 'Dockerfile'
+          dockerfileServiceConnection: 'MangoDockerHub'
+          baseUrl: 'mango-api-service' # service from kubernetes
