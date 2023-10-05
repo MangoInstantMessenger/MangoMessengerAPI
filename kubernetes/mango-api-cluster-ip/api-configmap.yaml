@@ -1,0 +1,12 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: mango-api-configmap
+  labels:
+    app: mango-api
+data:
+  ASPNETCORE_ENVIRONMENT: 'Docker'
+  BlobAccess: 'https://mangostorage01.blob.core.windows.net/mangocontainer'
+  InitializeBlob: 'false'
+  DatabaseUrl: 'Server=mssql-service;Database=MANGO_AKS;User Id=sa;Password=x2yiJt!Fs;TrustServerCertificate=true;'

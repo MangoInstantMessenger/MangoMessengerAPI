@@ -13,7 +13,8 @@ RUN npm ci
 WORKDIR /angular
 COPY ["MangoAPI.Client", "MangoAPI.Client/"]
 WORKDIR "/angular/MangoAPI.Client/src/assets/config"
-RUN sed -i 's/"baseUrl": "https:\/\/localhost:5001\/"/"baseUrl": "https:\/\/localhost:8002\/"/g' config.json
+ARG FRONT_API_URL
+RUN sed -i "s|https://localhost:5001|$FRONT_API_URL|" config.json
 WORKDIR "/angular/MangoAPI.Client"
 RUN ng build
 
@@ -28,10 +29,11 @@ COPY /img .
 RUN dotnet restore "MangoAPI.Presentation/MangoAPI.Presentation.csproj"
 COPY . .
 WORKDIR "/src/MangoAPI.Presentation"
-RUN dotnet build "MangoAPI.Presentation.csproj" -c Release -o /app/build --no-restore
+ARG VERSION
+RUN dotnet build "MangoAPI.Presentation.csproj" -c Release -p:Version=$VERSION -o /app/build --no-restore
 
 FROM build AS publish
-RUN dotnet publish "MangoAPI.Presentation.csproj" -c Release -o /app/publish --no-restore /p:UseAppHost=false
+RUN dotnet publish "MangoAPI.Presentation.csproj" -c Release -p:Version=$VERSION -o /app/publish --no-restore /p:UseAppHost=false
 COPY --from=angularBuild /angular/MangoAPI.Presentation/wwwroot/ /app/publish/wwwroot/
 
 FROM base AS final
