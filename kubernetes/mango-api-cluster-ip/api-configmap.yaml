@@ -3,6 +3,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: mango-api-configmap
+  namespace: mango-messenger
   labels:
     app: mango-api
 data:
