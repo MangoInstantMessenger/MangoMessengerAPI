@@ -3,6 +3,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: mssql-service
+  namespace: mango-messenger
 spec:
   selector:
     app: mssql
