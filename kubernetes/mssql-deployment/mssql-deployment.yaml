@@ -3,6 +3,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: mssql-deployment
+  namespace: mango-messenger
 spec:
   selector:
     matchLabels:

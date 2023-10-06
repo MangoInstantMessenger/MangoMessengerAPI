@@ -3,6 +3,7 @@ kind: Service
 apiVersion: v1
 metadata:
   name: mango-api-service
+  namespace: mango-messenger
 spec:
   selector:
     app: mango-api
