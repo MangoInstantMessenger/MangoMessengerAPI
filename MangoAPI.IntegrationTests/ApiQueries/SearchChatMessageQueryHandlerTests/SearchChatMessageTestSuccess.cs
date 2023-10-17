@@ -1,7 +1,6 @@
-﻿using System.Threading;
+﻿using FluentAssertions;
+using System.Threading;
 using System.Threading.Tasks;
-using FluentAssertions;
-using MangoAPI.BusinessLogic;
 using MangoAPI.BusinessLogic.ApiQueries.Messages;
 using MangoAPI.IntegrationTests.Helpers;
 using Xunit;
@@ -15,13 +14,11 @@ public class SearchChatMessageTestSuccess : IntegrationTestBase
     [Fact]
     public async Task SearchChatMessageTestSuccessAsync()
     {
-        var user =
-            await MangoModule.RequestAsync(CommandHelper.RegisterPetroCommand(), CancellationToken.None);
-        var chat =
-            await MangoModule.RequestAsync(
+        var user = await RequestAsync(CommandHelper.RegisterPetroCommand(), CancellationToken.None);
+        var chat = await RequestAsync(
                 request: CommandHelper.CreateExtremeCodeMainChatCommand(user.Response.Tokens.UserId),
                 cancellationToken: CancellationToken.None);
-        await MangoModule.RequestAsync(
+        await RequestAsync(
             request: CommandHelper.SendMessageToChannelCommand(user.Response.Tokens.UserId, chat.Response.ChatId),
             cancellationToken: CancellationToken.None);
         var query = new SearchChatMessagesQuery(
@@ -29,7 +26,7 @@ public class SearchChatMessageTestSuccess : IntegrationTestBase
             ChatId: chat.Response.ChatId,
             MessageText: "test");
 
-        var result = await MangoModule.RequestAsync(query, CancellationToken.None);
+        var result = await RequestAsync(query, CancellationToken.None);
 
         assert.Pass(result);
         result.Response.Messages.Count.Should().Be(1);

@@ -1,5 +1,4 @@
-﻿using MangoAPI.BusinessLogic;
-using System;
+﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
 using MangoAPI.BusinessLogic.ApiQueries.Users;
@@ -19,7 +18,7 @@ public class GetUserQueryShouldThrowUserNotFound : IntegrationTestBase
         var expectedDetails = ResponseMessageCodes.ErrorDictionary[expectedMessage];
         var query = new GetUserQuery(UserId: Guid.NewGuid());
 
-        var result = await MangoModule.RequestAsync(query, CancellationToken.None);
+        var result = await RequestAsync(query, CancellationToken.None);
 
         assert.Fail(result, expectedMessage, expectedDetails);
     }

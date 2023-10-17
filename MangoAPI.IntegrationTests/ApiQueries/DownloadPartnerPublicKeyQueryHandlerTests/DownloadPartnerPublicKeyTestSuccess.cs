@@ -1,8 +1,7 @@
-﻿using System.IO;
+﻿using FluentAssertions;
+using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
-using FluentAssertions;
-using MangoAPI.BusinessLogic;
 using MangoAPI.BusinessLogic.ApiQueries.DiffieHellmanKeyExchanges;
 using MangoAPI.IntegrationTests.Helpers;
 using Xunit;
@@ -16,18 +15,16 @@ public class DownloadPartnerPublicKeyTestSuccess : IntegrationTestBase
     [Fact]
     public async Task OpenSslDownloadPartnerPublicKeyTestSuccessAsync()
     {
-        var sender =
-            await MangoModule.RequestAsync(CommandHelper.RegisterKhachaturCommand(), CancellationToken.None);
-        var receiver =
-            await MangoModule.RequestAsync(CommandHelper.RegisterPetroCommand(), CancellationToken.None);
+        var sender = await RequestAsync(CommandHelper.RegisterKhachaturCommand(), CancellationToken.None);
+        var receiver = await RequestAsync(CommandHelper.RegisterPetroCommand(), CancellationToken.None);
         var publicKey = MangoFilesHelper.GetTestImage();
-        var keyExchange = await MangoModule.RequestAsync(
+        var keyExchange = await RequestAsync(
             request: CommandHelper.CreateOpenSslCreateKeyExchangeCommand(
                 receiverId: receiver.Response.Tokens.UserId,
                 senderId: sender.Response.Tokens.UserId,
                 senderPublicKey: publicKey),
             cancellationToken: CancellationToken.None);
-        await MangoModule.RequestAsync(
+        await RequestAsync(
             request: CommandHelper.CreateOpenSslConfirmKeyExchangeCommand(
                 requestId: keyExchange.Response.RequestId,
                 userId: receiver.Response.Tokens.UserId,
@@ -36,7 +33,7 @@ public class DownloadPartnerPublicKeyTestSuccess : IntegrationTestBase
         var query = new DownloadPartnerPublicKeyQuery(receiver.Response.Tokens.UserId, keyExchange.Response.RequestId);
 
         var response =
-            await MangoModule.RequestAsync(query, CancellationToken.None);
+            await RequestAsync(query, CancellationToken.None);
 
         assert.Pass(response);
         await using var target = new MemoryStream();

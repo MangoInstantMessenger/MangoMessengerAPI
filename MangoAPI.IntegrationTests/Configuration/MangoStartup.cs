@@ -8,12 +8,13 @@ using MangoAPI.BusinessLogic.Pipelines;
 using MangoAPI.BusinessLogic.Responses;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
+using System;
 
-namespace MangoAPI.BusinessLogic.Configuration;
+namespace MangoAPI.IntegrationTests.Configuration;
 
-public static class MangoStartup
+public class MangoStartup
 {
-    public static void Initialize(
+    public IServiceProvider Initialize(
         string databaseConnectionString,
         string mangoBlobUrl,
         string mangoBlobContainerName,
@@ -72,7 +73,6 @@ public static class MangoStartup
 
         services.AddHttpClient();
 
-        var provider = services.BuildServiceProvider();
-        MangoCompositionRoot.SetProvider(provider);
+        return services.BuildServiceProvider();
     }
 }

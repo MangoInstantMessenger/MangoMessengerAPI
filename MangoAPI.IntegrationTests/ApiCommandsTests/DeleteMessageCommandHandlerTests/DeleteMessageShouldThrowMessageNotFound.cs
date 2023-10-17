@@ -1,5 +1,4 @@
-﻿using MangoAPI.BusinessLogic;
-using System;
+﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
 using MangoAPI.BusinessLogic.ApiCommands.Messages;
@@ -18,10 +17,8 @@ public class DeleteMessageShouldThrowMessageNotFound : IntegrationTestBase
     {
         const string expectedMessage = ResponseMessageCodes.MessageNotFound;
         var expectedDetails = ResponseMessageCodes.ErrorDictionary[expectedMessage];
-        var user =
-            await MangoModule.RequestAsync(CommandHelper.RegisterPetroCommand(), CancellationToken.None);
-        var chat =
-            await MangoModule.RequestAsync(
+        var user = await RequestAsync(CommandHelper.RegisterPetroCommand(), CancellationToken.None);
+        var chat = await RequestAsync(
                 request: CommandHelper.CreateExtremeCodeMainChatCommand(user.Response.Tokens.UserId),
                 cancellationToken: CancellationToken.None);
         var command = new DeleteMessageCommand(
@@ -29,7 +26,7 @@ public class DeleteMessageShouldThrowMessageNotFound : IntegrationTestBase
             ChatId: chat.Response.ChatId,
             MessageId: Guid.NewGuid());
 
-        var result = await MangoModule.RequestAsync(command, CancellationToken.None);
+        var result = await RequestAsync(command, CancellationToken.None);
 
         assert.Fail(result, expectedMessage, expectedDetails);
     }

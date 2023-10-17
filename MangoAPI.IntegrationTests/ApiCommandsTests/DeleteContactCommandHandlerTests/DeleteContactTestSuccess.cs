@@ -1,5 +1,4 @@
-﻿using MangoAPI.BusinessLogic;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 using MangoAPI.BusinessLogic.ApiCommands.Contacts;
 using MangoAPI.BusinessLogic.Responses;
@@ -15,16 +14,14 @@ public class DeleteContactTestSuccess : IntegrationTestBase
     [Fact]
     public async Task DeleteContactTestSuccessAsync()
     {
-        var user =
-            await MangoModule.RequestAsync(CommandHelper.RegisterPetroCommand(), CancellationToken.None);
-        var partner =
-            await MangoModule.RequestAsync(CommandHelper.RegisterKhachaturCommand(), CancellationToken.None);
-        await MangoModule.RequestAsync(
+        var user = await RequestAsync(CommandHelper.RegisterPetroCommand(), CancellationToken.None);
+        var partner = await RequestAsync(CommandHelper.RegisterKhachaturCommand(), CancellationToken.None);
+        await RequestAsync(
             request: CommandHelper.CreateContactCommand(user.Response.Tokens.UserId, partner.Response.Tokens.UserId),
             cancellationToken: CancellationToken.None);
         var command = new DeleteContactCommand(UserId: user.Response.Tokens.UserId, ContactId: partner.Response.Tokens.UserId);
 
-        var result = await MangoModule.RequestAsync(command, CancellationToken.None);
+        var result = await RequestAsync(command, CancellationToken.None);
 
         assert.Pass(result);
     }

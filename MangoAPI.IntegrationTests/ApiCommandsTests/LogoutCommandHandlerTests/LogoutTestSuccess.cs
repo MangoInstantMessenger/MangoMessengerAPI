@@ -1,5 +1,4 @@
-﻿using MangoAPI.BusinessLogic;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 using MangoAPI.BusinessLogic.ApiCommands.Sessions;
 using MangoAPI.BusinessLogic.Responses;
@@ -16,14 +15,14 @@ public class LogoutTestSuccess : IntegrationTestBase
     public async Task LogoutTestSuccessAsync()
     {
         var petroCommand = CommandHelper.RegisterPetroCommand();
-        var petro = await MangoModule.RequestAsync(petroCommand, CancellationToken.None);
-        
+        var petro = await RequestAsync(petroCommand, CancellationToken.None);
+
         var petroId = petro.Response.Tokens.UserId;
         var petroRefresh = petro.Response.Tokens.RefreshToken;
-        
+
         var petroLogout = new LogoutCommand(petroId, petroRefresh);
 
-        var result = await MangoModule.RequestAsync(petroLogout, CancellationToken.None);
+        var result = await RequestAsync(petroLogout, CancellationToken.None);
 
         assert.Pass(result);
     }

@@ -1,5 +1,4 @@
-﻿using MangoAPI.BusinessLogic;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 using MangoAPI.BusinessLogic.ApiCommands.Contacts;
 using MangoAPI.BusinessLogic.Responses;
@@ -18,12 +17,12 @@ public class AddContactShouldThrowContactExists : IntegrationTestBase
     {
         const string expectedMessage = ResponseMessageCodes.ContactAlreadyExist;
         var expectedDetails = ResponseMessageCodes.ErrorDictionary[expectedMessage];
-        var sender = await MangoModule.RequestAsync(CommandHelper.RegisterKhachaturCommand(), CancellationToken.None);
-        var receiver = await MangoModule.RequestAsync(CommandHelper.RegisterPetroCommand(), CancellationToken.None);
+        var sender = await RequestAsync(CommandHelper.RegisterKhachaturCommand(), CancellationToken.None);
+        var receiver = await RequestAsync(CommandHelper.RegisterPetroCommand(), CancellationToken.None);
         var command = new AddContactCommand(sender.Response.Tokens.UserId, receiver.Response.Tokens.UserId);
-        await MangoModule.RequestAsync(command, CancellationToken.None);
+        await RequestAsync(command, CancellationToken.None);
 
-        var result = await MangoModule.RequestAsync(command, CancellationToken.None);
+        var result = await RequestAsync(command, CancellationToken.None);
 
         assert.Fail(result, expectedMessage, expectedDetails);
     }

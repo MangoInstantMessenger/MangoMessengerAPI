@@ -1,5 +1,4 @@
-﻿using MangoAPI.BusinessLogic;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 using MangoAPI.BusinessLogic.ApiCommands.DiffieHellmanKeyExchanges;
 using MangoAPI.BusinessLogic.Responses;
@@ -15,11 +14,9 @@ public class ConfirmKeyExchangeSuccess : IntegrationTestBase
     [Fact]
     public async Task ConfirmKeyExchangeSuccessAsync()
     {
-        var sender =
-            await MangoModule.RequestAsync(CommandHelper.RegisterKhachaturCommand(), CancellationToken.None);
-        var receiver =
-            await MangoModule.RequestAsync(CommandHelper.RegisterPetroCommand(), CancellationToken.None);
-        var keyExchange = await MangoModule.RequestAsync(
+        var sender = await RequestAsync(CommandHelper.RegisterKhachaturCommand(), CancellationToken.None);
+        var receiver = await RequestAsync(CommandHelper.RegisterPetroCommand(), CancellationToken.None);
+        var keyExchange = await RequestAsync(
             request: CommandHelper.CreateOpenSslCreateKeyExchangeCommand(
                 receiver.Response.Tokens.UserId,
                 sender.Response.Tokens.UserId,
@@ -30,7 +27,7 @@ public class ConfirmKeyExchangeSuccess : IntegrationTestBase
             UserId: receiver.Response.Tokens.UserId,
             ReceiverPublicKey: MangoFilesHelper.GetTestImage());
 
-        var response = await MangoModule.RequestAsync(command, CancellationToken.None);
+        var response = await RequestAsync(command, CancellationToken.None);
 
         assert.Pass(response);
     }

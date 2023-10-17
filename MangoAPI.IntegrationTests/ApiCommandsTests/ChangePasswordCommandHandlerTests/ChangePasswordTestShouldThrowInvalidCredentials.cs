@@ -1,5 +1,4 @@
-﻿using MangoAPI.BusinessLogic;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 using MangoAPI.BusinessLogic.ApiCommands.Users;
 using MangoAPI.BusinessLogic.Responses;
@@ -18,15 +17,14 @@ public class ChangePasswordTestShouldThrowInvalidCredentials : IntegrationTestBa
     {
         const string expectedMessage = ResponseMessageCodes.InvalidCredentials;
         var expectedDetails = ResponseMessageCodes.ErrorDictionary[expectedMessage];
-        var user =
-            await MangoModule.RequestAsync(CommandHelper.RegisterPetroCommand(), CancellationToken.None);
+        var user = await RequestAsync(CommandHelper.RegisterPetroCommand(), CancellationToken.None);
         var command = new ChangePasswordCommand(
             UserId: user.Response.Tokens.UserId,
             CurrentPassword: "Gm3-`xPRr-/q#6)rgf^925",
             NewPassword: "Gm3-`xPRr-/q#6)re^94",
             RepeatNewPassword: "Gm3-`xPRr-/q#6)re^94");
 
-        var result = await MangoModule.RequestAsync(command, CancellationToken.None);
+        var result = await RequestAsync(command, CancellationToken.None);
 
         assert.Fail(result, expectedMessage, expectedDetails);
     }

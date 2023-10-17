@@ -1,5 +1,4 @@
-﻿using MangoAPI.BusinessLogic;
-using System;
+﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
 using MangoAPI.BusinessLogic.ApiQueries.DiffieHellmanKeyExchanges;
@@ -19,7 +18,7 @@ public class GetKeyExchangeRequestByIdTestShouldThrowKeyExchangeRequestNotFound 
         var expectedDetails = ResponseMessageCodes.ErrorDictionary[expectedMessage];
         var query = new GetKeyExchangeRequestByIdQuery(Guid.NewGuid(), Guid.NewGuid());
 
-        var response = await MangoModule.RequestAsync(query, CancellationToken.None);
+        var response = await RequestAsync(query, CancellationToken.None);
 
         assert.Fail(response, expectedMessage, expectedDetails);
     }

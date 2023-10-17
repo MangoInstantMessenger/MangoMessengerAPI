@@ -1,5 +1,4 @@
-﻿using MangoAPI.BusinessLogic;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 using MangoAPI.BusinessLogic.ApiCommands.Users;
 using MangoAPI.IntegrationTests.Helpers;
@@ -14,12 +13,12 @@ public class UpdateProfilePictureTestSuccess : IntegrationTestBase
     [Fact]
     public async Task UpdateProfilePictureTestSuccessAsync()
     {
-        var userResult = await MangoModule.RequestAsync(CommandHelper.RegisterPetroCommand(), CancellationToken.None);
+        var userResult = await RequestAsync(CommandHelper.RegisterPetroCommand(), CancellationToken.None);
         var userId = userResult.Response.Tokens.UserId;
         var file = MangoFilesHelper.GetTestImage();
         var command = new UpdateProfilePictureCommand(userId, ContentType: "image/jpeg", file);
 
-        var result = await MangoModule.RequestAsync(command, CancellationToken.None);
+        var result = await RequestAsync(command, CancellationToken.None);
 
         assert.Pass(result);
         await BlobService.DeleteBlobAsync(result.Response.FileName);

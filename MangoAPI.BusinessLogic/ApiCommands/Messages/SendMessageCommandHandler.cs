@@ -57,7 +57,7 @@ public class SendMessageCommandHandler
             return responseFactory.ConflictResponse(errorMessage, errorDescription);
         }
 
-        var userChat = await dbContext.UserChats.AsNoTracking()
+        var userChat = await dbContext.UserChats
             .Select(x => new { x.ChatId, x.RoleId, x.Chat, }).FirstOrDefaultAsync(
                 x => x.ChatId == request.ChatId,
                 cancellationToken);

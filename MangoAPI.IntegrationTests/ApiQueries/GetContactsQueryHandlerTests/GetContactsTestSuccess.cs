@@ -1,7 +1,6 @@
-﻿using System.Threading;
+﻿using FluentAssertions;
+using System.Threading;
 using System.Threading.Tasks;
-using FluentAssertions;
-using MangoAPI.BusinessLogic;
 using MangoAPI.BusinessLogic.ApiQueries.Contacts;
 using MangoAPI.IntegrationTests.Helpers;
 using Xunit;
@@ -15,18 +14,18 @@ public class GetContactsTestSuccess : IntegrationTestBase
     [Fact]
     public async Task GetContactsTestSuccessAsync()
     {
-        var user = await MangoModule.RequestAsync(
+        var user = await RequestAsync(
             request: CommandHelper.RegisterPetroCommand(),
             cancellationToken: CancellationToken.None);
-        var contact = await MangoModule.RequestAsync(
+        var contact = await RequestAsync(
             request: CommandHelper.RegisterKhachaturCommand(),
             cancellationToken: CancellationToken.None);
-        await MangoModule.RequestAsync(
+        await RequestAsync(
             request: CommandHelper.CreateContactCommand(user.Response.Tokens.UserId, contact.Response.Tokens.UserId),
             cancellationToken: CancellationToken.None);
         var query = new GetContactsQuery(UserId: user.Response.Tokens.UserId);
 
-        var result = await MangoModule.RequestAsync(query, CancellationToken.None);
+        var result = await RequestAsync(query, CancellationToken.None);
 
         assert.Pass(result);
         result.Response.Contacts.Count.Should().Be(1);

@@ -1,5 +1,4 @@
-﻿using MangoAPI.BusinessLogic;
-using System;
+﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
 using MangoAPI.BusinessLogic.ApiQueries.DiffieHellmanKeyExchanges;
@@ -18,12 +17,10 @@ public class DownloadPartnerPublicKeyTestShouldThrowKeyExchangeRequestNotFound :
     {
         const string expectedMessage = ResponseMessageCodes.KeyExchangeRequestNotFound;
         var expectedDetails = ResponseMessageCodes.ErrorDictionary[expectedMessage];
-        var requestedUser =
-            await MangoModule.RequestAsync(CommandHelper.RegisterPetroCommand(), CancellationToken.None);
+        var requestedUser = await RequestAsync(CommandHelper.RegisterPetroCommand(), CancellationToken.None);
         var query = new DownloadPartnerPublicKeyQuery(requestedUser.Response.Tokens.UserId, Guid.NewGuid());
 
-        var response =
-            await MangoModule.RequestAsync(query, CancellationToken.None);
+        var response = await RequestAsync(query, CancellationToken.None);
 
         assert.Fail(response, expectedMessage, expectedDetails);
     }

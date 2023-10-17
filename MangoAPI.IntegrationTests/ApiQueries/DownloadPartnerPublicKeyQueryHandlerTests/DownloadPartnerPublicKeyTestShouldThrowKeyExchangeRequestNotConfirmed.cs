@@ -1,5 +1,4 @@
-﻿using MangoAPI.BusinessLogic;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 using MangoAPI.BusinessLogic.ApiQueries.DiffieHellmanKeyExchanges;
 using MangoAPI.Domain.Constants;
@@ -17,12 +16,10 @@ public class DownloadPartnerPublicKeyTestShouldThrowKeyExchangeRequestNotConfirm
     {
         const string expectedMessage = ResponseMessageCodes.KeyExchangeIsNotConfirmed;
         var expectedDetails = ResponseMessageCodes.ErrorDictionary[expectedMessage];
-        var sender =
-            await MangoModule.RequestAsync(CommandHelper.RegisterKhachaturCommand(), CancellationToken.None);
-        var requestedUser =
-            await MangoModule.RequestAsync(CommandHelper.RegisterPetroCommand(), CancellationToken.None);
+        var sender = await RequestAsync(CommandHelper.RegisterKhachaturCommand(), CancellationToken.None);
+        var requestedUser = await RequestAsync(CommandHelper.RegisterPetroCommand(), CancellationToken.None);
         var publicKey = MangoFilesHelper.GetTestImage();
-        var keyExchange = await MangoModule.RequestAsync(
+        var keyExchange = await RequestAsync(
             request: CommandHelper.CreateOpenSslCreateKeyExchangeCommand(
                 receiverId: sender.Response.Tokens.UserId,
                 senderId: requestedUser.Response.Tokens.UserId,
@@ -30,8 +27,7 @@ public class DownloadPartnerPublicKeyTestShouldThrowKeyExchangeRequestNotConfirm
             cancellationToken: CancellationToken.None);
         var query = new DownloadPartnerPublicKeyQuery(requestedUser.Response.Tokens.UserId, keyExchange.Response.RequestId);
 
-        var response =
-            await MangoModule.RequestAsync(query, CancellationToken.None);
+        var response = await RequestAsync(query, CancellationToken.None);
 
         assert.Fail(response, expectedMessage, expectedDetails);
     }

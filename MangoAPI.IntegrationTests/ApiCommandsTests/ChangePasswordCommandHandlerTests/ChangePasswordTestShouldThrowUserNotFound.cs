@@ -1,5 +1,4 @@
-﻿using MangoAPI.BusinessLogic;
-using System;
+﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
 using MangoAPI.BusinessLogic.ApiCommands.Users;
@@ -24,7 +23,7 @@ public class ChangePasswordTestShouldThrowUserNotFound : IntegrationTestBase
             NewPassword: "Gm3-`xPRr-/q#6)re^94",
             RepeatNewPassword: "Gm3-`xPRr-/q#6)re^94");
 
-        var result = await MangoModule.RequestAsync(command, CancellationToken.None);
+        var result = await RequestAsync(command, CancellationToken.None);
 
         assert.Fail(result, expectedMessage, expectedDetails);
     }

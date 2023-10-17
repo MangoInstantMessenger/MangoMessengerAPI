@@ -1,5 +1,4 @@
-﻿using MangoAPI.BusinessLogic;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 using MangoAPI.BusinessLogic.ApiCommands.Communities;
 using MangoAPI.IntegrationTests.Helpers;
@@ -14,11 +13,9 @@ public class CreateChannelTestSuccess : IntegrationTestBase
     [Fact]
     public async Task CreateChannelTestSuccessAsync()
     {
-        var user =
-            await MangoModule.RequestAsync(CommandHelper.RegisterPetroCommand(), CancellationToken.None);
+        var user = await RequestAsync(CommandHelper.RegisterPetroCommand(), CancellationToken.None);
 
-        var result =
-            await MangoModule.RequestAsync(
+        var result = await RequestAsync(
                 CommandHelper.CreateExtremeCodeMainChatCommand(user.Response.Tokens.UserId),
                 CancellationToken.None);
 

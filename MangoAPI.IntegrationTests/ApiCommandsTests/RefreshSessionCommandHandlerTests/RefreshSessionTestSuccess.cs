@@ -1,5 +1,4 @@
-﻿using MangoAPI.BusinessLogic;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 using MangoAPI.BusinessLogic.ApiCommands.Sessions;
 using MangoAPI.BusinessLogic.Responses;
@@ -16,11 +15,11 @@ public class RefreshSessionTestSuccess : IntegrationTestBase
     public async Task RefreshSessionTestSuccessAsync()
     {
         var petroCommand = CommandHelper.RegisterPetroCommand();
-        var petro = await MangoModule.RequestAsync(petroCommand, CancellationToken.None);
+        var petro = await RequestAsync(petroCommand, CancellationToken.None);
         var petroRefresh = petro.Response.Tokens.RefreshToken;
-        
+
         var command = new RefreshSessionCommand(petroRefresh);
-        var result = await MangoModule.RequestAsync(command, CancellationToken.None);
+        var result = await RequestAsync(command, CancellationToken.None);
 
         assert.Pass(result);
     }

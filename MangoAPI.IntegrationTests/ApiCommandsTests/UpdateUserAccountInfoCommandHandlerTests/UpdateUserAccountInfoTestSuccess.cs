@@ -1,5 +1,4 @@
-﻿using MangoAPI.BusinessLogic;
-using System;
+﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
 using MangoAPI.BusinessLogic.ApiCommands.Users;
@@ -16,7 +15,7 @@ public class UpdateUserAccountInfoTestSuccess : IntegrationTestBase
     public async Task UpdateUserAccountInfoTestSuccessAsync()
     {
         var petroCommand = CommandHelper.RegisterPetroCommand();
-        var petroResult = await MangoModule.RequestAsync(petroCommand, CancellationToken.None);
+        var petroResult = await RequestAsync(petroCommand, CancellationToken.None);
         var petroId = petroResult.Response.Tokens.UserId;
 
         var command = new UpdateUserAccountInfoCommand(
@@ -28,7 +27,7 @@ public class UpdateUserAccountInfoTestSuccess : IntegrationTestBase
             Address: "Poznan, Poland",
             Birthday: new DateTime(1994, 6, 12));
 
-        var result = await MangoModule.RequestAsync(command, CancellationToken.None);
+        var result = await RequestAsync(command, CancellationToken.None);
 
         assert.Pass(result);
     }

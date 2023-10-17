@@ -1,5 +1,4 @@
-﻿using MangoAPI.BusinessLogic;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 using MangoAPI.BusinessLogic.ApiCommands.Contacts;
 using MangoAPI.BusinessLogic.Responses;
@@ -19,11 +18,10 @@ public class AddContactShouldThrowCannotAddSelf : IntegrationTestBase
         const string expectedMessage = ResponseMessageCodes.CannotAddSelfToContacts;
         var expectedDetails = ResponseMessageCodes.ErrorDictionary[expectedMessage];
         var registerPetroCommand = CommandHelper.RegisterPetroCommand();
-        var user =
-            await MangoModule.RequestAsync(registerPetroCommand, CancellationToken.None);
-        
+        var user = await RequestAsync(registerPetroCommand, CancellationToken.None);
+
         var command = new AddContactCommand(user.Response.Tokens.UserId, user.Response.Tokens.UserId);
-        var result = await MangoModule.RequestAsync(command, CancellationToken.None);
+        var result = await RequestAsync(command, CancellationToken.None);
 
         assert.Fail(result, expectedMessage, expectedDetails);
     }

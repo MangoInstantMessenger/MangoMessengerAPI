@@ -1,8 +1,7 @@
-﻿using System.IO;
+﻿using FluentAssertions;
+using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
-using FluentAssertions;
-using MangoAPI.BusinessLogic;
 using MangoAPI.BusinessLogic.ApiQueries.DiffieHellmanKeyExchanges;
 using MangoAPI.IntegrationTests.Helpers;
 using Xunit;
@@ -18,15 +17,15 @@ public class GetDhParametersTestSuccess : IntegrationTestBase
     {
         var file = MangoFilesHelper.GetTestImage();
         var user =
-            await MangoModule.RequestAsync(CommandHelper.RegisterKhachaturCommand(), CancellationToken.None);
-        await MangoModule.RequestAsync(
+            await RequestAsync(CommandHelper.RegisterKhachaturCommand(), CancellationToken.None);
+        await RequestAsync(
             request: CommandHelper.CreateOpenSslCreateDiffieHellmanParameterCommand(
                 diffieHellmanParameter: file,
                 userId: user.Response.Tokens.UserId),
             cancellationToken: CancellationToken.None);
         var query = new GetDhParametersQuery();
 
-        var response = await MangoModule.RequestAsync(query, CancellationToken.None);
+        var response = await RequestAsync(query, CancellationToken.None);
 
         assert.Pass(response);
         await using var target = new MemoryStream();
