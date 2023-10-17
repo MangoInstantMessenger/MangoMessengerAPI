@@ -15,10 +15,12 @@ $transparentBlackLight: rgba(0, 0, 0, 0.300);
     Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol",
     "Noto Color Emoji";
 }
+
 html {
   overflow: hidden;
   scrollbar-width: none;
 }
+
 body {
   margin: 0;
   font-size: 1rem;
@@ -34,12 +36,14 @@ button {
   border: none !important;
   outline: none !important;
 }
+
 input::placeholder,
 textarea::placeholder {
   color: $gray;
   font-size: 16px;
   user-select: none;
 }
+
 p,
 span,
 a,
@@ -54,17 +58,21 @@ h5,
 h6 {
   user-select: none;
 }
+
 a {
   color: $orange !important;
 }
+
 ul {
   list-style-type: none;
   margin: 0 !important;
   padding: 0;
+
   li {
     margin: 0;
   }
 }
+
 i {
   font-size: 22px;
 }
@@ -79,6 +87,7 @@ i {
   width: 20px;
   height: 20px;
 }
+
 .gap-fix {
   gap: 20px;
 }
@@ -86,9 +95,11 @@ i {
 .text-red {
   color: $red !important;
 }
+
 .text-light-gray {
   color: $light-gray;
 }
+
 .cursor-pointer {
   cursor: pointer !important;
 }
@@ -98,12 +109,14 @@ i {
   background-color: $dark;
   border-radius: 15px;
 }
+
 .form-button {
   width: 30%;
   background-color: #cf7d1f;
   border-radius: 15px;
   font-size: 20px;
 }
+
 .form-label {
   font-size: 18px;
 }
@@ -119,6 +132,7 @@ i {
   -ms-overflow-style: none;
   min-height: 0;
   scrollbar-width: none;
+
   &::-webkit-scrollbar {
     display: none;
   }
@@ -150,10 +164,12 @@ i {
       .avatar {
         align-self: center;
       }
+
       .content {
         p {
           max-width: 35ch;
         }
+
         .message {
           p {
             color: $light-gray;
@@ -162,6 +178,7 @@ i {
         }
       }
     }
+
     .active {
       .message {
         p {
@@ -175,14 +192,18 @@ i {
 .dropdown {
   color: $gray;
   user-select: none;
+
   .dropdown-toggle {
     font-size: 18px;
   }
+
   .dropdown-menu {
     background: $dark;
+
     .dropdown-item {
       color: $light-gray !important;
       user-select: none;
+
       &:hover,
       &:active {
         background-color: #383f44 !important;
@@ -201,6 +222,7 @@ i {
 .button-orange {
   background-color: $orange;
   color: white;
+
   &:hover {
     background-color: #b56f1e;
   }
@@ -209,10 +231,12 @@ i {
 .button-dark {
   background: $dark;
   color: $light-gray !important;
+
   a {
     text-decoration: none;
     color: $light-gray !important;
   }
+
   &:hover {
     background-color: #313136;
   }
@@ -226,9 +250,11 @@ i {
     object-fit: cover;
     cursor: pointer;
   }
+
   p {
     font-size: 16px;
   }
+
   display: flex;
   justify-content: center;
   align-items: center;
@@ -247,6 +273,7 @@ i {
 
 .user-info {
   margin-bottom: 25px !important;
+
   li {
     border: $dark 1px solid;
     display: flex;
@@ -254,11 +281,13 @@ i {
     background-color: $dark-gray;
     padding: 12px 20px;
     justify-content: space-between;
+
     .info {
       .title {
         color: $light-gray;
         font-size: 12px;
       }
+
       p {
         margin: 0;
       }
@@ -280,9 +309,11 @@ i {
     flex-direction: column;
     justify-content: space-evenly;
     flex-grow: 1;
+
     .active {
       color: #fff9dc !important;
     }
+
     li {
       width: 35px;
 
@@ -307,6 +338,7 @@ i {
     background-color: white;
     border-radius: 15px;
     margin-bottom: auto;
+
     img {
       width: 40px;
       height: 40px;
@@ -320,6 +352,7 @@ i {
   height: 100vh;
   margin-left: 64px !important;
   border-right: 1px $gray solid;
+
   .sidebar-header {
     background: $dark-gray;
     height: 110px;
@@ -329,28 +362,35 @@ i {
       background: $dark;
       color: $light-gray;
       font-size: 18px;
+
       &::placeholder {
         color: $light-gray;
         font-size: 18px;
       }
+
       &:focus {
         box-shadow: none;
         border: none;
       }
     }
+
     .input-group-text {
       background: $dark;
       border: none;
       padding: 8px;
     }
   }
+
   .list {
     height: calc(100vh - 110px);
+
     .active {
       background: $orange;
+
       .message {
         color: white !important;
       }
+
       border: 1px $orange solid !important;
     }
 
@@ -372,6 +412,7 @@ i {
       .content {
         margin-left: 14px;
         width: 100%;
+
         .title {
           display: flex;
           align-items: center;
@@ -387,6 +428,7 @@ i {
             gap: 10px;
           }
         }
+
         p {
           font-size: 14px;
           margin: 0;
@@ -395,6 +437,7 @@ i {
           overflow: hidden;
           white-space: nowrap;
         }
+
         .message {
           user-select: none;
           color: $light-gray;
@@ -409,6 +452,7 @@ i {
       &:not(:last-child) {
         margin-bottom: 10px;
       }
+
       &:hover {
         border-color: $orange-dark;
         cursor: pointer;
@@ -435,19 +479,23 @@ i {
     background-color: $dark;
     display: flex;
     align-items: center;
+
     .avatar {
       margin-right: 20px;
       object-fit: cover;
     }
+
     .chat-info {
       display: flex;
       justify-content: space-between !important;
       align-items: center;
       width: 100%;
+
       .chat-description {
         display: flex;
         flex-direction: column;
         width: 60%;
+
         .chat-name {
           font-size: 16px;
           color: white;
@@ -456,6 +504,7 @@ i {
           text-overflow: ellipsis;
           overflow: hidden;
         }
+
         span {
           color: $light-gray;
           white-space: nowrap;
@@ -463,7 +512,27 @@ i {
           text-overflow: ellipsis;
           overflow: hidden;
         }
+
+        .chat-typing-message-event:after {
+          content: "";
+          animation: dots 1s infinite;
+        }
+
+        @keyframes dots {
+          0% {
+            content: ".";
+          }
+
+          33% {
+            content: "..";
+          }
+
+          66% {
+            content: "...";
+          }
+        }
       }
+
       .chat-actions {
         .form-control {
           height: 28px;
@@ -472,33 +541,40 @@ i {
           color: white;
           font-size: 18px;
           border-radius: 10px !important;
+
           &::placeholder {
             color: white;
             font-size: 18px;
           }
+
           &:focus {
             box-shadow: none;
             border: none;
           }
         }
+
         display: flex;
       }
     }
   }
+
   .chat-messages {
     scroll-behavior: smooth;
     height: 100%;
     padding: 12px;
     display: flex;
     flex-direction: column;
+
     .message {
       max-height: 155px;
       max-width: 500px;
       display: inline;
+
       .message-layout {
         display: flex;
         flex-direction: row;
         margin-bottom: 10px;
+
         .message-content {
           background-color: $gray;
           padding: 12px;
@@ -506,6 +582,7 @@ i {
           border-radius: 15px 15px 15px 0;
           display: flex;
           flex-direction: column;
+
           .message-reply {
             width: 100%;
             height: 40px;
@@ -518,7 +595,7 @@ i {
               max-width: 400px;
               text-overflow: ellipsis;
               overflow: hidden;
-              white-space:nowrap;
+              white-space: nowrap;
               margin: 0;
               font-size: 14px;
               font-weight: 600;
@@ -528,15 +605,17 @@ i {
               max-width: 400px;
               text-overflow: ellipsis;
               overflow: hidden;
-              white-space:nowrap;
+              white-space: nowrap;
               margin: 0;
               font-size: 14px;
             }
           }
+
           .message-image {
-              max-width: 200px;
-              cursor: pointer;
-            }
+            max-width: 200px;
+            cursor: pointer;
+          }
+
           .display-name {
             font-weight: bold;
             white-space: nowrap;
@@ -544,24 +623,29 @@ i {
             text-overflow: ellipsis;
             overflow: hidden;
           }
+
           span {
             max-width: 500px;
             overflow-wrap: break-word;
             user-select: text;
           }
         }
+
         .message-options {
           display: flex;
           margin-left: 10px;
+
           .message-button {
             background: none;
             padding: 0;
             cursor: pointer;
           }
+
           .message-time {
             margin: 0;
           }
         }
+
         .user-avatar {
           width: 40px;
           height: 40px;
@@ -572,8 +656,10 @@ i {
         }
       }
     }
+
     .self {
       align-self: flex-end;
+
       .message-layout {
         .message-content {
           background-color: $orange;
@@ -585,15 +671,18 @@ i {
       }
     }
   }
+
   .chat-footer {
     padding: 22px;
     background-color: $dark;
     position: static;
     display: flex;
     align-items: center;
+
     .button-dark {
       padding-bottom: 9px;
     }
+
     .message-input {
       &::placeholder {
         font-size: 18px;
@@ -607,6 +696,7 @@ i {
       background-color: $dark;
       height: 35px;
     }
+
     .send-message {
       background-color: $orange;
       width: 50px;
@@ -614,6 +704,7 @@ i {
       border-radius: 50%;
       margin-left: 10px;
       transition: all 0.3s ease;
+
       &:hover {
         background-color: #b16b1b;
       }
@@ -633,12 +724,14 @@ i {
   display: flex;
   flex-direction: column;
   width: 100%;
+
   .profile-header {
     width: 100%;
     padding: 13px;
     background-color: $dark-gray;
     border-bottom: 1px $gray solid;
   }
+
   .profile-settings {
     max-height: 100%;
     background-color: $dark;
@@ -649,31 +742,38 @@ i {
       flex-direction: column;
       width: 100%;
       margin-bottom: 20px;
+
       .profile-form-header,
       .profile-form-footer {
         background-color: $dark-gray;
         padding: 12px;
       }
+
       .profile-form-header {
         border-radius: 15px 15px 0 0;
       }
+
       .profile-form-content {
         background-color: $gray;
         padding: 12px;
+
         .profile-form-group {
           padding: 0 12px;
           margin-bottom: 15px;
         }
+
         .profile-form-input {
           background-color: $dark;
           padding: 6px 12px;
           border-radius: 5px;
+
           &::-webkit-calendar-picker-indicator {
             filter: invert(1);
             cursor: pointer;
           }
         }
       }
+
       .profile-form-footer {
         display: flex;
         justify-content: flex-end;
@@ -708,6 +808,7 @@ i {
     flex-shrink: 0;
     padding-right: 40px;
     text-overflow: ellipsis;
+
     .reply-displayname {
       font-size: 16px;
       margin-top: 5px;
@@ -718,7 +819,7 @@ i {
       display: inline-block;
       color: $light-gray;
       text-overflow: ellipsis;
-      white-space:nowrap;
+      white-space: nowrap;
       width: 250px;
       overflow: hidden;
     }

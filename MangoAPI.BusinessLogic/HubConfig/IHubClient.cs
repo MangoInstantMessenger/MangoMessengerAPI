@@ -24,4 +24,9 @@ public interface IHubClient
     /// Notifies chat subscribers on the message delete via SignalR.
     /// </summary>
     Task MessageDeletedAsync(DeleteMessageNotification notification);
+
+    /// <summary>
+    /// Notifies chat subscribers on the typing event via SignalR.
+    /// </summary>
+    Task PrivateChatSentTypingEventAsync(TypingEventNotification notification);
 }
