@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using MangoAPI.Domain.Enums;
 using System;
+using Uuids;
 
 namespace MangoAPI.Domain.Entities;
 
@@ -55,7 +56,7 @@ public sealed class UserEntity
         string imageFileName,
         DisplayNameColour displayNameColour)
     {
-        Id = Guid.NewGuid();
+        Id = Uuid.NewMySqlOptimized().ToGuidByteLayout();
         _sessions = new List<SessionEntity>();
         _messages = new List<MessageEntity>();
         _userChats = new List<UserChatEntity>();

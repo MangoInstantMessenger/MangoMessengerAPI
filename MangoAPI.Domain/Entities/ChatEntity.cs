@@ -2,6 +2,7 @@
 using MangoAPI.Domain.Enums;
 using System;
 using System.Collections.Generic;
+using Uuids;
 
 namespace MangoAPI.Domain.Entities;
 
@@ -56,7 +57,7 @@ public sealed class ChatEntity
 
         _messages = new List<MessageEntity>();
         _chatUsers = new List<UserChatEntity>();
-        Id = Guid.NewGuid();
+        Id = Uuid.NewMySqlOptimized().ToGuidByteLayout();
 
         new ChatEntityValidator().ValidateAndThrow(this);
     }

@@ -1,5 +1,6 @@
 ﻿using FluentValidation;
 using System;
+using Uuids;
 
 namespace MangoAPI.Domain.Entities;
 
@@ -33,7 +34,7 @@ public sealed class MessageEntity
 
     private MessageEntity(Guid userId, Guid chatId, string text)
     {
-        Id = Guid.NewGuid();
+        Id = Uuid.NewMySqlOptimized().ToGuidByteLayout();
         UserId = userId;
         ChatId = chatId;
         Text = text;
